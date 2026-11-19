@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-19T04:29:44.040Z
+- Generated At: 2026-11-19T06:30:57.711Z
 
 ## Authored
 ### Purpose
@@ -59,28 +59,28 @@ Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everythi
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L16)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L19)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L22)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L31)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L34)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -96,6 +96,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
+- [`tuning-reset.initTuningReset`](./tuning-reset.ts.mdmd.md#symbol-inittuningreset)
 - [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
@@ -105,6 +106,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](../types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
+- [`types.FRAME_CHOICES`](../types.ts.mdmd.md#symbol-frame_choices)
+- [`types.FRAMINGS`](../types.ts.mdmd.md#symbol-framings)
+- [`types.FrameChoice`](../types.ts.mdmd.md#symbol-framechoice)
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
@@ -122,6 +126,8 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
+- [`template.tuning-frame`](../../shared/template.html.mdmd.md#symbol-tuning-frame)
+- [`template.tuning-framing`](../../shared/template.html.mdmd.md#symbol-tuning-framing)
 - [`template.tuning-hidden-files`](../../shared/template.html.mdmd.md#symbol-tuning-hidden-files)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
 - [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)

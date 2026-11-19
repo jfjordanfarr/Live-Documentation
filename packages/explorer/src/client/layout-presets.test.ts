@@ -207,6 +207,20 @@ describe("shared packing preferences", () => {
     }
   });
 
+  it("carries Framing only when it follows the pins, and reads its absence as by hand (2026-11-19)", () => {
+    const plain = getDefaultTuning();
+    expect(plain.localMap.framing).toBe("hand");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("framing");
+    expect(readLayoutSettings({ localMap: { framing: "hand" } })).toBeUndefined();
+    const chosen = getDefaultTuning();
+    chosen.localMap.framing = "follows";
+    const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+    expect(carried.layout?.localMap?.framing).toBe("follows");
+    expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.framing).toBe("follows");
+    const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+    expect(applyLayoutSettings(chosen, unsaid.layout).localMap.framing).toBe("hand");
+  });
+
   it("opens a link in the three looks unless it says the ladder, which it carries only when chosen (2026-11-13)", () => {
     // The default is the three looks, and a link made with it does not write it.
     const three = getDefaultTuning();

@@ -1,7 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import path from "node:path";
 
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { browserLaunchOptions } from "./browser-launch";
+import { serverPortForThisRun, type ServerPort } from "./served-build";
 
 /**
  * Playwright E2E configuration for the Live Docs Explorer.
@@ -13,18 +15,21 @@ import { browserLaunchOptions } from "./browser-launch";
  * Run:   npx playwright test --config tests/e2e/playwright.config.ts   (every case, one worker, bundles as built)
  * Or:    npm run test:e2e   (builds the bundles, then two passes: see `workers` below)
  *
- * The server's port is 8766 unless `LIVE_DOCS_E2E_PORT` names another, so that two checkouts of the repository
- * (a builder's worktree beside the main tree, 2026-10-30) can run the suite at the same time, each against its own
- * built bundle; `reuseExistingServer` would otherwise hand the second run the first one's pages.
+ * The server is the suite's own, on a port found free unless `LIVE_DOCS_E2E_PORT` names one, and a named port that
+ * already answers is refused unless `LIVE_DOCS_E2E_REUSE=1` asks to use it: several checkouts run the suite on one
+ * machine at once, and a run handed another checkout's server would test that checkout's pages without a word
+ * (2026-11-19). The first global setup proves that the server serves this checkout's `dist/explorer` and that its
+ * bundles were built together (`served-build.ts`).
  */
-const port = Number(process.env.LIVE_DOCS_E2E_PORT ?? 8766);
-const site = `http://localhost:${port}`;
+// http-server's own script, run by this Node: through `npx` a wrapper stood between Playwright and the server, and a
+// cleanup that ended the wrapper left the server holding its port (2026-11-19).
+const httpServer = require.resolve("http-server/bin/http-server");
 // Set by scripts/e2e-passes.mjs: "shared" for its first pass, every case but those tagged `@alone`, at two workers;
 // "alone" for its second, those cases at one worker. Unset, Playwright run directly takes every case at one worker. The
 // pass's filter stands here and not on the runner's command line, because Playwright applies a configuration's `grep`
 // and a command line's `--grep` together, where a second `--grep` on the command line replaces the first. The
 // configuration is a function of the pass's name, so that a unit test reads each pass's as Playwright receives it.
-export const configFor = (pass: string | undefined) => defineConfig({
+export const configFor = (pass: string | undefined, { port, reuse }: ServerPort = { port: 8766, reuse: false }) => defineConfig({
   testDir: ".",
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
@@ -45,10 +50,11 @@ export const configFor = (pass: string | undefined) => defineConfig({
   ...(pass === "alone" ? { outputDir: "../../test-results-alone" } : {}),
   timeout: 30_000,
   // Prints which renderer draws the run's WebGL, and stops a run whose graphics card was asked for and did not answer.
-  globalSetup: "./renderer-report",
+  // First, that the bundles are current and the server serves them; then which renderer draws the run's WebGL.
+  globalSetup: ["./served-build", "./renderer-report"],
 
   use: {
-    baseURL: site,
+    baseURL: `http://localhost:${port}`,
     // On the host's graphics card where the container was given one, and Playwright's own launch everywhere else.
     launchOptions: browserLaunchOptions(),
     screenshot: "only-on-failure",
@@ -60,7 +66,7 @@ export const configFor = (pass: string | undefined) => defineConfig({
     // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
     storageState: {
       cookies: [],
-      origins: [{ origin: site, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
+      origins: [{ origin: `http://localhost:${port}`, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
     },
   },
 
@@ -72,11 +78,11 @@ export const configFor = (pass: string | undefined) => defineConfig({
   ],
 
   webServer: {
-    command: `npx http-server ../../dist/explorer -p ${port} -c-1 --silent`,
+    command: `"${process.execPath}" "${httpServer}" "${path.resolve(__dirname, "../../dist/explorer")}" -p ${port} -c-1 --silent`,
     port,
-    reuseExistingServer: true,
+    reuseExistingServer: reuse,
     timeout: 15_000,
   },
 });
 
-export default configFor(process.env.LIVE_DOCS_E2E_PASS);
+export default configFor(process.env.LIVE_DOCS_E2E_PASS, serverPortForThisRun());

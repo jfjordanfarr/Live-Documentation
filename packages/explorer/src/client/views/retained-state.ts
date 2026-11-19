@@ -1,5 +1,6 @@
+import type { DiscoveryTarget } from "../types";
 import { under } from "./localView/directory-state";
-import { removePin, type PinEntry, type PinSet } from "./pin-state";
+import { addPin, EMPTY_PIN_SET, isSymbolPinned, removePin, type PinEntry, type PinSet } from "./pin-state";
 
 /** One deliberate selection, independent of the neighbors it brings into view. */
 export type RetainedItem =
@@ -67,6 +68,108 @@ export function clearRetainedDirectory(state: RetainedState, directory: string, 
     pins: { entries: state.pins.entries.filter(pin => !under(pathOf({ kind: "pin", pin }), parent)) },
     openDirectories: new Set([...state.openDirectories].filter(path => !under(pathOf({ kind: "directory", directory: path }), parent)))
   });
+}
+
+/**
+ * How far "the others" go (the owner's approval of 2026-11-19 of one gesture at two strengths, chosen in the menu of the
+ * thing kept): `fold` closes what is merely open elsewhere and keeps every pin; `unpin` does the same and releases every
+ * other pin too.
+ */
+export type OthersStrength = "fold" | "unpin";
+
+/** What, beside the retained selections, decides what goes and what stays. */
+export interface OthersContext {
+  /** The 3D map's one discovery, which folds away like an opened directory unless it is the thing kept. */
+  discovery?: DiscoveryTarget | null;
+  /** The directories the 3D map's Connections layout has popped open, its own memory, which wrap again on a fold. */
+  popped?: ReadonlySet<string>;
+  /** The map's subject, which stands in the picture by itself without a pin. */
+  subject?: string | null;
+  /** A file's displayed path, for which directories hold it; its id by default. */
+  pathOf?: (nodeId: string) => string;
+}
+
+/** The selections after the others go, and what went, counted for the words the page says. */
+export interface OthersReleased {
+  state: RetainedState;
+  discovery: DiscoveryTarget | null;
+  popped: ReadonlySet<string>;
+  /** Pins released. */
+  pins: number;
+  /** Opened directories closed and popped directories wrapped again. */
+  directories: number;
+  /** Whether the discovery went. */
+  discoveryReleased: boolean;
+}
+
+/**
+ * "Fold others away" and "Unpin others" (the owner's ask of 2026-11-19, "release everything _except_ what I'm interacting
+ * with now"): in one step, everything open elsewhere goes, and at the `unpin` strength every other pin too, as an
+ * editor's Close Others keeps the tab whose menu it was chosen from. What is kept stays as it is where that keeps it in
+ * the picture:
+ * - a file (`kept` is its whole-file pin, symbol `*`) keeps every pin it holds, whole or narrowed to its symbols;
+ * - a symbol keeps exactly its own pin, the file's other symbols released, or, its file pinned whole, that whole pin,
+ *   which already holds it;
+ * - a directory stays open, or popped;
+ * - the discovery stays when it is the thing's own.
+ * A file that holds no pin and is neither the subject nor the discovery is drawn only because something else shows it.
+ * At the `unpin` strength that something goes, so the file is pinned instead, as the file or the symbol named, and
+ * becomes the one pin. At the `fold` strength no pin changes, so the opened or popped directories that hold the file
+ * stay open, since it may be drawn only inside them. A pinned file needs no directory: a pin is drawn wherever it stands,
+ * and so is whatever any remaining pin shows. A pin whose file does not stand at a moment of the history shown is
+ * released like any other. Nothing to release returns the input unchanged, with zero counts.
+ */
+export function releaseOthers(state: RetainedState, kept: RetainedItem, strength: OthersStrength, context: OthersContext = {}): OthersReleased {
+  const discovery = context.discovery ?? null;
+  const popped = context.popped ?? new Set<string>();
+  const ownDiscovery = !!discovery && (kept.kind === "directory"
+    ? discovery.kind === "directory" && discovery.directory === kept.directory
+    : discovery.kind === "file" && discovery.nodeId === kept.pin.nodeId);
+  const standsAlone = kept.kind === "pin" && (context.subject === kept.pin.nodeId || ownDiscovery);
+
+  let pins = state.pins;
+  if (strength === "unpin") {
+    if (kept.kind === "directory") pins = EMPTY_PIN_SET;
+    else {
+      const { nodeId, symbol } = kept.pin;
+      const own = state.pins.entries.filter(pin => pin.nodeId === nodeId
+        && (symbol === "*" || pin.symbol === symbol || pin.symbol === "*"));
+      pins = own.length > 0 || standsAlone ? { entries: own } : addPin(EMPTY_PIN_SET, nodeId, symbol);
+    }
+  }
+  const holdsPin = kept.kind === "pin" && pins.entries.some(pin => pin.nodeId === kept.pin.nodeId);
+  const path = kept.kind === "pin" ? (context.pathOf ?? (id => id))(kept.pin.nodeId) : null;
+  const needs = (directory: string): boolean => kept.kind === "directory" ? directory === kept.directory
+    : !holdsPin && !standsAlone && under(path!, directory);
+  const openDirectories = new Set([...state.openDirectories].filter(needs));
+  const nextPopped = new Set([...popped].filter(needs));
+
+  const pinsReleased = state.pins.entries.filter(pin => !isSymbolPinned(pins, pin.nodeId, pin.symbol)).length;
+  const directories = state.openDirectories.size - openDirectories.size + popped.size - nextPopped.size;
+  const discoveryGone = !!discovery && !ownDiscovery;
+  if (pinsReleased === 0 && directories === 0 && !discoveryGone) {
+    return { state, discovery, popped, pins: 0, directories: 0, discoveryReleased: false };
+  }
+  return {
+    state: reconcileRetained({ ...state, pins, openDirectories }),
+    discovery: ownDiscovery ? discovery : null,
+    popped: nextPopped,
+    pins: pinsReleased,
+    directories,
+    discoveryReleased: discoveryGone
+  };
+}
+
+/** The plain words that say once what went: "Unpinned 4 others, folded 2 directories away". */
+export function othersReleasedWords(released: Pick<OthersReleased, "pins" | "directories" | "discoveryReleased">): string {
+  const plural = (count: number, one: string, many: string): string => `${count} ${count === 1 ? one : many}`;
+  const folded = [
+    ...released.directories > 0 ? [plural(released.directories, "directory", "directories")] : [],
+    ...released.discoveryReleased ? ["the discovery"] : []
+  ].join(" and ");
+  const unpinned = released.pins > 0 ? `Unpinned ${plural(released.pins, "other", "others")}` : "";
+  if (!folded) return unpinned;
+  return unpinned ? `${unpinned}, folded ${folded} away` : `Folded ${folded} away`;
 }
 
 /** Keep an independent inspected file; replace it only when its own pin or explicit direct selection is released. */

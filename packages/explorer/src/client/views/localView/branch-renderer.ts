@@ -21,8 +21,9 @@ import { layoutTopOf } from "./ladder-rooms";
 import { membranePath } from "./membrane-outline";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE, type PictureSize } from "./overview-files";
 import { connectionCount, returningConnections } from "./returning-connections";
+import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
-import { NODE_HUB } from "./wire-gathering";
+import { hubLine, NODE_HUB } from "./wire-gathering";
 import { countOf } from "./word-seams";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -170,15 +171,16 @@ const cycleMemory = new WeakMap<LocalViewController, Map<string, string[]>>();
 
 /** The disclosure as the controller holds it, ranked with the cycles' orders given; the greedy order for any not given. */
 function exploreWith(controller: LocalViewController, orders?: ReadonlyMap<string, readonly string[]>): Exploration {
-  const { state, graphData } = controller.options;
+  const { state } = controller.options, graphData = controller.graph, moment = controller.showsMoment;
   const tuning = state.tuning.localMap;
-  return exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
+  return exploreBranches(controller.subject, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
     ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie, orders },
     membraneDepth: tuning.membraneDepth,
     openDirectories: controller.openDirectories,
-    reading: state.reading,
-    path: controller.getActivePath() ?? undefined,
+    // A moment's cards carry no words of that day, and a path is asked over today's files: neither is drawn at a moment.
+    reading: moment ? [] : state.reading,
+    path: moment ? undefined : controller.getActivePath() ?? undefined,
     directoryFlow: tuning.directoryLayout === "flow"
   });
 }
@@ -466,7 +468,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
  * shapes' own (`data-flow-shapes`).
  */
 function shapeOfDirectories(controller: LocalViewController, sceneTuning: SceneTuning, costs: StartCosts): ShapeSearch {
-  const { state, graphData } = controller.options;
+  const { state } = controller.options, graphData = controller.graph;
   const tuning = state.tuning.localMap;
   const filtered = (node: ExplorerNodePayload): boolean => {
     const archetype = (node.archetype || "").toLowerCase();
@@ -748,7 +750,7 @@ function writeHandleNeeds(label: HTMLElement): void {
  * (the root's reviews of the far bands, 2026-11-06: a pin made one press out placed eight cards two or three pixels from
  * where the same pin made at reading scale put them). A first repair read the layout's offsets up to the wrapper, which is
  * not among an anchor's offset parents, so every pin had still been read from the dot as drawn: 112.5 at reading scale,
- * 114.2 one press out. A hub keeps its own centring, a transform that no step changes.
+ * 114.2 one press out. A node-level hub is taken back as a dot is (2026-11-19: it is drawn down to the held name and grown with the look).
  */
 function anchorCentre(anchor: HTMLElement, wrapper: HTMLElement, scale: number): number {
   const box = laidOutBox(anchor, scale);
@@ -781,7 +783,8 @@ function onLayoutGrid(value: number): number {
  */
 function laidOutBox(element: Element, scale: number): { top: number; bottom: number } {
   const rect = element.getBoundingClientRect();
-  if (!element.classList.contains("dot")) return { top: rect.top, bottom: rect.bottom };
+  // A node-level hub is held to its look as a dot is, at its name's first line (2026-11-19).
+  if (!element.classList.contains("dot") && !element.classList.contains("hub")) return { top: rect.top, bottom: rect.bottom };
   // The card reading's arithmetic (`layoutTopOf`), in the map's own units, and back to the screen's.
   const drawn = new DOMMatrix(getComputedStyle(element).transform), height = (element as HTMLElement).offsetHeight;
   const top = layoutTopOf(rect.top / scale, height, drawn.f, drawn.d || 1) * scale;
@@ -835,6 +838,7 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
         answers.labelHeights.set(directory, height);
       }
       answers.heights = heights;
+      standHubs(stage, scale);
       // With files only at the overview every wire is laid out between the two cards' node-level hubs, as Flow's lines are.
       const filesOnly = controller.getContainer().hasAttribute(OVERVIEW_FILES_ATTRIBUTE);
       const pin = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): number | null => {
@@ -850,6 +854,34 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
       return { heights, pin, labelHeights };
     }
   };
+}
+
+/**
+ * Stands each card's node-level hubs at the middle of its header's first line as the card is laid out (2026-11-19,
+ * `hubLine` of wire-gathering.ts), below the card's padding edge in the map's own units, written on the card's wrapper as
+ * `--hub-y`, which the stylesheet places the hubs by (view-shared.css). The line is not a constant: a name of one line
+ * shares it with the room the node's controls keep, which makes it taller, and a longer name's first line does not. Every
+ * header is read before any hub is written, so that the page lays itself out once for them. A growing card's hubs keep
+ * their own place (reading.css).
+ */
+function standHubs(stage: BranchStage, scale: number): void {
+  const lines: Array<[HTMLElement, number]> = [];
+  const range = document.createRange();
+  for (const wrapper of stage.wrappers.values()) {
+    const card = wrapper.querySelector<HTMLElement>(".node-card:not(.local-reading-card)");
+    const header = card?.querySelector<HTMLElement>(":scope > .node-title"), name = header?.querySelector<HTMLElement>(".local-file-name");
+    const room = name?.querySelector<HTMLElement>(".local-file-name-room");
+    if (!card || !header || !name || !room) continue;
+    const box = header.getBoundingClientRect(), padding = card.getBoundingClientRect().top + card.clientTop * scale;
+    // A growing card's name keeps the font's own line ("normal"), which the text's first line box measures.
+    const stated = parseFloat(getComputedStyle(name).lineHeight);
+    const text = name.querySelector(".local-file-name-text");
+    if (!Number.isFinite(stated) && text) range.selectNodeContents(text);
+    const lineHeight = Number.isFinite(stated) ? stated : (range.getClientRects()[0]?.height ?? 0) / scale;
+    const middle = hubLine(box.height / scale, lineHeight, room.getBoundingClientRect().height / scale);
+    lines.push([wrapper, onLayoutGrid((box.top - padding) / scale + middle)]);
+  }
+  for (const [wrapper, y] of lines) wrapper.style.setProperty("--hub-y", String(y));
 }
 
 /**
@@ -1666,7 +1698,8 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
   for (const card of cards) {
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
-    card.querySelectorAll(":scope > .local-back-references").forEach(note => note.remove());
+    // A foot redrawn under the pointer or the focus (a cycle's trial redraws them) puts out the connections it lit.
+    card.querySelectorAll(":scope > .local-back-references").forEach(note => { releaseConnections(controller.runtime.container, controller.runtime.overlay, note); note.remove(); });
     const back = returning.byFile.get(id) ?? [];
     // A pair line names no symbol: its return is told by its two files, and counted by the links it stands for.
     controller.reading?.setBackReferences(id, back.map(edge => (isPairLine(edge) ? { ...edge, sourceSymbol: undefined, targetSymbol: undefined } : edge)));
@@ -1675,6 +1708,9 @@ function dressReturns(controller: LocalViewController, cards: readonly HTMLEleme
     note.className = "local-disclosure local-back-references";
     note.textContent = returnsWording(back);
     note.title = "Show the files joined by connections that return against the layout's reading direction";
+    // The pointer or the keyboard on the foot keeps its returning connections whole, their laces, routes and cards, and
+    // fades the rest, as pointing at one of their laces does (2026-11-19).
+    attendConnections(note, controller.runtime.container, controller.runtime.overlay, () => back);
     if (controller.reading) {
       note.setAttribute("aria-haspopup", "menu");
       note.addEventListener("click", event => {

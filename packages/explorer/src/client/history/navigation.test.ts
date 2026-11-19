@@ -31,11 +31,23 @@ it("gives a busy period its own tick density and preserves global identities and
   expect(() => rangedTickModel(input, [355, 350])).toThrow(RangeError);
 });
 
-it("stops at the marks inside a selected interval, its two ends always among them, and plays every step where the pins touched none", () => {
+it("stops at the marks inside a selected interval and its two ends, and beyond it at the whole history's, and plays every step where the pins touched none of it", () => {
   const dates = Array.from({ length: 20 }, (_, i) => new Date(Date.UTC(2026, 9, 1 + i)).toISOString());
   const input = { dates, ticks: { major: [3, 12], minor: [8, 15] }, pinned: true, granularity: "auto" as const, axis: "time" as const };
   expect(rangedTickModel(input, [0, 19]).stops).toEqual([0, 3, 8, 12, 15, 19]);
-  expect(rangedTickModel(input, [5, 13]).stops).toEqual([5, 8, 12, 13]);
+  // The interval's ends are stops; past them the coarse pair goes on to the history's marks (2026-11-19).
+  expect(rangedTickModel(input, [5, 13]).stops).toEqual([0, 3, 5, 8, 12, 13, 15, 19]);
   expect(rangedTickModel(input, [5, 13]).plays).toBe("stops");
-  expect(rangedTickModel(input, [16, 19])).toMatchObject({ stops: [16, 19], plays: "steps" });
+  expect(rangedTickModel(input, [16, 19])).toMatchObject({ stops: [0, 3, 8, 12, 15, 16, 19], plays: "steps" });
+});
+
+it("chooses the automatic granularity over the interval's own steps, so that a narrower range resolves months into single commits", () => {
+  // Ten commits a day for three years: the whole history is drawn by months, a fortnight of it commit by commit.
+  const dates: string[] = [];
+  for (let day = 0; day < 1095; day += 1) for (let commit = 0; commit < 10; commit += 1) dates.push(new Date(Date.UTC(2024, 0, 1 + day, commit)).toISOString());
+  const input = { dates, ticks: { major: [], minor: [] }, pinned: false, granularity: "auto" as const, axis: "time" as const };
+  expect(rangedTickModel(input, [0, dates.length - 1]).granularity).toBe("month");
+  expect(rangedTickModel(input, [0, 3000]).granularity).toBe("week");
+  expect(rangedTickModel(input, [5000, 5400]).granularity).toBe("day");
+  expect(rangedTickModel(input, [5000, 5100]).granularity).toBe("step");
 });

@@ -4,6 +4,7 @@ import type {
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../../../shared/types";
+import type { HistoryChanges, HistoryMoment } from "../../history/moment";
 import type { ReaderLinkContext } from "../../reader-links";
 import type { ExplorerState, TestCoverageMap } from "../../types";
 import type { InspectionTarget } from "../../types";
@@ -40,6 +41,10 @@ export interface LocalViewOptions {
   onBackwardConnections?: (count: number) => void;
   /** Whether the camera stands at its farthest or its closest zoom, said when either changes, for the Zoom buttons. */
   onZoomLimits?: (limits: { farthest: boolean; closest: boolean }) => void;
+  /** Whether the camera follows the pins (Tuning's Framing, Follows Pins), said when it changes, for Fit's pressed state. */
+  onFollowing?: (following: boolean) => void;
+  /** The pins the following camera's frame leaves out changed, for the pin tray's quiet sign. */
+  onFramingLeftOut?: () => void;
   testCoverage: TestCoverageMap;
   /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
   obstruction?: () => DOMRect | null;
@@ -71,6 +76,13 @@ export interface LocalExplorationFrame {
  */
 export interface LocalViewApi {
   render(): void;
+  /**
+   * Show a moment of the history, or today (null), with the step's changes: while the thumb drags (`settle` false) only
+   * the step's emphasis on the cards drawn, laying nothing out again; at rest the picture drawn at the moment.
+   */
+  setMoment(moment: HistoryMoment | null, changes: HistoryChanges | null, settle: boolean): void;
+  /** The thumb let go on the moment already shown: the picture drawn at it, settling with the map's own move. */
+  settle(): void;
   /** Refresh unchanged fixed-slot reading in place; false when a structural render is required. */
   tryRefreshReading(): boolean;
   /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
@@ -96,6 +108,10 @@ export interface LocalViewApi {
   resetZoom(): void;
   /** Frame everything the map shows, at reading scale or smaller; a person's press only (2026-11-12). */
   fitWhole(): void;
+  /** Whether the camera follows the pins, which only Tuning's Framing at Follows Pins acts on (2026-11-19). */
+  isFollowing(): boolean;
+  /** What the following camera's frame leaves out: a file pin by its path, a symbol pin as `path#symbol`, a directory as `path/`. */
+  framingLeftOut(): readonly string[];
   
   /** Observable state store for hover and explicit paths. */
   readonly localMapState: StateStore<LocalMapState>;
@@ -139,6 +155,11 @@ export interface LocalEdge {
    * its two files it stands for, the unit a card's count of connections outside the view uses. Absent on a reference.
    */
   gathered?: number;
+  /**
+   * On a pair line: the symbols at the two ends of each link it stands for, in the graph's order, so that a hovered row
+   * keeps the line that carries one of its links (2026-11-19); an end with no symbol is the file's Internals.
+   */
+  standsFor?: ReadonlyArray<Pick<LocalEdge, "sourceSymbol" | "targetSymbol">>;
 }
 
 /**

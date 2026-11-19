@@ -53,12 +53,12 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 
 | Act | 2D Local Map | 3D Local Map | World Map | Reader and panels |
 | --- | --- | --- | --- | --- |
-| **Hover** | Lights a row's or card's wires and fades the rest; draws no text. | Names the sphere and fades what it does not touch; no hover while the map builds. | Peeks: the thing's panel stands beside it until the pointer leaves. | Tooltip (the native `title`) on controls. |
-| **Keyboard focus** | Same as hover, and the camera brings the focused control into the frame. | A name's button takes focus; focus previews as hover does. | Same as hover; a ring on the piece's outline. | Focus ring. |
+| **Hover** | Lights a row's or card's wires and fades the rest; on a returning connection's lace or a card's foot on its returns, lights the whole connection (both laces, its route, both cards); draws no text. | At once, only the pointing hand (and a wrapper's rim) says a sphere can be pressed; once the pointer has rested, names the sphere, offers its actions and fades what it does not touch (see 2.2, *hover intent*); no hover while the map builds. | At once, only the pointing hand; once the pointer has rested, peeks: the thing's panel stands beside it until the pointer leaves. | Tooltip (the native `title`) on controls. |
+| **Keyboard focus** | Same as hover, a returning connection's lace among the stops, and the camera brings the focused control into the frame. | A name's button takes focus; focus previews as hover does. | Same as hover; a ring on the piece's outline. | Focus ring. |
 | **Click or tap on a name** | Opens or folds that name's description (a file's name: Purpose and every description). | Same as a click on its sphere. | A link in a pinned panel: a thing's name pins it, a file opens it in the Local Map. | Follows the link inside the reader. |
 | **Click or tap on a body** (card, sphere, piece) | A card's body does nothing; a closed directory's box opens it. | Pins the file; a second click releases it. A directory toggles its discovery. | Pins the piece's panel. | — |
 | **Pin** (the pin icon) | Retains a file or symbol and its connections; pressed again releases only what it retained. | The same, from the sphere's actions. | — (the World Map has no Pin control; see 2.3) | The tray lists pins; each row can release or focus. |
-| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | — |
+| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | A tray entry's More holds Fold others away and Unpin others for that entry. |
 | **Open / Close** (directory) | Discloses or withdraws a directory's contents; an opened directory is a pin. | Open: the whole directory; Close: withdraws it. | `open` in a pinned panel enters the thing in the Local Map. | — |
 | **Centre** | Makes the item the map's subject. | The same. | — | — |
 | **Double activation** | Nothing (omitted on purpose). | Nothing. | Enters the thing (a second route; `open` is the first). | — |
@@ -74,13 +74,20 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Why: the owner's words of 2026-11-05 (principle *Intent, not attention*); hover does not exist on a touch screen; WCAG 2.2 SC 1.4.13 Content on Hover or Focus.
 - Where: `views/localView/card-reading.ts` (descriptions open on a tap only); the decision "Descriptions Open on a Tap, Not on Hover".
 - Checked by: `tests/e2e/card-reading.spec.ts`.
-- Status: holds in 2D and 3D. The World Map's hover opens a panel beside the piece, which is indication within the rule (it moves nothing), but it is the one hover in the product that draws our text.
+- Status: holds in 2D and 3D. The World Map's hover opens a panel beside the piece, which is indication within the rule (it moves nothing), but it is the one hover in the product that draws our text; since 2026-11-19 it waits for the pointer to rest (the next rule).
+
+**A moving pointer shows only that a thing can be pressed; words and fades wait until it rests** (*hover intent*: the pointer's pausing on a thing, read as the wish to know about it, as against its passing over on the way elsewhere; the pause it takes is the *dwell time*).
+- Rule: what a moving pointer touches may show at once that it can be pressed, without a word and without changing the rest of the picture: the cursor, and a 3D wrapper's own rim. A name, a sentence, a panel of words, a wire's words and the fading of everything else for the thing's sake wait until the pointer has rested on it for the dwell, 350 ms, within 4 px, and go at once when the pointer is on something else. Every thing waits afresh: a rest on one thing does not let the next show its words without a rest of its own (no "warm tooltip"). Only the pointer's own movement starts a rest again: a picture moving under a still pointer neither starts it again nor ends it, and what stands under the pointer when the dwell is reached is rested on (whether anything may begin while the 3D map builds, and in the drift after it until the pointer moves, is the building rule's). Keyboard focus and a tap are deliberate and wait for nothing. The one grace: a 3D sphere's actions stay while the pointer crosses the gap to them, over anything on the way.
+- Why: the owner, 2026-11-19, after blind testers who were models wished that wires and boxes said more under the pointer: "Models live on text. It's natural for them to wish for there to be more. This is a bias we must account for. ... It is possible to take complex stuff and make it intuitive enough that words are only warranted on a modestly long hover or something of the like. What I don't want to have is an application which is shooting random text at me every which way as I scroll my mouse across the screen (which it most certainly does in the 3D local map ...)" ([Turn 22 of the November 18 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)); and 2026-11-02: "we don't draw a node's name (unless hovered over) until _the very last second_ ... our current system is overexcited to draw text". Their baseline, Microsoft Teams. *Fade the irrelevant rather than boosting the relevant* (AGENTS.md) is why the at-once sign is the touched thing's own and not a change to the rest. The dwell was chosen from 250, 350 and 500 ms ([the pictures and the frames](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/rested-pointer/README.md)).
+- Where: the rule, `views/pointerRest.ts` (`REST_DWELL`, `REST_TOLERANCE`), used by the 3D map (`views/forceGraphView.ts`, `updatePointerHover`, `settleRest`) and the World Map (`views/worldMap/controller.ts`, `lookAtRest`). It stands beside the building rule (`views/forceGraphBuilding.ts`), which says whether a hover may begin at all while the 3D map builds.
+- Checked by: `views/pointerRest.test.ts`; `tests/e2e/force-graph-focus.spec.ts` ("a pointer crossing spheres shows only that they can be pressed …"); `world-map.spec.ts` ("a pointer crossing the board peeks at nothing …", "the keyboard on a piece peeks at once …"); the building rule's own `force-graph-building.spec.ts`.
+- Status: holds in the 3D map and the World Map since 2026-11-19. **Broken** in 2D, where a hover lights a row's wires and fades the rest at once; it draws no words, so the fade is what remains to wait.
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
 - Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction](../../../AI-Agent-Workspace/Memory/direction.md#what-it-shows-discovery-groups-and-hops) heads "A click pins, a second releases" (a heading's words, not the owner's); Nielsen's heuristic *user control and freedom*.
-- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`).
-- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …").
-- Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back.
+- Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`; the World Map's Reset layout, whose second press puts back what the first discarded until a piece is next moved (`views/worldMap/controller.ts:2032-2059`); Tuning's Reset to defaults, the same act for the viewer's settings, whose second press puts them back as they were until a lever is next moved (`panels/tuning-reset.ts`).
+- Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery"), `world-map.spec.ts` ("a reset keeps what it discarded until a piece is next moved …"), `tuning-reset.spec.ts` ("… Reset to defaults puts them all back").
+- Status: holds. The World Map's reset joined it on 2026-11-19; before, it threw every moved position away with no way back. Tuning's reset was built to it the same night.
 
 **Inspecting, pinning and moving the subject are three separate acts, each with its own control.** In 2D a click inspects, Pin retains, Centre moves the subject; none of the three does another's work.
 - Why: owner, 2026-10-19 and 2026-10-20 ([decision](../../layer-3/architectural-decisions.mdmd.md), "Inspection, Pins and the Map Subject Are Separate"): to read one thing without moving the place being explored.
@@ -96,6 +103,12 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Why: *At least two ways*; the platform conventions for a context menu (Windows: ContextMenu and Shift+F10; touch: long press); WAI-ARIA Authoring Practices, Menu Button pattern.
 - Where: `views/localView/controller.ts:1639` and `views/forceGraphView.ts:2084` (the 550 ms hold); `panels/item-menu.ts` (the menu).
 - Status: holds in 2D and 3D.
+
+**What releases the others stands in the menu of the thing that stays** (the editor's *Close Others* convention): Fold others away (what is open elsewhere closes, pins stay), then Unpin others (every other pin goes too), beside the thing's own Pin. An item is present only when it would release something, never greyed out; each is one step Back takes back, is said once in the page's status region, and leaves the focus on the control it was chosen from.
+- Why: the owner, 2026-11-19: "release everything _except_ what I'm interacting with now"; two strengths of one gesture approved the same night. A step that releases many selections at once must be reversible (*user control and freedom*), and a change made away from the focus is told (WCAG 2.2 SC 4.1.3).
+- Where: `views/retained-state.ts` (`releaseOthers`, both strengths); `index.ts` (`othersCommands`, `releaseOthersOf`); `persistence/history.ts` (`stepWithinPlace`, the one entry within a place); `panels/pin-tray.ts` (an entry's More, shown only when it has something to offer).
+- Checked by: `views/retained-state.test.ts`, `persistence/history.test.ts`, `tests/e2e/others.spec.ts`.
+- Status: holds. Back does not restore the 3D Connections layout's pops, which are the view's own memory and not in the address.
 
 **Double activation is never the only route.**
 - Why: a double click has no equivalent on a keyboard and a double tap often zooms on a phone; the decision of 2026-10-15 removed it from the Local Map.
@@ -124,6 +137,13 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
 - Status: holds since 2026-11-19.
 
+**Under Follows Pins, the camera follows the pinned set until the person takes it, and Fit gives it back** (*user control and freedom*: an automatic camera is welcome only while the person's hand is not on it, and leaving it must cost nothing; *visual momentum* again, since the frame widens to hold the pins already swung along rather than riding away from them).
+- Rule: with Tuning's Framing at Follows Pins, the camera frames the subject (while it holds no pin; beside others, its name line), the pins and a directory opened while following, newest first, at the largest scale up to reading size that holds them and no farther than the connections look's last press; the oldest are left out where they do not fit, the newest never; one pin is framed as an arrival frames it; of several, the newest is held whole and the older by their name lines. It re-frames in one ease, longer for longer travel, once the picture has settled after a pin, an opening or a move of the layout; a re-frame the person did not cause never zooms in and never drops a target it can keep, and a change of the pinned set that moves the frame far takes the smooth zoom's path (*smooth zooming and panning*, van Wijk and Nuij). A pin left out says *Outside the frame* in the pin tray, in its name too. The person's pan, wheel, pinch, zoom button, Return to Reading Size or a focus asked on one thing ends the following; Fit, then named Follow pins, resumes it and is pressed while it holds. Under By Hand the step's rule above applies unchanged.
+- Why: owner, 2026-11-19 (Turn 37 of the November 18 record): "follow the sucker for a bit if the user hasn't provided input to navigate in any direction (panning, zooming, etc.)", "try to frame every pinned thing as best you can with bias towards most recent items".
+- Where: `views/localView/camera-intent.ts` (`pinsFrame`, `keepFrame`, `smoothZoom`, `framingEaseMs`, `poseBetween`); `panels/pin-tray.ts` (the row's words and name); `views/localView/controller.ts` (`framingTargets`, `pinsFraming`, `reframePins`, `easeFollowing`, `setFollowing`); `index.ts` (Fit's state).
+- Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
+- Status: a trial since 2026-11-19, By Hand the default until the owner has seen it.
+
 ### 2.3 Where the same act means different things
 
 These are stated so a builder does not mistake them for accidents. Each is in [the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md#the-owners-forks) with the choices it leaves the owner.
@@ -151,7 +171,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | **Pressed** (*toggle button*: a button that stays on until pressed again) | A toggle is on. | Border and icon in `--state-selected` with the subtle fill. | `aria-pressed="true"` | `styles/local.css:311`, `styles/graph.css:81`, `styles/history.css:14`, `styles/world.css:446` | holds in look; see 5.4 for names |
 | **Current** | This is the view you are in. | The navigation item filled. | `aria-current="page"` | `dom.ts:39` | holds |
 | **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>`, the World Map's help (`views/worldMap/controller.ts:310-313`, `:2120-2125`) | holds; the World Map's help since 2026-11-19, checked by `world-map.spec.ts` ("the help button says whether the help is open …") |
-| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:81`) |
+| **Disabled** | Not available now. | Faded, default cursor. | `disabled` | five rules | broken: five different opacities, 0.3, 0.35, 0.45, 0.55, 0.65 (`styles/shell.css:59`, `styles/history.css:16`, `styles/local.css:335`, `styles/local.css:326`, `styles/reading.css:84`); and since 2026-11-19 Tuning's Reset to defaults draws its glyph in `text.disabled` at full opacity (`styles/shell.css`, `.tuning-reset:disabled`), the palette's tone for a disabled control in place of a fade, which makes a sixth form until one is chosen for all |
 | **Building** | The 3D map is placing and framing; nodes refuse input. | After 300 ms a line sweeps along the map's top edge and the cursor waits; still under reduced motion. | none (see 6.4) | `views/forceGraphView.ts:525-537`; `styles/graph.css:99-123` | holds visually; not told to assistive technology |
 | **Busy** | The 3D motion has not come to rest. | Nothing on screen. | `aria-busy="true"` on `#graph-svg` | `views/forceGraphView.ts:692`, `:1448`, `:2504`, `:2518`, `:2523` | inconsistent: see 6.4 |
 | **Loading** | The bundle is loading. | Three dots where the map will be; "Loading…" in the sidebar's footer. | `role="status"`, named "Loading" | `shared/template.html:534-536`, `:496` | holds; two signs for one state |
@@ -193,7 +213,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 ### 4.1 Tab order
 
-**Rule: the tab order follows the reading order of the screen, top to bottom and left to right: the sidebar, the search, the map's contents, the floating controls, the open reader, then the map's toolbar at the bottom.** The DOM order is that order (`shared/template.html`; the toolbar is appended last to `#main`, `index.ts:600`); nothing sets a positive `tabindex`.
+**Rule: the tab order follows the reading order of the screen, top to bottom and left to right: the sidebar, the search, the map's contents, the floating controls, the open reader, then the map's toolbar at the bottom.** The DOM order is that order (`shared/template.html`; the toolbar is appended last to `#main`, `index.ts:600`); nothing sets a positive `tabindex`. Under the Bare frame's trial (2026-11-19, `panels/frame.ts`) the sidebar is not drawn and the order is the crumbs with Back and Forward, the search, the map's contents, the floating controls, the strip, then the key or the Tuning sheet the strip opened, which stand straight after it in the DOM.
 - Why: WCAG 2.2 SC 2.4.3 Focus Order.
 - Status: holds by construction; not tested as a whole journey. An outsider counted 18 stops before the first map content on the World Map ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 17); since 2026-11-19 the World Map's toolbar is one stop where it was nine (see 5.3). There is no skip link (see 7, SC 2.4.1).
 
@@ -209,7 +229,8 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Ctrl+P, or ⌘+P | everywhere | Focuses the search (replaces the browser's Print), the letter in either case since 2026-11-19, so that Caps Lock does not hand it to Print | `search/search-bar.ts` |
 | Enter, Space | a focused control | Activates it; on a World Map piece, pins it and moves focus into its panel | `views/worldMap/controller.ts:1842-1850` |
 | Arrows, Home, End | menu, search results, scrubber, cells | Move within the group | 4.1 |
-| Page Up, Page Down | the scrubber's slider | The next and previous marked commit, as the coarse buttons beside play do, so that hand and keyboard agree (since 2026-11-19); the arrows, as the fine buttons, a commit | `history/scrubber.ts` |
+| Page Up, Page Down | the scrubber's slider | The next and previous marked commit, as the coarse buttons beside play do, so that hand and keyboard agree (since 2026-11-19); the arrows, as the fine buttons, a commit; both pass the range's ends, which slide to hold the step | `history/scrubber.ts` |
+| Plus, Minus (and `=`, `_`) | the scrubber's slider | Narrow and widen the track's range about the step shown, as the wheel and a pinch do about the pointer (since 2026-11-19), so that what the pointer can do the keyboard can | `history/scrubber.ts`, `history/zoom.ts` |
 | ContextMenu, Shift+F10 | a map item | Opens its commands | `views/localView/controller.ts:1670-1679`, `views/forceGraphView.ts:2139-2147` |
 | Escape | everywhere | See 4.3 | |
 | Q, E, T, F, U, G, D, R, ? | World Map, while focus is inside the board and not in a field; never with Ctrl, ⌘ or Alt held | Turn left, right, top-down, fit, built on, snap, dark, reset the layout (and, pressed again before a piece is moved, put it back), help | `views/worldMap/controller.ts:1771-1799` |
@@ -266,7 +287,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: the page has one `main`, one `navigation` for the views, the `search`, and a `complementary` reader.**
 - Why: WCAG 2.2 SC 1.3.1 Info and Relationships and SC 2.4.1 Bypass Blocks (landmarks are one accepted way to bypass).
-- Status: holds since 2026-11-19: `#main` is a `<main>`, the three views' buttons stand in `<nav aria-label="Views">`, beside `role="search"`, the reader's `complementary` or `dialog` (`index.ts`, `syncReaderPresentation`) and, inside the reader, its `<nav aria-label="Sections">` (`detailPanel.ts`). A skip link, "Skip to the map", is the first stop of the keyboard, shown only while focused; it moves focus to the views and leaves the address alone (`shared/template.html`, `index.ts`). The sidebar itself is a plain `div`. Checked by `tests/e2e/shell-accessibility.spec.ts` ("the page has its landmarks, and a skip link…"). The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
+- Status: holds since 2026-11-19: `#main` is a `<main>`, the three views' buttons stand in `<nav aria-label="Views">`, beside `role="search"`, the reader's `complementary` or `dialog` (`index.ts`, `syncReaderPresentation`) and, inside the reader, its `<nav aria-label="Sections">` (`detailPanel.ts`). A skip link, "Skip to the map", is the first stop of the keyboard, shown only while focused; it moves focus to the views and leaves the address alone (`shared/template.html`, `index.ts`). The sidebar itself is a plain `div`. Under the Bare frame's trial the views' buttons move into the crumbs' menu, inside `<nav aria-label="Places">`, the crumb of the place shown says `aria-current="location"`, and the key and the Tuning sheet are non-modal dialogs named "Key" and "Tuning" whose openers say `aria-expanded`; Escape closes each and returns focus to its opener. Checked by `tests/e2e/shell-accessibility.spec.ts` ("the page has its landmarks, and a skip link…"). The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
 
 ### 5.2 Names and descriptions
 
@@ -274,7 +295,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: every control has a name; an icon-only control's name is its tooltip, set once by `iconButton`** (`panels/icon-button.ts`).
 - Why: WCAG 2.2 SC 4.1.2; the owner, 2026-10-01: "There is no reason for "Release", "Pin All", and "Read" to be buttons with text instead of interactible elements whose aria attributes yield a proper accessible textual equivalent for those who are visually imparied or those who wish to hover for a tooltip." ([Turn 44 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-44)).
-- Status: holds across the `aria-label`s written; the zoom buttons have carried a tooltip as well as a name since 2026-11-19 (`shared/template.html`; checked by `tests/e2e/shell-accessibility.spec.ts`).
+- Status: holds across the `aria-label`s written; the zoom buttons have carried a tooltip as well as a name since 2026-11-19 (`shared/template.html`; checked by `tests/e2e/shell-accessibility.spec.ts`). A glyph drawn by CSS `content` joins the name unless it is given empty alternative text (`content: "▶" / ""`): Tuning's heading was named "▶ Tuning" until 2026-11-19 (`styles/shell.css`, `.sidebar-details > summary::before`; checked by `tests/e2e/tuning-reset.spec.ts`).
 
 **Rule: the name contains the words drawn on the control** (*label in name*).
 - Why: WCAG 2.2 SC 2.5.3 Label in Name (level A): a speech user says what they see.
@@ -315,7 +336,9 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | A refusal (e.g. opened as a file) | `role="alert"` | holds |
 | A path's result | `role="status"`, `aria-atomic` (`shared/template.html:527`) | holds |
 | Copied as a declaration | `aria-live="polite"` (`panels/sources-view.ts:198`) | holds |
+| Tuning reset to defaults, and put back | "Tuning reset to defaults" and "Tuning put back as you had it", each said once in `#page-status` (`panels/tuning-reset.ts`); checked by `tests/e2e/tuning-reset.spec.ts` | holds since 2026-11-19 |
 | No search results | "Nothing found", said once in the page's one polite status region, `#page-status` (`announce.ts`, `search/search-field.ts`); checked by `tests/e2e/shell-accessibility.spec.ts` | holds since 2026-11-19 |
+| Others folded or unpinned | What went, counted, said once in `#page-status` ("Unpinned 4 others, folded 2 directories away"; `views/retained-state.ts` `othersReleasedWords`); checked by `tests/e2e/others.spec.ts` | holds since 2026-11-19 |
 | A pinned file absent at a historical moment | `aria-describedby` on the field; spoken only on focus | partial |
 | The 3D map is building and refuses clicks | not told | broken (SC 4.1.3); `announce.ts` is the module to tell it with |
 | The walkthrough's next step | `role="status"` in the World Map's own markup (`views/worldMap/controller.ts:318`, `:2154`); checked by `world-map.spec.ts` ("the walkthrough says each step …") | holds |
@@ -352,7 +375,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 
 **Rule: under `prefers-reduced-motion: reduce`, every animation that moves the picture ends at once at its destination, and every decorative animation stops; a still sign replaces a moving one.**
 - Why: WCAG 2.2 SC 2.3.3 Animation from Interactions (level AAA, adopted here because the product's motion is large and frequent: a whole map flies); vestibular disorders.
-- Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:626`, `styles/world.css:153`.
+- Where (holds): `views/perspectiveTransition.ts:90`, `:188`; `views/localView/controller.ts:1497`; `views/localView/branch-renderer.ts:435`; `views/localView/pan-zoom.ts:247`; `views/forceGraphView.ts` (6 places); CSS in `styles/shell.css:215`, `:451`, `styles/graph.css:121`, `styles/local.css:325`, `styles/reading.css:637`, `styles/world.css:153`.
 - Checked by: 11 cases across `tests/e2e/backward-cue.spec.ts`, `force-graph-focus.spec.ts`, `force-graph-building.spec.ts`, `local-map-motion.spec.ts` and four more.
 - Status: holds. The World Map's camera, turning, top-down and up, and the walkthrough, arrives at once since 2026-11-19 (`views/worldMap/controller.ts:1129-1131`), checked by `world-map.spec.ts` ("under reduced motion the camera arrives at once …"); before, it eased regardless.
 
@@ -455,7 +478,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | Directory controls | 17×15 at map scale 1 | `styles/local.css:446` | below |
 | Search's clear | 24×24, its glyph 14 px | `styles/search.css` (`.search-clear`) | meets since 2026-11-19 (`tests/e2e/shell-accessibility.spec.ts`); it was 18×18 inside the input, where the spacing exception could not save it |
 | Sidebar toggle, Back, Forward | 12 px glyph and 4×8 padding (15 px at 2×6 for some): about 22 to 24 tall, by the font's line height | `styles/shell.css:34-45`, `:52-55` | likely below; needs a browser |
-| Under `(pointer: coarse)` | counts 44 tall; card actions 32; symbol actions 26 | `styles/reading.css:98-103` | meets on touch, in the reading look only |
+| Under `(pointer: coarse)` | counts 44 tall; card actions 32; symbol actions 26 | `styles/reading.css:101-106` | meets on touch, in the reading look only |
 
 **Rule: a control drawn in screen space (outside the map) is at least 24×24 CSS px.**
 - Why: WCAG 2.2 SC 2.5.8; Fitts's law. The map's own controls scale with zoom and are the deferred touch pass's subject; the controls around the map do not scale and have no reason to be small.
@@ -484,8 +507,8 @@ How each was judged: **code** means read from the source here, which can show a 
 | width ≤ 768, ≤ 480 | Knowledge Sources' padding narrows | `styles/sources.css:14-24` |
 | width ≤ 760 | the sidebar overlays the page; the main area keeps a 48 px strip | `styles/shell.css:429-432`; `index.ts:275` |
 | width ≤ 760 or height ≤ 480 | the reader fills the screen, modal, with its own Back, Forward and Close | `styles/shell.css:434-449`; `index.ts:267` |
-| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:94-96`, `:751-754` |
-| `pointer: coarse` | larger reading-look controls | `styles/reading.css:98-103` |
+| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:97-99`, `:769-772` |
+| `pointer: coarse` | larger reading-look controls | `styles/reading.css:101-106` |
 
 **Rule (proposed): breakpoints are named and few.** Today there are six widths (480, 600, 760, 768, 850 and the 480 height) written as literals in five files, two of them 8 px apart. A design system names them once (for example *narrow* ≤ 600, *compact* ≤ 760) and every rule uses the names. Status: proposed; see the findings.
 

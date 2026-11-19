@@ -6,6 +6,8 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
+    setMoment: (moment, changes, settle) => controller.setMoment(moment, changes, settle),
+    settle: () => controller.settle(),
     tryRefreshReading: () => controller.tryRefreshReading(),
     isShown: () => controller.isShown(),
     show: () => controller.show(),
@@ -24,6 +26,8 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     zoomOut: () => controller.zoomOut(),
     resetZoom: () => controller.resetZoom(),
     fitWhole: () => controller.fitWhole(),
+    isFollowing: () => controller.isFollowing(),
+    framingLeftOut: () => controller.framingLeftOut(),
     // Multi-hop API
     get localMapState() { return controller.localMapState; },
     // Path mode API

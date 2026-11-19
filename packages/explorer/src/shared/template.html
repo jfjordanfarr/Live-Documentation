@@ -92,8 +92,12 @@
 
     <!-- Tuning Controls (collapsible) -->
     <details class="sidebar-section sidebar-details">
-      <summary class="section-label clickable">Tuning</summary>
+      <summary class="section-label clickable"><span>Tuning</span><span id="tuning-changed" class="tuning-changed" hidden><span id="tuning-changed-count" aria-hidden="true"></span><span id="tuning-changed-words" class="visually-hidden"></span></span></summary>
       <div class="tuning-content">
+        <!-- Reset to defaults: the World Map's Reset layout glyph, a toggle pressed while a second press can take the reset back. -->
+        <div class="tuning-head">
+          <button id="tuning-reset" type="button" class="tuning-reset" aria-label="Reset to defaults" title="Reset to defaults" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+        </div>
         <details class="tuning-subsection">
           <summary class="subsection-label">Colour</summary>
           <label class="tuning-slider">
@@ -275,6 +279,14 @@
               <option value="reading" selected>Reading Size</option>
               <option value="then-neighbours">Reading, Then Neighbours</option>
               <option value="neighbours">Neighbours</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Framing</span>
+            <select id="tuning-framing">
+              <option value="hand" selected>By Hand</option>
+              <option value="follows">Follows Pins</option>
+              <option value="follows-files">Follows Pins, Out To Files</option>
             </select>
           </label>
           <label class="tuning-slider" data-closed-cells-only>
@@ -495,6 +507,16 @@
               <option value="dim" selected>Dim the rest</option>
               <option value="both">Glow and dim the rest</option>
               <option value="none">No emphasis</option>
+            </select>
+          </label>
+        </details>
+        <details class="tuning-subsection" open>
+          <summary class="subsection-label">Page</summary>
+          <label class="tuning-slider">
+            <span>Frame</span>
+            <select id="tuning-frame">
+              <option value="sidebar" selected>Sidebar</option>
+              <option value="bare">Bare</option>
             </select>
           </label>
         </details>

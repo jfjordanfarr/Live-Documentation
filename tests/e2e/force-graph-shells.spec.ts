@@ -208,7 +208,8 @@ test("a click pops a shell into its own files and a shell of a subdirectory, and
   for (const [dx, dy] of [[0, 0], [0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5]]) {
     const point = { x: at.x + dx * at.r, y: at.y + dy * at.r };
     await page.mouse.move(point.x, point.y);
-    if (await named.isVisible().catch(() => false) && await named.getAttribute("data-priority").catch(() => null) === "1") { aimed = point; break; }
+    // The name comes once the pointer rests on the shell (2026-11-19).
+    if (await expect(named).toHaveAttribute("data-priority", "1", { timeout: 2_000 }).then(() => true, () => false)) { aimed = point; break; }
   }
   expect(aimed, "the pointer names the shell somewhere within its body").not.toBeNull();
   await expect(named).toHaveAttribute("title", new RegExp(`^Portal · ${portal.files.length} files · Open this shell$`));

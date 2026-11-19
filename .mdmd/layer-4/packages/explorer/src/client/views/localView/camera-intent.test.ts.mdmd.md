@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/camera-intent.test.ts
-- Generated At: 2026-11-19T01:56:29.026Z
+- Generated At: 2026-11-19T05:51:25.646Z
 
 ## Authored
 ### Purpose
@@ -24,10 +24,20 @@ _No public symbols detected_
 - [`camera-intent.ARRIVAL_EASE_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_ease_ms)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)
 - [`camera-intent.ARRIVAL_HOLD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_hold_ms)
+- [`camera-intent.FRAMING_EASE_MAX_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_max_ms)
+- [`camera-intent.FRAMING_EASE_MIN_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_min_ms)
+- [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
 - [`camera-intent.easeInOutCubic`](./camera-intent.ts.mdmd.md#symbol-easeinoutcubic)
+- [`camera-intent.framingEaseMs`](./camera-intent.ts.mdmd.md#symbol-framingeasems)
+- [`camera-intent.framingTravel`](./camera-intent.ts.mdmd.md#symbol-framingtravel)
+- [`camera-intent.keepFrame`](./camera-intent.ts.mdmd.md#symbol-keepframe)
+- [`camera-intent.pinsFrame`](./camera-intent.ts.mdmd.md#symbol-pinsframe)
+- [`camera-intent.poseBetween`](./camera-intent.ts.mdmd.md#symbol-posebetween)
 - [`camera-intent.revealPan`](./camera-intent.ts.mdmd.md#symbol-revealpan)
+- [`camera-intent.sameCamera`](./camera-intent.ts.mdmd.md#symbol-samecamera)
+- [`camera-intent.smoothZoom`](./camera-intent.ts.mdmd.md#symbol-smoothzoom)
 - [`camera-intent.unionOf`](./camera-intent.ts.mdmd.md#symbol-unionof)
 - [`ladder-steps.STEP_RATIO`](./ladder-steps.ts.mdmd.md#symbol-step_ratio)
 - [`ladder-steps.zoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-function)
