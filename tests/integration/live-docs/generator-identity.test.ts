@@ -162,6 +162,16 @@ describe("the tool lock in the history lens", () => {
     expect(committed.code).not.toBe(initial.code);
     fs.rmSync(path.join(history, "summary.ts"));
     expect(identity(modulePath, root).modified).not.toBeNull();
+    commit(root, "remove the summary");
+
+    // The command's side of a summary, the tree's reading, and data beside the history's modules key it too.
+    for (const file of ["git.ts", "table.json"]) {
+      const before = identity(modulePath, root);
+      fs.writeFileSync(path.join(history, file), `${file}\n`);
+      expect(identity(modulePath, root).modified, file).not.toBeNull();
+      commit(root, `add ${file}`);
+      expect(identity(modulePath, root).code, file).not.toBe(before.code);
+    }
   });
 
   it("does not mistake an installed generator's host lock for this tool's lock", () => {
@@ -178,7 +188,7 @@ describe("the tool lock in the history lens", () => {
     commit(root, "host dependencies");
 
     const initial = identity(modulePath, root);
-    expect(initial).toEqual({ version: "0.0.0", code: null, commit: null, modified: null });
+    expect(initial).toEqual({ version: "0.0.0", code: null, commit: null, modified: null, unicode: process.versions.unicode });
     fs.writeFileSync(path.join(root, "package-lock.json"), "another host dependency tree\n");
     expect(identity(modulePath, root)).toEqual(initial);
     commit(root, "change host dependencies");
