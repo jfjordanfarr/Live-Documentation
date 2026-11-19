@@ -62,16 +62,25 @@ describe("pointerRest", () => {
     expect(restedOn(wandered, REST_DWELL + 100)).toBe("a");
   });
 
-  it("does not rest on a thing the picture carries under a still pointer, until the pointer itself moves", () => {
-    const still = feed([[null, { x: 5, y: 5 }, 0], ["a", { x: 5, y: 5 }, 100], ["a", { x: 5, y: 5 }, 100 + 2 * REST_DWELL]]);
-    expect(restedOn(still, 100 + 2 * REST_DWELL)).toBeNull();
-    expect(restsAt(still)).toBeNull();
-    const nudged = restAt(still, "a", { x: 6, y: 5 }, 1000);
-    expect(restedOn(nudged, 1000 + REST_DWELL)).toBe("a");
+  it("lets the picture, not the pointer, move a thing under a still pointer without starting the rest again", () => {
+    // The pointer stops on a; the picture carries a away and brings b under the same point.
+    const carried = feed([["a", { x: 5, y: 5 }, 0], [null, { x: 5, y: 5 }, 100], ["b", { x: 5, y: 5 }, 200]]);
+    expect(restedOn(carried, REST_DWELL - 1)).toBeNull();
+    expect(restedOn(carried, REST_DWELL)).toBe("b");
+    // A sphere flickering with its wrapper under a still pointer does not hold the rest back either.
+    const flicker = feed([["a", { x: 5, y: 5 }, 0], ["wrap", { x: 5, y: 5 }, 100], ["a", { x: 5, y: 5 }, 300]]);
+    expect(restedOn(flicker, REST_DWELL)).toBe("a");
   });
 
-  it("does not let the picture's move under a still pointer restart a rest already begun", () => {
-    const begun = feed([["a", { x: 5, y: 5 }, 0], ["a", { x: 5, y: 5 }, 200]]);
-    expect(restedOn(begun, REST_DWELL)).toBe("a");
+  it("ends the words when the picture carries the thing away from a still pointer", () => {
+    const rested = feed([["a", { x: 5, y: 5 }, 0], ["a", { x: 5, y: 5 }, REST_DWELL]]);
+    expect(restedOn(restAt(rested, null, { x: 5, y: 5 }, REST_DWELL + 16), REST_DWELL + 16)).toBeNull();
+  });
+
+  it("starts again when the pointer itself steps onto another thing, however small the step", () => {
+    const rested = feed([["a", { x: 5, y: 5 }, 0], ["a", { x: 5, y: 5 }, REST_DWELL]]);
+    const stepped = restAt(rested, "b", { x: 6, y: 5 }, REST_DWELL + 16);
+    expect(restedOn(stepped, REST_DWELL + 16)).toBeNull();
+    expect(restsAt(stepped)).toBe(REST_DWELL + 16 + REST_DWELL);
   });
 });

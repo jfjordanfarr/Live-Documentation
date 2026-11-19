@@ -4,11 +4,12 @@
  *
  * What a moving pointer touches may show at once that it can be pressed; its name, its words and the fading of the
  * rest wait until the pointer has rested on it for `REST_DWELL`, and go as soon as it is on something else. Every thing
- * waits afresh: a rest on one thing lets the next show nothing until the pointer rests again. A hand that drifts by
- * less than `REST_TOLERANCE` from where the rest began is still resting. Only the pointer's own movement starts a rest:
- * a thing that a moving picture carries under a still pointer is touched, not rested on, until the pointer moves. What
- * may begin at all while the 3D map builds is `forceGraphBuilding.ts`'s rule, not this one. Keyboard focus and a tap are
- * deliberate and never pass through here.
+ * waits afresh: a pointer that moves onto another thing starts again, so a rest on one thing lets the next show nothing
+ * until the pointer rests again. A hand that drifts by less than `REST_TOLERANCE` from where the rest began is still
+ * resting. Only the pointer's own movement starts a rest again: a picture that moves under a still pointer neither
+ * starts it again nor ends it, and whatever stands under the pointer when the dwell is reached is rested on. What may
+ * begin at all while the 3D map builds, and in the drift after it until the pointer moves, is `forceGraphBuilding.ts`'s
+ * rule, not this one. Keyboard focus and a tap are deliberate and never pass through here.
  *
  * Pure: the views feed it what is under the pointer, where the pointer is and the time, and ask what is rested on.
  */
@@ -32,8 +33,8 @@ export interface RestPoint {
 }
 
 /**
- * The pointer's rest: the thing under it (`null` for nothing), where the pointer was last seen, where the current rest
- * began and when (`since` null when nothing is being rested on: no thing, or one the picture brought to a still pointer).
+ * The pointer's rest: the thing under it (`null` for nothing), where the pointer was last seen, and where and when the
+ * pointer last came to a stop (`since` null before the pointer has been seen).
  */
 export interface PointerRest {
   readonly on: string | null;
@@ -42,7 +43,7 @@ export interface PointerRest {
   readonly since: number | null;
 }
 
-/** No pointer, or one on nothing. */
+/** No pointer seen. */
 export const NO_REST: PointerRest = { on: null, at: null, anchor: null, since: null };
 
 /**
@@ -51,14 +52,14 @@ export const NO_REST: PointerRest = { on: null, at: null, anchor: null, since: n
  */
 export function restAt(previous: PointerRest, on: string | null, at: RestPoint, now: number): PointerRest {
   const moved = previous.at === null || previous.at.x !== at.x || previous.at.y !== at.y;
-  if (on === null) return { on: null, at, anchor: null, since: null };
-  if (on !== previous.on) return moved ? { on, at, anchor: at, since: now } : { on, at, anchor: null, since: null };
-  if (previous.since === null) return moved ? { on, at, anchor: at, since: now } : previous.at === at ? previous : { ...previous, at };
-  // Once rested, a pointer moving about on the same thing keeps it; before that, a drift past the tolerance starts again.
-  if (now - previous.since >= REST_DWELL) return previous.at === at ? previous : { ...previous, at };
-  const anchor = previous.anchor ?? at;
-  if (Math.hypot(at.x - anchor.x, at.y - anchor.y) > REST_TOLERANCE) return { on, at, anchor: at, since: now };
-  return previous.at === at ? previous : { ...previous, at };
+  const begin = (): PointerRest => ({ on, at, anchor: at, since: now });
+  if (previous.since === null || previous.anchor === null) return begin();
+  // The pointer itself carried onto another thing: that thing waits afresh.
+  if (moved && on !== previous.on) return begin();
+  // A thing already rested on is kept while the pointer moves about on it.
+  const rested = previous.on !== null && on === previous.on && now - previous.since >= REST_DWELL;
+  if (moved && !rested && Math.hypot(at.x - previous.anchor.x, at.y - previous.anchor.y) > REST_TOLERANCE) return begin();
+  return previous.on === on && previous.at === at ? previous : { ...previous, on, at };
 }
 
 /** The thing the pointer has rested on at `now`, if any. */
@@ -66,7 +67,7 @@ export function restedOn(rest: PointerRest, now: number): string | null {
   return rest.on !== null && rest.since !== null && now - rest.since >= REST_DWELL ? rest.on : null;
 }
 
-/** When the pointer will have rested on what it is on, if it keeps still; null when nothing is being rested on. */
+/** When the pointer will have rested on what it is on, if it keeps still; null when it is on nothing. */
 export function restsAt(rest: PointerRest): number | null {
   return rest.on !== null && rest.since !== null ? rest.since + REST_DWELL : null;
 }

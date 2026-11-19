@@ -1630,6 +1630,7 @@ export class WorldMapController {
       const pieceNode = orbit ? null : target.closest<SVGElement>(".w-piece");
       const piece = pieceNode?.dataset.piece;
       svg.setPointerCapture(event.pointerId);
+      window.clearTimeout(this.restTimer);
       const origin: Point2 = [this.svgLeft(), this.svgTop()];
       const [px, py] = fromScreen(this.screen, event.clientX - origin[0], event.clientY - origin[1]);
       const { width, height } = this.viewport();
@@ -1940,6 +1941,11 @@ export class WorldMapController {
    * moment the pin is let go. Keyboard focus peeks at once (`attachInput`); a click pins at once.
    */
   private lookAtRest(h: Hover | null): void {
+    // A drag is no rest, and a peek that came in its middle would lay the page out again on every frame of it.
+    if (this.drag) {
+      window.clearTimeout(this.restTimer);
+      return;
+    }
     const now = performance.now();
     this.touched = h;
     this.rest = restAt(this.rest, h && `${h.kind}:${h.id}`, { x: this.lastPointer[0], y: this.lastPointer[1] }, now);

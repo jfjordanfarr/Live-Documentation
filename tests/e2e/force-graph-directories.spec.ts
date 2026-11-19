@@ -129,9 +129,11 @@ test("the structure layout preserves files, uses uniform directory junctions, an
     if (await restsOn(page, node.id)) { hovered = node; break; }
   }
   expect(hovered, "a connected file is hoverable").toBeDefined();
-  const incident = (await renderedLinks(page)).filter(link => link.kind !== "containment" && (link.source === hovered!.id || link.target === hovered!.id));
+  const incidentOf = async () => (await renderedLinks(page)).filter(link => link.kind !== "containment" && (link.source === hovered!.id || link.target === hovered!.id));
+  // The rest shows the actions, and the frame after it draws the references (2026-11-19).
+  await expect.poll(async () => (await incidentOf()).every(link => link.visible)).toBe(true);
+  const incident = await incidentOf();
   expect(incident.length).toBeGreaterThan(0);
-  expect(incident.every(link => link.visible)).toBe(true);
   expect((await renderedLinks(page)).filter(link => link.kind !== "containment" && link.visible)).toHaveLength(incident.length);
   expect(await expectDrawnBetweenSpheres(page)).toBe(incident.length);
   await page.mouse.move(30, 50);
