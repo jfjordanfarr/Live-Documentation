@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
-import { folderOf, isProjectFile, joinWorkspacePath, lookUpWorkspaceFile, nearestProjectFolder, workspaceFile } from "./dotnetPaths";
+import { folderOf, isProjectFile, joinWorkspacePath, lookUpWorkspaceFile, nearestProjectFolder, type ReaderNotice, workspaceFile } from "./dotnetPaths";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { projectKind } from "./project";
@@ -67,9 +67,11 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     const content = await fs.readFile(absolutePath, "utf8");
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const extension = path.extname(absolutePath).toLowerCase();
+    // `directives.notices` says why each path left unlinked has no link, for a run to report at its end.
+    const directives = await resolveDirectiveDependencies(content, thisFile, extension, workspaceRoot, fileIndex);
     const dependencies: DependencyEntry[] = [
       ...resolveScriptDependencies(content, thisFile, fileIndex),
-      ...await resolveDirectiveDependencies(content, thisFile, extension, workspaceRoot, fileIndex)
+      ...directives.dependencies
     ];
 
     if (extension === ".cshtml" || extension === ".razor") {
@@ -144,20 +146,37 @@ async function resolveDirectiveDependencies(
   extension: string,
   workspaceRoot: string,
   fileIndex: WorkspaceFileIndex | undefined
-): Promise<DependencyEntry[]> {
-  const defaultName = DEFAULT_DIRECTIVE[extension];
-  if (!defaultName) return [];
+): Promise<{ dependencies: DependencyEntry[]; notices: ReaderNotice[] }> {
   const dependencies: DependencyEntry[] = [];
+  const notices: ReaderNotice[] = [];
+  const defaultName = DEFAULT_DIRECTIVE[extension];
+  if (!defaultName) return { dependencies, notices };
   for (const directive of readDirectives(content, defaultName)) {
     for (const attribute of FILE_ATTRIBUTES[directive.name] ?? []) {
       const written = directive.attributes.get(attribute)?.trim();
       if (!written) continue;
       const resolved = await resolveDirectivePath(written, thisFile, workspaceRoot, fileIndex);
-      dependencies.push(resolved ? fileDependency(resolved) : { specifier: written, symbols: [], kind: "import" });
+      if ("file" in resolved) {
+        dependencies.push(fileDependency(resolved.file));
+      } else {
+        dependencies.push({ specifier: written, symbols: [], kind: "import" });
+        notices.push({ reason: resolved.reason, subject: `${thisFile}: ${written}` });
+      }
     }
   }
-  return dependencies;
+  return { dependencies, notices };
 }
+
+/** Why a directive's path has no link. */
+export const DIRECTIVE_REASONS = {
+  several:   "paths several projects hold, left unlinked",
+  none:      "paths no file in the workspace holds, left unlinked",
+  caseTwins: "paths two files match without regard to case, left unlinked",
+  siteRoot:  "paths from the site's root, left unlinked"
+} as const;
+
+/** A directive's path, resolved to a workspace file or left unlinked for a reason. */
+export type DirectivePath = { file: string } | { reason: string };
 
 /**
  * The workspace file a directive's path names. A relative path is read from
@@ -179,12 +198,14 @@ export async function resolveDirectivePath(
   thisFile: string,
   workspaceRoot: string,
   fileIndex: WorkspaceFileIndex | undefined
-): Promise<string | undefined> {
+): Promise<DirectivePath> {
   const slashed = written.replace(/\\/gu, "/");
+  if (slashed.startsWith("/")) return { reason: DIRECTIVE_REASONS.siteRoot };
   if (!slashed.startsWith("~/")) {
-    return slashed.startsWith("/") ? undefined : workspaceFile(joinWorkspacePath(folderOf(thisFile), slashed), fileIndex);
+    const lookup = lookUpWorkspaceFile(joinWorkspacePath(folderOf(thisFile), slashed), fileIndex);
+    return "file" in lookup ? lookup : { reason: "ambiguous" in lookup ? DIRECTIVE_REASONS.caseTwins : DIRECTIVE_REASONS.none };
   }
-  if (!fileIndex) return undefined;
+  if (!fileIndex) return { reason: DIRECTIVE_REASONS.none };
   const fromRoot = slashed.slice(2);
   const ownProject = nearestProjectFolder(thisFile, fileIndex);
   const roots = new Set(await webProjectFolders(workspaceRoot, fileIndex));
@@ -194,7 +215,8 @@ export async function resolveDirectivePath(
     const lookup = lookUpWorkspaceFile(joinWorkspacePath(root, fromRoot), fileIndex);
     if ("file" in lookup) holders.push(lookup.file);
   }
-  return holders.length === 1 ? holders[0] : undefined;
+  if (holders.length === 1) return { file: holders[0] };
+  return { reason: holders.length > 1 ? DIRECTIVE_REASONS.several : DIRECTIVE_REASONS.none };
 }
 
 const webProjectFoldersCache = new WeakMap<WorkspaceFileIndex, Promise<string[]>>();

@@ -3,7 +3,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { aspNetMarkupAdapter } from "./aspnet";
+import { aspNetMarkupAdapter, resolveDirectivePath } from "./aspnet";
 
 describe("aspNetMarkupAdapter", () => {
   let workspaceRoot: string;
@@ -167,6 +167,23 @@ describe("aspNetMarkupAdapter", () => {
       "unresolved ~/DesktopModules/DDRMenu/Menu.ascx",
       "unresolved /controls/LabelControl.ascx"
     ]);
+  });
+
+  it("says why a directive's path has no link: several projects hold it, no file does, two differ by case alone, or it starts at the site's root", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Features/Features.csproj": webProject
+    }, ["Features/Page.aspx", "Web/App_MasterPages/layout.Master", "Features/App_MasterPages/layout.Master", "Features/twin.ascx", "Features/TWIN.ascx"]);
+    const reason = async (written: string) => {
+      const resolved = await resolveDirectivePath(written, "Features/Page.aspx", workspaceRoot, fileIndex);
+      return "reason" in resolved ? resolved.reason : resolved.file;
+    };
+
+    expect(await reason("~/App_MasterPages/layout.Master")).toBe("paths several projects hold, left unlinked");
+    expect(await reason("~/App_MasterPages/Missing.Master")).toBe("paths no file in the workspace holds, left unlinked");
+    expect(await reason("Missing.ascx")).toBe("paths no file in the workspace holds, left unlinked");
+    expect(await reason("Twin.ascx")).toBe("paths two files match without regard to case, left unlinked");
+    expect(await reason("/App_MasterPages/layout.Master")).toBe("paths from the site's root, left unlinked");
   });
 
   it("links `~/` to the page's own project only when no other web project holds the same path, since a stub kept for compiling is not what the host serves", async () => {

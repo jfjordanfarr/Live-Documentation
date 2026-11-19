@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/adapters/aspnet.test.ts
-- Generated At: 2026-09-27T23:21:30.225Z
+- Generated At: 2026-11-19T22:32:47.552Z
 
 ## Authored
 ### Purpose
@@ -25,5 +25,6 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`aspnet.aspNetMarkupAdapter`](./aspnet.ts.mdmd.md#symbol-aspnetmarkupadapter)
+- [`aspnet.resolveDirectivePath`](./aspnet.ts.mdmd.md#symbol-resolvedirectivepath)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/aspnet.ts
-- Generated At: 2026-11-19T21:08:25.206Z
+- Generated At: 2026-11-19T22:32:47.576Z
 
 ## Authored
 ### Purpose
@@ -34,22 +34,36 @@ symbols are element ids, server controls and plain HTML alike.
 
 #### `Directive` {#symbol-directive}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L121)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L123)
 
 ##### `Directive` — Summary
 One `<%@ … %>` directive: its name, lowercased, and its attributes by lowercased name.
 
 #### `readDirectives` {#symbol-readdirectives}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L127)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L129)
 - Returns: [`Directive`](#symbol-directive)[]
 
 ##### `readDirectives` — Summary
 The directives of a markup file, by Microsoft's documented syntax; a directive with no name is the file type's own. Server-side comments are skipped.
 
+#### `DIRECTIVE_REASONS` {#symbol-directive_reasons}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L171)
+
+##### `DIRECTIVE_REASONS` — Summary
+Why a directive's path has no link.
+
+#### `DirectivePath` {#symbol-directivepath}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L179)
+
+##### `DirectivePath` — Summary
+A directive's path, resolved to a workspace file or left unlinked for a reason.
+
 #### `resolveDirectivePath` {#symbol-resolvedirectivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L177)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L196)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveDirectivePath` — Summary
@@ -72,6 +86,7 @@ for, and has no link.
 ### Dependencies
 - `node:fs` - `promises`
 - `node:path` - `path`
+- [`dotnetPaths.ReaderNotice`](./dotnetPaths.ts.mdmd.md#symbol-readernotice)
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.isProjectFile`](./dotnetPaths.ts.mdmd.md#symbol-isprojectfile)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
