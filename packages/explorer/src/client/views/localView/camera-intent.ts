@@ -6,6 +6,10 @@
  * keeps its scale and moves only as far as brings the newcomer into view. This module holds the arithmetic and the
  * timing; the controller measures the page and moves the camera.
  *
+ * Beside that, a trial for the owner's eye (Tuning → 2D Layout → Framing, Follows Pins; the owner's Turn 37 of the
+ * November 18 record): the camera follows the pinned set, newest first, until the person takes it by hand, and Fit
+ * gives the following back. Its frame ({@link pinsFrame}) and its ease ({@link framingEaseMs}) are here.
+ *
  * @module camera-intent
  */
 import { farthestRatioOf } from "./ladder-steps";
@@ -55,14 +59,96 @@ export function arrivalPose(start: MapTransform, end: MapTransform, elapsed: num
   if (elapsed < ARRIVAL_HOLD_MS) return { phase: "hold", transform: start };
   const t = clamp((elapsed - ARRIVAL_HOLD_MS) / ARRIVAL_EASE_MS, 0, 1);
   if (t >= 1) return { phase: "done", transform: end };
-  const eased = easeInOutCubic(t);
+  return { phase: "ease", transform: poseBetween(start, end, easeInOutCubic(t), frame) };
+}
+
+/**
+ * The camera a fraction `eased` of the way from `start` to `end`: the scale in its logarithm, so that a zoom reads as
+ * even, and the picture's point under the frame's middle along a straight line between the two frames' middles.
+ */
+export function poseBetween(start: MapTransform, end: MapTransform, eased: number, frame: Frame): MapTransform {
   const k = start.k * (end.k / start.k) ** eased;
-  // The picture's point at the frame's middle, at each end, and between them.
   const middle = { x: frame.width / 2, y: frame.height / 2 };
   const from = { x: (middle.x - start.x) / start.k, y: (middle.y - start.y) / start.k };
   const to = { x: (middle.x - end.x) / end.k, y: (middle.y - end.y) / end.k };
   const at = { x: from.x + (to.x - from.x) * eased, y: from.y + (to.y - from.y) * eased };
-  return { phase: "ease", transform: { x: middle.x - at.x * k, y: middle.y - at.y * k, k } };
+  return { x: middle.x - at.x * k, y: middle.y - at.y * k, k };
+}
+
+/**
+ * One thing the camera frames when it follows the pins (Tuning → 2D Layout → Framing, Follows Pins; 2026-11-19): a
+ * whole-file pin's card, a pinned symbol's row with its card's name line, so that a row is never framed without saying
+ * whose it is, or the subject's card when nothing is pinned. In the picture's own units. A `card` alone is read as an
+ * arrival reads it, at reading scale and entered at its top where it is taller than the room.
+ */
+export interface FramingTarget<K = string> {
+  key: K;
+  bounds: Bounds;
+  card?: boolean;
+}
+
+/** Where following the pins puts the camera, and which targets that frame holds and which it leaves out, oldest first. */
+export interface PinsFraming<K = string> {
+  transform: MapTransform;
+  held: K[];
+  left: K[];
+}
+
+/**
+ * The frame that follows the pins, as a map application's tracking mode follows its blue dot. The targets come oldest
+ * first. The frame is the smallest box that holds them, padded as Fit pads, at the largest scale that holds it, never
+ * closer than `ceiling` (reading scale: text is never enlarged past it) and never farther than `floor`. Where the targets
+ * do not fit at the floor, the oldest are left out one at a time until the rest fit; the newest is always held. One
+ * target alone is the owner's "one pin": a card at the ceiling, entered at its top or left where it is larger than the
+ * room, as an arrival frames it; any other target at the largest scale between floor and ceiling that holds it, entered
+ * at its start where even the floor cannot. Null for no targets. Depends on its inputs alone.
+ */
+export function pinsFrame<K>(targets: readonly FramingTarget<K>[], frame: Frame, ceiling: number, floor: number): PinsFraming<K> | null {
+  if (!targets.length) return null;
+  const { horizontal, vertical } = framePadding(frame);
+  const room = { width: frame.width - 2 * horizontal, height: frame.height - 2 * vertical };
+  const fitOf = (box: Bounds): number => Math.min(room.width / Math.max(1, box.width), room.height / Math.max(1, box.height));
+  // Centred along an axis where the box fits the room at k, else its start at the padding, as a page is entered.
+  const place = (box: Bounds, k: number): MapTransform => ({
+    x: box.width * k > room.width + 0.5 ? horizontal - box.left * k : frame.width / 2 - (box.left + box.width / 2) * k,
+    y: box.height * k > room.height + 0.5 ? vertical - box.top * k : frame.height / 2 - (box.top + box.height / 2) * k,
+    k
+  });
+  for (let first = 0; first < targets.length; first++) {
+    const held = targets.slice(first), left = targets.slice(0, first).map(target => target.key);
+    const box = unionOf(held.map(target => target.bounds))!;
+    const fit = fitOf(box);
+    if (held.length === 1) {
+      const k = held[0].card ? ceiling : clamp(fit, floor, ceiling);
+      return { transform: place(box, k), held: [held[0].key], left };
+    }
+    if (fit >= floor * (1 - 1e-9)) return { transform: place(box, Math.min(fit, ceiling)), held: held.map(target => target.key), left };
+  }
+  return null;
+}
+
+/** The shortest and longest a re-frame of the following camera eases. */
+export const FRAMING_EASE_MIN_MS = 300;
+export const FRAMING_EASE_MAX_MS = 900;
+
+/**
+ * How long a re-frame eases, growing with how far the camera goes: a quarter of a second for each doubling of scale, and
+ * two fifths of a second for each frame's diagonal the frame's middle travels on screen at the lesser of the two scales,
+ * from {@link FRAMING_EASE_MIN_MS} to {@link FRAMING_EASE_MAX_MS}. A short pull back is short; a long ride is not
+ * made longer than the eye will follow.
+ */
+export function framingEaseMs(start: MapTransform, end: MapTransform, frame: Frame): number {
+  const zoom = Math.abs(Math.log2(end.k / start.k));
+  const middle = { x: frame.width / 2, y: frame.height / 2 };
+  const from = { x: (middle.x - start.x) / start.k, y: (middle.y - start.y) / start.k };
+  const to = { x: (middle.x - end.x) / end.k, y: (middle.y - end.y) / end.k };
+  const travel = Math.hypot(to.x - from.x, to.y - from.y) * Math.min(start.k, end.k) / Math.max(1, Math.hypot(frame.width, frame.height));
+  return clamp(FRAMING_EASE_MIN_MS + 250 * zoom + 400 * travel, FRAMING_EASE_MIN_MS, FRAMING_EASE_MAX_MS);
+}
+
+/** Whether two cameras differ by less than the eye sees: half a pixel of pan and a thousandth of scale. */
+export function sameCamera(a: MapTransform, b: MapTransform): boolean {
+  return Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5 && Math.abs(a.k / b.k - 1) < 1e-3;
 }
 
 /** Ease in and out, cubic. */

@@ -10,7 +10,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, revealPan, STEP_MARK_MS, unionOf } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -216,11 +216,22 @@ export class LocalViewController implements LocalViewApi {
    * of a file pinned from a cell or a card, or the label of a directory opened (camera-intent.ts).
    */
   private stepNewcomer: { card: string } | { directory: string } | null = null;
-  /** Any input of the person's on the map ends an arrival where it stands. */
+  /**
+   * Whether the camera follows the pins, under Tuning's Framing at Follows Pins (camera-intent.ts's pinsFrame): true
+   * from an arrival or a press of Fit, false from the person's own pan, wheel, pinch, zoom button or Return to Reading
+   * Size, or an explicit focus on one thing, after which a new pin only does what a step does.
+   */
+  private following = true;
+  /** The directory last opened while following, framed with the pins as their newest until the pinned set changes. */
+  private followDirectory: string | null = null;
+  /** The following camera's ease in progress, by a token that a newer ease or the person's input replaces; 0 when none. */
+  private followEase = 0;
+  /** Any input of the person's on the map ends an arrival, or the following camera's ease, where it stands. */
   private readonly endArrivalByHand = (): void => {
     this.arrivalPending = false;
     this.arrivalFocus = false;
     this.cancelArrival();
+    this.cancelFollowEase();
   };
   /** The requested identity is measured after its layout move, never from a transient pose. */
   private focusRequest: string | null = null;
@@ -323,6 +334,7 @@ export class LocalViewController implements LocalViewApi {
 
   private readonly handleWheel = (event: WheelEvent): void => {
     this.fitFraming = false;
+    this.setFollowing(false);
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
     this.directoryArrivalPending = false;
@@ -796,6 +808,7 @@ export class LocalViewController implements LocalViewApi {
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
   capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false): LocalExplorationFrame {
     if (closeExpansion) this.expandedCards.delete(nodeId);
+    this.followDirectory = null;
     const directory = this.pinHeldDirectory;
     this.pinHeldDirectory = null;
     // A file pinned whose card was not in view is a newcomer: once the picture settles it is brought into view and marked.
@@ -814,6 +827,8 @@ export class LocalViewController implements LocalViewApi {
         const marked = document.activeElement?.closest(`${label} .local-directory-cells`) ? document.activeElement as HTMLElement : null;
         newcomer();
         frame.afterRender();
+        // A cell's press is a pin, not an opening: the handle's directory is not framed as a newcomer.
+        this.followDirectory = null;
         marked?.focus({ preventScroll: true });
       } };
     }
@@ -870,6 +885,8 @@ export class LocalViewController implements LocalViewApi {
     const drawn = !!this.container.querySelector(label);
     return { ...frame, afterRender: () => {
       frame.afterRender();
+      // Opened while following, the directory is framed with the pins as their newest (the trial's choice, 2026-11-19).
+      this.followDirectory = this.container.querySelector(label) ? directory : null;
       if (!drawn && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
       this.directoryArrivalPending = this.isShown();
       if (!this.stage?.move) this.settleArrival();
@@ -925,7 +942,137 @@ export class LocalViewController implements LocalViewApi {
     const step = this.stepNewcomer, settle = this.directoryArrivalPending;
     this.stepNewcomer = null;
     this.directoryArrivalPending = false;
+    if (this.followsPins()) {
+      // Following: once the picture has settled, after a pin, an opening, the search's rearrangement or a card grown by
+      // its reading, one ease to the pins' frame; the newcomer is still marked so that the eye finds it.
+      const newcomer = step ? this.newcomerOf(step) : null;
+      if (newcomer) this.markNewcomer(newcomer.mark);
+      if (this.reframePins()) return;
+    }
     if (settle || step) this.settleIntoFrame(settle, step);
+  }
+
+  /** Whether Tuning's Framing is Follows Pins. */
+  private followsPinsLever(): boolean {
+    return this.options.state.tuning.localMap.framing === "follows";
+  }
+
+  /** Whether the camera follows the pins now: the lever, the person not having taken the camera, and no path drawn. */
+  private followsPins(): boolean {
+    return this.followsPinsLever() && this.following && !this.getActivePath() && this.isShown();
+  }
+
+  /** Whether the camera follows the pins, said to whoever shows it on Fit when it changes. */
+  private setFollowing(on: boolean): void {
+    if (on === this.following) return;
+    this.following = on;
+    if (!on) this.cancelFollowEase();
+    this.options.onFollowing?.(on);
+  }
+
+  /** Whether the camera follows the pins, for Fit's pressed state. */
+  isFollowing(): boolean {
+    return this.following;
+  }
+
+  /**
+   * What the following camera frames, oldest first, in the picture's own units (camera-intent.ts's FramingTarget): each
+   * pin in the order it was made, a whole-file pin by its card and a pinned symbol by its row with its card's name line;
+   * the subject's card when nothing is pinned; and a directory opened while following, by its label with the first row
+   * of what it holds, as the newest. What is not drawn is not framed.
+   */
+  private framingTargets(): FramingTarget[] {
+    const targets = withTransformReset(this.container, origin => {
+      const local = (element: Element): Bounds => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
+      };
+      const cardOf = (id: string) => this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`);
+      const found: FramingTarget[] = [];
+      for (const pin of this.pins.entries) {
+        const card = cardOf(pin.nodeId);
+        if (!card?.getClientRects().length) continue;
+        if (pin.symbol === "*") { found.push({ key: pin.nodeId, bounds: local(card), card: true }); continue; }
+        const row = card.querySelector<HTMLElement>(`.symbol-row[data-symbol="${CSS.escape(pin.symbol)}"]`);
+        const title = card.querySelector<HTMLElement>(".node-title") ?? card;
+        const parts = [title, row].filter((element): element is HTMLElement => !!element && element.getClientRects().length > 0);
+        found.push({ key: `${pin.nodeId}#${pin.symbol}`, bounds: unionOf(parts.map(local))! });
+      }
+      const subject = this.options.state.selectedNode?.id;
+      const subjectCard = !found.length && subject ? cardOf(subject) : null;
+      if (subjectCard?.getClientRects().length) found.push({ key: subject!, bounds: local(subjectCard), card: true });
+      return found;
+    });
+    const directory = this.followDirectory !== null ? this.newcomerOf({ directory: this.followDirectory }) : null;
+    if (directory) targets.push({ key: `${this.followDirectory}/`, bounds: directory.bounds });
+    return targets;
+  }
+
+  /** The pins' frame for the frame given (camera-intent.ts's pinsFrame), between the calibrated reading scale and the floor; null when nothing is framed. */
+  private pinsFraming(frame: Frame): PinsFraming | null {
+    const ceiling = this.readingReferenceScale;
+    const framed = pinsFrame(this.framingTargets(), frame, ceiling, ceiling * ARRIVAL_FLOOR_RATIO);
+    // Which pins the frame leaves out, for whoever reads the page; the pin tray still holds them.
+    if (framed?.left.length) this.container.dataset.framingLeftOut = framed.left.join(" ");
+    else delete this.container.dataset.framingLeftOut;
+    return framed;
+  }
+
+  /** Ease the camera to the pins' frame; false when there is nothing to frame. */
+  private reframePins(): boolean {
+    if (!this.contentRoot) return false;
+    const frame = this.frameRect();
+    const framed = this.pinsFraming(frame);
+    if (!framed) return false;
+    this.readingFrameTarget = null;
+    this.mapHasInitialFit = true;
+    this.mapUserAdjusted = true;
+    this.mapInitialTransform = { ...framed.transform };
+    this.easeFollowing(framed.transform, frame);
+    return true;
+  }
+
+  /**
+   * The following camera's one ease to a frame: its length grows with the distance (framingEaseMs), the scale even in
+   * its logarithm, a cut where the person prefers reduced motion. It moves as the camera's other animations do, through
+   * the runtime's target, so that the person's input or another move ends it where it stands.
+   */
+  private easeFollowing(next: MapTransform, frame: Frame): void {
+    const runtime = this.runtime;
+    if (sameCamera(runtime.mapAnimationTarget ?? this.mapTransform, next)) return;
+    this.cancelInertia();
+    cancelAnimationFrame(runtime.mapAnimationFrame);
+    if (prefersReducedMotion()) {
+      runtime.mapAnimationTarget = null;
+      this.mapTransform = { ...next };
+      this.updateMapTransform();
+      this.drawConnections();
+      return;
+    }
+    const start = { ...this.mapTransform }, duration = framingEaseMs(start, next, frame), began = performance.now();
+    const token = ++this.followEase;
+    runtime.mapAnimationTarget = { ...next };
+    const tick = (now: number): void => {
+      const to = runtime.mapAnimationTarget;
+      if (this.followEase !== token || !to) return;
+      const t = Math.min(1, (now - began) / duration);
+      this.mapTransform = t >= 1 ? { ...to } : poseBetween(start, to, easeInOutCubic(t), frame);
+      if (t >= 1) { runtime.mapAnimationTarget = null; this.followEase = 0; }
+      this.updateMapTransform();
+      if (t < 1) runtime.mapAnimationFrame = requestAnimationFrame(tick);
+      else this.drawConnections();
+    };
+    runtime.mapAnimationFrame = requestAnimationFrame(tick);
+    this.watchCamera();
+  }
+
+  /** End the following camera's ease where it stands. */
+  private cancelFollowEase(): void {
+    if (!this.followEase) return;
+    this.followEase = 0;
+    cancelAnimationFrame(this.runtime.mapAnimationFrame);
+    this.runtime.mapAnimationTarget = null;
+    this.watchCamera();
   }
 
   /** A pin or opening leaves path mode without restoring the former exploration camera. */
@@ -1074,6 +1221,9 @@ export class LocalViewController implements LocalViewApi {
       this.arrivalFocus = false;
       const content = this.measureLayoutExtents()?.content;
       if (content) next = this.arrivalFrame(nodeId, next, content, target, frame);
+    } else {
+      // A focus asked for on one thing (the pin tray, a search choice of a retained file) is the person's own frame.
+      this.setFollowing(false);
     }
     this.mapHasInitialFit = true;
     this.mapInitialTransform = { ...next };
@@ -1084,6 +1234,7 @@ export class LocalViewController implements LocalViewApi {
   /** Zooms the map in by 20%. */
   zoomIn(): void {
     this.endArrivalByHand();
+    this.setFollowing(false);
     this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
@@ -1094,6 +1245,7 @@ export class LocalViewController implements LocalViewApi {
   /** Zooms the map out by ~17%. */
   zoomOut(): void {
     this.endArrivalByHand();
+    this.setFollowing(false);
     this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
@@ -1110,6 +1262,8 @@ export class LocalViewController implements LocalViewApi {
   resetZoom(): void {
     this.endArrivalByHand();
     this.readingAsked = true;
+    // Reading size asked for is the person's frame: the camera stops following until Fit gives it back.
+    this.setFollowing(false);
     this.focusRequest = null;
     if (!this.runtime.contentRoot) {
       return;
@@ -1126,6 +1280,11 @@ export class LocalViewController implements LocalViewApi {
   fitWhole(): void {
     if (!this.runtime.contentRoot) return;
     this.beginCameraGesture();
+    // Under Follows Pins, Fit frames the pins by the following camera's rule and gives the following back.
+    if (this.followsPinsLever() && !this.getActivePath()) {
+      this.setFollowing(true);
+      if (this.reframePins()) return;
+    }
     this.fitFraming = true;
     // With files only shown at the overview, Fit frames the picture its rows would draw (overview-files.ts's rowsFrame,
     // 2026-11-13), so that it frames the same thing from either layout and a second press changes nothing.
@@ -1720,6 +1879,14 @@ export class LocalViewController implements LocalViewApi {
     const fresh = this.arrivalPending, asked = this.readingAsked;
     this.arrivalPending = false;
     this.readingAsked = false;
+    if (this.followsPinsLever() && !asked) {
+      // Under Follows Pins an arrival starts the following: the pins' frame, which for one pin is this reading frame.
+      this.cancelArrival();
+      this.setFollowing(true);
+      const framed = this.pinsFraming(frame);
+      if (framed && framed.held.length > 1) this.readingFrameTarget = null;
+      return framed?.transform ?? reading;
+    }
     const lever = this.options.state.tuning.localMap.arrival;
     if (lever === "reading") return reading;
     // Return to Reading Size keeps its meaning under every Arrival: the subject at reading size, the person's to move.
@@ -1984,6 +2151,7 @@ export class LocalViewController implements LocalViewApi {
   /** A movement, rather than a tap on readable prose, takes ownership of the camera. */
   private beginCameraGesture(): void {
     this.endArrivalByHand();
+    this.setFollowing(false);
     this.stepNewcomer = null;
     this.fitFraming = false;
     this.directoryArrivalPending = false;

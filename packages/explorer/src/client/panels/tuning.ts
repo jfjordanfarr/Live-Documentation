@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVALS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { ARRIVALS, FRAMINGS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -70,6 +70,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
+  const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   /**
@@ -192,6 +193,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
+    if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     syncClosedChoices();
@@ -312,6 +314,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (arrivalSelect) {
     arrivalSelect.addEventListener("change", () => {
       state.tuning.localMap.arrival = ARRIVALS.find(choice => choice === arrivalSelect.value) ?? ARRIVALS[0];
+      onTuningChange();
+    });
+  }
+  // Who frames the camera changes no picture: the next re-frame or Fit reads it, and Fit's state says it at once.
+  if (framingSelect) {
+    framingSelect.addEventListener("change", () => {
+      state.tuning.localMap.framing = FRAMINGS.find(choice => choice === framingSelect.value) ?? FRAMINGS[0];
       onTuningChange();
     });
   }

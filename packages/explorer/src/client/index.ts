@@ -346,6 +346,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       syncPerspectiveControls();
     },
     // A Zoom button that can do no more says so: disabled, which a reader of the page is told (2026-11-06).
+    onFollowing: () => syncPerspectiveControls(),
     onZoomLimits: ({ farthest, closest }) => {
       for (const [zoom, limited] of [["out", farthest], ["in", closest]] as const) {
         const button = document.querySelector<HTMLButtonElement>(`#controls [data-zoom="${zoom}"]`);
@@ -992,6 +993,18 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
+    // Under Tuning's Framing at Follows Pins (2026-11-19), Fit in 2D frames the pins and is pressed while the camera
+    // follows them; the person's own pan or zoom lifts it, and a press gives the following back.
+    if (state.perspective === "2d" && state.tuning.localMap.framing === "follows") {
+      const following = localView.isFollowing();
+      fitButton.setAttribute("aria-pressed", String(following));
+      fitButton.setAttribute("aria-label", "Follow pins");
+      fitButton.title = following ? "Following the pins: the camera frames what is pinned, newest first; pan or zoom to take it"
+        : "Follow the pins again: frame what is pinned, newest first";
+    } else {
+      fitButton.removeAttribute("aria-pressed");
+      fitButton.setAttribute("aria-label", "Fit current scope");
+    }
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
     hopsSelect.value = String(state.tuning.forceGraph.hops);
@@ -1386,7 +1399,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   syncTuningControls = initTuningPanel({
     state,
-    onTuningChange: () => { schedulePersistUi(); persistExploration(); },
+    onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); },
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
       if (state.perspective === "3d") {

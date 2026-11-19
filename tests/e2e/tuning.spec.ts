@@ -34,7 +34,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // Files joined the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files"), and Beyond
   // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything), and
   // Arrival the 2D layout group on 2026-11-19 (how the camera meets a new subject).
-  await expect(controls).toHaveCount(69);
+  await expect(controls).toHaveCount(70);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

@@ -40,6 +40,8 @@ export interface LocalViewOptions {
   onBackwardConnections?: (count: number) => void;
   /** Whether the camera stands at its farthest or its closest zoom, said when either changes, for the Zoom buttons. */
   onZoomLimits?: (limits: { farthest: boolean; closest: boolean }) => void;
+  /** Whether the camera follows the pins (Tuning's Framing, Follows Pins), said when it changes, for Fit's pressed state. */
+  onFollowing?: (following: boolean) => void;
   testCoverage: TestCoverageMap;
   /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
   obstruction?: () => DOMRect | null;
@@ -96,6 +98,8 @@ export interface LocalViewApi {
   resetZoom(): void;
   /** Frame everything the map shows, at reading scale or smaller; a person's press only (2026-11-12). */
   fitWhole(): void;
+  /** Whether the camera follows the pins, which only Tuning's Framing at Follows Pins acts on (2026-11-19). */
+  isFollowing(): boolean;
   
   /** Observable state store for hover and explicit paths. */
   readonly localMapState: StateStore<LocalMapState>;

@@ -132,6 +132,12 @@ export interface LocalMapTuning {
    */
   arrival: ArrivalFraming;
   /**
+   * Who frames the camera after an arrival (a trial for the owner's eye, 2026-11-19, Turn 37 of the November 18 record):
+   * "hand", the default, the person, with Arrival and the step as they are; "follows", the camera follows the pinned set,
+   * newest first, until the person pans or zooms, and Fit gives the following back (camera-intent.ts's pinsFrame).
+   */
+  framing: CameraFraming;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -374,6 +380,12 @@ export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
 
 /** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
 export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
+
+/** Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it. */
+export type CameraFraming = "hand" | "follows";
+
+/** Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other. */
+export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
