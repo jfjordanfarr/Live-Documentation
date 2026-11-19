@@ -156,7 +156,7 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
   return infos;
 }
 
-function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
+function ensureUniqueSymbolSlugs(headings: { slug: string }[]): void {
   const used = new Set<string>();
   const suffixCounts = new Map<string, number>();
 
@@ -867,6 +867,18 @@ export function composeEntries(args: {
 // ============================================================================
 
 /**
+ * A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where two
+ * share one, as `Foo` and `foo` do, the later told apart as two symbols' anchors are (`symbol-foo-1`). The doc's
+ * headings ({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that
+ * a link to a re-export lands on the heading it names.
+ */
+export function anchorReExports<T extends { name: string }>(reExports: readonly T[]): Array<{ entry: T; slug: string }> {
+  const anchored = [...reExports].sort((a, b) => compareText(a.name, b.name)).map((entry) => ({ entry, slug: createSymbolSlug(entry.name) }));
+  ensureUniqueSymbolSlugs(anchored);
+  return anchored;
+}
+
+/**
  * Composes the `Re-Exported Symbol Anchors` section: one anchor per symbol a
  * barrel re-exports. Its own heading uses the exported name; the provider link
  * uses that provider's actual indexed heading when the workspace index is present.
@@ -878,10 +890,7 @@ export function composeReExports(args: {
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
-  const sorted = [...args.reExports].sort((a, b) => compareText(a.name, b.name));
-
-  return sorted.map((entry) => {
-    const slugValue = createSymbolSlug(entry.name);
+  return anchorReExports(args.reExports).map(({ entry, slug: slugValue }) => {
     const flags: string[] = [];
     if (entry.isTypeOnly) {
       flags.push("type-only");
@@ -895,7 +904,7 @@ export function composeReExports(args: {
       const relative = linkTo(args.docDir, moduleDocAbsolute);
       const providerSlug = args.symbolIndex
         ? resolveSymbolSlugFromIndex(entry.name, entry.sourceModulePath, args.symbolIndex, entry.kind)
-        : slugValue;
+        : createSymbolSlug(entry.name);
       const fragment = providerSlug ? `#${providerSlug}` : "";
       reExport.from = { label: toModuleLabel(entry.sourceModulePath), link: `${relative}${fragment}` };
     }

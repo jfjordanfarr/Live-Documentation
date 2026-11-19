@@ -198,7 +198,8 @@ function together(names: readonly string[]): Handed {
     symbols: names.map((name, index) => ({ name, kind: index % 5 === 0 ? "const" : "key" })),
     declaredBy: names.map((name) => ({ declarer: "package.json", reason: "command" as const, name })),
     dependencies: names.map((name) => ({ specifier: name, symbols: [name], kind: "import" as const })),
-    reExports: [],
+    // Each name is re-exported too, as a barrel's `export *` would, so that two re-exports one anchor would name are seen.
+    reExports: names.map((name) => ({ name, kind: "const" })),
     citedBy: [],
     symbolIndex: new Map()
   };
@@ -286,6 +287,8 @@ function checkEverywhere(name: string): void {
   const external = read.dependencies.find((dependency) => dependency.link === undefined);
   if (external?.label !== name || external.symbols?.[external.symbols.indexOf(name)] !== name) fail("the external dependency reads back otherwise");
   if (read.reExports?.[0]?.name !== name && read.reExports?.[1]?.name !== name) fail("the re-export reads back otherwise");
+  // The name and the name with `!` give one anchor by their names; the doc tells them apart.
+  if (read.reExports?.[0]?.slug === read.reExports?.[1]?.slug) fail(`the two re-exports share the anchor ${JSON.stringify(read.reExports?.[0]?.slug)}`);
   if (read.citedBy?.[0]?.label !== `${folder}/README.md`) fail("the citing document reads back otherwise");
   const parameters = read.symbols[0].references.find((reference) => reference.role === "Parameters");
   if (parameters?.role !== "Parameters" || parameters.parameters[0].name !== name || parameters.parameters[0].types[0].name !== name) fail("the parameter reads back otherwise");
@@ -308,10 +311,16 @@ function checkTogether(names: readonly string[]): void {
   if (JSON.stringify([...specifiers].sort()) !== JSON.stringify([...new Set(names)].sort())) {
     throw new Error(`the specifiers ${label} read back as ${specifiers.map((name) => JSON.stringify(name)).join(", ")}`);
   }
-  const anchors = read.symbols.map((symbol) => symbol.slug ?? "");
-  const repeated = anchors.find((anchor, index) => anchors.indexOf(anchor) !== index);
-  if (repeated !== undefined) {
-    throw new Error(`two of the symbols ${label} share the anchor ${JSON.stringify(repeated)}`);
+  const reExported = (read.reExports ?? []).map((entry) => entry.name);
+  if (JSON.stringify([...reExported].sort()) !== JSON.stringify(sorted)) {
+    throw new Error(`the re-exports ${label} read back as ${reExported.map((name) => JSON.stringify(name)).join(", ")}`);
+  }
+  // Anchors apart among the public symbols, and among the re-exports, as a barrel re-exporting `Foo` and `foo` needs.
+  for (const [what, anchors] of [["symbols", read.symbols.map((symbol) => symbol.slug ?? "")], ["re-exports", (read.reExports ?? []).map((entry) => entry.slug ?? "")]] as const) {
+    const repeated = anchors.find((anchor, index) => anchors.indexOf(anchor) !== index);
+    if (repeated !== undefined) {
+      throw new Error(`two of the ${what} ${label} share the anchor ${JSON.stringify(repeated)}`);
+    }
   }
 }
 

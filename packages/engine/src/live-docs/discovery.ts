@@ -20,7 +20,7 @@ import { gitIgnored } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
-import { computePublicSymbolHeadingInfo } from "./compose";
+import { anchorReExports, computePublicSymbolHeadingInfo } from "./compose";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
@@ -31,7 +31,6 @@ import type {
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { createSymbolSlug } from "./coreUtils";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
@@ -447,8 +446,9 @@ export async function buildWorkspaceIndexes(options: {
         register(symbol.qualifiedName, location);
       }
     }
-    for (const entry of reExports) {
-      register(entry.name, { liveDocPath, sourcePath, anchor: createSymbolSlug(entry.name), kind: entry.kind, isReExport: true,
+    // Anchored as the doc's `Re-Exported Symbol Anchors` section anchors them, two that one anchor would name told apart.
+    for (const { entry, slug } of anchorReExports(reExports)) {
+      register(entry.name, { liveDocPath, sourcePath, anchor: slug, kind: entry.kind, isReExport: true,
         ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }
   }
