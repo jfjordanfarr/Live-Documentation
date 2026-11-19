@@ -82,6 +82,20 @@ describe("the Live Doc grammar over real docs", () => {
           expectRoundTrip(path.join(workspaceRoot, record.docPath));
         }
       }
+
+      // Checked out again with CRLF line endings, as Git for Windows does: the check calls no doc changed, and a run
+      // rewrites none, its timestamp and its endings kept.
+      const written = result.files.filter((record) => record.change !== "skipped").map((record) => path.join(workspaceRoot, record.docPath));
+      for (const doc of written) {
+        fs.writeFileSync(doc, fs.readFileSync(doc, "utf8").split("\n").join("\r\n"));
+      }
+      const checkedOut = new Map(written.map((doc) => [doc, fs.readFileSync(doc, "utf8")]));
+      const logger = { info: () => undefined, warn: () => undefined, error: (message: string) => { throw new Error(message); } };
+      const check = await generateLiveDocs({ workspaceRoot, config, dryRun: true, logger });
+      expect(check.files.filter((record) => record.change !== "unchanged" && record.change !== "skipped").map((record) => record.docPath)).toEqual([]);
+      const rerun = await generateLiveDocs({ workspaceRoot, config, logger });
+      expect(rerun.written).toBe(0);
+      expect(written.filter((doc) => fs.readFileSync(doc, "utf8") !== checkedOut.get(doc))).toEqual([]);
     } finally {
       fs.rmSync(workspaceRoot, { recursive: true, force: true });
     }

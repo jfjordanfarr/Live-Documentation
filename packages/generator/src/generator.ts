@@ -585,5 +585,8 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
     return "created";
   }
 
-  return existingContent === rendered ? "unchanged" : "updated";
+  // A doc checked out with CRLF line endings, as Git for Windows does by default, is the doc written with LF: the
+  // reader reads both alike, so neither a check nor a run calls it changed or rewrites it for its endings alone. A doc
+  // the generator writes is written with LF.
+  return existingContent.replace(/\r\n/gu, "\n") === rendered ? "unchanged" : "updated";
 }
