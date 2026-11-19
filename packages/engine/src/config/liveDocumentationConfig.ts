@@ -132,9 +132,9 @@ export const LIVE_DOCUMENTATION_SOURCE_EXTENSIONS: readonly string[] = [
   // C and C++
   ".c", ".h", ".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".inl",
   // C# and ASP.NET markup
-  ".cs", ".aspx", ".ascx", ".cshtml", ".razor",
-  // .NET configuration and project files
-  ".config", ".csproj", ".vbproj", ".fsproj",
+  ".cs", ".aspx", ".ascx", ".master", ".ashx", ".asmx", ".asax", ".svc", ".cshtml", ".razor",
+  // .NET configuration, project and solution files
+  ".config", ".csproj", ".vbproj", ".fsproj", ".sln", ".slnx",
   ".css",
   ".go",
   ".html", ".htm",
