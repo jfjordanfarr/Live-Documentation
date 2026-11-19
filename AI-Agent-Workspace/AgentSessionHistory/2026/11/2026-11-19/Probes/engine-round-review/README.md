@@ -243,7 +243,7 @@ Two corrections to the first pass:
 - **The vanished scratch trees.** The builder says it deleted `/tmp/live-docs-history-*` by hand while the first pass ran. That is the likeliest cause of the two `ENOENT` failures noted above.
 - **The first pass's scripts are gone.** The folder `scratchpad/review/` named under "Where the evidence is" was removed by someone else before this pass. This pass's scripts are in `~/.t-rev/`.
 
-### Verdict
+### Verdict of the second pass
 
 **Do not rebuild on this yet.** Four of the faults still open, and the one already acknowledged, all lie in files that key the cache:
 
@@ -401,7 +401,7 @@ Each change below makes the code smaller as well as more correct:
 
 `readSmallBlobs` and `followLink`'s listing of folders are sound.
 
-### What I checked and found sound
+### What the second pass checked and found sound
 
 - **The tests as the builder left them.** All pass with a private `TMPDIR`: 226 tests, plus 1 expected failure, in 21 files (history unit tests, `history.test.ts`, `history-reading.test.ts`, `history-tree-equivalence.test.ts`).
 - **The tests catch what they should.** Each of these changes, made alone and reverted, fails a test:
@@ -422,7 +422,7 @@ Each change below makes the code smaller as well as more correct:
   - `kinds.ts` measures the excluded bytes by kind;
   - `citers.js` scans the cache's citing labels.
 
-### What I did not check
+### What the second pass did not check
 
 - **Windows and macOS.** By reading only.
 - **Each language adapter's every way of reading another file.** I found the C one by reading the adapters for calls that open a file other than their own, not by running each.
