@@ -154,6 +154,18 @@ Each day's pictures of the built Explorer, as the index `Screenshots/README.md` 
 
 [Beyond the Hops, Everything and Next step](2026-11-18/Screenshots/beyond-the-hops/README.md): the trial the owner's thought of the same day asked for, the same pin at one, two and three hops under each value of the lever, with the counts of files drawn, held in membranes and not in the picture, the page's own measures of the partition and the packing, and a run of seven frames of the Hops menu taken from one to three under Next step. By the trial's builder.
 
+[The owner's pictures of Turn 20](2026-11-18/Screenshots/owner-turn-20/README.md): four pictures from the owner's own browser, sent with their reading of the new defaults: the cells under a directory's name on `pathfind.ts`, the same file's marbles in 3D, the estate's `PaymentsContext.cs` pinned with five rows dimmed, and the history sample at its third step. Saved from the session's log as sent, and shown in the record at the turn.
+
+[The hidden-file cells' cost in the 2D press's first frame](2026-11-18/Screenshots/cells-cost/README.md): the timings and the pictures of the round that found why Cells under name held the press over its bound (each of 38 toolbars of marks laid the page out again) and mended it with one observer; the marks before and after at the reading, far and overview looks on this repository and the estate, identical to the pixel at the first two. By the round's builder.
+
+[The marble pattern trial](2026-11-18/Screenshots/marble-patterns/README.md): forty files as marbles under One Pattern and under From Its Doc, and at three Vein Bends; a made-up run of changes to `pathfind.ts`; the history sample's steps; one real file's last ten commits drawn from its Live Doc's facts and from its contents, in neither of which the eye can see a marble move (the finding that sent the trial back); and the 3D map of `pathfind.ts` under both patterns. By the trial's builder.
+
+[The World Map's keyboard round](2026-11-18/Screenshots/world-map-keyboard/README.md): a reset that a second press takes back (two pieces moved, reset with the tool lit, put back); the toolbar's focus ring after two arrow presses; the board focused by a click with no ring; the help opened by `?`. By the round's builder.
+
+[The page's frame: contrast, landmarks and a fault that can be reached](2026-11-18/Screenshots/shell-accessibility/README.md): the sidebar, a card, the detail panel and the search before and after the quiet tones were lifted; the skip link while focused; the search clear's 24 px target; a fatal fault as its panel now shows it; the reading dialog's headings. By the round's builder.
+
+[A cycle's returning connection, as a blind tester saw it](2026-11-18/Screenshots/cycle-stub/README.md): two enlargements, cut from one tester's picture of the estate sample, of the laces at `App.config` and `PaymentService.cs` that half the testers read as a file linking to itself; sent to the owner at their asking in Turn 22. [The owner's own picture of the same state](2026-11-18/Screenshots/owner-turn-23/README.md), sent back with Turn 23, is beside it.
+
 ### 2026-11-16
 
 
