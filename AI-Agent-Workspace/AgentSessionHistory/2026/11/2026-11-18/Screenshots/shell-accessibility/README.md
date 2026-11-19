@@ -20,8 +20,9 @@ _Historical evidence, taken on the night of 2026-11-18 to 19 by the builder of t
 | Picture | What it shows | What I see |
 | --- | --- | --- |
 | `skip-link-focused.png` | The first Tab on the page. | "Skip to the map" stands at the sidebar's top left in a blue focus ring. While it has focus it covers "Live Docs", the first line of the title; on the next Tab it slides away. |
-
-Not pictured: the clear's 24 px target, the fatal fault in the reader, and the dialog's headings. The machine's browser lock was held by a gate when they were due. `tests/e2e/shell-accessibility.spec.ts` measures all three on the page.
+| `search-clear-focused.png` | `errors.ts` pinned and `dom.ts` asked as the path's end, with the clear focused. Taken the next hour, on the landing branch's build. | The focus ring outlines the clear's 24 px square at the field's right edge. The × inside is the same 14 px glyph as before, now in the muted grey at full strength. The ring sits clear of "dom.ts". |
+| `fatal-fault.png` | A fault the reader cannot act on, raised by a dispatched `error` event. | The reader opens headed "The Explorer stopped". The message stands alone in the error's red under it, then the stack in monospace, wrapped. The Close button and Download Markdown are there to reach; the reader's placeholder heading "Select a Node" is gone. |
+| `dialog-headings.png` | The reading dialog's prose with a heading of each of the first four levels and body text under each, laid in by script. | The four headings step down: 18, 17, 16 and 15 px. Each stands at least as large as the 15 px body under it, where the third had been 14 px. The steps are small, a pixel each, which the type scale's open question names. |
 
 ## Measures
 
