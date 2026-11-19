@@ -18,8 +18,7 @@
  * `--palette <name>` draws every view in one of the Explorer's palettes (`today`, `proposed`, `vividKinds`), the
  * viewer's saved setting written before each page loads, and names the sheet for it; `--marbles on|off` draws every file as a
  * marble (the trial of 2026-11-17) or as a plain sphere, the same way; without it the sheet draws the default, marbles
- * since 2026-11-18. `--marble-pattern one|doc|doc-axis` winds the marbles' veins in one pattern or from each file's doc
- * (the trial of 2026-11-18), the same way. For a sheet of the marbles alone, large, see `marble-sheet.ts` beside this.
+ * since 2026-11-18.
  *
  * A hook is a module whose default export is `async (context, view) => void`, given the Playwright browser context
  * and the view about to load (`{ name, title }`); it usually calls `context.addInitScript` to write local storage.
@@ -32,11 +31,12 @@ import { pathToFileURL } from "node:url";
 
 import { isPaletteName, PALETTES } from "../../packages/explorer/src/client/palette";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
-import { MARBLE_PATTERNS, type MarblePattern } from "../../packages/explorer/src/client/types";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { browserLaunchOptions } from "../../tests/e2e/browser-launch";
 import { localMapStill } from "../../tests/e2e/still-picture";
 import { optionValue, runCommand, UsageError } from "../live-docs/cli";
-import { escape, mergeStorage, ORIGIN, serve } from "./bundle-page";
+
+const ORIGIN = "http://sheet.local";
 const VIEWPORT = { width: 1440, height: 900 };
 
 /** What a subject opens and pins: a directory whose closed children show their make-up, and a file that has tests. */
@@ -151,6 +151,42 @@ async function readBundle(bundleDir: string): Promise<Bundle> {
   return bundle;
 }
 
+const CONTENT_TYPES: Record<string, string> = {
+  ".html": "text/html; charset=utf-8", ".js": "application/javascript", ".json": "application/json", ".css": "text/css",
+  ".png": "image/png", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".woff": "font/woff", ".map": "application/json", ".md": "text/markdown"
+};
+
+/** Answers the page's requests from the bundle on disk, under an origin of its own. */
+async function serve(context: BrowserContext, bundleDir: string): Promise<void> {
+  await context.route(`${ORIGIN}/**`, async route => {
+    let file = path.join(bundleDir, decodeURIComponent(new URL(route.request().url()).pathname));
+    try {
+      if ((await fs.stat(file)).isDirectory()) file = path.join(file, "index.html");
+      await route.fulfill({ body: await fs.readFile(file), contentType: CONTENT_TYPES[path.extname(file)] ?? "application/octet-stream" });
+    } catch {
+      await route.fulfill({ status: 404, body: "" });
+    }
+  });
+}
+
+/**
+ * Merges this view's settings into the persisted UI the caller's hook may already have written. The script is given as
+ * text: a function passed from here is compiled by tsx, which names its inner functions with a helper the page does not
+ * have, and the script then failed in the page before writing anything (found 2026-11-17, when no setting reached a page).
+ */
+async function mergeStorage(context: BrowserContext, settings: Record<string, unknown>): Promise<void> {
+  await context.addInitScript(`(() => {
+    const key = ${JSON.stringify(PERSISTED_UI_KEY)};
+    const merge = function (into, from) {
+      for (const [k, v] of Object.entries(from)) into[k] = v && typeof v === "object" && !Array.isArray(v) ? merge(into[k] ?? {}, v) : v;
+      return into;
+    };
+    let stored;
+    try { stored = JSON.parse(window.localStorage.getItem(key) ?? "{}"); } catch { stored = {}; }
+    window.localStorage.setItem(key, JSON.stringify(merge({ version: ${JSON.stringify(PERSISTED_UI_VERSION)}, ...stored }, ${JSON.stringify(settings)})));
+  })();`);
+}
+
 async function rest(page: Page, kind: View["rest"]): Promise<void> {
   if (kind === "2d") {
     await localMapStill(page);
@@ -187,7 +223,9 @@ async function drawSheet(context: BrowserContext, pictures: Picture[], heading: 
   await page.close();
 }
 
-interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[]; palette?: string; marbles?: "on" | "off"; marblePattern?: MarblePattern }
+const escape = (text: string): string => text.replace(/[&<>"]/gu, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[ch]!);
+
+interface Options { bundle: string; out: string; preset?: string; directory?: string; pinned?: string; hook?: string; label: string; only?: string[]; palette?: string; marbles?: "on" | "off" }
 
 function parseArgs(args: string[]): Options {
   const options: Partial<Options> = {};
@@ -207,16 +245,10 @@ function parseArgs(args: string[]): Options {
       if (choice !== "on" && choice !== "off") throw new UsageError(`--marbles takes on or off, not ${choice}.`);
       options.marbles = choice;
     }
-    else if (arg === "--marble-pattern") {
-      const choice = optionValue(args, ++i, arg);
-      const pattern = MARBLE_PATTERNS.find(known => known === choice);
-      if (!pattern) throw new UsageError(`--marble-pattern takes ${MARBLE_PATTERNS.join(", ")}, not ${choice}.`);
-      options.marblePattern = pattern;
-    }
-    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only --palette (${Object.keys(PALETTES).join(", ")}) --marbles (on, off) --marble-pattern (${MARBLE_PATTERNS.join(", ")})`);
+    else throw new UsageError(`${arg} is not an option. Options: --bundle --out --preset (${Object.keys(PRESETS).join(", ")}) --dir --pin --hook --label --only --palette (${Object.keys(PALETTES).join(", ")}) --marbles (on, off)`);
   }
   if (options.palette !== undefined && !isPaletteName(options.palette)) throw new UsageError(`No palette ${options.palette}; the palettes are ${Object.keys(PALETTES).join(", ")}.`);
-  options.label ??= `${options.palette ? `the ${options.palette} palette` : "Today's palette"}${options.marbles ? `, marbles ${options.marbles}` : ""}${options.marblePattern ? `, marble pattern ${options.marblePattern}` : ""}`;
+  options.label ??= `${options.palette ? `the ${options.palette} palette` : "Today's palette"}${options.marbles ? `, marbles ${options.marbles}` : ""}`;
   if (!options.bundle || !options.out) throw new UsageError("Name the built bundle with --bundle and where to write with --out.");
   return options as Options;
 }
@@ -244,9 +276,8 @@ async function main(): Promise<void> {
       try {
         await serve(context, bundleDir);
         if (hook) await hook(context, { name: view.name, title: view.title });
-        if (options.palette || options.marbles || options.marblePattern) {
-          await mergeStorage(context, { tuning: { appearance: { ...(options.palette ? { palette: options.palette } : null), ...(options.marbles ? { marbles: options.marbles } : null),
-            ...(options.marblePattern ? { marblePattern: options.marblePattern } : null) } } });
+        if (options.palette || options.marbles) {
+          await mergeStorage(context, { tuning: { appearance: { ...(options.palette ? { palette: options.palette } : null), ...(options.marbles ? { marbles: options.marbles } : null) } } });
         }
         if (view.storage) await mergeStorage(context, view.storage);
         const page = await context.newPage();

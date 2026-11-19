@@ -163,6 +163,26 @@ describe("saving only what a person changed (2026-10-22)", () => {
     expect(applyPersistedUi(defaults(), readPersistedUi()).tuning.forceGraph).toMatchObject({ groupWrappers: "off", hops: 2 });
   });
 
+  it("loads a setting no lever holds any more without error, and does not write it back", () => {
+    // The Marble Pattern trial's two settings (2026-11-18 and 19), removed with the trial on 2026-11-19: a browser that
+    // saved them keeps its other choices, and the next save drops them.
+    vi.useFakeTimers();
+    const saved = { version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off", marblePattern: "doc", marbleBend: 0.3 }, forceGraph: { hops: 2 } } };
+    const store = new Map<string, string>([[PERSISTED_UI_KEY, JSON.stringify(saved)]]);
+    vi.stubGlobal("window", {
+      localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => store.set(key, value), removeItem: (key: string) => store.delete(key) },
+      setTimeout,
+      clearTimeout
+    });
+    const state = applyPersistedUi(defaults(), readPersistedUi());
+    expect(state.tuning.appearance).toEqual({ ...getDefaultTuning().appearance, marbles: "off" });
+    expect(state.tuning.forceGraph.hops).toBe(2);
+    const scheduler = createPersistUiScheduler(() => state);
+    scheduler.schedule();
+    scheduler.flush();
+    expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off" }, forceGraph: { hops: 2 } } });
+  });
+
   it("removes a version 1 entry unread, since it held every setting and cannot tell a choice from an old default", () => {
     const store = new Map<string, string>([["live-docs-explorer:ui:v1", '{"version":1,"tuning":{"history":{"axis":"steps"}}}']]);
     vi.stubGlobal("window", {

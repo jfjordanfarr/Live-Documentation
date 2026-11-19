@@ -46,8 +46,6 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-closed-shape":              "The shape of a closed directory's skin: a folder with its name on its tab, a capsule, or a card's corners.",
   "tuning-palette":                   "The colours the page is drawn in: today's, or a proposed palette, where each colour means one thing in every view.",
   "tuning-marbles":                   "Draws each file as glass of its kind, veined blue by the files that use it and green by the files it uses.",
-  "tuning-marble-pattern":            "How a marble's veins wind: one pattern for all, or bent by its file's symbols and uses, so that a change shifts them.",
-  "tuning-marble-bend":               "How far a marble's veins bend from its file's doc; zero leaves plain vanes, higher bends them more.",
   "tuning-closed-cells":              "What colours a closed directory's cells: each file's kind, as the 3D map colours it, or one grey.",
   "tuning-hidden-files":              "What a directory drawn around pins shows of the files it leaves out: a count, or cells that a press pins.",
   "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",

@@ -9,8 +9,7 @@
  * second literal.
  *
  * Pure: no DOM. The mutable things are which palette is in force (`activePalette`) and whether files are drawn as
- * marbles (`marblesDrawn`), in which pattern (`marblePattern`) and how far it bends (`marbleBend`), each chosen at
- * startup and again from Tuning.
+ * marbles (`marblesDrawn`), each chosen at startup and again from Tuning.
  */
 
 /** A colour, `#rrggbb`. */
@@ -357,20 +356,6 @@ export const MASK_FADE: Colour = "#111111";
 
 let active: Palette = TODAY;
 let marbles = false;
-/**
- * How a marble's veins wind (a trial, 2026-11-18, the owner's wish that "Minor changes to files produce subtle shifts on
- * the surface of these little marble planets. Massive changes to files completely changes their patterns"): one pattern
- * for every file, turned by its path, the default; or bent by a sketch of what its Live Doc lists (views/marbleSketch.ts),
- * its axis kept by its path. The shares of blue, green and clear glass stay. A third choice, the axis from the sketch
- * too, was tried the same night and dropped: across files it looked no more varied than the second.
- */
-export type MarblePattern = "one" | "doc";
-
-/** How far the veins bend from a file's doc at a sketch of unit length, in vanes' periods, until a viewer moves Vein Bend. */
-export const DEFAULT_MARBLE_BEND = 0.55;
-
-let pattern: MarblePattern = "one";
-let bend = DEFAULT_MARBLE_BEND;
 
 /** The palette in force. */
 export const activePalette = (): Palette => active;
@@ -382,22 +367,13 @@ export const activePalette = (): Palette => active;
  */
 export const marblesDrawn = (): boolean => marbles;
 
-/**
- * How the marbles' veins wind (the pattern trial, 2026-11-18): one pattern for every file, turned by its path; or bent by
- * a sketch of what its Live Doc lists (`doc`).
- */
-export const marblePattern = (): MarblePattern => pattern;
-
-/** How far the veins bend from a file's doc (Vein Bend, 2026-11-19), 0 to 1. */
-export const marbleBend = (): number => bend;
-
 /** A palette by name, the default for a name no palette has. */
 export const paletteNamed = (name: unknown): Palette => PALETTES[isPaletteName(name) ? name : DEFAULT_PALETTE];
 
 const listeners = new Set<(palette: Palette) => void>();
 
 /**
- * Calls `listener` each time another palette is put in force, the marbles are turned on or off or their pattern changes, so that what a script
+ * Calls `listener` each time another palette is put in force or the marbles are turned on or off, so that what a script
  * drew is drawn again as it now should be; returns the unsubscription.
  */
 export function whenPaletteChanges(listener: (palette: Palette) => void): () => void {
@@ -418,21 +394,6 @@ export function choosePalette(name: unknown): Palette {
 export function chooseMarbles(on: boolean): void {
   if (on === marbles) return;
   marbles = on;
-  for (const listener of listeners) listener(active);
-}
-
-/** Chooses how the marbles' veins wind, and tells whoever listens to the palette if that changed: the same redraw, nothing moving. */
-export function chooseMarblePattern(chosen: MarblePattern): void {
-  if (chosen === pattern) return;
-  pattern = chosen;
-  for (const listener of listeners) listener(active);
-}
-
-/** Sets how far the veins bend from a file's doc, held to 0 to 1, and tells whoever listens to the palette if that changed. */
-export function chooseMarbleBend(chosen: number): void {
-  const held = Number.isFinite(chosen) ? Math.min(1, Math.max(0, chosen)) : DEFAULT_MARBLE_BEND;
-  if (held === bend) return;
-  bend = held;
   for (const listener of listeners) listener(active);
 }
 

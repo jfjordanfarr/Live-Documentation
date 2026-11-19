@@ -56,7 +56,7 @@ import { requireElement } from "../dom";
 import type { HistoryChanges, HistoryMoment } from "../history/moment";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
 import { layoutSettingsOf } from "../layout-presets";
-import { activePalette, marblePattern, marblesDrawn, rgba, whenPaletteChanges, type Colour } from "../palette";
+import { activePalette, marblesDrawn, rgba, whenPaletteChanges, type Colour } from "../palette";
 import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
 import { renderSpatialLegend } from "../panels/spatial-legend";
 import type { ExplorerState } from "../types";
@@ -77,7 +77,6 @@ import { spatialSizeScale } from "./forceGraphSizing";
 import { BURST, burstProgress, ringedSpheres, wrappedSeeds, wrapperHull, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
 import { parentDirectory } from "./localView/directory-bands";
 import { under } from "./localView/directory-state";
-import { marbleSketches, type Sketch } from "./marbleSketch";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
@@ -401,13 +400,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    * never what the picture happens to show, so that a filter such as Show Tests repaints no ball.
    */
   let scanCounts: ReadonlyMap<string, MarbleCounts> = new Map();
-  /**
-   * The scan's graph the counts were read from, today's or the moment's, from which each file's sketch is read when the
-   * marbles' pattern is drawn from the doc (the pattern trial, 2026-11-18), so that a step of the history bends a marble
-   * where its file's symbols or uses changed.
-   */
-  let scanGraph: Parameters<typeof marbleSketches>[0] = { nodes: [], links: [] };
-  const sketchOf = (id: string): Sketch | undefined => (marblePattern() === "one" ? undefined : marbleSketches(scanGraph).get(id));
   /** Each file's colour and marble under the palette in force and the scan's counts, by id, drawn afresh when either changes. */
   let fileLooks = new Map<string, { color: Colour; marble: Marble | null }>();
   /**
@@ -417,8 +409,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   const fileLook = (id: string, archetype: string | undefined): { color: Colour; marble: Marble | null } => {
     let look = fileLooks.get(id);
     if (!look) {
-      const found = marblesDrawn() ? marbleOf(id, archetype, scanCounts) : null, sketch = found && sketchOf(id);
-      const marble = found && sketch ? { ...found, sketch } : found;
+      const marble = marblesDrawn() ? marbleOf(id, archetype, scanCounts) : null;
       fileLooks.set(id, look = { color: marble ? marbleTint(marble.glass, marble) : spatialNodeStyle(archetype).color, marble });
     }
     return look;
@@ -1321,7 +1312,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const source = moment?.graph ?? graphData;
     // The marbles' counts are the scan's: a moment of the history has its own, and the files within the skins take them.
     const counts = marbleCounts(source);
-    if (counts !== scanCounts) { scanCounts = counts; scanGraph = source; fileLooks = new Map(); shownUnits = new WeakMap(); }
+    if (counts !== scanCounts) { scanCounts = counts; fileLooks = new Map(); shownUnits = new WeakMap(); }
     const todayPins = state.pins ?? EMPTY_PIN_SET;
     const pins: PinSet = moment
       ? { entries: todayPins.entries.flatMap(pin => { const at = fileAt(pin.nodeId); return at ? [{ ...pin, nodeId: at }] : []; }) }
