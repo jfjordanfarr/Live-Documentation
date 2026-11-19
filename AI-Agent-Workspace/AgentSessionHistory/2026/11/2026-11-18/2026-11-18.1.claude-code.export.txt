@@ -25262,3 +25262,493 @@
 
   Timer is running; the builder should hand back around 15:10 UTC, and the
   landing follows.
+
+● Background command "When the machine is quiet, run the Tuning reset cases
+  three times on main" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The Tuning reset test passed 9 of 9 on a quiet machine (three runs of its
+  three cases), so this morning's failures were a race that load exposes, not a
+  break. Tuning's reset is confirmed on main, and the test joins the list of
+  cases to make independent of timing.
+
+  The history rebuild finished at 15:07 UTC with exit 0: 1,201 commits in 139
+  minutes. Its builder is now comparing the result with the earlier rebuilds,
+  then it writes its documents-only correction, runs its checks and hands back.
+  The landing starts when it does.
+
+● Background command "Fallback timer of fifty minutes while the history builder
+  works" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The builder has committed its documents-only correction, merged main and
+  recorded the rebuild's figures: 1,201 commits in 137 minutes, every step
+  replaying, and the last step equal to today's committed docs. No file the
+  cache is keyed on was touched, so the rebuilt cache will be valid on main. It
+  is running its checks now; I land the branch as soon as it hands back.
+
+› Message from general-purpose
+  ## Hand-back: `history-data-mended`, after four reviews (worktree
+  agent-a1d5a68d5bf667933, tip 9c15c6e4)
+
+  The branch is ready to land as root narrowed it. The full gate passes on a
+  clean tree: 2,236 unit tests, 154 integration tests, lint, build, freshness,
+  links and references. Main is merged, last at 93b523fd. `npx eslint` is clean
+  on every source and test file I touched. I pushed nothing and amended nothing.
+
+  Since the final rebuild started, no keyed file has changed: nothing under
+  `packages/engine`, `packages/generator`, `scripts`, `tsconfig.base.json` or
+  the lock. The merge brought only Explorer files. So the lens just filled,
+  c186af7356b58191, is the branch's.
+
+  ### The final rebuild (twelve processes beside one other builder, not a quiet
+  machine)
+  - **Wall clock:** 12:48:25 to 15:07:06 UTC, 137.1 minutes of regeneration for
+  1,201 commits, all cold.
+  - **Process time per commit:** first third 49.8 s, middle third 71.0 s, last
+  third 124.6 s.
+  - **Load:** 19 to 21 at the start, easing to 8 to 9 at the end.
+  - **Peak memory:** 539.9 MB per process.
+  - **Cache:** 233.3 MB, of which the text store is 11.1 MB.
+  - **Replay check:** all 1,200 steps replayed.
+  - **Head check:** `--check-head` applied. The last step's 1,091 files, 4,153
+  symbols with their words, and 6,853 links equal the Live Docs committed at
+  923c7a95.
+  - **history.json:** 3,169,843 bytes raw, 736,087 gzipped.
+  - **Words:** 7,903 texts in 495 parts, 11.6 MB raw; 1.44 MB gzipped part by
+  part.
+  - **Against lens aaf1a8f531b22001:** 0 of the 1,190 commits both lenses hold
+  have a different summary. No commit's tree left any file out, so there is no
+  `unwritten.txt`.
+  - **Warm run:** 94 s in all.
+    - 18 s from start to the cache being verified (opening it and checking every
+  summary and text against it).
+    - 57 s to build and replay the sequence; this part is as before.
+    - 14 s for the check at the head.
+    - 2 s for the words.
+    - The verification is a few seconds' share of the run, so I left it as it
+  is.
+  - **Where things are:**
+    - The cache is in `/workspaces/Live-Documentation/.claude/worktrees/agent-a1
+  d5a68d5bf667933/.mdmd/history/`.
+    - Two older lens folders are kept: `70072223287e4197` (the stopped run, 41
+  MB) and `aaf1a8f531b22001` (230 MB).
+    - Logs: `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-
+  95a5-166121c231a3/scratchpad/rebuild3.log`, `/tmp/claude-1000/-workspaces-Live
+  -Documentation/6450141c-9e11-40e5-95a5-166121c231a3/scratchpad/rebuild3.out`
+  and `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-1
+  66121c231a3/scratchpad/rebuild3.load`.
+  - **The stopped run:** the second rebuild (lens 70072223) stopped cleanly at
+  403 of 1,196 commits on SIGINT. It exited 130 and left no claim or scratch
+  folder behind.
+
+  ### Commits of the last three passes
+  - **Second review:**
+    - 6eb4e86a: the tree writer stays inside its folder; one rejection;
+  streaming.
+    - 2ce2f723: names written as code spans; `$` anchors; empty keys.
+    - a7b20e03: claims instead of a lock file; `tsconfig.base.json` keyed; guard
+  on the hand-off; cache pruning.
+    - fd2612fa: Pages run ends red when the history step fails.
+    - fcc650a5: documents.
+  - **Third review:**
+    - 7be0ebac: the writer asks the disk; task by file; named environment; every
+  file not read is printed and listed.
+    - 6e12bfb7: reverts the wrapper commits 62f50cc3 and bb906a76.
+    - 51dd6e1a, then the regenerate commit: documents and limits. 51dd6e1a also
+  carries the not-UTF-8 refusal in `git.ts` and its test; that code was
+  committed by mistake under a documents message.
+  - **Fourth review:**
+    - 92fe0e3f: documents only.
+    - 9c15c6e4: the rebuild's figures.
+
+  ### First review (10 items)
+  - **Answered:**
+    1. Anchors: every name has one. `$` is `symbol-~24`, a symbol told apart by
+  its kind keeps its code points, and the empty name is `symbol-~`.
+    2. Trees are written from stored bytes; the command's side of a summary is
+  keyed and the guard checks it; one sort order.
+    3. The tracked-but-ignored file has a test that fails without the fix.
+    4. Damaged cache entries are summarized again; claims replace the lock;
+  superseded caches are removed once the current lens is whole.
+    5. Pages deploys every run.
+    6. The check at the head is independent, says when it is skipped, and is
+  held by integration tests.
+    7. The pool is sized by the container's limits.
+    8. Ordering and leftovers.
+  - **Taken out:** 9, wrapper commands in scripts. It was reverted in 6e12bfb7
+  and is owed as a round of its own (below).
+  - **Written limit:** 10, two symbols with the same boilerplate description
+  read as a rename.
+
+  ### Second review
+  - **Answered:**
+    - Nothing is written outside the tree's folder by the writer.
+    - One rejection, never an uncaught `EPIPE`.
+    - The `--` false entries, by removing the wrapper work.
+    - The `$`-overload anchor.
+    - Backtick and empty JSON keys.
+    - The claim race, held by an in-process test over 25 rounds.
+    - A signal removes the claim; tested through the CLI with SIGINT.
+    - `GIT_NO_REPLACE_OBJECTS`.
+    - `tsconfig.base.json` is keyed.
+    - The guard holds the members handed to the keyed side.
+    - Pages ends red on a failed history and keeps at most two lenses, about 460
+  MB here.
+    - Blobs streamed to disk.
+  - **Written limits:** what the key cannot see; a claim from another machine;
+  the shared-folder case.
+
+  ### Third review
+  - **Answered:**
+    - The task goes by file; tested with 3,000 refused entries through the real
+  command.
+    - The writer asks the disk.
+      - It runs an `lstat` on every parent and makes folders one level at a
+  time.
+      - The folding rule and the probe are gone.
+      - Five name pairs (`s`/`ſ`, NFC/NFD `é`, `µ`/`Μ`, `σ`/`ς`,
+  `LONGNAME`/`LONGNA~1`) are tested against a stand-in folding disk.
+      - `ENAMETOOLONG` and its kin, or a name that is not UTF-8, leave that one
+  entry out instead of failing the commit.
+      - I could not run the new stand-in tests against the folding writer: that
+  writer had no disk to ask, so they cannot apply to it. The third review's own
+  run is the evidence that the folding rule failed.
+    - Every refused entry is printed and listed in
+  `<root>/history/unwritten.txt`.
+    - The summarizer gets a named environment: `PATH`, the temporary folders,
+  the Windows system folders and `TSX_TSCONFIG_PATH`.
+    - The stale remarks in `json.ts` went with the revert.
+  - **Written limits:**
+    - A file a disk cannot hold is not read at that commit and reads as deleted
+  there.
+    - So a commit's history depends on the disk, which the lens does not key.
+  - **Disagreement:** none.
+    - After the revert, `json.ts` differs from main only by `compareText` and
+  the path beneath an empty key, both of which you kept.
+    - `json.test.ts` is identical to main.
+
+  ### Fourth review
+  Its four rulings are in documents only:
+  1. The decision, plan and `git.ts` note now say what is true. The tree writer
+  writes nothing outside its folder. The generator that then runs in the tree
+  still writes and prunes under the docs root, through any link at or along that
+  root; the head check's tree is affected the same way. This is so on main too
+  and is owed a mend.
+  2. Written limits:
+     - A link with an empty or NUL target fails its commit.
+     - On Windows without the right to make links, any commit holding a link
+  fails.
+     - The summarizer still inherits `execArgv`.
+     - The writer is about half again as slow.
+     - The wording of the clash and target-length reasons is inexact.
+     - On Pages, `unwritten.txt` exists only in the saved cache.
+  3. The CLI reference names `unwritten.txt` and says its header's "this disk
+  could not hold them" also covers reasons that hold on any disk.
+  4. The `regenerate.ts` Live Doc note now states the environment as it is, and
+  says the source comment still has the old words until the next keyed change.
+
+  ### Owed to later rounds
+  - **Engine round on the history (needs its own rebuild):**
+    - The history writes no link at all, names each one as not followed, and
+  reads the file a link points to at its own path. This closes the generator
+  writing through a link at the docs root, on main as well.
+    - Any failure of `symlink` (empty or NUL target, `EPERM` on Windows) leaves
+  that entry out.
+    - The tree writer remembers the folders it has checked.
+    - Pass `execArgv: []` plus tsx's own flags.
+    - Correct `regenerate.ts`'s comment about the environment, and the
+  `unwritten.txt` header.
+    - Make the target-length and same-name reasons exact.
+    - Optionally, carry the files not read into the sequence or the page.
+  - **Entry detection through wrapper commands (a round of its own).** Root's
+  note: read every word of a script, recursively into quoted command lines, and
+  take as named by the command each word that resolves to an existing file the
+  tool analyses as code, wherever it stands; no list.
+  - **The generator's names, with a fuzzing test.** These throw on main as well:
+    - a JSON key with a line break or CRLF;
+    - a package script, a `bin`, or a folder on `main`'s path named with a
+  backtick;
+    - an empty script name;
+    - ambiguous read-backs: `""` versus `"\"\""`, and lone surrogates.
+
+  ### Housekeeping
+  - I removed my scratch scripts and superseded logs, and the `tsx` and
+  `typescript` links I had made in the worktree's `node_modules`.
+  `node_modules/.vite`, vitest's cache, remains.
+  - What I kept: `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-
+  40e5-95a5-166121c231a3/scratchpad/gate-final.log` and the three `rebuild3.*`
+  files.
+  - As said before: my first gate run of the round overwrote your
+  `/tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e5-95a5-16612
+  1c231a3/scratchpad/gate.log`.
+  - I used no subagent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Mend the history data round" finished · 3h 39m 26s
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Merged the history data into main (4b8a082b) and moved the rebuilt cache
+  across. The checks that need no browser are running over the merge now; next
+  come the history run on main, the bundles, and one whole browser suite on the
+  quiet machine.
+
+● Background command "Regenerate the Live Docs and run the gate's stages without
+  the browser over the merge" completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The checks that need no browser pass over the merge (2,236 unit and 154
+  integration tests). The history run on main accepted the moved cache: 1,162 of
+  1,222 commits were already there and it is computing the other 60 now, about
+  ten minutes. The direction notes are brought level and committed. After this
+  come the bundles and the whole browser suite.
+
+❯ I won't restart the container until your work is done. But for the SSD
+  writes, how frequently is the scratch folder cleaned up? Each commit? After N
+  commits? I'm definitely impressed at the cumulative churn over the disk.
+
+  Okay, and on to the unanswered questions from the summary:
+  >Asked of the owner and not answered
+
+  >Will the December presentation show this repository or their work's own
+  code? It changes what is ranked next.
+
+  My work's own code, most likely. Powershell 5.1 stuff, .NET Framework 4.8
+  stuff, SQL stuff. If you're reading this as a signal to prioritize making the
+  estate sample look good over making this software look good, the estate
+  sample is already a toy example. It is based on my setup at work, but you
+  should expect the real setup to be similarly hairy to our software. A lot
+  will be going on visually. Making our own software look aesthetically
+  pleasing to itself will pay higher dividends than chasing refinements on the
+  estate sample at the possible expense of good aesthetics on the non-sample
+  codebases.
+
+  >Shall root remove the eight superseded history caches in .mdmd/history
+  (about 800 MB)?
+
+  I mean yeah, for sure. Any reason we wouldn't?
+
+  >Should Clear all pins match the new actions? It leaves popped groups and
+  symbol expansions open, and Back cannot always restore it.
+
+  Yeah we'll need to go back to the drawing board a tiny bit insofar as we need
+  to ensure that our interactions are reversible. If they are not, then we
+  need to be rethinking a bit.
+
+  >The pointer's rest: does a bare sphere feel dead while sweeping, and should
+  the 2D map wait for a rest too?
+  >Tuning's reset is a curved arrow without a word; does it read as undo?
+  >The Bare frame: three choices its builder made (Frame not counted as a
+  changed setting; checkboxes in the key in place of legend rows as switches; a
+  directory's crumb does what Centre does).
+
+  Questions like this (there are many in the list) are much more readily
+  answerable repeatedly with:
+  - Screenshots to compare
+  - Hyperlinks and instructions if necessary to try it
+  - Blind tester agents who are working off of screenshots they generate
+
+  Doesn't mean I need you to do the rigmarole of all of this right now, but I
+  suspect that would be reasonable for us to start the next dev day chat with.
+
+  Searched for 2 patterns, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Recording your answers into Memory (the presentation on your work's code,
+  reversible interactions, and how questions for your eye should come), while
+  the history run finishes its last dozen commits.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Every commit. I read the code to be sure (regenerate.ts:131-164
+  (packages/generator/src/history/regenerate.ts#L131-L164)): for each commit the
+  history makes a fresh scratch folder, writes that commit's whole tree into
+  it, runs one process to summarise it, and deletes the folder as soon as that
+  summary is written.
+
+  - Nothing piles up. At most twelve trees exist at once, about 11 GB.
+  - The churn is the rewriting. Every commit writes its whole tree from nothing,
+    about 1 GB at today's size, and then throws it away. Over about 1,200
+    commits that is the third of a terabyte per rebuild.
+  - Why it is so large: 970 MB of that 1 GB is the session archive, mostly
+    screenshots.
+  - The mend, for the next engine round: stop writing what the generator does
+    not read. It is recorded there as the first question.
+
+  Your four answers are recorded in Memory in your words:
+
+  - Presentation on your work's code (PowerShell 5.1, .NET Framework 4.8, SQL).
+    I take two things from it. Looks are judged on this repository's own large
+    map, not polished on the estate. And being able to run the tool cold on a
+    machine that holds your work's code moves up the list, because that is what
+    the presentation actually needs. Three things I don't know yet and will ask
+    at the start of the next day: which machine that is, what may leave it, and
+    whether a .NET Framework 4.8 solution builds there for the C# indexer.
+  - Old history caches: no reason to keep them now. The only reason was as a
+    fallback while a new one was unproven, and the new one has replayed every
+    step and matched today's docs. I remove them with the history command's own
+    flag as soon as the run on main ends.
+  - Reversible interactions: recorded as a rule. A round is owed that finds
+    every action that cannot be taken back (Clear all pins is one; Tuning's
+    reset loses its undo once you move a lever) and fixes or redesigns each.
+  - Questions for your eye: agreed. The next dev day opens with a packet: for
+    each open question, matched screenshots, a link with what to press, and a
+    blind tester's reading where it helps. I am not assembling it in this close.
+
+  Where the landing stands: all 60 missing commits are summarised on main; the
+  run is now replaying the whole sequence and checking its last step against
+  today's docs. Then come the cache removal, the bundles, and one whole browser
+  suite on the quiet machine, about 50 minutes in all. I'll say "ready" when
+  that suite has reported.
+● Background command "Build main's history forward from the moved cache"
+  completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The history on main is complete and both history worktrees are removed, so
+  main now holds the cache. The final run is underway, and I'm writing Turns 39
+  and 40 into the summary while the browser suite runs. · summary
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 21 lines, removed 2 lines
+      331 
+      332  The owner, 13:45 UTC on November 19, after compacting the conv
+           ersation by hand ([record](../2026-11-18/2026-11-18.1.record.m
+           d#turn-38)): "While that runs, can you please wrap up the dev
+           day chat by creating a comprehensive summary file for the asto
+           unding development sprint accomplished yesterday? I'll start a
+            new dev day chat after the history rebuild is done and you de
+           clare you're ready."
+      333 
+      334 -Root recorded its 58 delivered messages since Turn 37, read th
+          -e record in ranges and wrote this summary as the reading went,
+          - then the narrative and the month's inventory.                
+      334 +Root recorded its 58 delivered messages since Turn 37, read th
+          +e record in ranges and wrote this summary as the reading went,
+          + then the narrative and the month's inventory ([notes](../2026
+          +-11-18/2026-11-18.1.record.md#work-notes-the-close-before-the-
+          +historys-data-lands)). It removed the worktrees and branches o
+          +f builders whose work had landed, after checking each: 13 work
+          +trees and 43 branches then, the two history worktrees later. N
+          +ine worktrees the harness holds locked for this session's agen
+          +ts were left for the next session.                            
+      335 
+      336 +## Turn 39                                                    
+      337 +                                                              
+      338 +The owner, 14:27 UTC, with two pictures of their own screen ([
+          +record](../2026-11-18/2026-11-18.1.record.md#turn-39); [the pi
+          +ctures](../2026-11-18/Screenshots/owner-turn-39/README.md)): "
+          +After this session closes, is it sensible for me to shut down 
+          +the container to make sure everything gets cleaned up properly
+          +? (I see a rather ludicrous number of long-running \"backgroun
+          +d tasks\" in the Agent window)". And whether reopening is "as 
+          +simple as opening VS Code again from my Windows desktop".     
+      339 +                                                              
+      340 +Yes to both, from the configuration ([notes](../2026-11-18/202
+          +6-11-18.1.record.md#work-notes-turn-39)): a stop ends every pr
+          +ocess and loses nothing kept, since the working copy is the Ub
+          +untu disk's folder and the chats and dependencies are on volum
+          +es; the graphics card's arguments are part of the container as
+          + created. Untried: this container had never been stopped. The 
+          +background tasks were real leftovers: 27 waits, 2 to 14 hours 
+          +old, most with the fault root had found in its own commands th
+          +at morning (a wait that searches the process list and matches 
+          +itself), written by builders too; ten preview servers left by 
+          +builders; three leftovers of the lane's tests. Root ended all 
+          +forty by process id.                                          
+      341 +                                                              
+      342 +Their picture of the container's disk showed 1.43 TB written. 
+          +Measured: the history's rebuild writes each commit's whole tre
+          +e to a scratch folder, 1,016 MB at today's head, of which 968 
+          +MB is the session archive. One rebuild writes on the order of 
+          +a third of a terabyte, and the session ran five. Root's readin
+          +g, not measured: much of a commit's cost may be the writing of
+          + files the generator never analyses, which would explain why t
+          +welve processes were no faster than eight. It is the next engi
+          +ne round's first question.                                    
+      343 +                                                              
+      344 +## Turn 40                                                    
+      345 +                                                              
+      346 +The owner, 15:30 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-40)), answering four of this summary's open questio
+          +ns. How often is the scratch folder cleaned up? Every commit, 
+          +from the code: a fresh folder, the whole tree written, one pro
+          +cess, the folder removed; the churn is the rewriting. Then:   
+      347 +                                                              
+      348 +- **The presentation:** "My work's own code, most likely. Powe
+          +rshell 5.1 stuff, .NET Framework 4.8 stuff, SQL stuff." And: "
+          +the estate sample is already a toy example ... Making our own 
+          +software look aesthetically pleasing to itself will pay higher
+          + dividends than chasing refinements on the estate sample at th
+          +e possible expense of good aesthetics on the non-sample codeba
+          +ses."                                                         
+      349 +- **The superseded history caches:** "I mean yeah, for sure. A
+          +ny reason we wouldn't?" Removed by the history command's own f
+          +lag once the new lens was whole on `main`: nine folders, 994 M
+          +B.                                                            
+      350 +- **Clear all pins:** "Yeah we'll need to go back to the drawi
+          +ng board a tiny bit insofar as we need to ensure that our inte
+          +ractions are reversible. If they are not, then we need to be r
+          +ethinking a bit."                                             
+      351 +- **The questions for their eye:** "Questions like this (there
+          + are many in the list) are much more readily answerable repeat
+          +edly with:" and then "Screenshots to compare", "Hyperlinks and
+          + instructions if necessary to try it", "Blind tester agents wh
+          +o are working off of screenshots they generate". "Doesn't mean
+          + I need you to do the rigmarole of all of this right now, but 
+          +I suspect that would be reasonable for us to start the next de
+          +v day chat with."                                             
+      352 +                                                              
+      353 +All four went into `owner.md` and `direction.md` in their word
+          +s ([notes](../2026-11-18/2026-11-18.1.record.md#work-notes-tur
+          +n-40)). Root's reading of the first, in direction as a reading
+          +: looks are judged on this repository's own large map, and the
+          + journey of a stranger mapping their own folder moves up.     
+      354 +                                                              
+      355  ## The close
+      356 
+      338 -_To be completed when the history's data has landed and the Tu
+          -ning reset case has rerun on a quiet machine._                
+      357 +_To be completed when the last run of the browser suite has re
+          +ported._                                                      
+      358 
+      359  ## Commits and outcomes
+      360 
+
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Updating the summary's open ends with your four answers; renumbering its list,
+  then the narrative's last lines and the inventory while the suite runs.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The narrative and the summary now carry Turns 39 and 40, and every quotation
+  in them checks against the record. The last run is in progress on a quiet
+  machine: the history brought to the head with the nine old caches removed,
+  then the bundles, then the whole browser suite, which should report around
+  16:30 UTC. I'll finish the close's notes when it does.
+
+● Background command "Fallback timer while the history builder finishes its
+  checks" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The nine old history caches are gone (994 MB) and the history on main now runs
+  to today's head: 1,224 commits, every step replayed, the last step equal to
+  the committed docs. The summary, narrative, direction notes and inventory are
+  committed with Turns 39 and 40 in them.
+
+  One correction to what I told you about disk writes: a rebuild writes about
+  half a terabyte, not a third, and this session ran three whole rebuilds and
+  one stopped early, not "four and a bit". I had extrapolated from one hour of
+  your chart; I then measured the tree size at every tenth commit (mean 425 MB,
+  over 900 MB for the last quarter of the history). The total on your chart is
+  consistent with that.
+
+  The bundles are building and the whole browser suite follows; I'll report when
+  it ends, around 16:25 UTC.
