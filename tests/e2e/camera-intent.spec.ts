@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { ArrivalFraming } from "../../packages/explorer/src/client/types";
+import type { ArrivalFraming, CameraFraming } from "../../packages/explorer/src/client/types";
 import { ARRIVAL_FLOOR_RATIO } from "../../packages/explorer/src/client/views/localView/camera-intent";
 import { loadGraph, localMapSettled } from "./still-picture";
 
@@ -55,7 +55,7 @@ const boxOf = (page: Page, selector: string): Promise<Box | null> => page.evalua
   return rect ? { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom } : null;
 }, selector);
 
-const inside = (box: Box, frame: Box): boolean =>
+const inside = (box: Box | null, frame: Box): boolean => !!box &&
   box.left >= frame.left - 1 && box.right <= frame.right + 1 && box.top >= frame.top - 1 && box.bottom <= frame.bottom + 1;
 
 /** The camera's scale and the look it draws. */
@@ -190,4 +190,125 @@ test("a link carries Arrival: a fresh browser opens the link's choice", async ({
   expect((await cameraOf(page)).look).toBe("connections");
   await expect(page.locator("#tuning-arrival")).toHaveValue("neighbours");
   await context.close();
+});
+
+/**
+ * The camera that follows the pins (Tuning → 2D Layout → Framing, Follows Pins; a trial of 2026-11-19 for the owner's
+ * eye). The owner, Turn 37 of the November 18 record: "follow the sucker for a bit if the user hasn't provided input to
+ * navigate", "try to frame every pinned thing as best you can with bias towards most recent items", and of two pinned
+ * symbols, "having the camera really zoom in to care only about those two symbols". Each case reads the lever both ways:
+ * By Hand is today's camera, and the case's promise fails there.
+ */
+const ROW = "PaymentService/Data/PostPaymentRow.cs";
+
+/** A fresh visitor at an address with Tuning's Framing chosen, the continuing search off, once the map is still. */
+async function visitFraming(browser: Browser, address: string, framing: CameraFraming) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, framing } } })
+  });
+  const page = await context.newPage();
+  await page.goto(address);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  await still(page);
+  return { context, page };
+}
+
+const link = (base: string, pins: Array<{ nodeId: string; symbol: string }>, selected: string) =>
+  `${base}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: selected, pinSet: { entries: pins } })}`;
+
+const scaleOf = (page: Page): Promise<number> => page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a);
+
+const row = (id: string, symbol: string): string => `${card(id)} .symbol-row[data-symbol="${symbol}"]`;
+const cell = (page: Page) => page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field .local-directory-cell--file:not([hidden])`).first();
+const follow = (page: Page) => page.locator(".perspective-controls button[aria-label='Follow pins']");
+
+test("following, the owner's two pinned symbols are framed with their cards' names; by hand they are not", async ({ browser }) => {
+  test.setTimeout(90_000);
+  const pins = [{ nodeId: ROW, symbol: "PostPaymentRow" }, { nodeId: PAYMENTS, symbol: "PostPayment" }];
+  const seen: Record<string, boolean> = {};
+  for (const framing of ["hand", "follows"] as const) {
+    const { context, page } = await visitFraming(browser, link(ESTATE, pins, PAYMENTS), framing);
+    const frame = await frameOf(page);
+    const parts = [row(ROW, "PostPaymentRow"), `${card(ROW)} .node-title`, row(PAYMENTS, "PostPayment"), `${card(PAYMENTS)} .node-title`];
+    const boxes = await Promise.all(parts.map(part => boxOf(page, part)));
+    seen[framing] = boxes.every(box => inside(box, frame));
+    if (framing === "follows") expect(seen[framing], `${JSON.stringify(boxes)} inside ${JSON.stringify(frame)}`).toBe(true);
+    await context.close();
+  }
+  expect(seen.hand, "by hand, the arrival frames the subject's card alone").toBe(false);
+});
+
+test("following, a cell's press at reading size pulls back to hold the subject and the new card; by hand it keeps the scale", async ({ browser }) => {
+  test.setTimeout(120_000);
+  // Known to fail on 2026-11-19, and marked so until the floor's fork is decided: on pathfind.ts the first history cell's
+  // card lands about 2,700 map px below the subject's name, farther than the connections look's last press can hold in a
+  // 900 px window, so the rule leaves the subject out and rides to the new card as By Hand does (the evidence's README).
+  test.fail();
+  for (const framing of ["hand", "follows"] as const) {
+    const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, framing);
+    const before = await scaleOf(page);
+    const target = cell(page);
+    const path = (await target.getAttribute("data-path"))!;
+    await target.click();
+    await expect(page.locator(card(path))).toHaveCount(1);
+    await still(page);
+    const frame = await frameOf(page), after = await scaleOf(page);
+    const both = inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame) && inside(await boxOf(page, `${card(path)} .node-title`), frame);
+    if (framing === "follows") {
+      expect(both, "the subject's name and the new card's name both in view").toBe(true);
+      expect(after).toBeLessThan(before);
+    } else {
+      expect(after, "a step keeps the camera's scale").toBeCloseTo(before, 6);
+      expect(both, "by hand, the step brings the newcomer in and lets the subject go").toBe(false);
+    }
+    await context.close();
+  }
+});
+
+test("the person's wheel takes the camera: a new pin then only pans at the same scale, and Fit gives the following back", async ({ browser }) => {
+  test.setTimeout(120_000);
+  // Known to fail at its last step on 2026-11-19 for the reason the case above states: Fit follows the pins again, but the
+  // subject and the history cell's card do not both fit at the floor, so the subject is left out.
+  test.fail();
+  const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "follows");
+  await expect(follow(page)).toHaveAttribute("aria-pressed", "true");
+  const frame = await frameOf(page);
+  await page.mouse.move((frame.left + frame.right) / 2, (frame.top + frame.bottom) / 2);
+  await page.mouse.wheel(0, 200);
+  await still(page);
+  await expect(follow(page)).toHaveAttribute("aria-pressed", "false");
+  const before = await scaleOf(page);
+  const target = cell(page);
+  const path = (await target.getAttribute("data-path"))!;
+  await target.click();
+  await expect(page.locator(card(path))).toHaveCount(1);
+  await still(page);
+  expect(await scaleOf(page), "the person's frame keeps its scale").toBeCloseTo(before, 6);
+  await follow(page).click();
+  await expect(follow(page)).toHaveAttribute("aria-pressed", "true");
+  await still(page);
+  const framed = await frameOf(page);
+  expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), framed) && inside(await boxOf(page, `${card(path)} .node-title`), framed),
+    "Fit frames the subject and the pin again").toBe(true);
+  await context.close();
+});
+
+test("following, pins that cannot all be framed leave the oldest out and always frame the newest", async ({ browser }) => {
+  test.setTimeout(90_000);
+  const files = ["packages/engine/src/live-docs/graph.ts", "scripts/live-docs/visualize-static.ts", "packages/explorer/src/client/index.ts",
+    "packages/engine/src/live-docs/history/codec.ts", SUBJECT];
+  const pins = files.map(nodeId => ({ nodeId, symbol: "*" }));
+  for (const framing of ["hand", "follows"] as const) {
+    const { context, page } = await visitFraming(browser, link("/", pins, SUBJECT), framing);
+    const leftOut = await page.locator("#map-container").getAttribute("data-framing-left-out");
+    if (framing === "hand") expect(leftOut, "by hand nothing is framed for the pins").toBeNull();
+    else {
+      expect(leftOut?.split(" ")[0], "the oldest pin is the first left out").toBe(files[0]);
+      expect(leftOut?.split(" "), "the newest is never left out").not.toContain(SUBJECT);
+      const frame = await frameOf(page);
+      expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame)).toBe(true);
+    }
+    await context.close();
+  }
 });

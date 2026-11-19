@@ -124,6 +124,13 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
 - Status: holds since 2026-11-19.
 
+**Under Follows Pins, the camera follows the pinned set until the person takes it, and Fit gives it back** (*user control and freedom*: an automatic camera is welcome only while the person's hand is not on it, and leaving it must cost nothing; *visual momentum* again, since the frame widens to hold the pins already swung along rather than riding away from them).
+- Rule: with Tuning's Framing at Follows Pins, the camera frames the subject (while it holds no pin; beside others, its name line), the pins and a directory opened while following, newest first, at the largest scale up to reading size that holds them and no farther than the connections look's last press; the oldest are left out where they do not fit, the newest never; one pin is framed as an arrival frames it. It re-frames in one ease, longer for longer travel, once the picture has settled after a pin, an opening or a move of the layout. The person's pan, wheel, pinch, zoom button, Return to Reading Size or a focus asked on one thing ends the following; Fit, then named Follow pins, resumes it and is pressed while it holds. Under By Hand the step's rule above applies unchanged.
+- Why: owner, 2026-11-19 (Turn 37 of the November 18 record): "follow the sucker for a bit if the user hasn't provided input to navigate in any direction (panning, zooming, etc.)", "try to frame every pinned thing as best you can with bias towards most recent items".
+- Where: `views/localView/camera-intent.ts` (`pinsFrame`, `framingEaseMs`, `poseBetween`); `views/localView/controller.ts` (`framingTargets`, `pinsFraming`, `reframePins`, `easeFollowing`, `setFollowing`); `index.ts` (Fit's state).
+- Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
+- Status: a trial since 2026-11-19, By Hand the default until the owner has seen it.
+
 ### 2.3 Where the same act means different things
 
 These are stated so a builder does not mistake them for accidents. Each is in [the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md#the-owners-forks) with the choices it leaves the owner.

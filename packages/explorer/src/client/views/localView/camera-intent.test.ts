@@ -185,6 +185,16 @@ describe("the frame that follows the pins (Framing, Follows Pins)", () => {
     expect(apart.transform.k).toBe(reading);
   });
 
+  it("holds a target by its brief beside others and whole alone: a tall unpinned subject's name line beside a new pin", () => {
+    const subject = target("subject", box(0, 0, 300, 3000), true), name = box(0, 0, 300, 40);
+    const pin = target("pin", box(600, 1200, 300, 400), true);
+    const withPin = pinsFrame([{ ...subject, brief: name }, pin], frame, reading, floor)!;
+    expect(withPin.held).toEqual(["subject", "pin"]);
+    expect(within(name, withPin.transform) && within(pin.bounds, withPin.transform)).toBe(true);
+    expect(pinsFrame([subject, pin], frame, reading, floor)!.left, "held whole, the subject would not fit beside it").toEqual(["subject"]);
+    expect(pinsFrame([{ ...subject, brief: name }], frame, reading, floor)!.transform.k, "alone it is the arrival's card").toBe(reading);
+  });
+
   it("depends on its inputs alone", () => {
     const targets = [target("a", box(-40, 12, 310, 170)), target("b", box(900, 300, 320, 240), true)];
     expect(pinsFrame(targets, frame, reading, floor)).toEqual(pinsFrame(targets.map(each => ({ ...each, bounds: { ...each.bounds } })), { ...frame }, reading, floor));

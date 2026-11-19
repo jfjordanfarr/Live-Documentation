@@ -313,6 +313,7 @@ export class LocalViewController implements LocalViewApi {
     if (this.pointers.size >= 2 && this.pinch) {
       // Two fingers: zoom around their midpoint by the change in their distance, and pan with the midpoint.
       event.preventDefault();
+      this.setFollowing(false);
       const [a, b] = [...this.pointers.values()];
       const distance = Math.hypot(b.x - a.x, b.y - a.y);
       const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
@@ -329,6 +330,8 @@ export class LocalViewController implements LocalViewApi {
       return;
     }
     event.preventDefault();
+    // A drag that moves takes the camera from the following; a press that does not move leaves it.
+    this.setFollowing(false);
     handleDragMove(this.runtime, event.clientX, event.clientY, () => this.updateMapTransform());
   };
 
@@ -976,10 +979,10 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * What the following camera frames, oldest first, in the picture's own units (camera-intent.ts's FramingTarget): each
-   * pin in the order it was made, a whole-file pin by its card and a pinned symbol by its row with its card's name line;
-   * the subject's card when nothing is pinned; and a directory opened while following, by its label with the first row
-   * of what it holds, as the newest. What is not drawn is not framed.
+   * What the following camera frames, oldest first, in the picture's own units (camera-intent.ts's FramingTarget): the
+   * subject's card while it holds no pin of its own, as the oldest; each pin in the order it was made, a whole-file pin
+   * by its card and a pinned symbol by its row with its card's name line; and a directory opened while following, by its
+   * label with the first row of what it holds, as the newest. What is not drawn is not framed.
    */
   private framingTargets(): FramingTarget[] {
     const targets = withTransformReset(this.container, origin => {
@@ -989,6 +992,14 @@ export class LocalViewController implements LocalViewApi {
       };
       const cardOf = (id: string) => this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`);
       const found: FramingTarget[] = [];
+      // The subject, where the journey started, is the oldest target while it holds no pin of its own, so that the first
+      // pin made from it widens the frame to hold both rather than riding away from it (the owner's "starting small").
+      const subject = this.options.state.selectedNode?.id;
+      const subjectCard = subject && !this.pins.entries.some(pin => pin.nodeId === subject) ? cardOf(subject) : null;
+      // Beside pins it is held by its name line alone: a tall subject's whole card had left out the subject at the first
+      // pin made from it, and the camera rode away (the owner's case on pathfind.ts, seen 2026-11-19).
+      const subjectTitle = subjectCard?.querySelector<HTMLElement>(".node-title");
+      if (subjectCard?.getClientRects().length) found.push({ key: subject!, bounds: local(subjectCard), card: true, ...(subjectTitle ? { brief: local(subjectTitle) } : null) });
       for (const pin of this.pins.entries) {
         const card = cardOf(pin.nodeId);
         if (!card?.getClientRects().length) continue;
@@ -998,9 +1009,6 @@ export class LocalViewController implements LocalViewApi {
         const parts = [title, row].filter((element): element is HTMLElement => !!element && element.getClientRects().length > 0);
         found.push({ key: `${pin.nodeId}#${pin.symbol}`, bounds: unionOf(parts.map(local))! });
       }
-      const subject = this.options.state.selectedNode?.id;
-      const subjectCard = !found.length && subject ? cardOf(subject) : null;
-      if (subjectCard?.getClientRects().length) found.push({ key: subject!, bounds: local(subjectCard), card: true });
       return found;
     });
     const directory = this.followDirectory !== null ? this.newcomerOf({ directory: this.followDirectory }) : null;
@@ -2151,7 +2159,6 @@ export class LocalViewController implements LocalViewApi {
   /** A movement, rather than a tap on readable prose, takes ownership of the camera. */
   private beginCameraGesture(): void {
     this.endArrivalByHand();
-    this.setFollowing(false);
     this.stepNewcomer = null;
     this.fitFraming = false;
     this.directoryArrivalPending = false;

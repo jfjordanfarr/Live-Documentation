@@ -85,6 +85,8 @@ export interface FramingTarget<K = string> {
   key: K;
   bounds: Bounds;
   card?: boolean;
+  /** What is held of it while other targets are framed with it, where that is less than the whole: the unpinned subject's name line. */
+  brief?: Bounds;
 }
 
 /** Where following the pins puts the camera, and which targets that frame holds and which it leaves out, oldest first. */
@@ -116,7 +118,7 @@ export function pinsFrame<K>(targets: readonly FramingTarget<K>[], frame: Frame,
   });
   for (let first = 0; first < targets.length; first++) {
     const held = targets.slice(first), left = targets.slice(0, first).map(target => target.key);
-    const box = unionOf(held.map(target => target.bounds))!;
+    const box = unionOf(held.map(target => held.length > 1 ? target.brief ?? target.bounds : target.bounds))!;
     const fit = fitOf(box);
     if (held.length === 1) {
       const k = held[0].card ? ceiling : clamp(fit, floor, ceiling);
