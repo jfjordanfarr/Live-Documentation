@@ -28,6 +28,7 @@ export interface FrameConfig {
   tuningButton: HTMLButtonElement;
 }
 
+/** The page's frame as the application drives it: which frame stands, its crumbs kept level with the page, and its two panels on the strip. */
 export interface Frame {
   apply(choice: FrameChoice): void;
   bare(): boolean;
@@ -46,6 +47,10 @@ const VIEWS_ICON = '<path d="m7 10 5 5 5-5"/>';
 /** The key's drawing, for the strip's button. */
 export const FRAME_KEY_ICON = KEY_ICON;
 
+/**
+ * Makes the page's frame: under Bare it moves the sidebar's own elements (the views, the Display switches, the legend and
+ * Tuning) to the top bar and the strip's two panels, and under Sidebar puts each back where it stood.
+ */
 export function createFrame(config: FrameConfig): Frame {
   const main = document.getElementById("main")!;
   const sidebar = document.getElementById("sidebar")!;

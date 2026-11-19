@@ -188,8 +188,9 @@ function place(box: Bounds, k: number, frame: Frame): MapTransform {
   };
 }
 
-/** The shortest and longest a re-frame of the following camera eases. */
+/** The shortest a re-frame of the following camera eases. */
 export const FRAMING_EASE_MIN_MS = 300;
+/** The longest a re-frame of the following camera eases. */
 export const FRAMING_EASE_MAX_MS = 900;
 
 /**

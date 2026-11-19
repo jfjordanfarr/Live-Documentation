@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { crumbsOf, outwardCrumb } from "./frame-crumbs";
 
 describe("the Bare frame's crumbs", () => {

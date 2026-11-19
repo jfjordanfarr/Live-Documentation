@@ -16,9 +16,9 @@ import { createHistoryControl, isHistorySequence } from "./history/history-contr
 import type { HistoryMoment } from "./history/moment";
 import { endFiles, momentGround, todayGround, type PathGround } from "./history/moment-paths";
 import { applyLayoutSettings, layoutSettingsOf } from "./layout-presets";
-import { iconButton } from "./panels/icon-button";
 import { createFrame, FRAME_KEY_ICON, type Frame } from "./panels/frame";
 import type { CrumbSubject } from "./panels/frame-crumbs";
+import { iconButton } from "./panels/icon-button";
 import { createItemMenu, type ItemCommand } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
