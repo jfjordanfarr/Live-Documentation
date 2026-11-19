@@ -64,14 +64,22 @@ export interface ScriptDomReference {
 
 /** An `EXEC (…)` of a string, an `sp_executesql`, or an `EXEC @variable`; when the text is written out, what the parser reads in it. */
 export interface ScriptDomDynamic {
-  how:          "exec-string" | "sp_executesql" | "exec-variable";
+  how:          "exec-string" | "sp_executesql" | "exec-variable" | "openquery";
   line:         number;
   column:       number;
+  /** Whether the statement that executes the string runs in the script itself or in a module's body. */
+  scope:        "script" | "module";
   literal:      boolean;
   text?:        string;
+  /** The line of the file the text's first part starts on; the creates and references inside carry lines of the file. */
+  textLine?:    number;
+  /** The linked server an `OPENQUERY` or an `EXEC (…) AT` sends the text to. */
+  server?:      string;
   parseErrors?: ScriptDomParseError[];
   creates?:     ScriptDomCreate[];
   references?:  ScriptDomReference[];
+  /** The strings the text itself executes, read the same way. */
+  nested?:      ScriptDomDynamic[];
 }
 
 /** What the parser says about one file. */

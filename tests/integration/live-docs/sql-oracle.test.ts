@@ -21,12 +21,21 @@ import { readScriptDomRecord } from "../../../scripts/oracle/sql-scriptdom";
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 
 /**
- * The measured disagreements, fixture by fixture. None remains since the
- * reader's mends of 2026-11-19; the first register for `fixtures/sql-server`
- * held nineteen, from a garbled name to a missing function call.
+ * The measured disagreements, fixture by fixture. The first register for
+ * `fixtures/sql-server` held nineteen, from a garbled name to a missing
+ * function call, and none remained after the reader's mends of 2026-11-19.
+ * The strings a script executes, read by the oracle since the same evening,
+ * brought five more: a procedure created as a stub and then altered, and
+ * what the strings and an ALTER use.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
-  "fixtures/sql-server": [],
+  "fixtures/sql-server": [
+    "object missing: Procedures/Billing.usp_Settle.sql:6 procedure Billing.usp_Settle",
+    "dependency missing: Procedures/Billing.usp_Settle.sql = billing.vw_legacy (alter)",
+    "dependency missing: Procedures/Billing.usp_Settle.sql -> Schema/Billing.Invoice.sql :: billing.invoice (update)",
+    "dependency missing: Procedures/Billing.usp_Settle.sql -> Schema/Billing.Customer.sql :: billing.customer (select)",
+    "dependency missing: Procedures/Billing.usp_Settle.sql = oracle_central..central.account (select)"
+  ],
   "programs/csharp/estate": []
 };
 

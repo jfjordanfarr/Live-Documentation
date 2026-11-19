@@ -25,8 +25,10 @@
 //                A column, a variable, a table variable and a SQL Server data type (`INT`, `NVARCHAR`,
 //                `XML`: the parser's own `SqlDataTypeReference` and `XmlDataTypeReference`) are not
 //                schema objects and are not listed;
-//   dynamic      every EXEC of a string and every sp_executesql, whether its text is written out,
-//                and, when it is, what the parser reads in that text: its creates and references.
+//   dynamic      every EXEC of a string, every sp_executesql and every OPENQUERY (with its linked
+//                server), whether it runs in the script or in a module's body, whether its text is
+//                written out, and, when it is, what the parser reads in that text: its creates,
+//                references and own executed strings, at their lines in the file.
 //
 // Nothing is trimmed to fit an analyzer: the comparison decides what it grades, and says so.
 //
@@ -78,7 +80,7 @@ namespace SqlScriptDomOracle
 
     record Reference(string How, ObjectName Name, int Line, int Column, string? StandsFor = null, string? Context = null);
 
-    record Dynamic(string How, int Line, int Column, bool Literal, string? Text, List<ParseError>? ParseErrors, List<Create>? Creates, List<Reference>? References);
+    record Dynamic(string How, int Line, int Column, string Scope, bool Literal, string? Text, int? TextLine, string? Server, List<ParseError>? ParseErrors, List<Create>? Creates, List<Reference>? References, List<Dynamic>? Nested);
 
     record FileFacts(List<ParseError> ParseErrors, List<Create> Creates, List<Reference> References, List<Dynamic> Dynamic);
 
@@ -133,6 +135,9 @@ namespace SqlScriptDomOracle
                         break;
                     case ExecuteSpecification execute:
                         ReadExecute(execute);
+                        break;
+                    case OpenQueryTableReference query:
+                        Dynamic.Add(ReadString("openquery", query, ScopeOf(query), [query.Query], query.LinkedServer?.Value));
                         break;
                 }
             }
@@ -290,28 +295,47 @@ namespace SqlScriptDomOracle
             switch (execute.ExecutableEntity)
             {
                 case ExecutableStringList strings:
-                    Dynamic.Add(ReadString("exec-string", execute, strings.Strings));
+                    Dynamic.Add(ReadString("exec-string", execute, ScopeOf(execute), strings.Strings, execute.LinkedServer?.Value));
                     break;
                 case ExecutableProcedureReference procedure when procedure.ProcedureReference?.ProcedureReference?.Name is { } name
                     && string.Equals(name.BaseIdentifier.Value, "sp_executesql", StringComparison.OrdinalIgnoreCase):
                     var first = procedure.Parameters.FirstOrDefault()?.ParameterValue;
-                    Dynamic.Add(ReadString("sp_executesql", execute, first == null ? [] : [first]));
+                    Dynamic.Add(ReadString("sp_executesql", execute, ScopeOf(execute), first == null ? [] : [first], null));
                     break;
                 case ExecutableProcedureReference procedure when procedure.ProcedureReference?.ProcedureVariable != null:
-                    Dynamic.Add(new Dynamic("exec-variable", execute.StartLine, execute.StartColumn, false, null, null, null, null));
+                    Dynamic.Add(new Dynamic("exec-variable", execute.StartLine, execute.StartColumn, ScopeOf(execute), false, null, null, null, null, null, null, null));
                     break;
             }
         }
 
-        static Dynamic ReadString(string how, TSqlFragment at, IEnumerable<ScalarExpression> written)
+        /// <summary>
+        /// An executed string: when every part is written out, the parser's reading of the whole, its lines counted from the line its
+        /// first part starts on, so that a line inside it is the line in the file; nested strings are read the same way.
+        /// </summary>
+        static Dynamic ReadString(string how, TSqlFragment at, string scope, IEnumerable<ScalarExpression> written, string? server)
         {
             var parts = written.ToList();
             if (parts.Count == 0 || !parts.All(part => part is StringLiteral))
-                return new Dynamic(how, at.StartLine, at.StartColumn, false, null, null, null, null);
-            var text  = string.Concat(parts.Cast<StringLiteral>().Select(part => part.Value));
-            var inner = Reading.Read(text);
-            return new Dynamic(how, at.StartLine, at.StartColumn, true, text, inner.ParseErrors, inner.Creates, inner.References);
+                return new Dynamic(how, at.StartLine, at.StartColumn, scope, false, null, null, server, null, null, null, null);
+            var text   = string.Concat(parts.Cast<StringLiteral>().Select(part => part.Value));
+            var inner  = Reading.Read(text);
+            var offset = parts[0].StartLine - 1;
+            return new Dynamic(how, at.StartLine, at.StartColumn, scope, true, text, offset + 1, server, inner.ParseErrors,
+                inner.Creates.Select(create => create with { Line = create.Line + offset }).ToList(),
+                inner.References.Select(reference => reference with { Line = reference.Line + offset }).ToList(),
+                inner.Dynamic.Select(nested => Shift(nested, offset, scope)).ToList());
         }
+
+        /// <summary>A nested string's lines moved into the file's, and its scope the scope of the string that holds it when that is a module's body.</summary>
+        static Dynamic Shift(Dynamic nested, int offset, string scope) => nested with
+        {
+            Line       = nested.Line + offset,
+            TextLine   = nested.TextLine + offset,
+            Scope      = scope == "module" ? "module" : nested.Scope,
+            Creates    = nested.Creates?.Select(create => create with { Line = create.Line + offset }).ToList(),
+            References = nested.References?.Select(reference => reference with { Line = reference.Line + offset }).ToList(),
+            Nested     = nested.Nested?.Select(inner => Shift(inner, offset, scope)).ToList()
+        };
 
         static ObjectName FromName(SchemaObjectName name) =>
             new(name.ServerIdentifier?.Value, name.DatabaseIdentifier?.Value, name.SchemaIdentifier?.Value, name.BaseIdentifier.Value);

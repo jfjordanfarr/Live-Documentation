@@ -19,8 +19,19 @@
  * and nowhere else, and is the same for both sides:
  *
  *   - a use is an object executed, read from, inserted into, updated, deleted
- *     from, merged into, truncated, altered as a table, called as a function,
- *     read as a table-valued function, or referenced by a foreign key;
+ *     from, merged into, truncated, altered as a table, altered as a
+ *     procedure, function, view or trigger, called as a function, read as a
+ *     table-valued function, or referenced by a foreign key;
+ *   - a string the script executes (`EXEC('…')`, `sp_executesql N'…'`,
+ *     `OPENQUERY(server, '…')`) is read when every part of it is written out,
+ *     as the parser reads it: what it creates is the script's when the string
+ *     runs in the script itself, not in a module's body, and not on a linked
+ *     server; what it uses is the script's use, on the linked server when it
+ *     runs on one (`server..schema.name`). A string with a computed part is
+ *     counted and not read;
+ *   - an object the script creates and later alters (the "stub, then ALTER"
+ *     idiom of an idempotent script) stands at its last ALTER, where its
+ *     body is; an ALTER of what the script does not create is a use;
  *   - a name the statement itself defines is no object: a common table
  *     expression, a name standing for a table source of the statement's own
  *     FROM, a temporary table (`#name`);
@@ -35,10 +46,10 @@
  *     parts to that schema and name, as the product matches them; T-SQL itself
  *     resolves a one-part name by the caller's default schema, which the text
  *     does not give;
- *   - the other ways a statement names an object (a drop, a grant, an ALTER of
- *     a procedure, a type, a sequence, a synonym's target, a trigger's or an
- *     index's table, SELECT … INTO) are counted and not graded: the reader
- *     does not claim them.
+ *   - the other ways a statement names an object (a drop, a grant, a type, a
+ *     sequence, a synonym's target, a trigger's or an index's table,
+ *     SELECT … INTO) are counted and not graded: the reader does not claim
+ *     them.
  *
  * Files the parser cannot read are listed and not graded; objects they create
  * are in neither side's index. It prints figures and lists and exits 0: the
@@ -71,8 +82,38 @@ import {
 
 /** The ways of naming an object the grading counts as a use. */
 export const GRADED_HOWS: ReadonlySet<ScriptDomHow> = new Set([
-  "execute", "select", "insert", "update", "delete", "merge", "truncate", "alter-table", "call", "table-function", "foreign-key"
+  "execute", "select", "insert", "update", "delete", "merge", "truncate", "alter-table", "alter", "call", "table-function", "foreign-key"
 ]);
+
+/** A file's facts with the strings it executes written out read into them: creates with where they take effect, and references with lines of the file. */
+interface ReadFacts {
+  creates:    Array<ScriptDomCreate & { effective: "script" | "module" | "server" }>;
+  references: ScriptDomReference[];
+  /** The ALTERs of a procedure, function, view or trigger that the script itself runs, with their lines. */
+  alters:     ScriptDomReference[];
+}
+
+/** The parser's facts of a file, and of every string it executes that is written out in full and parsed, nested strings included. */
+export function readFacts(facts: { creates: ScriptDomCreate[]; references: ScriptDomReference[]; dynamic: ScriptDomDynamic[] }): ReadFacts {
+  const read: ReadFacts = {
+    creates:    facts.creates.map((create) => ({ ...create, effective: create.scope })),
+    references: [...facts.references],
+    alters:     facts.references.filter((reference) => reference.how === "alter")
+  };
+  const walk = (dynamic: ScriptDomDynamic, outer: "script" | "module", server: string | undefined): void => {
+    if (!dynamic.literal || (dynamic.parseErrors?.length ?? 0) > 0) return;
+    const scope = outer === "module" || dynamic.scope === "module" ? "module" : "script";
+    const on    = dynamic.server ?? server;
+    for (const create of dynamic.creates ?? []) read.creates.push({ ...create, effective: on ? "server" : scope === "module" || create.scope === "module" ? "module" : "script" });
+    for (const reference of dynamic.references ?? []) {
+      read.references.push(on && !reference.name.server ? { ...reference, name: { ...reference.name, server: on } } : reference);
+      if (reference.how === "alter" && scope === "script" && !on) read.alters.push(reference);
+    }
+    for (const nested of dynamic.nested ?? []) walk(nested, scope, on);
+  };
+  for (const dynamic of facts.dynamic) walk(dynamic, "script", undefined);
+  return read;
+}
 
 const SYSTEM_SCHEMAS = new Set(["sys", "information_schema"]);
 const XML_METHODS    = new Set(["value", "query", "exist", "nodes", "modify"]);
@@ -191,11 +232,15 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
   const objects: CreatedObject[] = [];
   const moduleCreates: CreatedObject[] = [];
   let temporaryCreates = 0;
+  const read = new Map(graded.map((file) => [file, readFacts(record.files[file])]));
   for (const file of graded) {
-    for (const create of record.files[file].creates) {
+    const facts = read.get(file)!;
+    for (const create of facts.creates) {
       if (create.name.name.startsWith("#")) { if (reported.has(file)) temporaryCreates += 1; continue; }
-      const object = { file, kind: create.kind, name: writtenName(create.name), parts: partsOf(create.name), line: create.line };
-      (create.scope === "script" ? objects : moduleCreates).push(object);
+      const parts   = partsOf(create.name);
+      const altered = facts.alters.filter((alter) => names(partsOf(alter.name), parts) && alter.line > create.line).map((alter) => alter.line);
+      const object  = { file, kind: create.kind, name: writtenName(create.name), parts, line: Math.max(create.line, ...altered) };
+      (create.effective === "script" ? objects : moduleCreates).push(object);
     }
   }
   const byLastPart = new Map<string, CreatedObject[]>();
@@ -211,7 +256,7 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
   const ungraded: Record<string, { count: number; ofObjectsHere: number }> = {};
   const count = (bucket: string) => { setAside[bucket] = (setAside[bucket] ?? 0) + 1; };
   for (const file of graded.filter((candidate) => reported.has(candidate))) {
-    const facts = record.files[file];
+    const facts = read.get(file)!;
     const own   = facts.creates.map((create) => partsOf(create.name));
     const mine  = new Map<Line, Set<ScriptDomHow>>();
     for (const reference of facts.references) {
@@ -438,17 +483,19 @@ export async function compareSql(root: string, record: ScriptDomRecord, options:
   let naming = 0;
   let namingHere = 0;
   const createdHere = (parts: string[]): boolean => expected.objects.some((object) => names(parts, object.parts));
+  const tally = (file: string, dynamic: ScriptDomDynamic): void => {
+    const label = `${dynamic.how}${!dynamic.literal ? " (computed)" : (dynamic.parseErrors?.length ?? 0) > 0 ? " (written out, not parsed)" : " (written out)"}`;
+    dynamicByHow[label] = (dynamicByHow[label] ?? 0) + 1;
+    for (const nested of dynamic.nested ?? []) tally(file, nested);
+    if (!dynamic.literal) return;
+    const { names: used, creates } = namesInDynamic(dynamic);
+    if (used.length === 0 && creates.length === 0) return;
+    naming += 1;
+    if (used.some((name) => createdHere(partsOfWritten(name)))) namingHere += 1;
+    examples.push({ file, line: dynamic.line, how: dynamic.how, names: used, creates, text: (dynamic.text ?? "").replace(/\s+/gu, " ").trim().slice(0, 160) });
+  };
   for (const file of reported) {
-    for (const dynamic of record.files[file].dynamic) {
-      const label = `${dynamic.how}${dynamic.literal ? " (written out)" : " (computed)"}`;
-      dynamicByHow[label] = (dynamicByHow[label] ?? 0) + 1;
-      if (!dynamic.literal) continue;
-      const { names: used, creates } = namesInDynamic(dynamic);
-      if (used.length === 0 && creates.length === 0) continue;
-      naming += 1;
-      if (used.some((name) => createdHere(partsOfWritten(name)))) namingHere += 1;
-      examples.push({ file, line: dynamic.line, how: dynamic.how, names: used, creates, text: (dynamic.text ?? "").replace(/\s+/gu, " ").trim().slice(0, 160) });
-    }
+    for (const dynamic of record.files[file].dynamic) tally(file, dynamic);
   }
 
   return {

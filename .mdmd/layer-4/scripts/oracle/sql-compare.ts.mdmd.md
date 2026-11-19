@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/sql-compare.ts
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:24:00.583Z
+- Generated At: 2026-11-19T21:15:59.890Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ Grades the SQL reader against ScriptDom: `npm run oracle:sql -- <folder>` reads 
 - Written on 2026-11-19 ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)). What counts as a use, and what is set aside as no object of the folder, is stated once at the head of the file and applies to both sides alike: common table expressions, a statement's own table sources, temporary tables, SQL Server's `sys` and `INFORMATION_SCHEMA` schemas and the `xml` type's five methods. Name matching is written here independently of the product: a one-part name matches an object of that name in any schema, two parts that schema and name, which is the product's presumption too, since T-SQL resolves a one-part name by the caller's default schema, which no text gives.
 - Ways of naming an object the reader does not claim (a drop, a grant, a type, SELECT INTO and the rest) are counted, with how many of them name an object the folder creates, and not graded, so that a reader of the figures sees what the map does not draw.
 - Files the parser refuses are listed and left out of both sides' index; objects created only in such a file are therefore unresolved on both sides.
+- Since the evening of 2026-11-19 it reads, through `readFacts`, every executed string written out in full that the parser reads: its creates are the script's objects when it runs in the script and not on a linked server, its uses are the script's (on the linked server, `server..schema.name`, when it runs on one), and an object the script creates and later alters stands at its last ALTER; an ALTER of a procedure, function, view or trigger is graded as a use ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)).
 - The sample is a Fisher–Yates shuffle of the sorted list of graded files by a mulberry32 generator from the seed. The cold run's own draw of 2026-11-19 was not kept, so seed 1119 here is a draw of its own, not the cold run's twenty files.
 
 ## Generated
@@ -22,15 +23,23 @@ Grades the SQL reader against ScriptDom: `npm run oracle:sql -- <folder>` reads 
 ### Public Symbols
 #### `GRADED_HOWS` {#symbol-graded_hows}
 - Type: const
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L73)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L84)
 - Returns: `ReadonlySet`
 
 ##### `GRADED_HOWS` — Summary
 The ways of naming an object the grading counts as a use.
 
+#### `readFacts` {#symbol-readfacts}
+- Type: function
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L97)
+- Returns: `ReadFacts`
+
+##### `readFacts` — Summary
+The parser's facts of a file, and of every string it executes that is written out in full and parsed, nested strings included.
+
 #### `writtenPart` {#symbol-writtenpart}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L93)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L134)
 
 ##### `writtenPart` — Summary
 One name part as the product writes it in a symbol or a kept name: bare, or
@@ -40,7 +49,7 @@ product's documented form, not imported from it.
 
 #### `writtenName` {#symbol-writtenname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L98)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L139)
 - Parameters: `name`: [`ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname)
 
 ##### `writtenName` — Summary
@@ -48,35 +57,35 @@ A parser's name in the product's written form: the parts written, from the first
 
 #### `partsOfWritten` {#symbol-partsofwritten}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L105)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L146)
 
 ##### `partsOfWritten` — Summary
 Reads a name the product wrote back into its parts: dots outside brackets split it, brackets come off and `]]` is `]`.
 
 #### `isSqlServerOwn` {#symbol-issqlserverown}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L156)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L197)
 
 ##### `isSqlServerOwn` — Summary
 Whether a used name is SQL Server's own: a system schema, or an `xml` method on a column.
 
 #### `SqlReport` {#symbol-sqlreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L292)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L337)
 
 ##### `SqlReport` — Summary
 What the comparison found.
 
 #### `drawSample` {#symbol-drawsample}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L340)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L385)
 
 ##### `drawSample` — Summary
 Draws `count` of the files, in a Fisher–Yates shuffle of their sorted list by the seed, returned sorted.
 
 #### `compareSql` {#symbol-comparesql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L358)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L403)
 - Parameters: `record`: [`ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
 
 ##### `compareSql` — Summary

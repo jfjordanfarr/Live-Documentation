@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/sql-scriptdom.ts
-- Generated At: 2026-11-19T19:25:48.202Z
+- Generated At: 2026-11-19T21:15:59.934Z
 
 ## Authored
 ### Purpose
@@ -70,21 +70,21 @@ An `EXEC (…)` of a string, an `sp_executesql`, or an `EXEC
 
 #### `ScriptDomFileFacts` {#symbol-scriptdomfilefacts}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L78)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L86)
 
 ##### `ScriptDomFileFacts` — Summary
 What the parser says about one file.
 
 #### `ScriptDomRecord` {#symbol-scriptdomrecord}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L86)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L94)
 
 ##### `ScriptDomRecord` — Summary
 The parser's record of a folder, file by file, in folder-relative coordinates.
 
 #### `parseSqlFiles` {#symbol-parsesqlfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L94)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L102)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `parseSqlFiles` — Summary
@@ -92,7 +92,7 @@ Runs the parser over the named files of a folder; `dotnet` must be on the path.
 
 #### `writeScriptDomRecord` {#symbol-writescriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L118)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L126)
 - Parameters: `record`: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `writeScriptDomRecord` — Summary
@@ -100,7 +100,7 @@ Writes the record beside a fixture's other expectations, each file named relativ
 
 #### `readScriptDomRecord` {#symbol-readscriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L124)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L132)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `readScriptDomRecord` — Summary

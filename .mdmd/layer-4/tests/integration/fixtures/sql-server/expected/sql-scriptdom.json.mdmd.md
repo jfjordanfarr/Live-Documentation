@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/expected/sql-scriptdom.json
-- Generated At: 2026-11-19T19:25:52.613Z
+- Generated At: 2026-11-19T21:16:04.668Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,21 @@ What Microsoft's T-SQL parser says about the SQL Server fixture's scripts, writt
 - Type: key
 
 #### `files:../Procedures/Billing.usp_Archive.sql:dynamic` {#symbol-filesproceduresbillingusp_archivesqldynamic}
+- Type: key
+
+#### `files:../Procedures/Billing.usp_Settle.sql` {#symbol-filesproceduresbillingusp_settlesql}
+- Type: key
+
+#### `files:../Procedures/Billing.usp_Settle.sql:parseErrors` {#symbol-filesproceduresbillingusp_settlesqlparseerrors}
+- Type: key
+
+#### `files:../Procedures/Billing.usp_Settle.sql:creates` {#symbol-filesproceduresbillingusp_settlesqlcreates}
+- Type: key
+
+#### `files:../Procedures/Billing.usp_Settle.sql:references` {#symbol-filesproceduresbillingusp_settlesqlreferences}
+- Type: key
+
+#### `files:../Procedures/Billing.usp_Settle.sql:dynamic` {#symbol-filesproceduresbillingusp_settlesqldynamic}
 - Type: key
 
 #### `files:../Procedures/Billing.usp_Statement.sql` {#symbol-filesproceduresbillingusp_statementsql}

@@ -28,6 +28,141 @@
       ],
       "dynamic": []
     },
+    "../Procedures/Billing.usp_Settle.sql": {
+      "parseErrors": [],
+      "creates": [],
+      "references": [
+        {
+          "how": "alter",
+          "name": {
+            "schema": "Billing",
+            "name": "usp_Settle"
+          },
+          "line": 6,
+          "column": 17
+        },
+        {
+          "how": "execute",
+          "name": {
+            "name": "sp_executesql"
+          },
+          "line": 13,
+          "column": 10
+        },
+        {
+          "how": "alter",
+          "name": {
+            "schema": "Billing",
+            "name": "vw_Legacy"
+          },
+          "line": 23,
+          "column": 12
+        }
+      ],
+      "dynamic": [
+        {
+          "how": "exec-string",
+          "line": 3,
+          "column": 5,
+          "scope": "script",
+          "literal": true,
+          "text": "CREATE PROCEDURE Billing.usp_Settle AS BEGIN SELECT 1 END",
+          "textLine": 3,
+          "parseErrors": [],
+          "creates": [
+            {
+              "kind": "procedure",
+              "name": {
+                "schema": "Billing",
+                "name": "usp_Settle"
+              },
+              "line": 3,
+              "column": 1,
+              "scope": "script"
+            }
+          ],
+          "references": [],
+          "nested": []
+        },
+        {
+          "how": "sp_executesql",
+          "line": 13,
+          "column": 5,
+          "scope": "module",
+          "literal": true,
+          "text": "UPDATE Billing.Invoice SET IsOpen = 0 WHERE CustomerId = @c",
+          "textLine": 13,
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "update",
+              "name": {
+                "schema": "Billing",
+                "name": "Invoice"
+              },
+              "line": 13,
+              "column": 8
+            }
+          ],
+          "nested": []
+        },
+        {
+          "how": "exec-string",
+          "line": 14,
+          "column": 5,
+          "scope": "module",
+          "literal": true,
+          "text": "SELECT CustomerId, Name FROM Billing.Customer WHERE Note = 'settled'",
+          "textLine": 14,
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "select",
+              "name": {
+                "schema": "Billing",
+                "name": "Customer"
+              },
+              "line": 14,
+              "column": 30
+            }
+          ],
+          "nested": []
+        },
+        {
+          "how": "exec-string",
+          "line": 15,
+          "column": 5,
+          "scope": "module",
+          "literal": false
+        },
+        {
+          "how": "openquery",
+          "line": 18,
+          "column": 12,
+          "scope": "module",
+          "literal": true,
+          "text": "SELECT BALANCE FROM CENTRAL.ACCOUNT",
+          "textLine": 18,
+          "server": "ORACLE_CENTRAL",
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "select",
+              "name": {
+                "schema": "CENTRAL",
+                "name": "ACCOUNT"
+              },
+              "line": 18,
+              "column": 21
+            }
+          ],
+          "nested": []
+        }
+      ]
+    },
     "../Procedures/Billing.usp_Statement.sql": {
       "parseErrors": [],
       "creates": [
@@ -158,8 +293,10 @@
           "how": "exec-string",
           "line": 43,
           "column": 5,
+          "scope": "module",
           "literal": true,
           "text": "SELECT COUNT(*) FROM Billing.Invoice WHERE IsOpen = 1",
+          "textLine": 43,
           "parseErrors": [],
           "creates": [],
           "references": [
@@ -169,10 +306,11 @@
                 "schema": "Billing",
                 "name": "Invoice"
               },
-              "line": 1,
+              "line": 43,
               "column": 22
             }
-          ]
+          ],
+          "nested": []
         }
       ]
     },
