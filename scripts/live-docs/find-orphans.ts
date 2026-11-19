@@ -4,6 +4,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { parseLiveDoc } from "@live-documentation/engine/live-docs/document";
 
 import { optionValue, runCommand, UsageError, workspaceFolder } from "./cli";
 
@@ -100,17 +101,18 @@ async function collectLiveDocFiles(root: string): Promise<string[]> {
   return results;
 }
 
+/**
+ * The source file a Live Doc documents, as the doc grammar's own reader reads it, so that a code path the writer
+ * writes in its quoted form reads back as the path and not as the quotes; `undefined` for a doc the reader refuses or
+ * cannot open, which the caller maps from the doc's place instead.
+ */
 async function extractCodePath(liveDocPath: string): Promise<string | undefined> {
   try {
-    const content = await fs.readFile(liveDocPath, { encoding: "utf8" });
-    const match = content.match(/^\s*-\s*Code Path:\s*(.+)$/m);
-    if (match) {
-      return match[1].trim();
-    }
+    return parseLiveDoc(await fs.readFile(liveDocPath, { encoding: "utf8" })).codePath;
   } catch {
-    // Ignore unreadable files; caller will handle via fallback mapping.
+    // A doc the grammar refuses, or a file that cannot be read: the caller maps it from where it lies.
+    return undefined;
   }
-  return undefined;
 }
 
 async function pathExists(candidate: string): Promise<boolean> {

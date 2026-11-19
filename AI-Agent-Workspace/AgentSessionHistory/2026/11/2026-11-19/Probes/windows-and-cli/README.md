@@ -440,3 +440,11 @@ Deleting it means removing:
 - its three entries in `repository-entries.json`, which is the owner's hand-curated expectation and so wants their nod.
 
 Carry forward the binary's name and the list of commands it meant to dispatch into the package's design. `index.ts` still holds both.
+
+### `live-docs:orphans` reads a doc's source through the grammar
+
+`find-orphans.ts` read a doc's source with a pattern of its own, `^\s*-\s*Code Path:\s*(.+)$`. Under the writer on the other branch, which quotes a value whose plain form would not read back, that pattern would take the quotes as part of the path and report a false orphan. It now reads the source with `parseLiveDoc(text).codePath`, the grammar's own reader, which reads both forms on that branch. A doc the reader refuses, or a file that cannot be opened, is mapped from where it lies, as before.
+
+The new case in `generate-cli.test.ts` writes its docs with the engine's `renderLiveDoc`: an ordinary file, a file whose name begins with `"` (skipped on Windows, which allows no such name), and a source that is gone. It holds each doc's source to what `parseLiveDoc` reads, and the command's output to the one gone file. It passes before and after this mend under today's writer, which writes the name plainly, so it could not be seen red here. It is the case that would turn red with the old pattern once the two branches are joined. `npm run live-docs:orphans` over this repository still finds none.
+
+One thing it shows, left as it was: a doc the reader refuses is mapped by the `.md` suffix alone. With this repository's `.mdmd.md` suffix that mapping would expect a source ending in `.mdmd`. The command reads no configuration by its own Notes, so the suffix is not known to it. Only a doc that is broken anyway reaches that mapping.

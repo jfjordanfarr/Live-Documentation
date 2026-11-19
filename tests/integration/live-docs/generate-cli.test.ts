@@ -29,6 +29,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { parseLiveDoc, renderLiveDoc } from "../../../packages/engine/src/live-docs/document";
+
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
 const scripts = path.join(repoRoot, "scripts", "live-docs");
@@ -67,7 +69,15 @@ const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
  * `mine` and a configuration beside it; `other` is another repository with a configuration of its own and a folder
  * `src/deep` inside it; `bare` has no configuration, nor has any folder above it, and holds a folder `sub`.
  */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "", orphans: "" };
+
+/**
+ * The code paths of the orphans workspace's docs, each written by the engine's own writer: an ordinary file, a file
+ * whose name begins with a quotation mark, which a writer may write in a quoted form, both present, and one gone.
+ * Linux and macOS allow the quotation mark in a name; Windows does not, so the case is skipped there.
+ */
+const QUOTED = "\"quoted.ts";
+const ORPHAN_SOURCES = ["src/a.ts", ...(process.platform === "win32" ? [] : [QUOTED])];
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -102,6 +112,15 @@ beforeAll(async () => {
   for (const name of ["Shop.sln", "src/Legacy.vb", "src/Old.VB", "Database/Install.SqlDataProvider", "logo.png"]) {
     fs.mkdirSync(path.dirname(path.join(at.unread, name)), { recursive: true });
     fs.writeFileSync(path.join(at.unread, name), "x\n", "utf8");
+  }
+  at.orphans = makeWorkspace({});
+  for (const codePath of [...ORPHAN_SOURCES, "src/gone.ts"]) {
+    if (codePath !== "src/a.ts" && codePath !== "src/gone.ts") {
+      fs.writeFileSync(path.join(at.orphans, codePath), "export const q = 1;\n", "utf8");
+    }
+    const doc = path.join(at.orphans, ".live-documentation", "source", `${codePath}.md`);
+    fs.mkdirSync(path.dirname(doc), { recursive: true });
+    fs.writeFileSync(doc, renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nA file.\n\n### Notes\nNone.", symbols: [], dependencies: [] }), "utf8");
   }
   // A configuration cut short, the failure every command meets first.
   at.broken = makeWorkspace({});
@@ -143,6 +162,7 @@ beforeAll(async () => {
     // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
     recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
     record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
+    record("orphans", "find-orphans.ts", ["--workspace", at.orphans]),
     record("generate, a repository", "generate.ts", ["--workspace", at.repository, "--dry-run"]),
     record("generate, a repository without git", "generate.ts", ["--workspace", at.repository, "--dry-run"], { PATH: at.noGit }),
     record("lint, failing", "lint.ts", ["--workspace", at.broken]),
@@ -252,6 +272,19 @@ describe("what git ignores", () => {
   it("is said to be read from the workspace's .gitignore alone outside a repository", () => {
     const result = ran("generate, unread kinds");
     expect(result.stdout).toContain(`[live-docs] Not in a git repository, so of what to leave out only ${path.join(at.unread, ".gitignore")} and the configuration's exclude are read.`);
+  });
+});
+
+describe("live-docs:orphans", () => {
+  it("reads each doc's source as the doc grammar's reader reads it, and lists only the doc whose source is gone", () => {
+    // The reader's answer for each doc, whichever form the writer gave its code path, is what the command must check.
+    for (const codePath of ORPHAN_SOURCES) {
+      const text = fs.readFileSync(path.join(at.orphans, ".live-documentation", "source", `${codePath}.md`), "utf8");
+      expect(parseLiveDoc(text).codePath).toBe(codePath);
+    }
+    const result = ran("orphans");
+    expect(result.status).toBe(1);
+    expect(result.stderr).toBe("Found 1 orphan live documentation file(s):\n - .live-documentation/source/src/gone.ts.md (expected code path: src/gone.ts)\n");
   });
 });
 
