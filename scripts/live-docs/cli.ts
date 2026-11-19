@@ -58,14 +58,29 @@ export function runCommand(name: string, main: () => Promise<void>): void {
 }
 
 /**
+ * A text file's characters, in whichever of the encodings Windows writes by
+ * default it was saved: UTF-8 with or without a byte-order mark (Windows
+ * PowerShell 5.1's `Set-Content -Encoding UTF8` writes the mark), or UTF-16
+ * little- or big-endian after its mark (its `Out-File` and `>`). The mark
+ * itself is not part of the text.
+ */
+export function decodeText(bytes: Uint8Array): string {
+  const encoding = bytes[0] === 0xff && bytes[1] === 0xfe ? "utf-16le" : bytes[0] === 0xfe && bytes[1] === 0xff ? "utf-16be" : "utf-8";
+  // The decoder drops the mark of the encoding it decodes.
+  return new TextDecoder(encoding).decode(bytes);
+}
+
+/**
  * The configuration a command reads: the file given, else the workspace's own
  * `.live-docs.config.json` when it has one, else nothing, which leaves the
  * shipped defaults. The history command reads its lens by the same rule.
+ * Saved by Windows PowerShell 5.1 with a byte-order mark, or as UTF-16, it is
+ * read all the same ({@link decodeText}).
  */
 export async function readConfiguration(workspaceRoot: string, configPath: string | undefined): Promise<LiveDocumentationConfigInput> {
   const file = configPath === undefined ? path.join(workspaceRoot, ".live-docs.config.json") : path.resolve(configPath);
   try {
-    return JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
+    return JSON.parse(decodeText(await fs.readFile(file))) as LiveDocumentationConfigInput;
   } catch (error) {
     if (configPath === undefined && (error as NodeJS.ErrnoException).code === "ENOENT") {
       return {};

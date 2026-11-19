@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-12T16:06:56.230Z
+- Generated At: 2026-11-19T19:10:26.409Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - Written 2026-10-18 when the history build found `generate --version` printing a constant, 0.1.0, or an environment variable, while the generator package is 0.0.0 and the history's lens carries the manifest's version ([the record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#work-notes-continued-the-c1-hand-back)); `inspect` and `lint` printed the same constant, and `inspect` piped into `head` died with an EPIPE trace. A command's version is its package's and nothing of its own, so the three read their manifests here, and the two that print long listings end quietly when the pipe closes.
 - `UsageError`, `optionValue`, `runCommand` and `readConfiguration` (2026-11-12), after [the first-visit evaluation](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md) found the Explorer's builder dying on `--help` with a stack trace and the other commands ending a refused argument each in its own way. Every script a `live-docs:*` npm script runs now takes `--help` and `-h`, and ends through `runCommand` under that npm script's name, so that the hint it prints is a command a person can paste. Each parses its own arguments by hand; `optionValue` is the one rule for the value after an option, refused when it is missing or is itself an option.
 - `readConfiguration` is the rule `generate` and `inspect` already followed, and the history command's lens follows in `computeHistory.ts`; `lint`, `board` and `visualize-static` read only the file given until 2026-11-12, which the npm scripts hid by pinning this repository's configuration, and which made `--workspace <folder>` read this repository's configuration for another folder. The pins went the same day.
+- `decodeText` (2026-11-19): the configuration is read by its byte-order mark, UTF-8 with or without one or UTF-16 in either order, after [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found a configuration saved by Windows PowerShell 5.1, which writes the mark, stopping every command. The PowerShell reader decodes scripts by the same rule for itself; the history's lens reads the configuration by its own copy of `readConfiguration` without it ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -55,14 +56,27 @@ Runs a command to its end, by the name of the npm script that runs it: a
 refused command line prints one line, naming what was refused and how to list
 the options; any other failure prints its message; both exit 1.
 
+#### `decodeText` {#symbol-decodetext}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/cli.ts#L67)
+
+##### `decodeText` — Summary
+A text file's characters, in whichever of the encodings Windows writes by
+default it was saved: UTF-8 with or without a byte-order mark (Windows
+PowerShell 5.1's `Set-Content -Encoding UTF8` writes the mark), or UTF-16
+little- or big-endian after its mark (its `Out-File` and `>`). The mark
+itself is not part of the text.
+
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L65)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L80)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, else the workspace's own
 `.live-docs.config.json` when it has one, else nothing, which leaves the
 shipped defaults. The history command reads its lens by the same rule.
+Saved by Windows PowerShell 5.1 with a byte-order mark, or as UTF-16, it is
+read all the same ({@link decodeText}).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
