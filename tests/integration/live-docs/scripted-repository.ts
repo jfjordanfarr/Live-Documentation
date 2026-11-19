@@ -186,6 +186,9 @@ export const SCRIPT: ScriptedCommit[] = [
       "docs/old-notes.md": "# Old notes\n\nWhat the legacy helper said, and why.\n",
       ".mdmd/layer-4/src/app/main.ts.mdmd.md": COMMITTED_DOC("src/app/main.ts", MAIN_WORDS(true)),
       ".mdmd/layer-4/lib/legacy.ts.mdmd.md": COMMITTED_DOC("lib/legacy.ts", "### Purpose\nWhat the app used to say, as [the old notes](../../../docs/old-notes.md) record.\n\n### Notes\n- Retired in the fifth commit."),
+      // A doc in a form older than today's grammar, with no authored block today's reader finds: its words were written
+      // that day and cannot be read, which the history must say rather than show the generator's placeholder (2026-11-19).
+      ".mdmd/layer-4/lib/big.ts.mdmd.md": "---\ntitle: lib/big.ts\n---\n# lib/big.ts\n\n## Source Mapping\n\n- Purpose: counts to a big number, as the old mirror wrote it.\n",
       // A committed mirror's orphan: the doc of a file long gone, kept by the generator of its day for its authored words.
       // Its link to the design must never count: the lens documents no such file.
       ".mdmd/layer-4/lib/ghost.ts.mdmd.md": renderLiveDoc({

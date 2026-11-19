@@ -132,6 +132,38 @@ describe("the tool lock in the history lens", () => {
     expect(key(second)).not.toBe(key(first));
   });
 
+  it("keys on the code that makes a summary, and not on the tests or the modules that only read summaries", () => {
+    const { root, modulePath } = fixture(true);
+    const history = path.join(root, "packages", "engine", "src", "live-docs", "history");
+    fs.mkdirSync(history, { recursive: true });
+    fs.writeFileSync(path.join(history, "summary.ts"), "export const summary = 1;\n");
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 1;\n");
+    fs.writeFileSync(path.join(root, "packages", "engine", "marker.test.ts"), "test(1);\n");
+    commit(root, "the history's modules");
+    const initial = identity(modulePath, root);
+
+    // The codec and a test change, dirty and then committed: the summaries they would read are the same.
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 2;\n");
+    fs.writeFileSync(path.join(root, "packages", "engine", "marker.test.ts"), "test(2);\n");
+    fs.writeFileSync(path.join(history, "queries.ts"), "export const queries = 1;\n");
+    expect(identity(modulePath, root).modified).toBeNull();
+    commit(root, "change only what reads the summaries");
+    expect(identity(modulePath, root).code).toBe(initial.code);
+    expect(key(identity(modulePath, root))).toBe(key(initial));
+
+    // The summary's own module changes what a summary says: dirty, then committed, then removed.
+    fs.writeFileSync(path.join(history, "summary.ts"), "export const summary = 2;\n");
+    const dirty = identity(modulePath, root);
+    expect(dirty.modified).not.toBeNull();
+    expect(key(dirty)).not.toBe(key(initial));
+    commit(root, "change the summary");
+    const committed = identity(modulePath, root);
+    expect(committed.modified).toBeNull();
+    expect(committed.code).not.toBe(initial.code);
+    fs.rmSync(path.join(history, "summary.ts"));
+    expect(identity(modulePath, root).modified).not.toBeNull();
+  });
+
   it("does not mistake an installed generator's host lock for this tool's lock", () => {
     const root = fs.mkdtempSync(path.join(scratch, "host-"));
     const installed = path.join(root, "node_modules", "@live-documentation", "generator");

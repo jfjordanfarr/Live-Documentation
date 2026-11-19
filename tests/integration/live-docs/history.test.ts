@@ -10,6 +10,7 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import * as zlib from "node:zlib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
@@ -18,6 +19,8 @@ import type { HistorySequence } from "../../../packages/engine/src/live-docs/his
 import { openGitRepository } from "../../../packages/engine/src/live-docs/history/git";
 import { changeAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import { edgeKey, type Shape } from "../../../packages/engine/src/live-docs/history/shape";
+import { sectionsOfDescription, type CommitSummary, type SummaryFile } from "../../../packages/engine/src/live-docs/history/summary";
+import { readText, TEXT_STORE_DIRECTORY } from "../../../packages/engine/src/live-docs/history/textStore";
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
@@ -161,9 +164,54 @@ describe("the history command over a scripted repository", () => {
     expect(again).toEqual(sequence);
     const cache = path.join(repository, ".mdmd", "history", sequence.lens.key);
     for (const commit of commits) {
-      expect(fs.existsSync(path.join(cache, `${commit}.json`))).toBe(true);
+      expect(fs.existsSync(path.join(cache, `${commit}.json.gz`))).toBe(true);
       expect(fs.existsSync(path.join(cache, `${commit}.index.json.gz`))).toBe(true);
     }
+  });
+
+  it("keeps each commit's rows, and that day's words once each by hash, saying unread where the mirror's form hides them", async () => {
+    const cache = path.join(repository, ".mdmd", "history", sequence.lens.key);
+    const summary = (step: number): CommitSummary => JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(cache, `${commits[step]}.json.gz`))).toString("utf8")) as CommitSummary;
+    const first = summary(0);
+    const file = (path: string): SummaryFile => first.files.find((entry) => entry.path === path)!;
+    const store = path.join(cache, TEXT_STORE_DIRECTORY);
+    // The main file's doc stood with its words, which the text store holds as that day's.
+    expect(await readText(store, file("src/app/main.ts").authored!)).toContain("as [the design](../../../../docs/design.md) lays out");
+    // The big helper's doc stood in an older form: its words are unread, never the generator's placeholder.
+    expect(file("lib/big.ts")).toMatchObject({ unread: true });
+    expect(file("lib/big.ts").authored).toBeUndefined();
+    // No doc of the model stood at the first commit: it has no words of that day at all.
+    expect(file("src/core/model.ts").authored).toBeUndefined();
+    expect(file("src/core/model.ts").unread).toBeUndefined();
+    // Its rows are the generator's own, in the doc's order, each description named by hash.
+    expect(file("src/core/model.ts").symbols.map((symbol) => [symbol.name, symbol.kind])).toEqual([["Model", "interface"], ["makeModel", "function"]]);
+    expect(file("src/core/model.ts").symbols[1].references).toEqual([{ role: "returns", type: "Model", to: "src/core/model.ts", toSymbol: file("src/core/model.ts").symbols[0].slug }]);
+    expect(sectionsOfDescription(await readText(store, file("src/core/model.ts").symbols[1].text!))[0]).toEqual({ title: "Summary", body: ["Makes a model."] });
+    expect(file("src/app/main.ts").dependencies.map((line) => [line.label, line.to])).toEqual(expect.arrayContaining([["big", "lib/big.ts"], ["model.makeModel", "src/core/model.ts"]]));
+    // A text unchanged across the commits is stored once: the store holds fewer texts than the summaries name.
+    const named = commits.flatMap((_, step) => summary(step).files.flatMap((entry) => [entry.authored, ...entry.symbols.map((symbol) => symbol.text)])).filter((hash): hash is string => hash !== undefined);
+    const stored = fs.readdirSync(store, { recursive: true, withFileTypes: true }).filter((entry) => entry.isFile());
+    expect(new Set(named).size).toBe(stored.length);
+    expect(stored.length).toBeLessThan(named.length);
+  });
+
+  it("lists the caches of other lenses with their sizes at every run, and removes them only when asked", () => {
+    const history = path.join(repository, ".mdmd", "history");
+    const stale = path.join(history, "0123456789abcdef");
+    fs.mkdirSync(path.join(stale, "texts", "ab"), { recursive: true });
+    fs.writeFileSync(path.join(stale, "texts", "ab", "old"), "x".repeat(2048));
+    const listed = runCli(historyScript, ["--workspace", repository, "--jobs", "1", "--keep-index"]);
+    expect(listed.exitCode, listed.stderr).toBe(0);
+    expect(listed.stderr).toContain("kept .mdmd/history/0123456789abcdef, the cache of a lens that is not the current one: 2.0 KB");
+    expect(listed.stdout).toContain("The caches of 1 other lenses hold 2.0 KB; --remove-superseded removes them.");
+    expect(fs.existsSync(stale)).toBe(true);
+    const removed = runCli(historyScript, ["--workspace", repository, "--jobs", "1", "--keep-index", "--remove-superseded"]);
+    expect(removed.exitCode, removed.stderr).toBe(0);
+    expect(removed.stderr).toContain("removed .mdmd/history/0123456789abcdef");
+    expect(fs.existsSync(stale)).toBe(false);
+    // The current lens's cache and the record of the pool stay.
+    expect(fs.existsSync(path.join(history, sequence.lens.key))).toBe(true);
+    expect(JSON.parse(fs.readFileSync(path.join(history, "pool.json"), "utf8"))).toMatchObject({ lens: sequence.lens.key, peakMemory: expect.any(Number) });
   });
 
   it("checks a commit out as the repository stores it, whatever the person's git would convert", async () => {

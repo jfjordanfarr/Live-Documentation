@@ -27,9 +27,6 @@ import type { LiveDocumentationConfig } from "../../config/liveDocumentationConf
 /** The version of the sequence's format, written first in every `history.json`. */
 export const HISTORY_FORMAT = "live-docs-history/2";
 
-/** The version of the format of one change's summary in the cache. */
-export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/2";
-
 /** The folder under the docs root that holds the cache and the sequence. */
 export const HISTORY_DIRECTORY = "history";
 
@@ -210,19 +207,4 @@ export interface HistoryHead {
   first: CommitInfo;
   /** The last step's change. */
   last: CommitInfo;
-}
-
-/** One change's shape as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json`. */
-export interface CommitSummary {
-  format: typeof HISTORY_SUMMARY_FORMAT;
-  /** The lens key the summary was made under. */
-  lens: string;
-  /** The change summarized. */
-  commit: string;
-  /** Every file, sorted by path: its path, archetype, symbol count and entry mark. */
-  files: Array<[path: string, archetype: string, symbols: number, entry: 0 | 1]>;
-  /** Every directed edge, sorted: its ends' paths and its count. */
-  edges: Array<[from: string, to: string, count: number]>;
-  /** Every link from a file's authored words to a document that stood at the change, sorted: the file's path and the document's. */
-  docLinks: Array<[from: string, doc: string]>;
 }

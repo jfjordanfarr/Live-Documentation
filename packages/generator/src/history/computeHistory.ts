@@ -13,6 +13,13 @@
  * written beside the cache. A second run regenerates only what the cache
  * lacks. Nothing here is committed, and nothing reaches a remote.
  *
+ * Since 2026-11-19 the summaries are gzipped and name their prose by hash in
+ * the lens's text store, which holds each text once; the pool is sized by the
+ * machine's memory and processors and the peak memory a summarizing process
+ * was last measured to take, which every run records beside the cache; and
+ * every run says which cache folders belong to no current lens and how much
+ * they hold, removing them only when asked.
+ *
  * @module
  */
 
@@ -20,6 +27,7 @@ import { fork, type ChildProcess } from "node:child_process";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { gunzipSync } from "node:zlib";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
@@ -27,25 +35,18 @@ import {
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import {
-  HISTORY_DIRECTORY,
-  HISTORY_FILE,
-  HISTORY_SUMMARY_FORMAT,
-  type CommitInfo,
-  type CommitSummary,
-  type HistoryLens,
-  type HistorySequence,
-  type Sampling
-} from "@live-documentation/engine/live-docs/history/format";
+import { HISTORY_DIRECTORY, HISTORY_FILE, type CommitInfo, type HistoryLens, type HistorySequence, type Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
 import { lensOf } from "@live-documentation/engine/live-docs/history/lens";
 import { sampleChanges } from "@live-documentation/engine/live-docs/history/sampling";
 import { SequenceBuilder } from "@live-documentation/engine/live-docs/history/sequence";
-import { shapeOfSummary } from "@live-documentation/engine/live-docs/history/summary";
+import { shapeOfSummary } from "@live-documentation/engine/live-docs/history/shape";
+import { HISTORY_SUMMARY_FORMAT, type CommitSummary } from "@live-documentation/engine/live-docs/history/summary";
+import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl, WorkingTree } from "@live-documentation/engine/live-docs/history/versionControl";
 
 import { generatorIdentity } from "./generatorIdentity";
-import type { SummaryTask } from "./summarizeChange";
+import type { SummaryReport, SummaryTask } from "./summarizeChange";
 
 /** What to compute. */
 export interface HistoryOptions {
@@ -54,14 +55,28 @@ export interface HistoryOptions {
   /** A configuration file for the lens, relative to the working directory; the workspace's `.live-docs.config.json` when absent, or the defaults. */
   configPath?: string;
   sampling: Sampling;
-  /** How many changes are regenerated at once, each in a process of its own. */
-  jobs: number;
+  /** How many changes are regenerated at once, each in a process of its own; when absent, {@link poolSize} for this machine. */
+  jobs?: number;
   /** Keep each change's full graph index, gzipped, in the cache. */
   keepIndex: boolean;
   /** Carry the authors' names in the steps. */
   authors: boolean;
+  /** Remove the cache folders of every lens but the current one. */
+  removeSuperseded?: boolean;
   /** Where progress goes, a line at a time. */
   progress: (line: string) => void;
+}
+
+/** A cache folder under the history folder that belongs to another lens than the current one. */
+export interface SupersededCache {
+  /** Its lens key, which names it. */
+  lens: string;
+  /** Workspace-relative path. */
+  folder: string;
+  /** The bytes of the files it holds. */
+  bytes: number;
+  /** Whether this run removed it. */
+  removed: boolean;
 }
 
 /** What a run did. */
@@ -77,6 +92,39 @@ export interface HistoryRun {
   cached: number;
   /** The mean time one change's regeneration took, in milliseconds; 0 when none was regenerated. */
   millisecondsPerChange: number;
+  /** How many changes were regenerated at once. */
+  jobs: number;
+  /** The wall clock the regeneration took, in milliseconds; 0 when none was regenerated. */
+  regenerationMilliseconds: number;
+  /** The largest peak resident memory a summarizing process of this run reported, in bytes; 0 when none was regenerated. */
+  peakMemory: number;
+  /** The bytes the current lens's cache folder holds after the run. */
+  cacheBytes: number;
+  /** The cache folders of other lenses, and whether this run removed them. */
+  superseded: SupersededCache[];
+}
+
+/**
+ * The record a run leaves beside the caches of how much memory one summarizing process took on this repository, so
+ * that the next run sizes its pool by it: `<docsRoot>/history/pool.json`.
+ */
+const POOL_RECORD = "pool.json";
+
+/**
+ * What one summarizing process is expected to take before any has been measured on a repository: the peak measured
+ * on 2026-11-19 over the largest commit of this repository's history (1,058 files), rounded up. A larger repository
+ * takes more, which its first run measures and records.
+ */
+export const UNMEASURED_PEAK_MEMORY = 1.5 * 1024 ** 3;
+
+/**
+ * How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
+ * one, since the person's own work goes on beside the run, and one fewer than its processors, since each process
+ * keeps one busy and the command and git need one; never fewer than one.
+ */
+export function poolSize(machine: { totalMemory: number; processors: number; peakMemory: number }): number {
+  const byMemory = Math.floor(machine.totalMemory / 2 / machine.peakMemory);
+  return Math.max(1, Math.min(machine.processors - 1, byMemory));
 }
 
 /** Computes the history and writes the sequence. */
@@ -97,17 +145,38 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   const historyFolder = path.join(workspaceRoot, configuration.root, HISTORY_DIRECTORY);
   const cacheFolder = path.join(historyFolder, lens.key);
   await prepareHistoryFolder(historyFolder, cacheFolder);
+  const relative = (absolute: string): string => path.relative(workspaceRoot, absolute).split(path.sep).join("/");
+  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true, relative);
+  for (const cache of superseded) {
+    options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
+  }
+  if (superseded.some((cache) => !cache.removed)) {
+    options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
+  }
   const missing: MainlineChange[] = [];
   for (const change of sampled) {
     if (!(await cached(cacheFolder, change.id, options.keepIndex))) {
       missing.push(change);
     }
   }
-  const jobs = Math.max(1, Math.min(options.jobs, missing.length));
-  const pool = missing.length > 0 ? `, ${jobs} at a time` : "";
+  const measured = (await recordedPool(historyFolder))?.peakMemory;
+  const machineJobs = options.jobs ?? poolSize({ totalMemory: os.totalmem(), processors: os.cpus().length, peakMemory: measured ?? UNMEASURED_PEAK_MEMORY });
+  const jobs = Math.max(1, Math.min(machineJobs, missing.length));
+  const sizing =
+    options.jobs !== undefined
+      ? "as asked"
+      : `by ${formatBytes(os.totalmem())} of memory and ${os.cpus().length} processors at ${formatBytes(measured ?? UNMEASURED_PEAK_MEMORY)} a process, ${measured === undefined ? "before any was measured here" : "as last measured here"}`;
+  const pool = missing.length > 0 ? `, ${jobs} at a time ${sizing}` : "";
   options.progress(`${sampled.length} changes sampled of ${mainline.length}; ${sampled.length - missing.length} in the cache under lens ${lens.key}, ${missing.length} to regenerate${pool}`);
 
-  const timings = await regenerate(missing, { versionControl, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs, progress: options.progress });
+  const started = Date.now();
+  const regeneration = await regenerate(missing, { versionControl, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs, progress: options.progress });
+  const regenerationMilliseconds = missing.length > 0 ? Date.now() - started : 0;
+  if (regeneration.peakMemory > 0) {
+    await recordPeakMemory(historyFolder, lens.key, regeneration.peakMemory);
+    options.progress(`the largest summarizing process took ${formatBytes(regeneration.peakMemory)} at its peak; the next run sizes its pool by it`);
+  }
+  const timings = regeneration.timings;
 
   const builder = await buildSequence(sampled, {
     versionControl,
@@ -129,7 +198,6 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   const file = path.join(historyFolder, HISTORY_FILE);
   await writeInPlace(file, JSON.stringify(sequence));
 
-  const relative = (absolute: string): string => path.relative(workspaceRoot, absolute).split(path.sep).join("/");
   return {
     sequence,
     file: relative(file),
@@ -137,8 +205,70 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     sampled: sampled.length,
     regenerated: missing.length,
     cached: sampled.length - missing.length,
-    millisecondsPerChange: timings.length > 0 ? timings.reduce((sum, time) => sum + time, 0) / timings.length : 0
+    millisecondsPerChange: timings.length > 0 ? timings.reduce((sum, time) => sum + time, 0) / timings.length : 0,
+    jobs,
+    regenerationMilliseconds,
+    peakMemory: regeneration.peakMemory,
+    cacheBytes: await folderBytes(cacheFolder),
+    superseded
   };
+}
+
+/** The cache folders under the history folder named by a lens key other than the current one, removed when asked. */
+async function supersededCaches(historyFolder: string, current: string, remove: boolean, relative: (absolute: string) => string): Promise<SupersededCache[]> {
+  const caches: SupersededCache[] = [];
+  for (const entry of await fs.readdir(historyFolder, { withFileTypes: true })) {
+    // A lens key is sixteen hexadecimal digits (`lensOf`); nothing else the history folder holds is named so.
+    if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || entry.name === current) {
+      continue;
+    }
+    const folder = path.join(historyFolder, entry.name);
+    const bytes = await folderBytes(folder);
+    if (remove) {
+      await fs.rm(folder, { recursive: true, force: true });
+    }
+    caches.push({ lens: entry.name, folder: relative(folder), bytes, removed: remove });
+  }
+  return caches.sort((a, b) => compare(a.lens, b.lens));
+}
+
+/** The bytes of every file under a folder. */
+async function folderBytes(folder: string): Promise<number> {
+  let bytes = 0;
+  for (const entry of await fs.readdir(folder, { withFileTypes: true, recursive: true })) {
+    if (entry.isFile()) {
+      bytes += (await fs.stat(path.join(entry.parentPath, entry.name))).size;
+    }
+  }
+  return bytes;
+}
+
+interface PoolRecord {
+  /** The lens the peak was measured under. */
+  lens: string;
+  /** The largest peak resident memory a summarizing process took under it, in bytes. */
+  peakMemory: number;
+}
+
+/** What a run last recorded of a summarizing process's peak memory on this repository, when one has. */
+async function recordedPool(historyFolder: string): Promise<PoolRecord | undefined> {
+  try {
+    const record = JSON.parse(await fs.readFile(path.join(historyFolder, POOL_RECORD), "utf8")) as Partial<PoolRecord>;
+    return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string" ? { lens: record.lens, peakMemory: record.peakMemory } : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Records the run's largest peak, so that the next run sizes its pool by what this repository was measured to take:
+ * under the same lens the largest of every run's, since a run that regenerates only the newest change sees one
+ * change's peak and not the history's; under a new lens, this run's alone, since the generator has changed.
+ */
+async function recordPeakMemory(historyFolder: string, lens: string, peakMemory: number): Promise<void> {
+  const previous = await recordedPool(historyFolder);
+  const record: PoolRecord = { lens, peakMemory: previous?.lens === lens ? Math.max(previous.peakMemory, peakMemory) : peakMemory };
+  await writeInPlace(path.join(historyFolder, POOL_RECORD), `${JSON.stringify(record)}\n`);
 }
 
 /**
@@ -178,7 +308,7 @@ async function prepareHistoryFolder(historyFolder: string, cacheFolder: string):
 }
 
 function summaryPath(cacheFolder: string, change: string): string {
-  return path.join(cacheFolder, `${change}.json`);
+  return path.join(cacheFolder, `${change}.json.gz`);
 }
 
 function indexPath(cacheFolder: string, change: string): string {
@@ -211,12 +341,13 @@ interface RegenerationContext {
  * Regenerates the changes the cache lacks, `jobs` at a time, each in a scratch
  * tree under the system's temporary folder and a process of its own.
  *
- * @returns How long each change took, in milliseconds.
+ * @returns How long each change took, in milliseconds, and the largest peak memory a process reported.
  */
-async function regenerate(changes: readonly MainlineChange[], context: RegenerationContext): Promise<number[]> {
+async function regenerate(changes: readonly MainlineChange[], context: RegenerationContext): Promise<{ timings: number[]; peakMemory: number }> {
   const timings: number[] = [];
+  let peakMemory = 0;
   if (changes.length === 0) {
-    return timings;
+    return { timings, peakMemory };
   }
   const trees = new Set<WorkingTree>();
   const children = new Set<ChildProcess>();
@@ -242,17 +373,19 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
         const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)));
         trees.add(tree);
         try {
-          const warned = await runSummary(
+          const { warned, report } = await runSummary(
             {
               tree: tree.root,
               configuration: context.configuration,
               lens: context.lens.key,
               commit: change.id,
               summaryPath: summaryPath(context.cacheFolder, change.id),
+              textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
               indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
             },
             children
           );
+          peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
           for (const message of new Set(warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
           }
@@ -282,22 +415,26 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
       context.progress(`the generator warned at ${count} of the ${changes.length} changes regenerated: ${message}`);
     }
   }
-  return timings;
+  return { timings, peakMemory };
 }
 
 /**
  * Runs one summary in a process of its own, the generator's code loaded
  * afresh, and waits for it.
  *
- * @returns The lines the generator warned on its way.
+ * @returns The lines the generator warned on its way, and what the process reported when it ended.
  */
-function runSummary(task: SummaryTask, children: Set<ChildProcess>): Promise<string[]> {
+function runSummary(task: SummaryTask, children: Set<ChildProcess>): Promise<{ warned: string[]; report?: SummaryReport }> {
   // The worker sits beside this module, as TypeScript under tsx or as JavaScript once built.
   const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
   return new Promise((resolve, reject) => {
     const child = fork(worker, [JSON.stringify(task)], { stdio: ["ignore", "ignore", "pipe", "ipc"] });
     children.add(child);
     let errors = "";
+    let report: SummaryReport | undefined;
+    child.on("message", (message) => {
+      report = message as SummaryReport;
+    });
     child.stderr?.setEncoding("utf8");
     child.stderr?.on("data", (text: string) => {
       errors += text;
@@ -306,7 +443,7 @@ function runSummary(task: SummaryTask, children: Set<ChildProcess>): Promise<str
     child.on("exit", (code, signal) => {
       children.delete(child);
       if (code === 0) {
-        resolve(errors.split("\n").map((line) => line.trim()).filter(Boolean));
+        resolve({ warned: errors.split("\n").map((line) => line.trim()).filter(Boolean), report });
       } else {
         reject(new Error(`the summary of ${task.commit} failed (${signal ?? `exit ${code}`}): ${errors.trim().split("\n").slice(-5).join(" | ")}`));
       }
@@ -365,7 +502,7 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
 
 async function readSummary(context: SequenceContext, change: string): Promise<CommitSummary> {
   const file = summaryPath(context.cacheFolder, change);
-  const summary = JSON.parse(await fs.readFile(file, "utf8")) as CommitSummary;
+  const summary = JSON.parse(gunzipSync(await fs.readFile(file)).toString("utf8")) as CommitSummary;
   if (summary.format !== HISTORY_SUMMARY_FORMAT || summary.lens !== context.lens.key || summary.commit !== change) {
     throw new Error(`${file} is not the summary of ${change} under lens ${context.lens.key}; remove it and run again`);
   }
@@ -380,4 +517,16 @@ async function writeInPlace(target: string, content: string): Promise<void> {
 
 function seconds(milliseconds: number): string {
   return `${(milliseconds / 1000).toFixed(1)} s`;
+}
+
+/** A size in the units a person reads it in. */
+export function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+  return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+}
+
+function compare(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
