@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-structure-cells.spec.ts
-- Generated At: 2026-11-07T23:45:53.149Z
+- Generated At: 2026-11-19T10:01:39.237Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,8 @@ _No public symbols detected_
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphShells.DRAWN_FILES`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-drawn_files)
+- [`forceGraphShells.pictureVeils`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-pictureveils)
 - [`forceGraphShells.structureCells`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-structurecells)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
