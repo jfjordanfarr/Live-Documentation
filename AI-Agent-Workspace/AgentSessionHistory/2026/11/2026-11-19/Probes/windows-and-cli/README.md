@@ -448,3 +448,29 @@ Carry forward the binary's name and the list of commands it meant to dispatch in
 The new case in `generate-cli.test.ts` writes its docs with the engine's `renderLiveDoc`: an ordinary file, a file whose name begins with `"` (skipped on Windows, which allows no such name), and a source that is gone. It holds each doc's source to what `parseLiveDoc` reads, and the command's output to the one gone file. It passes before and after this mend under today's writer, which writes the name plainly, so it could not be seen red here. It is the case that would turn red with the old pattern once the two branches are joined. `npm run live-docs:orphans` over this repository still finds none.
 
 One thing it shows, left as it was: a doc the reader refuses is mapped by the `.md` suffix alone. With this repository's `.mdmd.md` suffix that mapping would expect a source ending in `.mdmd`. The command reads no configuration by its own Notes, so the suffix is not known to it. Only a doc that is broken anyway reaches that mapping.
+
+### The second leg's verification
+
+All runs used a private TMPDIR. The machine's load average was 21 to 29 throughout, from other builders.
+
+**`npm run safe:commit` without the browser**, run twice. Each time, the Live Docs pipeline (1,094 docs unchanged, lint), ESLint, the build and the tests' type-check passed. Each time, one suite then overran its five-second deadline under that load:
+- `generatorIdentity.test.ts`'s lens-key case, at 5.8 s;
+- in the second run, `sequence.test.ts`'s keyframe case, at 6.2 s. That suite already stands in the serial project for this reason.
+
+Neither touches this leg's files. Each passed when run alone: the first three times, the second once. The gate stopped at that stage, so the stages after it were run by hand:
+- the unit suite again: 199 files, 2,253 tests, all passing;
+- integration: 21 files, 169 tests;
+- documentation link enforcement and the three SlopCop audits.
+
+All passed, and the tree was clean.
+
+**Other checks.**
+- The Explorer's client, bundled for the browser as `buildAssets.ts` bundles it, builds with the configuration module's new function.
+- `npm run live-docs:orphans` over this repository finds no orphan.
+- The browser stage was not run.
+
+**Unfinished, or another's.**
+- `computeHistory.ts` is to call `parseLiveDocumentationConfigBytes`. The exact swap is above.
+- The reading seam waits for the adapters' builders, as the root ruled.
+- The orphans case turns red only once the writer's quoted form is joined.
+- The fate of `packages/cli` is the owner's.
