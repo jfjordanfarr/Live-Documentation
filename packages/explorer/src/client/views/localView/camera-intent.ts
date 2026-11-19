@@ -218,6 +218,41 @@ export function framingTravel(start: MapTransform, end: MapTransform, frame: Fra
   return Math.hypot(to.x - from.x, to.y - from.y) * Math.min(start.k, end.k) / Math.max(1, Math.hypot(frame.width, frame.height));
 }
 
+/**
+ * The smooth zoom's path between two cameras (van Wijk and Nuij, "Smooth and efficient zooming and panning", 2003; the
+ * form of d3's `interpolateZoom`, rho = sqrt 2): the camera pulls back, travels and closes in, so that a long move is seen
+ * as a short one from farther away. Never farther than `floor`; the returned `duration` grows with the path's length, from
+ * {@link FRAMING_EASE_MIN_MS} to twice {@link FRAMING_EASE_MAX_MS}.
+ */
+export function smoothZoom(start: MapTransform, end: MapTransform, frame: Frame, floor: number): { pose: (t: number) => MapTransform; duration: number } {
+  const rho = Math.SQRT2, rho2 = 2, rho4 = 4;
+  const view = (camera: MapTransform) => ({ x: (frame.width / 2 - camera.x) / camera.k, y: (frame.height / 2 - camera.y) / camera.k, w: frame.width / camera.k });
+  const a = view(start), b = view(end);
+  const dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy;
+  let at: (t: number) => { x: number; y: number; w: number }, S: number;
+  if (d2 < 1e-12) {
+    S = Math.log(b.w / a.w) / rho;
+    at = t => ({ x: a.x + t * dx, y: a.y + t * dy, w: a.w * Math.exp(rho * t * S) });
+  } else {
+    const d1 = Math.sqrt(d2);
+    const b0 = (b.w * b.w - a.w * a.w + rho4 * d2) / (2 * a.w * rho2 * d1), b1 = (b.w * b.w - a.w * a.w - rho4 * d2) / (2 * b.w * rho2 * d1);
+    const r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0), r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+    S = (r1 - r0) / rho;
+    at = t => {
+      const s1 = t * S, u = a.w / (rho2 * d1) * (Math.cosh(r0) * Math.tanh(rho * s1 + r0) - Math.sinh(r0));
+      return { x: a.x + u * dx, y: a.y + u * dy, w: a.w * Math.cosh(r0) / Math.cosh(rho * s1 + r0) };
+    };
+  }
+  const pose = (t: number): MapTransform => {
+    if (t >= 1) return { ...end };
+    const { x, y, w } = at(t);
+    const k = Math.max(floor, frame.width / w);
+    return { x: frame.width / 2 - x * k, y: frame.height / 2 - y * k, k };
+  };
+  const duration = clamp(Math.abs(S) * 1000 * rho / Math.SQRT2 * 0.6, FRAMING_EASE_MIN_MS, 2 * FRAMING_EASE_MAX_MS);
+  return { pose, duration };
+}
+
 /** Whether two cameras differ by less than the eye sees: half a pixel of pan and a thousandth of scale. */
 export function sameCamera(a: MapTransform, b: MapTransform): boolean {
   return Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5 && Math.abs(a.k / b.k - 1) < 1e-3;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, keepFrame, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -278,3 +278,25 @@ describe("a re-frame the person did not cause (keepFrame)", () => {
   });
 });
 
+describe("the smooth zoom's path for a long re-frame (van Wijk and Nuij)", () => {
+  const floor = 0.4;
+  it("pulls back, travels and closes in, never past the floor, ending exactly on the frame", () => {
+    const start = { x: 0, y: 0, k: 1.2 }, end = { x: -9000, y: -3000, k: 1.0 };
+    expect(framingTravel(start, end, frame)).toBeGreaterThan(1);
+    const { pose, duration } = smoothZoom(start, end, frame, floor);
+    expect(sameCamera(pose(0), start)).toBe(true);
+    expect(pose(1)).toEqual(end);
+    const middle = pose(0.5);
+    expect(middle.k, "farther out in the middle than at either end").toBeLessThan(1.0);
+    for (let t = 0; t <= 1; t += 0.05) expect(pose(t).k).toBeGreaterThanOrEqual(floor - 1e-9);
+    expect(duration).toBeGreaterThanOrEqual(FRAMING_EASE_MIN_MS);
+    expect(duration).toBeLessThanOrEqual(2 * FRAMING_EASE_MAX_MS);
+  });
+
+  it("is a plain zoom where the middle does not move", () => {
+    const { pose } = smoothZoom({ x: 600 - 100 * 1.2, y: 400 - 100 * 1.2, k: 1.2 }, { x: 600 - 100 * 0.6, y: 400 - 100 * 0.6, k: 0.6 }, frame, floor);
+    const half = pose(0.5);
+    expect((600 - half.x) / half.k).toBeCloseTo(100, 6);
+    expect(half.k).toBeCloseTo(Math.sqrt(1.2 * 0.6), 6);
+  });
+});

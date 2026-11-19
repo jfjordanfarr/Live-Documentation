@@ -10,7 +10,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, keepFrame, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -1078,7 +1078,8 @@ export class LocalViewController implements LocalViewApi {
     this.mapHasInitialFit = true;
     this.mapUserAdjusted = true;
     this.mapInitialTransform = { ...framed.transform };
-    this.easeFollowing(framed.transform, frame);
+    // A change of the pinned set that still moves the frame far takes the smooth zoom's path: back, across, in.
+    this.easeFollowing(framed.transform, frame, framed.kept ? null : framed.floor);
     return true;
   }
 
@@ -1087,7 +1088,7 @@ export class LocalViewController implements LocalViewApi {
    * its logarithm, a cut where the person prefers reduced motion. It moves as the camera's other animations do, through
    * the runtime's target, so that the person's input or another move ends it where it stands.
    */
-  private easeFollowing(next: MapTransform, frame: Frame): void {
+  private easeFollowing(next: MapTransform, frame: Frame, smoothFloor: number | null = null): void {
     const runtime = this.runtime;
     if (sameCamera(runtime.mapAnimationTarget ?? this.mapTransform, next)) return;
     this.cancelInertia();
@@ -1099,14 +1100,18 @@ export class LocalViewController implements LocalViewApi {
       this.drawConnections();
       return;
     }
-    const start = { ...this.mapTransform }, duration = framingEaseMs(start, next, frame), began = performance.now();
+    const start = { ...this.mapTransform }, began = performance.now();
+    // Farther than about a frame's diagonal, van Wijk and Nuij's path (camera-intent.ts's smoothZoom), never past the floor.
+    const smooth = smoothFloor !== null && framingTravel(start, next, frame) > 1 ? smoothZoom(start, next, frame, smoothFloor) : null;
+    const duration = smooth?.duration ?? framingEaseMs(start, next, frame);
+    this.container.dataset.framingPath = smooth ? "smooth" : "flat";
     const token = ++this.followEase;
     runtime.mapAnimationTarget = { ...next };
     const tick = (now: number): void => {
       const to = runtime.mapAnimationTarget;
       if (this.followEase !== token || !to) return;
       const t = Math.min(1, (now - began) / duration);
-      this.mapTransform = t >= 1 ? { ...to } : poseBetween(start, to, easeInOutCubic(t), frame);
+      this.mapTransform = t >= 1 ? { ...to } : smooth ? smooth.pose(easeInOutCubic(t)) : poseBetween(start, to, easeInOutCubic(t), frame);
       if (t >= 1) { runtime.mapAnimationTarget = null; this.followEase = 0; }
       this.updateMapTransform();
       if (t < 1) runtime.mapAnimationFrame = requestAnimationFrame(tick);
