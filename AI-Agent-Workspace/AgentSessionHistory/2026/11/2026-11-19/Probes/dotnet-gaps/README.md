@@ -362,6 +362,6 @@ Measured with this branch after the sixth leg's commits, against the fifth leg's
 
 On DNN the change gained 20 lines the compiler confirms and lost 11 (`scripts/lost_agreement.py`). Ten of the eleven are an error of the oracle: DNN's Groups module declares a user control named `List`, and without the framework the compiler has no `System.Collections.Generic.List<T>`, so its error recovery binds `new List<RoleInfo>()` to the control; the reader, now matching arity, does not. The eleventh, `DnnLabelExtensions.cs` to `DnnHelper.cs`, is a member reached through `DnnHelper<TModel>`, which by the rule above is not a dependency. The two namesake lines left are the documentation `cref` and the anonymous object's member read in the fifth leg. mojoPortal has neither shape and does not move.
 
-### Not done in this leg
+### What the sixth leg left
 
 - A declaration split by `#if`/`#else`, the configuration reads, and the procedure named from C#.
