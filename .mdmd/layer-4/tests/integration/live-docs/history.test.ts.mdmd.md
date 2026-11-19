@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-11-19T08:59:57.713Z
+- Generated At: 2026-11-19T12:01:29.944Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `spawnSync`
+- `node:child_process` - `spawn`, `spawnSync`
+- `node:crypto` - `createHash`
 - `node:fs`
 - `node:os`
 - `node:path`

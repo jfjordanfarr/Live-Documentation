@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-11-19T06:20:28.621Z
+- Generated At: 2026-11-19T11:54:02.328Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ One change's summary as the cache keeps it: `<docsRoot>/history/<lens>/<change>.
 
 #### `AuthoredReading` {#symbol-authoredreading}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L147)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L152)
 - Returns: `ReadonlyMap`
 
 ##### `AuthoredReading` — Summary
@@ -99,14 +99,14 @@ writes is its placeholder and not that day's words. A doc absent from the map di
 
 #### `SummarizedChange` {#symbol-summarizedchange}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L150)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L155)
 
 ##### `SummarizedChange` — Summary
 A summary and the texts it names by hash, for the caller to put in the text store.
 
 #### `summarizeGraph` {#symbol-summarizegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L167)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L172)
 - Returns: [`SummarizedChange`](#symbol-summarizedchange)
 - Parameters: `graph`: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph); `relatedDocs`: `ReadonlyMap`; `authored`: [`AuthoredReading`](#symbol-authoredreading)
 
@@ -124,7 +124,7 @@ the caller reads them with `relatedDocsOf` and the change's tree, which the grap
 
 #### `descriptionText` {#symbol-descriptiontext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L282)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L287)
 
 ##### `descriptionText` — Summary
 A symbol's description as one text: its `#####` sections as JSON, `[{ title, body }]`, without the symbol's name, so
@@ -132,7 +132,7 @@ that a symbol renamed with its description unchanged keeps its text; {@link sect
 
 #### `sectionsOfDescription` {#symbol-sectionsofdescription}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L287)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L292)
 - Returns: [`DocSection`](../document.ts.mdmd.md#symbol-docsection)[]
 
 ##### `sectionsOfDescription` — Summary
@@ -140,7 +140,7 @@ The sections a description's text holds.
 
 #### `textHash` {#symbol-texthash}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L292)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L297)
 
 ##### `textHash` — Summary
 The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.

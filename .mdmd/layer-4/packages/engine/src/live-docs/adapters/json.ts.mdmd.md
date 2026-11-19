@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/json.ts
-- Generated At: 2026-11-19T08:59:52.884Z
+- Generated At: 2026-11-19T11:54:01.775Z
 
 ## Authored
 ### Purpose
@@ -20,27 +20,30 @@ Polyglot language adapter for JSON files: file-path references in configuration 
 - Since 2026-11-19 a script is split as a POSIX shell splits it, quotes and escapes kept to their words (`commandsOf`), and a command may hand on another: what follows a `--` that ends a wrapper's options is a command of its own, and so is a quoted word holding a command line. These are the forms dotenv-cli, concurrently, nodemon, start-server-and-test and `sh -c` document; cross-env needs nothing more. Before, `node ./scripts/browser-lane.mjs --label gate -- node ./scripts/e2e-passes.mjs` gave the lane its entry and the passes none, so nothing reached them. This repository's entries were unchanged by it.
 - Since 2026-10-16 the `package.json` branch writes its symbol and dependencies through `manifest.ts`, which the Cargo, pyproject, go.mod and pom adapters share, and links a dependency only to another `package.json` publishing its name, so that a crate or an artifact of the same name is never taken for the package.
 - Reads JSON with comments and trailing commas (2026-10-16, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16)): `toStrictJson` drops line and block comments, a comma that only precedes a closing bracket and a byte order mark, leaving strings intact, and the result goes to `JSON.parse`, so a malformed document still fails as it did. TypeScript's own JSON reader was not used: its diagnostics are internal and it reads malformed JSON leniently. One lenient corner: an unterminated block comment at the very end of an otherwise valid document is dropped rather than failing.
+- Since [the second review](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md) what follows a `--`, or a quoted word, is read as a command of its own only when it begins as one, with a known interpreter or launcher (`LAUNCHERS`) or a path run itself; otherwise it is the first command's arguments, so `node scripts/gen.mjs -- data/input.json` declares the script and not its input. A `#` that begins a word begins a comment, and `&>` is a redirection. A key path beneath an empty key keeps its leading `:`, apart from a key of its own name.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `commandsOf` {#symbol-commandsof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L143)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L164)
 
 ##### `commandsOf` — Summary
 Every command a script starts, each as its words: the commands between the shell's separators, and within each the
 commands it hands on to another. A wrapper hands on a command in one of two ways, as their own documentation shows:
 after a `--` that ends the wrapper's own options (`dotenv -e .env -- node app.js`, a runner that takes `-- <command>`),
 or as a quoted word holding a whole command line (`concurrently "node api.js" "node web.js"`,
-`nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). A wrapper that takes the command as its own
-remaining words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the
-first of the words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the
-scripts it names are read as scripts.
+`nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). What follows a `--`, or a quoted word, is a
+command only when it begins as one ({@link beginsAsCommand}): `node gen.mjs -- data/input.json` hands its script an
+argument, and `node "scripts/my script.js"` names one path. A wrapper that takes the command as its own remaining
+words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the first of the
+words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the scripts it names
+are read as scripts.
 
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L474)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L502)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -48,7 +51,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L487)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L516)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary

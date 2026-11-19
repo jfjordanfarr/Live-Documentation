@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-11-19T08:59:55.158Z
+- Generated At: 2026-11-19T12:01:27.304Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,7 @@ The history command: the mainline read and sampled, every sampled commit the cac
 - The pool, without `--jobs`, is as many processes as half the memory this process may use holds at the peak one was measured to take on the repository, at most one fewer than the processors it may run on (`poolSize`, `usableMachine`): a container's memory limit is read through `process.constrainedMemory`, and the processors are `os.availableParallelism`, which a limit of processor time (`docker run --cpus`) does not lower. Each process sends its peak resident memory when it ends; a run records its largest in `<root>/history/pool.json` (`nextPoolRecord`), the largest of every run under the same lens, so that a run regenerating only the newest commit does not shrink it, and under a new lens the larger of the old and new until the new lens has measured as many commits. Before any measurement it expects 768 MiB, the 526 MB measured over this repository rounded up. Until 2026-11-19 the CLI chose two processes under 8 GiB and else at most three, whatever the machine.
 - Every run lists the cache folders of other lenses (sixteen hexadecimal digits, not the current key) with their sizes, and `--remove-superseded` removes them, only once the current lens holds every sampled commit; nothing is removed unasked. One run at a time writes under a history folder: it holds `run.lock` there, refuses while a live process on this machine holds it, and takes over a lock whose process has ended or that came from another machine with a restored cache. At its start it removes every `*.partial` a stopped run left. `--stop-after` starts no commit past a budget; a run stopped so writes no history and throws `HistoryStopped`, which the CLI turns into exit code 3, so that the Pages workflow deploys the site without a history rather than not at all. The history folder writes its own `.gitignore`, so that no repository commits it: nothing derived from local history is committed (the owner, 2025-11-10).
 - A run stopped by a signal removes its scratch trees, the check at the head's included, before it exits (`Scratch` in `regenerate.ts`).
+- Since [the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md) the lock is a claim per run (`holdLock`): an empty file named `run.<host>.<pid>.<nonce>.lock`, made in one step, after which the run lists the claims and holds the folder only when no other live one stands, else withdraws, waits a random moment and tries again. Two runs meeting a dead lock had both been able to proceed under the old single file. A signal removes the claim (`Scratch.hold`). With `--remove-superseded`, the run keeps beside the current lens only the newest whole one, marked by the `whole.json` a run writes once it wrote a history from a lens.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -60,7 +61,7 @@ When the check at the head applies, in the words the command prints when it skip
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L151)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L160)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -69,7 +70,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L158)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L167)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -78,7 +79,7 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L169)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L178)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -88,22 +89,42 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L175)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L184)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
 Computes the history and writes the sequence.
 
+#### `holdLock` {#symbol-holdlock}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L350)
+
+##### `holdLock` — Summary
+Claims the history folder for this run, or refuses while another run on this machine holds a claim.
+
+##### `holdLock` — Remarks
+Each run makes a claim of its own, an empty file whose name says the machine and the process, and only then lists
+the claims there are: it holds the folder when no other claim of a live run stands, and otherwise withdraws its own,
+waits a short random while and tries again, refusing after {@link LOCK_ATTEMPTS} tries. Two runs can never both
+hold the folder: each made its claim before it looked, so the later to look always sees the other's. A claim whose
+process has ended on this machine, or that a run on another machine left in a folder copied here, as a restored
+cache is, is removed by whoever meets it, which is safe whoever else removes it too. Until a second review of
+2026-11-19 one lock file was written and then taken over by removing it, and two runs meeting a dead lock at once
+could both proceed, one removing the other's fresh lock.
+
+##### `holdLock` — Returns
+The claim's path, which the caller removes when the run ends.
+
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L479)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L521)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L507)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L549)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -116,7 +137,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L731)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L773)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -124,7 +145,7 @@ A size in the units a person reads it in.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:crypto` - `createHash`
+- `node:crypto` - `createHash`, `randomBytes`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`

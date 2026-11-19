@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T06:20:30.852Z
+- Generated At: 2026-11-19T11:54:04.363Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L76)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L78)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -38,7 +38,7 @@ Generates the change's docs in its working tree and writes its summary, and its 
 
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L153)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L158)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.

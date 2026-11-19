@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/history/computeHistory.test.ts
-- Generated At: 2026-11-19T08:59:55.142Z
+- Generated At: 2026-11-19T12:01:27.281Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `node:crypto` - `createHash`
+- `node:fs` - `promises`
+- `node:os` - `os`
+- `node:path` - `path`
 - [`document.DEFAULT_AUTHORED_BLOCK`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
 - [`document.LiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
 - [`graph.deriveLiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
@@ -30,6 +34,7 @@ _No public symbols detected_
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
 - [`computeHistory.UNMEASURED_PEAK_MEMORY`](./computeHistory.ts.mdmd.md#symbol-unmeasured_peak_memory)
 - [`computeHistory.formatBytes`](./computeHistory.ts.mdmd.md#symbol-formatbytes)
+- [`computeHistory.holdLock`](./computeHistory.ts.mdmd.md#symbol-holdlock)
 - [`computeHistory.nextPoolRecord`](./computeHistory.ts.mdmd.md#symbol-nextpoolrecord)
 - [`computeHistory.poolSize`](./computeHistory.ts.mdmd.md#symbol-poolsize)
 - [`computeHistory.usableMachine`](./computeHistory.ts.mdmd.md#symbol-usablemachine)

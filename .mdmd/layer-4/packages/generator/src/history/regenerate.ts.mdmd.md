@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T08:59:55.183Z
+- Generated At: 2026-11-19T12:01:27.333Z
 
 ## Authored
 ### Purpose
@@ -44,14 +44,14 @@ when a signal stops it: a folder is held from the moment it is made, before anyt
 
 #### `RegenerationContext` {#symbol-regenerationcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L97)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L102)
 
 ##### `RegenerationContext` — Summary
 What regenerating needs.
 
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L116)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L121)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
