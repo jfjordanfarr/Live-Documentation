@@ -116,4 +116,21 @@ test.describe("on a narrow window", () => {
     await out.click();
     await expect(crumbs(page).last()).toHaveText("client");
   });
+
+  // The menu once took the key's placing over the strip and stood ten pixels tall, its three views spilling out of it
+  // with no ground under them (2026-11-19).
+  test("under Bare the views' menu holds its three views on its own ground", async ({ page }) => {
+    await bare(page);
+    await page.goto(local(FILE));
+    await started(page);
+    await page.getByRole("button", { name: "Views", exact: true }).click();
+    const inside = await page.locator("#frame-views").evaluate(menu => {
+      const box = menu.getBoundingClientRect();
+      return [...menu.querySelectorAll(".nav-item")].every(item => {
+        const own = item.getBoundingClientRect();
+        return own.top >= box.top && own.bottom <= box.bottom && own.left >= box.left && own.right <= box.right;
+      });
+    });
+    expect(inside).toBe(true);
+  });
 });

@@ -1227,7 +1227,7 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
     display: flex;
     align-items: center;
     gap: 2px;
-    max-width: 52vw;
+    max-width: 60vw;
     min-width: 0;
     padding: 8px 4px 8px 12px;
     background: var(--ground-deep);
@@ -1258,6 +1258,9 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
 .frame-crumb-item:last-child { flex-shrink: 0; max-width: 100%; }
 .frame-crumb-item + .frame-crumb-item::before { content: "/" / ""; flex: none; padding: 0 2px; color: var(--text-subtle); }
 .frame-crumb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A drawn crumb (the World Map, the scan root) keeps its size: only names give way. */
+.frame-crumb-item:has(> .frame-crumb > svg) { flex-shrink: 0; }
+.frame-crumbs svg { flex: none; }
 .frame-crumb[aria-current="location"] { color: var(--text-strong); }
 /* The way out on a narrow window is the chevron; at room enough, every crumb is its own way out. */
 .frame-crumbs .frame-out { display: none; }
@@ -1304,7 +1307,7 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
 
 @media (max-width: 760px) {
     :root[data-frame="bare"] #main { margin-left: 0; }
-    .frame-crumbs { max-width: 60vw; padding-left: 8px; }
+    .frame-crumbs { padding-left: 8px; }
     .frame-crumb-item:not(:last-child) { display: none; }
     .frame-crumb-item:last-child::before { content: none; }
     .frame-crumbs .frame-out:not([hidden]) { display: inline-flex; }

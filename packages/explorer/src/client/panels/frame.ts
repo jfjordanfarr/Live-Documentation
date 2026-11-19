@@ -126,7 +126,7 @@ export function createFrame(config: FrameConfig): Frame {
   const setOpen = (element: HTMLElement, button: HTMLButtonElement, open: boolean, focusButton = false): void => {
     element.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
-    if (open) place(element);
+    if (open && element !== views) place(element);
     if (!open && focusButton) button.focus();
   };
   const toggleViews = (open = views.hidden): void => setOpen(views, viewsButton, open);
