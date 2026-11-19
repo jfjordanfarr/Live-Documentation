@@ -25,6 +25,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     resetZoom: () => controller.resetZoom(),
     fitWhole: () => controller.fitWhole(),
     isFollowing: () => controller.isFollowing(),
+    framingLeftOut: () => controller.framingLeftOut(),
     // Multi-hop API
     get localMapState() { return controller.localMapState; },
     // Path mode API

@@ -974,8 +974,22 @@ export class LocalViewController implements LocalViewApi {
   private setFollowing(on: boolean): void {
     if (on === this.following) return;
     this.following = on;
-    if (!on) this.cancelFollowEase();
+    if (!on) { this.cancelFollowEase(); this.sayLeftOut([]); }
     this.options.onFollowing?.(on);
+  }
+
+  /** What the following camera's frame leaves out, as last framed. */
+  framingLeftOut(): readonly string[] {
+    return this.container.dataset.framingLeftOut?.split(" ") ?? [];
+  }
+
+  /** Say which targets the frame leaves out, on the map for whoever reads the page and to the pin tray when it changes. */
+  private sayLeftOut(left: readonly string[]): void {
+    const said = left.join(" ");
+    if (said === (this.container.dataset.framingLeftOut ?? "")) return;
+    if (said) this.container.dataset.framingLeftOut = said;
+    else delete this.container.dataset.framingLeftOut;
+    this.options.onFramingLeftOut?.();
   }
 
   /** Whether the camera follows the pins, for Fit's pressed state. */
@@ -1037,7 +1051,7 @@ export class LocalViewController implements LocalViewApi {
    * leave the oldest out; otherwise keepFrame from the camera as it stands, which never zooms in and keeps what it held.
    * The floor is the connections look's last press, or under Out To Files the overview's when every target is a file.
    */
-  private pinsFraming(frame: Frame, fresh = true): PinsFraming | null {
+  private pinsFraming(frame: Frame, fresh = true): (PinsFraming & { floor: number; kept: boolean }) | null {
     const ceiling = this.readingReferenceScale, targets = this.framingTargets(), signature = this.followSignature();
     const files = this.options.state.tuning.localMap.framing === "follows-files" && targets.length > 0
       && targets.every(target => target.card && !target.key.endsWith("/"));
@@ -1048,10 +1062,10 @@ export class LocalViewController implements LocalViewApi {
     const framed = kept ? { ...kept, left: targets.filter(target => !kept.held.includes(target.key)).map(target => target.key) }
       : pinsFrame(targets, frame, ceiling, floor);
     this.followFramed = framed ? { signature, held: framed.held } : null;
+    if (!framed) { this.sayLeftOut([]); return null; }
     // Which pins the frame leaves out, for whoever reads the page; the pin tray still holds them.
-    if (framed?.left.length) this.container.dataset.framingLeftOut = framed.left.join(" ");
-    else delete this.container.dataset.framingLeftOut;
-    return framed;
+    this.sayLeftOut(framed.left);
+    return { ...framed, floor, kept: !!kept };
   }
 
   /** Ease the camera to the pins' frame (`fresh`: a person's press, never a mere settle); false when there is nothing to frame. */
