@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, it } from "vitest";
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { buildRepository, SCRIPT } from "./scripted-repository";
 
 interface InspectRunResult {
   exitCode: number;
@@ -648,5 +649,42 @@ describe("Live Docs inspect CLI", () => {
       assert.match(run.stderr, /--groups lists the disconnected groups of the whole graph/u);
       assert.strictEqual(run.stdout, "");
     }
+  });
+});
+
+/**
+ * A history question names a file as a person on Windows types it, in any case, and is answered for the file the
+ * commit held, as today's questions are (2026-11-19, the Windows and command-line probe). The repository is the
+ * history's scripted one, its first commit alone, so that the history is quick to write.
+ */
+describe("a history question about a file named in another case", () => {
+  let repository = "";
+  let commit = "";
+
+  beforeAll(() => {
+    repository = fs.mkdtempSync(path.join(os.tmpdir(), "inspect-history-case-"));
+    temporaryWorkspaces.push(repository);
+    [commit] = buildRepository(repository, SCRIPT.slice(0, 1));
+    const written = runCli(path.join(repoRoot, "scripts", "live-docs", "history.ts"), repository, ["--jobs", "1"]);
+    assert.strictEqual(written.exitCode, 0, written.stderr);
+  }, 300_000);
+
+  it("answers for the file the commit held, by its own spelling, as for the name as spelled", () => {
+    const spelled = runInspectCli(repository, ["--at", commit, "--from", "src/app/view.ts", "--json"]);
+    assert.strictEqual(spelled.exitCode, 0, spelled.stderr);
+    for (const named of ["SRC/App/View.TS", ".MDMD/Layer-4/src/app/VIEW.ts.mdmd.md"]) {
+      const folded = runInspectCli(repository, ["--at", commit, "--from", named, "--json"]);
+      assert.strictEqual(folded.exitCode, 0, `${named}: ${folded.stderr}`);
+      assert.deepStrictEqual(JSON.parse(folded.stdout), JSON.parse(spelled.stdout), named);
+    }
+    const linked = runInspectCli(repository, ["--at", commit, "--from", "src/APP/main.ts", "--to", "Src/App/View.ts"]);
+    assert.strictEqual(linked.exitCode, 0, linked.stderr);
+    assert.match(linked.stdout, /^Links between src\/app\/main\.ts and src\/app\/view\.ts: [1-9]/mu);
+  });
+
+  it("still says a file named in another case did not exist when none did", () => {
+    const missing = runInspectCli(repository, ["--at", commit, "--from", "SRC/App/Nowhere.ts"]);
+    assert.strictEqual(missing.exitCode, 0, missing.stderr);
+    assert.match(missing.stdout, /SRC\/App\/Nowhere\.ts does not exist at /u);
   });
 });

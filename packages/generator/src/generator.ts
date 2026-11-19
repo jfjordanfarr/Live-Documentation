@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import {
+  hasReader,
   type LiveDocumentationConfig,
   noReaderHandles,
   normalizeLiveDocumentationConfig
@@ -27,6 +28,7 @@ import {
   toWorkspaceFileUri,
   toWorkspaceRelativePath
 } from "@live-documentation/engine/tooling/pathUtils";
+import { decodeSourceText, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -65,6 +67,19 @@ export interface LiveDocGeneratorResult {
   deletedFiles: string[];
   /** Workspace-relative path of the graph index written after the run; absent on a dry run. */
   index?: string;
+  /** The files the run could not map, by source path, with the reason: skipped, while the run went on (2026-11-19). */
+  failed: Array<{ sourcePath: string; reason: string }>;
+  /** Which files a rule other than UTF-8 read, and which were not read as text at all, by the one reading step. */
+  readings: SourceReadings;
+  /** What the readers said they left undrawn, a reason at a time in the order first met, each subject as `<source path>: <subject>`. */
+  notices: Array<{ reason: string; subjects: string[] }>;
+}
+
+/** The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path. */
+export interface SourceReadings {
+  utf16: string[];
+  windows1252: string[];
+  unread: Array<{ sourcePath: string; reason: string }>;
 }
 
 type LiveDocWriteKind = "created" | "updated" | "unchanged" | "skipped";
@@ -174,6 +189,9 @@ export async function generateLiveDocs(
     : includedFiles;
 
   const results: LiveDocWriteRecord[] = [];
+  const failed: Array<{ sourcePath: string; reason: string }> = [];
+  const readings: SourceReadings = { utf16: [], windows1252: [], unread: [] };
+  const notices = new Map<string, string[]>();
   let written = 0;
   let skipped = 0;
   const generatedDocPaths = new Set(allTargetFiles.map((absolute) =>
@@ -205,9 +223,21 @@ export async function generateLiveDocs(
     }
 
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
+    // A file that cannot be mapped, because it cannot be read or because the doc written for it is one the grammar's
+    // own reader refuses, is skipped and named by its source path, and the run goes on (2026-11-19).
+    try {
     const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
 
+    // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
+    if (hasReader(normalizedSourcePath)) {
+      noteReading(readings, normalizedSourcePath, decodeSourceText(await fs.readFile(absoluteSourcePath)));
+    }
+
     const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
+    // What the reader says it left undrawn, counted a reason across files for the run's last lines; never written into the doc.
+    for (const notice of analysis.notices ?? []) {
+      notices.set(notice.reason, [...(notices.get(notice.reason) ?? []), `${normalizedSourcePath}: ${notice.subject}`]);
+    }
 
     const docPaths = resolveLiveDocPaths(
       workspaceRoot,
@@ -253,6 +283,13 @@ export async function generateLiveDocs(
       }
     }
 
+    // Read back by the grammar's own reader before it is written: a doc the reader refuses would stop every later read.
+    try {
+      parseLiveDoc(rendered);
+    } catch (error) {
+      throw error instanceof LiveDocSyntaxError ? new Error(`Live Documentation wrote a doc for it that its own reader refuses: ${error.message}`, { cause: error }) : error;
+    }
+
     results.push({
       sourcePath: normalizedSourcePath,
       docPath: docPaths.relative,
@@ -272,6 +309,10 @@ export async function generateLiveDocs(
     await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
     await fs.writeFile(docPaths.absolute, rendered, "utf8");
     written += 1;
+    } catch (error) {
+      failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error) });
+      await removeRefusedDoc(resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute, options.dryRun ?? false);
+    }
   }
 
   let deletedFiles: string[] = [];
@@ -301,8 +342,41 @@ export async function generateLiveDocs(
     files: results,
     deleted: deletedFiles.length,
     deletedFiles,
-    index
+    index,
+    failed,
+    readings,
+    notices: [...notices].map(([reason, subjects]) => ({ reason, subjects }))
   };
+}
+
+/** Counts which rule read a file's text: the files read as UTF-16 or as Windows-1252, and those not read as text at all. */
+function noteReading(readings: SourceReadings, sourcePath: string, reading: SourceTextReading): void {
+  if (reading.encoding === "unread") {
+    readings.unread.push({ sourcePath, reason: reading.reason });
+  } else if (reading.encoding === "windows-1252") {
+    readings.windows1252.push(sourcePath);
+  } else if (reading.encoding.startsWith("utf-16")) {
+    readings.utf16.push(sourcePath);
+  }
+}
+
+/**
+ * Removes the doc of a file this run could not map when the grammar's reader refuses it and it holds no words of a
+ * person's: the leftover of an earlier run that stopped on that file, which would otherwise stop the index's read.
+ * A doc the reader reads, or one that holds authored words, is left as it is.
+ */
+async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promise<void> {
+  const text = await readFileIfExists(docAbsolutePath);
+  if (text === undefined || dryRun) {
+    return;
+  }
+  try {
+    parseLiveDoc(text);
+  } catch (error) {
+    if (error instanceof LiveDocSyntaxError && !hasMeaningfulAuthoredContent(authoredBlockOf(text))) {
+      await fs.rm(docAbsolutePath, { force: true });
+    }
+  }
 }
 
 /** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */

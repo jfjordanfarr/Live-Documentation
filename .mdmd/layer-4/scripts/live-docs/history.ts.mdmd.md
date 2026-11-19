@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/history.ts`
 - Entry: command `live-docs:history` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.097Z
+- Generated At: 2026-11-19T19:18:27.945Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,8 @@ _No public symbols detected_
 - [`cli.endQuietlyWhenThePipeCloses`](./cli.ts.mdmd.md#symbol-endquietlywhenthepipecloses)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.typedPath`](./cli.ts.mdmd.md#symbol-typedpath)
+- [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

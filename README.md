@@ -40,8 +40,9 @@ Then open `http://127.0.0.1:8766/`.
 - `generate` writes the markdown into `<folder>/.live-documentation/source/`, one file per source file. Add `--dry-run` to see what it would write first. This repository's thousand files take a few minutes.
 - `visualize` builds the Explorer into `dist/explorer/` in this checkout. Copy that folder to any static host to share it.
 - The Explorer has to be served, as the last line does. A browser will not let a page opened as a file read the data beside it, and the page says so if you try.
-- In a git repository, files that git ignores are left out. Elsewhere, name build output to leave out in the [configuration](#configuration).
+- In a git repository, files that git ignores are left out. Elsewhere, name build output to leave out in the [configuration](#configuration). If git cannot be asked, because it is not on the path or does not trust the folder's owner, `generate` says so: only the folder's own `.gitignore` is then read.
 - Every command prints its options with `--help`, for example `npm run live-docs:generate -- --help`.
+- A path you give, `<folder>` among them, is taken from the folder you run the command in. With no `--workspace`, a command works on the nearest folder, from there up, that holds a `.live-docs.config.json`, else on the folder itself: run from `scripts/` here, `npm run live-docs:generate` still maps this whole checkout. Standing in your own folder, `npm --prefix <path to this checkout> run live-docs:generate` maps it.
 
 To try it without a repository of your own, leave out `--workspace`: the same three commands map this one.
 

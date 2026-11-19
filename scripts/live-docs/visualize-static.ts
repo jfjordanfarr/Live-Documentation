@@ -5,10 +5,10 @@
  * ## Usage
  *
  * ```bash
- * # Basic usage - outputs to ./dist/explorer
+ * # Basic usage - outputs to dist/explorer in this checkout
  * npm run live-docs:visualize
  *
- * # Custom output directory
+ * # Custom output directory, from the folder the command is run from
  * npm run live-docs:visualize -- --output ./docs/explorer
  *
  * # Pretty-print JSON for debugging
@@ -35,12 +35,13 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { buildStaticExplorer, type ExportedHistory } from "@live-documentation/explorer/shared/staticBuilder";
 
-import { optionValue, readConfiguration, runCommand, UsageError } from "./cli";
+import { invocationFolder, optionValue, readConfiguration, runCommand, typedPath, UsageError, workspaceFolder } from "./cli";
 
 interface CliOptions {
     help: boolean;
     workspace?: string;
-    outputDir: string;
+    /** Where to write the site, as the person typed it; this checkout's `dist/explorer` when they name none. */
+    outputDir?: string;
     prettyPrint: boolean;
     configPath?: string;
     boardPath?: string;
@@ -50,7 +51,6 @@ interface CliOptions {
 function parseArgs(args: string[]): CliOptions {
     const options: CliOptions = {
         help: false,
-        outputDir: "./dist/explorer",
         prettyPrint: false
     };
 
@@ -95,10 +95,11 @@ function usage(): string {
         "Builds the Explorer, a static site, from the workspace's Live Docs.",
         "",
         "Options:",
-        "  --workspace <path>     The folder whose docs to read (default: the current directory).",
+        "  --workspace <path>     The folder whose docs to read (default: the nearest folder, from the current",
+        "                         directory up, that holds a .live-docs.config.json; else the current directory).",
         "  --config <file>        The configuration (default: the workspace's .live-docs.config.json",
         "                         when it has one, else the shipped defaults).",
-        "  -o, --output <dir>     Where to write the site (default: ./dist/explorer).",
+        "  -o, --output <dir>     Where to write the site (default: dist/explorer in this checkout).",
         "  --board <file>         A board to draw the World Map from, relative to the workspace; the",
         "                         Explorer then opens on it (default: the configuration's \"board\", if any).",
         "  --history <rule>       How much of the history to carry: none, all, since <date> or last <n>",
@@ -111,9 +112,16 @@ function usage(): string {
     ].join("\n");
 }
 
-/** A folder as a person in the current directory would type it: relative when it lies beneath, quoted when it holds a space. */
+/**
+ * Where the Explorer is written when no `--output` names a place: this
+ * checkout's `dist/explorer`, whichever folder is mapped and wherever the
+ * command is run from, as the README and the guides say.
+ */
+const DEFAULT_OUTPUT = path.resolve(__dirname, "..", "..", "dist", "explorer");
+
+/** A folder as the person who ran the command would type it: relative when it lies beneath where they stand, quoted when it holds a space. */
 function typed(folder: string): string {
-    const relative = path.relative(process.cwd(), folder);
+    const relative = path.relative(invocationFolder(), folder);
     const shown = relative !== "" && !relative.startsWith("..") && !path.isAbsolute(relative) ? relative : folder;
     return /\s/u.test(shown) ? `"${shown}"` : shown;
 }
@@ -124,7 +132,7 @@ async function main(): Promise<void> {
         console.log(usage());
         return;
     }
-    const workspaceRoot = path.resolve(options.workspace ?? process.cwd());
+    const workspaceRoot = workspaceFolder(options.workspace);
 
     const config = normalizeLiveDocumentationConfig({
         ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
@@ -133,11 +141,12 @@ async function main(): Promise<void> {
 
     console.log("Building static explorer bundle...");
     console.log(`  Workspace: ${workspaceRoot}`);
-    console.log(`  Output: ${path.resolve(options.outputDir)}`);
+    const outputDir = options.outputDir === undefined ? DEFAULT_OUTPUT : typedPath(options.outputDir);
+    console.log(`  Output: ${outputDir}`);
 
     const result = await buildStaticExplorer({
         workspaceRoot,
-        outputDir: options.outputDir,
+        outputDir,
         config,
         prettyPrint: options.prettyPrint,
         boardPath: options.boardPath,

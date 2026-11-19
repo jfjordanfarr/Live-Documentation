@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:17.975Z
+- Generated At: 2026-11-19T21:42:07.044Z
 
 ## Authored
 ### Purpose
@@ -26,12 +26,14 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-11-12 a folder git ignores is no scan: `scansWithin` asks git, through `gitIgnored`, of the docs roots and configuration files it finds, and `scansAbove` does not count an outer scan whose git ignores this folder, after an agent's worktree under the ignored `.claude/worktrees/`, which carries a copy of the configuration, made every run in the checkout warn of a nested scan. It is the owner's rule of 2026-10-19 that what git ignores never becomes part of the map; without git, every one still counts.
 - Since 2026-11-19 what makes a folder a scan of its own is named once (`scanMarkers`: a docs root or this tool's configuration file) and read by the search above the workspace and the search below it; a matcher of the same marks for the history's tree writer was built that day and removed when the tree began to write every name. still written and still warned of.
 
+- Since 2026-11-19 ([the probe's third leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#third-leg-november-19)) a file the run cannot map, because it cannot be read or because the doc written for it is one the grammar's own reader refuses, is skipped and named in `failed` by its source path with the reason, and the run goes on to write every other doc and the index; each doc is read back by `parseLiveDoc` before it is written. Until then one refused doc stopped the run after every doc was written and before the index, naming the doc and not the source, and the next run called the docs of the failed run unchanged. A failed file's old doc is removed only when the reader refuses it and it holds no authored words. The run also classifies each file a reader reads by the one reading step (`decodeSourceText`) and returns in `readings` the files read as UTF-16, as Windows-1252, and not read as text.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L59)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L60)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -39,9 +41,16 @@ Summary returned by {@link generateLiveDocs} after processing all target files.
 The caller uses `written` and `deleted` counts for progress reporting, while
 the `files` array gives per-file detail for dry-run previews and CI checks.
 
+#### `SourceReadings` {#symbol-sourcereadings}
+- Type: interface
+- Source: [source](../../../../../packages/generator/src/generator.ts#L78)
+
+##### `SourceReadings` — Summary
+The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
+
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L105)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L119)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -73,6 +82,7 @@ behind the `Entry` lines (2026-10-15).
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
 - [`liveDocumentationConfig.noReaderHandles`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.BINARY_SNIFF_BYTES`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-binary_sniff_bytes)
@@ -111,6 +121,8 @@ behind the `Entry` lines (2026-10-15).
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
+- [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading)
+- [`sourceText.decodeSourceText`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

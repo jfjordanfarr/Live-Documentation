@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/engine/src/live-docs/adapters/html.ts`
-- Generated At: 2026-11-19T21:10:09.794Z
+- Code Path: packages/engine/src/live-docs/adapters/html.ts
+- Generated At: 2026-11-19T21:21:16.861Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 ### Public Symbols
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L319)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L320)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -33,7 +33,7 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L340)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L341)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
@@ -42,13 +42,14 @@ Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`, `statSync`
+- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

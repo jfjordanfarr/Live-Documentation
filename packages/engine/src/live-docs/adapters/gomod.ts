@@ -18,9 +18,9 @@
  *
  * @module
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { readSourceText } from "../../tooling/sourceText";
 import type { SourceAnalysisResult } from "../coreTypes";
 import type { LanguageAdapter } from "./index";
 import { ManifestDependencies, manifestContext, manifestIn, packageSymbols, publishedName } from "./manifest";
@@ -103,7 +103,7 @@ export const goModAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [GO_MOD],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const goMod = readGoMod(await fs.readFile(input.absolutePath, "utf8"));
+    const goMod = readGoMod(await readSourceText(input.absolutePath));
     const context = manifestContext(input);
     const directory = path.dirname(input.absolutePath);
     const dependencies = new ManifestDependencies();

@@ -28,6 +28,7 @@ import path from "node:path";
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -428,7 +429,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await fs.readFile(absolutePath, "utf8");
+  const content = await readSourceText(absolutePath);
   const tree    = await parseSource("go", content);
   try {
     const facts = new FileExtractor().extract(tree.rootNode);
@@ -498,7 +499,7 @@ async function moduleOf(absolutePath: string, workspaceRoot: string): Promise<Go
   let directory = path.dirname(absolutePath);
   while (directory.startsWith(workspaceRoot)) {
     try {
-      const content = await fs.readFile(path.join(directory, "go.mod"), "utf8");
+      const content = await readSourceText(path.join(directory, "go.mod"));
       const match   = /^module\s+(\S+)/mu.exec(content);
       if (match) return { path: match[1], root: normalizeWorkspacePath(path.relative(workspaceRoot, directory)) || "." };
     } catch {

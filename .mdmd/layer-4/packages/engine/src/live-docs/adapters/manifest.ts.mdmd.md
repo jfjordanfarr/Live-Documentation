@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/engine/src/live-docs/adapters/manifest.ts`
-- Generated At: 2026-11-19T21:10:10.068Z
+- Code Path: packages/engine/src/live-docs/adapters/manifest.ts
+- Generated At: 2026-11-19T21:21:16.983Z
 
 ## Authored
 ### Purpose
@@ -118,7 +118,6 @@ Declared entries without repeats, in path order, then by reason and name.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
@@ -129,6 +128,7 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`openings.PACKAGE_KIND`](../openings.ts.mdmd.md#symbol-package_kind)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `smol-toml` - `parse`
 <!-- LIVE-DOC:END Dependencies -->
 

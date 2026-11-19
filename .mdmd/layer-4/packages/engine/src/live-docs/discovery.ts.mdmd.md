@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-19T21:10:11.428Z
+- Code Path: packages/engine/src/live-docs/discovery.ts
+- Generated At: 2026-11-19T21:28:37.111Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ itself, or somewhere outside it.
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L210)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L212)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -87,7 +87,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L238)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L240)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -118,14 +118,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L325)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L320)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L349)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L344)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -174,7 +174,9 @@ parser; every other file is read by its language adapter.
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`gitIgnored`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
+- [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

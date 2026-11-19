@@ -1,13 +1,13 @@
 # CLI Reference
 
-_Current as of 2026-11-12._
+_Current as of 2026-11-19._
 
 ## Metadata
 
 - Layer: 1
 - Guide Type: reference
 
-Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`, from the root of this checkout. Every command prints its options on `--help` (as `npm run live-docs:inspect -- --help`), refuses an option it does not know on one line, and exits 1 when it fails. Each reads the configuration of the folder it works on, its `.live-docs.config.json`, unless `--config <file>` names another; without either it uses the defaults. In the examples, a word in angle brackets, such as `<folder>`, stands for your own value.
+Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`, from the root of this checkout, or from any other folder as `npm --prefix <checkout> run <script> [-- <options>]`. A path you type is taken from the folder you run the command from, though npm runs the script itself in the checkout. With no `--workspace`, a command works on the nearest folder, from there up, that holds a `.live-docs.config.json`, as git finds a repository, and on the folder itself when none does: run from `scripts/` in this checkout, `npm run live-docs:generate` maps the whole checkout. Every command prints its options on `--help` (as `npm run live-docs:inspect -- --help`), refuses an option it does not know on one line, and exits 1 when it fails. A failure is said in a line; run the same command again with `--stack`, which every command takes, to see where it failed and what caused it. Each reads the configuration of the folder it works on, its `.live-docs.config.json`, unless `--config <file>` names another; without either it uses the defaults. In the examples, a word in angle brackets, such as `<folder>`, stands for your own value.
 
 > **Note**: This reference covers user-facing commands. Contributor tooling (test suites, fixture management, audits) is in the [Internal Tooling Reference](../../layer-2/internal-tooling.mdmd.md).
 
@@ -49,10 +49,14 @@ npm run live-docs:generate -- --workspace <folder> --config <file>
 | `--check` | Fail when a doc would be created, updated or deleted; leave docs and the derived index untouched |
 | `--changed` | Only process Git-modified source files, using the full workspace for link resolution |
 | `--include <pattern>` | Render an explicit file or glob subset using workspace-wide resolution context; repeat to include several |
-| `--workspace <path>` | The folder to document (default: the current directory) |
+| `--workspace <path>` | The folder to document (default: the nearest folder, from the current directory up, that holds a `.live-docs.config.json`; else the current directory) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 
 `--changed` requires Git status. If Git cannot report status, the command fails with the Git error; run full generation in a folder without Git. The file and symbol indexes still cover the full workspace, so a changed file can link to an unchanged provider. `--include` also uses full workspace context while rendering only its explicit subset.
+
+In a git repository, what git ignores is left out, by git's own word: every `.gitignore`, `.git/info/exclude` and the global excludes file. When git cannot be asked, because it is not on the path or refuses a folder whose owner it does not trust, the run warns, and only the folder's own `.gitignore` is read, so that what the others hide, a .NET project's `bin/` and `obj/` among it, gets docs unless the configuration's `exclude` names it. Outside a repository the run says that only that `.gitignore` and `exclude` are read.
+
+Every run ends by naming the kinds of file no reader reads, with how many of each, as `Not read, so their docs hold no symbols or links: 87 .vb, 5 .sln`: each such file still gets a doc, saying only that it is there, so the map does not show what those files use or offer. Pictures, fonts and recordings are not counted, since they hold nothing to read.
 
 `--dry-run` reports differences but succeeds. `--check` uses the same non-writing comparison and exits unsuccessfully when the mirror is stale. `npm run livedocs` regenerates then lints locally; `npm run ci-check` requests `--check` explicitly before verification, so CI checks the committed mirror rather than repairing it.
 
@@ -138,7 +142,7 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |
 | `--verbose` | Include additional diagnostics |
-| `--workspace <path>` | The folder whose docs to read (default: the current directory) |
+| `--workspace <path>` | The folder whose docs to read (default: the nearest folder, from the current directory up, that holds a `.live-docs.config.json`; else the current directory) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 
 `--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's rows and wires, the links between two files or symbols, a file's words, or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--direction`, and only `--at` takes `--to`. `--between` also takes no `--from` or `--reachable`. A doc that stood at a commit in a form today's reader finds no authored block in, as this repository's mirror before 2026-09-27, prints its words as not readable rather than as the generator's placeholder.
@@ -173,8 +177,8 @@ npm run live-docs:visualize -- --workspace <folder>
 **Options:**
 | Flag | Description |
 |------|-------------|
-| `--workspace <path>` | The folder whose docs to read (default: the current directory) |
-| `--output <dir>` | Output directory (default: `dist/explorer/`) |
+| `--workspace <path>` | The folder whose docs to read (default: the nearest folder, from the current directory up, that holds a `.live-docs.config.json`; else the current directory) |
+| `--output <dir>` | Output directory (default: `dist/explorer/` in this checkout, whichever folder is mapped) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 | `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from, in place of the configuration's `board`; the bundle then opens on it |
 | `--history none\|all\|since <date>\|last <n>` | Choose how much generated history is included in the Explorer bundle. |

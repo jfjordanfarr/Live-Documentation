@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `packages/engine/src/live-docs/archetype.ts`
-- Generated At: 2026-11-19T21:10:10.943Z
+- Code Path: packages/engine/src/live-docs/archetype.ts
+- Generated At: 2026-11-19T21:28:37.049Z
 
 ## Authored
 ### Purpose
@@ -91,13 +91,14 @@ Checks whether an authored markdown block carries information beyond the default
 
 #### `matchesPathPattern` {#symbol-matchespathpattern}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L174)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L175)
 
 ##### `matchesPathPattern` — Summary
 True when a workspace-relative path matches a configuration pattern: a path
 exactly, or a glob in which `*` stands for anything within one segment and
 `**` for anything across segments. The archetype overrides and the declared
-entry points are read by this rule.
+entry points are read by this rule; `exclude` without regard to case where
+git ignores case in the repository (`ignoreCase`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

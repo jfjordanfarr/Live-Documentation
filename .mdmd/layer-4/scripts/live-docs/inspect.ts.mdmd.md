@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect.ts`
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.123Z
+- Generated At: 2026-11-19T20:08:19.960Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
@@ -54,6 +53,7 @@ _No public symbols detected_
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 - [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 - [`emit.emitDualDirectionResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionresult)
 - [`emit.emitDualDirectionSymbolResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
 - [`emit.emitFanoutResult`](./inspect/emit.ts.mdmd.md#symbol-emitfanoutresult)
@@ -65,6 +65,7 @@ _No public symbols detected_
 - [`emit.emitSymbolPathNotFound`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathnotfound)
 - [`emit.emitSymbolPathResult`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathresult)
 - [`history.HistoryRefusal`](./inspect/history.ts.mdmd.md#symbol-historyrefusal)
+- [`history.codePathOf`](./inspect/history.ts.mdmd.md#symbol-codepathof)
 - [`history.emitBetween`](./inspect/history.ts.mdmd.md#symbol-emitbetween)
 - [`history.emitFileAt`](./inspect/history.ts.mdmd.md#symbol-emitfileat)
 - [`history.emitLinksAt`](./inspect/history.ts.mdmd.md#symbol-emitlinksat)

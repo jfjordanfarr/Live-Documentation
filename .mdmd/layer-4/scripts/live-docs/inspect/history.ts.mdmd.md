@@ -3,8 +3,8 @@
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: `scripts/live-docs/inspect/history.ts`
-- Generated At: 2026-11-19T21:10:19.200Z
+- Code Path: scripts/live-docs/inspect/history.ts
+- Generated At: 2026-11-19T20:08:20.017Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ Since 2026-11-19 ([Turn 35](../../../../../AI-Agent-Workspace/AgentSessionHistor
 
 Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) `--at` lists a file's linked documents and `--between` the documents linked and unlinked, from the shape alone as before.
 Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)) the walk from a commit's entries lists the files not read apart from the unreachable, in text and as `unread` in its JSON, as the present's walk does.
+Since 2026-11-19 ([the Windows and command-line probe's second leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19)) a question finds the file it names at that commit in any case, by `fileNamedAt`, as today's questions do: the name as spelled first, then the one file that differs by case alone; two that do are named back, and a name no file answers to is still said not to have existed. `codePathOf`, which reads a doc's path as its file's, moved here from `inspect.ts` and reads the docs folder and suffix in any case.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,9 +33,29 @@ Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Wor
 ##### `HistoryRefusal` — Summary
 A question the history cannot answer as asked, said plainly.
 
+#### `codePathOf` {#symbol-codepathof}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L39)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `codePathOf` — Summary
+A file as a history question names it: its workspace-relative path, also when given as its doc's path, with
+backslashes, or with the docs folder and the doc's suffix in any case.
+
+#### `fileNamedAt` {#symbol-filenamedat}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L55)
+- Parameters: `moment`: [`Moment`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-moment)
+
+##### `fileNamedAt` — Summary
+The file a question names, as the moment holds it: the name as written when the moment holds that file, else the
+one file it holds whose path differs by case alone, since on Windows a path's case is not the person's to get
+right; the name as written when none does, so that the answer says the file did not exist. Two files that differ
+by case alone, as a repository made on Linux may hold, are named back.
+
 #### `readHistory` {#symbol-readhistory}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L36)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L68)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `readHistory` — Summary
@@ -42,7 +63,7 @@ The sequence the history command wrote for this workspace; a refusal naming the 
 
 #### `resolveStep` {#symbol-resolvestep}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L55)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L87)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `resolveStep` — Summary
@@ -50,7 +71,7 @@ The step of the commit a reference names: a prefix of its id.
 
 #### `emitFileAt` {#symbol-emitfileat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L75)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L107)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitFileAt` — Summary
@@ -60,7 +81,7 @@ links from and to its symbols.
 
 #### `emitLinksAt` {#symbol-emitlinksat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L143)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L176)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitLinksAt` — Summary
@@ -69,7 +90,7 @@ directions, from the rows the history carries.
 
 #### `historyFolder` {#symbol-historyfolder}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L172)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L206)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `historyFolder` — Summary
@@ -77,7 +98,7 @@ The folder the history command writes the sequence and its words store into.
 
 #### `emitWordsAt` {#symbol-emitwordsat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L180)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L214)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitWordsAt` — Summary
@@ -86,7 +107,7 @@ from the part of the words store beside the sequence for the file's directory; o
 
 #### `emitReachableAt` {#symbol-emitreachableat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L232)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L268)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `emitReachableAt` — Summary
@@ -94,7 +115,7 @@ What the entries of a commit reach, by the pathfinder over the graph the commit'
 
 #### `emitBetween` {#symbol-emitbetween}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L267)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L303)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitBetween` — Summary
@@ -120,6 +141,7 @@ What changed from one commit to a later one, each file followed through every re
 - [`queries.stepsMatching`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-stepsmatching)
 - [`queries.symbolNamed`](../../../packages/engine/src/live-docs/history/queries.ts.mdmd.md#symbol-symbolnamed)
 - [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink) (type-only)
+- [`sequence.Moment`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-moment)
 - [`sequence.commitAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)

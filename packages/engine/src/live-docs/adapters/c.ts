@@ -36,6 +36,7 @@ import path from "node:path";
 import { cSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -620,7 +621,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const facts = await extractFacts(await fs.readFile(absolutePath, "utf8"), absolutePath);
+  const facts = await extractFacts(await readSourceText(absolutePath), absolutePath);
   factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
   return facts;
 }
@@ -835,7 +836,7 @@ export const cAdapter: LanguageAdapter = {
   id: "c-basic",
   extensions: cSyntax.extensions,
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
     return analyzeCSource({ content, absolutePath, workspaceRoot });
   }
 };

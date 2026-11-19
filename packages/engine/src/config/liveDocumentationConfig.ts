@@ -300,6 +300,25 @@ export function normalizeLiveDocumentationConfig(
   };
 }
 
+/**
+ * The settings a `.live-docs.config.json` holds, from the file's bytes as it
+ * was saved: decoded by its byte-order mark, UTF-8 with or without one, or
+ * UTF-16 little- or big-endian after one, then parsed as JSON. Windows
+ * PowerShell 5.1 writes the mark with `Set-Content -Encoding UTF8`, and UTF-16
+ * with `Out-File` and `>`; until 2026-11-19 every command stopped on such a
+ * file. Every reader of the configuration, the commands and the history's
+ * lens, parses it here. It reads no file itself, so that this module stays one
+ * the Explorer's page can carry: the caller reads the bytes, and says which
+ * file it could not read.
+ *
+ * @throws SyntaxError when the text is not JSON.
+ */
+export function parseLiveDocumentationConfigBytes(bytes: Uint8Array): LiveDocumentationConfigInput {
+  const encoding = bytes[0] === 0xff && bytes[1] === 0xfe ? "utf-16le" : bytes[0] === 0xfe && bytes[1] === 0xff ? "utf-16be" : "utf-8";
+  // The decoder drops the mark of the encoding it decodes.
+  return JSON.parse(new TextDecoder(encoding).decode(bytes)) as LiveDocumentationConfigInput;
+}
+
 function normalizeStringOption(value: string | undefined, fallback: string): string {
   const normalized = value?.trim();
   return normalized && normalized.length > 0 ? normalized : fallback;

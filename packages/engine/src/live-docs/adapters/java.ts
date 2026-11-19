@@ -25,6 +25,7 @@ import path from "node:path";
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -500,7 +501,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await fs.readFile(absolutePath, "utf8");
+  const content = await readSourceText(absolutePath);
   const tree    = await parseSource("java", content);
   try {
     const facts = new FileExtractor().extract(tree.rootNode);

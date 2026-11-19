@@ -26,12 +26,13 @@
  * entry point; the guard inside a function or a class, or in a string or a
  * comment, is not.
  */
-import { promises as fs, readdirSync, statSync } from "node:fs";
+import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { pythonSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter } from "./index";
 import { parseDocstring } from "./python.docstring";
@@ -400,7 +401,7 @@ async function moduleFacts(absolutePath: string): Promise<ModuleFacts> {
   const mtimeMs = statSync(absolutePath).mtimeMs;
   const cached  = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === mtimeMs) return cached.facts;
-  const facts = fs.readFile(absolutePath, "utf8").then(extractFacts);
+  const facts = readSourceText(absolutePath).then(extractFacts);
   factsCache.set(absolutePath, { mtimeMs, facts });
   return facts;
 }

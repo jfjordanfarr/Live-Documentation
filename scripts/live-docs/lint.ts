@@ -14,7 +14,7 @@ import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engin
 import { fileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
 import { absoluteLinks } from "./absoluteLinks";
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
@@ -95,7 +95,8 @@ function usage(): string {
     "sections still to be written and files with no dependencies and no dependents.",
     "",
     "Options:",
-    "  --workspace <path>     The folder whose docs to check (default: the current directory).",
+    "  --workspace <path>     The folder whose docs to check (default: the nearest folder, from the current",
+    "                         directory up, that holds a .live-docs.config.json; else the current directory).",
     "  --config <file>        The configuration (default: the workspace's .live-docs.config.json",
     "                         when it has one, else the shipped defaults).",
     "  --root <path>          In place of the configuration's root.",
@@ -119,7 +120,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
 
   const configInput = await readConfiguration(workspaceRoot, args.configPath);
 
