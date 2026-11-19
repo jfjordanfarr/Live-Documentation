@@ -190,3 +190,36 @@ describe("the history over a document whose name holds parentheses (waiting on t
     expect(result.status, result.stderr).toBe(0);
   }, 300_000);
 });
+
+/**
+ * A citing document whose name holds `#` or a percent-escape (the second pass of the independent review, finding 1):
+ * the summary reads the citing path from the `Cited By` line's link, decoding it and dropping what follows `#`, but the
+ * generator writes that link as a plain path, so `docs/C#.md` is kept as `docs/C` and `docs/50%41off.md` as
+ * `docs/50Aoff.md`, and the check at the head fails. On the branch that mends the doc writer and reader, a generated
+ * link's path is percent-encoded and the reader decodes it, so the right mend takes the citing path from the doc
+ * reader's model when the branches join; these cases wait on that joining, and are to become ordinary cases then.
+ */
+describe("the history over a citing document whose name holds # or a percent-escape (waiting on the joining with the doc reader's mend)", () => {
+  async function checkedHistory(name: string): Promise<number | null> {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "citing-"));
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
+    fs.mkdirSync(path.join(here, "src"), { recursive: true });
+    fs.mkdirSync(path.join(here, "docs"), { recursive: true });
+    fs.writeFileSync(path.join(here, ".live-docs.config.json"), `${JSON.stringify(config)}\n`);
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    fs.writeFileSync(path.join(here, "docs", name), "# A note\n\nSee [a](../src/a.ts).\n");
+    await generateLiveDocs({ workspaceRoot: here, config: normalizeLiveDocumentationConfig(config), logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "A citing document with an awkward name"]]) {
+      execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    }
+    return spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1", "--check-head"], { encoding: "utf8", env: process.env }).status;
+  }
+
+  it.fails("holds docs/C#.md as it is named, the check at the head passing", async () => {
+    expect(await checkedHistory("C#.md")).toBe(0);
+  }, 300_000);
+
+  it.fails("holds docs/50%41off.md as it is named, the check at the head passing", async () => {
+    expect(await checkedHistory("50%41off.md")).toBe(0);
+  }, 300_000);
+});
