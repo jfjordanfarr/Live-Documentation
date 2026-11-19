@@ -14,7 +14,6 @@
  * 
  * @module inspect
  */
-import path from "node:path";
 import process from "node:process";
 
 import {
@@ -37,7 +36,7 @@ import {
 } from "@live-documentation/engine/live-docs/pathfind";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
-import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
@@ -112,7 +111,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
 
   const configFileInput = await readConfiguration(workspaceRoot, args.configPath);
 

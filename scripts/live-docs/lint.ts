@@ -13,7 +13,7 @@ import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from 
 import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { fileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
@@ -118,7 +118,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
 
   const configInput = await readConfiguration(workspaceRoot, args.configPath);
 

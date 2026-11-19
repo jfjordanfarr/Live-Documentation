@@ -12,6 +12,11 @@
  * the Explorer, by `--workspace`; and the board a configuration names, which the
  * Explorer's build and the board command read when none is given.
  *
+ * Since 2026-11-19, the folder a person runs a command from: a relative
+ * `--workspace` and `--config` are taken from it, and it is the workspace when
+ * none is named, though npm runs the script in this checkout, which the cold run
+ * of that day found every `--help` calling the current directory.
+ *
  * Every command here is a process of its own through tsx, a second or more
  * each, so all of them start together in `beforeAll`, eight at a time, and each
  * case reads what its own run printed: one after another they took about two
@@ -56,8 +61,8 @@ const BOARD = "# Sample board\n\n## Metadata\n- Layer: 3\n\n## Authored\n### Pur
 
 const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
 
-/** The workspaces the cases run in, made in `beforeAll`. */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "" };
+/** The workspaces the cases run in, made in `beforeAll`; `stand` is a folder a person stands in, holding two repositories, `mine` and `theirs`, and a configuration beside them. */
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "" };
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -76,9 +81,19 @@ beforeAll(async () => {
   at.boarded = makeWorkspace({ board: "board.md" });
   fs.writeFileSync(path.join(at.boarded, "board.md"), BOARD, "utf8");
   at.unboarded = makeWorkspace({});
+  at.stand = makeWorkspace({});
+  for (const repository of ["mine", "theirs"]) {
+    fs.cpSync(path.join(at.stand, "src"), path.join(at.stand, repository, "src"), { recursive: true });
+  }
+  fs.writeFileSync(path.join(at.stand, "standing.json"), JSON.stringify({ root: "docs", baseLayer: "mirror" }), "utf8");
 
   const record = (name: string, script: string, args: string[]) => async (): Promise<Run> => {
     const result = await run(script, args);
+    runs.set(name, result);
+    return result;
+  };
+  const recordNpm = (name: string, cwd: string, script: string, args: string[]) => async (): Promise<Run> => {
+    const result = await runNpm(cwd, script, args);
     runs.set(name, result);
     return result;
   };
@@ -95,6 +110,9 @@ beforeAll(async () => {
     record("boarded board", "board.ts", ["--workspace", at.boarded]),
     record("unboarded board", "board.ts", ["--workspace", at.unboarded]),
     record("visualize --output", "visualize-static.ts", ["--output"]),
+    // The configuration is named first, so that a run that took the paths from this checkout would stop before writing.
+    recordNpm("npm from elsewhere", at.stand, "live-docs:generate", ["--config", "standing.json", "--workspace", "mine"]),
+    recordNpm("npm from elsewhere, no workspace", path.join(at.stand, "theirs"), "live-docs:generate", ["--config", path.join("..", "standing.json"), "--dry-run"]),
     ...commands.flatMap(([, script]) => ["--help", "-h", "--no-such-option"].map((flag) => record(`${script} ${flag}`, script, [flag])))
   ];
   await inPool(jobs, WIDTH);
@@ -119,6 +137,21 @@ describe("live-docs:generate --workspace", () => {
     expect(result.status, result.stderr).toBe(0);
     expect(fs.existsSync(path.join(at.given, "docs", "mirror", "src", "a.ts.md"))).toBe(true);
     expect(fs.existsSync(path.join(at.given, ".mdmd"))).toBe(false);
+  });
+});
+
+describe("the folder a person runs a command from", () => {
+  it("is where a relative --workspace and --config are taken from, though npm runs the script in this checkout", () => {
+    const result = ran("npm from elsewhere");
+    expect(result.status, result.stderr).toBe(0);
+    expect(fs.existsSync(path.join(at.stand, "mine", "docs", "mirror", "src", "a.ts.md"))).toBe(true);
+    expect(fs.existsSync(path.join(repoRoot, "mine"))).toBe(false);
+  });
+
+  it("is the workspace when none is named", () => {
+    const result = ran("npm from elsewhere, no workspace");
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain("Would create 1 Live Doc(s): docs/mirror/src/a.ts.md");
   });
 });
 
@@ -195,6 +228,21 @@ function run(script: string, args: string[]): Promise<Run> {
       process.execPath,
       [tsxCli, "--tsconfig", path.join(repoRoot, "tsconfig.base.json"), path.resolve(scripts, script), ...args],
       { encoding: "utf8", maxBuffer: 1 << 26 },
+      (error, stdout, stderr) => {
+        const status = error === null ? 0 : typeof error.code === "number" ? error.code : null;
+        resolve({ status, stdout, stderr });
+      }
+    );
+  });
+}
+
+/** Runs one of this checkout's npm scripts from another folder, as a person standing in their own repository would: `npm --prefix <checkout> run <script> -- <args>`. */
+function runNpm(cwd: string, script: string, args: string[]): Promise<Run> {
+  return new Promise((resolve) => {
+    execFile(
+      process.platform === "win32" ? "npm.cmd" : "npm",
+      ["--prefix", repoRoot, "run", "--silent", script, "--", ...args],
+      { cwd, encoding: "utf8", maxBuffer: 1 << 26, shell: process.platform === "win32" },
       (error, stdout, stderr) => {
         const status = error === null ? 0 : typeof error.code === "number" ? error.code : null;
         resolve({ status, stdout, stderr });

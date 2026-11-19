@@ -10,7 +10,7 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -160,7 +160,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
 
   // The file given, else the workspace's own configuration, as every command reads it; without either, the defaults.
   const configInput: LiveDocumentationConfigInput = await readConfiguration(workspaceRoot, args.configPath);

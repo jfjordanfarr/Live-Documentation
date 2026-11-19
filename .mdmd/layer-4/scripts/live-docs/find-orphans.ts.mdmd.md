@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/find-orphans.ts
 - Entry: command `live-docs:orphans` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.260Z
+- Generated At: 2026-11-19T19:18:27.914Z
 
 ## Authored
 ### Purpose
@@ -30,4 +30,5 @@ _No public symbols detected_
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->

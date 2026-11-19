@@ -5,11 +5,11 @@ import process from "node:process";
 
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { optionValue, runCommand, UsageError } from "./cli";
+import { optionValue, runCommand, UsageError, workspaceFolder } from "./cli";
 
 interface CliOptions {
   help: boolean;
-  workspace: string;
+  workspace?: string;
   docsRoot: string;
   baseLayer: string;
   quiet: boolean;
@@ -23,7 +23,6 @@ interface OrphanRecord {
 function parseArgs(argv: string[]): CliOptions {
   const options: CliOptions = {
     help: false,
-    workspace: process.cwd(),
     docsRoot: ".live-documentation",
     baseLayer: "source",
     quiet: false
@@ -123,7 +122,7 @@ async function pathExists(candidate: string): Promise<boolean> {
 }
 
 async function findOrphans(options: CliOptions): Promise<OrphanRecord[]> {
-  const workspaceRoot = path.resolve(options.workspace);
+  const workspaceRoot = workspaceFolder(options.workspace);
   const docsRoot = path.resolve(workspaceRoot, options.docsRoot);
   const baseLayerPath = path.join(docsRoot, options.baseLayer);
 

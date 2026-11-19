@@ -1,6 +1,7 @@
 /**
  * What every Live Docs command shares at its edge: the version it prints, read
- * from the manifest of the package that does its work; the configuration it
+ * from the manifest of the package that does its work; the folder a person ran
+ * it from, which every path they type is taken from; the configuration it
  * reads; how it ends, with a refused argument said on one line and a pointer to
  * its help; and a quiet end when the reader closes the pipe.
  *
@@ -11,6 +12,42 @@ import path from "node:path";
 import process from "node:process";
 
 import type { LiveDocumentationConfigInput } from "@live-documentation/engine/config/liveDocumentationConfig";
+
+/**
+ * The folder the person ran the command from: the workspace when they name
+ * none, and where every path they type is taken from. `npm run` starts a
+ * script in this checkout's own folder, wherever the person stands, and says
+ * where they stood in `INIT_CWD`; that folder is the one meant, when npm
+ * started this very script. A process started otherwise, by a test, by
+ * another command or by a person running the script directly, inherits npm's
+ * variables without having been started by it, and its own working directory
+ * is the one meant.
+ *
+ * @param env - The environment, for `INIT_CWD` and the script npm ran (`npm_lifecycle_script`).
+ * @param cwd - The process's working directory, where npm's script line is read from.
+ * @param script - The script this process runs, as Node names it.
+ */
+export function invocationFolder(env: NodeJS.ProcessEnv = process.env, cwd: string = process.cwd(), script: string | undefined = process.argv[1]): string {
+  const stoodIn = env.INIT_CWD;
+  const ranByNpm = env.npm_lifecycle_script;
+  if (!stoodIn || !ranByNpm || !script) {
+    return cwd;
+  }
+  // A path's case is not the person's to get right on Windows, where npm and Node may spell a drive letter differently.
+  const same = (a: string, b: string): boolean => process.platform === "win32" ? a.toLowerCase() === b.toLowerCase() : a === b;
+  const words = ranByNpm.split(/\s+/u).map((word) => word.replace(/^["']|["']$/gu, "")).filter(Boolean);
+  return words.some((word) => same(path.resolve(cwd, word), path.resolve(script))) ? path.resolve(stoodIn) : cwd;
+}
+
+/** A path the person typed, made absolute from the folder they ran the command from ({@link invocationFolder}). */
+export function typedPath(typed: string): string {
+  return path.resolve(invocationFolder(), typed);
+}
+
+/** The folder a command works on: the one `--workspace` names, from where the person ran the command, else that folder itself. */
+export function workspaceFolder(given: string | undefined): string {
+  return given === undefined ? invocationFolder() : typedPath(given);
+}
 
 /** The version of one of this repository's packages, from its manifest: a command prints its package's version, never a constant of its own. */
 export async function packageVersion(packageName: "engine" | "generator"): Promise<string> {
@@ -71,14 +108,15 @@ export function decodeText(bytes: Uint8Array): string {
 }
 
 /**
- * The configuration a command reads: the file given, else the workspace's own
+ * The configuration a command reads: the file given, from the folder the
+ * command was run from ({@link typedPath}), else the workspace's own
  * `.live-docs.config.json` when it has one, else nothing, which leaves the
  * shipped defaults. The history command reads its lens by the same rule.
  * Saved by Windows PowerShell 5.1 with a byte-order mark, or as UTF-16, it is
  * read all the same ({@link decodeText}).
  */
 export async function readConfiguration(workspaceRoot: string, configPath: string | undefined): Promise<LiveDocumentationConfigInput> {
-  const file = configPath === undefined ? path.join(workspaceRoot, ".live-docs.config.json") : path.resolve(configPath);
+  const file = configPath === undefined ? path.join(workspaceRoot, ".live-docs.config.json") : typedPath(configPath);
   try {
     return JSON.parse(decodeText(await fs.readFile(file))) as LiveDocumentationConfigInput;
   } catch (error) {

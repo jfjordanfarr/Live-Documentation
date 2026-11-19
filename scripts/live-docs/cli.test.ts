@@ -10,7 +10,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { readConfiguration } from "./cli";
+import { invocationFolder, readConfiguration } from "./cli";
 
 const folders: string[] = [];
 
@@ -63,5 +63,33 @@ describe("readConfiguration", () => {
     expect(await readConfiguration(folder, undefined)).toEqual({});
     fs.writeFileSync(path.join(folder, ".live-docs.config.json"), "{ root: ", "utf8");
     await expect(readConfiguration(folder, undefined)).rejects.toThrow(`cannot read the configuration at ${path.join(folder, ".live-docs.config.json")}`);
+  });
+});
+
+/**
+ * `npm run` starts a script in this checkout's folder wherever the person
+ * stands, and says where they stood in `INIT_CWD`; the cold run of 2026-11-19
+ * found every `--help` calling that checkout "the current directory".
+ */
+describe("invocationFolder", () => {
+  const checkout = path.resolve("/tools/Live-Documentation");
+  const script = path.join(checkout, "scripts", "live-docs", "generate.ts");
+  const stoodIn = path.resolve("/work/MyRepo");
+  const ranByNpm = { INIT_CWD: stoodIn, npm_lifecycle_script: "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/generate.ts" };
+
+  it("is where the person stood when npm ran this very script", () => {
+    expect(invocationFolder(ranByNpm, checkout, script)).toBe(stoodIn);
+  });
+
+  it("is the working directory of a process npm did not start, though it inherits npm's variables", () => {
+    // Another script npm ran, as a test runner or the pipeline, starting this one as a process of its own in a folder of its choosing.
+    const elsewhere = path.resolve("/tmp/fixture");
+    expect(invocationFolder({ ...ranByNpm, npm_lifecycle_script: "vitest run --project integration" }, elsewhere, script)).toBe(elsewhere);
+    expect(invocationFolder({ ...ranByNpm, npm_lifecycle_script: "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/run-all.ts" }, elsewhere, script)).toBe(elsewhere);
+  });
+
+  it("is the working directory outside npm", () => {
+    expect(invocationFolder({}, stoodIn, script)).toBe(stoodIn);
+    expect(invocationFolder({ INIT_CWD: checkout }, stoodIn, script)).toBe(stoodIn);
   });
 });

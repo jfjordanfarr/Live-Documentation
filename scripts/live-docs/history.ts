@@ -13,7 +13,7 @@ import type { HistorySequence, Sampling } from "@live-documentation/engine/live-
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
 import { computeHistory, formatBytes, HistoryStopped } from "../../packages/generator/src/history/computeHistory";
-import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, runCommand, typedPath, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -41,8 +41,8 @@ async function main(): Promise<void> {
   let run;
   try {
     run = await computeHistory({
-      workspace: args.workspace ?? ".",
-      configPath: args.configPath,
+      workspace: workspaceFolder(args.workspace),
+      configPath: args.configPath === undefined ? undefined : typedPath(args.configPath),
       sampling: samplingOf(args),
       jobs: args.jobs,
       keepIndex: args.keepIndex,

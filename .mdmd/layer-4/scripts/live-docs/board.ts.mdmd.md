@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/board.ts
 - Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.202Z
+- Generated At: 2026-11-19T19:18:27.860Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,8 @@ _No public symbols detected_
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.typedPath`](./cli.ts.mdmd.md#symbol-typedpath)
+- [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

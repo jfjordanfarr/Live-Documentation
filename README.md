@@ -42,6 +42,7 @@ Then open `http://127.0.0.1:8766/`.
 - The Explorer has to be served, as the last line does. A browser will not let a page opened as a file read the data beside it, and the page says so if you try.
 - In a git repository, files that git ignores are left out. Elsewhere, name build output to leave out in the [configuration](#configuration).
 - Every command prints its options with `--help`, for example `npm run live-docs:generate -- --help`.
+- A path you give, `<folder>` among them, is taken from the folder you run the command in. To stand in your own folder instead, run `npm --prefix <path to this checkout> run live-docs:generate` there with no `--workspace`.
 
 To try it without a repository of your own, leave out `--workspace`: the same three commands map this one.
 

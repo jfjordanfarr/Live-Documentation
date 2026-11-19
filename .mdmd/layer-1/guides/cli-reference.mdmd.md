@@ -1,13 +1,13 @@
 # CLI Reference
 
-_Current as of 2026-11-12._
+_Current as of 2026-11-19._
 
 ## Metadata
 
 - Layer: 1
 - Guide Type: reference
 
-Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`, from the root of this checkout. Every command prints its options on `--help` (as `npm run live-docs:inspect -- --help`), refuses an option it does not know on one line, and exits 1 when it fails. Each reads the configuration of the folder it works on, its `.live-docs.config.json`, unless `--config <file>` names another; without either it uses the defaults. In the examples, a word in angle brackets, such as `<folder>`, stands for your own value.
+Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`, from the root of this checkout, or from any other folder as `npm --prefix <checkout> run <script> [-- <options>]`. A path you type is taken from the folder you run the command from, and a command works on that folder when `--workspace` names none, though npm runs the script itself in the checkout. Every command prints its options on `--help` (as `npm run live-docs:inspect -- --help`), refuses an option it does not know on one line, and exits 1 when it fails. Each reads the configuration of the folder it works on, its `.live-docs.config.json`, unless `--config <file>` names another; without either it uses the defaults. In the examples, a word in angle brackets, such as `<folder>`, stands for your own value.
 
 > **Note**: This reference covers user-facing commands. Contributor tooling (test suites, fixture management, audits) is in the [Internal Tooling Reference](../../layer-2/internal-tooling.mdmd.md).
 
@@ -174,7 +174,7 @@ npm run live-docs:visualize -- --workspace <folder>
 | Flag | Description |
 |------|-------------|
 | `--workspace <path>` | The folder whose docs to read (default: the current directory) |
-| `--output <dir>` | Output directory (default: `dist/explorer/`) |
+| `--output <dir>` | Output directory (default: `dist/explorer/` in this checkout, whichever folder is mapped) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 | `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from, in place of the configuration's `board`; the bundle then opens on it |
 | `--history none\|all\|since <date>\|last <n>` | Choose how much generated history is included in the Explorer bundle. |
