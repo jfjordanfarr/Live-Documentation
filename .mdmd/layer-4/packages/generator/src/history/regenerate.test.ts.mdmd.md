@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Holds the history's tree to what the generator looks for by name: with the files the configuration excludes left out (`unread`), a scan nested under an excluded folder is still written, and the generator warns of it as it does over the whole commit.
+Holds the history's tree to what the generator looks for by name: every name stands, an excluded file no reader reads written empty (`treeOptions`), so a scan nested under an excluded folder is found, and the generator warns of it as it does over the whole commit.
 
 ### Notes
-- Written 2026-11-19, when the tree writer began to leave out what `exclude` names. The generator's search for nested scans (`scansWithin`) globs the whole tree by name and does not read `exclude`; the case failed with `unread` not asking `marksScan`, and passes with the two sharing the generator's own markers (`scanMarkers`).
+- Written 2026-11-19, when the tree writer left out what `exclude` names and the generator's search for nested scans (`scansWithin`), which globs the tree by name, stopped seeing them; since the tree writes every name, the case holds without a special rule, and it holds the generator's warnings over the tree to those over the whole commit.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

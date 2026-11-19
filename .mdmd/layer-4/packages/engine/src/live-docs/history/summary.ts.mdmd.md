@@ -19,6 +19,7 @@ One commit's summary as the history command's cache keeps it, read from the grap
 - A description's text is its `#####` sections as JSON, without the symbol's name, so that a symbol renamed with its words unchanged keeps its text, the evidence `rows.ts` believes a rename on.
 - What can be read of a doc's authored block is the caller's to say, from the docs as they stood before the generator rewrote them: `read`, `unread` (a doc stood with no `## Authored` heading, so the block the generator wrote is its placeholder and not that day's words), or nothing, when no doc stood. The data never passes the placeholder off as the words of a day it could not read.
 - Each `Source:` line is left out, since its number moves with nearly every edit above it while the doc's order says the same, as the probe of 2026-11-18 recommended.
+- Format 4 (2026-11-19, after the independent review of the engine round): a file's `citedBy` holds each citing document's path, read from its `Cited By` line's link, where format 3 held the line's label, which writes a backtick as an apostrophe; the bundle's exclusions are held to the path where the summaries are read, and the rows make the label from it (`citedByLabel`).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

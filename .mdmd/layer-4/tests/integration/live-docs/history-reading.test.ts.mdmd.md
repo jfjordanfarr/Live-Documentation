@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds the history command to a repository with what this repository's own history never held: a folder the configuration excludes that included code imports, re-exports and takes an asset from, documents the bundle excludes, and three symbolic links (`CLAUDE.md -> AGENTS.md`, `lib/b.ts -> ../src/b.ts`, `docs/alias.md -> guide.md`). Its mirror is generated in a checkout and committed, and the check at the head holds the history's last step to it; the summary must keep every linked document and the sequence apply the bundle's exclusions, and an edit of them must change the sequence at the next run with nothing summarized again.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 from the [independent review](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/engine-round-review/README.md) of the engine round, whose test repositories showed the history contradicting the generator's docs while every test passed: the scripted repositories held no `exclude`, no `bundleExclude` and no link. Each behaviour taken away was seen to turn a case red: excluded files left out, links written as nothing, the exclusions applied inside the summary, and not applied where the sequence reads it. Asking the disk instead of the listing whether a linked document stands stays green on this platform, since every name is now written.
+- A case for a document whose name holds parentheses waits (`it.fails`) on the doc reader's mend, which belongs to the builder who owns it: the doc reader cannot read back a `Cited By` link holding `)`.
+- It runs with a temporary folder of its own, since the system's is shared by every history run on the machine.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

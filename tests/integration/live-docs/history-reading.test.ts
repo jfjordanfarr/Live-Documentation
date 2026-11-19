@@ -151,3 +151,26 @@ describe("the history over excluded code, documents the bundle excludes and symb
     }
   }, 300_000);
 });
+
+/**
+ * A document the bundle excludes whose name holds parentheses, citing a file. The summary is made with no bundle
+ * exclusion, so the generator writes a `Cited By` line for it, and the doc reader cannot read a link holding `)` back
+ * (`document.ts`; the independent review of 2026-11-19, finding 3): the summarizing process fails and the history with
+ * it. The fault is the reader's, older than the history's change, and owed to the builder who owns the doc reader and
+ * writer; this case waits on that mend, and is to become an ordinary case, the history finishing, once it lands.
+ */
+describe("the history over a document whose name holds parentheses (waiting on the doc reader's mend)", () => {
+  it.fails("finishes, the document's citation read back", () => {
+    const here = path.join(privateTemporary, "parentheses");
+    fs.mkdirSync(path.join(here, "src"), { recursive: true });
+    fs.mkdirSync(path.join(here, "notes"), { recursive: true });
+    fs.writeFileSync(path.join(here, ".live-docs.config.json"), `${JSON.stringify({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", bundleExclude: ["notes/**"] })}\n`);
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    fs.writeFileSync(path.join(here, "notes", "plan (draft).md"), "# Plan\n\nSee [a](../src/a.ts).\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "A document with parentheses in its name"]]) {
+      execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    }
+    const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1"], { encoding: "utf8", env: process.env });
+    expect(result.status, result.stderr).toBe(0);
+  }, 300_000);
+});

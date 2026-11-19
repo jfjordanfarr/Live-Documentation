@@ -26,17 +26,19 @@
  * directory, registering nothing with the repository, so that a process in
  * the tree can ask git what it tracks ({@link WorkingTree.environment}).
  *
- * Since a second review of 2026-11-19 nothing is written outside the tree's
- * folder whatever the commit holds: the disk itself is asked, without
- * following a link, before each entry is written, so that an entry beneath a
- * link or a file, one whose name the disk already holds by its own rule of
- * names (case, normalization, short names), or one whose name the disk or the
- * platform cannot hold is left out and named, and the summary says it was not
- * read. A third review found that a folding rule of this module's own, as the
- * second pass had, missed what APFS and NTFS take for one name. Blobs are
- * streamed to disk rather than held whole; every failure of the reader ends
- * in one rejection; and every call reads the commit as stored, the
- * repository's replacement objects set aside.
+ * Nothing is written outside the tree's folder whatever the commit holds.
+ * No symbolic link is ever written: a link to a file of the tree is written as
+ * a copy of that file, any other is left out and named (since 2026-11-19).
+ * The disk itself is asked, without following a link, once for each folder,
+ * so that an entry beneath a file, one whose name the disk already holds by
+ * its own rule of names (case, normalization, short names), or one whose name
+ * the disk or the platform cannot hold is left out and named, and the summary
+ * says it was not read; a third review found that a folding rule of this
+ * module's own missed what APFS and NTFS take for one name. Every name of the
+ * commit stands; a file the caller says no reader reads is written empty.
+ * Blobs are streamed to disk rather than held whole; every failure of the
+ * reader ends in one rejection; and every call reads the commit as stored,
+ * the repository's replacement objects set aside.
  *
  * @module
  */
@@ -345,17 +347,20 @@ async function readSmallBlobs(root: string, ids: readonly string[]): Promise<Map
 /**
  * Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
  * where its mode says so, streamed to disk as git gives them; an empty folder where another repository's commit
- * stands, as a checkout leaves a submodule it has not initialized. A file `leaveOut` names is not written and not named:
- * the caller's reader never opens it (since 2026-11-19, what the configuration excludes, which wrote 511 of a rebuild's
- * 521 GB in this repository).
+ * stands, as a checkout leaves a submodule it has not initialized; an empty file where the caller asks for its name
+ * without its content (`contentless`); and, for a symbolic link that leads through the commit's own listing to a file
+ * of the tree ({@link followLink}), a copy of that file, so that no link is ever on the disk and a reader finds at the
+ * link's path what it finds in a checkout.
  *
  * Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
- * reason, when it is a symbolic link, which the history never writes (since 2026-11-19: a link the generator wrote
- * through, as one at its docs root, carried its writes and its pruning outside the scratch folder, and an empty or
- * unwritable target failed the commit); when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
- * disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
- * something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
- * hold its name. Of two entries that clash, the first in the tree's order is written.
+ * reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at,
+ * above or beneath the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
+ * docs root carried the generator's writes and pruning outside the scratch folder; for one day after, no link was
+ * written at all, and the files and documents links stood for dropped out of the history); when its path would leave
+ * the directory or name a `.git`; when the platform cannot hold its name; when the disk, asked once for each folder
+ * ({@link placeEntry}), has a file where one of its folders goes, or already holds something at its name, as a disk
+ * that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot hold its name. Of two entries that
+ * clash, the first in the tree's order is written.
  *
  * @param disk - The disk, asked; the real one under `directory` unless a test stands one in.
  * @returns The entries not written, in the tree's order.
