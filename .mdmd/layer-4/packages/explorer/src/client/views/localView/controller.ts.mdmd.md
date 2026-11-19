@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-19T01:56:29.116Z
+- Generated At: 2026-11-19T05:15:58.199Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L86)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -84,6 +84,8 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`moment.HistoryChanges`](../../history/moment.ts.mdmd.md#symbol-historychanges) (type-only)
+- [`moment.HistoryMoment`](../../history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`reading-state.readingFiles`](../../reading-state.ts.mdmd.md#symbol-readingfiles)
 - [`branch-renderer.BranchStage`](./branch-renderer.ts.mdmd.md#symbol-branchstage)
 - [`branch-renderer.createStage`](./branch-renderer.ts.mdmd.md#symbol-createstage)
@@ -172,6 +174,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
+- [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
