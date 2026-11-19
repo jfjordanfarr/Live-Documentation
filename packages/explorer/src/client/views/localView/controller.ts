@@ -1828,25 +1828,30 @@ export class LocalViewController implements LocalViewApi {
    * that look was last drawn over the ratio now as `--look-zoom` (a Zoom button moves the camera at once, by 1.2 a
    * press), so that a thing starts at the size it had on screen; the lesser of that and 1 as `--look-keep`, at which the
    * file name's leaving lines stay; and the class `local-look-fading`, set afresh so that its animations start again at
-   * every change and taken away with the attribute once they have ended. The wires are drawn again then: drawn the frame
-   * after the change, they had ended where a travelling dot stood at its first frame, and stayed there at rest (a pinned
-   * symbol's wire 1.5 px off its dot at the overview, found 2026-11-13).
+   * every change and taken away once they have ended. The attribute stays until the next change: the held scales of the
+   * look left hang on it, on every card and row, and taking them away restyled the whole map a second time in each change
+   * (2026-11-19, the record's Turn 37; the numbers are in that day's `Probes/look-change-freeze/`). The wires are drawn
+   * again at the end: drawn the frame after the change, they had ended where a travelling dot stood at its first frame,
+   * and stayed there at rest (a pinned symbol's wire 1.5 px off its dot at the overview, found 2026-11-13).
    */
   private morphLook(from: ZoomLook, zoom: number): void {
     const container = this.container, style = container.style;
+    const fading = container.classList.contains("local-look-fading");
     container.classList.remove("local-look-fading");
     container.dataset.lookFrom = from;
     const moved = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
     style.setProperty("--look-from-scale", LOOK_SCALES[from].toFixed(3));
     style.setProperty("--look-zoom", moved.toFixed(4));
     style.setProperty("--look-keep", Math.min(1, moved).toFixed(4));
-    // A new animation starts only from a style without the class: reading a box flushes it.
-    void container.offsetWidth;
+    // A new animation starts only from a style without the class. Where the class was on (a change of look within the
+    // last one's fade), reading a box flushes the style without it; elsewhere the page's last style is already without
+    // it, and the read would only restyle the whole map once more at the old look, a quarter of the look change's cost
+    // on this repository's picture (measured 2026-11-19).
+    if (fading) void container.offsetWidth;
     container.classList.add("local-look-fading");
     window.clearTimeout(this.lookFade);
     this.lookFade = window.setTimeout(() => {
       container.classList.remove("local-look-fading");
-      delete container.dataset.lookFrom;
       if (this.stage && this.isShown()) this.drawConnections();
     }, 200);
   }
