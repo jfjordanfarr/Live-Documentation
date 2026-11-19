@@ -14286,3 +14286,677 @@
   ready for the next session.
 
   Six builders are out, with handbacks due by about 04:00 UTC.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ Oh! Not related to any of the above, but can you give me a button in Live
+  Documentation Explorer to reset my stylings to the defaults? I've noticed
+  that sometimes we diverge, and I see you changing the defaults to accommodate
+  design choices. There should be a way for me to quickly reset my visual
+  tuning preferences to their default values so that the links you send me are
+  perceived by both of us in the same way.
+
+  >Your question about the marks. They reach exactly one wire out, and no
+  further.
+
+  Ohhhh okay that makes sense.
+
+  >Your test of the product is being prepared as a playtest. A tester gets only
+  the Explorer and is asked how this software came to be. Its account is
+  graded against claims drawn from the narrative beforehand. The catch is the
+  one you named: our commit subjects are full sentences, so a tester reading
+  them is reading words. It runs twice, once with the step panel shown and once
+  hidden. The gap between the two scores is what the picture tells without the
+  words. It takes the browser only if a run can finish before the gate,
+  otherwise it is ready for the next session.
+
+  Ohhhhh my gosh that's so slick hahahahaha! You're right, we do have a control
+  to hide that. Oh wow, that is just so elegant I wish I had thought it up
+  myself! What a slick experiment! Hah!
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ Oh I guess it was related to the above. Takes me a while to write the
+  messages haha!
+
+● Agent(Reset Tuning to defaults) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● A builder is out for the reset button; recording your message now, then a
+  short answer.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The reset button is being built. It is a real gap: the page has no reset
+  today.
+
+  What I found when I checked: the page already saves only the levers you have
+  moved, so a default I change reaches every lever you never touched. A
+  difference between your picture and mine is therefore always a lever you once
+  moved. The Colour group (palette, marbles, Marble Pattern) never travels in a
+  link at all.
+
+  What you will get:
+  - Reset to Defaults, the first thing inside Tuning. It is greyed out when
+    nothing differs.
+  - An undo. A second press puts your levers back, until you move one. The World
+    Map's reset works the same way.
+  - A count beside the folded Tuning heading whenever any lever differs from its
+    default, so you can tell at a glance whether we are seeing the same thing
+    without opening the section.
+  - A quiet mark on each lever that differs, if it can be done cleanly, so you
+    can see which ones.
+
+  It leaves the Show Tests and Show Assets checkboxes alone, since those are in
+  plain sight.
+
+  Until it lands, and after, any link I send will say which levers it assumes
+  when one is not the default.
+
+  Seven builders are out now, with handbacks due around 04:00 UTC.
+
+› Message from general-purpose
+  The narrative playtest is ready to run, but no run fit tonight. It is
+  committed on branch `narrative-playtest` (from 2b9ff5d1) as one commit,
+  671accf7, not pushed.
+
+  **Why no run.** From 02:45 to 02:59 UTC the browser lock had one exclusive
+  holder and eight exclusive waiters queued ahead of any tester. A run takes
+  about 25 to 35 minutes once it holds the lock, so none could be sure to end by
+  03:55, and I started none.
+
+  **The claims key** is
+  `AI-Agent-Workspace/scripts/playtest/narrative-claims.md`. It has 39 dated
+  claims, C1 to C39, written before any run: 27 the history can show and 12 it
+  cannot. Of the 27, 23 show in the picture and 4 only in commit subjects.
+  - The claims cover every period: October 2025, the November simplification,
+  December, January to March, the April stop, and September to November 2026.
+  - Each cites its narrative line, and each showable claim was checked by
+  replaying `dist/explorer/explorer-history.json` step by step and against git.
+  - I used one Opus subagent to read the narrative whole (all 409 lines) and
+  draft and check the key. It wrote only that file; its helper scripts are in
+  the scratchpad.
+
+  **What is in the commit.**
+  - **Tasks.** `narrative-panel` and `narrative-picture` were added to
+  `tasks.json`. Both start at `http://127.0.0.1:8792/?view=local&mode=3d` with
+  150 actions. The tester is told the history is opened for it and that it has
+  about 150 actions, so it must choose how to travel.
+  - **Window setup.** A new `--open-history` makes the harness press the map's
+  own History button before the tester begins. A new `--hide-step-words` adds a
+  stylesheet of the harness's own before the page loads, which hides:
+    - the step panel, its dialog and its "Step details" toggle;
+    - the commit subjects in the commit finder's results.
+
+    The page's policy allows inline styles, so this needs no bypass.
+  - **Self-check.** In both conditions the window checks, before the tester's
+  first action, that the scrubber is open and the panel is drawn or hidden as
+  the condition says. It writes `setup.json` and ends the run if the check
+  fails. The launcher copies the check into `run.json`.
+  - **Grader.** `grade-narrative.mjs <run folder>` gives the grader's brief
+  (`narrative-grader.md`), the claims, the narrative and the account to a fresh
+  headless session with no tools. That session starts in an empty folder and is
+  not told the tester's model or condition.
+    - It marks each showable claim restated, partly restated, absent or
+  contradicted, quoting the account.
+    - It lists what the narrative contradicts and quotes what the account says
+  the screen did and did not show.
+    - It writes `grade.md` and `grade.json`.
+
+    I tested it on a made-up three-sentence account and it graded sensibly
+  ($0.81). It needs no browser.
+  - The README has a "narrative playtest" section.
+
+  **Not verified.** The setup's selectors have never run in a browser: the
+  History button by its accessible name, and the class names
+  `.history-scrubber`, `.history-step-panel`, `.history-details` and
+  `.history-commit-result`, all read from the source. If any is wrong,
+  `setup.json` stops the run before a tester spends anything.
+
+  **Commands to run it after the gate**, from the repository root. I chose high
+  effort as the strongest Opus setting allowed for builders, since max is ruled
+  out:
+  ```
+  R=AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/narrative-p
+  laytest
+  node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task narrative-panel
+  --model claude-opus-5-5 --effort high --out $R/narrative-panel-opus-high
+  node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task narrative-picture
+  --model claude-opus-5-5 --effort high --out $R/narrative-picture-opus-high
+  node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task narrative-picture
+  --model claude-sonnet-5-5 --effort medium --out
+  $R/narrative-picture-sonnet-medium
+  node AI-Agent-Workspace/scripts/playtest/grade-narrative.mjs $R/<each run>
+  node AI-Agent-Workspace/scripts/playtest/keep-pictures.mjs $R
+  ```
+  - The two Opus runs can run side by side.
+  - Grading needs no lane and costs about $1 a run.
+  - Run `keep-pictures` after a README cites the pictures.
+
+  **What the testers could not get from the pictures.** These are known from the
+  key, not from runs.
+  - The 12 not-showable claims are a third of the story: who made a change,
+  models and harnesses, decisions taken before code moved, the failures behind
+  the rules, the burnout, the return.
+  - Within what is showable, the map draws no markdown. The `.mdmd/` docs,
+  READMEs and AGENTS.md never appear, so the documentation that is the product
+  changes invisibly. A commit that rewrote the project's guidance looks the same
+  as one that touched only the record: 271 of the 415 steps from October to
+  November change no drawn file.
+  - The narrative's file counts cannot be checked on the map: "1,633 files" at
+  the April stop is 677 drawn files.
+
+  **Where the key and narrative disagree with git.** The subagent found nine
+  places. Six are dates or details the narrative gets slightly wrong; the full
+  list is in its report.
+  - The config file came on 12-12, not 12-11.
+  - The rule engine came on 10-31, not 10-30.
+  - The System-layer docs were deleted on 11-12 (the narrative tells it under
+  11-11).
+  - Over the holiday, main's line shows no step at all from 12-20 to 01-02;
+  Dependabot's commits reached main by merges on 01-03.
+  - **Most important for you:** the narrative never mentions the package renames
+  of 2026-09-27 and 28 (server to generator, shared to engine, scripts to
+  explorer). They are among the most visible moves in the whole history, so the
+  key has no claim for them, and a tester who sees them earns nothing for it.
+  I'd add the renames to the narrative, then to the key.
+
+  **What I would change in the design.**
+  1. **Build the history to today before running.** The bundle's history ends at
+  2026-11-13 (`5d520791`), so nothing after it is showable.
+  2. **Grade against a richer key.** The grader has the narrative but scores
+  only its claims. Picture-truths outside them, such as the renames, show up
+  only in section C. Either add picture-only claims checked against git, or
+  score section C.
+  3. **Remember condition (a) has a second source of words.** The commit finder
+  lists subjects with dates, so a panel-shown tester can read every subject by
+  searching. The words-versus-picture difference measures the panel and finder
+  together.
+  4. **Compare at equal cost.** Watch whether the hidden-words tester spends its
+  150 actions differently, for example using play rather than search. That
+  choice is a finding in itself.
+
+  **ideas.md, line 96** (I did not edit it). The entry "Playtesting by agents
+  who see only the screen" ends: "**Begun 2026-11-18** on a builder's branch
+  (`1b54b8b1`, not on `main` when this was written) … This entry goes when
+  playtests run from `main`." That is now stale on two counts:
+  - Playtests run from main: the instrument, the ladder runner, `keep-pictures`
+  and the first half of the ladder's records are all on main as of 2b9ff5d1.
+  - The ladder's first half ran: 24 runs on the estate sample across Opus medium
+  and low, Sonnet and Haiku.
+
+  By its own condition the entry should go. What it still carries, the owner's
+  words of 11-17 and 11-18, belongs in direction or in the probe README.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Blind playtest instrument" is waiting on its own background work · 3h
+  18m 8s
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+  ⎿  Resuming agent a1cac76  ⎿  Message queued for delivery to ae9c064b34d4535c0 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to a631ff0d46f0529ba at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to a56f13063bbac6a0c at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● The narrative playtest is on main, ready but not yet run; I'm now reading the
+  other two rounds' code ahead of their handbacks.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The narrative playtest is on main, ready but not yet run. The browser had
+  eight jobs queued, and a run takes about half an hour, so none could finish
+  before the gate.
+
+  Preparing it turned up three things before any tester looked:
+
+  - A third of the story is not in the picture at all. Of 39 claims drawn from
+    the narrative, 12 are about people, decisions and failures that no history
+    of code could show. Of the 27 that could show, 23 are visible in the picture
+    and 4 only in commit subjects.
+  - The map draws no Markdown. From October to November 2026, 271 of 415 history
+    steps change no drawn file, because they touched only documents. Your
+    second picture, "This commit changed nothing the docs could see", is one of
+    those.
+  - The narrative has gaps and small errors against git. It never mentions the
+    package renames of September 27 and 28, which are among the most visible
+    moves in the whole history. The builder also found a handful of dates off by
+    a day. I've asked for the full list and will check each against its source
+    before correcting the narrative.
+
+  One thing to do before the first run: the history your port carries ends at
+  November 13, so it needs building forward to today.
+
+  I've read the code of two of the other rounds, returning connections and the
+  rested pointer, ahead of their handbacks, and both read soundly so far. To get
+  the three earliest rounds through the browser queue first, I told the newer
+  builders to stay out of it until 03:30 UTC. The gate follows at about 03:50.
+
+› Message from general-purpose
+  Text-shape probe: a file's page shape shows what kind of text it is, but no
+  candidate let a stranger see which file a commit changed. Committed on branch
+  text-shape-probe as 8769bbbb (one commit on 4de93dfc); nothing under
+  packages/, nothing generated.
+
+  **Where things are**
+  - Code and README:
+  AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/text-shape/
+    - shape.ts draws the pictures (no browser). run.ts makes the pictures, the
+  counts and the samples. trials.ts makes the blind pictures; their answer key
+  is trials-key.json.
+    - Also there: both SQL queries, numbers.json, touches.json,
+  blind-answers.json, and proposal-samples.txt (the Braille and encoded-line
+  samples).
+  - Sheets and their README: …/2026-11-18/Screenshots/text-shape/ — fork.png,
+  small.png, sql.png, kinds.png, field.png, pins.png, pairs-PG.png, pairs-P.png.
+  - The sheets have no captions; the README names each tile by position. The
+  labelled composer (compose.ts) sat about 15 minutes in an eight-deep queue for
+  the browser lane, so I withdrew it and laid the sheets out without a browser.
+  The blind reading needed no browser.
+
+  **The three candidates**
+  - P: the file's page drawn on the marble, facing the viewer.
+  - PG: P plus a fine grain in each band of lines, which turns when a line in
+  that band changes.
+  - BG: the page wrapped round the marble in the vein colours, with the grain.
+  - The page is a 32-column ink grid over the first 128 characters. Rows: one
+  per line up to 64; a longer file is squeezed into 64 rows, each the mean of
+  its lines. A marble is at most about 60 px on screen, so a short file keeps
+  every line and a long file reads as its profile.
+  - The grain: each band of lines carries its own wrapped sketch, sin(sum/0.35),
+  so one changed line turns that band's grain by about a radian.
+
+  **What I see on each sheet**
+  - fork (forceGraphView.ts, last ten commits): P is the same marble at all ten
+  commits, because 2,500 lines squeezed into 64 rows keep only the profile. PG
+  and BG change only as a mottle with no place you can point to.
+  - small (a 58-line test before and after a one-line commit): P looks
+  unchanged. PG's grain differs only if you hunt for it.
+  - sql: P reads the alignment at a glance — the aliases make a clean vertical
+  gutter, while the conventional query's right edge is ragged. PG veils it; BG
+  loses it.
+  - kinds: in P each kind reads differently. Tests are dense streaks, CSS is
+  short lines, JSON shows its indentation staircase, Markdown is long even
+  prose, the stored procedure is blocky, and the PNG is an even smear (mostly
+  told by its magenta asset colour).
+  - field: P is about as calm as today's From Its Doc but has no veins, so it
+  loses the marble's meaning. PG is noisier and BG the noisiest.
+  - pins: at the real 18×14 size every box is a smudge. At 36×28 the left margin
+  shows. At ×4 the page reads.
+  - BG left 139 touches pixel-identical, 123 of which moved PG. The likely cause
+  is that edits in the first or last band land at the poles, out of view — a BG
+  flaw.
+
+  **Numbers (375 touches of the 384; 9 made or removed a file)**
+
+  The measure is the largest mean change in brightness over any 8×8 window of a
+  48 px marble, on a 0–255 scale. On the pairs sheets, a change above 8 is
+  findable side by side and anything below 5 is invisible to me. Nothing at 48
+  px shows at a glance.
+
+  | Candidate | Touches above 8 | Above 4 | Above 1 |
+  | --- | --- | --- | --- |
+  | P | 56 | 115 | 245 |
+  | PG | 171 | 234 | 301 |
+  | BG | 186 | 199 | 210 |
+
+  Bytes per file each Live Doc (and each history step that touches the file)
+  would have to carry:
+
+  | What | Size |
+  | --- | --- |
+  | Page at 2 bits per cell | up to 512 B |
+  | Grain | 64 B |
+  | One base64 line | 712 B (the test), 500 B (SQL), 776 B (forceGraphView.ts) |
+  | Braille fence | 506 B, 264 B, 627 B respectively |
+
+  - Braille: a person reading the Markdown sees the page, git's diff shows which
+  band moved, and the SQL gutter is plain. It has no room for the grain.
+  - Cost: today 250 of 384 touches leave a Live Doc byte-identical. With the
+  page in the doc, almost every touch would rewrite it, since P's page moves at
+  245 of 375.
+
+  **Blind reading (questions and chance levels fixed before seeing any result,
+  nothing rerun)**
+
+  A fresh Opus agent was told only "each ball is drawn from the text of one
+  file" and shown 37 unlabelled pictures once.
+
+  | Question (chance) | P | PG | BG | Today's From Its Doc | 2D pin, page | 2D
+  pin, page + grain |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | Which of six changed, real commit (1/6) | 1/3 | 0/3 | 0/3 | 0/3 | 0/2 | 1/2
+  |
+  | Same, one or two lines of a small file (1/6) | 0/2 | 0/2 | 1/2 | 0/2 | — | —
+  |
+  | Which query is the aligned one (1/2) | right | right, a guess | right, a
+  guess | — | wrong | right, a guess |
+  | Order three text files by length (1/6) | 2/2 | 1/2 | 1/2 | 1/2 | — | — |
+  | Which of four is not text (1/4) | 2/2 | 2/2 | 2/2 | 2/2 | — | — |
+
+  - P's aligned-query answer came with the right reason: "dark marks stack into
+  vertical columns at a shared edge".
+  - The not-text question says nothing about texture: the stranger named the
+  asset's magenta as its clue.
+  - In its own words: "At that size an edit of one file almost never showed";
+  "mottled and woven textures … were too uniform to compare ball by ball";
+  "small boxes … told me nothing".
+
+  **Verdict**
+  - The texture that turns at every edit (the grain, PG and BG) does not work.
+  It measured as moving, told a stranger nothing, and added noise to the field.
+  Back it out as an idea.
+  - P's page does tell a stranger something: file length (2 of 2, 1 in 36 by
+  chance) and the owner's case of alignment by eye. It stays calm. But it
+  answers the shape half of the wish, not the "see that a commit changed
+  something" half.
+  - A model's failure isn't proof a person's eye fails — people read texture
+  better, and would learn it over weeks. A model's success is fair evidence the
+  signal is there, and P's page was the only success.
+
+  **Recommendation**
+  - Drop the grain.
+  - If anything ships, P's page as a slow, readable shape in the 2D Internals
+  pin at its larger looks, and as an alternative glass on the marble near up.
+  - Don't promise perceptible per-commit change from texture. At 48–72 px it
+  isn't there.
+  - For "something changed here", a plain change mark is honest; the history's
+  Dim/Glow already does this.
+  - In the product, P would need the page's direction taken from the view rather
+  than the marble's own sphere (the contained sphere already computes the hit
+  in view space), plus about 512 B per file.
+
+  **What I'd change in root's reading**
+  - The two-scales idea is sound on paper, but its fine scale measures without
+  being seen at this size. The coarse page carries the signal on its own, and
+  only near up or at the pin's larger sizes.
+  - The 2D pin needs its far look (36×28 or larger) for any shape to read; at
+  the reading look it is a smudge.
+
+  **The lane cost me** the labelled sheets: about 15 minutes in the queue, then
+  I withdrew from it.
+
+  Read 4 files, ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  The table is committed as ce5bcd3a on branch `narrative-disagreements` (from
+  feb7bbd2, not pushed). It is at `AI-Agent-Workspace/AgentSessionHistory/2026/1
+  1/2026-11-18/Probes/blind-playtests/narrative-disagreements.md`. I did not
+  edit the narrative.
+
+  There are seven real disagreements, not the nine I reported earlier. I checked
+  every row again with read-only git, and each gives the narrative line, what
+  it says, what git shows, the commit, and the command that proves it.
+
+  | Narrative line | What is wrong | Kind |
+  | --- | --- | --- |
+  | 51 | The relationship rule engine, `6473d51c`, is dated 2025-10-31, not the
+  10-30 the narrative implies | Wrong date, one day |
+  | 75 | The System docs' deletion in `5a20f2e8` is dated 11-12, not 11-11. The
+  same commit also adds the System tooling's code. | Wrong date, one day |
+  | 115 | `.live-docs.config.json` (`bf08ea0a`) is from 12-12 at 11:21, not
+  "that evening" of 12-11 | Wrong date, one day |
+  | 131 | Dependabot's commits of the holiday stayed on its own branches. Main
+  has nothing from 12-19 to the merges of 01-03. | Wrong detail |
+  | 139 | `0d89e857` removed the store's code. The schema went in `cb35a274`
+  (01-13) and the last SQLite script in `59665f98` (01-15). | Wrong detail |
+  | 169 | The HTTP server's retirement, `9a6ded52`, is dated 03-10, not 03-09 |
+  Wrong date, one day |
+  | Around 193 | The package renames are missing: server to generator
+  (`cad63bdd`, 09-27), shared to engine (`690f5d27`, 09-28), scripts to explorer
+  (`d23a6f90`, 09-28) | Omission |
+
+  The other four points from my earlier count are not disagreements, and the
+  file says why:
+  - The counts on lines 185 and 193 measure all files and docs, while the
+  history draws neither markdown nor `AI-Agent-Workspace`.
+  - "The extension became one file" (line 161) checks out.
+  - 817 against 818 was a miscount in my own brief.
+
+  The link check passes on the branch (0 broken).
+
+● Agent "Blind playtest instrument" is waiting on its own background work · 3h
+  20m 55s
+
+› Message from general-purpose
+  ## Text-shape probe
+
+  A file's drawn page reads as a picture of its text, but no texture let a blind
+  reader see which file a commit changed. The probe is on branch
+  `text-shape-probe`, commit 8769bbbb, built on 4de93dfc. Nothing changed under
+  `packages/`, nothing generated, nothing in the Live Doc format. I sent the
+  same report to "main" by SendMessage.
+
+  **Where things are**
+  - **Probe:**
+  `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/text-shape/`
+    - `shape.ts` draws the pictures pixel by pixel, without a browser.
+    - `run.ts` makes the pictures, the counts and the samples.
+    - `trials.ts` makes the blind reading's pictures, with the answers kept in
+  `trials-key.json`; the reader's answers are in `blind-answers.json`.
+    - Also there: the two SQL queries, `numbers.json`, `touches.json`,
+  `proposal-samples.txt`, and a README.
+  - **Sheets:** `…/2026-11-18/Screenshots/text-shape/` holds `fork.png`,
+  `small.png`, `sql.png`, `kinds.png`, `field.png`, `pins.png`, `pairs-PG.png`
+  and `pairs-P.png`, with a README that says what I see in each.
+
+  The sheets have no captions; the README names each tile by position. The
+  shared browser lane had eight jobs queued, and three product rounds were
+  waiting on it, so I withdrew the labelled run after about a quarter of an
+  hour. The blind reading needed no browser.
+
+  **The candidates**
+  - **The page:** a grid of ink, 32 columns over the first 128 characters. Rows:
+  one per line up to 64. A longer file is squeezed into 64 rows, each the mean
+  of its lines, because a marble is at most about 60 px on screen.
+  - **The grain:** each band of lines carries its own sketch, wrapped as
+  sin(sum/0.35). One changed line turns its band's grain by about a radian.
+  - **P** puts the page inside the ball, facing the viewer. **PG** is P plus the
+  grain. **BG** wraps the page round the ball in the vein colours, with the
+  grain.
+
+  **What I see on each sheet**
+  - **`fork.png`** (forceGraphView.ts over its last ten commits): in P the ten
+  balls look the same, since a 2,500-line file keeps only its profile. In PG and
+  BG the commits differ only as a mottle with no place you can point to.
+  - **`small.png`** (a 58-line test, one line changed): P looks unchanged. In PG
+  the change shows only if you hunt for it.
+  - **`sql.png`:** P shows the aligned query's alias gutter at a glance, against
+  the conventional query's ragged right edge. PG veils it; BG loses it.
+  - **`kinds.png`:** in P each kind reads as its own shape.
+    - The test is dense streaks; the stylesheet is short lines.
+    - The JSON shows its indentation staircase; the Markdown is long even lines.
+    - The stored procedure is blocky.
+    - The PNG is an even smear, though it is told apart mostly by the asset's
+  magenta.
+  - **`field.png`** (forty balls at on-screen sizes): P is about as calm as
+  today's From Its Doc marble, but it has no veins, so it loses what the marble
+  meant. PG is noisier and BG the noisiest.
+  - **`pins.png`:** the 2D Internals pin is a smudge at its reading size (about
+  18×14). The left margin shows from 36×28, and the page reads at four times
+  enlarged.
+  - **BG's blind spot:** BG left 139 touches pixel-identical, 123 of which
+  changed PG. The likely cause is that edits at a file's start or end fall at
+  the ball's poles, out of view. That is a flaw of BG.
+
+  **Numbers**
+
+  Of the 384 touches in the last 150 commits, 375 have the file both before and
+  after. The measure is the largest change of brightness in any 8×8 window of a
+  48 px ball, on a 0–255 scale. I set the threshold at 8 by eye: above it a
+  change can be found side by side, below 5 I could not see one. Nothing at 48
+  px shows at a glance.
+
+  | Candidate | Touches above 8 | Above 4 | Above 1 |
+  | --- | --- | --- | --- |
+  | P | 56 | 115 | 245 |
+  | PG | 171 | 234 | 301 |
+  | BG | 186 | 199 | 210 |
+
+  What a Live Doc would carry per file:
+  - The page at 2 bits a cell is up to 512 B, and the grain 64 B.
+  - As one base64 line: 712 B for the test, 500 B for the SQL, 776 B for
+  forceGraphView.ts.
+  - As a Braille block in the Markdown: 506, 264 and 627 B. A reader sees the
+  page and git's diff shows which band moved, but there is no room for the
+  grain.
+  - Today 250 of 384 touches leave a Live Doc byte-for-byte unchanged. With the
+  page in the doc, nearly every touch would rewrite it.
+
+  **The blind reading**
+
+  A fresh Opus agent was told only that each ball is drawn from the text of one
+  file. It saw 37 unlabelled pictures once. The questions and their chance
+  levels were set beforehand, and nothing was rerun.
+
+  | Question (chance) | P | PG | BG | Today's marble | Pin, page | Pin, page and
+  grain |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | Which of six balls a real commit changed (1 in 6) | 1/3 | 0/3 | 0/3 | 0/3 |
+  0/2 | 1/2 |
+  | The same, one or two lines of a small file (1 in 6) | 0/2 | 0/2 | 1/2 | 0/2
+  | — | — |
+  | Which query is the aligned one (1 in 2) | right | right, a guess | right, a
+  guess | — | wrong | right, a guess |
+  | Order three text files by length (1 in 6) | 2/2 | 1/2 | 1/2 | 1/2 | — | — |
+  | Which of four is not text (1 in 4) | 2/2 | 2/2 | 2/2 | 2/2 | — | — |
+
+  - For P's aligned-query answer it gave the right reason: "dark marks stack
+  into vertical columns at a shared edge".
+  - The not-text question says nothing about texture: the reader named the
+  asset's magenta as its clue.
+  - In its own words: "At that size an edit of one file almost never showed";
+  "mottled and woven textures … were too uniform to compare ball by ball";
+  "small boxes … told me nothing".
+
+  **Verdict**
+  - **The grain doesn't work.** It is the texture made to turn at every edit, in
+  PG and BG alike. It measures as moving, tells a stranger nothing, and makes
+  the field noisier. Back it out.
+  - **The page (P) tells a stranger something** and stays calm: it ordered files
+  by length twice out of twice, and it showed the hand-aligned query. But it
+  answers the "shape of the file" half of the owner's wish, not the "see that a
+  commit changed something" half.
+  - A model failing to see a change is not proof a person would fail; people
+  read texture better, and would learn it over weeks. A model's success is fair
+  evidence the signal is there, and the page was the only success.
+
+  **Recommendation**
+  - Drop the grain.
+  - If anything ships, show the page near up: as an alternative glass on the
+  marble, and in the 2D pin at its larger sizes.
+  - Don't promise a perceptible per-commit change from texture at 48–72 px; it
+  isn't there.
+  - For "this file changed here", a plain change mark is honest, which the
+  history's Dim and Glow already give.
+  - In the product, P would need to read the page's direction from the view
+  rather than from the ball's own sphere (the contained sphere already computes
+  the hit in view space). It would also need about 512 B per file.
+
+  **What I'd change in root's reading:** the two-scales idea is sound on paper,
+  but the fine scale measures without being seen at these sizes. The coarse page
+  carries the signal on its own, near up and at the pin's larger looks.
+
+  **Unfinished:** only the labelled versions of the sheets, given up to the
+  browser lane.
+
+● Agent "Marble pattern from contents" finished · 24m 34s
+
+● The texture probe is back with a clear verdict; I'm filing the last piece from
+  the playtest builder and then giving you the verdict with its pictures.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Verdict from the texture probe: stop using texture to show change. You invited
+  the plain version, and the evidence supports it.
+
+  What failed
+
+  - The grain was my own proposal, and it does not work. It was meant to turn at
+    every edit. Measured, it moves at 171 of 375 real file edits, yet it tells
+    a viewer nothing.
+  - A stranger could not find the changed file. Shown six unlabelled marbles and
+    asked which one a commit changed, a fresh model picked right in none of
+    five trials with the grain.
+  - Today's From Its Doc marble did no better: none of five on the same
+    question.
+  - The grain adds noise. On the field of forty (AI-Agent-Workspace/AgentSession
+    History/2026/11/2026-11-18/Screenshots/text-shape/field.png), the top two
+    rows are the page alone and are calm. The four rows below carry a grain and
+    are visibly mottled.
+  - No version shows a commit. A 2,500-line file is the same ball at ten
+    commits, and one changed line out of 58 changes nothing an eye can find.
+
+  What survived
+
+  The page alone, your "grid of text" idea as an editor's minimap, does tell a
+  stranger something:
+
+  - Your aligned queries read. On the query sheet (AI-Agent-Workspace/AgentSessi
+    onHistory/2026/11/2026-11-18/Screenshots/text-shape/sql.png), the top row is
+    the query aligned by eye and shows a vertical column where the aliases line
+    up. The bottom row is the same query formatted conventionally, with a
+    ragged edge. The stranger picked the aligned one and gave that reason.
+  - Kinds of file differ. On the kinds sheet (AI-Agent-Workspace/AgentSessionHis
+    tory/2026/11/2026-11-18/Screenshots/text-shape/kinds.png), the first two
+    columns show a test, a stylesheet, a JSON file's indentation staircase,
+    prose, a stored procedure and an image, each with its own shape.
+  - Length reads: three files ordered correctly, twice out of two.
+
+  It only reads near up, at about 100 px on a sphere or about 36 × 28 px flat.
+  Most spheres on the 3D map are 20 to 60 px, where it is invisible. At the
+  Internals pin's real size of 18 × 14 px, every box is a smudge (AI-Agent-Works
+  pace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/text-shape/pins.png).
+
+  A model failing is not proof your eye would fail. But I looked at every sheet
+  myself and saw the same thing.
+
+  What I recommend
+
+  - Build nothing more on texture. I've filed the page idea in the ideas list
+    with this evidence and its cost. The cost is up to about 600 bytes in every
+    Live Doc, and nearly every edit of a file would then rewrite its doc.
+  - For "a small change should be perceptible", use the mark the history already
+    puts on a changed file. It could also say how much changed, by brightness
+    or size, if the history carried lines added and removed per commit. I have
+    not built this; it is the direction I would try next.
+  - The history work now in progress serves the same wish more directly: pinned
+    files undimmed, the coarse and fine buttons, and the timeline zoom.
+
+  One question for you
+
+  Do you want Marble Pattern → From Its Doc kept as a look? It is off by default
+  and costs nothing while it sits there. It gives each file its own marble but
+  does not show change. If you don't say, I'll leave it where it is.
+
+  Also filed
+
+  The playtest builder checked the narrative against git and found seven
+  disagreements: four dates off by a day, two wrong details, and the missing
+  package renames of September 27 and 28. I'll verify each against its source
+  before correcting the narrative.
+
+  Six builders are still out. The gate follows the first landings.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 13m
+  48s
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Waiting on the browser queue now: three builders are in it, and the first
+  three rounds each still need one verification run before they hand back.
+
+  While waiting, I checked the seven narrative disagreements against their
+  commits and corrected the narrative in place, with a dated note linking the
+  list and its proofs. The package renames of September 27 and 28 are now told.
+
+  No round has handed back since my last message. I'll review and land each as
+  it arrives, then start the gate.
