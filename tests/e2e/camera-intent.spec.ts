@@ -239,12 +239,11 @@ test("following, the owner's two pinned symbols are framed with their cards' nam
   expect(seen.hand, "by hand, the arrival frames the subject's card alone").toBe(false);
 });
 
-test("following, a cell's press at reading size pulls back to hold the subject and the new card; by hand it keeps the scale", async ({ browser }) => {
+test("following, a cell's press far from the subject frames the new card on the smooth path and says the subject is left out; by hand it pans flat at its scale", async ({ browser }) => {
   test.setTimeout(120_000);
-  // Known to fail on 2026-11-19, and marked so until the floor's fork is decided: on pathfind.ts the first history cell's
-  // card lands about 2,700 map px below the subject's name, farther than the connections look's last press can hold in a
-  // 900 px window, so the rule leaves the subject out and rides to the new card as By Hand does (the evidence's README).
-  test.fail();
+  // The owner's case: the first history cell's card lands about 2,700 map px below pathfind.ts's name, farther than the
+  // floor can hold beside it in a 900 px window, so the newest is framed alone, the subject said left out, and the long
+  // move takes the smooth zoom's path rather than a flat ride (root's rulings of 2026-11-19).
   for (const framing of ["hand", "follows"] as const) {
     const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, framing);
     const before = await scaleOf(page);
@@ -253,14 +252,14 @@ test("following, a cell's press at reading size pulls back to hold the subject a
     await target.click();
     await expect(page.locator(card(path))).toHaveCount(1);
     await still(page);
-    const frame = await frameOf(page), after = await scaleOf(page);
-    const both = inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame) && inside(await boxOf(page, `${card(path)} .node-title`), frame);
+    const frame = await frameOf(page), map = page.locator("#map-container");
+    expect(inside(await boxOf(page, `${card(path)} .node-title`), frame), "the new card's name in view").toBe(true);
     if (framing === "follows") {
-      expect(both, "the subject's name and the new card's name both in view").toBe(true);
-      expect(after).toBeLessThan(before);
+      await expect(map).toHaveAttribute("data-framing-path", "smooth");
+      expect((await map.getAttribute("data-framing-left-out"))?.split(" ")).toContain(SUBJECT);
     } else {
-      expect(after, "a step keeps the camera's scale").toBeCloseTo(before, 6);
-      expect(both, "by hand, the step brings the newcomer in and lets the subject go").toBe(false);
+      expect(await scaleOf(page), "a step keeps the camera's scale").toBeCloseTo(before, 6);
+      expect(await map.getAttribute("data-framing-path"), "by hand there is no following path").toBeNull();
     }
     await context.close();
   }
@@ -268,12 +267,9 @@ test("following, a cell's press at reading size pulls back to hold the subject a
 
 test("the person's wheel takes the camera: a new pin then only pans at the same scale, and Fit gives the following back", async ({ browser }) => {
   test.setTimeout(120_000);
-  // Known to fail at its last step on 2026-11-19 for the reason the case above states: Fit follows the pins again, but the
-  // subject and the history cell's card do not both fit at the floor, so the subject is left out.
-  test.fail();
   const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "follows");
   await expect(follow(page)).toHaveAttribute("aria-pressed", "true");
-  const frame = await frameOf(page);
+  const frame = await frameOf(page), map = page.locator("#map-container");
   await page.mouse.move((frame.left + frame.right) / 2, (frame.top + frame.bottom) / 2);
   await page.mouse.wheel(0, 200);
   await still(page);
@@ -285,16 +281,39 @@ test("the person's wheel takes the camera: a new pin then only pans at the same 
   await expect(page.locator(card(path))).toHaveCount(1);
   await still(page);
   expect(await scaleOf(page), "the person's frame keeps its scale").toBeCloseTo(before, 6);
+  expect(await map.getAttribute("data-framing-left-out"), "nothing is said left out while the person holds the camera").toBeNull();
   await follow(page).click();
   await expect(follow(page)).toHaveAttribute("aria-pressed", "true");
   await still(page);
-  const framed = await frameOf(page);
-  expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), framed) && inside(await boxOf(page, `${card(path)} .node-title`), framed),
-    "Fit frames the subject and the pin again").toBe(true);
+  expect(inside(await boxOf(page, `${card(path)} .node-title`), await frameOf(page)), "Fit frames the newest pin again").toBe(true);
+  expect((await map.getAttribute("data-framing-left-out"))?.split(" ")).toContain(SUBJECT);
   await context.close();
 });
 
-test("following, pins that cannot all be framed leave the oldest out and always frame the newest", async ({ browser }) => {
+test("following, the continuing search's rearrangement never zooms in and keeps both pins' names in view; by hand it does not hold them", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const pins = ["packages/engine/src/live-docs/graph.ts", SUBJECT].map(nodeId => ({ nodeId, symbol: "*" }));
+  for (const framing of ["hand", "follows"] as const) {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+    await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 6, framing } } })
+    });
+    const page = await context.newPage();
+    await page.goto(link("/", pins, SUBJECT));
+    await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+    const first = await scaleOf(page);
+    await still(page);
+    const frame = await frameOf(page);
+    const names = [inside(await boxOf(page, `${card(pins[0].nodeId)} .node-title`), frame), inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame)];
+    if (framing === "follows") {
+      expect(await scaleOf(page), "the search's re-frame never zooms in").toBeLessThanOrEqual(first + 1e-6);
+      expect(names, "both pins' names held").toEqual([true, true]);
+    } else expect(names.every(Boolean), "by hand the arrival frames the subject alone").toBe(false);
+    await context.close();
+  }
+});
+
+test("following, pins that cannot all be framed leave the oldest out, always frame the newest, and the tray says so", async ({ browser }) => {
   test.setTimeout(90_000);
   const files = ["packages/engine/src/live-docs/graph.ts", "scripts/live-docs/visualize-static.ts", "packages/explorer/src/client/index.ts",
     "packages/engine/src/live-docs/history/codec.ts", SUBJECT];
@@ -309,6 +328,11 @@ test("following, pins that cannot all be framed leave the oldest out and always 
       const frame = await frameOf(page);
       expect(inside(await boxOf(page, `${card(SUBJECT)} .node-title`), frame)).toBe(true);
     }
+    // The pin tray says which pins are outside the frame, in its quiet words and in the row's name.
+    await page.locator(".pin-tray-toggle").click();
+    const oldest = page.locator(`.pin-tray-row[data-retained-key='${JSON.stringify(["pin", files[0], "*"])}'] .pin-tray-subject`);
+    if (framing === "follows") await expect(oldest).toHaveAttribute("aria-label", /outside the frame$/);
+    else await expect(oldest).not.toHaveAttribute("aria-label", /outside the frame/);
     await context.close();
   }
 });
