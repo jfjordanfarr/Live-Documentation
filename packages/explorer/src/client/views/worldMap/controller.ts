@@ -1860,12 +1860,17 @@ export class WorldMapController {
       }
     });
 
-    // Unfolding a piece's files makes its panel taller and wider; it is placed again, beside its piece and in the view.
-    on(this.evidence, "toggle", () => {
-      if (this.pinned) {
+    // A pinned panel that changes size, its files unfolded or folded, is placed again, beside its piece and in the view.
+    // A resize observer answers after the browser lays the panel out and before it paints it, so no frame shows it
+    // grown where it stood. The `toggle` event it replaces comes in a task of its own, which may follow a painted frame
+    // with the unfolded panel's foot below the view (2026-11-19).
+    const resized = new ResizeObserver(() => {
+      if (this.pinned && this.evidence.style.display !== "none") {
         this.placeEvidence(this.pinned, true);
       }
-    }, { capture: true });
+    });
+    resized.observe(this.evidence);
+    this.disposers.push(() => resized.disconnect());
 
     // The keyboard on a piece peeks at it as the pointer does; Enter or Space pins it as a click does and takes the
     // keyboard into its panel, where who it talks to, the way inside and its files are the next stops. The listeners

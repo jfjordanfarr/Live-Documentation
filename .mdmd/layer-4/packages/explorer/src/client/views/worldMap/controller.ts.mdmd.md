@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-11-19T00:56:03.195Z
+- Generated At: 2026-11-19T01:19:39.962Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,7 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
   - **Reset, and putting back.** `resetLayout` used to throw every position away and save at once. It now keeps what it discarded in `beforeReset` until a piece is next moved (`forgetReset`, from a drop or the handle's `move`); until then the same tool and the same key put the positions back. The tool is a toggle, pressed while a reset stands that it can take back. Its name stays "Reset layout", as a toggle's name does, and its tooltip says which of the two a press will do. A reset with nothing moved does nothing. What was discarded lives for the page, not in storage.
   - **Reduced motion.** `tween` makes every change at once under `prefers-reduced-motion: reduce`, read at each change: turning, looking down and up, and the walkthrough's camera.
   - **Help and the walkthrough.** The help button carries `aria-expanded` and `aria-controls`. The walkthrough writes each step into a `role="status"` region of the view's own (`status`), kept outside the walkthrough's box, which is hidden when it ends; the page's own status region is the page template's.
+  - **The pinned panel's size.** Since 2026-11-19 a resize observer places a pinned panel again whenever its size changes, its files unfolded or folded. It replaced a `toggle` listener. That event comes in a task of its own, so the unfolded panel could be read, and could be painted, where the folded one had stood, its foot below the view; `world-map.spec.ts` caught it about one run in five.
   - **The toolbar** is one Tab stop: the tool last on holds `tabIndex` 0 and the rest -1, and the arrows (wrapping), Home and End move between them, as the WAI-ARIA Authoring Practices' toolbar does.
 
 ## Generated
@@ -63,7 +64,7 @@ Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2251)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L2256)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.

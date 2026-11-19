@@ -198,6 +198,9 @@ test.describe("World Map", () => {
     const evidence = page.locator("#view-world .world-evidence");
     await expect(evidence).toHaveClass(/pinned/);
     const judge = async (state: string): Promise<void> => {
+      // What a person sees is the next painted frame: the panel unfolds on the click and is placed again before that
+      // frame is painted. Read at once, it was read between the two, its foot below the view, one run in five (2026-11-19).
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       const box = (await evidence.boundingBox())!;
       const view = (await page.locator("#view-world").boundingBox())!;
       const panel: TextBox = { text: "the pinned panel", tag: "div", x: box.x, y: box.y, w: box.width, h: box.height };
