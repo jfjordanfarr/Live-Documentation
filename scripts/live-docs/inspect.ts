@@ -50,8 +50,8 @@ import {
   emitSymbolPathNotFound,
   emitSymbolPathResult
 } from "./inspect/emit";
-import { emitBetween, emitFileAt, emitReachableAt, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
-import { hasSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
+import { emitBetween, emitFileAt, emitLinksAt, emitReachableAt, emitWordsAt, historyFolder, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
+import { hasSymbolReference, parseSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
 
 interface ParsedArgs {
   help: boolean;
@@ -66,6 +66,8 @@ interface ParsedArgs {
   from?: string;
   to?: string;
   reachable: boolean;
+  /** Whether `--words` asks, with `--at` and `--from`, for the words of the file at that commit. */
+  words: boolean;
   /** Whether `--groups` asks for the disconnected groups of the whole graph. */
   groups: boolean;
   direction: Direction;
@@ -94,6 +96,12 @@ async function main(): Promise<void> {
 
   if (args.groups && (args.from !== undefined || args.to !== undefined || args.directionGiven || args.reachable || args.at !== undefined || args.between !== undefined)) {
     console.error("--groups lists the disconnected groups of the whole graph as today's docs say; it takes no --from, --to, --direction, --reachable, --at or --between.");
+    process.exit(1);
+    return;
+  }
+
+  if (args.words && args.at === undefined) {
+    console.error("--words prints a file's words at a past commit, from the history, and takes --at; today's words are in the file's Live Doc.");
     process.exit(1);
     return;
   }
@@ -290,8 +298,8 @@ async function answerFromHistory(args: ParsedArgs, workspaceRoot: string, config
   if (args.at !== undefined && args.between !== undefined) {
     throw new HistoryRefusal("--at asks about one commit and --between about two; give one of them.");
   }
-  if (args.to !== undefined || args.directionGiven) {
-    throw new HistoryRefusal("From the history, --at answers a file's wires and the walk from the entries, and --between what changed; neither takes --to or --direction yet.");
+  if (args.directionGiven || (args.to !== undefined && args.at === undefined)) {
+    throw new HistoryRefusal("From the history, --at answers a file's rows, the links between two files or symbols with --to, and the walk from the entries, and --between what changed; neither takes --direction, nor --between --to.");
   }
   if (args.between !== undefined) {
     if (args.from !== undefined || args.reachable) {
@@ -306,6 +314,24 @@ async function answerFromHistory(args: ParsedArgs, workspaceRoot: string, config
   }
   const sequence = await readHistory(workspaceRoot, config);
   const step = resolveStep(sequence, args.at!);
+  if (args.words) {
+    if (args.from === undefined || args.to !== undefined || args.reachable) {
+      throw new HistoryRefusal("At a commit, --words prints the words of the file --from names; it takes no --to or --reachable.");
+    }
+    await emitWordsAt(sequence, step, codePathOf(args.from, config), historyFolder(workspaceRoot, config), args.json);
+    return;
+  }
+  if (args.to !== undefined) {
+    if (args.from === undefined || args.reachable) {
+      throw new HistoryRefusal("At a commit, --to lists the links between --from and it; give --from and no --reachable.");
+    }
+    const end = (given: string): { codePath: string; symbol?: string } => {
+      const reference = parseSymbolReference(given);
+      return { codePath: codePathOf(reference.path, config), ...(reference.symbol !== undefined ? { symbol: reference.symbol } : {}) };
+    };
+    emitLinksAt(sequence, step, end(args.from), end(args.to), args.json);
+    return;
+  }
   if (args.from !== undefined) {
     emitFileAt(sequence, step, codePathOf(args.from, config), args.json);
     return;
@@ -330,6 +356,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     json: false,
     verbose: false,
     reachable: false,
+    words: false,
     groups: false,
     direction: "outbound",
     directionGiven: false,
@@ -397,6 +424,10 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--words": {
+        parsed.words = true;
+        break;
+      }
       case "--reachable": {
         parsed.reachable = true;
         break;
@@ -467,8 +498,12 @@ function usage(): string {
     `  --json                   Emit JSON instead of text.\n` +
     `  --verbose                Include full symbol lists in output (default: slim).\n` +
     `  --at <commit>            From the history, at a commit (a prefix of its id): with --from, whether the\n` +
-    `                           file existed and its wires; with --reachable, the walk from that commit's\n` +
-    `                           entries. From the shape alone; npm run live-docs:history computes the history.\n` +
+    `                           file existed, its symbols, dependency lines and links that day; with --from\n` +
+    `                           and --to, the links between two files, or two symbols as path#Symbol; with\n` +
+    `                           --reachable, the walk from that commit's entries, from the shape alone.\n` +
+    `                           npm run live-docs:history computes the history.\n` +
+    `  --words                  With --at and --from, the file's words that day: its authored block and each\n` +
+    `                           symbol's description, or why they cannot be read.\n` +
     `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files created,\n` +
     `                           deleted, renamed and resized, wires added and removed. From the shape alone.\n` +
     `  --workspace <path>       Workspace root (defaults to current working directory).\n` +

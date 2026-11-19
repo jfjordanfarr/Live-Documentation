@@ -9,6 +9,7 @@
  *   index.html              # The viewer
  *   explorer-data.json      # The graph index and the related markdown
  *   explorer-history.json   # The history the export carries, when it carries one
+ *   explorer-history-words/ # The words of its steps, one part per directory, beside it
  *   static/                 # Scripts and styles
  * ```
  */
@@ -27,6 +28,7 @@ import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/li
 import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { headOf } from "@live-documentation/engine/live-docs/history/sequence";
 import { windowOf, type HistorySelection } from "@live-documentation/engine/live-docs/history/window";
+import { wordsStore, type WordsPart } from "@live-documentation/engine/live-docs/history/words";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
 import { bundleRelatedDocs } from "./bundledMarkdownScanner";
@@ -34,6 +36,9 @@ import type { StaticExplorerData } from "./staticExplorerData";
 
 /** The name of the history file the bundle carries beside `explorer-data.json`. */
 const BUNDLED_HISTORY_FILE = "explorer-history.json";
+
+/** The folder of the words of the steps the bundle carries, beside its history file, fetched a directory at a time (2026-11-19). */
+const BUNDLED_WORDS_DIRECTORY = "explorer-history-words";
 
 /** How much of the history an export carries: none of it, or the part a selection names. */
 export type ExportedHistory = { rule: "none" } | HistorySelection;
@@ -212,6 +217,8 @@ async function writeHistory(
         throw error;
     });
     const selection: ExportedHistory = asked ?? (text === undefined ? { rule: "none" } : { rule: "all" });
+    const wordsTarget = path.join(outputDir, BUNDLED_WORDS_DIRECTORY);
+    await fs.rm(wordsTarget, { recursive: true, force: true });
     if (selection.rule === "none") {
         await fs.rm(target, { force: true });
         return undefined;
@@ -226,6 +233,29 @@ async function writeHistory(
     }
     const sequence = parsed as HistorySequence;
     const window = windowOf(sequence, selection);
+    if (sequence.words) {
+        // The words of the steps the export carries, each text once, from the store the history command wrote beside its sequence.
+        const texts = new Map<number, string>();
+        const sourceWords = path.join(path.dirname(source), sequence.words.folder);
+        for (const index of sequence.words.directories.keys()) {
+            const part = JSON.parse(await fs.readFile(path.join(sourceWords, `${index}.json`), "utf8")) as WordsPart;
+            part.ids.forEach((id, at) => texts.set(id, part.texts[at]));
+        }
+        const { head, parts } = wordsStore(window, BUNDLED_WORDS_DIRECTORY, (id) => {
+            const words = texts.get(id);
+            if (words === undefined) throw new Error(`the history names the text ${id}, which its words store at ${sourceWords} lacks; run \`npm run live-docs:history\` again`);
+            return words;
+        });
+        await fs.mkdir(wordsTarget, { recursive: true });
+        let bytes = 0;
+        for (const [index, part] of parts.entries()) {
+            const partJson = JSON.stringify(part);
+            bytes += partJson.length;
+            await fs.writeFile(path.join(wordsTarget, `${index}.json`), partJson, "utf-8");
+        }
+        window.words = head;
+        logger.log(`Wrote ${wordsTarget} (${head.texts} texts in ${parts.length} parts, ${formatBytes(bytes)})`);
+    }
     const json = JSON.stringify(window);
     await fs.writeFile(target, json, "utf-8");
     logger.log(`Wrote ${target} (${window.steps.length + 1} commits, ${formatBytes(json.length)})`);

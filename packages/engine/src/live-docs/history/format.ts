@@ -10,10 +10,21 @@
  * and then as one delta per later change. Paths and archetypes are interned
  * once, and every tuple names them by their index. Every 256 steps a keyframe
  * repeats the snapshot whole, so that a seek is the nearest keyframe plus at
- * most 255 deltas. The docs of each change remain the truth of everything
- * else; the sequence carries no symbol, no edge kind and no authored word,
- * only where the authored words pointed (version 2, 2026-10-20, when the
- * lens began to keep each change's authored words instead of discarding them).
+ * most 255 deltas. Version 2 (2026-10-20) added where each file's authored
+ * words pointed, when the lens began to keep each change's authored words
+ * instead of discarding them.
+ *
+ * Version 3 (2026-11-19) adds the second rung beside the shape, so that a
+ * moment can be drawn in 2D as fully as today (the owner, 2026-11-18: "all
+ * three rungs ... we should"): every file's public symbols in the doc's order
+ * with their kinds, flags and type references, its dependency lines, entries,
+ * re-exported anchors and citing documents, each reference and line with the
+ * file and symbol it resolved to, and its words by the id of their text in
+ * the words store beside the sequence (the third rung). Names of symbols,
+ * kinds, labels and the rest are interned once in a third table. A step
+ * carries the symbols gone, changed, born and reordered by their anchors,
+ * and a file's lines whole where they changed; a keyframe repeats the rows
+ * whole. A consumer that reads only the shape reads it as before.
  *
  * Nothing here is ever committed: two clones' histories differ, so the
  * sequence lives beside the graph index under the docs root and is derived
@@ -23,9 +34,10 @@
  */
 
 import type { LiveDocumentationConfig } from "../../config/liveDocumentationConfig";
+import type { WordsHead } from "./words";
 
 /** The version of the sequence's format, written first in every `history.json`. */
-export const HISTORY_FORMAT = "live-docs-history/2";
+export const HISTORY_FORMAT = "live-docs-history/3";
 
 /** The folder under the docs root that holds the cache and the sequence. */
 export const HISTORY_DIRECTORY = "history";
@@ -45,12 +57,55 @@ export type EdgeTuple = [fromId: number, toId: number, count: number];
 /** The two ends of a directed edge, by path id. */
 export type EdgeEnds = [fromId: number, toId: number];
 
-/** A whole snapshot: every file, every edge and every doc link, sorted by id. */
-export interface SnapshotTuples {
+/** A whole shape: every file, every edge and every doc link, sorted by id. */
+export interface ShapeTuples {
   files: FileTuple[];
   edges: EdgeTuple[];
   /** Each link from a file's authored words to a document that stood then: the file's path id and the document's. */
   docLinks: EdgeEnds[];
+}
+
+/**
+ * A type reference of a symbol: its role's name id, its type's name id, then, each left out from the end when it is
+ * its default, its parameter's name id (-1 for none), its marks (1 an array, 2 a promise), and the path id and anchor
+ * name id it resolved to (-1 for none).
+ */
+export type ReferenceTuple = [roleId: number, typeId: number, parameterId?: number, marks?: number, toPathId?: number, toSlugId?: number];
+
+/**
+ * A symbol row: its heading's, anchor's and kind's name ids, then, each left out from the end when empty, its flags'
+ * name ids, its type references, and the id of its description's text (-1 for none).
+ */
+export type SymbolTuple = [nameId: number, slugId: number, kindId: number, flagIds?: number[], references?: ReferenceTuple[], textId?: number];
+
+/**
+ * A dependency line: its label's name id and kind (0 an import, 1 a re-export), then, each left out from the end when
+ * it is its default, its marks (1 type-only), its basis's name id, the path id and anchor name id it resolved to (-1
+ * for none), and the name ids of the symbols an external dependency gives.
+ */
+export type DependencyTuple = [labelId: number, kind: 0 | 1, marks?: number, basisId?: number, toPathId?: number, toSlugId?: number, symbolIds?: number[]];
+
+/** An entry line: its reason's name id, then its symbol's and command's name ids and its declarer's path id (-1 for none), left out from the end when none. */
+export type EntryTuple = [reasonId: number, symbolId?: number, commandId?: number, declarerPathId?: number];
+
+/** A re-exported anchor: its name id, then its anchor's name id, its origin's path id, its origin's label's name id (-1 for none) and its flags' name ids, left out from the end when none. */
+export type ReExportTuple = [nameId: number, slugId?: number, fromPathId?: number, fromLabelId?: number, flagIds?: number[]];
+
+/** The authored words of a file in a tuple: the id of their text, {@link NO_WORDS} or {@link UNREAD_WORDS}. */
+export const NO_WORDS = -1;
+/** A doc stood whose form today's reader cannot read the authored words of. */
+export const UNREAD_WORDS = -2;
+
+/**
+ * A file's rows: its path id, then, each left out from the end when it is its default, its authored words (a text id,
+ * {@link NO_WORDS} or {@link UNREAD_WORDS}), its symbols in the doc's order, its dependency lines, its entries, its
+ * re-exported anchors and the path ids of the documents that cite it.
+ */
+export type FileRowsTuple = [pathId: number, authored?: number, symbols?: SymbolTuple[], dependencies?: DependencyTuple[], entries?: EntryTuple[], reExports?: ReExportTuple[], citedBy?: number[]];
+
+/** A whole snapshot: its shape and, since format 3, every file's rows, sorted by path id. */
+export interface SnapshotTuples extends ShapeTuples {
+  rows: FileRowsTuple[];
 }
 
 /** One change of the version control, as the sequence names it. */
@@ -101,6 +156,27 @@ export interface StepDelta {
   directoriesRenamed?: Array<[fromPath: string, toPath: string]>;
   /** Files whose content the version control saw change while their shape did not. */
   touched?: number[];
+  /**
+   * The rows' change, since format 3, applied after the shape's in this order and named after its renames: symbols
+   * gone, by their file's path id and their anchor's name id.
+   */
+  symbolsGone?: Array<[pathId: number, slugId: number]>;
+  /** Symbols whose row changed, by their anchor before the step; a renamed symbol's new row carries its new anchor. */
+  symbolsChanged?: Array<[pathId: number, slugId: number, symbol: SymbolTuple]>;
+  /** Symbols that appear, each with its place in its file's rows after the step, inserted in this order. */
+  symbolsBorn?: Array<[pathId: number, index: number, symbol: SymbolTuple]>;
+  /** A file's anchors in their new order, where the symbols that stayed changed places. */
+  symbolsOrdered?: Array<[pathId: number, slugIds: number[]]>;
+  /** A file's entries, whole, where they changed. */
+  entryLines?: Array<[pathId: number, entries: EntryTuple[]]>;
+  /** A file's dependency lines, whole, where they changed. */
+  dependencyLines?: Array<[pathId: number, lines: DependencyTuple[]]>;
+  /** A file's re-exported anchors, whole, where they changed. */
+  reExports?: Array<[pathId: number, entries: ReExportTuple[]]>;
+  /** A file's citing documents' path ids, whole, where they changed. */
+  citedBy?: Array<[pathId: number, documentIds: number[]]>;
+  /** A file's authored words, where they changed: a text id, {@link NO_WORDS} or {@link UNREAD_WORDS}. */
+  authored?: Array<[pathId: number, words: number]>;
 }
 
 /** One sampled change after the base: the change and what it did to the shape. */
@@ -188,6 +264,10 @@ export interface HistorySequence {
   paths: string[];
   /** Every archetype the sequence names, once. */
   archetypes: string[];
+  /** Every other name the rows use once: symbols' headings, anchors, kinds and flags, roles, types, labels and the rest. */
+  names: string[];
+  /** The words store beside the sequence, whose texts the rows name by id; absent when none was written beside it. */
+  words?: WordsHead;
   /** Step 0: the first sampled change and its snapshot in full. */
   base: SnapshotTuples & { commit: CommitInfo };
   /** Step 1 onwards: one per later sampled change, oldest first. */

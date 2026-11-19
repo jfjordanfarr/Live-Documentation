@@ -17,10 +17,12 @@ import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/c
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
 import { openGitRepository } from "../../../packages/engine/src/live-docs/history/git";
-import { changeAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
+import { linksOf, type RowLink } from "../../../packages/engine/src/live-docs/history/rows";
+import { changeAt, momentAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import { edgeKey, type Shape } from "../../../packages/engine/src/live-docs/history/shape";
 import { sectionsOfDescription, type CommitSummary, type SummaryFile } from "../../../packages/engine/src/live-docs/history/summary";
 import { readText, TEXT_STORE_DIRECTORY } from "../../../packages/engine/src/live-docs/history/textStore";
+import { textInPart, textsOfFile, wordsPartFile, type WordsPart } from "../../../packages/engine/src/live-docs/history/words";
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
@@ -65,7 +67,7 @@ afterAll(() => {
 
 describe("the history command over a scripted repository", () => {
   it("samples every commit of the mainline, oldest first, under one lens", () => {
-    expect(sequence.format).toBe("live-docs-history/2");
+    expect(sequence.format).toBe("live-docs-history/3");
     expect([sequence.base.commit.id, ...sequence.steps.map((step) => step.commit.id)]).toEqual(commits);
     expect(sequence.source).toMatchObject({ system: "git", branch: "main", head: commits[commits.length - 1], shallow: false, knowledgeBegins: commits[0], authors: true });
     expect(sequence.source.sampling).toEqual({ rule: "every-commit" });
@@ -76,10 +78,14 @@ describe("the history command over a scripted repository", () => {
 
   it("reproduces, by replay, the generator's own index at every commit, regenerated independently here", async () => {
     for (let step = 0; step < commits.length; step += 1) {
-      const expected = await regeneratedShape(repository, commits[step]);
-      const replayed = seek(sequence, step);
+      const { shape: expected, symbols, links } = await regeneratedShape(repository, commits[step]);
+      const moment = momentAt(sequence, step);
+      const replayed = moment.shape;
       expect(sortedFiles(replayed), `files at step ${step}`).toEqual(sortedFiles(expected));
       expect(sortedEdges(replayed), `edges at step ${step}`).toEqual(sortedEdges(expected));
+      // The rows: each file's symbols in the doc's order, and every link between two files, from symbol or file to symbol or file.
+      expect(new Map([...moment.rows].map(([file, rows]) => [file, rows.symbols.map((symbol) => [symbol.name, symbol.slug, symbol.kind])])), `symbols at step ${step}`).toEqual(symbols);
+      expect(linksOf(moment.rows).map(linkWords).sort(), `links at step ${step}`).toEqual(links);
     }
   });
 
@@ -262,30 +268,70 @@ describe("the bundle's history", () => {
     expect(sortedEdges(seek(window, 2))).toEqual(sortedEdges(seek(sequence, commits.length - 1)));
     expect(window.paths.length).toBeLessThan(sequence.paths.length);
     expect(data.history).toMatchObject({ file: "explorer-history.json", head: { window: { rule: "last", count: 3 }, commits: 3, first: { id: commits[4] }, last: { id: commits[6] } } });
+    // The window's words ride beside it, a part per directory, each text its rows name there and no other.
+    expect(window.words?.folder).toBe("explorer-history-words");
+    const last = momentAt(window, 2).rows;
+    const mainPart = JSON.parse(fs.readFileSync(path.join(output, "explorer-history-words", wordsPartFile(window.words!, "src/app/main.ts")!), "utf8")) as WordsPart;
+    expect(textInPart(mainPart, last.get("src/app/main.ts")!.authored as number)).toContain("Its later form is in [the plan]");
+    const named = new Set([...Array(3).keys()].flatMap((step) => [...momentAt(window, step).rows.values()].flatMap(textsOfFile)));
+    const carried = fs.readdirSync(path.join(output, "explorer-history-words")).flatMap((part) => (JSON.parse(fs.readFileSync(path.join(output, "explorer-history-words", part), "utf8")) as WordsPart).ids);
+    expect(new Set(carried)).toEqual(named);
 
     await buildStaticExplorer({ workspaceRoot: repository, outputDir: output, config, history: { rule: "none" }, logger: quiet });
     expect(fs.existsSync(path.join(output, "explorer-history.json"))).toBe(false);
+    expect(fs.existsSync(path.join(output, "explorer-history-words"))).toBe(false);
     expect((JSON.parse(fs.readFileSync(path.join(output, "explorer-data.json"), "utf8")) as StaticExplorerData).history).toBeUndefined();
   });
 });
 
 describe("inspect's history questions", () => {
-  it("answers whether a file exists at a commit, with its wires, from the shape alone", () => {
+  it("answers whether a file exists at a commit, with its wires, and its rows and links as that day's docs listed them", () => {
     const before = runInspect(repository, ["--at", commits[1].slice(0, 10), "--from", "src/app/view.ts", "--json"]);
     expect(before.exitCode, before.stderr).toBe(0);
-    const at = JSON.parse(before.stdout) as { kind: string; answeredFrom: string; commit: { id: string }; file: { exists: boolean; outbound: Array<{ codePath: string }>; inbound: Array<{ codePath: string }> } };
-    expect(at).toMatchObject({ kind: "at", answeredFrom: "shape", commit: { id: commits[1] }, file: { exists: true } });
+    const at = JSON.parse(before.stdout) as {
+      kind: string;
+      answeredFrom: string;
+      commit: { id: string };
+      file: { exists: boolean; outbound: Array<{ codePath: string }>; inbound: Array<{ codePath: string }> };
+      rows: { symbols: Array<{ name: string; references: Array<{ role: string; to?: string }> }> };
+      links: { outbound: RowLink[]; inbound: RowLink[] };
+    };
+    expect(at).toMatchObject({ kind: "at", answeredFrom: "rows", commit: { id: commits[1] }, file: { exists: true } });
     expect(at.file.outbound.map((neighbour) => neighbour.codePath)).toEqual(["src/engine/model.ts"]);
     expect(at.file.inbound.map((neighbour) => neighbour.codePath)).toEqual(["src/app/main.ts"]);
+    expect(at.rows.symbols.map((symbol) => symbol.name)).toEqual(["render", "renderAll"]);
+    expect(at.rows.symbols[0].references).toEqual([{ role: "parameter", parameter: "model", type: "Model", to: "src/engine/model.ts", toSymbol: expect.any(String) }]);
+    expect(at.links.inbound).toEqual([expect.objectContaining({ from: "src/app/main.ts", to: "src/app/view.ts", kind: "import" })]);
 
     const after = runInspect(repository, ["--at", commits[2], "--from", "src/app/view.ts"]);
     expect(after.exitCode, after.stderr).toBe(0);
-    expect(after.stdout.split("\n")[0]).toContain("from the shape alone");
+    expect(after.stdout.split("\n")[0]).toContain("from the rows that day's docs listed");
     expect(after.stdout).toContain("src/app/view.ts does not exist at");
 
     const main = runInspect(repository, ["--at", commits[0], "--from", "src/app/main.ts"]);
     expect(main.exitCode, main.stderr).toBe(0);
     expect(main.stdout).toContain("Linked documents: 1 document\n  docs/design.md");
+    expect(main.stdout).toContain("Symbols: 1 symbol, in the doc's order\n  main  function");
+    expect(main.stdout).toContain("Dependencies: 5 lines");
+  });
+
+  it("lists the links at a commit between two files, and between two symbols named path#Symbol", () => {
+    const files = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts", "--to", "src/engine/model.ts", "--json"]);
+    expect(files.exitCode, files.stderr).toBe(0);
+    const between = JSON.parse(files.stdout) as { kind: string; answeredFrom: string; links: RowLink[] };
+    expect(between).toMatchObject({ kind: "at-links", answeredFrom: "rows" });
+    expect(between.links.map((link) => [link.from, link.fromSymbol, link.to, link.kind])).toEqual([
+      ["src/app/view.ts", undefined, "src/engine/model.ts", "import"],
+      ["src/app/view.ts", "symbol-render", "src/engine/model.ts", "parameter"],
+      ["src/app/view.ts", "symbol-renderall", "src/engine/model.ts", "parameter"]
+    ]);
+    const symbols = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts#renderAll", "--to", "src/engine/model.ts#Model"]);
+    expect(symbols.exitCode, symbols.stderr).toBe(0);
+    expect(symbols.stdout).toContain("Links between src/app/view.ts#symbol-renderall and src/engine/model.ts#");
+    expect(symbols.stdout).toContain(": 1 link\n  src/app/view.ts#symbol-renderall -> src/engine/model.ts#");
+    const missing = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts#nothing", "--to", "src/engine/model.ts"]);
+    expect(missing.exitCode).toBe(1);
+    expect(missing.stderr).toContain("lists no one symbol nothing");
   });
 
   it("walks from the entries of a commit with the pathfinder", () => {
@@ -339,6 +385,24 @@ describe("inspect's history questions", () => {
     expect(words.stdout).not.toMatch(/\b(Born|Dead)\b/u);
   });
 
+  it("prints a file's words at a commit, and says plainly where that day's words cannot be read or none were written", () => {
+    const main = runInspect(repository, ["--at", commits[0], "--from", "src/app/main.ts", "--words"]);
+    expect(main.exitCode, main.stderr).toBe(0);
+    expect(main.stdout).toContain("Authored:\n  ### Purpose\n  Runs the app, as [the design](../../../../docs/design.md) lays out.");
+    // The design link left the main file's words at the fifth commit, and its later words are read there.
+    const later = runInspect(repository, ["--at", commits[4], "--from", "src/app/main.ts", "--words", "--json"]);
+    expect((JSON.parse(later.stdout) as { authored: { state: string; text: string } }).authored.text).not.toContain("the design");
+    const big = runInspect(repository, ["--at", commits[0], "--from", "lib/big.ts", "--words"]);
+    expect(big.exitCode, big.stderr).toBe(0);
+    expect(big.stdout).toContain("Not readable: the doc that stood at");
+    expect(big.stdout).toContain("Descriptions: 1 symbol\n  big\n    Summary:\n      Counts to a big number, one step at a time.");
+    const model = runInspect(repository, ["--at", commits[0], "--from", "src/core/model.ts", "--words", "--json"]);
+    expect(JSON.parse(model.stdout)).toMatchObject({ kind: "at-words", answeredFrom: "words", authored: { state: "none" }, descriptions: [{ name: "Model" }, { name: "makeModel", sections: [{ title: "Summary", body: ["Makes a model."] }] }] });
+    const today = runInspect(repository, ["--from", "src/app/main.ts", "--words"]);
+    expect(today.exitCode).toBe(1);
+    expect(today.stderr).toContain("takes --at");
+  });
+
   it("refuses a commit the sequence does not hold, and says so", () => {
     const result = runInspect(repository, ["--at", "0000000", "--from", "src/app/main.ts"]);
     expect(result.exitCode).toBe(1);
@@ -361,7 +425,7 @@ describe("inspect's history questions", () => {
  * generator run over it, and the derived graph summarized by this test's own
  * reading.
  */
-async function regeneratedShape(root: string, commit: string): Promise<Shape> {
+async function regeneratedShape(root: string, commit: string): Promise<{ shape: Shape; symbols: Map<string, string[][]>; links: string[] }> {
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "history-oracle-"));
   const tree = path.join(scratch, "tree");
   git(root, ["worktree", "add", "--detach", "--quiet", tree, commit]);
@@ -370,18 +434,23 @@ async function regeneratedShape(root: string, commit: string): Promise<Shape> {
     const config = normalizeLiveDocumentationConfig(CONFIG);
     await generateLiveDocs({ workspaceRoot: tree, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
     const graph = await readLiveDocGraph({ workspaceRoot: tree, config });
-    // The oracle reads files and wires from a fresh generation; the doc links are held to the script in their own test.
+    // The oracle reads files, wires, symbols and links from a fresh generation; the doc links are held to the script in their own test.
     const shape: Shape = { files: new Map(), edges: new Map(), docLinks: new Set() };
+    const symbols = new Map<string, string[][]>();
+    const links = new Map<string, number>();
     for (const file of Object.values(graph.files)) {
       shape.files.set(file.codePath, { archetype: file.archetype ?? "", symbols: file.symbols.length, entry: file.entries.length > 0 });
+      symbols.set(file.codePath, file.symbols.map((symbol) => [symbol.name, symbol.slug ?? "", symbol.kind]));
       for (const edge of file.edges) {
         if (edge.to && edge.to !== file.codePath) {
           const key = edgeKey(file.codePath, edge.to);
           shape.edges.set(key, (shape.edges.get(key) ?? 0) + 1);
+          const link = linkWords({ from: file.codePath, fromSymbol: edge.from, to: edge.to, toSymbol: edge.toSymbol, kind: edge.kind, count: 0 });
+          links.set(link, (links.get(link) ?? 0) + 1);
         }
       }
     }
-    return shape;
+    return { shape, symbols, links: [...links].map(([link, count]) => `${link} x${count}`).sort() };
   } finally {
     git(root, ["worktree", "remove", "--force", tree]);
     fs.rmSync(scratch, { recursive: true, force: true });
@@ -400,6 +469,12 @@ function nameStatus(root: string, from: string, to: string, threshold = "-M50%")
   }
   result.renamed.sort((a, b) => (a[0] < b[0] ? -1 : 1));
   return result;
+}
+
+/** A link in words: its ends and its kind, and with a count when it has one. */
+function linkWords(link: RowLink): string {
+  const words = `${link.from}#${link.fromSymbol ?? ""} -${link.kind}-> ${link.to}#${link.toSymbol ?? ""}`;
+  return link.count > 0 ? `${words} x${link.count}` : words;
 }
 
 function sortedFiles(shape: Shape): Array<[string, string, number, boolean]> {

@@ -14,7 +14,7 @@
  */
 
 import type { HistorySequence, HistoryWindow } from "./format";
-import { changeAt, commitAt, commitCount, seek, SequenceWriter } from "./sequence";
+import { changeAt, commitAt, commitCount, momentAt, rowsChangeAt, SequenceWriter } from "./sequence";
 
 /** Which part of a sequence to carry. */
 export type HistorySelection = { rule: "all" } | HistoryWindow;
@@ -25,9 +25,10 @@ export function windowOf(sequence: HistorySequence, selection: HistorySelection)
     return sequence;
   }
   const first = firstStep(sequence, selection);
-  const writer = new SequenceWriter({ lens: sequence.lens, source: sequence.source, window: selection }, commitAt(sequence, first), seek(sequence, first));
+  const start = momentAt(sequence, first);
+  const writer = new SequenceWriter({ lens: sequence.lens, source: sequence.source, window: selection }, commitAt(sequence, first), start.shape, start.rows);
   for (let step = first + 1; step <= sequence.steps.length; step += 1) {
-    writer.append(commitAt(sequence, step), changeAt(sequence, step));
+    writer.append(commitAt(sequence, step), changeAt(sequence, step), rowsChangeAt(sequence, step));
   }
   return writer.finish();
 }

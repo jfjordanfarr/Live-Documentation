@@ -35,15 +35,20 @@ import {
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { Interner } from "@live-documentation/engine/live-docs/history/codec";
 import { HISTORY_DIRECTORY, HISTORY_FILE, type CommitInfo, type HistoryLens, type HistorySequence, type Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
 import { lensOf } from "@live-documentation/engine/live-docs/history/lens";
+import { compareLinks, linksOf, rowsDifferences, rowsOfSummary, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
 import { sampleChanges } from "@live-documentation/engine/live-docs/history/sampling";
-import { SequenceBuilder } from "@live-documentation/engine/live-docs/history/sequence";
+import { momentAt, SequenceBuilder } from "@live-documentation/engine/live-docs/history/sequence";
 import { shapeOfSummary } from "@live-documentation/engine/live-docs/history/shape";
-import { HISTORY_SUMMARY_FORMAT, type CommitSummary } from "@live-documentation/engine/live-docs/history/summary";
-import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
+import { HISTORY_SUMMARY_FORMAT, summarizeGraph, type CommitSummary } from "@live-documentation/engine/live-docs/history/summary";
+import { readText, TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl, WorkingTree } from "@live-documentation/engine/live-docs/history/versionControl";
+import { WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
 
 import { generatorIdentity } from "./generatorIdentity";
 import type { SummaryReport, SummaryTask } from "./summarizeChange";
@@ -111,11 +116,11 @@ export interface HistoryRun {
 const POOL_RECORD = "pool.json";
 
 /**
- * What one summarizing process is expected to take before any has been measured on a repository: the peak measured
- * on 2026-11-19 over the largest commit of this repository's history (1,058 files), rounded up. A larger repository
- * takes more, which its first run measures and records.
+ * What one summarizing process is expected to take before any has been measured on a repository: the largest peak
+ * measured on 2026-11-19 over every 25th commit of this repository's history and its head (1,064 files), 526 MB,
+ * rounded up to 768 MiB. A larger repository takes more, which its first run measures and records.
  */
-export const UNMEASURED_PEAK_MEMORY = 1.5 * 1024 ** 3;
+export const UNMEASURED_PEAK_MEMORY = 768 * 1024 ** 2;
 
 /**
  * How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -178,11 +183,13 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   }
   const timings = regeneration.timings;
 
+  const texts = new Interner();
   const builder = await buildSequence(sampled, {
     versionControl,
     lens,
     cacheFolder,
     authors: options.authors,
+    texts,
     source: {
       system: versionControl.system,
       root: options.workspace,
@@ -195,6 +202,17 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     }
   });
   const sequence = builder.finish();
+  options.progress(`every step replayed to the shape and the rows it was derived from, ${sequence.steps.length} steps`);
+  const headCheck = await checkHead(sequence, {
+    versionControl,
+    configuration,
+    lens,
+    texts,
+    ownConfiguration: options.configPath === undefined,
+    head: end.head
+  });
+  options.progress(headCheck);
+  sequence.words = await writeWords(sequence, historyFolder, path.join(cacheFolder, TEXT_STORE_DIRECTORY), texts, options.progress);
   const file = path.join(historyFolder, HISTORY_FILE);
   await writeInPlace(file, JSON.stringify(sequence));
 
@@ -478,9 +496,14 @@ interface SequenceContext {
   cacheFolder: string;
   authors: boolean;
   source: HistorySequence["source"];
+  /** The texts' hashes, each given an id where the sequence first names it. */
+  texts: Interner;
 }
 
-/** The sequence from the cached summaries of the sampled changes, oldest first, and the version control's word between each two. */
+/**
+ * The sequence from the cached summaries of the sampled changes, oldest first, and the version control's word between
+ * each two, each text the summaries name given its id as it is first met.
+ */
 async function buildSequence(sampled: readonly MainlineChange[], context: SequenceContext): Promise<SequenceBuilder> {
   const commitOf = (change: MainlineChange): CommitInfo => ({
     id: change.id,
@@ -489,15 +512,125 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
     ...(context.authors ? { author: change.author } : {}),
     subject: change.subject
   });
-  const builder = new SequenceBuilder({ lens: context.lens, source: context.source }, commitOf(sampled[0]), shapeOfSummary(await readSummary(context, sampled[0].id)));
+  const textId = (hash: string): number => context.texts.id(hash);
+  const first = await readSummary(context, sampled[0].id);
+  const builder = new SequenceBuilder({ lens: context.lens, source: context.source }, commitOf(sampled[0]), shapeOfSummary(first), rowsOfSummary(first, textId));
   for (let index = 1; index < sampled.length; index += 1) {
     const [summary, version] = await Promise.all([
       readSummary(context, sampled[index].id),
       context.versionControl.changesBetween(sampled[index - 1].id, sampled[index].id)
     ]);
-    builder.add(commitOf(sampled[index]), shapeOfSummary(summary), version);
+    builder.add(commitOf(sampled[index]), shapeOfSummary(summary), version, rowsOfSummary(summary, textId));
   }
   return builder;
+}
+
+interface HeadCheckContext {
+  versionControl: VersionControl;
+  configuration: LiveDocumentationConfig;
+  lens: HistoryLens;
+  texts: Interner;
+  /** Whether the lens's configuration is the workspace's own, the one its committed mirror was made under. */
+  ownConfiguration: boolean;
+  head: string;
+}
+
+/**
+ * The check at the head, from a path independent of the history's own: the last step's rows, replayed through every
+ * step from the base, must be the rows and links of the graph derived afresh from the Live Docs committed at the
+ * head, read from a checkout of it. It is asked only where the committed mirror was made by this very generator under
+ * this configuration: when the generator runs, unmodified, from the commit the history ends at, as it does over its
+ * own repository. A difference stops the run, as a replay's does.
+ *
+ * @returns A line saying what was checked, or why the check does not apply.
+ */
+async function checkHead(sequence: HistorySequence, context: HeadCheckContext): Promise<string> {
+  const generator = context.lens.generator;
+  if (generator.code === null || generator.modified !== null || generator.commit !== context.head || !context.ownConfiguration) {
+    return "the check at the head does not apply: the mirror committed there was not made by this generator, unmodified, under this configuration";
+  }
+  const scratch = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-history-head-"));
+  let committed: LiveDocGraph;
+  try {
+    const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)));
+    try {
+      committed = await readLiveDocGraph({ workspaceRoot: tree.root, config: context.configuration });
+    } catch (error) {
+      return `the check at the head does not apply: the mirror committed there does not read (${error instanceof Error ? error.message : String(error)})`;
+    } finally {
+      await tree.remove();
+    }
+  } finally {
+    await fs.rm(scratch, { recursive: true, force: true });
+  }
+  if (Object.keys(committed.files).length === 0) {
+    return "the check at the head does not apply: no Live Docs are committed there";
+  }
+  const replayed = momentAt(sequence, sequence.steps.length).rows;
+  const differences = headDifferences(replayed, committed, (hash) => context.texts.id(hash));
+  if (differences.length > 0) {
+    throw new Error(
+      `the history's last step is not the graph of the Live Docs committed at ${context.head.slice(0, 8)}: ${differences.slice(0, 5).join("; ")}. ` +
+        "When the mirror was not regenerated after the last change of the source, run `npm run live-docs:generate`, commit the docs and run again."
+    );
+  }
+  const symbols = [...replayed.values()].reduce((sum, file) => sum + file.symbols.length, 0);
+  return `the last step's ${replayed.size} files, ${symbols} symbols and ${linksOf(replayed).length} links are those of the Live Docs committed at ${context.head.slice(0, 8)}, read afresh`;
+}
+
+/**
+ * Where a moment's rows, replayed, differ from a graph derived from committed Live Docs: the graph's rows read by the
+ * one rule every summary is read by, its texts named by `textId`, and its links read straight from its resolved
+ * edges, apart from the rows' reading of them.
+ */
+export function headDifferences(replayed: Rows, committed: LiveDocGraph, textId: (hash: string) => number): string[] {
+  const fromMirror = rowsOfSummary(summarizeGraph(committed, "", "").summary, textId);
+  return [...rowsDifferences(fromMirror, replayed), ...linkDifferences(linksOfGraph(committed), linksOf(replayed))];
+}
+
+/**
+ * Writes the words store beside the sequence, `<history folder>/history-words/<index>.json`, each text the sequence
+ * names read from the lens's text store, which checks it against its hash; a store an earlier run wrote is replaced.
+ *
+ * @returns What the sequence's head says of it.
+ */
+async function writeWords(sequence: HistorySequence, historyFolder: string, textStore: string, texts: Interner, progress: (line: string) => void): Promise<WordsHead> {
+  const read = await Promise.all(texts.values.map((hash) => readText(textStore, hash)));
+  const { head, parts } = wordsStore(sequence, WORDS_DIRECTORY, (id) => read[id]);
+  const folder = path.join(historyFolder, WORDS_DIRECTORY);
+  await fs.rm(folder, { recursive: true, force: true });
+  await fs.mkdir(folder, { recursive: true });
+  let bytes = 0;
+  for (const [index, part] of parts.entries()) {
+    const json = JSON.stringify(part);
+    bytes += Buffer.byteLength(json);
+    await writeInPlace(path.join(folder, `${index}.json`), json);
+  }
+  progress(`wrote the words of every step beside the sequence: ${head.texts} texts in ${parts.length} parts by directory, ${formatBytes(bytes)}`);
+  return head;
+}
+
+/** Every link between two different files of a graph, read from its resolved edges, counted by ends and kind. */
+function linksOfGraph(graph: LiveDocGraph): RowLink[] {
+  const counted = new Map<string, RowLink>();
+  for (const file of Object.values(graph.files)) {
+    for (const edge of file.edges) {
+      if (edge.to === undefined || edge.to === file.codePath) continue;
+      const link: RowLink = { from: file.codePath, ...(edge.from !== undefined ? { fromSymbol: edge.from } : {}), to: edge.to, ...(edge.toSymbol !== undefined ? { toSymbol: edge.toSymbol } : {}), kind: edge.kind, count: 0 };
+      const key = [link.from, link.fromSymbol ?? "", link.to, link.toSymbol ?? "", link.kind].join("\0");
+      const existing = counted.get(key) ?? link;
+      existing.count += 1;
+      counted.set(key, existing);
+    }
+  }
+  return [...counted.values()].sort(compareLinks);
+}
+
+function linkDifferences(expected: readonly RowLink[], actual: readonly RowLink[]): string[] {
+  const words = (link: RowLink): string => `${link.from}${link.fromSymbol ? `#${link.fromSymbol}` : ""} -${link.kind}-> ${link.to}${link.toSymbol ? `#${link.toSymbol}` : ""} x${link.count}`;
+  const want = new Set(expected.map(words));
+  const have = new Set(actual.map(words));
+  return [...[...want].filter((link) => !have.has(link)).map((link) => `the link ${link} is missing`), ...[...have].filter((link) => !want.has(link)).map((link) => `the link ${link} was not expected`)];
 }
 
 async function readSummary(context: SequenceContext, change: string): Promise<CommitSummary> {
