@@ -1,11 +1,11 @@
-# tests/integration/programs/java/service/pom.xml
+# `tests/integration/programs/java/service/pom.xml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/service/pom.xml
+- Code Path: `tests/integration/programs/java/service/pom.xml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:30.202Z
+- Generated At: 2026-11-19T21:10:27.547Z
 
 ## Authored
 ### Purpose

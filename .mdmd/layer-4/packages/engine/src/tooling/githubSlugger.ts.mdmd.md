@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/githubSlugger.ts
+# `packages/engine/src/tooling/githubSlugger.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/githubSlugger.ts
-- Generated At: 2026-10-05T17:11:04.605Z
+- Code Path: `packages/engine/src/tooling/githubSlugger.ts`
+- Generated At: 2026-11-19T21:10:12.750Z
 
 ## Authored
 ### Purpose

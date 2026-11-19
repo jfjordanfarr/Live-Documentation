@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/stockroom/src/store/memory.rs
+# `tests/integration/programs/rust/stockroom/src/store/memory.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/stockroom/src/store/memory.rs
-- Generated At: 2026-10-02T20:20:08.805Z
+- Code Path: `tests/integration/programs/rust/stockroom/src/store/memory.rs`
+- Generated At: 2026-11-19T21:10:28.401Z
 
 ## Authored
 ### Purpose

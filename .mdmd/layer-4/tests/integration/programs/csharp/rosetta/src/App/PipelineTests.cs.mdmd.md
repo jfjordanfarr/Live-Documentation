@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/rosetta/src/App/PipelineTests.cs
+# `tests/integration/programs/csharp/rosetta/src/App/PipelineTests.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/csharp/rosetta/src/App/PipelineTests.cs
-- Generated At: 2026-09-27T23:21:35.271Z
+- Code Path: `tests/integration/programs/csharp/rosetta/src/App/PipelineTests.cs`
+- Generated At: 2026-11-19T21:10:26.888Z
 
 ## Authored
 ### Purpose

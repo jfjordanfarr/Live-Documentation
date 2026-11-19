@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/spatial-legend.ts
+# `packages/explorer/src/client/panels/spatial-legend.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-11-17T04:51:06.868Z
+- Code Path: `packages/explorer/src/client/panels/spatial-legend.ts`
+- Generated At: 2026-11-19T21:10:13.915Z
 
 ## Authored
 ### Purpose

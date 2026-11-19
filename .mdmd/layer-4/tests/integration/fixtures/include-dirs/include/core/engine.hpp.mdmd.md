@@ -1,10 +1,10 @@
-# tests/integration/fixtures/include-dirs/include/core/engine.hpp
+# `tests/integration/fixtures/include-dirs/include/core/engine.hpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/include/core/engine.hpp
-- Generated At: 2026-10-16T00:58:47.478Z
+- Code Path: `tests/integration/fixtures/include-dirs/include/core/engine.hpp`
+- Generated At: 2026-11-19T21:10:25.044Z
 
 ## Authored
 ### Purpose

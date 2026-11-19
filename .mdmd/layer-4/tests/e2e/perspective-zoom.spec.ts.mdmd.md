@@ -1,10 +1,10 @@
-# tests/e2e/perspective-zoom.spec.ts
+# `tests/e2e/perspective-zoom.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/perspective-zoom.spec.ts
-- Generated At: 2026-11-09T06:15:21.206Z
+- Code Path: `tests/e2e/perspective-zoom.spec.ts`
+- Generated At: 2026-11-19T21:10:23.461Z
 
 ## Authored
 ### Purpose

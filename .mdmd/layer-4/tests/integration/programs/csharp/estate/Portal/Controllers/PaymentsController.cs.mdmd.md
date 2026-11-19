@@ -1,12 +1,12 @@
-# tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
+# `tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
+- Code Path: `tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs`
 - Entry: opening [`POST api/payments`](#symbol-post-apipayments)
 - Entry: opening [`GET api/payments/{paymentId}`](#symbol-get-apipaymentspaymentid)
-- Generated At: 2026-10-15T15:49:45.207Z
+- Generated At: 2026-11-19T21:10:26.710Z
 
 ## Authored
 ### Purpose

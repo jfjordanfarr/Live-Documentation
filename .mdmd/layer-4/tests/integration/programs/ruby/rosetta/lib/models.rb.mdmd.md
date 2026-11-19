@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/rosetta/lib/models.rb
+# `tests/integration/programs/ruby/rosetta/lib/models.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/rosetta/lib/models.rb
-- Generated At: 2026-10-02T20:20:08.344Z
+- Code Path: `tests/integration/programs/ruby/rosetta/lib/models.rb`
+- Generated At: 2026-11-19T21:10:28.163Z
 
 ## Authored
 ### Purpose

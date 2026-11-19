@@ -1,10 +1,10 @@
-# packages/explorer/src/client/styles/history.css
+# `packages/explorer/src/client/styles/history.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/styles/history.css
-- Generated At: 2026-10-18T05:36:02.256Z
+- Code Path: `packages/explorer/src/client/styles/history.css`
+- Generated At: 2026-11-19T21:10:14.490Z
 
 ## Authored
 ### Purpose

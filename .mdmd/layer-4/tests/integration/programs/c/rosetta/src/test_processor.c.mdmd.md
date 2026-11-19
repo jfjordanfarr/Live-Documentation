@@ -1,11 +1,11 @@
-# tests/integration/programs/c/rosetta/src/test_processor.c
+# `tests/integration/programs/c/rosetta/src/test_processor.c`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/c/rosetta/src/test_processor.c
+- Code Path: `tests/integration/programs/c/rosetta/src/test_processor.c`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-16T00:58:49.216Z
+- Generated At: 2026-11-19T21:10:26.195Z
 
 ## Authored
 ### Purpose

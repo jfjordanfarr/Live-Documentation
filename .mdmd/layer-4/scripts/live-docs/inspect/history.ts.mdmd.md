@@ -1,10 +1,10 @@
-# scripts/live-docs/inspect/history.ts
+# `scripts/live-docs/inspect/history.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-11-19T06:20:31.369Z
+- Code Path: `scripts/live-docs/inspect/history.ts`
+- Generated At: 2026-11-19T21:10:19.200Z
 
 ## Authored
 ### Purpose

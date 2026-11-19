@@ -8,6 +8,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { inWorkspaceOrder } from "@live-documentation/engine/live-docs/discovery";
 import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
@@ -134,7 +135,7 @@ export async function generateLiveDocs(
   // still part of the workspace context for this run, but only included files
   // are rendered.
   const allTargetFiles = includeSet.size > 0
-    ? [...new Set([...workspaceFiles, ...includedFiles])].sort()
+    ? inWorkspaceOrder([...new Set([...workspaceFiles, ...includedFiles])].map((file) => ({ file, relative: normalizeWorkspacePath(path.relative(workspaceRoot, file)) }))).map(({ file }) => file)
     : workspaceFiles;
   const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 
@@ -551,6 +552,7 @@ function composeGenerated(params: {
 
   const reExports = composeReExports({
     reExports: params.analysis.reExportedSymbols ?? [],
+    headings,
     docDir,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension,
@@ -598,5 +600,9 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
     return "created";
   }
 
-  return existingContent === rendered ? "unchanged" : "updated";
+  // A doc checked out with CRLF line endings, as Git for Windows does by default, saved with CR alone, or given a
+  // byte-order mark, as Windows PowerShell 5.1 gives any file that passes through it, is the doc written with LF and no
+  // mark: the reader reads them alike, so neither a check nor a run calls it changed or rewrites it for those alone. A
+  // doc the generator writes is written with LF and no mark.
+  return existingContent.replace(/^\ufeff/u, "").replace(/\r\n?/gu, "\n") === rendered ? "unchanged" : "updated";
 }

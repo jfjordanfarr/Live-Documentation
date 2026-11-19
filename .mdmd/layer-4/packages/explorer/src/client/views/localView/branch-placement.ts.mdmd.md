@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-placement.ts
+# `packages/explorer/src/client/views/localView/branch-placement.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/branch-placement.ts
-- Generated At: 2026-11-15T22:47:39.921Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-placement.ts`
+- Generated At: 2026-11-19T21:10:15.810Z
 
 ## Authored
 ### Purpose

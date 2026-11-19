@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/pyproject.ts
+# `packages/engine/src/live-docs/adapters/pyproject.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/pyproject.ts
-- Generated At: 2026-10-22T16:47:52.174Z
+- Code Path: `packages/engine/src/live-docs/adapters/pyproject.ts`
+- Generated At: 2026-11-19T21:10:10.364Z
 
 ## Authored
 ### Purpose

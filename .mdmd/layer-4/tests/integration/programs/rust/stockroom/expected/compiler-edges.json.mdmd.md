@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/stockroom/expected/compiler-edges.json
+# `tests/integration/programs/rust/stockroom/expected/compiler-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/stockroom/expected/compiler-edges.json
-- Generated At: 2026-10-16T20:40:32.910Z
+- Code Path: `tests/integration/programs/rust/stockroom/expected/compiler-edges.json`
+- Generated At: 2026-11-19T21:10:28.353Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Contracts/Contracts.csproj
+# `tests/integration/programs/csharp/estate/Contracts/Contracts.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Contracts/Contracts.csproj
+- Code Path: `tests/integration/programs/csharp/estate/Contracts/Contracts.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.464Z
+- Generated At: 2026-11-19T21:10:26.442Z
 
 ## Authored
 ### Purpose

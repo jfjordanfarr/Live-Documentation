@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/fonts/tide.woff
+# `tests/integration/programs/typescript/tidepool/assets/fonts/tide.woff`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/fonts/tide.woff
-- Generated At: 2026-11-16T20:15:24.884Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/fonts/tide.woff`
+- Generated At: 2026-11-19T21:10:28.633Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs
+# `tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs
-- Generated At: 2026-09-27T23:21:32.932Z
+- Code Path: `tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs`
+- Generated At: 2026-11-19T21:10:25.349Z
 
 ## Authored
 ### Purpose

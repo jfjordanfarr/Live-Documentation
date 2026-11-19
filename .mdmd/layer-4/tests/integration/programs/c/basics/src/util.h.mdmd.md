@@ -1,10 +1,10 @@
-# tests/integration/programs/c/basics/src/util.h
+# `tests/integration/programs/c/basics/src/util.h`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/basics/src/util.h
-- Generated At: 2026-10-02T20:20:04.180Z
+- Code Path: `tests/integration/programs/c/basics/src/util.h`
+- Generated At: 2026-11-19T21:10:25.986Z
 
 ## Authored
 ### Purpose

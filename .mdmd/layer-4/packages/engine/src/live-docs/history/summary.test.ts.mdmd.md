@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/summary.test.ts
+# `packages/engine/src/live-docs/history/summary.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/summary.test.ts
-- Generated At: 2026-11-19T06:20:28.612Z
+- Code Path: `packages/engine/src/live-docs/history/summary.test.ts`
+- Generated At: 2026-11-19T21:10:12.306Z
 
 ## Authored
 ### Purpose

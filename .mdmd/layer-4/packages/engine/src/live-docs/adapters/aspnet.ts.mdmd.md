@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/aspnet.ts
+# `packages/engine/src/live-docs/adapters/aspnet.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/aspnet.ts
-- Generated At: 2026-10-22T16:47:51.352Z
+- Code Path: `packages/engine/src/live-docs/adapters/aspnet.ts`
+- Generated At: 2026-11-19T21:10:09.012Z
 
 ## Authored
 ### Purpose

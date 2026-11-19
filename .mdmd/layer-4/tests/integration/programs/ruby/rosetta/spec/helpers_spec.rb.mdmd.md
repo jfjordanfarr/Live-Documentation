@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/rosetta/spec/helpers_spec.rb
+# `tests/integration/programs/ruby/rosetta/spec/helpers_spec.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/ruby/rosetta/spec/helpers_spec.rb
-- Generated At: 2026-09-27T23:21:38.717Z
+- Code Path: `tests/integration/programs/ruby/rosetta/spec/helpers_spec.rb`
+- Generated At: 2026-11-19T21:10:28.184Z
 
 ## Authored
 ### Purpose

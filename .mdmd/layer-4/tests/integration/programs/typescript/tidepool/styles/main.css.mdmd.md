@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/styles/main.css
+# `tests/integration/programs/typescript/tidepool/styles/main.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/tidepool/styles/main.css
-- Generated At: 2026-11-16T20:15:28.063Z
+- Code Path: `tests/integration/programs/typescript/tidepool/styles/main.css`
+- Generated At: 2026-11-19T21:10:28.910Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/download.ts
+# `packages/explorer/src/client/download.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/download.ts
-- Generated At: 2026-10-22T16:47:53.908Z
+- Code Path: `packages/explorer/src/client/download.ts`
+- Generated At: 2026-11-19T21:10:12.926Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/archetype.ts
+# `packages/engine/src/live-docs/archetype.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-10-22T16:47:52.529Z
+- Code Path: `packages/engine/src/live-docs/archetype.ts`
+- Generated At: 2026-11-19T21:10:10.943Z
 
 ## Authored
 ### Purpose

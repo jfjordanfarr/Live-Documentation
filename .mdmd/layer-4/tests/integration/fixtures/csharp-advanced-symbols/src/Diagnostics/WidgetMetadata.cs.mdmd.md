@@ -1,10 +1,10 @@
-# tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs
+# `tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs
-- Generated At: 2026-10-22T16:47:59.209Z
+- Code Path: `tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs`
+- Generated At: 2026-11-19T21:10:24.841Z
 
 ## Authored
 ### Purpose

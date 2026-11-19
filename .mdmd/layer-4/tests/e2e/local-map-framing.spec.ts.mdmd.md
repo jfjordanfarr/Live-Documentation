@@ -1,10 +1,10 @@
-# tests/e2e/local-map-framing.spec.ts
+# `tests/e2e/local-map-framing.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-framing.spec.ts
-- Generated At: 2026-10-30T15:20:53.744Z
+- Code Path: `tests/e2e/local-map-framing.spec.ts`
+- Generated At: 2026-11-19T21:10:22.482Z
 
 ## Authored
 ### Purpose

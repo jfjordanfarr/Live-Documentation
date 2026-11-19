@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/derive.ts
+# `packages/engine/src/live-docs/history/derive.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/derive.ts
-- Generated At: 2026-10-22T16:47:53.106Z
+- Code Path: `packages/engine/src/live-docs/history/derive.ts`
+- Generated At: 2026-11-19T21:10:11.910Z
 
 ## Authored
 ### Purpose

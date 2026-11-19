@@ -1,11 +1,11 @@
-# packages/engine/package.json
+# `packages/engine/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/package.json
+- Code Path: `packages/engine/package.json`
 - Entry: tooling
-- Generated At: 2026-11-18T17:31:24.036Z
+- Generated At: 2026-11-19T21:10:08.686Z
 
 ## Authored
 ### Purpose

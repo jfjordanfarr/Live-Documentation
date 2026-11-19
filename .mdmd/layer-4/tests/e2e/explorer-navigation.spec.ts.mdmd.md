@@ -1,10 +1,10 @@
-# tests/e2e/explorer-navigation.spec.ts
+# `tests/e2e/explorer-navigation.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/explorer-navigation.spec.ts
-- Generated At: 2026-11-06T07:24:52.626Z
+- Code Path: `tests/e2e/explorer-navigation.spec.ts`
+- Generated At: 2026-11-19T21:10:20.727Z
 
 ## Authored
 ### Purpose

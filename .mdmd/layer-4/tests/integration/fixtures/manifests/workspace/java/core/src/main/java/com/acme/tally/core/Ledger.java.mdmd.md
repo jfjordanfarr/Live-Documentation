@@ -1,10 +1,10 @@
-# tests/integration/fixtures/manifests/workspace/java/core/src/main/java/com/acme/tally/core/Ledger.java
+# `tests/integration/fixtures/manifests/workspace/java/core/src/main/java/com/acme/tally/core/Ledger.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/java/core/src/main/java/com/acme/tally/core/Ledger.java
-- Generated At: 2026-10-16T16:21:50.140Z
+- Code Path: `tests/integration/fixtures/manifests/workspace/java/core/src/main/java/com/acme/tally/core/Ledger.java`
+- Generated At: 2026-11-19T21:10:25.184Z
 
 ## Authored
 ### Purpose

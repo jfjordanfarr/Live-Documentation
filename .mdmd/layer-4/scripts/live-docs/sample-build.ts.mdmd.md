@@ -1,10 +1,10 @@
-# scripts/live-docs/sample-build.ts
+# `scripts/live-docs/sample-build.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/sample-build.ts
-- Generated At: 2026-11-18T19:06:09.458Z
+- Code Path: `scripts/live-docs/sample-build.ts`
+- Generated At: 2026-11-19T21:10:19.257Z
 
 ## Authored
 ### Purpose

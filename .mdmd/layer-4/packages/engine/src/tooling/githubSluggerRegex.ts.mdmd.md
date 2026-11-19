@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/githubSluggerRegex.ts
+# `packages/engine/src/tooling/githubSluggerRegex.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/githubSluggerRegex.ts
-- Generated At: 2026-09-27T23:21:31.656Z
+- Code Path: `packages/engine/src/tooling/githubSluggerRegex.ts`
+- Generated At: 2026-11-19T21:10:12.759Z
 
 ## Authored
 ### Purpose

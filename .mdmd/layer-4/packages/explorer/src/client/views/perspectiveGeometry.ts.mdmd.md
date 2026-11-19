@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/perspectiveGeometry.ts
+# `packages/explorer/src/client/views/perspectiveGeometry.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/perspectiveGeometry.ts
-- Generated At: 2026-11-08T17:57:47.547Z
+- Code Path: `packages/explorer/src/client/views/perspectiveGeometry.ts`
+- Generated At: 2026-11-19T21:10:17.283Z
 
 ## Authored
 ### Purpose

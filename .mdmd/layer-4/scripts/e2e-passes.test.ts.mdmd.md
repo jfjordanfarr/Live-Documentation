@@ -1,10 +1,10 @@
-# scripts/e2e-passes.test.ts
+# `scripts/e2e-passes.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/e2e-passes.test.ts
-- Generated At: 2026-11-19T01:35:29.541Z
+- Code Path: `scripts/e2e-passes.test.ts`
+- Generated At: 2026-11-19T21:10:18.330Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/contained-sphere-reference.ts
+# `tests/e2e/contained-sphere-reference.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/contained-sphere-reference.ts
-- Generated At: 2026-11-09T00:01:56.340Z
+- Code Path: `tests/e2e/contained-sphere-reference.ts`
+- Generated At: 2026-11-19T21:10:20.480Z
 
 ## Authored
 ### Purpose

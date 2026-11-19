@@ -1,10 +1,10 @@
-# tests/integration/fixtures/queue-worker/workspace/appsettings.json
+# `tests/integration/fixtures/queue-worker/workspace/appsettings.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/queue-worker/workspace/appsettings.json
-- Generated At: 2026-10-16T20:40:25.190Z
+- Code Path: `tests/integration/fixtures/queue-worker/workspace/appsettings.json`
+- Generated At: 2026-11-19T21:10:25.366Z
 
 ## Authored
 ### Purpose

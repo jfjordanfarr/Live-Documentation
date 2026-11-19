@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/heuristics/routes.ts
+# `packages/engine/src/live-docs/heuristics/routes.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/heuristics/routes.ts
-- Generated At: 2026-11-19T08:59:53.236Z
+- Code Path: `packages/engine/src/live-docs/heuristics/routes.ts`
+- Generated At: 2026-11-19T21:10:11.809Z
 
 ## Authored
 ### Purpose

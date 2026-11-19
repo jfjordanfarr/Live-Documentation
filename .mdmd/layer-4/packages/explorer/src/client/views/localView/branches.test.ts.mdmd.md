@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branches.test.ts
+# `packages/explorer/src/client/views/localView/branches.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/branches.test.ts
-- Generated At: 2026-11-03T19:22:41.876Z
+- Code Path: `packages/explorer/src/client/views/localView/branches.test.ts`
+- Generated At: 2026-11-19T21:10:16.153Z
 
 ## Authored
 ### Purpose

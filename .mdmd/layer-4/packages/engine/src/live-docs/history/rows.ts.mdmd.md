@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/rows.ts
+# `packages/engine/src/live-docs/history/rows.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/rows.ts
-- Generated At: 2026-11-19T19:05:05.593Z
+- Code Path: `packages/engine/src/live-docs/history/rows.ts`
+- Generated At: 2026-11-19T21:10:12.208Z
 
 ## Authored
 ### Purpose

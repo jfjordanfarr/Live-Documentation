@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/images/trailer.jpg
+# `tests/integration/fixtures/slopcop-assets/workspace/public/images/trailer.jpg`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/trailer.jpg
-- Generated At: 2026-10-16T20:40:26.161Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/images/trailer.jpg`
+- Generated At: 2026-11-19T21:10:25.470Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/c/modular/src/metrics.c
+# `tests/integration/programs/c/modular/src/metrics.c`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/modular/src/metrics.c
-- Generated At: 2026-10-02T20:20:04.256Z
+- Code Path: `tests/integration/programs/c/modular/src/metrics.c`
+- Generated At: 2026-11-19T21:10:26.035Z
 
 ## Authored
 ### Purpose

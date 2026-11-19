@@ -1,10 +1,10 @@
-# tests/integration/programs/c/basics/compile_commands.json
+# `tests/integration/programs/c/basics/compile_commands.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/basics/compile_commands.json
-- Generated At: 2026-10-16T20:40:27.111Z
+- Code Path: `tests/integration/programs/c/basics/compile_commands.json`
+- Generated At: 2026-11-19T21:10:25.949Z
 
 ## Authored
 ### Purpose

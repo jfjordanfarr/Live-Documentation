@@ -1,11 +1,11 @@
-# .devcontainer/devcontainer.json
+# `.devcontainer/devcontainer.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .devcontainer/devcontainer.json
+- Code Path: `.devcontainer/devcontainer.json`
 - Entry: tooling
-- Generated At: 2026-11-18T00:13:11.519Z
+- Generated At: 2026-11-19T21:10:08.288Z
 
 ## Authored
 ### Purpose

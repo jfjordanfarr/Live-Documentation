@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-scene.ts
+# `packages/explorer/src/client/views/localView/branch-scene.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/branch-scene.ts
-- Generated At: 2026-11-15T22:47:40.369Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-scene.ts`
+- Generated At: 2026-11-19T21:10:16.054Z
 
 ## Authored
 ### Purpose

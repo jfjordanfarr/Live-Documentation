@@ -1,10 +1,10 @@
-# tests/e2e/history-emphasis.spec.ts
+# `tests/e2e/history-emphasis.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/history-emphasis.spec.ts
-- Generated At: 2026-11-18T22:28:23.389Z
+- Code Path: `tests/e2e/history-emphasis.spec.ts`
+- Generated At: 2026-11-19T21:10:21.709Z
 
 ## Authored
 ### Purpose

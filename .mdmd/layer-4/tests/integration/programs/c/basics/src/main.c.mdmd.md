@@ -1,11 +1,11 @@
-# tests/integration/programs/c/basics/src/main.c
+# `tests/integration/programs/c/basics/src/main.c`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/basics/src/main.c
+- Code Path: `tests/integration/programs/c/basics/src/main.c`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-15T15:49:44.496Z
+- Generated At: 2026-11-19T21:10:25.971Z
 
 ## Authored
 ### Purpose

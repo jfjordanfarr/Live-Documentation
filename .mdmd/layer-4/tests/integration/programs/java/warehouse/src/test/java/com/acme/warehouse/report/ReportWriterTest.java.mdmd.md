@@ -1,10 +1,10 @@
-# tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/report/ReportWriterTest.java
+# `tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/report/ReportWriterTest.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/report/ReportWriterTest.java
-- Generated At: 2026-09-27T23:21:36.901Z
+- Code Path: `tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/report/ReportWriterTest.java`
+- Generated At: 2026-11-19T21:10:27.682Z
 
 ## Authored
 ### Purpose

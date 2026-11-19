@@ -1,10 +1,10 @@
-# scripts/layout-lab/scopes.ts
+# `scripts/layout-lab/scopes.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/scopes.ts
-- Generated At: 2026-10-13T19:38:17.549Z
+- Code Path: `scripts/layout-lab/scopes.ts`
+- Generated At: 2026-11-19T21:10:18.896Z
 
 ## Authored
 ### Purpose

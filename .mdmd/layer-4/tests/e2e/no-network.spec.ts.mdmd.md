@@ -1,10 +1,10 @@
-# tests/e2e/no-network.spec.ts
+# `tests/e2e/no-network.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/no-network.spec.ts
-- Generated At: 2026-11-12T17:12:27.845Z
+- Code Path: `tests/e2e/no-network.spec.ts`
+- Generated At: 2026-11-19T21:10:23.256Z
 
 ## Authored
 ### Purpose

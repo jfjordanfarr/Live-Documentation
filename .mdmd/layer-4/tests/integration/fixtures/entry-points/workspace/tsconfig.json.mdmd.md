@@ -1,11 +1,11 @@
-# tests/integration/fixtures/entry-points/workspace/tsconfig.json
+# `tests/integration/fixtures/entry-points/workspace/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/tsconfig.json
+- Code Path: `tests/integration/fixtures/entry-points/workspace/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:23.234Z
+- Generated At: 2026-11-19T21:10:25.008Z
 
 ## Authored
 ### Purpose

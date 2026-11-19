@@ -1,11 +1,11 @@
-# .vscode/settings.json
+# `.vscode/settings.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .vscode/settings.json
+- Code Path: `.vscode/settings.json`
 - Entry: tooling
-- Generated At: 2026-10-22T18:45:16.881Z
+- Generated At: 2026-11-19T21:10:08.375Z
 
 ## Authored
 ### Purpose

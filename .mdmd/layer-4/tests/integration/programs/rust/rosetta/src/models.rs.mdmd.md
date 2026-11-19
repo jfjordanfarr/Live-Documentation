@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/rosetta/src/models.rs
+# `tests/integration/programs/rust/rosetta/src/models.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/rosetta/src/models.rs
-- Generated At: 2026-10-02T20:20:08.642Z
+- Code Path: `tests/integration/programs/rust/rosetta/src/models.rs`
+- Generated At: 2026-11-19T21:10:28.314Z
 
 ## Authored
 ### Purpose

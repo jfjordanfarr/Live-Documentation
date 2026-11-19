@@ -1,11 +1,11 @@
-# scripts/oracle/index-fixture.ts
+# `scripts/oracle/index-fixture.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/oracle/index-fixture.ts
+- Code Path: `scripts/oracle/index-fixture.ts`
 - Entry: command `oracle:index` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.762Z
+- Generated At: 2026-11-19T21:10:19.375Z
 
 ## Authored
 ### Purpose

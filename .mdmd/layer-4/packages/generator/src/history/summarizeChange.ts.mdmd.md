@@ -1,10 +1,10 @@
-# packages/generator/src/history/summarizeChange.ts
+# `packages/generator/src/history/summarizeChange.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T20:51:09.306Z
+- Code Path: `packages/generator/src/history/summarizeChange.ts`
+- Generated At: 2026-11-19T21:10:18.113Z
 
 ## Authored
 ### Purpose

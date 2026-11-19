@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/java/app/pom.xml
+# `tests/integration/fixtures/manifests/workspace/java/app/pom.xml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/java/app/pom.xml
+- Code Path: `tests/integration/fixtures/manifests/workspace/java/app/pom.xml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:24.441Z
+- Generated At: 2026-11-19T21:10:25.160Z
 
 ## Authored
 ### Purpose

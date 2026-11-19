@@ -1,10 +1,10 @@
-# packages/explorer/src/client/graph-helpers.ts
+# `packages/explorer/src/client/graph-helpers.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/graph-helpers.ts
-- Generated At: 2026-10-22T16:47:53.955Z
+- Code Path: `packages/explorer/src/client/graph-helpers.ts`
+- Generated At: 2026-11-19T21:10:12.960Z
 
 ## Authored
 ### Purpose

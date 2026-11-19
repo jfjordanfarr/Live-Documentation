@@ -1,10 +1,10 @@
-# scripts/slopcop/symbolReferences.ts
+# `scripts/slopcop/symbolReferences.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/symbolReferences.ts
-- Generated At: 2026-11-19T00:59:46.977Z
+- Code Path: `scripts/slopcop/symbolReferences.ts`
+- Generated At: 2026-11-19T21:10:19.719Z
 
 ## Authored
 ### Purpose

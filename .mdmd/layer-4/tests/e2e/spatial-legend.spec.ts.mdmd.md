@@ -1,10 +1,10 @@
-# tests/e2e/spatial-legend.spec.ts
+# `tests/e2e/spatial-legend.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/spatial-legend.spec.ts
-- Generated At: 2026-11-16T20:47:29.221Z
+- Code Path: `tests/e2e/spatial-legend.spec.ts`
+- Generated At: 2026-11-19T21:10:24.263Z
 
 ## Authored
 ### Purpose

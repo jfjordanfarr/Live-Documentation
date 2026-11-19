@@ -1,11 +1,11 @@
-# packages/explorer/src/client/tsconfig.json
+# `packages/explorer/src/client/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/tsconfig.json
+- Code Path: `packages/explorer/src/client/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-10-22T18:45:24.614Z
+- Generated At: 2026-11-19T21:10:14.550Z
 
 ## Authored
 ### Purpose

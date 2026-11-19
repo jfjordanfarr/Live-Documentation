@@ -34,12 +34,19 @@ import {
   formatRelativePathFromDoc,
   createSymbolSlug,
   toModuleLabel,
-  formatInlineCode,
   displayDependencyKey,
   createProximityAwareComparator
 } from "./coreUtils";
-import type { CitedBy, Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
+import { encodeLinkPath, symbolName, type CitedBy, type Dependency, type DocSection, type Entry, type ReExport, type ReferenceLine, type SymbolBlock, type TypeRef } from "./document";
 import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
+
+/**
+ * The link from a doc's folder to a file: the relative path, written as a link's path ({@link encodeLinkPath}), so
+ * that a path holding a space, a parenthesis or a `#` opens the file in a markdown viewer and resolves in the graph.
+ */
+function linkTo(docDir: string, targetAbsolute: string): string {
+  return encodeLinkPath(formatRelativePathFromDoc(docDir, targetAbsolute));
+}
 
 // ============================================================================
 // Public Symbol Heading Computation
@@ -125,12 +132,12 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
         const ordinal = occurrence > 0 ? occurrence : 1;
         suffix = `${labelBase} ${ordinal}`;
       }
-    } else if (isReservedHeadingName) {
+    } else if (isReservedHeadingName || symbolName(symbol) !== symbol.name) {
+      // A reserved name, and a name that itself ends in a parenthesised word, which a reader of the heading would take
+      // for a suffix: `build (prod)` is written `build (prod) (key)`, so that the heading's name is `build (prod)`.
       suffix = symbol.kind ?? "symbol";
     }
-    // A name that is empty, as a JSON key may be, is shown as the file spells it.
-    const shownName = symbol.name === "" ? '""' : symbol.name;
-    const displayName = suffix === undefined ? shownName : `${shownName} (${suffix})`;
+    const displayName = suffix === undefined ? symbol.name : `${symbol.name} (${suffix})`;
 
     // A reserved name keeps the anchor of its bare name. A disambiguated one is anchored by its bare name's anchor and
     // the suffix, which for a name the slug keeps is the anchor of the name it displays, and for a name of punctuation
@@ -149,7 +156,7 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
   return infos;
 }
 
-function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
+function ensureUniqueSymbolSlugs(headings: { slug: string }[]): void {
   const used = new Set<string>();
   const suffixCounts = new Map<string, number>();
 
@@ -217,7 +224,7 @@ export function composeSymbolBlocks(args: {
     };
     if (symbol.location) {
       block.source = {
-        path: formatRelativePathFromDoc(args.docDir, args.sourceAbsolute),
+        path: linkTo(args.docDir, args.sourceAbsolute),
         line: symbol.location.line
       };
     }
@@ -399,7 +406,7 @@ function composeTypeRef(
     } else {
       // liveDocPath is workspace-relative; the Live Docs root sits two levels below the workspace root.
       const targetDocAbsolute = path.resolve(args.liveDocsRootAbsolute, "..", "..", location.liveDocPath);
-      type.link = `${formatRelativePathFromDoc(args.docDir, targetDocAbsolute)}${fragment}`;
+      type.link = `${linkTo(args.docDir, targetDocAbsolute)}${fragment}`;
     }
   }
 
@@ -424,10 +431,19 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
 
   const sections: DocSection[] = [];
   const pushSection = (title: string, body: string[] | undefined): void => {
-    if (!body || body.length === 0) {
+    // A section's body is lines: an item that spans several, a description of many lines, is split into them as
+    // example code is, at a line or paragraph separator too, and blank lines at its end go, since a blank line followed
+    // by the next heading ends a body. It is prose, so a lone surrogate, which no file can hold, and a control
+    // character other than a tab, which would make git take the doc for a binary file, are each the U+FFFD that stands
+    // for a character not shown; a name holding one is written so that it reads back (`document.ts`).
+    const lines = (body ?? []).flatMap((line) => line.replace(PROSE_UNSHOWN, "\ufffd").split(/\r\n?|\n|\u2028|\u2029/u));
+    while (lines.length > 0 && lines[lines.length - 1] === "") {
+      lines.pop();
+    }
+    if (lines.length === 0) {
       return;
     }
-    sections.push({ title, body });
+    sections.push({ title, body: lines });
   };
 
   pushSection("Summary", normalizeDocText(documentation.summary));
@@ -465,7 +481,10 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
       }
       const descriptionLines = normalizeDocText(example.description);
       if (descriptionLines) {
-        exampleLines.push(...descriptionLines);
+        // One by one: a spread of many lines into one call exceeds the engine's limit on its arguments.
+        for (const line of descriptionLines) {
+          exampleLines.push(line);
+        }
       }
       if (example.code) {
         if (exampleLines.length > 0 && exampleLines[exampleLines.length - 1] !== "") {
@@ -508,15 +527,21 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
   return sections;
 }
 
+/** What prose in a section body cannot hold as itself: a lone surrogate, and a control character other than a tab or a line break. */
+// eslint-disable-next-line no-control-regex -- the control characters are what a doc's prose cannot hold
+const PROSE_UNSHOWN = /\p{Cs}|[\x00-\x08\x0b\x0c\x0e-\x1f]/gu;
+
 function normalizeDocText(value?: string): string[] | undefined {
   if (!value) {
     return undefined;
   }
 
+  // `trimEnd` strips what `\s+$` would, in linear time: the pattern takes time quadratic in a long run of spaces that
+  // something other than a space follows.
   const lines = value
     .replace(/\r\n/g, "\n")
     .split("\n")
-    .map((line) => line.replace(/\s+$/u, ""));
+    .map((line) => line.trimEnd());
 
   let start = 0;
   while (start < lines.length && lines[start].trim() === "") {
@@ -615,11 +640,11 @@ export function composeDependencies(args: {
         args.liveDocsRootAbsolute,
         `${dependency.resolvedPath}${args.docExtension}`
       );
-      const docRelative = formatRelativePathFromDoc(args.docDir, docAbsolute);
+      const docRelative = linkTo(args.docDir, docAbsolute);
       const symbols = Array.from(bucket.symbols).sort();
 
       if (symbols.length === 0) {
-        dependencies.push({ label: inlineLabel(moduleLabel), link: docRelative, qualifiers });
+        dependencies.push({ label: moduleLabel, link: docRelative, qualifiers });
         continue;
       }
 
@@ -637,13 +662,13 @@ export function composeDependencies(args: {
           symbolName.toLowerCase() === moduleLabel.toLowerCase()
             ? symbolName
             : `${moduleLabel}.${symbolName}`;
-        dependencies.push({ label: inlineLabel(label), link: `${docRelative}${fragment}`, qualifiers });
+        dependencies.push({ label, link: `${docRelative}${fragment}`, qualifiers });
       }
       continue;
     }
 
-    const externalSymbols = Array.from(bucket.symbols).sort().map(inlineLabel);
-    const external: Dependency = { label: inlineLabel(dependency.specifier), qualifiers };
+    const externalSymbols = Array.from(bucket.symbols).sort();
+    const external: Dependency = { label: dependency.specifier, qualifiers };
     if (externalSymbols.length > 0) {
       external.symbols = externalSymbols;
     }
@@ -651,11 +676,6 @@ export function composeDependencies(args: {
   }
 
   return dependencies;
-}
-
-/** The text inside an inline-code span: backticks cannot appear in it. */
-function inlineLabel(value: string): string {
-  return formatInlineCode(value).slice(1, -1);
 }
 
 function buildSymbolSlugIndex(headings: PublicSymbolHeadingInfo[]): Map<string, string> {
@@ -756,8 +776,8 @@ function resolveSymbolSlugFromIndex(
  */
 export function composeCitedBy(args: { documents: readonly string[]; docDir: string; workspaceRoot: string }): CitedBy[] {
   return [...args.documents].sort().map((document) => ({
-    label: inlineLabel(document),
-    link: formatRelativePathFromDoc(args.docDir, path.resolve(args.workspaceRoot, document))
+    label: document,
+    link: linkTo(args.docDir, path.resolve(args.workspaceRoot, document))
   }));
 }
 
@@ -815,7 +835,7 @@ export function composeEntries(args: {
 
   const declarerOf = (declarer: string): { label: string; link: string } => ({
     label: declarer,
-    link: formatRelativePathFromDoc(args.docDir, path.resolve(args.liveDocsRootAbsolute, `${declarer}${args.docExtension}`))
+    link: linkTo(args.docDir, path.resolve(args.liveDocsRootAbsolute, `${declarer}${args.docExtension}`))
   });
   const commands = args.declaredBy
     .filter((declared) => declared.reason === "command")
@@ -850,21 +870,35 @@ export function composeEntries(args: {
 // ============================================================================
 
 /**
+ * A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
+ * is already a public symbol's or another re-export's, as `Foo` and `foo` share one, told apart as two symbols' anchors
+ * are (`symbol-foo-1`). One doc's anchors are one namespace, its public symbols' first. The doc's headings
+ * ({@link composeReExports}) and the workspace index (`discovery.ts`) both take the anchors from here, so that a link to
+ * a re-export lands on the heading it names.
+ *
+ * @param headings - The file's public symbol headings, whose anchors stand as they are.
+ */
+export function anchorReExports<T extends { name: string }>(reExports: readonly T[], headings: readonly { slug: string }[]): Array<{ entry: T; slug: string }> {
+  const anchored = [...reExports].sort((a, b) => compareText(a.name, b.name)).map((entry) => ({ entry, slug: createSymbolSlug(entry.name) }));
+  ensureUniqueSymbolSlugs([...headings.map(({ slug: taken }) => ({ slug: taken })), ...anchored]);
+  return anchored;
+}
+
+/**
  * Composes the `Re-Exported Symbol Anchors` section: one anchor per symbol a
  * barrel re-exports. Its own heading uses the exported name; the provider link
  * uses that provider's actual indexed heading when the workspace index is present.
  */
 export function composeReExports(args: {
   reExports: ReExportedSymbolInfo[];
+  /** The file's public symbol headings, whose anchors a re-export's is held apart from. */
+  headings: readonly { slug: string }[];
   docDir: string;
   liveDocsRootAbsolute: string;
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
-  const sorted = [...args.reExports].sort((a, b) => compareText(a.name, b.name));
-
-  return sorted.map((entry) => {
-    const slugValue = createSymbolSlug(entry.name);
+  return anchorReExports(args.reExports, args.headings).map(({ entry, slug: slugValue }) => {
     const flags: string[] = [];
     if (entry.isTypeOnly) {
       flags.push("type-only");
@@ -875,12 +909,12 @@ export function composeReExports(args: {
         args.liveDocsRootAbsolute,
         `${entry.sourceModulePath}${args.docExtension}`
       );
-      const relative = formatRelativePathFromDoc(args.docDir, moduleDocAbsolute);
+      const relative = linkTo(args.docDir, moduleDocAbsolute);
       const providerSlug = args.symbolIndex
         ? resolveSymbolSlugFromIndex(entry.name, entry.sourceModulePath, args.symbolIndex, entry.kind)
-        : slugValue;
+        : createSymbolSlug(entry.name);
       const fragment = providerSlug ? `#${providerSlug}` : "";
-      reExport.from = { label: inlineLabel(toModuleLabel(entry.sourceModulePath)), link: `${relative}${fragment}` };
+      reExport.from = { label: toModuleLabel(entry.sourceModulePath), link: `${relative}${fragment}` };
     }
     return reExport;
   });

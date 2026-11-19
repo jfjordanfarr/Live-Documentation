@@ -1,11 +1,11 @@
-# scripts/oracle/powershell-ast.ps1
+# `scripts/oracle/powershell-ast.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/oracle/powershell-ast.ps1
+- Code Path: `scripts/oracle/powershell-ast.ps1`
 - Entry: program
-- Generated At: 2026-10-22T16:47:57.783Z
+- Generated At: 2026-11-19T21:10:19.439Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# scripts/layout-lab/drift.test.ts
+# `scripts/layout-lab/drift.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/layout-lab/drift.test.ts
-- Generated At: 2026-11-02T17:03:47.304Z
+- Code Path: `scripts/layout-lab/drift.test.ts`
+- Generated At: 2026-11-19T21:10:18.558Z
 
 ## Authored
 ### Purpose

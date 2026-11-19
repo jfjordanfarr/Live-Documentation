@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/go/ledger/go.mod
+# `tests/integration/fixtures/manifests/workspace/go/ledger/go.mod`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/go/ledger/go.mod
+- Code Path: `tests/integration/fixtures/manifests/workspace/go/ledger/go.mod`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:24.356Z
+- Generated At: 2026-11-19T21:10:25.145Z
 
 ## Authored
 ### Purpose

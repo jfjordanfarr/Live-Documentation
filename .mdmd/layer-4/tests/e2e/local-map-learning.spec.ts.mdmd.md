@@ -1,10 +1,10 @@
-# tests/e2e/local-map-learning.spec.ts
+# `tests/e2e/local-map-learning.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-learning.spec.ts
-- Generated At: 2026-11-06T03:23:54.365Z
+- Code Path: `tests/e2e/local-map-learning.spec.ts`
+- Generated At: 2026-11-19T21:10:22.637Z
 
 ## Authored
 ### Purpose

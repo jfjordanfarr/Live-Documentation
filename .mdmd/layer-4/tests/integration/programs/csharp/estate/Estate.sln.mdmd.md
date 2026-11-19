@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Estate.sln
+# `tests/integration/programs/csharp/estate/Estate.sln`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Estate.sln
-- Generated At: 2026-10-22T00:39:46.584Z
+- Code Path: `tests/integration/programs/csharp/estate/Estate.sln`
+- Generated At: 2026-11-19T21:10:26.528Z
 
 ## Authored
 ### Purpose

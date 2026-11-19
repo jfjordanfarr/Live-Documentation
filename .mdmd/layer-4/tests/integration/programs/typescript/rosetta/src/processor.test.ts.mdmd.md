@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/rosetta/src/processor.test.ts
+# `tests/integration/programs/typescript/rosetta/src/processor.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/typescript/rosetta/src/processor.test.ts
-- Generated At: 2026-09-27T23:21:39.661Z
+- Code Path: `tests/integration/programs/typescript/rosetta/src/processor.test.ts`
+- Generated At: 2026-11-19T21:10:28.594Z
 
 ## Authored
 ### Purpose

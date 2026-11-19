@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/ladder-steps.ts
+# `packages/explorer/src/client/views/localView/ladder-steps.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/ladder-steps.ts
-- Generated At: 2026-11-19T01:56:29.217Z
+- Code Path: `packages/explorer/src/client/views/localView/ladder-steps.ts`
+- Generated At: 2026-11-19T21:10:16.856Z
 
 ## Authored
 ### Purpose

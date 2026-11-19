@@ -1,11 +1,11 @@
-# tests/integration/programs/go/rosetta/src/main/main.go
+# `tests/integration/programs/go/rosetta/src/main/main.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/rosetta/src/main/main.go
+- Code Path: `tests/integration/programs/go/rosetta/src/main/main.go`
 - Entry: program [`main`](#symbol-main-function-overload-2)
-- Generated At: 2026-10-15T15:49:45.743Z
+- Generated At: 2026-11-19T21:10:27.259Z
 
 ## Authored
 ### Purpose

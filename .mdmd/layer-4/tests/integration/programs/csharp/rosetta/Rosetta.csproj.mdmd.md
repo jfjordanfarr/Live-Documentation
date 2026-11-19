@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/rosetta/Rosetta.csproj
+# `tests/integration/programs/csharp/rosetta/Rosetta.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/rosetta/Rosetta.csproj
+- Code Path: `tests/integration/programs/csharp/rosetta/Rosetta.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:29.196Z
+- Generated At: 2026-11-19T21:10:26.845Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psm1
+# `tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psm1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psm1
+- Code Path: `tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psm1`
 - Entry: module of [`tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psd1`](./Rollout.Steps.psd1.mdmd.md)
-- Generated At: 2026-10-16T21:23:48.943Z
+- Generated At: 2026-11-19T21:10:27.783Z
 
 ## Authored
 ### Purpose

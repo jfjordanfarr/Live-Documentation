@@ -1,10 +1,10 @@
-# packages/engine/src/languages/csharp.ts
+# `packages/engine/src/languages/csharp.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/csharp.ts
-- Generated At: 2026-09-27T23:21:30.001Z
+- Code Path: `packages/engine/src/languages/csharp.ts`
+- Generated At: 2026-11-19T21:10:08.772Z
 
 ## Authored
 ### Purpose

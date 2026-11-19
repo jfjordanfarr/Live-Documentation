@@ -1,10 +1,10 @@
-# packages/engine/grammars/powershell/grammar.patch
+# `packages/engine/grammars/powershell/grammar.patch`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/grammars/powershell/grammar.patch
-- Generated At: 2026-10-22T00:39:37.183Z
+- Code Path: `packages/engine/grammars/powershell/grammar.patch`
+- Generated At: 2026-11-19T21:10:08.635Z
 
 ## Authored
 ### Purpose

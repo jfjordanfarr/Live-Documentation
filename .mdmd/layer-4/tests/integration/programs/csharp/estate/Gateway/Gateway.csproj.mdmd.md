@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Gateway/Gateway.csproj
+# `tests/integration/programs/csharp/estate/Gateway/Gateway.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Gateway/Gateway.csproj
+- Code Path: `tests/integration/programs/csharp/estate/Gateway/Gateway.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.680Z
+- Generated At: 2026-11-19T21:10:26.572Z
 
 ## Authored
 ### Purpose

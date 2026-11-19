@@ -1,10 +1,10 @@
-# tests/integration/programs/java/rosetta/src/com/rosetta/types/ProcessorConfig.java
+# `tests/integration/programs/java/rosetta/src/com/rosetta/types/ProcessorConfig.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/ProcessorConfig.java
-- Generated At: 2026-10-02T20:20:06.425Z
+- Code Path: `tests/integration/programs/java/rosetta/src/com/rosetta/types/ProcessorConfig.java`
+- Generated At: 2026-11-19T21:10:27.526Z
 
 ## Authored
 ### Purpose

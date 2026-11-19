@@ -1,10 +1,10 @@
-# packages/explorer/src/client/pathfind.test.ts
+# `packages/explorer/src/client/pathfind.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/pathfind.test.ts
-- Generated At: 2026-10-14T21:04:58.568Z
+- Code Path: `packages/explorer/src/client/pathfind.test.ts`
+- Generated At: 2026-11-19T21:10:14.090Z
 
 ## Authored
 ### Purpose

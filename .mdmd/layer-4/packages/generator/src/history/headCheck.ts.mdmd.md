@@ -1,10 +1,10 @@
-# packages/generator/src/history/headCheck.ts
+# `packages/generator/src/history/headCheck.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/history/headCheck.ts
-- Generated At: 2026-11-19T08:59:55.177Z
+- Code Path: `packages/generator/src/history/headCheck.ts`
+- Generated At: 2026-11-19T21:10:18.079Z
 
 ## Authored
 ### Purpose

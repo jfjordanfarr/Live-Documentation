@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/ladder-rooms.ts
+# `packages/explorer/src/client/views/localView/ladder-rooms.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/ladder-rooms.ts
-- Generated At: 2026-11-16T04:49:21.024Z
+- Code Path: `packages/explorer/src/client/views/localView/ladder-rooms.ts`
+- Generated At: 2026-11-19T21:10:16.825Z
 
 ## Authored
 ### Purpose

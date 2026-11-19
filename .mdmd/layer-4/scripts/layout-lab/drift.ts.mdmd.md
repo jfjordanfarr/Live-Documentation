@@ -1,10 +1,10 @@
-# scripts/layout-lab/drift.ts
+# `scripts/layout-lab/drift.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/drift.ts
-- Generated At: 2026-10-31T20:07:04.423Z
+- Code Path: `scripts/layout-lab/drift.ts`
+- Generated At: 2026-11-19T21:10:18.576Z
 
 ## Authored
 ### Purpose

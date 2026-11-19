@@ -1,10 +1,10 @@
-# scripts/browser-lane.mjs
+# `scripts/browser-lane.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/browser-lane.mjs
-- Generated At: 2026-11-19T07:32:35.074Z
+- Code Path: `scripts/browser-lane.mjs`
+- Generated At: 2026-11-19T21:10:18.146Z
 
 ## Authored
 ### Purpose

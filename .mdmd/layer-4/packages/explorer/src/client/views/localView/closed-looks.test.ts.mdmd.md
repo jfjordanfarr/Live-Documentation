@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/closed-looks.test.ts
+# `packages/explorer/src/client/views/localView/closed-looks.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/closed-looks.test.ts
-- Generated At: 2026-11-17T13:35:12.395Z
+- Code Path: `packages/explorer/src/client/views/localView/closed-looks.test.ts`
+- Generated At: 2026-11-19T21:10:16.390Z
 
 ## Authored
 ### Purpose

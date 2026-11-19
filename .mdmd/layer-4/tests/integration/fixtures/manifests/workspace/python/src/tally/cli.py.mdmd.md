@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py
+# `tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py
+- Code Path: `tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py`
 - Entry: command `tally` of [`tests/integration/fixtures/manifests/workspace/python/pyproject.toml`](../../pyproject.toml.mdmd.md)
-- Generated At: 2026-10-16T16:21:50.324Z
+- Generated At: 2026-11-19T21:10:25.210Z
 
 ## Authored
 ### Purpose

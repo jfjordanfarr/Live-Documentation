@@ -1,10 +1,10 @@
-# packages/generator/src/generator.test.ts
+# `packages/generator/src/generator.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/generator.test.ts
-- Generated At: 2026-11-19T08:59:55.125Z
+- Code Path: `packages/generator/src/generator.test.ts`
+- Generated At: 2026-11-19T21:10:17.952Z
 
 ## Authored
 ### Purpose

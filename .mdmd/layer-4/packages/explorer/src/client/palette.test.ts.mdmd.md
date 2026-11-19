@@ -1,10 +1,10 @@
-# packages/explorer/src/client/palette.test.ts
+# `packages/explorer/src/client/palette.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/palette.test.ts
-- Generated At: 2026-11-19T04:29:43.941Z
+- Code Path: `packages/explorer/src/client/palette.test.ts`
+- Generated At: 2026-11-19T21:10:13.678Z
 
 ## Authored
 ### Purpose

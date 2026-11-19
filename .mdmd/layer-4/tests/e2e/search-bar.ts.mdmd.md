@@ -1,10 +1,10 @@
-# tests/e2e/search-bar.ts
+# `tests/e2e/search-bar.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/search-bar.ts
-- Generated At: 2026-10-14T21:05:01.798Z
+- Code Path: `tests/e2e/search-bar.ts`
+- Generated At: 2026-11-19T21:10:24.126Z
 
 ## Authored
 ### Purpose

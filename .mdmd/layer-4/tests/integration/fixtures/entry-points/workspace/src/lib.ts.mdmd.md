@@ -1,11 +1,11 @@
-# tests/integration/fixtures/entry-points/workspace/src/lib.ts
+# `tests/integration/fixtures/entry-points/workspace/src/lib.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/src/lib.ts
+- Code Path: `tests/integration/fixtures/entry-points/workspace/src/lib.ts`
 - Entry: module of [`tests/integration/fixtures/entry-points/workspace/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:43.550Z
+- Generated At: 2026-11-19T21:10:24.957Z
 
 ## Authored
 ### Purpose

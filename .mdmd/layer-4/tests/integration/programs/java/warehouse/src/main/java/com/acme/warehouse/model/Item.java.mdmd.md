@@ -1,10 +1,10 @@
-# tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java
+# `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java
-- Generated At: 2026-10-02T20:20:06.695Z
+- Code Path: `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java`
+- Generated At: 2026-11-19T21:10:27.631Z
 
 ## Authored
 ### Purpose

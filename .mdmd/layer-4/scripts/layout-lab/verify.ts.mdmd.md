@@ -1,10 +1,10 @@
-# scripts/layout-lab/verify.ts
+# `scripts/layout-lab/verify.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/verify.ts
-- Generated At: 2026-10-07T13:20:48.909Z
+- Code Path: `scripts/layout-lab/verify.ts`
+- Generated At: 2026-11-19T21:10:19.027Z
 
 ## Authored
 ### Purpose

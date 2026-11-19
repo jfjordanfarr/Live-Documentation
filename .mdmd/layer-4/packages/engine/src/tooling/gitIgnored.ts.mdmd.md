@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/gitIgnored.ts
+# `packages/engine/src/tooling/gitIgnored.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/gitIgnored.ts
-- Generated At: 2026-10-16T17:10:16.855Z
+- Code Path: `packages/engine/src/tooling/gitIgnored.ts`
+- Generated At: 2026-11-19T21:10:12.730Z
 
 ## Authored
 ### Purpose

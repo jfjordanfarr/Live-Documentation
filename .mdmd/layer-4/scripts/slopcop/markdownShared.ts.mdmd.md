@@ -1,10 +1,10 @@
-# scripts/slopcop/markdownShared.ts
+# `scripts/slopcop/markdownShared.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/markdownShared.ts
-- Generated At: 2026-11-19T00:59:46.965Z
+- Code Path: `scripts/slopcop/markdownShared.ts`
+- Generated At: 2026-11-19T21:10:19.670Z
 
 ## Authored
 ### Purpose

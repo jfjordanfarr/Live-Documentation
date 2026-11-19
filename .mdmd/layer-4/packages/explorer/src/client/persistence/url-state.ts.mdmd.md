@@ -1,10 +1,10 @@
-# packages/explorer/src/client/persistence/url-state.ts
+# `packages/explorer/src/client/persistence/url-state.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-11-02T02:09:50.619Z
+- Code Path: `packages/explorer/src/client/persistence/url-state.ts`
+- Generated At: 2026-11-19T21:10:14.320Z
 
 ## Authored
 ### Purpose

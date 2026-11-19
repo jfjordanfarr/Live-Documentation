@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/git.ts
+# `packages/engine/src/live-docs/history/git.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T20:47:23.004Z
+- Code Path: `packages/engine/src/live-docs/history/git.ts`
+- Generated At: 2026-11-19T21:10:12.061Z
 
 ## Authored
 ### Purpose

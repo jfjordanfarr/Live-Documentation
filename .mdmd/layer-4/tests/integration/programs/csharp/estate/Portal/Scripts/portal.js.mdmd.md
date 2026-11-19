@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Portal/Scripts/portal.js
+# `tests/integration/programs/csharp/estate/Portal/Scripts/portal.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Portal/Scripts/portal.js
-- Generated At: 2026-10-02T20:20:05.314Z
+- Code Path: `tests/integration/programs/csharp/estate/Portal/Scripts/portal.js`
+- Generated At: 2026-11-19T21:10:26.797Z
 
 ## Authored
 ### Purpose

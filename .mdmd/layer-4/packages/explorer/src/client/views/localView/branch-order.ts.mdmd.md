@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-order.ts
+# `packages/explorer/src/client/views/localView/branch-order.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/branch-order.ts
-- Generated At: 2026-11-12T22:02:38.366Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-order.ts`
+- Generated At: 2026-11-19T21:10:15.746Z
 
 ## Authored
 ### Purpose

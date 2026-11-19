@@ -1,10 +1,10 @@
-# tests/e2e/design-audit.ts
+# `tests/e2e/design-audit.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/design-audit.ts
-- Generated At: 2026-11-18T19:06:09.833Z
+- Code Path: `tests/e2e/design-audit.ts`
+- Generated At: 2026-11-19T21:10:20.653Z
 
 ## Authored
 ### Purpose

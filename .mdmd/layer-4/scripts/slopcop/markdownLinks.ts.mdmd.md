@@ -1,10 +1,10 @@
-# scripts/slopcop/markdownLinks.ts
+# `scripts/slopcop/markdownLinks.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/markdownLinks.ts
-- Generated At: 2026-09-28T20:40:08.942Z
+- Code Path: `scripts/slopcop/markdownLinks.ts`
+- Generated At: 2026-11-19T21:10:19.654Z
 
 ## Authored
 ### Purpose

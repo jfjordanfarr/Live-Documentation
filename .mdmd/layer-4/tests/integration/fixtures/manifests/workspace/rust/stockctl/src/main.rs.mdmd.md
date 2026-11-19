@@ -1,12 +1,12 @@
-# tests/integration/fixtures/manifests/workspace/rust/stockctl/src/main.rs
+# `tests/integration/fixtures/manifests/workspace/rust/stockctl/src/main.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/rust/stockctl/src/main.rs
+- Code Path: `tests/integration/fixtures/manifests/workspace/rust/stockctl/src/main.rs`
 - Entry: program `main`
 - Entry: command `count` of [`tests/integration/fixtures/manifests/workspace/rust/stockctl/Cargo.toml`](../Cargo.toml.mdmd.md)
-- Generated At: 2026-10-16T16:21:50.428Z
+- Generated At: 2026-11-19T21:10:25.249Z
 
 ## Authored
 ### Purpose

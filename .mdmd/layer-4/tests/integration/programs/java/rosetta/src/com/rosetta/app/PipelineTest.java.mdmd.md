@@ -1,10 +1,10 @@
-# tests/integration/programs/java/rosetta/src/com/rosetta/app/PipelineTest.java
+# `tests/integration/programs/java/rosetta/src/com/rosetta/app/PipelineTest.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/PipelineTest.java
-- Generated At: 2026-09-27T23:21:36.246Z
+- Code Path: `tests/integration/programs/java/rosetta/src/com/rosetta/app/PipelineTest.java`
+- Generated At: 2026-11-19T21:10:27.458Z
 
 ## Authored
 ### Purpose

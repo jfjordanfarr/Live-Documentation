@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/state.test.ts
+# `packages/explorer/src/client/views/localView/state.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/state.test.ts
-- Generated At: 2026-10-02T21:07:39.723Z
+- Code Path: `packages/explorer/src/client/views/localView/state.test.ts`
+- Generated At: 2026-11-19T21:10:17.061Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/src/audio/sounds.ts
+# `tests/integration/programs/typescript/tidepool/src/audio/sounds.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/tidepool/src/audio/sounds.ts
-- Generated At: 2026-11-16T20:15:25.707Z
+- Code Path: `tests/integration/programs/typescript/tidepool/src/audio/sounds.ts`
+- Generated At: 2026-11-19T21:10:28.723Z
 
 ## Authored
 ### Purpose

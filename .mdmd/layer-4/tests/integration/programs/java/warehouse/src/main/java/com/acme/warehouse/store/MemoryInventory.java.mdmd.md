@@ -1,10 +1,10 @@
-# tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java
+# `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java
-- Generated At: 2026-10-02T20:20:06.829Z
+- Code Path: `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java`
+- Generated At: 2026-11-19T21:10:27.675Z
 
 ## Authored
 ### Purpose

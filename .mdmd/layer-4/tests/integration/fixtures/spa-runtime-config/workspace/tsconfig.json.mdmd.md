@@ -1,11 +1,11 @@
-# tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json
+# `tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json
+- Code Path: `tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:26.632Z
+- Generated At: 2026-11-19T21:10:25.532Z
 
 ## Authored
 ### Purpose

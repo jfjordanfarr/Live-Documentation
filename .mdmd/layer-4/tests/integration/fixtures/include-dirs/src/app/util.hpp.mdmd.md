@@ -1,10 +1,10 @@
-# tests/integration/fixtures/include-dirs/src/app/util.hpp
+# `tests/integration/fixtures/include-dirs/src/app/util.hpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/src/app/util.hpp
-- Generated At: 2026-10-16T00:58:47.672Z
+- Code Path: `tests/integration/fixtures/include-dirs/src/app/util.hpp`
+- Generated At: 2026-11-19T21:10:25.078Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# scripts/steps.test.ts
+# `scripts/steps.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/steps.test.ts
-- Generated At: 2026-10-19T00:50:07.165Z
+- Code Path: `scripts/steps.test.ts`
+- Generated At: 2026-11-19T21:10:19.742Z
 
 ## Authored
 ### Purpose

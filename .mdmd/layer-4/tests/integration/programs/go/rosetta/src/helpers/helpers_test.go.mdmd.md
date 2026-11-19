@@ -1,10 +1,10 @@
-# tests/integration/programs/go/rosetta/src/helpers/helpers_test.go
+# `tests/integration/programs/go/rosetta/src/helpers/helpers_test.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/go/rosetta/src/helpers/helpers_test.go
-- Generated At: 2026-09-27T23:21:35.948Z
+- Code Path: `tests/integration/programs/go/rosetta/src/helpers/helpers_test.go`
+- Generated At: 2026-11-19T21:10:27.250Z
 
 ## Authored
 ### Purpose

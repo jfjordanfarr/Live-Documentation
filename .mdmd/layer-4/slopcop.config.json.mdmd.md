@@ -1,11 +1,11 @@
-# slopcop.config.json
+# `slopcop.config.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: slopcop.config.json
+- Code Path: `slopcop.config.json`
 - Entry: tooling
-- Generated At: 2026-10-16T00:58:46.237Z
+- Generated At: 2026-11-19T21:10:19.762Z
 
 ## Authored
 ### Purpose

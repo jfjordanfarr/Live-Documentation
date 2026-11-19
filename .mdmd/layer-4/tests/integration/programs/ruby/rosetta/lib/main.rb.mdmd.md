@@ -1,11 +1,11 @@
-# tests/integration/programs/ruby/rosetta/lib/main.rb
+# `tests/integration/programs/ruby/rosetta/lib/main.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/rosetta/lib/main.rb
+- Code Path: `tests/integration/programs/ruby/rosetta/lib/main.rb`
 - Entry: program
-- Generated At: 2026-10-15T15:49:47.298Z
+- Generated At: 2026-11-19T21:10:28.155Z
 
 ## Authored
 ### Purpose

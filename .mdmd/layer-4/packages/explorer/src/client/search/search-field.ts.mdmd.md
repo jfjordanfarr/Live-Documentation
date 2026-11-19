@@ -1,10 +1,10 @@
-# packages/explorer/src/client/search/search-field.ts
+# `packages/explorer/src/client/search/search-field.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/search/search-field.ts
-- Generated At: 2026-11-19T00:33:07.290Z
+- Code Path: `packages/explorer/src/client/search/search-field.ts`
+- Generated At: 2026-11-19T21:10:14.466Z
 
 ## Authored
 ### Purpose

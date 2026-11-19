@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/rosetta/src/Helpers/HelpersTests.cs
+# `tests/integration/programs/csharp/rosetta/src/Helpers/HelpersTests.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/csharp/rosetta/src/Helpers/HelpersTests.cs
-- Generated At: 2026-09-27T23:21:35.311Z
+- Code Path: `tests/integration/programs/csharp/rosetta/src/Helpers/HelpersTests.cs`
+- Generated At: 2026-11-19T21:10:26.907Z
 
 ## Authored
 ### Purpose

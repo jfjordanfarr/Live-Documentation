@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs
+# `tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs
-- Generated At: 2026-10-02T20:20:05.069Z
+- Code Path: `tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs`
+- Generated At: 2026-11-19T21:10:26.667Z
 
 ## Authored
 ### Purpose

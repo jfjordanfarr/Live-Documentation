@@ -1,10 +1,10 @@
-# tests/integration/fixtures/include-dirs/src/shared/log.hpp
+# `tests/integration/fixtures/include-dirs/src/shared/log.hpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/src/shared/log.hpp
-- Generated At: 2026-10-16T00:58:47.780Z
+- Code Path: `tests/integration/fixtures/include-dirs/src/shared/log.hpp`
+- Generated At: 2026-11-19T21:10:25.103Z
 
 ## Authored
 ### Purpose

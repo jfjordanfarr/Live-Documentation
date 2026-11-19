@@ -1,6 +1,6 @@
 # The Live Documentation Engine
 
-_Current as of 2026-10-15._
+_Current as of 2026-11-19._
 
 ## Purpose
 
@@ -8,7 +8,7 @@ _Current as of 2026-10-15._
 
 ## What is here
 
-- [document.ts](../layer-4/packages/engine/src/live-docs/document.ts.mdmd.md) is the grammar: the model of a Live Doc, `renderLiveDoc`, which writes one, and `parseLiveDoc`, which reads one back and refuses anything the grammar does not describe. Rendering what was parsed gives back the same text for every doc the generator writes, and the round-trip suite checks that on every committed doc. Since 2026-10-15 the Metadata block carries `Entry` lines, why something outside the code starts the file ([the decision](architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)).
+- [document.ts](../layer-4/packages/engine/src/live-docs/document.ts.mdmd.md) is the grammar: the model of a Live Doc, `renderLiveDoc`, which writes one, and `parseLiveDoc`, which reads one back and refuses anything the grammar does not describe. Rendering what was parsed gives back the same text for every doc the generator writes, and the round-trip suite checks that on every committed doc. Since 2026-10-15 the Metadata block carries `Entry` lines, why something outside the code starts the file ([the decision](architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)). Since 2026-11-19 a doc holds any name, path or link a repository can and reads it back as itself: a value is written as the format always wrote it where that reads back, a name as a code span, and as a JSON string where it would not (`#### "a\nb"`); a link is a URL reference whose path is percent-encoded where a URL or a markdown viewer needs it; a docstring line the reader would take for structure is written behind a backslash; a doc reads the same with LF or CRLF line endings ([the decision](architectural-decisions.mdmd.md#every-name-a-repository-can-hold-reads-back-from-its-doc-recorded-2026-11-19)).
 - [pathfind.ts](../layer-4/packages/engine/src/live-docs/pathfind.ts.mdmd.md) is one breadth-first walk over a neighbour function and what the CLI and the Explorer ask of it: the shortest path, every file a path reaches, the symbol-level search, the terminal paths, and `reachability`, the walk from the docs' entry points that tells apart what nothing reaches and what only a test reaches.
 - [compose.ts](../layer-4/packages/engine/src/live-docs/compose.ts.mdmd.md) turns a file's analysis into the model: unique headings and anchors, links from type references and dependencies to the docs that declare them, and the documentation sections.
 - [graph.ts](../layer-4/packages/engine/src/live-docs/graph.ts.mdmd.md) is the derived graph index: every parsed doc plus what only the whole corpus can say, which file each link lands on and which files point at each doc. It touches no file system, so the Explorer client reads a graph the same way the CLI does. [graphFiles.ts](../layer-4/packages/engine/src/live-docs/graphFiles.ts.mdmd.md) reads the docs from disk into a graph and writes a graph to `<root>/index.json`.

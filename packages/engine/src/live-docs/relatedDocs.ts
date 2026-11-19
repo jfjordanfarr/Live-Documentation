@@ -26,8 +26,11 @@ import { minimatch } from "minimatch";
 
 import { linkTarget, resolveDocLink, type DocLocation } from "./graph";
 
-/** A markdown link's target, in angle brackets or bare, with an optional title after it; the text before it is not read. */
-const MARKDOWN_LINK = /\]\(\s*(?:<([^>\n]*)>|([^)\s]+))(?:\s+(?:"[^"]*"|'[^']*'))?\s*\)/gu;
+/**
+ * A markdown link's target, in angle brackets or bare, with an optional title after it; the text before it is not
+ * read. A bare target may hold parentheses that pair, as CommonMark reads one: `notes/plan%20(draft).md`.
+ */
+const MARKDOWN_LINK = /\]\(\s*(?:<([^>\n]*)>|((?:[^()\s]|\([^()\s]*\))+))(?:\s+(?:"[^"]*"|'[^']*'))?\s*\)/gu;
 
 /** A line that opens or closes a fenced code block, indented by up to three spaces as CommonMark allows. */
 const FENCE = /^ {0,3}(`{3,}|~{3,})/u;
@@ -84,7 +87,7 @@ export function relatedDocsOf(file: { docPath: string; authored: string }, locat
     if (!isMarkdownDocument(link.split("#", 2)[0])) {
       continue;
     }
-    const resolved = resolveDocLink(file.docPath, decoded(link));
+    const resolved = resolveDocLink(file.docPath, link);
     // A Live Doc is a file of the graph, wired by its own edges, not a document beside it.
     if (resolved === undefined || resolved === file.docPath || linkTarget(file.docPath, link, location)) {
       continue;
@@ -123,7 +126,7 @@ export function citingDocuments(documents: Iterable<DocumentText>, files: Readon
       continue;
     }
     for (const link of markdownLinkTargets(document.text)) {
-      const file = citedFile(document.path, decoded(link), files, location);
+      const file = citedFile(document.path, link, files, location);
       if (file === undefined) {
         continue;
       }
@@ -148,15 +151,6 @@ function citedFile(documentPath: string, link: string, files: ReadonlySet<string
 /** Whether the configuration's bundle exclusions (`bundleExclude`) name a document, by its workspace-relative path. */
 export function excluded(workspacePath: string, exclude: readonly string[]): boolean {
   return exclude.some((pattern) => minimatch(workspacePath, pattern, { dot: true }));
-}
-
-/** A link with its percent-encoding undone, as a browser reads it; a link that is not well-formed is read as written. */
-function decoded(link: string): string {
-  try {
-    return decodeURIComponent(link);
-  } catch {
-    return link;
-  }
 }
 
 function compare(a: string, b: string): number {

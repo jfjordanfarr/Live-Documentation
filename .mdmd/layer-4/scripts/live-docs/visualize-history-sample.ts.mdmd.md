@@ -1,11 +1,11 @@
-# scripts/live-docs/visualize-history-sample.ts
+# `scripts/live-docs/visualize-history-sample.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/visualize-history-sample.ts
+- Code Path: `scripts/live-docs/visualize-history-sample.ts`
 - Entry: command `live-docs:visualize:history-sample` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.791Z
+- Generated At: 2026-11-19T21:10:19.272Z
 
 ## Authored
 ### Purpose

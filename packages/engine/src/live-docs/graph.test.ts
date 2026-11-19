@@ -169,7 +169,7 @@ describe("TypeScript binding facts through analysis, composition, markdown and g
         symbols: composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex,
           liveDocsRootAbsolute, dependencies: analysis.dependencies }),
         dependencies: composeDependencies({ analysis, docDir, liveDocsRootAbsolute, docExtension: location.extension, headings, symbolIndex }),
-        reExports: analysis.reExportedSymbols?.length ? composeReExports({ reExports: analysis.reExportedSymbols, docDir, liveDocsRootAbsolute,
+        reExports: analysis.reExportedSymbols?.length ? composeReExports({ reExports: analysis.reExportedSymbols, headings, docDir, liveDocsRootAbsolute,
           docExtension: location.extension, symbolIndex }) : undefined
       }));
     }

@@ -1,10 +1,10 @@
-# scripts/oracle/scip-edges.ts
+# `scripts/oracle/scip-edges.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/oracle/scip-edges.ts
-- Generated At: 2026-10-16T00:58:46.127Z
+- Code Path: `scripts/oracle/scip-edges.ts`
+- Generated At: 2026-11-19T21:10:19.507Z
 
 ## Authored
 ### Purpose

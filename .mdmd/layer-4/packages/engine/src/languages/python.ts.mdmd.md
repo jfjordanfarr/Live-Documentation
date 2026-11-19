@@ -1,10 +1,10 @@
-# packages/engine/src/languages/python.ts
+# `packages/engine/src/languages/python.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/python.ts
-- Generated At: 2026-09-27T23:21:30.145Z
+- Code Path: `packages/engine/src/languages/python.ts`
+- Generated At: 2026-11-19T21:10:08.897Z
 
 ## Authored
 ### Purpose

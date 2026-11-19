@@ -1,10 +1,10 @@
-# tests/integration/programs/java/rosetta/src/com/rosetta/models/Report.java
+# `tests/integration/programs/java/rosetta/src/com/rosetta/models/Report.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/models/Report.java
-- Generated At: 2026-10-02T20:20:06.364Z
+- Code Path: `tests/integration/programs/java/rosetta/src/com/rosetta/models/Report.java`
+- Generated At: 2026-11-19T21:10:27.493Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# .devcontainer/post-create.sh
+# `.devcontainer/post-create.sh`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .devcontainer/post-create.sh
-- Generated At: 2026-10-22T00:39:32.670Z
+- Code Path: `.devcontainer/post-create.sh`
+- Generated At: 2026-11-19T21:10:08.307Z
 
 ## Authored
 ### Purpose

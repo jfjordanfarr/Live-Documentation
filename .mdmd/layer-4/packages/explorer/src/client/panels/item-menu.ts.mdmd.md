@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/item-menu.ts
+# `packages/explorer/src/client/panels/item-menu.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/item-menu.ts
-- Generated At: 2026-11-04T23:30:35.462Z
+- Code Path: `packages/explorer/src/client/panels/item-menu.ts`
+- Generated At: 2026-11-19T21:10:13.759Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/index.ts
+# `packages/explorer/src/client/views/localView/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/index.ts
-- Generated At: 2026-11-19T07:17:27.559Z
+- Code Path: `packages/explorer/src/client/views/localView/index.ts`
+- Generated At: 2026-11-19T21:10:16.797Z
 
 ## Authored
 ### Purpose

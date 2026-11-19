@@ -1,10 +1,10 @@
-# scripts/live-docs/cli.ts
+# `scripts/live-docs/cli.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-12T16:06:56.230Z
+- Code Path: `scripts/live-docs/cli.ts`
+- Generated At: 2026-11-19T21:10:19.056Z
 
 ## Authored
 ### Purpose

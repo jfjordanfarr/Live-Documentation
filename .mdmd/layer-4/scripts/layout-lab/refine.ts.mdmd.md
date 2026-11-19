@@ -1,10 +1,10 @@
-# scripts/layout-lab/refine.ts
+# `scripts/layout-lab/refine.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/refine.ts
-- Generated At: 2026-11-16T11:46:40.675Z
+- Code Path: `scripts/layout-lab/refine.ts`
+- Generated At: 2026-11-19T21:10:18.766Z
 
 ## Authored
 ### Purpose

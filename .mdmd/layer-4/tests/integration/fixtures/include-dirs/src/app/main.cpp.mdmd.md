@@ -1,11 +1,11 @@
-# tests/integration/fixtures/include-dirs/src/app/main.cpp
+# `tests/integration/fixtures/include-dirs/src/app/main.cpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/src/app/main.cpp
+- Code Path: `tests/integration/fixtures/include-dirs/src/app/main.cpp`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-16T00:58:47.627Z
+- Generated At: 2026-11-19T21:10:25.063Z
 
 ## Authored
 ### Purpose

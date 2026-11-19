@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/sampling.test.ts
+# `packages/engine/src/live-docs/history/sampling.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/sampling.test.ts
-- Generated At: 2026-10-18T00:39:19.026Z
+- Code Path: `packages/engine/src/live-docs/history/sampling.test.ts`
+- Generated At: 2026-11-19T21:10:12.222Z
 
 ## Authored
 ### Purpose

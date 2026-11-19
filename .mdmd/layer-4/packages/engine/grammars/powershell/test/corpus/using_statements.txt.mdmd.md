@@ -1,10 +1,10 @@
-# packages/engine/grammars/powershell/test/corpus/using_statements.txt
+# `packages/engine/grammars/powershell/test/corpus/using_statements.txt`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/grammars/powershell/test/corpus/using_statements.txt
-- Generated At: 2026-10-22T00:39:37.224Z
+- Code Path: `packages/engine/grammars/powershell/test/corpus/using_statements.txt`
+- Generated At: 2026-11-19T21:10:08.653Z
 
 ## Authored
 ### Purpose

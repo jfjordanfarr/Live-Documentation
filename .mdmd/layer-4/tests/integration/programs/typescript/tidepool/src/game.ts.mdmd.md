@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/src/game.ts
+# `tests/integration/programs/typescript/tidepool/src/game.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/tidepool/src/game.ts
-- Generated At: 2026-11-16T20:15:25.893Z
+- Code Path: `tests/integration/programs/typescript/tidepool/src/game.ts`
+- Generated At: 2026-11-19T21:10:28.753Z
 
 ## Authored
 ### Purpose

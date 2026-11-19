@@ -1,11 +1,11 @@
-# scripts/live-docs/inspect.ts
+# `scripts/live-docs/inspect.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/inspect.ts
+- Code Path: `scripts/live-docs/inspect.ts`
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T06:20:31.336Z
+- Generated At: 2026-11-19T21:10:19.123Z
 
 ## Authored
 ### Purpose

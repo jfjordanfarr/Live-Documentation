@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/layered/src/repositories/storage.ts
+# `tests/integration/programs/typescript/layered/src/repositories/storage.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/layered/src/repositories/storage.ts
-- Generated At: 2026-10-02T20:20:09.019Z
+- Code Path: `tests/integration/programs/typescript/layered/src/repositories/storage.ts`
+- Generated At: 2026-11-19T21:10:28.500Z
 
 ## Authored
 ### Purpose

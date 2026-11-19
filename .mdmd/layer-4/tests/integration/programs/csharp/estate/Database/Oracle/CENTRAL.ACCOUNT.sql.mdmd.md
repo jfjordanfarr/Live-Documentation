@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql
+# `tests/integration/programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql
+- Code Path: `tests/integration/programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql`
 - Entry: opening [`CENTRAL.ACCOUNT`](#symbol-centralaccount)
-- Generated At: 2026-10-16T20:40:28.575Z
+- Generated At: 2026-11-19T21:10:26.492Z
 
 ## Authored
 ### Purpose

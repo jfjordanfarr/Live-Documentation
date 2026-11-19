@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/stats-line.ts
+# `packages/explorer/src/client/panels/stats-line.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/stats-line.ts
-- Generated At: 2026-10-30T16:45:20.937Z
+- Code Path: `packages/explorer/src/client/panels/stats-line.ts`
+- Generated At: 2026-11-19T21:10:13.936Z
 
 ## Authored
 ### Purpose

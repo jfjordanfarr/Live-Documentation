@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/ladder-steps.test.ts
+# `packages/explorer/src/client/views/localView/ladder-steps.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/ladder-steps.test.ts
-- Generated At: 2026-11-10T21:46:16.148Z
+- Code Path: `packages/explorer/src/client/views/localView/ladder-steps.test.ts`
+- Generated At: 2026-11-19T21:10:16.842Z
 
 ## Authored
 ### Purpose

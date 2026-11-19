@@ -1,10 +1,10 @@
-# packages/explorer/src/client/bootstrap/entry-heuristics.ts
+# `packages/explorer/src/client/bootstrap/entry-heuristics.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/bootstrap/entry-heuristics.ts
-- Generated At: 2026-10-22T16:47:53.774Z
+- Code Path: `packages/explorer/src/client/bootstrap/entry-heuristics.ts`
+- Generated At: 2026-11-19T21:10:12.815Z
 
 ## Authored
 ### Purpose

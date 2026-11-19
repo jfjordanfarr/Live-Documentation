@@ -1,10 +1,10 @@
-# tests/integration/fixtures/entry-points/workspace/styles.css
+# `tests/integration/fixtures/entry-points/workspace/styles.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/styles.css
-- Generated At: 2026-10-16T20:40:23.208Z
+- Code Path: `tests/integration/fixtures/entry-points/workspace/styles.css`
+- Generated At: 2026-11-19T21:10:25.002Z
 
 ## Authored
 ### Purpose

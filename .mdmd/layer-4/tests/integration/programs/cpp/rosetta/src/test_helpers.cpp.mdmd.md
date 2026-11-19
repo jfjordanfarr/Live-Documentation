@@ -1,11 +1,11 @@
-# tests/integration/programs/cpp/rosetta/src/test_helpers.cpp
+# `tests/integration/programs/cpp/rosetta/src/test_helpers.cpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/cpp/rosetta/src/test_helpers.cpp
+- Code Path: `tests/integration/programs/cpp/rosetta/src/test_helpers.cpp`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-16T00:58:49.496Z
+- Generated At: 2026-11-19T21:10:26.319Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/world-map-estate.spec.ts
+# `tests/e2e/world-map-estate.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/world-map-estate.spec.ts
-- Generated At: 2026-11-12T22:44:25.550Z
+- Code Path: `tests/e2e/world-map-estate.spec.ts`
+- Generated At: 2026-11-19T21:10:24.609Z
 
 ## Authored
 ### Purpose

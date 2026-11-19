@@ -1,10 +1,10 @@
-# packages/engine/src/tooling/compareText.ts
+# `packages/engine/src/tooling/compareText.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/tooling/compareText.ts
-- Generated At: 2026-11-19T08:59:53.464Z
+- Code Path: `packages/engine/src/tooling/compareText.ts`
+- Generated At: 2026-11-19T21:10:12.711Z
 
 ## Authored
 ### Purpose

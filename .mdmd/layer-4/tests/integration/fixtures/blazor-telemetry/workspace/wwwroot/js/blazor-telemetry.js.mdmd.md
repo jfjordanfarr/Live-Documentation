@@ -1,10 +1,10 @@
-# tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js
+# `tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js
-- Generated At: 2026-09-30T16:22:06.257Z
+- Code Path: `tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js`
+- Generated At: 2026-11-19T21:10:24.809Z
 
 ## Authored
 ### Purpose

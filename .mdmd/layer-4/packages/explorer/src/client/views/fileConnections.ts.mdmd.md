@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/fileConnections.ts
+# `packages/explorer/src/client/views/fileConnections.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/fileConnections.ts
-- Generated At: 2026-10-31T15:14:58.011Z
+- Code Path: `packages/explorer/src/client/views/fileConnections.ts`
+- Generated At: 2026-11-19T21:10:14.668Z
 
 ## Authored
 ### Purpose

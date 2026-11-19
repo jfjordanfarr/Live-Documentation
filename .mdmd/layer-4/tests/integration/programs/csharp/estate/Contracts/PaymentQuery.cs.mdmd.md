@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Contracts/PaymentQuery.cs
+# `tests/integration/programs/csharp/estate/Contracts/PaymentQuery.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Contracts/PaymentQuery.cs
-- Generated At: 2026-10-02T20:20:04.758Z
+- Code Path: `tests/integration/programs/csharp/estate/Contracts/PaymentQuery.cs`
+- Generated At: 2026-11-19T21:10:26.471Z
 
 ## Authored
 ### Purpose

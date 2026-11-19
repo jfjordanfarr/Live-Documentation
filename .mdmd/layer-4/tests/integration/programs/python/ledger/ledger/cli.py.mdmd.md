@@ -1,11 +1,11 @@
-# tests/integration/programs/python/ledger/ledger/cli.py
+# `tests/integration/programs/python/ledger/ledger/cli.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/ledger/ledger/cli.py
+- Code Path: `tests/integration/programs/python/ledger/ledger/cli.py`
 - Entry: program
-- Generated At: 2026-10-15T15:49:46.280Z
+- Generated At: 2026-11-19T21:10:27.850Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/aspnet.test.ts
+# `packages/engine/src/live-docs/adapters/aspnet.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/aspnet.test.ts
-- Generated At: 2026-09-27T23:21:30.225Z
+- Code Path: `packages/engine/src/live-docs/adapters/aspnet.test.ts`
+- Generated At: 2026-11-19T21:10:08.979Z
 
 ## Authored
 ### Purpose

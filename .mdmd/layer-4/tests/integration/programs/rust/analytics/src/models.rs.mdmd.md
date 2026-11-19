@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/analytics/src/models.rs
+# `tests/integration/programs/rust/analytics/src/models.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/analytics/src/models.rs
-- Generated At: 2026-10-02T20:20:08.508Z
+- Code Path: `tests/integration/programs/rust/analytics/src/models.rs`
+- Generated At: 2026-11-19T21:10:28.244Z
 
 ## Authored
 ### Purpose

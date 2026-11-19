@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/step-panel.ts
+# `packages/explorer/src/client/history/step-panel.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/step-panel.ts
-- Generated At: 2026-11-11T07:33:49.673Z
+- Code Path: `packages/explorer/src/client/history/step-panel.ts`
+- Generated At: 2026-11-19T21:10:13.328Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/bootstrap/index.ts
+# `packages/explorer/src/client/bootstrap/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/bootstrap/index.ts
-- Generated At: 2026-10-22T16:47:53.792Z
+- Code Path: `packages/explorer/src/client/bootstrap/index.ts`
+- Generated At: 2026-11-19T21:10:12.824Z
 
 ## Authored
 ### Purpose

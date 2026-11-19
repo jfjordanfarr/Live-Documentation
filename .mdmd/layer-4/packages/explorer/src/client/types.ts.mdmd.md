@@ -1,10 +1,10 @@
-# packages/explorer/src/client/types.ts
+# `packages/explorer/src/client/types.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-19T12:46:58.642Z
+- Code Path: `packages/explorer/src/client/types.ts`
+- Generated At: 2026-11-19T21:10:14.569Z
 
 ## Authored
 ### Purpose

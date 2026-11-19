@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/cycle-order.test.ts
+# `packages/explorer/src/client/views/localView/cycle-order.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/cycle-order.test.ts
-- Generated At: 2026-11-16T03:53:05.328Z
+- Code Path: `packages/explorer/src/client/views/localView/cycle-order.test.ts`
+- Generated At: 2026-11-19T21:10:16.572Z
 
 ## Authored
 ### Purpose

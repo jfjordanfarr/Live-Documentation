@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/subgraph-builder.ts
+# `packages/explorer/src/client/views/localView/subgraph-builder.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-11-03T19:06:09.572Z
+- Code Path: `packages/explorer/src/client/views/localView/subgraph-builder.ts`
+- Generated At: 2026-11-19T21:10:17.098Z
 
 ## Authored
 ### Purpose

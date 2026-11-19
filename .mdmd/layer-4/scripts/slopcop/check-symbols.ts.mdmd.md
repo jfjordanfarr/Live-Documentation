@@ -1,11 +1,11 @@
-# scripts/slopcop/check-symbols.ts
+# `scripts/slopcop/check-symbols.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/check-symbols.ts
+- Code Path: `scripts/slopcop/check-symbols.ts`
 - Entry: command `slopcop:symbols` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.920Z
+- Generated At: 2026-11-19T21:10:19.614Z
 
 ## Authored
 ### Purpose

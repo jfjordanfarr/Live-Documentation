@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/tests/snapshot.png
+# `tests/integration/programs/typescript/tidepool/tests/snapshot.png`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/tests/snapshot.png
-- Generated At: 2026-11-16T20:15:28.461Z
+- Code Path: `tests/integration/programs/typescript/tidepool/tests/snapshot.png`
+- Generated At: 2026-11-19T21:10:28.981Z
 
 ## Authored
 ### Purpose

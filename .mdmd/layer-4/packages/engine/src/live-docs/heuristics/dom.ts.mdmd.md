@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/heuristics/dom.ts
+# `packages/engine/src/live-docs/heuristics/dom.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/heuristics/dom.ts
-- Generated At: 2026-10-19T15:06:00.002Z
+- Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
+- Generated At: 2026-11-19T21:10:11.763Z
 
 ## Authored
 ### Purpose

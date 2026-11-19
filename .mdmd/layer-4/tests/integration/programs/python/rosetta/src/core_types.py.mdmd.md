@@ -1,10 +1,10 @@
-# tests/integration/programs/python/rosetta/src/core_types.py
+# `tests/integration/programs/python/rosetta/src/core_types.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/rosetta/src/core_types.py
-- Generated At: 2026-10-02T20:20:07.802Z
+- Code Path: `tests/integration/programs/python/rosetta/src/core_types.py`
+- Generated At: 2026-11-19T21:10:27.994Z
 
 ## Authored
 ### Purpose

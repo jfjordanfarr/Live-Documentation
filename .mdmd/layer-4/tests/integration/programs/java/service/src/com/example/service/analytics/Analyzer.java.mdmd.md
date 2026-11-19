@@ -1,10 +1,10 @@
-# tests/integration/programs/java/service/src/com/example/service/analytics/Analyzer.java
+# `tests/integration/programs/java/service/src/com/example/service/analytics/Analyzer.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/service/src/com/example/service/analytics/Analyzer.java
-- Generated At: 2026-10-02T20:20:06.494Z
+- Code Path: `tests/integration/programs/java/service/src/com/example/service/analytics/Analyzer.java`
+- Generated At: 2026-11-19T21:10:27.560Z
 
 ## Authored
 ### Purpose

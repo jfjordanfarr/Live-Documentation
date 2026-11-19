@@ -1,10 +1,10 @@
-# packages/explorer/src/client/reading-state.test.ts
+# `packages/explorer/src/client/reading-state.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/reading-state.test.ts
-- Generated At: 2026-11-04T15:03:15.927Z
+- Code Path: `packages/explorer/src/client/reading-state.test.ts`
+- Generated At: 2026-11-19T21:10:14.375Z
 
 ## Authored
 ### Purpose

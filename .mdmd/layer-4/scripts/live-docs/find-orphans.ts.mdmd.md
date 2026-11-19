@@ -1,11 +1,11 @@
-# scripts/live-docs/find-orphans.ts
+# `scripts/live-docs/find-orphans.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/find-orphans.ts
+- Code Path: `scripts/live-docs/find-orphans.ts`
 - Entry: command `live-docs:orphans` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.260Z
+- Generated At: 2026-11-19T21:10:19.070Z
 
 ## Authored
 ### Purpose

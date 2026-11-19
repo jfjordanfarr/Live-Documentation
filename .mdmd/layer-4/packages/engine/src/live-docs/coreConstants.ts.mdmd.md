@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/coreConstants.ts
+# `packages/engine/src/live-docs/coreConstants.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/coreConstants.ts
-- Generated At: 2026-10-16T20:40:17.951Z
+- Code Path: `packages/engine/src/live-docs/coreConstants.ts`
+- Generated At: 2026-11-19T21:10:11.248Z
 
 ## Authored
 ### Purpose

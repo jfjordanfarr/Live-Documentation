@@ -20,7 +20,7 @@ import { gitIgnored } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
-import { computePublicSymbolHeadingInfo } from "./compose";
+import { anchorReExports, computePublicSymbolHeadingInfo } from "./compose";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
@@ -31,7 +31,6 @@ import type {
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { createSymbolSlug } from "./coreUtils";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
@@ -286,7 +285,17 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     }
     files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
   }
-  return files.sort((a, b) => a.absolute < b.absolute ? -1 : a.absolute > b.absolute ? 1 : 0);
+  return inWorkspaceOrder(files);
+}
+
+/**
+ * Files in the order of their workspace-relative paths with forward slashes, by UTF-16 code unit, whatever the platform
+ * spells their absolute paths with: on Windows a backslash sorts after the digits and the capitals, where a slash sorts
+ * before them, so an order of absolute paths put `Shop.Data2\` before `Shop.Data\`, the reverse of Linux. The order is
+ * the one in which files register their symbols, so it must not depend on the platform.
+ */
+export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[] {
+  return files.sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0));
 }
 
 /**
@@ -447,8 +456,9 @@ export async function buildWorkspaceIndexes(options: {
         register(symbol.qualifiedName, location);
       }
     }
-    for (const entry of reExports) {
-      register(entry.name, { liveDocPath, sourcePath, anchor: createSymbolSlug(entry.name), kind: entry.kind, isReExport: true,
+    // Anchored as the doc's `Re-Exported Symbol Anchors` section anchors them, two that one anchor would name told apart.
+    for (const { entry, slug } of anchorReExports(reExports, headings)) {
+      register(entry.name, { liveDocPath, sourcePath, anchor: slug, kind: entry.kind, isReExport: true,
         ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }
   }

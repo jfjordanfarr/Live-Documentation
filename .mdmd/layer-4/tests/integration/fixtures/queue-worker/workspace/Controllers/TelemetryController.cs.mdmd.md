@@ -1,11 +1,11 @@
-# tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs
+# `tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs
+- Code Path: `tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs`
 - Entry: opening [`POST api/telemetry`](#symbol-post-apitelemetry)
-- Generated At: 2026-10-15T15:49:43.717Z
+- Generated At: 2026-11-19T21:10:25.341Z
 
 ## Authored
 ### Purpose

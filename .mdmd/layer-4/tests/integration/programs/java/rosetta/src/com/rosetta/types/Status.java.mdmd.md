@@ -1,10 +1,10 @@
-# tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java
+# `tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java
-- Generated At: 2026-10-02T20:20:06.442Z
+- Code Path: `tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java`
+- Generated At: 2026-11-19T21:10:27.533Z
 
 ## Authored
 ### Purpose

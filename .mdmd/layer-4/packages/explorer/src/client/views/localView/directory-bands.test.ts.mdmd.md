@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/directory-bands.test.ts
+# `packages/explorer/src/client/views/localView/directory-bands.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/directory-bands.test.ts
-- Generated At: 2026-10-12T19:35:22.606Z
+- Code Path: `packages/explorer/src/client/views/localView/directory-bands.test.ts`
+- Generated At: 2026-11-19T21:10:16.646Z
 
 ## Authored
 ### Purpose

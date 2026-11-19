@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/coreTypes.ts
+# `packages/engine/src/live-docs/coreTypes.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/coreTypes.ts
-- Generated At: 2026-11-09T00:01:53.916Z
+- Code Path: `packages/engine/src/live-docs/coreTypes.ts`
+- Generated At: 2026-11-19T21:10:11.275Z
 
 ## Authored
 ### Purpose

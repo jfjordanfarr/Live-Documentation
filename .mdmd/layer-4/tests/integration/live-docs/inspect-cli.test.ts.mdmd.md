@@ -1,10 +1,10 @@
-# tests/integration/live-docs/inspect-cli.test.ts
+# `tests/integration/live-docs/inspect-cli.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/inspect-cli.test.ts
-- Generated At: 2026-11-02T16:51:00.818Z
+- Code Path: `tests/integration/live-docs/inspect-cli.test.ts`
+- Generated At: 2026-11-19T21:10:25.785Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/zoom-looks.spec.ts
+# `tests/e2e/zoom-looks.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/zoom-looks.spec.ts
-- Generated At: 2026-11-13T18:24:39.058Z
+- Code Path: `tests/e2e/zoom-looks.spec.ts`
+- Generated At: 2026-11-19T21:10:24.770Z
 
 ## Authored
 ### Purpose

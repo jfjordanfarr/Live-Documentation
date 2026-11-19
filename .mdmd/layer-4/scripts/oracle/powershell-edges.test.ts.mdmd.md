@@ -1,10 +1,10 @@
-# scripts/oracle/powershell-edges.test.ts
+# `scripts/oracle/powershell-edges.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/oracle/powershell-edges.test.ts
-- Generated At: 2026-10-16T16:49:41.528Z
+- Code Path: `scripts/oracle/powershell-edges.test.ts`
+- Generated At: 2026-11-19T21:10:19.451Z
 
 ## Authored
 ### Purpose

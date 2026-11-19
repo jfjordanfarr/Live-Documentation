@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/name-cut.test.ts
+# `packages/explorer/src/client/views/localView/name-cut.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/name-cut.test.ts
-- Generated At: 2026-11-16T04:49:21.246Z
+- Code Path: `packages/explorer/src/client/views/localView/name-cut.test.ts`
+- Generated At: 2026-11-19T21:10:16.933Z
 
 ## Authored
 ### Purpose

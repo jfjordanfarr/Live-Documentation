@@ -1,10 +1,10 @@
-# tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Scripts/app-insights.js
+# `tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Scripts/app-insights.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Scripts/app-insights.js
-- Generated At: 2026-09-27T23:21:33.831Z
+- Code Path: `tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Scripts/app-insights.js`
+- Generated At: 2026-11-19T21:10:25.570Z
 
 ## Authored
 ### Purpose

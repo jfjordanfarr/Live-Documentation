@@ -1,10 +1,10 @@
-# tests/integration/live-docs/graph.test.ts
+# `tests/integration/live-docs/graph.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/graph.test.ts
-- Generated At: 2026-09-28T00:41:41.867Z
+- Code Path: `tests/integration/live-docs/graph.test.ts`
+- Generated At: 2026-11-19T21:10:25.686Z
 
 ## Authored
 ### Purpose

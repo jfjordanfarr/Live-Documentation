@@ -1,10 +1,10 @@
-# tests/e2e/contrast.test.ts
+# `tests/e2e/contrast.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/contrast.test.ts
-- Generated At: 2026-10-30T14:57:10.594Z
+- Code Path: `tests/e2e/contrast.test.ts`
+- Generated At: 2026-11-19T21:10:20.491Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/programs/rust/rosetta/Cargo.toml
+# `tests/integration/programs/rust/rosetta/Cargo.toml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/rosetta/Cargo.toml
+- Code Path: `tests/integration/programs/rust/rosetta/Cargo.toml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:32.767Z
+- Generated At: 2026-11-19T21:10:28.280Z
 
 ## Authored
 ### Purpose

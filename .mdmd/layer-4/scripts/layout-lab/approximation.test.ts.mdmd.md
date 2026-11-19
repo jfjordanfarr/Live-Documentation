@@ -1,10 +1,10 @@
-# scripts/layout-lab/approximation.test.ts
+# `scripts/layout-lab/approximation.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/layout-lab/approximation.test.ts
-- Generated At: 2026-10-28T20:40:12.983Z
+- Code Path: `scripts/layout-lab/approximation.test.ts`
+- Generated At: 2026-11-19T21:10:18.347Z
 
 ## Authored
 ### Purpose

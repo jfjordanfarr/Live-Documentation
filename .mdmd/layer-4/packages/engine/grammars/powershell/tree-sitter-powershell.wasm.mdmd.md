@@ -1,10 +1,10 @@
-# packages/engine/grammars/powershell/tree-sitter-powershell.wasm
+# `packages/engine/grammars/powershell/tree-sitter-powershell.wasm`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: packages/engine/grammars/powershell/tree-sitter-powershell.wasm
-- Generated At: 2026-10-22T00:39:37.237Z
+- Code Path: `packages/engine/grammars/powershell/tree-sitter-powershell.wasm`
+- Generated At: 2026-11-19T21:10:08.658Z
 
 ## Authored
 ### Purpose

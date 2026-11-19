@@ -1,10 +1,10 @@
-# scripts/layout-lab/restarts.test.ts
+# `scripts/layout-lab/restarts.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/layout-lab/restarts.test.ts
-- Generated At: 2026-10-07T14:15:48.043Z
+- Code Path: `scripts/layout-lab/restarts.test.ts`
+- Generated At: 2026-11-19T21:10:18.802Z
 
 ## Authored
 ### Purpose

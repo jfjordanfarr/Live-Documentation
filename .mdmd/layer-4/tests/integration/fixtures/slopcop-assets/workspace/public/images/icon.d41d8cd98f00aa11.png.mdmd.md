@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png
+# `tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png
-- Generated At: 2026-10-16T20:40:26.083Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png`
+- Generated At: 2026-11-19T21:10:25.461Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/scenarios/reading.ts
+# `tests/e2e/scenarios/reading.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/scenarios/reading.ts
-- Generated At: 2026-11-18T19:06:10.608Z
+- Code Path: `tests/e2e/scenarios/reading.ts`
+- Generated At: 2026-11-19T21:10:23.902Z
 
 ## Authored
 ### Purpose

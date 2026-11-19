@@ -12,6 +12,7 @@
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../tooling/compareText";
 import { slug } from "../tooling/githubSlugger";
 import type { DependencyEntry, LocationInfo } from "./coreTypes";
 
@@ -64,11 +65,15 @@ export function formatRelativePathFromDoc(docDir: string, targetAbsolute: string
  * names each symbol by its anchor, could not summarize the file that
  * exported it.
  *
+ * A lone surrogate, which a JSON key's `\ud800` escape gives and the slug
+ * keeps, is written the same way, `~d800`, since no file can hold one: two
+ * such names would otherwise share the anchor U+FFFD on disk.
+ *
  * @param name - The symbol name
  * @returns A slug like "symbol-myfunction"
  */
 export function createSymbolSlug(name: string): string {
-  const candidate = slug(`\`${name}\``);
+  const candidate = slug(`\`${name}\``).replace(/\p{Cs}/gu, (surrogate) => `~${surrogate.charCodeAt(0).toString(16)}`);
   if (candidate.length > 0) {
     return `symbol-${candidate}`;
   }
@@ -92,17 +97,6 @@ export function toModuleLabel(workspaceRelativePath: string): string {
     }
   }
   return withoutExtension || baseName || workspaceRelativePath;
-}
-
-/**
- * Formats a value as inline code, escaping backticks.
- *
- * @param value - The value to format
- * @returns The value wrapped in backticks with internal backticks escaped
- */
-export function formatInlineCode(value: string): string {
-  const sanitized = value.replace(/`/g, "'");
-  return `\`${sanitized}\``;
 }
 
 /**
@@ -306,6 +300,7 @@ export function createProximityAwareComparator(referencePath: string) {
     // Among same proximity, prefer deeper paths (more specific modules)
     const aDepth = a.sourcePath.split(/[\\/]/).length;
     const bDepth = b.sourcePath.split(/[\\/]/).length;
-    return bDepth - aDepth;
+    // Then by path, so that no choice is left to the order in which files were discovered.
+    return bDepth - aDepth || compareText(a.sourcePath, b.sourcePath);
   };
 }

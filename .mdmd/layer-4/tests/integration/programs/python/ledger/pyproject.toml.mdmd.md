@@ -1,11 +1,11 @@
-# tests/integration/programs/python/ledger/pyproject.toml
+# `tests/integration/programs/python/ledger/pyproject.toml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/ledger/pyproject.toml
+- Code Path: `tests/integration/programs/python/ledger/pyproject.toml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:31.194Z
+- Generated At: 2026-11-19T21:10:27.926Z
 
 ## Authored
 ### Purpose
