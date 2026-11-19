@@ -314,7 +314,8 @@ export function followLink(link: string, listing: ReadonlyMap<string, { mode: st
 
 const OUT_OF_TREE = "it is a symbolic link out of the tree, which the history does not follow";
 const NOTHING = "it is a symbolic link to nothing the commit holds";
-const TO_FOLDER = "it is a symbolic link to a folder, which the history does not follow";
+const TO_FOLDER =
+  "it is a symbolic link to a folder, which the history does not follow: what is read through it reads as gone, an import through it is not resolved, and the check at the head of such a history fails";
 
 const folderCache = new WeakMap<ReadonlyMap<string, unknown>, Set<string>>();
 

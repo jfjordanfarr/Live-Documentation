@@ -8,7 +8,7 @@ import { followLink, openGitRepository, parseMainline, parseNameStatus, parseTag
 
 const OUT = "it is a symbolic link out of the tree, which the history does not follow";
 const NOWHERE = "it is a symbolic link to nothing the commit holds";
-const FOLDER = "it is a symbolic link to a folder, which the history does not follow";
+const FOLDER = "it is a symbolic link to a folder, which the history does not follow: what is read through it reads as gone, an import through it is not resolved, and the check at the head of such a history fails";
 const DOCS_ROOT = "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow";
 
 describe("parseMainline", () => {

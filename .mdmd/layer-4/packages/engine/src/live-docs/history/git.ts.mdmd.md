@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T20:45:38.779Z
+- Generated At: 2026-11-19T20:47:23.004Z
 
 ## Authored
 ### Purpose
@@ -105,7 +105,7 @@ the reason it is not followed.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L387)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L388)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeStoredTree` — Summary
@@ -134,7 +134,7 @@ The entries not written, in the tree's order.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L606)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L607)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -142,14 +142,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L618)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L619)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L630)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L631)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
