@@ -26,17 +26,19 @@ const clamp = (value: number, low: number, high: number): number => Math.min(hig
  * below one narrows, above one widens. The span is held between the least span (or the whole history, if shorter) and
  * the whole history, `last` being the history's last step; a range already narrower than the least, as the finder can
  * choose, is never widened by a narrowing, and a range of one step widens from one. The view is slid back inside the
- * history where the scale would carry it past an end.
+ * history where the scale would carry it past an end. `share`, from 0 at the track's start to 1 at its end, is where the
+ * focus stands on the track; on the date axis that is not its share of the steps, and the pointer's own share keeps the
+ * focus under the pointer. Without it, the focus's share of the steps.
  */
-export function zoomView(view: View, focus: number, factor: number, last: number, least = LEAST_SPAN): View {
+export function zoomView(view: View, focus: number, factor: number, last: number, least = LEAST_SPAN, share?: number): View {
   if (last <= 0) return [0, 0];
   const [first, end] = view;
   const span = Math.max(0, end - first);
   const scale = Number.isFinite(factor) && factor > 0 ? factor : 1;
   const next = clamp(Math.max(span, scale > 1 ? 1 : 0) * scale, Math.min(least, last, span), last);
   const at = clamp(focus, first, end);
-  const share = span > 0 ? (at - first) / span : 0.5;
-  const start = clamp(at - share * next, 0, last - next);
+  const along = share !== undefined && Number.isFinite(share) ? clamp(share, 0, 1) : span > 0 ? (at - first) / span : 0.5;
+  const start = clamp(at - along * next, 0, last - next);
   return [start, start + next];
 }
 

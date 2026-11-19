@@ -39,6 +39,12 @@ describe("zooming the track", () => {
     expect(one[1] - one[0]).toBeCloseTo(2);
   });
 
+  it("keeps the focus at the pointer's share of the track where that is not its share of the steps, as on the date axis", () => {
+    // Step 700 stands nine tenths along a track of steps 0 to 800 laid out by date; halving keeps it nine tenths along.
+    expect(zoomView([0, 800], 700, 0.5, 800, LEAST_SPAN, 0.9)).toEqual([340, 740]);
+    expect(zoomView([0, 800], 700, 0.5, 800)).toEqual([350, 750]);
+  });
+
   it("holds a focus outside the view at the nearer end", () => {
     expect(zoomView([100, 200], 50, 0.5, 800)).toEqual([100, 150]);
   });
