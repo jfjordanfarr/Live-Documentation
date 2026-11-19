@@ -113,6 +113,14 @@ describe("database objects", () => {
     ]);
   });
 
+  it("puts a declaration at its own line, whatever comment, string or name spans lines before it", () => {
+    expect(sqlDeclarations("/*\n licence\n*/\nCREATE TABLE dbo.T (a int);")).toEqual([{ kind: "table", name: "dbo.T", line: 4 }]);
+    expect(sqlDeclarations("PRINT 'one\r\ntwo\r\nthree';\r\nGO\r\nCREATE PROCEDURE [a\r\nb] AS SELECT 1;\r\nGO\r\nCREATE VIEW dbo.V AS SELECT 1 AS x;")).toEqual([
+      { kind: "procedure", name: "a\r\nb", line: 5 },
+      { kind: "view",      name: "dbo.V",  line: 8 }
+    ]);
+  });
+
   it("never lets an apostrophe in a bracketed name open a string: the cold run's smallest crash", () => {
     expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1 }]);
   });

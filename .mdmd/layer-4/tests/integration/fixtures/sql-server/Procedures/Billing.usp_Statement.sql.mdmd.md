@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Procedures/Billing.usp_Statement.sql
 - Entry: opening [`Billing.usp_Statement`](#symbol-billingusp_statement)
-- Generated At: 2026-11-19T19:25:52.578Z
+- Generated At: 2026-11-19T19:41:35.003Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ The SQL Server fixture's busiest procedure, after a comment of seven lines: it e
 ### Public Symbols
 #### `Billing.usp_Statement` {#symbol-billingusp_statement}
 - Type: procedure
-- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Procedures/Billing.usp_Statement.sql#L2)
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Procedures/Billing.usp_Statement.sql#L8)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

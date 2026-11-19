@@ -24,10 +24,6 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 const MEASURED_MISSES: Record<string, string[]> = {
   "fixtures/sql-server": [
     "object invented: Tests/BillingTests.class.sql:9 table \"BillingTests.Expected\"",
-    "line: Procedures/Billing.usp_Statement.sql Billing.usp_Statement at 8, the adapter says 2",
-    "line: Schema/Billing.Customer.sql Billing.Customer at 5, the adapter says 2",
-    "line: Schema/Billing.fn_Balance.sql Billing.fn_Balance at 3, the adapter says 2",
-    "line: Schema/Billing.fn_Balance.sql Billing.fn_OpenInvoices at 11, the adapter says 10",
     "dependency missing: Procedures/Billing.usp_Archive.sql -> Schema/Billing.Invoice.sql :: billing.invoice (delete)",
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Procedures/Billing.usp_Archive.sql :: billing.usp_archive (execute)",
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)",

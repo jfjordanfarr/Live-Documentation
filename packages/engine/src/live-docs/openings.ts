@@ -333,13 +333,14 @@ function sqlKind(keyword: string): string {
 }
 
 /**
- * SQL text without its comments and string literals, positions kept. A
+ * SQL text without its comments and string literals, positions and line
+ * breaks kept, so that a line counted in it is the line in the file. A
  * quoted name is passed over whole, so that an apostrophe or a dash inside
  * one never opens a string or a comment; a string or a comment left open
  * runs to the end of the text.
  */
 export function stripSql(text: string): string {
-  return text.replace(SQL_HIDDEN, (match) => (match.startsWith("[") || match.startsWith("\"") ? match : " ".repeat(match.length)));
+  return text.replace(SQL_HIDDEN, (match) => (match.startsWith("[") || match.startsWith("\"") ? match : match.replace(/[^\n]/gu, " ")));
 }
 
 /** One object a script declares. */

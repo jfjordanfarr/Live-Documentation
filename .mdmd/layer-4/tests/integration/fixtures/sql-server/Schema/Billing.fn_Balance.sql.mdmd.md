@@ -6,7 +6,7 @@
 - Code Path: tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql
 - Entry: opening [`Billing.fn_Balance`](#symbol-billingfn_balance)
 - Entry: opening [`Billing.fn_OpenInvoices`](#symbol-billingfn_openinvoices)
-- Generated At: 2026-11-19T19:25:52.599Z
+- Generated At: 2026-11-19T19:41:35.035Z
 
 ## Authored
 ### Purpose
@@ -20,11 +20,11 @@ Two functions of the SQL Server fixture in one file: a scalar function after a c
 ### Public Symbols
 #### `Billing.fn_Balance` {#symbol-billingfn_balance}
 - Type: sql-function
-- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql#L2)
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql#L3)
 
 #### `Billing.fn_OpenInvoices` {#symbol-billingfn_openinvoices}
 - Type: sql-function
-- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql#L10)
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql#L11)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

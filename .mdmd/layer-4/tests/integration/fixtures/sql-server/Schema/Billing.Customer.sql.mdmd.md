@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Schema/Billing.Customer.sql
 - Entry: opening [`Billing.Customer`](#symbol-billingcustomer)
-- Generated At: 2026-11-19T19:25:52.584Z
+- Generated At: 2026-11-19T19:41:35.015Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ A table of the SQL Server fixture, its CREATE standing after a comment of severa
 ### Public Symbols
 #### `Billing.Customer` {#symbol-billingcustomer}
 - Type: table
-- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.Customer.sql#L2)
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Schema/Billing.Customer.sql#L5)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
