@@ -21,9 +21,9 @@
  * under the pointer; a sideways wheel, or Shift with the wheel, slides it; on
  * touch two fingers pinch and slide (`zoom.ts`). The step shown may then stand
  * outside the range, and a mark in the thumb's look at that end of the track
- * slides the range back to hold it. While the thumb drags, the steps it crosses are coalesced into one
- * call per animation frame, so that the thumb never lags the hand; when it
- * rests, one call says so.
+ * slides the range back to hold it. While the thumb drags, the steps it
+ * crosses are coalesced into one call per animation frame, so that the thumb
+ * never lags the hand; when it rests, one call says so.
  *
  * The left edge is marked truncated when the history begins where the
  * knowledge does rather than where the repository did (scenario 8).
@@ -37,7 +37,7 @@ import { iconButton } from "../panels/icon-button";
 import type { HistoryAxis } from "../types";
 import { findCommits, type HistoryRange } from "./navigation";
 import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
-import { panView, rangeOfView, wheelFactor, zoomView, type View } from "./zoom";
+import { panView, rangeOfView, slideToHold, wheelFactor, zoomView, type View } from "./zoom";
 
 /** How near the pointer, in pixels, a step must stand on the date axis to be the one a click or a drag means. */
 const POINTER_REACH_PX = 3;
@@ -295,7 +295,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   previousMark.addEventListener("click", () => { if (current) options.onMove(nextStop(current.model, current.step, -1)); });
   nextMark.addEventListener("click", () => { if (current) options.onMove(nextStop(current.model, current.step, 1)); });
   elsewhere.addEventListener("pointerdown", event => event.stopPropagation());
-  elsewhere.addEventListener("click", () => { if (current) options.onMove(current.step); });
+  // Bringing the step back is a slide of the range alone: a playing history plays on.
+  elsewhere.addEventListener("click", () => { if (current) options.onView(slideToHold(current.range, current.step)); });
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
   rate.addEventListener("change", () => { const chosen = Number(rate.value); if (Number.isFinite(chosen) && chosen > 0) options.onRate(chosen); });
