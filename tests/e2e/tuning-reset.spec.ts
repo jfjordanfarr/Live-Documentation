@@ -16,7 +16,7 @@ test.use({ viewport: { width: 1440, height: 900 } });
 const PAGE = "/?view=local&node=packages/generator/src/generator.ts";
 
 /** Four settings moved from their defaults: the suite's own search off, and three levers in three groups. */
-const MOVED = { localMap: { searchStarts: 0, columnGap: 140 }, bezier: { stubMin: 20 }, appearance: { marbles: "off" } };
+const MOVED = { localMap: { searchStarts: 0, columnGap: 140 }, bezier: { stubMin: 20 }, appearance: { marbles: "on" } };
 
 /** Every page this test opens starts from `tuning` as the viewer's saved settings, in place of the suite's. */
 async function saved(page: Page, tuning: object): Promise<void> {
@@ -72,10 +72,10 @@ test("the count beside Tuning says how many settings differ, a dot marks each ch
   await expect(page.locator("#tuning-column-gap")).toHaveValue("100");
   await expect(page.locator("#tuning-column-gap-value")).toHaveText("100");
   await expect(page.locator("#tuning-stub-min")).toHaveValue("8");
-  await expect(page.locator("#tuning-marbles")).toHaveValue("on");
+  await expect(page.locator("#tuning-marbles")).toHaveValue("off");
   await expect(page.locator("#tuning-search-starts")).toHaveValue("32");
-  // The pictures take it as from a lever: the page wears marbles again and the Local Map's columns their default gap.
-  await expect(page.locator("html")).toHaveAttribute("data-marbles", "on");
+  // The pictures take it as from a lever: the page wears no marbles again and the Local Map's columns their default gap.
+  await expect(page.locator("html")).toHaveAttribute("data-marbles", "off");
   expect(await page.evaluate(() => document.documentElement.style.getPropertyValue("--local-column-gap"))).toBe("100px");
   await expect.poll(() => storedTuning(page), "nothing of tuning is kept").toBeNull();
   await expect(pageStatus(page)).toHaveText("Tuning reset to defaults");
@@ -88,8 +88,8 @@ test("the count beside Tuning says how many settings differ, a dot marks each ch
   await expect(page.locator("#tuning-changed-count")).toHaveText("4");
   await expect(page.locator("#tuning-column-gap")).toHaveValue("140");
   await expect(page.locator("#tuning-stub-min")).toHaveValue("20");
-  await expect(page.locator("#tuning-marbles")).toHaveValue("off");
-  await expect(page.locator("html")).toHaveAttribute("data-marbles", "off");
+  await expect(page.locator("#tuning-marbles")).toHaveValue("on");
+  await expect(page.locator("html")).toHaveAttribute("data-marbles", "on");
   await expect.poll(() => storedTuning(page)).toEqual(MOVED);
   await expect(pageStatus(page)).toHaveText("Tuning put back as you had it");
   await expect(reset(page)).toHaveAttribute("aria-pressed", "false");

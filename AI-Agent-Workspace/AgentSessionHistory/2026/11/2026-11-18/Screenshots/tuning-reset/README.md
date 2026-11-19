@@ -1,6 +1,6 @@
 # Tuning's Reset to defaults, and the count of what differs
 
-_Historical evidence, taken on the night of 2026-11-18 to 19 by the builder of the Tuning reset round. The request was the owner's of 2026-11-19: "There should be a way for me to quickly reset my visual tuning preferences to their default values so that the links you send me are perceived by both of us in the same way" ([the November 18 record](../../2026-11-18.1.record.md), the turn after Turn 26)._
+_Historical evidence, taken on the night of 2026-11-18 to 19 by the builder of the Tuning reset round. The request was the owner's of 2026-11-19: "There should be a way for me to quickly reset my visual tuning preferences to their default values so that the links you send me are perceived by both of us in the same way" ([Turn 27 of the November 18 record](../../2026-11-18.1.record.md#turn-27))._
 
 **The setup.** This repository's Explorer, built from the branch `tuning-reset` (`npm run build`, `npm run live-docs:generate`, `npm run live-docs:visualize`) and served on port 8823, at device scale 2, on a 1440 × 900 window and a 390 × 844 one. Each address opens the Local Map on `packages/generator/src/generator.ts`. The viewer's saved settings were seeded with three levers moved, in three groups: Marbles off (Colour), Stub Min 20 (2D Wires) and Column Gap 140 (2D Layout). Tuning was opened from its heading, and Colour and 2D Wires unfolded by hand; 2D Layout opens on its own in 2D.
 

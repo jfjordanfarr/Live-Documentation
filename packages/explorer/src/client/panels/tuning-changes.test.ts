@@ -59,7 +59,7 @@ describe("the control that shows a setting", () => {
   it("is named by the group's prefix and the key in kebab case", () => {
     expect(tuningControlId({ group: "forceGraph", key: "linkGap" })).toBe("tuning-force-link-gap");
     expect(tuningControlId({ group: "history", key: "changeEmphasis" })).toBe("tuning-history-change-emphasis");
-    expect(tuningControlId({ group: "appearance", key: "marbleBend" })).toBe("tuning-marble-bend");
+    expect(tuningControlId({ group: "appearance", key: "palette" })).toBe("tuning-palette");
     expect(tuningControlId({ group: "bezier", key: "stubMaxOffset" })).toBe("tuning-stub-max-offset");
   });
 

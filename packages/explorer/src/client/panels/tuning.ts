@@ -42,7 +42,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const refreshChanges = initTuningReset({ state, apply: () => {
     applyPalette(state.tuning.appearance.palette);
     applyMarbles(state.tuning.appearance.marbles);
-    applyMarblePattern(state.tuning.appearance.marblePattern, state.tuning.appearance.marbleBend);
     syncTuningControlsFromState();
     onTuningChange();
     if (state.view === "map") onRender();
