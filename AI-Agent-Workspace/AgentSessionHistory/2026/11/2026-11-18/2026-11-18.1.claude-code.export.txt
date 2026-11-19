@@ -15642,3 +15642,424 @@
   - A way of leaving that you can see happen and can take back.
 
   Nothing is built on it.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  14m 19s
+
+› Message from general-purpose
+  Branch marble-pattern-removed is verified: Marble Pattern is gone, Marbles
+  defaults to Off, the gate and all 44 browser cases pass. Not pushed, no commit
+  amended.
+
+  **Commits, on 5e00916c**
+  1. 2f975dc4 "Take the Marble Pattern trial out of the product"
+  2. 3ab0f073 "Draw files without marbles by default again"
+  3. 81a4fa5d "Regenerate the Live Docs after the Marble Pattern trial's removal
+  and the marbles default" (regenerated docs only)
+
+  **What the removal took out (1)**
+  - Deleted: the Marble Pattern lever and the Vein Bend slider (template, help
+  texts, Tuning wiring), the two saved settings, marbleSketch.ts and its test,
+  the sketch attributes, MARBLE_WAVES, the MARBLE_SKETCH define, the bend
+  uniform, marble-sheet.ts, bundle-page.ts, the marble:sheet script and its
+  oracle entry, and the four deleted files' Live Docs.
+  - Restored to 8e42651b~1 as they were: the files only the trial had touched
+  since — dom, types, tuning, tuning-levers and its test, local-storage,
+  forceGraphAppearance, forceGraphBatches, forceGraphView, tuning.spec,
+  contact-sheet, package.json, repository-entries.json. contact-sheet.ts is back
+  to before its helpers were split out, so it has no --marble-pattern.
+  - Hand-deleted, keeping other rounds' lines: the trial's lines in index.ts,
+  palette.ts, palette.test.ts and template.html.
+  - Saved settings: the loader reads appearance keys one by one, so the removed
+  ones are ignored and a save writes only the diff. New unit case: a store
+  holding marblePattern and marbleBend loads without error, keeps its other
+  choices, and writes nothing of them back.
+  - Documents:
+    - The Explorer design's trial paragraph is now a dated account in the past
+  tense: the owner's words, the probe, the doc-facts count and the blind
+  reading.
+    - The marble-patterns pictures README has a dated "Removed" line naming the
+  commit.
+    - The text-shape probe README notes its scripts no longer run without the
+  commit before the removal, since they import the deleted marbleSketch.
+    - No design-system line named the lever.
+
+  **Proof the marble is unchanged**
+  - I compared source, not pixels: rendering at 8e42651b~1 would have meant a
+  second build in the lane.
+  - The marble's whole code path is byte-identical to 8e42651b~1:
+  forceGraphAppearance.ts (the shader chunks), forceGraphBatches.ts (attributes,
+  defines, uniforms), containedSphere.ts, forceGraphView.ts and
+  forceGraphRenderer.ts, plus dom, types, tuning and local-storage as of the
+  removal commit. So under Marbles → On the compiled shader text and the
+  attribute lists are as before the trial.
+
+  **Default off (2)**
+  - MARBLE_CHOICES is now ["off", "on"]. The default and the template's
+  `selected` follow from it.
+  - With Off, the MARBLES define is never set, so the default picture compiles
+  no marble code.
+  - The veins' row in the key appears only when marblesDrawn() is true; the
+  browser cases confirm the default key has no Offers/Uses row.
+  - Saved settings, held by a new unit case:
+    - a saved "off" and an empty store both load as Off;
+    - someone who wants marbles chooses On, which is then saved as their change.
+    - No explicit "on" can exist from before, since On was the default and was
+  never saved.
+  - Cases touched, 8 in all:
+    - **Changed for the flat default (6):**
+      - tuning.spec: the marbles case now starts Off and turns marbles On then
+  Off — its pre-2026-11-18 form.
+      - spatial-legend.spec: three cases restored to their pre-2026-11-18
+  flat-key expectations — words and row counts without Offers/Uses; the 3D audit
+  is 6 rows and 6 words. The first case's extra step that turned marbles off is
+  removed.
+      - force-graph-wires.spec: back to `not.toContainText("Offers")`.
+      - local-storage.test: the removed-keys case now saves "on", since "off" is
+  the default and would no longer be written; a new case covers the default.
+    - **Unchanged checks, edited only so it states its dependency:**
+  history-emphasis.spec. Its cases are about emphasis among marbles, so its
+  visitor now turns marbles On itself; every check is unchanged.
+    - **Comment only:** forceGraphEmphasis.test.
+    - closed-directory-looks.spec and force-graph-contained.spec already set Off
+  explicitly; only their comments changed.
+  - Documents:
+    - The Explorer design paragraph is now "Marbles, off by default since
+  November 19", with the owner's words and the two days On was the default as
+  history.
+    - The design system's visual foundations: the "Do" line on carrying roles
+  through the veins now says "while marbles are drawn", and its table note says
+  the default history.
+    - Comments in types.ts (MarbleChoice), palette.ts, local-storage.ts and the
+  contact sheet now name Off as the default.
+
+  **Checks**
+  - Without the lane: explorer and scripts unit tests 1,239/1,239 after the
+  removal; client type-check and eslint clean; both audits clean.
+  - One lane hold, 03:56–04:09:
+    - build OK, live-docs:generate OK.
+    - `npm run safe:commit` (the gate without its browser stage) exit 0,
+  including the graph integration test.
+    - Six browser specs that mention marbles — tuning, spatial-legend,
+  force-graph-wires, history-emphasis, closed-directory-looks,
+  force-graph-contained: 44 passed of 44 in 8.2 min.
+
+  **Left for you**
+  - AI-Agent-Workspace/Memory/direction.md (line 21, the texture item) and the
+  narrative may want the removal and the default.
+  - Expect merge conflicts in tuning.ts, template.html, types.ts,
+  local-storage.ts and tuning-levers.ts against the other rounds. My edits stay
+  on the trial's own lines and the MARBLE_CHOICES order.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Marble Pattern removal and Marbles off by default: verified
+
+  Branch `marble-pattern-removed`, built on 5e00916c, holds three commits: the
+  removal, the default change, and the regenerated Live Docs on their own. Not
+  pushed, nothing amended. The gate without its browser stage passed, and 44 of
+  44 browser cases passed. I sent the same report to "main" by SendMessage.
+
+  **Commits**
+  1. 2f975dc4 "Take the Marble Pattern trial out of the product"
+  2. 3ab0f073 "Draw files without marbles by default again"
+  3. 81a4fa5d "Regenerate the Live Docs after the Marble Pattern trial's removal
+  and the marbles default"
+
+  **The removal (2f975dc4)**
+  - **Gone:** the Marble Pattern lever and Vein Bend slider with their help
+  texts and wiring, the saved `marblePattern` and `marbleBend` settings,
+  `marbleSketch.ts` and its test. The sketch attributes, `MARBLE_WAVES`, the
+  `MARBLE_SKETCH` define and the bend uniform are gone too, as are
+  `marble-sheet.ts`, `bundle-page.ts`, the `marble:sheet` script and its entry
+  in the hand-read entry list, and the Live Docs of the deleted files.
+  - **How:** files that only the trial had touched since it began are back to
+  their state at 8e42651b~1. In `index.ts`, `palette.ts`, `palette.test.ts` and
+  `template.html`, which other rounds had also changed, I deleted only the
+  trial's lines by hand. `contact-sheet.ts` is back to its pre-trial form, with
+  its helpers inline and no `--marble-pattern`.
+  - **Saved settings:** a browser that still holds the two removed settings
+  loads without error, keeps its other choices, and does not write them back. A
+  new unit case holds this.
+  - **The marble is unchanged:** I compared source, not pixels, because a pixel
+  comparison would have needed a second build in the lane. The marble's whole
+  code path is byte-identical to 8e42651b~1: `forceGraphAppearance.ts`,
+  `forceGraphBatches.ts`, `containedSphere.ts`, `forceGraphView.ts` and
+  `forceGraphRenderer.ts`. So a marble under Marbles → On compiles to the same
+  shader text and attribute lists as before the trial.
+  - **Documents:**
+    - The Explorer design's trial paragraph is now a dated account, in the past
+  tense, of the trial and why it was taken out.
+    - The marble-patterns pictures README has a dated line naming the removal
+  commit.
+    - The text-shape probe's README says its scripts need the commit before the
+  removal to run, since they import the deleted `marbleSketch.ts`.
+
+  **Off by default (3ab0f073)**
+  - `MARBLE_CHOICES` is now `["off", "on"]`, so the default, the template's
+  selected option and the fallback all follow from it.
+  - The default picture compiles no marble code. The 3D key has no veins' row;
+  the browser cases confirm this.
+  - **What viewers get:** a browser that saved Off while On was the default, and
+  one that saved nothing, both load as Off. Someone who wants marbles chooses
+  On, which is then saved as their change. No saved "on" can exist from before,
+  because On was the default and was never saved. A new unit case holds all of
+  this.
+
+  Eight test files were touched:
+
+  | File | What changed | Why |
+  | --- | --- | --- |
+  | `tuning.spec.ts` | Starts with marbles Off, turns them On, then Off | Its
+  form before 2026-11-18 |
+  | `spatial-legend.spec.ts` | Three cases expect the flat key again: no
+  Offers/Uses row, 3D audit at 6 rows and 6 words | Restored to their
+  pre-2026-11-18 expectations |
+  | `force-graph-wires.spec.ts` | Expects the key not to contain "Offers" |
+  Restored to its pre-2026-11-18 check |
+  | `local-storage.test.ts` | The removed-keys case saves "on"; a new case
+  covers the default | "off" is now the default and would no longer be written |
+  | `history-emphasis.spec.ts` | Its visitor turns marbles On itself | Its cases
+  are about emphasis among marbles; every check is unchanged |
+  | `forceGraphEmphasis.test.ts` | Comment only | |
+  | `closed-directory-looks.spec.ts`, `force-graph-contained.spec.ts` | Comments
+  only | They already set Off explicitly |
+
+  - **Documents:** the Explorer design's paragraph is now "Marbles, off by
+  default since November 19", with the owner's words and the two days On was the
+  default told as history. In the design system's visual foundations, the line
+  on carrying roles through the veins now applies "while marbles are drawn", and
+  its table note gives the default's history. Comments in `types.ts`,
+  `palette.ts`, `local-storage.ts` and the contact sheet name Off as the
+  default.
+
+  **Checks**
+  - Without the lane: explorer and scripts unit tests passed 1,239 of 1,239; the
+  client type-check and eslint are clean; both audits are clean.
+  - One hold of the lane, 03:56–04:09:
+    - build and `live-docs:generate` succeeded;
+    - `npm run safe:commit` (the gate without its browser stage) exited 0,
+  including the graph integration test;
+    - the six browser specs that mention marbles passed 44 of 44 in 8.2 minutes:
+  tuning, spatial-legend, force-graph-wires, history-emphasis,
+  closed-directory-looks and force-graph-contained.
+
+  **Left for you**
+  - Line 21 of `AI-Agent-Workspace/Memory/direction.md` and the narrative may
+  want the removal and the new default; Memory is yours, so I didn't touch them.
+  - Expect merge conflicts against the other rounds in `tuning.ts`,
+  `template.html`, `types.ts`, `local-storage.ts` and `tuning-levers.ts`. My
+  edits there are the trial's own lines and the order of `MARBLE_CHOICES`.
+
+● Agent "Marble pattern from contents" finished · 59m 23s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● From Its Doc is gone and Marbles Off is the default, both on main.
+
+  - Removed: the Marble Pattern lever, the Vein Bend slider, and all the code
+    behind them, about 1,200 lines.
+  - Default: spheres and cells draw in flat kind colour. Tuning → Colour →
+    Marbles → On still gives the veined look.
+  - The veined marble is unchanged from before the trial. The builder verified
+    this by comparing source rather than pixels: every file on the marble's
+    drawing path is byte-for-byte what it was before the trial began.
+  - Your browser: if you had left the trial's settings saved, they are ignored
+    and not written back.
+  - Verified on the builder's branch: the gate's non-browser stages, and all 44
+    browser cases that touch marbles.
+
+  It reaches your port when the gate rebuilds the Explorer.
+
+  One loose end: a generated doc on main still links to a deleted file's doc
+  until the gate's first step regenerates the docs.
+
+  The browser queue is still six deep. The camera, returning-connections,
+  rested-pointer and reset rounds each have a run waiting in it.
+
+● Agent "Unpin others interaction" is waiting on its own background work · 18m
+  38s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No change yet: six runs are waiting on the browser, and the "Unpin others"
+  builder already has its first commit, with both menu items. I'll queue the
+  gate at 04:40 UTC regardless of what has handed back, so it starts by about
+  05:00.
+
+● Background command "Fallback timer of fifty minutes while builders work"
+  completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Timer renewed. The queue is moving, one job at a time: the
+  returning-connections builder is checking two failing cases against main's own
+  build, with five jobs waiting behind it. Nothing has handed back since the
+  marble round.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ Once "History follows the pinned set" builder's work is done, I think we
+  should get serious about ensuring that the 2D Local Map has the ability to
+  explore history as well. We should be able to scrub through history in the
+  same shared control whose state is continuous in 2D and 3D local map. (Future
+  idea: pin a date in the World Map and then peek into the temporally-matched
+  state of all temporally-scanned objects when looking inside them). How might
+  you design such a thing?
+
+  In addition, I want to hear about design ideas for how we eventually ditch
+  the Detail Panel for good (if possible; otherwise for extraordinarily rare
+  sparing use), and possibly even the Left Sidbar? How do we ensure that we're
+  making great use of our screen real estate and making sure that our software
+  shuts up and the scanned materials do they talking? How do we best get out of
+  the way so users on many different viewport sizes and dimensions can still
+  understand complex directories of things with simple idiomatic gestures and
+  intuitive controls? (idea for later: first-class support for generic gamepads
+  as input to Live Documentation Explorer as a means of ensuring that our
+  design is simple enough that it _could_ easily be navigated via a
+  controller).
+
+● Gathering what the record already holds on 2D history, the reader panel and
+  the sidebar before I answer with a design.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  20m 53s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  21m 24s
+
+● Here is how I'd design both. Nothing below is built; I read the history plan
+  and the earlier decisions on the reader and sidebar first.
+
+  History in the 2D map
+
+  The obstacle. The history file carries each file's shape at every commit
+  (kind, symbol count, wires between files). It does not carry symbol names or
+  symbol-to-symbol links, so a 2D card's rows cannot be drawn truthfully for a
+  past commit. That is why the October 16 plan left 2D out.
+
+  The moment belongs to the app, not to the 3D map. One scrubber, in one place,
+  for both maps. Switching 2D ↔ 3D keeps the commit you are on. Today that
+  switch snaps back to the present and closes the control.
+
+  Three rungs, each showing only what it knows:
+
+  Rung: 1
+  What 2D shows at a past commit: Files, directories, one line per pair of
+    files with its count, and "+N symbols" on each card. This is the Flow look
+    zoomed out.
+  What it needs: Nothing new. It is exactly what the history already carries.
+  ────────────────────────────────────────
+  Rung: 2
+  What 2D shows at a past commit: Symbol rows and their wires as they were,
+    with changed rows lit.
+  What it needs: The history must also carry symbols and their links per
+    commit. The file grows and is rebuilt once.
+  ────────────────────────────────────────
+  Rung: 3
+  What 2D shows at a past commit: The descriptions as written that day.
+  What it needs: Text per commit. I'd skip this and show today's words, marked
+    as today's, as the reader already does.
+
+  Keeping your bearings while scrubbing. While the thumb drags, cards hold their
+  places and only light up, appear or fade. When it rests, the layout
+  re-settles with the move animation 2D already has. 3D follows the same rule:
+  cheap while dragging, settle at rest.
+
+  The World Map date. Across several repositories a commit means nothing, so the
+  moment should be a date. Each scanned thing resolves it to its own latest
+  commit on or before that date, and a thing without history says so.
+
+  I'd build rung 1 next. It needs no format change and will show whether
+  file-level 2D history is already useful. I'd measure rung 2's file size before
+  committing to it.
+
+  Retiring the Detail Panel
+
+  Each thing you open it for gets a home on the map:
+
+  You open it for: Purpose and symbol notes
+  New home: Already on the card.
+  ────────────────────────────────────────
+  You open it for: The lists of what uses a file and what it uses
+  New home: The search field: "what uses X" becomes a query and the results
+    are the list. That leaves one list in the whole app. Tonight's two
+    smallest playtesters found their answers in that list, so it has value; it
+    just shouldn't need a panel.
+  ────────────────────────────────────────
+  You open it for: Long notes and documents
+  New home: The card's closest zoom. Past reading size, a card becomes its own
+    page, full-screen on a phone. Zooming out returns you.
+  ────────────────────────────────────────
+  You open it for: What a commit changed
+  New home: The step panel, which exists.
+
+  That leaves the panel empty. I'd keep a dialog only for overflow, which you
+  allowed on November 3.
+
+  Retiring the sidebar
+
+  It is 260 px wide, nearly a third of your 834 px window.
+
+  ┌───────────────────┬─────────────────────────────────────────────────────┐
+  │   Sidebar item    │                      New home                       │
+  ├───────────────────┼─────────────────────────────────────────────────────┤
+  │ Knowledge Sources │ A breadcrumb beside search: World › payments › Data │
+  │  / World Map /    │  › PaymentsContext.cs. Each crumb steps out one     │
+  │ Local Map         │ scale. You suggested this on September 30.          │
+  ├───────────────────┼─────────────────────────────────────────────────────┤
+  │ Show Tests, Show  │ The legend's own rows. Click a kind in the key to   │
+  │ Assets            │ hide it, so legend and filter become one object.    │
+  ├───────────────────┼─────────────────────────────────────────────────────┤
+  │ Legend            │ A chip on the bottom strip, which already has its   │
+  │                   │ icon.                                               │
+  ├───────────────────┼─────────────────────────────────────────────────────┤
+  │ Tuning            │ A sheet opened from the strip's sliders icon.       │
+  ├───────────────────┼─────────────────────────────────────────────────────┤
+  │ File counts, the  │ The root crumb's hover.                             │
+  │ Context line      │                                                     │
+  └───────────────────┴─────────────────────────────────────────────────────┘
+
+  wide                                  phone
+  ┌──────────────────────────────────┐  ┌───────────────┐
+  │ World › payments › Data   [find] │  │ ‹ Data [find] │
+  │                                  │  │               │
+  │            the map               │  │    the map    │
+  │                                  │  │               │
+  │ [fit][key][tune][2D|3D][when] 📌 │  │ [⋯][2D|3D] 📌 │
+  └──────────────────────────────────┘  └───────────────┘
+
+  One rule, six verbs, and the gamepad
+
+  The rule. Words of ours appear only on a rested hover, in a menu, or in a
+  sheet you opened. Everything always on screen is either the scan's own words
+  or an icon.
+
+  The verbs. Closer / further (zoom), follow (a wire), keep / let go (pin,
+  fold), when (the moment), find, and back. Each gets one gesture per input
+  device.
+
+  The gamepad as a test. Mapping those six onto a controller is easy for five of
+  them: triggers zoom, one button keeps, one goes back, bumpers step through
+  time. What has no home is moving focus by direction, to the nearest thing
+  left, right, up or down. The app has no such thing today; keyboard users Tab
+  through everything. I'd build that first, for arrow keys. It helps keyboard
+  users immediately and is the piece a controller would stand on.
+
+  Two questions
+
+  1. Should 2D history rung 1 go next, once the timeline zoom is verified?
+  2. For the frame, shall I build the sidebar-free version behind a lever, with
+     the sidebar still available, so you can judge it in the app rather than
+     from these words?
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  23m 1s
