@@ -35,6 +35,12 @@ describe("the Tuning settings that differ from the defaults", () => {
     ]);
   });
 
+  it("leave out the frame, which places the page's controls and draws nothing", () => {
+    const tuning = getDefaultTuning();
+    tuning.appearance.frame = "bare";
+    expect(changedSettings(tuning, getDefaultTuning())).toEqual([]);
+  });
+
   it("forget a setting moved and moved back, and read a dial set to none as a change from a number", () => {
     const tuning = getDefaultTuning();
     tuning.localMap.columnGap = 140;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/pin-tray.ts
-- Generated At: 2026-11-01T21:06:14.923Z
+- Generated At: 2026-11-19T06:19:56.771Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Ag
 ### Public Symbols
 #### `PinTrayOptions` {#symbol-pintrayoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L6)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L7)
 
 ##### `PinTrayOptions` — Summary
 Actions operate on the shared selection; opening the tray or focusing a row does not retain anything.
 
 #### `createPinTray` {#symbol-createpintray}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L24)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L29)
 - Parameters: `options`: [`PinTrayOptions`](#symbol-pintrayoptions)
 
 ##### `createPinTray` — Summary
@@ -48,7 +48,9 @@ gives the words, or null when the pin stands.
 ### Dependencies
 - [`icon-button.CLOSE_ICON`](./icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.DIRECTORY_ICON`](./icon-button.ts.mdmd.md#symbol-directory_icon)
+- [`icon-button.MORE_ICON`](./icon-button.ts.mdmd.md#symbol-more_icon)
 - [`icon-button.iconButton`](./icon-button.ts.mdmd.md#symbol-iconbutton)
+- [`item-menu.ItemCommand`](./item-menu.ts.mdmd.md#symbol-itemcommand) (type-only)
 - [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem)
 - [`retained-state.RetainedState`](../views/retained-state.ts.mdmd.md#symbol-retainedstate)
 - [`retained-state.describeRetained`](../views/retained-state.ts.mdmd.md#symbol-describeretained)

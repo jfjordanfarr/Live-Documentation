@@ -58,7 +58,7 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 | **Click or tap on a name** | Opens or folds that name's description (a file's name: Purpose and every description). | Same as a click on its sphere. | A link in a pinned panel: a thing's name pins it, a file opens it in the Local Map. | Follows the link inside the reader. |
 | **Click or tap on a body** (card, sphere, piece) | A card's body does nothing; a closed directory's box opens it. | Pins the file; a second click releases it. A directory toggles its discovery. | Pins the piece's panel. | — |
 | **Pin** (the pin icon) | Retains a file or symbol and its connections; pressed again releases only what it retained. | The same, from the sphere's actions. | — (the World Map has no Pin control; see 2.3) | The tray lists pins; each row can release or focus. |
-| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | — |
+| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | A tray entry's More holds Fold others away and Unpin others for that entry. |
 | **Open / Close** (directory) | Discloses or withdraws a directory's contents; an opened directory is a pin. | Open: the whole directory; Close: withdraws it. | `open` in a pinned panel enters the thing in the Local Map. | — |
 | **Centre** | Makes the item the map's subject. | The same. | — | — |
 | **Double activation** | Nothing (omitted on purpose). | Nothing. | Enters the thing (a second route; `open` is the first). | — |
@@ -104,6 +104,12 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Where: `views/localView/controller.ts:1639` and `views/forceGraphView.ts:2084` (the 550 ms hold); `panels/item-menu.ts` (the menu).
 - Status: holds in 2D and 3D.
 
+**What releases the others stands in the menu of the thing that stays** (the editor's *Close Others* convention): Fold others away (what is open elsewhere closes, pins stay), then Unpin others (every other pin goes too), beside the thing's own Pin. An item is present only when it would release something, never greyed out; each is one step Back takes back, is said once in the page's status region, and leaves the focus on the control it was chosen from.
+- Why: the owner, 2026-11-19: "release everything _except_ what I'm interacting with now"; two strengths of one gesture approved the same night. A step that releases many selections at once must be reversible (*user control and freedom*), and a change made away from the focus is told (WCAG 2.2 SC 4.1.3).
+- Where: `views/retained-state.ts` (`releaseOthers`, both strengths); `index.ts` (`othersCommands`, `releaseOthersOf`); `persistence/history.ts` (`stepWithinPlace`, the one entry within a place); `panels/pin-tray.ts` (an entry's More, shown only when it has something to offer).
+- Checked by: `views/retained-state.test.ts`, `persistence/history.test.ts`, `tests/e2e/others.spec.ts`.
+- Status: holds. Back does not restore the 3D Connections layout's pops, which are the view's own memory and not in the address.
+
 **Double activation is never the only route.**
 - Why: a double click has no equivalent on a keyboard and a double tap often zooms on a phone; the decision of 2026-10-15 removed it from the Local Map.
 - Status: holds (the World Map's double click has `open` in the pinned panel and the wheel beside it).
@@ -130,6 +136,13 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Where: `views/localView/camera-intent.ts` (`revealPan`, `STEP_MARK_MS`); `views/localView/controller.ts` (`capturePinChange`, `captureDirectoryChange`, `settleIntoFrame`, `newcomerOf`, `markNewcomer`); `styles/local.css` (`.local-step-mark`).
 - Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
 - Status: holds since 2026-11-19.
+
+**Under Follows Pins, the camera follows the pinned set until the person takes it, and Fit gives it back** (*user control and freedom*: an automatic camera is welcome only while the person's hand is not on it, and leaving it must cost nothing; *visual momentum* again, since the frame widens to hold the pins already swung along rather than riding away from them).
+- Rule: with Tuning's Framing at Follows Pins, the camera frames the subject (while it holds no pin; beside others, its name line), the pins and a directory opened while following, newest first, at the largest scale up to reading size that holds them and no farther than the connections look's last press; the oldest are left out where they do not fit, the newest never; one pin is framed as an arrival frames it; of several, the newest is held whole and the older by their name lines. It re-frames in one ease, longer for longer travel, once the picture has settled after a pin, an opening or a move of the layout; a re-frame the person did not cause never zooms in and never drops a target it can keep, and a change of the pinned set that moves the frame far takes the smooth zoom's path (*smooth zooming and panning*, van Wijk and Nuij). A pin left out says *Outside the frame* in the pin tray, in its name too. The person's pan, wheel, pinch, zoom button, Return to Reading Size or a focus asked on one thing ends the following; Fit, then named Follow pins, resumes it and is pressed while it holds. Under By Hand the step's rule above applies unchanged.
+- Why: owner, 2026-11-19 (Turn 37 of the November 18 record): "follow the sucker for a bit if the user hasn't provided input to navigate in any direction (panning, zooming, etc.)", "try to frame every pinned thing as best you can with bias towards most recent items".
+- Where: `views/localView/camera-intent.ts` (`pinsFrame`, `keepFrame`, `smoothZoom`, `framingEaseMs`, `poseBetween`); `panels/pin-tray.ts` (the row's words and name); `views/localView/controller.ts` (`framingTargets`, `pinsFraming`, `reframePins`, `easeFollowing`, `setFollowing`); `index.ts` (Fit's state).
+- Checked by: `tests/e2e/camera-intent.spec.ts`; `views/localView/camera-intent.test.ts`.
+- Status: a trial since 2026-11-19, By Hand the default until the owner has seen it.
 
 ### 2.3 Where the same act means different things
 
@@ -200,7 +213,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 ### 4.1 Tab order
 
-**Rule: the tab order follows the reading order of the screen, top to bottom and left to right: the sidebar, the search, the map's contents, the floating controls, the open reader, then the map's toolbar at the bottom.** The DOM order is that order (`shared/template.html`; the toolbar is appended last to `#main`, `index.ts:600`); nothing sets a positive `tabindex`.
+**Rule: the tab order follows the reading order of the screen, top to bottom and left to right: the sidebar, the search, the map's contents, the floating controls, the open reader, then the map's toolbar at the bottom.** The DOM order is that order (`shared/template.html`; the toolbar is appended last to `#main`, `index.ts:600`); nothing sets a positive `tabindex`. Under the Bare frame's trial (2026-11-19, `panels/frame.ts`) the sidebar is not drawn and the order is the crumbs with Back and Forward, the search, the map's contents, the floating controls, the strip, then the key or the Tuning sheet the strip opened, which stand straight after it in the DOM.
 - Why: WCAG 2.2 SC 2.4.3 Focus Order.
 - Status: holds by construction; not tested as a whole journey. An outsider counted 18 stops before the first map content on the World Map ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 17); since 2026-11-19 the World Map's toolbar is one stop where it was nine (see 5.3). There is no skip link (see 7, SC 2.4.1).
 
@@ -274,7 +287,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: the page has one `main`, one `navigation` for the views, the `search`, and a `complementary` reader.**
 - Why: WCAG 2.2 SC 1.3.1 Info and Relationships and SC 2.4.1 Bypass Blocks (landmarks are one accepted way to bypass).
-- Status: holds since 2026-11-19: `#main` is a `<main>`, the three views' buttons stand in `<nav aria-label="Views">`, beside `role="search"`, the reader's `complementary` or `dialog` (`index.ts`, `syncReaderPresentation`) and, inside the reader, its `<nav aria-label="Sections">` (`detailPanel.ts`). A skip link, "Skip to the map", is the first stop of the keyboard, shown only while focused; it moves focus to the views and leaves the address alone (`shared/template.html`, `index.ts`). The sidebar itself is a plain `div`. Checked by `tests/e2e/shell-accessibility.spec.ts` ("the page has its landmarks, and a skip link…"). The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
+- Status: holds since 2026-11-19: `#main` is a `<main>`, the three views' buttons stand in `<nav aria-label="Views">`, beside `role="search"`, the reader's `complementary` or `dialog` (`index.ts`, `syncReaderPresentation`) and, inside the reader, its `<nav aria-label="Sections">` (`detailPanel.ts`). A skip link, "Skip to the map", is the first stop of the keyboard, shown only while focused; it moves focus to the views and leaves the address alone (`shared/template.html`, `index.ts`). The sidebar itself is a plain `div`. Under the Bare frame's trial the views' buttons move into the crumbs' menu, inside `<nav aria-label="Places">`, the crumb of the place shown says `aria-current="location"`, and the key and the Tuning sheet are non-modal dialogs named "Key" and "Tuning" whose openers say `aria-expanded`; Escape closes each and returns focus to its opener. Checked by `tests/e2e/shell-accessibility.spec.ts` ("the page has its landmarks, and a skip link…"). The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
 
 ### 5.2 Names and descriptions
 
@@ -325,6 +338,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | Copied as a declaration | `aria-live="polite"` (`panels/sources-view.ts:198`) | holds |
 | Tuning reset to defaults, and put back | "Tuning reset to defaults" and "Tuning put back as you had it", each said once in `#page-status` (`panels/tuning-reset.ts`); checked by `tests/e2e/tuning-reset.spec.ts` | holds since 2026-11-19 |
 | No search results | "Nothing found", said once in the page's one polite status region, `#page-status` (`announce.ts`, `search/search-field.ts`); checked by `tests/e2e/shell-accessibility.spec.ts` | holds since 2026-11-19 |
+| Others folded or unpinned | What went, counted, said once in `#page-status` ("Unpinned 4 others, folded 2 directories away"; `views/retained-state.ts` `othersReleasedWords`); checked by `tests/e2e/others.spec.ts` | holds since 2026-11-19 |
 | A pinned file absent at a historical moment | `aria-describedby` on the field; spoken only on focus | partial |
 | The 3D map is building and refuses clicks | not told | broken (SC 4.1.3); `announce.ts` is the module to tell it with |
 | The walkthrough's next step | `role="status"` in the World Map's own markup (`views/worldMap/controller.ts:318`, `:2154`); checked by `world-map.spec.ts` ("the walkthrough says each step …") | holds |

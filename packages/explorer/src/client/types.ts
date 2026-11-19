@@ -132,6 +132,12 @@ export interface LocalMapTuning {
    */
   arrival: ArrivalFraming;
   /**
+   * Who frames the camera after an arrival (a trial for the owner's eye, 2026-11-19, Turn 37 of the November 18 record):
+   * "hand", the default, the person, with Arrival and the step as they are; "follows", the camera follows the pinned set,
+   * newest first, until the person pans or zooms, and Fit gives the following back (camera-intent.ts's pinsFrame).
+   */
+  framing: CameraFraming;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -249,7 +255,19 @@ export interface TuningConfig {
 export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
+  frame: FrameChoice;
 }
+
+/**
+ * What frames the map (a trial, 2026-11-19, the owner's "That would be great!" to a page without its sidebar, judged in
+ * the app): the sidebar, today's page, or Bare, where the views are a breadcrumb in the top bar, the legend and the
+ * display filters one key opened from the bottom strip, and Tuning a sheet opened from the strip's tuning button. The
+ * viewer's own, saved in the browser and never carried by a link.
+ */
+export type FrameChoice = "sidebar" | "bare";
+
+/** Every frame, in the order the control offers them; the first, the sidebar, is the default. */
+export const FRAME_CHOICES: readonly FrameChoice[] = ["sidebar", "bare"];
 
 /**
  * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
@@ -374,6 +392,16 @@ export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
 
 /** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
 export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
+
+/**
+ * Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",
+ * a matched alternative for the owner's eye (root's ruling, 2026-11-19), follows as far out as the overview look when every
+ * target is a whole-file pin.
+ */
+export type CameraFraming = "hand" | "follows" | "follows-files";
+
+/** Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other. */
+export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows", "follows-files"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

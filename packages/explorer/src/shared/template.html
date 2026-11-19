@@ -281,6 +281,14 @@
               <option value="neighbours">Neighbours</option>
             </select>
           </label>
+          <label class="tuning-slider">
+            <span>Framing</span>
+            <select id="tuning-framing">
+              <option value="hand" selected>By Hand</option>
+              <option value="follows">Follows Pins</option>
+              <option value="follows-files">Follows Pins, Out To Files</option>
+            </select>
+          </label>
           <label class="tuning-slider" data-closed-cells-only>
             <span>Skin's Shape</span>
             <select id="tuning-closed-shape">
@@ -499,6 +507,16 @@
               <option value="dim" selected>Dim the rest</option>
               <option value="both">Glow and dim the rest</option>
               <option value="none">No emphasis</option>
+            </select>
+          </label>
+        </details>
+        <details class="tuning-subsection" open>
+          <summary class="subsection-label">Page</summary>
+          <label class="tuning-slider">
+            <span>Frame</span>
+            <select id="tuning-frame">
+              <option value="sidebar" selected>Sidebar</option>
+              <option value="bare">Bare</option>
             </select>
           </label>
         </details>

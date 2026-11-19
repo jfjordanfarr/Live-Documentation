@@ -32,4 +32,14 @@ describe("entryFor", () => {
   it("joins a write made in the same task as a new entry to it, so one click is one step back", () => {
     expect(entryFor({ ...move, joining: true })).toBe("replace");
   });
+
+  it("adds an entry within a place for a step Back must take back, as Unpin others, under the same conditions as a move", () => {
+    const within = { ...move, toPlace: "a", step: true };
+    expect(entryFor(within)).toBe("push");
+    expect(entryFor({ ...within, step: false })).toBe("replace");
+    expect(entryFor({ ...within, sameUrl: true })).toBe("none");
+    expect(entryFor({ ...within, armed: false })).toBe("replace");
+    expect(entryFor({ ...within, restoring: true })).toBe("replace");
+    expect(entryFor({ ...within, joining: true })).toBe("replace");
+  });
 });

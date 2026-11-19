@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-changes.ts
-- Generated At: 2026-11-19T04:53:49.578Z
+- Generated At: 2026-11-19T06:00:10.105Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ Every Tuning setting that differs from `defaults`, group by group in the order t
 
 #### `tuningControlId` {#symbol-tuningcontrolid}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L40)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L43)
 - Parameters: `setting`: [`ChangedSetting`](#symbol-changedsetting)
 
 ##### `tuningControlId` — Summary
@@ -45,7 +45,7 @@ kebab case (`forceGraph.linkGap` is `tuning-force-link-gap`). A setting no lever
 
 #### `changedSettingsWords` {#symbol-changedsettingswords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L48)
 
 ##### `changedSettingsWords` — Summary
 What the count beside Tuning's heading says to a screen reader and on hover.

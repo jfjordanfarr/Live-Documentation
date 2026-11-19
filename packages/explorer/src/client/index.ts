@@ -3,6 +3,7 @@ import type { HistorySequence } from "@live-documentation/engine/live-docs/histo
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
+import { announce } from "./announce";
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
@@ -16,7 +17,9 @@ import type { HistoryMoment } from "./history/moment";
 import { endFiles, momentGround, todayGround, type PathGround } from "./history/moment-paths";
 import { applyLayoutSettings, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
-import { createItemMenu } from "./panels/item-menu";
+import { createFrame, FRAME_KEY_ICON, type Frame } from "./panels/frame";
+import type { CrumbSubject } from "./panels/frame-crumbs";
+import { createItemMenu, type ItemCommand } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
@@ -35,12 +38,12 @@ import {
   createPersistNavScheduler
 } from "./persistence";
 import { compressSnapshot, readUrlState, scrubSnapshot, writeUrlState, type UrlStateSnapshot } from "./persistence/compressed-url-state";
-import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
+import { canGoBack, canGoForward, onHistoryChange, startHistory, stepWithinPlace } from "./persistence/history";
 import { placeOf } from "./persistence/place";
 import { chooseReading, releaseReading } from "./reading-state";
 import { searchIndexOf, type SearchHit } from "./search/graph-search";
 import { createSearchBar, type SearchWords } from "./search/search-bar";
-import type { ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
+import type { DiscoveryTarget, ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
 import { defaultSpatialLayout } from "./views/forceGraphScope";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
@@ -49,7 +52,7 @@ import { BACKWARD_STRENGTHS, backwardStrength, type BackwardStrength } from "./v
 import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
-import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
+import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, othersReleasedWords, releaseOthers, type OthersReleased, type OthersStrength, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { createWorldMapView } from "./views/worldMap";
 
 attachGlobalErrorHandler();
@@ -272,6 +275,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   readerBackdrop.hidden = true;
   readerBackdrop.addEventListener("click", () => closeInspection());
   document.body.append(readerBackdrop);
+  // What frames the map, put in force once the strip it opens its key and its sheet from is built (the Bare trial).
+  let frame: Frame | null = null;
   const narrowNavigation = window.matchMedia("(max-width: 760px)");
   const sidebar = requireElement("sidebar");
   if (narrowNavigation.matches) sidebar.classList.add("collapsed");
@@ -306,6 +311,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const shown = state.view === "map" && state.perspective === "3d" && shownFiles
       ? ` · ${n(shownFiles.shown)} of ${n(shownFiles.total)} files shown · ${n(shownFiles.groups)} ${shownFiles.groups === 1 ? "group" : "groups"}, ${n(shownFiles.alone)} alone` : "";
     statsText.data = counts + shown;
+    frame?.sync();
   };
   syncStatsLine();
 
@@ -346,6 +352,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       syncPerspectiveControls();
     },
     // A Zoom button that can do no more says so: disabled, which a reader of the page is told (2026-11-06).
+    onFollowing: () => syncPerspectiveControls(),
+    onFramingLeftOut: () => syncRetainedWords(),
     onZoomLimits: ({ farthest, closest }) => {
       for (const [zoom, limited] of [["out", farthest], ["in", closest]] as const) {
         const button = document.querySelector<HTMLButtonElement>(`#controls [data-zoom="${zoom}"]`);
@@ -527,6 +535,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   });
   const tuningButton = iconButton("Layout tuning", '<path d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6M10 15v6"/>');
   tuningButton.addEventListener("click", () => {
+    if (frame?.bare()) { frame.toggleSheet(); return; }
     document.getElementById("sidebar")?.classList.remove("collapsed");
     const tuning = document.querySelector<HTMLDetailsElement>(".sidebar-details");
     if (tuning) {
@@ -535,6 +544,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       tuning.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
   });
+  // The Bare frame's key: the legend and the display filters, one press from the map (shown only under Bare).
+  const keyButton = iconButton("Key", FRAME_KEY_ICON);
+  keyButton.setAttribute("aria-expanded", "false");
+  keyButton.hidden = true;
+  keyButton.addEventListener("click", () => frame?.toggleKey());
   const mapButton = document.createElement("button");
   mapButton.textContent = "2D";
   mapButton.title = "Local Map in 2D";
@@ -595,9 +609,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     element.append(...buttons);
     return element;
   };
-  perspectiveControls.append(group(fitButton), group(wholeButton, tuningButton), group(mapButton, graphButton),
+  perspectiveControls.append(group(fitButton), group(wholeButton, keyButton, tuningButton), group(mapButton, graphButton),
     group(connectionsButton, structureButton, hopsSelect), group(historyButton));
   requireElement("main").append(perspectiveControls);
+  frame = createFrame({
+    hasBoard: !!bundle.board,
+    view: () => state.view,
+    subject: frameSubject,
+    counts: () => statsText.data,
+    onDirectory: directory => centreOnDirectory(directory),
+    onFile: path => { const node = nodesById.get(path); if (node) recentreOn(node); },
+    keyButton,
+    tuningButton
+  });
+  frame.apply(state.tuning.appearance.frame);
   const pinTray = createPinTray({
     parent: requireElement("main"),
     nodes: nodesById,
@@ -607,6 +632,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       !!state.selectedNode && under(shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath, shownMoment?.directoryAt(directory) ?? directory)
     ),
     onClear: () => applyRetentionChange({ pins: EMPTY_PIN_SET, openDirectories: new Set(), retentionOrder: [] }, true),
+    othersCommands: item => othersCommands(item),
+    onShowOthers: (item, anchor, onClose) => itemMenu.show(anchor, othersCommands(item), onClose),
     onFocus: focusRetained,
     onOpen: () => closeInspection(),
     canClear: () => !!state.discovery || !!state.selectedNode
@@ -780,8 +807,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (next !== current) changeRetainedDirectory(directory, next);
   }
 
-  function applyRetentionChange(next: RetainedState, releaseSubject = false): void {
-    if (releaseSubject) state.discovery = null;
+  /**
+   * `kept`, given by Fold others away and Unpin others, says that one thing stays: the discovery becomes the one given
+   * (the thing's own, or none), and the emptied picture is not fitted, so that the camera holds the subject under the hand.
+   */
+  function applyRetentionChange(next: RetainedState, releaseSubject = false, kept?: { discovery: DiscoveryTarget | null }): void {
+    if (kept) state.discovery = kept.discovery;
+    else if (releaseSubject) state.discovery = null;
     const current = state.selectedNode;
     const selectedId = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, next.pins, current?.id ?? null, releaseSubject);
     const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
@@ -792,8 +824,64 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.selectedNode = selected;
     persistExploration(!!localView.getActivePath());
     renderCurrentView();
-    if (releaseSubject && state.perspective === "3d") forceGraphView.fit();
+    if (releaseSubject && !kept && state.perspective === "3d") forceGraphView.fit();
     if (focused && anchor) view.placeSubjectAnchor(focused.id, anchor);
+  }
+
+  /** What Fold others away or Unpin others would leave, from the state shown; the 3D pops count only where they are seen. */
+  function othersAfter(item: RetainedItem, strength: OthersStrength): OthersReleased {
+    return releaseOthers(retentionState(), item, strength, {
+      discovery: state.discovery ?? null,
+      popped: state.view === "map" && state.perspective === "3d" ? forceGraphView.poppedGroups() : new Set(),
+      subject: state.selectedNode?.id ?? null,
+      pathOf: id => retainedPath({ kind: "pin", pin: { nodeId: id, symbol: "*" } })
+    });
+  }
+
+  /**
+   * Fold others away and Unpin others (the owner's ask of 2026-11-19, two strengths of one gesture, approved the same
+   * night), by the tray's own path (`applyRetentionChange`): what the pure `releaseOthers` leaves is applied, the subject
+   * stays at the fold strength and at the unpin strength follows the release policy unless it is the thing kept, and the
+   * 3D map's pops wrap again. Each is one entry of the page's history, so that Back restores every released pin with
+   * its symbols and order and every closed directory (not the 3D pops, which the address does not carry); each is told
+   * once in the page's status region; and the keyboard's focus stays on the control it was chosen from.
+   */
+  function releaseOthersOf(item: RetainedItem, strength: OthersStrength): void {
+    const result = othersAfter(item, strength);
+    if (result.pins === 0 && result.directories === 0 && !result.discoveryReleased) return;
+    const focused = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
+    const label = focused?.getAttribute("aria-label");
+    const keptSubject = item.kind === "pin" && state.selectedNode?.id === item.pin.nodeId;
+    const releaseSubject = strength === "unpin" && !keptSubject;
+    // The 2D map holds the thing kept under the hand by the rule a pin's change uses, which also tells it that a subject
+    // moved by a release is no direct choice to re-fit the camera to (found 2026-11-19: without it the card kept left
+    // the pointer by 470 px as the map centred its new subject).
+    const nextSubject = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, result.state.pins, state.selectedNode?.id ?? null, releaseSubject);
+    const frame = item.kind === "pin" ? localView.capturePinChange(item.pin.nodeId, item.pin.symbol, nextSubject)
+      : localView.captureDirectoryChange(item.directory);
+    forceGraphView.keepPoppedGroups(result.popped);
+    stepWithinPlace();
+    applyRetentionChange(result.state, releaseSubject, { discovery: result.discovery });
+    frame.afterRender();
+    // A render can rebuild the control the menu returned focus to, or the pin's change hand it to the Pin beside it; the
+    // focus goes back to the control of that name.
+    if (label && document.activeElement?.getAttribute("aria-label") !== label) {
+      document.querySelector<HTMLElement>(`[aria-label="${CSS.escape(label)}"]`)?.focus({ preventScroll: true });
+    }
+    announce(othersReleasedWords(result));
+  }
+
+  /**
+   * The menu's items for the thing kept, in their order: Fold others away when something is open elsewhere, Unpin others
+   * when another pin exists; where there is nothing to fold, only Unpin others, and where no other pin, only the fold.
+   */
+  function othersCommands(item: RetainedItem): ItemCommand[] {
+    const folds = othersAfter(item, "fold");
+    const unpins = othersAfter(item, "unpin");
+    return [
+      ...folds.directories > 0 || folds.discoveryReleased ? [{ label: "Fold others away", run: () => releaseOthersOf(item, "fold") }] : [],
+      ...unpins.pins > 0 ? [{ label: "Unpin others", run: () => releaseOthersOf(item, "unpin") }] : []
+    ];
   }
 
   function focusRetained(item: RetainedItem): void {
@@ -981,6 +1069,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       : destination.symbol ? { kind: "symbol", node: node!, symbol: destination.symbol } : { kind: "file", node: node! });
   }
 
+  /** What the Local Map is about, for the Bare frame's crumbs: the selected file, else the newest pin, else the discovery. */
+  function frameSubject(): CrumbSubject | null {
+    if (state.selectedNode) return { kind: "file", path: state.selectedNode.codeRelativePath };
+    const newest = newestRetained(retentionState());
+    if (newest?.kind === "directory") return { kind: "directory", path: newest.directory };
+    if (newest?.kind === "pin") { const node = nodesById.get(newest.pin.nodeId); if (node) return { kind: "file", path: node.codeRelativePath }; }
+    if (state.discovery?.kind === "directory") return { kind: "directory", path: state.discovery.directory };
+    if (state.discovery?.kind === "file") { const node = nodesById.get(state.discovery.nodeId); if (node) return { kind: "file", path: node.codeRelativePath }; }
+    return null;
+  }
+
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     const selectedPath = state.selectedNode ? shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath : null;
@@ -989,9 +1088,22 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (contextName) contextName.textContent = selectedPath
       ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
-    for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
+    frame?.sync();
+    for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
+    // Under Tuning's Framing at Follows Pins (2026-11-19), Fit in 2D frames the pins and is pressed while the camera
+    // follows them; the person's own pan or zoom lifts it, and a press gives the following back.
+    if (state.perspective === "2d" && state.tuning.localMap.framing !== "hand") {
+      const following = localView.isFollowing();
+      fitButton.setAttribute("aria-pressed", String(following));
+      fitButton.setAttribute("aria-label", "Follow pins");
+      fitButton.title = following ? "Following the pins: the camera frames what is pinned, newest first; pan or zoom to take it"
+        : "Follow the pins again: frame what is pinned, newest first";
+    } else {
+      fitButton.removeAttribute("aria-pressed");
+      fitButton.setAttribute("aria-label", "Fit current scope");
+    }
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
     hopsSelect.value = String(state.tuning.forceGraph.hops);
@@ -1039,7 +1151,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   function syncRetainedWords(): void {
     if (shownMoment && historicalSearch?.moment !== shownMoment) historicalSearch = { moment: shownMoment, index: searchIndexOf(shownMoment.graph.nodes) };
     searchBar.setIndex(shownMoment ? historicalSearch!.index : searchIndex);
-    pinTray.sync(retentionState(), state.view === "map", changingPerspective, item => historyControl.absence(item));
+    // A pin the following camera's frame leaves out says so in the absence's own quiet words (Framing, 2026-11-19).
+    const outside = new Set(state.view === "map" && state.perspective === "2d" ? localView.framingLeftOut() : []);
+    const outsideKey = (item: RetainedItem): string => item.kind === "directory" ? `${item.directory}/`
+      : item.pin.symbol === "*" ? item.pin.nodeId : `${item.pin.nodeId}#${item.pin.symbol}`;
+    pinTray.sync(retentionState(), state.view === "map", changingPerspective,
+      item => historyControl.absence(item) ?? (outside.has(outsideKey(item)) ? "Outside the frame" : null));
     const newest = newestRetained(retentionState());
     const key = newest ? JSON.stringify([retainedKey(newest), shownMoment?.step ?? null]) : null;
     if (key !== reachKey) {
@@ -1178,7 +1295,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
 
   // The page's controls are wired here, never by attributes in its HTML, which its Content-Security-Policy refuses to run.
-  for (const button of document.querySelectorAll<HTMLButtonElement>("#sidebar .nav-item[data-view]")) {
+  for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-item[data-view]")) {
     const viewName = button.dataset.view as ViewName;
     button.addEventListener("click", event => {
       event.preventDefault();
@@ -1386,7 +1503,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   syncTuningControls = initTuningPanel({
     state,
-    onTuningChange: () => { schedulePersistUi(); persistExploration(); },
+    onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); },
+    onFrame: choice => frame?.apply(choice),
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
       if (state.perspective === "3d") {
@@ -1745,10 +1863,34 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
 
   function showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }, onClose?: () => void): void {
+    // Fold others away and Unpin others stand beside the thing's own Pin, as an editor's Close Others stands beside Close
+    // in the tab's menu; Wrap this group again beside them, an act on what holds the thing.
+    const [pin, ...rest] = actionsForFile(node, symbol);
     itemMenu.show(anchor, [
       { label: symbol ? `Inspect ${symbol === INTERNAL_SYMBOL ? "Internals" : symbol}` : "Inspect " + node.name, run: () => focusSidebar(node, symbol) },
-      ...actionsForFile(node, symbol)
+      pin,
+      ...othersCommands({ kind: "pin", pin: { nodeId: node.id, symbol: symbol ?? "*" } }),
+      ...wrapGroupCommand(node),
+      ...rest
     ], onClose);
+  }
+
+  /**
+   * A sphere standing inside a group the 3D Connections layout popped open can wrap that group again from its own menu
+   * (2026-11-19: the owner, who uses the map daily, had not found the popped group's dimmed name, which does it).
+   */
+  function wrapGroupCommand(node: ExplorerNodePayload): ItemCommand[] {
+    if (state.view !== "map" || state.perspective !== "3d") return [];
+    const group = forceGraphView.groupHolding(node.id);
+    if (group === null) return [];
+    return [{
+      label: "Wrap this group again",
+      detail: group || "Scan root",
+      run: () => {
+        forceGraphView.wrapGroup(group);
+        announce(`Wrapped ${group || "Scan root"} again`);
+      }
+    }];
   }
 
   function centreOnDirectory(directory: string): void {
@@ -1768,6 +1910,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     itemMenu.show(anchor, [
       { label: "Inspect directory", run: () => openInspection({ kind: "directory", directory }) },
       { label: opened ? "Close directory" : "Open directory", run: () => opened ? closeRetainedDirectory(directory) : openRetainedDirectory(directory) },
+      // An opened directory is a pin and keeps itself; a closed one has no pin of its own to keep, so it offers none.
+      ...opened ? othersCommands({ kind: "directory", directory }) : [],
       { label: "Centre on directory", run: () => centreOnDirectory(directory) },
       {
         label: "Clear pins inside this directory",
