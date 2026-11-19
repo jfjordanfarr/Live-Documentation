@@ -526,6 +526,78 @@ test("a pin whose file is not yet created is said so in the tray and never dropp
   await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
 });
 
+/**
+ * The two knobs (2026-11-19, the owner: "I had the coarse adjustment and then the fine adjustment"): the fine pair moves a
+ * commit, the coarse pair and Page Up and Page Down to the next mark, and play, with something pinned under the automatic
+ * granularity, from mark to mark. With main.ts pinned the engine marks steps 3 and 4 tall and 1 and 2 short; step 5 is
+ * quiet, and the end, step 6, is always a stop.
+ */
+test("the coarse pair, Page Up and Page Down and play move between the pins' marks, the fine pair a commit", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await page.goto(entry("/samples/history/", { commit: commits[0].id, pinSet: { entries: [{ nodeId: "src/app/main.ts", symbol: "*" }] } }));
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+  await expect(page.locator(".history-tick.is-major")).toHaveCount(2);
+  await expect(page.locator(".history-tick.is-minor")).toHaveCount(2);
+  const button = (name: string) => page.getByRole("button", { name, exact: true });
+  // Four buttons about play, the coarse outside the fine, each named for what it does.
+  expect(await page.locator(".history-playback button").evaluateAll(buttons => buttons.map(item => item.getAttribute("aria-label"))))
+    .toEqual(["Previous marked commit", "Previous commit", "Play", "Next commit", "Next marked commit"]);
+  await expect(button("Previous marked commit")).toBeDisabled();
+  await expect(button("Previous marked commit")).toHaveAttribute("title", "Previous marked commit");
+  await button("Next marked commit").click();
+  await expect(track(page), "the short mark at step 1 is a stop").toHaveAttribute("aria-valuenow", "1");
+  await button("Next commit").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await button("Next marked commit").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  await button("Next marked commit").click();
+  await button("Next marked commit").click();
+  await expect(track(page), "past the last mark, the end").toHaveAttribute("aria-valuenow", "6");
+  await expect(button("Next marked commit")).toBeDisabled();
+  await button("Previous marked commit").click();
+  await expect(track(page), "back over the quiet step 5").toHaveAttribute("aria-valuenow", "4");
+  await button("Previous commit").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  // The keyboard agrees with the hand: Page Down and Page Up stop at the short marks too.
+  await track(page).focus();
+  await page.keyboard.press("PageDown");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await page.keyboard.press("PageDown");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "1");
+  await page.keyboard.press("PageUp");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await page.keyboard.press("ArrowRight");
+  await expect(track(page), "the arrows still move a commit").toHaveAttribute("aria-valuenow", "3");
+
+  // Play from the beginning moves from mark to mark and passes the quiet step by.
+  await page.keyboard.press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+  await expect(button("Play")).toHaveAttribute("title", "Play, one marked commit after another");
+  // Every step the thumb stands on, from the beginning: the scrubber writes its value again at each refresh, so only a
+  // value that differs from the last is a move.
+  await page.evaluate(() => {
+    const slider = document.querySelector(".history-track")!;
+    const seen = [slider.getAttribute("aria-valuenow")!];
+    (window as unknown as { seenSteps: string[] }).seenSteps = seen;
+    new MutationObserver(() => {
+      const now = slider.getAttribute("aria-valuenow")!;
+      if (now !== seen[seen.length - 1]) seen.push(now);
+    }).observe(slider, { attributes: true, attributeFilter: ["aria-valuenow"] });
+  });
+  await page.getByLabel("Playback speed").selectOption("8");
+  await button("Play").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "6", { timeout: 10_000 });
+  await expect(button("Play")).toBeVisible({ timeout: 5_000 });
+  expect(await page.evaluate(() => (window as unknown as { seenSteps: string[] }).seenSteps), "step 5, quiet, is passed by").toEqual(["0", "1", "2", "3", "4", "6"]);
+
+  // With nothing pinned the marks are every drawn tick, here every step, and play goes a step at a time.
+  await page.goto(entry("/samples/history/", { commit: commits[2].id }));
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await expect(button("Play")).toHaveAttribute("title", "Play, one step after another");
+  await button("Next marked commit").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+});
+
 test("an absent historical request shows only the tree's root, dimmed, and resumes normal motion at its birth", async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await observeGraph(page);
