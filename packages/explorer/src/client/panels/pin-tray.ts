@@ -157,6 +157,10 @@ export function createPinTray(options: PinTrayOptions): {
         const absence = row.querySelector<HTMLElement>(".pin-tray-absent")!;
         absence.hidden = words === null;
         absence.textContent = words ?? "";
+        // The words are part of the row's name, so that a reader of the page hears what the eye sees (2026-11-19).
+        const focus = row.querySelector<HTMLButtonElement>(".pin-tray-subject")!;
+        focus.dataset.name ??= focus.getAttribute("aria-label") ?? "";
+        focus.setAttribute("aria-label", words === null ? focus.dataset.name : `${focus.dataset.name}, ${words.toLowerCase()}`);
       });
 
       if (focusedRow && !focusedRow.isConnected) {

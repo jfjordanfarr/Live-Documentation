@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, revealPan, unionOf } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -113,5 +113,190 @@ describe("a step's reveal", () => {
   it("unites boxes, and has none for none", () => {
     expect(unionOf([box(0, 0, 10, 10), box(20, -5, 10, 10)])).toEqual(box(0, -5, 30, 15));
     expect(unionOf([])).toBeNull();
+  });
+});
+
+describe("the frame that follows the pins (Framing, Follows Pins)", () => {
+  const { horizontal, vertical } = framePadding(frame);
+  const room = { width: frame.width - 2 * horizontal, height: frame.height - 2 * vertical };
+  const reading = 1.2, floor = reading * ARRIVAL_FLOOR_RATIO;
+  const target = (key: string, bounds: Bounds, card = false): FramingTarget => ({ key, bounds, card });
+  const within = (bounds: Bounds, camera: { x: number; y: number; k: number }) => {
+    const drawn = onScreen(bounds, camera);
+    return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+  };
+
+  it("has nothing to frame without targets", () => {
+    expect(pinsFrame([], frame, reading, floor)).toBeNull();
+  });
+
+  it("frames one card as an arrival does: at reading scale, centred, or entered at its top where it is taller than the room", () => {
+    const small = pinsFrame([target("a", box(100, 100, 300, 200), true)], frame, reading, floor)!;
+    expect(small.transform.k).toBe(reading);
+    const drawn = onScreen(box(100, 100, 300, 200), small.transform);
+    expect((drawn.left + drawn.right) / 2).toBeCloseTo(600, 6);
+    expect((drawn.top + drawn.bottom) / 2).toBeCloseTo(400, 6);
+    const tall = pinsFrame([target("a", box(100, -400, 300, 2000), true)], frame, reading, floor)!;
+    expect(tall.transform.k, "a tall card is not shrunk to fit").toBe(reading);
+    expect(onScreen(box(100, -400, 300, 2000), tall.transform).top).toBeCloseTo(vertical, 6);
+    expect(tall.held).toEqual(["a"]);
+  });
+
+  it("frames one symbol's row with its name line at reading scale where they fit, smaller where they do not, never past the floor", () => {
+    const near = box(0, 0, 300, 400);
+    expect(pinsFrame([target("s", near)], frame, reading, floor)!.transform.k).toBe(reading);
+    const far = box(0, 0, 300, 1400);
+    const framed = pinsFrame([target("s", far)], frame, reading, floor)!;
+    expect(framed.transform.k).toBeCloseTo(room.height / 1400, 9);
+    expect(within(far, framed.transform)).toBe(true);
+    const beyond = pinsFrame([target("s", box(0, 0, 300, 20_000))], frame, reading, floor)!;
+    expect(beyond.transform.k).toBe(floor);
+    expect(onScreen(box(0, 0, 300, 20_000), beyond.transform).top, "entered at its start").toBeCloseTo(vertical, 6);
+  });
+
+  it("frames two pinned rows in two cards, the owner's PostPayment and PostPaymentRow, as large as fits, centred on the pair, never past reading scale", () => {
+    const rowA = box(100, 150, 200, 120), rowB = box(700, 120, 220, 160);
+    const framed = pinsFrame([target("PostPaymentRow", rowA), target("PostPayment", rowB)], frame, reading, floor)!;
+    const pair = unionOf([rowA, rowB])!;
+    expect(framed.transform.k).toBe(reading);
+    expect(within(pair, framed.transform)).toBe(true);
+    const spread = [target("a", box(0, 0, 200, 100)), target("b", box(1800, 900, 200, 100))];
+    const wide = pinsFrame(spread, frame, reading, floor)!;
+    expect(wide.transform.k).toBeCloseTo(Math.min(room.width / 2000, room.height / 1000), 9);
+    expect(wide.transform.k).toBeLessThan(reading);
+    expect(within(unionOf(spread.map(each => each.bounds))!, wide.transform)).toBe(true);
+    expect(wide.held).toEqual(["a", "b"]);
+    expect(wide.left).toEqual([]);
+  });
+
+  it("leaves out the oldest, one at a time, until the rest fit at the floor; the newest is always held", () => {
+    const span = room.width / floor;
+    const targets = [target("oldest", box(-3 * span, 0, 100, 100)), target("old", box(-span / 2, 0, 100, 100)),
+      target("new", box(0, 0, 100, 100)), target("newest", box(span / 3, 0, 100, 100))];
+    const framed = pinsFrame(targets, frame, reading, floor)!;
+    expect(framed.left).toEqual(["oldest"]);
+    expect(framed.held).toEqual(["old", "new", "newest"]);
+    expect(framed.transform.k).toBeGreaterThanOrEqual(floor * (1 - 1e-9));
+    for (const each of targets.slice(1)) expect(within(each.bounds, framed.transform), each.key).toBe(true);
+    // Far apart, only the newest stays, and alone it is framed as one pin is.
+    const apart = pinsFrame([target("old", box(-10 * span, 0, 300, 200), true), target("newest", box(0, 0, 300, 200), true)], frame, reading, floor)!;
+    expect(apart.held).toEqual(["newest"]);
+    expect(apart.left).toEqual(["old"]);
+    expect(apart.transform.k).toBe(reading);
+  });
+
+  it("holds a target by its brief beside others and whole alone: a tall unpinned subject's name line beside a new pin", () => {
+    const subject = target("subject", box(0, 0, 300, 3000), true), name = box(0, 0, 300, 40);
+    const pin = target("pin", box(600, 1200, 300, 400), true);
+    const withPin = pinsFrame([{ ...subject, brief: name }, pin], frame, reading, floor)!;
+    expect(withPin.held).toEqual(["subject", "pin"]);
+    expect(within(name, withPin.transform) && within(pin.bounds, withPin.transform)).toBe(true);
+    expect(pinsFrame([subject, pin], frame, reading, floor)!.left, "held whole, the subject would not fit beside it").toEqual(["subject"]);
+    expect(pinsFrame([{ ...subject, brief: name }], frame, reading, floor)!.transform.k, "alone it is the arrival's card").toBe(reading);
+  });
+
+  it("holds the newest whole and the older by their names: an older whole-file pin keeps its name line beside a new one", () => {
+    const older = { ...target("older", box(0, 0, 300, 2400), true), brief: box(0, 0, 300, 40) };
+    const newest = target("newest", box(500, 1200, 300, 500), true);
+    const framed = pinsFrame([older, newest], frame, reading, floor)!;
+    expect(framed.held).toEqual(["older", "newest"]);
+    expect(within(older.brief, framed.transform) && within(newest.bounds, framed.transform)).toBe(true);
+    // The newest is never held by its brief: given one, its whole card is still framed.
+    const briefNewest = pinsFrame([older, { ...newest, brief: box(500, 1200, 300, 40) }], frame, reading, floor)!;
+    expect(within(newest.bounds, briefNewest.transform)).toBe(true);
+  });
+
+  it("depends on its inputs alone", () => {
+    const targets = [target("a", box(-40, 12, 310, 170)), target("b", box(900, 300, 320, 240), true)];
+    expect(pinsFrame(targets, frame, reading, floor)).toEqual(pinsFrame(targets.map(each => ({ ...each, bounds: { ...each.bounds } })), { ...frame }, reading, floor));
+  });
+});
+
+describe("the following camera's ease", () => {
+  it("grows with the distance, from a short pull back to a capped long ride", () => {
+    const here = { x: 0, y: 0, k: 1.2 };
+    expect(framingEaseMs(here, here, frame)).toBe(FRAMING_EASE_MIN_MS);
+    const pullBack = framingEaseMs(here, { x: 150, y: 100, k: 0.9 }, frame);
+    const ride = framingEaseMs(here, { x: -6000, y: 0, k: 1.2 }, frame);
+    expect(pullBack).toBeGreaterThan(FRAMING_EASE_MIN_MS);
+    expect(pullBack).toBeLessThan(ride);
+    expect(ride).toBe(FRAMING_EASE_MAX_MS);
+  });
+
+  it("passes through the poses between, zoom even in its logarithm, and ends exactly on the frame", () => {
+    const start = { x: -500, y: -200, k: 1.2 }, end = { x: 100, y: 50, k: 0.3 };
+    expect(poseBetween(start, end, 0, frame)).toEqual(start);
+    const last = poseBetween(start, end, 1, frame);
+    expect(sameCamera(last, end)).toBe(true);
+    expect(poseBetween(start, end, 0.5, frame).k).toBeCloseTo(Math.sqrt(1.2 * 0.3), 9);
+  });
+
+  it("tells apart cameras the eye can tell apart", () => {
+    expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 0.2, y: -0.3, k: 1.0005 })).toBe(true);
+    expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 2, y: 0, k: 1 })).toBe(false);
+    expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 0, y: 0, k: 0.99 })).toBe(false);
+  });
+});
+
+describe("a re-frame the person did not cause (keepFrame)", () => {
+  const { horizontal, vertical } = framePadding(frame);
+  const reading = 1.2, floor = reading * ARRIVAL_FLOOR_RATIO;
+  const target = (key: string, bounds: Bounds, card = false): FramingTarget => ({ key, bounds, card });
+  const within = (bounds: Bounds, camera: { x: number; y: number; k: number }) => {
+    const drawn = onScreen(bounds, camera);
+    return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+  };
+
+  it("never zooms in: held targets that moved apart a little are panned to, at the camera's own scale", () => {
+    const camera = { x: 0, y: 0, k: 0.6 };
+    const held = [target("a", box(0, 0, 200, 100)), target("b", box(900, 200, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.transform.k).toBe(0.6);
+    expect(kept.held).toEqual(["a", "b"]);
+    for (const each of held) expect(within(each.bounds, kept.transform)).toBe(true);
+    expect(keepFrame([target("a", box(100, 100, 50, 50))], camera, frame, floor)!.transform, "a target in view moves nothing").toEqual(camera);
+  });
+
+  it("zooms out only as far as the held targets need, never past the floor, and keeps every one it can", () => {
+    const camera = { x: 0, y: 0, k: reading };
+    const held = [target("a", box(0, 0, 200, 100)), target("b", box(2000, 0, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.transform.k).toBeLessThan(reading);
+    expect(kept.transform.k).toBeGreaterThanOrEqual(floor);
+    expect(kept.left).toEqual([]);
+    for (const each of held) expect(within(each.bounds, kept.transform)).toBe(true);
+  });
+
+  it("where even the floor cannot hold them, keeps the newest and says the rest are left out", () => {
+    const camera = { x: 0, y: 0, k: reading };
+    const held = [target("old", box(-20_000, 0, 200, 100)), target("newest", box(0, 0, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.held).toEqual(["newest"]);
+    expect(kept.left).toEqual(["old"]);
+    expect(kept.transform.k, "and still does not zoom in").toBeLessThanOrEqual(reading);
+    expect(within(held[1].bounds, kept.transform)).toBe(true);
+  });
+});
+
+describe("the smooth zoom's path for a long re-frame (van Wijk and Nuij)", () => {
+  const floor = 0.4;
+  it("pulls back, travels and closes in, never past the floor, ending exactly on the frame", () => {
+    const start = { x: 0, y: 0, k: 1.2 }, end = { x: -9000, y: -3000, k: 1.0 };
+    expect(framingTravel(start, end, frame)).toBeGreaterThan(1);
+    const { pose, duration } = smoothZoom(start, end, frame, floor);
+    expect(sameCamera(pose(0), start)).toBe(true);
+    expect(pose(1)).toEqual(end);
+    const middle = pose(0.5);
+    expect(middle.k, "farther out in the middle than at either end").toBeLessThan(1.0);
+    for (let t = 0; t <= 1; t += 0.05) expect(pose(t).k).toBeGreaterThanOrEqual(floor - 1e-9);
+    expect(duration).toBeGreaterThanOrEqual(FRAMING_EASE_MIN_MS);
+    expect(duration).toBeLessThanOrEqual(2 * FRAMING_EASE_MAX_MS);
+  });
+
+  it("is a plain zoom where the middle does not move", () => {
+    const { pose } = smoothZoom({ x: 600 - 100 * 1.2, y: 400 - 100 * 1.2, k: 1.2 }, { x: 600 - 100 * 0.6, y: 400 - 100 * 0.6, k: 0.6 }, frame, floor);
+    const half = pose(0.5);
+    expect((600 - half.x) / half.k).toBeCloseTo(100, 6);
+    expect(half.k).toBeCloseTo(Math.sqrt(1.2 * 0.6), 6);
   });
 });

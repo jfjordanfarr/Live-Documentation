@@ -346,6 +346,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       syncPerspectiveControls();
     },
     // A Zoom button that can do no more says so: disabled, which a reader of the page is told (2026-11-06).
+    onFollowing: () => syncPerspectiveControls(),
+    onFramingLeftOut: () => syncRetainedWords(),
     onZoomLimits: ({ farthest, closest }) => {
       for (const [zoom, limited] of [["out", farthest], ["in", closest]] as const) {
         const button = document.querySelector<HTMLButtonElement>(`#controls [data-zoom="${zoom}"]`);
@@ -992,6 +994,18 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
+    // Under Tuning's Framing at Follows Pins (2026-11-19), Fit in 2D frames the pins and is pressed while the camera
+    // follows them; the person's own pan or zoom lifts it, and a press gives the following back.
+    if (state.perspective === "2d" && state.tuning.localMap.framing !== "hand") {
+      const following = localView.isFollowing();
+      fitButton.setAttribute("aria-pressed", String(following));
+      fitButton.setAttribute("aria-label", "Follow pins");
+      fitButton.title = following ? "Following the pins: the camera frames what is pinned, newest first; pan or zoom to take it"
+        : "Follow the pins again: frame what is pinned, newest first";
+    } else {
+      fitButton.removeAttribute("aria-pressed");
+      fitButton.setAttribute("aria-label", "Fit current scope");
+    }
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
     hopsSelect.value = String(state.tuning.forceGraph.hops);
@@ -1039,7 +1053,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   function syncRetainedWords(): void {
     if (shownMoment && historicalSearch?.moment !== shownMoment) historicalSearch = { moment: shownMoment, index: searchIndexOf(shownMoment.graph.nodes) };
     searchBar.setIndex(shownMoment ? historicalSearch!.index : searchIndex);
-    pinTray.sync(retentionState(), state.view === "map", changingPerspective, item => historyControl.absence(item));
+    // A pin the following camera's frame leaves out says so in the absence's own quiet words (Framing, 2026-11-19).
+    const outside = new Set(state.view === "map" && state.perspective === "2d" ? localView.framingLeftOut() : []);
+    const outsideKey = (item: RetainedItem): string => item.kind === "directory" ? `${item.directory}/`
+      : item.pin.symbol === "*" ? item.pin.nodeId : `${item.pin.nodeId}#${item.pin.symbol}`;
+    pinTray.sync(retentionState(), state.view === "map", changingPerspective,
+      item => historyControl.absence(item) ?? (outside.has(outsideKey(item)) ? "Outside the frame" : null));
     const newest = newestRetained(retentionState());
     const key = newest ? JSON.stringify([retainedKey(newest), shownMoment?.step ?? null]) : null;
     if (key !== reachKey) {
@@ -1386,7 +1405,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   syncTuningControls = initTuningPanel({
     state,
-    onTuningChange: () => { schedulePersistUi(); persistExploration(); },
+    onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); },
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
       if (state.perspective === "3d") {
