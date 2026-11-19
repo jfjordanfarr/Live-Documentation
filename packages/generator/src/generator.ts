@@ -70,6 +70,8 @@ export interface LiveDocGeneratorResult {
   failed: Array<{ sourcePath: string; reason: string }>;
   /** Which files a rule other than UTF-8 read, and which were not read as text at all, by the one reading step. */
   readings: SourceReadings;
+  /** What the readers said they left undrawn, a reason at a time in the order first met, each subject as `<source path>: <subject>`. */
+  notices: Array<{ reason: string; subjects: string[] }>;
 }
 
 /** The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path. */
@@ -188,6 +190,7 @@ export async function generateLiveDocs(
   const results: LiveDocWriteRecord[] = [];
   const failed: Array<{ sourcePath: string; reason: string }> = [];
   const readings: SourceReadings = { utf16: [], windows1252: [], unread: [] };
+  const notices = new Map<string, string[]>();
   let written = 0;
   let skipped = 0;
   const generatedDocPaths = new Set(allTargetFiles.map((absolute) =>
@@ -230,6 +233,10 @@ export async function generateLiveDocs(
     }
 
     const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
+    // What the reader says it left undrawn, counted a reason across files for the run's last lines; never written into the doc.
+    for (const notice of analysis.notices ?? []) {
+      notices.set(notice.reason, [...(notices.get(notice.reason) ?? []), `${normalizedSourcePath}: ${notice.subject}`]);
+    }
 
     const docPaths = resolveLiveDocPaths(
       workspaceRoot,
@@ -336,7 +343,8 @@ export async function generateLiveDocs(
     deletedFiles,
     index,
     failed,
-    readings
+    readings,
+    notices: [...notices].map(([reason, subjects]) => ({ reason, subjects }))
   };
 }
 

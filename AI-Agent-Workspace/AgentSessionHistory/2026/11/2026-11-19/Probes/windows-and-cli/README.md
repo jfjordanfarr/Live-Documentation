@@ -540,3 +540,45 @@ The loop's body inside the new `try` is left at its old indentation so that the 
 ### Refusals printed whole
 
 `runCommand` prints a failure's `error.message` whole, on its first line, and with `--stack` the whole stack, whose first line is the message. A refused command line prints the `UsageError`'s message whole, then the pointer to `--help`. The generator's new failures print each reason whole after the source path. So a reader's message that ends by saying `live-docs:generate` rewrites a doc reaches the person whole, whichever path it takes. This was read in the code, not run, since that message lives on the names' branch.
+
+### For whoever joins the branches: the readers in other builders' files
+
+Each of these files reads its own source as UTF-8, or decodes it for itself. Each line becomes a call to the one step. Add `import { readSourceText } from "../../tooling/sourceText";`, and drop `fs` from the file's imports where nothing else uses it.
+
+| File and line, as on `17532f56` | Replace | With |
+| --- | --- | --- |
+| `adapters/sql.ts:27` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/aspnet.ts:18` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/csharp.ts:893` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/csharp.ts:1249` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/dotnetConfig.ts:75` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/project.ts:58` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/powershell.ts:934` | `const content = decodeScript(await fs.readFile(absolutePath));` | `const content = await readSourceText(absolutePath);` |
+
+After the last swap, `decodeScript` (`powershell.ts:902–906`) has no caller and goes. The one step reads by the same marks and also reads Windows-1252, which is what Windows PowerShell 5.1 itself assumes for a script without a mark. `openings.ts` and `csharp.dependencies.ts` open no source file; the latter probes for files by name (Part B, item 2). `dotnetPaths.ts` and `solution.ts` are not on this branch. If they read a file, the same swap applies. For each swapped reader, the test to add is `sourceEncodings.test.ts`'s case with a `.sql`, `.cs`, `.aspx`, `.config`, `.csproj` or `.ps1` file, which belongs in that file's own leg.
+
+### A channel for what a reader leaves undrawn
+
+The root added this to the leg. An analysis result may now carry `notices?: SourceNotice[]`, each `{ reason, subject }` (`coreTypes.ts`). A reason is a short fixed phrase the reader chooses, so that counts add up across files. `analyzeSourceFile` hands an adapter's result on whole, so the notices pass through it with no change. `generateLiveDocs` counts them a reason at a time, each subject as `<source path>: <subject>`, and returns them as `notices`. `generate` prints a line for each reason, such as `[live-docs] paths several projects hold, left unlinked: 149.`, in the same place as the unread kinds and the reading rules. `--verbose`, new on `generate`, lists the subjects after the count. Nothing of it is written into a Live Doc.
+
+`generator.notices.test.ts` wraps the analysis with a fake reader that gives two reasons across three of four files, and checks the counts, the subjects and a doc with no trace of them. It failed before the channel existed. The command's line itself is not covered by a test, since a fake reader cannot be put into the command's own process.
+
+**The one line each reader would add,** for whoever joins the branches. Each goes where the reader decides to leave the thing undrawn, with a `notices` array returned on its result:
+
+- **.NET** (`csharp.dependencies.ts` or `aspnet.ts`, where a `~/` path is left unlinked because several projects hold the file):
+
+  ```ts
+  notices.push({ reason: "paths several projects hold, left unlinked", subject: specifier });
+  ```
+
+- **SQL** (`sql.ts`, where a string is passed over because part of it is computed):
+
+  ```ts
+  notices.push({ reason: "SQL strings computed in part, not read", subject: `line ${line}` });
+  ```
+
+- **PowerShell** (`powershell.ts`, where a load names no path the text can fix, as `. $file.FullName`):
+
+  ```ts
+  notices.push({ reason: "loads whose path the text does not fix, not followed", subject: `line ${line}: ${command}` });
+  ```

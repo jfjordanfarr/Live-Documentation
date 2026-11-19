@@ -27,6 +27,8 @@ interface ParsedArgs {
   dryRun: boolean;
   check: boolean;
   changedOnly: boolean;
+  /** Whether `--verbose` asks for the subjects of what the readers left undrawn, after each reason's count. */
+  verbose: boolean;
 }
 
 type ChangeCounts = Record<"created" | "updated" | "unchanged" | "skipped", number>;
@@ -39,7 +41,8 @@ function parseArgs(argv: string[]): ParsedArgs {
     include: [],
     dryRun: false,
     check: false,
-    changedOnly: false
+    changedOnly: false,
+    verbose: false
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -103,6 +106,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--verbose": {
+        parsed.verbose = true;
+        break;
+      }
+
       case "--changed": {
         parsed.changedOnly = true;
         break;
@@ -142,6 +150,7 @@ function usage(): string {
     `  --dry-run                 Report what would change; write nothing.\n` +
     `  --check                   Exit 1 when docs would be created, changed or deleted; write nothing.\n` +
     `  --changed                 Only the files git reports as changed.\n` +
+    `  --verbose                 After each reason a reader gave for what it left undrawn, list the subjects.\n` +
     `  -v, --version             Print the generator's version.\n` +
     `  -h, --help                Print this help.\n` +
     `\nExamples:\n` +
@@ -304,6 +313,11 @@ async function main(): Promise<void> {
   }
   if (readings.unread.length > 0) {
     console.warn(`[live-docs] ${files(readings.unread.length)} not read, since ${readings.unread.length === 1 ? "its bytes are" : "their bytes are"} not text in UTF-8, UTF-16 or Windows-1252: ${readings.unread.map(({ sourcePath, reason }) => `${sourcePath} (${reason})`).join("; ")}.`);
+  }
+
+  // What the readers said they left undrawn, a line a reason with its count; its subjects with --verbose.
+  for (const { reason, subjects } of layer4Result.notices) {
+    console.log(`[live-docs] ${reason}: ${subjects.length}${args.verbose ? `: ${subjects.join("; ")}` : ""}.`);
   }
 
   // The files the run could not map, each by its source path and the reason; the rest of the map was written.

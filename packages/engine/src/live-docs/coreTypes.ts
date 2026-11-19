@@ -24,6 +24,18 @@ export interface SourceAnalysisResult {
   program?: ProgramEntry;
   /** The files this file declares as entries: a manifest's scripts, binaries and main module. */
   declares?: DeclaredEntry[];
+  /**
+   * Why the reader drew nothing where a person might look for something: a reason, a short fixed phrase the reader
+   * chooses so that counts add up across files, and the subject it concerns. The generator counts them at the end of a
+   * run; they are said, never written into a Live Doc (2026-11-19).
+   */
+  notices?: SourceNotice[];
+}
+
+/** One thing a reader leaves undrawn, and why: as `{ reason: "paths several projects hold, left unlinked", subject: "~/Site.master" }`. */
+export interface SourceNotice {
+  reason: string;
+  subject: string;
 }
 
 /**
