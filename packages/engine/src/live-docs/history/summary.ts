@@ -117,7 +117,9 @@ export interface SummaryFile {
   reExports?: ReExportRow[];
   /**
    * The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths read
-   * from the lines' links, when any did. Until format 4 the lines' labels, which write a backtick as an apostrophe.
+   * from the lines' links, when any did. Until format 4 the lines' labels, which write a backtick as an apostrophe. A
+   * name holding `#` or a percent-escape is misread (`docs/C#.md` as `docs/C`), since the link is written as a plain
+   * path and read here as a browser reads one; the mend waits on the doc reader's, which decodes such a link.
    */
   citedBy?: string[];
   /**

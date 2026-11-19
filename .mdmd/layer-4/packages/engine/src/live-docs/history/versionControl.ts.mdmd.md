@@ -13,7 +13,7 @@ The seam between the history command and a version control: where the mainline e
 ### Notes
 - Written 2026-10-17 for C13 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), the owner's question of that day ([Turn 3 of October 17](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-3)) how the machinery of change can be "sufficiently decoupled from the source control mechanism that we can aim to support TFS and other versioning systems' change formats later". The interface is the plan's first reading of C13, the mainline, a tree at a change and the renames between two, with what the command also needs: the truncation, the tags and the content changes. C13 waits on the survey the plan names, and this interface changes with it.
 - No method reaches a remote or asks for credentials, the owner's rule of 2025-11-08, re-affirmed on 2026-10-16.
-- Since 2026-11-19 `workingTree` takes what its caller asks of the tree (`WorkingTreeOptions`): the files whose names must stand but whose content no reader reads, written empty, and the docs root, at or along which no symbolic link is written even as a copy.
+- Since 2026-11-19 `workingTree` takes what its caller asks of the tree (`WorkingTreeOptions`): the files whose names must stand but whose content no reader reads, written empty, and the docs root, at or above which no symbolic link is written even as a copy.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

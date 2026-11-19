@@ -12,7 +12,7 @@ import { treeOptions } from "./regenerate";
 
 /**
  * What the history's tree holds (`treeOptions`) against what the generator looks for in a tree by names alone: every
- * name stands, an excluded file no reader reads only empty, so a scan nested under a folder the configuration excludes
+ * name stands, an excluded image or recording only empty, so a scan nested under a folder the configuration excludes
  * is still found, and the generator still warns of it.
  */
 describe("a commit's tree as the history writes it, emptying the images and recordings the configuration excludes", () => {

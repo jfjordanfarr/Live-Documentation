@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-11-19T19:05:05.668Z
+- Generated At: 2026-11-19T21:00:42.403Z
 
 ## Authored
 ### Purpose
@@ -82,14 +82,14 @@ What a file's doc said at a change, everything but its prose, which is named by 
 
 #### `CommitSummary` {#symbol-commitsummary}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L133)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L135)
 
 ##### `CommitSummary` — Summary
 One change's summary as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json.gz`.
 
 #### `AuthoredReading` {#symbol-authoredreading}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L156)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L158)
 - Returns: `ReadonlyMap`
 
 ##### `AuthoredReading` — Summary
@@ -100,14 +100,14 @@ writes is its placeholder and not that day's words. A doc absent from the map di
 
 #### `SummarizedChange` {#symbol-summarizedchange}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L159)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L161)
 
 ##### `SummarizedChange` — Summary
 A summary and the texts it names by hash, for the caller to put in the text store.
 
 #### `summarizeGraph` {#symbol-summarizegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L176)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L178)
 - Returns: [`SummarizedChange`](#symbol-summarizedchange)
 - Parameters: `graph`: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph); `relatedDocs`: `ReadonlyMap`; `authored`: [`AuthoredReading`](#symbol-authoredreading)
 
@@ -125,7 +125,7 @@ the caller reads them with `relatedDocsOf` and the change's tree, which the grap
 
 #### `descriptionText` {#symbol-descriptiontext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L293)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L295)
 
 ##### `descriptionText` — Summary
 A symbol's description as one text: its `#####` sections as JSON, `[{ title, body }]`, without the symbol's name, so
@@ -133,7 +133,7 @@ that a symbol renamed with its description unchanged keeps its text; {@link sect
 
 #### `sectionsOfDescription` {#symbol-sectionsofdescription}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L298)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L300)
 - Returns: [`DocSection`](../document.ts.mdmd.md#symbol-docsection)[]
 
 ##### `sectionsOfDescription` — Summary
@@ -141,7 +141,7 @@ The sections a description's text holds.
 
 #### `textHash` {#symbol-texthash}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L303)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L305)
 
 ##### `textHash` — Summary
 The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.

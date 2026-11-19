@@ -1,9 +1,9 @@
 /**
  * The history's tree against the whole tree, as the oracle: over every sample workspace of the integration tests,
  * which between them hold every adapter's kind of reference, each top-level folder is excluded in turn, and the docs
- * the generator writes over the tree the history writes (every name standing, an excluded file no reader reads
+ * the generator writes over the tree the history writes (every name standing, an excluded image, font or recording
  * written empty) must equal, byte for byte, the docs it writes over the whole tree under the same configuration. The
- * rule that a file no reader reads may be empty rests on this (the coordinator's ruling of 2026-11-19, after an
+ * rule that such a file may be empty rests on this (the coordinator's ruling of 2026-11-19, after an
  * independent review found that leaving such files out changed what included code depends on).
  */
 import { execFileSync } from "node:child_process";
@@ -55,7 +55,7 @@ let emptiedInAll = 0;
 const quiet = { info: (): undefined => undefined, warn: (): undefined => undefined, error: (): undefined => undefined };
 const now = (): Date => new Date(0);
 
-describe("the history's tree, every name standing and an excluded file no reader reads empty, against the whole tree", () => {
+describe("the history's tree, every name standing and an excluded image, font or recording empty, against the whole tree", () => {
   for (const workspace of workspaces()) {
     it(`gives the same docs over ${workspace} with each top-level folder excluded in turn`, async () => {
       const source = path.join(repoRoot, "tests", "integration", workspace);
