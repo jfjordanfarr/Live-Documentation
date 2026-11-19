@@ -223,3 +223,21 @@ describe("the history over a citing document whose name holds # or a percent-esc
     expect(await checkedHistory("50%41off.md")).toBe(0);
   }, 300_000);
 });
+
+/** A configuration saved as Windows tools save one: the history reads it as every other command does. */
+describe("the history over a repository whose configuration is saved as UTF-16 with a byte-order mark", () => {
+  it("reads the configuration and finishes", () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "utf16-"));
+    fs.mkdirSync(path.join(here, "src"), { recursive: true });
+    const text = `${JSON.stringify({ root: "docs-root", baseLayer: "files", extension: ".md" }, null, 2)}\r\n`;
+    fs.writeFileSync(path.join(here, ".live-docs.config.json"), Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(text, "utf16le")]));
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "A configuration saved as UTF-16"]]) {
+      execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    }
+    const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1"], { encoding: "utf8", env: process.env });
+    expect(result.status, result.stderr).toBe(0);
+    // The configuration's own docs root, not the default: the file was read.
+    expect(fs.existsSync(path.join(here, "docs-root", "history", "history.json"))).toBe(true);
+  }, 300_000);
+});

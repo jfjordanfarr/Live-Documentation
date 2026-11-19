@@ -38,6 +38,7 @@ import { gunzipSync } from "node:zlib";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
+  parseLiveDocumentationConfigBytes,
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
@@ -582,7 +583,7 @@ async function lensConfiguration(workspaceRoot: string, configPath: string | und
   const file = configPath ? path.resolve(configPath) : path.join(workspaceRoot, ".live-docs.config.json");
   let input: LiveDocumentationConfigInput = {};
   try {
-    input = JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
+    input = parseLiveDocumentationConfigBytes(await fs.readFile(file));
   } catch (error) {
     if (configPath || (error as NodeJS.ErrnoException).code !== "ENOENT") {
       throw new Error(`cannot read the configuration at ${file}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
