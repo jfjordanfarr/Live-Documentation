@@ -5,7 +5,7 @@ The workspace of the browser case `tests/e2e/link-targets.spec.ts`: one source f
 | Path | What it is |
 | --- | --- |
 | `src/plan.ts` | `draftPlan`, whose docstring holds the line ``#### `notes` ``, which its Live Doc writes as ``\#### `notes` `` so that it is not read as a symbol's heading |
-| `.live-documentation/source/src/plan.ts.md` | The authored part of its Live Doc: links to `notes/plan (draft).md` in angle brackets, bare with parentheses that pair, percent-encoded, with backslash escapes, with a title in quotes and with a title in parentheses, and one into `app/(auth)/` |
+| `.live-documentation/source/src/plan.ts.md` | The authored part of its Live Doc: links to `notes/plan (draft).md` in angle brackets, bare with parentheses that pair, percent-encoded, with backslash escapes, with a title in quotes and with a title in parentheses, and one into `app/(auth)/`; and once by reference, `[by reference][plan]`, whose definition stands in the Notes section |
 | `notes/plan (draft).md` | The document they name, a name with a space and parentheses |
 | `app/(auth)/notes.md` | A document in a folder named as a web framework's route group |
 

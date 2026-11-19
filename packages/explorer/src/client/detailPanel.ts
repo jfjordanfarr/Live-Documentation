@@ -5,7 +5,7 @@
  * Renders a file's Live Doc from the graph in the bundle: its metadata, its
  * authored block as markdown, and its generated sections as navigable lists.
  */
-import { renderLiveDoc, renderSymbolBlocks } from "@live-documentation/engine/live-docs/document";
+import { renderLiveDoc, type SymbolBlock, type TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
 import { readMarkdownLinks } from "@live-documentation/engine/tooling/markdownLinks";
@@ -390,7 +390,7 @@ function renderDocumentation(
   } else if (inspectedSymbol) {
     const block = file.symbols.find(entry => entry.name === inspectedSymbol);
     parts.push(sectionHtml("Inspected symbol", block
-      ? `<div class="reader-prose" data-reader-symbol="${escapeHtml(block.name)}">${renderMarkdown(renderSymbolBlocks([{ ...block, slug: undefined }]).join("\n"), { linkHandler })}</div>`
+      ? `<div class="reader-prose" data-reader-symbol="${escapeHtml(block.name)}">${inspectedSymbolHtml(block, linkHandler)}</div>`
       : `<strong>${escapeHtml(inspectedSymbol)}</strong>`));
   }
 
@@ -419,6 +419,31 @@ function renderDocumentation(
 }
 
 /** One authored section, marked so that the jump list can name it by its heading and scroll to it. */
+/**
+ * An inspected symbol as the doc's reader reads it: its name, its parameters' and types' names as code whatever
+ * characters they hold, never the form the doc writes them in (a quoted name, a longer backtick fence, a line written
+ * behind a backslash); its type and source; and each section's text, the docstring's own markdown, rendered on its
+ * own, so that an unclosed fence in one section ends with that section.
+ */
+export function inspectedSymbolHtml(block: SymbolBlock, linkHandler: (href: string, text: string) => string): string {
+  const code = (name: string): string => `<code>${escapeHtml(name)}</code>`;
+  const type = (ref: TypeRef): string => {
+    const named = ref.link ? linkHandler(ref.link, code(ref.name)) : code(ref.name);
+    const listed = ref.array ? `${named}[]` : named;
+    return ref.promise ? `Promise&lt;${listed}&gt;` : listed;
+  };
+  const items = [`Type: ${escapeHtml(block.kind)}${block.flags.length ? ` (${escapeHtml(block.flags.join(", "))})` : ""}`];
+  if (block.source) items.push(`Source: ${linkHandler(`${block.source.path}#L${block.source.line}`, "source")}`);
+  for (const reference of block.references) {
+    items.push(reference.role === "Parameters"
+      ? `Parameters: ${reference.parameters.map(parameter => `${code(parameter.name)}: ${parameter.types.map(type).join(", ")}`).join("; ")}`
+      : `${reference.role}: ${reference.types.map(type).join(", ")}`);
+  }
+  const sections = block.sections.map(section =>
+    `<h5>${code(block.name)} — ${escapeHtml(section.title)}</h5>\n${renderMarkdown(section.body.join("\n"), { linkHandler })}`);
+  return [`<h4>${code(block.name)}</h4>`, `<ul>\n${items.map(item => `<li>${item}</li>`).join("\n")}\n</ul>`, ...sections].join("\n");
+}
+
 function authoredSectionHtml(section: AuthoredSection, index: number, html: string): string {
   return section.heading === null ? `<div>${html}</div>` : `<div data-reader-section="authored-${index}">${html}</div>`;
 }
