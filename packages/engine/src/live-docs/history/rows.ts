@@ -80,8 +80,11 @@ export interface RowsChange {
   symbolsOrdered: Array<[path: string, slugs: string[]]>;
   /** A file's entries, whole, where they changed. */
   entryLines: Array<[path: string, entries: EntryRow[]]>;
-  /** A file's dependency lines, whole, where they changed. */
-  dependencyLines: Array<[path: string, dependencies: DependencyRow[]]>;
+  /**
+   * A file's dependency lines where they changed, as an edit: the places of the lines removed, in the rows before the
+   * step, and the lines added, each at its place after it; the lines that stay keep their order.
+   */
+  dependencyLines: Array<[path: string, removed: number[], added: Array<[index: number, line: DependencyRow]>]>;
   /** A file's re-exported anchors, whole, where they changed. */
   reExports: Array<[path: string, reExports: ReExportRow[]]>;
   /** A file's citing documents, whole, where they changed. */
@@ -172,7 +175,7 @@ export function deriveRowsChange(before: Rows, after: Rows, change: ShapeChange)
     const previous = moved.get(path) ?? emptyFileRows();
     deriveSymbols(path, previous.symbols, next.symbols, rows);
     if (!same(previous.entries, next.entries)) rows.entryLines.push([path, next.entries]);
-    if (!same(previous.dependencies, next.dependencies)) rows.dependencyLines.push([path, next.dependencies]);
+    if (!same(previous.dependencies, next.dependencies)) rows.dependencyLines.push([path, ...listEdit(previous.dependencies, next.dependencies)]);
     if (!same(previous.reExports, next.reExports)) rows.reExports.push([path, next.reExports]);
     if (!same(previous.citedBy, next.citedBy)) rows.citedBy.push([path, next.citedBy]);
     if (previous.authored !== next.authored) rows.authored.push([path, next.authored]);
@@ -206,6 +209,38 @@ function deriveSymbols(path: string, previous: readonly RowSymbol[], next: reado
   if (!same(stayedBefore, stayedAfter)) {
     rows.symbolsOrdered.push([path, next.map((symbol) => symbol.slug)]);
   }
+}
+
+/**
+ * The edit from one list to another that keeps the longest run of equal elements in order: the places of the
+ * elements removed, in the first list, and the elements added, each at its place in the second, in ascending order.
+ * Removing the one and then inserting the other, in that order, gives the second list.
+ */
+function listEdit<T>(before: readonly T[], after: readonly T[]): [removed: number[], added: Array<[number, T]>] {
+  // The longest common subsequence by the classic table, from the end; the lists are a file's lines, tens long.
+  const table = Array.from({ length: before.length + 1 }, () => new Array<number>(after.length + 1).fill(0));
+  for (let i = before.length - 1; i >= 0; i -= 1) {
+    for (let j = after.length - 1; j >= 0; j -= 1) {
+      table[i][j] = same(before[i], after[j]) ? table[i + 1][j + 1] + 1 : Math.max(table[i + 1][j], table[i][j + 1]);
+    }
+  }
+  const removed: number[] = [];
+  const added: Array<[number, T]> = [];
+  let i = 0;
+  let j = 0;
+  while (i < before.length || j < after.length) {
+    if (i < before.length && j < after.length && same(before[i], after[j])) {
+      i += 1;
+      j += 1;
+    } else if (j < after.length && (i === before.length || table[i][j + 1] >= table[i + 1][j])) {
+      added.push([j, after[j]]);
+      j += 1;
+    } else {
+      removed.push(i);
+      i += 1;
+    }
+  }
+  return [removed, added];
 }
 
 /**
@@ -276,7 +311,16 @@ export function applyRowsChange(rows: Rows, change: ShapeChange, rowsChange: Row
     file(path).symbols = slugs.map((slug) => bySlug.get(slug)!);
   }
   for (const [path, entries] of rowsChange.entryLines) file(path).entries = entries.map((entry) => ({ ...entry }));
-  for (const [path, lines] of rowsChange.dependencyLines) file(path).dependencies = lines.map((line) => ({ ...line }));
+  for (const [path, removed, added] of rowsChange.dependencyLines) {
+    const own = file(path);
+    const gone = new Set(removed);
+    if (removed.some((index) => index < 0 || index >= own.dependencies.length)) {
+      throw new Error(`a step removes dependency lines of ${path} at ${removed.join(", ")}, which its rows do not hold`);
+    }
+    const lines = own.dependencies.filter((_line, index) => !gone.has(index));
+    for (const [index, line] of added) lines.splice(index, 0, { ...line });
+    own.dependencies = lines;
+  }
   for (const [path, entries] of rowsChange.reExports) file(path).reExports = entries.map((entry) => ({ ...entry }));
   for (const [path, documents] of rowsChange.citedBy) file(path).citedBy = [...documents];
   for (const [path, authored] of rowsChange.authored) file(path).authored = authored;

@@ -178,7 +178,11 @@ export function encodeRowsChange(change: RowsChange, interners: Interners): Step
   setIfAny(delta, "symbolsBorn", change.symbolsBorn.map(([at, index, symbol]): [number, number, SymbolTuple] => [path(at), index, encodeSymbol(symbol, interners)]));
   setIfAny(delta, "symbolsOrdered", change.symbolsOrdered.map(([at, slugs]): [number, number[]] => [path(at), slugs.map(name)]));
   setIfAny(delta, "entryLines", change.entryLines.map(([at, entries]): [number, EntryTuple[]] => [path(at), entries.map((entry) => encodeEntry(entry, interners))]));
-  setIfAny(delta, "dependencyLines", change.dependencyLines.map(([at, lines]): [number, DependencyTuple[]] => [path(at), lines.map((line) => encodeDependency(line, interners))]));
+  setIfAny(
+    delta,
+    "dependencyLines",
+    change.dependencyLines.map(([at, removed, added]): [number, number[], Array<[number, DependencyTuple]>] => [path(at), removed, added.map(([index, line]): [number, DependencyTuple] => [index, encodeDependency(line, interners)])])
+  );
   setIfAny(delta, "reExports", change.reExports.map(([at, entries]): [number, ReExportTuple[]] => [path(at), entries.map((entry) => encodeReExport(entry, interners))]));
   setIfAny(delta, "citedBy", change.citedBy.map(([at, documents]): [number, number[]] => [path(at), documents.map(path)]));
   setIfAny(delta, "authored", change.authored.map(([at, words]): [number, number] => [path(at), encodeWords(words)]));
@@ -195,7 +199,7 @@ export function decodeRowsChange(delta: StepDelta, tables: RowTables): RowsChang
   change.symbolsBorn = (delta.symbolsBorn ?? []).map(([at, index, symbol]) => [path(at), index, decodeSymbol(symbol, tables)]);
   change.symbolsOrdered = (delta.symbolsOrdered ?? []).map(([at, slugs]) => [path(at), slugs.map(name)]);
   change.entryLines = (delta.entryLines ?? []).map(([at, entries]) => [path(at), entries.map((entry) => decodeEntry(entry, tables))]);
-  change.dependencyLines = (delta.dependencyLines ?? []).map(([at, lines]) => [path(at), lines.map((line) => decodeDependency(line, tables))]);
+  change.dependencyLines = (delta.dependencyLines ?? []).map(([at, removed, added]) => [path(at), [...removed], added.map(([index, line]): [number, DependencyRow] => [index, decodeDependency(line, tables)])]);
   change.reExports = (delta.reExports ?? []).map(([at, entries]) => [path(at), entries.map((entry) => decodeReExport(entry, tables))]);
   change.citedBy = (delta.citedBy ?? []).map(([at, documents]) => [path(at), documents.map(path)]);
   change.authored = (delta.authored ?? []).map(([at, words]) => [path(at), decodeWords(words)]);

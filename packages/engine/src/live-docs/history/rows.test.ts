@@ -94,9 +94,29 @@ describe("the rows' change", () => {
     const before: Rows = new Map([["a.ts", file({ dependencies: [{ label: "x", kind: "import" }], authored: "unread" })]]);
     const after: Rows = new Map([["a.ts", file({ dependencies: [{ label: "x", kind: "import" }, { label: "y", kind: "re-export", typeOnly: true }], reExports: [{ name: "Y", from: "y.ts" }], authored: "none" })]]);
     const change = roundTrip(before, after);
-    expect(change.dependencyLines).toEqual([["a.ts", after.get("a.ts")!.dependencies]]);
+    // A line added is all the edit says: the line that stayed is not written again.
+    expect(change.dependencyLines).toEqual([["a.ts", [], [[1, { label: "y", kind: "re-export", typeOnly: true }]]]]);
     expect(change.reExports).toEqual([["a.ts", [{ name: "Y", from: "y.ts" }]]]);
     expect(change.authored).toEqual([["a.ts", "none"]]);
+  });
+
+  it("edits a file's dependency lines by the lines removed and added, whatever moved", () => {
+    const line = (label: string): { label: string; kind: "import" } => ({ label, kind: "import" });
+    // Each case with the length of the longest run both lists share in order, which the edit does not write.
+    const cases: Array<[string[], string[], number]> = [
+      [["a", "b", "c", "d"], ["a", "c", "d"], 3],
+      [["a", "b", "c"], ["x", "a", "b", "y", "c", "z"], 3],
+      [["a", "b", "c", "d"], ["d", "c", "b", "a"], 1],
+      [["a", "a", "b"], ["b", "a", "a", "a"], 2],
+      [[], ["a", "b"], 0],
+      [["a", "b"], [], 0]
+    ];
+    for (const [from, to, shared] of cases) {
+      const change = roundTrip(new Map([["f.ts", file({ dependencies: from.map(line) })]]), new Map([["f.ts", file({ dependencies: to.map(line) })]]));
+      const [, removed, added] = change.dependencyLines[0];
+      expect([removed.length, added.length], `${from.join("")} -> ${to.join("")}`).toEqual([from.length - shared, to.length - shared]);
+    }
+    expect(roundTrip(new Map([["f.ts", file({ dependencies: ["a", "b", "c"].map(line) })]]), new Map([["f.ts", file({ dependencies: ["a", "c"].map(line) })]])).dependencyLines).toEqual([["f.ts", [1], []]]);
   });
 
   it("refuses a change that names a symbol the rows do not hold", () => {

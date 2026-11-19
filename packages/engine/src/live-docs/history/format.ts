@@ -169,8 +169,8 @@ export interface StepDelta {
   symbolsOrdered?: Array<[pathId: number, slugIds: number[]]>;
   /** A file's entries, whole, where they changed. */
   entryLines?: Array<[pathId: number, entries: EntryTuple[]]>;
-  /** A file's dependency lines, whole, where they changed. */
-  dependencyLines?: Array<[pathId: number, lines: DependencyTuple[]]>;
+  /** A file's dependency lines where they changed, as an edit: the places of the lines removed, before the step, and the lines added at their places after it. */
+  dependencyLines?: Array<[pathId: number, removed: number[], added: Array<[index: number, line: DependencyTuple]>]>;
   /** A file's re-exported anchors, whole, where they changed. */
   reExports?: Array<[pathId: number, entries: ReExportTuple[]]>;
   /** A file's citing documents' path ids, whole, where they changed. */
