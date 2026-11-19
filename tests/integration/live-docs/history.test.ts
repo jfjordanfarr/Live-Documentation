@@ -11,6 +11,7 @@ import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { pathToFileURL } from "node:url";
 import * as zlib from "node:zlib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -31,6 +32,7 @@ import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, FIXTURE_GIT_ENV, git, 
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
+const tsxLoader = path.join(repoRoot, "node_modules", "tsx", "dist", "loader.mjs");
 const tsconfigPath = path.join(repoRoot, "tsconfig.base.json");
 const historyScript = path.join(repoRoot, "scripts", "live-docs", "history.ts");
 const inspectScript = path.join(repoRoot, "scripts", "live-docs", "inspect.ts");
@@ -41,6 +43,18 @@ let sequence: HistorySequence;
 let firstRun: CliResult;
 let secondRun: CliResult;
 const temporary: string[] = [];
+
+/**
+ * A temporary folder of this file's own, for every folder it makes and every history command it runs: the system's
+ * is shared by every history run on the machine, another test file's or another person's, and until 2026-11-19 their
+ * trees read here as this file's leftovers and a tidy of theirs removed this file's trees mid-run. Short, since tsx
+ * makes its socket in it.
+ */
+const privateTemporary = fs.mkdtempSync(path.join(os.tmpdir(), "lh-"));
+process.env.TMPDIR = privateTemporary;
+afterAll(() => {
+  fs.rmSync(privateTemporary, { recursive: true, force: true });
+});
 
 interface CliResult {
   exitCode: number;
@@ -540,8 +554,17 @@ describe("the history over a repository that commits its mirror", () => {
   it("removes its claim and its scratch trees when a signal stops it", async () => {
     const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
     for (const commit of ids) fs.rmSync(path.join(history, lens, `${commit}.json.gz`));
-    const before = new Set(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-")));
-    const child = spawn(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", checked, "--jobs", "2"], { env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+    // A temporary folder of the run's own: the system's is shared by every history run on the machine, another
+    // builder's or another test file's, whose trees until 2026-11-19 read here as this run's leftovers three times in ten.
+    const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "history-signal-"));
+    temporary.push(scratch);
+    const trees = (): string[] => fs.readdirSync(scratch).filter((name) => name.startsWith("live-docs-history-"));
+    // The command itself under tsx's loader, not tsx's command line, so that the process signalled and waited for is the
+    // one that cleans up, not a wrapper that relays the signal and exits on its own.
+    const child = spawn(process.execPath, ["--import", pathToFileURL(tsxLoader).href, historyScript, "--workspace", checked, "--jobs", "2"], {
+      env: { ...process.env, TMPDIR: scratch, TSX_TSCONFIG_PATH: tsconfigPath },
+      stdio: ["ignore", "pipe", "pipe"]
+    });
     let stderr = "";
     child.stderr.setEncoding("utf8");
     const exited = new Promise<number | null>((resolve) => child.on("exit", (code) => resolve(code)));
@@ -553,10 +576,11 @@ describe("the history over a repository that commits its mirror", () => {
       });
     });
     await new Promise((resolve) => setTimeout(resolve, 1500));
+    expect(trees().length, "the run's trees stand when the signal comes").toBeGreaterThan(0);
     child.kill("SIGINT");
     expect(await exited).toBe(130);
     expect(fs.readdirSync(history).filter((name) => name.endsWith(".lock"))).toEqual([]);
-    expect(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-") && !before.has(name))).toEqual([]);
+    expect(trees()).toEqual([]);
     // The next run regenerates what the stopped one did not finish.
     const mended = runCli(historyScript, ["--workspace", checked, "--jobs", "2"]);
     expect(mended.exitCode, mended.stderr).toBe(0);
