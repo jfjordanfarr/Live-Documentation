@@ -34,6 +34,8 @@ The tolerance asked for was the rest rule's own, 3 × 10⁻⁵ of the picture's 
 
 **Frames now depend on the machine.** Before, a frame drew one substep whatever the machine, so a settle's frames were the picture's alone. Now a frame draws as many substeps as fit in its 10 ms, so a loaded machine draws fewer a frame and takes more frames: the discovery growth took 3,883 frames (215 s) at a load of 24 to 29 with a screenshot every 60 frames, against 2,638 at a load of 2.5, and still rested with all 305 spheres in main's places to the last digit. Under such a load the discovery case's bound of 2,700 frames can be crossed again by the machine, not the picture.
 
+**So the bound now counts substeps** (the root's ruling after step 1 landed, when the case failed on main at a load of 21 with 2,702 frames). The motion force counts the evaluations of the field it takes, a substep each, the 3D map says the count on its container (`data-motion-substeps`), and `cameToRest` bounds that count where it bounded frames, at the same numbers, with its soft clock as it was. Before step 1 a frame was one evaluation, so each bound means what it meant. On the build with the count, at a load of 3 to 9, each case alone: `force-graph-discovery` is red again, truthfully, on any machine, "no, 2725 substeps in 1380 frames, 30.0 s" against its 2,700 (its whole settle takes 5,250); its archipelago 42 of 300. `force-graph-update`: the whole repository enters in 929 of 1,300 (the nearest to its bound after discovery), the tests hidden 140 of 450, shown again 599 of 800, hidden at half energy 162 of 450, a new tether 148 of 350. `force-graph-reveal`: the entry 347 of 700, the change 278 of 2,500. `tuning` 4 passed, `force-graph-defaults` 7 passed.
+
 **The lane, on the final build of step 1**, each file alone through the browser lane: `force-graph-structure-cells` 3 passed, `force-graph-discovery` 3 passed (the grown group at rest in 2,638 frames, 46.1 s), `force-graph-exploration` 8 passed (`:206`, the case the first pacing broke, among them), `force-graph-building` 3, `force-graph-defaults` 7, `force-graph-focus` 15, `force-graph-shells` 9, `history-emphasis` 16. Loads 2.3 to 4.0.
 
 ## Step 2: why the tail is long, and a Settle Hold to try by eye
@@ -73,6 +75,8 @@ Sleeping churns: a sleeping sphere's force changes as its neighbours creep, so i
 
 ### The Settle Hold, built behind a lever
 
+**In one sentence a person can check on the screen:** with Settle Hold above zero, once the picture has finished growing and its spheres have nearly stopped, they slow to a stop where they then stand, instead of creeping on, a few at a time, for another half-minute.
+
 **What it is.** Once the whole picture has entered and calmed, with no hand on a sphere, each sphere is also held where it stands then, beside its tether, by a pull of the lever's strength per unit of distance. The tether toward where it stood before and this hold toward where it calmed are one pull, of their summed strength, toward the mean of the two places weighed by their strengths (`SpatialMotion.settleHere`); the pull on every sphere is therefore unchanged at the moment it takes hold and grows only as a sphere moves on, so nothing jumps: the creeps slow to a stop within some 135 ticks. It is the tether's own reason, a person's bearings, applied at the moment the picture looks settled: what was seen when it calmed is what stays. Its price: the rest is not the forces' balance, but the calmed picture's.
 
 **Where.** Tuning, 3D, Forces: **Settle Hold**, below Tether, 0 to 0.1 by 0.001, **0 by default** (the picture as it is today; at 0 the code takes no new path, and the lever-0 runs below rest with every sphere in main's place to the last digit). It travels in a share link like its neighbours and changes no force, so moving it changes the next settle, not the picture on screen.
@@ -88,6 +92,16 @@ Sleeping churns: a sleeping sphere's force changes as its neighbours creep, so i
 | Discovery growth (`force-graph-discovery.spec.ts:70`) | 3,883 frames, 215 s | 490 frames, 27.9 s | 389 frames, 22.6 s | 130 / 298 / 709 (1,304) | 128 / 298 / 706 |
 | Estate, seed `PaymentService/PaymentService.cs` clicked | 997 frames, 85.2 s | 169 frames, 13.5 s | 171 frames, 10.6 s | 32 / 77 / 104 (330) | 34 / 80 / 108 |
 | This repository in Structure, `views` opened | 480 frames, 31.4 s | 197 frames, 12.8 s | 154 frames, 10.6 s | 9.4 / 31 / 74 (948) | 10 / 32 / 101 |
+
+**In substeps**, the measure every settle is bounded in since this round's third commit (below), on a quiet machine (load 1.9 to 2.9), one run each:
+
+| Picture | Settle Hold 0 (today) | 0.02 |
+| --- | --- | --- |
+| Discovery growth (bound 2,700) | 5,250 substeps in 2,637 frames, 45.4 s | **627 substeps** in 324 frames, 7.0 s |
+| Its archipelago before the click (bound 300) | 42 | 30 |
+| Estate seed click | 997 substeps, 997 frames, 23.1 s | 171 substeps, 170 frames, 3.9 s |
+| `views` opened | 958 substeps, 479 frames, 10.0 s | 391 substeps, 196 frames, 4.0 s |
+| The `client` opening before it | 1,018 | 660 |
 
 The page's distances agree with the replays' (the first picture differs a little under the lever, so the grown one starts elsewhere). Numbers and every place are in [`step-2/runs-and-places.json`](step-2/runs-and-places.json).
 
