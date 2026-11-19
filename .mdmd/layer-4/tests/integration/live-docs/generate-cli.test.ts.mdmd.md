@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/generate-cli.test.ts
-- Generated At: 2026-11-12T17:12:34.512Z
+- Generated At: 2026-11-19T19:42:12.390Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `execFile`
+- `node:child_process` - `execFile`, `execFileSync`
 - `node:fs`
 - `node:os`
 - `node:path`
