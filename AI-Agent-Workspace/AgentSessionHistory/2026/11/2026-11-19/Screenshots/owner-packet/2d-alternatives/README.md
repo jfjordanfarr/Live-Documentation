@@ -116,3 +116,6 @@ Root's rule, to be built as a further value of Tuning → 2D Layout → Hidden F
 
 **Root's recommendation:** build the simpler form: every cell on the name's line when they fit, and all of them beneath it when they do not. A first few on the name's line with the rest wrapped beneath would be a ragged block that begins half way along a line.
 
+## The second leg
+
+[The second leg](second-leg/README.md) makes the break the default mark, holds a not yet created file's place in its directory, and stands cells after a directory's name; each of its sections closes with the root's recommendation. _Linked by the root on 2026-11-19._
