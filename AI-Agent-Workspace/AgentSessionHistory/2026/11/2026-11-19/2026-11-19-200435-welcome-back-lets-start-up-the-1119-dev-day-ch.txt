@@ -13466,3 +13466,1025 @@
   which C# looks names up.
 
   Two builders are parked until the browser queue clears; it was nine deep.
+
+● Agent "One rule for markdown link targets" is waiting on its own background
+  work · 20m 12s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The reply to your last message was delivered at 22:29 UTC. Nothing new has
+  come back since: the link builder's notice just now was only that it is
+  waiting in the browser queue.
+
+  Still out are the engine joining, the several-folders run, the layout's price,
+  SQL, .NET, PowerShell, the 2D alternatives and the link pictures. I'll bring
+  you the full choice on Markdown as the store when the several-folders run
+  hands back.
+
+› Message from general-purpose
+  ## Fourth leg: the PL/SQL oracle is kept in the repository, and the four
+  missed tables are mended
+
+  Both items are done. Nothing was built for packages or for the linked server;
+  the record now states the three facts you asked for about linked-server names.
+
+  Four commits on the branch, on top of `5552afe6`; none amended, none pushed:
+  - `027fb095` Keep the PL/SQL oracle so that it can be run again
+  - `afe8dd4e` Read Oracle's CREATE GLOBAL TEMPORARY TABLE and the other words
+  before a kind
+  - `c1eeeb1f` Write the PL/SQL emitter's entry as the generator rightly does:
+  `program main`
+  - `779a15fc` the record
+
+  The probe README is brought level under "The fourth leg".
+
+  ### 1. The PL/SQL oracle is kept (`027fb095`)
+  - **Where it lives.** The emitter is `scripts/oracle/PlSqlEmitter.java`,
+  beside the ScriptDom one. The driver and comparison is
+  `scripts/oracle/plsql-compare.ts`, run as `npm run oracle:plsql -- <folder>
+  [--detail] [--json]`, named the way `oracle:sql` is.
+  - **What it fetches.** The ANTLR 4.13.2 tool jar and the grammar's four files,
+  into `~/.cache/live-documentation/oracle-plsql`, a 2.5 MB cache of the tool's
+  own that is left in place for the next run.
+    - The grammar is pinned to grammars-v4 commit
+  `de38599628d221099c046e92962f70204d852b54`. That was the last change to
+  `sql/plsql` as of November 19, and the files I used: their sizes match.
+    - The jar's version and the SHA-256 of every file are written in the script,
+  and each fetched file is checked against them.
+  - **How it runs.** It generates and compiles the parser in a scratch folder,
+  blanks SQL*Plus lines for both readers alike, and prints the comparison.
+  Without `java` and `javac` it says so in one line and exits; it installs
+  nothing.
+  - **What its header says it cannot judge:**
+    - It does not resolve names, so calls are graded only when written with two
+  or more parts, by a presumption stated in the file.
+    - It refuses 98 of utPLSQL's 366 files, and says why: every `create
+  noneditionable synonym`, type attributes written `integer default`, `(self as
+  …)` in type bodies, and several core package bodies.
+    - SQL*Plus lines, `EXEC` lines included, are blanked on both sides.
+  - **Reproduced.** Run again on utPLSQL, it gave the third leg's figures
+  exactly: 270 of 433 dependency lines right.
+  - **Bookkeeping.** `internal-tooling` has a row for it, the two new docs have
+  their Purpose and Notes, and both files are in the hand-read list of this
+  repository's entry points.
+
+  ### 2. The four tables: a reading fault, mended (`afe8dd4e`)
+  - **Why they were missed.** All four are created as `create global temporary
+  table`: `ut_coverage_sources_tmp`, `ut_compound_data_tmp`,
+  `ut_compound_data_diff_tmp` and `ut_json_data_diff_tmp`. The reader looked for
+  `TABLE` right after `CREATE`. A global temporary table is a lasting object of
+  its schema; only its rows are temporary.
+  - **The mend.** The reader now passes over the words Oracle allows between
+  `CREATE [OR REPLACE]` and what it makes:
+    - `GLOBAL` / `PRIVATE TEMPORARY`, `SHARDED`, `DUPLICATED`, `IMMUTABLE` and
+  `BLOCKCHAIN` tables;
+    - `EDITIONABLE` and `NONEDITIONABLE`, which Oracle's own export writes
+  before every routine and view;
+    - `[NO] FORCE` and `EDITIONING` views.
+
+    T-SQL writes none of these words in that place. An object table (`CREATE
+  TABLE t OF type`) and quoted or schema-qualified names were already read
+  correctly, and the test now holds them too. The test was red before the mend
+  and is green after.
+  - **utPLSQL after the mend.** 15 of 15 tables found, all at the right line;
+  its other figures are unchanged.
+  - **The three T-SQL corpora, re-graded with ScriptDom. Nothing moved:**
+    - tSQLt: 1,525 of 1,535 objects, 969 of 969 dependency lines.
+    - DNN provider scripts: 4,052 of 4,056 objects, 6,961 of 6,962 dependency
+  lines.
+    - DNN `.sql`: 51 of 51 objects, 29 of 29 dependency lines.
+
+  ### 3. What the reader records today for a linked server's name
+  All three are recorded in the README.
+  1. **`OPENQUERY(server, '…')` with the query written out in full.** Each name
+  the query uses is recorded as `ORACLE_CENTRAL..CENTRAL.ACCOUNT`: the server
+  first, the database empty. It is marked linked and matched by schema and
+  object alone. The server name is recorded nowhere else. A computed query is
+  not read, and nothing an `OPENQUERY` creates becomes a symbol.
+  2. **A four-part name `server.db.schema.object`, or `server..schema.object`.**
+  Recorded as written with every part kept, marked linked, and matched by
+  schema and object alone; the server and database play no part in the match.
+  3. **`EXEC (…) AT server` with the text written out in full.** The text is
+  read as running on that server: its uses are written `server..schema.object`,
+  as for `OPENQUERY`, and anything it creates is not the script's symbol. `EXEC
+  server.db.schema.proc` is simply a four-part name, as in 2.
+
+  ### Verification
+  The full gate without the browser at `afe8dd4e`, at a load average of about 13
+  to 17 on 20 threads:
+  - Live Docs: 1,108 validated, none changed. Lint, build and the tests'
+  type-check passed. Unit: 2,253 tests in 197 files.
+  - **Integration had one failure, my own mistake.** I wrote the Java emitter's
+  entry in the hand-read list as `program`, while the generator rightly writes
+  `program main` for a Java main method. Fixed in `c1eeeb1f`.
+  - After the fix, the stages after the unit tests were run one by one, all
+  passing: integration (158 tests in 23 files), the documentation link
+  enforcement, and the three SlopCop audits.
+
+  The scratch folders, the private temp folder and the .NET build output are
+  removed. No subagent was used.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "SQL adapter: crash, lines, facts" finished · 20m 44s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Handing back at 49 minutes. All four items are built and pictured, but nothing
+  of this leg has been through the browser suite: the mark's new cases are
+  written and unrun, and two of the seven red cases are still unsettled. The
+  lane's queue stood at eight to ten all leg; my holds waited 16 to 23 minutes
+  each.
+
+  ## Branch and commits
+  `worktree-agent-a44cc0ec97fd43b94`, on top of `8005466f`, tree clean, nothing
+  pushed:
+  - `34587c7d` the code for items 1, 2 and 4 with tests and regenerated Live
+  Docs. It is one commit because `types.ts`, `template.html` and the Tuning
+  files carry all three.
+  - `bbc5b7e2` pictures, strangers, record, and two small corrections.
+  - `638d16fe`, `1e80abce` the record's last section.
+
+  The record is a new file,
+  `…/owner-packet/2d-alternatives/second-leg/README.md`, so it does not collide
+  with your recommendations in the first leg's README. Each section ends in an
+  empty `**Root's recommendation:**`.
+
+  ## 1. The break is the default
+  - **Built:** a fading stub beyond the disc where the history goes on; a crowd
+  of faint ticks before the bar for the steps skipped (one each up to nine;
+  hover text says "111 commits between it and the bar"); strokes taller and in
+  the thumb's white. The old mark and both arrows stay in the lever and measure
+  exactly as before.
+  - **One date form, the ruler's ("2 Apr 2026"):** the ruler has to shorten by
+  what its neighbours say ("3 Oct", "Dec 2025", "2026"), which figures cannot do
+  readably, and a month in words cannot be taken for a day. The readout, the
+  mark's name and the slider's spoken value now use it. The step panel and the
+  finder's list still write "2026-04-02"; I left them, since the finder is
+  searched by typing that form.
+  - **Pictures** (in `second-leg/`): `break-the-bar-three-ways.png`,
+  `break-the-ends-enlarged.png`, `break-1/2/3-…png`,
+  `off-the-left-end-the-four-marks.png`, `off-the-right-end-the-four-marks.png`.
+  A pointer's press on the disc slid the bar back.
+  - **Strangers, same task, nothing remembered:**
+    - Sonnet: "The playhead (white handle) sits on the first tick, labeled '2
+  Apr 2026'. A break mark ('//') follows it… So the current point is the
+  earliest one on the timeline, and a gap of about six months separates it from
+  the later commits."
+    - Haiku: "the handle sits at the far left, under the '2 Apr 2026' label… so
+  this is the earliest point shown."
+    - Neither reading moved for the three mends. Neither mentioned the crowd or
+  the stub; Haiku again missed the break.
+  - **My eye:** the strokes are now plain and the dates read in order. The crowd
+  reads to me as a stretch squeezed. Two things are wrong: the stub cannot be
+  seen (18 px of the line's grey), and the strokes stand hard against the disc
+  where they should be midway. I would lengthen the stub and give it the gap's
+  faint ticks, thinning out. At the right end the date is still written twice a
+  finger apart, now in the same words.
+  - **Browser cases:** written in `tests/e2e/history-scrubber.spec.ts` (the zoom
+  case follows the new default; a new case holds the break at both ends, its
+  date among the bar's, the press, the date form, the three kept marks). **Not
+  run.**
+
+  ## 2. A file not yet created: its place held
+  - **Lever:** Tuning → History → Not Yet Created, values "Scan root" (default)
+  and "Its directory, its place held". The arithmetic is in
+  `history/held-place.ts` with tests.
+  - **Both roads give one picture:** `place-1-by-the-bar.png` and
+  `place-2-by-the-address.png`; the card's box and the camera are the same to
+  the pixel. The card is a dashed outline: "pathfind.ts / not yet created /
+  packages/shared/src/live-docs".
+  - **Directory did not exist either:** `place-3-directory-not-yet-there.png`,
+  `history/scrubber.ts`. There was no `history` directory, so the place is held
+  one level up, in what was then
+  `packages/scripts/src/live-docs/explorer/client`. I show the nearest standing
+  directory, not the root, because it is the most of the reader's place that day
+  holds.
+  - **Weak point:** the directory's name is in neither window. Opened, the
+  directory is about 4,000 px wide at reading size, the camera arrives on the
+  card, and the handle is far off the left edge. So the step panel covers no
+  name, and the slide-out-from-under-the-panel I built is untested. Only the
+  card's small third line says which directory.
+  - **Other limits:** the held card takes no pointer (pressing it would have
+  made it the subject). "Not yet created" is matched by its words in `index.ts`.
+  No stranger was sent.
+
+  ## 3. Camera cases and the red cases
+  - On the first leg's build, at load 24 to 30: `local-map-framing` 7 of 7,
+  `camera-intent` 10 of 12.
+  - Seven cases against the baseline (`b64aed64`, at load about 14):
+
+  | Case | Branch, load 24 to 31 | Baseline, load ~14 |
+  | --- | --- | --- |
+  | `camera-intent:154` | red | green |
+  | `camera-intent:317` | red | red |
+  | `history-scrubber:333` | red twice | green |
+  | `:399`, `:686`, `:726`, `:785` | red twice | red |
+
+  - Five are red on the baseline too, so they are not this branch's doing.
+  - `:154` and `:333` are unsettled: red here under heavy load, green on the
+  baseline under light load. They need one run on this branch at light load;
+  that run never reached the front of the lane.
+
+  ## 4. Cells after name
+  - **Built** as the fourth value of Hidden Files, default unchanged. Two
+  existing lines changed in `branch-renderer.ts`'s handle fill, nothing else
+  there:
+    - `if (look === "under" || look === "follow") field =
+  createHiddenField(directory, disclosure.hidden, style, actions);`
+    - `if (field) label.dataset.hiddenLook = look; else delete
+  label.dataset.hiddenLook;`
+  - **Fixed camera:** each handle dragged by script to the same point (430, 210)
+  under every value, lever and quiet search remembered in the browser. Cuts:
+  `cells-1-…` (`config`, 1), `cells-2-…` (`packages`, 2), `cells-3-…`
+  (`localView`, 79), each at reading size and three presses out, comparing under
+  name, beside name and after name. Count was not pictured.
+  - **Result:** the one cell stands after the name at both zooms; under the
+  default it moves. All 79 go beneath. Across the map the line holds all for 1,
+  2, 2 and 11, and they go beneath for the six directories with 18 to 79.
+  - **Weak picture:** my script's "several" fell on `packages` with two;
+  `scripts/live-docs` (11 on the line) is the better case and is not pictured.
+  - **Still wrong:** with cells beneath, the path is cut shorter than under the
+  default ("…er/src/client/views/localView" against "…es/explorer/src/…"),
+  because the unseen line keeps its room. That is my shortcut.
+  - **Audit under the trial:** no fault at reading size on this repository or
+  the estate. Three presses out: 12 symbol names cut inside cards here (4 to 36
+  px), 5 on the estate (22 to 144 px); none is a handle or a mark. I did not run
+  the default at that zoom, so I cannot say the default has the same list.
+  - **Strangers** (handle already in view, no search used): both answered one
+  file, and neither got it from the cell.
+    - Sonnet: "Green dot: by the map's legend, green means 'Test'. I take it to
+  mean the folder has test files, but the page didn't explain the dot when I
+  hovered over it."
+    - Haiku: "The green dot most likely matches the map's legend… hovering gave
+  no tooltip."
+    - Both found the count through Inspect directory. A lone green dot reads as
+  "tests here", not "one file not shown"; placing does not mend that.
+
+  ## Verification
+  - Build, lint on touched files, both slopcops: pass. The client's unit tests:
+  1,198 pass. The whole unit suite was not rerun this leg.
+  - No suite case has run on this leg's build. Besides the mark's cases,
+  `hidden-file-cells.spec.ts` and the history specs are unrun against the new
+  default.
+  - The bundles in my worktree are built from the current client, so this runs
+  as soon as the lane allows: `node scripts/browser-lane.mjs --label 2d-alt --
+  npx playwright test --config tests/e2e/playwright.config.ts history-scrubber
+  -g "wheel and the keys widen|step off the zoomed bar|control opens a
+  scrubber"`.
+
+  ## Touched outside my named files
+  - `client/index.ts` (one option passed to the 2D view, one import) and
+  `views/localView/types.ts` (that option).
+  - The two lines in `branch-renderer.ts` you allowed.
+
+  ## Refusals and faults of mine
+  - No permission refusal.
+  - One hold was wasted: my capture script failed on a helper the page lacked,
+  after a 16-minute wait.
+
+  ## Left in place
+  - `/tmp/2a-work` (the baseline build and logs) and the ignored
+  `AI-Agent-Workspace/tmp/2d-alt/` in my worktree (scripts, stranger records).
+  - My private servers are stopped and I hold no ticket in the lane.
+
+  ## Next, if you resume me
+  1. Run the mark's cases, and `:154` and `:333` on this branch at light load.
+  2. Mend the stub and the strokes' place, then the strangers again.
+  3. Free the path when cells go beneath, and picture `scripts/live-docs`.
+  4. Frame the directory's name with the held place.
+
+● Agent "2D trials: off-range mark, cells" finished · 49m 55s
+
+❯ >Twice tonight a rule I gave a builder was wrong, and their evidence
+  corrected it before anything was built on it
+  >Two builders are parked until the browser queue clears; it was nine deep.
+
+  Yeah you seem to be juggling quite a bit. Don't be afraid to slow down so you
+  don't have to juggle too many builders at once. If you're getting
+  bombarded/overwhelmed, pace yourself.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  Committed as `2ff73606f` on branch `worktree-agent-ac88c01156dbab6d0`, on top
+  of `e566dbb11`. Nothing was amended or pushed. The probe folder is
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ac88c01156dbab6d0/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/many-scans/`. It
+  holds the README (answer first), the four boards, the OPENQUERY script and its
+  doc (kept as `.txt`), `measure.py`, `capture.mjs`, and 10 pictures with
+  `capture-notes.txt`. No product code, test or design document was changed.
+  slopcop:markdown found 1659 files and 0 broken links. The scratch folder
+  `/tmp/ms-4NZc` has been removed.
+
+  **Does a stranger get there today?** Yes, but only by writing a board by hand
+  from a design document, and only with the board in the common parent folder.
+  - It took **10 commands**: 7 `generate --workspace <sibling>`, 1 `board` (an
+  optional check), 1 `visualize --board`, 1 serve.
+  - It took **1 hand-written file**: the board, 35 lines and 376 bytes, of which
+  14 lines name the things. A one-line configuration `{ "board": "board.md" }`
+  is optional.
+  - The board was refused 4 times, one line at a time, before it was accepted.
+  - Tool time was about 26 s at load 8–14. Peak memory was 212 MB in generate,
+  82 MB in visualize.
+  - `/usr/bin/time` is not installed, so I measured with a Python rusage wrapper
+  (`measure.py`).
+  - Git commands outside the worktree were refused when chained or looped. Plain
+  single commands worked, so every sibling repository was still set up and
+  checked.
+
+  **Faults, in the order a person meets them:**
+  1. **Visualize of the parent with no board succeeds with nothing.** It reports
+  "Graph: 0 files, 0 edges", writes 8.2 MB, and says nothing about the seven
+  scans below.
+  2. **No command creates a board or adds a thing.** `board` says "Name the
+  board file to read; the configuration names none as \"board\"". The CLI
+  reference doesn't give the board's grammar, so I had to read `boards.mdmd.md`
+  and the sample's `board.md`.
+  3. **The board's required sections are learned by refusal, and two of the four
+  messages mislead:**
+     - `expected "## Metadata"`
+     - `expected "## Authored"`
+     - On an empty Authored block: "the authored block must not start or end
+  with a blank line"
+     - On a missing Connections section: "line 33: unexpected line undefined
+  under oracle", at a line past the end of the file.
+  4. **`live-docs:board -- board.md --workspace <work>` fails with a false
+  message.** It says "board.md is outside the workspace <work>", because `board`
+  resolves its file against the tool's checkout while `visualize --board`
+  resolves against the workspace. Leaving out `--workspace` names the tool's
+  checkout as the workspace; that is the cold run's finding, here hitting the
+  board's path.
+  5. **Placement (b): visualize says nothing.** `board` lists 7 "outside the
+  workspace" lines and exits 0. The page shows solid cubes with "0 files" and an
+  orange "7 wanting" link.
+  6. **Bug: a `From` of `.` owns no files.** In `boardGraph.ts` line 134 the
+  folder becomes `""`, and `startsWith("/")` matches nothing. The output reads
+  "portal from : 0 files" and "has no docs under " with nothing after it.
+  7. **An outer scan documents the inner scans' `index.json`.** Generating the
+  parent after the siblings gives 7 nesting warnings, then writes a 15 KB doc
+  with 147 key symbols for each sibling's index, and counts those docs as the
+  thing's files.
+  8. **A Windows `From` isn't read.** `.\Contoso.Hub` gives "has no docs under".
+  9. **A folder name with a dot can't be a thing's name.** `Contoso.Hub` is
+  refused with "expected a thing heading" and no reason. A space in a `From`
+  works.
+  10. **The parent's configuration decides where every sibling's docs are looked
+  for.** With `"root": ".docs"` in the parent, the siblings' default docs
+  report "has no docs under". This is T11 as a person sees it.
+
+  **Where output went:**
+  - Each sibling got exactly one folder, `.live-documentation/`. `git status` in
+  every sibling shows `?? .live-documentation/`, and no `.gitignore` entry is
+  written.
+  - Bytes per sibling (du of that folder):
+
+  | Sibling | Bytes |
+  | --- | ---: |
+  | Portal | 44,215 |
+  | Gateway | 20,300 |
+  | Contracts | 24,574 |
+  | Hub | 13,461 |
+  | PaymentService | 24,993 |
+  | SqlServer | 4,085 |
+  | Oracle | 1,694 |
+  | **All seven** | **133,322** (37 KB docs, 96 KB indexes, 35 docs) |
+
+  - The built Explorer is 8.62 MB in 16 files, of which 60.5 KB is data.
+  - Estimate, scaled by file count to 10,777 docs: about 41 MB in the
+  repositories, plus about 18 MB of Explorer data on top of 8.6 MB of Explorer
+  code. The sample's files are small, so the cold run's measured 118 MB of docs
+  and 46 MB of Explorer for DNN are the better guide.
+  - The board sits in the parent folder, which belongs to no repository, so it
+  has nowhere to be committed.
+
+  **Wires under each placement**, against the reference's eleven:
+  - **(a) Board in the common parent:** 10. All but the IPsec tunnel, which
+  needs regions the smallest board lacks. The three wires to contracts carry 1
+  edge each instead of 13, 13 and 11, the cost the design already states.
+  - **(b) Board in `maps/`:** 0.
+  - **(c) Board inside Portal's repository**, the third thing a person would
+  try: 0, because of fault 6 for Portal and "outside the workspace" for the
+  other six.
+  - **(d) Extra: the parent generated as one scan:** 10, with full edge counts.
+  The 7 inner scans are not read.
+
+  **The OPENQUERY script:**
+  - Its doc lists one dependency, `` `OPENQUERY` (contract) ``. String literals
+  are blanked before names are read, so `ledger.entries` is lost, and `ORALINK`
+  appears nowhere.
+  - Its wire goes nowhere. It is a ghost "OPENQUERY" on sqlserver. With Oracle
+  imagined, `Serves: CENTRAL.ACCOUNT` also fails to catch `usp_PostPayment`'s
+  `ORACLE_CENTRAL..CENTRAL.ACCOUNT`, so the scanned sqlserver→oracle wire
+  disappears.
+  - Only declared connections reach Oracle: `sqlserver to oracle.ORALINK` and
+  `sqlserver to oracle.ledger.entries` both work.
+  - **Can `ORALINK` be an address door today?** It is accepted and drawn, but no
+  scanned call can land on it, for two reasons:
+    - The join never matches a ghost against a door the board declares under
+  `Serves`.
+    - A SQL edge has the contract basis, and `targetsOf` in `estateGraph.ts`
+  matches address doors only for the configuration basis.
+  - **Smallest change, not built:**
+    - In `deriveBoardGraph`, match ghosts against other things' `Serves` doors
+  by the same rules `targetsOf` uses, and make a wire with the ghost's basis.
+    - In the SQL reader, read `OPENQUERY`/`OPENROWSET` before blanking strings,
+  keeping the server's name and the inner query's objects as linked references,
+  the same shape `X..schema.table` has today.
+  - Whether the linked server's name should itself be a door is left to the
+  owner. The name belongs to the SQL Server instance, not to Oracle.
+
+  **The pictures** (in `pictures/`; all are in the README with what I see):
+  - `a-1-whole-board`: with no Layout, the first placement packs the cubes so
+  they hide each other. Sqlserver stands in front of portal and oracle in front
+  of gateway, and most wires run behind cubes. The footer says "Context: Scan
+  root" for seven scans.
+  - `a-2-payments-pinned`: a good panel, but the address label runs off the left
+  edge and the panel covers sqlserver.
+  - `a-3-wire-hub-payments-pinned`: clear.
+  - `a-4-portal-entered`: a readable Portal Local Map, with no sign of the other
+  six things.
+  - `b-1`/`b-2`/`b-3`: solid "0 files" cubes. The reason appears only in the
+  help's Wanting list, and the pinned panel for portal says only "0 files · 0
+  symbols".
+  - `d-1`: Oracle as a hollow drum crowding sqlserver.
+  - `d-2`: the sqlserver panel says "nothing on the board serves them" right
+  beside an Oracle that offers `CENTRAL.ACCOUNT`; the picture contradicts
+  itself.
+  - `d-3`: Oracle's three declared doors; `CENTRAL.ACCOUNT` has nothing reaching
+  it.
+
+  **What "point at a folder, get a thing" would have to do, none of which exists
+  today:**
+  1. Scan the folder with the board's configuration.
+  2. Find the board, or create one with its required sections in a folder above
+  every thing, and say where it lives when that folder is in no repository.
+  3. Add the thing, named after the folder in a form the grammar accepts (dots
+  need a rule), with a forward-slash `From` relative to the board, or `.` once
+  fault 6 is fixed.
+  4. Carve or refuse when scans would nest, without documenting the inner scans'
+  output.
+  5. Rebuild, and show on the page what the join found wanting.
+
+  **Not finished:**
+  - No pictures of placement (c) or case (d); their command output is in the
+  README.
+  - No run on Windows.
+  - The two changes for the linked server are described, not built.
+  - The disk estimate is scaled by file count only.
+
+● Agent "Many scans, one board: cold run" finished · 27m 12s
+● Understood, and you're right. I'm not starting anything new: I'll finish
+  reviewing what has come back, one piece at a time, with the engine landing and
+  your Markdown question first.
+
+  Read 10 files, ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Summary
+
+  The fourth leg is two commits on top of `135e93ad`, on my branch, unpushed and
+  never amended:
+  - `516125b9`: the symbol audit and the documentation bridge find links by the
+  module.
+  - `26e3bef5`: the probe record and pictures.
+
+  Nothing under `packages/engine` or `packages/generator` changed, and
+  `markdownLinks.ts` and the register were left alone. All three items are done.
+  The pictures show the docstring heading can be mistaken for the doc's own
+  structure; two alternatives are shown, and the choice is yours.
+
+  ## 1. The last two readers onto the module (`516125b9`)
+
+  **`scripts/slopcop/symbolReferences.ts` (symbol audit).** It now takes its
+  anchor links from `readMarkdownLinks`, replacing two patterns over a mask of
+  code.
+  - New test fails on the old patterns. It covers a target holding parentheses,
+  a reference, a double code span and escaped brackets.
+  - Findings before and after: the same, 0 issues over 1,645 files.
+  - Anchors checked over all 2,008 tracked markdown files go from 16,021 to
+  16,029. They differ only in four raw session captures outside the audit's
+  scope. In each, commonmark.js agrees with the new reading:
+
+  | File | Change | Why |
+  |---|---|---|
+  | `2025-12-05.md:1359` | link now read | A real link after a backslash-escaped
+  backtick, which the old code-span mask hid. |
+  | `2025-12-06.1.md:1553` | link no longer read | A link's shape inside a
+  double-backtick code span, which the old mask misread. |
+  | `2026-02-15.1.md:1886` | link no longer read | `\[foo\](…)` has escaped
+  brackets. |
+  | `2026-02-15.1.md:1894` | link now read | A real `[label](path#anchor)`
+  between literal escaped backticks. |
+  | `2026-10-12.1.export.md` | links now read | Pasted JavaScript that forms
+  links by the rule. |
+
+  **`scripts/doc-tools/documentationLinks.ts` (documentation bridge).** Each
+  line now gets the links the module reads on it.
+  - New test fails on the old patterns.
+  - Findings before and after: the same, every documentation link satisfied
+  (1,090 documents).
+  - Backlinks over all tracked markdown go from 21,431 to 20,383:
+    - 1,049 were only in the old reading. The old patterns masked no code, so
+  these were link shapes inside code spans or fenced blocks, or a pattern's
+  misreading.
+    - 1 is only in the new reading: the fixture's link into `app/(auth)/`.
+
+  **Removed:** `extractReferenceDefinitions`, `parseLinkTarget` and `maskCode`
+  in `scripts/slopcop/markdownShared.ts` had no caller left.
+
+  ## 2. Bundles and the browser
+
+  I built the before sample and `npm run e2e:bundles` first.
+  - **Hold:** one lane hold at 22:31, after 946 s in the queue.
+  - **Bundles:** the served-build check confirmed they were built together.
+  - **Cases:** 18 of 18 passed: `link-targets.spec.ts` (2), `cited-by.spec.ts`
+  (2) and `inspection.spec.ts` (14).
+  - **Second hold:** 8 s, only to retake the alternatives (see below).
+  - **"Before":** a sample built with `c2bfd65f`'s client into
+  `dist/explorer/samples/link-targets-before`, using today's fixture.
+
+  ## Pictures
+
+  All are in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/m
+  arkdown-link-targets/`.
+
+  Reference link:
+  - `before-reference-link.png`: the Purpose ends "The plan is cited [by
+  reference][plan] too." as plain text.
+  - `after-reference-link.png`: "by reference" is a link, like the seven before
+  it.
+  - `before-reference-definition.png`: the Notes section shows the raw
+  definition line `[plan]: ../../../notes/plan%20(draft).md "The plan"`.
+  - `after-reference-definition.png`: the Notes section shows only its sentence;
+  the definition is hidden.
+
+  Inspected symbol:
+  - `before-inspected-symbol.png`: the docstring's heading is plain text in one
+  paragraph: "#### notes What the notes say, in a sentence."
+  - `after-inspected-symbol.png`: the same line is drawn as a heading, with
+  `notes` in a purple code chip and its sentence below.
+
+  ## 3. The docstring heading, for your eye
+
+  In `after-inspected-symbol.png`, the docstring's `notes` is drawn exactly like
+  the symbol's own name `draftPlan` two rows above: same chip, size, colour and
+  weight. It reads like a second symbol named `notes`. So yes, it can be taken
+  for the doc's own structure.
+
+  I made two alternatives as styles injected into the probe page only. Nothing
+  about them is committed or decided:
+  - **A** (`alternative-a-plain-docstring-heading.png`): the docstring's heading
+  loses its chip and is plainer, smaller and muted. `notes` then reads as a
+  label inside the docstring, not a sibling of `draftPlan`. This is your first
+  thought.
+  - **B** (`alternative-b-plain-heading-docstring-set-in.png`): A, plus each
+  section's docstring text set in under its section heading behind a thin grey
+  rule. It separates the source author's words from the doc's own structure most
+  clearly, but the rule could be read as a block quote.
+
+  My first attempt at an alternative changed nothing visible, because the code
+  chip's own style won, so I discarded it.
+
+  ## Checks
+
+  - `scripts` unit tests: 129 passed.
+  - eslint: clean.
+  - Markdown audit: 0 broken links.
+  - Symbol audit: 0 issues.
+  - The full gate was not run this leg; the browser stage above is the leg's
+  browser run.
+
+  ## Left open
+
+  - Your choice between A and B, or neither.
+  - The register's limit, which the engine round's builder is writing into the
+  module and the register.
+
+● Agent "One rule for markdown link targets" finished · 24m 51s
+
+● Looked at all ten pictures from the several-folders run; fixing one audit
+  warning in that probe before committing it. The link builder also handed back;
+  I'll take its pictures after.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Sixth leg: rulings 1, 2, 3 and 5 are built and verified; 4 and 6 not
+  reached
+
+  Arity matching, C#'s lookup order and generic arguments anywhere in a member
+  access are built. They took DNN's namesake lines from 30 to 2. "In both" rose
+  and "ours only" fell; mojoPortal did not move. Directive and type-name reasons
+  are returned, ready for the notices channel. Not reached: ruling 4
+  (`#if`/`#else`), and ruling 6, the configuration reads and the procedure named
+  from C#.
+
+  **Branch** `worktree-agent-ac7ef8df4222b2e4b`, on top of `3b991651`:
+  - `e1d535e7` — arity, C#'s lookup order, generic arguments in a member access,
+  the C# reader's reasons, and the header sentence on inferred types
+  - `9b8d8c69` — reasons out of `resolveDirectivePath`
+  - `af9dadac` and `32d03c79` — the probe README
+
+  The three mends share one commit because I measured them together.
+
+  **Verification**
+  - Build passes.
+  - Unit tests: 2,255 of 2,255. Integration: 154 of 154. Load average was 9 to
+  16.
+  - Both SlopCop audits pass. `slopcop:symbols` had flagged a duplicated heading
+  in my README; I fixed it in `32d03c79`.
+  - This repository's C# docs did not move. Only the docs of the four files I
+  edited changed.
+
+  ## 1 to 3. Arity, C#'s lookup order, generic arguments in a member access
+
+  **Tests seen failing first**, all in `csharp.test.ts`:
+  - **Arity:** `DnnHelper<object>` → `DnnHelper{TModel}.cs` only, bare
+  `DnnHelper` → `DnnHelper.cs`, and `typeof(DnnHelper<>)` / `typeof(Pair<,>)`.
+  This replaces last leg's link-both test.
+  - **DNN's own shape:** every `using` inside the namespace, with the outer
+  namespace declaring a namesake `FileOrder`.
+    - The nearer project's copy must lose when the `using` is inside the
+  namespace.
+    - It wins when the `using` is outside the namespace.
+    - It loses for a file-scoped namespace with the `using` after it.
+  - **Generic argument in a member access:**
+  `EventHandlersContainer<IFriendshipEventHandlers>.Instance`.
+
+  **Where the arity cannot be told,** today's behaviour (link every arity)
+  remains:
+  - the segments an alias stands for, because the alias's target is read as
+  text;
+  - a type named in a string for reflection.
+
+  The reader does not read documentation `cref`s at all.
+
+  **The compiler table** (C#-to-C# dependency lines, fifth leg before, this leg
+  after):
+
+  | | DNN before | DNN after | mojoPortal before | mojoPortal after |
+  | --- | ---: | ---: | ---: | ---: |
+  | Our lines | 20,989 | 20,970 | 7,060 | 7,060 |
+  | In both | 20,390 | 20,399 | 7,022 | 7,022 |
+  | Ours only | 599 | 571 | 38 | 38 |
+  | — we chose a namesake | 30 | 2 | 0 | 0 |
+  | The compiler's only | 4,458 | 4,449 | 1,195 | 1,195 |
+
+  On DNN the change gained 20 lines the compiler confirms and lost 11. Both
+  kinds of loss are correct:
+  - **10 are the oracle's error.** DNN's Groups module declares a user control
+  named `List`. The oracle compiles without the framework, so
+  `System.Collections.Generic.List<T>` does not exist for it, and Roslyn's error
+  recovery binds `new List<RoleInfo>()` to the control. Our reader, now
+  matching arity, does not.
+  - **1 is a member-only edge.** `DnnLabelExtensions.cs` → `DnnHelper.cs` is a
+  member reached through `DnnHelper<TModel>`, which by our convention is not a
+  dependency.
+
+  The 2 namesake lines left are last leg's documentation `cref` and the
+  anonymous object's member.
+
+  **The header sentence** is in `csharp.ts`, with the count: a type the file
+  uses without naming it (inferred through `var`, a lambda's parameter, or a
+  return) is not a dependency; 31 of the 40 DNN readings were that kind, and
+  they are a choice, not a fault. I also rewrote the header's description of the
+  lookup order to match what is now built.
+
+  ## 5. Reasons
+  `resolveDirectivePath` returns `{ file }` or `{ reason }`. The markup reader
+  collects these as `directives.notices`, each `{ reason, subject: "<file>:
+  <written path>" }`. The phrases:
+  - "paths several projects hold, left unlinked"
+  - "paths no file in the workspace holds, left unlinked"
+  - "paths two files match without regard to case, left unlinked"
+  - "paths from the site's root, left unlinked"
+
+  The last three phrases are my additions beyond yours.
+
+  The C# name search now records whether it met declarations it could not see,
+  or stopped at an ambiguity. `toDependencies` returns `{ dependencies, notices
+  }` with your two phrases, deduplicated per name per file.
+
+  **The hand-over at the gathering is one property in each adapter's returned
+  result:** `notices: directives.notices` in `aspnet.ts`, and `notices:
+  resolved.notices` in `csharp.ts`. A `ReaderNotice { reason, subject }` type
+  sits in `dotnetPaths.ts` until the channel's own `SourceNotice` replaces it.
+
+  **Two gaps in the tests here:**
+  - The directive-reasons test in `aspnet.test.ts` was written after the change,
+  so I did not see it fail. It could not have passed on the old signature,
+  which returned a string or undefined.
+  - The C# reasons have no test yet, because nothing outside the adapter can see
+  them until the channel exists.
+
+  ## Not reached
+  - **4. `#if`/`#else`:** your ruling (a type declared in any branch is declared
+  by the file; the same type in two branches is one symbol) is not built and
+  not measured.
+  - **6.** The configuration reads, and the procedure named from C# as you
+  framed it for the owner: how often exactly one scanned `.sql` file declares
+  the name with its schema, and how often several or none do.
+
+  No refusal of an action came up. The worktree guard refused three compound
+  commands as too complex to check; I re-ran them as a script file or as plain
+  commands. The corpora's docs at each stage are kept in
+  `/home/node/scratch-dotnet-gaps/`; the fifth leg's are `leg5-*-ld`. My temp
+  folder is `/tmp/dn-95qM`.
+
+● Agent ".NET Framework gaps: measure, mend" finished · 11m 59s
+
+● Committing the several-folders record and writing down your pacing instruction
+  where future sessions will read it; then the full choice on the store.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● You're right, and I've slowed down. Nothing new is being started: six builders
+  are parked with their work saved, and three are finishing (the engine
+  joining, the layout's price, PowerShell). I still owe a look at two sets of
+  pictures that came back, and I'll take them one at a time.
+
+  Here is the choice on Markdown as the store. Both measurements are in:
+  authored sections (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/P
+  robes/authored-section/README.md) and several folders to one map (AI-Agent-Wor
+  kspace/AgentSessionHistory/2026/11/2026-11-19/Probes/many-scans/README.md).
+
+  What the several-folders run found. Starting from seven sibling repositories
+  and no board, a stranger reaches one World Map in ten commands plus a board
+  file written by hand. The tool refused that board four times before accepting
+  it. It works only if the board sits in the folder above all the repositories,
+  which belongs to no repository. Every repository is left with an untracked
+  docs folder, and the first map packs the boxes so that two hide two others.
+
+  Three ways to go
+
+  A. Keep the Markdown doc per file as the store
+  What your four work repositories would get: A docs folder written into each
+    one, a hand-written board, and Node installed
+  What it costs: Mending the ten faults on that road; the escaping work stays
+    with us for good
+  ────────────────────────────────────────
+  B. Keep the facts beside the board; Markdown becomes something you export
+  What your four work repositories would get: Nothing written into them. One
+    folder, or one HTML file, holds the board and each scan's facts
+  What it costs: The vision's first rule changes; the history, the checks and
+    the agent skill are re-pointed
+  ────────────────────────────────────────
+  C. Keep Markdown docs, but write them outside the repositories
+  What your four work repositories would get: Nothing written into them
+  What it costs: Authored words would sit in a folder nobody commits, so the
+    authored section goes anyway, and what remains is A's cost without A's
+    benefit
+
+  The rule that changes under B: today "Markdown is canonical"; it would become
+  "the source is canonical, the facts are derived from it, and Markdown is one
+  way to read them".
+
+  I recommend B, with three things fixed in it:
+  - A file's description is its own top comment, read by the tool. For your C#
+    and SQL that is usually empty, as it would be under any option.
+  - Words people write stay Markdown, as ordinary documents that link to a file
+    and are shown with it. In this repository each doc's authored half would
+    stay where it is as such a document, moved by script, with nothing rewritten
+    by hand.
+  - The board stays a readable text file.
+
+  B does not fix two things. Reading links in people's Markdown stays with us,
+  and history still needs git, so the command line stays for that.
+
+  B and the single HTML file belong together: the page can only hold a whole map
+  if the facts aren't thousands of files. I'd build them after the engine
+  landing and the three readers.
+
+  What I don't know yet: whether a browser tab holds a codebase the size of your
+  largest, and whether your work browser allows picking a folder. A small test
+  page for your work machine would answer both before anything is built.
+
+  From you:
+  1. May the per-file Markdown doc stop being the store? Yes, no, or not yet.
+  2. Do you want that test page?
+
+› Message from general-purpose
+  ## Third leg handed back: C used only to refuse does what your eye asked on
+  every place
+
+  **Branch:** `worktree-agent-a60d7d862eb837be2`. Commits `e57d2aca` (candidate
+  C, the veto form, offering moves to A's end, legible drawings) and `fa717ad5`
+  (results, pictures, README), on top of `7961e0a4`. Everything is in the probe
+  folder `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/layou
+  t-price/`, README section "Third leg: candidate C, the ground an outline
+  claims, and A's two questions". Nothing changed in the product or in the lab's
+  own files; `slopcop:markdown` passes.
+
+  **Late, and why:** I deleted the second leg's captures when cleaning up after
+  that leg. Taking them again cost 24 minutes behind other holders in the lane,
+  then 43 s of hold. The new five-file capture matches the page to the pixel
+  (placement 1,145,468, 4,999 × 9,418). This time I kept the three captures and
+  the runs' JSON in `/tmp/lp3` (my own folder) in case you resume me; delete it
+  when done.
+
+  ### Candidate C
+  - **What it is:** today's price, plus each drawn outline's height over every
+  column where its directory holds no card of its own, at `r` px of wire per
+  pixel.
+  - **Lanes are not content.** A lane is the passage of lines whose ends are
+  files elsewhere, so a column holding only a lane is still ground the directory
+  holds no file in. Counting it would let any outline a bundle passes through
+  claim that ground for free.
+  - **Nesting multiplies the charge.** A nested directory's cards are not the
+  parent's, so a column holding only a nested directory is charged for the
+  parent, and for the child too if the child holds no card of its own there.
+  - **`Cveto`:** a trial is taken only when today's price takes it and C would
+  too.
+
+  ### Which levellings each takes
+  Five files at 80 orders, "taken" in each price's own search; moves numbered as
+  in the packet.
+
+  | | Today | A | C 0.5 | C 1 | C 2 | C 1, refusing only |
+  |---|---|---|---|---|---|---|
+  | 22, the 7 px jog | taken | refused | taken | taken | taken | taken |
+  | 23, `inspect` levelled (no claimed ground) | taken | taken | taken | taken |
+  taken | taken |
+  | 24 (+300 px of outline, 180 claimed) | taken | refused | taken | taken, by
+  20 | refused | taken |
+  | 25, under a card | taken | taken | taken | taken | taken | taken |
+  | 26, 27 (`approximation.ts` lifted) | taken | refused | taken | taken | taken
+  | taken |
+  | 28, 29 (+608 each, all claimed) | taken | refused | refused | refused |
+  refused | refused |
+  | Levellings today never takes | – | 0 | 3 | 3 | 3 | 0 |
+  | Moves in the whole search | 29 | 20 | 30 | 29 | 27 | 25 |
+  | `pathfind.ts`'s three | all | none | all | the first | none | the first |
+  | The estate's | taken | taken | taken | taken | taken | taken |
+
+  Your expectations held except 24: it is taken at C 1, narrowly (180 px claimed
+  against the step's 200), and refused from about 1.11. Move 23 claims no
+  ground at all, since both of its columns hold `inspect`'s files.
+
+  ### What C does beyond refusing
+  At every rate from 0.5 to 2, C takes three levellings that today's price
+  refuses. Each moves cards to shrink claimed ground:
+
+  | Levelling | Cards moved (farthest) | Wire added | Claimed ground |
+  |---|---|---|---|
+  | `views/worldMap` top | 2 (209 px) | +1,881 px | −209 px |
+  | `scripts` foot | 2, `approximation.ts` and `lab.ts` (845 px) | +4,225 px |
+  −1,690 px |
+  | `scripts/layout-lab` foot | 3 (344 px) | +1,785 px | −344 px |
+
+  That is 7,891 px of wire in all, against B's 27,432.
+  - **No rate avoids it.** The worldMap levelling is taken at any rate above
+  about 0.05, and C stops refusing 28 and 29 below 0.33. So there is no rate at
+  which C refuses 28 and 29 and moves no card for its charge.
+  - **The veto takes none of the three.** It refuses 14 trials today's price
+  would take, and its search makes today's moves less 28 and 29 (and less two
+  levellings before order 77, today's 12 and 15, whose picture order 77
+  replaces). It ends on "today, before move 28", identical to the byte: the
+  panel you called the best.
+  - **Honest form or patch:** I read the veto as the honest form, said for what
+  it is. Today's price decides what the picture gains; C's charge says only that
+  a gain bought by claiming ground is no gain. As a full price, C buys snug
+  outlines with wire, which the owner's reward of 2026-10-05 forbids; as a veto
+  it can buy nothing.
+  - **Its cost:** it is two judgements, not one price. The first picture's
+  choice among its starts stays today's. The judge lives in `branch-search.ts`
+  (the other round's file), and the charge would live in `branch-shape.ts`
+  (mine).
+
+  ### A's two questions
+  - **Offered today's 26 and 27 directly at A's own end:** priced +379 and +100
+  against it, and the jog +130. A refuses all three, so A is short of them by
+  its own price, not unlucky. They remove steps beside columns that hold none of
+  the directory's cards, which A no longer counts, and they cost wire.
+  - **The jog:** `five-jog.png`, twice enlarged, shows the top of
+  `packages/engine/src` stepping 7 px down before and running level after.
+
+  ### Pictures (redrawn and replacing the dark ones; B no longer drawn)
+  Light ground, a stroke on every outline, and claimed ground (an outline over a
+  column with no card of its own) in amber. Each panel is labelled in words.
+  The five places have five panels: today before, today after, A's end, C 1's
+  end, and the veto's end.
+  - `pictures/five-move-23.png`, `five-move-24.png`, `five-move-25.png`,
+  `five-move-28.png`, `five-move-29.png`
+  - `pathfind-levellings.png`, `estate-levelling.png`
+  - `five-jog.png`
+  - `five-c-new-levelling.png`: C 1 before and after its 845 px levelling of
+  `scripts`.
+
+  ### Recommendation
+  **C at 1, used only to refuse.**
+  - It takes the jog, 23, 25, 26, 27 and the estate's, and refuses 28 and 29.
+  - It ends on the picture you named the best, and it moves no card and spends
+  no wire for its charge, by construction.
+  - It keeps 24 and `pathfind.ts`'s first levelling, each claiming 180 px
+  against the step's 200. At about 1.2 it would refuse those too while still
+  taking 23 and 25, since neither claims ground; I did not run that rate.
+  - A is short of 26, 27 and the jog by its own price. C as a full price spends
+  wire at every rate that refuses 28 and 29.
+
+  ### Not done
+  - The veto at about 1.2.
+  - The estate's 21 px card-model gap in flow pictures, now noted in the README
+  as open.
+  - Fault 3, closed as you asked and recorded so in the README.
+
+  No permission was refused.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "2D layout price: three faults" finished · 39m 41s
+
+  Read 5 files, ran 1 shell command (ctrl+o to expand)
+
+● The layout builder's third leg is back and I've looked at its nine redrawn
+  pictures; filing my reading of it, then I'm waiting on the engine joining.
+
+  Read 8 files, ran 8 shell commands (ctrl+o to expand)
+
+● Link pictures reviewed and my choice recorded; committing, then the 2D trial
+  pictures are the last review I owe before the engine joining comes back.
+
+  Searched for 1 pattern, read 14 files, ran 2 shell commands (ctrl+o to expand)
+
+● The last of the returned pictures (the 2D trials) are reviewed and my
+  recommendations written beside them; one audit, then I'm caught up and waiting
+  on the engine joining.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'm caught up: every handback from this evening has been read and every set of
+  pictures looked at.
+
+  - Link reader: a docstring's own heading was being drawn exactly like a
+    symbol's name, so it read as a second symbol. I've chosen the plainer form,
+    a small label inside the docstring.
+  - 2D trials: my recommendations are written beside each section in the packet
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/2d-alternatives/second-leg/README.md):
+    - the break mark for a step off the history bar stays the default;
+    - a file that didn't exist yet is shown as a dashed card in its directory as
+      it stood that day;
+    - hidden-file cells sit after a directory's name when they fit.
+  - Layout price: the builder's third leg shows the mend works best as a refusal
+    only. A levelling that would enclose empty ground is turned down, and
+    nothing is ever moved to tidy outlines. One definition in it was mine and
+    wrong, and I've written the correction into the probe (AI-Agent-Workspace/Ag
+    entSessionHistory/2026/11/2026-11-19/Probes/layout-price/README.md) for when
+    that builder is resumed.
+
+  Seven builders are parked with their work on their branches. Two are still
+  working: the engine joining and PowerShell. Nothing of tonight's trial work
+  lands until its browser cases have run on a quiet machine.
+
+  Still with you: whether the per-file Markdown doc may stop being the store
+  (yes, no, or not yet), and whether you want the test page for your work
+  machine.
+
+● I'm caught up: every handback from this evening has been read and every set of
+  pictures looked at.
+
+  - Link reader: a docstring's own heading was being drawn exactly like a
+    symbol's name, so it read as a second symbol. I've chosen the plainer form,
+    a small label inside the docstring.
+  - 2D trials: my recommendations are written beside each section in the packet
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/2d-alternatives/second-leg/README.md):
+    - the break mark for a step off the history bar stays the default;
+    - a file that didn't exist yet is shown as a dashed card in its directory as
+      it stood that day;
+    - hidden-file cells sit after a directory's name when they fit.
+  - Layout price: the builder's third leg shows the mend works best as a refusal
+    only. A levelling that would enclose empty ground is turned down, and
+    nothing is ever moved to tidy outlines. One definition in it was mine and
+    wrong, and I've written the correction into the probe (AI-Agent-Workspace/Ag
+    entSessionHistory/2026/11/2026-11-19/Probes/layout-price/README.md) for when
+    that builder is resumed.
+
+  Seven builders are parked with their work on their branches. Two are still
+  working: the engine joining and PowerShell. Nothing of tonight's trial work
+  lands until its browser cases have run on a quiet machine.
+
+  Still with you: whether the per-file Markdown doc may stop being the store
+  (yes, no, or not yet), and whether you want the test page for your work
+  machine.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file .claude/worktrees/agent-a4efa650656a29c17/AI-Agent-Workspac
+     e/AgentSessionHistory/2026/11/2026-11-19/Probes/authored-section/README.md
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/a0685a3a-b7de-45e3-bcf9-44c55d10db4e/tool-results/bethyzxjd.txt
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/S
+     creenshots/owner-packet/search-stop/README.md
+  ⎿  Read AGENTS.md (63 lines)
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/S
+     creenshots/owner-packet/2d/README.md
+
+● Task "PowerShell wires: measure, then build" still running in background
+
+● Task "History's linked documents at old commits" still running in background
+
+● Task "Fifty-minute fallback timer while builders run" still running in
+  background

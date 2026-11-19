@@ -1,6 +1,6 @@
 # The .NET gaps, measured against Microsoft's own tools
 
-Current as of November 19, 2026, end of the fifth leg, which read the namesakes left and the edges we lack and applied `global using` to the project: see [the fifth leg](#fifth-leg-the-namesakes-left-the-edges-we-lack-and-global-usings). The fourth leg resolved C# type names within what each file's project can see and indexed the lookups that resolution rests on: see [the fourth leg](#fourth-leg-type-names-within-the-projects-reach). A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
+Current as of November 19, 2026, end of the sixth leg, which matched type arguments to arity, searched names in C#'s order and said why paths and names are left unlinked: see [the sixth leg](#sixth-leg-arity-c-lookup-order-and-reasons). The fifth leg read the namesakes left and the edges we lack and applied `global using` to the project: see [the fifth leg](#fifth-leg-the-namesakes-left-the-edges-we-lack-and-global-usings). The fourth leg resolved C# type names within what each file's project can see and indexed the lookups that resolution rests on: see [the fourth leg](#fourth-leg-type-names-within-the-projects-reach). A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
 
 ## Corpora and oracles
 
@@ -338,3 +338,30 @@ The compiler table after, against the fourth leg's:
 | of which a type named that only the target declares | 628 | 628 | 172 | 45 |
 
 mojoPortal gains 127 lines the compiler confirms and none it does not; DNN has no `global using` and does not move. The `#if` row's six DNN cases are all in DNN's copy of log4net; mojoPortal's one has not been read.
+
+## Sixth leg: arity, C# lookup order and reasons
+
+Measured with this branch after the sixth leg's commits, against the fifth leg's docs.
+
+### What was built
+
+- **Arity.** A use records how many type arguments each segment of its name writes (`X` 0, `X<T>` 1, `X<,>` 2, also inside `typeof`), and links the declaration with that many type parameters. Where the reader has only the bare name it links every arity, as before: the segments an alias stands for (its target is read as text), and a type named in a string for reflection. Documentation `cref`s are not read at all.
+- **C#'s lookup order.** For each namespace declaration from the innermost out, its members and then the `using` directives written inside it; a file-scoped namespace holds the directives after it; last the global namespace with the compilation unit's own `using`s and the project's `global using`s.
+- **Generic arguments anywhere in a dotted name**, `A<B>.C` as much as `C<D>`.
+- **Reasons.** `resolveDirectivePath` returns why a path has no link ("paths several projects hold, left unlinked", "paths no file in the workspace holds, left unlinked", "paths two files match without regard to case, left unlinked", "paths from the site's root, left unlinked"), and the markup reader keeps them as `directives.notices`. The C# reader's name search records whether it met declarations it could not see or stopped at an ambiguity, and `toDependencies` returns them as `resolved.notices` ("type names several projects in reach declare, left unlinked", "type names declared only outside the project's reach, left unlinked"). The hand-over is one property in each adapter's returned result: `notices: directives.notices` and `notices: resolved.notices`.
+
+### The compiler table
+
+| | DNN before | DNN after | mojoPortal before | mojoPortal after |
+| --- | ---: | ---: | ---: | ---: |
+| Our C#-to-C# dependency lines | 20,989 | 20,970 | 7,060 | 7,060 |
+| In both | 20,390 | 20,399 | 7,022 | 7,022 |
+| Ours only | 599 | 571 | 38 | 38 |
+| of which we chose a namesake | 30 | 2 | 0 | 0 |
+| The compiler's only | 4,458 | 4,449 | 1,195 | 1,195 |
+
+On DNN the change gained 20 lines the compiler confirms and lost 11 (`scripts/lost_agreement.py`). Ten of the eleven are an error of the oracle: DNN's Groups module declares a user control named `List`, and without the framework the compiler has no `System.Collections.Generic.List<T>`, so its error recovery binds `new List<RoleInfo>()` to the control; the reader, now matching arity, does not. The eleventh, `DnnLabelExtensions.cs` to `DnnHelper.cs`, is a member reached through `DnnHelper<TModel>`, which by the rule above is not a dependency. The two namesake lines left are the documentation `cref` and the anonymous object's member read in the fifth leg. mojoPortal has neither shape and does not move.
+
+### What the sixth leg left
+
+- A declaration split by `#if`/`#else`, the configuration reads, and the procedure named from C#.
