@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/camera-intent.ts
-- Generated At: 2026-11-19T07:03:49.467Z
+- Generated At: 2026-11-19T06:40:41.630Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/frame.ts
-- Generated At: 2026-11-19T07:03:47.642Z
+- Generated At: 2026-11-19T06:40:39.480Z
 
 ## Authored
 ### Purpose
