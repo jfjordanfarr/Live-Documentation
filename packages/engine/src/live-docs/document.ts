@@ -564,28 +564,74 @@ function renderReExports(entries: ReExport[]): string[] {
 // Section bodies
 // ============================================================================
 
-/** A body line the grammar would take for its own: a heading, a fence, a section marker. */
+/** A fence line as CommonMark reads one: up to three spaces, three or more backticks or tildes, and whether it may close a fence. */
+function fenceOf(line: string): { char: string; length: number; closes: boolean } | undefined {
+  const fence = /^ {0,3}(`{3,}|~{3,})(.*)$/u.exec(line);
+  if (fence === null || (fence[1][0] === "`" && fence[2].includes("`"))) return undefined;
+  return { char: fence[1][0], length: fence[1].length, closes: fence[2].trim() === "" };
+}
+
+/** True when a fence line closes the fence opened by `open`, as CommonMark closes one. */
+function closesFence(line: string, open: { char: string; length: number }): boolean {
+  const fence = fenceOf(line);
+  return fence !== undefined && fence.closes && fence.char === open.char && fence.length >= open.length;
+}
+
+/**
+ * The HTML blocks CommonMark ends only at a closer, not at a blank line: a `<script>`, `<pre>`, `<style>` or
+ * `<textarea>`, a comment, a processing instruction, a declaration and a CDATA section. Opened in a docstring and never
+ * closed there, one would run on over the doc after it.
+ */
+const HTML_BLOCKS: readonly { start: RegExp; end: RegExp }[] = [
+  { start: /^ {0,3}<(?:script|pre|style|textarea)(?:[ \t>]|$)/iu, end: /<\/(?:script|pre|style|textarea)>/iu },
+  { start: /^ {0,3}<!--/u, end: /-->/u },
+  { start: /^ {0,3}<\?/u, end: /\?>/u },
+  { start: /^ {0,3}<![A-Za-z]/u, end: />/u },
+  { start: /^ {0,3}<!\[CDATA\[/u, end: /\]\]>/u }
+];
+
+/** The HTML block a line opens, if it opens one that only a closer ends. */
+function htmlBlockOf(line: string): { start: RegExp; end: RegExp } | undefined {
+  return HTML_BLOCKS.find((block) => block.start.test(line));
+}
+
+/** A body line the grammar or a markdown viewer would take for structure: a heading, a fence, a section marker, an HTML block a closer ends. */
 function structural(line: string): boolean {
-  return line.startsWith("```") || line.startsWith(MARKER) || symbolHeading(line) !== undefined || sectionHeading(line) !== undefined;
+  return fenceOf(line) !== undefined || htmlBlockOf(line) !== undefined || line.startsWith(MARKER) || symbolHeading(line) !== undefined || sectionHeading(line) !== undefined;
 }
 
 /**
  * A section's body as written: each line the reader would take for structure gets one more backslash in front.
  *
  * @remarks
- * A body is free text from a source file, a docstring's lines, and the reader ends a body at a heading outside a
- * fence and a section at its end marker anywhere. So a line of the body that is a heading where the reader sees no
- * fence, that is a section marker, or that opens a fence no later line closes (which would hide every heading after
- * it) is written with a backslash in front, which markdown shows as the line's own text; so is a line that is
- * already such a line behind backslashes, so that {@link unescapeBodyLine} gives every line back. Every other line,
- * the fences that pair and what they enclose among them, is written as it is.
+ * A body is free text from a source file, a docstring's lines, and markdown by its author's intent: its emphasis,
+ * links and lists render. What it may not do is change the doc around it. The reader ends a body at a heading outside
+ * a fence and a section at its end marker anywhere; a markdown viewer runs a fence or an HTML block of the kinds a
+ * closer ends ({@link HTML_BLOCKS}) on past the body when nothing in the body closes it. So a line of the body that is
+ * a heading outside a fence, that is a section marker, or that opens a fence or such an HTML block nothing later in the
+ * body closes, is written with a backslash in front, which markdown shows as the line's own text; so is a fence line
+ * inside such an HTML block, where the reader, which knows fences and not HTML, would take it for one; and so is a
+ * line that is already such a line behind backslashes, so that {@link unescapeBodyLine} gives every line back. Fences
+ * are read by CommonMark's rule, backticks or tildes, a closer at least as long as its opener, by the writer and the
+ * reader alike.
  */
 function escapeBody(lines: string[]): string[] {
-  let lastFence = -1;
-  lines.forEach((line, index) => {
-    if (line.startsWith("```")) lastFence = index;
-  });
-  let fence = false;
+  // What closes after each line, counted once from the end: the longest closing fence of each kind, and whether each
+  // HTML block's closer comes, so that the escape stays linear in a docstring of many lines.
+  const longestCloser = new Map<string, number[]>([["`", []], ["~", []]]);
+  const closerComes = HTML_BLOCKS.map((): boolean[] => []);
+  let longest = { "`": 0, "~": 0 } as Record<string, number>;
+  let comes = HTML_BLOCKS.map(() => false);
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    longestCloser.get("`")![index] = longest["`"];
+    longestCloser.get("~")![index] = longest["~"];
+    HTML_BLOCKS.forEach((_, kind) => (closerComes[kind][index] = comes[kind]));
+    const fence = fenceOf(lines[index]);
+    if (fence?.closes) longest = { ...longest, [fence.char]: Math.max(longest[fence.char], fence.length) };
+    comes = HTML_BLOCKS.map((block, kind) => comes[kind] || block.end.test(lines[index]));
+  }
+  let fence: { char: string; length: number } | undefined;
+  let html: RegExp | undefined;
   return lines.map((line, index) => {
     const escaped = `\\${line}`;
     if (line.startsWith("\\")) {
@@ -594,14 +640,31 @@ function escapeBody(lines: string[]): string[] {
     if (line.startsWith(MARKER)) {
       return escaped;
     }
-    if (line.startsWith("```")) {
-      if (!fence && index >= lastFence) {
-        return escaped;
-      }
-      fence = !fence;
+    if (fence !== undefined) {
+      if (closesFence(line, fence)) fence = undefined;
       return line;
     }
-    return !fence && structural(line) ? escaped : line;
+    if (html !== undefined) {
+      if (html.test(line)) html = undefined;
+      // Inside such a block a markdown viewer shows the lines as they are; the reader, which knows no HTML, still takes a
+      // fence or a heading for its own, so those are escaped.
+      return fenceOf(line) !== undefined || symbolHeading(line) !== undefined || sectionHeading(line) !== undefined ? escaped : line;
+    }
+    const opens = fenceOf(line);
+    if (opens !== undefined) {
+      if (longestCloser.get(opens.char)![index] < opens.length) return escaped;
+      fence = opens;
+      return line;
+    }
+    const block = htmlBlockOf(line);
+    if (block !== undefined) {
+      const rest = line.replace(block.start, "");
+      if (block.end.test(rest)) return line;
+      if (!closerComes[HTML_BLOCKS.indexOf(block)][index]) return escaped;
+      html = block.end;
+      return line;
+    }
+    return structural(line) ? escaped : line;
   });
 }
 
@@ -887,7 +950,7 @@ function parseSymbols(body: Body): SymbolBlock[] {
       }
       index += 1;
       const sectionLines: string[] = [];
-      let fence = false;
+      let fence: { char: string; length: number } | undefined;
       while (index < lines.length) {
         const line = lines[index];
         if (!fence && (sectionHeading(line) !== undefined || symbolHeading(line) !== undefined)) {
@@ -896,8 +959,12 @@ function parseSymbols(body: Body): SymbolBlock[] {
         if (!fence && line === "" && (index + 1 === lines.length || sectionHeading(lines[index + 1]) !== undefined || symbolHeading(lines[index + 1]) !== undefined)) {
           break;
         }
-        if (line.startsWith("```")) {
-          fence = !fence;
+        // Fences by CommonMark's rule, as the writer pairs them.
+        if (fence !== undefined) {
+          if (closesFence(line, fence)) fence = undefined;
+        } else {
+          const opens = fenceOf(line);
+          if (opens !== undefined) fence = opens;
         }
         sectionLines.push(line);
         index += 1;

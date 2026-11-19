@@ -342,6 +342,17 @@ describe("the Live Doc grammar", () => {
     expect(parseLiveDoc(text).entries[0].command).toBe(command);
   });
 
+  it("writes a docstring's fence or HTML block that nothing in it closes behind a backslash, so it cannot run on over the doc", () => {
+    // CommonMark runs a fence, of backticks or tildes, and a comment, a `<script>`, `<pre>`, `<style>`, `<textarea>`, a
+    // processing instruction, a declaration or a CDATA section on to their closers, not to a blank line.
+    // `</pre>` would close a `<script>` opened before it, as CommonMark closes any of the four by any of their end tags.
+    const body = ["Opens:", "<!-- one line -->", "<!-- never closed", "~~~", "````", "```", "<pre>", "kept", "</pre>", "<script>"];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Remarks", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain(["Opens:", "<!-- one line -->", "\\<!-- never closed", "\\~~~", "\\````", "\\```", "<pre>", "kept", "</pre>", "\\<script>"].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
   it("reads the authored block of any text that has one", () => {
     expect(authoredBlockOf(renderLiveDoc(FULL))).toBe(FULL.authored);
     expect(authoredBlockOf("# x\n\n## Authored\n\n### Purpose\nOld words\n\n\n## Generated\nwhatever")).toBe("### Purpose\nOld words");
