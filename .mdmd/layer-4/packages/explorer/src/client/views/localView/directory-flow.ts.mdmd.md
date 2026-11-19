@@ -21,6 +21,8 @@ The same day a pin on the sixty-file directory re-wrapped its tallest rank and m
 
 Since 2026-11-15 ([November 15, Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) `NOMINAL_LABEL` is the strip's own constant, `HANDLE_STRIP` of `directory-handle.ts`, 60 units where the measured one-line label had been 30: a label's height no longer depends on its text or the screen, so on this point the nominal model is the page.
 
+Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)) a pair line keeps the symbols at the two ends of each link it stands for (`standsFor`), so that a row's hover keeps the lines that carry its links (`symbol-highlight.ts`); until then a row pointed at in Flow faded every line of the picture.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

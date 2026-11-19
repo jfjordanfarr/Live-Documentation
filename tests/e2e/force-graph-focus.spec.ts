@@ -8,6 +8,7 @@ import { spatialScope, startHops, startOf } from "../../packages/explorer/src/cl
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
+import { framesDuring, recordFrames, restsOn, sweepThrough } from "./pointer-frames";
 import { currentSnapshot } from "./search-bar";
 
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
@@ -474,6 +475,58 @@ test("a stationary pointer rechecks its sphere when wheel movement changes the c
   expect((await renderedNodes(page)).find(node => node.id === id)!.world).toEqual(world);
 });
 
+// The owner (2026-11-19): not "an application which is shooting random text at me every which way as I scroll my mouse
+// across the screen (which it most certainly does in the 3D local map)". A moving pointer shows at once only that a
+// sphere can be pressed; its actions, its name and the fading of the rest wait until the pointer rests on it.
+test("a pointer crossing spheres shows only that they can be pressed; a rest shows the actions and the fade, and leaving takes them at once", async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await observeGraph(page);
+  await page.goto("/samples/estate/?view=local&mode=3d&node=Portal%2FServices%2FGatewayClient.cs");
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const id = "Portal/Models/PaymentResultModel.cs";
+  const point = await uncover(page, id);
+  const empty = await emptyPoint(page);
+  await recordFrames(page);
+  const strip = page.locator(".force-graph-actions");
+  const beyond = { x: point.x + (point.x - empty.x) * 0.5, y: point.y + (point.y - empty.y) * 0.5 };
+  const sweep = await framesDuring(page, () => sweepThrough(page, [empty, point, beyond, empty]));
+  expect(sweep.filter(frame => frame.pressable).length, "the sweep crossed a sphere, which said at once that it can be pressed").toBeGreaterThan(0);
+  expect(sweep.filter(frame => frame.actions), "frames showing a sphere's actions during the sweep").toEqual([]);
+  expect(sweep.filter(frame => frame.wire), "frames showing a wire's words during the sweep").toEqual([]);
+  expect(sweep.filter(frame => frame.leastOpacity !== null && frame.leastOpacity < .25), "frames with the rest faded during the sweep").toEqual([]);
+  // A rest: the sign at once, the actions and the fade after the dwell and not before.
+  const rest = await framesDuring(page, async () => {
+    await page.mouse.move(point.x, point.y);
+    await expect(strip).toHaveAttribute("data-node-id", id);
+    await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeLessThan(.25);
+  });
+  const shown = rest.find(frame => frame.actions)!;
+  // In order, not by the clock: a frame showed the pointing hand without the actions before the actions came.
+  expect(rest.filter(frame => frame.t < shown.t && frame.pressable && !frame.actions).length, "the sign came before the words").toBeGreaterThan(0);
+  expect(rest.slice(0, 4).some(frame => frame.pressable), "the sign that it can be pressed shows at once").toBe(true);
+  expect(rest.filter(frame => frame.t < shown.t && frame.leastOpacity !== null && frame.leastOpacity < .25), "no fade before the rest").toEqual([]);
+  // Moving off takes them at once.
+  const off = await framesDuring(page, () => page.mouse.move(empty.x, empty.y));
+  expect(off.at(-1)!.actions).toBe(false);
+  expect(off.at(-1)!.leastOpacity!).toBeGreaterThan(.25);
+  // A person heading for the actions reaches them: rested on the sphere, the pointer crosses the gap to Pin.
+  await page.mouse.move(point.x, point.y);
+  await expect(strip).toHaveAttribute("data-node-id", id);
+  const pin = strip.getByRole("button", { name: "Pin PaymentResultModel.cs", exact: true });
+  const target = (await pin.boundingBox())!;
+  await sweepThrough(page, [point, { x: target.x + target.width / 2, y: target.y + target.height / 2 }], 6);
+  await expect(strip).toHaveAttribute("data-node-id", id);
+  await pin.click();
+  expect(currentSnapshot(page).pinSet.entries).toContainEqual({ nodeId: id, symbol: "*" });
+  // The keyboard is deliberate and waits for nothing: the subject's name, given focus from the keyboard, offers its
+  // actions on the frame that follows.
+  await page.mouse.move(empty.x, empty.y);
+  await page.keyboard.press("Shift");
+  const keyed = await framesDuring(page, () => page.locator(".force-graph-focus").focus());
+  expect(keyed.at(-1)!.actionsFor).toBe("Portal/Services/GatewayClient.cs");
+});
+
 test.describe("touch pointer lifetime", () => {
   test.use({ hasTouch: true, viewport: { width: 1600, height: 1000 } });
 
@@ -523,7 +576,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native picking is throttled at 50 ms.
-    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) { found = node; break; }
+    if (await restsOn(page, node.id)) { found = node; break; }
   }
   expect(found, "a visible distant sphere is hoverable").toBeDefined();
   const opacity = async () => (await renderedNodes(page)).find(node => node.id === found!.id)!.opacity;
@@ -559,7 +612,10 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   for (const node of otherCandidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120);
-    if ((await renderedNodes(page)).find(candidate => candidate.id === node.id)!.opacity > .7) { peeked = true; break; }
+    // The peek comes once the pointer rests on the sphere (2026-11-19): wait for it where the pointing hand says one is under it.
+    if (await page.locator("#graph-svg").getAttribute("data-hovered-node") === "true"
+      && await expect.poll(async () => (await renderedNodes(page)).find(candidate => candidate.id === node.id)!.opacity, { timeout: 2_000 })
+        .toBeGreaterThan(.7).then(() => true, () => false)) { peeked = true; break; }
   }
   expect(peeked, "another unrelated sphere can be temporarily peeked").toBe(true);
   await expect.poll(opacity).toBeLessThan(.35);

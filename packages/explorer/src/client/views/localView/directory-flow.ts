@@ -30,21 +30,27 @@ export interface UndrawnLink {
   /** The file that offers. */
   targetId: string;
   kind: ExplorerLinkKind;
+  /** The symbol of the using file the link leaves from; none for its Internals. */
+  sourceSymbol?: string;
+  /** The symbol of the offering file the link reaches; none for its Internals. */
+  targetSymbol?: string;
 }
 
 /**
  * One line for each pair of files, each way: every undrawn link from one file to another gathered under one edge between
- * their node-level hubs, in the order the pairs first came, counting its links. A file's links to itself join no pair of
- * cards and make no line.
+ * their node-level hubs, in the order the pairs first came, counting its links and keeping the symbols at their ends
+ * (`standsFor`), by which a hovered row finds the lines that carry its links (2026-11-19). A file's links to itself join
+ * no pair of cards and make no line.
  */
 export function pairLines(undrawn: readonly UndrawnLink[]): LocalEdge[] {
-  const pairs = new Map<string, LocalEdge & { gathered: number }>();
+  const pairs = new Map<string, LocalEdge & { gathered: number; standsFor: Array<Pick<LocalEdge, "sourceSymbol" | "targetSymbol">> }>();
   for (const link of undrawn) {
     if (link.sourceId === link.targetId) continue;
     const key = JSON.stringify([link.targetId, link.sourceId]);
+    const ends = { sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol };
     const pair = pairs.get(key);
-    if (pair) pair.gathered++;
-    else pairs.set(key, { sourceId: link.sourceId, targetId: link.targetId, sourceSymbol: NODE_HUB, targetSymbol: NODE_HUB, kind: link.kind, direction: "inbound", gathered: 1 });
+    if (pair) { pair.gathered++; pair.standsFor.push(ends); }
+    else pairs.set(key, { sourceId: link.sourceId, targetId: link.targetId, sourceSymbol: NODE_HUB, targetSymbol: NODE_HUB, kind: link.kind, direction: "inbound", gathered: 1, standsFor: [ends] });
   }
   return [...pairs.values()];
 }

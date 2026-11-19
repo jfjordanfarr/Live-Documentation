@@ -16,6 +16,7 @@ import { escapeHtml } from "../../graph-helpers";
 import { activePalette, mix, whenPaletteChanges, type WorldForm } from "../../palette";
 import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
 import { parseInitialState } from "../../persistence/url-state";
+import { NO_REST, restAt, restedOn, restsAt, type PointerRest } from "../pointerRest";
 import {
   FLOAT,
   GRID,
@@ -234,7 +235,12 @@ export class WorldMapController {
   /** Where the pieces stood before a reset, kept so that the same control puts them back, until a piece is next moved. */
   private beforeReset: Map<string, Point2> | null = null;
 
+  /** What the pointer has rested on, or the keyboard is on: the peek's subject. */
   private hover: Hover | null = null;
+  /** What the pointer touches now, and its rest (`lookAtRest`). */
+  private touched: Hover | null = null;
+  private rest: PointerRest = NO_REST;
+  private restTimer = 0;
   private pinned: Hover | null = null;
   private under = false;
   private snap = false;
@@ -497,7 +503,9 @@ export class WorldMapController {
   private buildFocusTargets(): void {
     for (const piece of this.model.pieces) {
       const files = `${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
-      const said = [piece.name, piece.kind, piece.imagined ? "imagined, nothing inside yet" : files].filter(Boolean).join(", ");
+      // The folder a piece opens is said with its name, in the scan's words: every blind tester met a box named
+      // "payments" that opened PaymentService/ and said so nowhere until it was opened (2026-11-19).
+      const said = [piece.name, piece.kind, piece.imagined ? "imagined, nothing inside yet" : piece.folder !== undefined ? `opens ${piece.folder || "the scan root"}` : "", piece.imagined ? "" : files].filter(Boolean).join(", ");
       const target = svgElement("g", { class: "w-focus", tabindex: 0, role: "button", "aria-label": said, "data-focus": piece.name }, this.layers.focus) as SVGGElement;
       svgElement("polygon", { class: "w-focus-ring" }, target);
       this.focusTargets.set(piece.name, target);
@@ -1622,6 +1630,7 @@ export class WorldMapController {
       const pieceNode = orbit ? null : target.closest<SVGElement>(".w-piece");
       const piece = pieceNode?.dataset.piece;
       svg.setPointerCapture(event.pointerId);
+      window.clearTimeout(this.restTimer);
       const origin: Point2 = [this.svgLeft(), this.svgTop()];
       const [px, py] = fromScreen(this.screen, event.clientX - origin[0], event.clientY - origin[1]);
       const { width, height } = this.viewport();
@@ -1673,17 +1682,7 @@ export class WorldMapController {
         }
         return;
       }
-      const h = this.hoverAt(event.target as Element);
-      if (this.pinned) {
-        this.hover = h;
-        return;
-      }
-      if (JSON.stringify(h) !== JSON.stringify(this.hover)) {
-        this.hover = h;
-        this.applyHover();
-      } else if (h) {
-        this.showEvidence(h);
-      }
+      this.lookAtRest(this.hoverAt(event.target as Element));
     });
 
     on(svg, "pointerup", () => {
@@ -1717,11 +1716,15 @@ export class WorldMapController {
     });
 
     on(svg, "pointerleave", () => {
+      window.clearTimeout(this.restTimer);
+      this.rest = NO_REST;
+      this.touched = null;
       if (!this.drag && !this.pinned) {
         this.hover = null;
         this.applyHover();
       }
     });
+    this.disposers.push(() => window.clearTimeout(this.restTimer));
 
     on(this.root, "wheel", (event: WheelEvent) => {
       event.preventDefault();
@@ -1929,6 +1932,38 @@ export class WorldMapController {
 
   private svgTop(): number {
     return this.svg.getBoundingClientRect().top;
+  }
+
+  /**
+   * "A hover peeks; a click pins": the peek is words, so it waits until the pointer has rested on a thing
+   * (`pointerRest.ts`, 2026-11-19), and goes as soon as the pointer is on something else. A moving pointer shows at once
+   * only that a thing can be pressed, by the cursor. Under a pin the peek stays away, but the rest is kept for the
+   * moment the pin is let go. Keyboard focus peeks at once (`attachInput`); a click pins at once.
+   */
+  private lookAtRest(h: Hover | null): void {
+    // A drag is no rest, and a peek that came in its middle would lay the page out again on every frame of it.
+    if (this.drag) {
+      window.clearTimeout(this.restTimer);
+      return;
+    }
+    const now = performance.now();
+    this.touched = h;
+    this.rest = restAt(this.rest, h && `${h.kind}:${h.id}`, { x: this.lastPointer[0], y: this.lastPointer[1] }, now);
+    window.clearTimeout(this.restTimer);
+    const due = restsAt(this.rest);
+    const rested = restedOn(this.rest, now) !== null ? h : null;
+    if (!rested && due !== null) {
+      this.restTimer = window.setTimeout(() => this.lookAtRest(this.touched), Math.max(0, due - now) + 1);
+    }
+    if (this.pinned) {
+      this.hover = rested;
+    } else if (JSON.stringify(rested) !== JSON.stringify(this.hover)) {
+      this.hover = rested;
+      this.applyHover();
+    } else if (rested) {
+      // A peek follows the pointer about its thing.
+      this.showEvidence(rested);
+    }
   }
 
   private hoverAt(target: Element, forClick = false): Hover | null {

@@ -12,6 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, revealPan, STEP_MARK_MS, unionOf } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -75,6 +76,11 @@ import type {
   ReadingControl
 } from "./types";
 import { atScale, CLOSEST_SCALE, farthestScale } from "./zoom-limits";
+
+/** Whether the person prefers reduced motion: a step's pan is then a cut, and an arrival rests on its end at once. */
+function prefersReducedMotion(): boolean {
+  return typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 /** Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths. */
 export class LocalViewController implements LocalViewApi {
@@ -193,6 +199,31 @@ export class LocalViewController implements LocalViewApi {
   };
   private renderedPath = false;
   private directoryArrivalPending = false;
+  /** A fresh subject's arrival, owed by the next framing of its card (camera-intent.ts): set when the subject changes. */
+  private arrivalPending = false;
+  /** The next framing of the subject's card, owed by a move, is the arrival's (fitMapToContent while the picture moves). */
+  private arrivalFocus = false;
+  /**
+   * An arrival that rests on the subject at reading size and then eases back to the neighbours (Tuning's Arrival,
+   * "Reading, Then Neighbours"): its subject, the frame it rests on and when it came to rest (0 until the picture has
+   * settled), the end it eases to, measured when the ease begins, and its animation frame.
+   */
+  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number } | null = null;
+  /** The subject whose arrival has come to rest on its neighbours, so that a later framing of it rests there too. */
+  private arrivedSubject: string | null = null;
+  /** Return to Reading Size was pressed: the next framing of the subject is at reading size, whatever Tuning's Arrival. */
+  private readingAsked = false;
+  /**
+   * What a step from inside the map brought into the picture, revealed and marked once the picture has settled: the card
+   * of a file pinned from a cell or a card, or the label of a directory opened (camera-intent.ts).
+   */
+  private stepNewcomer: { card: string } | { directory: string } | null = null;
+  /** Any input of the person's on the map ends an arrival where it stands. */
+  private readonly endArrivalByHand = (): void => {
+    this.arrivalPending = false;
+    this.arrivalFocus = false;
+    this.cancelArrival();
+  };
   /** The requested identity is measured after its layout move, never from a transient pose. */
   private focusRequest: string | null = null;
   private restoreExplorationCamera = false;
@@ -408,6 +439,7 @@ export class LocalViewController implements LocalViewApi {
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
+    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.addEventListener(type, this.endArrivalByHand, { capture: true, passive: true });
     this.container.addEventListener("pointerover", this.handleCardAttention);
     this.container.addEventListener("pointerleave", this.handleCardAttention);
     this.container.addEventListener("focusin", this.handleCardAttention);
@@ -524,6 +556,8 @@ export class LocalViewController implements LocalViewApi {
     this.reading?.dispose();
     cancelAnimationFrame(this.pendingRender);
     this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
+    for (const type of ARRIVAL_ENDING_INPUTS) this.viewport.removeEventListener(type, this.endArrivalByHand, { capture: true });
+    this.cancelArrival();
     this.container.removeEventListener("pointerover", this.handleCardAttention);
     this.container.removeEventListener("pointerleave", this.handleCardAttention);
     this.container.removeEventListener("focusin", this.handleCardAttention);
@@ -643,6 +677,11 @@ export class LocalViewController implements LocalViewApi {
     }
     const centeredId = this.subject?.id ?? null;
     if (centeredId !== this.lastCenteredNodeId) {
+      // A fresh subject: its next framing is an arrival, which Tuning's Arrival frames (camera-intent.ts).
+      this.cancelArrival();
+      this.arrivalPending = centeredId !== null;
+      this.arrivalFocus = false;
+      this.arrivedSubject = null;
       this.readingVisible = true;
       this.mapHasInitialFit = false;
       this.mapUserAdjusted = false;
@@ -822,6 +861,12 @@ export class LocalViewController implements LocalViewApi {
     if (closeExpansion) this.expandedCards.delete(nodeId);
     const directory = this.pinHeldDirectory;
     this.pinHeldDirectory = null;
+    // A file pinned whose card was not in view is a newcomer: once the picture settles it is brought into view and marked.
+    const card = `.node-card[data-id="${CSS.escape(nodeId)}"]`;
+    const seen = this.inView(card);
+    const newcomer = (): void => {
+      if (!seen && this.container.querySelector(card)) this.stepNewcomer = { card: nodeId };
+    };
     if (directory !== null) {
       // A pin pressed on a handle's cell: the eye is on the handle, so the change is captured as a press on that handle
       // is, its label held still and its arrival settled; the keyboard's focus then stays among the handle's marks.
@@ -830,6 +875,7 @@ export class LocalViewController implements LocalViewApi {
       const frame = this.captureDirectoryChange(directory);
       return { ...frame, afterRender: () => {
         const marked = document.activeElement?.closest(`${label} .local-directory-cells`) ? document.activeElement as HTMLElement : null;
+        newcomer();
         frame.afterRender();
         marked?.focus({ preventScroll: true });
       } };
@@ -844,7 +890,22 @@ export class LocalViewController implements LocalViewApi {
     const focusSelector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin`
       : `${selector} .local-symbol-pin`;
-    return this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
+    const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
+    return { ...frame, afterRender: () => {
+      frame.afterRender();
+      newcomer();
+      if (this.stepNewcomer && !this.stage?.move) this.settleArrival();
+    } };
+  }
+
+  /** Whether an element's box shows inside the map's frame, any of it. */
+  private inView(selector: string): boolean {
+    if (!this.isShown()) return false;
+    const box = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    if (!box || !box.width) return false;
+    const view = this.viewport.getBoundingClientRect(), place = this.framePlace();
+    const left = view.left + place.left, top = view.top + place.top;
+    return box.right > left && box.left < left + place.width && box.bottom > top && box.top < top + place.height;
   }
 
   /**
@@ -868,8 +929,11 @@ export class LocalViewController implements LocalViewApi {
     // the focus had stayed on it and been dropped with it (found 2026-11-15, on the keyboard's way to close what it opened).
     const focusSelector = [`${label} .local-directory-handle`, `.local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-handle`];
     const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
+    // A directory opened whose label was not drawn (a skin pressed among a handle's cells, a closed box) is a newcomer.
+    const drawn = !!this.container.querySelector(label);
     return { ...frame, afterRender: () => {
       frame.afterRender();
+      if (!drawn && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
       this.directoryArrivalPending = this.isShown();
       if (!this.stage?.move) this.settleArrival();
     } };
@@ -921,9 +985,10 @@ export class LocalViewController implements LocalViewApi {
       this.readingCalibrationPending = false;
       return;
     }
-    if (!this.directoryArrivalPending) return;
+    const step = this.stepNewcomer, settle = this.directoryArrivalPending;
+    this.stepNewcomer = null;
     this.directoryArrivalPending = false;
-    if (this.isShown()) this.settleIntoFrame();
+    if (settle || step) this.settleIntoFrame(settle, step);
   }
 
   /** A pin or opening leaves path mode without restoring the former exploration camera. */
@@ -1064,9 +1129,15 @@ export class LocalViewController implements LocalViewApi {
       const left = across.left - origin.left, top = vertical.top - origin.top;
       return { left, top, right: left + across.width, bottom: top + vertical.height, width: across.width, height: vertical.height };
     });
-    const next = this.reading && element.classList.contains("node-card")
+    let next = this.reading && element.classList.contains("node-card")
       ? cardReadingTransform(target, frame) : focusTransform(target, this.mapTransform, frame);
     if (this.reading && nodeId) this.readingReferenceScale = next.k;
+    if (this.arrivalFocus && nodeId && element.classList.contains("node-card")) {
+      // The subject's arrival, owed since the move began: Tuning's Arrival frames it.
+      this.arrivalFocus = false;
+      const content = this.measureLayoutExtents()?.content;
+      if (content) next = this.arrivalFrame(nodeId, next, content, target, frame);
+    }
     this.mapHasInitialFit = true;
     this.mapInitialTransform = { ...next };
     this.mapUserAdjusted = true;
@@ -1075,6 +1146,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Zooms the map in by 20%. */
   zoomIn(): void {
+    this.endArrivalByHand();
     this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
@@ -1084,6 +1156,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Zooms the map out by ~17%. */
   zoomOut(): void {
+    this.endArrivalByHand();
     this.fitFraming = false;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
@@ -1098,6 +1171,8 @@ export class LocalViewController implements LocalViewApi {
    * window resized, and the picture may have moved under the continuing search.
    */
   resetZoom(): void {
+    this.endArrivalByHand();
+    this.readingAsked = true;
     this.focusRequest = null;
     if (!this.runtime.contentRoot) {
       return;
@@ -1416,7 +1491,8 @@ export class LocalViewController implements LocalViewApi {
    */
   private watchCamera(): void {
     const runtime = this.runtime;
-    const moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null;
+    // An arrival's hold and ease say the camera moves, so that whoever waits for the map's rest sees where it ends.
+    const moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null || this.arrival !== null;
     if (moving !== this.cameraMoving) {
       this.cameraMoving = moving;
       if (moving) this.container.dataset.camera = "moving";
@@ -1557,8 +1633,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** The move between the two layouts: the tuning's Move Length, none where the person prefers reduced motion. */
   private overviewMoveMs(): number {
-    const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    return reduced ? 0 : Math.max(0, this.options.state.tuning.localMap.moveMs);
+    return prefersReducedMotion() ? 0 : Math.max(0, this.options.state.tuning.localMap.moveMs);
   }
 
   /** Pan only as far as the focused command needs, including while its native row is moving. */
@@ -1631,14 +1706,155 @@ export class LocalViewController implements LocalViewApi {
    * the frame stays. The return from 3D holds the subject through the motion and then settles so (the owner's choice,
    * 2026-10-30; before, the hold alone could leave a card cut at the edge with the rest of the frame empty).
    */
-  settleIntoFrame(): void {
+  settleIntoFrame(settle = true, step: LocalViewController["stepNewcomer"] = null): void {
     const extents = this.measureLayoutExtents();
     if (!extents) return;
-    const current = this.runtime.mapAnimationTarget ?? this.mapTransform;
-    const next = settleTransform(extents.content, current, this.frameRect());
+    const current = this.runtime.mapAnimationTarget ?? this.mapTransform, frame = this.frameRect();
+    let next = settle ? settleTransform(extents.content, current, frame) : current;
+    // A step's newcomer (camera-intent.ts): the least pan that brings it wholly into view at this scale, which wins over
+    // the hold of what was pressed, and its outline emphasised for a moment, so that the eye finds it.
+    const newcomer = step ? this.newcomerOf(step) : null;
+    if (newcomer) {
+      const pan = revealPan(newcomer.bounds, next, frame);
+      next = { x: next.x + pan.x, y: next.y + pan.y, k: next.k };
+      this.markNewcomer(newcomer.mark);
+    }
     if (Math.abs(next.x - current.x) < 0.5 && Math.abs(next.y - current.y) < 0.5) return;
     this.cancelInertia();
+    if (newcomer && prefersReducedMotion()) {
+      // Where the person prefers reduced motion the step's pan is a cut.
+      cancelAnimationFrame(this.runtime.mapAnimationFrame);
+      this.runtime.mapAnimationTarget = null;
+      this.mapTransform = next;
+      this.updateMapTransform();
+      this.drawConnections();
+      return;
+    }
     this.animateCamera(next);
+  }
+
+  /**
+   * A step's newcomer as laid out, in the picture's own units: a file's card, drawn emphasised round its card; or an
+   * opened directory's label with the first row of what it holds, drawn emphasised round its membrane. Null when it is
+   * not drawn.
+   */
+  private newcomerOf(step: NonNullable<LocalViewController["stepNewcomer"]>): { bounds: Bounds; mark: Element } | null {
+    return withTransformReset(this.container, origin => {
+      const local = (element: Element): Bounds => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
+      };
+      if ("card" in step) {
+        const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(step.card)}"]`);
+        return card ? { bounds: local(card), mark: card } : null;
+      }
+      const key = CSS.escape(step.directory);
+      const label = this.container.querySelector<HTMLElement>(`.local-directory-label[data-directory="${key}"]`);
+      const band = label?.closest<HTMLElement>(".local-directory-band");
+      if (!label || !band) return null;
+      // What the directory holds directly, its cards, closed boxes and inner membranes, and of those the first row.
+      const held = [...band.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed, .local-directory-band")]
+        .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(local);
+      const top = Math.min(...held.map(box => box.top));
+      const firstRow = held.filter(box => box.top <= top + 8);
+      const shape = this.container.querySelector(`.local-membrane-shape[data-directory="${key}"]`) ?? label;
+      return { bounds: unionOf([local(label), ...firstRow])!, mark: shape };
+    });
+  }
+
+  /** Draw a newcomer's outline emphasised, fading to its usual look over {@link STEP_MARK_MS} (local.css). */
+  private markNewcomer(element: Element): void {
+    const styled = element as HTMLElement | SVGElement;
+    styled.classList.remove("local-step-mark");
+    styled.style.setProperty("--step-mark-ms", `${STEP_MARK_MS}ms`);
+    // A new animation starts only from a style without the class: reading a box flushes it.
+    void styled.getBoundingClientRect();
+    styled.classList.add("local-step-mark");
+    window.setTimeout(() => styled.classList.remove("local-step-mark"), STEP_MARK_MS + 50);
+  }
+
+  /**
+   * The frame an arrival rests on, given the subject's frame at reading size (camera-intent.ts): that frame with
+   * Tuning's Arrival at reading size, or after Return to Reading Size was pressed; the neighbours' frame where the arrival goes there at once, or the person prefers
+   * reduced motion, or this subject's arrival has already eased back to them; otherwise the reading frame, with the
+   * ease back to the neighbours scheduled for when the picture has settled.
+   */
+  private arrivalFrame(subject: string, reading: MapTransform, content: Bounds, card: Bounds, frame: Frame): MapTransform {
+    const fresh = this.arrivalPending, asked = this.readingAsked;
+    this.arrivalPending = false;
+    this.readingAsked = false;
+    const lever = this.options.state.tuning.localMap.arrival;
+    if (lever === "reading") return reading;
+    // Return to Reading Size keeps its meaning under every Arrival: the subject at reading size, the person's to move.
+    if (asked) { this.arrivedSubject = null; return reading; }
+    if (lever === "neighbours" || prefersReducedMotion() || this.arrivedSubject === subject) {
+      this.cancelArrival();
+      this.arrivedSubject = subject;
+      // The neighbours' frame is not the subject's reading frame: a resize keeps the camera's own frame.
+      this.readingFrameTarget = null;
+      return arrivalEndFrame(content, card, frame, reading.k);
+    }
+    if (fresh || this.arrival?.subject === subject) this.beginArrival(subject);
+    return reading;
+  }
+
+  /** Rest on the subject at reading size until the picture has settled and the hold has passed, then ease to the neighbours. */
+  private beginArrival(subject: string): void {
+    this.cancelArrival();
+    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0 };
+    this.arrival = arrival;
+    const tick = (now: number): void => {
+      if (this.arrival !== arrival) return;
+      if (!this.isShown()) { this.cancelArrival(); return; }
+      const runtime = this.runtime;
+      if (!arrival.restAt) {
+        // Settled: the camera's own move to reading size has ended and nothing in the picture moves.
+        if (runtime.mapAnimationTarget || this.stage?.move || runtime.isDragging || runtime.mapInertiaFrame) {
+          arrival.frame = requestAnimationFrame(tick);
+          return;
+        }
+        arrival.restAt = now;
+        arrival.start = { ...this.mapTransform };
+      }
+      const frame = this.frameRect();
+      if (!arrival.end && now - arrival.restAt >= ARRIVAL_HOLD_MS) {
+        // The end is measured when the ease begins, on the picture as it has settled.
+        const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(subject)}"]`);
+        const content = this.measureLayoutExtents()?.content;
+        if (!card || !content) { this.cancelArrival(); return; }
+        const bounds = withTransformReset(this.container, origin => {
+          const rect = card.getBoundingClientRect();
+          return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
+        });
+        arrival.end = arrivalEndFrame(content, bounds, frame, this.readingReferenceScale);
+      }
+      const pose = arrivalPose(arrival.start!, arrival.end ?? arrival.start!, now - arrival.restAt, frame);
+      if (pose.phase !== "hold") {
+        this.mapTransform = pose.transform;
+        this.updateMapTransform();
+      }
+      if (pose.phase === "done") {
+        this.arrival = null;
+        this.arrivedSubject = subject;
+        this.readingFrameTarget = null;
+        this.mapInitialTransform = { ...pose.transform };
+        this.drawConnections();
+        this.watchCamera();
+        return;
+      }
+      arrival.frame = requestAnimationFrame(tick);
+    };
+    arrival.frame = requestAnimationFrame(tick);
+    this.watchCamera();
+  }
+
+  /** End an arrival's hold or ease where it stands. */
+  private cancelArrival(): void {
+    const arrival = this.arrival;
+    if (!arrival) return;
+    cancelAnimationFrame(arrival.frame);
+    this.arrival = null;
+    this.watchCamera();
   }
 
   // Placeholder utilities to be implemented below
@@ -1830,6 +2046,8 @@ export class LocalViewController implements LocalViewApi {
 
   /** A movement, rather than a tap on readable prose, takes ownership of the camera. */
   private beginCameraGesture(): void {
+    this.endArrivalByHand();
+    this.stepNewcomer = null;
     this.fitFraming = false;
     this.directoryArrivalPending = false;
     this.focusRequest = null;
@@ -1863,6 +2081,7 @@ export class LocalViewController implements LocalViewApi {
       }
       if (this.stage?.move) {
         this.focusRequest = `.node-card[data-id="${CSS.escape(subject!)}"]`;
+        this.arrivalFocus = true;
         return;
       }
       this.fitMap((extents, frame) => {
@@ -1873,12 +2092,14 @@ export class LocalViewController implements LocalViewApi {
         });
         const next = cardReadingTransform(bounds, frame);
         this.readingReferenceScale = next.k;
-        return next;
+        return this.arrivalFrame(subject!, next, extents.content, bounds, frame);
       });
       this.readingCalibrationPending = false;
       return;
     }
     // Directory and path-free root arrivals still frame their disclosed contents.
+    this.arrivalPending = false;
+    this.readingAsked = false;
     this.fitMap((extents, frame) => computeFitTransform(extents, frame, this.branches ? { minScale: 1 } : undefined));
   }
 

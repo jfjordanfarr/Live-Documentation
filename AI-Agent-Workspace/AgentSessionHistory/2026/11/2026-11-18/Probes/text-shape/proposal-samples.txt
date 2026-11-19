@@ -1,0 +1,52 @@
+packages/engine/src/live-docs/adapters/index.test.ts at a49ffd8, Braille (506 bytes):
+⣿⣿⣿⣿⣍⣀
+⠶⠶⠶⠶⠶⠶⠶⠶⠶⠒⠒⠒⠒⠒⠒⠒
+⢻⣿⣿⠿⠿⠶⠶⠶⠒⠒⠒⠒⠒⠒⠒⠒
+⢠⣛⣛⣛⡛⠛⠛⠛⠉⠉⠉
+⢥⣤⣤⣤⣤⣤⣤⣤⣤⣤⡤⠤⠤⠤
+⠜⠛⠛⠛⠛⠛⠋⠉⠉⠉⠉
+⢹⣿⣿⣿⣿⣯⡭⠭⠭⠭⠭⠭⠭⠍⠉⠉
+⠠⣭⣭⣭⣭⣭⣍⣉
+⠄
+⢹⣛⣛⣛⣛⣛⣛⣛⣛⣛⠛⠉⠁
+⢀⠿⠟⠛⠛⠛⠃
+⢸⣿⣿⣿⣿⣿⣿⠿⠯⠭⠥⠄
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣖⠒⠒⠒
+⠸⠿⠭⠭⠭⠭⠭⠭⠍⠉⠉⠉⠉⠉⠉⠉
+⠃
+
+the same, one encoded line (712 bytes):
+58://8PAAAAAAD//wAAAAAAAP//AwAAAAAA////AAAAAAAAAAAAAAAAAP///////////////x8AAAAAAAAAAAAAAP//DwAAAAAA///////////8////AAAAAPwPAAAAAAAA8P////8fAADw////AAAAAAwAAAAAAAAA/P8DAAAAAAAHAAAAAAAAAAAAAAAAAAAA/////////wD8/////wMAAPz/////DwAA/P//AwAAAAAHAAAAAAAAAAAAAAAAAAAA///////////8/38AAAAAAPz//////z8A/P//AwAAAADw////AAAAAAQAAAAAAAAA/P//AwAAAADw////AAAAAAQAAAAAAAAABAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAA////////AwD8/////w8AABwAAAAAAAAA/P////8AAADw//8DAAAAAPD//wMAAAAA8AMAAAAAAAAMAAAAAAAAAPz/////AwAA/P///wcAAAD8/////z8AAPz//w8AAAAA/P////9/AAD8//////////z//////wMA/P//////DwD8//////////wAAAAAAAAA/P///wMAAAAEAAAAAAAAAAcAAAAAAAAAAwAAAAAAAAA=:BUr1/3Ahsw8AkwFW6oByYEkJ/JuewvP9j7GHNzUljj5k3yrqGuKdFD3pbi9agUr8X8UdmQv9+KkKhAOtW3d0OA==
+
+payments-aligned.sql, Braille (264 bytes):
+⢿⣛⠛⠛⠛⠛⣛⣛⠛⠛⠋⠁
+⢸⣯⡀⠀⠀⠀⣿⣯⡀
+⢸⡷⠀⠀⠀⠀⣿⣿⡅
+⢸⣏⣁⣀⣀⠀⣿⣿⡇
+⣜⣻⣤⠀⣄⣀⡛⣛⣀
+⣛⣛⣛⡀⣻⣿⡯⣿⡿
+⠭⠭⢭⣥⡙⠛⣃⣛⠃
+⡀⢸⡼⣿⣱⠶⠤⠠⠤⠄
+⡇⢸⡇⣯⡥⠤
+⠉⠘⠛
+
+the same, one encoded line (500 bytes):
+38://////8/AAD//////wcAAA8AAAAAAAAA/AAA/wAAAAD8AAD/AAAAADwAAD8AAAAA/AAA/wAAAAD8AwD/AwAAADwAAP8DAAAA/AAA/wEAAAD8AQD/AwAAADwAAP8HAAAA/AMA/wMAAAA8AAD/AwAAADwAAP8DAAAA/P8f/wMAAAD8AAD/AQAAAPwAAP8AAAAA0w8HAAAAAAD/D//3DwAAAP8P//8PAAAA/w//9w8AAAAAAPz/DwAAAP9///MHAAAA/3//8wMAAAAAAPzzAwAAAP//AQAAAAAAAPwD/wEAAADA/AcAAAAAAMD9/QEAAAAAwP/93z8AAADX9w8AAAAAANf3BwAAAAAA1zMAAAAAAADX8/8AAAAAANfzAwAAAAAA3w8AAAAAAADQDwAAAAAAAA==:ATYSAd/51u4C/QMMTYfnCPwU0+/HVhweOTwhLyX+S0UY1qYaiFe2AcVcPja/9mHJEK/qdjfS/ezdChD3WioAJg==
+
+packages/explorer/src/client/views/forceGraphView.ts, Braille (627 bytes):
+⣿⣿⣿⣿⣿⣿⡿⠿⠿⠗⠒⠒⠒⠒
+⣿⣿⣿⣿⣿⣿⣋⣉⣉⣉⣁⣀⣀⣀⡀
+⣻⣿⣿⣿⣿⣿⣿⣿⣿⡿⢛⠛⣃
+⢹⣿⣿⣿⣿⣿⣿⠷⠶⠦⠤
+⢸⣿⣿⣿⣿⣭⣭⣭⣭⣬⡀
+⢨⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠛⠏⠁
+⢸⣿⣿⣿⣿⣿⣦⣤⠄
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣒⣂
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣭⣤⣤⣤⣤⣄
+⢠⣿⣿⣿⣿⣿⣿⣿⣛⣛⣛⣓⣐⣀⡀
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣯⡻⠉
+⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣛⣓⡂
+⢰⣿⣿⣿⣿⣿⣿⣿⣯⡭⠩⠉⠉⠀⠁
+⢸⣿⣿⣿⣿⣿⣿⣿⣷⡂
+⢸⣿⣿⣿⣿⣿⣿⣓⣒⣒⣒⠒
+⢸⣿⣿⣿⣿⣿⠯⠯⠥⠤⠄⠠

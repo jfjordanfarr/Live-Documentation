@@ -1,0 +1,21 @@
+{
+  "reader": "A fresh general-purpose agent (Opus), told only that each ball is drawn from the text of one file, shown the 37 unlabelled pictures once, 2026-11-19. Its answers as given, with how sure it said it was.",
+  "answers": {
+    "trial-01.png": [5, "guess"], "trial-02.png": [4, "guess"], "trial-03.png": [5, "guess"], "trial-04.png": [5, "guess"],
+    "trial-05.png": [4, "guess"], "trial-06.png": [6, "guess"], "trial-07.png": [2, "guess"], "trial-08.png": [2, "guess"],
+    "trial-09.png": [6, "guess"], "trial-10.png": [6, "guess"], "trial-11.png": [3, "guess"], "trial-12.png": [4, "guess"],
+    "trial-13.png": [4, "fairly sure"], "trial-14.png": [1, "guess"], "trial-15.png": [6, "guess"], "trial-16.png": [2, "guess"],
+    "trial-17.png": [3, "fairly sure"], "trial-18.png": [3, "guess"], "trial-19.png": [4, "guess"], "trial-20.png": [5, "guess"],
+    "trial-21.png": ["right", "fairly sure"], "trial-22.png": ["left", "guess"], "trial-23.png": ["left", "guess"],
+    "trial-24.png": [{ "notText": 4, "shortestToLongest": [3, 2, 1] }, "fairly sure / guess"],
+    "trial-25.png": [{ "notText": 2, "shortestToLongest": [1, 4, 3] }, "fairly sure / guess"],
+    "trial-26.png": [{ "notText": 3, "shortestToLongest": [2, 4, 1] }, "fairly sure / guess"],
+    "trial-27.png": [{ "notText": 1, "shortestToLongest": [2, 3, 4] }, "fairly sure / guess"],
+    "trial-28.png": [{ "notText": 2, "shortestToLongest": [3, 1, 4] }, "fairly sure / guess"],
+    "trial-29.png": [{ "notText": 1, "shortestToLongest": [3, 2, 4] }, "fairly sure / guess"],
+    "trial-30.png": [{ "notText": 4, "shortestToLongest": [2, 3, 1] }, "sure / guess"],
+    "trial-31.png": [{ "notText": 2, "shortestToLongest": [3, 4, 1] }, "sure / guess"],
+    "trial-32.png": [3, "guess"], "trial-33.png": [4, "guess"], "trial-34.png": ["left", "guess"], "trial-35.png": [2, "guess"],
+    "trial-36.png": [5, "guess"], "trial-37.png": ["right", "guess"]
+  }
+}

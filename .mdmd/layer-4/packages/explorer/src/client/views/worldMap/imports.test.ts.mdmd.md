@@ -8,10 +8,11 @@
 
 ## Authored
 ### Purpose
-Holds the World Map's modules to what they may read: each other, the engine's board, the board's join, the graph and the doc reader, and three client helpers that carry no facts of their own (HTML escaping, the address the page was opened at, the icon button). It is the test the World Map plan's standing rule names: the World Map reads a board and the graphs its things name, and never source ([World Map](../../../../../../../layer-3/world-map.mdmd.md#the-standing-rules)).
+Holds the World Map's modules to what they may read: each other, the engine's board, the board's join, the graph and the doc reader, and five client helpers that carry no facts of their own (HTML escaping, the address the page was opened at, the icon button, the palette, and when the pointer has rested on a thing). It is the test the World Map plan's standing rule names: the World Map reads a board and the graphs its things name, and never source ([World Map](../../../../../../../layer-3/world-map.mdmd.md#the-standing-rules)).
 
 ### Notes
 - Written on 2026-11-12, when the builder of the World Map repairs found that the rule of 2026-10-09 named a test no commit had ever held; the root asked for it, since a document may not claim a test that is not there. It reads each non-test module of the folder with TypeScript's own `preProcessFile`, so imports, re-exports and dynamic imports all count, and names each stranger it finds. Shown failing on a deliberate `node:fs` and `../../types` import in `model.ts` before it was kept ([the round's evidence](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/world-map-repairs/README.md)).
+- Since 2026-11-19 the World Map may also read when the pointer has rested on a thing, [`pointerRest.ts`](../pointerRest.ts.mdmd.md), a rule about the pointer that carries no facts and that the 3D map shares.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

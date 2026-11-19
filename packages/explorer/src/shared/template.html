@@ -92,8 +92,12 @@
 
     <!-- Tuning Controls (collapsible) -->
     <details class="sidebar-section sidebar-details">
-      <summary class="section-label clickable">Tuning</summary>
+      <summary class="section-label clickable">Tuning<span id="tuning-changed" class="tuning-changed" hidden><span id="tuning-changed-count" aria-hidden="true"></span><span id="tuning-changed-words" class="visually-hidden"></span></span></summary>
       <div class="tuning-content">
+        <!-- Reset to defaults: the World Map's Reset layout glyph, a toggle pressed while a second press can take the reset back. -->
+        <div class="tuning-head">
+          <button id="tuning-reset" type="button" class="tuning-reset" aria-label="Reset to defaults" title="Reset to defaults" aria-pressed="false" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+        </div>
         <details class="tuning-subsection">
           <summary class="subsection-label">Colour</summary>
           <label class="tuning-slider">
@@ -107,21 +111,9 @@
           <label class="tuning-slider">
             <span>Marbles</span>
             <select id="tuning-marbles">
-              <option value="on" selected>On</option>
-              <option value="off">Off</option>
+              <option value="off" selected>Off</option>
+              <option value="on">On</option>
             </select>
-          </label>
-          <label class="tuning-slider">
-            <span>Marble Pattern</span>
-            <select id="tuning-marble-pattern">
-              <option value="one" selected>One Pattern</option>
-              <option value="doc">From Its Doc</option>
-            </select>
-          </label>
-          <label class="tuning-slider" data-marble-bend-only hidden>
-            <span>Vein Bend</span>
-            <input type="range" id="tuning-marble-bend" min="0" max="1" step="0.05" value="0.55" />
-            <output id="tuning-marble-bend-value">0.55</output>
           </label>
         </details>
         <details class="tuning-subsection">
@@ -279,6 +271,14 @@
               <option value="under" selected>Cells under name</option>
               <option value="cells">Cells beside name</option>
               <option value="count">Count</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Arrival</span>
+            <select id="tuning-arrival">
+              <option value="reading" selected>Reading Size</option>
+              <option value="then-neighbours">Reading, Then Neighbours</option>
+              <option value="neighbours">Neighbours</option>
             </select>
           </label>
           <label class="tuning-slider" data-closed-cells-only>

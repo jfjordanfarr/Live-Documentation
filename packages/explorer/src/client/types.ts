@@ -1,5 +1,5 @@
 import type { ExplorerNodePayload } from "../shared/types";
-import type { MarblePattern, PaletteName } from "./palette";
+import type { PaletteName } from "./palette";
 import type { ReadingChoice } from "./reading-state";
 import type { PinSet } from "./views/pin-state";
 
@@ -125,6 +125,13 @@ export interface LocalMapTuning {
    */
   hiddenFiles: HiddenFilesLook;
   /**
+   * How the camera meets a fresh subject (a link, a search choice, the first open; 2026-11-19): "reading", the default,
+   * the subject's card at reading size with its neighbours cut; "then-neighbours", the same and then, once the picture
+   * has settled and a moment has passed, an ease back to the neighbours; "neighbours", on the neighbours at once. The
+   * neighbours' frame is Fit's, held between reading scale and the connections look's farthest press (camera-intent.ts).
+   */
+  arrival: ArrivalFraming;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -242,27 +249,20 @@ export interface TuningConfig {
 export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
-  marblePattern: MarblePattern;
-  /** How far the veins bend with the pattern from each file's doc, 0 to 1 (Vein Bend, 2026-11-19). */
-  marbleBend: number;
 }
 
 /**
  * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
  * record, Turn 9): its kind's colour as glass with veins of the offering blue and the using green, as many as the files
- * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On is the
- * default since 2026-11-18, the owner's "I think they are a worthy new default" (the November 17 record, Turn 13).
+ * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On was the
+ * default on 2026-11-18 and 19 (the owner's "I think they are a worthy new default", the November 17 record, Turn 13);
+ * Off is again since 2026-11-19, the owner's "for immediate understandability of the system, Marbes Off is superior":
+ * one colour meaning across the 3D spheres and the 2D cells, and less fine detail in a view they found "Still quite noisy".
  */
 export type MarbleChoice = "off" | "on";
 
-/** Every marble choice, in the order the control offers them; the first, on, is the default. */
-export const MARBLE_CHOICES: readonly MarbleChoice[] = ["on", "off"];
-
-/** How a marble's veins wind, the trial of 2026-11-18 (`MarblePattern` in palette.ts). */
-export type { MarblePattern };
-
-/** Every marble pattern, in the order the control offers them; the first, one pattern, is the default. */
-export const MARBLE_PATTERNS: readonly MarblePattern[] = ["one", "doc"];
+/** Every marble choice, in the order the control offers them; the first, off, is the default. */
+export const MARBLE_CHOICES: readonly MarbleChoice[] = ["off", "on"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -368,6 +368,12 @@ export type HiddenFilesLook = "count" | "cells" | "under";
  * root chose which of the two cell values. The count was the default before.
  */
 export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["under", "cells", "count"];
+
+/** How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the neighbours. */
+export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
+
+/** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
+export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

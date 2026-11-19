@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/ladder-steps.ts
-- Generated At: 2026-11-10T22:19:02.034Z
+- Generated At: 2026-11-19T01:56:29.217Z
 
 ## Authored
 ### Purpose
@@ -85,16 +85,26 @@ one state in place of the band and the step, so that a slot card changes only tw
 as composed at reading scale, everything following the map; connections is the far band's drawing (names, one More a
 row, the file's name and its More) and overview the overview band's, each at one held scale for every zoom inside it.
 
+#### `farthestRatioOf` {#symbol-farthestratioof}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L91)
+
+##### `farthestRatioOf` — Summary
+The zoom ratio of a look's last press out, the farthest the camera may stand and still draw that look: the reading
+look's second press, the connections look's sixth, beyond which the overview strips a card to its file's name. An
+arrival that frames the neighbours stops here, at the connections look, so that every name on the map still reads
+(camera-intent.ts, 2026-11-19).
+
 #### `LOOK_BANDS` {#symbol-look_bands}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L96)
 
 ##### `LOOK_BANDS` — Summary
 The ladder's band each look draws with: the stylesheet's rules for that band say what has left.
 
 #### `LOOK_SCALES` {#symbol-look_scales}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L98)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L108)
 
 ##### `LOOK_SCALES` — Summary
 Each look's one held scale for names, controls and dots, in the map's own units. Inside a look a name on screen is its
@@ -108,7 +118,7 @@ holds nothing.
 
 #### `zoomLook (function)` {#symbol-zoomlook-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L104)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L114)
 - Returns: [`ZoomLook`](#symbol-zoomlook-type)
 - Parameters: `previous`: [`ZoomLook`](#symbol-zoomlook-type)
 
@@ -118,7 +128,7 @@ show the same look and a camera resting on a press does not chatter. A ratio tha
 
 #### `ladderStep` {#symbol-ladderstep}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L126)
 
 ##### `ladderStep` — Summary
 The step of a zoom ratio, given the step shown (null before any): step n is centred on STEP_RATIO^-n, covering half a
@@ -130,21 +140,21 @@ not a positive number keeps the step.
 
 #### `LadderResistances` {#symbol-ladderresistances}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L131)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L141)
 
 ##### `LadderResistances` — Summary
 The resistances of Tuning → 2D Layout: 0 follows the map, 1 holds the screen size the step began with.
 
 #### `LadderScales (interface)` {#symbol-ladderscales-interface}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L137)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L147)
 
 ##### `LadderScales (interface)` — Summary
 A step's held scales, in the map's own units: what a name and a control are multiplied by while the step holds.
 
 #### `ladderScales (function)` {#symbol-ladderscales-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L150)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L160)
 - Returns: [`LadderScales`](#symbol-ladderscales-interface)
 - Parameters: `resistances`: [`LadderResistances`](#symbol-ladderresistances)
 

@@ -8,6 +8,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { ExplorerNodePayload } from "../../../shared/types";
+import { pairLines } from "./directory-flow";
 import { computeSymbolHighlight } from "./symbol-highlight";
 import type { LocalSubgraph, LocalEdge, LocalViewOptions } from "./types";
 
@@ -387,6 +388,45 @@ describe("symbol-highlight", () => {
       // Hovering 'depFunc' on dep SHOULD match
       const resultDep = computeSymbolHighlight(subgraph, options, "dep", "depFunc", false);
       expect(resultDep.relatedEdges).toHaveLength(1);
+    });
+
+    // The owner's picture of 2026-11-19: in Flow, the default, every wire between two cards of an opened directory is a
+    // pair line between the files' hubs, standing for the links the picture does not draw symbol by symbol. A row's
+    // hover kept none of them, so it faded every wire of the picture.
+    describe("a pair line of an opened directory", () => {
+      const service = createNode("PaymentService.cs"), config = createNode("App.config"), context = createNode("PaymentsContext.cs");
+      const subgraph: LocalSubgraph = {
+        center: null,
+        nodes: [service, config, context],
+        links: pairLines([
+          // App.config's Internals uses PaymentService.cs's row PaymentService: the cycle's return.
+          { sourceId: "App.config", targetId: "PaymentService.cs", kind: "dependency", targetSymbol: "PaymentService" },
+          { sourceId: "PaymentService.cs", targetId: "PaymentsContext.cs", kind: "dependency", targetSymbol: "PaymentsContext (class)" },
+          { sourceId: "PaymentsContext.cs", targetId: "App.config", kind: "dependency", targetSymbol: "PaymentsDb" }
+        ]),
+        inboundIds: new Set(),
+        outboundIds: new Set()
+      };
+      const pairsOf = (edges: readonly LocalEdge[]): string[] => edges.map(edge => `${edge.sourceId} uses ${edge.targetId}`);
+
+      it("is kept by the hover of a row one of its links ends at, at either end", () => {
+        const offering = computeSymbolHighlight(subgraph, createOptions(), "PaymentService.cs", "PaymentService", false);
+        expect(pairsOf(offering.relatedEdges)).toEqual(["App.config uses PaymentService.cs"]);
+        expect(offering.relatedNodeIds).toEqual(new Set(["PaymentService.cs", "App.config"]));
+        // The row at the link's far end is lit, here App.config's Internals.
+        expect(offering.relatedSymbols).toEqual(new Set(["PaymentService.cs:PaymentService", "App.config:__internals__"]));
+        const using = computeSymbolHighlight(subgraph, createOptions(), "App.config", "__internals__", false);
+        expect(pairsOf(using.relatedEdges)).toEqual(["App.config uses PaymentService.cs"]);
+        const offered = computeSymbolHighlight(subgraph, createOptions(), "App.config", "PaymentsDb", false);
+        expect(pairsOf(offered.relatedEdges)).toEqual(["PaymentsContext.cs uses App.config"]);
+        expect(offered.relatedSymbols).toEqual(new Set(["App.config:PaymentsDb", "PaymentsContext.cs:__internals__"]));
+      });
+
+      it("is not kept by the hover of a row none of its links ends at", () => {
+        expect(computeSymbolHighlight(subgraph, createOptions(), "App.config", "Estate.Payments.PaymentService", false).relatedEdges).toEqual([]);
+        expect(pairsOf(computeSymbolHighlight(subgraph, createOptions(), "PaymentService.cs", "__internals__", false).relatedEdges))
+          .toEqual(["PaymentService.cs uses PaymentsContext.cs"]);
+      });
     });
   });
 });

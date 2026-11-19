@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-19T00:59:26.866Z
+- Generated At: 2026-11-19T04:53:49.609Z
 
 ## Authored
 ### Purpose
@@ -59,28 +59,28 @@ Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everythi
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L16)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L19)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L22)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L31)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L32)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -89,15 +89,15 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`dom.applyMarblePattern`](../dom.ts.mdmd.md#symbol-applymarblepattern)
 - [`dom.applyMarbles`](../dom.ts.mdmd.md#symbol-applymarbles)
 - [`dom.applyPalette`](../dom.ts.mdmd.md#symbol-applypalette)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
-- [`palette.DEFAULT_MARBLE_BEND`](../palette.ts.mdmd.md#symbol-default_marble_bend)
 - [`palette.DEFAULT_PALETTE`](../palette.ts.mdmd.md#symbol-default_palette)
 - [`palette.isPaletteName`](../palette.ts.mdmd.md#symbol-ispalettename)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
+- [`tuning-reset.initTuningReset`](./tuning-reset.ts.mdmd.md#symbol-inittuningreset)
+- [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
 - [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
@@ -109,9 +109,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
-- [`types.MARBLE_PATTERNS`](../types.ts.mdmd.md#symbol-marble_patterns)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
+- [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-closed-cells`](../../shared/template.html.mdmd.md#symbol-tuning-closed-cells)
@@ -135,9 +135,6 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-lace-curl`](../../shared/template.html.mdmd.md#symbol-tuning-lace-curl)
 - [`template.tuning-lace-reach`](../../shared/template.html.mdmd.md#symbol-tuning-lace-reach)
 - [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
-- [`template.tuning-marble-bend`](../../shared/template.html.mdmd.md#symbol-tuning-marble-bend)
-- [`template.tuning-marble-bend-value`](../../shared/template.html.mdmd.md#symbol-tuning-marble-bend-value)
-- [`template.tuning-marble-pattern`](../../shared/template.html.mdmd.md#symbol-tuning-marble-pattern)
 - [`template.tuning-marbles`](../../shared/template.html.mdmd.md#symbol-tuning-marbles)
 - [`template.tuning-membrane-evenness`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-evenness)
 - [`template.tuning-membrane-simplicity`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-simplicity)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-19T00:59:27.019Z
+- Generated At: 2026-11-19T04:29:44.254Z
 
 ## Authored
 ### Purpose
@@ -113,7 +113,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L227)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L234)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -122,14 +122,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L230)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L237)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `AppearanceTuning` {#symbol-appearancetuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L242)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L249)
 
 ##### `AppearanceTuning` — Summary
 How the page is drawn, the viewer's own (2026-11-16): the palette, by name, and since 2026-11-17 whether files are
@@ -137,31 +137,22 @@ drawn as marbles. Saved, as every setting is, only when it differs from the defa
 
 #### `MarbleChoice` {#symbol-marblechoice}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L256)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L262)
 
 ##### `MarbleChoice` — Summary
 Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
 record, Turn 9): its kind's colour as glass with veins of the offering blue and the using green, as many as the files
-that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On is the
-default since 2026-11-18, the owner's "I think they are a worthy new default" (the November 17 record, Turn 13).
+that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On was the
+default on 2026-11-18 and 19 (the owner's "I think they are a worthy new default", the November 17 record, Turn 13);
+Off is again since 2026-11-19, the owner's "for immediate understandability of the system, Marbes Off is superior":
+one colour meaning across the 3D spheres and the 2D cells, and less fine detail in a view they found "Still quite noisy".
 
 #### `MARBLE_CHOICES` {#symbol-marble_choices}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L259)
-
-##### `MARBLE_CHOICES` — Summary
-Every marble choice, in the order the control offers them; the first, on, is the default.
-
-#### `MarblePattern` {#symbol-marblepattern}
-- Type: unknown
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L262)
-
-#### `MARBLE_PATTERNS` {#symbol-marble_patterns}
-- Type: const
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L265)
 
-##### `MARBLE_PATTERNS` — Summary
-Every marble pattern, in the order the control offers them; the first, one pattern, is the default.
+##### `MARBLE_CHOICES` — Summary
+Every marble choice, in the order the control offers them; the first, off, is the default.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
@@ -333,9 +324,23 @@ Every Hidden Files choice, in the order the control offers them; the first, Cell
 2026-11-18, when the owner asked that the defaults reflect the cells' pictures (the November 17 record, Turn 13) and
 root chose which of the two cell values. The count was the default before.
 
+#### `ArrivalFraming` {#symbol-arrivalframing}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L373)
+
+##### `ArrivalFraming` — Summary
+How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the neighbours.
+
+#### `ARRIVALS` {#symbol-arrivals}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L376)
+
+##### `ARRIVALS` — Summary
+Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others.
+
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L376)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L382)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -343,14 +348,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L379)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L385)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L388)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L394)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -361,42 +366,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L391)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L397)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
 Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L394)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L400)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L503)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L509)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L508)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L514)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L515)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L521)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L521)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L527)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -404,7 +409,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L550)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L556)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
@@ -412,7 +417,6 @@ Map from implementation file path → covering test node(s).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`palette.MarblePattern`](./palette.ts.mdmd.md#symbol-marblepattern-type) (type-only)
 - [`palette.PaletteName`](./palette.ts.mdmd.md#symbol-palettename) (type-only)
 - [`reading-state.ReadingChoice`](./reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`pin-state.PinSet`](./views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)

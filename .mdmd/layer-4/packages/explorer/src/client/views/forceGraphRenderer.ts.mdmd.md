@@ -29,6 +29,8 @@ The November 8 transition capture forwards only submitted visible links and proj
 
 Since November 8, 2026 initialization supplies the actual renderer to the buffers for contained-file capability selection before shader compilation. The ordinary node geometry, picking, trackball controls and motion ownership are unchanged; unsupported contexts retain native contained spheres.
 
+Since 2026-11-19 `wireAt` picks the wire under the pointer without showing its words, so that the view can show them only once the pointer has rested on it (`pointerRest.ts`); `showWireAt` uses it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

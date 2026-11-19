@@ -37,7 +37,7 @@ const words = option('--words', task?.words);
 const model = option('--model');
 const effort = option('--effort');
 const variant = option('--variant', 'look-only');
-const maxActions = option('--max-actions', '60');
+const maxActions = option('--max-actions', String(task?.maxActions ?? 60));
 if (!start || !words || !model || !effort || !['look-only', 'after-each'].includes(variant)) {
   console.error('usage: playtest.mjs (--task <id> | --start <url> --words <text>) --model <id> --effort <level|default> [--variant look-only|after-each] [--out <dir>]');
   process.exit(2);
@@ -75,6 +75,9 @@ if (!await serving()) {
 const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'session-'));
 const windowArgs = [path.join(here, 'browser-window.mjs'), '--start', start, '--record', out, '--max-actions', maxActions];
 if (variant === 'after-each') windowArgs.push('--after-each');
+// A task may ask the window to prepare the page before the tester begins (the narrative playtest's history and its
+// condition); the window records what it did in setup.json.
+for (const flag of task?.window ?? []) if (['--open-history', '--hide-step-words'].includes(flag)) windowArgs.push(flag);
 const mcp = { mcpServers: { window: { type: 'stdio', command: process.execPath, args: windowArgs } } };
 const claudeArgs = [
   '-p', prompt,
@@ -163,6 +166,7 @@ fs.writeFileSync(path.join(out, 'answer.md'), answer + '\n');
 const summary = {
   ...JSON.parse(fs.readFileSync(path.join(out, 'run.json'), 'utf8')),
   finishedAt: new Date().toISOString(), siteAtEnd: siteStamp(),
+  setup: fs.existsSync(path.join(out, 'setup.json')) ? JSON.parse(fs.readFileSync(path.join(out, 'setup.json'), 'utf8')) : null,
   siteChanged: JSON.stringify(siteStamp()) !== JSON.stringify(siteAtStart), exitCode: code, outcome: result?.subtype ?? 'no result', wallMs, lockWaitMs, apiMs: result?.duration_api_ms,
   turns: result?.num_turns, assistantMessages, toolCalls, actions: actions.length,
   actionsByTool: Object.fromEntries(tools.map((t) => [t, actions.filter((a) => a.tool === t).length])),

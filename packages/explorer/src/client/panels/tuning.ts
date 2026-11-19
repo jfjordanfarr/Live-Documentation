@@ -5,11 +5,12 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
-import { applyMarblePattern, applyMarbles, applyPalette } from "../dom";
+import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
-import { DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, MARBLE_PATTERNS, OVERVIEW_FILES, type ExplorerState } from "../types";
+import { DEFAULT_PALETTE, isPaletteName } from "../palette";
+import { ARRIVALS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
+import { initTuningReset } from "./tuning-reset";
 
 /** Callback for when tuning values change */
 export type TuningChangeCallback = () => void;
@@ -34,7 +35,17 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
     persistChange();
+    refreshChanges();
   };
+  // Reset to defaults takes the path every lever's change takes: the looks the page wears, the controls, the save and
+  // the address, and the picture drawn again.
+  const refreshChanges = initTuningReset({ state, apply: () => {
+    applyPalette(state.tuning.appearance.palette);
+    applyMarbles(state.tuning.appearance.marbles);
+    syncTuningControlsFromState();
+    onTuningChange();
+    if (state.view === "map") onRender();
+  } });
   const packingSliders = [
     ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"], ["widthCost", "width-cost"] ] as const).map(([key, name]) => ({
       id: `tuning-${name}`, get: () => state.tuning.localMap[key], set: (value: number) => { state.tuning.localMap[key] = value; }
@@ -69,15 +80,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedShapeSelect = document.getElementById("tuning-closed-shape") as HTMLSelectElement | null;
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
+  const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
-  const marblePatternSelect = document.getElementById("tuning-marble-pattern") as HTMLSelectElement | null;
-  const marbleBendInput = document.getElementById("tuning-marble-bend") as HTMLInputElement | null;
-  /** The Vein Bend is a choice of the pattern from the doc alone: shown only while marbles are drawn from it. */
-  const syncMarbleChoices = (): void => {
-    const { marbles, marblePattern } = state.tuning.appearance;
-    for (const row of document.querySelectorAll<HTMLElement>("[data-marble-bend-only]")) row.hidden = marbles !== "on" || marblePattern !== "doc";
-  };
   /**
    * The skin's shape and its cells' colour are choices of the cells alone: shown only while a closed directory's skin or
    * a handle's hidden files draw them.
@@ -197,15 +202,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedShapeSelect) closedShapeSelect.value = state.tuning.localMap.closedShape;
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
+    if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
-    if (marblePatternSelect) marblePatternSelect.value = state.tuning.appearance.marblePattern;
-    if (marbleBendInput) {
-      marbleBendInput.value = String(state.tuning.appearance.marbleBend);
-      const output = document.getElementById("tuning-marble-bend-value");
-      if (output) output.textContent = marbleBendInput.value;
-    }
-    syncMarbleChoices();
     syncClosedChoices();
     if (overviewFilesSelect) overviewFilesSelect.value = state.tuning.localMap.overviewFiles;
     if (descriptionsZoomedOutSelect) descriptionsZoomedOutSelect.value = state.tuning.localMap.descriptionsZoomedOut;
@@ -320,6 +319,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       if (state.view === "map" && state.perspective === "2d") onRender();
     });
   }
+  // How the camera meets a new subject changes no picture: the next arrival reads it.
+  if (arrivalSelect) {
+    arrivalSelect.addEventListener("change", () => {
+      state.tuning.localMap.arrival = ARRIVALS.find(choice => choice === arrivalSelect.value) ?? ARRIVALS[0];
+      onTuningChange();
+    });
+  }
   if (closedShapeSelect) {
     closedShapeSelect.addEventListener("change", () => {
       state.tuning.localMap.closedShape = CLOSED_DIRECTORY_SHAPES.find(choice => choice === closedShapeSelect.value) ?? CLOSED_DIRECTORY_SHAPES[0];
@@ -341,27 +347,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     marblesSelect.addEventListener("change", () => {
       state.tuning.appearance.marbles = MARBLE_CHOICES.find(choice => choice === marblesSelect.value) ?? MARBLE_CHOICES[0];
       applyMarbles(state.tuning.appearance.marbles);
-      syncMarbleChoices();
-      onTuningChange();
-    });
-  }
-  // How the marbles' veins wind (the pattern trial, 2026-11-18): taken at once as the marbles are, nothing moving.
-  if (marblePatternSelect) {
-    marblePatternSelect.addEventListener("change", () => {
-      state.tuning.appearance.marblePattern = MARBLE_PATTERNS.find(choice => choice === marblePatternSelect.value) ?? MARBLE_PATTERNS[0];
-      applyMarblePattern(state.tuning.appearance.marblePattern, state.tuning.appearance.marbleBend);
-      syncMarbleChoices();
-      onTuningChange();
-    });
-  }
-  // How far they bend (2026-11-19): a uniform, taken at once with nothing compiled again and nothing moving.
-  if (marbleBendInput) {
-    const output = document.getElementById("tuning-marble-bend-value");
-    marbleBendInput.addEventListener("input", () => {
-      const value = Number(marbleBendInput.value);
-      state.tuning.appearance.marbleBend = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : DEFAULT_MARBLE_BEND;
-      if (output) output.textContent = marbleBendInput.value;
-      applyMarblePattern(state.tuning.appearance.marblePattern, state.tuning.appearance.marbleBend);
       onTuningChange();
     });
   }
@@ -480,7 +465,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     const anchor = document.createElement("a"); anchor.href = url; anchor.download = "local-map-layout.json"; anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 0);
   });
-  return syncTuningControlsFromState;
+  refreshChanges();
+  return () => { syncTuningControlsFromState(); refreshChanges(); };
 }
 
 /**

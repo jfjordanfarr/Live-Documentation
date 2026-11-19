@@ -232,7 +232,7 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 - **Checked by.** `palette.test.ts` ("draws the 2D and World wires in the roles' colours"), and `spatial-legend.spec.ts` for the keys.
 - **Status.** Holds.
 - **Do and don't.**
-  - *Do* carry the roles into the 3D map through the marble's veins, which are a file's own share of offering and using.
+  - *Do* carry the roles into the 3D map, while marbles are drawn (Tuning → Colour → Marbles → On; off by default since 2026-11-19), through the marble's veins, which are a file's own share of offering and using.
   - *Don't* colour a 3D wire by direction. That was tried on 2026-10-30 and withdrawn at the owner's eye the next day: on a dense web, "too many connectors drawn ... to confer any ability for the end user to understand what color means on any one connector".
 
 **Rule: a file's kind is told by colour, in both maps.** In the 3D map and in a closed directory's cells in the 2D map, a file's colour is its kind.
@@ -714,7 +714,7 @@ Each motion takes its band's one value, and one unit (ms).
 | A connection's role, offers or uses | Hue: blue, green | 2D wires, pins and the key; 3D marble veins; World doors | Owner, 2025-12-03 and 2026-09-29 |
 | A connection's direction in 2D | Position: uses enter on the left, offerings leave on the right | `judgments.ts`, `usesLeftOfferingsRight` | Owner, 2026-09-28; checked by the scenario suite |
 | A file's kind | Hue | 3D sphere and marble glass; 2D cells; both keys | Owner, 2026-11-17 |
-| How much a file offers and uses | The share of each vein on the marble, from `marbleAmount` (1 user is a third, 3 two thirds, 7 or more all) | `views/forceGraphAppearance.ts` | Owner, 2026-11-16: "Something that sends more is more blue. Something that receives more is more green"; default since 2026-11-18 |
+| How much a file offers and uses | The share of each vein on the marble, from `marbleAmount` (1 user is a third, 3 two thirds, 7 or more all) | `views/forceGraphAppearance.ts` | Owner, 2026-11-16: "Something that sends more is more blue. Something that receives more is more green"; drawn by default on 2026-11-18 and 19, and since then only with Marbles → On |
 | A file's exposed interface | Size of the 3D sphere, sublinear | the 3D map | Owner, 2026-10-13, quoting back the agent's "position suggests coupling, size suggests exposed interface" and answering "Phenomenal. Yeah, we're aligned. Please implement." ([the October 13 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md)) |
 | Coupling between files | Distance in the 3D layout | the 3D map | The same exchange |
 | A reference's weight | Wire width, `1 + 0.375 log2(count)`, at most 3×; a path's wires twice as wide | `views/forceGraphView.ts:1906–1907` | No owner word found; see the findings |

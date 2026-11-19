@@ -361,7 +361,7 @@ export function exploreBranches(
       if (path) { remember(sourceId, link.sourceSymbol); remember(targetId, link.targetSymbol); }
     } else if (flow && sourceId !== targetId && cards.has(sourceId) && cards.has(targetId)) {
       // Both ends are file cards on screen: the link is drawn, in its pair's line, and so is no hidden connection.
-      undrawn.push({ sourceId, targetId, kind: link.kind });
+      undrawn.push({ sourceId, targetId, kind: link.kind, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol });
     } else {
       for (const endpoint of new Set([sourceId, targetId])) {
         if (shown.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);

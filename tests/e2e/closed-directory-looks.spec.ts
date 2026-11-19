@@ -43,7 +43,8 @@ async function still(page: Page): Promise<void> {
 
 /**
  * How a closed directory is drawn for a visit: its look, and for the skin with cells its shape and its cells' colour;
- * and whether files are marbles, on by default since 2026-11-18, for a case that reads a cell's plain colour.
+ * and whether files are marbles (on by default on 2026-11-18 and 19, off again since), for a case that reads a cell's
+ * plain colour.
  */
 interface Style { look: ClosedDirectoryLook; shape?: ClosedDirectoryShape; cells?: ClosedCellColour; marbles?: MarbleChoice }
 

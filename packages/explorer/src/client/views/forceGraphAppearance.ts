@@ -61,12 +61,8 @@ export interface MarbleCounts { usedBy: number; uses: number }
 /** How much of a ball each vein takes, 0 to 1 each and never more than 1 together: blue for what it offers, green for what it uses. */
 export interface MarbleShares { offers: number; uses: number }
 
-/**
- * A file drawn as a marble: its glass, its veins' shares, and the number from its id that turns its pattern; and, when
- * its pattern is drawn from its doc (the pattern trial, 2026-11-18), the sketch of what its Live Doc lists
- * (views/marbleSketch.ts), the strengths of the waves that bend its veins.
- */
-export interface Marble extends MarbleShares { glass: Colour; seed: number; sketch?: readonly number[] }
+/** A file drawn as a marble: its glass, its veins' shares, and the number from its id that turns its pattern. */
+export interface Marble extends MarbleShares { glass: Colour; seed: number }
 
 /**
  * How much of its veins a count of files gives a ball: 1 a third, 3 two thirds, 7 or more all. Half this repository's
@@ -166,12 +162,6 @@ export function marbleOf(id: string, archetype: string | undefined, counts: Read
  * pixels, so that a distant ball is one steady colour and never shimmers. A small highlight makes the ball read as
  * glass, fading as the pattern does. With no marble (`spatialMarbleVeins.w` zero) none of this runs.
  *
- * With the pattern from each file's doc (the pattern trial, 2026-11-18) the material defines `MARBLE_SKETCH` beside
- * `MARBLES`, and the warp is the field of `MARBLE_WAVES` whose strengths are the file's sketch, carried in two more
- * attributes, scaled by the viewer's Vein Bend (the uniform `uMarbleBend`, so that moving it compiles nothing). The axis,
- * the vanes, their shares and every edge's filtering are as before. With one pattern it is not defined and the shaders
- * are, to the compiler, the ones of before the trial.
- *
  * Every chunk stands inside `#ifdef MARBLES`, and a material defines that only while marbles are drawn: with marbles
  * off its shaders are, to the compiler, the ones it had before marbles. A test inside the shader is not enough. The
  * software renderer the browser tests run on shades several pixels at once and pays for the three varyings on every
@@ -184,57 +174,17 @@ attribute vec3 spatialMarbleGlass;
 attribute vec4 spatialMarbleVeins;
 varying vec3 vMarbleGlass;
 varying vec4 vMarbleVeins;
-#ifdef MARBLE_SKETCH
-attribute vec4 spatialMarbleSketchA;
-attribute vec4 spatialMarbleSketchB;
-varying vec4 vMarbleSketchA;
-varying vec4 vMarbleSketchB;
-#endif
 #endif`;
 
-/** The vertex's hand-on of a marble's glass and veins, and with the pattern from its doc, its sketch. */
+/** The vertex's hand-on of a marble's glass and veins. */
 export const MARBLE_VERTEX = `
 #ifdef MARBLES
 vMarbleGlass = spatialMarbleGlass;
 vMarbleVeins = spatialMarbleVeins;
-#ifdef MARBLE_SKETCH
-vMarbleSketchA = spatialMarbleSketchA;
-vMarbleSketchB = spatialMarbleSketchB;
-#endif
 #endif`;
 
 /** The pattern's constants: the vanes round the axis (a whole number, so that the pattern closes), their twist along it, and its warp. */
 const MARBLE_PATTERN = { vanes: 3, twist: 1.35, warp: 0.07 } as const;
-
-/**
- * The pattern from a file's doc (the pattern trial, 2026-11-18): eight fixed smooth waves over the ball's unit sphere,
- * each a direction, a frequency and a phase, whose strengths are the file's sketch, one number each. The field
- * `W(p) = Σ sᵢ · sin(fᵢ · dot(dᵢ, p) + φᵢ)` takes the place of the warp: smooth and periodic, as Perlin's noise is, and
- * linear in the sketch, so that a small move of the sketch is a small bend of the veins. The frequencies are low, one
- * to two waves across a ball, so that the bend is of the vanes' own scale and the pattern still gives way to the far
- * tint where it did. `bend` is the field's strength in vanes' periods, the Vein Bend a viewer starts with: a sketch of
- * unit length bends a vane by about a third of its period at its root mean square.
- */
-export const MARBLE_WAVES = {
-  bend: 0.55,
-  waves: [
-    { direction: [0.577, 0.577, 0.577], frequency: 2.3, phase: 0.4 },
-    { direction: [0.577, -0.577, -0.577], frequency: 2.9, phase: 2.1 },
-    { direction: [-0.577, 0.577, -0.577], frequency: 3.4, phase: 4.4 },
-    { direction: [-0.577, -0.577, 0.577], frequency: 3.9, phase: 1.3 },
-    { direction: [0, 0.6, 0.8], frequency: 4.6, phase: 5.6 },
-    { direction: [0.8, 0, -0.6], frequency: 2.6, phase: 3.0 },
-    { direction: [-0.6, 0.8, 0], frequency: 5.3, phase: 0.9 },
-    { direction: [0.36, -0.48, 0.8], frequency: 3.1, phase: 2.7 }
-  ]
-} as const;
-
-const glslNumber = (value: number): string => (Number.isInteger(value) ? value.toFixed(1) : String(value));
-const glslVec = (values: readonly number[]): string => `vec${values.length}(${values.map(glslNumber).join(", ")})`;
-const waveTerm = (wave: (typeof MARBLE_WAVES.waves)[number]): string =>
-  `sin(${glslNumber(wave.frequency)} * dot(${glslVec(wave.direction)}, p) + ${glslNumber(wave.phase)})`;
-const SKETCH_WARP = `uMarbleBend * (dot(vMarbleSketchA, vec4(${MARBLE_WAVES.waves.slice(0, 4).map(waveTerm).join(",\n    ")}))
-    + dot(vMarbleSketchB, vec4(${MARBLE_WAVES.waves.slice(4, 8).map(waveTerm).join(",\n    ")})))`;
 
 /** The fragment's declarations and the pattern. */
 export const MARBLE_FRAGMENT_PARS = `
@@ -243,11 +193,6 @@ uniform vec3 uMarbleOffers;
 uniform vec3 uMarbleUses;
 varying vec3 vMarbleGlass;
 varying vec4 vMarbleVeins;
-#ifdef MARBLE_SKETCH
-uniform float uMarbleBend;
-varying vec4 vMarbleSketchA;
-varying vec4 vMarbleSketchB;
-#endif
 float marbleDetail = 0.0;
 // The share of [0, s) of every whole period that a pixel's footprint [t - w / 2, t + w / 2] covers.
 float marbleCover(float t, float w, float s) {
@@ -263,11 +208,7 @@ vec3 marbleColour(vec3 p, vec3 far) {
   // Nudged off the axis, where the angle has no value.
   float h = dot(p, axis), x = dot(p, u) + 1.0e-6, y = dot(p, v);
   float turn = atan(y, x) / 6.2831853;
-#ifdef MARBLE_SKETCH
-  float warp = ${SKETCH_WARP};
-#else
   float warp = ${MARBLE_PATTERN.warp.toFixed(3)} * sin(7.0 * h + 6.2831853 * seed) + ${(MARBLE_PATTERN.warp * 0.6).toFixed(3)} * sin(12.5663706 * turn + 4.0 * h);
-#endif
   float along = ${MARBLE_PATTERN.twist.toFixed(3)} * h + warp + seed;
   float t = ${MARBLE_PATTERN.vanes.toFixed(1)} * turn + along;
   // The angle's seam, where it jumps by a whole turn, is crossed by reading the footprint from the angle turned half round.

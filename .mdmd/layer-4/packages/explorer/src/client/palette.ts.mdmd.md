@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/palette.ts
-- Generated At: 2026-11-19T01:24:59.504Z
+- Generated At: 2026-11-19T04:29:43.950Z
 
 ## Authored
 ### Purpose
@@ -24,35 +24,35 @@ Since 2026-11-19 Today draws three quiet tones of text at the proposed palette's
 ### Public Symbols
 #### `Colour` {#symbol-colour}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L17)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L16)
 
 ##### `Colour` — Summary
 A colour, `#rrggbb`.
 
 #### `WorldTints` {#symbol-worldtints}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L20)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L19)
 
 ##### `WorldTints` — Summary
 The tints a World Map region may wear, by the names a board's legend gives them.
 
 #### `WorldForm` {#symbol-worldform}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L29)
 
 ##### `WorldForm` — Summary
 The World Map in one of its two forms, the white board or the dark one.
 
 #### `Palette` {#symbol-palette}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L66)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L65)
 
 ##### `Palette` — Summary
 One palette: every meaning the Explorer draws in colour.
 
 #### `TODAY` {#symbol-today}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L238)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L237)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `TODAY` — Summary
@@ -62,7 +62,7 @@ system's audit): as drawn before they stood at 4.42, 3.50 and 3.34 to 1 on a car
 
 #### `PROPOSED` {#symbol-proposed}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L303)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L302)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `PROPOSED` — Summary
@@ -78,7 +78,7 @@ its doors and its wires in its own blue and green.
 
 #### `VIVID_KINDS` {#symbol-vivid_kinds}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L330)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L329)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `VIVID_KINDS` — Summary
@@ -90,21 +90,21 @@ has-tests violet.
 
 #### `PALETTES` {#symbol-palettes}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L342)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L341)
 
 ##### `PALETTES` — Summary
 The palettes a viewer may choose, by name.
 
 #### `PaletteName` {#symbol-palettename}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L345)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L344)
 
 ##### `PaletteName` — Summary
 A palette's name.
 
 #### `DEFAULT_PALETTE` {#symbol-default_palette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L348)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L347)
 - Returns: [`PaletteName`](#symbol-palettename)
 
 ##### `DEFAULT_PALETTE` — Summary
@@ -112,14 +112,14 @@ The palette drawn when none is chosen.
 
 #### `isPaletteName` {#symbol-ispalettename}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L351)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L350)
 
 ##### `isPaletteName` — Summary
 Whether a saved name is a palette's.
 
 #### `MASK_KEEP` {#symbol-mask_keep}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L354)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L353)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_KEEP` — Summary
@@ -127,80 +127,48 @@ A cell mask's luminance where the cells stay drawn: not a colour a person sees, 
 
 #### `MASK_FADE` {#symbol-mask_fade}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L356)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L355)
 - Returns: [`Colour`](#symbol-colour)
 
 ##### `MASK_FADE` — Summary
 A cell mask's luminance where the cells fade, at a field's end.
 
-#### `MarblePattern (type)` {#symbol-marblepattern-type}
-- Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L367)
-
-##### `MarblePattern (type)` — Summary
-How a marble's veins wind (a trial, 2026-11-18, the owner's wish that "Minor changes to files produce subtle shifts on
-the surface of these little marble planets. Massive changes to files completely changes their patterns"): one pattern
-for every file, turned by its path, the default; or bent by a sketch of what its Live Doc lists (views/marbleSketch.ts),
-its axis kept by its path. The shares of blue, green and clear glass stay. A third choice, the axis from the sketch
-too, was tried the same night and dropped: across files it looked no more varied than the second.
-
-#### `DEFAULT_MARBLE_BEND` {#symbol-default_marble_bend}
-- Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L370)
-
-##### `DEFAULT_MARBLE_BEND` — Summary
-How far the veins bend from a file's doc at a sketch of unit length, in vanes' periods, until a viewer moves Vein Bend.
-
 #### `activePalette` {#symbol-activepalette}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L376)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L361)
 
 ##### `activePalette` — Summary
 The palette in force.
 
 #### `marblesDrawn` {#symbol-marblesdrawn}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L383)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L369)
 
 ##### `marblesDrawn` — Summary
 Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
 what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until the page applies the
-viewer's choice as it starts, which is on unless they turned it off (the default since 2026-11-18).
-
-#### `marblePattern (const)` {#symbol-marblepattern-const}
-- Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L389)
-
-##### `marblePattern (const)` — Summary
-How the marbles' veins wind (the pattern trial, 2026-11-18): one pattern for every file, turned by its path; or bent by
-a sketch of what its Live Doc lists (`doc`).
-
-#### `marbleBend` {#symbol-marblebend}
-- Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L392)
-
-##### `marbleBend` — Summary
-How far the veins bend from a file's doc (Vein Bend, 2026-11-19), 0 to 1.
+viewer's choice as it starts, which is off unless they turned it on (the default again since 2026-11-19; on was the
+default on 2026-11-18 and 19).
 
 #### `paletteNamed` {#symbol-palettenamed}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L395)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L372)
 
 ##### `paletteNamed` — Summary
 A palette by name, the default for a name no palette has.
 
 #### `whenPaletteChanges` {#symbol-whenpalettechanges}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L403)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L380)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `whenPaletteChanges` — Summary
-Calls `listener` each time another palette is put in force, the marbles are turned on or off or their pattern changes, so that what a script
+Calls `listener` each time another palette is put in force or the marbles are turned on or off, so that what a script
 drew is drawn again as it now should be; returns the unsubscription.
 
 #### `choosePalette` {#symbol-choosepalette}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L409)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L386)
 - Returns: [`Palette`](#symbol-palette)
 
 ##### `choosePalette` — Summary
@@ -208,57 +176,42 @@ Puts a palette in force by name, the default for a name no palette has, tells wh
 
 #### `chooseMarbles` {#symbol-choosemarbles}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L418)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L395)
 
 ##### `chooseMarbles` — Summary
 Turns the marbles on or off, and tells whoever listens to the palette if that changed: the same redraw, nothing moving.
 
-#### `chooseMarblePattern` {#symbol-choosemarblepattern}
-- Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L425)
-- Parameters: `chosen`: [`MarblePattern`](#symbol-marblepattern-type)
-
-##### `chooseMarblePattern` — Summary
-Chooses how the marbles' veins wind, and tells whoever listens to the palette if that changed: the same redraw, nothing moving.
-
-#### `chooseMarbleBend` {#symbol-choosemarblebend}
-- Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L432)
-
-##### `chooseMarbleBend` — Summary
-Sets how far the veins bend from a file's doc, held to 0 to 1, and tells whoever listens to the palette if that changed.
-
 #### `channels` {#symbol-channels}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L440)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L402)
 
 ##### `channels` — Summary
 A colour's channels, 0 to 255.
 
 #### `rgba` {#symbol-rgba}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L447)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L409)
 
 ##### `rgba` — Summary
 A colour at an opacity, as `rgba(r, g, b, alpha)`, the alpha written as given.
 
 #### `unitChannels` {#symbol-unitchannels}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L453)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L415)
 
 ##### `unitChannels` — Summary
 A colour's channels, 0 to 1, for a shader.
 
 #### `mix` {#symbol-mix}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L456)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L418)
 
 ##### `mix` — Summary
 A colour between two, `t` of the way from `a` to `b`, each channel rounded, as `rgb(r,g,b)`.
 
 #### `customProperties` {#symbol-customproperties}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L469)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L431)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `customProperties` — Summary
@@ -269,7 +222,7 @@ its channels (`--ground-card-hover-rgb: 47, 47, 51`), from which a stylesheet dr
 
 #### `paletteStylesheet` {#symbol-palettestylesheet}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L483)
+- Source: [source](../../../../../../packages/explorer/src/client/palette.ts#L445)
 - Parameters: `palette`: [`Palette`](#symbol-palette)
 
 ##### `paletteStylesheet` — Summary

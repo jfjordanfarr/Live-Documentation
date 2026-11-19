@@ -144,6 +144,11 @@ export interface LocalEdge {
    * its two files it stands for, the unit a card's count of connections outside the view uses. Absent on a reference.
    */
   gathered?: number;
+  /**
+   * On a pair line: the symbols at the two ends of each link it stands for, in the graph's order, so that a hovered row
+   * keeps the line that carries one of its links (2026-11-19); an end with no symbol is the file's Internals.
+   */
+  standsFor?: ReadonlyArray<Pick<LocalEdge, "sourceSymbol" | "targetSymbol">>;
 }
 
 /**
