@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/document.test.ts
-- Generated At: 2026-09-27T23:21:31.440Z
+- Generated At: 2026-11-19T20:42:02.149Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,8 @@ _No public symbols detected_
 - [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 - [`document.LiveDocSyntaxError`](./document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.authoredBlockOf`](./document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.decodeLinkPath`](./document.ts.mdmd.md#symbol-decodelinkpath)
+- [`document.encodeLinkPath`](./document.ts.mdmd.md#symbol-encodelinkpath)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - `vitest` - `describe`, `expect`, `it`
