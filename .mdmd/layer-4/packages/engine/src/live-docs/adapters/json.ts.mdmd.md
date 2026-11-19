@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/json.ts
-- Generated At: 2026-11-19T11:54:01.775Z
+- Generated At: 2026-11-19T12:44:36.502Z
 
 ## Authored
 ### Purpose
@@ -24,25 +24,9 @@ Polyglot language adapter for JSON files: file-path references in configuration 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `commandsOf` {#symbol-commandsof}
-- Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L164)
-
-##### `commandsOf` — Summary
-Every command a script starts, each as its words: the commands between the shell's separators, and within each the
-commands it hands on to another. A wrapper hands on a command in one of two ways, as their own documentation shows:
-after a `--` that ends the wrapper's own options (`dotenv -e .env -- node app.js`, a runner that takes `-- <command>`),
-or as a quoted word holding a whole command line (`concurrently "node api.js" "node web.js"`,
-`nodemon --exec "tsx src/main.ts"`, `sh -c "node a.js && node b.js"`). What follows a `--`, or a quoted word, is a
-command only when it begins as one ({@link beginsAsCommand}): `node gen.mjs -- data/input.json` hands its script an
-argument, and `node "scripts/my script.js"` names one path. A wrapper that takes the command as its own remaining
-words (`cross-env NODE_ENV=production node app.js`) needs nothing more: its command's first file is the first of the
-words. A wrapper that names npm scripts (`npm-run-all build test`) starts no file of its own; the scripts it names
-are read as scripts.
-
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L502)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L380)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -50,7 +34,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L516)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L394)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary

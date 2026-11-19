@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T11:54:02.241Z
+- Generated At: 2026-11-19T12:44:37.009Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ The seam's git implementation, through the `git` executable on the local clone: 
 ### Public Symbols
 #### `openGitRepository` {#symbol-opengitrepository}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L63)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L66)
 
 ##### `openGitRepository` — Summary
 The git repository whose top level is `workspaceRoot`, as the history
@@ -35,47 +35,72 @@ command's version control.
 
 #### `UnwrittenEntry` {#symbol-unwrittenentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L161)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L164)
 
 ##### `UnwrittenEntry` — Summary
 An entry of a change's tree that was not written into its working tree, and why.
 
+#### `DiskEntry` {#symbol-diskentry}
+- Type: type
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L170)
+
+##### `DiskEntry` — Summary
+What a path under a tree's folder is on the disk, read without following a link.
+
 #### `TreeDisk` {#symbol-treedisk}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L167)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L176)
 
 ##### `TreeDisk` — Summary
-What decides which names a working tree's disk can hold apart; read from the disk when not given.
+The disk a tree is written to, as the writer asks it, by paths relative to the tree's folder: the real disk
+({@link realDisk}), or in a test a stand-in that treats names as one as APFS or NTFS do.
 
-#### `caseInsensitiveDisk` {#symbol-caseinsensitivedisk}
+#### `realDisk` {#symbol-realdisk}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L183)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L184)
+- Returns: [`TreeDisk`](#symbol-treedisk)
 
-##### `caseInsensitiveDisk` — Summary
-Whether a folder's disk takes two names that differ only in case for the same file: a probe written under one case
-and looked for under the other.
+##### `realDisk` — Summary
+The real disk under a folder.
+
+#### `placeEntry` {#symbol-placeentry}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L222)
+- Parameters: `disk`: [`TreeDisk`](#symbol-treedisk)
+
+##### `placeEntry` — Summary
+Prepares the place of one entry on the disk, asking the disk at each step: every folder above it, one level at a
+time, must be a folder (made where absent) and never a link or a file, and nothing may stand where the entry goes.
+Whether two names are one is the disk's own rule, case, Unicode normalization and short names included, never a
+rule of this module's.
+
+##### `placeEntry` — Returns
+Why the entry cannot be written, or undefined where it can.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L210)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L267)
 
 ##### `writeStoredTree` — Summary
 Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
 where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
 folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
 
-Nothing is ever written outside `directory`. An entry is not written, and is returned with the reason, when its path
-would leave the directory or name a `.git`; when the platform cannot hold its name; when it lies beneath a link or a
-file of the tree, as a tree holding both `a` as a link and `a/x` does, or `A` as a link and `a/x` on a disk that
-takes `A` and `a` for one name; or when it names a path already written, under another case on such a disk. Of two
-entries that clash, the first in the tree's order is written.
+Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
+reason, when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
+disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
+something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
+hold its name. Of two entries that clash, the first in the tree's order is written.
+
+##### `writeStoredTree` — Parameters
+- `disk`: The disk, asked; the real one under `directory` unless a test stands one in.
 
 ##### `writeStoredTree` — Returns
 The entries not written, in the tree's order.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L372)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L463)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -83,14 +108,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L384)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L475)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L396)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L487)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T12:01:27.333Z
+- Generated At: 2026-11-19T12:44:39.339Z
 
 ## Authored
 ### Purpose
@@ -61,6 +61,14 @@ of its own, starting none after the deadline when there is one.
 
 ##### `regenerate` — Returns
 How long each change regenerated took, in milliseconds, and the largest peak memory a process reported.
+
+#### `summarizingEnvironment` {#symbol-summarizingenvironment}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L190)
+- Parameters: `environment`: `NodeJS.ProcessEnv`
+
+##### `summarizingEnvironment` — Summary
+The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

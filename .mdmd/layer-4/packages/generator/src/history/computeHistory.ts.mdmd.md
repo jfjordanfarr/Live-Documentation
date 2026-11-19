@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-11-19T12:01:27.304Z
+- Generated At: 2026-11-19T12:44:39.309Z
 
 ## Authored
 ### Purpose
@@ -62,7 +62,7 @@ When the check at the head applies, in the words the command prints when it skip
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L160)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L163)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -71,7 +71,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L167)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L170)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -80,7 +80,7 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L178)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L181)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -90,7 +90,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L184)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L187)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -98,7 +98,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L350)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L361)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -118,14 +118,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L521)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L532)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L549)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L560)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -138,7 +138,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L773)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L809)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.

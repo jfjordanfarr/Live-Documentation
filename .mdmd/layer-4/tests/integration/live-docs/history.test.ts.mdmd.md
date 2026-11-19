@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-11-19T12:01:29.944Z
+- Generated At: 2026-11-19T12:44:41.865Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `spawn`, `spawnSync`
+- `node:child_process` - `execFileSync`, `spawn`, `spawnSync`
 - `node:crypto` - `createHash`
 - `node:fs`
 - `node:os`
@@ -59,6 +59,7 @@ _No public symbols detected_
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`scripted-repository.CHECKED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-checked_config)
 - [`scripted-repository.CHECKED_SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-checked_script)
+- [`scripted-repository.FIXTURE_GIT_ENV`](./scripted-repository.ts.mdmd.md#symbol-fixture_git_env)
 - [`scripted-repository.MODEL`](./scripted-repository.ts.mdmd.md#symbol-model)
 - [`scripted-repository.SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-script)
 - [`scripted-repository.SCRIPTED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-scripted_config)

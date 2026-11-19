@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T11:54:04.363Z
+- Generated At: 2026-11-19T12:44:39.347Z
 
 ## Authored
 ### Purpose
@@ -24,14 +24,14 @@ One commit's summary, made in a process of its own: the generator run over the c
 ### Public Symbols
 #### `SummaryTask` {#symbol-summarytask}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L58)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L59)
 
 ##### `SummaryTask` — Summary
 What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L78)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L79)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -39,7 +39,7 @@ Generates the change's docs in its working tree and writes its summary, and its 
 
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L158)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L159)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.
