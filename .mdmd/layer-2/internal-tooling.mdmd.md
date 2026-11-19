@@ -88,6 +88,15 @@ The oracle measures the shipped generator against a compiler, which shares no me
 
 The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside it.
 
+The SQL reader has an oracle of its own, Microsoft's T-SQL parser (ScriptDom, the parser SQL Server's tools use), since 2026-11-19 ([the probe](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)):
+
+| Command | What it does |
+| --- | --- |
+| `npm run oracle:sql -- <folder>` | Reads every `.sql` file of the folder with ScriptDom through `scripts/oracle/sql-scriptdom.cs` (a .NET file-based program; it needs the .NET SDK, and NuGet on its first run), reads the same files with the SQL adapter, and prints the figures: objects created and found, lines right, dependency lines right, missing and invented, by how each object is used, and the strings the scripts execute. `--only <prefix>` narrows the files, `--sample <n> --seed <s>` reports a seeded draw, `--detail` lists every disagreement, `--json` prints data. A fixture that keeps `expected/sql-scriptdom.json` is read from it without .NET |
+| `npm run oracle:sql -- <fixture> --write` | Keeps ScriptDom's record as the fixture's `expected/sql-scriptdom.json`, which `tests/integration/live-docs/sql-oracle.test.ts` holds the adapter to, against a register of measured misses |
+
+What the comparison grades as a use of an object, and what it sets aside as no object of the folder (common table expressions, a statement's own table sources, temporary tables, SQL Server's system schemas and the `xml` type's methods), is stated once, at the head of `scripts/oracle/sql-compare.ts`.
+
 ---
 
 ## SlopCop audits

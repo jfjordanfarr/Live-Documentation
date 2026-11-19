@@ -59,6 +59,7 @@
     "live-docs:visualize:history-sample": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4 --collision-output dist/explorer/samples/history-collision --growth-output dist/explorer/samples/history-growth --veil-output dist/explorer/samples/history-veil",
     "oracle:index": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/index-fixture.ts",
     "oracle:compare": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/compare.ts",
+    "oracle:sql": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/sql-compare.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts --docs-root .mdmd --base-layer layer-4",
     "contact:sheet": "tsx --tsconfig ./tsconfig.base.json scripts/contact-sheet/contact-sheet.ts",
     "layout:lab": "tsx --tsconfig ./tsconfig.base.json scripts/layout-lab/lab.ts",
