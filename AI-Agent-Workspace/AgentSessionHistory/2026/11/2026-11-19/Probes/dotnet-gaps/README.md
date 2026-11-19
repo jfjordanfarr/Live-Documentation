@@ -1,6 +1,6 @@
 # The .NET gaps, measured against Microsoft's own tools
 
-Current as of November 19, 2026, end of the fourth leg, which resolved C# type names within what each file's project can see and indexed the lookups that resolution rests on: see [the fourth leg](#fourth-leg-type-names-within-the-projects-reach). A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
+Current as of November 19, 2026, end of the fifth leg, which read the namesakes left and the edges we lack and applied `global using` to the project: see [the fifth leg](#fifth-leg-the-namesakes-left-the-edges-we-lack-and-global-usings). The fourth leg resolved C# type names within what each file's project can see and indexed the lookups that resolution rests on: see [the fourth leg](#fourth-leg-type-names-within-the-projects-reach). A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
 
 ## Corpora and oracles
 
@@ -290,3 +290,51 @@ Seconds say little tonight: the load average was 18 to 40 throughout. The C# rea
 - The 40 seeded readings of the compiler's edges that we lack where only the target declares the name (628 and 172), and their mends.
 - Keeping the reasons for an unlinked path where a later change can hand them to a `notices` channel: `lookUpWorkspaceFile` in `dotnetPaths.ts` already returns `missing` or `ambiguous`; `resolveDirectivePath` in `aspnet.ts` and `narrowFor` in `csharp.ts` collapse their reasons into no link and would need to return them.
 - The configuration reads and the procedure named from C#.
+
+**Where the counts were taken, for comparison with another builder's profile** (307 s of `toDependencies` and 173 s of `isWorkspaceNamespace` on a 2,000-file corpus): this probe's counts are of DNN Platform at `9bc6b06f` and mojoPortal at `ecbaf7f4`, read by this branch at `086140cc`/`c6b8674b` (before) and `f201fc8f` (after), through `scripts/csharp-scale.ts`. Neither corpus showed those times before the change: the C# reader's main pass over 2,000 DNN files took 9.7 s.
+
+## Fifth leg: the namesakes left, the edges we lack, and global usings
+
+### DNN's 30 lines that still chose a namesake
+
+All 30 read (`scripts/namesakes.py`, against the docs of `f201fc8f`):
+
+| Cause | Lines |
+| --- | ---: |
+| One name declared plainly and with type parameters in one project (`ISettingsView` and `ISettingsView<TModel>`, `DnnHelper` and `DnnHelper<TModel>`); the file uses one, we link both, as the fourth leg's arity rule does until a use's type arguments are matched | 24 |
+| A `using` written inside the namespace declaration, which C# searches before the enclosing namespaces; the reader searches every enclosing namespace first | 4 |
+| A type named in a documentation `cref`, which the oracle does not bind (it parses without documentation comments) | 1 |
+| A member name of an anonymous object (`new { BrowserTypes = … }`) read as a type name | 1 |
+
+So the 30 do not bear out a rule about namespaces the file cannot see: in the four of them that concern namespaces, both candidates are visible, and the order is what is wrong. In `DnnCssInclude.cs`, `namespace DotNetNuke.Web.Client.ClientResourceManagement { using DotNetNuke.Abstractions.ClientResources; … FileOrder … }` binds `FileOrder` to the Abstractions type, because the namespace declaration's own `using` directives are searched at that declaration's level, before `DotNetNuke.Web.Client`; DNN writes every `using` inside the namespace (StyleCop SA1200). Nothing was built for these, as ruled. The rule they call for is C#'s own: for each namespace declaration from the innermost out, its members, then the `using` directives written in that declaration; the compilation unit's `using` directives (and the project's `global using`s) with the global namespace; and the type arguments a use writes, to choose between `X` and `X<T>`.
+
+### The compiler's edges we lack where only the target declares the name
+
+Forty drawn on each corpus with seed 1119 (`scripts/missing_sample.py`, classed by `scripts/missing_classes.py` and read):
+
+| Cause | DNN | mojoPortal |
+| --- | ---: | ---: |
+| The type is not written in the file: inferred through `var`, a lambda's parameter, a property's or a method's return | 31 | 7 |
+| The name is visible only through a `global using` in another file of the project | 0 | 29 |
+| Our doc of the target has no symbol for the type: a `#if`/`#else` splits the declaration's header (`#if NETCF … class PropertiesDictionary : … #else … #endif` in DNN's log4net), and the parser reads neither | 6 | 1 |
+| A generic argument inside a member access's expression (`EventHandlersContainer<IFriendshipEventHandlers>.Instance`) is not visited | 1 | 0 |
+| A property read through `this` that has the type's name (`this.UserInfo.UserID`), the same as inferred | 1 | 0 |
+| Written, but its namespace neither used nor enclosing in the file, not yet read | 1 | 3 |
+
+The first row is what a dependency line means today, a type the file names, and is left. The `global using` row is a plain fault of reading and is mended below. The `#if` row is a fault of reading too, but mending it means choosing which symbols are defined (a project's `DefineConstants` for which configuration), which is a question for the owner; named and left. The generic-argument row is small and plain; not yet built.
+
+### `global using` applied to the project
+
+C# applies a `global using` directive to every file of its project. mojoPortal keeps them in a `GlobalUsings.cs` per project (`global using mojoPortal.Core.Configuration;` and the like); the reader applied them only to the file that wrote them. Now a file's names are also resolved against the `global using`s of every file in its project, after its own directives. A `global using static` and a `global using` alias are not read, as their non-global forms are not. The external-namespace dependencies a file lists still come from its own `using`s only.
+
+The compiler table after, against the fourth leg's:
+
+| | DNN before | DNN after | mojoPortal before | mojoPortal after |
+| --- | ---: | ---: | ---: | ---: |
+| Our C#-to-C# dependency lines | 20,989 | 20,989 | 6,933 | 7,060 |
+| In both | 20,390 | 20,390 | 6,895 | 7,022 |
+| Ours only | 599 | 599 | 38 | 38 |
+| The compiler's only | 4,458 | 4,458 | 1,322 | 1,195 |
+| of which a type named that only the target declares | 628 | 628 | 172 | 45 |
+
+mojoPortal gains 127 lines the compiler confirms and none it does not; DNN has no `global using` and does not move. The `#if` row's six DNN cases are all in DNN's copy of log4net; mojoPortal's one has not been read.
