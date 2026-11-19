@@ -1,0 +1,181 @@
+# Where a history rebuild's time and disk writes go
+
+Current as of November 19, 2026: a measurement made read-only by a builder for the root, with `main` at `892833fc` and the history cache of lens `c186af7356b58191` (1,224 summaries, head `c84fd00f`). Nothing under `packages/` or in `.live-docs.config.json` changed, nothing was rebuilt, and the cache on the main checkout was only read. The measuring scripts lived in the builder's scratch folder and were not kept: each is described below well enough to write again in a few minutes. They ran the main checkout's build of 15:17 that day, the build that made the cache.
+
+**Answer.**
+- A cold rebuild writes **521 GB** of trees. Of that, **511 GB** lies under `AI-Agent-Workspace/`, a folder the configuration excludes. At today's head the summarizing process opens no file there, and it opens 14 MB of the 1,017 MB tree in all.
+- Writing the tree is 17% of a commit's wall time early in the line, 26% in the middle and 42–51% at the head.
+- Writing only what is read would cut the writes by 98% and most of that time. That is the first thing to build.
+- Moving one tree from commit to commit would save little once that is done, and it carries real risk.
+- Per-blob reuse of analysis has a large ceiling: 7,203 distinct versions behind 977,305 analysed file-moments. But the generator's time is mostly in its workspace index pass, whose content-only share is not known. Measure that before building anything there.
+
+## 1. One commit's anatomy
+
+Each phase ran as the history command runs it:
+- **Tree:** `workingTree` of the built `git.ts`.
+- **Generator, summary and text store:** the built `summarizeChange` given its task, in a process of its own with the tree's git environment. Its generator pass, `summarizeGraph` and `putTexts` were timed apart by wrapping those exports.
+- **Removal:** `rm -rf` of the tree.
+
+Processor seconds are user plus system and include child processes (git). Three other builders shared the 20-core machine, at a load of 1.9–4.9.
+
+| Commit (position on the line) | Tree | Write the tree: wall / processor s | Summarizing process: wall / processor s | of which the generator | Remove | Write share of wall |
+| --- | --- | --- | --- | --- | --- | ---: |
+| `87b9e7b5` (100, early) | 1,213 files, 16.7 MB | 2.3 / 2.5 | 10.9 / 13.3 | 9.5 / 11.8 | 0.05 | 17% |
+| `535ceefc` (612, middle) | 3,020 files, 258 MB | 5.7 / 7.1; again 5.9 / 7.3 | 16.5 / 20.4; again 15.5 / 19.0 | 13.1 / 16.4 | 0.11 | 26% |
+| `c84fd00f` (1,224, head) | 7,532 files, 1,017 MB | 28.5 / 39.4; again 18.7 / 26.9 and 17.2 / 24.8 | 27.4 / 33.8; again 23.4 / 28.8 | 21.6 / 26.0; again 18.5 / 21.9 | 0.3–0.5 | 42–51% |
+
+Notes on the table:
+- **`summarizeGraph`** took 0.01–0.09 s everywhere.
+- **`putTexts`** took 0.4 / 2.4 / 3.4–3.7 s here, but each run wrote into an empty text store. In a rebuild the store already holds most texts and `putTexts` skips them (`fs.access` first), so these figures overstate it.
+- **Peak memory** was 390–464 MB.
+- **Removing the tree** costs nothing that matters.
+
+**The generator's passes** were timed by wrapping the engine's exports, and their wall times were summed.
+
+| Pass | Head (18.5 s) | Middle (13.1 s) |
+| --- | ---: | ---: |
+| `buildWorkspaceIndexes` (the index pass over every file) | 9.3 s | 7.6 s |
+| `analyzeSourceFile` (1,091 and 858 calls) | 4.7 s | 2.3 s |
+| `discoverTargetFiles` + `discoverDocuments` | 2.0 s | 0.4 s |
+| read + write of the graph | 0.4 s | 0.3 s |
+| `citingDocuments`, `renderLiveDoc` | 0.1 s | 0.1 s |
+
+The rest (process start, reading the mirror's existing docs, pruning) is about 2 s. On October 19 [the generation-cost probe](../../../../10/2026-10-19/Probes/generation-cost/README.md) found a pause of about 2.5 s inside the index pass after the PowerShell adapter, not parse time. It was not diagnosed then and was not diagnosed here.
+
+**The oracle reproduces.** Four commits were summarized afresh: the three above and `85ba619f`, once under strace. Each summary, unzipped, was identical byte for byte to the cached one, though it ran in another folder, another process and under other load.
+
+## 2. What the summarizing process opens
+
+The summarizing process ran at the head under `strace -f -e trace=openat,execve`. Opens that succeeded under the scratch tree, other than of directories, were matched against `git ls-tree -r -l` of the commit.
+
+| Top-level folder | Files | MB | Files opened to read | MB of them |
+| --- | ---: | ---: | ---: | ---: |
+| `AI-Agent-Workspace/` | 5,287 | 1,002.3 | **0** | **0** |
+| `packages/` | 422 | 6.2 | 421 | 6.21 |
+| `.mdmd/` | 1,114 | 5.2 | 1,112 | 4.94 |
+| `tests/` | 594 | 2.4 | 582 | 2.41 |
+| `scripts/` | 83 | 0.7 | 83 | 0.73 |
+| the rest (root files, `.github/` and other dot folders) | 32 | 0.3 | 27 | 0.09 |
+| **All** | **7,532** | **1,017.1** | **2,225** | **14.4** |
+
+By kind:
+
+| Kind | Files | MB | Files read | MB read |
+| --- | ---: | ---: | ---: | ---: |
+| Pictures (png, jpg, gif, webp, svg, ico) | 3,509 | 711.0 | 15 | 0.00 |
+| Other (no listed suffix: logs, binaries, txt) | 531 | 231.7 | 101 | 1.07 |
+| Markdown (not Live Docs) | 871 | 46.6 | 21 | 0.06 |
+| Manifests and data | 471 | 13.5 | 85 | 0.21 |
+| Code | 1,035 | 9.0 | 890 | 8.09 |
+| Live Docs | 1,115 | 5.2 | 1,113 | 4.94 |
+
+- **The 15 pictures read** are the small fixture images under `tests/integration/fixtures/slopcop-assets/`. Not one picture under `AI-Agent-Workspace/` is opened.
+- **Git.** The git children (`git check-ignore`) open nothing in the tree: they read the index and the repository.
+- **At an old commit**, `85ba619f`, traced for stats and directory reads, nothing under `AI-Agent-Workspace/` was opened for its content either. Two things touch that folder:
+  - discovery's walk opens its directories (850 directory opens);
+  - the summarizer checks that each linked document exists. There were 114 `statx` calls on records, summaries and their folders (`standingRelatedDocs` in `summarizeChange.ts`).
+
+  So the excluded folder's files matter at an old commit only by whether a linked document exists, never by their bytes.
+
+## 3. How much is new at each commit
+
+These counts cover the first-parent line up to `c84fd00f`, 1,224 commits, from one `git ls-tree -r -l` per commit. "Analysed" means the file has a doc in that commit's cached summary.
+
+| Count over the line | (path, blob) file-moments | Bytes | Distinct blobs |
+| --- | ---: | ---: | ---: |
+| Every file: what a cold rebuild writes | 4,632,597 | 521.5 GB | 28,902 (1.64 GB) |
+| Outside `AI-Agent-Workspace/` | 1,995,516 | 11.0 GB | 20,954 |
+| Outside it, plus every markdown file under it | 2,592,249 | 51.3 GB | 24,524 |
+| New against the previous commit, every file | 34,276 | 2.56 GB | — |
+| New against the previous commit, outside `AI-Agent-Workspace/` | 21,505 | 0.35 GB | — |
+| New against the previous commit, outside it plus its markdown | 25,865 | 0.71 GB | — |
+| Analysed files | 977,305 | 6.9 GB | 7,203 (232 MB); 7,721 distinct (path, blob) |
+
+- **Analysed files per commit:** median 858.
+- **Analysed files new per commit:** median 0, 90th percentile 18, at most 209.
+- **Live Docs in the trees:** 976,587 moments, 12,799 of them new against the previous commit.
+
+So 99.2% of per-file analyses repeat a version already analysed.
+
+## 4. What depends on a file's bytes alone, and what on the whole tree
+
+This section is from reading `generator.ts`, `discovery.ts`, `sourceAnalysis.ts` and `summarizeChange.ts` as of `892833fc`.
+
+**Bytes alone:**
+- the TypeScript parse;
+- `collectExportedSymbols` (names, kinds, doc comments);
+- the raw import and export specifiers;
+- the binary sniff;
+- the path-and-configuration part of the archetype.
+
+**The rest of the tree:**
+- the index pass itself: a workspace symbol index and the entry index from every manifest;
+- `collectDependencies`, which resolves specifiers against the files on disk;
+- `augmentWithReExportedSymbols`, which reads the providers;
+- DOM inference, which reads markup within the file index;
+- route inference, which uses the symbol index;
+- every language adapter, which is given the file index and the symbol index, and several of which mix extraction with resolution;
+- Cited By, which reads every markdown document discovery finds;
+- each doc's authored block, from the commit's committed mirror;
+- the existence of linked documents;
+- the graph, which is read back from all the docs.
+
+**What of October 19 exists today.**
+- The accepted boundary, between extracting a file's own facts and resolving them against the workspace, is a principle. It is not a seam in the code.
+- Only in-process caches exist (several adapters' maps), and they live for one run.
+- No serializable form of unresolved facts exists, and there is no store across runs.
+- The bounded prototype of October 19, which reused TypeScript symbol entries within a run, saved nothing and was removed.
+- Each per-commit process therefore starts from nothing. It can use none of this across commits until such a seam and store exist.
+
+## The three shapes, costed
+
+**(i) Write only what is read.**
+- **What it is.** The tree writer leaves out every file the configuration's `exclude` names, by discovery's own matcher, never a second copy of the rule.
+- **The existence check must change with it.** The summarizer's check that a linked document exists would ask the commit's listing (the tree's index, or a list in the task) instead of the disk. If it asks the disk, the markdown under excluded folders has to be written too: that is 51 GB rather than 11 GB, because records are large.
+- **Saves.** Writes fall from 521 GB to 11 GB (98%). At late commits it removes most of the 17–28 s of tree writing; early, it removes little. By the head's rate of 25–39 processor-seconds per GB written, the line's writes are about 3.6–5.6 of the rebuild's 22 processor-hours. Their share of the twelve-wide pool's wall time was not measured: twelve processes no faster than eight hints at a shared disk or memory limit.
+- **Cost.** A small change in `git.ts` and in `summarizeChange.ts`. Both are in the lens key, so it rides with the rebuild already owed. The unwritten entries need no record in the summary: they are excluded by the configuration, which is in the key.
+- **What could go wrong.** A future reader of excluded files, such as an adapter reading context outside the scan (the DOM case of October 19), would silently see less. The oracle comparison is the guard.
+
+**(ii) Move one tree from commit to commit.**
+- **Saves.** Alone: 521 GB → 2.6 GB. After (i): 11 GB → 0.35–0.7 GB, about 2% of the original writes.
+- **What it needs of the order.** Each process would take a contiguous run of the first-parent line in order. Today the pool hands commits out one by one to whichever lane frees, so neighbours land in different processes. Contiguous runs lose load balancing (late commits cost three to five times early ones), and a partial cache leaves scattered gaps.
+- **Cleaning.** The generator writes into the tree (the mirror's docs, `index.json`, prunes), so each step must restore the mirror and remove untracked output before the next commit.
+- **Applying the difference.** If git checkout applies it, git's own rules for names, links and case replace the writer's rules, which record every entry it cannot write. If the writer applies the difference itself, that is a new piece of exactly the code that has needed the most care.
+- **What could go wrong.** A leftover from the previous commit silently enters a summary.
+- **Verdict.** Do not build it, at least not after (i).
+
+**(iii) Analyse each distinct version of a file once.**
+- **Ceiling.** 977,305 file-moments rest on 7,203 versions.
+- **The time it can reach.** The index pass (7.6–9.3 s) and `analyzeSourceFile` (2.3–4.7 s) are 75% of the generator's time at the head and the middle. How much of that is extraction, as against resolution, and fixed costs such as loading grammars and the unexplained pause, is unmeasured.
+- **Cost.**
+  - A serializable form of each adapter's unresolved facts, and many adapters mix the two.
+  - A store keyed by the blob and by the code identity that reads it.
+  - A second pass that resolves from those facts alone.
+  - The far end, reading blobs from git's object store with no tree, also replaces the disk seam that every adapter reads through.
+- **What could go wrong.** A cached fact that secretly depended on its neighbours, which October 19 found twice.
+- **Verdict.** Do not build it until the index pass is decomposed. A fixed per-process cost would make a cheaper fix: the 2.5 s pause alone is about 50 processor-minutes across the line.
+
+**How they compose.**
+- (i) composes with both (ii) and (iii).
+- (iii) without a tree on disk subsumes (i) and (ii).
+- Build (i) first, with the owed rebuild.
+- Then measure the index pass: per-file time split into parse, resolution and fixed cost.
+- Do not build (ii).
+
+## The oracle
+
+Summaries are gzipped JSON, one per commit, holding `format`, `lens`, `commit`, `files` and `docLinks`. Texts sit in a content-addressed store, so identical summaries name identical texts.
+
+**Deterministic in practice.** Four of four fresh summaries matched the cached ones after unzipping. Compare unzipped bytes, not gzip bytes, which depend on the zlib build.
+
+**What a changed key means.** Any of the shapes above changes code in the key (`git.ts`, `summarizeChange.ts`). The new summaries then carry another `lens` value, so the comparison must set `lens` aside. The `lens` field is the only part that names the key. The comparison must also run under the same configuration as the oracle, because the configuration is in the key. A configuration change such as naming the archive's former layout is a separate step, compared on its own.
+
+**As a test.** A comparison over all 1,224 commits is itself a rebuild. A sample is practical: every 25th commit plus chosen hard ones is about 50 commits, around 15–20 minutes at four processes. A probe's driver that hands `summarizeChange` a task with the oracle's `lens` and configuration (read from the history file) reproduces a summary outside the real cache. The main checkout's cache must never be the place it writes.
+
+## Not measured
+
+- The pool's behaviour at twelve processes: where the shared limit lies (disk, page cache or memory bandwidth), and so the wall-clock saving of (i) under the pool.
+- The index pass's decomposition, and the October 19 pause.
+- The text store's cost in a warm rebuild.
+- Device-level write bytes. The bytes reported are logical sizes from git and `du`.
+- More than three commits for the anatomy, and only one under strace for opens.
