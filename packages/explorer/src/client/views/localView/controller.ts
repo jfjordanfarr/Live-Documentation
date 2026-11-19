@@ -854,7 +854,8 @@ export class LocalViewController implements LocalViewApi {
     return { ...frame, afterRender: () => {
       frame.afterRender();
       newcomer();
-      if (this.stepNewcomer && !this.stage?.move) this.settleArrival();
+      // Without a move to end (reduced motion, nothing re-laid out) the following camera's settle is owed here.
+      if ((this.stepNewcomer || this.followsPins()) && !this.stage?.move) this.settleArrival();
     } };
   }
 

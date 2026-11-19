@@ -4,6 +4,27 @@ _Historical evidence, taken in the night of 2026-11-18 to 19 by the builder of t
 
 **The setup.** This repository's Explorer and the estate sample built by `npm run live-docs:visualize` and `npm run live-docs:visualize:estate`, served on port 8826, Chromium at 1440 × 900 and 390 × 844, device scale 1, the continuing search off unless said. Framing chosen through the saved tuning or the link. Frames of a motion are screenshots taken as fast as they come while the map says its camera moves (`data-camera`), about one every 100 to 300 ms on this shared machine, so a strip shows a few moments of an ease, not every frame.
 
+## The second increment: root's rulings of 2026-11-19
+
+After the first pictures root ruled: older pins held by their name lines beside the newest, which is held whole; a re-frame the person did not cause never zooms in and never drops a target it can keep; a long move after a change of the pinned set takes van Wijk and Nuij's smooth zoom; Out To Files as a matched alternative; and the pin tray's sign for pins outside the frame. Taken on `camera-follows-pins` after `git merge main` (`c52a2d34`), the repository and estate bundles rebuilt for each hold.
+
+| Picture | What I see |
+| --- | --- |
+| `r2-cell-press-follows-1440-rest.png` | **The named case under the rulings**, `pathfind.ts` at reading size, the first `live-docs/history` cell pressed. Still `codec.ts` alone at reading size, `pathfind.ts` said left out. Holding the older targets by their names changes nothing here, since the unpinned subject was already held by its name: the new card lands about 2,700 map px below that name, beyond what the floor holds in a 900 px window. After the hold of the pressed handle the rest of the move is under a frame's diagonal at this size, so it eased flat (`data-framing-path="flat"`), one ease of a few hundred ms at one scale: calm, but the subject goes. |
+| `r2-cell-press-follows-390-strip.png` (before, two moving frames, rest) | The same at 390 × 844, where the move is longer than a diagonal and takes the smooth path: the second frame was caught at scale 0.83 on the way out and shows **an empty view**, the dark map with nothing drawn; the rest is `codec.ts` at reading size. So the pull back here is not deep enough to show anything, and whether the empty frame is the path or the page not yet drawing at the new scale I cannot tell from two frames. Jarring as caught. |
+| `r2-search-reframe-rest.png` | Ruling 2. Two pins (`graph.ts`, then `pathfind.ts`), the continuing search on. Arrival framed both at the floor (0.336); after the search's rearrangement the camera kept 0.336 and only panned (y −1059 to −324): `pathfind.ts` whole at the top, `graph.ts`'s name at the left, its card cut below, nothing left out. In the first increment the same search had jumped to reading size and dropped `graph.ts`. The strip's frames were not caught (the ease ran before my sampler began), so its motion is unseen. |
+| `r2-estate-pin-strip.png` (before, two moving frames, rest), `r2-estate-pin-rest.png` | The estate, `PostPayment` pinned on `PaymentsContext.cs`, then the `PostPaymentRow` row pinned from its card: one short pan at 1.45 that brings `PostPaymentRow.cs`'s name and row in beside `PostPayment`, the wire across the middle. Calm: nothing changes size, the eye follows the pan. |
+| `r2-five-near-follows-1440.png`, `r2-five-near-out-to-files-1440.png` | Five whole-file pins from one directory (`graph.ts`, `document.ts`, `graphFiles.ts`, `discovery.ts`, then `pathfind.ts`). **Follows Pins** still frames only the newest at reading size: `pathfind.ts` is so tall that even entered at its top it leaves no room for the four names at the connections floor. **Out To Files** holds all five at 0.196 in the overview's files-only picture, every file name legible, the pinned ones among some sixty others; the five are not marked out from the rest beyond the pins' own look. |
+| `r2-five-scattered-follows-1440.png`, `r2-five-scattered-out-to-files-1440.png` | The five scattered pins. Follows Pins: the newest alone, four left out. Out To Files: at 0.229, `codec.ts` and `pathfind.ts` held, three left out: even the overview cannot hold five directories apart. |
+| `r2-fit-gives-following-back-rest.png` | The five scattered pins, the wheel turned (0.64, Fit not pressed), Fit pressed: back at the newest at 1.0, Fit pressed again. No moving frame was caught. |
+| Reduced motion | **Found broken and mended, not yet seen after the mend.** On the estate with reduced motion the second pin did not re-frame at all: without a move to end, the settle that re-frames was never called. The pin's settle is now owed whenever the camera follows (`capturePinChange`); see the hold-C note below. |
+
+**The tray's sign.** A pin left out says *Outside the frame* in the tray's quiet italic, the words it already uses for a pin absent from a history moment, and the row's name ends with ", outside the frame". The browser case on the five scattered pins checks the name; I have no picture of the open tray yet.
+
+**An opened directory** is a target only while it is the newest thing: at the next pin, the directory stops being framed, though it stays open.
+
+## The first increment
+
 ## What works
 
 | Picture | What I see |
@@ -29,7 +50,7 @@ Ease lengths by the rule (`framingEaseMs`): 300 ms at least, plus 250 ms a doubl
 
 ## Browser cases
 
-Four new cases at the end of `tests/e2e/camera-intent.spec.ts`, each reading the lever both ways, run once on this build: the owner's two symbols (passes; the By Hand half confirms the arrival frames the subject's card alone), the five pins leaving out the oldest (passes; By Hand writes nothing). The cell press pulling back, and Fit giving the following back after a wheel, **fail** for the geometry above, and are marked `test.fail()` with the reason, so they turn into a failure the day the rule is mended and pass.
+Four new cases at the end of `tests/e2e/camera-intent.spec.ts`, each reading the lever both ways, run once on this build: the owner's two symbols (passes; the By Hand half confirms the arrival frames the subject's card alone), the five pins leaving out the oldest (passes; By Hand writes nothing). The cell press pulling back, and Fit giving the following back after a wheel, failed for the geometry above and were marked `test.fail()` that night; in the second increment both were rewritten to the rule as it then stood and pass as ordinary cases, and no case is marked (corrected 2026-11-19).
 
 ## Links (Framing = Follows Pins, carried in the `s=` snapshot's layout settings)
 
