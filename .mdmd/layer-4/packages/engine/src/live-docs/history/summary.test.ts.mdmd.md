@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/history/summary.test.ts
-- Generated At: 2026-10-18T00:39:19.181Z
+- Generated At: 2026-11-19T06:20:28.612Z
 
 ## Authored
 ### Purpose
@@ -21,10 +21,14 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.GraphEdge`](../graph.ts.mdmd.md#symbol-graphedge) (type-only)
-- [`graph.GraphFile`](../graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`summary.shapeOfSummary`](./summary.ts.mdmd.md#symbol-shapeofsummary)
+- [`document.DEFAULT_AUTHORED_BLOCK`](../document.ts.mdmd.md#symbol-default_authored_block)
+- [`document.LiveDoc`](../document.ts.mdmd.md#symbol-livedoc)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.deriveLiveDocGraph`](../graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`shape.shapeOfSummary`](./shape.ts.mdmd.md#symbol-shapeofsummary)
+- [`summary.descriptionText`](./summary.ts.mdmd.md#symbol-descriptiontext)
+- [`summary.sectionsOfDescription`](./summary.ts.mdmd.md#symbol-sectionsofdescription)
 - [`summary.summarizeGraph`](./summary.ts.mdmd.md#symbol-summarizegraph)
+- [`summary.textHash`](./summary.ts.mdmd.md#symbol-texthash)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

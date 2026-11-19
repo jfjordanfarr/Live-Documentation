@@ -28,6 +28,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
@@ -108,7 +109,7 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
     if (file) declare({ reason: "module", file });
   }
 
-  return Array.from(declared.values()).sort((a, b) => a.file.localeCompare(b.file) || a.reason.localeCompare(b.reason) || (a.name ?? "").localeCompare(b.name ?? ""));
+  return Array.from(declared.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
 }
 
 /** The workspace file one command runs: the first token naming one that is not a tooling input, flags passed over. */
@@ -376,12 +377,13 @@ function endOfStringLiteral(text: string, start: number): number {
  * Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
  * nested settings (`Hangfire:Queue`). Arrays are not descended into.
  */
-export function collectKeyPaths(value: unknown, prefix = "", into: string[] = []): string[] {
+export function collectKeyPaths(value: unknown, prefix?: string, into: string[] = []): string[] {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return into;
   }
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
-    const keyPath = prefix ? `${prefix}:${key}` : key;
+    // Beneath an empty key the path still names it: `{"": {"a": 1}}` has the paths "" and ":a", apart from a key "a".
+    const keyPath = prefix === undefined ? key : `${prefix}:${key}`;
     into.push(keyPath);
     collectKeyPaths(child, keyPath, into);
   }
@@ -451,7 +453,7 @@ export const jsonAdapter: LanguageAdapter = {
     }
 
     // Sort dependencies by resolved path for deterministic output
-    dependencies.sort((a, b) => (a.resolvedPath ?? "").localeCompare(b.resolvedPath ?? ""));
+    dependencies.sort((a, b) => compareText(a.resolvedPath ?? "", b.resolvedPath ?? ""));
 
     return {
       symbols,

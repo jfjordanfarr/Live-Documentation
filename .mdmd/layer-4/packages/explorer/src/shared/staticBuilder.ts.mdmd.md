@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticBuilder.ts
-- Generated At: 2026-11-12T17:12:19.603Z
+- Generated At: 2026-11-19T06:20:30.740Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ Builds the static Explorer bundle: `explorer-data.json`, holding the graph index
 - Since 2026-10-17 (C1 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md)) the bundle carries the history the exporter asks for as `explorer-history.json` beside the data, a window re-based on its first commit, and says so in the data's `history` field: by default all of it when `<root>/history/history.json` exists and none otherwise, and a build that carries none removes a history an earlier build left. The history is a file apart so that the client fetches it only when the history is opened, and a page without it is no slower.
 - Since 2026-10-22 ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) the links carry both directions: `relatedDocsOf` over each doc's authored words for what the file cites, and each doc's `Cited By` section, resolved from the doc's place, for what cites it; the bundle then carries every document either names. On this repository that is 78 documents against 63.
 - Since 2026-11-12 the build reports `bundleSizeBytes`, the bytes it wrote: the page, the data, the history it carries and `static/`. It reported `totalSizeBytes` for the whole output folder, which counted other builds lying in it, the samples under `dist/explorer/samples`: 708.7 MB beside a bundle of about 16 MB in [the first-visit evaluation](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md).
+- Since 2026-11-19 ([Turn 37 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)) an export that carries history carries the words of its steps beside it, `explorer-history-words/<index>.json`, a part per directory with each text the window's rows name there, from the store the history command wrote beside its sequence; the page is to fetch a part only when a card shows words at a past moment. An export that carries no history removes the folder an earlier build left.
 - Since 2026-11-12 the board is `boardPath` when given, else the configuration's `board`, else none, so that every build, this repository's, another folder's and the samples', chooses its board by one rule.
 
 ## Generated
@@ -27,7 +28,7 @@ Builds the static Explorer bundle: `explorer-data.json`, holding the graph index
 ### Public Symbols
 #### `ExportedHistory` {#symbol-exportedhistory}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L39)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L44)
 - Returns: [`HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
 
 ##### `ExportedHistory` — Summary
@@ -35,21 +36,21 @@ How much of the history an export carries: none of it, or the part a selection n
 
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L45)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L50)
 
 ##### `BuildStaticExplorerOptions` — Summary
 Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L76)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L81)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L98)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L103)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
@@ -74,6 +75,8 @@ Build a complete static Explorer bundle.
 - [`sequence.headOf`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
 - [`window.HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
 - [`window.windowOf`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-windowof)
+- [`words.WordsPart`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordspart)
+- [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`buildAssets`](./buildAssets.ts.mdmd.md)
 - [`bundledMarkdownScanner.bundleRelatedDocs`](./bundledMarkdownScanner.ts.mdmd.md#symbol-bundlerelateddocs)

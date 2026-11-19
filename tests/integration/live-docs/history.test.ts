@@ -6,22 +6,28 @@
  * renamed whole; and what `inspect --at` and `inspect --between` answer from
  * the sequence.
  */
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import * as zlib from "node:zlib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
 import { openGitRepository } from "../../../packages/engine/src/live-docs/history/git";
-import { changeAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
+import { linksOf, type RowLink } from "../../../packages/engine/src/live-docs/history/rows";
+import { changeAt, momentAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import { edgeKey, type Shape } from "../../../packages/engine/src/live-docs/history/shape";
+import { sectionsOfDescription, type CommitSummary, type SummaryFile } from "../../../packages/engine/src/live-docs/history/summary";
+import { readText, TEXT_STORE_DIRECTORY } from "../../../packages/engine/src/live-docs/history/textStore";
+import { textInPart, textsOfFile, wordsPartFile, type WordsPart } from "../../../packages/engine/src/live-docs/history/words";
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { buildRepository, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
+import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, FIXTURE_GIT_ENV, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -62,7 +68,7 @@ afterAll(() => {
 
 describe("the history command over a scripted repository", () => {
   it("samples every commit of the mainline, oldest first, under one lens", () => {
-    expect(sequence.format).toBe("live-docs-history/2");
+    expect(sequence.format).toBe("live-docs-history/3");
     expect([sequence.base.commit.id, ...sequence.steps.map((step) => step.commit.id)]).toEqual(commits);
     expect(sequence.source).toMatchObject({ system: "git", branch: "main", head: commits[commits.length - 1], shallow: false, knowledgeBegins: commits[0], authors: true });
     expect(sequence.source.sampling).toEqual({ rule: "every-commit" });
@@ -73,10 +79,14 @@ describe("the history command over a scripted repository", () => {
 
   it("reproduces, by replay, the generator's own index at every commit, regenerated independently here", async () => {
     for (let step = 0; step < commits.length; step += 1) {
-      const expected = await regeneratedShape(repository, commits[step]);
-      const replayed = seek(sequence, step);
+      const { shape: expected, symbols, links } = await regeneratedShape(repository, commits[step]);
+      const moment = momentAt(sequence, step);
+      const replayed = moment.shape;
       expect(sortedFiles(replayed), `files at step ${step}`).toEqual(sortedFiles(expected));
       expect(sortedEdges(replayed), `edges at step ${step}`).toEqual(sortedEdges(expected));
+      // The rows: each file's symbols in the doc's order, and every link between two files, from symbol or file to symbol or file.
+      expect(new Map([...moment.rows].map(([file, rows]) => [file, rows.symbols.map((symbol) => [symbol.name, symbol.slug, symbol.kind])])), `symbols at step ${step}`).toEqual(symbols);
+      expect(linksOf(moment.rows).map(linkWords).sort(), `links at step ${step}`).toEqual(links);
     }
   });
 
@@ -161,9 +171,54 @@ describe("the history command over a scripted repository", () => {
     expect(again).toEqual(sequence);
     const cache = path.join(repository, ".mdmd", "history", sequence.lens.key);
     for (const commit of commits) {
-      expect(fs.existsSync(path.join(cache, `${commit}.json`))).toBe(true);
+      expect(fs.existsSync(path.join(cache, `${commit}.json.gz`))).toBe(true);
       expect(fs.existsSync(path.join(cache, `${commit}.index.json.gz`))).toBe(true);
     }
+  });
+
+  it("keeps each commit's rows, and that day's words once each by hash, saying unread where the mirror's form hides them", async () => {
+    const cache = path.join(repository, ".mdmd", "history", sequence.lens.key);
+    const summary = (step: number): CommitSummary => JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(cache, `${commits[step]}.json.gz`))).toString("utf8")) as CommitSummary;
+    const first = summary(0);
+    const file = (path: string): SummaryFile => first.files.find((entry) => entry.path === path)!;
+    const store = path.join(cache, TEXT_STORE_DIRECTORY);
+    // The main file's doc stood with its words, which the text store holds as that day's.
+    expect(await readText(store, file("src/app/main.ts").authored!)).toContain("as [the design](../../../../docs/design.md) lays out");
+    // The big helper's doc stood in an older form: its words are unread, never the generator's placeholder.
+    expect(file("lib/big.ts")).toMatchObject({ unread: true });
+    expect(file("lib/big.ts").authored).toBeUndefined();
+    // No doc of the model stood at the first commit: it has no words of that day at all.
+    expect(file("src/core/model.ts").authored).toBeUndefined();
+    expect(file("src/core/model.ts").unread).toBeUndefined();
+    // Its rows are the generator's own, in the doc's order, each description named by hash.
+    expect(file("src/core/model.ts").symbols.map((symbol) => [symbol.name, symbol.kind])).toEqual([["Model", "interface"], ["makeModel", "function"]]);
+    expect(file("src/core/model.ts").symbols[1].references).toEqual([{ role: "returns", type: "Model", to: "src/core/model.ts", toSymbol: file("src/core/model.ts").symbols[0].slug }]);
+    expect(sectionsOfDescription(await readText(store, file("src/core/model.ts").symbols[1].text!))[0]).toEqual({ title: "Summary", body: ["Makes a model."] });
+    expect(file("src/app/main.ts").dependencies.map((line) => [line.label, line.to])).toEqual(expect.arrayContaining([["big", "lib/big.ts"], ["model.makeModel", "src/core/model.ts"]]));
+    // A text unchanged across the commits is stored once: the store holds fewer texts than the summaries name.
+    const named = commits.flatMap((_, step) => summary(step).files.flatMap((entry) => [entry.authored, ...entry.symbols.map((symbol) => symbol.text)])).filter((hash): hash is string => hash !== undefined);
+    const stored = fs.readdirSync(store, { recursive: true, withFileTypes: true }).filter((entry) => entry.isFile());
+    expect(new Set(named).size).toBe(stored.length);
+    expect(stored.length).toBeLessThan(named.length);
+  });
+
+  it("lists the caches of other lenses with their sizes at every run, and removes them only when asked", () => {
+    const history = path.join(repository, ".mdmd", "history");
+    const stale = path.join(history, "0123456789abcdef");
+    fs.mkdirSync(path.join(stale, "texts", "ab"), { recursive: true });
+    fs.writeFileSync(path.join(stale, "texts", "ab", "old"), "x".repeat(2048));
+    const listed = runCli(historyScript, ["--workspace", repository, "--jobs", "1", "--keep-index"]);
+    expect(listed.exitCode, listed.stderr).toBe(0);
+    expect(listed.stderr).toContain("kept .mdmd/history/0123456789abcdef, the cache of a lens that is not the current one: 2.0 KB");
+    expect(listed.stdout).toContain("The caches of 1 other lenses hold 2.0 KB; --remove-superseded removes them.");
+    expect(fs.existsSync(stale)).toBe(true);
+    const removed = runCli(historyScript, ["--workspace", repository, "--jobs", "1", "--keep-index", "--remove-superseded"]);
+    expect(removed.exitCode, removed.stderr).toBe(0);
+    expect(removed.stderr).toContain("removed .mdmd/history/0123456789abcdef");
+    expect(fs.existsSync(stale)).toBe(false);
+    // The current lens's cache and the record of the pool stay.
+    expect(fs.existsSync(path.join(history, sequence.lens.key))).toBe(true);
+    expect(JSON.parse(fs.readFileSync(path.join(history, "pool.json"), "utf8"))).toMatchObject({ lens: sequence.lens.key, peakMemory: expect.any(Number) });
   });
 
   it("checks a commit out as the repository stores it, whatever the person's git would convert", async () => {
@@ -214,30 +269,70 @@ describe("the bundle's history", () => {
     expect(sortedEdges(seek(window, 2))).toEqual(sortedEdges(seek(sequence, commits.length - 1)));
     expect(window.paths.length).toBeLessThan(sequence.paths.length);
     expect(data.history).toMatchObject({ file: "explorer-history.json", head: { window: { rule: "last", count: 3 }, commits: 3, first: { id: commits[4] }, last: { id: commits[6] } } });
+    // The window's words ride beside it, a part per directory, each text its rows name there and no other.
+    expect(window.words?.folder).toBe("explorer-history-words");
+    const last = momentAt(window, 2).rows;
+    const mainPart = JSON.parse(fs.readFileSync(path.join(output, "explorer-history-words", wordsPartFile(window.words!, "src/app/main.ts")!), "utf8")) as WordsPart;
+    expect(textInPart(mainPart, last.get("src/app/main.ts")!.authored as number)).toContain("Its later form is in [the plan]");
+    const named = new Set([...Array(3).keys()].flatMap((step) => [...momentAt(window, step).rows.values()].flatMap(textsOfFile)));
+    const carried = fs.readdirSync(path.join(output, "explorer-history-words")).flatMap((part) => (JSON.parse(fs.readFileSync(path.join(output, "explorer-history-words", part), "utf8")) as WordsPart).ids);
+    expect(new Set(carried)).toEqual(named);
 
     await buildStaticExplorer({ workspaceRoot: repository, outputDir: output, config, history: { rule: "none" }, logger: quiet });
     expect(fs.existsSync(path.join(output, "explorer-history.json"))).toBe(false);
+    expect(fs.existsSync(path.join(output, "explorer-history-words"))).toBe(false);
     expect((JSON.parse(fs.readFileSync(path.join(output, "explorer-data.json"), "utf8")) as StaticExplorerData).history).toBeUndefined();
   });
 });
 
 describe("inspect's history questions", () => {
-  it("answers whether a file exists at a commit, with its wires, from the shape alone", () => {
+  it("answers whether a file exists at a commit, with its wires, and its rows and links as that day's docs listed them", () => {
     const before = runInspect(repository, ["--at", commits[1].slice(0, 10), "--from", "src/app/view.ts", "--json"]);
     expect(before.exitCode, before.stderr).toBe(0);
-    const at = JSON.parse(before.stdout) as { kind: string; answeredFrom: string; commit: { id: string }; file: { exists: boolean; outbound: Array<{ codePath: string }>; inbound: Array<{ codePath: string }> } };
-    expect(at).toMatchObject({ kind: "at", answeredFrom: "shape", commit: { id: commits[1] }, file: { exists: true } });
+    const at = JSON.parse(before.stdout) as {
+      kind: string;
+      answeredFrom: string;
+      commit: { id: string };
+      file: { exists: boolean; outbound: Array<{ codePath: string }>; inbound: Array<{ codePath: string }> };
+      rows: { symbols: Array<{ name: string; references: Array<{ role: string; to?: string }> }> };
+      links: { outbound: RowLink[]; inbound: RowLink[] };
+    };
+    expect(at).toMatchObject({ kind: "at", answeredFrom: "rows", commit: { id: commits[1] }, file: { exists: true } });
     expect(at.file.outbound.map((neighbour) => neighbour.codePath)).toEqual(["src/engine/model.ts"]);
     expect(at.file.inbound.map((neighbour) => neighbour.codePath)).toEqual(["src/app/main.ts"]);
+    expect(at.rows.symbols.map((symbol) => symbol.name)).toEqual(["render", "renderAll"]);
+    expect(at.rows.symbols[0].references).toEqual([{ role: "parameter", parameter: "model", type: "Model", to: "src/engine/model.ts", toSymbol: expect.any(String) }]);
+    expect(at.links.inbound).toEqual([expect.objectContaining({ from: "src/app/main.ts", to: "src/app/view.ts", kind: "import" })]);
 
     const after = runInspect(repository, ["--at", commits[2], "--from", "src/app/view.ts"]);
     expect(after.exitCode, after.stderr).toBe(0);
-    expect(after.stdout.split("\n")[0]).toContain("from the shape alone");
+    expect(after.stdout.split("\n")[0]).toContain("from the rows that day's docs listed");
     expect(after.stdout).toContain("src/app/view.ts does not exist at");
 
     const main = runInspect(repository, ["--at", commits[0], "--from", "src/app/main.ts"]);
     expect(main.exitCode, main.stderr).toBe(0);
     expect(main.stdout).toContain("Linked documents: 1 document\n  docs/design.md");
+    expect(main.stdout).toContain("Symbols: 1 symbol, in the doc's order\n  main  function");
+    expect(main.stdout).toContain("Dependencies: 5 lines");
+  });
+
+  it("lists the links at a commit between two files, and between two symbols named path#Symbol", () => {
+    const files = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts", "--to", "src/engine/model.ts", "--json"]);
+    expect(files.exitCode, files.stderr).toBe(0);
+    const between = JSON.parse(files.stdout) as { kind: string; answeredFrom: string; links: RowLink[] };
+    expect(between).toMatchObject({ kind: "at-links", answeredFrom: "rows" });
+    expect(between.links.map((link) => [link.from, link.fromSymbol, link.to, link.kind])).toEqual([
+      ["src/app/view.ts", undefined, "src/engine/model.ts", "import"],
+      ["src/app/view.ts", "symbol-render", "src/engine/model.ts", "parameter"],
+      ["src/app/view.ts", "symbol-renderall", "src/engine/model.ts", "parameter"]
+    ]);
+    const symbols = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts#renderAll", "--to", "src/engine/model.ts#Model"]);
+    expect(symbols.exitCode, symbols.stderr).toBe(0);
+    expect(symbols.stdout).toContain("Links between src/app/view.ts#symbol-renderall and src/engine/model.ts#");
+    expect(symbols.stdout).toContain(": 1 link\n  src/app/view.ts#symbol-renderall -> src/engine/model.ts#");
+    const missing = runInspect(repository, ["--at", commits[1], "--from", "src/app/view.ts#nothing", "--to", "src/engine/model.ts"]);
+    expect(missing.exitCode).toBe(1);
+    expect(missing.stderr).toContain("lists no one symbol nothing");
   });
 
   it("walks from the entries of a commit with the pathfinder", () => {
@@ -291,6 +386,24 @@ describe("inspect's history questions", () => {
     expect(words.stdout).not.toMatch(/\b(Born|Dead)\b/u);
   });
 
+  it("prints a file's words at a commit, and says plainly where that day's words cannot be read or none were written", () => {
+    const main = runInspect(repository, ["--at", commits[0], "--from", "src/app/main.ts", "--words"]);
+    expect(main.exitCode, main.stderr).toBe(0);
+    expect(main.stdout).toContain("Authored:\n  ### Purpose\n  Runs the app, as [the design](../../../../docs/design.md) lays out.");
+    // The design link left the main file's words at the fifth commit, and its later words are read there.
+    const later = runInspect(repository, ["--at", commits[4], "--from", "src/app/main.ts", "--words", "--json"]);
+    expect((JSON.parse(later.stdout) as { authored: { state: string; text: string } }).authored.text).not.toContain("the design");
+    const big = runInspect(repository, ["--at", commits[0], "--from", "lib/big.ts", "--words"]);
+    expect(big.exitCode, big.stderr).toBe(0);
+    expect(big.stdout).toContain("Not readable: the doc that stood at");
+    expect(big.stdout).toContain("Descriptions: 1 symbol\n  big\n    Summary:\n      Counts to a big number, one step at a time.");
+    const model = runInspect(repository, ["--at", commits[0], "--from", "src/core/model.ts", "--words", "--json"]);
+    expect(JSON.parse(model.stdout)).toMatchObject({ kind: "at-words", answeredFrom: "words", authored: { state: "none" }, descriptions: [{ name: "Model" }, { name: "makeModel", sections: [{ title: "Summary", body: ["Makes a model."] }] }] });
+    const today = runInspect(repository, ["--from", "src/app/main.ts", "--words"]);
+    expect(today.exitCode).toBe(1);
+    expect(today.stderr).toContain("takes --at");
+  });
+
   it("refuses a commit the sequence does not hold, and says so", () => {
     const result = runInspect(repository, ["--at", "0000000", "--from", "src/app/main.ts"]);
     expect(result.exitCode).toBe(1);
@@ -308,12 +421,219 @@ describe("inspect's history questions", () => {
 });
 
 /**
+ * A second repository, built from the checked script, whose head commits the mirror the generator writes there: what
+ * the history must read of any repository, and what it holds itself to and mends.
+ */
+describe("the history over a repository that commits its mirror", () => {
+  let checked: string;
+  let ids: string[];
+  let history: string;
+  let first: CliResult;
+
+  beforeAll(async () => {
+    checked = fs.mkdtempSync(path.join(os.tmpdir(), "history-checked-"));
+    temporary.push(checked);
+    ids = buildRepository(checked, CHECKED_SCRIPT);
+    // The mirror as a person commits it: today's generator over the checkout at the head.
+    await generateLiveDocs({ workspaceRoot: checked, config: normalizeLiveDocumentationConfig(CHECKED_CONFIG), logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
+    git(checked, ["add", "--all"]);
+    git(checked, ["commit", "--quiet", "-m", "Commit the mirror"], { GIT_AUTHOR_DATE: "2026-03-04T10:00:00+00:00", GIT_COMMITTER_DATE: "2026-03-04T10:00:00+00:00" });
+    ids.push(git(checked, ["rev-parse", "HEAD"]).trim());
+    history = path.join(checked, ".mdmd", "history");
+    first = runCli(historyScript, ["--workspace", checked, "--jobs", "2", "--check-head"]);
+  });
+
+  const summaryOf = (commit: string): CommitSummary => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    return JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, lens, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
+  };
+
+  it("keeps a file git tracks though an ignore file names it, as a checkout of the commit does", () => {
+    expect(first.exitCode, first.stderr).toBe(0);
+    expect(summaryOf(ids[0]).files.map((file) => file.path)).toContain("src/table.ts");
+    // The oracle: git itself, asked of the commit, tracks it.
+    expect(git(checked, ["ls-tree", "-r", "--name-only", ids[0]]).split("\n")).toContain("src/table.ts");
+    expect(summaryOf(ids[0]).files.find((file) => file.path === "src/main.ts")?.dependencies.map((line) => line.to)).toContain("src/table.ts");
+  });
+
+  it("summarizes a module exporting $ and $$, each under an anchor of its own", () => {
+    expect(summaryOf(ids[0]).files.find((file) => file.path === "src/select.ts")?.symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
+      ["$", "symbol-~24"],
+      ["$$", "symbol-~24~24"]
+    ]);
+  });
+
+  it("holds the last step to the mirror committed at the head when asked, and says so", () => {
+    // The configuration, the ignore file and the three modules, each documented.
+    expect(first.stdout).toMatch(/Checked: the last step's 5 files, \d+ symbols with their words, and \d+ links/u);
+    expect(first.stdout).toContain(`are those of the Live Docs committed at ${ids[2].slice(0, 8)}, read afresh.`);
+  });
+
+  it("says the check was skipped, and why, when it was not asked and this generator did not make the mirror", () => {
+    const unasked = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    expect(unasked.exitCode, unasked.stderr).toBe(0);
+    expect(unasked.stdout).toContain("Not checked: the check at the head was skipped: it applies when asked with --check-head, or when this generator runs unmodified from the commit the history ends at");
+    expect(unasked.stdout).toMatch(/and here this generator(?: runs from \w+ and the history ends at| is installed|'s code differs from its commit)/u);
+  });
+
+  it("refuses a last step that differs from the committed mirror, naming the difference", () => {
+    const stale = fs.mkdtempSync(path.join(os.tmpdir(), "history-stale-"));
+    temporary.push(stale);
+    git(os.tmpdir(), ["clone", "--quiet", checked, stale]);
+    // The source changes and the mirror is not regenerated.
+    fs.appendFileSync(path.join(stale, "src", "select.ts"), "\n/** Selects the last of many. */\nexport function last(queries: string[]): string {\n  return queries[queries.length - 1];\n}\n");
+    git(stale, ["commit", "--quiet", "-am", "Select the last of many"]);
+    const refused = runCli(historyScript, ["--workspace", stale, "--jobs", "2", "--check-head"]);
+    expect(refused.exitCode).toBe(1);
+    expect(refused.stderr).toContain("the history's last step is not the graph of the Live Docs committed at");
+    expect(refused.stderr).toContain("the symbols of src/select.ts differ");
+  });
+
+  it("summarizes again a change whose text is missing or changed, rather than failing every later run", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    const store = path.join(history, lens, TEXT_STORE_DIRECTORY);
+    const named = summaryOf(ids[0]).files.find((file) => file.path === "src/main.ts")!.symbols[0].text!;
+    const gone = path.join(store, named.slice(0, 2), named);
+    const changed = summaryOf(ids[0]).files.find((file) => file.path === "src/table.ts")!.symbols[0].text!;
+    fs.rmSync(gone);
+    fs.writeFileSync(path.join(store, changed.slice(0, 2), changed), "words someone changed");
+    const mended = runCli(historyScript, ["--workspace", checked, "--jobs", "2"]);
+    expect(mended.exitCode, mended.stderr).toBe(0);
+    expect(mended.stderr).toContain("are summarized again, since their summaries do not read or name texts the store lacks or holds changed");
+    expect(mended.stdout).toMatch(/[1-9]\d* regenerated/u);
+    expect(fs.existsSync(gone)).toBe(true);
+    expect(fs.readFileSync(path.join(store, changed.slice(0, 2), changed), "utf8")).not.toBe("words someone changed");
+  });
+
+  it("writes the words beside the sequence in a folder of their own, the one the sequence names, and leaves no other", () => {
+    const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
+    const folders = fs.readdirSync(history).filter((name) => name.startsWith("history-words"));
+    expect(folders).toEqual([sequence.words!.folder]);
+    expect(sequence.words!.folder).toMatch(/^history-words-[0-9a-f]{16}$/u);
+  });
+
+  it("removes what a stopped run left half written, and refuses to write beside a run that holds the folder", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    const leftover = path.join(history, lens, `${ids[0]}.json.gz.4242.partial`);
+    fs.writeFileSync(leftover, "half");
+    const host = createHash("sha256").update(os.hostname()).digest("hex").slice(0, 12);
+    // This test's own process holds a claim, as another run on this machine would.
+    const live = path.join(history, `run.${host}.${process.pid}.test.lock`);
+    fs.writeFileSync(live, "");
+    const refused = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    fs.rmSync(live);
+    expect(refused.exitCode).toBe(1);
+    expect(refused.stderr).toContain(`another history run (process ${process.pid}`);
+    expect(fs.existsSync(leftover)).toBe(true);
+    // A claim whose process has ended, and one a run on another machine left, are removed.
+    fs.writeFileSync(path.join(history, `run.${host}.${2 ** 22 + 1}.dead.lock`), "");
+    fs.writeFileSync(path.join(history, "run.0123456789ab.42.elsewhere.lock"), "");
+    const resumed = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    expect(resumed.exitCode, resumed.stderr).toBe(0);
+    expect(resumed.stderr).toContain(`the claim of process ${2 ** 22 + 1}, which has ended`);
+    expect(resumed.stderr).toContain("the claim of a run on another machine");
+    expect(resumed.stderr).toContain("removed 1 files a stopped run left half written");
+    expect(fs.existsSync(leftover)).toBe(false);
+    expect(fs.readdirSync(history).filter((name) => name.endsWith(".lock"))).toEqual([]);
+  });
+
+  it("removes its claim and its scratch trees when a signal stops it", async () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    for (const commit of ids) fs.rmSync(path.join(history, lens, `${commit}.json.gz`));
+    const before = new Set(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-")));
+    const child = spawn(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", checked, "--jobs", "2"], { env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+    let stderr = "";
+    child.stderr.setEncoding("utf8");
+    const exited = new Promise<number | null>((resolve) => child.on("exit", (code) => resolve(code)));
+    // Stopped once its summarizing processes are at work, its trees written and its claim held.
+    await new Promise<void>((resolve) => {
+      child.stderr.on("data", (text: string) => {
+        stderr += text;
+        if (stderr.includes("to regenerate")) resolve();
+      });
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    child.kill("SIGINT");
+    expect(await exited).toBe(130);
+    expect(fs.readdirSync(history).filter((name) => name.endsWith(".lock"))).toEqual([]);
+    expect(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-") && !before.has(name))).toEqual([]);
+    // The next run regenerates what the stopped one did not finish.
+    const mended = runCli(historyScript, ["--workspace", checked, "--jobs", "2"]);
+    expect(mended.exitCode, mended.stderr).toBe(0);
+  }, 120_000);
+
+  it("stops when asked before the cache is whole, writes no history, and keeps beside the current lens only the newest whole one", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    // Two older lenses: one a whole history was written from, and one a run never finished.
+    const whole = path.join(history, "0123456789abcdef");
+    const partial = path.join(history, "fedcba9876543210");
+    fs.mkdirSync(whole, { recursive: true });
+    fs.writeFileSync(path.join(whole, "whole.json"), JSON.stringify({ head: "abc", changes: 3, at: "2026-11-01T00:00:00.000Z" }));
+    fs.mkdirSync(partial, { recursive: true });
+    fs.rmSync(path.join(history, lens, `${ids[1]}.json.gz`));
+    fs.rmSync(path.join(history, "history.json"));
+    const stopped = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--stop-after", "0", "--remove-superseded"]);
+    expect(stopped.exitCode, stopped.stderr).toBe(3);
+    expect(stopped.stdout).toContain(`History incomplete: stopped after 0 minutes, as asked: the cache at .mdmd/history/${lens} holds 2 of the 3 changes sampled`);
+    expect(fs.existsSync(path.join(history, "history.json"))).toBe(false);
+    expect(fs.existsSync(whole)).toBe(true);
+    expect(fs.existsSync(partial)).toBe(false);
+    // Once the current lens is whole, the other lens's cache goes, and the current one is marked whole.
+    const done = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--remove-superseded"]);
+    expect(done.exitCode, done.stderr).toBe(0);
+    expect(fs.existsSync(whole)).toBe(false);
+    expect(JSON.parse(fs.readFileSync(path.join(history, lens, "whole.json"), "utf8"))).toMatchObject({ head: ids[ids.length - 1], changes: 3 });
+  });
+});
+
+/**
+ * A repository whose one commit leaves thousands of entries out of its tree, made with `git hash-object` and `git
+ * mktree`: a link `vendor` and a tree `vendor` of the same name, every file of which lies beneath the link.
+ */
+describe("the history over a commit whose tree leaves thousands of entries out", () => {
+  it("completes, names every entry not read, and keeps the list where a person finds it after the run", () => {
+    const repository = fs.mkdtempSync(path.join(os.tmpdir(), "history-unwritten-"));
+    temporary.push(repository);
+    const run = (args: string[], input?: string): string => execFileSync("git", args, { cwd: repository, env: FIXTURE_GIT_ENV, input, encoding: "utf8", maxBuffer: 1 << 28 }).trim();
+    run(["init", "--quiet", "-b", "main"]);
+    const files = path.join(repository, "..", `${path.basename(repository)}-blobs`);
+    temporary.push(files);
+    fs.mkdirSync(files);
+    const names = Array.from({ length: 3000 }, (_, index) => `module-with-a-long-name-${String(index).padStart(5, "0")}.ts`);
+    names.forEach((name, index) => fs.writeFileSync(path.join(files, name), `export const value${index} = ${index};\n`));
+    const ids = run(["hash-object", "-w", "--stdin-paths"], names.map((name) => path.join(files, name)).join("\n")).split("\n");
+    const vendor = run(["mktree"], names.map((name, index) => `100644 blob ${ids[index]}\t${name}\n`).join(""));
+    const link = run(["hash-object", "-w", "--stdin"], "/elsewhere");
+    const kept = run(["hash-object", "-w", "--stdin"], "/** Kept. */\nexport const kept = 1;\n");
+    const root = run(["mktree"], `100644 blob ${kept}\tkept.ts\n120000 blob ${link}\tvendor\n040000 tree ${vendor}\tvendor\n`);
+    const commit = run(["commit-tree", root, "-m", "A tree that leaves thousands of entries out"], undefined);
+    run(["update-ref", "refs/heads/main", commit]);
+
+    const result = runCli(historyScript, ["--workspace", repository, "--jobs", "1"]);
+    expect(result.exitCode, result.stderr.slice(-2000)).toBe(0);
+    // Every entry not read is said, not the first few.
+    expect(result.stderr.split("\n").filter((line) => line.includes("which is a symbolic link on this disk"))).toHaveLength(3000);
+    expect(result.stderr).toContain("3000 files at 1 commits were not read");
+    // Where the run says the list is: the history folder under the default docs root, since this repository configures none.
+    const listed = /The list is (\S+)/u.exec(result.stderr)![1];
+    const history = path.dirname(path.join(repository, listed));
+    const list = fs.readFileSync(path.join(repository, listed), "utf8").split("\n").filter((line) => line !== "" && !line.startsWith("#"));
+    expect(list).toHaveLength(3000);
+    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit lies beneath vendor, which is a symbolic link on this disk, and nothing is written through it`);
+    const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
+    const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, sequence.lens.key, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
+    expect(summary.unwritten).toHaveLength(3000);
+    expect(summary.files.map((file) => file.path)).toEqual(["kept.ts"]);
+  }, 300_000);
+});
+
+/**
  * The commit's shape, regenerated here as a first run over its source sees
  * it: its tree checked out with the mirror it committed removed, the
  * generator run over it, and the derived graph summarized by this test's own
  * reading.
  */
-async function regeneratedShape(root: string, commit: string): Promise<Shape> {
+async function regeneratedShape(root: string, commit: string): Promise<{ shape: Shape; symbols: Map<string, string[][]>; links: string[] }> {
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "history-oracle-"));
   const tree = path.join(scratch, "tree");
   git(root, ["worktree", "add", "--detach", "--quiet", tree, commit]);
@@ -322,18 +642,23 @@ async function regeneratedShape(root: string, commit: string): Promise<Shape> {
     const config = normalizeLiveDocumentationConfig(CONFIG);
     await generateLiveDocs({ workspaceRoot: tree, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
     const graph = await readLiveDocGraph({ workspaceRoot: tree, config });
-    // The oracle reads files and wires from a fresh generation; the doc links are held to the script in their own test.
+    // The oracle reads files, wires, symbols and links from a fresh generation; the doc links are held to the script in their own test.
     const shape: Shape = { files: new Map(), edges: new Map(), docLinks: new Set() };
+    const symbols = new Map<string, string[][]>();
+    const links = new Map<string, number>();
     for (const file of Object.values(graph.files)) {
       shape.files.set(file.codePath, { archetype: file.archetype ?? "", symbols: file.symbols.length, entry: file.entries.length > 0 });
+      symbols.set(file.codePath, file.symbols.map((symbol) => [symbol.name, symbol.slug ?? "", symbol.kind]));
       for (const edge of file.edges) {
         if (edge.to && edge.to !== file.codePath) {
           const key = edgeKey(file.codePath, edge.to);
           shape.edges.set(key, (shape.edges.get(key) ?? 0) + 1);
+          const link = linkWords({ from: file.codePath, fromSymbol: edge.from, to: edge.to, toSymbol: edge.toSymbol, kind: edge.kind, count: 0 });
+          links.set(link, (links.get(link) ?? 0) + 1);
         }
       }
     }
-    return shape;
+    return { shape, symbols, links: [...links].map(([link, count]) => `${link} x${count}`).sort() };
   } finally {
     git(root, ["worktree", "remove", "--force", tree]);
     fs.rmSync(scratch, { recursive: true, force: true });
@@ -352,6 +677,12 @@ function nameStatus(root: string, from: string, to: string, threshold = "-M50%")
   }
   result.renamed.sort((a, b) => (a[0] < b[0] ? -1 : 1));
   return result;
+}
+
+/** A link in words: its ends and its kind, and with a count when it has one. */
+function linkWords(link: RowLink): string {
+  const words = `${link.from}#${link.fromSymbol ?? ""} -${link.kind}-> ${link.to}#${link.toSymbol ?? ""}`;
+  return link.count > 0 ? `${words} x${link.count}` : words;
 }
 
 function sortedFiles(shape: Shape): Array<[string, string, number, boolean]> {

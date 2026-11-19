@@ -4,10 +4,12 @@
  * and JSON, read from `<docsRoot>/history/history.json` (the plan's C9).
  *
  * @remarks
- * Every answer says in its first line, or in its `answeredFrom` field, that it
- * comes from the shape alone: files, their archetypes, symbol counts, entry
- * marks and wires. The symbols themselves, the kinds of the wires and the docs'
- * words were in the docs of that commit, which the history does not keep.
+ * Every answer says in its first line, or in its `answeredFrom` field, what it
+ * comes from: the walk and what changed between two commits from the shape
+ * alone, files, their archetypes, symbol counts, entry marks and wires; a
+ * file at a commit and the links between two files or two symbols, since
+ * 2026-11-19, from the rows that day's docs listed, which the history carries
+ * so that a command prints whatever the page can show of a moment.
  *
  * @module
  */
@@ -17,11 +19,15 @@ import path from "node:path";
 
 import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type CommitInfo, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
-import { changesBetween, entryMarked, fileOfShape, graphOfShape, stepsMatching } from "@live-documentation/engine/live-docs/history/queries";
-import { commitAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
+import { changesBetween, entryMarked, fileOfShape, graphOfShape, linksBetween, rowsOfFile, stepsMatching, symbolNamed } from "@live-documentation/engine/live-docs/history/queries";
+import type { RowLink } from "@live-documentation/engine/live-docs/history/rows";
+import { commitAt, momentAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
+import { sectionsOfDescription } from "@live-documentation/engine/live-docs/history/summary";
+import { textInPart, wordsOfFile, wordsPartFile, type WordsPart } from "@live-documentation/engine/live-docs/history/words";
 import { reachability } from "@live-documentation/engine/live-docs/pathfind";
 
 const SHAPE_ALONE = "from the shape alone: files, their wires, entry marks and linked documents; the symbols and the docs' words of that day are not in the history";
+const ROWS = "from the rows that day's docs listed: symbols, their type references, dependency lines and the links they make; the docs' words are not printed";
 
 /** A question the history cannot answer as asked, said plainly. */
 export class HistoryRefusal extends Error {}
@@ -61,24 +67,61 @@ export function resolveStep(sequence: HistorySequence, reference: string): numbe
   );
 }
 
-/** What a file was at a commit: whether it existed, its shape, and its wires either way. */
+/**
+ * What a file was at a commit: whether it existed, its shape, and its wires either way; and, where the history carries
+ * them, its rows as its card drew them, each symbol with its kind and type references, its dependency lines, and the
+ * links from and to its symbols.
+ */
 export function emitFileAt(sequence: HistorySequence, step: number, codePath: string, json: boolean): void {
-  const file = fileOfShape(seek(sequence, step), codePath);
+  const moment = momentAt(sequence, step);
+  const file = fileOfShape(moment.shape, codePath);
+  const rows = rowsOfFile(moment, codePath);
   const commit = commitAt(sequence, step);
+  // A file that did not exist is answered from whatever the moment carries; one that did, from its rows when carried.
+  const fromRows = file.exists ? rows.carried : moment.rows.size > 0;
   if (json) {
-    console.log(JSON.stringify({ kind: "at", answeredFrom: "shape", step, commit, file }, null, 2));
+    console.log(JSON.stringify({ kind: "at", answeredFrom: fromRows ? "rows" : "shape", step, commit, file, ...(rows.rows ? { rows: rows.rows, links: { outbound: rows.outbound, inbound: rows.inbound } } : {}) }, null, 2));
     return;
   }
-  console.log(`At ${where(sequence, step, commit)}, ${SHAPE_ALONE}.`);
+  console.log(`At ${where(sequence, step, commit)}, ${fromRows ? ROWS : SHAPE_ALONE}.`);
   if (!file.exists) {
     console.log(`${codePath} does not exist at ${commit.id.slice(0, 8)}.`);
     return;
   }
   console.log(`${codePath}: ${file.archetype}, ${count(file.symbols ?? 0, "symbol")}${file.entry ? ", an entry" : ""}`);
-  for (const [heading, neighbours] of [["Outbound", file.outbound ?? []], ["Inbound", file.inbound ?? []]] as const) {
-    console.log(`${heading}: ${count(neighbours.length, "file")}`);
-    for (const neighbour of neighbours) {
-      console.log(`  ${neighbour.codePath}  ${count(neighbour.count, "reference")}`);
+  if (rows.rows) {
+    const own = rows.rows;
+    for (const entry of own.entries) {
+      console.log(`Entry: ${entry.reason}${entry.command ? ` ${entry.command}` : ""}${entry.symbol ? ` ${entry.symbol}` : ""}${entry.declarer ? `, named in ${entry.declarer}` : ""}`);
+    }
+    console.log(`Symbols: ${count(own.symbols.length, "symbol")}, in the doc's order`);
+    for (const symbol of own.symbols) {
+      const flags = symbol.flags.length > 0 ? ` (${symbol.flags.join(", ")})` : "";
+      console.log(`  ${symbol.name}  ${symbol.kind}${flags}`);
+      for (const reference of symbol.references) {
+        const type = `${reference.type}${reference.array ? "[]" : ""}${reference.promise ? " (promise)" : ""}`;
+        console.log(`    ${reference.role}${reference.parameter ? ` ${reference.parameter}` : ""}: ${type}${reference.to ? ` -> ${end(reference.to, reference.toSymbol)}` : ""}`);
+      }
+    }
+    console.log(`Dependencies: ${count(own.dependencies.length, "line")}`);
+    for (const line of own.dependencies) {
+      const marks = [line.kind === "re-export" ? "re-export" : "", line.typeOnly ? "type-only" : "", line.basis ?? ""].filter(Boolean);
+      console.log(`  ${line.label}${marks.length > 0 ? ` (${marks.join(", ")})` : ""}${line.to ? ` -> ${end(line.to, line.toSymbol)}` : ""}${line.symbols ? `: ${line.symbols.join(", ")}` : ""}`);
+    }
+    if (own.reExports.length > 0) {
+      console.log(`Re-exports: ${count(own.reExports.length, "anchor")}`);
+      for (const entry of own.reExports) console.log(`  ${entry.name}${entry.from ? ` from ${entry.from}` : entry.fromLabel ? ` from ${entry.fromLabel}` : ""}`);
+    }
+    for (const [heading, links] of [["Links out", rows.outbound ?? []], ["Links in", rows.inbound ?? []]] as const) {
+      console.log(`${heading}: ${count(links.length, "link")}`);
+      for (const link of links) console.log(`  ${linkWords(link)}`);
+    }
+  } else {
+    for (const [heading, neighbours] of [["Outbound", file.outbound ?? []], ["Inbound", file.inbound ?? []]] as const) {
+      console.log(`${heading}: ${count(neighbours.length, "file")}`);
+      for (const neighbour of neighbours) {
+        console.log(`  ${neighbour.codePath}  ${count(neighbour.count, "reference")}`);
+      }
     }
   }
   const documents = file.documents ?? [];
@@ -86,6 +129,103 @@ export function emitFileAt(sequence: HistorySequence, step: number, codePath: st
   for (const document of documents) {
     console.log(`  ${document}`);
   }
+  const cited = rows.rows?.citedBy ?? [];
+  if (cited.length > 0) {
+    console.log(`Cited by: ${count(cited.length, "document")}`);
+    for (const document of cited) console.log(`  ${document}`);
+  }
+}
+
+/**
+ * The links at a commit between two files, or two symbols named `path#Symbol` by their anchors or names, in both
+ * directions, from the rows the history carries.
+ */
+export function emitLinksAt(sequence: HistorySequence, step: number, from: { codePath: string; symbol?: string }, to: { codePath: string; symbol?: string }, json: boolean): void {
+  const moment = momentAt(sequence, step);
+  const commit = commitAt(sequence, step);
+  const ends = [from, to].map((given) => {
+    const rows = moment.rows.get(given.codePath);
+    if (!moment.shape.files.has(given.codePath)) {
+      throw new HistoryRefusal(`${given.codePath} does not exist at ${commit.id.slice(0, 8)} (${day(commit)}).`);
+    }
+    if (!rows) {
+      throw new HistoryRefusal(`the history does not carry the rows of ${given.codePath}; run \`npm run live-docs:history\` again.`);
+    }
+    if (given.symbol === undefined) return { codePath: given.codePath };
+    const symbol = symbolNamed(rows, given.symbol);
+    if (!symbol) {
+      throw new HistoryRefusal(`${given.codePath} lists no one symbol ${given.symbol} at ${commit.id.slice(0, 8)}; it lists ${rows.symbols.map((row) => row.name).join(", ") || "none"}.`);
+    }
+    return { codePath: given.codePath, symbol: symbol.slug };
+  });
+  const links = linksBetween(moment.rows, ends[0], ends[1]);
+  if (json) {
+    console.log(JSON.stringify({ kind: "at-links", answeredFrom: "rows", step, commit, from: ends[0], to: ends[1], links }, null, 2));
+    return;
+  }
+  console.log(`At ${where(sequence, step, commit)}, ${ROWS}.`);
+  console.log(`Links between ${end(ends[0].codePath, ends[0].symbol)} and ${end(ends[1].codePath, ends[1].symbol)}: ${count(links.length, "link")}`);
+  for (const link of links) console.log(`  ${linkWords(link)}`);
+}
+
+/** The folder the history command writes the sequence and its words store into. */
+export function historyFolder(workspaceRoot: string, config: LiveDocumentationConfig): string {
+  return path.join(workspaceRoot, config.root, HISTORY_DIRECTORY);
+}
+
+/**
+ * A file's words at a commit: its authored block and each symbol's description as that day's docs held them, read
+ * from the part of the words store beside the sequence for the file's directory; or, where they cannot be read, why.
+ */
+export async function emitWordsAt(sequence: HistorySequence, step: number, codePath: string, folder: string, json: boolean): Promise<void> {
+  const commit = commitAt(sequence, step);
+  const words = wordsOfFile(momentAt(sequence, step).rows, codePath);
+  if (!words.exists) {
+    throw new HistoryRefusal(`${codePath} does not exist at ${commit.id.slice(0, 8)} (${day(commit)}), or the history carries no rows of it.`);
+  }
+  const partFile = sequence.words ? wordsPartFile(sequence.words, codePath) : undefined;
+  let part: WordsPart | undefined;
+  if (sequence.words && partFile) {
+    part = JSON.parse(await fs.readFile(path.join(folder, sequence.words.folder, partFile), "utf8")) as WordsPart;
+  }
+  const text = (id: number): string => {
+    const found = part ? textInPart(part, id) : undefined;
+    if (found === undefined) {
+      throw new HistoryRefusal(`the words store beside the history lacks the text ${id} of ${codePath}; run \`npm run live-docs:history\` again.`);
+    }
+    return found;
+  };
+  const authored = typeof words.authored === "number" ? { state: "read" as const, text: text(words.authored) } : { state: words.authored === "unread" ? ("unread" as const) : ("none" as const) };
+  const descriptions = (words.descriptions ?? []).map((description) => ({ slug: description.slug, name: description.name, sections: sectionsOfDescription(text(description.text)) }));
+  if (json) {
+    console.log(JSON.stringify({ kind: "at-words", answeredFrom: "words", step, commit, codePath, authored, descriptions }, null, 2));
+    return;
+  }
+  console.log(`At ${where(sequence, step, commit)}, the words of ${codePath} as that day's docs held them.`);
+  console.log("Authored:");
+  if (authored.state === "read") {
+    for (const line of authored.text.split("\n")) console.log(`  ${line}`);
+  } else if (authored.state === "unread") {
+    console.log(`  Not readable: the doc that stood at ${commit.id.slice(0, 8)} is in a form today's reader finds no authored block in.`);
+  } else {
+    console.log(`  None: no doc of ${codePath} stood at ${commit.id.slice(0, 8)} where the lens reads the docs.`);
+  }
+  console.log(`Descriptions: ${count(descriptions.length, "symbol")}`);
+  for (const description of descriptions) {
+    console.log(`  ${description.name}`);
+    for (const section of description.sections) {
+      console.log(`    ${section.title}:`);
+      for (const line of section.body) console.log(`      ${line}`);
+    }
+  }
+}
+
+function end(codePath: string, symbol?: string): string {
+  return symbol === undefined ? codePath : `${codePath}#${symbol}`;
+}
+
+function linkWords(link: RowLink): string {
+  return `${end(link.from, link.fromSymbol)} -> ${end(link.to, link.toSymbol)}  ${link.kind}${link.count > 1 ? ` x${link.count}` : ""}`;
 }
 
 /** What the entries of a commit reach, by the pathfinder over the graph the commit's shape makes. */

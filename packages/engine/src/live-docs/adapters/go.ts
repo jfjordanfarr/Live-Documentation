@@ -26,6 +26,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { goSyntax } from "../../languages";
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
@@ -543,7 +544,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
     .sort((left, right) =>
       (left.location.line - right.location.line) ||
       (left.location.character - right.location.character) ||
-      left.name.localeCompare(right.name)
+      compareText(left.name, right.name)
     );
 }
 
@@ -620,9 +621,9 @@ async function toDependencies(facts: FileFacts, thisFile: string, absolutePath: 
   }
 
   const dependencies: DependencyEntry[] = Array.from(byTarget.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
-  return [...dependencies, ...external.sort((left, right) => left.specifier.localeCompare(right.specifier))];
+  return [...dependencies, ...external.sort((left, right) => compareText(left.specifier, right.specifier))];
 }
 
 /** Language adapter for Go (`.go`): tree-sitter symbols and package-aware name resolution across the module. */

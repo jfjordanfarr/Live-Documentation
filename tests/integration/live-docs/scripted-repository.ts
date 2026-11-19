@@ -157,6 +157,8 @@ export interface ScriptedCommit {
   write?: Record<string, string>;
   move?: Array<[string, string]>;
   remove?: string[];
+  /** Files written that an ignore file names, added all the same, as `git add --force` adds them: tracked, and ignored. */
+  forceAdd?: string[];
 }
 
 /** The seven commits, oldest first. */
@@ -186,6 +188,9 @@ export const SCRIPT: ScriptedCommit[] = [
       "docs/old-notes.md": "# Old notes\n\nWhat the legacy helper said, and why.\n",
       ".mdmd/layer-4/src/app/main.ts.mdmd.md": COMMITTED_DOC("src/app/main.ts", MAIN_WORDS(true)),
       ".mdmd/layer-4/lib/legacy.ts.mdmd.md": COMMITTED_DOC("lib/legacy.ts", "### Purpose\nWhat the app used to say, as [the old notes](../../../docs/old-notes.md) record.\n\n### Notes\n- Retired in the fifth commit."),
+      // A doc in a form older than today's grammar, with no authored block today's reader finds: its words were written
+      // that day and cannot be read, which the history must say rather than show the generator's placeholder (2026-11-19).
+      ".mdmd/layer-4/lib/big.ts.mdmd.md": "---\ntitle: lib/big.ts\n---\n# lib/big.ts\n\n## Source Mapping\n\n- Purpose: counts to a big number, as the old mirror wrote it.\n",
       // A committed mirror's orphan: the doc of a file long gone, kept by the generator of its day for its authored words.
       // Its link to the design must never count: the lens documents no such file.
       ".mdmd/layer-4/lib/ghost.ts.mdmd.md": renderLiveDoc({
@@ -387,6 +392,34 @@ export const VEIL_SCRIPT: ScriptedCommit[] = [
   { message: "Delete a file in the veiled corner", date: "2026-02-04T10:00:00+00:00", remove: ["big/d20/e2/f05.ts"] }
 ];
 
+/** The lens of the checked sample, whose main file is its entry. */
+export const CHECKED_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/main.ts"] };
+
+const SELECT = (more: boolean): string =>
+  `/** Selects one. */\nexport function $(query: string): string {\n  return query;\n}\n\n/** Selects all. */\nexport function $$(query: string): string[] {\n  return [query];\n}\n${more ? "\n/** Selects the first of many. */\nexport function first(queries: string[]): string {\n  return queries[0];\n}\n" : ""}`;
+
+/**
+ * A third script, of two commits, for what the history must read of any repository and hold itself to (2026-11-19):
+ * a file git tracks although an ignore file names it, which a summary must keep as a checkout does; a module exporting
+ * `$` and `$$`, names of punctuation only, which must be summarized; and a commit that adds a symbol. The test commits
+ * the mirror the generator writes at the head, so that the history's last step can be held to it.
+ */
+export const CHECKED_SCRIPT: ScriptedCommit[] = [
+  {
+    message: "Begin with a selector, a generated table git ignores but tracks, and their user",
+    date: "2026-03-02T10:00:00+00:00",
+    write: {
+      ".live-docs.config.json": `${JSON.stringify(CHECKED_CONFIG, null, 2)}\n`,
+      ".gitignore": "# The table is generated, and kept in the repository all the same.\nsrc/table.ts\n",
+      "src/table.ts": "/** The table the build generates. */\nexport const TABLE = [1, 2, 3];\n",
+      "src/select.ts": SELECT(false),
+      "src/main.ts": `import { $, $$ } from "./select";\nimport { TABLE } from "./table";\n\n/** Runs the app. */\nexport function main(): string {\n  return $("a") + $$("b").join("") + String(TABLE.length);\n}\n`
+    },
+    forceAdd: ["src/table.ts"]
+  },
+  { message: "Select the first of many", date: "2026-03-03T10:00:00+00:00", write: { "src/select.ts": SELECT(true) } }
+];
+
 export function buildRepository(root: string, script: ScriptedCommit[] = SCRIPT): string[] {
   git(root, ["init", "--quiet", "-b", "main"]);
   const ids: string[] = [];
@@ -403,6 +436,7 @@ export function buildRepository(root: string, script: ScriptedCommit[] = SCRIPT)
       fs.writeFileSync(path.join(root, file), content, "utf8");
     }
     git(root, ["add", "--all"]);
+    if (commit.forceAdd) git(root, ["add", "--force", ...commit.forceAdd]);
     git(root, ["commit", "--quiet", "-m", commit.message], { GIT_AUTHOR_DATE: commit.date, GIT_COMMITTER_DATE: commit.date });
     ids.push(git(root, ["rev-parse", "HEAD"]).trim());
   }

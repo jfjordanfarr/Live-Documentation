@@ -132,6 +132,48 @@ describe("the tool lock in the history lens", () => {
     expect(key(second)).not.toBe(key(first));
   });
 
+  it("keys on the code that makes a summary, and not on the tests or the modules that only read summaries", () => {
+    const { root, modulePath } = fixture(true);
+    const history = path.join(root, "packages", "engine", "src", "live-docs", "history");
+    fs.mkdirSync(history, { recursive: true });
+    fs.writeFileSync(path.join(history, "summary.ts"), "export const summary = 1;\n");
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 1;\n");
+    fs.writeFileSync(path.join(root, "packages", "engine", "marker.test.ts"), "test(1);\n");
+    commit(root, "the history's modules");
+    const initial = identity(modulePath, root);
+
+    // The codec and a test change, dirty and then committed: the summaries they would read are the same.
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 2;\n");
+    fs.writeFileSync(path.join(root, "packages", "engine", "marker.test.ts"), "test(2);\n");
+    fs.writeFileSync(path.join(history, "queries.ts"), "export const queries = 1;\n");
+    expect(identity(modulePath, root).modified).toBeNull();
+    commit(root, "change only what reads the summaries");
+    expect(identity(modulePath, root).code).toBe(initial.code);
+    expect(key(identity(modulePath, root))).toBe(key(initial));
+
+    // The summary's own module changes what a summary says: dirty, then committed, then removed.
+    fs.writeFileSync(path.join(history, "summary.ts"), "export const summary = 2;\n");
+    const dirty = identity(modulePath, root);
+    expect(dirty.modified).not.toBeNull();
+    expect(key(dirty)).not.toBe(key(initial));
+    commit(root, "change the summary");
+    const committed = identity(modulePath, root);
+    expect(committed.modified).toBeNull();
+    expect(committed.code).not.toBe(initial.code);
+    fs.rmSync(path.join(history, "summary.ts"));
+    expect(identity(modulePath, root).modified).not.toBeNull();
+    commit(root, "remove the summary");
+
+    // The command's side of a summary, the tree's reading, and data beside the history's modules key it too.
+    for (const file of ["git.ts", "table.json", "../../../../../tsconfig.base.json"]) {
+      const before = identity(modulePath, root);
+      fs.writeFileSync(path.join(history, file), `${file}\n`);
+      expect(identity(modulePath, root).modified, file).not.toBeNull();
+      commit(root, `add ${file}`);
+      expect(identity(modulePath, root).code, file).not.toBe(before.code);
+    }
+  });
+
   it("does not mistake an installed generator's host lock for this tool's lock", () => {
     const root = fs.mkdtempSync(path.join(scratch, "host-"));
     const installed = path.join(root, "node_modules", "@live-documentation", "generator");
@@ -146,7 +188,7 @@ describe("the tool lock in the history lens", () => {
     commit(root, "host dependencies");
 
     const initial = identity(modulePath, root);
-    expect(initial).toEqual({ version: "0.0.0", code: null, commit: null, modified: null });
+    expect(initial).toEqual({ version: "0.0.0", code: null, commit: null, modified: null, unicode: process.versions.unicode });
     fs.writeFileSync(path.join(root, "package-lock.json"), "another host dependency tree\n");
     expect(identity(modulePath, root)).toEqual(initial);
     commit(root, "change host dependencies");

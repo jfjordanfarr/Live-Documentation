@@ -12,6 +12,8 @@
  * @module
  */
 
+import type { CommitSummary } from "./summary";
+
 /** What the sequence knows of one file at one change. */
 export interface FileShape {
   archetype: string;
@@ -82,6 +84,38 @@ export function edgeKey(from: string, to: string): string {
 export function edgeEnds(key: string): [from: string, to: string] {
   const separator = key.indexOf(EDGE_SEPARATOR);
   return [key.slice(0, separator), key.slice(separator + 1)];
+}
+
+/**
+ * The shape a summary records: each file's symbol count and entry mark, and each directed edge between two different
+ * files counted as the summary's rows make it, one per dependency line and one per type reference that resolved to the
+ * target (what `summarizeGraph` counted from the graph's edges until the summary kept the rows themselves).
+ */
+export function shapeOfSummary(summary: CommitSummary): Shape {
+  const files = new Map<string, FileShape>();
+  const edges = new Map<string, number>();
+  for (const file of summary.files) {
+    files.set(file.path, { archetype: file.archetype, symbols: file.symbols.length, entry: file.entries.length > 0 });
+    const counts = new Map<string, number>();
+    const count = (to: string | undefined): void => {
+      if (to !== undefined && to !== file.path) {
+        counts.set(to, (counts.get(to) ?? 0) + 1);
+      }
+    };
+    for (const dependency of file.dependencies) {
+      count(dependency.to);
+    }
+    for (const symbol of file.symbols) {
+      for (const reference of symbol.references ?? []) {
+        count(reference.to);
+      }
+    }
+    for (const [to, total] of counts) {
+      edges.set(edgeKey(file.path, to), total);
+    }
+  }
+  const docLinks = new Set<string>(summary.docLinks.map(([from, doc]) => edgeKey(from, doc)));
+  return { files, edges, docLinks };
 }
 
 /** The shape with each renamed file moved to its new path, its shape, its edges and its doc links with it. */

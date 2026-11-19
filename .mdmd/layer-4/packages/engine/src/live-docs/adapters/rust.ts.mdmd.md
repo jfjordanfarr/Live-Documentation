@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/rust.ts
-- Generated At: 2026-10-22T16:47:52.418Z
+- Generated At: 2026-11-19T08:59:53.059Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L893)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L894)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rustAdapter` — Summary
@@ -45,6 +45,7 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

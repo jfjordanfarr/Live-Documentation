@@ -261,7 +261,7 @@ function renderEntry(entry: Entry): string {
 }
 
 function renderSymbolRef(symbol: { name: string; link?: string }): string {
-  return symbol.link ? `[\`${symbol.name}\`](${symbol.link})` : `\`${symbol.name}\``;
+  return symbol.link ? `[${codeSpan(symbol.name)}](${symbol.link})` : codeSpan(symbol.name);
 }
 
 function pushSection(lines: string[], name: string, body: string[]): void {
@@ -275,7 +275,7 @@ export function renderSymbolBlocks(symbols: SymbolBlock[]): string[] {
     if (index > 0) {
       lines.push("");
     }
-    lines.push(`#### \`${symbol.name}\`${symbol.slug ? ` {#${symbol.slug}}` : ""}`);
+    lines.push(`#### ${codeSpan(symbol.name)}${symbol.slug ? ` {#${symbol.slug}}` : ""}`);
     lines.push(`- Type: ${symbol.kind}${symbol.flags.length ? ` (${symbol.flags.join(", ")})` : ""}`);
     if (symbol.source) {
       lines.push(`- Source: [source](${symbol.source.path}#L${symbol.source.line})`);
@@ -284,7 +284,7 @@ export function renderSymbolBlocks(symbols: SymbolBlock[]): string[] {
       lines.push(renderReference(reference));
     }
     symbol.sections.forEach((section) => {
-      lines.push("", `##### \`${symbol.name}\` — ${section.title}`, ...section.body);
+      lines.push("", `##### ${codeSpan(symbol.name)} — ${section.title}`, ...section.body);
     });
   });
   return lines;
@@ -332,7 +332,7 @@ function renderReExports(entries: ReExport[]): string[] {
     if (index > 0) {
       lines.push("");
     }
-    lines.push(`#### \`${entry.name}\`${entry.slug ? ` {#${entry.slug}}` : ""}`);
+    lines.push(`#### ${codeSpan(entry.name)}${entry.slug ? ` {#${entry.slug}}` : ""}`);
     const flags = entry.flags.length ? ` (${entry.flags.join(", ")})` : "";
     lines.push(entry.from ? `- Re-exported from [\`${entry.from.label}\`](${entry.from.link})${flags}` : `${EXTERNAL_RE_EXPORT}${flags}`);
   });
@@ -408,7 +408,16 @@ function nextSectionIs(reader: Reader, name: string): boolean {
 }
 
 const ENTRY_LINE = /^- Entry: (program|command|module|opening|tooling|declared)(?: (.+))?$/u;
-const SYMBOL_REF = /^(?:\[`([^`]+)`\]\(([^)]+)\)|`([^`]+)`)$/u;
+/** A symbol named in an entry, linked or not: `[text, linked name, link, plain name]`, as a match of a pattern would be. */
+function symbolRef(text: string): [string, string | undefined, string | undefined, string | undefined] | undefined {
+  if (text.startsWith("[")) {
+    const span = takeCodeSpan(text, 1);
+    const link = span && /^\]\(([^)]+)\)$/u.exec(text.slice(span.end));
+    return span && link ? [text, span.content, link[1], undefined] : undefined;
+  }
+  const span = takeCodeSpan(text, 0);
+  return span && span.end === text.length ? [text, undefined, undefined, span.content] : undefined;
+}
 const DECLARER = /^\[`([^`]+)`\]\(([^)]+)\)$/u;
 const COMMAND_EVIDENCE = /^`([^`]+)` of (\[`[^`]+`\]\([^)]+\))$/u;
 const MODULE_EVIDENCE = /^of (\[`[^`]+`\]\([^)]+\))$/u;
@@ -420,8 +429,8 @@ function parseEntry(match: RegExpExecArray, lineNumber: number): Entry {
     throw new LiveDocSyntaxError(lineNumber, `unexpected evidence on the ${reason} entry ${JSON.stringify(match[0])}`);
   };
   const symbolOf = (text: string): { name: string; link?: string } => {
-    const ref = SYMBOL_REF.exec(text) ?? fail();
-    return ref[3] !== undefined ? { name: ref[3] } : { name: ref[1], link: ref[2] };
+    const ref = symbolRef(text) ?? fail();
+    return ref[3] !== undefined ? { name: ref[3] } : { name: ref[1]!, link: ref[2] };
   };
   const declarerOf = (text: string): { label: string; link: string } => {
     const ref = DECLARER.exec(text) ?? fail();
@@ -471,8 +480,57 @@ function parseSection<T>(reader: Reader, name: string, parse: (body: Body) => T)
   return parse({ start, lines });
 }
 
-const SYMBOL_HEADING = /^#### `([^`]+)`(?: \{#([^}]+)\})?$/u;
-const SECTION_HEADING = /^##### `([^`]+)` — (.+)$/u;
+/** A symbol's or a re-export's heading: `[line, name, anchor]`, as a match of a pattern would be. */
+function symbolHeading(line: string): [string, string, string | undefined] | undefined {
+  const span = line.startsWith("#### `") ? takeCodeSpan(line, 5) : undefined;
+  if (span === undefined) return undefined;
+  const rest = line.slice(span.end);
+  if (rest === "") return [line, span.content, undefined];
+  const anchor = /^ \{#([^}]+)\}$/u.exec(rest);
+  return anchor ? [line, span.content, anchor[1]] : undefined;
+}
+
+/** A section heading under a symbol: `[line, name, title]`. */
+function sectionHeading(line: string): [string, string, string] | undefined {
+  const span = line.startsWith("##### `") ? takeCodeSpan(line, 6) : undefined;
+  const title = span && /^ — (.+)$/u.exec(line.slice(span.end));
+  return span && title ? [line, span.content, title[1]] : undefined;
+}
+
+/**
+ * A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
+ * longest run of backticks, and padded with a space on each side where it begins or ends with a backtick or a space,
+ * as CommonMark reads a code span; a name that is all spaces is written as it is.
+ */
+export function codeSpan(name: string): string {
+  const longest = Math.max(0, ...Array.from(name.matchAll(/`+/gu), (run) => run[0].length));
+  const fence = "`".repeat(longest + 1);
+  const pad = /^[` ]|[` ]$/u.test(name) && name.trim() !== "" ? " " : "";
+  return `${fence}${pad}${name}${pad}${fence}`;
+}
+
+/**
+ * The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
+ * exactly as many, and a space stripped from each side where the content begins and ends with one and is not all
+ * spaces; undefined where no span begins or it never closes.
+ */
+export function takeCodeSpan(text: string, at: number): { content: string; end: number } | undefined {
+  const open = /^`+/u.exec(text.slice(at));
+  if (open === null) return undefined;
+  const fence = open[0].length;
+  for (let index = at + fence; index < text.length; index += 1) {
+    if (text[index] !== "`") continue;
+    let run = index;
+    while (run < text.length && text[run] === "`") run += 1;
+    if (run - index === fence) {
+      let content = text.slice(at + fence, index);
+      if (content.length >= 2 && content.startsWith(" ") && content.endsWith(" ") && content.trim() !== "") content = content.slice(1, -1);
+      return content === "" ? undefined : { content, end: run };
+    }
+    index = run - 1;
+  }
+  return undefined;
+}
 const TYPE_LINE = /^- Type: ([^ ]+)(?: \(([^)]+)\))?$/u;
 const SOURCE_LINE = /^- Source: \[source\]\((.+)#L(\d+)\)$/u;
 const REFERENCE_LINE = /^- (Returns|Parameters|Extends|Implements|Constraints): (.+)$/u;
@@ -483,7 +541,7 @@ function parseSymbols(body: Body): SymbolBlock[] {
   const at = (index: number): number => body.start + index;
   let index = 0;
   while (index < lines.length) {
-    const heading = SYMBOL_HEADING.exec(lines[index]);
+    const heading = symbolHeading(lines[index]);
     if (!heading) {
       throw new LiveDocSyntaxError(at(index), `expected a symbol heading, found ${JSON.stringify(lines[index])}`);
     }
@@ -510,10 +568,10 @@ function parseSymbols(body: Body): SymbolBlock[] {
         throw new LiveDocSyntaxError(at(index), `expected a blank line after the details of ${symbol.name}, found ${JSON.stringify(lines[index])}`);
       }
       index += 1;
-      if (SYMBOL_HEADING.test(lines[index] ?? "")) {
+      if (symbolHeading(lines[index] ?? "") !== undefined) {
         break;
       }
-      const section = SECTION_HEADING.exec(lines[index] ?? "");
+      const section = sectionHeading(lines[index] ?? "");
       if (!section) {
         throw new LiveDocSyntaxError(at(index), `expected a section of ${symbol.name}, found ${JSON.stringify(lines[index])}`);
       }
@@ -525,10 +583,10 @@ function parseSymbols(body: Body): SymbolBlock[] {
       let fence = false;
       while (index < lines.length) {
         const line = lines[index];
-        if (!fence && (SECTION_HEADING.test(line) || SYMBOL_HEADING.test(line))) {
+        if (!fence && (sectionHeading(line) !== undefined || symbolHeading(line) !== undefined)) {
           break;
         }
-        if (!fence && line === "" && (index + 1 === lines.length || SECTION_HEADING.test(lines[index + 1]) || SYMBOL_HEADING.test(lines[index + 1]))) {
+        if (!fence && line === "" && (index + 1 === lines.length || sectionHeading(lines[index + 1]) !== undefined || symbolHeading(lines[index + 1]) !== undefined)) {
           break;
         }
         if (line.startsWith("```")) {
@@ -629,7 +687,7 @@ function parseReExports(body: Body): ReExport[] {
   const lines = body.lines;
   const at = (index: number): number => body.start + index;
   for (let index = 0; index < lines.length; index += 3) {
-    const heading = SYMBOL_HEADING.exec(lines[index]);
+    const heading = symbolHeading(lines[index]);
     if (!heading) {
       throw new LiveDocSyntaxError(at(index), `expected a re-export heading, found ${JSON.stringify(lines[index])}`);
     }

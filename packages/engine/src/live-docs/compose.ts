@@ -15,6 +15,8 @@ import path from "node:path";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { getSyntaxByPath } from "../languages";
+import { compareText } from "../tooling/compareText";
+import { slug } from "../tooling/githubSlugger";
 import { matchesPathPattern } from "./archetype";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";
 import type {
@@ -72,12 +74,10 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
     nameCounts.set(normalizedNameKey, (nameCounts.get(normalizedNameKey) ?? 0) + 1);
     nameKindCounts.set(nameKindKey, (nameKindCounts.get(nameKindKey) ?? 0) + 1);
 
-    const slugValue = createSymbolSlug(symbol.name) ?? "";
-    if (slugValue) {
-      const slugKindKey = `${slugValue}::${kindLabel}`;
-      slugCounts.set(slugValue, (slugCounts.get(slugValue) ?? 0) + 1);
-      slugKindCounts.set(slugKindKey, (slugKindCounts.get(slugKindKey) ?? 0) + 1);
-    }
+    const slugValue = createSymbolSlug(symbol.name);
+    const slugKindKey = `${slugValue}::${kindLabel}`;
+    slugCounts.set(slugValue, (slugCounts.get(slugValue) ?? 0) + 1);
+    slugKindCounts.set(slugKindKey, (slugKindCounts.get(slugKindKey) ?? 0) + 1);
   }
 
   const kindOccurrences = new Map<string, number>();
@@ -86,16 +86,16 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
     const normalizedNameKey = normalizeSymbolNameKey(symbol.name);
     const kindLabel = symbol.kind ?? "symbol";
     const nameKindKey = `${normalizedNameKey}::${kindLabel}`;
-    const initialSlug = createSymbolSlug(symbol.name) ?? "";
-    const slugKindKey = initialSlug ? `${initialSlug}::${kindLabel}` : undefined;
+    const initialSlug = createSymbolSlug(symbol.name);
+    const slugKindKey = `${initialSlug}::${kindLabel}`;
 
     let occurrence = 0;
     let occurrenceKey: string | undefined;
 
     const duplicateNameCount = nameCounts.get(normalizedNameKey) ?? 0;
     const duplicateKindCount = nameKindCounts.get(nameKindKey) ?? 0;
-    const slugCollisionCount = initialSlug ? slugCounts.get(initialSlug) ?? 0 : 0;
-    const slugKindCollisionCount = slugKindKey ? slugKindCounts.get(slugKindKey) ?? 0 : 0;
+    const slugCollisionCount = slugCounts.get(initialSlug) ?? 0;
+    const slugKindCollisionCount = slugKindCounts.get(slugKindKey) ?? 0;
     const normalizedName = normalizedNameKey;
     const isReservedHeadingName = RESERVED_HEADING_NAMES.has(normalizedName);
     const baseSlug = initialSlug;
@@ -105,7 +105,7 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
 
     if (shouldDisambiguateByName) {
       occurrenceKey = nameKindKey;
-    } else if (shouldDisambiguateBySlug && slugKindKey) {
+    } else if (shouldDisambiguateBySlug) {
       occurrenceKey = slugKindKey;
     }
 
@@ -114,29 +114,29 @@ export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): Pu
       kindOccurrences.set(occurrenceKey, occurrence);
     }
 
-    let displayName = symbol.name;
+    // What the heading adds to the name in parentheses, where two symbols share one name or anchor or the name is reserved.
+    let suffix: string | undefined;
     if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
       const kindSpecificCount = shouldDisambiguateByName ? duplicateKindCount : slugKindCollisionCount;
       if (kindSpecificCount === 1 && symbol.kind) {
-        displayName = `${symbol.name} (${symbol.kind})`;
+        suffix = symbol.kind;
       } else {
         const labelBase = symbol.kind ? `${symbol.kind} overload` : "variant";
         const ordinal = occurrence > 0 ? occurrence : 1;
-        displayName = `${symbol.name} (${labelBase} ${ordinal})`;
+        suffix = `${labelBase} ${ordinal}`;
       }
     } else if (isReservedHeadingName) {
-      const descriptiveKind = symbol.kind ?? "symbol";
-      displayName = `${symbol.name} (${descriptiveKind})`;
+      suffix = symbol.kind ?? "symbol";
     }
+    // A name that is empty, as a JSON key may be, is shown as the file spells it.
+    const shownName = symbol.name === "" ? '""' : symbol.name;
+    const displayName = suffix === undefined ? shownName : `${shownName} (${suffix})`;
 
-    let resolvedSlug: string;
-    if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
-      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
-    } else if (isReservedHeadingName) {
-      resolvedSlug = baseSlug || createSymbolSlug(displayName) || "";
-    } else {
-      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
-    }
+    // A reserved name keeps the anchor of its bare name. A disambiguated one is anchored by its bare name's anchor and
+    // the suffix, which for a name the slug keeps is the anchor of the name it displays, and for a name of punctuation
+    // only keeps its code points, so that adding `$` never changes the anchor of `$$`.
+    const disambiguated = shouldDisambiguateByName || shouldDisambiguateBySlug;
+    const resolvedSlug = suffix === undefined || !disambiguated ? baseSlug : `${baseSlug}-${slug(`\`${suffix}\``)}`;
     infos.push({
       symbol,
       displayName,
@@ -154,10 +154,6 @@ function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
   const suffixCounts = new Map<string, number>();
 
   for (const heading of headings) {
-    if (!heading.slug) {
-      continue;
-    }
-
     const baseSlug = heading.slug;
     const normalizedBase = baseSlug.toLowerCase();
     if (!used.has(normalizedBase)) {
@@ -823,11 +819,11 @@ export function composeEntries(args: {
   });
   const commands = args.declaredBy
     .filter((declared) => declared.reason === "command")
-    .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.declarer.localeCompare(b.declarer));
+    .sort((a, b) => compareText(a.name ?? "", b.name ?? "") || compareText(a.declarer, b.declarer));
   for (const declared of commands) {
     entries.push({ reason: "command", command: declared.name ?? "", declarer: declarerOf(declared.declarer) });
   }
-  const modules = args.declaredBy.filter((declared) => declared.reason === "module").sort((a, b) => a.declarer.localeCompare(b.declarer));
+  const modules = args.declaredBy.filter((declared) => declared.reason === "module").sort((a, b) => compareText(a.declarer, b.declarer));
   for (const declared of modules) {
     entries.push({ reason: "module", declarer: declarerOf(declared.declarer) });
   }
@@ -865,7 +861,7 @@ export function composeReExports(args: {
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
-  const sorted = [...args.reExports].sort((a, b) => a.name.localeCompare(b.name));
+  const sorted = [...args.reExports].sort((a, b) => compareText(a.name, b.name));
 
   return sorted.map((entry) => {
     const slugValue = createSymbolSlug(entry.name);

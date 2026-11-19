@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/document.ts
-- Generated At: 2026-10-22T16:47:52.870Z
+- Generated At: 2026-11-19T11:54:02.131Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ The grammar of a Live Doc: the model of everything a doc says, `renderLiveDoc`, 
 - The `Entry` lines (2026-10-15, [Turn 4](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) stand between `Code Path` and `Generated At`: a reason, `program`, `command`, `module`, `opening`, `tooling` or `declared`, and its evidence, a symbol linked or bare, a command's name and its manifest, an opening. `parseEntry` refuses evidence that does not fit the reason; `entryWords` gives the CLI and the panel one wording. A test is an entry by its archetype and carries no line.
 - `UNREAD_NOTE` and `UNREAD_AUTHORED_BLOCK` (2026-10-22): the note a new doc of a file no reader handles starts with, in its authored block in place of `_Pending notes_` and never in a generated region, where the owner asked for it: "a reasonable caveat to throw in the Authored section and worthy of remembering when we visit such a file again" ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)). `hasMeaningfulAuthoredContent` reads it as a placeholder, so a doc holding nothing else is pruned with its file; a pass that adds a reader finds the docs to revisit by its exact words.
 - `Cited By` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): an optional generated section after `Dependencies` and before `Re-Exported Symbol Anchors`, one line per document whose links name the file, `- [\`path\`](link)`, present only when a document cites the file. The parser takes the optional sections in that order through `nextSectionIs`, so a doc without either still ends at `Dependencies`; a `Cited By` line it cannot read names its line, as the other refusals do.
+- Since 2026-11-19 ([the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md)) a symbol's name is written as a CommonMark code span whose fence is longer than any run of backticks in it, padded with a space where it begins or ends with a backtick or a space (`codeSpan`), and read the same way (`takeCodeSpan`), in the symbol and re-export headings, the section headings and an entry's symbol: a JSON key holding a backtick had made the generator write a doc it could not read back, which stopped a whole history.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -190,9 +191,27 @@ Thrown when text is not a Live Doc. `line` is one-based.
 ##### `parseLiveDoc` — Summary
 Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
+#### `codeSpan` {#symbol-codespan}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L505)
+
+##### `codeSpan` — Summary
+A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
+longest run of backticks, and padded with a space on each side where it begins or ends with a backtick or a space,
+as CommonMark reads a code span; a name that is all spaces is written as it is.
+
+#### `takeCodeSpan` {#symbol-takecodespan}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L517)
+
+##### `takeCodeSpan` — Summary
+The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
+exactly as many, and a space stripped from each side where the content begins and ends with one and is not all
+spaces; undefined where no span begins or it never closes.
+
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L663)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L721)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -204,7 +223,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L682)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L740)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met.

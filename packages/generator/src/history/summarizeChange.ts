@@ -21,22 +21,36 @@
  * the files and wires of the shape are exactly those of a fresh generation: an
  * orphan kept for its words, or a doc of a file today's lens excludes, never
  * enters the reading. A link counts only when its document stands in the
- * change's tree. A summary is written to a temporary name and renamed into
- * place, so that a run stopped halfway never leaves a summary the cache would
- * trust.
+ * change's tree.
  *
- * Run as a process, it takes one argument, the task as JSON.
+ * Since 2026-11-19 the summary keeps each file's symbol rows and dependency
+ * lines and names its prose by hash (see `summary.ts`). Before the generator
+ * runs, every doc of the committed mirror is read once for whether its
+ * authored block can be read at all: a doc in a form with no `## Authored`
+ * heading, as this repository's mirror before 2026-09-27, gets the
+ * generator's placeholder, and the summary says "unread" for it rather than
+ * pass the placeholder off as that day's words. The texts go to the lens's
+ * text store first and the summary, gzipped, is written to a temporary name
+ * and renamed into place after, so that a run stopped halfway never leaves a
+ * summary the cache would trust nor one that names a text the store lacks.
+ * When it ends, the process sends the history command its peak resident
+ * memory, which sizes the pool.
+ *
+ * Run as a process, it takes one argument, the path of a file holding the task as JSON (since 2026-11-19; the task
+ * itself, which names every entry a tree left out, could outgrow the command line).
  *
  * @module
  */
 
+import { glob } from "glob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { gzipSync } from "node:zlib";
 
 import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
-import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
+import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
+import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
 import { generateLiveDocs } from "../generator";
@@ -51,15 +65,20 @@ export interface SummaryTask {
   lens: string;
   /** The change's id. */
   commit: string;
-  /** Where the summary goes. */
+  /** Where the summary goes, gzipped. */
   summaryPath: string;
+  /** The lens's text store, where the texts the summary names go. */
+  textStore: string;
   /** Where the full graph index goes, gzipped, when the cache keeps it. */
   indexPath?: string;
+  /** The change's files its working tree does not hold, and why, which the summary records. */
+  unwritten?: Array<{ path: string; reason: string }>;
 }
 
 /** Generates the change's docs in its working tree and writes its summary, and its index when asked. */
 export async function summarizeChange(task: SummaryTask): Promise<void> {
   const { tree, configuration } = task;
+  const authored = await authoredReading(tree, configuration);
   const result = await generateLiveDocs({
     workspaceRoot: tree,
     config: configuration,
@@ -76,11 +95,36 @@ export async function summarizeChange(task: SummaryTask): Promise<void> {
   const graph: LiveDocGraph = indexText
     ? (JSON.parse(indexText) as LiveDocGraph)
     : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: {} };
-  await writeInPlace(task.summaryPath, JSON.stringify(summarizeGraph(graph, task.lens, task.commit, await standingRelatedDocs(graph, tree, configuration))));
+  const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, await standingRelatedDocs(graph, tree, configuration), authored);
+  if (task.unwritten && task.unwritten.length > 0) {
+    summary.unwritten = task.unwritten.map((entry): [string, string] => [entry.path, entry.reason]);
+  }
+  await putTexts(task.textStore, texts);
+  await writeInPlace(task.summaryPath, gzipSync(JSON.stringify(summary)));
   if (task.indexPath) {
     await writeInPlace(task.indexPath, gzipSync(indexText ?? JSON.stringify(graph)));
   }
 }
+
+/**
+ * What can be read of the authored block of each doc of the mirror committed at the change, by its workspace-relative
+ * path, read before the generator rewrites the mirror: a doc with an `## Authored` heading, which the generator carries
+ * forward verbatim whether or not the rest of it meets today's grammar, is `read`; one without is `unread`.
+ */
+async function authoredReading(tree: string, configuration: LiveDocumentationConfig): Promise<AuthoredReading> {
+  const pattern = path.posix.join(configuration.root, configuration.baseLayer, "**", `*${configuration.extension}`);
+  // `dot`, since a hidden file's doc lives under a hidden path segment, as `readLiveDocGraph` reads them.
+  const docs = await glob(pattern, { cwd: tree, nodir: true, dot: true, posix: true, windowsPathsNoEscape: true });
+  const reading = new Map<string, "read" | "unread">();
+  for (const doc of docs) {
+    const text = await fs.readFile(path.join(tree, doc), "utf8");
+    reading.set(doc, AUTHORED_HEADING.test(text) ? "read" : "unread");
+  }
+  return reading;
+}
+
+// The heading `authoredBlockOf` looks for, under which the generator carries a doc's authored words forward.
+const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
 
 /** Each file's related documents, as the bundle reads them, that stand as files in the change's tree. */
 async function standingRelatedDocs(graph: LiveDocGraph, tree: string, configuration: LiveDocumentationConfig): Promise<Map<string, string[]>> {
@@ -111,9 +155,22 @@ async function writeInPlace(target: string, content: string | Uint8Array): Promi
   await fs.rename(temporary, target);
 }
 
+/** What the process tells the history command when it has written the summary. */
+export interface SummaryReport {
+  /** The process's peak resident memory, in bytes. */
+  peakMemory: number;
+}
+
 if (require.main === module) {
-  summarizeChange(JSON.parse(process.argv[2]) as SummaryTask).catch((error: unknown) => {
-    process.stderr.write(`${error instanceof Error ? (error.stack ?? error.message) : String(error)}\n`);
-    process.exitCode = 1;
-  });
+  fs.readFile(process.argv[2], "utf8").then((text) => summarizeChange(JSON.parse(text) as SummaryTask)).then(
+    () => {
+      // The peak as the operating system counts it; `maxRSS` is in kibibytes.
+      const report: SummaryReport = { peakMemory: process.resourceUsage().maxRSS * 1024 };
+      process.send?.(report);
+    },
+    (error: unknown) => {
+      process.stderr.write(`${error instanceof Error ? (error.stack ?? error.message) : String(error)}\n`);
+      process.exitCode = 1;
+    }
+  );
 }

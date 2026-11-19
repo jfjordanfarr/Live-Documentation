@@ -17,6 +17,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parse as parseToml } from "smol-toml";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DeclaredEntry, DependencyEntry, PublicSymbolEntry, ResolvedSymbolLocation, WorkspaceSymbolIndex } from "../coreTypes";
 import { PACKAGE_KIND } from "../openings";
@@ -153,7 +154,7 @@ export class ManifestDependencies {
   /** The dependencies gathered: the linked manifests in path order, each with the names it publishes, then the externals in order. */
   entries(): DependencyEntry[] {
     const dependencies: DependencyEntry[] = Array.from(this.linked.entries())
-      .sort(([left], [right]) => left.localeCompare(right))
+      .sort(([left], [right]) => compareText(left, right))
       .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const }));
     for (const specifier of Array.from(this.external).sort()) {
       dependencies.push({ specifier, symbols: [], kind: "import" });
@@ -166,5 +167,5 @@ export class ManifestDependencies {
 export function sortDeclared(declared: Iterable<DeclaredEntry>): DeclaredEntry[] {
   const unique = new Map<string, DeclaredEntry>();
   for (const entry of declared) unique.set(`${entry.reason}\u0000${entry.file}\u0000${entry.name ?? ""}`, entry);
-  return Array.from(unique.values()).sort((a, b) => a.file.localeCompare(b.file) || a.reason.localeCompare(b.reason) || (a.name ?? "").localeCompare(b.name ?? ""));
+  return Array.from(unique.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
 }

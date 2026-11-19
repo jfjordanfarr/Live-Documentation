@@ -7,13 +7,12 @@
  *
  * @module history
  */
-import os from "node:os";
 import process from "node:process";
 
 import type { HistorySequence, Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
-import { computeHistory } from "../../packages/generator/src/history/computeHistory";
+import { computeHistory, formatBytes, HistoryStopped } from "../../packages/generator/src/history/computeHistory";
 import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
 
 interface ParsedArgs {
@@ -27,9 +26,10 @@ interface ParsedArgs {
   jobs?: number;
   keepIndex: boolean;
   authors: boolean;
+  removeSuperseded: boolean;
+  checkHead: boolean;
+  stopAfter?: number;
 }
-
-const GIBIBYTE = 1024 ** 3;
 
 async function main(): Promise<void> {
   endQuietlyWhenThePipeCloses();
@@ -38,28 +38,49 @@ async function main(): Promise<void> {
     console.log(usage());
     return;
   }
-  const run = await computeHistory({
-    workspace: args.workspace ?? ".",
-    configPath: args.configPath,
-    sampling: samplingOf(args),
-    jobs: args.jobs ?? defaultJobs(),
-    keepIndex: args.keepIndex,
-    authors: args.authors,
-    progress: (line) => process.stderr.write(`[history] ${line}\n`)
-  });
+  let run;
+  try {
+    run = await computeHistory({
+      workspace: args.workspace ?? ".",
+      configPath: args.configPath,
+      sampling: samplingOf(args),
+      jobs: args.jobs,
+      keepIndex: args.keepIndex,
+      authors: args.authors,
+      removeSuperseded: args.removeSuperseded,
+      checkHead: args.checkHead,
+      stopAfterMinutes: args.stopAfter,
+      progress: (line) => process.stderr.write(`[history] ${line}\n`)
+    });
+  } catch (error) {
+    if (!(error instanceof HistoryStopped)) throw error;
+    // Not a failure of the history, and not a history: a caller tells the two apart by the exit code.
+    console.log(`History incomplete: ${error.message}`);
+    process.exitCode = STOPPED;
+    return;
+  }
   if (args.json) {
     printJson(run.sequence);
   } else {
     const bytes = Buffer.byteLength(JSON.stringify(run.sequence));
+    const regenerated =
+      run.regenerated > 0
+        ? `${run.regenerated} regenerated in ${minutes(run.regenerationMilliseconds)} at ${run.jobs} at a time, the largest process ${formatBytes(run.peakMemory)} at its peak`
+        : "0 regenerated";
+    const kept = run.superseded.filter((cache) => !cache.removed);
+    const others = kept.length > 0 ? ` The caches of ${kept.length} other lenses hold ${formatBytes(kept.reduce((sum, cache) => sum + cache.bytes, 0))}; --remove-superseded removes them.` : "";
     console.log(
-      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${run.regenerated} regenerated, ${run.cached} from the cache at ${run.cache}.`
+      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${regenerated}; ${run.cached} from the cache at ${run.cache}, which holds ${formatBytes(run.cacheBytes)}.${others}\n` +
+        `${run.headCheck.applied ? "Checked" : "Not checked"}: ${run.headCheck.line}.`
     );
   }
 }
 
-/** Two processes on a machine of 8 GiB or less; else one fewer than the processors, at most three. */
-function defaultJobs(): number {
-  return os.totalmem() <= 8 * GIBIBYTE ? 2 : Math.max(1, Math.min(3, os.cpus().length - 1));
+/** The exit code of a run stopped by --stop-after before the cache held every sampled commit. */
+const STOPPED = 3;
+
+function minutes(milliseconds: number): string {
+  return milliseconds < 120_000 ? `${(milliseconds / 1000).toFixed(1)} s` : `${(milliseconds / 60_000).toFixed(1)} min`;
 }
 
 function samplingOf(args: ParsedArgs): Sampling {
@@ -96,7 +117,7 @@ function nonEmpty(change: object): Record<string, unknown> {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true };
+  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -141,6 +162,22 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--no-authors":
         parsed.authors = false;
         break;
+      case "--remove-superseded":
+        parsed.removeSuperseded = true;
+        break;
+      case "--check-head":
+        parsed.checkHead = true;
+        break;
+      case "--stop-after": {
+        // 0 starts no commit: the run writes a history only when the cache already holds every one.
+        const value = optionValue(argv, ++index, current);
+        const minutes = Number(value);
+        if (!Number.isInteger(minutes) || minutes < 0) {
+          throw new UsageError(`--stop-after takes a whole number of minutes, 0 or more; ${value} is not one.`);
+        }
+        parsed.stopAfter = minutes;
+        break;
+      }
       default:
         throw new UsageError(`${current} is not an option.`);
     }
@@ -156,12 +193,6 @@ function positiveInteger(value: string, flag: string): number {
   return parsed;
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 function usage(): string {
   return (
     `Usage: npm run live-docs:history -- [options]\n\n` +
@@ -175,10 +206,21 @@ function usage(): string {
     `  --step <unit>        commit (default), day, week or tag: which commits are regenerated.\n` +
     `  --every <n>          Every n-th commit, with --step commit.\n` +
     `  --since <date>       Only commits on or after the date.\n` +
-    `  --jobs <n>           Commits regenerated at once, one process each (default: 2 on 8 GiB or less,\n` +
-    `                       else one fewer than the processors, at most 3).\n` +
+    `  --jobs <n>           Commits regenerated at once, one process each (default: as many as half the\n` +
+    `                       memory holds at the peak a process last took here, at most one fewer than\n` +
+    `                       the processors).\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
     `  --no-authors         Leave the authors' names out of the sequence.\n` +
+    `  --remove-superseded  Remove the caches of other lenses, which every run lists with their sizes,\n` +
+    `                       keeping only the newest whole one until the current lens's cache holds every\n` +
+    `                       sampled commit.\n` +
+    `  --check-head         Hold the last commit's rows and links to the Live Docs committed there, read\n` +
+    `                       afresh, and fail where they differ: say so when those docs were generated by\n` +
+    `                       this generator under this configuration. Without it the check applies only\n` +
+    `                       when this generator runs unmodified from the commit the history ends at,\n` +
+    `                       under the workspace's own configuration, and is skipped elsewhere.\n` +
+    `  --stop-after <min>   Start no commit after this many minutes of regeneration. A run stopped so\n` +
+    `                       writes no history, keeps what it summarized for the next run, and exits 3.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +
     `  -h, --help           Print this help.\n` +
     `\nThe first and the last commit are always regenerated, so the sequence spans what it samples.\n` +

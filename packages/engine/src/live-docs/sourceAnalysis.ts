@@ -12,6 +12,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
@@ -157,6 +158,6 @@ function sortSymbolsByLocation(symbols: PublicSymbolEntry[]): PublicSymbolEntry[
       return aChar - bChar;
     }
 
-    return a.name.localeCompare(b.name);
+    return compareText(a.name, b.name);
   });
 }

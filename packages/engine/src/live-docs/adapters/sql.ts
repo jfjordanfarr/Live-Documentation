@@ -13,6 +13,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import { matchSqlObject, sqlDeclarations, sqlNameMatches, sqlObjectName, sqlReferences } from "../openings";
@@ -53,7 +54,7 @@ export const sqlAdapter: LanguageAdapter = {
 
     const entries = (bucket: Map<string, Set<string>>, basis?: "contract"): DependencyEntry[] =>
       Array.from(bucket.entries())
-        .sort(([left], [right]) => left.localeCompare(right))
+        .sort(([left], [right]) => compareText(left, right))
         .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const, ...(basis ? { basis } : {}) }));
 
     const named = Array.from(unresolved).sort().map((specifier): DependencyEntry => ({ specifier, symbols: [], kind: "import", basis: "contract" }));

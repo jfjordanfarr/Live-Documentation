@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/css.ts
-- Generated At: 2026-10-22T16:47:51.621Z
+- Generated At: 2026-11-19T08:59:52.765Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L296)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L297)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cssAdapter` — Summary
@@ -37,6 +37,7 @@ Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, c
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -3,8 +3,10 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import { decodeChange, decodeShape, encodeChange, encodeShape, Interner } from "./codec";
 import { KEYFRAME_INTERVAL, type CommitInfo, type HistoryLens, type HistorySource } from "./format";
-import { changeAt, commitAt, headOf, seek, SequenceBuilder } from "./sequence";
+import { rowsDifferences, type Rows } from "./rows";
+import { changeAt, commitAt, headOf, momentAt, rowsChangeAt, seek, SequenceBuilder } from "./sequence";
 import { edgeKey, shapeDifferences, type Shape } from "./shape";
+import { windowOf } from "./window";
 
 const LENS: HistoryLens = { key: "0123456789abcdef", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG };
 const SOURCE: HistorySource = { system: "git", root: ".", branch: "main", head: "c9", shallow: false, knowledgeBegins: "c0", sampling: { rule: "every-commit" }, authors: true };
@@ -81,7 +83,7 @@ describe("the sequence", () => {
 
   it("says what it holds in its head", () => {
     const sequence = build(4);
-    expect(headOf(sequence)).toMatchObject({ format: "live-docs-history/2", commits: 5, first: { id: "c0" }, last: { id: "c4" }, lens: LENS, source: SOURCE });
+    expect(headOf(sequence)).toMatchObject({ format: "live-docs-history/3", commits: 5, first: { id: "c0" }, last: { id: "c4" }, lens: LENS, source: SOURCE });
     expect(changeAt(sequence, 0).born).toEqual([]);
     expect(() => seek(sequence, 5)).toThrow(RangeError);
   });
@@ -92,6 +94,86 @@ describe("the sequence", () => {
     expect(changeAt(sequence, 2)).toBe(changeAt(sequence, 2));
     expect(changeAt(sequence, 2)).not.toBe(changeAt(again, 2));
     expect(changeAt(sequence, 2)).toEqual(changeAt(again, 2));
+    expect(rowsChangeAt(sequence, 2)).toBe(rowsChangeAt(sequence, 2));
+  });
+});
+
+/** {@link growingShape} held to twenty files of at most five symbols, so that a history past a keyframe stays small. */
+function smallShape(index: number): Shape {
+  const shape = growingShape(index);
+  const kept = (path: string): boolean => Number(/f(\d+)/u.exec(path)![1]) < 20;
+  return {
+    files: new Map([...shape.files].filter(([path]) => kept(path)).map(([path, file]) => [path, { ...file, symbols: Math.min(file.symbols, 5 + (index % 2)) }])),
+    edges: new Map([...shape.edges].filter(([key]) => kept(key.split("\u0000")[0]))),
+    docLinks: new Set([...shape.docLinks].filter((key) => kept(key.split("\u0000")[0])))
+  };
+}
+
+/**
+ * The rows of {@link smallShape}'s files: each file's symbols named for their age, newest first, each wire one
+ * dependency line, the newest symbol's description changing with the change, the order reversed every fifth change,
+ * and the first file's words unread until the third change.
+ */
+function growingRows(index: number): Rows {
+  const shape = smallShape(index);
+  const rows: Rows = new Map();
+  for (const [path, file] of shape.files) {
+    const born = Number(/f(\d+)/u.exec(path)![1]);
+    rows.set(path, {
+      entries: file.entry ? [{ reason: "declared" }] : [],
+      // The newest symbol comes first, so that the rows of a file grow at their head and, every fifth change, reorder.
+      symbols: Array.from({ length: file.symbols }, (_, age) => ({ name: `s${age}`, slug: `s${age}`, kind: "function", flags: [], references: [], ...(age === 0 ? { text: index } : {}) })).reverse(),
+      dependencies: [],
+      reExports: [],
+      citedBy: [],
+      authored: born === 0 && index < 3 ? "unread" : born
+    });
+    if (index % 5 === 4) rows.get(path)!.symbols.reverse();
+  }
+  for (const [key, count] of shape.edges) {
+    const [from, to] = key.split("\u0000");
+    rows.get(from)!.dependencies.push(...Array.from({ length: count }, () => ({ label: to, kind: "import" as const, to })));
+  }
+  return rows;
+}
+
+describe("the sequence's rows", () => {
+  function buildWithRows(changes: number): ReturnType<SequenceBuilder["finish"]> {
+    const builder = new SequenceBuilder({ lens: LENS, source: SOURCE }, commit(0), smallShape(0), growingRows(0));
+    for (let index = 1; index <= changes; index += 1) {
+      builder.add(commit(index), smallShape(index), { renamed: [], modified: [] }, growingRows(index));
+    }
+    return builder.finish();
+  }
+
+  it("replays to every step's rows, by a seek from the nearest keyframe, which repeats them whole", () => {
+    const sequence = buildWithRows(KEYFRAME_INTERVAL + 4);
+    expect(sequence.keyframes[0].rows.length).toBe(20);
+    for (const step of [0, 1, 2, 3, 4, 5, KEYFRAME_INTERVAL - 1, KEYFRAME_INTERVAL, KEYFRAME_INTERVAL + 4]) {
+      const moment = momentAt(sequence, step);
+      expect(rowsDifferences(growingRows(step), moment.rows), `step ${step}`).toEqual([]);
+      expect(shapeDifferences(smallShape(step), moment.shape), `step ${step}`).toEqual([]);
+    }
+    expect(sequence.names).toContain("s0");
+    // The first file's words become readable at the third change, where the third file is born with its own.
+    expect(rowsChangeAt(sequence, 3).authored).toEqual([["src/f0.ts", 0], ["src/f3.ts", 3]]);
+  });
+
+  it("refuses rows that disagree with the shape they come with", () => {
+    const rows = growingRows(1);
+    rows.get("src/f1.ts")!.dependencies.push({ label: "x", kind: "import", to: "src/f0.ts" });
+    expect(() => new SequenceBuilder({ lens: LENS, source: SOURCE }, commit(0), smallShape(1), rows)).toThrow("disagree with its shape");
+    const builder = new SequenceBuilder({ lens: LENS, source: SOURCE }, commit(0), smallShape(0), growingRows(0));
+    expect(() => builder.add(commit(1), smallShape(1), { renamed: [], modified: [] }, rows)).toThrow("does not give its moment");
+    expect(() => builder.add(commit(1), smallShape(1), { renamed: [], modified: [] })).toThrow("gives no rows");
+  });
+
+  it("carries the rows through a window re-based on its first change", () => {
+    const sequence = buildWithRows(12);
+    const window = windowOf(sequence, { rule: "last", count: 4 });
+    for (let step = 0; step < 4; step += 1) {
+      expect(rowsDifferences(growingRows(9 + step), momentAt(window, step).rows), `step ${step}`).toEqual([]);
+    }
   });
 });
 

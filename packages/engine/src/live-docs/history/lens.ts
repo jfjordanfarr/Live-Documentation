@@ -13,11 +13,12 @@ import type { GeneratorIdentity, HistoryLens } from "./format";
 
 /**
  * The lens of a generator and a normalized configuration, with its key. The key is made of the generator's version,
- * its committed code and tool dependency lock, its uncommitted changes to either, and the configuration; the commit
+ * its committed code and tool dependency lock, its uncommitted changes to either, the runtime's version of Unicode,
+ * and the configuration; the commit
  * the generator runs from rides in the lens for the reader but does not key it, so unrelated commits keep the cache.
  */
 export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig): HistoryLens {
-  const keyed = { version: generator.version, code: generator.code, modified: generator.modified };
+  const keyed = { version: generator.version, code: generator.code, modified: generator.modified, unicode: generator.unicode ?? null };
   const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration })).digest("hex").slice(0, 16);
   return { key, generator, configuration };
 }

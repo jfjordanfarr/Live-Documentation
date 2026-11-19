@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/sql.ts
-- Generated At: 2026-10-22T16:47:52.471Z
+- Generated At: 2026-11-19T08:59:53.074Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The adapter for SQL scripts. What a script creates, a procedure, a table, a view
 ### Public Symbols
 #### `sqlAdapter` {#symbol-sqladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L22)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L23)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `sqlAdapter` — Summary
@@ -41,6 +41,7 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`openings.sqlNameMatches`](../openings.ts.mdmd.md#symbol-sqlnamematches)
 - [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

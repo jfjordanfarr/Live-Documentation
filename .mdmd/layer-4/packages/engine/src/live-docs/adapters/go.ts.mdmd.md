@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/go.ts
-- Generated At: 2026-10-22T16:47:51.720Z
+- Generated At: 2026-11-19T08:59:52.800Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L629)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L630)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goAdapter` — Summary
@@ -44,6 +44,7 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -5,11 +5,13 @@
  * between two changes.
  *
  * @remarks
- * Every answer is from the shape alone: files, their archetypes, symbol
- * counts and entry marks, the edges between them with their counts, and the
- * documents their authored words linked to. The symbols themselves, the kinds
- * of the edges and every authored word were in the docs of that change, which
- * the sequence does not carry.
+ * The walk and the changes between two changes answer from the shape:
+ * files, their archetypes, symbol counts and entry marks, the edges between
+ * them with their counts, and the documents their authored words linked to.
+ * Since format 3 (2026-11-19) a file's rows at a change and the links between
+ * two files or two symbols answer from the rows, what a 2D card of that day
+ * drew (`rows.ts`), so that whatever the page can show of a moment a command
+ * can print.
  *
  * @module
  */
@@ -17,7 +19,8 @@
 import type { DocLocation, GraphFile, LiveDocGraph } from "../graph";
 import { directoryRenames } from "./directories";
 import type { CommitInfo, HistorySequence } from "./format";
-import { changeAt, commitAt, seek } from "./sequence";
+import { linksOf, type FileRows, type RowLink, type Rows, type RowSymbol } from "./rows";
+import { changeAt, commitAt, seek, type Moment } from "./sequence";
 import { edgeEnds, edgeKey, type FileShape, type Shape, type ShapeChange } from "./shape";
 
 /** The steps whose change id begins with `reference`, ignoring case; more than one when the reference is ambiguous. */
@@ -124,6 +127,59 @@ export function fileOfShape(shape: Shape, codePath: string): FileAtChange {
   inbound.sort((a, b) => compare(a.codePath, b.codePath));
   const documents = [...shape.docLinks].map(edgeEnds).filter(([from]) => from === codePath).map(([, doc]) => doc).sort(compare);
   return { codePath, exists: true, archetype: file.archetype, symbols: file.symbols, entry: file.entry, outbound, inbound, documents };
+}
+
+/** A file's rows at a change, with the links that leave and reach it. */
+export interface RowsAtChange {
+  codePath: string;
+  /** Whether the file existed then. */
+  exists: boolean;
+  /** Whether the sequence carries the file's rows; false for a sequence made without them. */
+  carried: boolean;
+  rows?: FileRows;
+  /** The links from its lines and its symbols to other files. */
+  outbound?: RowLink[];
+  /** The links from other files to it or its symbols. */
+  inbound?: RowLink[];
+}
+
+/** What a file's rows were at a moment: whether it existed and its rows were carried, and its links either way. */
+export function rowsOfFile(moment: Moment, codePath: string): RowsAtChange {
+  const exists = moment.shape.files.has(codePath);
+  const rows = moment.rows.get(codePath);
+  if (!exists || !rows) {
+    return { codePath, exists, carried: rows !== undefined };
+  }
+  const links = linksOf(moment.rows);
+  return { codePath, exists, carried: true, rows, outbound: links.filter((link) => link.from === codePath), inbound: links.filter((link) => link.to === codePath) };
+}
+
+/** One end of a link as a person names it: a file, and a symbol of it by its anchor or its name, or the file whole. */
+export interface LinkEnd {
+  codePath: string;
+  symbol?: string;
+}
+
+/**
+ * The symbol of a file's rows a person names: by its anchor, by its heading, or by its heading's name without the
+ * kind the heading adds (`Widget` for `Widget (interface)`), when exactly one symbol answers.
+ */
+export function symbolNamed(file: FileRows, name: string): RowSymbol | undefined {
+  const exact = file.symbols.filter((symbol) => symbol.slug === name || symbol.name === name);
+  if (exact.length === 1) return exact[0];
+  const bare = file.symbols.filter((symbol) => symbol.name.replace(/\s+\([^)]*\)$/u, "") === name);
+  return bare.length === 1 ? bare[0] : undefined;
+}
+
+/**
+ * The links at a moment from one end to another, in both directions: from a file or a symbol of it to a file or a
+ * symbol of it, each end's symbol given by anchor. A link from a dependency line has no symbol at its source, so an end
+ * with a symbol is reached only by type references.
+ */
+export function linksBetween(rows: Rows, one: LinkEnd, other: LinkEnd): RowLink[] {
+  const touches = (link: RowLink, from: LinkEnd, to: LinkEnd): boolean =>
+    link.from === from.codePath && link.to === to.codePath && (from.symbol === undefined || link.fromSymbol === from.symbol) && (to.symbol === undefined || link.toSymbol === to.symbol);
+  return linksOf(rows, new Set([one.codePath, other.codePath])).filter((link) => touches(link, one, other) || touches(link, other, one));
 }
 
 /** What changed from one change of a sequence to a later one, every list sorted. */

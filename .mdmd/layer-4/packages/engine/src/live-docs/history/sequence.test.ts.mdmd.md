@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/history/sequence.test.ts
-- Generated At: 2026-10-18T00:39:19.088Z
+- Generated At: 2026-11-19T06:20:28.587Z
 
 ## Authored
 ### Purpose
@@ -31,13 +31,18 @@ _No public symbols detected_
 - [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens)
 - [`format.HistorySource`](./format.ts.mdmd.md#symbol-historysource)
 - [`format.KEYFRAME_INTERVAL`](./format.ts.mdmd.md#symbol-keyframe_interval)
+- [`Rows`](./rows.ts.mdmd.md#symbol-rows)
+- [`rows.rowsDifferences`](./rows.ts.mdmd.md#symbol-rowsdifferences)
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`sequence.changeAt`](./sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](./sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.headOf`](./sequence.ts.mdmd.md#symbol-headof)
+- [`sequence.momentAt`](./sequence.ts.mdmd.md#symbol-momentat)
+- [`sequence.rowsChangeAt`](./sequence.ts.mdmd.md#symbol-rowschangeat)
 - [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.shapeDifferences`](./shape.ts.mdmd.md#symbol-shapedifferences)
+- [`window.windowOf`](./window.ts.mdmd.md#symbol-windowof)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

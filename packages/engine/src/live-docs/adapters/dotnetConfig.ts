@@ -12,6 +12,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { ADDRESS_KIND } from "../openings";
@@ -146,13 +147,13 @@ export const dotnetConfigAdapter: LanguageAdapter = {
       }
     }
     const dependencies: DependencyEntry[] = Array.from(byFile.entries())
-      .sort(([left], [right]) => left.localeCompare(right))
+      .sort(([left], [right]) => compareText(left, right))
       .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const }));
 
     dependencies.push(...listenersOf(clientAddresses, thisFile, symbolIndex));
-    dependencies.push(...packages.sort((left, right) => left.specifier.localeCompare(right.specifier)));
+    dependencies.push(...packages.sort((left, right) => compareText(left.specifier, right.specifier)));
 
-    symbols.sort((left, right) => left.location!.line - right.location!.line || left.name.localeCompare(right.name));
+    symbols.sort((left, right) => left.location!.line - right.location!.line || compareText(left.name, right.name));
     return { symbols, dependencies };
   }
 };
@@ -174,7 +175,7 @@ function listenersOf(addresses: Set<string>, thisFile: string, symbolIndex: Work
     }
   }
   const dependencies: DependencyEntry[] = Array.from(byFile.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const, basis: "configuration" as const }));
   for (const address of unresolved) {
     dependencies.push({ specifier: address, symbols: [], kind: "import", basis: "configuration" });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/heuristics/routes.ts
-- Generated At: 2026-10-22T16:47:53.047Z
+- Generated At: 2026-11-19T08:59:53.236Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ The routes a script calls. Over the TypeScript syntax tree of a script it finds 
 ### Public Symbols
 #### `inferRouteDependencies` {#symbol-inferroutedependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/routes.ts#L38)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/routes.ts#L39)
 - Returns: [`DependencyEntry`](../coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
 ##### `inferRouteDependencies` — Summary
@@ -34,7 +34,7 @@ Finds the route calls in a script and resolves each to the file that serves it.
 
 #### `collectRouteCalls` {#symbol-collectroutecalls}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/routes.ts#L84)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/routes.ts#L85)
 - Returns: `RouteCall`[]
 - Parameters: `sourceFile`: `ts.SourceFile`
 
@@ -54,6 +54,7 @@ Every route call in the script, in source order.
 - [`openings.matchRoute`](../openings.ts.mdmd.md#symbol-matchroute)
 - [`openings.routeSegments`](../openings.ts.mdmd.md#symbol-routesegments)
 - [`openings.routeSymbolName`](../openings.ts.mdmd.md#symbol-routesymbolname)
+- [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

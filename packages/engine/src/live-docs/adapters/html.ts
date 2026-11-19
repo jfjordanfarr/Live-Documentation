@@ -15,6 +15,7 @@
 import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
@@ -290,7 +291,7 @@ function extractHtmlDependencies(params: {
   }
 
   // Sort dependencies by specifier for consistent output
-  dependencies.sort((a, b) => a.specifier.localeCompare(b.specifier));
+  dependencies.sort((a, b) => compareText(a.specifier, b.specifier));
 
   return dependencies;
 }
@@ -327,7 +328,7 @@ export function extractElementIds(content: string): string[] {
       ids.push(id);
     }
   }
-  ids.sort((a, b) => a.localeCompare(b));
+  ids.sort((a, b) => compareText(a, b));
   return ids;
 }
 

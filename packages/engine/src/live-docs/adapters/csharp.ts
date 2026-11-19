@@ -30,6 +30,7 @@ import { glob } from "glob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type {
   DependencyEntry,
@@ -1026,7 +1027,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
   return entries.sort((left, right) =>
     (left.location!.line - right.location!.line) ||
     (left.location!.character - right.location!.character) ||
-    left.name.localeCompare(right.name)
+    compareText(left.name, right.name)
   );
 }
 
@@ -1148,7 +1149,7 @@ async function toDependencies(
   }
 
   const dependencies: DependencyEntry[] = Array.from(byTarget.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
 
   dependencies.push(...contractDependencies(facts, thisFile, table, fileIndex, symbolIndex));
@@ -1219,7 +1220,7 @@ function contractDependencies(
   }
 
   const dependencies: DependencyEntry[] = Array.from(byTarget.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const, basis: "contract" as const }));
   for (const name of Array.from(unresolved).sort()) {
     dependencies.push({ specifier: name, symbols: [], kind: "import", basis: "contract" });
