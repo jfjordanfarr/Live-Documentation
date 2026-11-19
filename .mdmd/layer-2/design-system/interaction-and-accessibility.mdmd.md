@@ -58,7 +58,7 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 | **Click or tap on a name** | Opens or folds that name's description (a file's name: Purpose and every description). | Same as a click on its sphere. | A link in a pinned panel: a thing's name pins it, a file opens it in the Local Map. | Follows the link inside the reader. |
 | **Click or tap on a body** (card, sphere, piece) | A card's body does nothing; a closed directory's box opens it. | Pins the file; a second click releases it. A directory toggles its discovery. | Pins the piece's panel. | — |
 | **Pin** (the pin icon) | Retains a file or symbol and its connections; pressed again releases only what it retained. | The same, from the sphere's actions. | — (the World Map has no Pin control; see 2.3) | The tray lists pins; each row can release or focus. |
-| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | — |
+| **More, right-click, a stationary hold of 550 ms, the ContextMenu key or Shift+F10** | One menu of the item's commands. | The same menu. | — | A tray entry's More holds Fold others away and Unpin others for that entry. |
 | **Open / Close** (directory) | Discloses or withdraws a directory's contents; an opened directory is a pin. | Open: the whole directory; Close: withdraws it. | `open` in a pinned panel enters the thing in the Local Map. | — |
 | **Centre** | Makes the item the map's subject. | The same. | — | — |
 | **Double activation** | Nothing (omitted on purpose). | Nothing. | Enters the thing (a second route; `open` is the first). | — |
@@ -103,6 +103,12 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Why: *At least two ways*; the platform conventions for a context menu (Windows: ContextMenu and Shift+F10; touch: long press); WAI-ARIA Authoring Practices, Menu Button pattern.
 - Where: `views/localView/controller.ts:1639` and `views/forceGraphView.ts:2084` (the 550 ms hold); `panels/item-menu.ts` (the menu).
 - Status: holds in 2D and 3D.
+
+**What releases the others stands in the menu of the thing that stays** (the editor's *Close Others* convention): Fold others away (what is open elsewhere closes, pins stay), then Unpin others (every other pin goes too), beside the thing's own Pin. An item is present only when it would release something, never greyed out; each is one step Back takes back, is said once in the page's status region, and leaves the focus on the control it was chosen from.
+- Why: the owner, 2026-11-19: "release everything _except_ what I'm interacting with now"; two strengths of one gesture approved the same night. A step that releases many selections at once must be reversible (*user control and freedom*), and a change made away from the focus is told (WCAG 2.2 SC 4.1.3).
+- Where: `views/retained-state.ts` (`releaseOthers`, both strengths); `index.ts` (`othersCommands`, `releaseOthersOf`); `persistence/history.ts` (`stepWithinPlace`, the one entry within a place); `panels/pin-tray.ts` (an entry's More, shown only when it has something to offer).
+- Checked by: `views/retained-state.test.ts`, `persistence/history.test.ts`, `tests/e2e/others.spec.ts`.
+- Status: holds. Back does not restore the 3D Connections layout's pops, which are the view's own memory and not in the address.
 
 **Double activation is never the only route.**
 - Why: a double click has no equivalent on a keyboard and a double tap often zooms on a phone; the decision of 2026-10-15 removed it from the Local Map.
@@ -332,6 +338,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 | Copied as a declaration | `aria-live="polite"` (`panels/sources-view.ts:198`) | holds |
 | Tuning reset to defaults, and put back | "Tuning reset to defaults" and "Tuning put back as you had it", each said once in `#page-status` (`panels/tuning-reset.ts`); checked by `tests/e2e/tuning-reset.spec.ts` | holds since 2026-11-19 |
 | No search results | "Nothing found", said once in the page's one polite status region, `#page-status` (`announce.ts`, `search/search-field.ts`); checked by `tests/e2e/shell-accessibility.spec.ts` | holds since 2026-11-19 |
+| Others folded or unpinned | What went, counted, said once in `#page-status` ("Unpinned 4 others, folded 2 directories away"; `views/retained-state.ts` `othersReleasedWords`); checked by `tests/e2e/others.spec.ts` | holds since 2026-11-19 |
 | A pinned file absent at a historical moment | `aria-describedby` on the field; spoken only on focus | partial |
 | The 3D map is building and refuses clicks | not told | broken (SC 4.1.3); `announce.ts` is the module to tell it with |
 | The walkthrough's next step | `role="status"` in the World Map's own markup (`views/worldMap/controller.ts:318`, `:2154`); checked by `world-map.spec.ts` ("the walkthrough says each step …") | holds |

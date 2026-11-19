@@ -194,6 +194,14 @@ export interface ForceGraphViewApi {
    * when the view is shown, else at its next render.
    */
   setMoment(moment: HistoryMoment | null, renames: Renames, energy?: number, changes?: HistoryChanges | null): void;
+  /** The directories the Connections layout has popped open, the view's own memory; none where it draws no shells. */
+  poppedGroups(): ReadonlySet<string>;
+  /** Wrap every pop but these again, at the next render: Fold others away and Unpin others. */
+  keepPoppedGroups(kept: ReadonlySet<string>): void;
+  /** The nearest popped directory a file stands inside, or null: what "Wrap this group again" wraps. */
+  groupHolding(nodeId: string): string | null;
+  /** Wrap a popped directory again, with every pop beneath it, as its chip does. */
+  wrapGroup(directory: string): void;
   /** Feed the standing picture at the tuning's energy, after a drag placed it without a tick. */
   settle(): void;
 }
@@ -2479,6 +2487,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     render();
   }
 
+  /** The directories popped open where the picture draws shells; none where it draws none. */
+  function poppedGroups(): ReadonlySet<string> {
+    return shelling() ? new Set(popped) : new Set();
+  }
+
+  /** Keep only these pops, for Fold others away and Unpin others (2026-11-19); drawn at the next render. */
+  function keepPoppedGroups(kept: ReadonlySet<string>): void {
+    popped = new Set([...popped].filter(directory => kept.has(directory)));
+  }
+
+  /** The nearest popped directory a shown file stands inside, whose pop a menu can wrap again; null when none. */
+  function groupHolding(nodeId: string): string | null {
+    const path = nodeCache.get(fileAt(nodeId) ?? nodeId)?.codeRelativePath;
+    if (path === undefined) return null;
+    const holding = [...poppedGroups()].filter(directory => under(path, directory));
+    return holding.sort((a, b) => b.length - a.length)[0] ?? null;
+  }
+
   /** Advance the wrappers bursting open; one that has burst is gone from the picture. */
   function advanceBursts(): void {
     if (!bursts.size) return;
@@ -2585,5 +2611,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, cameraRoom, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, poppedGroups, keepPoppedGroups, groupHolding, wrapGroup: wrapShell, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }
