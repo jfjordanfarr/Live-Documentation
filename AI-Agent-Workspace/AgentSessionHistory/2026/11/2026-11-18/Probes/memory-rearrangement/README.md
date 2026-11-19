@@ -40,6 +40,25 @@ The file is 45% of what it was. It was three current sections over a dated recor
 - **One inbound link breaks,** from the November 15 record to the old heading "Answers at forks"; records are left as written. The headings `Next` and `Open with the owner`, which 31 links point at, are kept.
 - **[The ledger](direction-ledger.md)** holds all of this item by item, with the helper's judgment calls and the root's rulings on them.
 
+## `owner.md`
+
+| | Bytes | Quotations |
+| --- | --- | --- |
+| Before (`git show c5493364:AI-Agent-Workspace/Memory/owner.md`) | 162,530 | 428 |
+| First pass: every entry moved whole to its subject | 171,559 | 430 |
+| Second pass: the telling tightened | 161,711 | 429 |
+| Third pass: a fresh reader's 19 corrections applied | 164,976 | 429 |
+| In place, with two entries from the night's turns | 167,214 | 441 |
+
+**This file did not shrink, and that is the finding.** 37% of it is the owner's quoted words and 10% link targets, neither of which may shrink; what remains is readings, instructions, facts and the entries' leads. Its editor tightened the telling by 11.6% and a fresh reader then found that 19 of the 121 tightened entries had lost or shifted something, most often by turning "So …", which marked the root's inference from a quotation, into a bare instruction that reads as the owner's. Putting those right gave back most of the saving. The lesson: in a file that is mostly quotation, the words around a quotation are what say whose inference follows it, and they are not padding.
+
+**Its gain is arrangement.** It had grown by accretion: 200 entries under four headings, newest first for a stretch and oldest first after, some under the wrong heading (the machine's load under visual taste), one subject told in five places. It is now by subject: who they are; what the tool has to serve; how they work with an agent, in seven parts with named groups (deciding with them, explaining and teaching, how the lead developer conducts the work, roots and builders, sessions and records, their machine, git and tests); taste, in ten parts; what they hold about the product; and the Copilot era's note, its entries moved beside the later stances they led to. A stance that replaced another stands first with the older one beneath, marked. The three linked headings keep their words.
+
+- **How it was made safe:** the editor's build moves each old entry whole by script and applies only listed rewrites, each verified to keep every quotation, link, code span and number of its entry ([its ledger](owner-ledger.md)). No quotation of any length is absent (447 checked). 13 stand that the old lacks: one of November 17 and 12 from the night's Turns 11 to 18, each found word for word in the record.
+- **The fresh reader's check** ([its list](owner-check.md)): 102 of 121 rewritten entries kept their meaning; 6 changed, 6 weaker, 7 with the speaker blurred; the stated ordering untrue in four groups; five entries where a reader briefing a builder would not look; three replaced stances unmarked. All applied.
+- **The root read the result whole** before it replaced anything.
+- **Left for another pass:** the thirteen entries under "What they hold about the product", and about twenty more that are partly product decisions, are candidates to move to `direction.md`.
+
 ## The other files
 
-`owner.md` and `ideas.md` were in draft when this was written, and the narrative not begun; their ledgers join this folder as each lands.
+`ideas.md` was in its last pass when this was written, and the narrative not begun; their ledgers join this folder as each lands.
