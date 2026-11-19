@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.ts
-- Generated At: 2026-11-19T22:16:43.830Z
+- Generated At: 2026-11-19T22:32:47.900Z
 
 ## Authored
 ### Purpose
@@ -18,9 +18,16 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1094)
+
+##### `TYPE_NAME_REASONS` — Summary
+Why a type name has no link although the workspace declares it.
+
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1369)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1478)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -28,7 +35,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1379)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1488)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -44,6 +51,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`csharp.dependencies.ResolvedTypeTarget`](./csharp.dependencies.ts.mdmd.md#symbol-resolvedtypetarget)
 - [`csharp.dependencies.extractDynamicDependencies`](./csharp.dependencies.ts.mdmd.md#symbol-extractdynamicdependencies)
 - [`csharp.xmldoc.buildDocumentationFromLines`](./csharp.xmldoc.ts.mdmd.md#symbol-builddocumentationfromlines)
+- [`dotnetPaths.ReaderNotice`](./dotnetPaths.ts.mdmd.md#symbol-readernotice) (type-only)
 - [`dotnetProjects.ProjectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-interface)
 - [`dotnetProjects.projectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-function)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)

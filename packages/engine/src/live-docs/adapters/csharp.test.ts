@@ -219,13 +219,60 @@ describe("csharpAdapter", () => {
         expect(await links("Ref/Uses.cs")).toEqual([]);
       });
 
-      it("takes a name declared once plainly and once with type parameters for two types, not an ambiguity", async () => {
+      it("links a name to the declaration with as many type parameters as the use writes type arguments", async () => {
         await write("Mvc/Mvc.csproj", sdk());
         await write("Mvc/Helpers/DnnHelper.cs", ["namespace Dnn.Mvc { public class DnnHelper { } }"]);
         await write("Mvc/Helpers/DnnHelper{TModel}.cs", ["namespace Dnn.Mvc { public class DnnHelper<TModel> : DnnHelper { } }"]);
+        await write("Mvc/Helpers/Pair{TKey,TValue}.cs", ["namespace Dnn.Mvc { public class Pair<TKey, TValue> { } public class Pair { } }"]);
         await write("Mvc/Framework/DnnWebViewPage.cs", ["namespace Dnn.Mvc { public class DnnWebViewPage { public DnnHelper<object> Dnn; } }"]);
+        await write("Mvc/Framework/Plain.cs", ["namespace Dnn.Mvc { public class Plain { public DnnHelper Dnn; } }"]);
+        await write("Mvc/Framework/Open.cs", ["namespace Dnn.Mvc { public class Open { object a = typeof(DnnHelper<>); object b = typeof(Pair<,>); } }"]);
 
-        expect(await links("Mvc/Framework/DnnWebViewPage.cs")).toEqual(["Mvc/Helpers/DnnHelper.cs", "Mvc/Helpers/DnnHelper{TModel}.cs"]);
+        expect(await links("Mvc/Framework/DnnWebViewPage.cs")).toEqual(["Mvc/Helpers/DnnHelper{TModel}.cs"]);
+        expect(await links("Mvc/Framework/Plain.cs")).toEqual(["Mvc/Helpers/DnnHelper.cs"]);
+        expect(await links("Mvc/Framework/Open.cs")).toEqual(["Mvc/Helpers/DnnHelper{TModel}.cs", "Mvc/Helpers/Pair{TKey,TValue}.cs"]);
+      });
+
+      it("searches a namespace's own using directives before the namespaces around it, as C# does (DNN writes every using inside the namespace)", async () => {
+        await write("Abstractions/Abstractions.csproj", sdk());
+        await write("Abstractions/ClientResources/FileOrder.cs", ["namespace DotNetNuke.Abstractions.ClientResources { public enum FileOrder { } }"]);
+        await write("Client/Client.csproj", sdk(["../Abstractions/Abstractions.csproj"]));
+        await write("Client/FileOrder.cs", ["namespace DotNetNuke.Web.Client { public enum FileOrder { } }"]);
+        await write("Client/Controls/Inside.cs", [
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement",
+          "{",
+          "    using DotNetNuke.Abstractions.ClientResources;",
+          "    public class Inside { FileOrder order; }",
+          "}"
+        ]);
+        await write("Client/Controls/Outside.cs", [
+          "using DotNetNuke.Abstractions.ClientResources;",
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement",
+          "{",
+          "    public class Outside { FileOrder order; }",
+          "}"
+        ]);
+        await write("Client/Controls/FileScoped.cs", [
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement;",
+          "using DotNetNuke.Abstractions.ClientResources;",
+          "public class FileScoped { FileOrder order; }"
+        ]);
+
+        expect(await links("Client/Controls/Inside.cs")).toEqual(["Abstractions/ClientResources/FileOrder.cs"]);
+        expect(await links("Client/Controls/Outside.cs")).toEqual(["Client/FileOrder.cs"]);
+        expect(await links("Client/Controls/FileScoped.cs")).toEqual(["Abstractions/ClientResources/FileOrder.cs"]);
+      });
+
+      it("reads the type arguments of a generic name anywhere in a member access, not only at its end", async () => {
+        await write("Library/Library.csproj", sdk());
+        await write("Library/EventHandlersContainer.cs", ["namespace Shop { public class EventHandlersContainer<T> { public static EventHandlersContainer<T> Instance; } }"]);
+        await write("Library/Users/IFriendshipEventHandlers.cs", ["namespace Shop.Friends { public interface IFriendshipEventHandlers { } }"]);
+        await write("Library/EventManager.cs", [
+          "using Shop.Friends;",
+          "namespace Shop { class EventManager { void Raise() { var all = EventHandlersContainer<IFriendshipEventHandlers>.Instance.ToString(); } } }"
+        ]);
+
+        expect(await links("Library/EventManager.cs")).toEqual(["Library/EventHandlersContainer.cs", "Library/Users/IFriendshipEventHandlers.cs"]);
       });
 
       it("applies a project's global using directives to every file of that project, and to no other project's", async () => {

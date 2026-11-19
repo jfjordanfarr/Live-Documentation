@@ -6,11 +6,19 @@
  * the type references in their signatures.
  *
  * Dependencies are the workspace files that declare the types this file names.
- * A name is resolved the way the compiler resolves it: the enclosing types first,
- * then the enclosing namespaces from the inside out, then `using` directives and
- * aliases. Members of a partial class that live in a peer file count as well.
- * Configuration keys, reflection targets and Hangfire jobs are handled by
- * `csharp.dependencies`.
+ * A type the file uses without naming it, inferred through `var`, a lambda's
+ * parameter or a method's or property's return, is not a dependency: of 40
+ * links the compiler binds and this reader lacks, drawn on DNN Platform in
+ * November 2026, 31 were of that kind, and they are a choice, not a fault.
+ * A name is resolved the way the compiler resolves it: the enclosing types
+ * first; then each namespace declaration from the innermost out, its members
+ * and then the `using` directives written inside it; last the global
+ * namespace with the compilation unit's `using` directives and the project's
+ * `global using` directives; and among the declarations of a name, the one
+ * with as many type parameters as the use writes type arguments. Only what
+ * the file's project can see is linked (`dotnetProjects`). Members of a
+ * partial class that live in a peer file count as well. Configuration keys,
+ * reflection targets and Hangfire jobs are handled by `csharp.dependencies`.
  *
  * Openings are the file's business too. A controller's route attributes become
  * route symbols. An HTTP client call, a stored procedure or table named in a
@@ -53,6 +61,7 @@ import {
 } from "../openings";
 import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarget } from "./csharp.dependencies";
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
+import type { ReaderNotice } from "./dotnetPaths";
 import { projectReach, type ProjectReach } from "./dotnetProjects";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseSource, type SyntaxNode } from "./treeSitter";
@@ -111,6 +120,8 @@ interface DeclaredType {
 interface NameUse {
   chain: string[];
   scope: Scope;
+  /** The number of type arguments each segment writes (`X` 0, `X<T>` 1, `X<,>` 2), where the syntax tells it. */
+  arities?: number[];
 }
 
 /** A piece of a string expression: text as written, or a name that may fold to a constant. An empty chain is a part nothing can fold. */
@@ -135,6 +146,10 @@ interface FileFacts {
   usings:         string[];
   /** The namespaces this file's `global using` directives open to every file of its project. */
   globalUsings:   string[];
+  /** The `using` directives by the namespace declaration they are written in, `""` for the compilation unit. */
+  usingsIn:       Map<string, string[]>;
+  /** The `global using` directives of the other files of this file's project, set for resolution only. */
+  projectUsings?: string[];
   aliases:        Map<string, string>;
   namespaces:     Set<string>;
   types:          DeclaredType[];
@@ -234,6 +249,37 @@ function leadingDocumentation(node: SyntaxNode): SymbolDocumentation | undefined
     sibling     = sibling.previousNamedSibling;
   }
   return lines.length > 0 ? buildDocumentationFromLines(lines) : undefined;
+}
+
+/** The number of type arguments a generic name writes: `X<T>` 1, `X<,>` and `X<A, B>` 2; 0 for a plain name. */
+function typeArgumentCount(node: SyntaxNode): number {
+  const list = node.namedChildren.find((child) => child.type === "type_argument_list");
+  return list ? list.children.filter((child) => child.type === ",").length + 1 : 0;
+}
+
+/** The type-argument count of each segment of a dotted name, parallel to {@link identifierChain}. */
+function arityChain(node: SyntaxNode | null): number[] | null {
+  if (!node) return null;
+  switch (node.type) {
+    case "identifier":
+      return [0];
+    case "generic_name":
+      return [typeArgumentCount(node)];
+    case "qualified_name": {
+      const qualifier = arityChain(node.childForFieldName("qualifier"));
+      const name      = arityChain(node.childForFieldName("name"));
+      return qualifier && name ? [...qualifier, ...name] : null;
+    }
+    case "member_access_expression": {
+      const expression = arityChain(node.childForFieldName("expression"));
+      const name       = arityChain(node.childForFieldName("name"));
+      return expression && name ? [...expression, ...name] : null;
+    }
+    case "alias_qualified_name":
+      return arityChain(node.childForFieldName("name"));
+    default:
+      return null;
+  }
 }
 
 /** The identifiers of a dotted name, or null when the expression is not a plain name chain. */
@@ -473,6 +519,7 @@ class FileExtractor {
   readonly facts: FileFacts = {
     usings:         [],
     globalUsings:   [],
+    usingsIn:       new Map(),
     aliases:        new Map(),
     namespaces:     new Set(),
     types:          [],
@@ -500,7 +547,7 @@ class FileExtractor {
 
   private visitDeclaration(node: SyntaxNode, scope: Scope): void {
     if (node.type === "using_directive") {
-      this.recordUsing(node);
+      this.recordUsing(node, scope.namespace);
       return;
     }
     if (node.type === "namespace_declaration") {
@@ -518,7 +565,7 @@ class FileExtractor {
     this.visitExpression(node, scope);
   }
 
-  private recordUsing(node: SyntaxNode): void {
+  private recordUsing(node: SyntaxNode, namespace: string): void {
     const alias   = node.childForFieldName("name");
     const targets = node.namedChildren.filter((child) => ["qualified_name", "identifier", "alias_qualified_name", "generic_name"].includes(child.type));
     if (alias) {
@@ -531,9 +578,10 @@ class FileExtractor {
     }
     const target = targets[0];
     if (!target) return;
-    const namespace = target.text.replace(/\s+/g, "").replace(/^global::/u, "");
-    this.facts.usings.push(namespace);
-    if (node.children.some((child) => child.type === "global")) this.facts.globalUsings.push(namespace);
+    const opened = target.text.replace(/\s+/g, "").replace(/^global::/u, "");
+    this.facts.usings.push(opened);
+    this.facts.usingsIn.set(namespace, [...(this.facts.usingsIn.get(namespace) ?? []), opened]);
+    if (node.children.some((child) => child.type === "global")) this.facts.globalUsings.push(opened);
   }
 
   private visitType(node: SyntaxNode, scope: Scope): void {
@@ -742,10 +790,31 @@ class FileExtractor {
     if (parts) this.facts.routeUses.push({ method, parts, scope });
   }
 
-  private recordNameUse(chain: string[], scope: Scope): void {
-    this.facts.nameUses.push({ chain, scope });
+  private recordNameUse(chain: string[], scope: Scope, arities?: number[] | null): void {
+    this.facts.nameUses.push(arities && arities.length === chain.length ? { chain, scope, arities } : { chain, scope });
     if (scope.partial) {
       this.facts.peerMemberUses.push({ chain: [chain[0]], scope });
+    }
+  }
+
+  /** Visits the type arguments of every generic name in a dotted name, `A<B>.C<D>` as much as `C<D>`. */
+  private visitChainGenericArguments(node: SyntaxNode | null, scope: Scope): void {
+    if (!node) return;
+    switch (node.type) {
+      case "generic_name":
+        this.visitGenericArguments(node, scope);
+        return;
+      case "qualified_name":
+        this.visitChainGenericArguments(node.childForFieldName("qualifier"), scope);
+        this.visitChainGenericArguments(node.childForFieldName("name"), scope);
+        return;
+      case "member_access_expression":
+        this.visitChainGenericArguments(node.childForFieldName("expression"), scope);
+        this.visitChainGenericArguments(node.childForFieldName("name"), scope);
+        return;
+      case "alias_qualified_name":
+        this.visitChainGenericArguments(node.childForFieldName("name"), scope);
+        return;
     }
   }
 
@@ -783,16 +852,15 @@ class FileExtractor {
         break;
       }
       case "using_directive":
-        this.recordUsing(node);
+        this.recordUsing(node, scope.namespace);
         return;
       case "namespace_declaration":
         this.visitDeclaration(node, scope);
         return;
       case "qualified_name": {
         const chain = identifierChain(node);
-        if (chain) this.recordNameUse(chain, scope);
-        const nameNode = node.childForFieldName("name");
-        if (nameNode?.type === "generic_name") this.visitGenericArguments(nameNode, scope);
+        if (chain) this.recordNameUse(chain, scope, arityChain(node));
+        this.visitChainGenericArguments(node, scope);
         return;
       }
       case "member_access_expression": {
@@ -800,7 +868,9 @@ class FileExtractor {
         const nameNode = node.childForFieldName("name");
         const expression = node.childForFieldName("expression");
         if (chain) {
-          this.recordNameUse(chain, scope);
+          this.recordNameUse(chain, scope, arityChain(node));
+          this.visitChainGenericArguments(node, scope);
+          return;
         } else if (isThis(expression)) {
           // `this.member` names a member of this type, never a type: in a partial type, one a peer half may declare.
           const member = identifierChain(nameNode)?.[0];
@@ -813,7 +883,7 @@ class FileExtractor {
       }
       case "generic_name": {
         const identifier = node.namedChildren.find((child) => child.type === "identifier");
-        if (identifier) this.recordNameUse([identifier.text], scope);
+        if (identifier) this.recordNameUse([identifier.text], scope, [typeArgumentCount(node)]);
         this.visitGenericArguments(node, scope);
         return;
       }
@@ -823,7 +893,7 @@ class FileExtractor {
         return;
       }
       case "identifier":
-        if (!isDeclaredName(node)) this.recordNameUse([node.text], scope);
+        if (!isDeclaredName(node)) this.recordNameUse([node.text], scope, [0]);
         return;
       case "attribute": {
         const nameNode = node.childForFieldName("name");
@@ -1020,6 +1090,18 @@ function namespaceChain(namespace: string): string[] {
  */
 type Narrow = (records: TypeRecord[]) => TypeRecord[] | undefined;
 
+/** Why a type name has no link although the workspace declares it. */
+export const TYPE_NAME_REASONS = {
+  ambiguous: "type names several projects in reach declare, left unlinked",
+  outside:   "type names declared only outside the project's reach, left unlinked"
+} as const;
+
+/** What a search for a name met on the way: declarations it could not see, or an ambiguity where it stopped. */
+interface SearchOutcome {
+  outside?:   boolean;
+  ambiguous?: boolean;
+}
+
 /** Every declaration, as a reflection lookup by name sees them. */
 const WHOLE_WORKSPACE: Narrow = (records) => records;
 
@@ -1063,12 +1145,25 @@ function narrowFor(file: string, reach: ProjectReach): Narrow {
   };
 }
 
-/** The containers the compiler searches for a name used in a scope, nearest first, after the name itself. */
-const containersCache = new WeakMap<Scope, { usings: string[]; containers: string[] }>();
+/**
+ * The containers the compiler searches for a name used in a scope, nearest
+ * first, in C#'s order: the enclosing types from the innermost out; then each
+ * namespace declaration from the innermost out, its own members and then the
+ * `using` directives written inside that declaration (a file-scoped namespace
+ * holds the directives after it); last the global namespace with the
+ * compilation unit's own `using` directives and the `global using`
+ * directives of the file's project.
+ */
+const containersCache = new WeakMap<Scope, { projectUsings: string[] | undefined; containers: string[] }>();
 function containersOf(scope: Scope, facts: FileFacts): string[] {
   let cached = containersCache.get(scope);
-  if (!cached || cached.usings !== facts.usings) {
-    cached = { usings: facts.usings, containers: ["", ...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings] };
+  if (!cached || cached.projectUsings !== facts.projectUsings) {
+    const containers: string[] = [...scope.enclosingTypes];
+    for (const namespace of namespaceChain(scope.namespace).filter(Boolean)) {
+      containers.push(namespace, ...(facts.usingsIn.get(namespace) ?? []));
+    }
+    containers.push("", ...(facts.usingsIn.get("") ?? []), ...(facts.projectUsings ?? []));
+    cached = { projectUsings: facts.projectUsings, containers };
     containersCache.set(scope, cached);
   }
   return cached.containers;
@@ -1093,28 +1188,36 @@ function withProjectUsings(facts: FileFacts, thisFile: string, table: TypeTable,
     }
     projectUsingsCache.set(table, byProject);
   }
-  const extra = (byProject.get(project) ?? []).filter((namespace) => !facts.usings.includes(namespace));
-  return extra.length === 0 ? facts : { ...facts, usings: [...facts.usings, ...new Set(extra)] };
+  const own   = facts.usingsIn.get("") ?? [];
+  const extra = (byProject.get(project) ?? []).filter((namespace) => !own.includes(namespace));
+  return extra.length === 0 ? facts : { ...facts, projectUsings: [...new Set(extra)] };
 }
 
 /** Resolves a dotted name from a scope: exact, then relative to each container the compiler would search. */
-function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): TypeRecord[] | undefined {
+function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arity: number | undefined, outcome?: SearchOutcome): TypeRecord[] | undefined {
   if (!table.lastSegments.has(segments[segments.length - 1])) return undefined;
   const dotted = segments.join(".");
   for (const container of containersOf(scope, facts)) {
-    const records = table.byQualifiedName.get(joinNames(container, dotted));
-    const seen    = records ? narrow(records) : undefined;
-    if (seen) return seen;
+    const records  = table.byQualifiedName.get(joinNames(container, dotted));
+    const matching = records && arity !== undefined ? records.filter((record) => record.type.arity === arity) : records;
+    const seen     = matching && matching.length > 0 ? narrow(matching) : undefined;
+    if (matching && matching.length > 0 && !seen && outcome) outcome.outside = true;
+    if (seen) {
+      if (seen.length === 0 && outcome) outcome.ambiguous = true;
+      return seen;
+    }
   }
   return undefined;
 }
 
 /** Resolves the longest prefix of a name chain that names a type the file can see. */
-function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): TypeRecord[] {
+function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arities?: number[], outcome?: SearchOutcome): TypeRecord[] {
   const alias    = facts.aliases.get(chain[0]);
   const expanded = alias ? [...alias.split("."), ...chain.slice(1)] : chain;
+  // An alias's target is read as text, so the arity of the segments it stands for is not known.
+  const counts   = arities && alias ? [...alias.split(".").map(() => undefined), ...arities.slice(1)] : arities;
   for (let length = expanded.length; length >= 1; length -= 1) {
-    const records = resolveSegments(expanded.slice(0, length), scope, facts, table, narrow);
+    const records = resolveSegments(expanded.slice(0, length), scope, facts, table, narrow, counts?.[length - 1], outcome);
     if (records) return records;
   }
   return [];
@@ -1229,9 +1332,10 @@ async function toDependencies(
   reach: ProjectReach,
   fileIndex: WorkspaceFileIndex | undefined,
   symbolIndex: WorkspaceSymbolIndex | undefined
-): Promise<DependencyEntry[]> {
+): Promise<{ dependencies: DependencyEntry[]; notices: ReaderNotice[] }> {
   const narrow   = narrowFor(thisFile, reach);
   const seen     = withProjectUsings(facts, thisFile, table, reach);
+  const noticed  = new Map<string, ReaderNotice>();
   const byTarget = new Map<string, Set<string>>();
   const link = (file: string, symbol?: string) => {
     const symbols = byTarget.get(file) ?? new Set<string>();
@@ -1240,7 +1344,12 @@ async function toDependencies(
   };
 
   for (const use of facts.nameUses) {
-    const records = resolveChain(use.chain, use.scope, seen, table, narrow);
+    const outcome: SearchOutcome = {};
+    const records = resolveChain(use.chain, use.scope, seen, table, narrow, use.arities, outcome);
+    if (records.length === 0 && (outcome.ambiguous || outcome.outside)) {
+      const reason = outcome.ambiguous ? TYPE_NAME_REASONS.ambiguous : TYPE_NAME_REASONS.outside;
+      noticed.set(`${reason}\u0000${use.chain.join(".")}`, { reason, subject: `${thisFile}: ${use.chain.join(".")}` });
+    }
     if (records.length === 0 || records.some((record) => record.file === thisFile)) continue;
     for (const record of records) link(record.file, record.type.name);
   }
@@ -1297,7 +1406,7 @@ async function toDependencies(
     dependencies.push({ specifier: namespace, symbols: [], kind: "import" });
   }
 
-  return dependencies;
+  return { dependencies, notices: Array.from(noticed.values()) };
 }
 
 /**
@@ -1385,9 +1494,11 @@ export const csharpAdapter: LanguageAdapter = {
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const content  = await fs.readFile(absolutePath, "utf8");
     const reach    = await projectReach(workspaceRoot, fileIndex);
+    // `resolved.notices` says why each type name left unlinked has no link, for a run to report at its end.
+    const resolved = await toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex);
     const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
-      dependencies: await toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex)
+      dependencies: resolved.dependencies
     };
     if (facts.program) result.program = facts.program;
     return result;

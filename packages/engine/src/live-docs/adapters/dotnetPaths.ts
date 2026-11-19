@@ -18,6 +18,16 @@ import path from "node:path";
 
 import type { WorkspaceFileIndex } from "./index";
 
+/**
+ * Why a .NET reader drew no link where a file names something: a short fixed
+ * phrase, so that counts add up across files, and what was named. Readers keep
+ * these beside their dependencies for a run to report at its end.
+ */
+export interface ReaderNotice {
+  reason:  string;
+  subject: string;
+}
+
 /** A written path looked up in the workspace's files. */
 export type WorkspacePathLookup =
   | { file: string }
