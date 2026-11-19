@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/aspnet.ts
-- Generated At: 2026-11-19T20:42:49.607Z
+- Generated At: 2026-11-19T21:08:25.206Z
 
 ## Authored
 ### Purpose
@@ -49,19 +49,23 @@ The directives of a markup file, by Microsoft's documented syntax; a directive w
 
 #### `resolveDirectivePath` {#symbol-resolvedirectivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L173)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L177)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveDirectivePath` — Summary
 The workspace file a directive's path names. A relative path is read from
 the markup's own folder. `~/` is the root of the running web application,
-which in a repository is a project's folder: the folder of the nearest
-project file above the markup when the file is there, else the one web
-project in the workspace that holds a file at that path, as when a module
-or provider project is deployed into the web application that hosts it.
-Where several web projects hold it, or none does, there is no link. A path
-from the site's root (`/…`) names a deployed location no repository folder
-stands for, and has no link either.
+which in a repository is a project's folder: the markup's own project (the
+nearest folder above it with a project file), or a web project it is
+deployed into, as a module or provider project is deployed into the web
+application that hosts it. The path links to the one of these that holds a
+file there. Where several hold it, the own project among them, there is no
+link: a feature project may keep a copy of its host's master page only so
+that it compiles, and which copy is served depends on how the build deploys
+the project, which is not read here (mojoPortal's feature pages, measured on
+November 19, 2026). Where none holds it there is no link either. A path from
+the site's root (`/…`) names a deployed location no repository folder stands
+for, and has no link.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

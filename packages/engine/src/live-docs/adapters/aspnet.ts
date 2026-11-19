@@ -162,13 +162,17 @@ async function resolveDirectiveDependencies(
 /**
  * The workspace file a directive's path names. A relative path is read from
  * the markup's own folder. `~/` is the root of the running web application,
- * which in a repository is a project's folder: the folder of the nearest
- * project file above the markup when the file is there, else the one web
- * project in the workspace that holds a file at that path, as when a module
- * or provider project is deployed into the web application that hosts it.
- * Where several web projects hold it, or none does, there is no link. A path
- * from the site's root (`/…`) names a deployed location no repository folder
- * stands for, and has no link either.
+ * which in a repository is a project's folder: the markup's own project (the
+ * nearest folder above it with a project file), or a web project it is
+ * deployed into, as a module or provider project is deployed into the web
+ * application that hosts it. The path links to the one of these that holds a
+ * file there. Where several hold it, the own project among them, there is no
+ * link: a feature project may keep a copy of its host's master page only so
+ * that it compiles, and which copy is served depends on how the build deploys
+ * the project, which is not read here (mojoPortal's feature pages, measured on
+ * November 19, 2026). Where none holds it there is no link either. A path from
+ * the site's root (`/…`) names a deployed location no repository folder stands
+ * for, and has no link.
  */
 export async function resolveDirectivePath(
   written: string,
@@ -183,15 +187,14 @@ export async function resolveDirectivePath(
   if (!fileIndex) return undefined;
   const fromRoot = slashed.slice(2);
   const ownProject = nearestProjectFolder(thisFile, fileIndex);
-  const own = ownProject === undefined ? undefined : workspaceFile(joinWorkspacePath(ownProject, fromRoot), fileIndex);
-  if (own) return own;
-  const hosts: string[] = [];
-  for (const folder of await webProjectFolders(workspaceRoot, fileIndex)) {
-    if (folder === ownProject) continue;
-    const lookup = lookUpWorkspaceFile(joinWorkspacePath(folder, fromRoot), fileIndex);
-    if ("file" in lookup) hosts.push(lookup.file);
+  const roots = new Set(await webProjectFolders(workspaceRoot, fileIndex));
+  if (ownProject !== undefined) roots.add(ownProject);
+  const holders: string[] = [];
+  for (const root of roots) {
+    const lookup = lookUpWorkspaceFile(joinWorkspacePath(root, fromRoot), fileIndex);
+    if ("file" in lookup) holders.push(lookup.file);
   }
-  return hosts.length === 1 ? hosts[0] : undefined;
+  return holders.length === 1 ? holders[0] : undefined;
 }
 
 const webProjectFoldersCache = new WeakMap<WorkspaceFileIndex, Promise<string[]>>();

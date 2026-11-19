@@ -169,6 +169,25 @@ describe("aspNetMarkupAdapter", () => {
     ]);
   });
 
+  it("links `~/` to the page's own project only when no other web project holds the same path, since a stub kept for compiling is not what the host serves", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Features/Features.csproj": webProject,
+      "Features/Blog/EditPost.aspx": [
+        "<%@ Page MasterPageFile=\"~/App_MasterPages/layout.Master\" CodeBehind=\"EditPost.aspx.cs\" %>",
+        "<%@ Register TagPrefix=\"blog\" TagName=\"List\" Src=\"~/Blog/Controls/PostList.ascx\" %>",
+        "<%@ Register TagPrefix=\"site\" TagName=\"Login\" Src=\"~/Controls/Login.ascx\" %>"
+      ].join("\n")
+    }, ["Features/Blog/EditPost.aspx.cs", "Features/App_MasterPages/layout.Master", "Web/App_MasterPages/layout.Master", "Features/Blog/Controls/PostList.ascx", "Web/Controls/Login.ascx"]);
+
+    expect(await linksOf("Features/Blog/EditPost.aspx", fileIndex)).toEqual([
+      "Features/Blog/EditPost.aspx.cs",
+      "unresolved ~/App_MasterPages/layout.Master",
+      "Features/Blog/Controls/PostList.ascx",
+      "Web/Controls/Login.ascx"
+    ]);
+  });
+
   it("finds a file named in another case, as Windows does, links it in its own spelling, and links neither of two that differ by case alone", async () => {
     // The index stands for a Windows checkout: these paths are never asked of the disk, which on Linux tells case apart.
     const fileIndex = await workspace({
