@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/zoom.ts
-- Generated At: 2026-11-19T04:31:53.353Z
+- Generated At: 2026-11-19T04:54:31.792Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,7 @@ A range in fractional steps, its first and its last.
 
 #### `zoomView` {#symbol-zoomview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L31)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L33)
 - Returns: [`View`](#symbol-view)
 - Parameters: `view`: [`View`](#symbol-view)
 
@@ -41,11 +41,13 @@ The view scaled by `factor` about `focus`, a step (fractional) that stays where 
 below one narrows, above one widens. The span is held between the least span (or the whole history, if shorter) and
 the whole history, `last` being the history's last step; a range already narrower than the least, as the finder can
 choose, is never widened by a narrowing, and a range of one step widens from one. The view is slid back inside the
-history where the scale would carry it past an end.
+history where the scale would carry it past an end. `share`, from 0 at the track's start to 1 at its end, is where the
+focus stands on the track; on the date axis that is not its share of the steps, and the pointer's own share keeps the
+focus under the pointer. Without it, the focus's share of the steps.
 
 #### `panView` {#symbol-panview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L46)
 - Returns: [`View`](#symbol-view)
 - Parameters: `view`: [`View`](#symbol-view)
 
@@ -54,7 +56,7 @@ The view slid by `by` steps, later for a positive amount, held inside the histor
 
 #### `rangeOfView` {#symbol-rangeofview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L52)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L54)
 - Returns: [`HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
 - Parameters: `view`: [`View`](#symbol-view)
 
@@ -63,7 +65,7 @@ The range a view shows, its ends rounded to steps; null where it shows the whole
 
 #### `slideToHold` {#symbol-slidetohold}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L59)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L61)
 - Returns: [`HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
 - Parameters: `range`: [`HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
 
@@ -72,7 +74,7 @@ The range slid by the least amount that holds the step, its span kept; the range
 
 #### `wheelFactor` {#symbol-wheelfactor}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L71)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/zoom.ts#L73)
 
 ##### `wheelFactor` — Summary
 The factor a wheel's turn scales the view by: an exponential of its vertical delta, so that a trackpad's run of small
