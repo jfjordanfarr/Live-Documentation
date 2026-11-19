@@ -15413,3 +15413,232 @@
   semantic equivalence is not yet clear to me, but I wonder if two design holes
   could be plugged semantically together by a common unifying user
   interaction.
+
+  Ran 2 shell commands (ctrl+o to expand)
+  ⎿  Message queued for delivery to a926dea23ef843579 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+› Message from general-purpose
+  Interim, not yet verified: on branch marble-pattern-removed, the Marble
+  Pattern removal and the Marbles-off default are both committed; checking waits
+  on the browser lane.
+
+  Commits so far:
+  - 2f975dc4 "Take the Marble Pattern trial out of the product"
+  - 3ab0f073 "Draw files without marbles by default again"
+
+  How I checked that the marble is unchanged: I compared source, not pixels. The
+  marble shader's files are byte-identical to 8e42651b~1:
+  forceGraphAppearance.ts, forceGraphBatches.ts, containedSphere.ts and
+  forceGraphView.ts. So are forceGraphRenderer.ts, dom.ts, types.ts, tuning.ts
+  and local-storage.ts, as they stood after the removal.
+
+  Done without the lane:
+  - Explorer and scripts unit tests pass, 1,239 of 1,239; client type-check and
+  eslint are clean.
+  - A browser that still holds the two removed settings loads without them and
+  doesn't write them back; a new unit case covers it.
+  - Marbles default to Off; a second new unit case covers what saved choices now
+  load as.
+
+  Waiting on the lane: one queued hold (since about 03:42) runs build,
+  live-docs:generate, safe:commit and the six browser specs that mention
+  marbles. The generated docs will go in their own last commit. I'll report with
+  results once that hold has run.
+
+  One thing for you: AI-Agent-Workspace/Memory/direction.md line 21 still
+  describes the texture work. Memory is yours, so I left it.
+
+● Recording your message, then my answer on open versus pinned and re-wrapping.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● It doesn't lead me astray; it points at something the product half has
+  already. I checked what exists.
+
+  The Explorer already has your three editor states, unnamed.
+
+  ┌────────────────────────┬────────────────────────────────────────────────┐
+  │      In an editor      │             In the Explorer today              │
+  ├────────────────────────┼────────────────────────────────────────────────┤
+  │ Preview tab, replaced  │ The 3D map's "discovery": one slot, filled     │
+  │ by the next file you   │ when you inspect something through More,       │
+  │ look at                │ replaced by the next one                       │
+  ├────────────────────────┼────────────────────────────────────────────────┤
+  │ Open tab, stays until  │ An opened directory, or in 3D a popped bubble  │
+  │ closed                 │                                                │
+  ├────────────────────────┼────────────────────────────────────────────────┤
+  │ Pinned tab, survives a │ A pin                                          │
+  │  wipe                  │                                                │
+  └────────────────────────┴────────────────────────────────────────────────┘
+
+  Re-wrapping exists in 3D, but you couldn't find it. An opened bubble carries a
+  small chip named "Wrap … again", and a directory's own sphere has Close. You
+  use the map daily and didn't know, so in practice it is missing.
+
+  The real hole is that nothing lets go. Since your request of November 2, a
+  plain click on a 3D sphere pins it. Every step of an exploration is therefore
+  durable, and the picture only grows.
+
+  My recommendation for the unifying interaction: one gesture at two strengths,
+  in the menu of the thing you keep. Not built.
+
+  - Fold others away: everything merely open elsewhere goes back. Opened
+    directories close, bubbles wrap again, the discovery is released. Pins stay.
+    This is the editor's "Close Others", and in 3D the wrapping is what letting
+    go looks like.
+  - Unpin others: the same, and the other pins go too.
+
+  I would not copy the other half of the editor's behaviour, where an open tab
+  disappears by itself once it is old. A tab's position means nothing, so it can
+  vanish unnoticed. On a map, a thing that leaves by itself costs you your
+  bearings.
+
+  What I changed in tonight's build. "Unpin others" is now defined as exactly
+  what Clear all pins releases, minus the thing you used it on, so the two
+  actions cannot drift apart. The builder will also list anything Clear all pins
+  leaves open that you would count as "everything", such as an opened directory
+  that isn't a pin, a popped bubble, or the discovery. That list is the
+  evidence for whether "Fold others away" needs to be its own item.
+
+  Do you want the two-strength version built once that list is in? I'd also make
+  the "Wrap again" chip findable in the same round.
+
+› Message from general-purpose
+  history-pinned builder, milestone two (the track's zoom): I'm working on a new
+  branch `history-zoom`, cut from history-pinned's head (58792127). Commit
+  366e66e5 holds the code, its unit cases, the documents, and the browser cases,
+  which are written but not yet run. Unit cases are green (76 across history/
+  and the emphasis module). The client and the tests type-check and lint clean.
+  I'm off the lane until you say the gate is done; one script then does the
+  build, my eye, the new cases against main's build, the three history specs,
+  and safe:commit.
+
+  What it does:
+  - **Wheel over the track or ruler:** zooms the range about the step under the
+  pointer, by exp(delta), so a trackpad is smooth and wheel notches are even.
+  - **Pinch:** Ctrl+wheel does the same, read more strongly. Two fingers on
+  touch pinch about their middle and slide.
+  - **Slide:** a sideways wheel, or Shift with the wheel, slides the range.
+  - **Keys:** + and - on the focused slider zoom about the current step.
+  - **Least span:** 8 steps, or a shorter history's whole. A finder range
+  already narrower than 8 is never widened by zooming in.
+  - **Marks sharpen:** `automaticGranularity` already counted the range's own
+  steps (`rangedTickModel` slices the dates), so nothing needed mending there. A
+  unit case now holds it: three years at ten commits a day resolve months →
+  weeks → days → single commits.
+  - **Step outside the range:** a zoom pauses nothing and can leave the current
+  step outside the range. Then the thumb leaves the track and a mark in its look
+  stands at that end. That mark is a 24 px button, "Show the current commit,
+  <date>", which slides the range the least amount to hold the step.
+
+  Rules I changed, and the ones I kept:
+  - **Changed:** the fine pair, the arrows, the coarse pair and Page Up/Down no
+  longer stop at the range's ends. They pass them and slide the range the least
+  amount. They are disabled only at the history's ends. Beyond the range, the
+  coarse marks are the whole history's.
+  - **Kept:** direct seeking outside the range (finder, a file chosen at its
+  moment, a link) still restores the whole range. Home and End still go to the
+  range's ends. Play still stops at the range's end; it first slides the range
+  to hold a step a zoom left outside.
+  - **One existing case updated:** the range-selection case used to assert Next
+  commit disabled at the range's end. It now asserts that Next passes the end
+  and the range slides from [2,4] to [3,5].
+
+  Not yet verified:
+  - **Everything in a browser:** wheel, pinch, keys, the off-range mark, and
+  play continuing during a zoom.
+  - **The zoom on this repository by eye:** a five-frame strip with pathfind.ts
+  pinned, the marks sharpening.
+  - **The narrow layouts with the mark.**
+  - **The new cases failing on main.**
+  - **Two-finger touch:** no case covers it. Playwright's desktop Chrome has no
+  multi-touch, so it will be verified by reading only.
+  - **Live Docs regeneration:** zoom.ts and its test have authored Purpose and
+  Notes. Their generated regions wait for the generator, which runs inside the
+  gate. Those Notes cite #turn-26 of the Nov 18 record, which exists on main but
+  not on my branch. If the gate's link check reads anchors, it may fail on my
+  branch only.
+
+  I'll wait for your word. If none comes by 05:10 I'll leave it at this commit,
+  as you asked.
+
+  Ran 2 shell commands (ctrl+o to expand)  ⎿  Message queued for delivery to aa7dbd7f336f21a29 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two things while the queue drains:
+
+  - The timeline zoom is written. Wheel, pinch, Shift-wheel to slide, + and − on
+    the focused slider, and a small marker that brings you back when the
+    current commit has slid out of view. Its unit cases pass. Nothing of it has
+    run in a browser yet; it waits for the gate to free the lane.
+  - I sent one test change back in the rested-pointer round. Its builder had
+    made a browser case retry up to four times when a hover didn't fade the
+    rest. That would also hide a real fault that fails only some of the time.
+    I've asked for a retry only when the sphere actually drifted out from under
+    the pointer, and an immediate failure otherwise.
+
+  The browser queue is six deep, so the gate will start later than 04:30,
+  probably around 04:45 UTC, and finish after the unlimited window closes at
+  about 05:18. It costs only machine time. I'll read its result when it reports.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >My recommendation for the unifying interaction: one gesture at two
+  strengths, in the menu of the thing you keep. Not built.
+  >Fold others away: everything merely open elsewhere goes back. Opened
+  directories close, bubbles wrap again, the discovery is released. Pins stay.
+  This is the editor's "Close Others", and in 3D the wrapping is what letting
+  go looks like.
+  >Unpin others: the same, and the other pins go too.
+
+  Oh man that sounds absolutely awesome.
+
+  >I would not copy the other half of the editor's behaviour, where an open tab
+  disappears by itself once it is old. A tab's position means nothing, so it
+  can vanish unnoticed. On a map, a thing that leaves by itself costs you your
+  bearings.
+
+  I would not copy it verbatim or literally but I would let it haunt me for
+  quite some time. There is, no doubt, a reason why such a mechanism needed to
+  exist. Whether or not a similar mechanism will or must exist for us is not
+  yet known, but it's not too crazy to envision a system which can collapse
+  that-which-is-no-longer-salient to reduce cognitive load in UIs which are
+  exceeding some maximum amount of allowable complexity.
+  ⎿  Message queued for delivery to a926dea23ef843579 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both strengths are now being built, by the same builder already on "Unpin
+  others":
+
+  - Fold others away: other opened directories close, their 3D bubbles wrap
+    again, and the discovery is released. Pins stay.
+  - Unpin others: the same, and the other pins go too.
+
+  Each shows only when it would do something. Where both would have the same
+  effect, only "Unpin others" shows. Each is one step that Back undoes.
+
+  Also in the round: "Wrap this group again" goes into the More menu of any
+  sphere inside an opened group, so the act is under your hand. The builder will
+  bring a picture of why the existing chip went unfound.
+
+  Your thought on things folding away by themselves is in the ideas list, in
+  your words. I agree it deserves to keep nagging. Tonight's two buttons are the
+  same letting go done by hand. The automatic form would need two things before
+  I'd propose it:
+
+  - A measure of how complex a picture is and how salient a thing is, that you
+    would agree with when you saw it applied.
+  - A way of leaving that you can see happen and can take back.
+
+  Nothing is built on it.
