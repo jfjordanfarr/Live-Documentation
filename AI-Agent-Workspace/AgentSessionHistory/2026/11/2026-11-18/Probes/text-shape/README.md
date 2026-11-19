@@ -28,6 +28,8 @@ npx tsx --tsconfig ./tsconfig.base.json AI-Agent-Workspace/AgentSessionHistory/2
 
 `out/`, the single pictures, is not kept; `run.ts` draws it again.
 
+**Since 2026-11-19** the Marble Pattern trial is removed from the product, and with it `marbleSketch.ts` and its doc sketches. So `shape.ts`, `run.ts` and `trials.ts` no longer run as they stand. To run them again, check out the commit before "Take the Marble Pattern trial out of the product".
+
 ## Numbers
 
 **Touches that move a 48 px marble.** The measure is the largest mean change of brightness over any 8 × 8 window, on a scale of 0 to 255. The sample is the 375 touches of the last 150 commits to c5493364 where the file existed before and after; another 9 of the 384 created or removed a file.

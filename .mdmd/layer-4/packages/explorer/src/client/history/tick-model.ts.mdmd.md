@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/tick-model.ts
-- Generated At: 2026-10-22T16:47:54.264Z
+- Generated At: 2026-11-19T04:29:43.847Z
 
 ## Authored
 ### Purpose
@@ -22,49 +22,49 @@ The ticks of the history's scrubber as one pure function: from every step's date
 ### Public Symbols
 #### `TICK_BUDGET` {#symbol-tick_budget}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L39)
 
 ##### `TICK_BUDGET` — Summary
 How many ticks a track shows at most before the automatic choice coarsens them.
 
 #### `TickModelInput` {#symbol-tickmodelinput}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L42)
 
 ##### `TickModelInput` — Summary
 What the model is made from.
 
 #### `TickWeight` {#symbol-tickweight}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L54)
 
 ##### `TickWeight` — Summary
 How a tick is drawn: a change of the shape of what is pinned, a change of content alone, or neither.
 
 #### `Tick` {#symbol-tick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L57)
 
 ##### `Tick` — Summary
 One tick drawn: the step the thumb lands on, where it stands on the track, and its weight.
 
 #### `RulerLabel` {#symbol-rulerlabel}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L57)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L67)
 
 ##### `RulerLabel` — Summary
 One label of the ruler beneath the ticks.
 
 #### `TickModel (interface)` {#symbol-tickmodel-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L64)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L74)
 
 ##### `TickModel (interface)` — Summary
 What the scrubber draws and the keys move by.
 
 #### `positionOfStep` {#symbol-positionofstep}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L92)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L107)
 - Parameters: `axis`: [`HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
 
 ##### `positionOfStep` — Summary
@@ -72,7 +72,7 @@ Where a step stands on the track: by its index, or by its date between the first
 
 #### `positionsOf` {#symbol-positionsof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L112)
 - Parameters: `axis`: [`HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
 
 ##### `positionsOf` — Summary
@@ -80,7 +80,7 @@ Where every step stands on the track, the dates read once: by index, or by date 
 
 #### `stepAtPosition` {#symbol-stepatposition}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L112)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L127)
 - Parameters: `axis`: [`HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
 
 ##### `stepAtPosition` — Summary
@@ -91,21 +91,21 @@ when it is the nearer: a click on a tick lands on it although the pixel under th
 
 #### `periodOf` {#symbol-periodof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L129)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L144)
 
 ##### `periodOf` — Summary
 The calendar period a date falls in, in UTC: the day, the week (from its Monday) or the month.
 
 #### `automaticGranularity` {#symbol-automaticgranularity}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L178)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L193)
 
 ##### `automaticGranularity` — Summary
 The finest granularity whose ticks fit the budget; months when none does.
 
 #### `rulerOf` {#symbol-rulerof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L190)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L205)
 - Returns: [`RulerLabel`](#symbol-rulerlabel)[]
 - Parameters: `axis`: [`HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
 
@@ -116,7 +116,7 @@ land on their neighbours.
 
 #### `tickModel (function)` {#symbol-tickmodel-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L219)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L234)
 - Returns: [`TickModel`](#symbol-tickmodel-interface)
 - Parameters: `input`: [`TickModelInput`](#symbol-tickmodelinput)
 
@@ -125,11 +125,11 @@ The model the scrubber draws from.
 
 #### `nextStop` {#symbol-nextstop}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L229)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/tick-model.ts#L250)
 - Parameters: `model`: [`TickModel`](#symbol-tickmodel-interface)
 
 ##### `nextStop` — Summary
-The stop the step key reaches from a step: the next major tick forward, the previous one back, the ends at the ends.
+The stop a coarse move reaches from a step: the next mark forward, the previous one back, the ends at the ends.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

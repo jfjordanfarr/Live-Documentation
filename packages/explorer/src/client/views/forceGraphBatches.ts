@@ -2,7 +2,7 @@ import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, Dynam
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
-import { activePalette, marbleBend, marblePattern, marblesDrawn, unitChannels } from "../palette";
+import { activePalette, marblesDrawn, unitChannels } from "../palette";
 import { containedSpherePrimitive, ContainedSphereMaterial } from "./containedSphere";
 import { MARBLE_COLOUR, MARBLE_FRAGMENT_PARS, MARBLE_SHINE, MARBLE_VERTEX, MARBLE_VERTEX_PARS, type Marble } from "./forceGraphAppearance";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
@@ -38,21 +38,14 @@ export interface SpatialDrawBatch<T> {
   enabled: Uint8Array;
   capacity: number;
   /**
-   * A batch of spheres that may be drawn as marbles (2026-11-17): each sphere's glass, its two veins' shares, its seed,
-   * whether it is a marble and its sketch's eight numbers (2026-11-18), fifteen values in membership order; absent for a
-   * batch that draws none.
+   * A batch of spheres that may be drawn as marbles (2026-11-17): each sphere's glass, its two veins' shares, its seed
+   * and whether it is a marble, seven values in membership order; absent for a batch that draws none.
    */
   marbles?: Float64Array;
 }
 
-/**
- * The values a marble carries to its sphere's shaders, after its glass's three channels: its two shares, its seed, and
- * one for a marble; then its sketch's eight numbers, zero where it has none (the pattern trial, 2026-11-18).
- */
-const MARBLE_VALUES = 15;
-
-/** The instance attributes a marble is drawn from. */
-const MARBLE_ATTRIBUTES = ["spatialMarbleGlass", "spatialMarbleVeins", "spatialMarbleSketchA", "spatialMarbleSketchB"] as const;
+/** The values a marble carries to its sphere's shaders, after its glass's three channels: its two shares, its seed, and one for a marble. */
+const MARBLE_VALUES = 7;
 
 /** A mesh sphere's own point, handed to the fragment for the marble's pattern; compiled, as the marble's chunks are, only while marbles are drawn. */
 const MARBLE_LOCAL_PARS = "#ifdef MARBLES\nvarying vec3 vMarbleLocal;\n#endif";
@@ -133,12 +126,8 @@ export interface SpatialWrapperUnit {
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>, renderer?: WebGLRenderer) {
   // The marbles' two roles, in linear light as the lit shaders read colours, shared by every material that draws a
   // marble and set again from the palette in force (`recolour`).
-  // The Vein Bend rides beside them as a uniform, so that moving it compiles nothing (2026-11-19).
-  const marbleRoles = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() }, uMarbleBend: { value: marbleBend() } };
-  const paintMarbles = (): void => {
-    const { role } = activePalette();
-    marbleRoles.uMarbleOffers.value.set(role.offers); marbleRoles.uMarbleUses.value.set(role.uses); marbleRoles.uMarbleBend.value = marbleBend();
-  };
+  const marbleRoles = { uMarbleOffers: { value: new Color() }, uMarbleUses: { value: new Color() } };
+  const paintMarbles = (): void => { const { role } = activePalette(); marbleRoles.uMarbleOffers.value.set(role.offers); marbleRoles.uMarbleUses.value.set(role.uses); };
   paintMarbles();
   /**
    * A transparent instanced material whose alpha each instance carries; a lit one that `marbled` may draw its spheres as
@@ -159,26 +148,19 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     material.customProgramCacheKey = () => `spatial-instance-alpha-${lit ? "lit" : "flat"}${marbled ? "-marbled" : ""}`;
     return material;
   };
-  /**
-   * A marbled mesh's instance attributes beside its colour: each marble's glass, its veins, and its sketch in two halves
-   * (`MARBLE_VALUES`). The sketch's are read only by a program compiled with the pattern from the doc.
-   */
+  /** A marbled mesh's two instance attributes beside its colour: each marble's glass, and its veins (`MARBLE_VALUES`). */
   const marbleAttributes = (geometry: BufferGeometry, capacity: number): void => {
     geometry.setAttribute("spatialMarbleGlass", new InstancedBufferAttribute(new Float32Array(3 * capacity), 3).setUsage(DynamicDrawUsage));
     geometry.setAttribute("spatialMarbleVeins", new InstancedBufferAttribute(new Float32Array(4 * capacity), 4).setUsage(DynamicDrawUsage));
-    geometry.setAttribute("spatialMarbleSketchA", new InstancedBufferAttribute(new Float32Array(4 * capacity), 4).setUsage(DynamicDrawUsage));
-    geometry.setAttribute("spatialMarbleSketchB", new InstancedBufferAttribute(new Float32Array(4 * capacity), 4).setUsage(DynamicDrawUsage));
   };
-  /** Write a marble's values, or none, into a marbled mesh's attributes at a slot. */
+  /** Write a marble's seven values, or none, into a marbled mesh's attributes at a slot. */
   const writeMarble = (geometry: BufferGeometry, slot: number, values: ArrayLike<number>, at: number): void => {
     const glass = geometry.getAttribute("spatialMarbleGlass").array as Float32Array, veins = geometry.getAttribute("spatialMarbleVeins").array as Float32Array;
     glass[3 * slot] = values[at]; glass[3 * slot + 1] = values[at + 1]; glass[3 * slot + 2] = values[at + 2];
     veins[4 * slot] = values[at + 3]; veins[4 * slot + 1] = values[at + 4]; veins[4 * slot + 2] = values[at + 5]; veins[4 * slot + 3] = values[at + 6];
-    const first = geometry.getAttribute("spatialMarbleSketchA").array as Float32Array, second = geometry.getAttribute("spatialMarbleSketchB").array as Float32Array;
-    for (let i = 0; i < 4; i++) { first[4 * slot + i] = values[at + 7 + i]; second[4 * slot + i] = values[at + 11 + i]; }
   };
   const markMarbles = (geometry: BufferGeometry): void => {
-    for (const name of MARBLE_ATTRIBUTES) geometry.getAttribute(name).needsUpdate = true;
+    geometry.getAttribute("spatialMarbleGlass").needsUpdate = true; geometry.getAttribute("spatialMarbleVeins").needsUpdate = true;
   };
   /** Give a batch room for `capacity` instances: its matrices, colours, alphas and widths, afresh. */
   const allocate = <T>(batch: SpatialDrawBatch<T>, capacity: number): void => {
@@ -263,21 +245,15 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   /**
    * The two materials that may draw a marble compile its code in only while marbles are drawn (`MARBLES`, which every
    * chunk of the marble stands inside): with marbles off their programs are what they were before marbles, at no cost
-   * to a frame. Likewise the pattern from each file's doc (the pattern trial, 2026-11-18): `MARBLE_SKETCH` only while it
-   * is chosen. A change of either choice builds each program again once, at the next frame.
+   * to a frame. A change of the choice builds each program again once, at the next frame.
    */
   const compileMarbles = (): void => {
-    const drawn = marblesDrawn(), pattern = marblePattern();
-    const wanted = { MARBLES: drawn, MARBLE_SKETCH: drawn && pattern === "doc" };
+    const drawn = marblesDrawn();
     for (const material of [nodes.mesh.material as Material, unitFiles.material as Material]) {
       const defines: Record<string, unknown> = (material.defines ??= {});
-      let changed = false;
-      for (const [name, on] of Object.entries(wanted)) {
-        if (on === name in defines) continue;
-        if (on) defines[name] = ""; else delete defines[name];
-        changed = true;
-      }
-      if (changed) material.needsUpdate = true;
+      if (drawn === "MARBLES" in defines) continue;
+      if (drawn) defines.MARBLES = ""; else delete defines.MARBLES;
+      material.needsUpdate = true;
     }
   };
   compileMarbles();
@@ -312,14 +288,6 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     if (rgba) { rgb = `rgb(${rgba[1]},${rgba[2]},${rgba[3]})`; alpha = Number(rgba[4]); }
     found = { color: new Color(rgb), alpha }; colors.set(text, found); return found;
   };
-  /** A marble's values into `values` at `at`: its glass in linear light, its shares, its seed, one, and its sketch or zeros; all zero for none. */
-  const marbleValuesOf = (marble: Marble | null | undefined, values: Float64Array, at: number): void => {
-    if (!marble) { values.fill(0, at, at + MARBLE_VALUES); return; }
-    const glass = colorOf(marble.glass).color;
-    values[at] = glass.r; values[at + 1] = glass.g; values[at + 2] = glass.b;
-    values[at + 3] = marble.offers; values[at + 4] = marble.uses; values[at + 5] = marble.seed; values[at + 6] = 1;
-    for (let i = 0; i < 8; i++) values[at + 7 + i] = marble.sketch?.[i] ?? 0;
-  };
   const reserve = <T>(batch: SpatialDrawBatch<T>): void => {
     if (batch.entries.length > batch.capacity) allocate(batch, Math.max(batch.entries.length, 2 * batch.capacity));
     batch.ordered.length = batch.entries.length;
@@ -340,7 +308,13 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     read(nodes, style.nodeColor, style.radius, style.sphere ?? (() => true), .75);
     // A marble's glass and veins, in linear light as the instance colour is; a plain sphere's all zero.
     const marbles = nodes.marbles!;
-    for (let i = 0; i < nodes.entries.length; i++) marbleValuesOf(style.marble?.(nodes.entries[i].data), marbles, MARBLE_VALUES * i);
+    for (let i = 0; i < nodes.entries.length; i++) {
+      const marble = style.marble?.(nodes.entries[i].data) ?? null, at = MARBLE_VALUES * i;
+      if (!marble) { marbles.fill(0, at, at + MARBLE_VALUES); continue; }
+      const glass = colorOf(marble.glass).color;
+      marbles[at] = glass.r; marbles[at + 1] = glass.g; marbles[at + 2] = glass.b;
+      marbles[at + 3] = marble.offers; marbles[at + 4] = marble.uses; marbles[at + 5] = marble.seed; marbles[at + 6] = 1;
+    }
     read(lines, style.linkColor, link => Math.ceil(style.linkWidth(link) * 10) / 10, style.linkVisible, 1);
     read(arrows, style.linkColor, style.arrowLength, style.linkVisible, 3);
     // A ring takes its sphere's radius, read above, and its own colour and alpha; no colour, no ring.
@@ -598,7 +572,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         opacity.array[slot] = unit.alpha;
         if (values) { values[0].array[slot] = unit.veil; values[1].array[slot] = unit.lit; }
         if (mesh === unitFiles) {
-          marbleValuesOf(unit.marble, marbleValues, 0);
+          const { marble } = unit, glass = marble ? colorOf(marble.glass).color : null;
+          marbleValues[0] = glass?.r ?? 0; marbleValues[1] = glass?.g ?? 0; marbleValues[2] = glass?.b ?? 0;
+          marbleValues[3] = marble?.offers ?? 0; marbleValues[4] = marble?.uses ?? 0; marbleValues[5] = marble?.seed ?? 0; marbleValues[6] = marble ? 1 : 0;
           writeMarble(mesh.geometry, slot, marbleValues, 0);
         }
       });

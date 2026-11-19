@@ -217,7 +217,7 @@ From `palette.ts`. **Identity colours** are hues that tell one category from ano
 | Directory | `kind.directory` | `#e9984d` | `#e9984d` | `#e9984d` | 3D hub and containment line |
 | Has tests (2D card) | `hasTests.mark` | `#8a5cff` | `#8a5cff` | `#8a5cff` | halo, border and chip |
 | Changed in this commit | `history.changed` | `#ffffff` | `#ffffff` | `#ffffff` | the changed sphere under Glow |
-| The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button |
+| The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button; on the 2D map, what it counts: a returning connection's laces and route, a forward wire that doubles back |
 
 Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set every second value to its meaning. The light World's pressed tool cannot be its meaning, a fill under a dark icon, so it is drawn from it as the dark World draws its own: the light form's blue at 16% over the white board (`#d7e7f2`). Until 2026-11-19 `errorWash`, `pathFoundWash` and `worldLightPressed` kept Today's values against the palette's comment; `palette.test.ts` now holds all three in both palettes.
 
@@ -232,7 +232,7 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 - **Checked by.** `palette.test.ts` ("draws the 2D and World wires in the roles' colours"), and `spatial-legend.spec.ts` for the keys.
 - **Status.** Holds.
 - **Do and don't.**
-  - *Do* carry the roles into the 3D map through the marble's veins, which are a file's own share of offering and using.
+  - *Do* carry the roles into the 3D map, while marbles are drawn (Tuning → Colour → Marbles → On; off by default since 2026-11-19), through the marble's veins, which are a file's own share of offering and using.
   - *Don't* colour a 3D wire by direction. That was tried on 2026-10-30 and withdrawn at the owner's eye the next day: on a dense web, "too many connectors drawn ... to confer any ability for the end user to understand what color means on any one connector".
 
 **Rule: a file's kind is told by colour, in both maps.** In the 3D map and in a closed directory's cells in the 2D map, a file's colour is its kind.
@@ -291,10 +291,10 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 
 **Rule: amber is the one warning hue the chrome keeps.**
 
-- **The rule.** The 3D button's cue, that connections run backward in the 2D map, is amber. Errors are red.
-- **Why.** Owner, 2026-11-02: they asked for the 3D button to light on a file with many returning connections (the Explorer design, "The 3D button's cue").
-- **Where.** `signal.cue` and `signal.error`.
-- **Checked by.** `backward-cue.spec.ts`.
+- **The rule.** The 3D button's cue, that connections run backward in the 2D map, is amber, and so is each connection it counts where the 2D map draws it: a returning connection's laces and its route, and a forward wire whose route doubles back. Errors are red.
+- **Why.** Owner, 2026-11-02: they asked for the 3D button to light on a file with many returning connections (the Explorer design, "The 3D button's cue"). Owner, 2026-11-19, of the button lit over a picture whose returning wires they could not find: "We should probably use that alert color to call attention to the specific wires which are violating the left/right arrangement rule." ([Turn 23 of the November 18 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)). The withdrawal of colour by direction on 3D wires (2026-10-31) was of a dense web; the 2D map draws few such connections.
+- **Where.** `signal.cue` and `signal.error`; the laces' fill in `views/localView/connections.ts`, the route's and a doubling wire's stroke in `styles/local.css`. The count and the marks share one test, so the button and the map cannot disagree.
+- **Checked by.** `backward-cue.spec.ts`; `returning-connections.spec.ts` (the laces and the route) and `local-map-branches.spec.ts` (a doubling wire).
 - **Status.** Holds.
 
 ### Strength: opacity that carries meaning
@@ -714,7 +714,7 @@ Each motion takes its band's one value, and one unit (ms).
 | A connection's role, offers or uses | Hue: blue, green | 2D wires, pins and the key; 3D marble veins; World doors | Owner, 2025-12-03 and 2026-09-29 |
 | A connection's direction in 2D | Position: uses enter on the left, offerings leave on the right | `judgments.ts`, `usesLeftOfferingsRight` | Owner, 2026-09-28; checked by the scenario suite |
 | A file's kind | Hue | 3D sphere and marble glass; 2D cells; both keys | Owner, 2026-11-17 |
-| How much a file offers and uses | The share of each vein on the marble, from `marbleAmount` (1 user is a third, 3 two thirds, 7 or more all) | `views/forceGraphAppearance.ts` | Owner, 2026-11-16: "Something that sends more is more blue. Something that receives more is more green"; default since 2026-11-18 |
+| How much a file offers and uses | The share of each vein on the marble, from `marbleAmount` (1 user is a third, 3 two thirds, 7 or more all) | `views/forceGraphAppearance.ts` | Owner, 2026-11-16: "Something that sends more is more blue. Something that receives more is more green"; drawn by default on 2026-11-18 and 19, and since then only with Marbles → On |
 | A file's exposed interface | Size of the 3D sphere, sublinear | the 3D map | Owner, 2026-10-13, quoting back the agent's "position suggests coupling, size suggests exposed interface" and answering "Phenomenal. Yeah, we're aligned. Please implement." ([the October 13 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md)) |
 | Coupling between files | Distance in the 3D layout | the 3D map | The same exchange |
 | A reference's weight | Wire width, `1 + 0.375 log2(count)`, at most 3×; a path's wires twice as wide | `views/forceGraphView.ts:1906–1907` | No owner word found; see the findings |

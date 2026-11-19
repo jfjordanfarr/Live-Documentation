@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-15T23:44:00.803Z
+- Generated At: 2026-11-19T04:41:44.214Z
 
 ## Authored
 ### Purpose
@@ -120,7 +120,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L598)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L599)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -128,7 +128,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L604)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L605)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

@@ -2,6 +2,8 @@
 
 _Historical evidence, taken 2026-11-18 and 19 by the builder of the trial. The trial is described in [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md); the owner's wish behind it is [Turn 20 of the November 18 record](../../2026-11-18.1.record.md#turn-20)._
 
+**Removed, 2026-11-19.** The Marble Pattern trial and its sheet tool (`scripts/contact-sheet/marble-sheet.ts`) were taken out of the product in the commit "Take the Marble Pattern trial out of the product" (branch `marble-pattern-removed`), after the owner's verdict and the [text-shape probe](../../Probes/text-shape/README.md)'s blind reading. These pictures stay as historical evidence; the commands below no longer exist.
+
 **The setup.** This repository's Explorer, built from the trial's working tree. The marble sheets are drawn by `npm run marble:sheet` (`scripts/contact-sheet/marble-sheet.ts`). Node works out each marble from the bundle's graph using the Explorer's own modules. A loaded 3D page lends its renderer, its lights and the marbled spheres' material, so the shaders are the page's own. Each marble is a 96 × 64 sphere at 0.75 opacity on the 3D map's ground. The pattern and the Vein Bend are set for each row with the Tuning levers, as a viewer would set them. The 3D map pictures are drawn by `npm run contact:sheet -- --marble-pattern`. The graphics card drew every picture.
 
 **Three rounds.**

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-11-19T00:59:26.570Z
+- Generated At: 2026-11-19T04:29:43.684Z
 
 ## Authored
 ### Purpose
@@ -45,17 +45,9 @@ views draw again in it at once where they drew a colour themselves (`whenPalette
 Draws files as marbles or not (the marble trial, 2026-11-17): the page's root says which, for the stylesheets that
 tint the 2D map's cells, and the maps' scripts draw again as for a palette chosen, with nothing moving.
 
-#### `applyMarblePattern` {#symbol-applymarblepattern}
-- Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L35)
-- Parameters: `choice`: [`MarblePattern`](./types.ts.mdmd.md#symbol-marblepattern)
-
-##### `applyMarblePattern` — Summary
-Winds the marbles' veins in one pattern or from each file's doc (the pattern trial, 2026-11-18): the 3D map draws again, nothing moving.
-
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L41)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L35)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
@@ -63,7 +55,7 @@ Activates the given view tab and its container while deactivating siblings.
 
 #### `setSeamedText` {#symbol-setseamedtext}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L89)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L83)
 
 ##### `setSeamedText` — Summary
 Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
@@ -72,15 +64,12 @@ wraps at a seam rather than at whatever letter the box ran out at; the element's
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`palette.chooseMarbleBend`](./palette.ts.mdmd.md#symbol-choosemarblebend)
-- [`palette.chooseMarblePattern`](./palette.ts.mdmd.md#symbol-choosemarblepattern)
 - [`palette.chooseMarbles`](./palette.ts.mdmd.md#symbol-choosemarbles)
 - [`palette.choosePalette`](./palette.ts.mdmd.md#symbol-choosepalette)
 - [`palette.customProperties`](./palette.ts.mdmd.md#symbol-customproperties)
 - [`palette.paletteNamed`](./palette.ts.mdmd.md#symbol-palettenamed)
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.MarbleChoice`](./types.ts.mdmd.md#symbol-marblechoice) (type-only)
-- [`types.MarblePattern`](./types.ts.mdmd.md#symbol-marblepattern) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`word-seams.seamsOf`](./views/localView/word-seams.ts.mdmd.md#symbol-seamsof)
 <!-- LIVE-DOC:END Dependencies -->

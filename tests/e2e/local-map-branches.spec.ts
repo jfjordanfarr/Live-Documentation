@@ -53,10 +53,21 @@ test("a geometrically backward ordinary wire cues 3D and clearing the fault remo
   }))).toBe(true);
   await expect(button).toHaveClass(/has-backward-wires/);
   await expect(button).toHaveAttribute("title", /backward in 2D/);
+  // What the cue counts is drawn in the cue's colour (2026-11-19): the doubling wires, and they only.
+  const strokes = () => wires.evaluateAll(elements => elements.map(element => {
+    const path = element as SVGPathElement;
+    return { doubles: path.getPointAtLength(path.getTotalLength()).x < path.getPointAtLength(0).x, stroke: getComputedStyle(path).stroke };
+  }));
+  const cue = "rgb(233, 184, 109)";
+  const displaced = await strokes();
+  const doubling = displaced.filter(wire => wire.doubles);
+  expect(doubling.length).toBeGreaterThan(0);
+  expect(doubling.map(wire => wire.stroke), "a wire that ends left of its start wears the cue's colour").toEqual(doubling.map(() => cue));
   await displacement.evaluate(element => element.parentNode?.removeChild(element));
   await repack(24);
   await localMapSettled(page);
   await expect(button).not.toHaveClass(/has-backward-wires/);
+  expect((await strokes()).filter(wire => wire.stroke === cue), "no wire keeps the cue's colour once none doubles back").toEqual([]);
 });
 
 /** Every lane's height and the slot lines it publishes, as the router reads them. */

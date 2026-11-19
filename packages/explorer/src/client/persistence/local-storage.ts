@@ -6,9 +6,9 @@
  */
 
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import { DEFAULT_MARBLE_BEND, DEFAULT_PALETTE, isPaletteName } from "../palette";
+import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, MARBLE_PATTERNS, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { ARRIVALS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
@@ -74,6 +74,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     closedCells: "kind",
     // Cells under name since 2026-11-18, the first of its choices, so that a link's silence reads as the default.
     hiddenFiles: HIDDEN_FILES_LOOKS[0],
+    arrival: ARRIVALS[0],
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,
@@ -102,10 +103,10 @@ export const getDefaultTuning = (): TuningConfig => ({
   // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,
   // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
   history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" },
-  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and marbles until a viewer turns them
-  // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default"), each in one
-  // pattern until a viewer chooses one from its doc (the pattern trial, 2026-11-18).
-  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], marblePattern: MARBLE_PATTERNS[0], marbleBend: DEFAULT_MARBLE_BEND }
+  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and no marbles until a viewer turns
+  // them on (the marble trial, 2026-11-17; on was the default on 2026-11-18 and 19, off again since 2026-11-19, the
+  // owner's "for immediate understandability of the system, Marbes Off is superior").
+  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0] }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -314,12 +315,9 @@ export const readPersistedUi = (): PersistedUi | null => {
       const appearanceRaw = getRecord(parsedTuning, "appearance");
       if (appearanceRaw) {
         const marbles = MARBLE_CHOICES.find(choice => choice === appearanceRaw.marbles);
-        const marblePattern = MARBLE_PATTERNS.find(choice => choice === appearanceRaw.marblePattern);
         tuning.appearance = {
           ...(isPaletteName(appearanceRaw.palette) ? { palette: appearanceRaw.palette } : null),
-          ...(marbles ? { marbles } : null),
-          ...(marblePattern ? { marblePattern } : null),
-          ...(typeof appearanceRaw.marbleBend === "number" && appearanceRaw.marbleBend >= 0 && appearanceRaw.marbleBend <= 1 ? { marbleBend: appearanceRaw.marbleBend } : null)
+          ...(marbles ? { marbles } : null)
         };
       }
 
@@ -548,12 +546,18 @@ export const changedFromDefaults = (
   defaults: { filters: ExplorerFilters; tuning: TuningConfig }
 ): Pick<PersistedUi, "filters" | "tuning"> => {
   const filters = changedIn(state.filters, defaults.filters);
-  const tuning: SavedTuning = {};
-  for (const group of Object.keys(state.tuning) as Array<keyof TuningConfig>) {
-    const changed = changedIn<object>(state.tuning[group], defaults.tuning[group]);
-    if (changed) (tuning as Record<string, object>)[group] = changed;
+  const tuning = changedTuningFromDefaults(state.tuning, defaults.tuning);
+  return { ...(filters ? { filters } : null), ...(tuning ? { tuning } : null) };
+};
+
+/** The Tuning settings that differ from the defaults, group by group, or `undefined` when none does. */
+export const changedTuningFromDefaults = (tuning: TuningConfig, defaults: TuningConfig): SavedTuning | undefined => {
+  const changed: SavedTuning = {};
+  for (const group of Object.keys(tuning) as Array<keyof TuningConfig>) {
+    const inGroup = changedIn<object>(tuning[group], defaults[group]);
+    if (inGroup) (changed as Record<string, object>)[group] = inGroup;
   }
-  return { ...(filters ? { filters } : null), ...(Object.keys(tuning).length > 0 ? { tuning } : null) };
+  return Object.keys(changed).length > 0 ? changed : undefined;
 };
 
 /**

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/contact-sheet/contact-sheet.ts
 - Entry: command `contact:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T00:59:28.214Z
+- Generated At: 2026-11-19T04:29:45.633Z
 
 ## Authored
 ### Purpose
@@ -44,12 +44,8 @@ The hook a caller passes, run on every fresh context before the view's page load
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
-- [`types.MARBLE_PATTERNS`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-marble_patterns)
-- [`types.MarblePattern`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-marblepattern)
-- [`bundle-page.ORIGIN`](./bundle-page.ts.mdmd.md#symbol-origin)
-- [`bundle-page.escape`](./bundle-page.ts.mdmd.md#symbol-escape)
-- [`bundle-page.mergeStorage`](./bundle-page.ts.mdmd.md#symbol-mergestorage)
-- [`bundle-page.serve`](./bundle-page.ts.mdmd.md#symbol-serve)
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`cli.UsageError`](../live-docs/cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.optionValue`](../live-docs/cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.runCommand`](../live-docs/cli.ts.mdmd.md#symbol-runcommand)

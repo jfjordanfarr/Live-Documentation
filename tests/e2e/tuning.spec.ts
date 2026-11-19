@@ -32,10 +32,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // joined on 2026-11-17 in a group of its own, Colour (the proposed palette of meanings beside today's), and Marbles
   // beside it the same day (the trial of a file drawn as glass of its kind, veined by what it offers and uses). Hidden
   // Files joined the 2D layout group the same day (the trial of cells in place of a drawn directory's "+2 files"), and Beyond
-  // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything), and Marble
-  // Pattern the Colour group the same day (the trial of veins bent by what each file's doc lists), and Vein Bend beside it
-  // on 2026-11-19 (how far they bend).
-  await expect(controls).toHaveCount(70);
+  // the Hops the 3D layout group on 2026-11-18 (the trial of the next step past the hops beside everything), and
+  // Arrival the 2D layout group on 2026-11-19 (how the camera meets a new subject).
+  await expect(controls).toHaveCount(69);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -114,65 +113,19 @@ test("marbles on and off each compile, and the 3D picture changes with the choic
   await openTuning(page);
   await page.locator(".sidebar-details summary", { hasText: /^Colour$/ }).click();
   const marbles = page.locator("#tuning-marbles");
-  // Marbles are the default since 2026-11-18, so the picture opens with them and the case turns them off and on again.
-  await expect(marbles).toHaveValue("on");
+  // Off is the default again since 2026-11-19 (on was on 2026-11-18 and 19), so the picture opens plain and the case
+  // turns the marbles on and off again.
+  await expect(marbles).toHaveValue("off");
   // The pointer parked off the picture, and a moment for the frame the choice asks for.
   const drawn = async (): Promise<Buffer> => { await page.mouse.move(640, 30); await page.waitForTimeout(800); return page.locator("#graph-svg canvas").first().screenshot(); };
-  const marbled = await drawn();
-  await marbles.selectOption("off");
   const plain = await drawn();
-  expect(plain.equals(marbled), "the spheres are drawn plain").toBe(false);
   await marbles.selectOption("on");
-  const marbledAgain = await drawn();
-  expect(marbledAgain.equals(plain), "and as marbles again").toBe(false);
+  const marbled = await drawn();
+  expect(marbled.equals(plain), "the spheres are drawn as marbles").toBe(false);
+  await marbles.selectOption("off");
+  const plainAgain = await drawn();
+  expect(plainAgain.equals(marbled), "and as plain spheres again").toBe(false);
   expect(said, "neither choice's programs fail to compile").toEqual([]);
-});
-
-/**
- * The marble's pattern from each file's doc (the pattern trial, 2026-11-18) is compiled in only while it is chosen; each
- * choice builds the spheres' programs again. Both must compile and draw another picture. Vein Bend (2026-11-19) is shown
- * only with the pattern from the doc, bends the veins by a uniform, and at zero leaves plain vanes. The viewer's
- * choices are kept for their next visit and are not written into a link.
- */
-test("each marble pattern compiles, draws its own picture, and is kept as the viewer's own", async ({ page }) => {
-  const said: string[] = [];
-  page.on("pageerror", error => said.push(String(error)));
-  page.on("console", message => { if (message.type() === "error" || /shader|program/i.test(message.text())) said.push(message.text().slice(0, 300)); });
-  await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
-  await openTuning(page);
-  await page.locator(".sidebar-details summary", { hasText: /^Colour$/ }).click();
-  const pattern = page.getByRole("combobox", { name: /^Marble Pattern/ });
-  await expect(pattern).toHaveValue("one");
-  await expect(pattern.locator("option")).toHaveText(["One Pattern", "From Its Doc"]);
-  const bend = page.getByRole("slider", { name: /^Vein Bend/ });
-  await expect(bend, "Vein Bend is a choice of the pattern from the doc alone").toBeHidden();
-  const drawn = async (): Promise<Buffer> => { await page.mouse.move(640, 30); await page.waitForTimeout(800); return page.locator("#graph-svg canvas").first().screenshot(); };
-  const one = await drawn();
-  await pattern.selectOption("doc");
-  await expect(bend).toBeVisible();
-  await expect(bend).toHaveValue("0.55");
-  const fromDoc = await drawn();
-  expect(fromDoc.equals(one), "from its doc differs from one pattern").toBe(false);
-  await bend.fill("0.9");
-  const bentMore = await drawn();
-  expect(bentMore.equals(fromDoc), "a larger bend draws another picture").toBe(false);
-  await bend.fill("0");
-  const unbent = await drawn();
-  expect(unbent.equals(bentMore), "and no bend another again").toBe(false);
-  await pattern.selectOption("one");
-  await expect(bend).toBeHidden();
-  expect(said, "no choice's programs fail to compile").toEqual([]);
-
-  await pattern.selectOption("doc");
-  await bend.fill("0.3");
-  await expect.poll(() => page.evaluate(() => Object.values(localStorage).join("\n"))).toContain('"marblePattern":"doc"');
-  await expect.poll(() => page.evaluate(() => Object.values(localStorage).join("\n"))).toContain('"marbleBend":0.3');
-  expect(page.url(), "the choice is the viewer's, not the link's").not.toMatch(/marble/i);
-  await page.reload();
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
-  await expect(page.locator("#tuning-marble-pattern")).toHaveValue("doc");
-  await expect(page.locator("#tuning-marble-bend")).toHaveValue("0.3");
 });
 
 test("the legend stands before Tuning, and Export reads at the panel's type size", async ({ page }) => {

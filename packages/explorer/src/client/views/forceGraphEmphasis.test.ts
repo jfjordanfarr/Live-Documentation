@@ -93,7 +93,7 @@ describe("how a commit's changes show inside a wrapper's skin", () => {
   });
 
   it("drops the marble of a dot the step glows white and keeps it on the rest; where the mode dims, every dot keeps its marble", () => {
-    // Marbles are the default since 2026-11-18: a glowing dot is white and whole, as a changed sphere is, with no veins.
+    // With marbles drawn (Tuning → Colour → Marbles → On), a glowing dot is white and whole, as a changed sphere is, with no veins.
     const marble = { glass: blue, offers: 0.2, uses: 0.1, seed: 0.5 };
     const marbled = units.map(unit => unit.kind === "file" ? { ...unit, marble } : unit);
     const changes = bodyChanges(marbled, members, seed, ["a/b/y.ts"], []);

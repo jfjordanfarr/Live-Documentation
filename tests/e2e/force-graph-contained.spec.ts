@@ -13,7 +13,8 @@ async function arrive(page: Page, native: boolean): Promise<string[]> {
   page.on("pageerror", error => errors.push(String(error)));
   page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
   // The independent reference draws a plain sphere of the kind's colour, so the files are drawn without marbles, the
-  // default until 2026-11-18; the marble's own shading has no independent reference here.
+  // default (again since 2026-11-19; marbles were on 2026-11-18 and 19); the marble's own shading has no independent
+  // reference here.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off" } } })
   });

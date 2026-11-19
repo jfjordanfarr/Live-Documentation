@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-19T00:59:28.122Z
+- Generated At: 2026-11-19T04:53:50.909Z
 
 ## Authored
 ### Purpose
@@ -201,6 +201,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `stats-line` {#symbol-stats-line}
 - Type: variable
 
+#### `tuning-arrival` {#symbol-tuning-arrival}
+- Type: variable
+
 #### `tuning-band-gap` {#symbol-tuning-band-gap}
 - Type: variable
 
@@ -208,6 +211,15 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-card-text` {#symbol-tuning-card-text}
+- Type: variable
+
+#### `tuning-changed` {#symbol-tuning-changed}
+- Type: variable
+
+#### `tuning-changed-count` {#symbol-tuning-changed-count}
+- Type: variable
+
+#### `tuning-changed-words` {#symbol-tuning-changed-words}
 - Type: variable
 
 #### `tuning-churn-cost` {#symbol-tuning-churn-cost}
@@ -438,15 +450,6 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
 - Type: variable
 
-#### `tuning-marble-bend` {#symbol-tuning-marble-bend}
-- Type: variable
-
-#### `tuning-marble-bend-value` {#symbol-tuning-marble-bend-value}
-- Type: variable
-
-#### `tuning-marble-pattern` {#symbol-tuning-marble-pattern}
-- Type: variable
-
 #### `tuning-marbles` {#symbol-tuning-marbles}
 - Type: variable
 
@@ -484,6 +487,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-palette` {#symbol-tuning-palette}
+- Type: variable
+
+#### `tuning-reset` {#symbol-tuning-reset}
 - Type: variable
 
 #### `tuning-return-cost` {#symbol-tuning-return-cost}

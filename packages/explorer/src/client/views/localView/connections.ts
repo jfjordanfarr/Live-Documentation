@@ -5,10 +5,11 @@ import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, t
 import { edgeKey, type BranchGraph } from "./branches";
 import { isPairLine, linksOf } from "./directory-flow";
 import { OVERVIEW_FILES_ATTRIBUTE, OVERVIEW_LINES_ATTRIBUTE } from "./overview-files";
-import { returningConnections, type ReturningConnections } from "./returning-connections";
+import { returningConnections, returnRoute, type LaidBox, type ReturningConnections } from "./returning-connections";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
+import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
-import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, type GatheredWire } from "./wire-gathering";
+import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
@@ -83,6 +84,8 @@ export function drawConnections(context: ConnectionsContext): number {
   const { drawn, doubling } = context.branches ? drawBranchConnections(context, layer, seen) : { drawn: 0, doubling: 0 };
   for (const [key, element] of layer.elements) {
     if (seen.has(key)) continue;
+    // A returning lace that leaves under the pointer or the focus puts out the connection it lit.
+    if (element.classList.contains("returning")) releaseConnections(context.runtime.container, context.runtime.overlay, element);
     element.remove();
     layer.elements.delete(key);
     layer.gradients.get(key)?.remove();
@@ -238,7 +241,11 @@ function placeOverlay(layer: WireLayer, bounds: { left: number; top: number; wid
   svg.style.height = `${height}px`;
 }
 
-/** Draws a wire between two pins: the path kept by its key, the gradient with it; returns the gradient's id for a bundle's run. */
+/**
+ * Draws a wire between two pins: the path kept by its key, the gradient with it; returns the gradient's id for a bundle's
+ * run. A forward wire whose drawn route doubles back, which the 3D button's cue counts, is marked `doubling`, and the
+ * stylesheet draws it in the cue's colour (2026-11-19), so that what the button counts can be found on the map.
+ */
 function drawWire(
   layer: WireLayer,
   seen: Set<string>,
@@ -250,7 +257,8 @@ function drawWire(
   tuning: BezierTuning,
   routedPath?: string,
   extraClass?: string,
-  presence = 1
+  presence = 1,
+  doubling = false
 ): string {
   const key = JSON.stringify([edgeKey(edge), extraClass ?? "wire"]);
   const gradientId = gradientFor(layer, key, source, target, svgNamespace);
@@ -269,6 +277,7 @@ function drawWire(
   });
   path.setAttribute("d", routedPath ?? `M ${source.x} ${source.y} ${curveTo(source, target, tuning)}`);
   path.style.strokeOpacity = String(presence);
+  path.classList.toggle("doubling", doubling);
   return gradientId;
 }
 
@@ -301,6 +310,19 @@ function gradientFor(layer: WireLayer, key: string, source: Point, target: Point
 }
 
 /**
+ * A returning connection's laces, what the 3D button's cue counts (2026-11-19): their accessible name and tooltip, and
+ * the connections a pointer or the keyboard on either lace keeps, with the map whose hover it applies.
+ */
+interface ReturnLaces {
+  name: string;
+  carries: readonly LocalEdge[];
+  runtime: LocalViewRuntime;
+}
+
+/** What each returning lace keeps when pointed at, written at every drawing, since a lace's element outlives a drawing. */
+const laceCarries = new WeakMap<SVGElement, readonly LocalEdge[]>();
+
+/**
  * Draws a self-reference as the two laces of the French Corset, one at each
  * pin, from {@link computeSelfLoopStubs}: each leaves its pin, sweeps past
  * its card's edge, turns toward the other row and comes back to be cut by
@@ -309,7 +331,11 @@ function gradientFor(layer: WireLayer, key: string, source: Point, target: Point
  * rows below shows as many laces; `ranks` counts them across one drawing.
  * Each lace is a filled polygon in its pin's colour, carrying the
  * reference's symbols for hover. A back reference between two cards gets
- * the same pair, each lace cut by its own card.
+ * the same pair, each lace cut by its own card; since 2026-11-19 its laces
+ * are drawn in the 3D button's cue colour, which counts them, are named by
+ * their two ends with a tooltip of the same words, and keep the whole
+ * connection, its two laces and its route, when pointed at or focused
+ * (`returning`), so that the two curls are seen to be one connection.
  */
 function drawLaces(
   layer: WireLayer,
@@ -321,7 +347,8 @@ function drawLaces(
   svgNamespace: string,
   shape: SelfLoopParams,
   ranks: Map<string, number>,
-  presence: number
+  presence: number,
+  returning?: ReturnLaces
 ): void {
   const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
   const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
@@ -338,8 +365,9 @@ function drawLaces(
   for (const [points, color, role] of [[laces.providerPoints, "var(--role-offers)", "provider"], [laces.consumerPoints, "var(--role-uses)", "consumer"]] as const) {
     const polygon = elementFor(layer, seen, JSON.stringify([edgeKey(edge), role]), () => {
       const made = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
-      // Inline, since the stylesheet's base rule gives every connection path no fill.
-      made.style.fill = color;
+      // Inline, since the stylesheet's base rule gives every connection path no fill. A returning connection's laces
+      // wear the cue's colour (a lace's key is its reference's, which returns at every drawing or at none).
+      made.style.fill = returning ? "var(--signal-cue)" : color;
       made.style.stroke = "none";
       made.classList.add("connection-path", "self-loop", `self-loop-${role}`);
       made.dataset.kind = edge.kind;
@@ -347,11 +375,30 @@ function drawLaces(
       made.dataset.targetId = edge.targetId;
       made.dataset.sourceSymbol = sourceSymbol;
       made.dataset.targetSymbol = targetSymbol;
+      if (returning) attendReturning(made, returning.runtime, svgNamespace);
       return made;
     });
     polygon.setAttribute("points", points);
     polygon.style.fillOpacity = String(presence);
+    if (returning) {
+      laceCarries.set(polygon, returning.carries);
+      polygon.setAttribute("aria-label", returning.name);
+      polygon.querySelector("title")!.textContent = returning.name;
+    }
   }
+}
+
+/**
+ * A returning lace's part in the page, made once with its element: it takes the pointer and the keyboard's focus, and
+ * either keeps the connections it carries and fades the rest, as a row's hover does; its name is an image's, and its
+ * tooltip, the native one, shows the same words only once the pointer has rested on it.
+ */
+function attendReturning(lace: SVGElement, runtime: LocalViewRuntime, svgNamespace: string): void {
+  lace.classList.add("returning");
+  lace.setAttribute("role", "img");
+  lace.setAttribute("tabindex", "0");
+  lace.append(document.createElementNS(svgNamespace, "title"));
+  attendConnections(lace, runtime.container, runtime.overlay, () => laceCarries.get(lace) ?? []);
 }
 
 /**
@@ -382,8 +429,12 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const columnBounds = branches.columns.map((_, column) => {
     const wrappers = [...runtime.container.querySelectorAll<HTMLElement>(`.local-column[data-column="${column}"]`)]
       .flatMap(element => { const measured = measure(element); return measured ? [measured] : []; });
-    return { left: Math.min(...wrappers.map(wrapper => wrapper.leftX)), right: Math.max(...wrappers.map(wrapper => wrapper.rightX)) };
+    return { left: Math.min(...wrappers.map(wrapper => wrapper.leftX)), right: Math.max(...wrappers.map(wrapper => wrapper.rightX)), wrappers };
   });
+  // Every box in the overlay's frame, which a returning connection's route passes over.
+  const boxes: LaidBox[] = columnBounds.flatMap(column => column.wrappers.map(wrapper => ({
+    left: wrapper.leftX - bounds.left, right: wrapper.rightX - bounds.left, top: wrapper.topY - bounds.top, bottom: wrapper.bottomY - bounds.top
+  })));
   // Each lane as the renderer placed it: its top, and where each slot rests below that top.
   const lanes = new Map<string, { top: number; slots: number[] }>();
   runtime.container.querySelectorAll<HTMLElement>(".local-pass-through[data-lane]").forEach(element => {
@@ -440,19 +491,18 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   // A forward wire's route: through its lanes, or the one curve across the gutter; leaving and entering its columns straight either way.
   const routeFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } =>
     threadFor(key, a, b, from, to) ?? { ...threadedRoute(from, to, [], state.tuning.bezier, clearance(a, b)), slots: [] };
+  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
   // The pairs' lines stand for the length of the move back in from files only (2026-11-13), as at the overview.
   if (runtime.container.dataset.lod === "overview" || runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE)) {
-    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape);
+    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape, nameOf, boxes);
     markHubs(runtime.container, hubsEnding);
     return overview;
   }
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
-  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
   // A pair line's dress: its laces or its path marked gathered, as wide as its count, described by its two files.
   const dressLine = (edge: LocalEdge, role: string): void => {
-    const wire: GatheredWire = { key: "", providerId: edge.targetId, consumerId: edge.sourceId, members: [edge], back: false };
-    dressGathered(layer.elements.get(JSON.stringify([edgeKey(edge), role])), linksOf(edge), gatheredDescription(wire, nameOf));
+    dressGathered(layer.elements.get(JSON.stringify([edgeKey(edge), role])), linksOf(edge), wireDescription(edge, nameOf));
   };
   branches.subgraph.links.forEach(edge => {
     const measured = wireEnds(edge.targetId, edge.targetSymbol, edge.sourceId, edge.sourceSymbol);
@@ -470,8 +520,9 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     const key = edgeKey(edge);
     const line = isPairLine(edge);
     if (branches.back.has(key)) {
-      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
-      drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      const returning = { name: wireDescription(edge, nameOf), carries: [edge], runtime };
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence, returning);
+      drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       if (line) {
         for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([key, role]))?.classList.add("gathered");
         dressLine(edge, "back-route");
@@ -480,8 +531,9 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     const routed = routeFor(key, a, b, from, to);
-    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) doubling += linksOf(edge);
-    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, line ? "gathered" : undefined, presence);
+    const doubles = presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier);
+    if (doubles) doubling += linksOf(edge);
+    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, line ? "gathered" : undefined, presence, doubles);
     if (line) {
       dressLine(edge, "gathered");
       return;
@@ -525,9 +577,11 @@ function drawOverviewWires(
   threadFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] } | null,
   routeFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] },
   laceRanks: Map<string, number>,
-  shape: SelfLoopParams
+  shape: SelfLoopParams,
+  nameOf: (nodeId: string) => string,
+  boxes: readonly LaidBox[]
 ): { drawn: number; doubling: number } {
-  const { branches, state, svgNamespace } = context;
+  const { branches, state, svgNamespace, runtime } = context;
   if (!branches) return { drawn: 0, doubling: 0 };
   // The references the closer bands draw, whose ends are laid out (a row the branch picture hides has none): a pair is
   // joined here exactly when a wire of the closer bands joins it, and its count is theirs.
@@ -544,7 +598,6 @@ function drawOverviewWires(
   // a wire's end is its dot only there.
   const pinnedDot = (nodeId: string, direction: "inbound" | "outbound", symbol: string | undefined): boolean =>
     !!context.getAnchor(nodeId, "center", direction, symbol)?.closest(".symbol-row.symbol-pinned-named");
-  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
   const ends = (from: AnchorMeasurement, to: AnchorMeasurement): { from: Point; to: Point } => {
     const p = offsetToEdge(from, "outbound"), q = offsetToEdge(to, "inbound");
     return { from: { x: p.x - bounds.left, y: p.y - bounds.top }, to: { x: q.x - bounds.left, y: q.y - bounds.top } };
@@ -564,20 +617,22 @@ function drawOverviewWires(
     // The gathered wire's identity: its pair, with the hubs for symbols, so that no reference's key can be the same.
     const gathered: LocalEdge = { sourceId: wire.consumerId, targetId: wire.providerId, sourceSymbol: NODE_HUB, targetSymbol: NODE_HUB, kind: wire.members[0].kind, direction: "outbound" };
     let path: SVGPathElement | undefined;
+    const description = gatheredDescription(wire, nameOf);
     if (wire.back) {
-      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), gathered, svgNamespace, shape, laceRanks, presence);
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), gathered, svgNamespace, shape, laceRanks, presence, { name: description, carries: wire.members, runtime });
       for (const role of ["provider", "consumer"]) layer.elements.get(JSON.stringify([edgeKey(gathered), role]))?.classList.add("gathered");
-      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "back-route"])) as SVGPathElement | undefined;
     } else {
       const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
       // Through the lanes one of its references was given, where all of that reference's passages stand; else the one curve.
       const routed = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? routeFor(edgeKey(wire.members[0]), a, b, from, to);
-      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) doubling += gatheredCount(wire);
-      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence);
+      const doubles = presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier);
+      if (doubles) doubling += gatheredCount(wire);
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence, doubles);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
     }
-    dressGathered(path, gatheredCount(wire), gatheredDescription(wire, nameOf));
+    dressGathered(path, gatheredCount(wire), description);
   }
   // A pinned symbol's own wires, drawn after the gathered ones and so above them: with files only too (2026-11-15),
   // where a row pinned by name is the one row a card draws, since a pin is the person's own question. None while the
@@ -591,9 +646,13 @@ function drawOverviewWires(
     drawn++;
     const presence = Math.min(provider.presence, consumer.presence);
     const { from, to } = ends(provider, consumer);
-    if (edge.sourceId === edge.targetId || isBack(edge)) {
+    if (edge.sourceId === edge.targetId) {
       drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, svgNamespace, shape, laceRanks, presence);
-      if (edge.sourceId !== edge.targetId) drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
+      continue;
+    }
+    if (isBack(edge)) {
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, svgNamespace, shape, laceRanks, presence, { name: wireDescription(edge, nameOf), carries: [edge], runtime });
+      drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, returnRoute(from, to, boxes), "back-route", presence);
       continue;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;

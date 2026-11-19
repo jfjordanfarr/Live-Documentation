@@ -157,14 +157,23 @@
     justify-self: center;
 }
 
+/* A card's node-level hubs, where a whole file's connections end (2026-11-19): at the height of the file's name, the
+   middle of its first line, where no symbol row can be mistaken for a hub's end; until then a hub stood half way down
+   its card, level with whichever row stood there, and the owner read a pair line's end as that row's. The line is not
+   a constant: a name of one line shares it with the room the node's controls keep, which makes it taller, and a longer
+   name's first line does not. So the render reads the line's middle below the card's padding edge from the page and
+   writes it on the card's wrapper (--hub-y, the branch renderer's standHubs); the fallback is a name of one line beside
+   the controls' room. The box is 12 px. From the
+   middle look out the hub is drawn down to the held name's first line and as large as the look's controls, as a row's
+   dot is (reading.css), and the placement takes that drawing back, as it does a dot's. */
 .symbol-anchor.hub {
     position: absolute;
-    top: 50%;
+    top: calc(var(--hub-y, 24) * 1px - 6px);
     width: 10px;
     height: 10px;
     opacity: 0.55;
     border: 1px solid rgba(var(--second-values-offers-pin-rgb), 0.35);
-    transform: translateY(-50%);
+    transform: scale(var(--hub-scale, 1));
     z-index: 28;
 }
 

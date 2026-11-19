@@ -62,9 +62,6 @@
     "scripts/contact-sheet/contact-sheet.ts": [
       "command contact:sheet of package.json"
     ],
-    "scripts/contact-sheet/marble-sheet.ts": [
-      "command marble:sheet of package.json"
-    ],
     "scripts/doc-tools/enforce-documentation-links.ts": [
       "command docs:links:enforce of package.json"
     ],
