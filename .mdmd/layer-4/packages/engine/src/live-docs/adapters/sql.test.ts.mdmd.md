@@ -12,6 +12,7 @@ Keeps the SQL adapter's two claims on written scripts: the estate's posting proc
 
 ### Notes
 - The scripts are written to a temporary folder and the symbol index is hand-built with the estate's paths, as the other adapter tests do.
+- Since 2026-11-19 a third claim: a test procedure in tSQLt's shape publishes itself, not the table its body creates, and keeps no name for that table where it uses it ([the SQL reader's probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)). The reader itself is measured against ScriptDom by `tests/integration/live-docs/sql-oracle.test.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
