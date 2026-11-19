@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
-import { observeGraph } from "./force-graph-observation";
+import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { localMapSettled, panIntoView } from "./still-picture";
 
 /**
@@ -199,12 +199,15 @@ test("a sphere inside a popped group can wrap that group again from its own menu
   await page.keyboard.press("Enter");
   const chip = page.locator(`#view-graph .force-graph-label[data-kind="popped"][data-directory="${directory}"]`);
   await expect(chip).toHaveCount(1);
-  // A file the pop released, named in the picture, offers the wrap in its menu.
-  const inside = page.locator(`#view-graph .force-graph-label[data-node-id^="${directory}/"]:not([hidden])`).first();
-  await expect(inside).toHaveCount(1, { timeout: 10_000 });
-  await inside.focus();
-  await page.keyboard.press("Shift+F10");
-  await choose(page, "Wrap this group again");
+  // A sphere the pop released offers the wrap in its menu, opened by the right press on it. Its name may give way to
+  // another's, so the case aims at the largest such sphere the picture draws.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const inside = (await renderedNodes(page)).filter(node => node.id.startsWith(`${directory}/`)).sort((a, b) => b.screenRadius - a.screenRadius);
+  expect(inside.length, "the pop releases spheres").toBeGreaterThan(0);
+  await page.mouse.click(inside[0]!.x, inside[0]!.y, { button: "right" });
+  // The item names the group beneath its words, so its accessible name ends with the directory.
+  await page.getByRole("menuitem", { name: `Wrap this group again ${directory}`, exact: true }).focus();
+  await page.keyboard.press("Enter");
   await expect(chip).toHaveCount(0);
   await expect(page.locator(`#view-graph .force-graph-label[data-node-id="shell:${directory}"]`)).toHaveCount(1);
   await expect(status(page)).toHaveText(`Wrapped ${directory} again`);
