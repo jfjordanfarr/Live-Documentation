@@ -353,6 +353,15 @@ describe("the Live Doc grammar", () => {
     expect(parseLiveDoc(text)).toEqual(doc);
   });
 
+  it("lets no docstring line that stands in a list open a fence or an HTML block, closed or not, since CommonMark ends one with its item", () => {
+    // A fence opened in the first item ends with that item; the fence line after the second would open one that runs on.
+    const body = ["- [a](b)", "   ```", "- `next` — a `<!--` below", "<!--", "```", "-->"];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Links", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain(["- [a](b)", "\\   ```", "- `next` — a `<!--` below", "\\<!--", "\\```", "-->"].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
   it("writes and reads a doc of hundreds of thousands of lines in one section, bounded by memory and not by a call's arguments", () => {
     // A generation of Dnn.Platform died in renderLiveDoc with "Maximum call stack size exceeded": a section's lines were
     // spread into one push, which the engine refuses past some hundred thousand arguments.

@@ -606,6 +606,9 @@ const HTML_BLOCKS: readonly { start: RegExp; end: RegExp }[] = [
   { start: /^ {0,3}<!\[CDATA\[/u, end: /\]\]>/u }
 ];
 
+/** A line that begins a container as CommonMark reads one: a list item, bulleted or ordered, or a block quote. */
+const CONTAINER_START = /^ {0,3}(?:[-+*](?:[ \t]|$)|\d{1,9}[.)](?:[ \t]|$)|>)/u;
+
 /** The HTML block a line opens, if it opens one that only a closer ends. */
 function htmlBlockOf(line: string): { start: RegExp; end: RegExp } | undefined {
   return HTML_BLOCKS.find((block) => block.start.test(line));
@@ -630,8 +633,24 @@ function structural(line: string): boolean {
  * line that is already such a line behind backslashes, so that {@link unescapeBodyLine} gives every line back. Fences
  * are read by CommonMark's rule, backticks or tildes, a closer at least as long as its opener, by the writer and the
  * reader alike.
+ *
+ * That rule pairs a fence or an HTML block with its closer line by line, as CommonMark does at a doc's top level. Inside
+ * a container, a list item or a block quote, CommonMark ends the block with the container instead, and a closer the
+ * rule paired with would open a block of its own that runs on over the doc. The writer does not model containers: in a
+ * docstring that holds one, its own section of list items (Parameters, Links and their kind) or its author's list or
+ * quote, every line that would open a fence or such an HTML block is written behind a backslash, closed or not, so the
+ * docstring opens none; its text then reads as text, which is the right loss.
  */
 function escapeBody(lines: string[]): string[] {
+  if (lines.some((line) => CONTAINER_START.test(line))) {
+    return lines.map((line) => {
+      const escaped = `\\${line}`;
+      if (line.startsWith("\\")) {
+        return structural(line.replace(/^\\+/u, "")) ? escaped : line;
+      }
+      return structural(line) ? escaped : line;
+    });
+  }
   // What closes after each line, counted once from the end: the longest closing fence of each kind, and whether each
   // HTML block's closer comes, so that the escape stays linear in a docstring of many lines.
   const longestCloser = new Map<string, number[]>([["`", []], ["~", []]]);
