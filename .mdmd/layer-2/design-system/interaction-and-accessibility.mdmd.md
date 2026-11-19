@@ -41,7 +41,7 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 | **Every claim is a link** (*traceability*) | A panel that states a fact links to where the fact comes from. | Owner, 2026-09-29: "why is that not a hyperlink? My immediate instinct is to attempt to verify." |
 | **The picture does not lie** | A reduction that hides something says so (a count, a ring, a fade) and leaves a way back. | Owner, 2026-10-01: "I'm not open to having the user open the shape of their software and believe it's all fine and dandy when it's not." |
 | **The page reads only its own site** | Nothing on the page fetches from or sends to another site; a link elsewhere opens only on a person's click. | Decision of 2026-10-21 ([decisions log](../../layer-3/architectural-decisions.mdmd.md), "The Explorer Reads Only Its Own Site"); the owner's ask of 2025-12-14: "Tests proving that Live Documentation cannot and will not ever access the internet." |
-| **Say what is happening** (*visibility of system status*, Nielsen's first heuristic) | While the product works it shows that it is working, and it never hands the person the browser's offer to kill the page. | Owner's decision of 2026-10-28 ([direction, Decisions in force](../../../AI-Agent-Workspace/Memory/direction.md)); the building sign of 2026-11-15. |
+| **Say what is happening** (*visibility of system status*, Nielsen's first heuristic) | While the product works it shows that it is working, and it never hands the person the browser's offer to kill the page. | Owner's decision of 2026-10-28 ([direction, Forces, motion and rest](../../../AI-Agent-Workspace/Memory/direction.md#forces-motion-and-rest)); the building sign of 2026-11-15. |
 
 ---
 
@@ -77,7 +77,7 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Status: holds in 2D and 3D. The World Map's hover opens a panel beside the piece, which is indication within the rule (it moves nothing), but it is the one hover in the product that draws our text.
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
-- Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction's Decisions in force](../../../AI-Agent-Workspace/Memory/direction.md#decisions-in-force) sums up as "a click pins and a second releases" (the summary's words, not the owner's); Nielsen's heuristic *user control and freedom*.
+- Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction](../../../AI-Agent-Workspace/Memory/direction.md#what-it-shows-discovery-groups-and-hops) heads "A click pins, a second releases" (a heading's words, not the owner's); Nielsen's heuristic *user control and freedom*.
 - Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`.
 - Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery").
 - Status: holds.
@@ -324,7 +324,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 - Status: holds in 3D. The 2D map's continuing layout search shows no sign while it works; its one rearrangement after arrival is accepted by the owner (2026-11-16).
 
 **Rule: the main thread never blocks long enough for the browser to offer to kill the page.** Heavy work runs in slices across frames.
-- Why: the owner's decision of 2026-10-28 ([direction, Decisions in force](../../../AI-Agent-Workspace/Memory/direction.md)).
+- Why: the owner's decision of 2026-10-28 ([direction, Forces, motion and rest](../../../AI-Agent-Workspace/Memory/direction.md#forces-motion-and-rest)).
 - Checked by: nothing measures a long task directly; the 3D specs bound time.
 - Status: holds as far as the record shows.
 
@@ -427,7 +427,7 @@ How each was judged: **code** means read from the source here, which can show a 
 
 ### 8.2 What the owner decided
 
-- **Collapse a card's actions into More only when two buttons on a card cannot be told apart by a tap**; keep a direct Pin wherever actions remain separately tappable (2026-10-20, [direction, Decisions in force](../../../AI-Agent-Workspace/Memory/direction.md)). The measured phone targets that day: 17 px for symbol actions and 20 px for header actions at map scale 1.
+- **Collapse a card's actions into More only when two buttons on a card cannot be told apart by a tap**; keep a direct Pin wherever actions remain separately tappable (2026-10-20, [direction, The card](../../../AI-Agent-Workspace/Memory/direction.md#the-card-its-box-its-rows-and-its-text)). The measured phone targets that day: 17 px for symbol actions and 20 px for header actions at map scale 1.
 - **The phone and touch pass is a pass of its own**, deferred (2026-10-20, Turn 7), widened to what a heavily zoomed-out map can show legibly.
 
 ### 8.3 What the product has
@@ -557,7 +557,7 @@ All are built in the page and saved through a `blob:` link: no network. Why: own
 - Status: mostly holds. Long tooltips: "Internal/private implementation — data flows in but isn't exposed as public symbols" (`views/localView/card-factory.ts:864`); "Close this expansion; keep symbols needed by other pins" (`:215`).
 
 **Rule: what a tooltip says is also reachable without a mouse.** A native `title` shows only to a mouse resting on the control, never on keyboard focus or touch; so a tooltip may only repeat the accessible name or description, never carry a fact found nowhere else.
-- Why: WCAG 2.2 SC 1.4.13 and SC 2.1.1; the owner, 2026-11-05: "text expansion does not occur on hover but instead on tap/click" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste); [direction](../../../AI-Agent-Workspace/Memory/direction.md#decisions-in-force) sums it up as "a tap, never hover, opens text").
+- Why: WCAG 2.2 SC 1.4.13 and SC 2.1.1; the owner, 2026-11-05: "text expansion does not occur on hover but instead on tap/click" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste); [direction](../../../AI-Agent-Workspace/Memory/direction.md#the-2d-local-map) sums it up as "a tap, never hover, opens text").
 - Status: holds where `iconButton` sets both, and for the World Map's tools, whose keys are also in its help panel. *Broken* where a fact lives only in a `title`: the 3D seed's group size and a shell's file count (`views/forceGraphView.ts:844-853`), which a screen reader receives as the description but a sighted keyboard or touch user never sees; a card's test coverage beyond the three test names drawn as chips (`views/localView/card-factory.ts:252-265`); and the legend's sentences. See the findings.
 
 ### 11.3 How the product speaks
