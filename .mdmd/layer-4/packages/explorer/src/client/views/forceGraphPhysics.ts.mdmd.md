@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-19T12:05:52.559Z
+- Generated At: 2026-11-19T12:46:59.106Z
 
 ## Authored
 ### Purpose
@@ -76,7 +76,7 @@ the browser long enough to be offered its end (the owner, 2026-10-28). `forces` 
 
 #### `SpatialField` {#symbol-spatialfield}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L143)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L145)
 
 ##### `SpatialField` — Summary
 The field over spheres at fixed indices. Positions and forces are flat arrays, x, y, z per sphere. At `approximation`
@@ -89,14 +89,14 @@ spheres.
 
 #### `MotionSettings` {#symbol-motionsettings}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L522)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L529)
 
 ##### `MotionSettings` — Summary
 The motion's constants: the step of time per tick and the drag per unit of time.
 
 #### `MotionTick` {#symbol-motiontick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L529)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L536)
 - Extends: [`FieldReading`](#symbol-fieldreading)
 
 ##### `MotionTick` — Summary
@@ -104,7 +104,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L561)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L568)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -124,7 +124,7 @@ are the same either way.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L731)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L760)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.

@@ -45,15 +45,15 @@ async function settled(page: Page): Promise<void> {
 
 /**
  * The membership case's two settles wait under two bounds, as the archipelago case of force-graph-discovery.spec.ts
- * does: drawn frames, hard, past which the picture is not coming to rest whatever the machine; and the clock as it
+ * does: substeps of the motion, hard, past which the picture is not coming to rest whatever the machine; and the clock as it
  * stood, 90 s a settle, soft, so that a slow settle still ends the case red after its picture has been checked (the
  * owner keeps performance "a red-hot sticking point", 2026-11-12). The frames are twice the most measured; the
- * measurements are in this file's Live Doc.
+ * measurements are in this file's Live Doc. Since 2026-11-19 the bounds count substeps of the motion, at the same numbers: they were measured in drawn frames when a frame took one substep (`cameToRest`).
  */
-const REST_FRAMES = { entry: 700, change: 2500 };
+const REST_SUBSTEPS = { entry: 700, change: 2500 };
 const REST_SECONDS = 90, CASE_SECONDS = 150;
-/** The hard timeout, a safety net only: every frame bound reached at a pessimistic two frames a second, and a minute more. */
-const CASE_NET_SECONDS = Math.ceil(Object.values(REST_FRAMES).reduce((sum, frames) => sum + frames, 0) / 2) + 60;
+/** The hard timeout, a safety net only: every bound reached at a pessimistic two substeps a second, and a minute more. */
+const CASE_NET_SECONDS = Math.ceil(Object.values(REST_SUBSTEPS).reduce((sum, substeps) => sum + substeps, 0) / 2) + 60;
 
 test("the first picture enters from the subject with its first hop, a share of the whole a frame, and rests only when every file is in", async ({ page }) => {
   test.setTimeout(150_000);
@@ -84,7 +84,7 @@ test("a membership change keeps what is shown and brings the newcomers in pieces
   const subject = "packages/explorer/src/client/views/forceGraphView.ts";
   await observeGraph(page);
   await page.goto(entry(false, subject));
-  await cameToRest(page, { label: "the subject's two hops enter, tests hidden", frames: REST_FRAMES.entry, seconds: REST_SECONDS });
+  await cameToRest(page, { label: "the subject's two hops enter, tests hidden", substeps: REST_SUBSTEPS.entry, seconds: REST_SECONDS });
   const before = await renderedPieces(page);
   const shown = before[before.length - 1];
   const { changes: untilNow } = await engineActivity(page);
@@ -99,7 +99,7 @@ test("a membership change keeps what is shown and brings the newcomers in pieces
   const kept = [...was].filter(id => is.has(id));
   expect(shown, "the picture before the change is the subject's scope").toBe(was.size);
   await page.getByLabel("Show Tests").check();
-  await cameToRest(page, { label: "tests shown, the newcomers enter", frames: REST_FRAMES.change, seconds: REST_SECONDS });
+  await cameToRest(page, { label: "tests shown, the newcomers enter", substeps: REST_SUBSTEPS.change, seconds: REST_SECONDS });
   const sizes = (await renderedPieces(page)).slice(before.length - 1);
   const whole = sizes[sizes.length - 1];
   expect(whole, "the tests shown make the subject's picture bigger").toBe(is.size);
