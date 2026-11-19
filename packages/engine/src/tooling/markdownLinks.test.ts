@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { namedCharacterReference } from "./htmlEntities";
-import { inlineTokens, linkPath, readMarkdownLinks } from "./markdownLinks";
+import { inlineTokens, linkPath, readingSteps, readMarkdownLinks } from "./markdownLinks";
 
 const destinations = (document: string): string[] => readMarkdownLinks(document).links.map((link) => link.destination);
 
@@ -107,6 +107,43 @@ describe("inline text", () => {
         ["inline", 23, 33, "y z"], ["html", 33, 40, "</span>"], ["autolink", 41, 57, "https://e.test"]
       ]);
   });
+});
+
+/** Paragraphs built to make a reader read the same characters again and again, each of about `size` characters. */
+export const HOSTILE: Record<string, (size: number) => string> = {
+  "a run of unclosed destinations, [a](": (size) => "[a](".repeat(size / 4),
+  "destinations with balanced parentheses and no closer": (size) => "[a](()()()".repeat(size / 10),
+  "unclosed comments": (size) => "<!-- ".repeat(size / 5),
+  "unclosed processing instructions": (size) => "<? ".repeat(size / 3),
+  "unclosed declarations": (size) => "<!a ".repeat(size / 4),
+  "unclosed CDATA sections": (size) => "<![CDATA[ ".repeat(size / 10),
+  "many images": (size) => "![a](b) ".repeat(size / 8),
+  "unmatched openers, then links": (size) => "[".repeat(size / 7) + "[a](b)".repeat(size / 7),
+  "backtick runs of every length": (size) => {
+    let text = "";
+    for (let length = 1; text.length < size; length += 1) text += `${"`".repeat(length)} `;
+    return text;
+  },
+  "unclosed titles": (size) => "[a](b \"x ".repeat(size / 9)
+};
+
+/** The steps a reading takes, counted by the module. */
+export function stepsOf(read: () => unknown, counter: { count: number }): number {
+  const before = counter.count;
+  read();
+  return counter.count - before;
+}
+
+describe("the work of reading", () => {
+  // Counted, not timed, since a busy machine makes any time limit a coin toss.
+  for (const [name, paragraph] of Object.entries(HOSTILE)) {
+    it(`grows with the text, not with its square: ${name}`, () => {
+      const small = stepsOf(() => readMarkdownLinks(paragraph(2_000)), readingSteps);
+      const large = stepsOf(() => readMarkdownLinks(paragraph(20_000)), readingSteps);
+      expect(small).toBeGreaterThan(0);
+      expect(large / small, `${small} steps, then ${large} for ten times the text`).toBeLessThan(12);
+    });
+  }
 });
 
 describe("linkPath", () => {

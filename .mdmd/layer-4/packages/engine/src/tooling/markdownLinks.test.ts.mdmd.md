@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/tooling/markdownLinks.test.ts
-- Generated At: 2026-11-19T20:14:11.661Z
+- Generated At: 2026-11-19T21:11:50.141Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,19 @@ Holds the markdown link rule ([markdownLinks.ts](markdownLinks.ts.mdmd.md)) to w
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `HOSTILE` {#symbol-hostile}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.test.ts#L113)
+
+##### `HOSTILE` — Summary
+Paragraphs built to make a reader read the same characters again and again, each of about `size` characters.
+
+#### `stepsOf` {#symbol-stepsof}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/markdownLinks.test.ts#L131)
+
+##### `stepsOf` — Summary
+The steps a reading takes, counted by the module.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -25,5 +37,6 @@ _No public symbols detected_
 - [`markdownLinks.inlineTokens`](./markdownLinks.ts.mdmd.md#symbol-inlinetokens)
 - [`markdownLinks.linkPath`](./markdownLinks.ts.mdmd.md#symbol-linkpath)
 - [`markdownLinks.readMarkdownLinks`](./markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
+- [`markdownLinks.readingSteps`](./markdownLinks.ts.mdmd.md#symbol-readingsteps)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

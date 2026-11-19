@@ -30,6 +30,14 @@
 
 import { namedCharacterReference } from "./htmlEntities";
 
+/**
+ * How many characters and tokens the reader has looked at since it was loaded, for the test that holds its work
+ * linear in the text: each loop that walks characters, and each search for a closer, adds what it walked. A
+ * pattern tried at one place is counted once, since each is bounded by its own delimiters or by a closer known to
+ * stand ahead.
+ */
+export const readingSteps = { count: 0 };
+
 /** A link, an image or an autolink, as CommonMark reads it. */
 export interface MarkdownLink {
   /**
@@ -121,9 +129,12 @@ export function readMarkdownLinks(document: string): MarkdownLinkReading {
   const unresolved: MarkdownLinkReading["unresolved"] = [];
   for (const [start, end] of contents) {
     const scan = new InlineScan(text.slice(start, end), definitions);
-    const images = scan.tokens.filter((token): token is MarkdownLink => isLink(token) && token.image);
+    // Tokens are in the order they begin, so one sweep tells what stands inside an image's description.
+    let insideImageUntil = -1;
     for (const token of scan.tokens) {
-      if (!isLink(token) || images.some((image) => token !== image && token.start >= image.textStart && token.end <= image.textEnd)) continue;
+      readingSteps.count += 1;
+      if (token.start < insideImageUntil || !isLink(token)) continue;
+      if (token.image) insideImageUntil = token.textEnd;
       links.push({ ...token, start: at(token.start + start), end: at(token.end + start), textStart: at(token.textStart + start), textEnd: at(token.textEnd + start) });
     }
     for (const reference of scan.unresolved) unresolved.push({ ...reference, start: at(reference.start + start), end: at(reference.end + start) });
@@ -322,15 +333,11 @@ const SPACE_OR_CONTROL = /[\x00-\x20\x7f]/u;
 const EMAIL_AUTOLINK = /<([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>/y;
 const WHITESPACE = "[ \\t\\n]";
 const ATTRIBUTE = `(?:${WHITESPACE}+[A-Za-z_:][A-Za-z0-9_.:-]*(?:${WHITESPACE}*=${WHITESPACE}*(?:[^"'=<>\`\\x00-\\x20]+|'[^']*'|"[^"]*"))?)`;
-const RAW_HTML = new RegExp([
-  `<[A-Za-z][A-Za-z0-9-]*${ATTRIBUTE}*${WHITESPACE}*/?>`,
-  `</[A-Za-z][A-Za-z0-9-]*${WHITESPACE}*>`,
-  "<!-->", "<!--->", "<!--[\\s\\S]*?-->",
-  "<\\?[\\s\\S]*?\\?>",
-  "<![A-Za-z][^>]*>",
-  "<!\\[CDATA\\[[\\s\\S]*?\\]\\]>"
-].join("|"), "y");
+/** An open or a closing tag; a comment, an instruction, a declaration or CDATA is found by its closer instead. */
+const RAW_HTML_TAG = new RegExp(`<[A-Za-z][A-Za-z0-9-]*${ATTRIBUTE}*${WHITESPACE}*/?>|</[A-Za-z][A-Za-z0-9-]*${WHITESPACE}*>`, "y");
 const LINK_LABEL = /\[(?:[^\\[\]]|\\[\s\S]){0,999}\]/y;
+/** How deep a bare destination's parentheses may nest, as cmark bounds them. */
+const MAX_PARENTHESIS_DEPTH = 32;
 /** A line ending in a paragraph and the spaces and tabs after it, which CommonMark strips from each line it continues. */
 const CONTINUATION = /\n[ \t]*/gu;
 const ANGLE_DESTINATION = /<((?:[^<>\n\\]|\\.)*)>/y;
@@ -339,8 +346,8 @@ interface Opener {
   /** Where its `[` stands. */
   index: number;
   image: boolean;
-  /** False once a link has been made after it: links do not hold links. */
-  active: boolean;
+  /** Its place in the order openers are met; a link opener met before the last link made is inactive. */
+  order: number;
   /** True once another `[` has followed it, so that its text cannot be a label. */
   bracketAfter: boolean;
 }
@@ -350,6 +357,12 @@ class InlineScan {
   readonly tokens: InlineToken[] = [];
   readonly unresolved: Array<{ label: string; start: number; end: number }> = [];
   private readonly openers: Opener[] = [];
+  private openersMet = 0;
+  /**
+   * Links do not hold links: once one is made, every link opener met before it is inactive. Kept as one number,
+   * the count of openers met when the last link was made, so that making a link costs nothing per opener.
+   */
+  private inactiveBefore = 0;
 
   constructor(private readonly text: string, private readonly definitions: LinkDefinitions) {
     let index = 0;
@@ -357,6 +370,7 @@ class InlineScan {
       SPECIAL.lastIndex = index;
       const special = SPECIAL.exec(text);
       if (!special) break;
+      readingSteps.count += special.index - index + 1;
       index = this.at(special.index);
     }
     this.tokens.sort((a, b) => a.start - b.start);
@@ -404,16 +418,47 @@ class InlineScan {
     let after = index;
     while (text[after] === "`") after += 1;
     const length = after - index;
-    const runs = /`+/gu;
-    runs.lastIndex = after;
-    for (let run = runs.exec(text); run; run = runs.exec(text)) {
-      if (run[0].length !== length) continue;
-      let content = text.slice(after, run.index).replace(CONTINUATION, " ");
-      if (content.length > 1 && content.startsWith(" ") && content.endsWith(" ") && content.trim() !== "") content = content.slice(1, -1);
-      this.tokens.push({ kind: "code", start: index, end: run.index + length, text: content });
-      return run.index + length;
+    const closer = this.nextRun(length, after);
+    if (closer === undefined) return after;
+    let content = text.slice(after, closer).replace(CONTINUATION, " ");
+    if (content.length > 1 && content.startsWith(" ") && content.endsWith(" ") && content.trim() !== "") content = content.slice(1, -1);
+    this.tokens.push({ kind: "code", start: index, end: closer + length, text: content });
+    return closer + length;
+  }
+
+  /** Where each length of backtick run begins, found by one walk of the text, and how far each has been read. */
+  private runs?: Map<number, { at: number[]; next: number }>;
+
+  /** The first run of exactly `length` backticks at or after `from`, as a code span's closer; reading only goes forward. */
+  private nextRun(length: number, from: number): number | undefined {
+    if (!this.runs) {
+      this.runs = new Map();
+      for (const run of this.text.matchAll(/`+/gu)) {
+        readingSteps.count += run[0].length;
+        const runs = this.runs.get(run[0].length) ?? { at: [], next: 0 };
+        runs.at.push(run.index);
+        this.runs.set(run[0].length, runs);
+      }
     }
-    return after;
+    const runs = this.runs.get(length);
+    if (!runs) return undefined;
+    while (runs.next < runs.at.length && runs.at[runs.next] < from) {
+      readingSteps.count += 1;
+      runs.next += 1;
+    }
+    return runs.at[runs.next];
+  }
+
+  /** Where a closer stands at or after `from`, found once and reused while reading goes forward past `from`. */
+  private readonly closers = new Map<string, { from: number; at: number }>();
+
+  private closerAt(closer: string, from: number): number {
+    const known = this.closers.get(closer);
+    if (known && known.from <= from && (known.at === -1 || known.at >= from)) return known.at;
+    const at = this.text.indexOf(closer, from);
+    readingSteps.count += (at === -1 ? this.text.length : at) - from + 1;
+    this.closers.set(closer, { from, at });
+    return at;
   }
 
   /** An autolink or raw HTML at a `<`; otherwise the `<` is text. */
@@ -428,19 +473,45 @@ class InlineScan {
         return end;
       }
     }
-    RAW_HTML.lastIndex = index;
-    const html = RAW_HTML.exec(text);
-    if (html) {
-      this.tokens.push({ kind: "html", start: index, end: index + html[0].length, text: html[0] });
-      return index + html[0].length;
+    readingSteps.count += 1;
+    const end = this.rawHtmlEnd(index);
+    if (end !== undefined) {
+      const html = text.slice(index, end);
+      readingSteps.count += html.length;
+      this.tokens.push({ kind: "html", start: index, end, text: html });
+      return end;
     }
     return index + 1;
+  }
+
+  /**
+   * Where raw HTML that begins at a `<` ends, or undefined when none begins there. A comment, a processing
+   * instruction, a CDATA section or a declaration runs to its closer, found by one search that reading reuses as it
+   * goes forward, so that a paragraph of unclosed `<!--` is not read to its end from each one; a tag is read by its
+   * pattern, which its own delimiters bound.
+   */
+  private rawHtmlEnd(index: number): number | undefined {
+    const { text } = this;
+    const through = (closer: string, from: number): number | undefined => {
+      const at = this.closerAt(closer, from);
+      return at === -1 ? undefined : at + closer.length;
+    };
+    if (text.startsWith("<!-->", index)) return index + 5;
+    if (text.startsWith("<!--->", index)) return index + 6;
+    if (text.startsWith("<!--", index)) return through("-->", index + 4);
+    if (text.startsWith("<?", index)) return through("?>", index + 2);
+    if (text.startsWith("<![CDATA[", index)) return through("]]>", index + 9);
+    if (/^<![A-Za-z]/u.test(text.slice(index, index + 3))) return through(">", index + 2);
+    RAW_HTML_TAG.lastIndex = index;
+    const tag = RAW_HTML_TAG.exec(text);
+    return tag ? index + tag[0].length : undefined;
   }
 
   private open(index: number, image: boolean): void {
     const previous = this.openers.at(-1);
     if (previous) previous.bracketAfter = true;
-    this.openers.push({ index, image, active: true, bracketAfter: false });
+    this.openers.push({ index, image, order: this.openersMet, bracketAfter: false });
+    this.openersMet += 1;
   }
 
   /** A `]`: the link or image it closes, if the text after it makes one; otherwise it is text. */
@@ -448,7 +519,7 @@ class InlineScan {
     const { text } = this;
     const opener = this.openers.pop();
     if (!opener) return index + 1;
-    if (!opener.active) return index + 1;
+    if (!opener.image && opener.order < this.inactiveBefore) return index + 1;
     const after = index + 1;
     let found: { kind: "inline" | "reference"; definition: LinkDefinition; end: number } | undefined;
     if (text[after] === "(") {
@@ -462,12 +533,12 @@ class InlineScan {
       if (labelLength > 2) {
         label = text.slice(after, after + labelLength);
         end = after + labelLength;
-      } else if (!opener.bracketAfter) {
+      } else if (!opener.bracketAfter && after - opener.index <= 1001) {
         // A collapsed or shortcut reference: the text is the label, so it may hold no bracket.
         label = text.slice(opener.index, after);
         end = after + labelLength;
       }
-      const definition = label !== undefined && label.length <= 1001 ? this.definitions.get(normalizeLabel(label)) : undefined;
+      const definition = label !== undefined ? this.definitions.get(normalizeLabel(label)) : undefined;
       if (definition) {
         found = { kind: "reference", definition, end };
       } else if (label !== undefined && labelLength > 0 && normalizeLabel(label) !== "") {
@@ -485,9 +556,7 @@ class InlineScan {
       textStart: opener.index + 1,
       textEnd: index
     });
-    if (!opener.image) {
-      for (const earlier of this.openers) if (!earlier.image) earlier.active = false;
-    }
+    if (!opener.image) this.inactiveBefore = this.openersMet;
     return found.end;
   }
 }
@@ -516,18 +585,24 @@ function inlineLink(text: string, start: number): (LinkDefinition & { end: numbe
  */
 function linkDestination(text: string, start: number): { value: string; end: number } | undefined {
   if (text[start] === "<") {
+    // Bounded by its own delimiters: it ends at the next `<`, `>` or line ending.
     ANGLE_DESTINATION.lastIndex = start;
     const match = ANGLE_DESTINATION.exec(text);
+    readingSteps.count += 1 + (match ? match[0].length : 0);
     return match ? { value: unescapeString(match[1]), end: start + match[0].length } : undefined;
   }
   let index = start;
   let depth = 0;
   while (index < text.length) {
+    readingSteps.count += 1;
     const character = text[index];
     if (character === "\\" && ESCAPABLE.test(text[index + 1] ?? "")) {
       index += 2;
     } else if (character === "(") {
+      // CommonMark lets a reader bound the nesting so that a run of `[a](` is not read again from each one; cmark
+      // stops at 32, and so does this rule. Deeper parentheses end the attempt, so the link is text.
       depth += 1;
+      if (depth > MAX_PARENTHESIS_DEPTH) return undefined;
       index += 1;
     } else if (character === ")") {
       if (depth === 0) break;
@@ -548,7 +623,9 @@ function linkTitle(text: string, start: number): { value: string; end: number } 
   const opener = text[start];
   const closer = opener === '"' ? '"' : opener === "'" ? "'" : opener === "(" ? ")" : undefined;
   if (closer === undefined) return undefined;
+  // Bounded: the next title opener of the same kind closes it, or a `(` ends one in parentheses.
   for (let index = start + 1; index < text.length; index += 1) {
+    readingSteps.count += 1;
     const character = text[index];
     if (character === "\\") {
       index += 1;
@@ -563,8 +640,10 @@ function linkTitle(text: string, start: number): { value: string; end: number } 
 
 /** The length of a link label at `start`, `[` to `]` with no bracket inside unescaped, or 0. */
 function linkLabel(text: string, start: number): number {
+  // Bounded: a label holds at most 999 characters.
   LINK_LABEL.lastIndex = start;
   const match = LINK_LABEL.exec(text);
+  readingSteps.count += 1 + (match ? match[0].length : 0);
   return match ? match[0].length : 0;
 }
 

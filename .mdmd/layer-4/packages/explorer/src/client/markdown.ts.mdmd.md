@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-11-19T20:14:12.241Z
+- Generated At: 2026-11-19T21:11:50.831Z
 
 ## Authored
 ### Purpose
@@ -62,6 +62,13 @@ holds a backtick is not one. Any reader that splits a document must agree with t
 
 ##### `headingOf` — Summary
 A heading line's level and its text without closing hashes, or null when the line is not a heading.
+
+#### `renderingSteps` {#symbol-renderingsteps}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L229)
+
+##### `renderingSteps` — Summary
+How many tokens the renderer has walked since it was loaded, for the test that holds its work linear in the text.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

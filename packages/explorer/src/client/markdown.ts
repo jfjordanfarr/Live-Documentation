@@ -225,6 +225,9 @@ function emphasize(html: string): string {
         .replace(/(?<![\p{L}\p{N}])_([^_]+)_(?![\p{L}\p{N}])/gu, "<em>$1</em>");
 }
 
+/** How many tokens the renderer has walked since it was loaded, for the test that holds its work linear in the text. */
+export const renderingSteps = { count: 0 };
+
 /** Finished HTML for text, with a doc's own private-use character as its reference, so that it marks nothing. */
 function textHtml(text: string): string {
     return escapeHtml(text).replace(//g, "&#xE000;");
@@ -258,8 +261,18 @@ function processInline(
     const render = (from: number, to: number, inLink: boolean): string => {
         let out = "";
         let at = from;
-        for (const token of tokens) {
-            // A token inside one already rendered is part of it; tokens are in the order they begin.
+        // Tokens are in the order they begin: start at the first one in the range, so that rendering each link's
+        // text does not walk every token of the paragraph again.
+        let low = 0;
+        for (let high = tokens.length; low < high;) {
+            const middle = (low + high) >> 1;
+            if (tokens[middle].start < from) low = middle + 1;
+            else high = middle;
+        }
+        for (let index = low; index < tokens.length && tokens[index].start < to; index += 1) {
+            const token = tokens[index];
+            renderingSteps.count += 1;
+            // A token inside one already rendered is part of it.
             if (token.start < at || token.end > to) continue;
             out += plain(at, token.start) + piece(token, inLink);
             at = token.end;

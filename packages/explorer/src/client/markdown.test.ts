@@ -1,6 +1,28 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { renderMarkdown } from "./markdown";
+import { readingSteps } from "@live-documentation/engine/tooling/markdownLinks";
+
+import { renderMarkdown, renderingSteps } from "./markdown";
+
+describe("the work of rendering", () => {
+  // Counted, not timed: the renderer's walk over tokens and the reader's walk over characters.
+  const steps = (text: string): number => {
+    const before = renderingSteps.count + readingSteps.count;
+    renderMarkdown(text);
+    return renderingSteps.count + readingSteps.count - before;
+  };
+  for (const [name, paragraph] of Object.entries({
+    "many links in one paragraph": (count: number) => "[a](https://b) ".repeat(count),
+    "many links whose text holds code": (count: number) => "[`a` *b*](c.md) ".repeat(count),
+    "many images": (count: number) => "![a](b.png) ".repeat(count)
+  })) {
+    it(`grows with the text, not with its square: ${name}`, () => {
+      const small = steps(paragraph(500));
+      const large = steps(paragraph(5_000));
+      expect(large / small, `${small} steps, then ${large} for ten times the text`).toBeLessThan(12);
+    });
+  }
+});
 
 const headingIds = (html: string): string[] => [...html.matchAll(/<h[1-6] id="([^"]*)">/g)].map(match => match[1]);
 
