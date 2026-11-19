@@ -11296,3 +11296,2173 @@
 
 ● Task "Fifty-minute fallback timer while builders run" still running in
   background
+
+● Agent "Names that do not read back" is waiting on its own background work ·
+  47m 39s
+
+  Searched for 1 pattern, read 1 file, ran 10 shell commands (ctrl+o to expand)
+
+● Bringing the project's direction file level with your decisions from Turns 2
+  and 3 while the builders finish their legs; nothing has handed back since my
+  last message.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Writing your Turn 2 and 3 answers and the evening's rulings into the direction
+  file now; no builder has handed back yet.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Third leg: all five items are built and committed; the full gate passed
+  last run (browser not run)
+
+  Five commits sit on my branch on top of `17532f56` (`ab9e346d6`, `0d20cc89c`,
+  `e05c5d948`, `b0f634882`, `18d8d8c83`); nothing is pushed or amended. The tree
+  is clean and my private temp folder is removed. I did not edit any file you
+  told me to leave. The record's new section is "Third leg, November 19" in
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-aabeca6131a64c7b7/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/R
+  EADME.md`.
+
+  **Verification.** `npm run safe:commit` without the browser passed on its last
+  run, at a load average of 28 to 34:
+  - Live Docs: 1,099 docs, all unchanged; lint, build and test type-check
+  passed.
+  - Unit tests: 203 files, 2,298 tests. Integration tests: 21 files, 170 tests.
+  - Link enforcement and the three SlopCop audits passed, and the tree was clean
+  afterwards.
+
+  The run before it (before item 5) had two load timeouts at a load average of
+  31 to 33: `generatorIdentity.test.ts` at 5.8 s and `forceGraphOctree.test.ts`
+  at 6.0 s. Both passed on the next run. The browser stage was not run; this leg
+  changes no Explorer file.
+
+  **1. One reading step (`ab9e346d6`).**
+  `packages/engine/src/tooling/sourceText.ts` provides `decodeSourceText(bytes)`
+  and `readSourceText(path)`. The rule:
+  - A byte-order mark decides first: UTF-8, UTF-16 LE or UTF-16 BE. The mark is
+  not part of the text.
+  - UTF-16 without a mark is accepted only when it is certain: an even number of
+  bytes, where every pair is one zero byte and one non-zero byte, the zero
+  always on the same side. That means every character is between U+0001 and
+  U+00FF.
+    - **What I refuse to guess:** unmarked UTF-16 containing any character above
+  U+00FF.
+  - Next, valid UTF-8 with no zero byte is read as UTF-8.
+  - Then Windows-1252, if there is no zero byte and no control character other
+  than tab, LF, VT, FF, CR or 0x1A.
+  - Anything else is not read: the reader gets empty text and the file is named.
+
+  Tests:
+  - Real bytes for each case, checked against PowerShell 7.7's `Get-Content -Raw
+  -Encoding …` (utf8NoBOM, utf8, Unicode, BigEndianUnicode, 1252). All match
+  code unit for code unit. These checks are skipped when `pwsh` is absent.
+  - I moved 16 readers onto the step: the TypeScript reader, the symbol-index
+  pass, the re-export follower, the DOM heuristic, and the Java, Go/go.mod,
+  Rust/Cargo, C/C++, Python, Ruby, JSON, HTML, CSS, pom and TOML adapters.
+  - `sourceEncodings.test.ts` saves one file per language as UTF-16 LE and BE
+  (with marks) and as Windows-1252, and holds each to its UTF-8 twin. All 21
+  cases failed before the change.
+  - `json.ts:166` reads tsconfig through TypeScript's own `ts.sys.readFile`,
+  which already decodes by the mark, so I left it.
+  - The history's tree writer writes blobs with nothing converted (`cat-file
+  --batch`; I read `history/git.ts`), so it needs no change.
+
+  `generate` now says which rule read the files, for example `[live-docs] 1 file
+  read as Windows-1252, since it is not UTF-8: src/ansi.py.`, a matching line
+  for UTF-16, and on stderr the names of files that are not text, with the
+  reason. To count this, the generator reads each such file's bytes a second
+  time.
+
+  **Simplest correct form:** the generator should read each file's bytes once
+  and pass the decoded text through `analyzeSourceFile` and
+  `analyzeWithLanguageAdapters` as `content`, so no adapter opens its own file.
+  That changes those two signatures, `buildWorkspaceIndexes`,
+  `LanguageAdapter.analyze`'s input, and the first line of each adapter. I did
+  not change any signature.
+
+  **Swaps for whoever joins the branches.** Add `import { readSourceText } from
+  "../../tooling/sourceText";` and drop `fs` where it becomes unused:
+  - `adapters/sql.ts:27`: `const content  = await fs.readFile(absolutePath,
+  "utf8");` → `const content  = await readSourceText(absolutePath);`
+  - `adapters/aspnet.ts:18`: `const content = await fs.readFile(absolutePath,
+  "utf8");` → `const content = await readSourceText(absolutePath);`
+  - `adapters/csharp.ts:893`: `const content = await fs.readFile(absolutePath,
+  "utf8");` → `const content = await readSourceText(absolutePath);`
+  - `adapters/csharp.ts:1249`: `const content  = await fs.readFile(absolutePath,
+  "utf8");` → `const content  = await readSourceText(absolutePath);`
+  - `adapters/dotnetConfig.ts:75`: `const content = await
+  fs.readFile(absolutePath, "utf8");` → `const content = await
+  readSourceText(absolutePath);`
+  - `adapters/project.ts:58`: `const content  = await fs.readFile(absolutePath,
+  "utf8");` → `const content  = await readSourceText(absolutePath);`
+  - `adapters/powershell.ts:934`: `const content = decodeScript(await
+  fs.readFile(absolutePath));` → `const content = await
+  readSourceText(absolutePath);` After this, `decodeScript` (`:902–906`) has no
+  caller left and can be deleted.
+
+  `openings.ts` and `csharp.dependencies.ts` open no file. `dotnetPaths.ts` and
+  `solution.ts` are not on my branch.
+
+  **2. The generator finishes a run that meets a file it cannot map
+  (`0d20cc89c`).**
+  - Each file's work, from the binary sniff to the write, is now in one `try`.
+  Each doc is read back with `parseLiveDoc` before it is written.
+  - A file that cannot be read, or whose doc the reader refuses, goes into
+  `failed` with its source path and the reason. The run still writes every other
+  doc and the index.
+  - `generate` then prints "Could not map N file(s)…", one indented `path:
+  reason` line per file, a pointer to `exclude`, and exits 1.
+  - A failed file's old doc is removed only if the reader refuses it and it
+  holds no authored words.
+  - Test: `generator.unmappable.test.ts` wraps the writer to produce a refused
+  doc for one file of three, plus a file that cannot be opened (skipped on
+  Windows and as root). Both failed before the change.
+
+  What I changed in `generator.ts`. None of it touches the ordering near line
+  137 or `classifyChange`.
+  - **Imports:** `hasReader`, and `decodeSourceText, type SourceTextReading`.
+  - **Result:** the new fields `failed`, `readings` and `notices`, the
+  `SourceReadings` type, and the three collections declared beside `results`.
+  - **In the loop:**
+    - `try {` before the binary sniff;
+    - `if (hasReader(...)) noteReading(...)`;
+    - the notices loop after `analyzeSourceFile`;
+    - the `parseLiveDoc(rendered)` read-back before `results.push`;
+    - `} catch (error) { failed.push(...); await removeRefusedDoc(...) }` after
+  the write.
+  - **New functions:** `noteReading` and `removeRefusedDoc`, after
+  `generateLiveDocs`.
+  - **Indentation:** the loop body inside the `try` keeps its old indentation,
+  to keep the join small. Please indent it at the join.
+
+  **3. `exclude` and filename case (`e05c5d948`).** `gitIgnoresCase` asks `git
+  config --type=bool --get core.ignorecase`. `matchesPathPattern` gains an
+  `ignoreCase` flag, and discovery passes it for `exclude` only. Entry points
+  and archetype overrides still match exactly. Tests with `core.ignorecase` set
+  true, set false, and absent, using `vendor/**` against `Vendor/Lib.cs`; the
+  "true" case failed first.
+
+  **4. Refusals printed whole.** By reading the code, not by a run (that message
+  lives on the other branch):
+  - `runCommand` prints `error.message` whole;
+  - `--stack` prints the whole stack, whose first line is the message;
+  - a `UsageError` prints its message whole before the `--help` pointer;
+  - my new failure lines print each reason whole.
+
+  So the names branch's message, including its last sentence, comes through
+  intact.
+
+  **5. Notices channel (`b0f634882`).**
+  - `coreTypes.ts` gains `notices?: SourceNotice[]` (`{ reason, subject }`);
+  `analyzeSourceFile` passes an adapter's result through whole.
+  - The generator counts notices by reason in first-seen order, each subject as
+  `<source path>: <subject>`.
+  - `generate` prints one line per reason with its count, for example
+  `[live-docs] paths several projects hold, left unlinked: 149.`, and a new
+  `--verbose` lists the subjects. Nothing goes into a Live Doc.
+  - Test: a fake reader giving two reasons across three of four files; it failed
+  first. The command's printed line itself has no test, because a fake reader
+  can't be injected into the command's process.
+
+  The one line each reader would add:
+  - **.NET:** `notices.push({ reason: "paths several projects hold, left
+  unlinked", subject: specifier });`
+  - **SQL:** ``notices.push({ reason: "SQL strings computed in part, not read",
+  subject: `line ${line}` });``
+  - **PowerShell:** ``notices.push({ reason: "loads whose path the text does not
+  fix, not followed", subject: `line ${line}: ${command}` });``
+
+  **Unfinished, or for others:**
+  - the seven reader swaps above;
+  - the read-once form (item 1);
+  - the loop's indentation inside the `try`;
+  - the three readers' notice lines;
+  - a test of the command's notice line;
+  - the browser stage.
+
+  The git-ignored `AI-Agent-Workspace/tmp/rosetta-parity-matrix.md` is still in
+  place, as you ruled.
+
+● Agent "Stranger's faults and Windows text" finished · 45m 12s
+
+● The Windows and command-line builder just handed back its third leg; I'm
+  committing the direction file and then reviewing that handback.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Names that do not read back" is waiting on its own background work ·
+  52m 33s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Handback, second leg: candidate prices for fault 2 drawn; fault 3's sample
+  half done
+
+  **Branch:** `worktree-agent-a60d7d862eb837be2`, on top of `6d96e11f`. New
+  commits:
+  - `e66860c1`: candidates A and B, the pictures, the recommendation.
+  - `8ffdc897`: the fault 3 sample and the median rule.
+  - `7961e0a4`: a correction to one count in the README.
+
+  Nothing in the product changed this leg. Everything is in `AI-Agent-Workspace/
+  AgentSessionHistory/2026/11/2026-11-19/Probes/layout-price/`; its README now
+  has a section "Second leg: candidates A and B searched and drawn" and "The
+  sample (second leg)". `slopcop:markdown` passes. The browser lane was used
+  only for captures, and no permission was refused.
+
+  ### Capturing the estate and `pathfind.ts`
+  No lab file changed. Two probe scripts did it:
+  - `capture-addresses.ts` captures any address of a built bundle with the lab's
+  own `captureFromPage`, through the lane.
+  - `lean.ts` builds the exploration from that address's state: the subject, the
+  pins, the directories opened, and an opened directory standing in flow order
+  from the top.
+
+  How close each comes to the page:
+  - **`pathfind.ts`:** exact. 16 cards, placement 97,117, 2,920 × 3,342, and the
+  packet's three levellings at its prices.
+  - **Estate:** close, not exact. The lab's picture is 765 px tall against the
+  page's 786 (placement 1,761 against 1,866); I did not run that down. It still
+  makes the packet's one levelling: `PaymentsContext.cs` 165 px down (the page's
+  186), the L made a rectangle, the price 6.0 % lower (the page's 6.5 %).
+  - **Five files:** recaptured; the lab reproduces the page to the pixel.
+
+  ### Fault 2: candidates A and B
+  Both live in `candidates.ts` and judge the first picture's starts and every
+  trial. All searches use the shuttle's mend as it will land (levellings
+  anchored, cards and slots).
+  - **A:** count an outline's steps only between columns that both hold the
+  directory's own cards.
+  - **B at 1.5 px of wire per pixel of outline height:** I chose 1.5 because it
+  is under Membrane Evenness's 2 per pixel of step. So the October 7 stretching
+  still pays in the price: squaring an outline by stretching d px saves 2d and
+  costs 1.5d. A levelling of a staircase that runs one way saves no evenness, so
+  it pays 1.5 a pixel against the 200 a step saves. The placement still
+  stretches exactly as today; B only judges.
+
+  | Place | Today | A | B 1.5 |
+  | --- | --- | --- | --- |
+  | Five files, move 22 (7 px jog) | taken | refused | taken |
+  | Move 23 (+180 px of outline; a name lifted over a column with no card) |
+  taken | **taken** | refused |
+  | Move 24 (+300) | taken | refused | refused |
+  | Move 25 (+72) | taken | taken | taken |
+  | Moves 28 and 29 (+608 each) | taken | refused | refused |
+  | Moves 26 and 27 (`approximation.ts` and the cards under it up 87 and 150 px;
+  outlines −368 and −750) | taken | **not reached** | taken |
+  | The estate's levelling | taken | taken | taken |
+  | `pathfind.ts`'s three (+300, +492, +120; with the mend none moves a card) |
+  taken | refused | refused |
+  | Five files, whole search at 80 orders | 29 moves | 20 moves | 28 moves |
+
+  What each table row hides:
+  - **A** also changes earlier moves: it takes order 2 as well, and after order
+  77 it never reaches today's moves 26 and 27, which are tidy levellings.
+  - **B** goes further than refusing. After order 77 it takes six levellings
+  today's price never reached. Each pulls an outline in by moving cards (up to
+  1,165 px), making the wires 27,432 px longer in all, 12,876 px in one move.
+  That is a trade of wire for snug outlines that today's price was built never
+  to make.
+
+  **Pictures** are in `pictures/`. They are the lab's geometry drawn plainly by
+  `draw.ts` at reading size (outlines by the page's own `membranePath`, cards as
+  boxes with their names, straight wires), not the page's look. Each has four
+  panels: today before the move, today after, A's end, B's end.
+  - `five-move-23.png`, `five-move-24.png`, `five-move-25.png`,
+  `five-move-28.png`, `five-move-29.png`
+  - `pathfind-levellings.png` and `estate-levelling.png`
+
+  What I see in them:
+  - In 28 and 29, today's after draws `scripts` 608 px round an empty column.
+  - In 24 and on `pathfind.ts`, names stand over empty bands in columns with no
+  card.
+  - On the estate, all three take the L to a rectangle with `PaymentsContext.cs`
+  level with `PostPaymentRow.cs`.
+  - B's ends show snug outlines bought by cards far from their partners.
+
+  **My recommendation is A.** It refuses 24, 28 and 29, all three of
+  `pathfind.ts`'s, and the jog. It keeps the estate's levelling and move 25, and
+  it changes only how the term that moved is counted.
+  - It keeps 23, because that step does separate the directory's own cards.
+  - It loses 26 and 27, which I would rather keep.
+  - B is a new trade of wire for outline height. A low B (about 0.33, refusing
+  only 28 and 29) was not run.
+  - Neither should land before the owner sees the pictures.
+
+  ### Fault 3: the first order (measured only)
+  **Sample.** `sample-maps.ts` drew 30 maps with seed 20261119. Only the first
+  capture hold ran: 15 maps from this repository, 8 single files and 7 files
+  with their own directory opened. **The second hold (the sets of pins and the
+  estate) waited behind nine other lane holders for over six minutes without
+  moving, and I stopped it.** It needs about 4 minutes of lane.
+
+  - **Single files:** the first picture is the best of 80 on 7 of 8; the eighth
+  is 0.36 % off. There is no gain to find.
+  - **Directories opened:** 2 of 7 have a 5.5 % gain.
+    - `history/lens.ts`: 58 of 80 orders beat the first by more than 1 %, so the
+  first order there is broadly bad.
+    - `adapters/cargo.ts`: 14 orders beat it, 9 by more than 1 %.
+    - The other five are within 0.6 %.
+    - **Caveat:** the lab's card model is off the page on 4 of the 7 opened
+  maps, slightly on `lens.ts`'s and more on `cargo.ts`'s.
+  - **Five files:** the gain is a single order in 82, unlike the two above.
+
+  **The median rule** was tried in a scratch copy of the sources, with the
+  barycenter swapped for the median of the neighbours' places; nothing in the
+  worktree changed.
+  - Five files: its first picture is 0.38 % dearer than today's, and more sweeps
+  change nothing.
+  - Its own order 77 lands 7.45 % under today's first, so order 77's gain comes
+  from that start's shuffle, not from the sweep's rule.
+  - On the 15 maps: equal on 5, better on 3 (by 0.29 %, 0.39 % and 3.64 %, the
+  last on `lens.ts`'s), dearer on 7 (up to +13.44 %).
+  - So no fixed rule I tried reaches order 77's kind of gain.
+  - The neighbour-swap pass was not tried.
+
+  ### Not done, and found on the way
+  - The second half of the sample, and the neighbour-swap pass.
+  - B at a low rate.
+  - The estate's 21 px card-model gap in flow pictures, and the lab's distance
+  from the page on opened directories generally.
+  - I removed `/tmp/lp2`, including the scratch copy of the sources and the
+  captures; nothing of mine still waits on the lane.
+
+● Agent "2D layout price: three faults" finished · 26m 36s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Two builders have handed back (the Windows/command-line work and the 2D
+  layout's price); I'm looking at the layout builder's seven pictures now.
+
+  Read 7 files, ran 4 shell commands (ctrl+o to expand)
+
+● Agent "SQL adapter: crash, lines, facts" is waiting on its own background work
+  · 15m 45s
+
+● I've looked at all seven layout pictures and reviewed the Windows code; now
+  auditing links and committing both records, then sending the layout builder
+  one more lab question.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Summary
+
+  `packages/cli` is deleted, in two commits on branch
+  `worktree-agent-ad3d32ddd177a1151`, based on `b822e037`. The World Map's
+  browser cases pass: 59 of 59. Two things need you before this lands:
+
+  - **The markdown audit fails with 13 broken links.** They are in archived
+  Research files, and the permission to fix them was refused, so I stopped
+  there.
+  - **Changing `package-lock.json` changes the history's cache key.** This
+  branch has to wait for the engine round and its one rebuild.
+
+  ## Commits
+
+  - `b7749f608` "Delete the unused CLI shell under packages/cli"
+    - Removes the package's three files and its three Live Docs.
+    - Drops its entry from `workspaces` in the root `package.json`.
+    - Regenerates `package-lock.json` with `npm install --ignore-scripts` in the
+  worktree. That removed exactly 21 lines: the workspace entry, the
+  `node_modules/@live-documentation/cli` link and the `packages/cli` block.
+    - Removes the three `packages/cli/...` entries from
+  `tests/integration/live-docs/expected/repository-entries.json`, plus the
+  regenerated doc of that file.
+  - `5599d307c` "Carry the CLI shell's name and commands into the board, and
+  bring its mentions current"
+    - Changes four authored docs: the board, the World Map plan, the tracing
+  guide and the internal tooling doc.
+
+  ## What I checked before deleting
+  All of the other builder's findings held:
+  - **Not built:** the root `build` covers only engine, explorer and generator,
+  and `node_modules/@live-documentation/` had only a symlink to it.
+  - **Not imported or run:** a `git grep` for `packages/cli` and
+  `@live-documentation/cli` found no import, script, workflow or config that
+  uses it. Nothing in `.github/workflows` mentions it, and `eslint.config.js`,
+  `tsconfig.json` and `vitest.config.ts` don't name it.
+  - **Only bookkeeping was left:** the workspace list, the lock, its docs and
+  the entries list. The other hits were example paths in tests and historical
+  archive text.
+
+  ## What was carried forward, and where
+  The board, `.mdmd/layer-3/board.mdmd.md`, is the current design document for
+  the delivery shape: its Purpose already says "One published package whose
+  binary runs the commands". I replaced its old Notes sentence, "The CLI shell
+  under `packages/cli` is not the package and is not on the board", with a new
+  paragraph. It says:
+  - No code in the repository is the `live-docs` package yet.
+  - What the shell was, and why published it could have run nothing.
+  - That it left the board when the board was re-authored on 2026-10-10.
+  - That it was deleted on 2026-11-19, quoting "That's okay if it needs to be
+  deleted, yep." with a link to Turn 2 of the November 19 record.
+  - The binary's name, `live-docs`, which the registry address on the board
+  already carries.
+  - The commands a person would expect: `generate`, `lint`, `inspect`,
+  `visualize` and `orphans`, which the shell dispatched, plus `history` and
+  `board`, which came after it.
+  - How the real package is to be built: the second candidate of the 2026-10-10
+  delivery-shape probe (linked), which is `scripts/live-docs/*.ts` moved and
+  compiled into a package built from the engine, the generator and the Explorer,
+  so a stranger can get the tool without this checkout. When it exists, one
+  `From` line makes the board's thing real.
+
+  I did not carry over the old Note "Single-package architecture decision:
+  CLI/server/shared tightly coupled".
+  `AI-Agent-Workspace/Notes/user-intent-census.md` (the entry on line 746)
+  records that as the agent's claim, not the owner's.
+
+  ## What the board's thing became
+  Nothing: `live-docs` (kind package) was already imagined, with no `From`. The
+  shell was never drawn there. The board's things, wires, legend and layout are
+  unchanged, and `npm run live-docs:board` still shows 17 things with
+  `live-docs` imagined. Only the Notes prose moved.
+
+  ## Every doc that moved, and why
+  - **Deleted:** the Live Docs of `packages/cli`'s `package.json`,
+  `tsconfig.json` and `src/index.ts`.
+    - Their tsconfig `tsBuildInfoFile` note also lives in the other three
+  packages' tsconfig docs, so nothing was lost.
+  - **Regenerated:** the Live Doc of `repository-entries.json` lost its three
+  `entries:packages/cli/...` keys.
+    - `npm run live-docs:generate` reported 1 updated and 1089 unchanged, and a
+  later dry run reported 1090 unchanged.
+    - No other generated doc moved: the engine's and Explorer's manifest docs
+  don't list who depends on them.
+  - **`.mdmd/layer-3/world-map.mdmd.md`, ticket T2:** "off the board and still
+  in the repository, its fate asked" now says it was left off the board, then
+  deleted on 2026-11-19 at the owner's word (linked), with the name and commands
+  kept in the board's Notes.
+  - **`.mdmd/layer-1/guides/tracing-impact.mdmd.md`:**
+    - In the `--reachable` example I replaced the `packages/cli/src/index.ts`
+  line with a real one: `packages/generator/src/generator.ts … module of
+  packages/generator/package.json`, an entry in the hand-kept list since
+  2026-10-15.
+    - I left the example's counts alone, since the doc says its examples are
+  dated snapshots. They are well out of date, though: today's run gives 493
+  entry points, 417 reached, 166 unreachable, 14 not read and 46 reached only
+  from tests.
+  - **`.mdmd/layer-2/internal-tooling.mdmd.md`:** the `npm run build` row no
+  longer says "the CLI package is not included".
+
+  ## The history's key: it changes
+  `generatorIdentity.ts` hashes the committed blob of `package-lock.json` into
+  `code`:
+  - `checkoutOf()` runs `git ls-tree HEAD -- package-lock.json` and folds that
+  into the hash (`.update("tool-lock\0").update(lockEntry …)`).
+  - `lens.ts` `lensOf()` keys on `{version, code, modified, unicode}` plus the
+  configuration.
+
+  So the new lock gives a new key and the history rebuilds from scratch.
+  Deleting `packages/cli` by itself would not change the key, since only
+  `packages/engine`, `packages/generator` and `tsconfig.base.json` are keyed.
+  But the lock has to change when a workspace is removed.
+
+  ## Verification
+  I used my own temp folder (`/tmp/pc-n0IV`, now removed).
+  - **Build:** `npm run build` passed.
+  - **Integration:** 154 of 154 passed, including the board's integration test.
+  - **Unit:** 2234 passed and 4 timed out at 5000 ms under a load average of
+  43.9. The four were `generatorIdentity.test.ts`, `forceGraphLayout.test.ts`,
+  `forceGraphOctree.test.ts` and `worldMap/layout.test.ts`. Run again on their
+  own, all 74 of their tests passed. I changed nothing in them.
+  - **Symbol and asset audits:** `slopcop:symbols` found 0 issues and
+  `slopcop:assets` found 0 broken references.
+  - **Browser:** `npm run e2e:bundles` built the bundles. The lane run (label
+  `cli-del`) waited 615 s, then ran `world-map.spec.ts`,
+  `world-map-design.spec.ts` and `world-map-estate.spec.ts`: 59 passed in 3.6
+  minutes. No case pinned anything the change moves.
+  - **Markdown audit: failed, 13 broken links.** All 13 point at the deleted
+  files, from archived Research files:
+    - six files under
+  `AgentSessionHistory/2026/09/2026-09-29/Research/bearings/`: `2025-12.md`,
+  `what-survives.md`, and in `readers/`, `2025-12-14-and-15-security.md`,
+  `2025-12-14-and-15.md`, `2025-12-19.md`,
+  `layer-4-authored-engine-and-scripts.md` and
+  `september-claims-versus-code.md`;
+    - `AgentSessionHistory/2026/10/2026-10-08/Research/headless-use-cases.md`.
+
+    Those Research folders are audited, and earlier deletions in the archive
+  were handled by pointing links at a commit on GitHub (for example
+  `what-survives.md` links `…/blob/663fe804/…`). I tried a `perl -pi` that would
+  point these at
+  `https://github.com/jfjordanfarr/Live-Documentation/blob/f571f9d9/<path>`.
+  `f571f9d9` is the last commit that touched the files, and it is on
+  `origin/main`. **The permission was refused**, so I stopped: nothing was
+  changed and those files aren't mine. Either you make that edit, or tell me to
+  try again.
+
+  ## Left alone, as asked
+  `packages/engine/src/live-docs/document.ts`, line 184, is in the JSDoc of
+  `entryWords`. It gives example entry words: `"module of
+  packages/cli/package.json"`. It is only an example, but it now names a path
+  that doesn't exist. The generated `document.ts.mdmd.md` (line 151) quotes it
+  and will follow when the comment changes.
+
+  ## Sentence for direction (under "The first visit, delivery and sharing")
+  "The unused CLI shell under `packages/cli` was deleted on 2026-11-19 at the
+  owner's word; the `live-docs` binary's name and the commands it is to run
+  (generate, lint, inspect, visualize, orphans, history, board) are kept in the
+  board's Notes, for the package to be built per the 2026-10-10 probe's second
+  candidate."
+
+  ## Other things I noticed
+  - **The design decisions doc**
+  (`.mdmd/layer-3/live-documentation-explorer.mdmd.md`, line 136) names `cli`
+  among short directory names, in a dated November 16 measurement. It is
+  history, and `cli` folders still exist among the sample programs, so I left
+  it.
+  - **`world-map.spec.ts`'s Live Doc** says "the CLI shell left the board",
+  which is still true as history.
+  - **The tracing guide's example counts** are well out of date, as noted above.
+
+● Agent "Delete packages/cli with care" finished · 33m 16s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Sending the layout builder a third, lab-only leg (a pricing rule that charges
+  for empty ground an outline encloses), then recording the three handbacks.
+  ⎿  Resuming agent a60d7d8
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent(Authored section against file comments) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Names that do not read back" is waiting on its own background work ·
+  59m 11s
+
+● While builders work, I'm reading the World Map and board designs so I can
+  bring you the proposal on scans as the board's pieces.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Still reading: the board design already supports several scans merged into one
+  map since October 9, which changes what I owe you. Reading the World Map
+  plan's tickets next.
+
+  Read 1 file (ctrl+o to expand)
+
+● Agent(Many scans, one board: cold run) Opus 5.5  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from general-purpose
+  ## Third leg: PL/SQL graded against an independent parser, two Oracle mends,
+  and the kinds counted
+
+  The leg is done: the grading of today's reader on PL/SQL, the mend of what
+  broke reading, and the count of the kinds of symbol, measured and not built.
+  Two commits on the branch, on top of `c07205b0`; none amended, none pushed.
+  The probe README is brought level under "The third leg".
+  - `32578989`: Read past Oracle's q-quoted strings and SQL*Plus PROMPT and REM
+  lines.
+  - `5552afe6`: the record.
+
+  ### The independent parser, and its limits
+  - **Parser.** The ANTLR project's PL/SQL grammar (grammars-v4 `sql/plsql`,
+  master as of today), generated with the ANTLR 4.13.2 tool jar and compiled
+  with the Java 21 already on the machine. Everything was fetched and built in
+  scratch; nothing was installed machine-wide.
+  - **Emitter.** A small Java program walks the parse tree and records top-level
+  creates, the members of packages, tables read or written, call statements and
+  calls with arguments, each with its line. Neither the emitter nor the
+  generated parser is committed; the emitter is about 150 lines and can go under
+  `scripts/oracle/` if you want a kept record.
+  - **What it cannot judge, said plainly in the record:**
+    - **It does not resolve names.** It cannot tell a package member from a
+  schema function, `arr(i)` from a call, or a local procedure from a standalone
+  one. So only calls written with two or more parts are graded; one-part calls
+  are counted.
+    - **It refuses 98 of utPLSQL's 366 files.** All 17 synonyms fail on `create
+  noneditionable synonym`; type attributes written `integer default` and `(self
+  as …)` also fail, as do several core package bodies.
+    - **It does not read SQL*Plus.** Both readers got the same text, with all
+  693 SQL*Plus lines blanked and their line numbers kept. `EXEC` lines were
+  among them, so their calls are on neither side.
+  - **Codebase.** utPLSQL, the develop branch. Its `.pks`, `.pkb`, `.tps`,
+  `.tpb`, `.syn` and `.trg` files were given `.sql` names, since the reader
+  reads only `.sql`.
+
+  ### Today's reader on utPLSQL (268 files the grammar parses)
+
+  | Kind | Objects | Found by the reader |
+  |---|---|---|
+  | Package specs | 40 (26 bodies, 976 members) | 0 |
+  | Type specs | 113 (55 bodies) | 0 |
+  | Tables | 15 | 11, all 11 at the right line |
+  | Sequences | 4 | 0 |
+  | Standalone procedures | 1 | 1, right line |
+  | Standalone functions | 1 | 1, right line |
+
+  - **Objects invented:** none. Why the reader misses four of the tables was not
+  looked into.
+  - **Dependency lines:** 433 expected. Before the mend 266 were right, 167
+  missing and 243 invented; after it, 270, 163 and 248.
+  - **Most of the misses are package calls.** A call into a package should be a
+  link to the package's spec file; today it is kept as a name (`= ut.run`), so
+  each counts once as missing and once as invented.
+  - **Counted but not graded:** 973 one-part calls and 88 one-part call
+  statements, plus 33 other places a table is named.
+
+  ### The mend, red first (`32578989`)
+  - **The q-quoted string.** `q'[it's]'` (in 18 utPLSQL files) is now read as
+  one string. That covers `q`, `Q`, `nq`, `NQ`, any delimiter, and brackets that
+  close with their pair. Before, its apostrophe opened a string and everything
+  after it was misread.
+  - **`PROMPT`, `PRO`, `REM` and `REMARK` lines.** These are now skipped to the
+  end of the line, but only where a statement could begin: first on its line,
+  after a `;`, a `/`, a `GO`, or at the start of the text. A column named
+  `Remark` on its own line inside a query stays a name, and the test holds that.
+  utPLSQL has no such line with an apostrophe; my owner-shaped trial in the
+  first leg had one.
+  - **Effect.** One unit test was red before and is green. On utPLSQL, 4 more
+  dependency lines are right, and 5 package calls the q-quotes had hidden now
+  appear as kept names. tSQLt was re-graded with ScriptDom: 969 of 969,
+  unchanged.
+  - **Nothing else breaks reading.** On the raw text (SQL*Plus lines left in)
+  the reader loses nothing; it has 12 more invented lines, which are the calls
+  on the `EXEC` lines the split had blanked.
+
+  ### Kinds of symbol: measured, not built
+  How many of each kind the corpora hold, and how many lines kept by name today
+  would become links if the kind were a symbol:
+
+  | Corpus | Kind | Count | Kept names that would become links |
+  |---|---|---|---|
+  | utPLSQL | packages | 40 specs, 976 members | 212 (221 on the raw text) |
+  | utPLSQL | types | 113 | 1 |
+  | utPLSQL | sequences | 4 | 0, since `NEXTVAL` is not read as a use |
+  | utPLSQL | synonyms | 17 files | not measured: the grammar refuses them |
+  | utPLSQL | triggers | 1 file | not measured: the grammar refuses it |
+  | tSQLt | types | 9 | 0 |
+  | tSQLt | triggers | 1 | 0 |
+  | tSQLt | synonyms | 3, all inside test bodies | 0 |
+  | DNN | types | 4 | 0 |
+
+  - **Packages are the kind that matters.** On a package-built codebase, 212 of
+  the 433 expected dependency lines are calls into a package, and today none of
+  them is drawn as a wire. On utPLSQL nearly all code lives in packages: 2
+  standalone routines against 976 package members. That is the number to put to
+  the owner.
+  - **The other kinds matter only once their uses are read**, which is a
+  separate reading step: types of parameters and columns, a trigger's table,
+  `NEXTVAL`, a synonym's target.
+  - **What a new kind touches:**
+    - **`openings.ts`:**
+      - `SQL_OBJECT_KINDS`, which governs name matching, doors and openings;
+      - `OPENING_KINDS`, which makes a file an entry;
+      - `sqlKind` and `SQL_DECLARED_KINDS`;
+      - for packages, also their members, matching `pkg.member(…)` to the
+  package, and tying the body's file to the spec's.
+    - **`board.ts`:** `DOOR_KINDS`.
+    - **`boardGraph.ts`:** the doors a thing serves.
+    - **`estateGraph.ts`:** the join across scans.
+    - **The Explorer:** how doors are drawn by kind.
+    - **`inspect`:** it prints kinds.
+    - **The estate's and the fixtures' docs.**
+    - **The oracle's `ADAPTER_KIND`.**
+
+  ### The four reads of a file
+  In the SQL reader, the four came from the generator's two passes (once to
+  build the symbol index, once with it), each of which tokenized the text twice.
+  `readSql` cut that to two. I also saw in the code, without measuring, that
+  the C# adapter's `analyze` reads its file twice within one pass (`fileFacts`,
+  then `fs.readFile`). For the builder adding one reading step: a step shared by
+  both passes and keyed by path and content would make it one read and one
+  parse per file.
+
+  ### Gate
+  `npm run safe:commit` without the browser, at `32578989`, passed whole. Load
+  average was 29 at the start and 17 at the end, on 20 threads. Live Docs: 1,106
+  files validated, none changed. Lint, build and the tests' type-check passed;
+  unit 2,252 tests in 197 files; integration 158 tests in 23 files; the
+  documentation links and all three SlopCop audits passed.
+
+  Scratch, the private temp folder and the .NET build output are removed. No
+  subagent was used.
+
+● Agent "SQL adapter: crash, lines, facts" finished · 22m 6s
+
+› Message from general-purpose
+  ## Summary
+
+  The third leg is three commits on top of `21fcc129`, on my branch, unpushed
+  and never amended:
+  - `e113ca5e`: the docs lint and `slugText` now read links by the module.
+  - `d8d6ba3a`: the inspected-symbol panel shows the doc reader's form, and the
+  fixture gains a reference link.
+  - `135e93ad`: the probe README gets a "The third leg" section.
+
+  Item 1 failed its test and is reverted; that needs your call. The browser
+  case, the bundles and the pictures did not run, because the browser lane was
+  full (details under item 5).
+
+  ## 1. Fence rule: it lost true links, so I stopped and reverted it
+
+  I tried your simple rule: after any quote markers and indentation, a line
+  starting with a fence run opens a fence at any depth, and the next such line
+  with a run at least as long closes it.
+
+  | Corpus | commonmark.js | Rule before | Simple fence rule |
+  |---|---|---|---|
+  | This repo (2,005 files) | 51,835 | 51,837 | **51,540** |
+  | Dnn.Platform | 2,872 | 2,872 | 2,872 |
+  | dbatools | 115 | 115 | 115 |
+  | shop | 0 | 0 | 0 |
+  | tSQLt | 3 | 3 | 3 |
+
+  **The case:** 295 true links lost, all in
+  `AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md`,
+  lines 388 to 432.
+  - That passage is a pasted TypeScript compiler error. Each error's `~~~~`
+  underline is indented 22 spaces at the top level.
+  - CommonMark reads those lines as an indented code block, which ends at the
+  next unindented paragraph.
+  - The simple rule makes each underline a fence. Line 424 has 67 tildes, and no
+  later run is that long (the last underline has 64). So that fence never
+  closes and swallows the rest of the file.
+
+  The change is reverted and nothing was committed for item 1; the register
+  still holds its one entry.
+
+  An untried idea, for you: open a deep fence only under a list item or in a
+  quote. That needs the reader to know whether a line is inside a list item.
+
+  ## 4. The readers still on their own patterns (`e113ca5e`)
+
+  - **Docs lint:** the absolute-link check moved to
+  `scripts/live-docs/absoluteLinks.ts` and reads links by the module.
+    - A link's shape inside a code span or a fenced block is no longer refused
+  (the bug that failed the other builder's gate). Autolinks are left alone. A
+  reference link counts as its definition's destination. A destination with
+  parentheses is read whole.
+    - The new test fails against the old pattern.
+    - The lint passes over the repository's 1,100 docs.
+  - **`slugText` in `githubSlugger.ts`:** it now replaces the links the module
+  reads with their text.
+    - The new case fails against the old pattern, which produced `The plan.md
+  "t") and group/a.md) and x`.
+    - No heading anchor in the repository changed (generate shows no doc moved),
+  and the symbol audit reports 0 issues.
+  - **Not done:** `symbolReferences.ts` and `documentationLinks.ts` still find
+  links with their own patterns. Since leg 2 they at least decode paths with
+  `linkPath`.
+
+  ## 2. Inspected-symbol panel (`d8d6ba3a`)
+
+  The new `inspectedSymbolHtml` in `detailPanel.ts` renders the parsed block
+  instead of the doc's written form:
+  - Names, parameter names and type names are shown as code, as the doc's reader
+  returns them, so the written form changing on the names' branch does not
+  matter here.
+  - Types link through the reader's handler.
+  - Each section's text is rendered on its own.
+
+  I checked the escaped fence by a run, on a Summary holding an unclosed ````
+  ```ts ```` followed by a Remarks section:
+  - **Old written-form rendering:** the name shows as `"a\nb"` with quotes and
+  backslash, and the fence is read as text.
+  - **New rendering:** the name shows as itself, the fence becomes `<pre><code
+  class="language-ts">`, and the Remarks are intact.
+
+  A new unit test, `detailPanel.test.ts`, holds the names, the fence ending with
+  its section, and the difference from the written form.
+
+  **One consequence for your eye:** the fixture's docstring line ``#### `notes`
+  `` now renders as the docstring's own heading, where before it showed as the
+  text `#### notes`. The browser case now expects that heading.
+
+  ## 3. Reference links in the fixture (`d8d6ba3a`)
+
+  The fixture's Purpose now cites the plan as `[by reference][plan]`, with the
+  definition in its Notes section. `tests/e2e/link-targets.spec.ts` now expects
+  eight links, the definition hidden, and the docstring heading.
+
+  ## 5. Not run: bundles, browser cases and pictures
+
+  None of the following ran:
+  - `npm run e2e:bundles`;
+  - the link-targets browser case and the cases that open the reading panel;
+  - the before and after pictures for items 2 and 3.
+
+  At 22:02 the browser lane had nine callers. I was sixth, behind five holders
+  of up to five minutes each, which ran past my time, and the after pictures
+  would have needed a second wait. I withdrew my ticket rather than hold a place
+  I could not use.
+
+  What I did verify:
+  - `npm run build` passes.
+  - 1,595 unit tests pass (the Explorer client, the engine's tooling,
+  `relatedDocs` and the scripts).
+  - The markdown and symbol audits pass after the slug change.
+  - I did not run the full gate this leg.
+
+  `dist/explorer/samples/link-targets` is rebuilt with the current client.
+
+  ## Still open
+
+  - Your decision on the fence rule, and therefore the register entry.
+  - Item 5 in full: bundles, the browser cases through the lane, and pictures
+  for items 2 and 3.
+  - Moving the link finding in `symbolReferences.ts` and `documentationLinks.ts`
+  onto the module.
+  - For the joining: `decodeLinkPath` in `document.ts` still has no caller among
+  the link readers. I left it alone.
+
+● Agent "One rule for markdown link targets" finished · 20m 31s
+
+● Two more builders have come back: the SQL one, checked against an independent
+  Oracle parser, and the link reader, whose fence rule turned out wrong on real
+  text. I'm checking what the Explorer already uses to render Markdown before I
+  decide on the link reader. · summary
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Fourth leg: C# type names now resolve within what the file's project can
+  see, and the lookups are indexed
+
+  Both item 1 and the profile request are built and verified. On mojoPortal, the
+  lines pointing at a namesake fell from 887 to 0, and "in both" did not fall
+  on either corpus. The indexing changed no doc on either corpus. Items 2, 3 and
+  4 were not reached.
+
+  **Branch** `worktree-agent-ac7ef8df4222b2e4b`, on top of `58245fc3`:
+  - `086140cc` — project reach
+  - `c6b8674b` — the arity distinction, which mends a regression in `086140cc`
+  - `f201fc8f` — the lookup indexes, alone in their commit as asked
+  - `f56d6c57` — the probe README and scripts
+
+  **Verification**
+  - Build passes. Integration: 154 of 154. Both SlopCop audits pass.
+  - Unit: 2,250 of 2,251 in the full run. The one failure is
+  `generatorIdentity.test.ts`, which hit the 5-second timeout at a load average
+  of about 17 to 25. It passes on its own (9 of 9, at load 28).
+  - This repository's C# docs did not move. The only docs that changed are those
+  of the files I edited, plus the new `dotnetProjects.ts` doc, whose Purpose
+  and Notes I wrote.
+
+  ## 1. A type resolves within what its project can see
+  **The rule**, in a new `adapters/dotnetProjects.ts`, used by `csharp.ts`:
+  - **Which project a file is in:** the nearest folder above it with a project
+  file.
+  - **Search order:** the own project, then the projects it references directly,
+  then, for SDK-style projects only, what those reference in turn.
+  - **Classic and SDK-style differ, as in MSBuild.** A classic project gives the
+  compiler only its direct references; the references of a reference are copied
+  to the output folder but not compiled against. An SDK-style project passes
+  them on transitively unless `DisableTransitiveProjectReferences` is set. A
+  `ProjectReference` with `ReferenceOutputAssembly="false"` gives the compiler
+  nothing.
+  - **Several declarations at one tier** link when they are halves of one
+  partial type in one project. Otherwise the name is ambiguous and nothing is
+  drawn.
+  - **Never linked:** a declaration outside the reach.
+  - **Loose files:** a file in no project keeps the whole-workspace reading,
+  except that several namesakes draw nothing.
+  - **Partial peers** are sought only in the file's own project.
+  - **Reflection:** a type named in a string still resolves across the
+  workspace, because reflection loads whatever assembly is present.
+
+  **Tests seen failing first**, all in `csharp.test.ts`, five in all:
+  - The estate's two `PaymentsController`s, written with the same full name in
+  Portal and Gateway, as mojoPortal does.
+  - Classic against SDK-style against `DisableTransitiveProjectReferences`.
+  - Own project first, partial halves, and true ambiguity, including
+  `ReferenceOutputAssembly="false"`.
+  - A loose file.
+  - The arity case.
+
+  **One regression, caught and mended.** The first build lost 40 of DNN's lines
+  that the compiler confirms. All 40 were a file naming `DnnHelper` where the
+  project declares both `DnnHelper` and `DnnHelper<TModel>`. Commit `c6b8674b`
+  treats one name with different numbers of type parameters as two types, each
+  linked as before. The reader still does not match a use's type arguments to an
+  arity.
+
+  **The compiler table** (C#-to-C# dependency lines, before at `30edd708` and
+  after at `c6b8674b`):
+
+  | | DNN before | DNN after | mojoPortal before | mojoPortal after |
+  | --- | ---: | ---: | ---: | ---: |
+  | Our lines | 20,991 | 20,989 | 8,180 | 6,933 |
+  | In both | 20,390 | 20,390 | 6,894 | 6,895 |
+  | Ours only | 601 | 599 | 1,286 | 38 |
+  | — of which we chose a namesake | 30 | 30 | 887 | 0 |
+  | — of which declared in several files, the compiler bound none | 22 | 20 |
+  376 | 18 |
+  | The compiler's only | 4,458 | 4,458 | 1,323 | 1,322 |
+
+  **DNN's 30 namesakes did not empty.** They are names like `FileOrder`,
+  declared in the own project `DotNetNuke.Web.Client` and also, in another
+  namespace, in `DotNetNuke.Abstractions`. Our reader takes the own project's
+  copy; the compiler binds the other. That is a question of which namespace the
+  compiler searches first, not of project reach, and I have not read those lines
+  one by one yet.
+
+  **Seeded readings (seed 1119), judged against the compiler's edges:**
+  - **Lines the mend removed:** 30 drawn of mojoPortal's 1,248, plus all 6 of
+  DNN's. The compiler binds none of them, so every removal is right.
+  - **Lines kept where a namesake exists:** the compiler binds 30 of 30 on
+  mojoPortal and 27 of 30 on DNN. One of DNN's three misses is
+  `SettingsViewBase.cs` → `ISettingsView{TModel}.cs`, the arity question again.
+  The other two are unread.
+
+  ## The profile request: lookups indexed once per run
+  **What the two functions actually did:**
+  - `isWorkspaceNamespace` compared each `using` against every declared
+  namespace in the workspace.
+  - `toDependencies`' own time was the inlined type lookup. For every name it
+  rebuilt the container list and made one map lookup per container and per
+  prefix of the chain. That includes the many names that no workspace type ends
+  with.
+  - The partial-peer loop scanned each peer's member list for every use.
+
+  **The change in `f201fc8f`:**
+  - A set of every namespace and of every namespace that contains one.
+  - A set of the last segment of every type name, so that a name no type ends
+  with is set aside in one lookup.
+  - Each scope's containers listed once.
+  - A peer's members looked up by name instead of scanned.
+
+  **Counts** (before is project reach, after is `f201fc8f`; the arity change
+  alters no count):
+
+  | Files | Type-name lookups before / after | Namespace comparisons before /
+  after | Peer member comparisons before / after |
+  | --- | --- | --- | --- |
+  | DNN 400 | 2,259,904 / 52,494 | 205,846 / 2,476 | 42 / 50 |
+  | DNN 1,000 | 5,643,504 / 313,006 | 579,886 / 6,194 | 233,984 / 9,212 |
+  | DNN 2,000 | 10,333,264 / 860,498 | 1,194,610 / 12,348 | 391,000 / 14,326 |
+  | mojoPortal 400 | 2,765,474 / 47,266 | 21,846 / 1,300 | 141,874 / 4,394 |
+  | mojoPortal 1,000 | 6,258,518 / 202,288 | 60,752 / 3,052 | 859,400 / 24,762 |
+  | mojoPortal 1,900 (all) | 12,616,904 / 626,886 | 133,634 / 5,672 | 4,155,398
+  / 92,808 |
+
+  - Namespace comparisons are now one per question, so they grow exactly with
+  the files.
+  - Type lookups and peer comparisons after the mend still grow faster than N. I
+  believe that is the experiment, not the reader: a random draw of N files
+  contains both halves of a pair, or a name together with its declaration, more
+  often as N grows. So the real work in the sample grows faster than N.
+
+  **No doc changed.**
+  - On the measuring script's six runs, the digest of every C# dependency is
+  identical before and after.
+  - Over the whole corpora, `f201fc8f` regenerated the docs `c6b8674b` had
+  written, in place. All 10,776 DNN docs and all 7,911 mojoPortal docs came out
+  "unchanged", and `diff -r` against a copy, `index.json` included, found 0
+  differing files.
+
+  **Seconds, with the load beside them:**
+  - C# main pass over 2,000 DNN files: 9.7 s before (load 21), 7.7 s after (load
+  33).
+  - C# main pass over all 1,900 mojoPortal files: 12.3 s before (load 18), 7.1 s
+  after (load 29).
+  - The index pass is dominated by the parser and moved with the load: 52 then
+  69 s on DNN, 85 then 60 s on mojoPortal.
+  - The whole regeneration afterwards took 247 s for DNN and 151 s for
+  mojoPortal, run side by side at load 16 to 24.
+  - Neither DNN nor mojoPortal reproduces the other builder's 307 s for
+  `toDependencies` and 173 s for `isWorkspaceNamespace`. Their corpus presumably
+  has many more namespaces or external `using`s, and the mend makes both
+  lookups constant-time regardless.
+
+  ## Not reached
+  - **2.** The 40 seeded readings of the compiler's edges we lack where only the
+  target declares the name (628 on DNN, 172 on mojoPortal), and their mends.
+  - **3. Where the reasons are today:**
+    - `lookUpWorkspaceFile` in `dotnetPaths.ts` already returns `missing` or
+  `ambiguous`.
+    - `resolveDirectivePath` in `aspnet.ts` and `narrowFor` in `csharp.ts`
+  collapse their reasons into "no link". Each needs to return its reason so that
+  a one-line change can hand it to `notices`. Not done.
+  - **4.** The configuration reads and the procedure named from C#.
+
+  ## Files
+  - **Corpora:** `/home/node/scratch-dotnet-gaps/`. Each stage's docs are kept
+  beside them: `leg3-*-ld`, `leg4a-*` (project reach without arity), `leg4b-*`
+  (`c6b8674b`), and the current ones (`f201fc8f`).
+  - **Temp folder:** `/tmp/dn-95qM`.
+  - **New probe scripts**, in `AI-Agent-Workspace/AgentSessionHistory/2026/11/20
+  26-11-19/Probes/dotnet-gaps/scripts/`: `csharp-scale.ts`, `add_counters.py`
+  (counters, never committed), `reach_sample.py`, `lost_agreement.py`,
+  `tilde_holders.py`.
+
+  No refusal of an action came up. The worktree guard refused three compound
+  commands as too complex to check; I re-ran them as plain separate commands.
+
+● Agent ".NET Framework gaps: measure, mend" finished · 37m 35s
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19-200435-welco
+  me-back-lets-start-up-the-1119-dev-day-ch.txt in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+  >I'm checking what the Explorer already uses to render Markdown before I
+  decide on the link reader.
+
+  A subtle little hint that perhaps MarkDown has drawbacks as the central
+  source of truth. Not proof, just a bit of friction to note as it brushes
+  against us.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Fifth leg: handback
+
+  Three commits are on `worktree-agent-ab441e69edee8fd9c`, on top of `1dd746a1`.
+  Nothing was amended or pushed, and the working tree is clean.
+
+  **The gate did not pass.** In the last run, one test of my own timed out under
+  load (details below), so integration and the audits did not run in it; I ran
+  the three audits on their own afterwards.
+
+  1. **`eb1de4b0` Container rule.** Based on your ruling, the writer does not
+  model containers.
+     - **What triggers it:** a docstring that holds a container. That means the
+  format's own list sections (Parameters, Type Parameters, Exceptions, Links,
+  Additional Documentation, Unsupported Doc Tags) or an author's own list item
+  or block quote.
+     - **What it does:** in such a docstring, every line that would open a fence
+  or an HTML block of the kinds a closer ends is written behind a backslash,
+  closed or not. Those kinds are a comment, `<script>`, `<pre>`, `<style>`,
+  `<textarea>`, `<?`, `<!X` and `<![CDATA[`.
+     - **What stays:** a docstring with no container keeps the precise rule:
+  escape such a line only when nothing later in the docstring closes it.
+     - **Lines that only start a new item or quote, or an indented code line:**
+  I found none of these that let anything escape. Each ends at the blank line
+  the format always writes between a docstring and the next heading, so they
+  stay as they are.
+     - **Red then green:**
+       - A new grammar test writes a Links section where a fence opens in one
+  item and a comment opens below the next. The committed writer wrote both bare.
+       - The oracle also failed on the committed writer, on `" éB\n<!--\n
+  ```"`; a comment ran to line 118.
+     - No doc of this repository changed except `document.ts`'s own.
+  2. **`65d6d8e7` CommonMark oracle committed.**
+     - `"commonmark": "^0.31.2"` is a root devDependency, with its lock entries.
+     - The fuzzing case parses every written doc with it and holds the property
+  you ruled:
+       - every heading and generated link of the model is found at its place, as
+  itself;
+       - outside a docstring there is no heading, link, image or raw HTML the
+  model does not hold;
+       - no block a docstring opens runs past it.
+     - The test says in words that a JSON-string link (lone-surrogate path) is
+  left out, and that a doc over 200,000 characters is left to our reader alone.
+     - The hostile docstring lines include `<!--`, `<script>`, `~~~`, list and
+  quote lines and indented lines. The name now also stands in the type
+  parameters and the value, so every place the format puts a docstring's text is
+  covered.
+     - All four fuzz cases pass. `package.json`'s doc moved for the new
+  dependency.
+  3. **`27b56e73` Load the parser without `import.meta`.** The engine's build
+  compiles its tests to CommonJS, which refuses `import.meta`, so the first gate
+  run stopped at build.
+
+  **What moved in this repository:** nothing beyond the docs of the edited files
+  and `package.json`'s doc. `--check` reports 1,092 unchanged.
+
+  **The gate**, without the browser, under the private `TMPDIR=/tmp/ldn5` (since
+  removed):
+  - Passed: the Live Docs pipeline (generate and lint), lint, build and
+  type-check of tests.
+  - Unit: 2,257 of 2,258. The one failure is `document.fuzz.test.ts` › "reads
+  back 200 generated names…", which timed out at 5 s with load average about
+  23.5.
+  - That case took 3.3 s alone at load 18. With the reference parser added it is
+  my slowest case.
+  - I left its bound as you asked. Ways to get margin: move the file to
+  `unit-serial`, or trim it to about 120 names.
+  - Integration and the audits did not run inside the gate. Run on their own
+  afterwards: `slopcop:markdown` 0 broken, `slopcop:symbols` 0 issues,
+  `slopcop:assets` 0 broken.
+
+  **Dnn.Platform: on this branch it finishes.**
+  - **Setup:**
+    - My worktree is isolated, so the harness refused `git` on any other folder
+  and I could not clone.
+    - Instead I copied the other builder's checkout. Its `.git` HEAD is
+  `9bc6b06f4f15d11f6e52446505ec3117a7c84200`; I left out its old
+  `.live-documentation` folder.
+    - The copy went into my own scratch, and I generated it with the shipped
+  defaults and no configuration.
+  - **Result:**
+    - 10,776 files, all created.
+    - The graph index was written, so every doc read back.
+    - 6 min 6 s wall time, at load 31–44. Nothing stopped it.
+  - **Caveat on the crash:** the largest doc it produced is only 1,670 lines
+  (115 KB), far below the about 130,000 arguments a spread takes. The other
+  builder's Dnn logs in `/home/node/scratch-dotnet-gaps/` (before, after, leg3,
+  leg4) also all end with exit 0; `gen-leg4b-dnn.log` ends after its file-index
+  line. So the crash you saw probably comes from that builder's branch writing a
+  far larger doc, not from what this branch writes for Dnn. `1dd746a1` removes
+  that failure mode for a doc of any size, and its 200,000-line test fails on
+  the old writer. I did not run `main` on the corpus to prove the cause.
+  - My scratch copy is deleted. Nothing was written into the other builder's
+  folder.
+
+  **Not done:** a gate run that passes the unit stage at tonight's load.
+
+● Agent "Names that do not read back" finished · 1h 5m 21s
+
+● All three branches the engine landing was waiting on are now back, and your
+  note about Markdown is in front of me; I'm sending the engine builder the
+  joining first, then answering you properly.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent a4f78f1
+  ⎿  Resuming agent a0b2c5b
+  ⎿  Resuming agent a3f0000
+  ⎿  Resuming agent ac7ef8d
+
+● Builders are all briefed; now recording your note as Turn 4 and writing my
+  answer to it.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Audits are clean; committing the three probe records and writing Turn 4 into
+  the day's record, then my answer follows.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Stop Task
+  ⎿  sleep 3000; echo "fallback timer of fifty minutes ended at $(date -u
+     +%H:%M) UTC" · stopped
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Noted, and I think it's more than a hint: today is the most evidence we've had
+  on it. I'm not proposing anything yet, because two measurements that bear on
+  it are still out.
+
+  What Markdown cost us today
+  - Names: five rounds of work so that every file and symbol name survives being
+    written into a doc and read back. A name like a#b, or a docstring that
+    opens a code fence, turns into document structure unless it's escaped.
+  - Links: three rounds on reading them. The reader now agrees with the standard
+    Markdown parser in all but one place among 51,835 links here. My own rule
+    for closing that last gap lost 295 real links and was reverted.
+  - Volume: every doc is now read back before it's written, and the largest test
+    codebase gets 10,777 doc files (118 MB) written into it.
+
+  Two uses of Markdown are tangled together, and they fare differently
+  - Markdown holding generated facts (symbols, dependencies, line numbers).
+    Nearly all of the cost above is here. These facts are data derived from
+    source, and Markdown is a document format.
+  - Markdown holding what people write (the vision, guides, decisions, the
+    board). It suits this. Link reading stays with us whatever we do, because a
+    document that cites a file is how written words would attach to code.
+
+  Your idea from earlier, a file's own top comment replacing the authored
+  section, decides this. If nothing a person wrote lives in the per-file docs,
+  they are purely derived, and needn't be Markdown or sit in the mapped
+  repository at all. The cost is real too: today you can review docs in a pull
+  request and read them on GitHub without the tool, and the history view is
+  computed from them.
+
+  Two builders are measuring what the authored sections hold that file comments
+  don't, and what it takes today to get from several folders to one World Map. I
+  expect both within the hour and will bring you the choice with alternatives
+  then.
+
+  Since my last message
+  - Engine landing: it has begun. The three branches it waited on are back and
+    one builder is joining them.
+  - C#: links to a same-named class in the wrong project went from 887 to 0 on
+    the second test codebase, with no loss of links the compiler confirms.
+  - Oracle PL/SQL: graded against an independent grammar, the reader finds no
+    packages. On a package-built codebase about half the expected connections
+    are calls into packages.
+
+  Corrections
+  - The .NET crash: I said its cause was found. A real overflow was fixed, but
+    it isn't shown to be that crash.
+  - "A piece is one scan": this was not a new recommendation of mine. You agreed
+    it on October 9 (World Map plan (.mdmd/layer-3/world-map.mdmd.md), ticket
+    T1) and the engine already merges scans. What's missing is the road for a
+    person. Our own board is one scan cut into seven pieces by hand, which is
+    what you noticed.
+  - Linked server: I now think it needs no new line on the board. Its name can
+    be a door the Oracle piece offers, so the wire lands on a door of that name.
+    This is being tested.
+
+  Two things I need from you
+  1. The builder deleting packages/cli tried to repoint 13 links in archived
+     research notes that lead to the deleted files, and was refused permission.
+     I haven't made that edit. May I? Each link would point at the last commit
+     that held the file.
+  2. Is your Oracle side's code in files you would scan, or only the SQL Server
+     side? That decides whether packages matter for December.
+
+  The other questions from my last message are still open.
+
+› Message from general-purpose
+  Measurement done and committed as `8c6dbadf7` on branch
+  `worktree-agent-a4efa650656a29c17`, based on `e566dbb11`. The probe is in `/wo
+  rkspaces/Live-Documentation/.claude/worktrees/agent-a4efa650656a29c17/AI-Agent
+  -Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/authored-section/`:
+  - `README.md`, written for the owner, answer first.
+  - `classes.tsv`, the hand class of every sampled claim.
+  - `scripts/`: `lib.py`, `count.py`, `sample.py`, `notes.py` and `corpora.py`.
+  Plain Python with no dependencies; run from the repo root with `python3 -I`.
+
+  `slopcop:markdown` passes (0 broken links). I removed my temp folder. I
+  touched nothing outside the probe folder.
+
+  **One refusal.** Running `git -C <corpus> ls-files` on the scratch corpora was
+  refused, since I may run git only inside my worktree. I did not retry it.
+  `corpora.py` walks the files on disk instead, skipping `.git`, `node_modules`,
+  `bin`, `obj` and `.mdmd`, so a few untracked files may be counted.
+
+  **1. Counts (`count.py`)**
+  - **Docs:** 1,093 Live Docs. All 1,093 have a Purpose that says something, and
+  all 1,093 have Notes; none has any other authored section. 366 are tests.
+  - **Words:** Purposes are a median 27 words (41,542 in all). Notes are a
+  median 64, at most 5,507, 203,330 in all.
+  - **Opening comments**, defined per language in the README (comments before
+  the first statement, tool directives struck):
+
+  | State | Files |
+  |---|---|
+  | File-level comment | 347 |
+  | PowerShell help at the top | 5 |
+  | Leading comment that documents the first declaration | 36 |
+  | Directives only | 3 |
+  | No leading comment | 600 |
+  | No comment syntax | 77 |
+  | Binary | 25 |
+
+  - By test status: non-tests have a file-level comment 298 times in 727, tests
+  54 in 366. Of the 375 `.ts` files with no opening comment, 292 are tests.
+  - Your "382" sits between my 352 and 352 plus the 36 attached.
+
+  **2. Sample (`sample.py`, seed 20261119)**
+  - 44 pairs drawn from the 352: 32 non-test and 12 test, spread by first two
+  folders in proportion. That covers engine, explorer, generator, cli, five
+  script folders, e2e, integration and sample programs in 8 languages.
+  - 372 claims, each read and classified by hand:
+
+  | Class | Purpose (80 claims) | Notes (292 claims) |
+  |---|---|---|
+  | (a) already said by the file's comment | 51 (64%) | 38 (13%) |
+  | (b) could be said there with no loss | 24 (30%) | 105 (36%) |
+  | (c) provenance | 3 (4%) | 113 (39%, 44% of words) |
+  | (d) relation to other files or docs | 1 | 22 (8%) |
+  | (e) not about this file's text | 1 | 14 (5%) |
+
+  - **The other direction:** 36 of the 44 comments are longer than their
+  Purpose. A median 69% of a comment's content words never appear in its
+  Purpose. What the comments add is usage text, output layout, mechanism detail
+  and the owner's motivating quotes; 97 of the 352 comments already carry a date
+  or a history path.
+  - **Pairs that show the pattern:** `frame.ts`, `network-simplex.ts`, `go.ts`.
+  - **Worst fits:**
+    - `packages/cli/src/index.ts`: its usage comment is stale (it lists 4
+  commands; the Purpose lists 7).
+    - `.gitignore`: the comment is "Node/TypeScript workspace artifacts".
+    - The sample programs: their comments speak inside the sample's story
+  ("Where stock is kept."), while the Purpose says why the fixture exists in our
+  test suite.
+
+  **3. Notes, all 1,093 (`notes.py`)**
+  - **What they contain:** 867 are dated; 404 name a record turn; 300 hold
+  warnings or rules; 170 name a test; 136 quote the owner; 128 give a trial's or
+  decision's state; 88 hold measurements.
+  - **Links:** 719 Notes link somewhere. By target:
+    - records: 627 docs, 1,688 links
+    - design docs: 164 docs
+    - other Live Docs: 86 docs
+    - pictures: 79 docs, 123 links
+    - probes: 79 docs, 102 links
+  - The links land on 174 distinct record, probe and picture files.
+  - **The existing remedy does not carry them today.** The reverse rule
+  (`citingDocuments`, which fills Cited By) only reads documents that discovery
+  finds. The config's `exclude` drops `AI-Agent-Workspace/**`, so no record,
+  probe or picture README is ever a citer here. Today's Cited By comes from
+  `.mdmd/layer-3` (328 entries), `tests/integration` (45), `layer-2` (5),
+  `AGENTS.md` (2) and three single sources. `bundleExclude` also hides the
+  `*.record.md` day records.
+  - The forward rule (`relatedDocsOf`) reads links in the authored words, so it
+  has nothing left if they go.
+  - For Cited By to carry what Notes carry, three things would have to change:
+  the records would have to be discovered for citations; the links would have to
+  exist in the reverse direction; and Cited By would have to say why a document
+  cites the file (it lists paths only).
+
+  **4. Files with no comment syntax (102)**
+  - **Kinds:** 72 JSON (14 of them JSONC tsconfigs that could hold a comment);
+  12 png; 4 wav; 3 txt; 2 woff2; one each of jpg, gif, ico, mp4, ttf, woff,
+  wasm, patch and nvmrc.
+  - **Where:** 53 in `tests/integration/programs`, 23 in fixtures, 5 in
+  `packages/engine/grammars`, the rest the repository's own configuration files.
+  - **Purposes are short:** median 24 words, at most 68, one sentence each ("The
+  surf that loops behind the game.").
+  - **Notes run longer:** median 48 words; 56 pass 40. `package.json` holds the
+  longest, which is script history.
+  - So the "non-plaintext things" are real but few and short.
+
+  **5. What the product reads the authored section for**
+  - `document.ts`: writes the default and no-reader blocks, and renders and
+  parses them.
+  - `generator.ts` prune: keeps a doc whose file is gone if
+  `hasMeaningfulAuthoredContent` finds words in it. That would go away.
+  - `lint.ts` `validateAuthoredSections` and `RESERVED_HEADING_NAMES`: would go
+  away or shrink.
+  - `graph.ts`: carries the block verbatim into the graph.
+  - `relatedDocsOf`: forward Related Docs (the purple documents, and the 3D
+  map's documents when the filter is on).
+  - Explorer `card-reading.ts` `purposeOf`: the 2D card's reading line and
+  zoomed-out first line, with fixed slots.
+  - `detailPanel.ts` and `reader-sections.ts`: Purpose above the generated
+  facts, Notes after.
+  - `inspect`: related documents both ways, and `--words` at a past moment.
+  - History (`summarizeChange`, `summary`, `rows`, `words`, `codec`,
+  `textStore`): keeps each commit's authored block by hash, an `unread` state
+  for docs before 2026-09-27, and the links from authored words to documents.
+  Nothing else in a step depends on authored words. A comment-derived
+  description would be better for history, since comments exist at every commit.
+  - Explorer search does not read authored words at all.
+
+  **6. What the readers extract**
+  - No adapter reads a file-level comment. `SourceAnalysisResult` has no slot
+  for a file description, and the doc format has no generated one (only
+  per-symbol Summary).
+  - TS reads JSDoc per declaration. Python reads class and function docstrings,
+  not the module docstring. C# reads `///` on types. PowerShell reads function
+  help only, not script help. SQL blanks comments.
+  - On the cold run's scratch corpora (dbatools `067b215b`, tSQLt `4a921d0d`,
+  DNN `9bc6b06f`), counting a comment as "describing" once licence and banner
+  lines are struck:
+    - DNN `.cs`: 45 of 3,973. Of the 3,955 leading comments, 3,800 are the .NET
+  Foundation licence.
+    - tSQLt `.sql`: 7 of 281.
+    - DNN `.SqlDataProvider`: at most 139 of 299, mostly one-line change notes.
+    - dbatools `.ps1`: 843 of 1,789 have help inside their one function, which
+  is already read as that function's summary; only 26 have help at the top.
+  - AL-Go and AzureStack-Tools are no longer on disk; I downloaded nothing.
+
+  **7. What would be lost here tomorrow**
+  - **Provenance:** 886 docs carry a provenance mark (74 in the Purpose). Of the
+  813 such files that have comment syntax, only 325 open with a comment. So
+  about 800 files of history and record links would have nowhere to go but a
+  comment.
+  - **Links:** 642 docs link records, 81 probes, 79 pictures.
+  - **Descriptions:** 639 sources with comment syntax have no file-level
+  comment, and 102 cannot have one. All 741 have a Purpose today.
+  - **Cost of moving descriptions into comments:** about 810 source files
+  touched (639 new comments, plus about half of the 352; 21 of 44 sampled
+  Purposes say something their comment does not).
+  - **Is a comment the right home for a cited summary turn?** Partly, here; many
+  comments already quote the owner with a record path. But a comment's link is
+  plain text that no reader follows. And for a stranger's repository, no.
+
+  **What I would choose: (ii)**, on three conditions:
+  1. Add a generated description slot, filled from each language's conventional
+  place: module docstring, `@module` or leading block, `//!`, `// Package`,
+  script help, and a SQL header with the banner struck.
+  2. Make Cited By count this workspace's records and probes, so that a probe or
+  picture README that links a file is shown with it.
+  3. Keep today's authored words until they are carried elsewhere; do not delete
+  them in the same change.
+
+  The deciding fact: your own C# and T-SQL mostly have no file comment at all,
+  so their descriptions will be empty however they are stored. The real question
+  is where a person writes them, and (ii) lets that be a document they keep
+  rather than a section inside every Live Doc.
+
+  **Not finished**
+  - I did not check whether each of the 1,688 record links has a link back from
+  the record to the file. That would size how much the reverse rule could carry.
+  - The classification has one rater; `classes.tsv` lets a second rater disagree
+  claim by claim.
+  - Comments outside the sample were only spot-checked by eye.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Authored section against file comments" finished · 13m 31s
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Second leg handed back at about 44 minutes. The anchoring is carried and
+  confirmed on the page: 243 cards moved where 252 moved, `compose.test.ts` at 2
+  moves where it moved at 9, same thirteen prices. The control exists and was
+  seen once as stills; the quiet search yields; one of the two mends is in.
+  Other builders held the lane from 22:03 to the end, so four runs I had queued
+  never ran and I withdrew them.
+
+  **Branch** `worktree-agent-a3ede7b7e878b89ba`, on top of last leg's
+  `5bebcbc16` and `194a4c5b9`:
+  - `9f8cc1994`, `36eb1ab05`: the cherry-picks of `3feb97fa` and `3a8f95a3`,
+  clean.
+  - `3da5f4312`: the renderer passes the anchor for levellings, with the lab's
+  seam.
+  - `b355efc64`: the control, the yielding, the fold's mend.
+  - `3d95835c0`: the browser cases' comments and the generator's split.
+  - `f9fadb759`: the evidence page and five pictures.
+  - Untracked, never run: `tests/e2e/local-map-offer.spec.ts`.
+
+  ## 1. Anchoring
+
+  A levelling's trial passes the placement tops (cards and lane slots) of the
+  picture it is of, both when priced and when measured on the page; an order
+  passes nothing. Two forks I decided:
+  - **Under Offered**, a levelling of a held arrangement anchors to that
+  arrangement's own placement, and the press's page layout anchors to the held
+  scene, so what is shown is what was held.
+  - **The lab's seam** uses `previous.scene.placement.top`, not the diff's
+  `previous.scene.tops`, so that the lab matches the page's slots-included
+  choice.
+
+  Counted on the page with one probe on both builds: five files, Levelling set
+  to "every one the picture allows" so all thirteen moves are made.
+
+  | | Moves, prices | Cards moved in all | Moves that moved `compose.test.ts` |
+  Load |
+  | --- | --- | --- | --- | --- |
+  | Before | 13; 3,444,078 to 3,426,608, the first packet's to the digit | 252 |
+  9 (moves 1, 2, 3, 4, 5, 7, 10, 11, 13) | 31 to 44 |
+  | After | 13, the same prices | 243 | 2 (move 3, 30 px with order 5; move 6, 7
+  px) | 35 to 23 |
+
+  - **Per move after:** 28, 0, 91, 28, 0, 87, 0, 1, 2, 5, 0, 1, 0, the price
+  builder's column line for line, farthest distances included.
+  - **At the default (nine moves):** not counted; that run was among those
+  withdrawn. It is 237 and 2 if its nine moves are the first nine above, as
+  their prices are.
+  - **Lab against page, anchored build:** `local-map-simplicity` ran 5 green of
+  6, including the estate case that adopts twice. The sixth was red for last
+  leg's reason, not this one (see 5).
+  - **One thing to weigh in the quiet window:** the median long task in the
+  thirteen-move search was 277 ms after against 175 ms before. Loads differed,
+  so I cannot say it is the slots; the price builder's 8 to 9 % was with cards
+  alone.
+
+  ## 2. The control
+
+  - **Lines added, `index.ts`:** 52 (type import), 308 to 309 (state), 363 to
+  368 (callback and announcement), 623 to 633 (comment and button), 641 (group
+  with Fit), 1121 (disabled loop), 1122 to 1139 (sync).
+  - **Lines added, `local.css`:** 327 to 335, a new block after the 3D cue's,
+  whose lines are untouched.
+  - **What it is:** name "Tidier arrangement"; `aria-disabled` while there is
+  nothing to offer (still focusable); `aria-pressed` while taken; a tooltip per
+  state; the page's live region says "A tidier arrangement of the map is ready"
+  as it lights. Shown only in 2D under Offered.
+
+  One run on the five files (load 19 to 23). Pictures are in
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a3ede7b7e878b89ba/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner-packet
+  /search-stop-alternatives/`: `control-unlit-lit-pressed-pressed-again.png` and
+  four `offer-window-*.png`.
+  - **Before the while ended:** one move on the page, the first levelling (28
+  cards by one pixel).
+  - **Until it lit:** the map stood still; the first picture and the lit one
+  differ in 2,399 of 1,296,000 pixels. It lit 48 s in, at the 75th order tried
+  (the packet's order 77), 7.1 % cheaper.
+  - **The press:** the picture moved there with `graph.ts` held; rows dealt
+  anew, `estateGraph.ts` beside it.
+  - **The second press (Enter):** back to the same order at the same price,
+  3,444,078. Not proved to the pixel: my probe left the pointer on a row, which
+  dims the rest, and I did not compare places in that run.
+  - **To its end:** 128 orders, 128 levellings, holding 3,197,457, the
+  eighty-order search's end price to the digit, with 26 of 27 moves made out of
+  sight.
+
+  My eye: dim, amber and pressed blue read apart at a glance. What is wrong:
+  - The glyph was too small beside Fit's; I enlarged it afterwards and have not
+  seen the result.
+  - Dimmed, it looks dead for 48 seconds, with no sign that anything is being
+  looked for.
+  - One task of 9.7 s at about the press, unexplained.
+  - No transition strip: screenshots came two seconds apart at this load. The
+  probe now uses the browser's screencast and compares places, but has not run.
+
+  ## 3. Yielding
+
+  Built: `QUIET_REST_MS = 400`. The quiet search takes a trial only when
+  pointer, wheel and keys have been still that long, and begins none while a
+  button is held. The longest single trial on the five files was 434 ms (160
+  trials in 43 s, median 264, 95th 365; load 19 to 23). With no hand on the page
+  it fills 97 % of the thread, as intended. The worker paragraph is in the
+  README. Yielding has unit tests only; no browser case.
+
+  ## 4. Timings
+
+  All provisional, each with its load; none chased.
+
+  ## 5. Specs
+
+  - **`local-map-hidden.spec.ts`:** comments brought to a run of the suite's
+  setting under the default: 80 orders, 80 levellings, 19 moves, 3,199,550 (was
+  231, 29, 3,197,457). That is one move more than the packet's "A" foresaw,
+  because a levelling taken no longer restarts the list. No wait or budget
+  changed.
+  - **`local-map-simplicity.spec.ts`:** the generator's case was red because
+  under the default (4 orders, patience 2) the lab takes no levelling. It now
+  runs twice: at the default it must take none; with every levelling tried it
+  carries the adoption. I also made "takes none" an assertion for every run so
+  marked. **Not rerun since.**
+  - **`local-map-search.spec.ts`:** the "203 alignment trials" comment is
+  unchanged; its run was withdrawn.
+  - **Left as load:** the two `open()` reds.
+  - **Unit:** the whole suite is green at head (2,259). One 3D case,
+  `forceGraphOctree.test.ts`, timed out once at 5,672 ms under load 27 and
+  passed otherwise.
+
+  ## 6. Mends
+
+  - **The fold: done, but only by a unit test red first.** `levellingsRelaid`
+  remakes the waiting steps as candidates of the picture now standing. I held it
+  to two existing behaviours: files-only keeps the list as it is, since it is
+  the same picture drawn compact; and no new step is added, since
+  `card-reading-refresh.spec.ts` already pins that the search stands where it
+  stood after a fold. No browser case shows the renderer calls it; that spec
+  should be run.
+  - **The cycle under Offered: not done.** Holding a cycle's order needs the
+  held arrangement to carry its own ranking and card feet, and both presses to
+  dress the cards. The cheap alternative, letting cycles finish before the while
+  counts, breaks Offered's promise, so I did not build it.
+
+  ## 7. Words
+
+  Both are in the README under "Words proposed for the design system and the
+  decisions log".
+
+  ## Not got to
+  - `pathfind.ts` and the estate under any of this; the four maps and strips;
+  the transition strip; the strangers.
+  - A Dropped run, the default's cards-moved count, the four-order count, and
+  the simplicity rerun.
+  - Any browser run of the three-case estate spec I wrote for Applied, Dropped
+  and Offered.
+  - The other specs that touch the strip: `labels-and-controls`,
+  `local-map-framing`, `camera-intent`, `local-map-packing`, and the tuning
+  specs.
+
+  ## For you to rule
+  - **Late After counts seconds.** On the five files the first levelling arrives
+  at 3 to 7 s depending on the machine, so with 2.5 s this map gets almost none
+  of today's early moves under Dropped or Offered, while the estate gets its
+  one. Counting the search's first few trials instead would not depend on the
+  machine.
+  - **`slopcop:markdown` shows two broken links,** both in the cherry-picked
+  commit's Live Docs, pointing at the price builder's record, which is on `main`
+  and not on this branch. They resolve at landing; my README names that record
+  without a link for the same reason.
+
+  ## Lane and leftovers
+  - **Holds:** six of mine ran, none cut, the longest 144 s. Four were withdrawn
+  unrun at 22:16 by ending my own waiting processes.
+  - **Running:** nothing of mine; both private servers are stopped.
+  - **For a resume:** the probes are `moves.cjs` and `offer.cjs` in
+  `/tmp/claude-1000/-workspaces-Live-Documentation/a0685a3a-b7de-45e3-bcf9-44c55
+  d10db4e/scratchpad/`; results are in `/tmp/sa-YR6N/`. `dist/explorer` in my
+  worktree is built from head's client.
+  - **Refusal:** the harness again refused one compound command and told me to
+  split it; I split it.
+
+● Agent "2D search: stop rule and late moves" finished · 1h 27m 56s
+
+● Agent "Many scans, one board: cold run" is waiting on its own background work
+  · 11m 35s
+
+● The measurement of authored sections against file comments is back and read;
+  the 2D search builder also handed back. Committing the first and looking at
+  the second's five pictures.
+
+  Read 3 files, ran 3 shell commands (ctrl+o to expand)
+● Two handbacks are filed, and the offer control in the 2D search is the one
+  I've checked. I'm running the last audit and committing, then waiting on the
+  many-folders cold run before I bring you the store question. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  Second leg handed back at 22:21. Items 1, 2, 3 and 5 are done; item 4 is half
+  done: the unit suite and the 3D browser cases ran, **the 2D and Tuning browser
+  cases did not**.
+
+  ## Branch
+  `worktree-agent-afabd6e49523ee996`, on top of `491b4cbc`, worktree clean,
+  nothing pushed:
+  - `90a8f02a` Hold the packed ball's recorded places to a trillionth of the
+  ball (the Node 26 test).
+  - `0e9eda75` Second leg's code: bubble's name, row's outline, ring over wires,
+  Closed Bubble lever.
+  - `31ebab24` Evidence: `second-leg.md` and seven pictures in
+  `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner-p
+  acket/3d-alternatives/`.
+
+  I did not touch `README.md` there, since yours on `main` differs from mine;
+  `second-leg.md` is a new file and needs one link from it.
+
+  ## 1. The two signs
+  **Bubble.** Under "Touch, then rest" a bubble now answers by its name (the
+  chip's outline takes its text's colour; nothing on the skin). A bubble with no
+  name on screen keeps the thin edge line. A third lever value, "Touch with
+  edge, then rest", keeps the edge everywhere, for comparison only; drop it once
+  you choose.
+
+  Matched strips, same sweep, same build, load 19 to 33:
+
+  | | Name | Edge |
+  |---|---|---|
+  | Sweep lasted | 5.9 s | 4.9 s |
+  | Changes | 22 | 14 |
+  | Pixels per change | 0 to 2,532, median 475 | 1,051 to 4,335, median 2,530 |
+  | Pixels over the sweep | 18,259 | 34,677 |
+  | Widest change | a name chip, 87x24 or 95x24 px | `engine` and `explorer`
+  edges, boxes 859x419 and 741x586 |
+  | First change after stop | 0.38 s | 0.39 s |
+
+  - `pointer-3d-touch-name.png`: no large skin changes; `explorer · 250` gains a
+  one-pixel pale outline. **My eye: the name is the right news and, as built,
+  too slight.** The chip can stand 300 px from the pointer and I have to look
+  for it. I choose the name, with a plainer chip (ground lifting as well as
+  outline); that is one stylesheet rule and is not built.
+  - `pointer-3d-touch-edge.png`: finer on the mended mesh, still runs across
+  half the picture for one fact.
+  - **Still wrong:** three or four nameless bubbles on the path, up to 295 px
+  across, still wore the edge line. Larger than I expected a nameless bubble to
+  be.
+  - `pointer-3d-signs-second.png`: the ring is an unbroken circle at 3x (drawn
+  over the wires, `depthTest` off).
+
+  **Row.** The row under the pointer wears its outline as well as the blue name;
+  a pinned row's outline doubles. In `pointer-2d-rows-touch-outline.png` I find
+  the row at once. An unpinned row's single outline is not pictured (the file
+  is pinned whole, so every row is pinned).
+
+  **The 2D journey has no numbers this leg.** It ran at load 33 and took 14.7 s
+  against 5.2; the script stalled past 350 ms several times, the pointer rested,
+  and the map dimmed mid-journey (eleven changes of about 107,000 px). The
+  three-card sweep did not stall (3.6 s, 14 changes, all inside the card).
+  Retake with the 0.61 s question on a quiet machine.
+
+  ## 2. Node 26 test
+  `7 ** 1.5` is 18.520259177452132 on Node 22.23.5 and …136 on 26.13.1 (both are
+  installed here; I ran both). The three cases now hold the extent, and the
+  sphere's distance from its recorded place, to `1e-12` of the ball's extent.
+  - On Node 26 the three are off by 3.0e-16, 2.8e-16 and 1.3e-16 of the extent;
+  on Node 22 exact.
+  - The tolerance is three to eight thousand times that difference and ten
+  orders of magnitude below the smallest sphere's radius.
+  - Each case still proves that the faster placing of up to 48 spheres moved
+  none: with two large spheres; at 48, the largest count it serves; with a named
+  centre.
+  - All 46 cases of the file pass under both Nodes.
+
+  ## 3. The closed ball
+  Lever **Tuning → 3D Layout → Discovery → Closed Bubble**: Milky (default,
+  today's), Frosted, Stippled, Outline; carried in a link only when not Milky.
+  Under the last three the outer skin of a closed body is not drawn (still
+  picked), so the ball is one sphere. Pictures `closed-ball-far.png` and
+  `closed-ball-near.png`, one camera each; links for each value are in
+  `second-leg.md`.
+  - Milky: brightest thing, two highlights, level bands.
+  - **Frosted: my choice.** Dim slate, no highlight, sits behind the open
+  folders and still reads as a thing of its size.
+  - Stippled: says "full", but the dots read as files and are not; a few hundred
+  whatever the ball holds, identical on every closed ball. A sign that looks
+  like a count and is not one.
+  - Outline: nearly the ground's colour; far, the largest folder reads as a
+  hole.
+  - **Still wrong with all three:** near, the ball's edge shows short straight
+  runs. The ball's own sphere has 24 sides and is now the edge. Not mended: that
+  sphere draws every open bubble, and its cost in software drawing would need
+  measuring.
+
+  **The facets' mend**, `facets-before-after.png`, nearer camera: before,
+  straight lines with corners at the left, lower right and under `packages`;
+  after, one curve all round. The level bands and the notches at the milky
+  ball's left edge are untouched; they belong to the inner sphere.
+
+  ## 4. What was run
+  - `npm run build`, `slopcop:symbols`, `slopcop:markdown`: pass.
+  - **Whole unit suite, once, at load 38** (my own bundles were building): 2,249
+  of 2,252. Three failed on the 5 s case limit, in files I did not touch:
+  `engine/.../history/sequence.test.ts` (6.1 s),
+  `generator/.../generatorIdentity.test.ts`,
+  `explorer/.../forceGraphOctree.test.ts`. All three pass alone at load 19. No
+  bound changed.
+  - **3D browser cases** (focus, discovery, structure-cells, shells, wrappers,
+  defaults), after `e2e:bundles`, card, load 8 to 22, one 852 s hold: **39
+  passed, 3 failed, all on time:**
+    - `force-graph-discovery.spec.ts:70`: 2,713 substeps against 2,700. The
+  packet's known red.
+    - `force-graph-focus.spec.ts:226`: the 2D press's own time 615 ms against
+  500; the 3D first frame read 427 against 400. **I have not separated load from
+  my own work here:** the mended skins have more corners and this transition
+  copies skins.
+    - `force-graph-defaults.spec.ts:75`: estate picture still moving when the 25
+  s wait for rest ran out.
+    - `force-graph-focus.spec.ts:517` (today's pointer rule) passed; every
+  shells, structure-cells and wrappers case passed.
+  - **Not run:** `tuning.spec`, `tuning-reset`, `local-map-motion`,
+  `returning-connections`, `overview-files`, `local-map-directories`. The hold
+  stood behind six others at time; I stopped it and its ticket is out of the
+  lane. `tests/e2e/tuning.spec.ts` now expects 75 controls and has never run at
+  74 or 75; the unit test counting the same controls passes.
+
+  ## 5. The sentences about a wrapper's rim
+  What is true at today's defaults: the shader lights a rim only when Group
+  Wrappers is "Cloud, rim on hover" (`forceGraphBatches.ts:549`, `uRim` is 1
+  only for `cloud-rim`). In Skin, the default, and in Cloud, a wrapper under the
+  pointer is drawn exactly as any other; the view still restyles and redraws on
+  entering or leaving one, which moves no pixel by more than a fiftieth of
+  brightness. At once there is only the pointing hand.
+
+  `.mdmd/layer-2/design-system/interaction-and-accessibility.mdmd.md`:
+  - line 56 (table 2.1, Hover, 3D Local Map): "At once, only the pointing hand
+  (and a wrapper's rim) says a sphere can be pressed; once the pointer has
+  rested, names the sphere, offers its actions and fades what it does not touch
+  (see 2.2, *hover intent*); no hover while the map builds."
+  - line 80 (2.2, Rule): "what a moving pointer touches may show at once that it
+  can be pressed, without a word and without changing the rest of the picture:
+  the cursor, and a 3D wrapper's own rim."
+
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md` line 254: "a moving
+  pointer shows at once only that a thing can be pressed: the pointing hand, and
+  a wrapper's own rim."
+
+  `packages/explorer/src/client/views/forceGraphView.ts` (lines on my branch; I
+  left them for you):
+  - 471: "/** The node the pointer touches now: it shows at once only that it
+  can be pressed (the cursor, a wrapper's rim). */"
+  - 590-591: "What the pointer touches shows at once only that it can be
+  pressed: the cursor, and a wrapper's rim."
+  - 2572: "Each wrapper's opacity, as its node's, a bursting one's growth and
+  fading, the hovered or focused node's, for the rim,"
+  - 2582: "// The rim is the touched wrapper's own sign that it can be pressed,
+  shown at once; else the rested or focused one's."
+
+  The same belief is in the historical
+  `2026-11-18/Screenshots/rested-pointer/README.md`, lines 44 and 54 ("a
+  wrapper's rim where the pointer touches one, too faint to see at this size";
+  "A wrapped group adds its rim").
+
+  ## Other
+  - One refusal: the harness refused `git -C` into the shared checkout; I read
+  `main`'s log from my own worktree instead.
+  - Lane waits: 981 s for the suite hold, about 13 minutes for the pictures.
+  - Left in place: small scripts and logs in `AI-Agent-Workspace/tmp/3d-alt/`
+  (git-ignored), and Playwright's `test-results/` from the 3D run. Server on
+  8473 stopped; `/tmp/3a-*` removed.
+  - Still yours: the layer-3 Explorer design says nothing of Pointer, Drawn
+  Files or Closed Bubble; the month's screenshot inventory; the record turn for
+  `restGate.ts`'s Live Doc.
+
+● Agent "3D trials: hover intent, drawn files" finished · 38m 56s
+
+❯ >The builder deleting packages/cli tried to repoint 13 links in archived
+  research notes that lead to the deleted files, and was refused permission. I
+  haven't made that edit. May I? Each link would point at the last commit that
+  held the file.
+
+  Absolutely!
+
+  >Is your Oracle side's code in files you would scan, or only the SQL Server
+  side? That decides whether packages matter for December.
+
+  I could scan a lot of view definitions from the repo for the oracle side. Our
+  code repos for DBs onprem tend to just be systems of record for table
+  shapes, view and SP definitions, that kind of thing. They aren't typically
+  built or deployed programmatically for a wide number of silly constraints.
+  Strangely enough, I don't think the table defs are in the Oracle DB repo --
+  just views and procedures. That makes things more challenging, and it is very
+  reasonable to say "hey, I'm not gonna even try and guarantee these things
+  get linked together because we're going to get a hailstorm of false positive
+  links to allow that kind of flexibility".
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Thank you — making the 13 link edits now that you've said yes, then recording
+  both answers.
+
+  Read 7 files, ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Fifth leg: items 1 and 2 done, `global using` mended; items 3 and 4 not
+  reached
+
+  Item 1 found that DNN's 30 remaining namesake lines do not bear out the
+  namespace-visibility rule you proposed, so I built nothing for them. Item 2
+  found one class that is a plain reading fault, `global using`; I mended it and
+  mojoPortal gained 127 lines the compiler confirms. Items 3 (reasons) and 4
+  (configuration reads, the procedure named from C#) were not started.
+
+  **Branch** `worktree-agent-ac7ef8df4222b2e4b`, on top of `f56d6c57`:
+  - `9ab320c8` — `global using` applied to the whole project
+  - `3b991651` — the probe README and the scripts `namesakes.py`,
+  `missing_sample.py`, `missing_classes.py`
+
+  **Verification**
+  - Build passes; unit tests 2,252 of 2,252 pass, at a load average of about 12
+  to 20.
+  - `slopcop:markdown` passes.
+  - `live-docs:generate` of this repository moved only the doc of `csharp.ts`.
+  - Integration tests and `slopcop:symbols` were not re-run after `9ab320c8`.
+  Both passed at `f201fc8f`, and this commit touches only `csharp.ts` and its
+  test.
+
+  ## 1. DNN's 30 lines that still chose a namesake
+  I read all 30, against the docs of `f201fc8f`:
+
+  | Cause | Lines |
+  | --- | ---: |
+  | One name declared both plainly and with type parameters in one project
+  (`ISettingsView` / `ISettingsView<TModel>`, `DnnHelper` /
+  `DnnHelper<TModel>`). The file uses one; we link both, because the fourth
+  leg's arity rule links every arity until a use's type arguments are matched. |
+  24 |
+  | A `using` written inside the namespace declaration. C# searches it before
+  the enclosing namespaces; our reader searches every enclosing namespace first.
+  | 4 |
+  | A type named in a documentation `cref`. The oracle parses without doc
+  comments, so this is a limit of the oracle, not a wrong wire. | 1 |
+  | A member name of an anonymous object (`new { BrowserTypes = … }`) read as a
+  type name. | 1 |
+
+  **Why the proposed rule does not fit.** In none of the 30 is a candidate's
+  namespace invisible to the file.
+  - In the four namespace cases, both candidates are visible, and what is wrong
+  is the order. Example: `DnnCssInclude.cs` has `namespace
+  DotNetNuke.Web.Client.ClientResourceManagement { using
+  DotNetNuke.Abstractions.ClientResources; … FileOrder … }`. C# searches that
+  declaration's own `using` directives before the outer namespace
+  `DotNetNuke.Web.Client`, so it binds the Abstractions `FileOrder`. DNN writes
+  every `using` inside the namespace, per StyleCop's SA1200 rule.
+  - **Correction:** the order in your brief ("the enclosing namespaces from the
+  inside out before the `using`s") is wrong for this layout.
+
+  **C#'s actual order, which is what these cases need:**
+  1. For each namespace declaration, from the innermost out: its members, then
+  the `using` directives written inside that declaration.
+  2. Last, the compilation unit's own `using` directives and the project's
+  `global using`s, together with the global namespace.
+
+  **The bigger cause is arity (24 of 30).** The fix is to record how many type
+  arguments a use writes (`X` against `X<T>`, and `X<>` in `typeof`) and choose
+  the declaration with that arity.
+
+  **Decision for you:** whether to build the declaration-level `using` order and
+  the arity matching. Both are plain faults of reading by C#'s own rules.
+
+  ## 2. Compiler edges we lack where only the target declares the name
+  40 drawn per corpus with seed 1119, classed and spot-read:
+
+  | Cause | DNN | mojoPortal |
+  | --- | ---: | ---: |
+  | The type is never written in the file: inferred through `var`, a lambda
+  parameter, or a property's or method's return | 31 | 7 |
+  | Visible only through a `global using` in another file of the project | 0 |
+  29 |
+  | Our doc of the target lacks the symbol because `#if`/`#else` splits the
+  declaration header. DNN's six are all its copy of log4net (`#if NETCF … class
+  PropertiesDictionary … #else … #endif`); mojoPortal's one is unread. | 6 | 1 |
+  | A generic argument inside a member access's expression is never visited
+  (`EventHandlersContainer<IFriendshipEventHandlers>.Instance`) | 1 | 0 |
+  | A property read through `this` that has the type's name
+  (`this.UserInfo.UserID`), the same as inferred | 1 | 0 |
+  | Written, but its namespace is neither used nor enclosing in the file; not
+  read yet | 1 | 3 |
+
+  What I did with each class:
+  - **Inferred types:** left. A dependency line today means a type the file
+  names.
+  - **`global using`:** mended (below).
+  - **`#if`/`#else`:** named and left. Mending it means choosing which
+  preprocessor symbols are defined, for example a project's `DefineConstants` in
+  which configuration, and that is a question for the owner.
+  - **Generic argument in an expression:** a plain fault, small; not built yet.
+
+  **The `global using` mend (`9ab320c8`).** C# applies a `global using` to every
+  file of its project; our reader applied it only to the file that wrote it.
+  - **Test seen failing first:** a `GlobalUsings.cs` in Web opens `AppConfig` to
+  Web's other files, and not to a second project.
+  - **What changed:** a file's names now also resolve against every `global
+  using` in its project, after its own directives.
+  - **Unchanged:** the external-namespace dependencies a file lists still come
+  only from its own `using`s. `global using static` and global aliases are not
+  read, as their non-global forms are not.
+
+  **The compiler table after:**
+
+  | | DNN before | DNN after | mojoPortal before | mojoPortal after |
+  | --- | ---: | ---: | ---: | ---: |
+  | Our C#-to-C# lines | 20,989 | 20,989 | 6,933 | 7,060 |
+  | In both | 20,390 | 20,390 | 6,895 | 7,022 |
+  | Ours only | 599 | 599 | 38 | 38 |
+  | The compiler's only | 4,458 | 4,458 | 1,322 | 1,195 |
+  | — a type named that only the target declares | 628 | 628 | 172 | 45 |
+
+  mojoPortal gained 127 confirmed lines and no unconfirmed ones. DNN has no
+  `global using` and did not move.
+
+  ## 3. Reasons out of `resolveDirectivePath` and `narrowFor`
+  Not done. Both still collapse their reasons into "no link". When built, each
+  should return one of your three phrases, and the hand-over at the gathering
+  would be one line in each adapter's `analyze`, for example `notices:
+  reasons.map((reason) => ({ reason, subject: thisFile }))`.
+
+  ## 4. Configuration reads and the procedure named from C#
+  Not reached.
+
+  ## For the record
+  - **The 307 s / 173 s profile:** the README now says where my counts were
+  taken: DNN at `9bc6b06f` and mojoPortal at `ecbaf7f4`, read by
+  `086140cc`/`c6b8674b` before and `f201fc8f` after, through
+  `scripts/csharp-scale.ts`. Neither corpus showed those times before the
+  change: the main pass over 2,000 DNN files took 9.7 s.
+  - **The double read:** the C# adapter still reads its file twice in one pass.
+  Left alone, as you asked.
+
+  No refusal of an action. The worktree guard refused two compound commands as
+  too complex to check; I re-ran them as plain commands. The corpora's docs at
+  each stage are kept in `/home/node/scratch-dotnet-gaps/` (current is
+  `9ab320c8`, the previous stage is `leg4c-*`), and my temp folder is
+  `/tmp/dn-95qM`.
+
+● Agent ".NET Framework gaps: measure, mend" finished · 12m 14s
+
+● Three more handbacks reviewed (3D pictures looked at, .NET's fifth leg);
+  committing the link repair you approved and the packet additions, then I'll
+  answer your Oracle note.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  Handback for this leg. The worktree is clean. Two new commits on my branch, on
+  top of `c660cde6`: `fbbfd67a` (archetype) and `112d4f02` (grammar). No push,
+  no amend, `main` not touched. The Pester `BeforeAll` rule was not reached, and
+  the full gate on the two new commits is still owed (what did run is in
+  section 4).
+
+  ## 1. Gate for `c660cde6`
+  Run under a private `TMPDIR`, with the machine's load average about 27 to 33.
+  - **Passed:** Live Docs generate (0 changed) and lint, eslint, build, test
+  type-check.
+  - **Unit: 2257/2258.** The one failure was a timeout:
+  `packages/explorer/src/client/views/forceGraphOctree.test.ts`, "holds every
+  sphere once…", took 5299 ms against the 5000 ms limit. Run alone at load 23 it
+  passes 6/6. Not changed.
+  - verify stops at the first failing stage, so I ran the remaining stages
+  myself: integration 155/155 at load 18 to 25, and all three audits (markdown
+  links, asset paths, symbols) pass.
+
+  ## 2. Archetype mend (`fbbfd67a`)
+  - **The change:** in `packages/engine/src/live-docs/archetype.ts`,
+  `\btests?\b|__tests__` is now tested against `path.posix.dirname(sourcePath)`,
+  never the file's own name. Its test in `archetype.test.ts` failed first.
+  - **One name rule added:** `^tests?\.[^.]+$` (any case), for a file named for
+  the word alone, like `test.js` or Django's `tests.py`. Without it, DNN's 17
+  `test.js`/`test.ts` files would lose the test label; 16 of them are
+  CodeMirror's mode tests. This is my call, not yours; say if you want it out.
+  - **This repository:** no doc changes archetype.
+  - **Corpora:** every move is from test to implementation.
+
+  | Corpus | Files | Kind | Example | Old label wrong? |
+  |---|---|---|---|---|
+  | dbatools | 66 | function named for the verb `Test` |
+  `public/Test-DbaPath.ps1` | yes |
+  | dbatools | 4 | CI check script |
+  `.github/scripts/Test-ActionlintWorkflows.ps1` | yes |
+  | dbatools | 4 | workflow file | `.github/workflows/integration-tests.yml` |
+  arguable |
+  | tSQLt | 1 | dotted part of the name | `Source/tSQLt.Tests.view.sql` | yes |
+  | AL-Go | 6 | settings file | `Templates/AppSource App/.github/Test
+  Current.settings.json` | yes |
+  | AL-Go | 3 | end-to-end test named for the verb | `e2eTests/Test-AL-Go.ps1` |
+  **no, these are tests** |
+
+    The `e2eTests` folder name has no word boundary before `Tests`, so the
+  folder pattern doesn't read it as a test folder.
+  - **Adapter wires:** dbatools 7,473 → 7,477 (the four true wires to
+  `Test-Dba*` are back); AL-Go stays at 472.
+
+  **Pester's `Name.Tests.ps1` against `RunTests.psm1`: not built.** No
+  language-free pattern can tell `RunTests.psm1` from C#'s `FooTests.cs`.
+  Candidates, counted on top of the mend:
+  - **P1:** a PowerShell file is a test by its name only as `Name.Tests?.ps1`.
+  It moves tSQLt 4 (`Build/tSQLt_BuildTests.ps1`,
+  `Build/tSQLt_ValidateRunExampleTests.ps1`,
+  `Build/tSQLt_ValidateRuntSQLtTests.ps1`, `Experiments/InvokeSqlcmdTest.ps1`),
+  AL-Go 4 (`Actions/AnalyzeTests/AnalyzeTests.ps1`,
+  `Actions/RunTests/RunTests.ps1`, `Actions/RunTests/RunTests.psm1`,
+  `Internal/Scripts/GetOwnerForE2ETests.ps1`) and dbatools 0. All are working
+  code.
+  - **P2:** a `.psm1`/`.psd1` is never a test by its name. It moves AL-Go 1
+  (`RunTests.psm1`).
+  - **I recommend P1.**
+
+  **Letting a reader ask the workspace's own answer.** These are the exact lines
+  for the joining; not built, since generator and discovery are off-limits.
+  - `packages/engine/src/live-docs/adapters/index.ts` line 32 becomes:
+    `export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path:
+  string) => LiveDocumentationArchetype };`
+  - `packages/generator/src/generator.ts` lines 142 to 146 become:
+    `const fileIndex: WorkspaceFileIndex = Object.assign(new
+  Set(allTargetFiles.map((absPath) =>
+  normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))), {
+  archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig) });`
+  - In `powershell.ts`, `isTestFile(workspace, file)` returns
+  `(workspace.archetypeOf?.(file) ?? resolveArchetype(file,
+  DEFAULT_LIVE_DOCUMENTATION_CONFIG)) === "test"`.
+  - The index stays a `Set` to every other consumer.
+
+  ## 3. Grammar (`112d4f02`)
+  **Downloads.** wasi-sdk 34 and binaryen 132 into `~/.cache/tree-sitter`.
+  Binaryen's download was 111 MB; wasi-sdk's size was not captured. On disk: 953
+  MB (wasi-sdk 635, binaryen 318). The cache is left in place. No other
+  download, install or permission prompt appeared. `build.sh` run from the
+  committed patch gives the committed wasm byte for byte. It does write it with
+  mode 755; I set it back to 644.
+
+  **Graded by PowerShell's own parser** over 2,073 files:
+  - Files with an error node: 207 → 113 (dbatools 112→68, AL-Go 78→31,
+  AzureStack 12→10, tSQLt 4→3, shop 1). None is newly in error.
+  - Functions PowerShell sees that the grammar does not: the same 10 before and
+  after.
+
+  **Idioms, in order of files freed.** Each has a corpus entry
+  (`test/corpus/assignments.txt`, `script_blocks.txt`) that failed first against
+  the grammar as it stood. The per-idiom counts come from each error file's
+  first failing line; one-mend-at-a-time builds didn't grade reliably, so only
+  the combined result above is measured.
+  1. **An attribute with arguments before an expression**, even on the line
+  before it (`[SuppressMessageAttribute(...)]` then `$x = ...`). It was the
+  first error in 43 files, mostly AL-Go's, and is valid in 5.1. Built as
+  `attributed_expression`, like PowerShell's own `AttributedExpressionAst`, in a
+  declared conflict with param-block attributes.
+     - Rejected: putting the attributes in the assignment's target. Error
+  recovery then lost 5 AzureStack functions.
+     - Rejected: a fixed precedence. It took `[CmdletBinding()]` then
+  `[OutputType()]` before `param` for an expression; a corpus guard now covers
+  that.
+  2. **An empty script block** (`Mock X { }`, `-Value { }`).
+  3. **Named blocks ended by `;`** (`Process{...};`). Without it, mend 2 made
+  recovery lose tSQLt's whole `Build/CommonFunctionsAndMethods.psm1` and its
+  `Replace-InFile`.
+
+  **Adapter and oracle.** Both now read an attributed assignment's variable; a
+  type constraint like `[int]$x` stays unread on both sides. The adapter test
+  failed first, on the library half.
+
+  **The unread-text rule now has a test that can fail.** With the `ERROR` clause
+  removed from `inNestedScope` it fails; with it, it passes. It first checks
+  that the grammar still loses its input:
+  ```
+  Describe 'x' {
+      $path = 'C:\’
+      $name = 'y'
+  }
+  function Get-Thing { }
+  $z = 'w'
+  ```
+  - PowerShell 7 ends a string at the typographic quote `’` and reads this with
+  no error. 5.1 was not run.
+  - The grammar loses the `Describe` block. This is the idiom in AzureStack's
+  `AzS-PoSh-Environment.ps1`.
+  - This input loses a file-level definition. A reduction with a stub inside the
+  lost block stalled at 52 lines.
+
+  **Map effect, all corpora.** Only AL-Go changes: 472 → 477.
+  - Four true loads in tests the grammar can now read.
+  - One false wire: `Actions/RunTests/RunTests.psm1` → `Tests/RunTests.Test.ps1`
+  stubs. It appears because the name pattern calls that module a test; P1 or P2
+  removes it.
+
+  ## 4. Checks on the new commits
+  - **Passed:** unit 2263/2263 at load 14 to 23; engine build; eslint on the
+  changed files; Live Docs regenerated and linted; the three audits.
+  - **Integration: 152/155 on the full run.** The 3 failures were in
+  `history.test.ts`, run while `build.sh` was rewriting the wasm; my guess is
+  that rewrite caused them. Rerun alone with the wasm stable: 30/30.
+  - **Not run:** `safe:commit` as one run.
+
+  ## 5. Not reached
+  - Pester `BeforeAll`. What Pester 3/4 (5.1 ships 3.4.0) do differently is from
+  memory, not checked: there is no separate discovery phase, so a variable
+  assigned directly in a `Describe` body, not only in `BeforeAll`, reaches its
+  `It` blocks.
+  - The remaining idioms in `grammar-errors.md`: switch-as-expression, `1MB`, a
+  member after a method call as an argument, labels, typographic quotes.
+
+  ## Files
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/src/live-docs/archetype.ts`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/src/live-docs/adapters/powershell.ts`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/grammars/powershell/grammar.patch`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/AI
+  -Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wire
+  s/README.md`: the probe README, brought level with two new sections.
+  - Their tests, the new corpus files, `scripts/oracle/powershell-ast.ps1` and
+  the Live Docs are in the same two commits.
+
+● Agent "PowerShell wires: measure, then build" finished · 1h 13m 54s
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Resuming agent ac7ef8d
+  ⎿  Resuming agent a29a6d3
+
+● Recording your two answers and telling the engine builder that the
+  packages/cli deletion can now join the landing, since the links are repaired.
+  ⎿  Message queued for delivery to a4f78f17415dc6ce3 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "SQL adapter: crash, lines, facts" is waiting on its own background work
+  · 14m 50s
+
+● Your answers are recorded and the direction file is level; one last audit,
+  then a short reply.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Both done.
+
+  The links: all 13 now point at the last commit that held each file, and I
+  checked each target exists there. That unblocks deleting packages/cli, which
+  now joins the engine landing so the history is rebuilt only once.
+
+  Oracle: your answer settles more than the package question.
+  - What gets scanned: your Oracle repo, as views and procedures. A view's
+    tables have no definition in any scanned file, so they stay as names without
+    a link. The tool already works that way and I'm keeping it; nothing gets
+    loosened to guess at them.
+  - The rule for joining scans: I'm taking "no link rather than a hailstorm of
+    false positives" as the rule for every join. This evening's C# work is the
+    same rule in practice: 887 links to a same-named class in the wrong project
+    are gone, and none that the compiler confirms were lost.
+  - Packages: they stay unbuilt until we know your procedures live in them.
+
+  First measurement back on your Markdown question (the probe (AI-Agent-Workspac
+  e/AgentSessionHistory/2026/11/2026-11-19/Probes/authored-section/README.md)):
+  - Purposes: a file's own top comment already says about two thirds of what our
+    authored Purposes say, and could say nearly all of it.
+  - Notes: most of what we've authored is Notes, five words for every one of
+    Purpose, and Notes are mostly history. 627 docs hold 1,688 links into the
+    session records, and nothing else in the product carries that today.
+  - Code like yours: almost no file describes itself. In the test codebases that
+    is 45 of 3,973 C# files and 7 of 281 T-SQL scripts, once licence banners
+    are set aside. PowerShell is the exception, and its help text is already
+    read.
+
+  So for your work code the description is empty whichever way it's stored, and
+  the real question is where a person writes one. I'll bring the full choice
+  when the several-folders run is back.
+
+  Twice tonight a rule I gave a builder was wrong, and their evidence corrected
+  it before anything was built on it: the fence rule for links, and the order in
+  which C# looks names up.
+
+  Two builders are parked until the browser queue clears; it was nine deep.
