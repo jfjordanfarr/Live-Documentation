@@ -285,7 +285,17 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     }
     files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
   }
-  return files.sort((a, b) => a.absolute < b.absolute ? -1 : a.absolute > b.absolute ? 1 : 0);
+  return inWorkspaceOrder(files);
+}
+
+/**
+ * Files in the order of their workspace-relative paths with forward slashes, by UTF-16 code unit, whatever the platform
+ * spells their absolute paths with: on Windows a backslash sorts after the digits and the capitals, where a slash sorts
+ * before them, so an order of absolute paths put `Shop.Data2\` before `Shop.Data\`, the reverse of Linux. The order is
+ * the one in which files register their symbols, so it must not depend on the platform.
+ */
+export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[] {
+  return files.sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0));
 }
 
 /**

@@ -171,6 +171,35 @@ describe("import-bound signature composition", () => {
   });
 });
 
+describe("a type two files declare alike", () => {
+  it("resolves to one of them whatever order the files were discovered in, as Windows and Linux order them differently", () => {
+    // Equally near, equally deep, neither a barrel: once the order of discovery decided, and Windows discovers
+    // `Shop.Data2\` before `Shop.Data\`, the reverse of Linux.
+    const locations = ["Shop.Data/Customer.cs", "Shop.Data2/Customer.cs"].map((sourcePath) => ({
+      liveDocPath: `.live-documentation/source/${sourcePath}.md`,
+      sourcePath,
+      anchor: "symbol-customer",
+      kind: "class"
+    }));
+    const programPath = "App/Program.cs";
+    const resolveIn = (order: typeof locations): string | undefined => {
+      const headings = computePublicSymbolHeadingInfo([{ name: "Run", kind: "method", typeReferences: [{ name: "Customer", role: "parameter", parameterName: "customer" }] }]);
+      const [block] = composeSymbolBlocks({
+        headings,
+        docDir: path.dirname(path.join(liveDocsRootAbsolute, `${programPath}.md`)),
+        sourceAbsolute: path.join(workspaceRoot, programPath),
+        sourceRelativePath: programPath,
+        symbolIndex: new Map([["Customer", order]]),
+        liveDocsRootAbsolute
+      });
+      const parameters = block.references.find((reference) => reference.role === "Parameters");
+      return parameters?.role === "Parameters" ? parameters.parameters[0].types[0].link : undefined;
+    };
+    expect(resolveIn([...locations])).toBe("../Shop.Data/Customer.cs.md#symbol-customer");
+    expect(resolveIn([...locations].reverse())).toBe("../Shop.Data/Customer.cs.md#symbol-customer");
+  });
+});
+
 describe("composeDependencies", () => {
   it("uses only target anchors present in the workspace index, retaining missing names as file links", () => {
     const types = "packages/engine/src/types.ts";

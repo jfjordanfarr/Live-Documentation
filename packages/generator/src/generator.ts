@@ -134,7 +134,7 @@ export async function generateLiveDocs(
   // still part of the workspace context for this run, but only included files
   // are rendered.
   const allTargetFiles = includeSet.size > 0
-    ? [...new Set([...workspaceFiles, ...includedFiles])].sort()
+    ? [...new Set([...workspaceFiles, ...includedFiles])].map((file) => ({ file, relative: normalizeWorkspacePath(path.relative(workspaceRoot, file)) })).sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0)).map(({ file }) => file)
     : workspaceFiles;
   const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 

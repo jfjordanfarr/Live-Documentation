@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
-import { discoverDocuments, discoverTargetFiles } from "./discovery";
+import { discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
 
 /**
  * A workspace with a file for every rule: hidden files and folders, files no
@@ -73,6 +73,18 @@ const DOCUMENTED = [
   "tools/self/x.ts",
   "vendor/lib.ts"
 ];
+
+describe("inWorkspaceOrder", () => {
+  it("orders files by their workspace paths, the same whether the platform spells them with slashes or backslashes", () => {
+    const relative = ["Data/Order.cs", "DataAccess/Order.cs", "Shop.Data/Customer.cs", "Shop.Data2/Customer.cs", "src/a.cs", "src0/a.cs"];
+    const linux = relative.map((file) => ({ absolute: `/repo/${file}`, relative: file }));
+    const windows = relative.map((file) => ({ absolute: `C:\\repo\\${file.split("/").join("\\")}`, relative: file }));
+    // An order of the absolute paths, as discovery once sorted, puts Windows's `DataAccess\\` before `Data\\`.
+    expect([...windows].sort((a, b) => (a.absolute < b.absolute ? -1 : 1)).map((file) => file.relative)).not.toEqual(relative);
+    expect(inWorkspaceOrder([...linux].reverse()).map((file) => file.relative)).toEqual(relative);
+    expect(inWorkspaceOrder([...windows].reverse()).map((file) => file.relative)).toEqual(relative);
+  });
+});
 
 describe("discoverTargetFiles", () => {
   let workspace: string;

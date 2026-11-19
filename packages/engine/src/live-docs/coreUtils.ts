@@ -12,6 +12,7 @@
 import path from "node:path";
 import ts from "typescript";
 
+import { compareText } from "../tooling/compareText";
 import { slug } from "../tooling/githubSlugger";
 import type { DependencyEntry, LocationInfo } from "./coreTypes";
 
@@ -299,6 +300,7 @@ export function createProximityAwareComparator(referencePath: string) {
     // Among same proximity, prefer deeper paths (more specific modules)
     const aDepth = a.sourcePath.split(/[\\/]/).length;
     const bDepth = b.sourcePath.split(/[\\/]/).length;
-    return bDepth - aDepth;
+    // Then by path, so that no choice is left to the order in which files were discovered.
+    return bDepth - aDepth || compareText(a.sourcePath, b.sourcePath);
   };
 }

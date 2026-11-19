@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/discovery.test.ts
-- Generated At: 2026-10-22T16:47:52.792Z
+- Generated At: 2026-11-19T20:01:35.617Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Discovery's product rules over a temporary workspace: every file read by default
 ### Notes
 - Written 2026-10-16 with the suffix-anywhere defaults ([Turn 9 of the October 15 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-9)); the tracked-file case initialises a git repository in the temporary workspace.
 - The every-file default and the documents rule came on 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)); breaking either the rule or the document-name pattern fails both of the first two cases.
+- `inWorkspaceOrder` (2026-11-19) is held to one order of files whether their absolute paths are spelled with slashes or backslashes, where an order of the absolute paths reverses `Data/` and `DataAccess/`, `Shop.Data/` and `Shop.Data2/`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -30,5 +31,6 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
+- [`discovery.inWorkspaceOrder`](./discovery.ts.mdmd.md#symbol-inworkspaceorder)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

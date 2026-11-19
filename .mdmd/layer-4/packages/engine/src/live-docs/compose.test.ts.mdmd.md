@@ -14,6 +14,7 @@ Proves composition: a symbol becomes a heading with its kind, source line and do
 - Current binding regressions (2026-11-08) place namesakes in the workspace index: known external/unresolved and lexically bound names stay plain; original-symbol mappings and proven re-export providers retain declaration links; unavailable providers retain a real barrel anchor; default imports resolve by export identity.
 - Replaced `renderPublicSymbolLines.test.ts` on 2026-09-27, which asserted on rendered lines; these assertions are on the model. Target-index cases distinguish real direct and re-export anchors from a missing symbol whose known file still receives the link. A barrel keeps its own plain heading while its provider link uses the provider's disambiguated type/value heading; no-index standalone composition retains the earlier best-effort fragment.
 - Since 2026-11-19 the empty name reads back empty, written `#### ""` apart from a key spelled `""`, and a name ending in a parenthesised word is given its kind so that `symbolName` reads it whole. A barrel re-exporting `Foo` and `foo` through `export *` anchors them `symbol-foo` and `symbol-foo-1`, in its doc and in the workspace index alike; run on the code before, both were `symbol-foo`.
+- A type two files declare alike, equally near and equally deep, resolves to the same one whichever order the files were discovered in (2026-11-19); on the code before, the order decided, and Windows and Linux discover such files in opposite orders.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

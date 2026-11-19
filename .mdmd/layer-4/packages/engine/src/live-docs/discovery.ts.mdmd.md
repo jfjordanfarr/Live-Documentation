@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-11-19T19:54:56.964Z
+- Generated At: 2026-11-19T19:59:10.364Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - When TS/JS source has bare star re-export syntax, the first pass uses the same current-workspace re-export resolver that renders its `Re-Exported Symbol Anchors` section. It indexes only anchors that section will publish, marked as re-exports, so imports can link to real barrel anchors and declaration links still prefer origins. Namespace re-exports are ordinary exported symbols under their namespace name and do not trigger peer expansion here.
 - Since 2026-10-22 the shipped glob is every file, and documents are never documented: markdown, reStructuredText and AsciiDoc by suffix, and by name the plain-text readme, licence and its kin (`LICENSE-MIT`, `COPYING`, `NOTICE`), changelog, authors and contributing files with no extension or `.txt`, a name with another extension (`license.ts`) being code. A document reaches the map as linked documentation when a doc's authored words link to it. The owner: "I don't think we want to make a doc for a doc. I think we should aim for the "Linked Documentation" bundle to handle that.", and of licences, "they are docs and should be treated as such"; the markdown rule is absolute for now and expected to change for "prompts as programs", an agent's `SKILL.md` among them ([Turns 7 and 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-7)). The walk no longer enters `.git`, `node_modules` or the docs root at all (`glob`'s `ignore`), so every-file discovery walks this repository in under half a second.
 - `discoverDocuments` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the workspace's documents for the generator's `Cited By` sections, found by the same walk as the files (now shared as `walk` and `keptByGitAndConfiguration`): every document anywhere, whatever the configured globs name, since a document anywhere may link to a file and a doc's words may link to a document anywhere; less what git ignores and what `exclude` names; never `.git`, `node_modules` or the generated docs' base layer, while the authored documents a repository keeps under its docs root beside that layer count. The configured globs still decide which files get docs.
+- Since 2026-11-19 discovery orders the files it finds by their workspace-relative paths with forward slashes, by code unit (`inWorkspaceOrder`), not by their absolute paths as the platform spells them: on Windows a backslash sorts after the digits and the capitals, so `Shop.Data2\` came before `Shop.Data\`, the reverse of Linux, and since the order is the one in which files register their symbols, a type two files declare alike could resolve to another file on each. The generator's `--include` list is ordered the same way. On Linux the order is the one it always was, so no doc moved. Found by imitating Windows that day.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -92,16 +93,28 @@ reads their links for the `Cited By` sections.
 ##### `discoverDocuments` — Returns
 Workspace-relative paths with forward slashes, sorted.
 
+#### `inWorkspaceOrder` {#symbol-inworkspaceorder}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L297)
+- Returns: `T`[]
+- Parameters: `files`: `T`[]
+
+##### `inWorkspaceOrder` — Summary
+Files in the order of their workspace-relative paths with forward slashes, by UTF-16 code unit, whatever the platform
+spells their absolute paths with: on Windows a backslash sorts after the digits and the capitals, where a slash sorts
+before them, so an order of absolute paths put `Shop.Data2\` before `Shop.Data\`, the reverse of Linux. The order is
+the one in which files register their symbols, so it must not depend on the platform.
+
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L315)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L325)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L339)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L349)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
