@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/symbolReferences.ts
-- Generated At: 2026-11-19T00:59:46.977Z
+- Generated At: 2026-11-19T21:25:38.634Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 ### Public Symbols
 #### `SymbolIssueKind` {#symbol-symbolissuekind}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L22)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L23)
 
 ##### `SymbolIssueKind` — Summary
 The category of issue found during symbol/anchor auditing.
@@ -31,14 +31,14 @@ The category of issue found during symbol/anchor auditing.
 
 #### `SymbolIssueSeverity` {#symbol-symbolissueseverity}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L25)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L26)
 
 ##### `SymbolIssueSeverity` — Summary
 Severity level for a symbol audit issue.
 
 #### `SymbolRuleSetting` {#symbol-symbolrulesetting}
 - Type: type
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L28)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L29)
 - Returns: [`SymbolIssueSeverity`](#symbol-symbolissueseverity)
 
 ##### `SymbolRuleSetting` — Summary
@@ -46,7 +46,7 @@ Tri-state rule setting: `"off"` disables the check entirely.
 
 #### `SymbolReferenceIssue` {#symbol-symbolreferenceissue}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L36)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L37)
 
 ##### `SymbolReferenceIssue` — Summary
 A single issue discovered by {@link findSymbolReferenceAnomalies}.
@@ -56,7 +56,7 @@ diagnostics with file path, line/column, and actionable message.
 
 #### `SymbolAuditOptions` {#symbol-symbolauditoptions}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L55)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L56)
 
 ##### `SymbolAuditOptions` — Summary
 Options for {@link findSymbolReferenceAnomalies}.
@@ -67,7 +67,7 @@ Options for {@link findSymbolReferenceAnomalies}.
 
 #### `findSymbolReferenceAnomalies` {#symbol-findsymbolreferenceanomalies}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L131)
+- Source: [source](../../../../scripts/slopcop/symbolReferences.ts#L132)
 - Returns: [`SymbolReferenceIssue`](#symbol-symbolreferenceissue)[]
 - Parameters: `options`: [`SymbolAuditOptions`](#symbol-symbolauditoptions)
 
@@ -104,6 +104,7 @@ Created 2025-10-25 for the SlopCop symbol auditor; fence parser fixed
 - `node:path` - `path`
 - [`GitHubSlugger`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`githubSlugger.slugText`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
+- [`markdownLinks.linkPath`](../../packages/engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 - [`markdownShared.computeLineStarts`](./markdownShared.ts.mdmd.md#symbol-computelinestarts)
 - [`markdownShared.extractReferenceDefinitions`](./markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
 - [`markdownShared.fencedLines`](./markdownShared.ts.mdmd.md#symbol-fencedlines)
