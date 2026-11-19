@@ -19,6 +19,8 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 Since 2026-11-06 (the breakpoint round's gate, [the closing work notes after Turn 26](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-26--november-6)) the first test reads the structure layout's first picture once the scan root's hub is among its hubs rather than at the first hub: the hubs enter over frames in the reveal's order, the root's not the first of them, and that gate had read the picture one frame before it entered and found no root.
 
+Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) the cases that look for a hoverable file or hub wait for the pointer to rest on it (`restsOn`), and the references drawn for the hovered file are read once the frame after the rest has drawn them.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

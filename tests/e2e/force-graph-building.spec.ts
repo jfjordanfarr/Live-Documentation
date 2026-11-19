@@ -63,7 +63,11 @@ async function steadySphere(page: Page): Promise<Sphere> {
     // No frame needs awaiting between the two readings: one reading takes 93 to 150 ms against a frame of about 25 ms,
     // so the pair spans 6 to 8 frames; none of 46 pairs fell inside one frame (measured 2026-11-19, two workers).
     const again = new Map((await renderedNodes(page)).map(sphere => [sphere.id, sphere]));
-    found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
+    // A sphere the pointer can reach: one standing under the search bar or a control is out of a person's hand. On
+    // 2026-11-19 the largest steady sphere was found under the search bar, and nothing hovered.
+    const open = await page.evaluate(points => points.map(({ x, y }) => document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas")),
+      first.map(sphere => ({ x: sphere.x, y: sphere.y })));
+    found = first.map(sphere => again.get(sphere.id)).find((sphere, index) => !!sphere && open[index] && Math.hypot(sphere.x - first[index].x, sphere.y - first[index].y) < 1);
     return !!found;
   }, { timeout: 90_000, intervals: [0], message: "a sphere of the grown picture holds its place on the screen" }).toBe(true);
   return found!;
@@ -112,10 +116,17 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   // as its reading: the largest sphere whose place holds between two readings is taken, and the pointer moves once.
   // (Until 2026-11-18 the largest sphere of one reading was taken; beside a second worker it had left the pointer's
   // place by more than its own radius before the next frame picked, in 14 of 16 runs.)
-  const target = await steadySphere(page);
-  await page.mouse.move(target.x, target.y);
-  await expect.poll(async () => (await looking(page, target)).hovered).toBe("true");
-  await expect.poll(async () => (await looking(page, target)).faded, { message: "the rest fades for the hover" }).toBeGreaterThan(0);
+  // Since 2026-11-19 the fade waits for the pointer to rest, 350 ms, and a sphere of the drifting picture can leave the
+  // still pointer before then, as a person's target can: measured that day, the steady sphere drifted 12 to 50 px in
+  // 1.2 s. A person aims again; so does the case, up to four times, each a move of the pointer.
+  let rested = false;
+  for (let aim = 0; aim < 4 && !rested; aim++) {
+    const target = await steadySphere(page);
+    await page.mouse.move(target.x, target.y);
+    rested = await expect.poll(async () => (await looking(page, target)).hovered, { timeout: 2_000 }).toBe("true").then(() => true, () => false)
+      && await expect.poll(async () => (await looking(page, target)).faded, { timeout: 3_000 }).toBeGreaterThan(0).then(() => true, () => false);
+  }
+  expect(rested, "a move onto a sphere shows at once that it can be pressed, and a rest there fades the rest").toBe(true);
 });
 
 test("a press on a node while the map builds does nothing and is not replayed once it has built; a drag from a sphere turns the camera", async ({ page }) => {

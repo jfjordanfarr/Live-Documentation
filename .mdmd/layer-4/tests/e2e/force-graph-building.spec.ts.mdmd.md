@@ -19,6 +19,8 @@ Since 2026-11-18 the first case aims the pointer's first move at a sphere whose 
 
 A review on 2026-11-19 asked whether the two readings could fall inside one frame and so agree while the picture moved, and briefly awaited two frames between them. Measured beside a second worker, they cannot here: one reading takes 93 to 150 ms against a frame of about 25 ms, so a pair spans 6 to 8 frames, and none of 46 pairs fell inside one frame. The wait was taken out again, and the comment at the readings says why.
 
+Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-22)) a hover's fade comes only once the pointer has rested, so the case waits for it on the page's state rather than reading it at once; the pointing hand still shows at once. `steadySphere` now takes only a sphere the pointer can reach, since the largest steady sphere was once found under the search bar; and the last step aims again, up to four times, since a sphere of the drifting picture can leave a still pointer before its rest of 350 ms is done (it drifted 12 to 50 px in 1.2 s, measured that day), as a person would aim again. On the branch before these two changes the step failed in three runs of four.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
