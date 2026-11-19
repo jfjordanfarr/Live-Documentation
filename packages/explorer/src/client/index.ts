@@ -829,11 +829,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const focused = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
     const label = focused?.getAttribute("aria-label");
     const keptSubject = item.kind === "pin" && state.selectedNode?.id === item.pin.nodeId;
+    const releaseSubject = strength === "unpin" && !keptSubject;
+    // The 2D map holds the thing kept under the hand by the rule a pin's change uses, which also tells it that a subject
+    // moved by a release is no direct choice to re-fit the camera to (found 2026-11-19: without it the card kept left
+    // the pointer by 470 px as the map centred its new subject).
+    const nextSubject = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, result.state.pins, state.selectedNode?.id ?? null, releaseSubject);
+    const frame = item.kind === "pin" ? localView.capturePinChange(item.pin.nodeId, item.pin.symbol, nextSubject)
+      : localView.captureDirectoryChange(item.directory);
     forceGraphView.keepPoppedGroups(result.popped);
     stepWithinPlace();
-    applyRetentionChange(result.state, strength === "unpin" && !keptSubject, { discovery: result.discovery });
-    // A render can rebuild the control the menu returned focus to; its successor carries the same accessible name.
-    if (label && (!focused!.isConnected || document.activeElement === document.body || !document.activeElement)) {
+    applyRetentionChange(result.state, releaseSubject, { discovery: result.discovery });
+    frame.afterRender();
+    // A render can rebuild the control the menu returned focus to, or the pin's change hand it to the Pin beside it; the
+    // focus goes back to the control of that name.
+    if (label && document.activeElement?.getAttribute("aria-label") !== label) {
       document.querySelector<HTMLElement>(`[aria-label="${CSS.escape(label)}"]`)?.focus({ preventScroll: true });
     }
     announce(othersReleasedWords(result));
