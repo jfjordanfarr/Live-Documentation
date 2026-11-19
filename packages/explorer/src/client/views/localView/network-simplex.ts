@@ -45,9 +45,9 @@ export function rankByNetworkSimplex(count: number, constraints: readonly Constr
   let optimal = false;
   const limit = Math.max(50, edges.length * 8);
   let searchFrom = 0;
+  tree.rebuild();
+  const cut = tree.cutValues();
   for (let iteration = 0; iteration < limit; iteration++) {
-    tree.rebuild();
-    const cut = tree.cutValues();
     const leaving = tree.leavingEdge(cut, searchFrom);
     if (leaving < 0) { optimal = true; break; }
     searchFrom = leaving + 1;
@@ -174,9 +174,20 @@ class TreeIndex {
     });
   }
 
-  /** Exchange just the two tree edges, keeping the ascending edge order that a full rebuild produced. */
+  /**
+   * Exchange the leaving tree edge for the entering one, keeping the ascending edge order that a full rebuild produced,
+   * and bring the tree's numbers and cut values up to date where the exchange moved the tree: under the lowest common
+   * ancestor of the entering edge's ends, which the leaving edge lies under too (`renumber`).
+   */
   exchange(leaving: number, entering: number): void {
     const removed = this.edges[leaving], added = this.edges[entering];
+    // In the tree before the exchange, climb from the entering edge's tail until the subtree holds its head as well.
+    let top = added.tail;
+    const headNumber = this.lim[added.head];
+    while (!(this.low[top] <= headNumber && headNumber <= this.lim[top])) {
+      const up = this.edges[this.parentEdge[top]];
+      top = up.tail === top ? up.head : up.tail;
+    }
     for (const list of [this.treeEdges, this.adjacency[removed.tail], this.adjacency[removed.head]]) {
       list.splice(list.indexOf(leaving), 1);
     }
@@ -191,6 +202,57 @@ class TreeIndex {
     }
     this.inTree[leaving] = false;
     this.inTree[entering] = true;
+    this.renumber(top);
+  }
+
+  /**
+   * Number again the subtree of `top`, after an exchange under it, and work out again its nodes' sums and its tree
+   * edges' cut values, as a full rebuild and `cutValues` would (Gansner et al.'s incremental update, as Graphviz makes
+   * it). The subtree holds the same nodes before and after, so its numbers start where they started and end where they
+   * ended; nothing outside it is reached, since its one tree edge outward is `top`'s own, which the walk does not take;
+   * and nothing outside it changes: the order its ancestors visit their children in is theirs, and every other tree
+   * edge splits the nodes as it did. So the numbers are the very ones a full rebuild gives, and the cut values the same.
+   * Until 2026-11-19 every pivot rebuilt the whole tree and summed every cut, a third of the solver's time on this
+   * repository's five-file scope.
+   */
+  private renumber(top: number): void {
+    const first = this.low[top], last = this.lim[top];
+    for (let number = first; number <= last; number++) this.visited[this.byPostorder[number - 1]] = false;
+    let next = first, depth = 0;
+    this.stackNode[0] = top;
+    this.stackFrom[0] = this.parentEdge[top];
+    this.stackNext[0] = 0;
+    this.visited[top] = true;
+    this.low[top] = next;
+    this.subtree[top] = this.flow[top];
+    while (depth >= 0) {
+      const node = this.stackNode[depth], list = this.adjacency[node];
+      if (this.stackNext[depth] < list.length) {
+        const edgeIndex = list[this.stackNext[depth]++];
+        if (edgeIndex === this.stackFrom[depth]) continue;
+        const edge = this.edges[edgeIndex];
+        const child = edge.tail === node ? edge.head : edge.tail;
+        if (this.visited[child]) continue;
+        this.visited[child] = true;
+        this.parentEdge[child] = edgeIndex;
+        this.low[child] = next;
+        this.subtree[child] = this.flow[child];
+        depth++;
+        this.stackNode[depth] = child;
+        this.stackFrom[depth] = edgeIndex;
+        this.stackNext[depth] = 0;
+      } else {
+        this.lim[node] = next;
+        this.byPostorder[next - 1] = node;
+        next++;
+        if (depth > 0) {
+          const index = this.parentEdge[node];
+          this.subtree[this.stackNode[depth - 1]] += this.subtree[node];
+          this.cut[index] = this.edges[index].head === node ? this.subtree[node] : -this.subtree[node];
+        }
+        depth--;
+      }
+    }
   }
 
   rebuild(): void {
