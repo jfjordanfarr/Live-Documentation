@@ -9,8 +9,11 @@
  * the owner found the step panel "gone too quick to read anything in it at
  * all" and the rate buried in Tuning (2026-10-31); the toggle of the step panel,
  * which holds while the history is open (2026-10-30); and the authors toggle,
- * which rides the address. The slider grammar is on the keys: the arrows move a
- * step, Page Up and Page Down between the major ticks, Home and End to the
+ * which rides the address. Two pairs of buttons move the thumb, as a
+ * microscope's two knobs (2026-11-19): the fine, Previous and Next commit, a
+ * step at a time; the coarse, Previous and Next marked commit, between the
+ * marks on the track (`stops`). The slider grammar is on the keys: the arrows
+ * move a step, Page Up and Page Down as the coarse pair, Home and End to the
  * ends. While the thumb drags, the steps it crosses are coalesced into one
  * call per animation frame, so that the thumb never lags the hand; when it
  * rests, one call says so.
@@ -111,9 +114,12 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   play.className = "history-play";
   const previous = iconButton("Previous commit", '<path d="M15 5l-7 7 7 7"/>');
   const next = iconButton("Next commit", '<path d="m9 5 7 7-7 7"/>');
+  // The coarse pair outside the fine one, in the convention for a skip: a chevron against a bar.
+  const previousMark = iconButton("Previous marked commit", '<path d="M17 5l-7 7 7 7M7 5v14"/>');
+  const nextMark = iconButton("Next marked commit", '<path d="m7 5 7 7-7 7M17 5v14"/>');
   const playback = document.createElement("div");
   playback.className = "history-playback";
-  playback.append(previous, play, next);
+  playback.append(previousMark, previous, play, next, nextMark);
   // The speed, in steps a second, beside play: the same setting as Tuning's Play Rate, reachable where play is.
   const rate = document.createElement("select");
   rate.className = "history-rate";
@@ -265,6 +271,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   entire.addEventListener("click", () => { options.onRange(null); track.focus(); });
   previous.addEventListener("click", () => { if (current) options.onRest(Math.max(current.range[0], current.step - 1)); });
   next.addEventListener("click", () => { if (current) options.onRest(Math.min(current.range[1], current.step + 1)); });
+  previousMark.addEventListener("click", () => { if (current) options.onRest(nextStop(current.model, current.step, -1)); });
+  nextMark.addEventListener("click", () => { if (current) options.onRest(nextStop(current.model, current.step, 1)); });
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
   rate.addEventListener("change", () => { const chosen = Number(rate.value); if (Number.isFinite(chosen) && chosen > 0) options.onRate(chosen); });
@@ -418,8 +426,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       ruler.classList.toggle("is-truncated", state.truncated !== null);
       date.textContent = state.date;
       hash.textContent = state.hash;
-      previous.disabled = state.step <= state.range[0];
-      next.disabled = state.step >= state.range[1];
+      previous.disabled = previousMark.disabled = state.step <= state.range[0];
+      next.disabled = nextMark.disabled = state.step >= state.range[1];
       play.disabled = state.range[0] === state.range[1];
       readout.disabled = state.commits.length === 0;
       entire.hidden = state.range[0] === 0 && state.range[1] === state.steps;
@@ -429,7 +437,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       notice.textContent = state.notice ?? "";
       play.classList.toggle("is-playing", state.playing);
       play.setAttribute("aria-label", state.playing ? "Pause" : "Play");
-      play.title = state.playing ? "Pause" : "Play, one step after another";
+      play.title = state.playing ? "Pause" : state.model.plays === "stops" ? "Play, one marked commit after another" : "Play, one step after another";
       play.querySelector("svg")!.innerHTML = state.playing ? PAUSE_ICON : PLAY_ICON;
       syncRate(state.rate);
       details.setAttribute("aria-pressed", String(state.details));

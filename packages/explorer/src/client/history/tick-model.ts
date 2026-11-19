@@ -2,7 +2,7 @@
  * The ticks of the history's scrubber, as one pure function: from the steps'
  * dates, the pins' major and minor ticks (the engine's `ticksFor`, the plan's
  * C3) and a chosen granularity and axis, to the ticks the scrubber draws, the
- * stops the step key moves between, and the ruler of dates beneath. The view's
+ * marks the coarse moves stop at, and the ruler of dates beneath. The view's
  * half of the granularity seam (the plan's C14; the owner, 2026-10-17: "there
  * is no one right granularity, depending on the size of the history").
  *
@@ -15,6 +15,16 @@
  * its steps. The automatic choice is the finest granularity whose ticks fit
  * the budget, so that a five-commit repository shows five ticks and a long
  * history shows months. Whatever the ticks, a drag passes through every step.
+ *
+ * The marks are the stops of the coarse knob (2026-11-19, the owner: "I had the
+ * coarse adjustment and then the fine adjustment. The demarcating lines of the
+ * commit history markers give me the same tactile impression of those
+ * microscope focus knobs"): with something pinned, the steps that touched what
+ * is pinned, major and minor both; with nothing pinned, the drawn ticks; the
+ * beginning and the end always. The coarse buttons and Page Up and Page Down
+ * move between them; the fine buttons and the arrows move a step; play, with
+ * something pinned under the automatic or the salient granularity, moves
+ * between them too.
  *
  * Pure-function module: no DOM. The scrubber draws what this returns.
  *
@@ -70,8 +80,13 @@ export interface TickModel {
    */
   positions: number[];
   ticks: Tick[];
-  /** The steps the step key moves between, ascending: the major ticks', with the beginning and the end. */
+  /**
+   * The marks, ascending, which the coarse buttons and Page Up and Page Down move between: with something pinned the
+   * steps that touched it, major and minor; with nothing pinned the drawn ticks' steps; the beginning and the end always.
+   */
   stops: number[];
+  /** What play moves along: the marks, with something pinned under the automatic or the salient granularity, or every step. */
+  plays: "stops" | "steps";
   ruler: RulerLabel[];
 }
 
@@ -221,11 +236,17 @@ export function tickModel(input: TickModelInput): TickModel {
   const positions = positionsOf(input.dates, input.axis);
   const ticks: Tick[] = ticksAt(input, granularity).map((tick) => ({ ...tick, position: positions[tick.step] }));
   const last = input.dates.length - 1;
-  const stops = [...new Set([0, ...ticks.filter((tick) => tick.weight === "major").map((tick) => tick.step), Math.max(0, last)])].sort((a, b) => a - b);
-  return { granularity, positions, ticks, stops, ruler: rulerOf(input.dates, input.axis, positions) };
+  const marked = input.pinned
+    ? [...input.ticks.major, ...input.ticks.minor].filter((step) => step >= 0 && step <= last)
+    : ticks.filter((tick) => tick.weight !== "quiet").map((tick) => tick.step);
+  const stops = [...new Set([0, ...marked, Math.max(0, last)])].sort((a, b) => a - b);
+  // Play follows the marks where a person pinned something and chose no granularity that names its own unit; where the
+  // pins touched nothing in the range it plays every step, as with nothing pinned.
+  const plays = input.pinned && marked.length > 0 && (input.granularity === "auto" || input.granularity === "salient") ? "stops" : "steps";
+  return { granularity, positions, ticks, stops, plays, ruler: rulerOf(input.dates, input.axis, positions) };
 }
 
-/** The stop the step key reaches from a step: the next major tick forward, the previous one back, the ends at the ends. */
+/** The stop a coarse move reaches from a step: the next mark forward, the previous one back, the ends at the ends. */
 export function nextStop(model: TickModel, step: number, direction: 1 | -1): number {
   if (direction === 1) return model.stops.find((stop) => stop > step) ?? model.stops[model.stops.length - 1] ?? step;
   for (let index = model.stops.length - 1; index >= 0; index -= 1) {

@@ -71,16 +71,40 @@ describe("tickModel", () => {
     expect(model.stops).toEqual([0, 1, 2, 3, 4]);
   });
 
-  it("weighs the pinned steps major, the content-only ones minor and the rest quiet, and moves the step key between the major", () => {
-    const model = tickModel({ dates: daily(7), ticks: { major: [2, 5], minor: [1, 4] }, pinned: true, granularity: "step", axis: "steps" });
-    expect(model.ticks.map((tick) => tick.weight)).toEqual(["quiet", "minor", "major", "quiet", "minor", "major", "quiet"]);
-    expect(model.stops).toEqual([0, 2, 5, 6]);
-    expect(nextStop(model, 3, 1)).toBe(5);
-    expect(nextStop(model, 5, 1)).toBe(6);
-    expect(nextStop(model, 6, 1)).toBe(6);
+  it("weighs the pinned steps major, the content-only ones minor and the rest quiet, and moves the coarse knob between every mark", () => {
+    const model = tickModel({ dates: daily(8), ticks: { major: [2, 5], minor: [1, 4] }, pinned: true, granularity: "step", axis: "steps" });
+    expect(model.ticks.map((tick) => tick.weight)).toEqual(["quiet", "minor", "major", "quiet", "minor", "major", "quiet", "quiet"]);
+    // The marks, minor and major both (2026-11-19; before, the major alone), with the beginning and the end.
+    expect(model.stops).toEqual([0, 1, 2, 4, 5, 7]);
+    expect(nextStop(model, 3, 1)).toBe(4);
+    expect(nextStop(model, 5, 1), "past the last mark, the end").toBe(7);
+    expect(nextStop(model, 6, 1)).toBe(7);
+    expect(nextStop(model, 7, 1), "at the end, the end").toBe(7);
     expect(nextStop(model, 3, -1)).toBe(2);
-    expect(nextStop(model, 2, -1)).toBe(0);
+    expect(nextStop(model, 1, -1)).toBe(0);
     expect(nextStop(model, 0, -1)).toBe(0);
+  });
+
+  it("with nothing pinned stops at every drawn tick: every step, or a period's last step where the ticks are grouped", () => {
+    expect(tickModel({ dates: daily(5), ticks: EVERY(4), pinned: false, granularity: "auto", axis: "time" }).stops).toEqual([0, 1, 2, 3, 4]);
+    expect(tickModel({ dates: gapped, ticks: EVERY(6), pinned: false, granularity: "month", axis: "time" }).stops).toEqual([0, 2, 6]);
+  });
+
+  it("with pins that touched nothing stops at the beginning and the end alone, so that the coarse knob goes to the end", () => {
+    const model = tickModel({ dates: daily(6), ticks: { major: [], minor: [] }, pinned: true, granularity: "auto", axis: "steps" });
+    expect(model.stops).toEqual([0, 5]);
+    expect(nextStop(model, 2, 1)).toBe(5);
+    expect(nextStop(model, 2, -1)).toBe(0);
+  });
+
+  it("plays the marks with something pinned under the automatic or the salient granularity, and every step otherwise", () => {
+    const plays = (pinned: boolean, granularity: "auto" | "salient" | "step" | "day" | "week" | "month", ticks = { major: [2], minor: [4] }) =>
+      tickModel({ dates: daily(7), ticks, pinned, granularity, axis: "steps" }).plays;
+    expect(plays(true, "auto")).toBe("stops");
+    expect(plays(true, "salient")).toBe("stops");
+    for (const granularity of ["step", "day", "week", "month"] as const) expect(plays(true, granularity), granularity).toBe("steps");
+    expect(plays(false, "auto")).toBe("steps");
+    expect(plays(true, "auto", { major: [], minor: [] }), "pins that touched nothing play every step").toBe("steps");
   });
 
   it("keeps only the salient ticks, and the beginning, when asked", () => {
@@ -91,7 +115,8 @@ describe("tickModel", () => {
   it("groups the steps by day, one tick at the period's last step with the heaviest weight of its steps, the beginning alone", () => {
     const model = tickModel({ dates: gapped, ticks: { major: [4], minor: [1, 3] }, pinned: true, granularity: "day", axis: "steps" });
     expect(model.ticks.map((tick) => [tick.step, tick.weight, tick.steps])).toEqual([[0, "quiet", 1], [1, "minor", 1], [2, "quiet", 1], [5, "major", 3], [6, "quiet", 1]]);
-    expect(model.stops).toEqual([0, 5, 6]);
+    // With something pinned the marks are the steps that touched it, though a grouped period draws them as one tick.
+    expect(model.stops).toEqual([0, 1, 3, 4, 6]);
     const months = tickModel({ dates: gapped, ticks: EVERY(6), pinned: false, granularity: "month", axis: "time" });
     expect(months.ticks.map((tick) => [tick.step, tick.steps])).toEqual([[0, 1], [2, 2], [6, 4]]);
     expect(months.ticks[1].position).toBeLessThan(0.02);
