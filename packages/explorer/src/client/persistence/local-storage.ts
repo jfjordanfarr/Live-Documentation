@@ -102,8 +102,9 @@ export const getDefaultTuning = (): TuningConfig => ({
   // is shown, the files a step did not change dimmed so that the changed keep their own colour (Dim since 2026-11-15,
   // after the owner asked whether a changed file could keep its kind's colour; Glow, white, from 2026-10-31).
   history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "dim" },
-  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and marbles until a viewer turns them
-  // off (the marble trial, 2026-11-17; the default since 2026-11-18, the owner's "a worthy new default").
+  // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and no marbles until a viewer turns
+  // them on (the marble trial, 2026-11-17; on was the default on 2026-11-18 and 19, off again since 2026-11-19, the
+  // owner's "for immediate understandability of the system, Marbes Off is superior").
   appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0] }
 });
 

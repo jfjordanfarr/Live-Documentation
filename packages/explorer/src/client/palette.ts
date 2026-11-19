@@ -363,7 +363,8 @@ export const activePalette = (): Palette => active;
 /**
  * Whether files are drawn as marbles (the marble trial, 2026-11-17): each file's colour its kind's glass with veins of
  * what it offers and what it uses (`marbleOf` in views/forceGraphAppearance.ts). Off until the page applies the
- * viewer's choice as it starts, which is on unless they turned it off (the default since 2026-11-18).
+ * viewer's choice as it starts, which is off unless they turned it on (the default again since 2026-11-19; on was the
+ * default on 2026-11-18 and 19).
  */
 export const marblesDrawn = (): boolean => marbles;
 

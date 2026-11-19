@@ -78,7 +78,7 @@ const drawnColour = async (page: Page, id: string): Promise<Colour> => (await dr
 /**
  * Each file's own colour at a moment, read by a second visitor at the same address with Changed Files at None, where
  * nothing stands out. A file's own colour is its own: a marble's is its kind's glass tinted by its own veins at that
- * moment (marbles are the default since 2026-11-18), so another file of its kind cannot stand for it.
+ * moment (these cases draw marbles, see {@link emphasis}), so another file of its kind cannot stand for it.
  */
 async function ownColours<T>(browser: Browser, address: string, ready: (page: Page) => Promise<void>, read: (page: Page) => Promise<T>): Promise<T> {
   const context = await browser.newContext({ viewport: { width: 1400, height: 900 } });
@@ -97,13 +97,14 @@ const ownSpheres = (browser: Browser, address: string, ids: readonly string[]): 
   ownColours(browser, address, settled, async page => Object.fromEntries(await Promise.all(ids.map(async id => [id, await drawnColour(page, id)] as const))));
 
 /**
- * A visitor with the given Changed Files choice, on the default look: the files drawn as marbles since 2026-11-18. Each
- * case reads a file's base colour as that file's own at the moment shown ({@link ownColours}); until then an unchanged
- * file of the same kind stood for it, which only plain spheres allow.
+ * A visitor with the given Changed Files choice, the files drawn as marbles: these cases are the history's emphasis among
+ * marbles (2026-11-18, when marbles were the default; off is again since 2026-11-19, so they turn the marbles on). Each
+ * case reads a file's base colour as that file's own at the moment shown ({@link ownColours}), since a marble's colour
+ * is its own and an unchanged file of the same kind cannot stand for it.
  */
 const emphasis = (mode: string) => async ({ context }: { context: import("@playwright/test").BrowserContext }): Promise<void> => {
   await context.addInitScript(value => {
-    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value } } }));
+    window.localStorage.setItem("live-docs-explorer:ui:v2", JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0 }, history: { changeEmphasis: value }, appearance: { marbles: "on" } } }));
   }, mode);
 };
 

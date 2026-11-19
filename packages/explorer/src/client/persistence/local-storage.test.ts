@@ -167,7 +167,7 @@ describe("saving only what a person changed (2026-10-22)", () => {
     // The Marble Pattern trial's two settings (2026-11-18 and 19), removed with the trial on 2026-11-19: a browser that
     // saved them keeps its other choices, and the next save drops them.
     vi.useFakeTimers();
-    const saved = { version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off", marblePattern: "doc", marbleBend: 0.3 }, forceGraph: { hops: 2 } } };
+    const saved = { version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "on", marblePattern: "doc", marbleBend: 0.3 }, forceGraph: { hops: 2 } } };
     const store = new Map<string, string>([[PERSISTED_UI_KEY, JSON.stringify(saved)]]);
     vi.stubGlobal("window", {
       localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => store.set(key, value), removeItem: (key: string) => store.delete(key) },
@@ -175,12 +175,27 @@ describe("saving only what a person changed (2026-10-22)", () => {
       clearTimeout
     });
     const state = applyPersistedUi(defaults(), readPersistedUi());
-    expect(state.tuning.appearance).toEqual({ ...getDefaultTuning().appearance, marbles: "off" });
+    expect(state.tuning.appearance).toEqual({ ...getDefaultTuning().appearance, marbles: "on" });
     expect(state.tuning.forceGraph.hops).toBe(2);
     const scheduler = createPersistUiScheduler(() => state);
     scheduler.schedule();
     scheduler.flush();
-    expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "off" }, forceGraph: { hops: 2 } } });
+    expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: PERSISTED_UI_VERSION, tuning: { appearance: { marbles: "on" }, forceGraph: { hops: 2 } } });
+  });
+
+  it("draws no marbles by default, whether a browser saved Off when On was the default or saved nothing", () => {
+    // Off is the default again since 2026-11-19; on 2026-11-18 and 19 On was, and Off was saved as a change from it.
+    // A browser that saved Off then now holds the default, and one that saved nothing gets it too; a viewer who wants
+    // marbles chooses On, which is then saved as their change.
+    expect(getDefaultTuning().appearance.marbles).toBe("off");
+    for (const stored of ['{"version":2,"tuning":{"appearance":{"marbles":"off"}}}', null]) {
+      vi.stubGlobal("window", { localStorage: { getItem: (key: string) => (key === PERSISTED_UI_KEY ? stored : null), removeItem: vi.fn() } });
+      expect(applyPersistedUi(defaults(), readPersistedUi()).tuning.appearance.marbles, String(stored)).toBe("off");
+    }
+    const chosen = defaults();
+    chosen.tuning.appearance.marbles = "on";
+    expect(changedFromDefaults(chosen, defaults())).toEqual({ tuning: { appearance: { marbles: "on" } } });
+    expect(changedFromDefaults(defaults(), defaults())).toEqual({});
   });
 
   it("removes a version 1 entry unread, since it held every setting and cannot tell a choice from an old default", () => {

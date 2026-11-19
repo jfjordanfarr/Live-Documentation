@@ -112,17 +112,18 @@ test("marbles on and off each compile, and the 3D picture changes with the choic
   await openTuning(page);
   await page.locator(".sidebar-details summary", { hasText: /^Colour$/ }).click();
   const marbles = page.locator("#tuning-marbles");
-  // Marbles are the default since 2026-11-18, so the picture opens with them and the case turns them off and on again.
-  await expect(marbles).toHaveValue("on");
+  // Off is the default again since 2026-11-19 (on was on 2026-11-18 and 19), so the picture opens plain and the case
+  // turns the marbles on and off again.
+  await expect(marbles).toHaveValue("off");
   // The pointer parked off the picture, and a moment for the frame the choice asks for.
   const drawn = async (): Promise<Buffer> => { await page.mouse.move(640, 30); await page.waitForTimeout(800); return page.locator("#graph-svg canvas").first().screenshot(); };
-  const marbled = await drawn();
-  await marbles.selectOption("off");
   const plain = await drawn();
-  expect(plain.equals(marbled), "the spheres are drawn plain").toBe(false);
   await marbles.selectOption("on");
-  const marbledAgain = await drawn();
-  expect(marbledAgain.equals(plain), "and as marbles again").toBe(false);
+  const marbled = await drawn();
+  expect(marbled.equals(plain), "the spheres are drawn as marbles").toBe(false);
+  await marbles.selectOption("off");
+  const plainAgain = await drawn();
+  expect(plainAgain.equals(marbled), "and as plain spheres again").toBe(false);
   expect(said, "neither choice's programs fail to compile").toEqual([]);
 });
 

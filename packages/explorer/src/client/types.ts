@@ -247,13 +247,15 @@ export interface AppearanceTuning {
 /**
  * Whether a file is drawn as a marble (a trial, 2026-11-17, the owner's "Do it do it do it do it!!!!" of the November 16
  * record, Turn 9): its kind's colour as glass with veins of the offering blue and the using green, as many as the files
- * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On is the
- * default since 2026-11-18, the owner's "I think they are a worthy new default" (the November 17 record, Turn 13).
+ * that use it and that it uses, in the 3D map's spheres and the 2D map's closed directories' cells; or not. On was the
+ * default on 2026-11-18 and 19 (the owner's "I think they are a worthy new default", the November 17 record, Turn 13);
+ * Off is again since 2026-11-19, the owner's "for immediate understandability of the system, Marbes Off is superior":
+ * one colour meaning across the 3D spheres and the 2D cells, and less fine detail in a view they found "Still quite noisy".
  */
 export type MarbleChoice = "off" | "on";
 
-/** Every marble choice, in the order the control offers them; the first, on, is the default. */
-export const MARBLE_CHOICES: readonly MarbleChoice[] = ["on", "off"];
+/** Every marble choice, in the order the control offers them; the first, off, is the default. */
+export const MARBLE_CHOICES: readonly MarbleChoice[] = ["off", "on"];
 
 /**
  * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
