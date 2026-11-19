@@ -9,6 +9,7 @@
  */
 
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { isPairLine } from "./directory-flow";
 import type { LocalViewOptions, LocalSubgraph, LocalSubgraphLink } from "./types";
 
 /**
@@ -42,6 +43,22 @@ function isInternalsEdge(edgeTargetSymbol: string | undefined): boolean {
   return !edgeTargetSymbol || edgeTargetSymbol === "";
 }
 
+/** The symbols at a link's two ends. */
+type LinkEnds = Pick<LocalSubgraphLink, "sourceSymbol" | "targetSymbol">;
+
+/**
+ * The links an edge carries: a reference is its own one; a pair line of an opened directory, which names no symbol at
+ * its hubs, carries the links it stands for (2026-11-19: until then a row's hover kept no line, and in Flow, the
+ * default, faded every wire of the picture).
+ */
+const linksOfEdge = (edge: LocalSubgraphLink): readonly LinkEnds[] => (isPairLine(edge) ? edge.standsFor ?? [] : [edge]);
+
+/** Marks the rows at both ends of one of an edge's links, an end with no symbol being its file's Internals. */
+function addRows(rows: Set<string>, edge: LocalSubgraphLink, link: LinkEnds): void {
+  rows.add(`${edge.sourceId}:${link.sourceSymbol ? normalizeEdgeSymbol(link.sourceSymbol) : "__internals__"}`);
+  rows.add(`${edge.targetId}:${link.targetSymbol ? normalizeEdgeSymbol(link.targetSymbol) : "__internals__"}`);
+}
+
 /**
  * Computes which symbols, edges, and nodes should be highlighted
  * when a symbol is hovered or pinned.
@@ -63,32 +80,16 @@ export function computeSymbolHighlight(
     ? "__internals__"
     : normalizeSymbolIdentifier(symbol) ?? symbol.toLowerCase();
 
-  // Find all edges that involve this symbol on this node
-  let relatedEdges: LocalSubgraphLink[];
+  // Whether one end of a link is the hovered row: the row's own symbol, or for Internals an end that names no symbol
+  // (Internals denotes unresolved/private implementation on this file, regardless of which retained file currently has
+  // reading focus).
+  const isHovered = (fileId: string, endSymbol: string | undefined): boolean => fileId === nodeId
+    && (isInternalsHover ? isInternalsEdge(endSymbol) : normalizeEdgeSymbol(endSymbol) === normalizedHoverSymbol);
+  const carries = (link: LinkEnds, edge: LocalSubgraphLink): boolean =>
+    isHovered(edge.sourceId, link.sourceSymbol) || isHovered(edge.targetId, link.targetSymbol);
 
-  if (isInternalsHover) {
-    // Internals denotes unresolved/private implementation on this file,
-    // regardless of which retained file currently has reading focus.
-    relatedEdges = subgraph.links.filter(edge => {
-      const isDependencyToInternals =
-        edge.sourceId === nodeId && isInternalsEdge(edge.sourceSymbol);
-      const isDependentFromInternals =
-        edge.targetId === nodeId && isInternalsEdge(edge.targetSymbol);
-      return isDependencyToInternals || isDependentFromInternals;
-    });
-  } else {
-    // Normal symbol hover
-    relatedEdges = subgraph.links.filter(edge => {
-      const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
-      const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
-
-      const isSourceMatch =
-        edge.sourceId === nodeId && edgeSourceSymbol === normalizedHoverSymbol;
-      const isTargetMatch =
-        edge.targetId === nodeId && edgeTargetSymbol === normalizedHoverSymbol;
-      return isSourceMatch || isTargetMatch;
-    });
-  }
+  // Every edge that carries a link of this symbol on this node
+  const relatedEdges = subgraph.links.filter(edge => linksOfEdge(edge).some(link => carries(link, edge)));
 
   // Build sets of related node+symbol pairs for highlighting
   const relatedSymbols = new Set<string>();
@@ -98,18 +99,9 @@ export function computeSymbolHighlight(
   const relatedNodeIds = new Set<string>();
   relatedNodeIds.add(nodeId);
 
+  // The rows at both ends of each of the row's links, a pair line's own among them.
   relatedEdges.forEach(edge => {
-    if (edge.sourceSymbol) {
-      relatedSymbols.add(`${edge.sourceId}:${normalizeEdgeSymbol(edge.sourceSymbol)}`);
-    } else {
-      relatedSymbols.add(`${edge.sourceId}:__internals__`);
-    }
-    if (edge.targetSymbol) {
-      relatedSymbols.add(`${edge.targetId}:${normalizeEdgeSymbol(edge.targetSymbol)}`);
-    } else {
-      relatedSymbols.add(`${edge.targetId}:__internals__`);
-    }
-
+    for (const link of linksOfEdge(edge).filter(each => carries(each, edge))) addRows(relatedSymbols, edge, link);
     relatedNodeIds.add(edge.sourceId);
     relatedNodeIds.add(edge.targetId);
   });
@@ -176,6 +168,17 @@ export function applySymbolHighlight(
   container.style.setProperty("--hover-dim-symbols", String(dimSymbols));
   container.style.setProperty("--hover-dim-connections", String(dimConnections));
 
+  // If we collapsed any symbols, reapply centering first, then redraw connections
+  // (centering changes element positions, so connectors must be drawn after)
+  if (markHighlight(container, overlay, highlight, centerId)) {
+    reapplyCentering?.();
+    drawConnections();
+  }
+  markConnections(overlay, highlight.relatedEdges);
+}
+
+/** Marks the hover's rows and cards and turns its fading on; whether any row was collapsed. */
+function markHighlight(container: HTMLElement, overlay: HTMLElement, highlight: SymbolHighlightResult, centerId: string): boolean {
   // Add class to container AND overlay to enable dimming mode
   container.classList.add("symbol-hover-active");
   overlay.classList.add("symbol-hover-active");
@@ -211,16 +214,14 @@ export function applySymbolHighlight(
     }
   });
 
-  // If we collapsed any symbols, reapply centering first, then redraw connections
-  // (centering changes element positions, so connectors must be drawn after)
-  if (didCollapse) {
-    reapplyCentering?.();
-    drawConnections();
-  }
+  return didCollapse;
+}
 
+/** Marks the drawn things of the given edges as kept. */
+function markConnections(overlay: HTMLElement, edges: readonly LocalSubgraphLink[]): void {
   // Mark related connection paths as highlighted
   // Use normalized symbols to match paths (which also use normalized data attributes)
-  highlight.relatedEdges.forEach(edge => {
+  edges.forEach(edge => {
     const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
     const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
     const pair = `[data-source-id="${CSS.escape(edge.sourceId)}"][data-target-id="${CSS.escape(edge.targetId)}"]`;
