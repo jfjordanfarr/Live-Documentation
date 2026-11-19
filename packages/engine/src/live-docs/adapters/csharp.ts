@@ -936,6 +936,10 @@ interface TypeRecord {
 interface TypeTable {
   byQualifiedName: Map<string, TypeRecord[]>;
   namespaces:      Set<string>;
+  /** Every declared namespace and every namespace that contains one, so that a `using` is known in one lookup. */
+  namespacePrefixes: Set<string>;
+  /** The last segment of every qualified name, so that a name no type ends with is set aside in one lookup. */
+  lastSegments:    Set<string>;
 }
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
@@ -954,7 +958,7 @@ async function listCSharpFiles(workspaceRoot: string, fileIndex: WorkspaceFileIn
 }
 
 async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {
-  const table: TypeTable = { byQualifiedName: new Map(), namespaces: new Set() };
+  const table: TypeTable = { byQualifiedName: new Map(), namespaces: new Set(), namespacePrefixes: new Set(), lastSegments: new Set() };
   for (const file of await listCSharpFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
@@ -962,8 +966,12 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
     } catch {
       continue;
     }
-    for (const namespace of facts.namespaces) table.namespaces.add(namespace);
+    for (const namespace of facts.namespaces) {
+      table.namespaces.add(namespace);
+      for (let prefix = namespace; prefix; prefix = prefix.slice(0, Math.max(prefix.lastIndexOf("."), 0))) table.namespacePrefixes.add(prefix);
+    }
     for (const type of facts.types) {
+      table.lastSegments.add(type.qualifiedName.slice(type.qualifiedName.lastIndexOf(".") + 1));
       const records = table.byQualifiedName.get(type.qualifiedName) ?? [];
       records.push({ file, type });
       table.byQualifiedName.set(type.qualifiedName, records);
@@ -1046,11 +1054,22 @@ function narrowFor(file: string, reach: ProjectReach): Narrow {
   };
 }
 
+/** The containers the compiler searches for a name used in a scope, nearest first, after the name itself. */
+const containersCache = new WeakMap<Scope, string[]>();
+function containersOf(scope: Scope, facts: FileFacts): string[] {
+  let containers = containersCache.get(scope);
+  if (!containers) {
+    containers = ["", ...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings];
+    containersCache.set(scope, containers);
+  }
+  return containers;
+}
+
 /** Resolves a dotted name from a scope: exact, then relative to each container the compiler would search. */
 function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): TypeRecord[] | undefined {
+  if (!table.lastSegments.has(segments[segments.length - 1])) return undefined;
   const dotted = segments.join(".");
-  const containers = [...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings];
-  for (const container of ["", ...containers]) {
+  for (const container of containersOf(scope, facts)) {
     const records = table.byQualifiedName.get(joinNames(container, dotted));
     const seen    = records ? narrow(records) : undefined;
     if (seen) return seen;
@@ -1154,12 +1173,20 @@ function connectionName(value: string): string | undefined {
   return value.includes("=") ? undefined : value.trim() || undefined;
 }
 
-function isWorkspaceNamespace(namespace: string, table: TypeTable): boolean {
-  if (table.namespaces.has(namespace)) return true;
-  for (const known of table.namespaces) {
-    if (known.startsWith(`${namespace}.`)) return true;
+/** A type's members by name, the first of each name, as a search of the list in order would find it. */
+const membersCache = new WeakMap<DeclaredType, Map<string, DeclaredMember>>();
+function membersByName(type: DeclaredType): Map<string, DeclaredMember> {
+  let members = membersCache.get(type);
+  if (!members) {
+    members = new Map();
+    for (const member of type.members) if (!members.has(member.name)) members.set(member.name, member);
+    membersCache.set(type, members);
   }
-  return false;
+  return members;
+}
+
+function isWorkspaceNamespace(namespace: string, table: TypeTable): boolean {
+  return table.namespacePrefixes.has(namespace);
 }
 
 async function toDependencies(
@@ -1188,11 +1215,11 @@ async function toDependencies(
   for (const use of facts.peerMemberUses) {
     const enclosing = use.scope.enclosingTypes[0];
     const own       = facts.types.find((type) => type.qualifiedName === enclosing);
-    if (!enclosing || own?.members.some((member) => member.name === use.chain[0])) continue;
+    if (!enclosing || (own && membersByName(own).has(use.chain[0]))) continue;
     for (const peer of table.byQualifiedName.get(enclosing) ?? []) {
       // The halves of a partial type are compiled together, so a peer lies in this file's own project.
       if (peer.file === thisFile || reach.projectOf(peer.file) !== reach.projectOf(thisFile)) continue;
-      const member = peer.type.members.find((candidate) => candidate.name === use.chain[0]);
+      const member = membersByName(peer.type).get(use.chain[0]);
       if (member) link(peer.file, member.published ? member.name : undefined);
     }
   }
