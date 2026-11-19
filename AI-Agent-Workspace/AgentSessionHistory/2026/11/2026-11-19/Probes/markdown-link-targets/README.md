@@ -4,6 +4,60 @@ Current as of November 19, 2026.
 
 A builder's handback to the root, on its branch. Before this round, three readers each read a link's target by a pattern of their own, and they disagreed: the engine (`relatedDocs.ts`), which decides a file's related documents and every document's citations; the Explorer's renderer (`markdown.ts`), which ended a target at its first `)`; and the markdown link audit (`scripts/slopcop/markdownLinks.ts`), which decoded with `decodeURI`. All three now read links by one module, `packages/engine/src/tooling/markdownLinks.ts`, graded by CommonMark's own examples.
 
+## The fourth leg
+
+On top of `135e93ad`, by the root's ruling on the fence: the register's one entry stands as a stated limit. Neither the link module nor the Explorer's renderer reads list items or block quotes as containers, so the two agree with each other; the mend, if it comes, is containers read once for both. The engine round's builder writes that limit into the module and the register; this leg touches nothing under `packages/engine` or `packages/generator`.
+
+### The symbol audit and the documentation bridge find links by the module (`516125b9`)
+
+**The symbol audit** (`scripts/slopcop/symbolReferences.ts`) takes its anchor links from `readMarkdownLinks`, in place of two patterns over a mask of code. The new case fails on the old patterns:
+- a destination holding parentheses;
+- a reference;
+- a double code span;
+- escaped brackets.
+
+Its findings over the repository are the same before and after: no issue, over 1,645 files. The anchors it checks, recorded over all 2,008 tracked markdown files, go from 16,021 to 16,029 and differ in four raw session captures outside its scope. In each, the rule and commonmark.js agree:
+
+| File | What changed | Why |
+| --- | --- | --- |
+| `2025-12-05.md:1359` | A link is now read | After a backslash-escaped backtick, `[`LiveDocumentationConfig`](…)` is a real link, which the old code-span mask hid. |
+| `2025-12-06.1.md:1553` | A link is no longer read | A double-backtick code span holds a link's shape. The old mask failed on the backticks inside the span. |
+| `2026-02-15.1.md:1886` | A link is no longer read | `\[foo\](…)` has escaped brackets. |
+| `2026-02-15.1.md:1894` | A link is now read | `[label](path#anchor)` stands between literal escaped backticks. |
+| `2026-10-12.1.export.md` | Links are now read | Pasted JavaScript forms links by the rule. |
+
+**The documentation bridge** (`scripts/doc-tools/documentationLinks.ts`) gives each line of a document the links the module reads on it. The new case fails on the old patterns.
+
+Its findings are the same before and after: every documentation link is satisfied, over 1,090 documents. The backlinks it records over all tracked markdown go from 21,431 to 20,383:
+- 1,049 backlinks are only in the old reading: link shapes inside code spans or fenced blocks, which the old patterns never masked, or a pattern's misreading (for example `[^\"'`]+` in a pasted regular expression).
+- 1 backlink is only in the new reading: the fixture's link into `app/(auth)/`, which the old pattern cut at its first `)`.
+
+`extractReferenceDefinitions`, `parseLinkTarget` and `maskCode` in `scripts/slopcop/markdownShared.ts` had no caller left, and are removed.
+
+### The browser and the pictures
+
+**Bundles and the browser cases.** `npm run e2e:bundles` was run once its builds finished. Then one lane hold at 22:31, after 946 s in the queue, ran the probe and the browser cases. That hold's served-build check confirmed the bundles were built together. 18 of 18 cases passed: `link-targets.spec.ts` (2), `cited-by.spec.ts` (2) and `inspection.spec.ts` (14).
+
+**How "before" was made.** The before pictures come from a sample built with the first leg's client (`c2bfd65f`'s `markdown.ts`, `detailPanel.ts` and `reader-links.ts`) into `dist/explorer/samples/link-targets-before`. The fixture is today's in both.
+
+**The reference link:**
+- [before-reference-link.png](before-reference-link.png): the Purpose ends `The plan is cited [by reference][plan] too.` in plain text, brackets and label showing.
+- [after-reference-link.png](after-reference-link.png): `by reference` is a link, like the seven before it.
+- [before-reference-definition.png](before-reference-definition.png): the Notes section shows the definition line itself, `[plan]: ../../../notes/plan%20(draft).md "The plan"`.
+- [after-reference-definition.png](after-reference-definition.png): the Notes section shows only its sentence; the definition is read and not shown, as on GitHub.
+
+**The inspected symbol:**
+- [before-inspected-symbol.png](before-inspected-symbol.png): the docstring's heading shows as text, `#### notes What the notes say, in a sentence.`, one paragraph.
+- [after-inspected-symbol.png](after-inspected-symbol.png): the same line drawn as the docstring's own heading: `notes` in a purple code chip, followed by its sentence.
+
+**What I see in the "after" picture.** The docstring's `notes` is drawn exactly as the symbol's own name, `draftPlan`, is two rows above it: the same chip, size, colour and weight. It reads as another symbol, as if the doc held a block named `notes`. **So a docstring's heading can be taken for the doc's own structure.**
+
+What I would do, shown and **not decided**: draw a heading inside a docstring smaller and plainer than the doc's own. Both alternatives are styles injected into the probe page only; nothing is committed.
+- [alternative-a-plain-docstring-heading.png](alternative-a-plain-docstring-heading.png): the heading loses its chip; it is plain, smaller and muted. `notes` now reads as a label within the docstring, not as a sibling of `draftPlan`.
+- [alternative-b-plain-heading-docstring-set-in.png](alternative-b-plain-heading-docstring-set-in.png): A, with each section's docstring text set in under its section heading by a thin grey rule. This separates most clearly what the source's author wrote from what the doc is made of. The rule could be read as a block quote.
+
+My first attempt at an alternative changed nothing visible, because the code chip's own style won. I discarded it.
+
 ## The third leg
 
 This leg sits on top of `21fcc129`. Its commits are `e113ca5e`, `d8d6ba3a`, and the commit that brings this README level.
@@ -304,3 +358,10 @@ Not fixed, and listed below as unfinished: the other block-level differences and
   - A name written with a longer backtick fence, and a quoted name shown in the inspected-symbol panel in its written form: not done. They need the panel to render the doc reader's names, in `detailPanel.ts`.
   - `symbolReferences.ts` and `documentationLinks.ts`: not done, as above.
   - `reader-links.ts`: not done, as above.
+
+## The root's choice for a docstring's own heading
+
+_Added by the root on 2026-11-19 after looking at the eight pictures of the fourth leg. Not yet built._
+
+**Alternative A.** As first drawn, a docstring's line `#### notes` wears the same chip, size and weight as the symbol's own name two rows above it, and reads as a second symbol. In A it is a small plain label inside the docstring, which is what it is. B sets every docstring in behind a rule as well; the rule is one more line of the page's own on a panel that should have almost none, and it reads as a quotation. A is one rule of the stylesheet, to be built with a browser case when this branch is next worked on.
+
