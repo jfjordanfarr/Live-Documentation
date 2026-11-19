@@ -665,10 +665,11 @@ test("the wheel and the keys widen, slide and narrow the track's range, play goe
   await track(page).press("Home");
   await track(page).press("-");
   await expect.poll(range).not.toEqual(["2", "3"]);
-  const widened = await range();
+  expect(await range(), "widened about step 2").toEqual(["2", "4"]);
+  // Plus narrows, but never below the least span: on seven steps a range of two is already below it, and stays.
   await track(page).press("+");
-  await expect.poll(range).toEqual(["2", "3"]);
-  expect(Number(widened[1]) - Number(widened[0])).toBeGreaterThan(1);
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  expect(await range()).toEqual(["2", "4"]);
   await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
 
   // A zoom does not pause play: playing, a slide leaves the playhead going on outside the range.
