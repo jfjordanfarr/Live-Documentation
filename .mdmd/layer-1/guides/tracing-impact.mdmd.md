@@ -98,7 +98,8 @@ npm run live-docs:inspect -- --reachable
 Files a path reaches from the entry points (max depth 25), nearest first.
 Entry points: 190 files
   package.json [.mdmd/layer-4/package.json.mdmd.md]  tooling
-  packages/cli/src/index.ts [.mdmd/layer-4/packages/cli/src/index.ts.mdmd.md]  command live-docs of packages/cli/package.json; module of packages/cli/package.json
+  ...
+  packages/generator/src/generator.ts [.mdmd/layer-4/packages/generator/src/generator.ts.mdmd.md]  module of packages/generator/package.json
   ...
   scripts/live-docs/inspect.ts [.mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md]  command live-docs:inspect of package.json
   ...

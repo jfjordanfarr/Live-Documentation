@@ -19,16 +19,6 @@
     "package.json": [
       "tooling"
     ],
-    "packages/cli/package.json": [
-      "tooling"
-    ],
-    "packages/cli/src/index.ts": [
-      "command live-docs of packages/cli/package.json",
-      "module of packages/cli/package.json"
-    ],
-    "packages/cli/tsconfig.json": [
-      "tooling"
-    ],
     "packages/engine/package.json": [
       "tooling"
     ],

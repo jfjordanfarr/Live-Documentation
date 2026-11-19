@@ -30,8 +30,7 @@
   "workspaces": [
     "packages/engine",
     "packages/generator",
-    "packages/explorer",
-    "packages/cli"
+    "packages/explorer"
   ],
   "scripts": {
     "build": "npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",

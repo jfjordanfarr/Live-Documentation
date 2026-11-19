@@ -116,7 +116,7 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                                                                  |
 | `npm run live-docs:orphans`               | Live Docs whose source file no longer exists. The generator never prunes a doc that has authored content, so run this after deleting source files |
-| `npm run build`                           | `tsc` for the engine, the Explorer and the generator; the CLI package is not included                                                             |
+| `npm run build`                           | `tsc` for the engine, the Explorer and the generator                                                                                              |
 | `npm run lint`                            | Type-aware ESLint over the configured source and tests. |
 | `npm run live-docs:visualize:estate`      | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`; `test:e2e` runs it before the suite                  |
 | `npm run live-docs:visualize:tidepool`    | Build the tidepool sample's Explorer, a small TypeScript game whose directories mix implementation, tests, binary assets and documents, into `dist/explorer/samples/tidepool/`. Not part of the gate |
