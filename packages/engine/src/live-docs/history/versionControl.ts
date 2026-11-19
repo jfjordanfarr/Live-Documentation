@@ -50,6 +50,11 @@ export interface MainlineEnd {
 export interface WorkingTree {
   /** The workspace's root inside the tree. */
   root: string;
+  /**
+   * The environment a process run in the tree needs for the version control to answer of it as of a checkout, what it
+   * tracks and what it ignores; empty when the tree is a checkout the version control already knows.
+   */
+  environment: Record<string, string>;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
 }

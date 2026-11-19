@@ -369,7 +369,7 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
   }
   const trees = new Set<WorkingTree>();
   const children = new Set<ChildProcess>();
-  // A run stopped by a signal removes its scratch trees, so that the repository keeps no worktree of it.
+  // A run stopped by a signal removes its scratch trees, so that no tree of it is left behind.
   const stop = (signal: NodeJS.Signals): void => {
     for (const child of children) {
       child.kill(signal);
@@ -386,8 +386,6 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
       const began = Date.now();
       const scratch = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-history-"));
       try {
-        // Git names a worktree's record after its folder, so each tree's folder has a name of its own: two trees of one
-        // name made at once raced for the same record (found 2026-10-17, two at a time over this repository).
         const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)));
         trees.add(tree);
         try {
@@ -401,7 +399,8 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
               textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
               indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
             },
-            children
+            children,
+            tree.environment
           );
           peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
           for (const message of new Set(warned)) {
@@ -442,11 +441,11 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
  *
  * @returns The lines the generator warned on its way, and what the process reported when it ended.
  */
-function runSummary(task: SummaryTask, children: Set<ChildProcess>): Promise<{ warned: string[]; report?: SummaryReport }> {
+function runSummary(task: SummaryTask, children: Set<ChildProcess>, environment: Record<string, string>): Promise<{ warned: string[]; report?: SummaryReport }> {
   // The worker sits beside this module, as TypeScript under tsx or as JavaScript once built.
   const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
   return new Promise((resolve, reject) => {
-    const child = fork(worker, [JSON.stringify(task)], { stdio: ["ignore", "ignore", "pipe", "ipc"] });
+    const child = fork(worker, [JSON.stringify(task)], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: { ...process.env, ...environment } });
     children.add(child);
     let errors = "";
     let report: SummaryReport | undefined;

@@ -6,10 +6,10 @@
  * The executable, never `.git` by hand, since a `.git` can be a file pointing
  * elsewhere and a pack is deltas (the plan's failed ideas); never a remote,
  * never credentials. The mainline is the head's first parents, oldest first
- * (`rev-list --first-parent --reverse`); a working tree is a detached worktree
- * (`worktree add --detach`), removed with `worktree remove --force`, the
- * repository's hooks switched off for it so that no checkout runs a stranger's
- * code, its line endings as stored rather than as the person's `core.autocrlf`
+ * (`rev-list --first-parent --reverse`); a working tree is the change's
+ * tracked files written through an index of the tree's own (`read-tree` and
+ * `checkout-index`), registering nothing with the repository, so no hook runs,
+ * its line endings as stored rather than as the person's `core.autocrlf`
  * would convert them, and Git LFS's pointers left in place rather than fetched
  * from a remote; the renames and the content changes between two changes are git's own
  * word (`diff --name-status -M50%`), with no limit on the renames it may weigh
@@ -21,7 +21,6 @@
  */
 
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
 
 import { execFileAsync } from "../gitUtils";
@@ -58,7 +57,6 @@ export async function openGitRepository(workspaceRoot: string): Promise<VersionC
 
 class GitRepository implements VersionControl {
   readonly system = "git";
-  private worktreeChanges: Promise<void> = Promise.resolve();
 
   constructor(private readonly root: string) {}
 
@@ -79,29 +77,35 @@ class GitRepository implements VersionControl {
     return parseTags(await this.git(["for-each-ref", "--format=%(objectname) %(*objectname)", "refs/tags"]));
   }
 
+  /**
+   * The change's tracked files written into `directory` through an index of the tree's own beside it, `<directory>.index`,
+   * with nothing registered with the repository. Until 2026-11-19 a tree was a detached worktree, whose record in the
+   * repository's registry had to be made and removed one at a time; trees are now made at once, and the summaries
+   * they give were held identical over 48 commits of this repository. The generator asks git what a tree tracks and
+   * ignores (`gitIgnored`), so a process in the tree is given the repository, the tree and its index by
+   * {@link WorkingTree.environment}; without them a tracked file a `.gitignore` names was left out.
+   */
   async workingTree(change: string, directory: string): Promise<WorkingTree> {
-    // Git names a worktree's record after the folder's name, so trees made at once need folders of different names.
-    // The tree as the repository stores it and its own attributes declare it, whatever the person's git converts on
-    // checkout; no hook of the repository runs, and Git LFS writes its pointers rather than fetching a file.
-    await this.changeWorktrees(() => this.git(["-c", `core.hooksPath=${os.devNull}`, "-c", "core.autocrlf=false", "worktree", "add", "--detach", "--quiet", directory, change], {
-      GIT_LFS_SKIP_SMUDGE: "1"
-    }));
+    const index = `${directory}.index`;
+    const env = { GIT_INDEX_FILE: index, GIT_LFS_SKIP_SMUDGE: "1" };
+    await fs.mkdir(directory);
     let removal: Promise<void> | undefined;
-    return {
-      root: directory,
-      // A signal and the worker's finally may both release the same tree. They share one operation and its result.
-      remove: () => removal ??= this.changeWorktrees(async () => {
-        await this.git(["worktree", "remove", "--force", directory]);
-      })
-    };
+    // A signal and the worker's finally may both release the same tree. They share one operation and its result.
+    const remove = (): Promise<void> => (removal ??= Promise.all([fs.rm(directory, { recursive: true, force: true }), fs.rm(index, { force: true })]).then(() => undefined));
+    try {
+      await this.git(["read-tree", change], env);
+      // The tree as the repository stores it and its own attributes declare it, whatever the person's git converts;
+      // the trailing separator writes each file under the directory by its path in the tree.
+      await this.git(["-c", "core.autocrlf=false", "checkout-index", "--all", "--force", `--prefix=${directory}${path.sep}`], env);
+    } catch (error) {
+      await remove();
+      throw error;
+    }
+    this.gitDirectory ??= this.git(["rev-parse", "--path-format=absolute", "--git-common-dir"]).then((output) => output.trim());
+    return { root: directory, environment: { GIT_DIR: await this.gitDirectory, GIT_WORK_TREE: directory, GIT_INDEX_FILE: index }, remove };
   }
 
-  /** Git enumerates sibling worktree records while changing its registry; only source analysis may overlap. */
-  private changeWorktrees<T>(operation: () => Promise<T>): Promise<T> {
-    const result = this.worktreeChanges.then(operation);
-    this.worktreeChanges = result.then(() => undefined, () => undefined);
-    return result;
-  }
+  private gitDirectory: Promise<string> | undefined;
 
   async changesBetween(from: string, to: string): Promise<VersionChanges> {
     return parseNameStatus(
