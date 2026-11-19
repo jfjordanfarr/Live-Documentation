@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/powershell.ts
-- Generated At: 2026-11-19T20:49:27.344Z
+- Generated At: 2026-11-19T21:23:27.988Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 - Not followed: a module named rather than pathed, which a machine's module path finds, so a `RequiredModules` name stays external even when the workspace holds a module of that name; `Import-Module Name.psm1`, an extension without a separator, read as a name as the oracle reads it, where PowerShell takes it for a path from the current location; a path built any other way than below (a variable assigned twice, in a block or from a parameter, `Split-Path`, a `+`, `$env:`); a loop over a written-out list of names.
 - Calls between files, since 2026-11-19 ([the probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#a-powershell-call-reaches-what-its-caller-loads-else-the-only-definition-recorded-2026-11-19)): a cold run on dbatools had found 1,947 of its 1,977 files with no wire, because a function one script defines and another calls was never drawn. Measured first, against PowerShell's own parser over five corpora and two readers of sampled wires, rule R, "loaded, else unique", drew 60 true wires of 60 where the other rules drew stubs and copies the caller never loads. Every PowerShell file of the workspace is read once per run, into a table kept per file index as the C# reader keeps its type table (`buildWorkspace`), whose facts the file's own analysis reuses when its text is the same, so each file is parsed once a run where it was parsed twice before. A call goes, by `calledFiles`, to the one file defining the function at its own level that the caller's loading reaches (its dot-sources, imports and `using module`, followed, and its modules' files and their loads; a script run by its path is not followed, since its scope ends with it); to none when the loading reaches several; when it reaches none, to the only file of the workspace defining the name, unless PowerShell itself ships a command of that name ([`powershell.builtins.ts`](./powershell.builtins.ts.mdmd.md)). A name the caller defines itself, at any depth, is its own. A definition inside a function, a script block (a test's `BeforeAll`, `Describe`, `InModuleScope`) or text the grammar could not read counts as none: the last because a test whose blocks the grammar lost stood its stubs at the file's own level, which drew 562 false wires on dbatools before it. A wire is a dependency on the file carrying the function's name as defined there, merged into a load of the same file.
 - Loads the text fixes, the same day: a string or bare word as before; `Join-Path` of such, its `-Path`, `-ChildPath` and further children by name or position (named arguments first, the rest filling the positions left, as PowerShell binds them); a variable assigned exactly once in the file, by `=`, at its own level, from such; a `foreach` or `ForEach-Object` that dot-sources each item (`$f`, `$f.FullName`) of a `Get-ChildItem` whose folder, `-Filter`, `-Include`, `-Exclude` and `-Recurse` the text fixes, written in place, through such a variable or joined by `+`, a comma or `@()`, listing the `.ps1` and `.psm1` files beneath it as Windows finds them; a script run by its path after `&` or as a command's name. A load read only through `Join-Path` or a variable is drawn when it names a workspace file and otherwise by its text as written, if any.
+- The evening of 2026-11-19, on the root's rulings after the build ([the probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md#rulings-after-the-build-added-november-19-2026-late-evening)): a variable is fixed when it is assigned exactly once in the file, by `=`, before the load in the text, in the function or script block that holds the load or one enclosing it (a test's `BeforeAll` that sets `$scriptRoot` and loads by it), not only at the file's own level; `Split-Path` of the script's own path (`$MyInvocation.MyCommand.Path` or `.Definition`, `$PSCommandPath`) is its folder, of another fixed path its parent, unless it asks for a leaf, a qualifier or whether the path is absolute; a `foreach` or `ForEach-Object` over names written out (a string, a list, `@()`, or a variable assigned one) is read once per name with the loop's item standing for it; and the fallback to the only file defining a name passes over test files when the caller is not a test, by the archetype the product's naming conventions give (`resolveArchetype` with the default configuration: the adapter is not given the workspace's configuration, so its overrides and sample roots are not read here).
 - Programs since 2026-11-19: a `.ps1` whose own level only defines functions, filters, workflows, classes and enums and otherwise only sets up its scope (dot-sources, `Import-Module`, `Set-StrictMode`, `Export-ModuleMember`, `Set-Alias`, `New-Alias`, `Add-Type`, `Update-TypeData`, `Update-FormatData`, `Register-ArgumentCompleter`, assignments that call nothing on either side) does nothing when run and is a library, not the program's entry; one holding text the grammar could not read at its own level stays a program. On a seeded sixty it erred only toward calling a library a program: a helper that imports inside an `if`, and an include that only assigns a variable.
 - A manifest's `FunctionsToExport` offers each name it writes out from the one file of the module (its root and what that loads) that defines it at its own level, as a TypeScript barrel offers what it re-exports (`reExportedSymbols`, rendered as `Re-Exported Symbol Anchors` with a link to the origin), not as a wire; a wildcard, or a name the module does not define once, is not offered.
 - Measured by [`powershell-oracle.test.ts`](../../../../../../../.mdmd/layer-4/tests/integration/live-docs/powershell-oracle.test.ts.mdmd.md) against the parser's records `expected/powershell-ast.json` of `tests/integration/programs/powershell/rollout`, `tests/integration/fixtures/powershell-compendium` and, since 2026-11-19, `tests/integration/fixtures/powershell-wires`, the calls, loads, libraries and offers judged by the rules of [`powershell-wires.ts`](../../../../../../../.mdmd/layer-4/scripts/oracle/powershell-wires.ts.mdmd.md) over the parser's facts; its register holds one miss, the grammar's reading of `./scripts/Clean.ps1` as a dot-source. Before the wires the register was empty on the first two; `oracle:compare` finds 8 of 8 and 3 of 3 of the parser's edges with nothing extra. With the bundled grammar in place of the built one the register would list five misses on the rollout program and two on the compendium. The `pwsh` adapter it replaced found 7 of the rollout program's 12 published functions and 3 of its 8 dependencies. Guarded by [`powershell.test.ts`](./powershell.test.ts.mdmd.md) and, for the grammar, [`treeSitter.test.ts`](./treeSitter.test.ts.mdmd.md).
@@ -30,7 +31,7 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 ### Public Symbols
 #### `analyzePowerShellSource` {#symbol-analyzepowershellsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1685)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1870)
 
 ##### `analyzePowerShellSource` — Summary
 Analyzes one PowerShell file from its text, without the generator: a
@@ -41,7 +42,7 @@ what it names and the root module it declares. Paths are resolved against
 
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1727)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1912)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary
@@ -53,6 +54,7 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 - `node:crypto` - `createHash`
 - `node:fs` - `promises`
 - `node:path` - `path`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`index.powershellSyntax`](../../languages/index.ts.mdmd.md#symbol-powershellsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
@@ -60,6 +62,7 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 - [`powershell.builtins.SHIPPED_COMMANDS`](./powershell.builtins.ts.mdmd.md#symbol-shipped_commands)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
+- [`archetype.resolveArchetype`](../archetype.ts.mdmd.md#symbol-resolvearchetype)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)

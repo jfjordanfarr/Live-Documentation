@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/fixtures/powershell-wires/tests/Tools.Tests.ps1
 - Entry: program
-- Generated At: 2026-11-19T20:49:36.161Z
+- Generated At: 2026-11-19T21:23:47.094Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,18 @@ A Pester test that imports the Tools manifest and calls `Get-Tool`, reaching its
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `Get-Vendor` {#symbol-get-vendor}
+- Type: function
+- Source: [source](../../../../../../../tests/integration/fixtures/powershell-wires/tests/Tools.Tests.ps1#L2)
+
 #### `Write-Log` {#symbol-write-log}
 - Type: function
-- Source: [source](../../../../../../../tests/integration/fixtures/powershell-wires/tests/Tools.Tests.ps1#L8)
+- Source: [source](../../../../../../../tests/integration/fixtures/powershell-wires/tests/Tools.Tests.ps1#L13)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Format-Tool`](../Tools/Private/Format-Tool.ps1.mdmd.md)
 - [`Get-Tool`](../Tools/Public/Get-Tool.ps1.mdmd.md#symbol-get-tool)
 - [`Tools`](../Tools/Tools.psd1.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -12,7 +12,9 @@
  * record, and share no code with the adapter, which reads the same facts
  * from its grammar.
  */
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { SHIPPED_COMMANDS } from "@live-documentation/engine/live-docs/adapters/powershell.builtins";
+import { resolveArchetype } from "@live-documentation/engine/live-docs/archetype";
 
 import { isDataFileFacts, type PowerShellAst, type PowerShellDataFileFacts, type PowerShellScriptFacts } from "./powershell-edges";
 
@@ -30,6 +32,11 @@ const SCOPE_SETUP = new Set([
   "set-strictmode", "export-modulemember", "set-alias", "new-alias", "import-module", "ipmo", "add-type", "update-typedata", "update-formatdata",
   "register-argumentcompleter"
 ]);
+
+/** Whether a file is a test, by the archetype the product's naming conventions give it, without a workspace's configuration. */
+export function isTestFile(file: string): boolean {
+  return resolveArchetype(file, DEFAULT_LIVE_DOCUMENTATION_CONFIG) === "test";
+}
 
 /** A function's name as callers write it: without a scope prefix, case-folded. */
 export function callName(name: string): string {
@@ -186,19 +193,22 @@ export class ParserWorkspace {
    * "loaded, else unique": a name the script defines itself is its own; else
    * the one defining file its loading reaches; if several, none; if none, the
    * only file that defines the name, unless PowerShell itself ships a command
-   * of that name.
+   * of that name; and from a script that is not a test, that last reach
+   * passes over every test file.
    */
   wiresOf(file: string): Map<string, Set<string>> {
     const facts = this.ast.files[file];
     const wires = new Map<string, Set<string>>();
     if (!facts || isDataFileFacts(facts)) return wires;
     const own = new Set(facts.functions.filter((fn) => !fn.member).map((fn) => callName(fn.name)));
+    const test = isTestFile(file);
     for (const name of parserCalls(facts)) {
       if (own.has(name)) continue;
       const definers = (this.definers.get(name) ?? []).filter((definer) => definer.file !== file);
       if (definers.length === 0) continue;
       const loaded = definers.filter((definer) => this.loadsFile(file, definer.file));
-      const chosen = loaded.length === 1 ? loaded[0] : loaded.length === 0 && definers.length === 1 && !SHIPPED_COMMANDS.has(name) ? definers[0] : undefined;
+      const reach  = test ? definers : definers.filter((definer) => !isTestFile(definer.file));
+      const chosen = loaded.length === 1 ? loaded[0] : loaded.length === 0 && reach.length === 1 && !SHIPPED_COMMANDS.has(name) ? reach[0] : undefined;
       if (chosen) wires.set(chosen.file, new Set([...(wires.get(chosen.file) ?? []), chosen.name]));
     }
     return wires;

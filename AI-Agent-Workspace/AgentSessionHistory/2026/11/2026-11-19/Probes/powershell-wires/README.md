@@ -390,3 +390,35 @@ The other PowerShell files' docs are unchanged: the compendium's `Inventory.psm1
 The new fixture, `tests/integration/fixtures/powershell-wires`, adds 22 PowerShell files and their docs. The other new and changed docs are those of the adapter, its list of shipped commands, their tests, and the oracle's modules and test.
 
 **For the grammar's builder**: [grammar-errors.md](grammar-errors.md) lists the 112 dbatools files and 78 AL-Go files the grammar cannot read in full, each with the first failing line and the idiom where the line tells it. Since this round, those errors cost wires only where they swallow a definition or a call: here, two dbatools functions, and tSQLt's five scripts run as `./x.ps1`.
+
+## Rulings after the build _(added November 19, 2026, late evening)_
+
+The root ruled on the four forks of the build. Three are built here, each with tests that failed against `cb427f0b` first and with the rule written a second time in the oracle. The fourth, keeping the shipped list as broad as it is, needs no change. Counts are of the adapter's wires before and after, and of the oracle's.
+
+1. **A variable assigned inside a block.** It is fixed when the file assigns it exactly once, by `=`, before the load in the text, in the function or script block that holds the load or in one enclosing it.
+   - Adapter: no new wire on any corpus. The oracle reads two new loads in `Tests/RunTests.Action.Test.ps1`, which the adapter misses because the grammar cannot read that file in full.
+   - The 138 loads through `$scriptRoot` in AL-Go's tests mostly stay unread. 35 of the 36 test files do assign `$scriptRoot` exactly once, but inside a `BeforeAll`, and they load through it inside sibling `It` blocks, which the assigning block does not enclose. Pester runs `BeforeAll`'s variables into those `It` blocks; the text alone does not say so. This is a fork for the root.
+   - With no new adapter wire from this ruling, there were no thirty new wires to read by a seeded draw. Over every ruling the adapter gained one wire, read below.
+2. **A test's stub is never working code's only definition.** The reach to the only defining file passes over test files when the caller is not a test, by the product's archetype (`resolveArchetype`).
+   - Of AL-Go's five false calls the oracle drew, three are gone (from `Deliver.ps1`, `Deploy.psm1`, `RunPipeline.ps1`). Two remain, from `Actions/RunTests/RunTests.psm1`, because the product's test pattern `Tests?\.[^.]+$` calls `RunTests.psm1` a test.
+   - The adapter never drew those five, since the grammar loses the stubs.
+   - dbatools lost four true wires: `.github/scripts/gh-actions.ps1` and `gh-s3actions.ps1` to `public/Test-DbaInstanceName.ps1`, `Test-DbaTempDbConfig.ps1`, `Test-DbaBackupStorageCompatibility.ps1` and `Test-DbaPath.ps1`. The archetype's directory pattern `\btests?\b` is tested against the whole path, so a file named for PowerShell's approved verb `Test` is a test to the product. The generator labels those files `Archetype: test` in their docs too. That is a fault in `archetype.ts`, which this leg did not touch.
+   - **Also missing:** the adapter is not given the workspace's configuration, so it reads the archetype with the default configuration. A workspace's overrides and sample roots are not seen here. Passing the configuration's archetype to the adapters would take a change in the generator's plumbing.
+3. **The shipped list stays as built.**
+4. **`Split-Path` and loops over names written out.**
+   - `Split-Path` of the script's own path (`$MyInvocation.MyCommand.Path` or `.Definition`, `$PSCommandPath`) is its folder. Of another fixed path it is that path's parent, unless it asks for a leaf, a qualifier or whether the path is absolute.
+   - A `foreach` or `ForEach-Object` over a string, a list, `@()`, or a variable assigned one, is read once per name with the loop's item standing for it.
+   - On the corpora, `Split-Path` gave the adapter its one new wire. `Tests/AppHelper.Test.ps1` sets `$here = Split-Path -Parent $MyInvocation.MyCommand.Path` and dot-sources `..\Actions\AL-Go-Helper.ps1` from it. Read in the source, the wire is true.
+   - The written-out lists gave the oracle one new wire: AL-Go's ReviewAgent module, `Invoke-CopilotPRReview.psm1`, loading `scripts/GitHub.ps1`. The adapter misses it because the grammar cannot read that file in full.
+   - The fixture has both forms (`Neighbour.ps1`, `Extras/Extras.psm1`), and the adapter and the oracle agree on them.
+
+| Corpus | Adapter wires before → after | Calls before → after | Oracle wires before → after | Oracle calls before → after |
+| --- | --- | --- | --- | --- |
+| dbatools | 7,477 → 7,473 | 6,628 → 6,624 | 7,479 → 7,475 | 6,630 → 6,626 |
+| AL-Go | 471 → 472 | 1,040 → 1,041 | 475 → 478 | 1,045 → 1,044 |
+| AzureStack-Tools, tSQLt, shop | unchanged | unchanged | unchanged | unchanged |
+
+**The grammar.**
+- **What a rebuild needs here.** `build.sh` needs git, node, a C compiler and the pinned tree-sitter CLI, and the container has all four (`cc` is gcc; the CLI is 0.27.1 from `npm ci`). Its steps, run up to the wasm in a private folder, took 1 s to generate and 5 s to test, with all 164 corpus parses passing.
+- **The wasm step.** `tree-sitter build --wasm` downloads wasi-sdk 34 and binaryen 132 into `~/.cache/tree-sitter` the first time. That is a per-user download made by the pinned CLI itself, not a system install. It has not been run.
+- **Not started:** mending the idioms, and the smallest input that loses a block's structure.

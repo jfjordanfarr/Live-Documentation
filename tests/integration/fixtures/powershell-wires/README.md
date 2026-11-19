@@ -20,5 +20,9 @@ The PowerShell fixture for connections between scripts: which file a call reache
 | A library of functions only, and one that also sets up its scope | `lib/Common.ps1`, `lib/Paths.ps1` |
 | The two kinds of library the rule calls programs, as measured | `lib/Helper.ps1` (imports inside an `if`), `lib/Settings.inc.ps1` (assigns a variable only) |
 | `FunctionsToExport` offering two functions from their files and naming one the module does not define | `Tools/Tools.psd1` |
+| A variable assigned once inside a test's `BeforeAll`, read by a load in the same block (since the evening of 2026-11-19) | `tests/Tools.Tests.ps1` loads `Tools/Private/Format-Tool.ps1` |
+| A test's stub at its own level of a command another module supplies: working code that calls it is not wired to the test | `tests/Tools.Tests.ps1` (`Get-Vendor`), called by `scripts/Run-Step.ps1` |
+| `Split-Path -Parent $MyInvocation.MyCommand.Path`, the Windows PowerShell 5.1 way to find a neighbour | `Neighbour.ps1` loads `lib/Common.ps1` |
+| A loop over names written out, in a `foreach` and piped to `ForEach-Object` | `Extras/Extras.psm1` loads `Extras/One.ps1` and `Extras/Two.ps1` |
 
 Index it: `npm run oracle:index -- tests/integration/fixtures/powershell-wires`.

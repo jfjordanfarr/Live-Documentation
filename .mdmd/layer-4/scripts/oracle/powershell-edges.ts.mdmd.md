@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/powershell-edges.ts
-- Generated At: 2026-11-19T20:49:31.451Z
+- Generated At: 2026-11-19T21:23:40.286Z
 
 ## Authored
 ### Purpose
@@ -100,7 +100,7 @@ A command, by the name it is called by when that is written out, with where it s
 - Source: [source](../../../../scripts/oracle/powershell-edges.ts#L140)
 
 ##### `PowerShellLoad` — Summary
-A load only a reading of `Join-Path`, variables or loops finds: a loop's dot-sources of the files a `Get-ChildItem` lists, or a script run by its path.
+A load only a reading of loops or of a run by path finds: a loop's dot-sources of the files a `Get-ChildItem` lists, a loop's loads over names written out, or a script run by its path.
 
 #### `PowerShellStatement` {#symbol-powershellstatement}
 - Type: interface

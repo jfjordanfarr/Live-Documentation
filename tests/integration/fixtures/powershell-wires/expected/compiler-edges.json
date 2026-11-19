@@ -17,6 +17,10 @@
     "../Copies/Use-Both.ps1",
     "../Copies/Use-Neither.ps1",
     "../Deploy.ps1",
+    "../Extras/Extras.psm1",
+    "../Extras/One.ps1",
+    "../Extras/Two.ps1",
+    "../Neighbour.ps1",
     "../Own.ps1",
     "../Tools/Private/Format-Tool.ps1",
     "../Tools/Public/Get-Tool.ps1",
@@ -129,10 +133,46 @@
       ]
     },
     {
+      "from": "../Extras/Extras.psm1",
+      "to": "../Extras/One.ps1",
+      "symbols": [
+        ". (Join-Path $PSScriptRoot $helper)"
+      ]
+    },
+    {
+      "from": "../Extras/Extras.psm1",
+      "to": "../Extras/Two.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot\\$_\""
+      ]
+    },
+    {
+      "from": "../Extras/Two.ps1",
+      "to": "../Extras/One.ps1",
+      "symbols": [
+        "calls Get-One"
+      ]
+    },
+    {
+      "from": "../Neighbour.ps1",
+      "to": "../lib/Common.ps1",
+      "symbols": [
+        ". \"$here\\lib\\Common.ps1\"",
+        "calls Write-Log"
+      ]
+    },
+    {
       "from": "../scripts/Run-Step.ps1",
       "to": "../lib/Common.ps1",
       "symbols": [
         "calls Write-Log"
+      ]
+    },
+    {
+      "from": "../tests/Tools.Tests.ps1",
+      "to": "../Tools/Private/Format-Tool.ps1",
+      "symbols": [
+        ". (Join-Path $toolsRoot 'Private/Format-Tool.ps1')"
       ]
     },
     {

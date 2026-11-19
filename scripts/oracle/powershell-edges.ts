@@ -136,10 +136,10 @@ export interface PowerShellInvocation {
   blocks:   string[];
 }
 
-/** A load only a reading of `Join-Path`, variables or loops finds: a loop's dot-sources of the files a `Get-ChildItem` lists, or a script run by its path. */
+/** A load only a reading of loops or of a run by path finds: a loop's dot-sources of the files a `Get-ChildItem` lists, a loop's loads over names written out, or a script run by its path. */
 export interface PowerShellLoad {
   line:     number;
-  kind:     "dot" | "run";
+  kind:     "dot" | "import" | "run";
   text:     string;
   resolved: string[];
 }

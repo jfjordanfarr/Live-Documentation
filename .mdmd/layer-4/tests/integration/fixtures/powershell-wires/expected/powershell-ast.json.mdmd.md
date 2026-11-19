@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-wires/expected/powershell-ast.json
-- Generated At: 2026-11-19T20:49:36.096Z
+- Generated At: 2026-11-19T21:23:46.974Z
 
 ## Authored
 ### Purpose
@@ -427,6 +427,141 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 #### `files:../Deploy.ps1:statements` {#symbol-filesdeployps1statements}
 - Type: key
 
+#### `files:../Extras/Extras.psm1` {#symbol-filesextrasextraspsm1}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:parseErrors` {#symbol-filesextrasextraspsm1parseerrors}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:functions` {#symbol-filesextrasextraspsm1functions}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:published` {#symbol-filesextrasextraspsm1published}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:types` {#symbol-filesextrasextraspsm1types}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:exportModuleMembers` {#symbol-filesextrasextraspsm1exportmodulemembers}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:dotSources` {#symbol-filesextrasextraspsm1dotsources}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:importModules` {#symbol-filesextrasextraspsm1importmodules}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:usingStatements` {#symbol-filesextrasextraspsm1usingstatements}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:requiredModules` {#symbol-filesextrasextraspsm1requiredmodules}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:invocations` {#symbol-filesextrasextraspsm1invocations}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:loads` {#symbol-filesextrasextraspsm1loads}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:aliasCommands` {#symbol-filesextrasextraspsm1aliascommands}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:paramBlock` {#symbol-filesextrasextraspsm1paramblock}
+- Type: key
+
+#### `files:../Extras/Extras.psm1:statements` {#symbol-filesextrasextraspsm1statements}
+- Type: key
+
+#### `files:../Extras/One.ps1` {#symbol-filesextrasoneps1}
+- Type: key
+
+#### `files:../Extras/One.ps1:parseErrors` {#symbol-filesextrasoneps1parseerrors}
+- Type: key
+
+#### `files:../Extras/One.ps1:functions` {#symbol-filesextrasoneps1functions}
+- Type: key
+
+#### `files:../Extras/One.ps1:published` {#symbol-filesextrasoneps1published}
+- Type: key
+
+#### `files:../Extras/One.ps1:types` {#symbol-filesextrasoneps1types}
+- Type: key
+
+#### `files:../Extras/One.ps1:exportModuleMembers` {#symbol-filesextrasoneps1exportmodulemembers}
+- Type: key
+
+#### `files:../Extras/One.ps1:dotSources` {#symbol-filesextrasoneps1dotsources}
+- Type: key
+
+#### `files:../Extras/One.ps1:importModules` {#symbol-filesextrasoneps1importmodules}
+- Type: key
+
+#### `files:../Extras/One.ps1:usingStatements` {#symbol-filesextrasoneps1usingstatements}
+- Type: key
+
+#### `files:../Extras/One.ps1:requiredModules` {#symbol-filesextrasoneps1requiredmodules}
+- Type: key
+
+#### `files:../Extras/One.ps1:invocations` {#symbol-filesextrasoneps1invocations}
+- Type: key
+
+#### `files:../Extras/One.ps1:loads` {#symbol-filesextrasoneps1loads}
+- Type: key
+
+#### `files:../Extras/One.ps1:aliasCommands` {#symbol-filesextrasoneps1aliascommands}
+- Type: key
+
+#### `files:../Extras/One.ps1:paramBlock` {#symbol-filesextrasoneps1paramblock}
+- Type: key
+
+#### `files:../Extras/One.ps1:statements` {#symbol-filesextrasoneps1statements}
+- Type: key
+
+#### `files:../Extras/Two.ps1` {#symbol-filesextrastwops1}
+- Type: key
+
+#### `files:../Extras/Two.ps1:parseErrors` {#symbol-filesextrastwops1parseerrors}
+- Type: key
+
+#### `files:../Extras/Two.ps1:functions` {#symbol-filesextrastwops1functions}
+- Type: key
+
+#### `files:../Extras/Two.ps1:published` {#symbol-filesextrastwops1published}
+- Type: key
+
+#### `files:../Extras/Two.ps1:types` {#symbol-filesextrastwops1types}
+- Type: key
+
+#### `files:../Extras/Two.ps1:exportModuleMembers` {#symbol-filesextrastwops1exportmodulemembers}
+- Type: key
+
+#### `files:../Extras/Two.ps1:dotSources` {#symbol-filesextrastwops1dotsources}
+- Type: key
+
+#### `files:../Extras/Two.ps1:importModules` {#symbol-filesextrastwops1importmodules}
+- Type: key
+
+#### `files:../Extras/Two.ps1:usingStatements` {#symbol-filesextrastwops1usingstatements}
+- Type: key
+
+#### `files:../Extras/Two.ps1:requiredModules` {#symbol-filesextrastwops1requiredmodules}
+- Type: key
+
+#### `files:../Extras/Two.ps1:invocations` {#symbol-filesextrastwops1invocations}
+- Type: key
+
+#### `files:../Extras/Two.ps1:loads` {#symbol-filesextrastwops1loads}
+- Type: key
+
+#### `files:../Extras/Two.ps1:aliasCommands` {#symbol-filesextrastwops1aliascommands}
+- Type: key
+
+#### `files:../Extras/Two.ps1:paramBlock` {#symbol-filesextrastwops1paramblock}
+- Type: key
+
+#### `files:../Extras/Two.ps1:statements` {#symbol-filesextrastwops1statements}
+- Type: key
+
 #### `files:../lib/Common.ps1` {#symbol-fileslibcommonps1}
 - Type: key
 
@@ -605,6 +740,51 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 - Type: key
 
 #### `files:../lib/Settings.inc.ps1:statements` {#symbol-fileslibsettingsincps1statements}
+- Type: key
+
+#### `files:../Neighbour.ps1` {#symbol-filesneighbourps1}
+- Type: key
+
+#### `files:../Neighbour.ps1:parseErrors` {#symbol-filesneighbourps1parseerrors}
+- Type: key
+
+#### `files:../Neighbour.ps1:functions` {#symbol-filesneighbourps1functions}
+- Type: key
+
+#### `files:../Neighbour.ps1:published` {#symbol-filesneighbourps1published}
+- Type: key
+
+#### `files:../Neighbour.ps1:types` {#symbol-filesneighbourps1types}
+- Type: key
+
+#### `files:../Neighbour.ps1:exportModuleMembers` {#symbol-filesneighbourps1exportmodulemembers}
+- Type: key
+
+#### `files:../Neighbour.ps1:dotSources` {#symbol-filesneighbourps1dotsources}
+- Type: key
+
+#### `files:../Neighbour.ps1:importModules` {#symbol-filesneighbourps1importmodules}
+- Type: key
+
+#### `files:../Neighbour.ps1:usingStatements` {#symbol-filesneighbourps1usingstatements}
+- Type: key
+
+#### `files:../Neighbour.ps1:requiredModules` {#symbol-filesneighbourps1requiredmodules}
+- Type: key
+
+#### `files:../Neighbour.ps1:invocations` {#symbol-filesneighbourps1invocations}
+- Type: key
+
+#### `files:../Neighbour.ps1:loads` {#symbol-filesneighbourps1loads}
+- Type: key
+
+#### `files:../Neighbour.ps1:aliasCommands` {#symbol-filesneighbourps1aliascommands}
+- Type: key
+
+#### `files:../Neighbour.ps1:paramBlock` {#symbol-filesneighbourps1paramblock}
+- Type: key
+
+#### `files:../Neighbour.ps1:statements` {#symbol-filesneighbourps1statements}
 - Type: key
 
 #### `files:../Own.ps1` {#symbol-filesownps1}
@@ -997,6 +1177,8 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 - [`Expand-Archive`](../Backport/Expand-Archive.ps1.mdmd.md)
 - [`Alpha`](../Copies/Alpha.psm1.mdmd.md)
 - [`Beta`](../Copies/Beta.psm1.mdmd.md)
+- [`One`](../Extras/One.ps1.mdmd.md)
+- [`Two`](../Extras/Two.ps1.mdmd.md)
 - [`Format-Tool`](../Tools/Private/Format-Tool.ps1.mdmd.md)
 - [`Get-Tool`](../Tools/Public/Get-Tool.ps1.mdmd.md)
 - [`Set-Tool`](../Tools/Public/Set-Tool.ps1.mdmd.md)

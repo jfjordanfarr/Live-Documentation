@@ -778,6 +778,199 @@
         }
       ]
     },
+    "../Extras/Extras.psm1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 3,
+          "column": 5,
+          "text": ". (Join-Path $PSScriptRoot $helper)",
+          "target": null,
+          "resolved": null
+        },
+        {
+          "line": 5,
+          "column": 30,
+          "text": ". \"$PSScriptRoot\\$_\"",
+          "target": "$PSScriptRoot\\$_",
+          "resolved": null
+        }
+      ],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 3,
+          "column": 5,
+          "name": null,
+          "operator": ".",
+          "text": "(Join-Path $PSScriptRoot $helper)",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 3,
+          "column": 8,
+          "name": "Join-Path",
+          "operator": "",
+          "text": "Join-Path",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 5,
+          "column": 13,
+          "name": "ForEach-Object",
+          "operator": "",
+          "text": "ForEach-Object",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 5,
+          "column": 30,
+          "name": null,
+          "operator": ".",
+          "text": "\"$PSScriptRoot\\$_\"",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "ForEach-Object"
+          ]
+        }
+      ],
+      "loads": [
+        {
+          "line": 3,
+          "kind": "dot",
+          "text": ". (Join-Path $PSScriptRoot $helper)",
+          "resolved": [
+            "../Extras/One.ps1"
+          ]
+        },
+        {
+          "line": 5,
+          "kind": "dot",
+          "text": ". \"$PSScriptRoot\\$_\"",
+          "resolved": [
+            "../Extras/Two.ps1"
+          ]
+        }
+      ],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 2,
+          "kind": "ForEachStatement",
+          "command": null,
+          "invokes": true,
+          "text": "foreach ($helper in @('One.ps1')) {"
+        },
+        {
+          "line": 5,
+          "kind": "expression",
+          "command": null,
+          "invokes": true,
+          "text": "'Two.ps1' | ForEach-Object { . \"$PSScriptRoot\\$_\" }"
+        }
+      ]
+    },
+    "../Extras/One.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Get-One",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 1,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Get-One"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-One { 1 }"
+        }
+      ]
+    },
+    "../Extras/Two.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Get-Two",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 1,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Get-Two"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 1,
+          "column": 20,
+          "name": "Get-One",
+          "operator": "",
+          "text": "Get-One",
+          "resolved": null,
+          "function": "Get-Two",
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-Two { Get-One }"
+        }
+      ]
+    },
     "../lib/Common.ps1": {
       "parseErrors": [],
       "functions": [
@@ -1112,6 +1305,83 @@
         }
       ]
     },
+    "../Neighbour.ps1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 3,
+          "column": 1,
+          "text": ". \"$here\\lib\\Common.ps1\"",
+          "target": "$here\\lib\\Common.ps1",
+          "resolved": "../lib/Common.ps1"
+        }
+      ],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 2,
+          "column": 9,
+          "name": "Split-Path",
+          "operator": "",
+          "text": "Split-Path",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 3,
+          "column": 1,
+          "name": null,
+          "operator": ".",
+          "text": "\"$here\\lib\\Common.ps1\"",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 5,
+          "column": 1,
+          "name": "Write-Log",
+          "operator": "",
+          "text": "Write-Log",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 2,
+          "kind": "assignment",
+          "command": null,
+          "invokes": true,
+          "text": "$here = Split-Path -Parent $MyInvocation.MyCommand.Path"
+        },
+        {
+          "line": 3,
+          "kind": "dotSource",
+          "command": null,
+          "invokes": true,
+          "text": ". \"$here\\lib\\Common.ps1\""
+        },
+        {
+          "line": 5,
+          "kind": "command",
+          "command": "Write-Log",
+          "invokes": true,
+          "text": "Write-Log 'found by Split-Path'"
+        }
+      ]
+    },
     "../Own.ps1": {
       "parseErrors": [],
       "functions": [
@@ -1235,6 +1505,16 @@
           "resolved": null,
           "function": null,
           "blocks": []
+        },
+        {
+          "line": 9,
+          "column": 1,
+          "name": "Get-Vendor",
+          "operator": "",
+          "text": "Get-Vendor",
+          "resolved": null,
+          "function": null,
+          "blocks": []
         }
       ],
       "loads": [],
@@ -1247,6 +1527,13 @@
           "command": "Write-Log",
           "invokes": true,
           "text": "Write-Log \"Running step $Step\""
+        },
+        {
+          "line": 9,
+          "kind": "command",
+          "command": "Get-Vendor",
+          "invokes": true,
+          "text": "Get-Vendor -Name $Step"
         }
       ]
     },
@@ -1254,12 +1541,25 @@
       "parseErrors": [],
       "functions": [
         {
+          "name": "Get-Vendor",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 2,
+          "column": 1,
+          "parameters": [
+            "Name"
+          ],
+          "help": null
+        },
+        {
           "name": "Write-Log",
           "keyword": "function",
           "member": false,
           "fileScope": false,
           "aliases": [],
-          "line": 8,
+          "line": 13,
           "column": 9,
           "parameters": [
             "Message"
@@ -1268,14 +1568,23 @@
         }
       ],
       "published": [
+        "Get-Vendor",
         "Write-Log"
       ],
       "types": [],
       "exportModuleMembers": [],
-      "dotSources": [],
+      "dotSources": [
+        {
+          "line": 7,
+          "column": 5,
+          "text": ". (Join-Path $toolsRoot 'Private/Format-Tool.ps1')",
+          "target": null,
+          "resolved": "../Tools/Private/Format-Tool.ps1"
+        }
+      ],
       "importModules": [
         {
-          "line": 2,
+          "line": 5,
           "column": 5,
           "text": "Import-Module \"$PSScriptRoot/../Tools/Tools.psd1\" -Force",
           "command": "Import-Module",
@@ -1305,7 +1614,7 @@
       "requiredModules": [],
       "invocations": [
         {
-          "line": 1,
+          "line": 4,
           "column": 1,
           "name": "BeforeAll",
           "operator": "",
@@ -1315,7 +1624,7 @@
           "blocks": []
         },
         {
-          "line": 2,
+          "line": 5,
           "column": 5,
           "name": "Import-Module",
           "operator": "",
@@ -1327,7 +1636,43 @@
           ]
         },
         {
-          "line": 5,
+          "line": 6,
+          "column": 18,
+          "name": "Join-Path",
+          "operator": "",
+          "text": "Join-Path",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "BeforeAll"
+          ]
+        },
+        {
+          "line": 7,
+          "column": 5,
+          "name": null,
+          "operator": ".",
+          "text": "(Join-Path $toolsRoot 'Private/Format-Tool.ps1')",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "BeforeAll"
+          ]
+        },
+        {
+          "line": 7,
+          "column": 8,
+          "name": "Join-Path",
+          "operator": "",
+          "text": "Join-Path",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "BeforeAll"
+          ]
+        },
+        {
+          "line": 10,
           "column": 1,
           "name": "Describe",
           "operator": "",
@@ -1337,7 +1682,7 @@
           "blocks": []
         },
         {
-          "line": 6,
+          "line": 11,
           "column": 5,
           "name": "BeforeAll",
           "operator": "",
@@ -1349,7 +1694,7 @@
           ]
         },
         {
-          "line": 11,
+          "line": 16,
           "column": 5,
           "name": "It",
           "operator": "",
@@ -1361,7 +1706,7 @@
           ]
         },
         {
-          "line": 12,
+          "line": 17,
           "column": 9,
           "name": "Get-Tool",
           "operator": "",
@@ -1374,8 +1719,34 @@
           ]
         },
         {
-          "line": 12,
+          "line": 17,
           "column": 32,
+          "name": "Should",
+          "operator": "",
+          "text": "Should",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "It",
+            "Describe"
+          ]
+        },
+        {
+          "line": 18,
+          "column": 9,
+          "name": "Get-Vendor",
+          "operator": "",
+          "text": "Get-Vendor",
+          "resolved": null,
+          "function": null,
+          "blocks": [
+            "It",
+            "Describe"
+          ]
+        },
+        {
+          "line": 18,
+          "column": 34,
           "name": "Should",
           "operator": "",
           "text": "Should",
@@ -1392,14 +1763,21 @@
       "paramBlock": false,
       "statements": [
         {
-          "line": 1,
+          "line": 2,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-Vendor { param([string]$Name) 'stub' }"
+        },
+        {
+          "line": 4,
           "kind": "command",
           "command": "BeforeAll",
           "invokes": true,
           "text": "BeforeAll {"
         },
         {
-          "line": 5,
+          "line": 10,
           "kind": "command",
           "command": "Describe",
           "invokes": true,

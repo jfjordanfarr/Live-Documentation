@@ -520,6 +520,17 @@ describe("calls to functions other files define: loaded, else unique", () => {
     expect(await wires("Backport/Use-Backport.ps1")).toEqual({ "Backport/Expand-Archive.ps1": ["Expand-Archive"] });
   });
 
+  it("never reach a test's definition as the only one from working code, but let a test reach another test's helper", async () => {
+    await write({
+      "tests/Stubs.Tests.ps1": "function Get-External { }\nfunction Get-Thing { }\n",
+      "lib/Impl.ps1": "function Get-Thing { }\n",
+      "lib/Run.ps1": "Get-External\nGet-Thing\n",
+      "tests/Other.Tests.ps1": "Get-External\n"
+    });
+    expect(await wires("lib/Run.ps1")).toEqual({ "lib/Impl.ps1": ["Get-Thing"] });
+    expect(await wires("tests/Other.Tests.ps1")).toEqual({ "tests/Stubs.Tests.ps1": ["Get-External"] });
+  });
+
   it("let a module's files call each other, and its importers reach them through its manifest and what its root module loads", async () => {
     await write({
       "Tools/Tools.psd1": "@{ RootModule = 'Tools.psm1'; ModuleVersion = '1.0' }",
@@ -549,20 +560,68 @@ describe("loads the text fixes", () => {
     expect(await wires("Deploy.ps1")).toEqual({ "lib/A.ps1": [], "lib/B.ps1": [], "Mods/Tools/Tools.psm1": [], "Mods/Log.psm1": [] });
   });
 
-  it("read a variable assigned once at the file's own level from such a path, and not one assigned twice or only inside a block", async () => {
+  it("read a variable assigned once at the file's own level from such a path, and not one assigned twice", async () => {
     await write({
-      "lib/A.ps1": "", "lib/B.ps1": "", "lib/C.ps1": "",
+      "lib/A.ps1": "", "lib/B.ps1": "",
       "Deploy.ps1": [
         "$script:Root = $PSScriptRoot",
         "$a = Join-Path $script:Root 'lib/A.ps1'",
         ". $a",
         "$b = Join-Path $PSScriptRoot 'lib/B.ps1'",
         "$b = 'elsewhere.ps1'",
-        ". $b",
-        "& { $c = Join-Path $PSScriptRoot 'lib/C.ps1'; . $c }"
+        ". $b"
       ].join("\n")
     });
     expect(Object.keys(await wires("Deploy.ps1"))).toEqual(["lib/A.ps1"]);
+  });
+
+  it("read a variable assigned once in the block that holds the load or one enclosing it, before the load, and not elsewhere", async () => {
+    await write({
+      "Actions/Helper.ps1": "", "Actions/Other.ps1": "", "Actions/Third.ps1": "", "lib/Late.ps1": "",
+      "Tests/Helper.Test.ps1": [
+        "Describe 'helper' {",
+        "    BeforeAll {",
+        "        $scriptRoot = Join-Path $PSScriptRoot '..\\Actions' -Resolve",
+        "        . (Join-Path $scriptRoot 'Helper.ps1')",
+        "        & { . \"$scriptRoot\\Third.ps1\" }",
+        "    }",
+        "    It 'loads' { . \"$scriptRoot\\Other.ps1\" }",
+        "}",
+        ". $late",
+        "$late = Join-Path $PSScriptRoot '../lib/Late.ps1'"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Tests/Helper.Test.ps1")).sort()).toEqual(["Actions/Helper.ps1", "Actions/Third.ps1"]);
+  });
+
+  it("read Split-Path of the script's own path as its folder, and of another fixed path as its parent", async () => {
+    await write({
+      "scripts/lib.ps1": "", "scripts/b.ps1": "", "c.ps1": "", "scripts/d.ps1": "",
+      "scripts/Run.ps1": [
+        "$here = Split-Path -Parent $MyInvocation.MyCommand.Path",
+        ". \"$here\\lib.ps1\"",
+        ". (Join-Path (Split-Path $PSCommandPath) 'b.ps1')",
+        "$root = Split-Path $PSScriptRoot -Parent",
+        ". \"$root/c.ps1\"",
+        "$name = Split-Path -Leaf $MyInvocation.MyCommand.Definition",
+        ". \"$PSScriptRoot/$name\""
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("scripts/Run.ps1")).sort()).toEqual(["c.ps1", "scripts/b.ps1", "scripts/lib.ps1"]);
+  });
+
+  it("read a loop over names written out, in a foreach, piped to ForEach-Object, or through a variable assigned the list", async () => {
+    await write({
+      "M/a.ps1": "", "M/b.ps1": "", "M/c.ps1": "", "M/d.ps1": "", "M/E.psm1": "",
+      "M/M.psm1": [
+        "foreach ($s in @('a.ps1', 'b.ps1')) { . (Join-Path $PSScriptRoot $s) }",
+        "'c.ps1', 'd.ps1' | ForEach-Object { . \"$PSScriptRoot\\$_\" }",
+        "$modules = @('E.psm1')",
+        "foreach ($m in $modules) { Import-Module \"$PSScriptRoot/$m\" }",
+        "foreach ($x in (Get-Content names.txt)) { . (Join-Path $PSScriptRoot $x) }"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("M/M.psm1")).sort()).toEqual(["M/E.psm1", "M/a.ps1", "M/b.ps1", "M/c.ps1", "M/d.ps1"]);
   });
 
   it("read a foreach over Get-ChildItem of a fixed folder, by its filter and recursion, written in place or through variables", async () => {
