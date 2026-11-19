@@ -381,11 +381,15 @@ export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
 /** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
 export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
 
-/** Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it. */
-export type CameraFraming = "hand" | "follows";
+/**
+ * Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",
+ * a matched alternative for the owner's eye (root's ruling, 2026-11-19), follows as far out as the overview look when every
+ * target is a whole-file pin.
+ */
+export type CameraFraming = "hand" | "follows" | "follows-files";
 
 /** Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other. */
-export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows"];
+export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows", "follows-files"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

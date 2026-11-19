@@ -12,7 +12,7 @@
  *
  * @module camera-intent
  */
-import { farthestRatioOf } from "./ladder-steps";
+import { farthestRatioOf, STEP_RATIO } from "./ladder-steps";
 import { clamp, framePadding, type Bounds, type Frame } from "./layout-measure";
 import type { MapTransform } from "./types";
 
@@ -29,6 +29,13 @@ export const STEP_MARK_MS = 1000;
  * file's name alone.
  */
 export const ARRIVAL_FLOOR_RATIO = farthestRatioOf("connections");
+
+/**
+ * The floor of Framing's "Follows Pins, Out To Files" (a matched alternative for the owner's eye, 2026-11-19): the
+ * overview look's last press (presses 7 to 10, ladder-steps.ts), where a file's name is a card's only text. Used only when
+ * every target is a whole-file pin, since past the connections look a pinned symbol's row is silenced.
+ */
+export const FILES_FLOOR_RATIO = STEP_RATIO ** -10;
 
 /**
  * Where an arrival comes to rest when it frames the neighbours: what Fit frames (the whole picture, centred inside the
@@ -85,7 +92,11 @@ export interface FramingTarget<K = string> {
   key: K;
   bounds: Bounds;
   card?: boolean;
-  /** What is held of it while other targets are framed with it, where that is less than the whole: the unpinned subject's name line. */
+  /**
+   * What is held of it while it is not the newest of several targets framed together, where that is less than the whole:
+   * a card's name line (the unpinned subject's, an older whole-file pin's), so that the newest is read and the older keep
+   * their names for the person's bearings (root's ruling on the owner's "bias towards most recent items", 2026-11-19).
+   */
   brief?: Bounds;
 }
 
@@ -107,26 +118,74 @@ export interface PinsFraming<K = string> {
  */
 export function pinsFrame<K>(targets: readonly FramingTarget<K>[], frame: Frame, ceiling: number, floor: number): PinsFraming<K> | null {
   if (!targets.length) return null;
-  const { horizontal, vertical } = framePadding(frame);
-  const room = { width: frame.width - 2 * horizontal, height: frame.height - 2 * vertical };
-  const fitOf = (box: Bounds): number => Math.min(room.width / Math.max(1, box.width), room.height / Math.max(1, box.height));
-  // Centred along an axis where the box fits the room at k, else its start at the padding, as a page is entered.
-  const place = (box: Bounds, k: number): MapTransform => ({
-    x: box.width * k > room.width + 0.5 ? horizontal - box.left * k : frame.width / 2 - (box.left + box.width / 2) * k,
-    y: box.height * k > room.height + 0.5 ? vertical - box.top * k : frame.height / 2 - (box.top + box.height / 2) * k,
-    k
-  });
+  const room = roomOf(frame);
   for (let first = 0; first < targets.length; first++) {
     const held = targets.slice(first), left = targets.slice(0, first).map(target => target.key);
-    const box = unionOf(held.map(target => held.length > 1 ? target.brief ?? target.bounds : target.bounds))!;
-    const fit = fitOf(box);
+    const box = heldBox(held, room, floor);
+    const fit = fitIn(box, room);
     if (held.length === 1) {
       const k = held[0].card ? ceiling : clamp(fit, floor, ceiling);
-      return { transform: place(box, k), held: [held[0].key], left };
+      return { transform: place(box, k, frame), held: [held[0].key], left };
     }
-    if (fit >= floor * (1 - 1e-9)) return { transform: place(box, Math.min(fit, ceiling)), held: held.map(target => target.key), left };
+    if (fit >= floor * (1 - 1e-9)) return { transform: place(box, Math.min(fit, ceiling), frame), held: held.map(target => target.key), left };
   }
   return null;
+}
+
+/**
+ * The following camera's re-frame when the person changed nothing (root's ruling of 2026-11-19): the layout moved a held
+ * target (the continuing search, a card grown by reading, an opening). It never zooms in and never drops a target it can
+ * keep: from the camera as it stands it zooms out only as far as the held targets need, never past the floor, and pans
+ * the least that shows them; where even the floor cannot hold them all it keeps the newest alone and says the rest are
+ * left out. `held` is what the last frame held, oldest first.
+ */
+export function keepFrame<K>(held: readonly FramingTarget<K>[], camera: MapTransform, frame: Frame, floor: number): PinsFraming<K> | null {
+  if (!held.length) return null;
+  const room = roomOf(frame);
+  let kept = held, box = heldBox(held, room, floor);
+  if (held.length > 1 && fitIn(box, room) < floor * (1 - 1e-9)) {
+    kept = held.slice(-1);
+    box = heldBox(kept, room, floor);
+  }
+  const k = Math.min(camera.k, Math.max(fitIn(box, room), floor));
+  // Zoomed about the frame's middle, then the least pan that brings the box in.
+  const middle = { x: frame.width / 2, y: frame.height / 2 };
+  const scaled = { x: middle.x - (middle.x - camera.x) * k / camera.k, y: middle.y - (middle.y - camera.y) * k / camera.k, k };
+  const pan = revealPan(box, scaled, frame);
+  return { transform: { x: scaled.x + pan.x, y: scaled.y + pan.y, k }, held: kept.map(target => target.key),
+    left: held.slice(0, held.length - kept.length).map(target => target.key) };
+}
+
+/** The room inside the frame's padding, with the padding. */
+function roomOf(frame: Frame): { width: number; height: number; horizontal: number; vertical: number } {
+  const { horizontal, vertical } = framePadding(frame);
+  return { width: frame.width - 2 * horizontal, height: frame.height - 2 * vertical, horizontal, vertical };
+}
+
+/** The largest scale at which a box fits the room. */
+function fitIn(box: Bounds, room: { width: number; height: number }): number {
+  return Math.min(room.width / Math.max(1, box.width), room.height / Math.max(1, box.height));
+}
+
+/**
+ * The box a set of targets needs, oldest first: each older target by its brief where it has one, and the newest whole,
+ * though no taller than the floor can show, so that a card taller than the view is entered at its top.
+ */
+function heldBox<K>(held: readonly FramingTarget<K>[], room: { width: number; height: number }, floor: number): Bounds {
+  const newest = held[held.length - 1].bounds;
+  const tallest = room.height / floor;
+  const top = newest.height > tallest ? { ...newest, bottom: newest.top + tallest, height: tallest } : newest;
+  return unionOf([...held.slice(0, -1).map(target => target.brief ?? target.bounds), held.length > 1 ? top : newest])!;
+}
+
+/** Centred along an axis where the box fits the room at k, else its start at the padding, as a page is entered. */
+function place(box: Bounds, k: number, frame: Frame): MapTransform {
+  const room = roomOf(frame);
+  return {
+    x: box.width * k > room.width + 0.5 ? room.horizontal - box.left * k : frame.width / 2 - (box.left + box.width / 2) * k,
+    y: box.height * k > room.height + 0.5 ? room.vertical - box.top * k : frame.height / 2 - (box.top + box.height / 2) * k,
+    k
+  };
 }
 
 /** The shortest and longest a re-frame of the following camera eases. */
@@ -146,6 +205,17 @@ export function framingEaseMs(start: MapTransform, end: MapTransform, frame: Fra
   const to = { x: (middle.x - end.x) / end.k, y: (middle.y - end.y) / end.k };
   const travel = Math.hypot(to.x - from.x, to.y - from.y) * Math.min(start.k, end.k) / Math.max(1, Math.hypot(frame.width, frame.height));
   return clamp(FRAMING_EASE_MIN_MS + 250 * zoom + 400 * travel, FRAMING_EASE_MIN_MS, FRAMING_EASE_MAX_MS);
+}
+
+/**
+ * How far a re-frame travels, in frames' diagonals on screen at the lesser of its two scales: past about one, a flat pan
+ * crosses a view of empty map, and the following camera takes the smooth zoom's path instead.
+ */
+export function framingTravel(start: MapTransform, end: MapTransform, frame: Frame): number {
+  const middle = { x: frame.width / 2, y: frame.height / 2 };
+  const from = { x: (middle.x - start.x) / start.k, y: (middle.y - start.y) / start.k };
+  const to = { x: (middle.x - end.x) / end.k, y: (middle.y - end.y) / end.k };
+  return Math.hypot(to.x - from.x, to.y - from.y) * Math.min(start.k, end.k) / Math.max(1, Math.hypot(frame.width, frame.height));
 }
 
 /** Whether two cameras differ by less than the eye sees: half a pixel of pan and a thousandth of scale. */

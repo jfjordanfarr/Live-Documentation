@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, keepFrame, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -195,6 +195,17 @@ describe("the frame that follows the pins (Framing, Follows Pins)", () => {
     expect(pinsFrame([{ ...subject, brief: name }], frame, reading, floor)!.transform.k, "alone it is the arrival's card").toBe(reading);
   });
 
+  it("holds the newest whole and the older by their names: an older whole-file pin keeps its name line beside a new one", () => {
+    const older = { ...target("older", box(0, 0, 300, 2400), true), brief: box(0, 0, 300, 40) };
+    const newest = target("newest", box(500, 1200, 300, 500), true);
+    const framed = pinsFrame([older, newest], frame, reading, floor)!;
+    expect(framed.held).toEqual(["older", "newest"]);
+    expect(within(older.brief, framed.transform) && within(newest.bounds, framed.transform)).toBe(true);
+    // The newest is never held by its brief: given one, its whole card is still framed.
+    const briefNewest = pinsFrame([older, { ...newest, brief: box(500, 1200, 300, 40) }], frame, reading, floor)!;
+    expect(within(newest.bounds, briefNewest.transform)).toBe(true);
+  });
+
   it("depends on its inputs alone", () => {
     const targets = [target("a", box(-40, 12, 310, 170)), target("b", box(900, 300, 320, 240), true)];
     expect(pinsFrame(targets, frame, reading, floor)).toEqual(pinsFrame(targets.map(each => ({ ...each, bounds: { ...each.bounds } })), { ...frame }, reading, floor));
@@ -224,5 +235,45 @@ describe("the following camera's ease", () => {
     expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 0.2, y: -0.3, k: 1.0005 })).toBe(true);
     expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 2, y: 0, k: 1 })).toBe(false);
     expect(sameCamera({ x: 0, y: 0, k: 1 }, { x: 0, y: 0, k: 0.99 })).toBe(false);
+  });
+});
+
+describe("a re-frame the person did not cause (keepFrame)", () => {
+  const { horizontal, vertical } = framePadding(frame);
+  const reading = 1.2, floor = reading * ARRIVAL_FLOOR_RATIO;
+  const target = (key: string, bounds: Bounds, card = false): FramingTarget => ({ key, bounds, card });
+  const within = (bounds: Bounds, camera: { x: number; y: number; k: number }) => {
+    const drawn = onScreen(bounds, camera);
+    return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+  };
+
+  it("never zooms in: held targets that moved apart a little are panned to, at the camera's own scale", () => {
+    const camera = { x: 0, y: 0, k: 0.6 };
+    const held = [target("a", box(0, 0, 200, 100)), target("b", box(900, 200, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.transform.k).toBe(0.6);
+    expect(kept.held).toEqual(["a", "b"]);
+    for (const each of held) expect(within(each.bounds, kept.transform)).toBe(true);
+    expect(keepFrame([target("a", box(100, 100, 50, 50))], camera, frame, floor)!.transform, "a target in view moves nothing").toEqual(camera);
+  });
+
+  it("zooms out only as far as the held targets need, never past the floor, and keeps every one it can", () => {
+    const camera = { x: 0, y: 0, k: reading };
+    const held = [target("a", box(0, 0, 200, 100)), target("b", box(2000, 0, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.transform.k).toBeLessThan(reading);
+    expect(kept.transform.k).toBeGreaterThanOrEqual(floor);
+    expect(kept.left).toEqual([]);
+    for (const each of held) expect(within(each.bounds, kept.transform)).toBe(true);
+  });
+
+  it("where even the floor cannot hold them, keeps the newest and says the rest are left out", () => {
+    const camera = { x: 0, y: 0, k: reading };
+    const held = [target("old", box(-20_000, 0, 200, 100)), target("newest", box(0, 0, 200, 100))];
+    const kept = keepFrame(held, camera, frame, floor)!;
+    expect(kept.held).toEqual(["newest"]);
+    expect(kept.left).toEqual(["old"]);
+    expect(kept.transform.k, "and still does not zoom in").toBeLessThanOrEqual(reading);
+    expect(within(held[1].bounds, kept.transform)).toBe(true);
   });
 });

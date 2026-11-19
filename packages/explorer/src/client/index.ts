@@ -995,7 +995,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     fitButton.title = state.perspective === "3d" ? "Fit the current path or retained scope" : "Fit everything the map shows";
     // Under Tuning's Framing at Follows Pins (2026-11-19), Fit in 2D frames the pins and is pressed while the camera
     // follows them; the person's own pan or zoom lifts it, and a press gives the following back.
-    if (state.perspective === "2d" && state.tuning.localMap.framing === "follows") {
+    if (state.perspective === "2d" && state.tuning.localMap.framing !== "hand") {
       const following = localView.isFollowing();
       fitButton.setAttribute("aria-pressed", String(following));
       fitButton.setAttribute("aria-label", "Follow pins");
