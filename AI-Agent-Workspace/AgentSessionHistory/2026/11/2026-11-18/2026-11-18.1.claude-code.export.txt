@@ -22775,3 +22775,2363 @@
   after 45 minutes, so it should end at about 14:45 UTC. Timer renewed. The
   Tuning reset rerun and the history handback both follow from that, and nothing
   needs a decision before then.
+
+● The final history rebuild is about half done (590 of roughly 1,200 commits)
+  after 45 minutes, so it should end at about 14:45 UTC. Timer renewed. The
+  Tuning reset rerun and the history handback both follow from that, and nothing
+  needs a decision before then.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read .claude/worktrees/agent-af784aba5d0357850/AI-Agent-Workspace/AgentSess
+     ionHistory/2026/11/2026-11-18/Screenshots/camera-intent/README.md (51
+     lines)
+  ⎿  Read AGENTS.md (63 lines)
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/fresh-reader.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/645014
+     1c-9e11-40e5-95a5-166121c231a3/scratchpad/nar/joined.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/6450141c-9e11-40e
+     5-95a5-166121c231a3/scratchpad/handback-reviewer2.md (83 lines)
+
+● Task "Cells' first-frame cost" completed in background
+
+● Task "Review root's code of today" completed in background
+
+● Task "Blind playtest instrument" completed in background
+
+● Task "Returning connections made legible" completed in background
+
+● Task "Bare frame trial lever" completed in background
+
+● Task "Mend the look-change freeze" completed in background
+
+● Task "Finish the returning connections round" completed in background
+
+● Task "Mend the history data round" still running in background
+
+● Task "Third review, the last mends" completed in background
+
+● Task "When the machine is quiet, run the Tuning reset cases three times on
+  main" still running in background
+
+● Task "Fallback timer of fifty minutes while builders work" still running in
+  background
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ While that runs, can you please wrap up the dev day chat by creating a
+  comprehensive summary file for the astounding development sprint accomplished
+  yesterday? I'll start a new dev day chat after the history rebuild is done
+  and you declare you're ready.
+
+  Searched for 1 pattern, read 2 files, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● Turn 38 and my 58 delivered replies since Turn 37 are recorded. Now reading
+  the whole record in ranges and writing the summary as I go.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.S
+       UMMARIZED.md)
+  ⎿  Wrote 44 lines to AI-Agent-Workspace/AgentSessionHistory/2026/11/Summa
+     rized/2026-11-18.1.SUMMARIZED.md
+      1 # November 18–19, 2026 — the working copy on Linux, a design syst
+        em on paper, and a night of parallel builders
+      2
+      3 Historical session summary. Harness: Claude Code in the VS Code e
+        xtension; both roots were Fable 5.2 (`claude-fable-5-2`) by the h
+        arness's statement. Two roots kept one record: the first for Turn
+         1, in the owner's new WSL distribution, and the second from Turn
+         2, in the dev container made from the moved working copy. Builde
+        rs, reviewers and readers were Opus subagents of the second root,
+         each in its own worktree. Summary author: the second root, Novem
+     … +42 lines (~5 KB) (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 24 lines
+      42 
+      43  [Root's reply to Turns 2 to 5](../2026-11-18/2026-11-18.1.recor
+          d.md#roots-reply-to-turns-2-to-5-as-delivered) (15:05) recommen
+          ded neither whole: the copying of messages to a script with no
+          model in it, the authored notes kept by root and cut to what th
+          e reply does not already say, and one trial for a scribe, the s
+          ummary at a session's close. The startup read, finished after t
+          hat reply, added what the archive already knows of summaries wr
+          itten by a model that was not the session's root: the rewrites
+          of 2025-12-02 repeated agents' reports of success as fact ([not
+          es](../2026-11-18/2026-11-18.1.record.md#work-notes-after-the-s
+          tartup-read)).
+      44 
+      45 +## Turn 6                                                      
+      46 +                                                               
+      47 +The owner, 15:09 UTC ([record](../2026-11-18/2026-11-18.1.recor
+         +d.md#turn-6)): "Nah. Thanks for the pushback, that's very helpf
+         +ul. It sounds to me like our current setup is optimal for simpl
+         +icity and efficacy. The alternative is not superior." And: "you
+         + have everything you need to plausibly go through a full produc
+         +tive dev day! Is there anything else immediate which needs my a
+         +ttention?"                                                     
+      48 +                                                               
+      49 +Decided: no hook and no scribe; the record stays root's (to `ow
+         +ner.md` in their words). [The reply](../2026-11-18/2026-11-18.1
+         +.record.md#roots-reply-to-turn-6-as-delivered) (15:14): nothing
+         + needs them; pushing is now the working copy's only backup. Roo
+         +t dispatched the day's first builder, for the session-history c
+         +onvention ([the brief](../2026-11-18/2026-11-18.1.record.md#wor
+         +k-notes-the-session-history-builder-dispatched)): captures are 
+         +moved and never altered ("Those artifacts should be readonly", 
+         +2025-11-13), and the proof that every link still resolves lives
+         + in the move's own script, because the link audit did not read 
+         +the archive.                                                   
+      50 +                                                               
+      51 +Its first handback came in 27 minutes ([notes](../2026-11-18/20
+         +26-11-18.1.record.md#work-notes-the-session-history-builders-fi
+         +rst-handback)): one script, 4,505 files renamed with content un
+         +touched, links re-pointed in 1,074 documents. Root wrote a chec
+         +k that shares no code with the builder's: 20 broken paths and 1
+         +7 broken anchors before the move, the same 37 after. That check
+         + found three old defects, mended first (`6385b33d`): a `Turn 4`
+         + heading of the October 7 record trapped inside a code fence, t
+         +he January 30 summary's corrections trapped the same way, and o
+         +ne short link. Root overrode the builder twice from the convent
+         +ion's own first sentence: the Antigravity captures go into thei
+         +r days, and two exports the harness named for the day after the
+         +ir session began go to their dev day.                          
+      52 +                                                               
+      53 +The owner's export, saved a second time, showed rows ending in 
+         +"· summary" between root's messages. Root told the owner at 15:
+         +55 that the harness writes them and that one was false ([as del
+         +ivered](../2026-11-18/2026-11-18.1.record.md#roots-messages-aft
+         +er-the-first-handback-as-delivered)); Turn 7 corrects that.    
+      54 +                                                               
+      55 +## Turn 7                                                      
+      56 +                                                               
+      57 +The owner, 16:13 UTC ([record](../2026-11-18/2026-11-18.1.recor
+         +d.md#turn-7)): "Whaaaaat that is so crazy!!! Wow! Yeah I seriou
+         +sly am just copy-pasting in bulk from what it gives me." They n
+         +amed three things that differ: "What you say", "What gets shown
+         + to me in the UI", "What gets exported from the UI". "I am uh, 
+         +very happy we have our record format owned by the root agent." 
+      58 +                                                               
+      59 +"I told you wrong about those rows, and your newest export is w
+         +hat shows it." ([reply](../2026-11-18/2026-11-18.1.record.md#ro
+         +ots-reply-to-turn-7-as-delivered), 16:21). The evidence ([notes
+         +](../2026-11-18/2026-11-18.1.record.md#work-notes-turn-7)): of 
+         +seven short lines root wrote between 15:43 and 15:56, the expor
+         +t shows three word for word and a reworded "· summary" row in p
+         +lace of each of the other four; the session's log, listed by th
+         +e kind of each entry and nothing else, holds a reasoning entry 
+         +and no message at each of those four places. So a row marked "·
+         + summary" is the harness's summary of root's own reasoning at t
+         +hat step: "what I was thinking of doing, in someone else's word
+         +s. A message is what I said." Root then found that the archive'
+         +s README had described these rows since November 16 ("The cause
+         + was not found"); it had read that README in the morning and no
+         +t connected it, and told the owner the finding was a rediscover
+         +y with part of the cause added.                                
+      60 +                                                               
+      61 +**The first whole gate in the new container** ([notes](../2026-
+         +11-18/2026-11-18.1.record.md#work-notes-the-first-whole-gate-in
+         +-the-new-container)): 485 of 488 browser cases, 73 minutes 46 s
+         +econds in all against about 107 on the Windows drive. Root corr
+         +ected its own reading of an hour before, that the new disk left
+         + a case's time where it was. Red: two known unsteady cases and 
+         +one wait that is too tight. The owner was told what could now b
+         +e deleted: the folder on `D:\`, the old container and its `node
+         +_modules` volume.                                              
+      62 +                                                               
+      63 +**The session-history round landed** ([notes](../2026-11-18/202
+         +6-11-18.1.record.md#work-notes-the-session-history-round-landed
+         +)), `bbce1d4c` to `0be65840`: `ChatHistory/` became `AgentSessi
+         +onHistory/`, with a directory per dev day that holds its record
+         +, captures, `Probes/`, `Research/` and `Screenshots/`. Proved o
+         +n `main`: 227 of 227 captures with the same SHA-256; 23,941 of 
+         +23,958 links reach the same file and anchor, the other 17 unres
+         +olved before and untouched; the Explorer's bundle carries the s
+         +ame 103 workspace documents. The table [old-paths.md](../../../
+         +old-paths.md) maps every old path to its new one.              
+      64 +                                                               
+      65 +Two more builders went out while the suite measured at two work
+         +ers: one for the 19 findings of `npm audit` ("Yes, we'll need t
+         +o remediate of course."), told that no finding is closed by a s
+         +etting; one for the first slice of the owner's scenario suite, 
+         +their pattern of November 17 ("a series of _joint assertions_ r
+         +un across numerous common scenarios of data"). The dependency b
+         +uilder's first handback closed five of six root advisories by f
+         +ixed versions; the sixth, against `picomatch`, GitHub had withd
+         +rawn that day, and root ruled to wait for npm's data and overri
+         +de nothing.                                                    
+      66 +                                                               
+      67 +_Continues below as the reading goes._                         
+      68 +                                                               
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 833 (the work notes after the startup read
+        -); Turns 1 to 5 are written below. Everything after that line is
+        - still to be read and summarized.**                             
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 1,292 (root's messages after the session-h
+        +istory landing); Turns 1 to 7 are written below. Everything afte
+        +r that line is still to be read and summarized.**               
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+● Still reading the record (now through Turn 9 of 38) and writing the summary
+  section by section; the history rebuild keeps running in the background.
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 22 lines
+      64 
+      65  Two more builders went out while the suite measured at two work
+          ers: one for the 19 findings of `npm audit` ("Yes, we'll need t
+          o remediate of course."), told that no finding is closed by a s
+          etting; one for the first slice of the owner's scenario suite,
+          their pattern of November 17 ("a series of _joint assertions_ r
+          un across numerous common scenarios of data"). The dependency b
+          uilder's first handback closed five of six root advisories by f
+          ixed versions; the sixth, against `picomatch`, GitHub had withd
+          rawn that day, and root ruled to wait for npm's data and overri
+          de nothing.
+      66 
+      67 +## Turn 8                                                      
+      68 +                                                               
+      69 +The owner, 17:04 UTC ([record](../2026-11-18/2026-11-18.1.recor
+         +d.md#turn-8)), of the container's npm: "Any reason not to raise
+         + it? Raising it sounds fine."                                  
+      70 +                                                               
+      71 +Raised to npm 11, pinned in `.devcontainer/post-create.sh`; the
+         + one caution, two npm versions that both write the lockfile, is
+         + covered because GitHub's workflows only read it ([reply](../20
+         +26-11-18/2026-11-18.1.record.md#roots-reply-to-turn-8-as-delive
+         +red), 17:06).                                                  
+      72 +                                                               
+      73 +**The suite at two workers** ([notes](../2026-11-18/2026-11-18.
+         +1.record.md#work-notes-the-whole-suite-at-two-workers)): 482 of
+         + 488 in 41.9 minutes against 72 at one. Five cases failed only 
+         +when the machine was shared, four of them slow cases on their w
+         +hole-case limits, the fifth a race. Root built a second pass th
+         +at changes no limit (`8380146c`): `npm run test:e2e` runs `scri
+         +pts/e2e-passes.mjs`, the suite at two workers and then the case
+         +s tagged `@alone` at one. The owner's clocks on slow cases stay
+         + their alarms (their decision of November 12).                 
+      74 +                                                               
+      75 +**The count root owed on the scenario suite** ([notes](../2026-
+         +11-18/2026-11-18.1.record.md#work-notes-the-scenario-builders-f
+         +irst-handback)): 163 of the 488 cases are still-picture promise
+         +s and take 35% of the run's time. "The finding that matters: al
+         +most no case can be deleted as it stands": nearly every one als
+         +o checks a number written into the test or one gesture, so a co
+         +nversion means splitting the case.                             
+      76 +                                                               
+      77 +**The dependency round landed** (`0e88714c` to `af313e93`; [not
+         +es](../2026-11-18/2026-11-18.1.record.md#work-notes-the-depende
+         +ncy-round-landed)): `glob` 14 and `minimatch` 11, each proven t
+         +o select the same paths as its predecessor over about 1.56 mill
+         +ion comparisons; npm 11.21.1 pinned; `npm audit` reports no fin
+         +dings, since npm's data took in the withdrawal while the builde
+         +r worked. Root corrected its warning that the Monday audit work
+         +flow would go red. The round's gate first stopped on a gap in r
+         +oot's own runner commit, a hand-kept list of entry points that 
+         +did not name the new script (`1bbdfce5`).                      
+      78 +                                                               
+      79 +The scenario table ran for the first time ([notes](../2026-11-1
+         +8/2026-11-18.1.record.md#work-notes-the-scenario-builders-secon
+         +d-handback-up-to-roots-stop)): every law held on every map; its
+         + two failures were the table's own expectation, and root ruled 
+         +that "A red cell must mean a broken promise of the product." Br
+         +eaking the product on purpose turned the table red in eight of 
+         +ten tries; one miss exposed a blind spot in the suite's design 
+         +audit, which did not see a clip on an element between the audit
+         +ed one and its text. A fourth builder went out for the owner's 
+         +defect, the rings beside the membranes ([brief](../2026-11-18/2
+         +026-11-18.1.record.md#work-notes-the-wait-for-the-gate-the-scen
+         +ario-builders-rulings-coded-and-the-rings-builder-dispatched)).
+      80 +                                                               
+      81 +## Turn 9                                                      
+      82 +                                                               
+      83 +The owner, 18:18 UTC ([record](../2026-11-18/2026-11-18.1.recor
+         +d.md#turn-9)), quoting root's "Hidden documents: no sign at all
+         +": "If 'Document' file types are hidden, why do we make the ass
+         +ertion that there are other files connected to the one that is 
+         +ringed? Am I misunderstanding the problem?" And their position:
+         + "I personally think that's fine if it only reports the connect
+         +ions that are of the activated file archetypes. I would hope to
+         + see different structures depending on which permutation of fil
+         +e types I have active."                                        
+      84 +                                                               
+      85 +"You have the product right. My word \"hidden\" was standing fo
+         +r two different things, and the ring is only about one of them.
+         +" ([reply](../2026-11-18/2026-11-18.1.record.md#roots-reply-to-
+         +turn-9-as-delivered), 18:24). From the code: the four switches 
+         +are applied first and every count is worked out from what is le
+         +ft, so a kind that is switched off is counted by nothing. Root 
+         +has since written "switched off" for a kind the switches leave 
+         +out and "beyond the hops" for a thing farther out than the hops
+         + shown. The owner's sentence went into direction as a rule in f
+         +orce for both maps. The owner's fifth export showed that their 
+         +window displays each builder's handback in full.               
+      86 +                                                               
+      87 +**The first whole run of the two passes** ([notes](../2026-11-1
+         +8/2026-11-18.1.record.md#work-notes-the-first-whole-run-of-the-
+         +two-passes)): the gate in 47 minutes 26 seconds against 73 minu
+         +tes 46 that morning; five red, none of the dependency round's m
+         +aking. Two cases of the search's pause were tagged `@alone`, wi
+         +th a finding the tag does not hide: their search took 19 to 29 
+         +s in October and 40 to 44 s now. Root ran the history case's ra
+         +ce down by reading ([notes](../2026-11-18/2026-11-18.1.record.m
+         +d#work-notes-the-race-in-the-historys-case-run-down-by-reading)
+         +): the case waited on `aria-busy`, which does not cover spheres
+         + still entering; the map says that with `data-building`.       
+      88 +                                                               
+      89  _Continues below as the reading goes._
+      90 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 1,292 (root's messages after the session-h
+        -istory landing); Turns 1 to 7 are written below. Everything afte
+        -r that line is still to be read and summarized.**               
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 1,867 (root's messages while the scenario 
+        +builder worked); Turns 1 to 9 are written below. Everything afte
+        +r that line is still to be read and summarized.**               
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 12 lines
+       86 
+       87  **The first whole run of the two passes** ([notes](../2026-11-
+           18/2026-11-18.1.record.md#work-notes-the-first-whole-run-of-th
+           e-two-passes)): the gate in 47 minutes 26 seconds against 73 m
+           inutes 46 that morning; five red, none of the dependency round
+           's making. Two cases of the search's pause were tagged `@alone
+           `, with a finding the tag does not hide: their search took 19
+           to 29 s in October and 40 to 44 s now. Root ran the history ca
+           se's race down by reading ([notes](../2026-11-18/2026-11-18.1.
+           record.md#work-notes-the-race-in-the-historys-case-run-down-by
+           -reading)): the case waited on `aria-busy`, which does not cov
+           er spheres still entering; the map says that with `data-buildi
+           ng`.
+       88 
+       89 +## Turn 10                                                    
+       90 +                                                              
+       91 +The owner, 19:04 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-10)): "if it is no more visually efficient to creat
+          +e a membrane for one further hop away, might as well just draw
+          + that terminal leaf node, eh? Flipside of that coin: this coul
+          +d also be telling us that we should be more serious about _com
+          +pletely hiding_ things which are more than a configured set of
+          + hops away", with membranes that "kind of form and break and r
+          +e-form as new hops were taken". "I am trying to keep my mind o
+          +pen to the possibility that this design nit is a signal of som
+          +ething wider".                                                
+       92 +                                                              
+       93 +Root read what a pinned picture holds today (the hops, every o
+          +ther file of the same connected group in membranes at whatever
+          + distance, and the seeds of unreached groups) and searched the
+          + record: nothing like it had been tried or refused. [The reply
+          +](../2026-11-18/2026-11-18.1.record.md#roots-reply-to-turn-10-
+          +as-delivered) (19:08) put the two sides of the owner's coin as
+          + one rule, the horizon: "what is exactly one step past the las
+          +t hop gets a sign; what is farther gets nothing until a step b
+          +rings it to the edge." It named the two stances in designers' 
+          +terms (Shneiderman's "overview first, zoom and filter, then de
+          +tails on demand" against van Ham and Perer's "search, show con
+          +text, expand on demand") and started a trial behind a lever, t
+          +he default unchanged.                                         
+       94 +                                                              
+       95 +**The scenario slice landed** (`6ffd40f0` to `686ab1af`, with 
+          +root's mend `a2869e62`; [review](../2026-11-18/2026-11-18.1.re
+          +cord.md#work-notes-the-scenario-builders-third-handback-and-ro
+          +ots-review), [landing](../2026-11-18/2026-11-18.1.record.md#wo
+          +rk-notes-the-scenario-slice-landed)): 43 cases over ten maps, 
+          +715 promises judged in 127 s at one worker; per promise far ch
+          +eaper than today's cases, and "In gate time it saves nothing y
+          +et." Root refused the compiler judgment as built and said the 
+          +fault was in its own ruling: an excuse computed live would exc
+          +use any lost edge. It became a frozen list of two named gaps w
+          +ith teeth. Found for the owner to rank: the C-family maps lack
+          + what the compiler records as the use of a definition, and a C
+          + header's include guard is listed among its symbols. The measu
+          +rement is filed under [Probes/scenario-suite](../2026-11-18/Pr
+          +obes/scenario-suite/README.md).                               
+       96 +                                                              
+       97 +**The rings' mend and the horizon's trial landed** (`6b2f8c49`
+          + to `29421080`; [notes](../2026-11-18/2026-11-18.1.record.md#w
+          +ork-notes-the-rings-and-the-horizon-landed-and-three-waits-men
+          +ded), [report](../2026-11-18/2026-11-18.1.record.md#roots-repo
+          +rt-on-the-rings-mend-and-the-horizons-trial-as-delivered) at 2
+          +0:30): with a wrapper on, no sphere wears a ring; a lone file 
+          +beyond the hops is drawn as itself, dimmed. The trial is "Beyo
+          +nd the Hops" in the 3D Tuning, "Everything" by default and "Ne
+          +xt step": at one hop, 9 spheres and 184 files in membranes aga
+          +inst 69 and 965. Pictures in [rings-mend](../2026-11-18/Screen
+          +shots/rings-mend/README.md) and [beyond-the-hops](../2026-11-1
+          +8/Screenshots/beyond-the-hops/README.md). Root corrected two s
+          +tatements of its own: the Hops control already stands on the t
+          +oolbar, and the slow layout search is 121 boundary joins whate
+          +ver the seed count, not "about twice 80 trials". Three waits w
+          +ere mended and proven under load, among them the history case'
+          +s race (2 of 8 failing before, 8 of 8 passing after).         
+       98 +                                                              
+       99 +**The evening's gate** ([notes](../2026-11-18/2026-11-18.1.rec
+          +ord.md#work-notes-the-evenings-gate-and-the-transition-cases-m
+          +end)): 47 minutes 24 seconds for 542 cases, one red, `force-gr
+          +aph-defaults.spec.ts:101`, which root mended in the case (the 
+          +clock stopped before the press; 4 of 8 failing before, 8 of 8 
+          +after; `b1c570ba`). A message on it written between two tool c
+          +alls never reached the owner and was sent again. A builder wen
+          +t out for the two defaults the owner had decided that morning,
+          + marbles on ("I think they are a worthy new default.") and cel
+          +ls under the name. Root sent one item back: the history's chan
+          +ged-file cases had been set to marbles off, so the picture the
+          + owner would see by default was read by no case. The round lan
+          +ded at 22:29 (`50ff0ceb` to `665d92a3`; [notes](../2026-11-18/
+          +2026-11-18.1.record.md#work-notes-the-defaults-round-landed-an
+          +d-its-gate-begun)), with pictures in `Screenshots/defaults-rou
+          +nd/`.                                                         
+      100 +                                                              
+      101  _Continues below as the reading goes._
+      102 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 1,867 (root's messages while the scenario 
+        -builder worked); Turns 1 to 9 are written below. Everything afte
+        -r that line is still to be read and summarized.**               
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 2,401 (root's messages before Turn 11); Tu
+        +rns 1 to 10 are written below. Everything after that line is sti
+        +ll to be read and summarized.**                                 
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 54 lines
+       98 
+       99  **The evening's gate** ([notes](../2026-11-18/2026-11-18.1.rec
+           ord.md#work-notes-the-evenings-gate-and-the-transition-cases-m
+           end)): 47 minutes 24 seconds for 542 cases, one red, `force-gr
+           aph-defaults.spec.ts:101`, which root mended in the case (the
+           clock stopped before the press; 4 of 8 failing before, 8 of 8
+           after; `b1c570ba`). A message on it written between two tool c
+           alls never reached the owner and was sent again. A builder wen
+           t out for the two defaults the owner had decided that morning,
+            marbles on ("I think they are a worthy new default.") and cel
+           ls under the name. Root sent one item back: the history's chan
+           ged-file cases had been set to marbles off, so the picture the
+            owner would see by default was read by no case. The round lan
+           ded at 22:29 (`50ff0ceb` to `665d92a3`; [notes](../2026-11-18/
+           2026-11-18.1.record.md#work-notes-the-defaults-round-landed-an
+           d-its-gate-begun)), with pictures in `Screenshots/defaults-rou
+           nd/`.
+      100 
+      101 +## Turn 11                                                    
+      102 +                                                              
+      103 +The owner, 22:45 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-11)), while a gate ran: "If you're finding yourself
+          + in a situation where you have time to kill, you, the Root Age
+          +nt, are free to improve the AGENTS.md and memory documents, an
+          +d even the root README.md". The way they want of a frontier mo
+          +del: "one which takes the information and rearranges it into n
+          +ew cleaner arrangements which result in the same understanding
+          + or better, but wildly more efficiently, and in ordering and g
+          +rouping which meets the audience where it's at."              
+      104 +                                                              
+      105 +## Turn 12                                                    
+      106 +                                                              
+      107 +The owner, a minute later ([record](../2026-11-18/2026-11-18.1
+          +.record.md#turn-12)): "When you go out to touch these files, I
+          + want you to be confident that you know ahead of time: Why doe
+          +s this file exist? Who is it for? What should and should not g
+          +o into this file?"                                            
+      108 +                                                              
+      109 +[Root's reply to both](../2026-11-18/2026-11-18.1.record.md#ro
+          +ots-reply-to-turns-11-and-12-as-delivered) (22:49) gave the th
+          +ree answers for each of the six files and began from what was 
+          +tried before: the cut of November 12, which the owner had rest
+          +ored ("So much of success is just knowing what we have and hav
+          +en't already discussed."). The rule of this work ([notes](../2
+          +026-11-18/2026-11-18.1.record.md#work-notes-the-compression-of
+          +-the-guide-and-the-memory-documents-what-was-known-before-a-fi
+          +le-was-touched)): nothing of the owner's is dropped or reworde
+          +d; a script checks quotations both ways; a fresh reader compar
+          +es old against new. The four Memory documents were 1.13 MB.   
+      110 +                                                              
+      111 +## Turn 13                                                    
+      112 +                                                              
+      113 +The owner ([record](../2026-11-18/2026-11-18.1.record.md#turn-
+          +13)): `AGENTS.md` is "to carry _that which is unlikely to chan
+          +ge for the foreseeable future and useful anywhere in the works
+          +pace_. Otherwise, I think your plan is solid."                
+      114 +                                                              
+      115 +Root had given only half that test ("always true here"); the s
+          +econd half, of use anywhere, means guidance for one part of th
+          +e work is weighed for a home nearer its use. Root's reply to t
+          +his turn, written at 22:52, never stood in the log as a messag
+          +e; its substance went into the reply of 23:31.                
+      116 +                                                              
+      117 +## Turn 14                                                    
+      118 +                                                              
+      119 +The owner, 23:06 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-14)): "I'd also be very appreciative if you'd fire 
+          +up a builder or two to create something akin to a design bible
+          + for our project", holding the "Common visual design rules, co
+          +lor semantics, corner sizes" and the "Common UX design rules, 
+          +accessibility standards, responsiveness/portability standards"
+          +. Their reason: "when it comes time to document something (as 
+          +in: to defend the system as it is on paper), I find things tha
+          +t are indefensible and ultimately in need of change".         
+      120 +                                                              
+      121 +## Turn 15                                                    
+      122 +                                                              
+      123 +The owner ([record](../2026-11-18/2026-11-18.1.record.md#turn-
+          +15)): "professional design standardization materials that woul
+          +d be typically produced, and to the standard of, a professiona
+          +l who works in UI/UX design."                                 
+      124 +                                                              
+      125 +## Turn 16                                                    
+      126 +                                                              
+      127 +The owner ([record](../2026-11-18/2026-11-18.1.record.md#turn-
+          +16)): "If we have a standard, why is it that standard? If a re
+          +ason can't be found, is it a standard we should have or keep?"
+      128 +                                                              
+      129 +Root answered yes by Turn 12's own rule ([notes](../2026-11-18
+          +/2026-11-18.1.record.md#work-notes-turns-14-and-15)): the docu
+          +mentation of a design system, in `.mdmd/layer-2/design-system/
+          +`, each rule with a reason of one of three kinds (the owner's 
+          +words, a named principle or published criterion, a measurement
+          + here); a standard with no reason found goes to the findings f
+          +or the owner to keep, change or drop. Two builders wrote the f
+          +irst halves in fifteen and eighteen minutes.                  
+      130 +                                                              
+      131 +**The defaults round's gate** ([notes](../2026-11-18/2026-11-1
+          +8.1.record.md#work-notes-the-defaults-rounds-gate)): 40 minute
+          +s 40 seconds, 533 of 535, two red. One finding of root's own c
+          +heck on the way: the repository's anchor audit had passed a li
+          +nk to a heading that stands inside a verbatim block, because i
+          +t never looked up an anchor in a file it does not audit. Mende
+          +d at the cause (`6d9a8a45`), which found eight old stale ancho
+          +rs.                                                           
+      132 +                                                              
+      133 +## Turn 17                                                    
+      134 +                                                              
+      135 +The owner, 23:18 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-17)): the subscription's usage resets in six hours 
+          +with a quarter spent. "You're free, if you feel it wise, to se
+          +nd off many many builders on tasks that you wish done. You kno
+          +w the compute resources, so you can manage how many get spun u
+          +p and what they're allowed to do."                            
+      136 +                                                              
+      137 +## Turn 18                                                    
+      138 +                                                              
+      139 +The owner ([record](../2026-11-18/2026-11-18.1.record.md#turn-
+          +18)): "If you've got wishlist items you want to hit, feel free
+          + to hit 'em."                                                 
+      140 +                                                              
+      141 +Root's reading ([notes](../2026-11-18/2026-11-18.1.record.md#w
+          +ork-notes-turns-17-and-18-and-the-red-case-run-down-to-its-cau
+          +se)): one lane for the browser, kept busy by one builder after
+          + another, and beside it as many builders as there are separate
+          + pieces of document or unit-level work. The two red cases were
+          + run down. `force-graph-focus.spec.ts:189` was real: Cells und
+          +er name make the 2D map's first frame about 350 ms later on th
+          +is repository's picture, because each directory builds a mark 
+          +for every undrawn file twice. Root first guessed at the cause,
+          + changed code, saw the number not move, and took the change ba
+          +ck. The bound and the default both stay, by the owner's rule t
+          +hat a case red because the product is slow stays red. `force-g
+          +raph-building.spec.ts:66` was the case's: the picture is built
+          + and still gliding, so the sphere it aimed at had left (6 of 8
+          + failing; 8 of 8 passing once it aims at a sphere that holds s
+          +till; `a91d7f89`). [The full reply](../2026-11-18/2026-11-18.1
+          +.record.md#roots-messages-after-turn-18-as-delivered) (23:31) 
+          +carried the gate, the owner's links, the design system's first
+          + findings, and the draft of `direction.md` at 189 KB against 5
+          +29 KB, not yet lossless.                                      
+      142 +                                                              
+      143 +## Turn 19                                                    
+      144 +                                                              
+      145 +The owner, 23:34 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-19)): "A gentle nudge from me: as a rule of thumb, 
+          +the Root Agent should not typically be writing or debugging pe
+          +rmanent project code. That should, in general, be the purview 
+          +of the Builders." Opus 5.5 is "more diligent and more completi
+          +onist"; Fable "less thorough on drudgery but more capable of t
+          +hinking outside the box and envisioning solutions which bypass
+          + much drugery to begin with".                                 
+      146 +                                                              
+      147 +Root counted eight mends of code or tests made with its own ha
+          +nds that day, each proven only by its own runs, and gave all e
+          +ight to a builder to review as a stranger ([notes](../2026-11-
+          +18/2026-11-18.1.record.md#work-notes-turn-19)). The owner's wo
+          +rds went into `owner.md`, and one sentence into the guide's "R
+          +oots and builders" (`e5b42a35`), shown to them as a difference
+          +.                                                             
+      148 +                                                              
+      149 +## Turn 20                                                    
+      150 +                                                              
+      151 +The owner, 23:41 UTC, with four pictures of their own browser 
+          +([record](../2026-11-18/2026-11-18.1.record.md#turn-20); [the 
+          +pictures](../2026-11-18/Screenshots/owner-turn-20/README.md)).
+          + "The cells are delightful! Love that I can click them to open
+          + them too! I might wish the camera followed the newly-opened o
+          +ne though, as I quickly lose it." Of the marbles: "A joy. Stil
+          +l quite noisy." And a wish: a pattern made from a file's conte
+          +nts, "Minor changes to files produce subtle shifts on the surf
+          +ace of these little marble planets. Massive changes to files c
+          +ompletely changes their patterns. Each marble unique as a snow
+          +flake". And: "Dim things are still a bit hard to read."       
+      152 +                                                              
+      153 +[The reply](../2026-11-18/2026-11-18.1.record.md#roots-message
+          +s-after-turn-20-as-delivered) (23:46) answered Turns 19 and 20
+          +. Root's idea for the marble was a sketch that keeps nearness,
+          + the opposite of an ordinary hash, as a trial behind a lever. 
+          +Five builders were out by then (the cells' cost, the marble tr
+          +ial, the blind-playtest instrument, a verifier of the design f
+          +indings, the reviewer of root's code), with every browser run 
+          +and build under one file lock. Beside them, readers and editor
+          +s for Memory ([notes](../2026-11-18/2026-11-18.1.record.md#wor
+          +k-notes-eleven-helpers-out-and-the-two-design-documents-read))
+          +: five fresh readers compared the old `direction.md` with the 
+          +rearranged draft, entry by entry (of 333 entries, 231 carried 
+          +whole, 72 lost a detail, 3 wrong, 2 missing, to be patched bac
+          +k in), and an editor each took `owner.md` and `ideas.md`.     
+      154 +                                                              
+      155  _Continues below as the reading goes._
+      156 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 2,401 (root's messages before Turn 11); Tu
+        -rns 1 to 10 are written below. Everything after that line is sti
+        -ll to be read and summarized.**                                 
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 2,928 (root's short messages of 23:54 to 0
+        +0:01); Turns 1 to 20 are written below. Everything after that li
+        +ne is still to be read and summarized.**                        
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 35 lines
+      152 
+      153  [The reply](../2026-11-18/2026-11-18.1.record.md#roots-message
+           s-after-turn-20-as-delivered) (23:46) answered Turns 19 and 20
+           . Root's idea for the marble was a sketch that keeps nearness,
+            the opposite of an ordinary hash, as a trial behind a lever.
+           Five builders were out by then (the cells' cost, the marble tr
+           ial, the blind-playtest instrument, a verifier of the design f
+           indings, the reviewer of root's code), with every browser run
+           and build under one file lock. Beside them, readers and editor
+           s for Memory ([notes](../2026-11-18/2026-11-18.1.record.md#wor
+           k-notes-eleven-helpers-out-and-the-two-design-documents-read))
+           : five fresh readers compared the old `direction.md` with the
+           rearranged draft, entry by entry (of 333 entries, 231 carried
+           whole, 72 lost a detail, 3 wrong, 2 missing, to be patched bac
+           k in), and an editor each took `owner.md` and `ideas.md`.
+      154 
+      155 +**The first handbacks of the wave** ([notes](../2026-11-18/202
+          +6-11-18.1.record.md#work-notes-the-first-handbacks-of-the-even
+          +ings-helpers); [told to the owner](../2026-11-18/2026-11-18.1.
+          +record.md#roots-messages-of-2357-to-0016-utc-as-delivered) at 
+          +00:03):                                                       
+      156 +                                                              
+      157 +- **The review of root's code was "the owner's Turn 19 shown t
+          +rue".** Of eight changes, four were sound and four needed mend
+          +ing. The worst: `npm run test:e2e -- --grep x` undid the two p
+          +asses, because Playwright keeps only the last `--grep`. Landed
+          + as `74ab71e4` to `dd06db84`. The reviewer's own hardening of 
+          +the building case went in and out again when its probe showed 
+          +it failed 4 of 8 where root's form passed 8 of 8.             
+      158 +- **The blind-playtest instrument works** (`626a4821`, `326666
+          +e7`; [records](../2026-11-18/Probes/blind-playtests/)): a test
+          +er is a headless Claude with seven actions (look, point, click
+          +, drag, scroll, type, press), launched from an empty folder; b
+          +lindness is enforced by the harness and was proven by probes. 
+      159 +- **The design system's findings were checked against the code
+          + before anything landed:** of 57, 41 confirmed, 15 partly true
+          +, 1 refuted, 13 more found; fourteen "quotations" of the owner
+          +'s were paraphrases or another's words; eight rules marked as 
+          +holding were false in the code. Neither document landed as wri
+          +tten.                                                         
+      160 +                                                              
+      161 +**Memory, rearranged** ([the method's record](../2026-11-18/Pr
+          +obes/memory-rearrangement/README.md)):                        
+      162 +                                                              
+      163 +| File | Before | After | Commit |                            
+      164 +| --- | --- | --- | --- |                                     
+      165 +| `direction.md` | 529 KB | 241 KB, by subject | `7372d3a9`, c
+          +orrected `df9aa90e` |                                         
+      166 +| `owner.md` | 163 KB | 167 KB, by subject | `b41621f9` |     
+      167 +| `ideas.md` | 98 KB | 92 KB, sixteen landed or superseded ent
+          +ries out | `7314c7fc` |                                       
+      168 +| `narrative.md` | 344 KB | 239 KB, thirty-six chapters of eig
+          +ht weeks retold as eleven | `30a6bd94` |                      
+      169 +                                                              
+      170 +`owner.md` did not shrink and root came to think it should not
+          +: 37% of it is the owner's quoted words, and the one pass that
+          + tightened the telling blurred 19 entries, most often root's i
+          +nference ("So …") turned into an instruction that read as the 
+          +owner's. One wrong sentence stood in the new `direction.md` fo
+          +r about an hour (that the animated move between two 2D placeme
+          +nts "is not built"; it has been built since October 7); the re
+          +ader checking `ideas.md` against the commits caught it. The le
+          +sson went into the method: a sentence that says what is built 
+          +is checked against the code and the commits, not only against 
+          +the text it replaces ([notes](../2026-11-18/2026-11-18.1.recor
+          +d.md#work-notes-the-memory-drafts-checked-and-one-error-of-the
+          +-rearrangement-caught)).                                      
+      171 +                                                              
+      172 +**The design system landed** (`d659bac2` to `c04dea99`): [the 
+          +index](../../../../../.mdmd/layer-2/design-system/design-syste
+          +m.mdmd.md), [visual foundations](../../../../../.mdmd/layer-2/
+          +design-system/visual-foundations.mdmd.md) and [interaction and
+          + accessibility](../../../../../.mdmd/layer-2/design-system/int
+          +eraction-and-accessibility.mdmd.md), with the dated findings i
+          +n [Probes/design-system](../2026-11-18/Probes/design-system/RE
+          +ADME.md). Fifteen forks were put to the owner at 00:17, each w
+          +ith root's recommendation, answered by exception ([as delivere
+          +d](../2026-11-18/2026-11-18.1.record.md#roots-messages-of-0016
+          +-to-0041-utc-on-november-19-as-delivered)).                   
+      173 +                                                              
+      174 +**The playtest ladder's first half** (00:41, the same heading)
+          +: three tasks on the estate, two runs each on Opus medium, Opu
+          +s low, Sonnet and Haiku; 24 runs, none failed, $2.22 in all. T
+          +hey stumbled in the same four places: the view does not frame 
+          +what the visitor came for; a World Map box does not name the f
+          +older it opens; a cycle's returning connection reads as a file
+          + linking to itself; wires say nothing under the pointer.      
+      175 +                                                              
+      176 +## Turn 21                                                    
+      177 +                                                              
+      178 +The owner, 00:45 UTC on November 19 ([record](../2026-11-18/20
+          +26-11-18.1.record.md#turn-21)), narrowing what root had called
+          + a standing grant: "If they appear that they are in need of im
+          +provement. I'm not confident that will need to be something do
+          +ne all the time, and might quickly bloat the context of the Ro
+          +ot Agent unnecessarily. Today's pass should be sufficient for 
+          +setting a good standard. Often when a high-quality object is p
+          +resent as the starting context, the edits applied are frequent
+          +ly of similarly-high quality."                                
+      179 +                                                              
+      180 +`owner.md` was rewritten in those words. Two acknowledgements 
+          +root wrote before a tool call never reached the owner; the not
+          +e for later roots ([notes](../2026-11-18/2026-11-18.1.record.m
+          +d#work-notes-turn-21)): "what the owner must have goes in the 
+          +message that ends the turn."                                  
+      181 +                                                              
+      182 +## Turn 22                                                    
+      183 +                                                              
+      184 +The owner, 00:55 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-22)), on the four findings. On arrival: "It might b
+          +e jarring to always start at the zoom required to center the c
+          +ard, and then auto-zooming out to \"fit\", but perhaps that's 
+          +a reasonable best-of-both-worlds default? The user simply will
+          + not know that the deepest level of detail exists unless we sh
+          +ow it to them. It would be a travesty for the entire reader ex
+          +perience to need to be a discoverable feature." On the World M
+          +ap: "It's the most aesthetically simple and pleasing, but also
+          + home for the least defined concepts in the whole app." On the
+          + cycle: "Will need specific screenshots just to make sure we'r
+          +e talking about the same thing." On words: "Models live on tex
+          +t. It's natural for them to wish for there to be more. This is
+          + a bias we must account for." And: "What I don't want to have 
+          +is an application which is shooting random text at me every wh
+          +ich way as I scroll my mouse across the screen (which it most 
+          +certainly does in the 3D local map".                          
+      185 +                                                              
+      186 +[The reply](../2026-11-18/2026-11-18.1.record.md#roots-reply-t
+          +o-turns-21-and-22-and-its-short-messages-round-it-as-delivered
+          +) (01:01). Root's design for the camera ([notes](../2026-11-18
+          +/2026-11-18.1.record.md#work-notes-turn-22)): it follows the i
+          +ntent a gesture declares. A fresh subject arrives by a Tuning 
+          +lever, Arrival, with three values, today's the default; a step
+          + from inside the map keeps the camera's scale and moves only f
+          +ar enough to show the newcomer, with a brief mark on it. Root 
+          +withdrew "I'd just build the folder's name under the box" and 
+          +set a rule from the owner's fourth answer: what a moving point
+          +er touches may light at once, and a name or a sentence waits u
+          +ntil the pointer has rested. The cycle's pictures went to the 
+          +owner as two enlargements ([cycle-stub](../2026-11-18/Screensh
+          +ots/cycle-stub/)) with a question back.                       
+      187 +                                                              
+      188 +**The cells' cost, mended** (`6239b7c6`, `09823d2c`): not the 
+          +number of marks. Each of 38 toolbars had its own `ResizeObserv
+          +er`, each reading after the one before had written, so the bro
+          +wser laid the page out 38 times in the press's first frame. On
+          +e observer now reads every room and then draws; the red case p
+          +asses 8 of 8 with its bound and the default unchanged, the mar
+          +ks identical to the pixel.                                    
+      189 +                                                              
+      190  _Continues below as the reading goes._
+      191 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 2,928 (root's short messages of 23:54 to 0
+        -0:01); Turns 1 to 20 are written below. Everything after that li
+        -ne is still to be read and summarized.**                        
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 3,426 (the review's mends and the narrativ
+        +e in place); Turns 1 to 22 are written below. Everything after t
+        +hat line is still to be read and summarized.**                  
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+
+● Reading is at Turn 27 of 38 (line 3,961 of 5,729); the summary is written
+  through Turn 22 and I'm adding the night's turns now.
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 32 lines
+      187 
+      188  **The cells' cost, mended** (`6239b7c6`, `09823d2c`): not the
+           number of marks. Each of 38 toolbars had its own `ResizeObserv
+           er`, each reading after the one before had written, so the bro
+           wser laid the page out 38 times in the press's first frame. On
+           e observer now reads every room and then draws; the red case p
+           asses 8 of 8 with its bound and the default unchanged, the mar
+           ks identical to the pixel.
+      189 
+      190 +## Turn 23                                                    
+      191 +                                                              
+      192 +The owner, 01:12 UTC, with one picture ([record](../2026-11-18
+          +/2026-11-18.1.record.md#turn-23); [the picture](../2026-11-18/
+          +Screenshots/owner-turn-23/README.md)), on the cycle's drawing.
+          + The node-level pins stay tiny at distant zooms, and "once sym
+          +bols _do_ expand, we need to do some disambiguation between th
+          +e node-level pins (\"I eat the whole file\") and the flow pins
+          + (\"I am involved in some way\")". "When I hover over a symbol
+          + row, its salient connector wires do not un-dim ... (This is u
+          +ndoubtedly a regression)". The 3D button's orange should "call
+          + attention to the specific wires which are violating the left/
+          +right arrangement rule." And: "\"French Corset\". How did this
+          + phrase never come up? Is that what we're looking at, or a dif
+          +ferent cycle? Even I, interacting with the software, cannot fi
+          +gure that out."                                               
+      193 +                                                              
+      194 +It is the French Corset ([notes](../2026-11-18/2026-11-18.1.re
+          +cord.md#work-notes-turn-23)): the record has had the name sinc
+          +e October 5, and root's reports had called it a "stub" and a "
+          +curl" without making the search the guide asks for. Two differ
+          +ent marks stand at a card's edge for the file as a whole and a
+          +re drawn alike today. A builder went out (branch `returning-co
+          +nnections`).                                                  
+      195 +                                                              
+      196 +Landed in the hour after ([notes](../2026-11-18/2026-11-18.1.r
+          +ecord.md#work-notes-the-world-maps-keyboard-and-the-pages-fram
+          +e-landed)): **the World Map's keyboard** (`f2e1e7a1` to `11416
+          +679`: letters only while the board has the keyboard, a reset a
+          + second press takes back, reduced motion honoured; an intermit
+          +tent case turned out to be a fault of the product, a pinned pa
+          +nel placed one frame late); **the page's frame** (`befa3233` t
+          +o `5400b2d6`: the quiet grey words at contrast, landmarks and 
+          +a skip link, one status region, a reachable fault panel); and 
+          +**the marble trial** in three milestones (`8e42651b`, `8127eae
+          +a`, `e7e5de43`; Tuning's Marble Pattern, default unchanged). R
+          +oot's idea rescued the trial's centre once: a sum brought to u
+          +nit length dilutes an edit by the file's size, so each compone
+          +nt is wrapped through a sine instead. The first check over the
+          + five landings failed on one line, the type-check of the revie
+          +w's new test, and was mended at its cause (`3133fb40`); root h
+          +ad run that stage early on purpose, because five rounds from f
+          +ive bases had just met on `main`. At 01:37 root put the marble
+          +'s fork to the owner with its pictures ([as delivered](../2026
+          +-11-18/2026-11-18.1.record.md#roots-messages-after-0130-utc-as
+          +-delivered)): a pattern from what a Live Doc lists barely move
+          +s at a commit; only the file's contents would, at the cost of 
+          +a generated line in every Live Doc and one rebuild of the hist
+          +ory.                                                          
+      197 +                                                              
+      198 +## Turn 24                                                    
+      199 +                                                              
+      200 +The owner, 02:32 UTC, with three pictures ([record](../2026-11
+          +-18/2026-11-18.1.record.md#turn-24); [the pictures](../2026-11
+          +-18/Screenshots/owner-turn-24/README.md)): "I tested the marbl
+          +e pattern trial and found that the effect of changes was margi
+          +nal enough as to be not noticeable. What we should prefer is t
+          +o have even a small change in a file produce a _perceptible_ d
+          +ifference. Nevertheless, it's quite cool!" A new thought: "whe
+          +ther the concept of \"code file = grid of text\" could be some
+          +how translated into \"smoothed grid of text_ure_\"", with thei
+          +r case of 36 queries aligned by eye, and the same at the Inter
+          +nals row's pin. And a defect: "temporal scrubbing wouldn't hig
+          +hlight the pinned note (or wouldn't un-dim it)"; the scrubber 
+          +"should either limit itself to only that which is salient abou
+          +t the pinned set or at least help snap to those salient points
+          + of change". They named where it heads: "a consistent history 
+          +control which lets us go back in time in both 2D and 3D".     
+      201 +                                                              
+      202 +[The reply](../2026-11-18/2026-11-18.1.record.md#roots-reply-t
+          +o-turn-24-and-its-short-messages-round-it-as-delivered) (02:39
+          +): the track already marks the steps that touched what is pinn
+          +ed and does not use them where the hand is; a builder went out
+          + for it (branch `history-pinned`). On the texture root said th
+          +e two halves pull against each other (a picture of a whole fil
+          +e barely moves at one changed line; a hash moves and says noth
+          +ing) and proposed two scales in one marble, to be judged on a 
+          +probe's sheets with no product code.                          
+      203 +                                                              
+      204 +## Turn 25                                                    
+      205 +                                                              
+      206 +The owner, 02:43 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-25)): "You're also most welcome to come back to me 
+          +and say: \"Hey, this texture idea is stupid, the marble idea i
+          +s stupid, and we gotta back both of them out.\"" And a test of
+          + the product: "to hand it to an agent which watches the evolut
+          +ion of the software and have it functionally restate the narra
+          +tive.md just by using the software." On learning what the trac
+          +k's marks are: "I almost feel like I need the controls I used 
+          +to have at my old old day job when I was at the microscope: I 
+          +had the coarse adjustment and then the fine adjustment."      
+      207 +                                                              
+      208 +## Turn 26                                                    
+      209 +                                                              
+      210 +The owner, 02:45 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-26)): "Could I pinch or scroll the history ticks ar
+          +ea to expand or contract it, as one does for horizontal zoom i
+          +n/out in FL Studio? Is that the smooth software equivalent?"  
+      211 +                                                              
+      212 +[The reply to both](../2026-11-18/2026-11-18.1.record.md#roots
+          +-reply-to-turns-25-and-26-as-delivered) (02:48). A tall mark r
+          +eaches exactly one wire out and no further. The microscope cha
+          +nged the design: the ‹ › buttons keep one meaning, one commit;
+          + a second pair jumps between marks, "because a button that doe
+          +s one thing in every state needs no explaining". The zoom is a
+          + new way to move the range the scrubber has had since November
+          + 1. The plain verdict was taken up as a test decided before an
+          +y result: a stranger given unlabelled marbles, scored against 
+          +chance. The owner's test became a playtest task with two condi
+          +tions, the step panel shown and hidden, since "our commit subj
+          +ects are full sentences, so a tester reading them is reading w
+          +ords."                                                        
+      213 +                                                              
+      214 +## Turn 27                                                    
+      215 +                                                              
+      216 +The owner, 02:51 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-27)): "can you give me a button in Live Documentati
+          +on Explorer to reset my stylings to the defaults? ... so that 
+          +the links you send me are perceived by both of us in the same 
+          +way." Of the two-condition experiment: "Oh wow, that is just s
+          +o elegant I wish I had thought it up myself! What a slick expe
+          +riment! Hah!"                                                 
+      217 +                                                              
+      218 +A builder went out for the reset (branch `tuning-reset`). **Th
+          +e narrative task landed unrun** (`e96c3b33`; [the key](../../.
+          +./../scripts/playtest/narrative-claims.md), 39 dated claims wr
+          +itten before any run). Writing the key found seven disagreemen
+          +ts between the narrative and git, which root checked against t
+          +heir commits and corrected in place (`5e00916c`).             
+      219 +                                                              
+      220 +**The probe's verdict on the texture** ([notes](../2026-11-18/
+          +2026-11-18.1.record.md#work-notes-the-narrative-task-landed-un
+          +run-and-the-probes-verdict-on-the-texture); [told at 03:04](..
+          +/2026-11-18/2026-11-18.1.record.md#roots-messages-after-turn-2
+          +7-the-probes-verdict-among-them-as-delivered); [Probes/text-sh
+          +ape](../2026-11-18/Probes/text-shape/README.md)): "The grain w
+          +as my own proposal, and it does not work." A stranger picked t
+          +he changed file of six in none of five trials, with the grain 
+          +or with the landed marble. The page alone tells a file's kind,
+          + length and alignment, near up only; at the Internals pin's re
+          +al size "every box is a smudge". Root's recommendation: build 
+          +nothing more on texture; for a perceptible change, use the mar
+          +k the history already puts on a changed file.                 
+      221 +                                                              
+      222  _Continues below as the reading goes._
+      223 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 3,426 (the review's mends and the narrativ
+        -e in place); Turns 1 to 22 are written below. Everything after t
+        -hat line is still to be read and summarized.**                  
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 3,961 (root's messages after Turn 27); Tur
+        +ns 1 to 27 are written below. Everything after that line is stil
+        +l to be read and summarized.**                                  
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 48 lines
+      219 
+      220  **The probe's verdict on the texture** ([notes](../2026-11-18/
+           2026-11-18.1.record.md#work-notes-the-narrative-task-landed-un
+           run-and-the-probes-verdict-on-the-texture); [told at 03:04](..
+           /2026-11-18/2026-11-18.1.record.md#roots-messages-after-turn-2
+           7-the-probes-verdict-among-them-as-delivered); [Probes/text-sh
+           ape](../2026-11-18/Probes/text-shape/README.md)): "The grain w
+           as my own proposal, and it does not work." A stranger picked t
+           he changed file of six in none of five trials, with the grain
+           or with the landed marble. The page alone tells a file's kind,
+            length and alignment, near up only; at the Internals pin's re
+           al size "every box is a smudge". Root's recommendation: build
+           nothing more on texture; for a perceptible change, use the mar
+           k the history already puts on a changed file.
+      221 
+      222 +## Turn 28                                                    
+      223 +                                                              
+      224 +The owner, 03:09 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-28)), looking at the probe's sheets: "don't overlit
+          +eralize". "A text file with symmetries should produce a textur
+          +e with symmetries. A text file which is haphazard nonsense sho
+          +uld produce a texture which is pseudo-random." To building not
+          +hing more on texture: "Fair." To a change mark that says how m
+          +uch: "Still not sure." And of the From Its Doc lever: "Your pr
+          +eference. I believe the \"marble\" case is another one of \"if
+          + we do this, we have to do this all the way\", and intermediat
+          +e steps do _not_ read better than the alternative of flat colo
+          +rs".                                                          
+      225 +                                                              
+      226 +Root's preference was removal ("a lever that tells nobody anyt
+          +hing is clutter in Tuning"), and it asked whether the owner's 
+          +sentence reached the marbles themselves, their default for two
+          + days ([reply](../2026-11-18/2026-11-18.1.record.md#roots-repl
+          +y-to-turn-28-and-its-status-lines-as-delivered), 03:12). "Don'
+          +t overliteralize" was filed with the idea, with the bound the 
+          +probe sets: at 20 to 60 px a sphere carries a colour and two o
+          +r three coarse features. A hazard found that hour: root had gi
+          +ven two builders ports another builder's server held, and the 
+          +browser suite reuses any server it finds on its port, so a run
+          + could silently test another build.                           
+      227 +                                                              
+      228 +## Turn 29                                                    
+      229 +                                                              
+      230 +The owner, 03:36 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-29)): "I went back and forth and, you're right: for
+          + immediate understandability of the system, Marbes Off is supe
+          +rior. It's really only when one is up very close to a node tha
+          +t texture might be interesting, and even then, may really not 
+          +be worth it."                                                 
+      231 +                                                              
+      232 +Decided: marbles off by default, the lever kept. Landed with t
+          +he pattern's removal (`b532d6ed`, `bb57a1ac`; 1,243 lines out;
+          + [notes](../2026-11-18/2026-11-18.1.record.md#work-notes-the-m
+          +arble-pattern-removed-and-marbles-off-by-default-landed)). **T
+          +he history's first milestone landed** (`df64d4f3` to `e4df3103
+          +`; [notes](../2026-11-18/2026-11-18.1.record.md#work-notes-the
+          +-historys-first-milestone-landed); [pictures](../2026-11-18/Sc
+          +reenshots/history-pinned/README.md)): what a person asked abou
+          +t is never dimmed by a step; a second, outer pair of buttons j
+          +umps between marked commits; play follows the marks with somet
+          +hing pinned; and two older faults of the narrow scrubber were 
+          +mended (at the owner's 834 px its track was 146 px wide and is
+          + now 511).                                                    
+      233 +                                                              
+      234 +## Turn 30                                                    
+      235 +                                                              
+      236 +The owner, 03:42 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-30)): "when we do a history scan, that's only again
+          +st local git, correct? We don't actually reach out to github f
+          +or that commit history, right?"                               
+      237 +                                                              
+      238 +Correct, from the code ([reply](../2026-11-18/2026-11-18.1.rec
+          +ord.md#roots-replies-after-turn-30-as-delivered)): every comma
+          +nd in `history/git.ts` is a local read; it sees only what the 
+          +clone holds and follows the head's first parents.             
+      239 +                                                              
+      240 +## Turn 31                                                    
+      241 +                                                              
+      242 +The owner, 03:51 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-31)): "I'd really like to have a \"Unpin others\" i
+          +nteraction. I want to be able to release everything _except_ w
+          +hat I'm interacting with now. An ability to do that would be r
+          +eally great if designed well."                                
+      243 +                                                              
+      244 +Root's design ([reply](../2026-11-18/2026-11-18.1.record.md#ro
+          +ots-reply-to-turn-31-as-delivered), 03:53): an editor's "Close
+          + Others", which lives in the menu of the one that stays; offer
+          +ed only when another pin exists; one step that Back restores. 
+      245 +                                                              
+      246 +## Turn 32                                                    
+      247 +                                                              
+      248 +The owner, 03:55 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-32)): in an editor a file is "open" or "pinned"; "w
+          +e currently don't have much in the way of a \"re-wrap with a b
+          +ubble\" interaction in 3D"; "I wonder if two design holes coul
+          +d be plugged semantically together by a common unifying user i
+          +nteraction."                                                  
+      249 +                                                              
+      250 +Root found the three editor states already in the product, unn
+          +amed (the 3D map's discovery, an opened directory, a pin), and
+          + that re-wrapping exists but cannot be found ([reply](../2026-
+          +11-18/2026-11-18.1.record.md#roots-reply-to-turn-32-and-its-st
+          +atus-line-as-delivered), 03:57). "The real hole is that nothin
+          +g lets go." Its recommendation: one gesture at two strengths, 
+          +Fold others away and Unpin others. It advised against things l
+          +eaving by themselves: "On a map, a thing that leaves by itself
+          + costs you your bearings."                                    
+      251 +                                                              
+      252 +## Turn 33                                                    
+      253 +                                                              
+      254 +The owner, 04:01 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-33)): "Oh man that sounds absolutely awesome." And 
+          +of the automatic form: "I would not copy it verbatim or litera
+          +lly but I would let it haunt me for quite some time."         
+      255 +                                                              
+      256 +Both strengths went to the builder, with "Wrap this group agai
+          +n" in a sphere's menu; the owner's second sentence went into t
+          +he ideas list.                                                
+      257 +                                                              
+      258 +## Turn 34                                                    
+      259 +                                                              
+      260 +The owner, 04:13 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-34)): "we should get serious about ensuring that th
+          +e 2D Local Map has the ability to explore history as well. We 
+          +should be able to scrub through history in the same shared con
+          +trol whose state is continuous in 2D and 3D local map." And: "
+          +how we eventually ditch the Detail Panel for good ... and poss
+          +ibly even the Left Sidbar? How do we ensure that we're making 
+          +great use of our screen real estate and making sure that our s
+          +oftware shuts up and the scanned materials do they talking?" T
+          +wo ideas for later: a date pinned in the World Map, and a game
+          +pad as a test of simplicity.                                  
+      261 +                                                              
+      262 +[Root's design](../2026-11-18/2026-11-18.1.record.md#roots-rep
+          +ly-to-turn-34-the-design-as-delivered) (04:15), nothing built.
+          + History: the moment belongs to the app, not to the 3D map; th
+          +ree rungs, each showing only what the history knows (files and
+          + one line per pair; then symbol rows as they were; then the de
+          +scriptions of that day). A home on the map for each thing the 
+          +Detail Panel is opened for; a breadcrumb, the legend's rows as
+          + the kind switches and a sheet for Tuning in place of the side
+          +bar. "Words of ours appear only on a rested hover, in a menu, 
+          +or in a sheet you opened." Six verbs, and what a gamepad would
+          + lack: moving focus by direction.                             
+      263 +                                                              
+      264 +## Turn 35                                                    
+      265 +                                                              
+      266 +The owner, 04:20 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-35)): "Oh! Whoops, I thought that's what we already
+          + had. Yeah, all three rungs. I mean, we're going to be like \"
+          +holy hell that produces a mega gigantic build that is totally 
+          +unsustainable\", but that is the aspiration to achieve, yes." 
+          +Of holding cards in place while the thumb drags: "A good cheap
+          + default for now." Of the sidebar-free page behind a lever: "T
+          +hat would be great!"                                          
+      267 +                                                              
+      268 +Three pieces went out ([notes](../2026-11-18/2026-11-18.1.reco
+          +rd.md#work-notes-turn-35)): the bare frame as a trial; a read-
+          +only measure of what rungs 2 and 3 would add to the history; g
+          +roundwork for rung 1. Root told each to stop at 05:10, when th
+          +e window of ample usage would close; the next two turns withdr
+          +ew that.                                                      
+      269 +                                                              
+      270  _Continues below as the reading goes._
+      271 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 3,961 (root's messages after Turn 27); Tur
+        -ns 1 to 27 are written below. Everything after that line is stil
+        -l to be read and summarized.**                                  
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 4,490 (root's reply to Turn 35); Turns 1 t
+        +o 35 are written below. Everything after that line is still to b
+        +e read and summarized.**                                        
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Read 1 file · 1 failed (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 50 lines
+      267 
+      268  Three pieces went out ([notes](../2026-11-18/2026-11-18.1.reco
+           rd.md#work-notes-turn-35)): the bare frame as a trial; a read-
+           only measure of what rungs 2 and 3 would add to the history; g
+           roundwork for rung 1. Root told each to stop at 05:10, when th
+           e window of ample usage would close; the next two turns withdr
+           ew that.
+      269 
+      270 +## Turn 36                                                    
+      271 +                                                              
+      272 +The owner, 04:25 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-36)): "I'm okay to let the builders do a little dam
+          +age tonight and allow fails on e2e tests, and maaaaybe even in
+          +tegration/unit tests if you think it's going to save us enough
+          + time. We just need to get the builders running, the code bein
+          +g written, and then we can clean up after. We shouldn't accept
+          + bad work, but we should allow the builders to quickly hop in 
+          +a browser, run their testing screenshots, and get back out. We
+          + should drop all the timer-based test requirements that are fl
+          +aky due to the shared computational resources and cook complet
+          +ely."                                                         
+      273 +                                                              
+      274 +Root's reading, told to the owner for correction ([reply](../2
+          +026-11-18/2026-11-18.1.record.md#roots-replies-to-turn-36-as-d
+          +elivered), 04:31): builders build outside the browser lock and
+          + hold the browser five minutes at most; a case that fails only
+          + for time under load is written down and left; new cases asser
+          +t what happened and in what order, never milliseconds; no exis
+          +ting case deleted or loosened; unit tests and the type-check s
+          +till required; "The bar on the work is unchanged."            
+      275 +                                                              
+      276 +**The camera's round landed** (`cb766ad6` to `e8ff39cf`; [pict
+          +ures](../2026-11-18/Screenshots/camera-intent/README.md)): a s
+          +tep from inside the map keeps the camera's scale and pans the 
+          +least distance that brings the newcomer wholly into view, with
+          + a brief ring; Tuning → 2D Layout → Arrival, default unchanged
+          +. Found and left, older than the round: a stall of a quarter o
+          +f a second where the reading look gives way to the connections
+          + look on a large picture.                                     
+      277 +                                                              
+      278 +**The cost of rungs 2 and 3, measured** ([Probes/history-cost]
+          +(../2026-11-18/Probes/history-cost/README.md)): "Your \"mega g
+          +igantic build\" fear, measured: it is not gigantic." The build
+          + already derives every symbol and description at each commit a
+          +nd discards them; the costs are one full rebuild and a larger 
+          +cache. The probe's sizes later proved about half the truth (be
+          +low).                                                         
+      279 +                                                              
+      280 +## Turn 37                                                    
+      281 +                                                              
+      282 +The owner, 04:44 UTC, with one picture ([record](../2026-11-18
+          +/2026-11-18.1.record.md#turn-37); [the picture](../2026-11-18/
+          +Screenshots/owner-turn-37/README.md)): "The builders don't eve
+          +n need to know about the time limit." "I just want you to be o
+          +n hill-climbing duty making this software the very best it can
+          + be. I'd love to use it at my work for a presentation in early
+          + December if possible. But I don't want to compromise on quali
+          +ty in the slightest. I don't want to hear words like \"MVP\" a
+          +nd things like deadline-hitting causing us to cut corners. We 
+          +are in the age of parallel builders. You are smart enough to r
+          +esolve some merge conflicts and manage a fleet of builders. Yo
+          +u have enough good judgment to build the right thing, fully. N
+          +ot in a night, but in honest common-sense increments."        
+      283 +                                                              
+      284 +On rungs 2 and 3: "Then we should really do it." And: "How do 
+          +we mitigate these costs and risks?"                           
+      285 +                                                              
+      286 +On the camera, seen on their own port. The cell's press: "That
+          + was good fun! It did shift away so it might be wise to follow
+          + the sucker for a bit if the user hasn't provided input to nav
+          +igate in any direction". "Zoomed in close, it was quite the ro
+          +llercoaster ride though." They expect "differing default views
+          + for one pin ... versus many pins (try to frame every pinned t
+          +hing as best you can with bias towards most recent items)". Th
+          +e pull back: "the stutter of performance as the stylesheet bre
+          +akpoints were hit was jarring." And with their picture: a pin 
+          +on the `PostPayment` and `PostPaymentRow` symbols, "the camera
+          + really zoom in to care only about those two symbols, with eve
+          +rything else getting captured being a nice-to-have incidental.
+          +"                                                             
+      287 +                                                              
+      288 +Decided: rungs 2 and 3 are built; no limit of time or allowanc
+          +e stands; no corner cut for a date. The owner's words went int
+          +o `owner.md`, and the guide's "Usually one builder at a time, 
+          +three at most, never for throughput" was replaced ([notes](../
+          +2026-11-18/2026-11-18.1.record.md#work-notes-turn-37)). Root's
+          + 58 messages from here to the close are [recorded as delivered
+          +](../2026-11-18/2026-11-18.1.record.md#roots-replies-to-turn-3
+          +7-as-delivered). What followed, by subject:                   
+      289 +                                                              
+      290 +**Landed between 05:00 and 07:20 UTC**, each read by root in s
+          +ource and judged in its pictures first ([the first four](../20
+          +26-11-18/2026-11-18.1.record.md#work-notes-after-turn-37-five-
+          +builders-sent-out-and-four-rounds-landed), [the returning conn
+          +ections](../2026-11-18/2026-11-18.1.record.md#work-notes-the-f
+          +our-landings-checked-the-returning-connections-merged-the-came
+          +ras-first-increment), [the camera's trial](../2026-11-18/2026-
+          +11-18.1.record.md#work-notes-the-cameras-trial-merged-the-hist
+          +orys-first-increment-reported), [two more merges](../2026-11-1
+          +8/2026-11-18.1.record.md#work-notes-two-more-merges-and-two-fa
+          +ults-in-roots-own-checking), [three more and the lane](../2026
+          +-11-18/2026-11-18.1.record.md#work-notes-the-visits-on-main-th
+          +ree-more-merges-and-the-browsers-lane)):                      
+      291 +                                                              
+      292 +| Round | On `main` as | What a person meets |                
+      293 +| --- | --- | --- |                                           
+      294 +| Tuning's reset ([pictures](../2026-11-18/Screenshots/tuning-
+          +reset/)) | `21866052` to `e7321333` | A count beside Tuning's 
+          +heading of the settings that differ, a dot on each changed lev
+          +er, one button that resets and a second press that puts them b
+          +ack |                                                         
+      295 +| The pointer's rest ([pictures](../2026-11-18/Screenshots/res
+          +ted-pointer/)) | `dfa93bb9` to `2fbaab50` | On the 3D map and 
+          +the World Map, names, actions and the fading of the rest wait 
+          +until the pointer has rested 350 ms within 4 px |             
+      296 +| The row hover's mend | `59535b5f`, `3092637d` | Pointing at 
+          +a row keeps every line that carries one of its links; broken s
+          +ince Flow became the default on November 13 |                 
+      297 +| The history track's zoom ([pictures](../2026-11-18/Screensho
+          +ts/history-zoom/)) | `7ade8a6c` to `bdd7de4d` | Wheel or pinch
+          + narrows or widens the range about the step under the pointer 
+          +|                                                             
+      298 +| The returning connections ([pictures](../2026-11-18/Screensh
+          +ots/returning-connections/)) | merge `924bec80` | A lit return
+          +ing connection runs over the top of the cards as one closed am
+          +ber loop with both laces; hubs stand at the name's line |     
+      299 +| The camera frames what is pinned, a trial ([pictures](../202
+          +6-11-18/Screenshots/camera-follows-pins/)) | merge `36083775` 
+          +| Tuning → 2D Layout → Framing: By Hand (default), Follows Pin
+          +s, Follows Pins, Out To Files |                               
+      300 +| The Bare frame, a trial ([pictures](../2026-11-18/Screenshot
+          +s/bare-frame/)) | merge `d6f59f0f` | Tuning → Page → Frame: Si
+          +debar (default) or Bare: a breadcrumb before search, a Key and
+          + a Tuning sheet on the bottom strip; the map 22 % to 46 % larg
+          +er |                                                          
+      301 +| Fold others away and Unpin others ([pictures](../2026-11-18/
+          +Screenshots/unpin-others/)) | merge `7f603b12` | Both in the m
+          +enu of the thing kept, each one step that Back takes back; "Wr
+          +ap this group again" in a sphere's menu |                     
+      302 +| History in the 2D map at file level ([pictures](../2026-11-1
+          +8/Screenshots/history-2d/)) | merge in `54dd2061` | The scrubb
+          +er stands over both maps and keeps its moment across a switch;
+          + a past card shows its name and "+N symbols", never today's wo
+          +rds |                                                         
+      303 +| The look change's freeze ([the probe](../2026-11-18/Probes/l
+          +ook-change-freeze/)) | merge in `54dd2061` | A change between 
+          +reading and connections restyles the whole map once where it d
+          +id three times; the change's frame 797 ms to 378 ms under load
+          + |                                                            
+      304 +| The browser's lane | merge `46477948` | Tooling: one first-c
+          +ome lane with a capped hold, a suite that refuses a page that 
+          +is not its own build's, one command for every bundle |        
+      305 +                                                              
+      306 +Root refused two rounds as first handed back and they landed a
+          +fter a second pass: the returning connections (the lit route r
+          +an through two file names "as a strike-through; a line through
+          + a name reads as deletion") and history in 2D (a past card sai
+          +d "No public symbols", which was false). The freeze's cause wa
+          +s found from Chromium's own traces before any change: a forced
+          + flush in `morphLook`, and one rule ending in a bare `:not()` 
+          +under the fade's class.                                       
+      307 +                                                              
+      308 +**Root's own faults in that stretch**, each told to the owner:
+          + background waits that searched the process list for a script'
+          +s name and matched themselves, so that queued checks never beg
+          +an; a check that rebuilt two of the four bundles, so three cas
+          +es failed falsely on a stale page; a script written over a bui
+          +lder's file of the same name in the shared scratchpad; five li
+          +nt faults let through because the builders' rules asked only f
+          +or the type-check and unit cases; a hand-kept list of entry po
+          +ints missed again.                                            
+      309 +                                                              
+      310 +**The whole browser suite on `main`** ([notes](../2026-11-18/2
+          +026-11-18.1.record.md#work-notes-the-whole-browser-suite-on-ma
+          +in-three-red)), 08:02 to 08:47 on a quiet machine: 597 passed,
+          + 3 failed, 7 skipped by design. Every case that had failed in 
+          +root's short visits under load passed. The three red were run 
+          +down by bisecting along `main` ([notes](../2026-11-18/2026-11-
+          +18.1.record.md#work-notes-the-three-red-run-down-two-were-the-
+          +cases-one-is-the-3d-pictures-long-settle); [evidence](../2026-
+          +11-18/Screenshots/suite-reds/README.md); merge `c29e2a4a`). Tw
+          +o were the cases', overtaken by decisions the product had made
+          +. The third is real: after a group grows, the 3D picture took 
+          +about 5,500 frames to rest against a bound of 2,700. Root's ac
+          +count of the night's rule as it turned out: "landing on short 
+          +visits and running the whole suite afterwards let twelve round
+          +s land in six hours and left three cases red for two to five h
+          +ours".                                                        
+      311 +                                                              
+      312 +**The 3D settle** ([first step](../2026-11-18/2026-11-18.1.rec
+          +ord.md#work-notes-the-3d-speed-up-landed-a-third-review-and-th
+          +e-historys-round-narrowed), [the measure and the trial](../202
+          +6-11-18/2026-11-18.1.record.md#work-notes-the-settles-measure-
+          +in-substeps-and-settle-hold-merged-the-historys-last-pass-unde
+          +r-a-fourth-review); [evidence](../2026-11-18/Screenshots/settl
+          +e-sooner/)). Root ruled it a fault of the motion and the bound
+          + untouchable. A pure speed-up landed (`567cd887`), every spher
+          +e resting in the same place to the last digit. Root told the o
+          +wner the red case then "passes again narrowly"; it failed on `
+          +main` under load, because the speed-up had made a count of fra
+          +mes depend on the machine. Corrected to the owner, and ruled: 
+          +the bound keeps its number and counts the motion's substeps. M
+          +erged as `426f95b2` with a trial lever, Tuning → 3D → Forces →
+          + Settle Hold (0 by default; at 0.02 the red case rests in 627 
+          +substeps where it takes 5,250). **`force-graph-discovery.spec.
+          +ts:70` stays red on `main`, known, until the owner has judged 
+          +Settle Hold by eye or another mend shortens the tail.**       
+      313 +                                                              
+      314 +**The history's data, rungs 2 and 3** ([handed back](../2026-1
+          +1-18/2026-11-18.1.record.md#work-notes-the-historys-data-hande
+          +d-back-measured-and-sent-to-an-independent-review); reviews [o
+          +ne](../2026-11-18/Probes/history-data-review/README.md), [two]
+          +(../2026-11-18/Probes/history-data-review/second-review.md), [
+          +three](../2026-11-18/Probes/history-data-review/third-review.m
+          +d), [four](../2026-11-18/Probes/history-data-review/fourth-rev
+          +iew.md)). A commit's summary now keeps each file's symbol rows
+          + and resolved references and names each prose text by its hash
+          + in a store that holds one copy; the sequence carries rows as 
+          +changes with keyframes; the words are a store of their own in 
+          +parts by directory. Every step replays to its summary, and the
+          + last step equals the graph read afresh from the committed Liv
+          +e Docs.                                                       
+      315 +                                                              
+      316 +- **Measured against what root had told the owner to expect:**
+          + `history.json` 703 to 734 KB gzipped where the probe said 300
+          + to 320; the words 1.22 to 1.26 MB where it said 0.7; a rebuil
+          +d 102 to 115 minutes for about 1,190 commits where root had sa
+          +id faster than 85. About 22 processor-hours; twelve processes 
+          +were no faster than eight, since each commit regenerates the w
+          +hole repository's docs. Root also corrected its statement that
+          + a rebuild could only be made cheaper, not rarer: the builder 
+          +keyed the cache on the code that makes a summary, so tests and
+          + reader-only modules no longer begin a new one.               
+      317 +- **Four independent reviews**, each by an agent given the cod
+          +e and none of root's conclusions. The first, in ten minutes, f
+          +ound ten faults root had not caught from the handback, among t
+          +hem: a file exporting a symbol named `$` stopped the whole his
+          +tory; a commit's tree took the line endings of today's checkou
+          +t; the workflow could keep the published site from ever deploy
+          +ing. The second found the tree writer could write outside its 
+          +scratch folder, and that a rule root itself had written into t
+          +he brief (entries read through wrapper commands) made argument
+          +s into entries. The third found that rule, narrowed, now misse
+          +d real entries; root took it out of the round ("it cost two fa
+          +iled reviews and is the wrong place for it"). The fourth found
+          + the last pass sound under every attack it ran, and limits old
+          +er than the branch.                                           
+      318 +- **Root's ruling** ([notes](../2026-11-18/2026-11-18.1.record
+          +.md#work-notes-a-fourth-review-and-roots-ruling-to-land-the-hi
+          +storys-data-with-its-limits-written)): the round lands when it
+          +s last rebuild ends, its documents saying only what is true; t
+          +he code mends go to the next engine round. "For engine work th
+          +at every past moment depends on, a review by an agent given th
+          +e code and no conclusions is now part of landing, each time." 
+          +Root also reversed one of the builder's choices: a real failur
+          +e of the history in `pages.yml` deploys the site and then ends
+          + the run red.                                                 
+      319 +                                                              
+      320  _Continues below as the reading goes._
+      321 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 4,490 (root's reply to Turn 35); Turns 1 t
+        -o 35 are written below. Everything after that line is still to b
+        -e read and summarized.**                                        
+      5 +**Coverage endpoint while this summary is being written: the rec
+        +ord read through line 4,909 (the work notes of the fourth review
+        +); Turns 1 to 37 are written below. Still to do: the stretch aft
+        +er 13:09 UTC, Turn 38, the sources, the commits and the open end
+        +s. Everything after that line is still to be read and summarized
+        +.**                                                             
+      6 
+      7  ## Sources and coverage
+      8 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Summary is written through Turn 37 and the night's landings; now reading my
+  delivered replies for the last stretch, then the sources, commits and open
+  ends. The rebuild is at 767 of about 1,196.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)  ⎿  Added 22 lines, removed 1 line
+      317  - **Four independent reviews**, each by an agent given the cod
+           e and none of root's conclusions. The first, in ten minutes, f
+           ound ten faults root had not caught from the handback, among t
+           hem: a file exporting a symbol named `$` stopped the whole his
+           tory; a commit's tree took the line endings of today's checkou
+           t; the workflow could keep the published site from ever deploy
+           ing. The second found the tree writer could write outside its
+           scratch folder, and that a rule root itself had written into t
+           he brief (entries read through wrapper commands) made argument
+           s into entries. The third found that rule, narrowed, now misse
+           d real entries; root took it out of the round ("it cost two fa
+           iled reviews and is the wrong place for it"). The fourth found
+            the last pass sound under every attack it ran, and limits old
+           er than the branch.
+      318  - **Root's ruling** ([notes](../2026-11-18/2026-11-18.1.record
+           .md#work-notes-a-fourth-review-and-roots-ruling-to-land-the-hi
+           storys-data-with-its-limits-written)): the round lands when it
+           s last rebuild ends, its documents saying only what is true; t
+           he code mends go to the next engine round. "For engine work th
+           at every past moment depends on, a review by an agent given th
+           e code and no conclusions is now part of landing, each time."
+           Root also reversed one of the builder's choices: a real failur
+           e of the history in `pages.yml` deploys the site and then ends
+            the run red.
+      319 
+      320 -_Continues below as the reading goes._                        
+      320 +**Root's answer to "How do we mitigate these costs and risks?"
+          +** (04:53, in the delivered replies) was given before any of t
+          +his was measured: one rebuild for both rungs, each text stored
+          + once, summaries compressed, the pool sized to the machine, su
+          +perseded caches removed on a flag, two checks against wrong da
+          +ta. What the night then showed is the part of the answer that 
+          +stands: the rebuild is made rarer by the narrower cache key, n
+          +ot faster by more processes, and the lasting mitigation root r
+          +ecommends is to analyse each distinct version of a file once a
+          +nd reuse it across commits. That is a design still to be coste
+          +d and brought to the owner.                                   
+      321 
+      322 +**One result unresolved when the close was asked for.** After 
+          +the settle round's merge, `tests/e2e/tuning-reset.spec.ts:47` 
+          +failed on `main` in three runs under a load of 16, at two diff
+          +erent places; it had passed the whole-suite run that morning. 
+          +Root told the owner to treat Tuning's reset as unconfirmed unt
+          +il the case reruns on a quiet machine (13:15, in the delivered
+          + replies). How it came out is under [The close](#the-close).  
+      323 +                                                              
+      324 +## Turn 38                                                    
+      325 +                                                              
+      326 +The owner, 13:45 UTC on November 19, after compacting the conv
+          +ersation by hand ([record](../2026-11-18/2026-11-18.1.record.m
+          +d#turn-38)): "While that runs, can you please wrap up the dev 
+          +day chat by creating a comprehensive summary file for the asto
+          +unding development sprint accomplished yesterday? I'll start a
+          + new dev day chat after the history rebuild is done and you de
+          +clare you're ready."                                          
+      327 +                                                              
+      328 +Root recorded its 58 delivered messages since Turn 37, read th
+          +e record in ranges and wrote this summary as the reading went,
+          + then the narrative and the month's inventory.                
+      329 +                                                              
+      330 +## The close                                                  
+      331 +                                                              
+      332 +_To be completed when the history's data has landed and the Tu
+          +ning reset case has rerun on a quiet machine._                
+      333 +                                                              
+      334 +## Commits and outcomes                                       
+      335 +                                                              
+      336 +_To be completed with the close._                             
+      337 +                                                              
+      338 +## Open ends                                                  
+      339 +                                                              
+      340 +_To be completed with the close._                             
+      341 +                                                              
+      342 +                                                              
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The turn-by-turn summary now runs through Turn 38 at 64 KB, with every cited
+  commit confirmed on main. I'm checking its links next, then the narrative's
+  chapter and the month inventory while the rebuild finishes. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Links and anchors all resolve (112 into the record). Committing the summary's
+  checkpoint, then writing the narrative's part for these two days.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      104 
+      105  ## Turn 12
+      106 
+      107 -The owner, a minute later ([record](../2026-11-18/2026-11-18.1
+          -.record.md#turn-12)): "When you go out to touch these files, I
+          - want you to be confident that you know ahead of time: Why doe
+          -s this file exist? Who is it for? What should and should not g
+          -o into this file?"                                            
+      107 +The owner, a minute later ([record](../2026-11-18/2026-11-18.1
+          +.record.md#turn-12)): "When you go out to touch these files, I
+          + want you to be confident that you know ahead of time:" and th
+          +en three questions, "Why does this file exist?", "Who is it fo
+          +r?", "What should and should not go into this file?"          
+      108 
+      109  [Root's reply to both](../2026-11-18/2026-11-18.1.record.md#ro
+           ots-reply-to-turns-11-and-12-as-delivered) (22:49) gave the th
+           ree answers for each of the six files and began from what was
+           tried before: the cut of November 12, which the owner had rest
+           ored ("So much of success is just knowing what we have and hav
+           en't already discussed."). The rule of this work ([notes](../2
+           026-11-18/2026-11-18.1.record.md#work-notes-the-compression-of
+           -the-guide-and-the-memory-documents-what-was-known-before-a-fi
+           le-was-touched)): nothing of the owner's is dropped or reworde
+           d; a script checks quotations both ways; a fresh reader compar
+           es old against new. The four Memory documents were 1.13 MB.
+      110 
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 10 lines
+      334 
+      335  The move nearly stopped at its first step, installing a Linux
+           distribution: "This gets hairy very very quickly ... it sounds
+            like if I do, I'm going to need to be maintaining it", and "I
+            think I need a bit more instruction on what it implies in ter
+           ms of my responsibilities for the longer-term" ([Turn 16](../A
+           gentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#t
+           urn-16)). The steps had said what to type and not what it woul
+           d cost them to own. The root said it then: a distribution here
+            is a disk with a folder on it, with nothing to run or keep up
+           , and removing it removes the working copy. The owner installe
+           d Ubuntu, ran the copy script, and on November 18 opened the n
+           ext chat from `~/src/Live-Documentation` ([November 18, Turn 1
+           ](../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.recor
+           d.md#turn-1)). Since February the tools had run in a Linux con
+           tainer while the files stayed on the Windows drive; that chat
+           was the working copy's first on a Linux disk.
+      336 
+      337 +### A fleet of builders, a design system on paper, and what wa
+          +s taken back out (November 18 to 19, 2026)                    
+      338 +                                                              
+      339 +The container made from the moved copy failed at its first bui
+          +ld, and the fault was the root's own: its move script had carr
+          +ied the compiler's record of what it had built and left behind
+          + the output that record describes. It was mended in the build,
+          + so that a missing `dist` always means a whole build, and a se
+          +cond root took up the same record in the container ([November 
+          +18, Turn 2](../AgentSessionHistory/2026/11/2026-11-18/2026-11-
+          +18.1.record.md#turn-2)). Asked whether a scribe on a smaller m
+          +odel should keep the record, the root advised against it and t
+          +he owner agreed: "It sounds to me like our current setup is op
+          +timal for simplicity and efficacy" ([Turn 6](../AgentSessionHi
+          +story/2026/11/2026-11-18/2026-11-18.1.record.md#turn-6)). Thei
+          +r export then showed rows marked "· summary" where the root ha
+          +d written short lines, and the session's log gave part of the 
+          +cause that November 16 had left unknown: the harness had filed
+          + those lines as reasoning and shown its own summary of them. "
+          +I am uh, very happy we have our record format owned by the roo
+          +t agent" ([Turn 7](../AgentSessionHistory/2026/11/2026-11-18/2
+          +026-11-18.1.record.md#turn-7)). The session archive became a d
+          +irectory for each dev day, moved by one script that proved no 
+          +capture's bytes had changed and every link still landed. The w
+          +hole gate, about 107 minutes on the Windows drive, took 74 on 
+          +the Linux disk and 41 to 47 once the browser suite ran in two 
+          +passes, most cases at two workers and the few that need the ma
+          +chine to themselves alone, with no limit changed. The first sl
+          +ice of the owner's scenario suite judged 715 promises over ten
+          + maps in two minutes, and its ledger said what converting the 
+          +old cases would cost: 163 of 488 are still-picture promises, a
+          +nd almost none can be deleted as it stands. The rings beside t
+          +he membranes went. The owner, seeing the mend, held open a wid
+          +er thought, a picture that leaves out what is far, with "membr
+          +anes kind of form and break and re-form as new hops were taken
+          +" ([Turn 10](../ … [+109 chars]                               
+      340 +                                                              
+      341 +That evening the owner gave three things within an hour. Leave
+          + to improve the guide and the Memory documents by rearranging 
+          +them for "the same understanding or better, but wildly more ef
+          +ficiently" ([Turn 11](../AgentSessionHistory/2026/11/2026-11-1
+          +8/2026-11-18.1.record.md#turn-11)), with three questions to an
+          +swer before a file is touched: "Why does this file exist?", "W
+          +ho is it for?", "What should and should not go into this file?
+          +" ([Turn 12](../AgentSessionHistory/2026/11/2026-11-18/2026-11
+          +-18.1.record.md#turn-12)). A commission, "something akin to a 
+          +design bible", because "when it comes time to document somethi
+          +ng (as in: to defend the system as it is on paper), I find thi
+          +ngs that are indefensible and ultimately in need of change" ([
+          +Turn 14](../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.
+          +1.record.md#turn-14)), each standard with its reason: "If a re
+          +ason can't be found, is it a standard we should have or keep?"
+          + ([Turn 16](../AgentSessionHistory/2026/11/2026-11-18/2026-11-
+          +18.1.record.md#turn-16)). And six hours of ample usage, with l
+          +eave to "send off many many builders" ([Turn 17](../AgentSessi
+          +onHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-17)).
+          + Then a nudge: "the Root Agent should not typically be writing
+          + or debugging permanent project code. That should, in general,
+          + be the purview of the Builders" ([Turn 19](../AgentSessionHis
+          +tory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-19)). The 
+          +root gave the eight changes it had made by hand that day to a 
+          +builder to read as a stranger. Four needed mending, and the nu
+          +dge went into the guide. The design system's two documents wer
+          +e checked against the code before they landed: of 57 findings 
+          +41 held whole, and fourteen passages given as the owner's word
+          +s were a paraphrase or someone else's. `direction.md` went fro
+          +m 529 KB to 241, arranged by subject with every quotation kept
+          +; `owner.md` did not shrink, being mostly the owner's own word
+          +s; and this account's last eight weeks were retold at the grai
+          +n of its first y … [+788 chars]                               
+      342 +                                                              
+      343 +The night's first lesson was a thing taken out. The owner wish
+          +ed each marble "unique as a snowflake", its pattern made from 
+          +its file's contents ([Turn 20](../AgentSessionHistory/2026/11/
+          +2026-11-18/2026-11-18.1.record.md#turn-20)). A trial was built
+          + in three passes; they found its changes "marginal enough as t
+          +o be not noticeable" ([Turn 24](../AgentSessionHistory/2026/11
+          +/2026-11-18/2026-11-18.1.record.md#turn-24)) and invited the p
+          +lain verdict, that "we gotta back both of them out" ([Turn 25]
+          +(../AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record
+          +.md#turn-25)). A probe decided beforehand what would count: a 
+          +stranger shown unlabelled marbles picked the changed file in n
+          +one of five trials, with the root's own proposed grain or with
+          +out it. The trial left, and two days after making marbles the 
+          +default the owner reversed it: "for immediate understandabilit
+          +y of the system, Marbes Off is superior" ([Turn 29](../AgentSe
+          +ssionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-29
+          +)). Their note for whoever tries texture again is "don't overl
+          +iteralize" ([Turn 28](../AgentSessionHistory/2026/11/2026-11-1
+          +8/2026-11-18.1.record.md#turn-28)). What the same hours added 
+          +came from the owner's hand on the product: a pinned file that 
+          +a history step never dims, a coarse pair of buttons beside the
+          + fine ("I had the coarse adjustment and then the fine adjustme
+          +nt", of a microscope, [Turn 25](../AgentSessionHistory/2026/11
+          +/2026-11-18/2026-11-18.1.record.md#turn-25)), the history's tr
+          +ack zoomed by the wheel, a reset for Tuning so that a link is 
+          +"perceived by both of us in the same way" ([Turn 27](../AgentS
+          +essionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-2
+          +7)), and history in the 2D map, at file level first, with all 
+          +three rungs decided: "that is the aspiration to achieve, yes" 
+          +([Turn 35](../AgentSessionHistory/2026/11/2026-11-18/2026-11-1
+          +8.1.record.md#turn-35)). Asked for "Unpin others" ([Turn 31](.
+          +./AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.m
+          +d#turn-31)), the … [+436 chars]                               
+      344 +                                                              
+      345 +Before dawn the root told its builders to stop when the hours 
+          +of ample usage ran out, and the owner withdrew every limit: "I
+          + just want you to be on hill-climbing duty making this softwar
+          +e the very best it can be ... I don't want to hear words like 
+          +\"MVP\" and things like deadline-hitting causing us to cut cor
+          +ners. We are in the age of parallel builders" ([Turn 37](../Ag
+          +entSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#tu
+          +rn-37)). The guide's "one builder at a time, three at most" ga
+          +ve way to those words. With the gate's browser stage set aside
+          + for the night at the owner's word ("then we can clean up afte
+          +r", [Turn 36](../AgentSessionHistory/2026/11/2026-11-18/2026-1
+          +1-18.1.record.md#turn-36)), twelve rounds landed in six hours 
+          +on short visits to the browser, each read and looked at by the
+          + root first, among them a camera that frames what is pinned an
+          +d a page without its sidebar, both as trials. The whole suite 
+          +afterwards found three cases red that had stood so for two to 
+          +five hours. Two were the cases' own. The third was the 3D pict
+          +ure taking a minute and a half to rest after a group grows; th
+          +e root kept its bound, had it count the motion's own steps so 
+          +that no machine changes the number, and left the case red unti
+          +l the owner's eye has judged a trial. The data for the history
+          +'s second and third rungs taught the other half of running a f
+          +leet. The root read that handback and found nothing; a reviewe
+          +r given the code and none of the root's conclusions found ten 
+          +faults in ten minutes, the first of which would have stopped t
+          +he history of any repository that exports a symbol named `$`. 
+          +Three more reviews followed, each finding less, and one fault 
+          +was a rule the root itself had written into the brief. Since t
+          +hen engine work that every past moment depends on lands only b
+          +ehind such a review. What a rebuild of the history costs was l
+          +earned by paying it four times: about two hours on this machin
+          +e however many processes run, where the root had told the owne
+          +r 85 minutes and … [+164 chars]                               
+      346 +                                                              
+      347  ## Harnesses and models
+      348 
+      349  Most transcripts name no model; this table gives only what the
+           y say. A model's name in a transcript records what the owner e
+           nabled or said, not proof of which model wrote every reply.
+
+● Narrative chapter for November 18–19 is written; now checking every quotation
+  in it and in the summary word for word against the record.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      203 
+      204  ## Turn 25
+      205 
+      206 -The owner, 02:43 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          -rd.md#turn-25)): "You're also most welcome to come back to me 
+          -and say: \"Hey, this texture idea is stupid, the marble idea i
+          -s stupid, and we gotta back both of them out.\"" And a test of
+          - the product: "to hand it to an agent which watches the evolut
+          -ion of the software and have it functionally restate the narra
+          -tive.md just by using the software." On learning what the trac
+          -k's marks are: "I almost feel like I need the controls I used 
+          -to have at my old old day job when I was at the microscope: I 
+          -had the coarse adjustment and then the fine adjustment."      
+      206 +The owner, 02:43 UTC ([record](../2026-11-18/2026-11-18.1.reco
+          +rd.md#turn-25)): "You're also most welcome to come back to me 
+          +and say" that "this texture idea is stupid, the marble idea is
+          + stupid, and we gotta back both of them out." And a test of th
+          +e product: "to hand it to an agent which watches the evolution
+          + of the software and have it functionally restate the narrativ
+          +e.md just by using the software." On learning what the track's
+          + marks are: "I almost feel like I need the controls I used to 
+          +have at my old old day job when I was at the microscope: I had
+          + the coarse adjustment and then the fine adjustment."         
+      207 
+      208  ## Turn 26
+      209 
+
+  Ran 5 shell commands · 1 failed (ctrl+o to expand)
+
+● Month inventory is updated (final export state, 15 picture folders, probes).
+  Now locating where each still-open question was put to you, so the summary's
+  open ends can link to it.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 7 lines, removed 1 line
+       6 
+       7  ## Sources and coverage
+       8 
+       9 -_To be completed when the reading ends._                       
+       9 +- [Agent-maintained root record](../2026-11-18/2026-11-18.1.rec
+         +ord.md): thirty-eight owner turns verbatim, the messages they s
+         +ent while root worked, their pictures of Turns 20, 23, 24 and 3
+         +7, root's replies as each root's session log shows them (user-f
+         +acing text only), and the work notes of every dispatch, review,
+         + landing and gate. No reasoning, tool payload or delegated thre
+         +ad is in it.                                                   
+      10 +  - **Reading coverage for this summary.** Read on November 19 
+         +by the root that wrote most of it, in fifteen ranges, each to i
+         +ts end: lines 1 to 4,909, which is everything from Turn 1 throu
+         +gh the work notes of the fourth review. Of root's 58 messages a
+         +fter Turn 37 (lines 4,910 to 5,714), which a script placed from
+         + the session's log at Turn 38, the author read their index and 
+         +three whole (04:53, 07:59, and 13:10 to 13:31); the rest it wro
+         +te itself hours earlier and summarizes from the work notes that
+         + report the same events. Turn 38 and its notes were written dur
+         +ing this close.                                                
+      11 +  - **Gaps the record states about itself.** The first chat's l
+         +og stayed in the owner's WSL distribution, so the reply to Turn
+         + 1 is known only from the owner's export. Root's reply to Turn 
+         +13 never stood in the log as a message. Many short lines root w
+         +rote between tool calls were not shown to the owner; the record
+         + names those it knows of and counts none as told.              
+      12 +- [The owner's export](../2026-11-18/2026-11-18.1.claude-code.e
+         +xport.txt), terminal text from the Claude Code extension, saved
+         + by the owner twenty-three times under one name and committed a
+         +s received each time; each state's size and hash is in [the mon
+         +th's inventory](../README.md). At the close: **1,214,297 bytes*
+         +*, SHA-256 **`6b894ccc347c0b0e26c9aec78a50ea0cf4c4892ba48518119
+         +f280ae3ddbc0c66`**, 22,776 lines, saved at 13:42 UTC on Novembe
+         +r 19 after the owner compacted the chat by hand. It begins with
+         + the first chat's export byte for byte and ends with root's mes
+         +sage of 13:31, so it holds neither Turn 38 nor the close. **Not
+         + read as prose from end to end by any root:** the first chat's 
+         +part was read whole; of the rest, the stretches the owner's edi
+         +tor attached to their messages (the largest, lines 2,132 to 3,4
+         +48 of the fifth save) and the lines compared at Turns 6 and 7. 
+         +It is the only witness of the rows the extension marks "· summa
+         +ry".                                                           
+      13 +- The session's log, on the `live-documentation-claude` volume:
+         + read only through [visible-messages.mjs](../../../../scripts/v
+         +isible-messages.mjs), which admits user-facing messages and not
+         +hing else.                                                     
+      14 +- Git verifies every commit named below as an ancestor of `main
+         +` (checked by script on November 19). The owner pushed during t
+         +he session; at 13:51 UTC on November 19 `origin/main` stood at 
+         +`0ca5485c`.                                                    
+      15 +- Evidence filed by the session: twenty-five picture folders un
+         +der [the day's Screenshots](../2026-11-18/Screenshots/) and eig
+         +ht probe folders under [its Probes](../2026-11-18/Probes/), eac
+         +h with a README; the month's inventory lists them.             
+      16 
+      17  ## Context
+      18 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Couldn't edit file
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 94 lines, removed 2 lines
+      339 
+      340  ## Commits and outcomes
+      341 
+      342 -_To be completed with the close._                             
+      342 +330 commits on `main` from `24412675` (the opening of the reco
+          +rd, November 18) to `0ca5485c` at the request for the close, 2
+          +1 of them merges, and the commits of the close after those. Ea
+          +ch hash below was checked as an ancestor of `main`. A builder'
+          +s numbers are attributed to it in the record's notes; what roo
+          +t ran itself is said there too.                               
+      343 
+      344 +| When (UTC) | Round | On `main` as | Turn |                  
+      345 +| --- | --- | --- | --- |                                     
+      346 +| Nov 18, 14:59 | The build's record kept inside `dist` | `f57
+          +1f9d9` | 2 |                                                  
+      347 +| 16:22 | The session archive by dev day, and three old fence 
+          +and link defects | `bbce1d4c` to `0be65840`; `6385b33d` | 6, 7
+          + |                                                            
+      348 +| 17:26 | The browser suite in two passes, with the `@alone` t
+          +ag | `8380146c`, `1bbdfce5`, `241aead3` | 8 |                 
+      349 +| 17:31 | The 19 audit findings closed; npm 11 pinned | `0e887
+          +14c` to `af313e93` | 8 |                                      
+      350 +| 19:19 | The scenario suite's first slice | `6ffd40f0` to `68
+          +6ab1af`, `a2869e62` | 10 |                                    
+      351 +| 20:12 | The rings' mend, and Beyond the Hops as a trial | `6
+          +b2f8c49` to `29421080` | 9, 10 |                              
+      352 +| 20:20 to 23:30 | Five test mends by root (three waits, the t
+          +ransition's clock, the anchor audit, the building case's aim) 
+          +| `db4d6f00`, `d774ce61`, `b1c570ba`, `6d9a8a45`, `a91d7f89` |
+          + 10 to 18 |                                                   
+      353 +| 22:29 | Marbles on and cells under the name as defaults | `5
+          +0ff0ceb` to `665d92a3` | 10 |                                 
+      354 +| 23:36 | The guide: builders write and debug the code | `e5b4
+          +2a35` | 19 |                                                  
+      355 +| Nov 19, 00:09 to 01:11 | Memory rearranged | `7372d3a9`, `df
+          +9aa90e`, `b41621f9`, `7314c7fc`, `30a6bd94`, `57130ee1` | 11 t
+          +o 13, 21 |                                                    
+      356 +| 00:16 | The design system | `d659bac2` to `c04dea99` | 14 to
+          + 16 |                                                         
+      357 +| 00:47 to 03:07 | The blind-playtest instrument, its first re
+          +cords, the narrative task, and the narrative corrected against
+          + git | `626a4821`, `326666e7`, `e96c3b33`, `74d0e1a9`, `5e0091
+          +6c` | 20, 25 |                                                
+      358 +| 00:58 | The cells' cost at the first frame | `6239b7c6`, `09
+          +823d2c` | 18 |                                                
+      359 +| 01:05 to 01:42 | The review of root's code, and its test's t
+          +ype-check | `74ab71e4` to `dd06db84`, `3133fb40` | 19 |       
+      360 +| 01:25 | The World Map's keyboard; the page's frame | `f2e1e7
+          +a1` to `11416679`; `befa3233` to `5400b2d6` | after 20 |      
+      361 +| 01:19 to 04:10 | The marble pattern trial, in and out again;
+          + the probe of the text's shape; marbles off by default | `8e42
+          +651b`, `8127eaea`, `e7e5de43`; `658c1f14`; `b532d6ed`, `bb57a1
+          +ac` | 20, 24, 28, 29 |                                        
+      362 +| 03:50 | The history follows what is pinned | `df64d4f3` to `
+          +e4df3103` | 24 to 26 |                                        
+      363 +| 04:28 | The camera's intent | `cb766ad6` to `e8ff39cf` | 20,
+          + 22 |                                                         
+      364 +| 04:55 to 05:10 | Tuning's reset; the pointer's rest; the row
+          + hover; the history track's zoom | `21866052` to `e7321333`; `
+          +dfa93bb9` to `2fbaab50`; `59535b5f`, `3092637d`; `7ade8a6c` to
+          + `bdd7de4d` | 27, 22, 23, 26 |                                
+      365 +| 05:42 to 06:12 | The returning connections; the camera that 
+          +frames the pins; the Bare frame; Fold others away and Unpin ot
+          +hers | merges `924bec80`, `36083775`, `d6f59f0f`, `7f603b12` |
+          + 23, 37, 35, 31 to 33 |                                       
+      366 +| 06:37 to 07:32 | Root's landing mends (lint, Tuning's headin
+          +g, the list of entry points) | `44fc8028`, `89d6f015`, `248044
+          +d0` | 37 |                                                    
+      367 +| 07:17 | History in the 2D map at file level; the look change
+          +'s freeze; the browser's lane | merges in `54dd2061`; `4647794
+          +8` | 34 to 37 |                                               
+      368 +| 11:10 | The whole suite's three red run down | merge `c29e2a
+          +4a` | 37 |                                                    
+      369 +| 12:04 to 12:55 | The 3D settle: the speed-up, the measure in
+          + substeps, Settle Hold | `567cd887`; merge `426f95b2` | 37 |  
+      370 +                                                              
+      371 +**Whole runs of the browser suite, and what each showed:**    
+      372 +                                                              
+      373 +| Started (UTC) | On | Result |                               
+      374 +| --- | --- | --- |                                           
+      375 +| Nov 18, 15:00 | `f571f9d9`, one worker | 485 of 488; the who
+          +le gate 73 min 46 s |                                         
+      376 +| 16:31 | `0be65840`, two workers | 482 of 488 in 41.9 min |  
+      377 +| 17:39 | `1bbdfce5`, two passes | 479 of 484 and 4 of 4; 47 m
+          +in 26 s |                                                     
+      378 +| 20:29 | `fff1895b` | 529 passed, 7 not applicable, 1 failed,
+          + and 5 of 5; 47 min 24 s |                                    
+      379 +| 22:29 | `665d92a3` | 528 passed, 7 not applicable, 2 failed,
+          + and 5 of 5; 40 min 40 s |                                    
+      380 +| Nov 19, 08:02 | `a93ac108`, through the lane | 597 passed, 3
+          + failed, 7 skipped |                                          
+      381 +                                                              
+      382 +No whole gate of the session exited 0. Between the last two ru
+          +ns twelve rounds landed on short visits to the browser, at the
+          + owner's word in Turn 36; the gate's other stages (lint, build
+          +s, type-check, unit and integration tests, audits) passed over
+          + each landing or were mended until they did.                  
+      383 +                                                              
+      384  ## Open ends
+      385 
+      346 -_To be completed with the close._                             
+      386 +### Decided by the owner in this session, in force            
+      387 
+      388 +- The record stays root's; no hook and no scribe (Turn 6).    
+      389 +- A count or sign reports only connections of the file kinds t
+          +hat are switched on (Turn 9).                                 
+      390 +- `AGENTS.md` carries what is lasting and of use anywhere in t
+          +he workspace (Turn 13). The Memory documents are improved when
+          + they appear to need it, not as a routine (Turn 21).          
+      391 +- Builders write and debug permanent code and tests; the root 
+          +briefs, reviews and judges (Turn 19). Builders run in parallel
+          + wherever the work divides; no corner is cut for a date (Turn 
+          +37).                                                          
+      392 +- Words of ours wait for a rested pointer; a model tester's wi
+          +sh for more text is a bias to account for (Turn 22).          
+      393 +- Marbles are off by default, the lever kept (Turn 29). Nothin
+          +g more is built on texture as a sign of change (Turn 28).     
+      394 +- Fold others away and Unpin others, two strengths of one gest
+          +ure (Turn 33).                                                
+      395 +- All three rungs of history in the 2D map are the aim, and ru
+          +ngs 2 and 3 are to be built (Turns 35 and 37). While the thumb
+          + drags, cards hold their places: "A good cheap default for now
+          +."                                                            
+      396 +- The camera should frame what is pinned, most recent first, u
+          +ntil the person takes it (Turn 37); built as a trial, not yet 
+          +their choice of default.                                      
+      397 
+      398 +### Unfinished work, in root's order                          
+      399 +                                                              
+      400 +1. **The next engine round, with an independent review and one
+          + rebuild:** the history writes no link at all; the tree writer
+          + remembers the parents it has checked; an explicit `execArgv`;
+          + entry detection through wrapper commands (every word of a scr
+          +ipt that resolves to an existing file the tool analyses as cod
+          +e; no list of launchers); the generator's names that do not re
+          +ad back, with a fuzzing test. With it, a costed design for ana
+          +lysing each distinct version of a file once, which is what wou
+          +ld bring a rebuild from two hours to minutes.                 
+      401 +2. **Rung 2 in the page:** symbol rows as they were at a past 
+          +moment, now that the history carries them; then rung 3, the wo
+          +rds of that day.                                              
+      402 +3. **The 3D picture's long settle:** `force-graph-discovery.sp
+          +ec.ts:70` is red until the owner has judged Settle Hold or ano
+          +ther mend shortens the tail. Its bound is not to be touched.  
+      403 +4. **The whole browser suite again on a quiet machine**, and t
+          +he sorting of its time limits into the owner's alarms and plai
+          +n waits. Known to depend on the clock: `camera-intent.spec.ts:
+          +154`, `force-graph-focus.spec.ts:190`, `force-graph-exploratio
+          +n.spec.ts:16`, `:40`, `:84` and `:206`, `history-panel.spec.ts
+          +:277`, the layout lab's `:20` and `:31`.                      
+      404 +5. **The narrative playtest**, never run: it needs the history
+          + built to today, which the landing of the history's data gives
+          +. And the playtest ladder's second half (31 runs).            
+      405 +6. **The camera's trial:** the named case still leaves the sub
+          +ject out (a cell pressed on `pathfind.ts` ends on the new card
+          + alone); one empty frame on the way at 390 px, cause unknown; 
+          +no motion strips of Fit or of the search's re-frame.          
+      406 +7. **History in the 2D map:** a renamed file is still a new ca
+          +rd; cells inside a closed box are not lit one by one.         
+      407 +8. **The Bare frame's gaps:** nothing under Bare says Tuning d
+          +iffers from the defaults while the sheet is closed; the strip 
+          +exists only on the Local Map.                                 
+      408 +9. **Owed to the owner as matched alternatives:** how a whole-
+          +file pin ("I eat the whole file") is told from a flow pin ("I 
+          +am involved in some way"), from Turn 23; the chip that wraps a
+          + popped group again, which nothing shows can be pressed.      
+      409 +10. **Smaller, queued:** the pointer's rest in the 2D map; clo
+          +sed directories' observers, the same thrashing the cells had; 
+          +a pass of the two-pass runner that selects no case still start
+          +s a server; the lane's stale check does not see an engine chan
+          +ge that alters a bundle's data and not its script; the 3D map'
+          +s building told through `client/announce.ts`; the design syste
+          +m's pass that needs a browser; the scenario table's first conv
+          +ersions.                                                      
+      410 +                                                              
+      411 +### Asked of the owner and not answered                       
+      412 +                                                              
+      413 +None of these blocks work. Where root gave a recommendation it
+          + stands until they say otherwise. The messages of November 19 
+          +after 04:44 UTC are all under [one heading of the record](../2
+          +026-11-18/2026-11-18.1.record.md#roots-replies-to-turn-37-as-d
+          +elivered), found there by their time.                         
+      414 +                                                              
+      415 +| Question | Where it was put |                               
+      416 +| --- | --- |                                                 
+      417 +| Will the December presentation show this repository or their
+          + work's own code? It changes what is ranked next. | 06:52 and 
+          +07:59, November 19 |                                          
+      418 +| Shall root remove the eight superseded history caches in `.m
+          +dmd/history` (about 800 MB)? | 04:53, 05:12 and 07:59 |       
+      419 +| Settle Hold (Tuning → 3D → Forces): is the held rest a good 
+          +picture, and does the motion's end read as natural? | 12:56 | 
+      420 +| Framing: Follows Pins against Follows Pins, Out To Files, on
+          + five pins in one directory; and whether a new pin should pull
+          + the camera back into following after they have taken it by ha
+          +nd. | 04:53, 05:59, 07:59 |                                   
+      421 +| The Bare frame: three choices its builder made (Frame not co
+          +unted as a changed setting; checkboxes in the key in place of 
+          +legend rows as switches; a directory's crumb does what Centre 
+          +does). | 06:26 |                                              
+      422 +| Should Clear all pins match the new actions? It leaves poppe
+          +d groups and symbol expansions open, and Back cannot always re
+          +store it. | 06:26 |                                           
+      423 +| The pointer's rest: does a bare sphere feel dead while sweep
+          +ing, and should the 2D map wait for a rest too? | 05:30, 07:34
+          +, 07:59 |                                                     
+      424 +| Tuning's reset is a curved arrow without a word; does it rea
+          +d as undo? | 04:53, 05:12 |                                   
+      425 +| The history zoom's mark for an off-range step is drawn like 
+          +the thumb; can the two be told apart? | 05:30 |               
+      426 +| The Flow price's nominal hub, and whether a gathered line sh
+          +ould end in the rows it stands for (pictures 18 and 19 of the 
+          +returning connections). | 05:46 |                             
+      427 +| The limit of 1,024 files drawn inside membranes, set for the
+          + software renderer: this repository's Structure start now show
+          +s `tests · 556` as a closed veil. | 11:12 |                   
+      428 +| A real failure of the history in `pages.yml` now deploys the
+          + site and then ends the run red (root's choice, reversing the 
+          +builder's). | 11:35 |                                         
+      429 +| A change mark that says how much a commit changed. The owner
+          +: "Still not sure." | [Turn 28](../2026-11-18/2026-11-18.1.rec
+          +ord.md#turn-28) |                                             
+      430 +| The design system's fifteen forks, each with root's recommen
+          +dation. | [00:17, November 19](../2026-11-18/2026-11-18.1.reco
+          +rd.md#roots-messages-of-0016-to-0041-utc-on-november-19-as-del
+          +ivered); [the list](../2026-11-18/Probes/design-system/README.
+          +md#the-owners-forks) |                                        
+      431 +| Beyond the Hops: should "Next step" become the default (root
+          +'s recommendation at one hop)? And three things for their eye:
+          + the lone file dimmed in Connections and bright in Structure; 
+          +the Structure hub at the frontier with no sign; documents beyo
+          +nd the hops with none. | [20:30, November 18](../2026-11-18/20
+          +26-11-18.1.record.md#roots-report-on-the-rings-mend-and-the-ho
+          +rizons-trial-as-delivered) |                                  
+      432 +| The C-family maps lack what the compiler records as the use 
+          +of a definition (15 edges on each of the C and C++ programs), 
+          +and a C header's include guard is listed among its symbols: th
+          +eirs to rank. | [19:13 and 19:25, November 18](../2026-11-18/2
+          +026-11-18.1.record.md#roots-message-on-the-scenario-tables-mea
+          +surement-as-delivered) |                                      
+      433 +| Two rulings on the archive beyond the convention they confir
+          +med: the Antigravity captures in their days, and two late-name
+          +d exports in their dev days. | [16:34, November 18](../2026-11
+          +-18/2026-11-18.1.record.md#roots-messages-after-the-landing-as
+          +-delivered) |                                                 
+      434 +| A single undrawn file is one small dim cell where "+1 file" 
+          +was words. | [23:31, November 18](../2026-11-18/2026-11-18.1.r
+          +ecord.md#roots-messages-after-turn-18-as-delivered) |         
+      435 +                                                              
+      436 +### Root's proposals, heard and not yet decided               
+      437 +                                                              
+      438 +From [the design of Turn 34](../2026-11-18/2026-11-18.1.record
+          +.md#roots-reply-to-turn-34-the-design-as-delivered), of which 
+          +the owner answered two questions: the reader's lists of what u
+          +ses a file moved into the search field; a card's closest zoom 
+          +as its own page; a date, not a commit, as the moment across se
+          +veral scanned things; and moving focus by direction with the a
+          +rrow keys, built first, as what a gamepad would stand on. And 
+          +from Turn 33, the owner's own: things that fold away by themse
+          +lves, which they would "let ... haunt me for quite some time";
+          + it is in the ideas list and nothing is built on it.          
+      439 +                                                              
+      440 +                                                              
+
+● Sources, commits and open ends are now in the summary; fixing two small
+  things, then re-verifying hashes, links and quotations.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      2 
+      3  Historical session summary. Harness: Claude Code in the VS Code
+         extension; both roots were Fable 5.2 (`claude-fable-5-2`) by the
+          harness's statement. Two roots kept one record: the first for T
+         urn 1, in the owner's new WSL distribution, and the second from
+         Turn 2, in the dev container made from the moved working copy. B
+         uilders, reviewers and readers were Opus subagents of the second
+          root, each in its own worktree. Summary author: the second root
+         , November 19, 2026, at the owner's request for the close ([Turn
+          38](../2026-11-18/2026-11-18.1.record.md#turn-38)).
+      4 
+      5 -**Coverage endpoint while this summary is being written: the rec
+        -ord read through line 4,909 (the work notes of the fourth review
+        -); Turns 1 to 37 are written below. Still to do: the stretch aft
+        -er 13:09 UTC, Turn 38, the sources, the commits and the open end
+        -s. Everything after that line is still to be read and summarized
+        -.**                                                             
+      5 +Complete for the maintained record through Turn 38; what was rea
+        +d and what was not is stated under Sources. The section [The clo
+        +se](#the-close) says what happened after the owner asked for it.
+      6 
+      7  ## Sources and coverage
+      8 
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/Summarized/2026-11-18.1.
+        SUMMARIZED.md)
+  ⎿  Added 1 line, removed 1 line
+      435 
+      436  ### Root's proposals, heard and not yet decided
+      437 
+      438 -From [the design of Turn 34](../2026-11-18/2026-11-18.1.record
+          -.md#roots-reply-to-turn-34-the-design-as-delivered), of which 
+          -the owner answered two questions: the reader's lists of what u
+          -ses a file moved into the search field; a card's closest zoom 
+          -as its own page; a date, not a commit, as the moment across se
+          -veral scanned things; and moving focus by direction with the a
+          -rrow keys, built first, as what a gamepad would stand on. And 
+          -from Turn 33, the owner's own: things that fold away by themse
+          -lves, which they would "let ... haunt me for quite some time";
+          - it is in the ideas list and nothing is built on it.          
+      438 +From [the design of Turn 34](../2026-11-18/2026-11-18.1.record
+          +.md#roots-reply-to-turn-34-the-design-as-delivered), of which 
+          +the owner answered two questions: the reader's lists of what u
+          +ses a file moved into the search field; a card's closest zoom 
+          +as its own page; a date, not a commit, as the moment across se
+          +veral scanned things; and moving focus by direction with the a
+          +rrow keys, built first, as what a gamepad would stand on. And 
+          +from Turn 33, the owner's own: things that fold away by themse
+          +lves ("I would let it haunt me for quite some time"); it is in
+          + the ideas list and nothing is built on it.                   
+      439 
+      440 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything verifies (79 commits on main, 150 quotations, links clean).
+  Committing the summary, narrative chapter and inventory, then listing the
+  builders' worktrees to clean up.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All builder branches check out as landed, apart from regenerate-only commits
+  and one pre-pruning playtest branch. Before removing 21 clean worktrees (about
+  25 GB), I'm checking their ignored files for anything unique. · summary
+
+  Made 1 scratchpad edit +43, searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Remove the worktrees and branches of builders whose work
+  has landed" completed (exit code 0)
+
+● The cleanup of landed builders' worktrees finished; reading its log, and the
+  direction update is prepared for the moment the history's data lands.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The summary is written and committed; I am not ready to hand over yet, because
+  the history data has not landed.
+
+  Done for the close
+  - Summary: 2026-11-18.1.SUMMARIZED.md (AI-Agent-Workspace/AgentSessionHistory/
+    2026/11/Summarized/2026-11-18.1.SUMMARIZED.md) covers all 38 turns, the
+    night's landings, every commit, the six whole runs of the browser suite, and
+    every question I put to you that is still unanswered, with where each was
+    asked. Its section on the close itself is still to be written, once the
+    landing is done.
+  - Checks on it: a script confirmed that all 79 commits it names are on main
+    and all 150 quotations are word for word in the record. The link audits
+    pass.
+  - Narrative: a new chapter for these two days is in narrative.md
+    (AI-Agent-Workspace/Memory/narrative.md).
+  - Month inventory: brought level, including your export's final state and 15
+    picture folders that were not yet listed.
+  - Clean-up: 13 builder worktrees and 43 branches removed, after checking that
+    each one's work is on main. Nine more worktrees are locked by this session's
+    harness, so I left them for the next session.
+
+  Still to do before I say "ready"
+  1. The history rebuild is at about 840 of 1,196 commits and should end near
+     15:00 UTC. Its builder then hands back.
+  2. Merge it into main, move the rebuilt cache across, and build the history
+     forward over the 55 commits main has that the rebuild did not cover (about
+     ten minutes).
+  3. Run the checks, and rerun the Tuning reset test on a quiet machine.
+  4. Bring the direction notes level and finish the summary's last section.
+
+  One thing before you next push after that merge: it changes the GitHub Pages
+  workflow. I have read the change and will explain it in the message where I
+  say I'm ready.
