@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/frame.ts
-- Generated At: 2026-11-19T06:00:10.054Z
+- Generated At: 2026-11-19T06:40:39.480Z
 
 ## Authored
 ### Purpose
@@ -27,20 +27,27 @@ What the frame reads from the page and what its crumbs ask of it.
 
 #### `Frame` {#symbol-frame}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L31)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L32)
+
+##### `Frame` — Summary
+The page's frame as the application drives it: which frame stands, its crumbs kept level with the page, and its two panels on the strip.
 
 #### `FRAME_KEY_ICON` {#symbol-frame_key_icon}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L48)
 
 ##### `FRAME_KEY_ICON` — Summary
 The key's drawing, for the strip's button.
 
 #### `createFrame` {#symbol-createframe}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L49)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/frame.ts#L54)
 - Returns: [`Frame`](#symbol-frame)
 - Parameters: `config`: [`FrameConfig`](#symbol-frameconfig)
+
+##### `createFrame` — Summary
+Makes the page's frame: under Bare it moves the sidebar's own elements (the views, the Display switches, the legend and
+Tuning) to the top bar and the strip's two panels, and under Sidebar puts each back where it stood.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
