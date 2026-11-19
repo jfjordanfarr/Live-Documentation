@@ -1,0 +1,28 @@
+# dbo.usp_LedgerTotals.sql
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: dbo.usp_LedgerTotals.sql
+- Entry: opening [`dbo.usp_LedgerTotals`](#symbol-dbousp_ledgertotals)
+- Generated At: 2026-11-19T22:12:28.102Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `dbo.usp_LedgerTotals` {#symbol-dbousp_ledgertotals}
+- Type: procedure
+- Source: [source](../../dbo.usp_LedgerTotals.sql#L3)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `OPENQUERY` (contract)
+<!-- LIVE-DOC:END Dependencies -->

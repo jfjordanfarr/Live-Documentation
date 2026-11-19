@@ -1,0 +1,35 @@
+# Payments
+
+## Metadata
+- Layer: 3
+
+## Authored
+The payment path.
+
+## Declared
+
+### Things
+
+#### `portal`
+- From: `../Portal`
+
+#### `gateway`
+- From: `../Gateway`
+
+#### `contracts`
+- From: `../Contracts`
+
+#### `hub`
+- From: `../Hub`
+
+#### `payments`
+- From: `../PaymentService`
+
+#### `sqlserver`
+- From: `../SqlServer`
+
+#### `oracle`
+- From: `../Oracle`
+
+### Connections
+_No connections declared_

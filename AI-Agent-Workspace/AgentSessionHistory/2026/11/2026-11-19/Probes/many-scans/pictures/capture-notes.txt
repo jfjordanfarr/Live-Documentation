@@ -1,0 +1,11 @@
+a-1-whole-board: Payments · 7 things
+a-2-payments-pinned: Payments · 7 things
+a roads: gateway>contracts::source | gateway>hub:net.tcp://hub.onprem.example:8731/PaymentHub:configuration | hub>contracts::source | hub>payments:net.tcp://payments.onprem.example:8732/PaymentService:configuration | payments>contracts::source | payments>sqlserver:dbo.Payment:contract | payments>sqlserver:dbo.usp_PostPayment:contract | portal>gateway:GET api/payments/{paymentId}:contract | portal>gateway:POST api/payments:contract | sqlserver>oracle:CENTRAL.ACCOUNT:contract
+a-3-wire-hub-payments-pinned: Payments · 7 things
+a-4: url http://127.0.0.1:8930/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbUrqHGwrYAuiBR-BGWdSWQuwVRvAhZBG4OHMOkKOKkA
+b-1-whole-board: Payments · 7 things · 7 wanting
+b-2-wanting-listed: Payments · 7 things · 7 wanting
+b-3-portal-pinned: Payments · 7 things · 7 wanting
+d-1-whole-board: Payments with Oracle declared · 7 things
+d-2-sqlserver-pinned: Payments with Oracle declared · 7 things
+d-3-oracle-pinned: Payments with Oracle declared · 7 things

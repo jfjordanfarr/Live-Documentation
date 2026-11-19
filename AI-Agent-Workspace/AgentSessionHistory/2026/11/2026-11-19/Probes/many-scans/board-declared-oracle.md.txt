@@ -1,0 +1,37 @@
+# Payments with Oracle declared
+
+## Metadata
+- Layer: 3
+
+## Authored
+The payment path, with the Oracle database that is never scanned drawn as an imagined thing.
+
+## Declared
+
+### Things
+
+#### `portal`
+- From: `Portal`
+
+#### `gateway`
+- From: `Gateway`
+
+#### `contracts`
+- From: `Contracts`
+
+#### `hub`
+- From: `Hub`
+
+#### `payments`
+- From: `PaymentService`
+
+#### `sqlserver`
+- From: `SqlServer`
+
+#### `oracle`
+- Kind: database
+- Serves: `CENTRAL.ACCOUNT` (table), `ORALINK` (address), `ledger.entries` (table)
+
+### Connections
+- `sqlserver` to `oracle.ORALINK` over `linked server`
+- `sqlserver` to `oracle.ledger.entries`
