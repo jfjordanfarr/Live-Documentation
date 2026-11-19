@@ -19,6 +19,7 @@ import { pyprojectAdapter } from "./pyproject";
 import { pythonAdapter } from "./python";
 import { rubyAdapter } from "./ruby";
 import { rustAdapter } from "./rust";
+import { solutionAdapter } from "./solution";
 import { sqlAdapter } from "./sql";
 
 /**
@@ -90,6 +91,7 @@ export const LANGUAGE_ADAPTERS: readonly LanguageAdapter[] = [
   pythonAdapter,
   rubyAdapter,
   rustAdapter,
+  solutionAdapter,
   sqlAdapter
 ];
 

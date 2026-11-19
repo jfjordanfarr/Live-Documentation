@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/index.ts
-- Generated At: 2026-10-22T16:47:51.856Z
+- Generated At: 2026-11-19T20:42:50.205Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L32)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L33)
 
 ##### `WorkspaceFileIndex` — Summary
 Set of workspace-relative file paths for cross-file reference resolution.
@@ -33,7 +33,7 @@ analysis begins.
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L45)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -47,14 +47,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L74)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L75)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L105)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L107)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -89,6 +89,7 @@ Analyzer output when an adapter reads the file by its name or its extension, oth
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
 - [`ruby.rubyAdapter`](./ruby.ts.mdmd.md#symbol-rubyadapter)
 - [`rust.rustAdapter`](./rust.ts.mdmd.md#symbol-rustadapter)
+- [`solution.solutionAdapter`](./solution.ts.mdmd.md#symbol-solutionadapter)
 - [`sql.sqlAdapter`](./sql.ts.mdmd.md#symbol-sqladapter)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
