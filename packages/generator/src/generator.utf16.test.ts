@@ -29,7 +29,7 @@ describe("a source file saved as UTF-16 without a byte-order mark", () => {
     writeFileSync(path.join(workspace, "plain.ts"), text("listOrders"));
     writeFileSync(path.join(workspace, "saved.ts"), Buffer.from(text("listOrders"), "utf16le"));
     await generateLiveDocs({ workspaceRoot: workspace, config: normalizeLiveDocumentationConfig({}), logger: silent });
-    const read = (name: string): { archetype: string; symbols: string[] } => {
+    const read = (name: string): { archetype: string | undefined; symbols: string[] } => {
       const doc = parseLiveDoc(readFileSync(path.join(workspace, ".live-documentation", "source", `${name}.md`), "utf8"));
       return { archetype: doc.archetype, symbols: doc.symbols.map((symbol) => symbol.name) };
     };
