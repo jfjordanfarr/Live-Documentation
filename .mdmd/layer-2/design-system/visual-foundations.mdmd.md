@@ -1,6 +1,6 @@
 # Visual Foundations
 
-_Current, authored. As of 2026-11-18. This is the visual half of the Explorer's design system: the standing rules for colour, type, shape, spacing and sizing, layering, icons, motion and the maps' data encodings. Interaction, accessibility, responsiveness and portability, and the words on screen are in [Interaction and Accessibility](interaction-and-accessibility.mdmd.md), next to this file. What it found that cannot yet be defended is in [the findings of 2026-11-18](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/findings-visual.md)._
+_Current, authored. As of 2026-11-18. This is the visual half of the Explorer's design system: the standing rules for colour, type, shape, spacing and sizing, layering, icons, motion and the maps' data encodings. Interaction, accessibility, responsiveness and portability, and the words on screen are in [Interaction and Accessibility](interaction-and-accessibility.mdmd.md), next to this file. What it found that cannot yet be defended is in [the findings of 2026-11-18](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md), and this half's findings as first written, each with a checker's verdict, in [the visual findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/visual.md). Every status below was checked against the code on 2026-11-18 by a reader who had not written it, and corrected where it was wrong._
 
 ## Metadata
 
@@ -56,7 +56,8 @@ Six principles stand over every foundation. Each foundation's rules apply one or
 **2. Cut, don't boost: fade the irrelevant.** Attention is made by lowering everything a person is not looking at, not by raising what they are. The designer's term is **focus plus context**: the focus is kept whole while its context is kept visible but quieter (Furnas's fisheye view).
 
 - **Why.** Owner, 2025-12-03: "it's far better EQ practice to trim what you don't need versus boost what you like". Owner, 2025-12-07: "we definitely have an overall color excess problem". Both are in [owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste).
-- **The limits.** Fading is the default, not a ban. The owner has asked for a glow on a pinned thing and on a commit's changed files. Those two glows are the exceptions, and nothing else glows.
+- **The limits.** Fading is the default, not a ban. The owner has asked for a glow on a pinned thing and on a commit's changed files. Those two glows are meant to be the exceptions.
+- **Status of the limits.** *Broken*: more things glow than the two. A test-backed card glows violet (`styles/view-shared.css:102`, `:309`), the subject card wears a blue glow (`view-shared.css:86`), and there are glows at `view-shared.css:511` (`0 0 6px currentColor`) and `:533` (the Internals pin), on the legend's samples and on the 3D button's cue. See [the glow rule](#glow-as-distinct-from-shadow).
 - **Where it shows.** Hovering a symbol in the 2D map fades the other wires to a tenth and leaves the hovered symbol's own wires at their resting strength (`styles/local.css:191–196`).
 
 **3. Colour teaches, and may be quiet or loud on purpose.** A view in which nothing is strong teaches nothing. A choice of strength is defended by what it conveys.
@@ -108,36 +109,39 @@ Which palette becomes the default is open with the owner. Until then, every rule
 
 ### Grounds and lines (dark interior)
 
-From `palette.ts`, `TODAY.ground` and `TODAY.line`; the three palettes share them. The contrasts are WCAG ratios, measured 2026-11-18 against the page ground `#18181a`.
+From `palette.ts`, `TODAY.ground` and `TODAY.line`; the three palettes share them. The contrasts are WCAG ratios, measured 2026-11-18 against the page ground `#18181a`. The views do not stand on the page ground: `#main`, which holds every view and the 2D map, is `ground.surface` (`styles/shell.css:150`), so a ratio against the map is a little lower than the one given here (the figure-and-ground rule below gives both).
 
 | Token | Value | Meaning | Contrast to page |
 | --- | --- | --- | --- |
-| `ground.deep` | `#111111` | Sunken wells: inputs, the history's rate box | 1.10 |
-| `ground.page` | `#18181a` | The 2D map and the page | n/a |
-| `ground.surface` | `#1e1e1e` | Sidebars and panels | 1.06 |
-| `ground.raised` | `#1f1f22` | Floating results and menus | 1.08 |
+| `ground.deep` | `#111111` | Sunken wells (inputs, the history's rate box); and, against the tonal elevation rule below, the ground of nearly every floating panel: the pin tray, the history finder, step panel and step dialog, the ancestry popover, the scrubber, the perspective controls, the item menu and the narrow reader | 1.07 |
+| `ground.page` | `#18181a` | The body behind the views (`styles/theme.css:31`) | n/a |
+| `ground.surface` | `#1e1e1e` | `#main`, the ground every view stands on, the 2D map included; some fields and panels | 1.06 |
+| `ground.raised` | `#1f1f22` | The sidebar (`styles/shell.css:4`); search results | 1.08 |
 | `ground.card` | `#232326` | A 2D card | 1.13 |
 | `ground.cardHover` | `#2f2f33` | A card under the pointer | 1.33 |
 | `ground.control` | `#333333` | A control's resting fill | 1.40 |
-| `line.border` | `#2f2f34` | A card's or panel's border | 1.33 |
+| `ground.glass` | `#222225` | Frosted panels, at 0.95 (`--glass`, `styles/theme.css:25`) | |
+| `ground.shade` | `#000000` | Shadows and modal backdrops, always at an opacity | |
+| `ground.sheen` | `#ffffff` | Faint light washes and hairlines, always at an opacity (`--line-subtle`, hover fills, a membrane's trace of fill) | |
+| `line.border` | `#2f2f34` | A panel's border and dividers | 1.33 |
 | `line.membrane` | `#3d3d45` | An opened directory's outline on the 2D map | 1.65 |
-| `line.interactive` | `#3f3f46` | A control's border | 1.71 |
-| `line.hover` | `#777777` | A control's border under the pointer | 3.85 |
-| `scene.ground` | `#000011` | The 3D map's space | 1.18 |
+| `line.interactive` | `#3f3f46` | A control's border, and a 2D card's border (`styles/view-shared.css:65`) | 1.70 |
+| `line.hover` | `#777777` | A control's border under the pointer | 3.96 |
+| `scene.ground` | `#000011` | The 3D map's space | 1.17 |
 
 **Rule: a lighter surface is a higher one (tonal elevation).** On a dark ground, height is told by lightness: the nearer the viewer, the lighter. This is called **tonal elevation**.
 
 - **Why.** Principle: a shadow barely reads on a near-black ground. Material's dark theme, Carbon's layering model ("one step lighter with each added layer") and Atlassian's elevation guidance all carry height this way.
-- **Where.** The order of `ground.*` above runs deep, then page, surface, raised, card, card under the pointer, control.
+- **Where.** The tokens are named in that order: deep, page, surface, raised, card, card under the pointer, control.
 - **Checked by.** Nothing.
-- **Status.** Holds. Surface and raised stand 1.02 to 1 apart: two tokens the eye cannot tell apart (see the findings).
+- **Status.** *Broken*, widely. The things that float highest stand on the darkest ground: the pin tray (`styles/local.css:337`), the history finder, step panel and step dialog (`styles/history.css:21, 66, 87`), the ancestry popover (`local.css:352`), the scrubber (`history.css:7`), the perspective controls (`local.css:307`), the item menu (`styles/shell.css:406`) and the narrow reader (`shell.css:442`) are all `ground.deep`, darker than the map's `ground.surface` beneath them. The sidebar is `ground.raised` (`shell.css:4`). Surface and raised stand 1.01 to 1 apart, two tokens the eye cannot tell apart. And the 2D cards, which stand *in* the map, cast a shadow (see [Layering](#layering-and-elevation)). So the product does not carry height by tone: a floating panel is told by its border, its shadow and its sinking below the map's tone, the opposite of this rule. Whether the rule or the product should change is a fork for the owner ([the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md#the-owners-forks)).
 
 **Rule: a region is ground, a card is figure.**
 
 - **The terms.** **Figure and ground** is the perceptual split between what is looked at and what it stands on.
-- **What the rule says.** An opened directory's outline stands a step *under* a card's border (1.55 against 1.60 to 1 at the time of measurement), so that the directory is seen without competing with its cards.
-- **Why.** Measured and decided on 2026-11-15 ([the Explorer design, "Tone on the 2D map"](../../layer-3/live-documentation-explorer.mdmd.md)).
-- **Checked by.** `tests/e2e/local-map-tone.spec.ts`.
+- **What the rule says.** An opened directory's outline is seen against the map but is no stronger than a card's border, so that the directory is seen without competing with its cards. The outline is `line.membrane` (`#3d3d45`); a card's border is `line.interactive` (`#3f3f46`), not `line.border`. Against the map's ground (`ground.surface`, `#1e1e1e`) they stand at 1.55 and 1.60 to 1, the figures the Explorer design records; against the page ground in the table above, 1.65 and 1.70.
+- **Why.** Measured and decided by the root on 2026-11-15: the outline had stood at 1.25 to 1 ([the Explorer design, "Tone on the 2D map"](../../layer-3/live-documentation-explorer.mdmd.md)).
+- **Checked by.** `tests/e2e/local-map-tone.spec.ts`, "an opened directory's outline can be seen against the map, is no stronger than a card's border, and is no filled box": it reads both colours from the page and holds the outline at 1.5 or more and no higher than the border.
 - **Status.** Holds.
 
 **Rule: bright outside, dark inside.** The World Map defaults to its light form and the Local Maps are dark. A person may set the two apart.
@@ -148,7 +152,7 @@ From `palette.ts`, `TODAY.ground` and `TODAY.line`; the three palettes share the
 
 ### Text tones
 
-From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured 2026-11-18. The use counts are `var(--…)` references in the stylesheets.
+From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured 2026-11-18. The use counts are `var(--…)` references in the stylesheets, and a few of them are not words: `history.css:43` paints a tick, `local.css:243` an icon, `shell.css:277` a background.
 
 | Token | Today | Ratio | Proposed and Vivid | Uses | Meaning |
 | --- | --- | --- | --- | --- | --- |
@@ -162,7 +166,7 @@ From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured
 | `text.muted` | `#888888` | **4.42** | `#939393` | 27 | Paths, counts, metadata |
 | `text.subtle` | `#777777` | **3.50** | `#8a8a8a` | 2 | Quieter still |
 | `text.panelSubtle` | `#6c7484` | **3.34** | `#828a9a` | 19 | The panels' quietest text |
-| `text.disabled` | `#666666` | 2.73 | same | 5 | A disabled control (exempt from contrast) |
+| `text.disabled` | `#666666` | 2.73 | same | 5 | Named for a disabled control, but none of its five uses is one: it draws the sidebar's section labels, the search's placeholder, "Nothing found", the Ctrl+P hint and the search clear's × |
 | `text.onSelected` | `#ffffff` | 3.23 on `#0091ff` | `#111318` on `#f2f2f2` | 3 | Words on a selected fill |
 
 **Rule: words stand at 4.5 to 1 or better (text contrast).**
@@ -172,13 +176,14 @@ From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured
 - **Checked by.**
   - Unit level: `palette.test.ts` ("a valid palette") holds every text tone at 4.5 to 1 on a card. Today's palette is excused as a stated fact.
   - Page level: `local-map-tone.spec.ts` and `labels-and-controls.spec.ts`, using `tests/e2e/contrast.ts`.
-- **Status.** Broken under Today:
-  - `text.muted` is 4.42 to 1 in 27 places.
-  - `text.subtle` is 3.50 to 1 in 2 places.
-  - `text.panelSubtle` is 3.34 to 1 in 19 places.
+- **Status.** *Broken* under Today:
+  - `text.muted` is 4.42 to 1 on a card (a file's path, `view-shared.css:117`; its metadata, `:197`), 3.76 on a card under the pointer and 3.56 on a control. On the panels' grounds it passes: 4.64 on raised, 4.70 on surface, 5.33 on deep. So its 27 uses are not 27 failures; the failures are the uses on a card or lighter.
+  - `text.subtle` (3.50 on a card) and `text.panelSubtle` (3.34) fail on every ground; the best they reach is 4.22 and 4.02, on deep.
   - `button.action-btn` draws bold white words on `#0091ff` at 3.23 to 1 (`styles/view-shared.css:343–351`).
 
-  Proposed and Vivid kinds hold the rule.
+  Proposed and Vivid kinds lift those tones and hold the rule for them.
+
+  *Broken in every palette*: `text.disabled` (`#666666`), which no palette lifts, draws live words that are not disabled controls: the sidebar's section labels at 2.86 to 1 on raised (`styles/shell.css:920`), the search's placeholder at 2.90 (`styles/search.css:62`), "Nothing found" at 2.86 (`search.css:281`) and the Ctrl+P hint at 2.30 (`search.css:80`). The search clear's × glyph, at 2.90 (`search.css:111`), fails WCAG 1.4.11's 3 to 1 for a control's graphic. A disabled control is exempt; these are not disabled.
 
 **Rule: hierarchy by value on a card.** On a 2D card, rank is told by lightness because the sizes are fixed by the card's fits:
 
@@ -212,11 +217,11 @@ From `palette.ts`. **Identity colours** are hues that tell one category from ano
 | Changed in this commit | `history.changed` | `#ffffff` | `#ffffff` | `#ffffff` | the changed sphere under Glow |
 | The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button |
 
-Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set every second value to its meaning.
+Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set most second values to their meaning, but not all: `errorWash` (`#f44336`), `pathFoundWash` (`#4caf50`) and `worldLightPressed` (`#e0f2fe`) keep Today's values in all three palettes, beside `signal.error`, `signal.pathFound` and the light World's blue. The palette's own comment says otherwise ("Every second value equals its meaning", `palette.ts:294`); it is wrong for these three.
 
 **Rule: blue offers, green uses, at every scale.** What an interface offers is blue. What uses it is green. A 2D wire runs from blue at its offering end to green at its using end.
 
-- **Why.** Owner, 2025-12-03: "stick to it". Owner, 2026-09-29: "Offers!! I Like that!" Both are in [the colour record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/Probes/colour-pass/history.md).
+- **Why.** Owner. The first use of the two hues was the owner's, on 2025-12-03: "We should see the green dots of symbols being connected back to their inbound dependencies and we should see blue dots of symbols connecting outward to their outbound dependencies." The same day they left the hues to the agent and asked only for consistency: "However you want to color code that (which is green versus which is blue) is A-okay by me, but stick to it: Input = left, Output = Right." On the word for what a thing exposes, 2026-09-29: "Offers!! I Like that!" All three are in [the colour record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/Probes/colour-pass/history.md). So the owner's reason is for one meaning per hue kept at every scale; which hue is which they delegated.
 - **Where.**
   - `role.*`.
   - The wire's gradient in `views/localView/connections.ts`.
@@ -238,11 +243,18 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 **Rule: one hue answers one question.** No two meanings that can stand in one view share a colour or sit near one. This is semantic colour in the strict sense.
 
 - **Why.** Principle: hue is the strongest channel for telling categories apart (Munzner's ranking of identity channels). It only works if each hue has one meaning to learn. This is also why the owner wants colours "colored by salient information that their eyes can learn and adjust to" ([the colour record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/Probes/colour-pass/history.md)).
-- **Status.** Broken under Today:
+- **Status.** *Broken* under Today:
   - `#0091ff` is the implementation kind, the offering pin, and the selected, active and focused state.
   - Green is both the using pin and the test kind.
+  - The has-tests violet stands 8.7 from the document kind's violet.
 
-  Proposed and Vivid kinds keep each meaning on its own colour. The owner accepts a *mild* likeness between a kind's colour and a role's as the least bad option so far, not as the answer.
+  *Broken* under Proposed, too:
+  - The has-tests mark and the test kind are one colour, `#8a5cff` (`palette.ts:250, 299`). The palette's comment says this is meant ("a test file takes the violet the 2D cards already use for having tests"): the two meanings are near kin. If the product means it, the rule as written is wrong for them and should say that kin meanings may share a hue; that is for the owner.
+  - The document kind's yellow stands 8.6 from the cue's amber.
+
+  *Broken in every palette*: the 3D button's cue, amber `#e9b86d`, stands 7.5 from the directory kind's orange `#e9984d`, and both are drawn on the 2D map (`styles/local.css:321, 536`).
+
+  Vivid kinds clears the distance floors below. The owner accepts a *mild* likeness between a kind's colour and a role's as the least bad option so far, not as the answer.
 
 **Rule: identity colours clear the distance floors.**
 
@@ -266,12 +278,12 @@ Today also draws a second value for some meanings in `secondValues`: the 2D pins
 - **Why.** Principle: in a picture made of data, chrome in a data hue reads as data. Carbon's data-visualisation guidance and the colour pass both state it.
 - **Where.** `state.selected`: `#0091ff` in Today, `#f2f2f2` in Proposed and Vivid kinds.
 - **Checked by.** Nothing.
-- **Status.** *Proposed.* Broken under Today, where the chrome's blue is the product's most-used colour (90 readings of the variable, per the colour pass).
+- **Status.** *Proposed.* Broken under Today, where the chrome's blue is the product's most-used colour (94 readings of `var(--state-selected)` on 2026-11-18; the colour pass counted 90), and 17 focus rings are drawn in it.
 
 **Rule: white is the event.**
 
 - **The rule.** The changed file of the history step shown is white on dark (under Glow), and nothing else of its size is.
-- **Why.** Owner, 2026-11-01: "it should be obvious what is actually changing as a commit is walked by during history playback" (`views/forceGraphEmphasis.ts`, its head comment).
+- **Why.** Owner, 2026-10-31: "it should be obvious what is actually changing as a commit is walked by during history playback" ([Turn 8 of the October 31 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-8); `views/forceGraphEmphasis.ts` quotes it in its head comment).
 - **Status.** Holds in the default mode, Dim, where a changed file keeps its colour and the others lose four fifths.
 - **Where it is weak.** Every 3D reference wire is also white (`scene.wire`, `views/forceGraphView.ts:1895–1902`). Among marbles, under Glow, the white ball reads "unpainted" rather than lit ([the defaults round](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/defaults-round/README.md)). See the findings.
 
@@ -297,6 +309,8 @@ Each value below is a meaning, not decoration. Values are read from the files na
 | 3D map | a sphere at the frontier, beyond the hops | 0.4 (a wrapper 0.6) | `views/forceGraphView.ts:1854, 1860` |
 | 3D map | a reference wire: local, whole root, hovered, to the frontier, hidden, on a path | 0.3, 0.16, 0.5, 0.12, 0.025, 0.9 | `views/forceGraphView.ts:1895–1901` |
 | 3D map | containment and document wires: shown, dimmed, hidden | 0.35, 0.15, 0.08 and 0.4, 0.15, 0.04 | `views/forceGraphView.ts:1891–1892` |
+| 3D map | a reference wire in the Structure layout | 0.5 | `views/forceGraphView.ts:1896` |
+| 3D map | a cited-by wire: shown, dimmed, hidden | 0.55, 0.2, 0.06 | `views/forceGraphView.ts:1894` |
 | 3D history | an unchanged sphere or wire under Dim | loses 0.8 of its alpha | `views/forceGraphEmphasis.ts:26` |
 | 3D history | a changed wire under Glow | 0.85 | `views/forceGraphEmphasis.ts:28` |
 
@@ -319,7 +333,10 @@ Each value below is a meaning, not decoration. Values are read from the files na
   - Glows: `--offers-pin-glow` and `--uses-pin-glow` (`styles/theme.css:10–11`), `--has-tests-glow` (`theme.css:21`), and `--backward-glow` (`styles/local.css:321–324`).
   - Shadows: see [Layering](#layering-and-elevation).
 - **Checked by.** Nothing.
-- **Status.** Holds. For the has-tests glow the record gives no reason (see the findings).
+- **Status.** *Broken.*
+  - A glow is not always centred. The has-tests glow is offset, `0 12px 24px` (`styles/view-shared.css:102`) and `0 3px 6px` (`:309`), and the subject card wears an offset blue one, `0 12px 30px` in the selected colour (`:86`). These are coloured shadows: they do a shadow's job and a glow's at once.
+  - More things glow than the two the owner asked for (principle 2): besides those three, `0 0 6px currentColor` (`view-shared.css:511`), the Internals pin (`:533`), the legend's samples (`0 0 5px`) and the 3D button's cue.
+  - For the has-tests glow the record gives no reason (see the findings).
 
 ---
 
@@ -329,12 +346,13 @@ Each value below is a meaning, not decoration. Values are read from the files na
 
 Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; no canvas draws text in its own font.
 
-- **Families:** 5 values.
-  - `"Segoe UI", sans-serif` is the body and the symbol labels (`styles/theme.css:33`, `styles/view-shared.css:137`).
-  - Three monospace stacks:
-    - `"Fira Code", "Consolas", monospace`: Knowledge Sources;
-    - `'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace`: the symbol badge;
-    - bare `monospace`: the type badge, the search shortcut and the Tuning readouts.
+- **Families:** 5 `font-family` values, one of them `inherit`, and three more stacks written inside `font` shorthands in `styles/world.css` (`:35, 285, 438, 469, 538, 750`). So three proportional stacks and four monospace ones:
+  - `"Segoe UI", sans-serif` is the body and the symbol labels (`styles/theme.css:33`, `styles/view-shared.css:137`);
+  - the World Map's `system-ui, -apple-system, "Segoe UI", sans-serif` (`world.css:35`) and `system-ui, sans-serif`;
+  - `"Fira Code", "Consolas", monospace`: Knowledge Sources;
+  - `'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace`: the symbol badge;
+  - bare `monospace`: the type badge, the search shortcut and the Tuning readouts;
+  - the World Map's `ui-monospace, Consolas, monospace`.
 - **Sizes:** 16 distinct values in 173 declarations, from 8 to 28 px.
   - 13 px: 44; 12 px: 40; 11 px: 33; 10 px: 17. These four carry 134 of the 173.
   - 14 px: 11; 15 px: 8; 16 px: 4; 18 px: 4; 9 px: 3; 22 px: 2.
@@ -360,23 +378,26 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
   - Description: 12 px, `#b0b0b0`.
   - Path: 10 px, `text.muted`.
 - **Checked by.** `local-map-tone.spec.ts`.
-- **Status.** Holds by value. A description is still a pixel larger than the name it describes. That is the accepted cost of the fits, and it is why the value step is large: 7.23 against 13.39 to 1.
+- **Status.** Holds by value on the card. A description is still a pixel larger than the name it describes. That is the accepted cost of the fits, and it is why the value step is large: 7.23 against 13.39 to 1.
+
+  *Broken* in the reading dialog: its body is 15 px (`styles/reading.css:742–744`) and only h4 to h6 are set to `1em` (`:745`), so h1 to h3 keep the reader's 16, 15 and 14 px. An h3 is smaller than the body text under it and an h2 the same size. In the document reader beside the map the headings step by one pixel, 16, 15, 14 and 13, over a 13 px body (`styles/shell.css:578–605`).
 
 **Rule: a container's name is never smaller than its contents' names.**
 
 - **The rule.** A directory's name is drawn no smaller on screen than the file names inside it, at every zoom. From the connections look outward, the whole handle is held at the file names' size.
 - **Why.**
   - Principle: a map sets a country's name larger than its cities'.
-  - Owner, 2026-11-15: directories "are not useful" zoomed out ([the Explorer design, "A directory's handle, at every zoom"](../../layer-3/live-documentation-explorer.mdmd.md)).
+  - Measured by the root on 2026-11-15: an opened directory's label had shrunk to 6 px beside file names held at 13 px ([the Explorer design, "A directory's handle, at every zoom"](../../layer-3/live-documentation-explorer.mdmd.md)).
+  - The owner's remark of that day, that directories in the 2D map "still aren't exceptionally _useful_ (interaction-wise) at high zoom-outs because there are no buttons to interact with at that distance" ([Turn 1 of the November 15 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)), is about controls, not the size of a name; it is the reason for the handle's target below, not for this rule.
 - **Where.** `views/localView/directory-handle.ts` (`HANDLE_LINE = 15`) and `styles/local.css:383–399`.
 - **Checked by.** `closed-directory-looks.spec.ts` and `directory-handle.test.ts`.
 - **Status.** Holds.
 
 **Rule: held sizes step by 1.2 and stay within four fifths.**
 
-- **The rule.** On the 2D map a held size changes only at a zoom step. Each step is one fifth of a doubling (`STEP_RATIO = 1.2`, `views/localView/ladder-steps.ts:18`), so a held size on screen lies between 0.87 and 1.15 of its reading size. The first step holds reading size for every closer zoom, so zooming in never shrinks anything.
+- **The rule.** On the 2D map a held size changes only at a zoom step. Each step is a zoom of 20 %, four steps to a doubling (`STEP_RATIO = 1.2`, `views/localView/ladder-steps.ts:17–18`), so a held size on screen lies between 0.87 and 1.15 of its reading size. The first step holds reading size for every closer zoom, so zooming in never shrinks anything.
 - **Why.**
-  - Owner, 2026-11-06: breakpoints over per-frame scaling, with clamps "to prevent runaway goofy rendering results"; the agreed floor of four fifths.
+  - Owner, 2026-11-06: breakpoints over per-frame scaling, with "Clamps as in "prevent runaway goofy rendering results that emerge from extreme inputs"" ([Turn 19 of the November 5 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-05/2026-11-05.1.record.md#turn-19--november-6)); the agreed floor of four fifths.
   - Principle: perceived size constancy (principle 5).
 - **Checked by.** `ladder-steps.test.ts` and `card-ladder-boxes.spec.ts`.
 - **Status.** Holds.
@@ -414,6 +435,7 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
   - **Today.** 9 px words exist: the type badge (`view-shared.css:470`) and the search row badge (`search.css:244`).
 - **One family stack for each voice.** One proportional stack that reads well on every platform, and one monospace stack.
   - **Why.** Measured: off Windows, `"Segoe UI", sans-serif` falls to whatever generic sans the system has. The 2026-11-15 pictures had to borrow Segoe UI's metrics to judge widths.
+  - **Today.** Three proportional stacks and four monospace ones (above). The World Map already uses a system stack, `system-ui, -apple-system, "Segoe UI", sans-serif` (`styles/world.css:35`), so the product holds both answers at once.
 
 ---
 
@@ -441,13 +463,13 @@ The values of `border-radius` in the stylesheets on 2026-11-18: 14 distinct valu
 
 **Rule: a card's corners are rounded.** A 2D file card has rounded corners.
 
-- **Why.** Owner, 2026-11-04: a Card carries "trading/playing-card semantics" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste)). A playing card's rounded corner is part of how it is recognised.
+- **Why.** Owner, 2026-11-04: "I cannot stress enough how "Card" really does carry the semantics of trading/playing cards" ([Turn 15 of the November 3 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-03/2026-11-03.1.record.md#turn-15--november-4)). A playing card's rounded corner is part of how it is recognised; that reading is the author's, not the owner's.
 - **Status.** Holds at 6px.
 
 **Rule: a circle is a thing, a pill is a choice.** `50%` draws a circle, which is a mark standing for a thing: an anchor dot, a cell, a legend sample. `999px` draws a pill, which is a control holding a set of choices: the view toolbar, the filter toggles.
 
 - **Why.** Principle: shape similarity groups like with like (Gestalt similarity). The owner's "bags of cells" made the round mark the file's sign.
-- **Status.** Holds. The ring drawn around a cell in a handle under the pointer is `999px` (`styles/local.css:440`), which on a cell's square box is a circle; a directory's cell has a 5px ring (`local.css:441`).
+- **Status.** *Broken.* Controls are drawn as circles too: the zoom buttons (`styles/view-shared.css:324`) and the World Map's help button (`styles/world.css:461–464`) are `50%`, and the shape table above counts "round buttons" among its circles. The ring drawn around a cell in a handle under the pointer is `999px` (`styles/local.css:440`), which on a cell's square box is a circle; a directory's cell has a 5px ring (`local.css:441`). The product's practice may be the simpler statement: a single round thing, mark or button, is a circle, and a row of choices is a pill. Which statement the product keeps is in the findings.
 
 **Proposed rules, not yet the product's.**
 
@@ -468,9 +490,9 @@ Counted from the stylesheets on 2026-11-18:
 
 - **padding:** 82 distinct values in 180 declarations.
 - **margin:** 50 in 167.
-- **gap:** 24 in 92.
+- **gap:** 24 in 92 by the first count; 22 in 85 by a second count of `gap` alone, which suggests the first also counted `row-gap` and `column-gap`. The two counts were not reconciled; until a check holds them, take the gap figures as approximate.
 
-The gaps, by frequency: 6 (16), 4 (14), 12 (12), 8 (11), 10 (10), 2 (5), 14 (3), 24 (2), 20 (2), 3 (2), 28 (2), then single uses of 0, 1, 5, 7 and 18 px, and three compound or variable values.
+The gaps, by frequency in the first count: 6 (16), 4 (14), 12 (12), 8 (11), 10 (10), 2 (5), 14 (3), 24 (2), 20 (2), 3 (2), 28 (2), then single uses of 0, 1, 5, 7 and 18 px, and three compound or variable values.
 
 **The 2D map's own geometry is a separate system.** It is measured in map units and held by the layout's unit tests. It is not the chrome's spacing. Its values:
 
@@ -491,18 +513,18 @@ The gaps, by frequency: 6 (16), 4 (14), 12 (12), 8 (11), 10 (10), 2 (5), 14 (3),
 
 **Rule: a card is portrait.** The default card composition is taller than wide.
 
-- **Why.** Owner, 2026-11-04: portrait works "across many screen sizes", and "a Card is more portrait".
+- **Why.** Owner, 2026-11-04: "Prefer portrait in general if the aim is to have Live Documentation look good on many many different screen sizes. Plus, a Card is more portrait." ([Turn 2 of the November 4 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2)).
 - **Status.** Holds.
 
 **Rule: a directory's handle is at least 24 px tall where it is pressed.** Through the reading and connections looks, a directory's handle is pressable over the strip's whole height, at least 24 px on screen.
 
-- **Why.** Principle: Fitts's law. Also WCAG 2.2 success criterion 2.5.8, Target Size (Minimum), level AA, which asks 24 by 24 CSS px. Owner, 2026-11-15: no buttons to press at a distance.
+- **Why.** Principle: Fitts's law. Also WCAG 2.2 success criterion 2.5.8, Target Size (Minimum), level AA, which asks 24 by 24 CSS px. Owner, 2026-11-15: directories "still aren't exceptionally _useful_ (interaction-wise) at high zoom-outs because there are no buttons to interact with at that distance" ([Turn 1 of the November 15 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)).
 - **Status.** Holds through the reading and connections looks. At the overview look the handle is 21 to 12 px tall, held as tall as the strip allows. Target sizes as a whole belong to the interaction half.
 
 **Proposed rule: one spacing scale for the chrome.** Every padding, margin and gap in the panels, toolbars and dialogs takes a step of 0, 2, 4, 6, 8, 12, 16, 24, 32 or 40 px.
 
 - **Why.** Principle: a constrained scale makes equal relationships look equal, and it is what Carbon (2, 4, 8, 12, 16, 24, 32, 40, …), Atlassian (which includes 6) and Polaris publish.
-- **Today.** Measured on the gaps: 69 of 92 already fall on this scale. The rest are 10, 14, 18, 20, 28, 1, 3, 5 and 7.
+- **Today.** Measured on the gaps: most already fall on this scale (69 of 92 by the first count, 59 of 85 by the second). The rest are 10, 14, 18, 20, 28, 1, 3, 5 and 7.
 - **Not covered.** The map's own geometry, above, is not under this rule.
 
 ---
@@ -516,9 +538,9 @@ The gaps, by frequency: 6 (16), 4 (14), 12 (12), 8 (11), 10 (10), 2 (5), 14 (3),
 | Band | Values | What stands there |
 | --- | --- | --- |
 | Inside a view | −1, 1, 2, 3, 4, 5, 6, 20, 28, 30 | Highlights under their rows; the 3D label layer; the wires layer; anchor dots and hubs; the World's HUD, help, evidence and tour |
-| The application | 100, 104, 105, 106, 110, 160, 200, 300, 999, 1000, 1200 | The sidebar and controls (100); the 2D-to-3D transition (104); the history scrubber and the perspective controls (105); the pin tray (106); the view toolbar (160); the detail panel and search results (200); the search bar (300); the reading dialog and its backdrop (1000 and 999); a card's menu (1200) |
+| The application | 100, 104, 105, 106, 110, 160, 200, 300, 999, 1000, 1200 | The sidebar and controls (100); the 2D-to-3D transition and the history step panel (104, `styles/history.css:66`); the history scrubber and the perspective controls (105); the pin tray (106); the scrubber while its finder is open (110, `history.css:10`); the view toolbar (160); the detail panel and search results (200); the search bar (300); the reading dialog and its backdrop (1000 and 999), and the narrow reader (1000); a card's menu (1200) |
 
-There are ties at 100: the sidebar, the controls, the path report and the directory ancestor preview. The detail panel is declared at 200 (`styles/shell.css:301`) and again at 1000 (`shell.css:440`).
+There are ties at 100: the sidebar, the controls, the path report and the directory ancestor preview. Whether any two of them overlap in one stacking context was not checked. The detail panel is declared at 200 (`styles/shell.css:301`) and again at 1000 (`shell.css:440`); the second is inside the narrow-screen media query, where the reader becomes the full-screen modal, so it is deliberate, not a conflict.
 
 **Shadows:** 36 distinct `box-shadow` values in 44 declarations. Of those, 16 are elevation shadows: offset, black at 0.2 to 0.6. The others are glows and stacked-card edges.
 
@@ -530,7 +552,7 @@ There are ties at 100: the sidebar, the controls, the path report and the direct
 
 - **Why.** Principle: Material's dark theme and Carbon's layering. On `#18181a` a black shadow has little room to read.
 - **Checked by.** Nothing.
-- **Status.** Holds. Map cards cast no elevation shadow at rest. The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
+- **Status.** *Broken*, in both halves. Tone does not carry height (the floating panels stand on `ground.deep`, under [tonal elevation](#grounds-and-lines-dark-interior)), and a map card casts an elevation shadow at rest: `.node-card` has `0 2px 6px` black at 0.28 (`styles/view-shared.css:70`), never overridden (the only `box-shadow: none` rules are at `styles/local.css:518` and `styles/reading.css:224`). The stacked closed-directory look draws its under-cards as offset solid edges, which are a shape, not a shadow.
 
 **Proposed rule: named layers, not numbers.**
 
@@ -553,7 +575,7 @@ There are ties at 100: the sidebar, the controls, the path report and the direct
 | floating | `0 8px 24px` black 0.4 | menus, results, the tray |
 | modal | `0 12px 40px` black 0.5 | dialogs and panels over the map |
 
-These are the three the stylesheets already use most. Today there are 16 elevation shadows across nine offsets and eight strengths.
+Only the middle one is today's: `0 8px 24px` at 0.4 recurs three times (`styles/history.css:21, 66`; `styles/local.css:337`). The nearest to "raised" is the card's `0 2px 6px` at 0.28 (`view-shared.css:70`), and the nearest to "modal" the step dialog's `0 12px 40px` at 0.6 (`history.css:87`); neither level's value exists as written. Today there are 16 elevation shadows across nine offsets and eight strengths. Among them the World Map's are `0 12px 40px` at 0.22, `0 8px 30px` at 0.18 and `0 2px 10px` at 0.12 (`styles/world.css`).
 
 ---
 
@@ -568,18 +590,20 @@ These are the three the stylesheets already use most. Today there are 16 elevati
 | 18 px | `iconButton` (`panels/icon-button.ts:7`); the search marker (`shared/template.html:512`) |
 | 20 by 16 px | the three view icons (`shared/template.html:28–34`) |
 | 14 px | a card's Pin, More, Close, Recentre and Read (`views/localView/card-factory.ts:194–227, 327`; `card-reading.ts:71`; `branch-renderer.ts:687`) |
-| 13 px | a closed directory's Pin and More (`card-factory.ts:890, 900`) |
+| 13 px | a symbol row's Pin and More (`card-factory.ts:890, 900`), at stroke 1.7; a directory's controls are held at 13 px by CSS (`styles/local.css:447`) |
 | 11 px | the reveal-connections mark (`branch-renderer.ts:1713`) |
 | variable | the disclosure chevron (`directory-handle.ts:53`) |
 
-Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pin; the reveal mark) and 2.5 (the chevron). More is a filled glyph of three dots.
+Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and More; the reveal mark) and 2.5 (the chevron). More is a filled glyph of three dots. Pin is drawn in three places, and the pin tray's toggle draws a different pin from the other two (`panels/pin-tray.ts:56`, against `PIN_ICON` and `PIN_GLYPH`).
 
-**Text glyphs used as icons.** These render in whatever font the system gives:
+**Text glyphs used as icons.** These render in whatever font the system gives (`template.html` is `packages/explorer/src/shared/template.html`):
 
 - `←` and `→` for Back and Forward (`template.html:20–21, 567–568`);
-- `◀` for Collapse sidebar (`:22`);
+- `◀` and `▶` for Collapse and Open navigation (`:22`, and `index.ts:1220`, which swaps them);
 - `⟲` for Return to reading size (`:560`);
-- `×` for Close details (`:571`);
+- `+` and `-` for Zoom In and Zoom Out (`:558–559`);
+- `×` for Close details (`:571`) and for the search's clear (`:519`);
+- `?` for the World Map's help (`views/worldMap/controller.ts:296`);
 - `▶` and `▼` in the bundled tree (`panels/sources-view.ts:327, 453`).
 
 **Drawn in CSS.** The history dialog's disclosure is drawn with borders (`styles/history.css:99`), and so is the sidebar's summary marker (`styles/shell.css:1004`).
@@ -589,7 +613,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pi
 **Rule: a repeated action is an icon with a name.** An action that recurs (Pin, More, Close, Read, Recentre) is drawn as an icon, not a word. It carries an accessible name and a tooltip saying what it does.
 
 - **Why.**
-  - Owner, 2026-10-01: "recognizable icons over repeated visible “Release”, “Pin All” and “Read” button text, with accessible names and hover explanations".
+  - Owner, 2026-10-01: "There is no reason for "Release", "Pin All", and "Read" to be buttons with text instead of interactible elements whose aria attributes yield a proper accessible textual equivalent for those who are visually imparied or those who wish to hover for a tooltip." ([Turn 44 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-44)).
   - Owner, 2026-10-30: "If you look at a piece of software like Microsoft Teams, you see that everything is an icon ... hovering over any icon gives you a good idea of what it is with a tooltip."
   - Principle: WCAG 4.1.2, Name, Role, Value.
 - **Where.** `iconButton` sets `title` and `aria-label` from one label.
@@ -598,7 +622,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pi
 
 **Rule: a directory's sign is a disclosure chevron.** A closed directory's handle is led by a chevron pointing right. An opened one's points down. This is the sign a file tree draws, a **signifier**: the mark that tells a person what an object lets them do.
 
-- **Why.** Principle: Norman's signifier, and convention. Owner, 2026-11-15: no buttons at a distance ([the designer's reading, item 4](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/designer-eye/README.md)).
+- **Why.** Principle: Norman's signifier, and convention. The occasion was the owner's finding of 2026-11-15 that there were "no buttons to interact with at that distance" ([the designer's reading, item 4](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/designer-eye/README.md)).
 - **Where.** `views/localView/directory-handle.ts:53`.
 - **Checked by.** `closed-directory-looks.spec.ts`.
 - **Status.** Holds on the map. The bundled tree draws `▶` and `▼`, and the history dialog draws a CSS chevron: three signs for one act.
@@ -607,7 +631,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pi
 
 - **One icon family.** Every icon is a 24-grid line drawing in `currentColor` at one stroke weight, and is drawn from one module. No text glyph stands in for an icon.
   - **Why.** Principle: icons of one family read as one system, by Gestalt similarity. A text glyph changes its look with the platform's font.
-  - **Today.** More is drawn in five places, Pin in two, Close in two.
+  - **Today.** More is drawn in five places, Pin in three (with two different drawings), Close in two; ten different text glyphs stand in for icons.
 - **Icon sizes on a short scale.** 14 px on the map's cards (held with the card's controls) and 18 px in the chrome, each with the 1.5 stroke. Any other size is stated with its reason.
   - **Today.** Sizes of 11, 13, 14, 18 and 20 by 16 px, and strokes of 1.5 to 1.7, for icons of one family.
 
@@ -636,7 +660,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pi
 **Rule: a transition explains a change of place.** Following a connection, changing scale, opening evidence and returning are animated, so that the person keeps their bearings. A change that is not spatial is not animated for its own sake.
 
 - **Why.**
-  - Owner, 2026-09-30: "Consistency of view -- the ability to keep one's bearings as they click around". Screenshot-only iteration "misses sudden hops that a meaningful transition could mediate" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste)).
+  - Owner, 2026-09-30: "As modern models iterate with screenshots, they cannot feel the sudden hop from connection to connection which could otherwise be mediated with a great transition. Consistency of view -- the ability to keep one's bearings as they click around." ([Turn 16 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-16)).
   - Principle: object constancy in animated transitions (Heer and Robertson, 2007).
 - **Checked by.** The orientation specs of the interaction half; motion is judged by eye (AGENTS.md, "Look, then protect").
 - **Status.** Holds.
@@ -662,7 +686,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (the directory card's Pi
   - `styles/graph.css:121`, `styles/local.css:325`, `styles/shell.css:215, 451`, `styles/world.css:153`.
   - `styles/reading.css:626` adds motion only under `no-preference`.
 - **Checked by.** The interaction half's specs.
-- **Status.** Holds where counted. Small hover lifts such as `.control-btn:hover`'s 2 px were not traced.
+- **Status.** Holds where counted. *Broken* on the World Map: its camera tweens (turning, top-down, fit and the walkthrough) travel regardless (`views/worldMap/controller.ts:1107–1124`; no `matchMedia` call anywhere under `views/worldMap`). Small hover lifts such as `.control-btn:hover`'s 2 px were not traced.
 
 **Proposed rule: four durations, named by what they carry.**
 
@@ -689,19 +713,19 @@ Each motion takes its band's one value, and one unit (ms).
 | A connection's direction in 2D | Position: uses enter on the left, offerings leave on the right | `judgments.ts`, `usesLeftOfferingsRight` | Owner, 2026-09-28; checked by the scenario suite |
 | A file's kind | Hue | 3D sphere and marble glass; 2D cells; both keys | Owner, 2026-11-17 |
 | How much a file offers and uses | The share of each vein on the marble, from `marbleAmount` (1 user is a third, 3 two thirds, 7 or more all) | `views/forceGraphAppearance.ts` | Owner, 2026-11-16: "Something that sends more is more blue. Something that receives more is more green"; default since 2026-11-18 |
-| A file's exposed interface | Size of the 3D sphere, sublinear | the 3D map | Owner, 2026-10-13: "size suggests exposed interface" |
-| Coupling between files | Distance in the 3D layout | the 3D map | Owner, 2026-10-13: "position suggests coupling" |
+| A file's exposed interface | Size of the 3D sphere, sublinear | the 3D map | Owner, 2026-10-13, quoting back the agent's "position suggests coupling, size suggests exposed interface" and answering "Phenomenal. Yeah, we're aligned. Please implement." ([the October 13 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-13/2026-10-13.1.record.md)) |
+| Coupling between files | Distance in the 3D layout | the 3D map | The same exchange |
 | A reference's weight | Wire width, `1 + 0.375 log2(count)`, at most 3×; a path's wires twice as wide | `views/forceGraphView.ts:1906–1907` | No owner word found; see the findings |
 | Containment | Enclosure: a membrane in 2D; a skin, bubble or shell in 3D; a skin with cells for a closed directory | both maps | Principle: Gestalt common region. Owner, 2026-11-07: "cells in an embryo" |
-| A file a closed directory holds | A round cell, one size everywhere | 2D cells | Owner, 2026-11-15 and 16: "one kind of mark at one size" |
-| Tests cover this file | A violet halo and border on the 2D card | `hasTests.*` | No owner word found for the hue; violet chosen to avoid the roles |
+| A file a closed directory holds | A round cell, one size everywhere | 2D cells | Owner, 2026-11-15: "there's a bit in the visuals here that I struggle to understand the meaning of (likely folders in folders)", of smaller marks for inner directories ([Turn 2 of the November 15 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-2)); "one kind of mark at one size" is the Explorer design's wording of the remedy ("How a closed directory looks") |
+| Tests cover this file | A violet halo and border on the 2D card | `hasTests.*` | No owner word found for the hue; violet chosen to avoid the roles. Under Proposed it is also the test kind's colour |
 | Attention, the frontier, beyond | Lightness and opacity | the table of strengths above | Principle 2 |
-| Changed in the commit shown | Lightness: the others dim (Dim, the default), or the changed glow white (Glow) | `views/forceGraphEmphasis.ts` | Owner, 2026-11-01 and 2026-11-15 |
-| The flow from offers to uses on the World Map | Motion: dashes along the wire | `styles/world.css:143` | Owner, 2026-09-28: "I absolutely adore the motion from outputs to inputs" |
+| Changed in the commit shown | Lightness: the others dim (Dim, the default), or the changed glow white (Glow) | `views/forceGraphEmphasis.ts` | Owner, 2026-10-31, and the dimming they caught in playback on 2026-11-01 |
+| The flow from offers to uses on the World Map | Motion: dashes along the wire, as well as the wire's gradient (except under reduced motion, where the flow stops and the gradient alone is left) | `styles/world.css:143, 153` | Owner, 2026-09-28: "I absolutely adore the motion from outputs to inputs" |
 
 **Rule: an encoding is judged at an ordinary scene's density.** An encoding carried by one wire or one mark is judged on the whole web with nothing pinned, not on the few marks a hover isolates.
 
-- **Why.** Owner, 2026-10-31: "there are simply too many connectors drawn in the average 3D local map scene to confer any ability for the end user to understand what color means on any one connector". Also: "the test of a 3D picture is whether a person can find a thing in it" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste)).
+- **Why.** Owner, 2026-10-31: "there are simply too many connectors drawn in the average 3D local map scene to confer any ability for the end user to understand what color means on any one connector". And: "we still need to be thinking about how to make this graph more legible. If we want a user to be able to find what they're looking for." ([Turn 1 of the October 31 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-31/2026-10-31.1.record.md#turn-1)).
 - **Checked by.** The owner's eye, from pictures of the ordinary scene.
 - **Status.** Holds.
 
@@ -740,4 +764,4 @@ Proposed, not built:
   Each check reads the stylesheets and the TypeScript and fails on a value outside its named list. Each list is defined once, beside the palette, and written into the page as custom properties as the palette is.
 - **Generated tables.** The tables in this document would be generated from those lists, in a marked region that only the generator writes, as the Live Docs do. They are hand-kept until then, dated 2026-11-18.
 
-The findings file gives the order in which these would pay.
+[The findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md) give the order in which these would pay.

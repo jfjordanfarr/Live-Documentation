@@ -9,7 +9,7 @@ _Current, authored. Written 2026-11-18 from the code at `4856acf3`, read without
 
 This is half of the Explorer's design system: **how the product behaves and whom it serves**. The grammar of pointer, keyboard and touch; the states every control can be in; the keyboard; what assistive technology is told; conformance to WCAG 2.2 at level AA; target sizes; responsiveness; portability; the words on screen; and the feedback the product gives while it works. The other half, colour, type, shape, spacing, layering, iconography, motion curves and data encodings, is [Visual Foundations](visual-foundations.mdmd.md), beside this file.
 
-It states rules. A description of each view is [the Explorer design](../../layer-3/live-documentation-explorer.mdmd.md); how a rule came about is [the decisions log](../../layer-3/architectural-decisions.mdmd.md) and [the owner's Memory](../../../AI-Agent-Workspace/Memory/owner.md); open questions and ideas live in [direction](../../../AI-Agent-Workspace/Memory/direction.md) and [ideas](../../../AI-Agent-Workspace/Memory/ideas.md). What could not be defended when this was written, and what is missing, is in [the dated findings of 2026-11-18](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/findings-interaction.md); a rule here that the product breaks says so in its status and points there.
+It states rules. A description of each view is [the Explorer design](../../layer-3/live-documentation-explorer.mdmd.md); how a rule came about is [the decisions log](../../layer-3/architectural-decisions.mdmd.md) and [the owner's Memory](../../../AI-Agent-Workspace/Memory/owner.md); open questions and ideas live in [direction](../../../AI-Agent-Workspace/Memory/direction.md) and [ideas](../../../AI-Agent-Workspace/Memory/ideas.md). What could not be defended when this was written, and what is missing, is in [the dated findings of 2026-11-18](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md), with this half's findings as first written, each followed by a checker's verdict, in [the interaction findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/interaction.md); a rule here that the product breaks says so in its status and points there. Every entry was checked against the code on 2026-11-18 by a reader who had not written it, and corrected where it was wrong.
 
 ### How to read an entry
 
@@ -32,10 +32,10 @@ Ten rules that everything below applies. Each is the owner's, made precise.
 
 | Principle | The rule | Why |
 | --- | --- | --- |
-| **Intent, not attention** | Hover and keyboard focus *indicate* (they name, light or dim); only a click, a tap, Enter or Space *changes* the picture. | Owner, 2026-09-28: "A click pins, a hover peeks"; 2026-11-05: "text expansion does not occur on hover but instead on tap/click ... too difficult and finicky to actually work as a human end user with a computer mouse" ([owner.md, Formatting and visual taste](../../../AI-Agent-Workspace/Memory/owner.md)). Touch screens have no hover, so a meaning bound to hover does not exist for them. |
-| **One grammar for every input** | Every meaning has a visible target, activated the same way by a tap, a click or Enter. A gesture (double activation, a drag, a hold, a key) may be a second route, never the only one. | Owner, 2026-10-15, taking the agent's proposal whole: "This sounds great!" ([decision](../../layer-3/architectural-decisions.mdmd.md), "Clicks Pin What They Name"). WCAG 2.2 SC 2.1.1 Keyboard, SC 2.5.1 Pointer Gestures and SC 2.5.7 Dragging Movements say the same of keyboards, multi-point gestures and drags. |
+| **Intent, not attention** | Hover and keyboard focus *indicate* (they name, light or dim); only a click, a tap, Enter or Space *changes* the picture. | Owner, 2026-09-28, of the World Map's systems: "clicks on any system should pin the popover and require dismissing (or change its contents when clicking on another system)" ([the black-boxes probe](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-28/Probes/black-boxes.md); `owner.md` heads it "A click pins, a hover peeks"); 2026-11-05: "text expansion does not occur on hover but instead on tap/click ... too difficult and finicky to actually work as a human end user with a computer mouse" ([owner.md, Formatting and visual taste](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste)). Touch screens have no hover, so a meaning bound to hover does not exist for them. |
+| **One grammar for every input** | Every meaning has a visible target, activated the same way by a tap, a click or Enter. A gesture (double activation, a drag, a hold, a key) may be a second route, never the only one. | Owner, 2026-10-15, taking the agent's proposal whole: "This sounds great! Let's go ahead and give it a go!" ([Turn 10 of the October 14 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-10); the [decision](../../layer-3/architectural-decisions.mdmd.md), "Clicks Pin What They Name"). WCAG 2.2 SC 2.1.1 Keyboard, SC 2.5.1 Pointer Gestures and SC 2.5.7 Dragging Movements say the same of keyboards, multi-point gestures and drags. |
 | **At least two ways** | Anything a person can do, and above all any move between places, has at least two routes. | Owner, 2026-09-29: "expect there to almost always be _at least two_ ways to do anything in the program (a stance I'd most strictly apply to navigation". |
-| **Orientation is kept** (*object constancy*: a thing on screen stays recognisably the same thing through a change) | Following a connection, changing scale or perspective, opening evidence and coming back keep the subject recognisable and in place; a transition shows where things went. | Owner, 2026-09-30: "Consistency of view -- the ability to keep one's bearings as they click around"; AGENTS.md, "Orientation". |
+| **Orientation is kept** (*object constancy*: a thing on screen stays recognisably the same thing through a change) | Following a connection, changing scale or perspective, opening evidence and coming back keep the subject recognisable and in place; a transition shows where things went. | Owner, 2026-09-30: "Consistency of view -- the ability to keep one's bearings as they click around" ([Turn 16 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-16)); AGENTS.md, "Orientation". |
 | **A hidden door is the design's fault** (*discoverability*: whether a person can find that an action exists) | A thing a person can do is visible where they would look for it; if a newcomer does not find it, the door is changed, not the newcomer. | Owner, 2026-11-02 ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md)); Norman's principle of discoverability. |
 | **Their words, not ours** | The words on screen are the authors' own, from their files. Ours are names of controls, kept in tooltips and accessible names; a word of ours drawn on screen is the last resort. | Owner, 2026-10-30: "We should strive heavily to avoid _text authored by us onscreen_"; 2026-11-16, of the legend: "minimize visibile words that come from _us_". Nielsen's heuristic of *aesthetic and minimalist design*. |
 | **Every claim is a link** (*traceability*) | A panel that states a fact links to where the fact comes from. | Owner, 2026-09-29: "why is that not a hyperlink? My immediate instinct is to attempt to verify." |
@@ -77,7 +77,7 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Status: holds in 2D and 3D. The World Map's hover opens a panel beside the piece, which is indication within the rule (it moves nothing), but it is the one hover in the product that draws our text.
 
 **A click acts on what it names, and a second identical click undoes it** (*reversibility*).
-- Why: owner, 2026-10-15 and 2026-11-02 ("a click pins and a second releases"); Nielsen's heuristic *user control and freedom*.
+- Why: the owner's decisions of 2026-10-15 and 2026-11-02, which [direction's Decisions in force](../../../AI-Agent-Workspace/Memory/direction.md#decisions-in-force) sums up as "a click pins and a second releases" (the summary's words, not the owner's); Nielsen's heuristic *user control and freedom*.
 - Where: `views/pin-state.ts`; `views/forceGraphView.ts` `activateNode`.
 - Checked by: `tests/e2e/pin-clicks.spec.ts`, `force-graph-focus.spec.ts` ("direct labels release independent pins"; "a second directory click withdraws discovery").
 - Status: holds.
@@ -87,7 +87,7 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 - Status: holds in 2D. In 3D a click on a sphere pins, on purpose (the owner's decision of 2026-11-02); so **the same click on the same file means "read it" in 2D and "keep it" in 3D**. This is recorded, not settled by a reason this document can give; see the findings.
 
 **A press acts on release, and only if the pointer did not travel** (*pointer cancellation*).
-- Rule: an action fires on the pointer's release over the target it was pressed on; a move beyond the slop (6 px in 3D, `SPATIAL_DRAG_SLOP` in `views/forceGraphRenderer.ts:13`), a second pointer, losing the window or Escape cancels it.
+- Rule: an action fires on the pointer's release over the target it was pressed on; a move beyond the slop (6 px in 3D, `SPATIAL_DRAG_SLOP` in `views/forceGraphRenderer.ts:13`; 6 px in 2D too, written as a literal in `views/localView/controller.ts:1642`), a second pointer, losing the window or Escape cancels it.
 - Why: WCAG 2.2 SC 2.5.2 Pointer Cancellation (a press slid off can be abandoned).
 - Checked by: `tests/e2e/force-graph-focus.spec.ts` ("dragging a sphere cancels a held action").
 - Status: holds.
@@ -119,7 +119,7 @@ Where each is held: the 2D press, hold and menu in `views/localView/controller.t
 
 ### 2.3 Where the same act means different things
 
-These are stated so a builder does not mistake them for accidents. Each is in [the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/findings-interaction.md) with a recommendation.
+These are stated so a builder does not mistake them for accidents. Each is in [the findings](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-system/README.md#the-owners-forks) with the choices it leaves the owner.
 
 | Act | Meanings | Recorded as |
 | --- | --- | --- |
@@ -140,7 +140,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | --- | --- | --- | --- | --- | --- |
 | **Rest** | Available, untouched. | Quiet: muted icon or text, no border. | — | each component's CSS | holds |
 | **Hover** | The pointer is over it. | A subtle fill (`--selected-subtle`) or the border and icon in `--state-selected`. | — | e.g. `styles/local.css:244`, `styles/history.css:12` | holds; two looks (fill or border) by component |
-| **Focus-visible** (*the focus ring*: the outline the browser draws only when focus came from the keyboard) | Keyboard focus is here. | A 2 px solid outline in `--state-selected`, offset 2 px. | — | `styles/view-shared.css:431-437` and 50 more `:focus-visible` rules | broken at 5 places: a 1 px ring (`styles/shell.css:426`, `:1030`), an underline with no ring (`styles/history.css:106`), a 1.5 px shadow (`styles/local.css:444`), and the World Map's ring in the offers colour (`styles/world.css:455`) |
+| **Focus-visible** (*the focus ring*: the outline the browser draws only when focus came from the keyboard) | Keyboard focus is here. | A 2 px solid outline in `--state-selected`, offset 2 px. | — | `styles/view-shared.css:431-437` and 50 more `:focus-visible` rules | broken at more than ten places: a 1 px ring (`styles/shell.css:426`, `:1030`); an underline with no ring (`styles/history.css:106`, `styles/shell.css:702–704` the reader's section jumps, `styles/sources.css:139–145` the Sources tree); a border with no ring (`styles/local.css:356` the ancestry chooser's rows, `styles/sources.css:309–312` the export choice); a border with a 0.2 halo (`styles/search.css:56–58`); a 1.5 px shadow (`styles/local.css:444`); the World Map's ring in the offers colour (`styles/world.css:455`); and the browser's own ring on the sidebar's small buttons |
 | **Pressed** (*toggle button*: a button that stays on until pressed again) | A toggle is on. | Border and icon in `--state-selected` with the subtle fill. | `aria-pressed="true"` | `styles/local.css:311`, `styles/graph.css:81`, `styles/history.css:14`, `styles/world.css:446` | holds in look; see 5.4 for names |
 | **Current** | This is the view you are in. | The navigation item filled. | `aria-current="page"` | `dom.ts:39` | holds |
 | **Expanded** | A disclosure is open. | The panel shown. | `aria-expanded` on its opener | pin tray, sidebar, Tuning `<details>` | broken: the World Map's help button has no `aria-expanded` (`views/worldMap/controller.ts:2027-2031`) |
@@ -148,8 +148,8 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | **Building** | The 3D map is placing and framing; nodes refuse input. | After 300 ms a line sweeps along the map's top edge and the cursor waits; still under reduced motion. | none (see 6.4) | `views/forceGraphView.ts:525-537`; `styles/graph.css:99-123` | holds visually; not told to assistive technology |
 | **Busy** | The 3D motion has not come to rest. | Nothing on screen. | `aria-busy="true"` on `#graph-svg` | `views/forceGraphView.ts:692`, `:1448`, `:2504`, `:2518`, `:2523` | inconsistent: see 6.4 |
 | **Loading** | The bundle is loading. | Three dots where the map will be; "Loading..." in the sidebar's footer. | `role="status"`, named "Loading" | `shared/template.html:534-536`, `:496` | holds; two signs for one state |
-| **Empty** | Nothing to show. | Search: "Nothing found". Tray: "No retained selections." Reader: "Click on any node to view details." | — | `search/search-field.ts:116`; `panels/pin-tray.ts:53`; `shared/template.html:574` | words of ours; see 9 |
-| **Error** | The product cannot go on. | A refusal: one sentence where the map would be. A fault: its stack in the detail panel. | `role="alert"` (refusal) | `errors.ts:58-88` | refusal holds; the fault's panel is left `inert` and `aria-hidden` (finding) |
+| **Empty** | Nothing to show. | Search: "Nothing found". Tray: "No retained selections." Reader: "Click on any node to view details." | — | `search/search-field.ts:116`; `panels/pin-tray.ts:53`; `shared/template.html:574` | words of ours; see 11; the search's "Nothing found" is drawn in the disabled grey at 2.86 to 1 |
+| **Error** | The product cannot go on. | A refusal: one sentence where the map would be. A fault: its stack in the detail panel. | `role="alert"` (refusal) | `errors.ts:58-88` | refusal holds; a fault replaces only the panel's body (`errors.ts:81-88`), so the stack stands under the reader's placeholder heading "Select a Node", in a panel left `inert` and `aria-hidden` (`shared/template.html:564`, `detailPanel.ts:99-100`); whether it can be seen there needs a browser |
 
 **Rule: one state, one look, one attribute.** A builder adding a control uses these looks and these attributes and adds no new ones.
 - Why: *consistency and standards* (Nielsen's fourth heuristic); WCAG 2.2 SC 4.1.2 Name, Role, Value requires the state to be told, and SC 2.4.7 Focus Visible requires focus to be seen.
@@ -204,14 +204,14 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Arrows, Home, End | menu, search results, scrubber, cells | Move within the group | 4.1 |
 | ContextMenu, Shift+F10 | a map item | Opens its commands | `views/localView/controller.ts:1670-1679`, `views/forceGraphView.ts:2139-2147` |
 | Escape | everywhere | See 4.3 | |
-| Q, E, T, F, U, G, D, R, ? | World Map, when focus is not in a text field | Turn left, right, top-down, fit, built on, snap, dark, **reset the layout**, help | `views/worldMap/controller.ts:1721-1770` |
+| Q, E, T, F, U, G, D, R, ? | World Map, when focus is not in an `input` or `textarea`, with or without Ctrl, ⌘ or Alt held | Turn left, right, top-down, fit, built on, snap, dark, **reset the layout**, help | `views/worldMap/controller.ts:1721-1770` |
 
-**Rule: a shortcut of one printable character works only while focus is on the surface it acts on, or can be turned off.**
-- Why: WCAG 2.2 SC 2.1.4 Character Key Shortcuts (level A): speech-input users trigger single letters by speaking words.
-- Status: **broken** in the World Map, whose letters act whenever it is the active view, from any focus outside a text field; R discards every moved piece's position without undo (`views/worldMap/controller.ts:1961-1965`).
+**Rule: a shortcut of one printable character works only while focus is on the surface it acts on, or can be turned off; and a letter with Ctrl, ⌘ or Alt held is the browser's, not ours.**
+- Why: WCAG 2.2 SC 2.1.4 Character Key Shortcuts (level A): speech-input users trigger single letters by speaking words. The browser's own shortcuts are Ctrl or ⌘ with a letter.
+- Status: **broken** in the World Map, whose letters act whenever it is the active view, from any focus outside an `input` or `textarea` (a focused `<select>`, such as Tuning's, is not excluded); R discards every moved piece's position without undo (`views/worldMap/controller.ts:1961-1965`). Nothing checks `ctrlKey`, `metaKey` or `altKey`, so Ctrl+R reloads the page and also resets and saves the layout, Ctrl+F opens the browser's find and also fits the view, and Ctrl+D bookmarks and also switches the theme.
 
 **Rule: a shortcut is announced** with `aria-keyshortcuts` and named in its control's tooltip.
-- Status: holds for the World Map's tools (`views/worldMap/controller.ts:283-284`); the search shows "Ctrl+P" as a hidden `<kbd>` and its field carries no `aria-keyshortcuts`, and shows "Ctrl" on a Mac where ⌘ is the key (`shared/template.html:507`).
+- Status: holds for the World Map's tools (`views/worldMap/controller.ts:283-284`), whose help panel also lists every key (`:2018`); the search shows "Ctrl+P" as a hidden `<kbd>` and its field carries no `aria-keyshortcuts`, and shows "Ctrl" on a Mac where ⌘ is the key (`shared/template.html:507`). Ctrl+P has a recorded reason, "the Explorer's search shortcut since the dialog it replaced" (`search/search-bar.ts:95`).
 
 ### 4.3 Escape, in order
 
@@ -256,14 +256,14 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: the page has one `main`, one `navigation` for the views, the `search`, and a `complementary` reader.**
 - Why: WCAG 2.2 SC 1.3.1 Info and Relationships and SC 2.4.1 Bypass Blocks (landmarks are one accepted way to bypass).
-- Status: **broken**: `#sidebar` and `#main` are plain `div`s (`shared/template.html:17`, `:501`); only `role="search"` (`:503`) and the reader's `complementary` or `dialog` (`:564`, `index.ts:1649`) exist. The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
+- Status: **broken**: `#sidebar` and `#main` are plain `div`s (`shared/template.html:17`, `:501`); only `role="search"` (`:503`), the reader's `complementary` or `dialog` (`:564`, `index.ts:1649`) and, inside the reader, its `<nav aria-label="Sections">` (`detailPanel.ts:415`, `:638`) exist. The World Map's pinned panel is a `region` named by its thing (`views/worldMap/controller.ts:1307-1308`).
 
 ### 5.2 Names and descriptions
 
 *Accessible name*: what a screen reader says a control is. *Accessible description*: the extra sentence it reads after.
 
 **Rule: every control has a name; an icon-only control's name is its tooltip, set once by `iconButton`** (`panels/icon-button.ts`).
-- Why: WCAG 2.2 SC 4.1.2; the owner's "icons with accessible names and hover explanations" (2026-10-01, [owner.md](../../../AI-Agent-Workspace/Memory/owner.md)).
+- Why: WCAG 2.2 SC 4.1.2; the owner, 2026-10-01: "There is no reason for "Release", "Pin All", and "Read" to be buttons with text instead of interactible elements whose aria attributes yield a proper accessible textual equivalent for those who are visually imparied or those who wish to hover for a tooltip." ([Turn 44 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-44)).
 - Status: holds across the 83 `aria-label`s written; the zoom buttons carry a name and no tooltip (`shared/template.html:558-559`).
 
 **Rule: the name contains the words drawn on the control** (*label in name*).
@@ -272,7 +272,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: a description is given by `aria-describedby` pointing at text in the page.**
 - Why: `aria-description` is in the ARIA 1.3 draft, not in the ARIA 1.2 recommendation, and screen readers support it unevenly.
-- Status: **broken** at 7 places that use `aria-description` (the legend rows, `shared/template.html:67-85`; `panels/spatial-legend.ts:108`; `views/localView/branch-renderer.ts:662`; `views/localView/card-factory.ts:317`). Tuning does it the standard way (`panels/tuning.ts:453-472`).
+- Status: not followed at 7 places that use `aria-description`. This is a choice for robustness across screen readers, not a WCAG failure: the description is still given where the attribute is supported. The places: the legend rows, `shared/template.html:67-85`; `panels/spatial-legend.ts:108`; `views/localView/branch-renderer.ts:662`; `views/localView/card-factory.ts:317`. Tuning does it the standard way (`panels/tuning.ts:453-472`).
 
 ### 5.3 Roles in use
 
@@ -293,7 +293,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 
 **Rule: a toggle either keeps its name and says `aria-pressed`, or changes its name and says nothing; never both.**
 - Why: WAI-ARIA Authoring Practices, Button pattern: "the label on a toggle does not change when its state changes". With both, a screen reader says "Unpin `index.ts`, toggle button, pressed", which reads as a contradiction.
-- Status: **broken** at the 2D file and symbol Pin (`views/localView/card-factory.ts:191-192`, `:886-888`), the 3D actions (`views/forceGraphView.ts:1170-1171`, `:1179-1180`), Play (`history/scrubber.ts:427-428`) and Authors (`:434-435`). The pin tray and sidebar toggles change their names and say `aria-expanded` (`panels/pin-tray.ts:66-67`, `index.ts:1219-1221`), the same fault for a disclosure.
+- Status: **broken** at the 2D file and symbol Pin (`views/localView/card-factory.ts:191-192`, `:886-888`), the 3D actions (`views/forceGraphView.ts:1170-1171`, `:1179-1180`), Play (`history/scrubber.ts:427-428`) and Authors (`:434-435`). The pin tray and sidebar toggles change their names and say `aria-expanded` (`panels/pin-tray.ts:66-67`, `index.ts:1219-1221`). The Authoring Practices' rule is for toggle buttons, not disclosures, so this is not the same fault; whether a disclosure's name should also stay fixed is left open.
 
 ### 5.5 Live regions and busy
 
@@ -333,7 +333,7 @@ Counted in the client source and the template on 2026-11-18: 236 `aria-` attribu
 *Transition*: animation between two states that shows where each thing went, so the eye need not search again.
 
 **Rule: a change of place, scale or perspective animates what persists from where it was to where it goes; what leaves fades, what arrives grows in; the subject's name stays where it stood.**
-- Why: *object constancy*; the owner's "screenshot-only iteration misses sudden hops that a meaningful transition could mediate" (2026-09-30); AGENTS.md, "Orientation" and "Judge motion and whole journeys".
+- Why: *object constancy*; the owner, 2026-09-30: "As modern models iterate with screenshots, they cannot feel the sudden hop from connection to connection which could otherwise be mediated with a great transition." ([Turn 16 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-16)); AGENTS.md, "Orientation" and "Judge motion and whole journeys".
 - Where: `views/perspectiveTransition.ts` (2D to 3D and back), `views/localView/branch-renderer.ts` and `pan-zoom.ts` (2D moves), `views/forceGraphReveal.ts` (3D reveal).
 - Checked by: `tests/e2e/local-map-motion.spec.ts`, `perspective-zoom.spec.ts`, `local-map-row-motion.spec.ts`.
 - Status: holds for 2D↔3D. The World Map into the Local Map cross-fades with no spatial link ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 12), which is ticket T8.
@@ -363,18 +363,18 @@ How each was judged: **code** means read from the source here, which can show a 
 | 1.3.3 Sensory Characteristics | A | Partly | The legend explains wires by colour and side (left, right); the World Map's help says "blue offers, green uses" (code). Not tested. |
 | 1.3.4 Orientation | AA | Meets (code) | Nothing locks orientation; `tests/e2e/inspection.spec.ts:295` opens the reader at 390×844 and 844×390. |
 | 1.3.5 Identify Input Purpose | AA | Not applicable | No field asks for personal data. |
-| 1.4.1 Use of Color | A | Partly | In 2D what offers and what uses differ by side as well as colour (holds). On the World Map a wire's direction is its colour gradient alone, with no arrowhead ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 19); the hover's words say it. Owned with [Visual Foundations](visual-foundations.mdmd.md). |
+| 1.4.1 Use of Color | A | Partly | In 2D what offers and what uses differ by side as well as colour (holds). On the World Map a wire's direction is told by its colour gradient and by the flow's motion along it, with no arrowhead ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 19); under reduced motion the flow stops (`styles/world.css:153`) and colour alone is left; the hover's words say it. Owned with [Visual Foundations](visual-foundations.mdmd.md). |
 | 1.4.2 Audio Control | A | Not applicable | |
-| 1.4.3 Contrast (Minimum) | AA | Partly tested | `tests/e2e/contrast.ts` measures text against what lies behind it at 4.5:1 in `backward-cue`, `labels-and-controls`, `local-map-path`, `local-map-tone` and `search-bar` specs. The rest of the screen is not measured; an outsider read 3.3:1 on a card's directory line on 2026-11-12. |
+| 1.4.3 Contrast (Minimum) | AA | **Fails** (code), partly tested | `tests/e2e/contrast.ts` measures text against what lies behind it at 4.5:1 in `backward-cue`, `labels-and-controls`, `local-map-path`, `local-map-tone` and `search-bar` specs. The code alone shows failures: in every palette the disabled grey `#666666` draws live words, the sidebar's section labels (2.86:1, `styles/shell.css:920`), the search's placeholder (2.90, `styles/search.css:62`), "Nothing found" (2.86, `:281`) and the Ctrl+P hint (2.30, `:80`); under Today, the default, the quiet text tones and the action button fail ([Visual Foundations](visual-foundations.mdmd.md#text-tones)). An outsider read 3.3:1 on a card's directory line on 2026-11-12. |
 | 1.4.4 Resize Text | AA | Not tested | Text at 200% zoom has not been tried. |
 | 1.4.5 Images of Text | AA | Meets (code) | All text is text; 3D names are DOM buttons. |
 | 1.4.10 Reflow | AA | Not tested; likely fails | The map is two-dimensional content, which the criterion exempts; the sidebar, search and reader are not. At 390 px an outsider found the search over the title and the zoom buttons over the footer (first visit, finding 11). Nothing is tested at 320 px. |
-| 1.4.11 Non-text Contrast | AA | Not tested | Focus rings, control borders and wires against their ground; the contrast helper measures text only. |
+| 1.4.11 Non-text Contrast | AA | **Fails** at one place (code); the rest not tested | The search clear's × glyph, the only sign of its control, is drawn in the disabled grey at 2.90:1 (`styles/search.css:111`). Focus rings, control borders and wires against their ground are not measured; the contrast helper measures text only. |
 | 1.4.12 Text Spacing | AA | Not tested; at risk | Fixed-slot cards cut text with an ellipsis by design; wider spacing cuts more. Whether the full text stays reachable (the reader) is the test. |
 | 1.4.13 Content on Hover or Focus | AA | Not tested | The 3D tooltip and the World Map's hover panel: dismissible by Escape (World Map, code), hoverable and persistent not checked. Native `title` tooltips are the browser's and outside the criterion. |
 | 2.1.1 Keyboard | A | **Fails** (code) | No key turns the 3D camera or pans a map to an arbitrary place; World Map wires and doors are not stops; a 3D sphere without a drawn name is unreachable but by search. |
 | 2.1.2 No Keyboard Trap | A | Meets (tested) | The modal reader's trap leaves by Escape and Close (`tests/e2e/inspection.spec.ts`). |
-| 2.1.4 Character Key Shortcuts | A | **Fails** (code) | World Map letters act from any focus outside a text field and cannot be turned off (`views/worldMap/controller.ts:1721-1770`). |
+| 2.1.4 Character Key Shortcuts | A | **Fails** (code) | World Map letters act from any focus outside a text field, with Ctrl, ⌘ or Alt held as well, and cannot be turned off (`views/worldMap/controller.ts:1721-1770`; 4.2). |
 | 2.2.1 Timing Adjustable | A | Not applicable | No time limits. |
 | 2.2.2 Pause, Stop, Hide | A | **Fails** (code) | The World Map's flow along the wires moves for as long as the board is shown, with no control to pause it; only the operating system's reduced-motion setting stops it (`styles/world.css:135`, `:153`). History playback has Pause. |
 | 2.3.1 Three Flashes or Below Threshold | A | Not tested; at risk | History playback runs at up to 10 steps a second (`shared/template.html:477`), and each step lights its changed files white against a dimmed scene. Whether the lit area crosses the flash threshold needs measuring. |
@@ -384,7 +384,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 2.4.4 Link Purpose (In Context) | A | Meets (code) | Links are names of files, symbols and things. |
 | 2.4.5 Multiple Ways | AA | Not applicable as written (a single page); the product holds the owner's stronger rule *At least two ways*. |
 | 2.4.6 Headings and Labels | AA | Meets (code) | |
-| 2.4.7 Focus Visible | AA | Meets with exceptions (code, partly tested) | 3.1: five rings are thinner or of another colour; the sidebar's Back and Forward have no rule of their own. An outsider found focus visible on every stop tried (first visit, finding 17). |
+| 2.4.7 Focus Visible | AA | Meets with exceptions (code, partly tested) | 3.1: more than ten focus looks are thinner, of another colour, an underline or a border; the sidebar's Back and Forward have no rule of their own. An outsider found focus visible on every stop tried (first visit, finding 17). |
 | 2.4.11 Focus Not Obscured (Minimum) | AA | Meets in 2D (tested) | `tests/e2e/local-map-keyboard.spec.ts` keeps every focused card command inside the unobstructed frame. Not tested in 3D, the World Map or under the open reader. |
 | 2.5.1 Pointer Gestures | A | Partly | Pinch has the zoom buttons in 2D (code); 3D is reached by wheel, pinch and Fit. Not tested on touch. |
 | 2.5.2 Pointer Cancellation | A | Meets (tested) | 2.2. |
@@ -397,7 +397,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 3.2.1 On Focus | A | Meets (code) | Focus previews and brings a control into view; it changes nothing. |
 | 3.2.2 On Input | A | Meets (code) | A Tuning control changes the picture it tunes, which is its purpose, not a change of context. |
 | 3.2.3 Consistent Navigation | AA | Meets (code) | One sidebar for every view. |
-| 3.2.4 Consistent Identification | AA | Partly | The same act is named differently: Back is "Back to the last place" in the sidebar and "Back" in the reader (`shared/template.html:20`, `:567`); the close of a card says "Close this expansion" while every other close says "Close". |
+| 3.2.4 Consistent Identification | AA | Meets (code), with one doubt | The two Back buttons are both named "Back" (`shared/template.html:20`, `:567`); only the sidebar's tooltip says "Back to the last place", and the two do different jobs (places against the reader's own history), so the criterion does not bind them. A card's close says "Close this expansion" while every other close says "Close"; whether that is the same function is not settled. |
 | 3.2.6 Consistent Help | A | Partly | Help exists in the World Map only (`?`). |
 | 3.3.1 Error Identification | A | Meets (code) | The path report says what failed; a refusal says why. |
 | 3.3.2 Labels or Instructions | A | Meets (code) | Fields have names and placeholders. |
@@ -443,8 +443,8 @@ How each was judged: **code** means read from the source here, which can show a 
 | Card header actions | 20×20 at map scale 1 | `styles/local.css:263-265` | below |
 | Symbol Pin and More | 17×17 at map scale 1 | `styles/local.css:243` | below |
 | Directory controls | 17×15 at map scale 1 | `styles/local.css:446` | below |
-| Search's clear | 18×18 | `styles/search.css:100-104` | **below, and not on the map** |
-| Sidebar toggle, Back, Forward | 12 px glyph and 4×8 padding: about 22 tall | `styles/shell.css:34-45` | likely below; not measured |
+| Search's clear | 18×18 | `styles/search.css:100-104` | **below, and not on the map**; it sits inside the input, so the spacing exception cannot save it |
+| Sidebar toggle, Back, Forward | 12 px glyph and 4×8 padding (15 px at 2×6 for some): about 22 to 24 tall, by the font's line height | `styles/shell.css:34-45`, `:52-55` | likely below; needs a browser |
 | Under `(pointer: coarse)` | counts 44 tall; card actions 32; symbol actions 26 | `styles/reading.css:98-103` | meets on touch, in the reading look only |
 
 **Rule: a control drawn in screen space (outside the map) is at least 24×24 CSS px.**
@@ -464,7 +464,7 @@ How each was judged: **code** means read from the source here, which can show a 
 
 **Rule: the Explorer is designed for a desktop or laptop window from 1280×800 up, with a mouse or trackpad and a keyboard.** Below that it must remain usable for reading (the reader fills the screen), not for exploring.
 - Why: the owner's work is on a desktop; Tuning was accepted as usable at 1280×800 (2026-10-30, the Explorer design's "Tuning is usable at the available size"); the phone and touch pass is deferred by the owner.
-- Measured: the browser suite's viewports, counted 2026-11-18 across `tests/e2e/*.ts`: 1600×1000 (34 uses), 1280×800 (27), 1440×960 (20), 1440×900 (18), 1400×900 (8), 390×844 (6, with touch in two), 1800×1100 (5), 900×700 (3), and twelve others once or twice. The Playwright project is Desktop Chrome only (`tests/e2e/playwright.config.ts:64-68`).
+- Measured: the browser suite's viewports, counted 2026-11-18 across `tests/e2e/*.ts` (a second, looser count found 1600×1000 38 times, 1280×800 28 and 390×844 7; the order holds): 1600×1000 (34 uses), 1280×800 (27), 1440×960 (20), 1440×900 (18), 1400×900 (8), 390×844 (6, with touch in two), 1800×1100 (5), 900×700 (3), and twelve others once or twice. The Playwright project is Desktop Chrome only (`tests/e2e/playwright.config.ts:64-68`).
 
 ### 9.2 What changes when the window is small
 
@@ -493,7 +493,7 @@ The phone and touch pass (2026-10-20): in-map target sizes, collapse into More b
 - Where: the Content-Security-Policy `<meta>` (`shared/template.html:9-10`): `default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'`. Listeners, never inline event attributes; a doc's raw HTML shown as text.
 - Why: the decision of 2026-10-21; the owner's ask of 2025-12-14.
 - Checked by: `tests/e2e/no-network.spec.ts`, which walks every sample bundle's views and hostile docs and fails on any request to another site and any refusal by the policy.
-- Status: holds. `style-src 'unsafe-inline'` remains for the Explorer's own computed positions; the libraries that first needed it are gone (decision update of 2026-10-29).
+- Status: holds. `style-src 'unsafe-inline'` remains for the Explorer's own computed positions; the libraries that first needed it are gone (decision update of 2026-10-29). The comment beside the policy (`shared/template.html:6-8`) still gives the old reason, "three of the 3D view's libraries inject theirs"; it is stale.
 
 **Rule: opened as a file, the page says in one sentence that it must be served.**
 - Where: `errors.ts:21` (`OPENED_AS_FILE`), shown as a refusal with `role="alert"`; the script is a classic deferred script so that it runs from a file at all (`shared/template.html:583-584`).
@@ -557,8 +557,8 @@ All are built in the page and saved through a `blob:` link: no network. Why: own
 - Status: mostly holds. Long tooltips: "Internal/private implementation — data flows in but isn't exposed as public symbols" (`views/localView/card-factory.ts:864`); "Close this expansion; keep symbols needed by other pins" (`:215`).
 
 **Rule: what a tooltip says is also reachable without a mouse.** A native `title` shows only to a mouse resting on the control, never on keyboard focus or touch; so a tooltip may only repeat the accessible name or description, never carry a fact found nowhere else.
-- Why: WCAG 2.2 SC 1.4.13 and SC 2.1.1; the owner's "a tap, never hover, opens text".
-- Status: holds where `iconButton` sets both; the legend's sentences and the 3D names' counts live in tooltips that a keyboard or touch user does not see except through a screen reader. See the findings.
+- Why: WCAG 2.2 SC 1.4.13 and SC 2.1.1; the owner, 2026-11-05: "text expansion does not occur on hover but instead on tap/click" ([owner.md](../../../AI-Agent-Workspace/Memory/owner.md#formatting-and-visual-taste); [direction](../../../AI-Agent-Workspace/Memory/direction.md#decisions-in-force) sums it up as "a tap, never hover, opens text").
+- Status: holds where `iconButton` sets both, and for the World Map's tools, whose keys are also in its help panel. *Broken* where a fact lives only in a `title`: the 3D seed's group size and a shell's file count (`views/forceGraphView.ts:844-853`), which a screen reader receives as the description but a sighted keyboard or touch user never sees; a card's test coverage beyond the three test names drawn as chips (`views/localView/card-factory.ts:252-265`); and the legend's sentences. See the findings.
 
 ### 11.3 How the product speaks
 
