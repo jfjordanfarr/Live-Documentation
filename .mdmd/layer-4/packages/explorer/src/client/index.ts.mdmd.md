@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-19T06:19:56.684Z
+- Generated At: 2026-11-19T06:30:57.242Z
 
 ## Authored
 ### Purpose
@@ -93,6 +93,10 @@ _No public symbols detected_
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`frame-crumbs.CrumbSubject`](./panels/frame-crumbs.ts.mdmd.md#symbol-crumbsubject) (type-only)
+- [`frame.FRAME_KEY_ICON`](./panels/frame.ts.mdmd.md#symbol-frame_key_icon)
+- [`Frame`](./panels/frame.ts.mdmd.md#symbol-frame)
+- [`frame.createFrame`](./panels/frame.ts.mdmd.md#symbol-createframe)
 - [`icon-button.iconButton`](./panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`item-menu.ItemCommand`](./panels/item-menu.ts.mdmd.md#symbol-itemcommand)
 - [`item-menu.createItemMenu`](./panels/item-menu.ts.mdmd.md#symbol-createitemmenu)
