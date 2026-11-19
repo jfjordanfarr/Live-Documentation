@@ -79,6 +79,7 @@ import { parentDirectory } from "./localView/directory-bands";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
+import { NO_REST, restAt, restedOn, type PointerRest } from "./pointerRest";
 import { wheelPixels } from "./wheel";
 
 /**
@@ -459,7 +460,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let menuEpoch = 0;
   let inspectedActionId: string | null = null;
   let seenInspectionKey = "";
+  /** The node the pointer touches now: it shows at once only that it can be pressed (the cursor, a wrapper's rim). */
   let pointerHoverId: string | null = null;
+  /** The wire the pointer touches now, by its key, when it touches no node. */
+  let touchedWire: string | null = null;
+  /**
+   * The pointer's rest (`pointerRest.ts`, 2026-11-19), and the node it has rested on, whose name, actions, lit wires
+   * and the fading of the rest show; kept while the pointer crosses to that node's actions.
+   */
+  let rest: PointerRest = NO_REST;
+  let restedId: string | null = null;
+  /** A finger on the picture: a touch is deliberate, so what it touches is rested on at once. */
+  let touching = false;
   /**
    * The building (2026-11-15, `forceGraphBuilding.ts`): when it began and when its work last stopped, the phase the
    * container shows, whether a perspective change into this view is playing, and whether the pointer has moved since
@@ -559,16 +571,30 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     lastPointer = at;
   }
 
-  /** One application-owned pointer target, coalesced with the existing frame loop as the picture changes. */
+  /**
+   * One application-owned pointer target, coalesced with the existing frame loop as the picture changes. What the
+   * pointer touches shows at once only that it can be pressed: the cursor, and a wrapper's rim. Its name, its actions,
+   * its lit wires, the fading of the rest and a wire's words wait until the pointer has rested on it (the owner,
+   * 2026-11-19: no "random text at me every which way as I scroll my mouse across the screen"); the rest is looked at
+   * every frame, since it ripens with time alone.
+   */
   function updatePointerHover(): void {
     if (!forceGraphInstance || !pointerPosition || draggingNode || draggingCamera) return;
     // While the map builds, and after it until the pointer moves, nothing under the pointer begins a hover.
     if (!pointerMay().hover) { forceGraphInstance.hideWire(); return; }
-    const canvas = forceGraphInstance.renderer().domElement;
+    pickPointer();
+    rest = restAt(rest, pointerHoverId ?? (touchedWire && `wire:${touchedWire}`), pointerPosition, performance.now());
+    settleRest();
+  }
+
+  /** What the pointer touches, picked again only when the pointer, the picture or the camera has changed. */
+  function pickPointer(): void {
+    const instance = forceGraphInstance!, at = pointerPosition!;
+    const canvas = instance.renderer().domElement;
     const frame = canvas.getBoundingClientRect();
-    const camera = forceGraphInstance.camera();
+    const camera = instance.camera();
     camera.updateMatrixWorld();
-    const pointed = document.elementFromPoint(pointerPosition.x, pointerPosition.y);
+    const pointed = document.elementFromPoint(at.x, at.y);
     const onCanvas = pointed === canvas;
     if (onCanvas) {
       const unchanged = pickedFrame && pickedFrame.left === frame.left && pickedFrame.top === frame.top
@@ -581,30 +607,56 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     pickedFrame = onCanvas ? frame : null;
     pickedCamera = camera.matrixWorld.elements.slice();
     pickedProjection = camera.projectionMatrix.elements.slice();
-    const id = onCanvas ? nodeAt(pointerPosition.x, pointerPosition.y) ?? null
+    const id = onCanvas ? nodeAt(at.x, at.y) ?? null
       : pointed && actionStrip?.contains(pointed) ? actionTargetId
       : pointed instanceof HTMLElement && pointed.matches(".force-graph-focus, .force-graph-label") ? pointed.dataset.nodeId ?? null : null;
-    if (onCanvas && !id) forceGraphInstance.showWireAt(pointerPosition.x, pointerPosition.y);
-    else forceGraphInstance.hideWire();
+    const wire = onCanvas && !id ? instance.wireAt(at.x, at.y) : undefined;
+    touchedWire = wire ? linkKey(wire) : null;
     const container = requireElement("graph-svg");
     const hovered = String(!!id);
     if (container.dataset.hoveredNode !== hovered) container.dataset.hoveredNode = hovered;
     if (pointerHoverId === id) return;
+    const rim = (pointerHoverId !== null && isWrapped(pointerHoverId)) || (id !== null && isWrapped(id));
     pointerHoverId = id;
-    if (id) {
-      window.clearTimeout(hideActionsTimer);
-      hoveredId = id;
-      updateAttention();
-      refreshActionStrip();
-    } else {
-      deferHoverExit();
-    }
+    if (rim) { styleWrappers(); pictureChanged(); }
+  }
+
+  /** Whether a point is on the way into the actions shown, or on them: the grace that lets a pointer reach them. */
+  function nearActions(at: { x: number; y: number }): boolean {
+    if (pointerOverActions) return true;
+    if (!actionStrip || actionStrip.hidden) return false;
+    const box = actionStrip.getBoundingClientRect();
+    return at.x >= box.left - 24 && at.x <= box.right + 24 && at.y >= box.top - 32 && at.y <= box.bottom + 32;
+  }
+
+  /**
+   * Show what the pointer has rested on, and let go at once of what it has left; but a node whose actions the pointer
+   * is crossing to keeps them, so that a person heading for Pin, Centre or More reaches them across the gap and over
+   * any other sphere on the way.
+   */
+  function settleRest(): void {
+    const rested = touching ? rest.on : restedOn(rest, performance.now());
+    if (rested?.startsWith("wire:")) forceGraphInstance?.showWireAt(pointerPosition!.x, pointerPosition!.y);
+    else forceGraphInstance?.hideWire();
+    const node = rested?.startsWith("wire:") ? null : rested;
+    if (node === restedId) return;
+    if (node === null && pointerPosition && nearActions(pointerPosition)) return;
+    restedId = node;
+    window.clearTimeout(hideActionsTimer);
+    hoveredId = node ?? menuTargetId ?? keyboardActionTarget();
+    updateAttention();
+    refreshActionStrip();
   }
 
   function releasePointerHover(): void {
     forceGraphInstance?.hideWire();
     pointerPosition = null;
+    const rim = pointerHoverId !== null && isWrapped(pointerHoverId);
     pointerHoverId = null;
+    touchedWire = null;
+    rest = NO_REST;
+    restedId = null;
+    if (rim) styleWrappers();
     pointerPickNeeded = false;
     pickedFrame = null;
     hoveredId = menuTargetId ?? keyboardActionTarget();
@@ -1151,7 +1203,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (!actionStrip || !primaryAction || !centreAction || !moreAction) return;
     if (draggingNode || draggingCamera) { actionStrip.hidden = true; return; }
     const held = pointerOverActions || actionStrip.contains(document.activeElement);
-    const id = menuTargetId ?? (held ? actionTargetId : keyboardActionTarget() ?? pointerHoverId ?? inspectedActionId ?? (overFocusLabel || document.activeElement === focusLabel ? focusedId : null));
+    const id = menuTargetId ?? (held ? actionTargetId : keyboardActionTarget() ?? restedId ?? inspectedActionId ?? (document.activeElement === focusLabel ? focusedId : null));
     const action = id ? currentAction(id) : null;
     if (!id || !action) {
       actionStrip.hidden = true;
@@ -1198,7 +1250,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   function deferHoverExit(): void {
     window.clearTimeout(hideActionsTimer);
     hideActionsTimer = window.setTimeout(() => {
-      if (pointerHoverId || pointerOverActions || overFocusLabel) return;
+      if (restedId || pointerOverActions || overFocusLabel) return;
       hoveredId = menuTargetId ?? keyboardActionTarget();
       updateAttention();
       refreshActionStrip();
@@ -1299,6 +1351,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       for (const [key, link] of moved.links) linkCache.set(key, link);
       if (hoveredId) hoveredId = renamedId(hoveredId, pendingRenames);
       if (pointerHoverId) pointerHoverId = renamedId(pointerHoverId, pendingRenames);
+      if (restedId) restedId = renamedId(restedId, pendingRenames);
       if (actionTargetId) actionTargetId = renamedId(actionTargetId, pendingRenames);
       if (menuTargetId) menuTargetId = renamedId(menuTargetId, pendingRenames);
       if (inspectedActionId) inspectedActionId = renamedId(inspectedActionId, pendingRenames);
@@ -1696,6 +1749,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const present = new Set(graphNodes.map(node => node.id));
     if (hoveredId && !present.has(hoveredId)) hoveredId = null;
     if (pointerHoverId && !present.has(pointerHoverId)) pointerHoverId = null;
+    if (restedId && !present.has(restedId)) restedId = null;
     if (actionTargetId && !present.has(actionTargetId)) actionTargetId = null;
     if (menuTargetId && !present.has(menuTargetId)) menuTargetId = null;
     if (inspectedActionId && !present.has(inspectedActionId)) inspectedActionId = null;
@@ -2067,6 +2121,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.addEventListener("pointerenter", event => {
       pointerPosition = { x: event.clientX, y: event.clientY };
       pointerPickNeeded = true;
+      touching = event.pointerType === "touch";
     });
     container.addEventListener("pointerdown", event => {
       if (event.target !== forceGraphInstance?.renderer().domElement) return;
@@ -2099,12 +2154,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (press && event.pointerId === press.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > SPATIAL_DRAG_SLOP) {
         interrupt(); cancelPress(); draggingCamera = true; refreshActionStrip();
       }
-      // Keep the offer while the pointer crosses the small screen-space gap above a sphere, including a slow crossing.
-      if (!pointerHoverId && actionStrip && !actionStrip.hidden) {
-        const box = actionStrip.getBoundingClientRect();
-        if (event.clientX >= box.left - 24 && event.clientX <= box.right + 24
-          && event.clientY >= box.top - 32 && event.clientY <= box.bottom + 32) deferHoverExit();
-      }
+      // The offer is kept while the pointer crosses the small gap above a sphere to its actions: `settleRest`.
     });
     // Resolve each press against the uploaded instances, including fast clicks and touch taps
     // that have never produced a hover frame.
@@ -2125,7 +2175,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       activateNode(id);
     });
     const finishPointer = (event: PointerEvent): void => {
-      if (event.pointerType === "touch" || event.type === "pointercancel") releasePointerHover();
+      if (event.pointerType === "touch" || event.type === "pointercancel") { touching = false; releasePointerHover(); }
       if (!activePointers.delete(event.pointerId)) return;
       cancelPress();
       if (activePointers.size === 0) { draggingCamera = false; draggingNode = false; }
@@ -2453,7 +2503,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     forceGraphInstance.wrapperStyle({
       alpha: seed => attentionAlpha(seed) * (1 - burst(seed)),
       scale: seed => fitOf(seed) * (1 + BURST.growth * burst(seed)),
-      hovered: hoveredId !== null && isWrapped(hoveredId) ? hoveredId : null,
+      // The rim is the touched wrapper's own sign that it can be pressed, shown at once; else the rested or focused one's.
+      hovered: [pointerHoverId, hoveredId].find(id => id !== null && isWrapped(id)) ?? null,
       popping: new Set(bursts.keys()),
       skin: skinOf
     });

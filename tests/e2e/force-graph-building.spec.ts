@@ -84,7 +84,8 @@ test("a click on a seed with the pointer kept still: nothing hovers or fades whi
   // Before the click the pointer's own move hovers the seed, and the rest fades around it.
   await page.mouse.move(at.x, at.y);
   await expect.poll(async () => (await looking(page, at)).hovered).toBe("true");
-  expect((await looking(page, at)).faded, "the hover fades the other seeds").toBeGreaterThan(0);
+  // The fade waits until the pointer has rested on the seed (2026-11-19, `pointerRest.ts`).
+  await expect.poll(async () => (await looking(page, at)).faded, { message: "the hover fades the other seeds once the pointer rests" }).toBeGreaterThan(0);
   await page.mouse.down(); await page.mouse.up();
   // The click pins the seed and its group grows: the map builds, and the hover that was showing ends at once.
   expect(await looking(page, at), "at once after the click, the hover has ended and nothing is faded").toMatchObject({ hovered: "false", faded: 0 });

@@ -29,6 +29,12 @@ async function openEstate(page: Page): Promise<void> {
 }
 
 test.describe("The estate on the World Map", () => {
+  // Every blind tester met "payments" opening PaymentService/ with nothing to say so until it was opened (2026-11-19).
+  test("the payments box says it opens PaymentService, in its accessible name", async ({ page }) => {
+    await openEstate(page);
+    await expect(page.locator('#view-world [data-focus="payments"]')).toHaveAttribute("aria-label", /^payments, service, opens PaymentService, \d+ files$/u);
+  });
+
   test("draws seven things in two regions, the declared crossing, a call in the air and the library the services stand on", async ({ page }) => {
     await openEstate(page);
     const pieces = await page.evaluate(() => window.__worldMap!.pieces());

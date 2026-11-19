@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { restsOn } from "./pointer-frames";
 import { localMapSettled } from "./still-picture";
 
 test.use({ viewport: { width: 1600, height: 1000 } });
@@ -125,7 +126,7 @@ test("the structure layout preserves files, uses uniform directory junctions, an
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native hover picking is throttled.
-    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) { hovered = node; break; }
+    if (await restsOn(page, node.id)) { hovered = node; break; }
   }
   expect(hovered, "a connected file is hoverable").toBeDefined();
   const incident = (await renderedLinks(page)).filter(link => link.kind !== "containment" && (link.source === hovered!.id || link.target === hovered!.id));
@@ -161,7 +162,7 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native hover picking is throttled.
-    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) {
+    if (await restsOn(page, node.id)) {
       chosen = node;
       break;
     }

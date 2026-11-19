@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { outlines, textOverShapes, type TextBox } from "./design-audit";
+import { framesDuring, recordFrames, sweepThrough } from "./pointer-frames";
 import { currentSnapshot } from "./search-bar";
 
 /**
@@ -241,6 +242,66 @@ test.describe("World Map", () => {
     await expect(page.getByRole("button", { name: "Dark board" })).toHaveAttribute("aria-pressed", "true");
   });
 
+  // The owner (2026-11-19): not "an application which is shooting random text at me every which way as I scroll my
+  // mouse across the screen". A hover peeks, but only once the pointer has rested; a click pins at once.
+  test("a pointer crossing the board peeks at nothing; a rest peeks after the dwell, and moving off ends the peek at once", async ({ page }) => {
+    await openWorldMap(page);
+    await recordFrames(page);
+    const point = async (name: string): Promise<{ x: number; y: number }> => {
+      const [x, y] = await page.evaluate((piece) => window.__worldMap!.screenPointOf(piece), name);
+      return { x, y };
+    };
+    const [engine, scripts, explorer] = [await point("engine"), await point("scripts"), await point("explorer")];
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const empty = { x: box.x + 8, y: box.y + box.height - 8 };
+    await page.mouse.move(empty.x, empty.y);
+    // A sweep through three pieces at an ordinary pace, about a thousand pixels a second, never stopping.
+    const sweep = await framesDuring(page, () => sweepThrough(page, [empty, engine, scripts, explorer, empty]));
+    expect(sweep.length, "frames drawn during the sweep").toBeGreaterThan(5);
+    expect(sweep.filter((frame) => frame.peek), "frames with a peek during the sweep").toEqual([]);
+    expect(sweep.filter((frame) => frame.dimmed > 0), "frames with the rest faded during the sweep").toEqual([]);
+    expect(sweep.filter((frame) => frame.doorWords > 0), "frames with door names during the sweep").toEqual([]);
+    // A rest on a piece: nothing before the dwell, the peek, the fade and its door names after it.
+    const rest = await framesDuring(page, async () => {
+      await page.mouse.move(engine.x, engine.y);
+      await expect(page.locator("#view-world .world-evidence")).toBeVisible();
+    });
+    const arrived = rest[0].t;
+    const firstPeek = rest.find((frame) => frame.peek)!;
+    expect(firstPeek.t - arrived, "the peek waits for the rest").toBeGreaterThanOrEqual(300);
+    expect(rest.filter((frame) => frame.t < firstPeek.t && frame.dimmed > 0)).toEqual([]);
+    await expect(page.locator("#view-world .world-evidence")).toContainText("engine");
+    expect(await page.locator("#view-world .dim-soft").count(), "the rest faded once rested on").toBeGreaterThan(0);
+    // Moving off ends it at once: within the frame that follows the move.
+    const off = await framesDuring(page, async () => {
+      await page.mouse.move(empty.x, empty.y);
+    });
+    expect(off.at(-1)!.peek).toBe(false);
+    expect(off.at(-1)!.dimmed).toBe(0);
+    expect(await page.evaluate(() => window.__worldMap!.state().hover)).toBeNull();
+  });
+
+  test("the keyboard on a piece peeks at once, and a click pins at once", async ({ page }) => {
+    await openWorldMap(page);
+    const first = (await page.evaluate(() => window.__worldMap!.pieces()))[0];
+    await page.locator("#search-subject").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.locator(`#view-world [data-focus="${first}"]`)).toBeFocused();
+    expect(await page.evaluate(() => getComputedStyle(document.querySelector("#view-world .world-evidence")!).display), "peeked on the frame of the focus").toBe("block");
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("scripts"));
+    await page.mouse.click(sx, sy);
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "scripts" });
+  });
+
+  // Every blind tester met a box named "payments" that opened PaymentService/ and said so nowhere until opened (2026-11-19).
+  test("a piece says which folder it opens, in the scan's words, in its name and in its peek", async ({ page }) => {
+    await openWorldMap(page);
+    await expect(page.locator('#view-world [data-focus="engine"]')).toHaveAttribute("aria-label", /^engine, library, opens packages\/engine, \d+ files$/u);
+    await expect(page.locator('#view-world [data-focus="live-docs"]')).toHaveAttribute("aria-label", "live-docs, package, imagined, nothing inside yet");
+    await page.evaluate(() => window.__worldMap!.hover("piece", "engine"));
+    await expect(page.locator("#view-world .world-evidence")).toContainText("packages/engine");
+  });
+
   // By keyboard a newcomer could rotate the first screen but not read or enter any piece on it (2026-11-12).
   test("each piece is a keyboard stop in the board's order; Enter pins it and takes the keyboard into its panel, Escape brings it back", async ({ page }) => {
     await openWorldMap(page);
@@ -252,7 +313,7 @@ test.describe("World Map", () => {
       stops.push(await page.evaluate(() => document.activeElement?.getAttribute("aria-label") ?? document.activeElement?.tagName ?? ""));
     }
     expect(stops.map((stop) => stop.split(",")[0])).toEqual(order.slice(0, 3));
-    expect(stops[0]).toMatch(/^[^,]+, [^,]+, \d+ files?$/u);
+    expect(stops[0]).toMatch(/^[^,]+, [^,]+, opens [^,]+, \d+ files?$/u);
     const stop = page.locator(`#view-world [data-focus="${order[2]}"]`);
     await expect(stop).toBeFocused();
     expect(await stop.locator("polygon").evaluate((ring) => getComputedStyle(ring).stroke), "a visible ring").not.toBe("none");
