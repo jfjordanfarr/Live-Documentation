@@ -13,8 +13,7 @@ import {
   routeSymbolName,
   sqlDeclarations,
   sqlObjectName,
-  sqlReferences,
-  stripSql
+  sqlReferences
 } from "./openings";
 
 describe("routes", () => {
@@ -82,10 +81,36 @@ describe("database objects", () => {
     expect(sqlObjectName("Payment")).toEqual({ parts: ["payment"], linked: false });
   });
 
-  it("strips comments and strings, keeping positions", () => {
-    const text = "SELECT 1 -- FROM nowhere\n/* FROM x */ FROM 'FROM y' dbo.T";
-    expect(stripSql(text)).toHaveLength(text.length);
+  it("reads nothing inside a comment, a nested comment or a string", () => {
+    const text = "SELECT 1 -- FROM nowhere\n/* FROM x /* FROM nested */ FROM still.comment */ SELECT 'FROM y' AS a FROM dbo.T";
     expect(sqlReferences(text)).toEqual([{ verb: "FROM", name: { parts: ["dbo", "t"], linked: false }, raw: "dbo.T" }]);
+  });
+
+  it("reads no name a statement or its batch defines, nor a word T-SQL reserves, as an object", () => {
+    const script = [
+      "CREATE TYPE dbo.Money FROM DECIMAL(18, 2);",
+      "GO",
+      "CREATE PROCEDURE tests.[test it can execute if asked to] AS",
+      "BEGIN",
+      "    WITH recent AS (SELECT * FROM dbo.Invoice), totals (Id, Total) AS (SELECT Id, SUM(x) FROM recent GROUP BY Id)",
+      "    SELECT * INTO #t FROM totals;",
+      "    UPDATE c SET Note = 'x' FROM dbo.Customer AS c JOIN #t ON 1 = 1;",
+      "    DELETE FROM t FROM dbo.Old t WHERE t.Id = 1;",
+      "    UPDATE STATISTICS dbo.Invoice;",
+      "    EXECUTE AS USER = 'x';",
+      "    SELECT * FROM tempdb..#gone;",
+      "    INSERT INTO @rows SELECT 1;",
+      "    FETCH NEXT FROM columnsLeft INTO @x;",
+      "END;",
+      "GO",
+      "CREATE TABLE dbo.Line (Id INT REFERENCES dbo.Invoice (Id) ON DELETE CASCADE ON UPDATE NO ACTION);",
+      "CREATE USER [app] FROM LOGIN [app];"
+    ].join("\n");
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual([
+      "FROM dbo.Invoice",
+      "FROM dbo.Customer",
+      "FROM dbo.Old"
+    ]);
   });
 
   it("finds what a script declares and what it names", () => {

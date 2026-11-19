@@ -29,3 +29,7 @@ A name quoted in brackets or double quotes is passed over whole where comments a
 ## The lines
 
 Comments and strings are blanked with their line breaks kept. After it, on tSQLt: every one of the 1,497 objects found stands at the line of its CREATE, against 830 before.
+
+## Names that are no objects
+
+The reader moves from regular expressions over blanked text to tokens, and reads from the tokens around a name what it stands for: a temporary table, a common table expression, a cursor, an `UPDATE`'s or `DELETE`'s alias, a type's base type, a user's login, a foreign key's `ON UPDATE CASCADE`, a word T-SQL reserves. The text inside a bracketed name is no longer read as code (`[test it can execute if asked]` had executed `if`). After it, on tSQLt: 897 of 943 dependency lines right, as before, and the invented lines fall from 268 to 213, of which 207 name SQL Server's system schemas, 5 are links to tables made in procedure bodies, and one is a Service Broker service an experiment's `BEGIN DIALOG … FROM SERVICE` names.

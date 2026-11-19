@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/openings.test.ts
-- Generated At: 2026-10-22T16:47:53.537Z
+- Generated At: 2026-11-19T19:49:56.055Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,6 @@ _No public symbols detected_
 - [`openings.sqlDeclarations`](./openings.ts.mdmd.md#symbol-sqldeclarations)
 - [`openings.sqlObjectName`](./openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.sqlReferences`](./openings.ts.mdmd.md#symbol-sqlreferences)
-- [`openings.stripSql`](./openings.ts.mdmd.md#symbol-stripsql)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

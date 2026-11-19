@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Procedures/Billing.usp_Statement.sql
 - Entry: opening [`Billing.usp_Statement`](#symbol-billingusp_statement)
-- Generated At: 2026-11-19T19:41:35.003Z
+- Generated At: 2026-11-19T19:50:03.544Z
 
 ## Authored
 ### Purpose
@@ -24,8 +24,6 @@ The SQL Server fixture's busiest procedure, after a comment of seven lines: it e
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `c` (contract)
-- `recent` (contract)
 - `sys.objects` (contract)
 - [`Billing.Customer`](../Schema/Billing.Customer.sql.mdmd.md#symbol-billingcustomer)
 - [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)

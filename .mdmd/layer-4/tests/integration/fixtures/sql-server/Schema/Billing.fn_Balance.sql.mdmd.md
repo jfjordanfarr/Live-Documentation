@@ -6,7 +6,7 @@
 - Code Path: tests/integration/fixtures/sql-server/Schema/Billing.fn_Balance.sql
 - Entry: opening [`Billing.fn_Balance`](#symbol-billingfn_balance)
 - Entry: opening [`Billing.fn_OpenInvoices`](#symbol-billingfn_openinvoices)
-- Generated At: 2026-11-19T19:41:35.035Z
+- Generated At: 2026-11-19T19:50:03.555Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,5 @@ Two functions of the SQL Server fixture in one file: a scalar function after a c
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `open_invoices` (contract)
 - [`Billing.Invoice`](./Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
 <!-- LIVE-DOC:END Dependencies -->
