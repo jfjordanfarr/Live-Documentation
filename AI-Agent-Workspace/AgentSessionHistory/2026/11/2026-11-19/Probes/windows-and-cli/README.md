@@ -474,3 +474,27 @@ All passed, and the tree was clean.
 - The reading seam waits for the adapters' builders, as the root ruled.
 - The orphans case turns red only once the writer's quoted form is joined.
 - The fate of `packages/cli` is the owner's.
+
+## Third leg, November 19
+
+The root ruled the reading seam in, once the SQL and PowerShell readers' builders had handed back. It added the generator finishing a run that meets a file it cannot map, `exclude` following git's `core.ignorecase`, and a check on how refusals are printed. This section says what the third leg built, on top of `17532f56`.
+
+### One reading step for every language reader
+
+`packages/engine/src/tooling/sourceText.ts` holds `decodeSourceText(bytes)` and `readSourceText(path)`. The rule, in order:
+
+1. A byte-order mark decides: UTF-8, UTF-16 LE, UTF-16 BE. The mark is not part of the text.
+2. UTF-16 without a mark is taken only where it is certain. That means an even number of bytes, in which every pair is one zero byte and one that is not, with the zero always on the same side. In other words, every character lies between U+0001 and U+00FF. No text in a one-byte encoding holds a zero byte in every other place. **Refused as a guess:** UTF-16 without a mark that holds any character above U+00FF. Telling it apart would mean weighing how often zero bytes occur, and a wrong guess reads a file as nonsense. Such a file holds zero bytes, so it falls to rule 5.
+3. Bytes that are valid UTF-8 and hold no zero byte are UTF-8.
+4. Bytes that are not UTF-8, hold no zero byte, and hold no control character other than tab, line feed, vertical tab, form feed, carriage return and 0x1A are read as Windows-1252.
+5. Anything else is not read. The reader gets empty text, the file is named, and the run goes on.
+
+The decoders are the platform's own `TextDecoder`. `sourceText.test.ts` checks real bytes for each rule and each refusal. Where PowerShell 7 is installed (it is here, 7.7.0), it also checks each readable case against `Get-Content -Raw -Encoding` with the encoding Windows would use: `utf8NoBOM`, `utf8`, `Unicode`, `BigEndianUnicode` and `1252`. All agree, code unit for code unit.
+
+**The readers this leg moved onto the step** (each `fs.readFile(x, "utf8")` became `readSourceText(x)`):
+- the TypeScript/JavaScript reader (`sourceAnalysis.ts`, and the symbol-index pass in `discovery.ts`), the re-export follower (`dependencies.ts`) and the DOM heuristic (`heuristics/dom.ts`);
+- the adapters for Java, Go and `go.mod`, Rust and `Cargo.toml`, C and C++, Python, Ruby, JSON, HTML, CSS, `pom.xml`, and the TOML manifests.
+
+`json.ts:166` reads a `tsconfig` through TypeScript's own `ts.sys.readFile`, which already decodes by the mark, and stays.
+
+`sourceEncodings.test.ts` saves one file per language as UTF-16 LE and BE with a mark, and as Windows-1252, each with a non-ASCII word in what the reader reports. It holds each one's symbols, descriptions and dependency lines to its UTF-8 twin. All 21 cases failed before the change.

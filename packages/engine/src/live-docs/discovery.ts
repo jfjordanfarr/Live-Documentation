@@ -18,6 +18,7 @@ import ts from "typescript";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { gitIgnored } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
+import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
 import { computePublicSymbolHeadingInfo } from "./compose";
@@ -373,7 +374,7 @@ export async function buildWorkspaceIndexes(options: {
 
       // Process JavaScript/TypeScript files with the built-in TypeScript parser
       if (SUPPORTED_SCRIPT_EXTENSIONS.has(ext)) {
-        const content = await fs.readFile(absolutePath, "utf8");
+        const content = await readSourceText(absolutePath);
         const scriptKind = inferScriptKind(ext);
         const sourceFile = ts.createSourceFile(
           absolutePath,

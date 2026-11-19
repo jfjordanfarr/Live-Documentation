@@ -12,11 +12,12 @@
  * @module
  */
 
-import { promises as fs, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
 
@@ -342,7 +343,7 @@ export const htmlAdapter: LanguageAdapter = {
   extensions: [".html", ".htm"],
 
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
 
     const dependencies = extractHtmlDependencies({
       content,

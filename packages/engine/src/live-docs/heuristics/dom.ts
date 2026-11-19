@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry } from "../core";
 
 interface DomDependencyParams {
@@ -267,7 +268,7 @@ async function readFileCached(filePath: string, cache: FileContentCache): Promis
   }
 
   try {
-    const content = await fs.readFile(filePath, "utf8");
+    const content = await readSourceText(filePath);
     cache.set(filePath, content);
     return content;
   } catch {

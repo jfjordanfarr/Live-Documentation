@@ -13,12 +13,12 @@
  *
  * @module
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parse as parseToml } from "smol-toml";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DeclaredEntry, DependencyEntry, PublicSymbolEntry, ResolvedSymbolLocation, WorkspaceSymbolIndex } from "../coreTypes";
 import { PACKAGE_KIND } from "../openings";
 import type { WorkspaceFileIndex } from "./index";
@@ -52,7 +52,7 @@ export function stringOf(value: unknown): string | undefined {
 /** A TOML document's root table, or `undefined` when the file cannot be read or is not valid TOML. */
 export async function readToml(absolutePath: string): Promise<Record<string, unknown> | undefined> {
   try {
-    return tableOf(parseToml(await fs.readFile(absolutePath, "utf8")));
+    return tableOf(parseToml(await readSourceText(absolutePath)));
   } catch {
     return undefined;
   }

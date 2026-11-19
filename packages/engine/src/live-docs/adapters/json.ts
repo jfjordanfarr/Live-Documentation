@@ -24,12 +24,12 @@
  * @module
  */
 
-import { promises as fs } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
@@ -398,7 +398,7 @@ export const jsonAdapter: LanguageAdapter = {
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     let content: string;
     try {
-      content = await fs.readFile(absolutePath, "utf8");
+      content = await readSourceText(absolutePath);
     } catch {
       return null;
     }
