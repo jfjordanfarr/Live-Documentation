@@ -22,7 +22,11 @@ const ROOT = path.resolve(__dirname, "../../..");
 /** Where the rule and the reference implementation read a document's links otherwise, and why. */
 const REGISTER: Record<string, { cause: string; onlyRule: string[]; onlyReference: string[] }> = {
   "AI-Agent-Workspace/AgentSessionHistory/2025/12/Summarized/2025-12-06.2.SUMMARIZED.md": {
-    cause: "a fence indented four spaces under a list item, which the rule reads as text since it keeps no list structure, so the two example links inside it are read as links",
+    // A stated limit, not a fault to mend here: neither the link reader nor the Explorer's renderer reads list items or
+    // block quotes as containers, so a fence indented four or more spaces under a list item, or inside a quote, is not
+    // seen as a fence. This is the one place in this repository; a rule of fences alone lost 295 true links when tried,
+    // and the mend, if ever, is the containers read once for both readers (`markdownLinks.ts`).
+    cause: "a fence indented four spaces under a list item, which the rule reads as text since it reads no list item or block quote as a container, so the two example links inside it are read as links",
     onlyRule: ["./logger.h.mdmd.md#symbol-log_message \"\"", "./metrics.h.mdmd.md#symbol-compute_average \"\""],
     onlyReference: []
   }

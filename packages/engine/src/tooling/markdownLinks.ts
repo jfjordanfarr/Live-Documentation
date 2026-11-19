@@ -23,6 +23,12 @@
  *   as text, where its backticks pair as a code span when no blank line falls between them.
  * - An HTML block is not recognised: a link written between `<div>` lines is read. Its tags are raw HTML.
  *
+ * The limit, plainly: neither this reader nor the Explorer's renderer reads list items or block quotes as
+ * containers, so a fence indented four or more spaces under a list item, or inside a quote, is not seen as a fence,
+ * and a link in it is read as a link. It shows in one place in this repository (the register of
+ * `markdown-links-commonmark.test.ts`). A rule of fences alone was tried on 2026-11-19 and lost 295 true links; the
+ * mend, if ever, is the containers read once, for both readers.
+ *
  * Pure, and with no dependencies but HTML's table of named references, so that the Explorer's page carries it.
  *
  * @module
