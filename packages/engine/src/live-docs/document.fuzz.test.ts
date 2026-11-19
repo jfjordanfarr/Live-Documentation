@@ -16,6 +16,7 @@
  * a failure names the value that broke it.
  */
 
+import { createRequire } from "node:module";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -46,6 +47,8 @@ const PIECES: Record<string, readonly string[]> = {
   controls: ["\u0000", "\u0001", "\u001b", "\u007f", "\u0080", "\u009f"],
   surrogates: ["\ud800", "\udbff", "\udc00", "\udfff", "\udc00\ud800", "😀", "\ud83d"],
   combining: ["\u0301", "\u0308", "\u20dd", "e\u0301"],
+  // Lines a docstring may hold that a markdown viewer reads as blocks running past them, or as structure.
+  blocks: ["\n<!--", "\n-->", "\n<script>", "\n</script>", "\n<pre>", "\n<style>", "\n<textarea>", "\n<![CDATA[", "\n]]>", "\n<?php", "\n?>", "\n<!DOCTYPE", "\n~~~", "\n````", "\n   ```", "\n[ref]: https://e.invalid", "\n---", "\n===", "\n> ", "\n- ", "\n    ", "<img src=x>", "[a](https://e.invalid)"],
   format: [
     "# ", "#### ", "##### ", "## Generated", "## Authored", "### Notes", "- Type: key", "- Entry: command ", " of ", "- Source: [source](",
     "<!-- LIVE-DOC:END Public Symbols -->", "<!-- LIVE-DOC:BEGIN Dependencies -->", "_No public symbols detected_", "_No dependencies documented yet_",
@@ -164,8 +167,11 @@ function everywhere(name: string): Handed {
         documentation: {
           summary: name,
           remarks: `before\n${name}\nafter`,
+          // Every place the format puts a docstring's text: at the top level, and inside the list items it writes.
           parameters: [{ name, description: name }],
+          typeParameters: [{ name, description: `${name}\n${name}` }],
           returns: `${name}\n\n${name}`,
+          value: name,
           exceptions: [{ type: name, description: name }],
           examples: [{ description: name, code: name, language: "ts" }],
           links: [{ kind: "cref", target: name, text: name }, { kind: "href", target: name }, { kind: "unknown", target: name }],
@@ -212,6 +218,98 @@ function together(names: readonly string[]): Handed {
 // The three properties
 // ============================================================================
 
+// ============================================================================
+// What a markdown viewer sees: the CommonMark reference implementation as the oracle
+// ============================================================================
+
+interface MarkdownNode {
+  type: string;
+  level: number;
+  destination: string | null;
+  literal: string | null;
+  sourcepos: [[number, number], [number, number]];
+  parent: MarkdownNode | null;
+  walker(): { next(): { entering: boolean; node: MarkdownNode } | null };
+}
+const { Parser } = createRequire(import.meta.url)("commonmark") as { Parser: new () => { parse(text: string): MarkdownNode } };
+
+/** The one-based line ranges of a doc's docstring bodies, laid out as the writer lays a doc's symbols out. */
+function bodyRanges(doc: LiveDoc, lines: readonly string[]): Array<[number, number]> {
+  const ranges: Array<[number, number]> = [];
+  let at = lines.indexOf("### Public Symbols") + 2;
+  doc.symbols.forEach((symbol, index) => {
+    at += (index > 0 ? 1 : 0) + 2 + (symbol.source ? 1 : 0) + symbol.references.length;
+    for (const section of symbol.sections) {
+      at += 2;
+      const length = section.body.flatMap((line) => line.split("\n")).length;
+      ranges.push([at, at + length - 1]);
+      at += length;
+    }
+  });
+  return ranges;
+}
+
+/** A link as a browser takes it, percent-decoding undone where it is well-formed. */
+function asOpened(link: string): string {
+  try {
+    return decodeURIComponent(link);
+  } catch {
+    return link;
+  }
+}
+
+/**
+ * Holds a written doc to what a markdown viewer sees, by the reference parser: every heading and every generated link
+ * the doc holds is found at its place and as itself; outside a docstring nothing is a heading, a link, an image or raw
+ * HTML the doc does not hold; and no block a docstring opens runs past it. Inside a docstring anything may render.
+ */
+function viewerSees(doc: LiveDoc, text: string): string | undefined {
+  // The very long names alone make docs of megabytes, which the reference parser takes seconds over: those docs are held
+  // to our reader only.
+  if (text.length > 200_000) return undefined;
+  const lines = text.split("\n");
+  const bodies = bodyRanges(doc, lines);
+  const inBody = (line: number): [number, number] | undefined => bodies.find(([start, end]) => line >= start && line <= end);
+  const expectedHeadings = lines.flatMap((line, index) => (inBody(index + 1) === undefined && /^#{1,6} /u.test(line) ? [`${index + 1}:${/^#+/u.exec(line)![0].length}`] : []));
+  const expectedLinks = [
+    ...doc.entries.flatMap((entry) => [entry.symbol?.link, entry.declarer?.link]),
+    ...doc.symbols.flatMap((symbol) => [
+      symbol.source ? `${symbol.source.path}#L${symbol.source.line}` : undefined,
+      ...symbol.references.flatMap((reference) => (reference.role === "Parameters" ? reference.parameters.flatMap((parameter) => parameter.types) : reference.types).map((type) => type.link))
+    ]),
+    ...doc.dependencies.map((dependency) => dependency.link),
+    ...(doc.citedBy ?? []).map((entry) => entry.link),
+    ...(doc.reExports ?? []).map((entry) => entry.from?.link)
+  ].filter((link): link is string => link !== undefined && !/\p{Cs}/u.test(link)).map(asOpened);
+  const headings: string[] = [];
+  const links: string[] = [];
+  const document = new Parser().parse(text);
+  const walker = document.walker();
+  for (let event = walker.next(); event; event = walker.next()) {
+    const node = event.node;
+    if (!event.entering) continue;
+    // An inline node has no place of its own; it stands on its block's first line.
+    let block: MarkdownNode | null = node;
+    while (block !== null && !block.sourcepos) block = block.parent;
+    if (block === null) continue;
+    const line = block.sourcepos[0][0];
+    const body = inBody(line);
+    // A block may end on the blank line after the body; it may not hold a line of what follows.
+    if (node.parent === document && node.sourcepos && body !== undefined && lines.slice(body[1], node.sourcepos[1][0]).some((next) => next.trim() !== "")) {
+      return `a ${node.type} the docstring at line ${line} opens runs on to line ${node.sourcepos[1][0]}`;
+    }
+    if (body !== undefined) continue;
+    if (node.type === "heading") headings.push(`${line}:${node.level}`);
+    // A link written as a JSON string, deliberately, for a path no URL can hold, is no link a viewer follows.
+    if (node.type === "link" && !asOpened(node.destination ?? "").startsWith("\"")) links.push(asOpened(node.destination ?? ""));
+    if (node.type === "image") return `an image at line ${line}`;
+    if (node.type === "html_inline" || (node.type === "html_block" && !(node.literal ?? "").startsWith("<!-- LIVE-DOC:"))) return `raw HTML at line ${line}: ${JSON.stringify(node.literal)}`;
+  }
+  if (JSON.stringify(headings) !== JSON.stringify(expectedHeadings)) return `the viewer's headings ${headings.join(" ")} are not the doc's ${expectedHeadings.join(" ")}`;
+  if (JSON.stringify(links) !== JSON.stringify(expectedLinks)) return `the viewer's links ${JSON.stringify(links)} are not the doc's ${JSON.stringify(expectedLinks)}`;
+  return undefined;
+}
+
 /** Writes the doc, puts it through UTF-8 as a file on disk would, and reads it back; fails naming the value. */
 function writeAndRead(doc: LiveDoc, name: string): { text: string; read: LiveDoc } {
   const fail = (what: string, error?: unknown): never => {
@@ -247,6 +345,10 @@ function writeAndRead(doc: LiveDoc, name: string): { text: string; read: LiveDoc
     expect(renderLiveDoc(read!)).toBe(text);
   } catch (error) {
     fail("the doc does not read back as written", error);
+  }
+  const seen = viewerSees(doc, text);
+  if (seen !== undefined) {
+    fail(`a markdown viewer sees otherwise: ${seen}`);
   }
   // As Git for Windows checks it out, every line ending CRLF, and as Windows PowerShell writes it, a byte-order mark first.
   try {
