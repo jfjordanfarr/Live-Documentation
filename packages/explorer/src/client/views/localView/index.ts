@@ -6,8 +6,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
-    setMoment: (moment, changes) => controller.setMoment(moment, changes),
-    applyHistoryEmphasis: () => controller.applyHistoryEmphasis(),
+    setMoment: (moment, changes, settle) => controller.setMoment(moment, changes, settle),
     tryRefreshReading: () => controller.tryRefreshReading(),
     isShown: () => controller.isShown(),
     show: () => controller.show(),

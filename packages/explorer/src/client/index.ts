@@ -409,11 +409,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       forceGraphView.setMoment(moment, renames, energy, changes);
       // The 2D map (2026-11-19): while the thumb drags, its cards keep their places and only light or fade; at rest the
       // picture is drawn at the moment and settles with the map's own move.
-      localView.setMoment(moment, changes ?? moment);
-      if (localView.isShown()) {
-        if (energy === 0) localView.applyHistoryEmphasis();
-        else localView.render();
-      }
+      localView.setMoment(moment, changes ?? moment, energy !== 0);
       if (state.inspection) renderInspection();
       syncReaderNote();
       syncStatsLine();
