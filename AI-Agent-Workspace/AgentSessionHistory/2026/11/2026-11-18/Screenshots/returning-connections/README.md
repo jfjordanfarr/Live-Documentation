@@ -32,6 +32,16 @@ The cycle is `PaymentService.cs` to `PaymentsContext.cs` to `App.config` and bac
 | [14-after-hubs-overview.png](14-after-hubs-overview.png) | The overview look: the hubs at the held names, larger with the look. |
 | [15-after-hubs-branch-renderer.png](15-after-hubs-branch-renderer.png) | `branch-renderer.ts` alone with the third step, unchanged where no hub ends a line. |
 
+The hubs stand at the middle of the header's first line: for a name of one line, the line it shares with the controls' room, which stands a few pixels above the text's own middle; for a longer name, its first line.
+
+## The two meanings of a hub, as they look today (for the choice the owner is to be offered)
+
+| Picture | What it shows |
+| --- | --- |
+| [16-whole-file-reference-reading.png](16-whole-file-reference-reading.png) | A whole-file reference: `Portal/Pages/Default.aspx` (the subject) uses `Default.aspx.cs` and `portal.js` as files, no symbol named at their end. The line from `Default.aspx.cs` leaves its hub, at its name, and arrives at `Default.aspx`'s Internals dot: the offering end of a whole-file reference is the hub, the using end the Internals row. The use of `portal.js` returns in a cycle, so it is an amber lace at `Default.aspx`'s Internals (and at `portal.js`'s hub, out of the frame). |
+| [17-whole-file-reference-connections.png](17-whole-file-reference-connections.png) | The same at the connections look: `Default.aspx.cs`'s hub at its held name, as large as the look's dots; `portal.js`'s amber lace at its hub, at its name. |
+| [12-after-hubs-reading.png](12-after-hubs-reading.png) | A gathered line's hub: every line of the opened directories is a pair line standing for the links between two files, and ends at both files' hubs, whatever rows its links leave or reach. Today the two meanings, "the whole file" and "some of this file", are drawn the same. |
+
 ## What was judged
 
 - The row's hover keeps exactly what carries the row's links (the browser case reads them from the graph's own links).
