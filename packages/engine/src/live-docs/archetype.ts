@@ -91,6 +91,7 @@ export function resolveArchetype(
   //   *_test.go, *_test.rs     (Go, Rust)
   //   test_*.py, test_*.c      (Python, C)
   //   *Test.java, *Tests.cs    (Java, C#)
+  //   test.js, tests.py        (a file named for the word alone)
   //   *_spec.rb                (Ruby)
   const basename = path.basename(sourcePath);
   if (
@@ -98,6 +99,7 @@ export function resolveArchetype(
     /_test\.[^.]+$/.test(basename) ||            // foo_test.go, foo_test.rs
     /^test_[^.]+\.[^.]+$/.test(basename) ||      // test_foo.py, test_foo.c
     /Tests?\.[^.]+$/.test(basename) ||           // FooTest.java, FooTests.cs
+    /^tests?\.[^.]+$/i.test(basename) ||         // test.js, tests.py
     /_spec\.[^.]+$/.test(basename)               // foo_spec.rb
   ) {
     return "test";
@@ -127,8 +129,9 @@ export function resolveArchetype(
     return "implementation";
   }
 
-  // Check for test directories (but not individual test files - those were caught above)
-  if (/\btests?\b|__tests__/i.test(sourcePath)) {
+  // Check for test directories, read against the folders alone: a file's own name makes it a test only by the
+  // conventions above, so PowerShell's `Test-DbaPath.ps1`, named for its approved verb, is working code.
+  if (/\btests?\b|__tests__/i.test(path.posix.dirname(sourcePath))) {
     return "test";
   }
 
