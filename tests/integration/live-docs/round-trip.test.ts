@@ -138,4 +138,21 @@ describe("the Live Doc grammar over real docs", () => {
       fs.rmSync(workspaceRoot, { recursive: true, force: true });
     }
   });
+
+  it("names the doc and the line of a doc in a form the writer no longer writes, and says that generate rewrites it", async () => {
+    // Before 2026-11-19 a command named with a leading space was written in bare backticks; the one form pads it.
+    const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), "live-docs-old-form-"));
+    try {
+      const config = normalizeLiveDocumentationConfig(DEFAULT_LIVE_DOCUMENTATION_CONFIG);
+      const docPath = path.posix.join(config.root, config.baseLayer, `run.js${config.extension}`);
+      const doc = renderLiveDoc({ codePath: "run.js", layer: 4, entries: [{ reason: "command", command: " start", declarer: { label: "package.json", link: "./package.json.md" } }], authored: "### Purpose\nRuns.", symbols: [], dependencies: [] });
+      fs.mkdirSync(path.dirname(path.join(workspaceRoot, docPath)), { recursive: true });
+      fs.writeFileSync(path.join(workspaceRoot, docPath), doc.replace("command `  start ` of", "command ` start` of"));
+      const error = await readLiveDocGraph({ workspaceRoot, config }).then(() => undefined, (caught: Error) => caught);
+      expect(error?.message.startsWith(`${docPath}: line 6: `)).toBe(true);
+      expect(error?.message).toContain("`live-docs:generate` rewrites it");
+    } finally {
+      fs.rmSync(workspaceRoot, { recursive: true, force: true });
+    }
+  });
 });

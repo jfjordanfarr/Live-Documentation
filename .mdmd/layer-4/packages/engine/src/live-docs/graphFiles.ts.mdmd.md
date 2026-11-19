@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graphFiles.ts
-- Generated At: 2026-10-22T16:47:52.981Z
+- Generated At: 2026-11-19T20:46:42.204Z
 
 ## Authored
 ### Purpose
@@ -30,14 +30,14 @@ nobody may hand-edit can only be malformed by a generator bug.
 
 #### `EstateReading` {#symbol-estatereading}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L45)
 
 ##### `EstateReading` — Summary
 What reading an estate found: its graph, the scans it read, and what it found wanting.
 
 #### `readEstateGraph` {#symbol-readestategraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L63)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L64)
 
 ##### `readEstateGraph` — Summary
 Reads the graph of the estate a board describes.
@@ -52,7 +52,7 @@ them what each left unlinked. One scan at the root is today's single graph.
 
 #### `writeLiveDocGraph` {#symbol-writelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L108)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L109)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `writeLiveDocGraph` — Summary

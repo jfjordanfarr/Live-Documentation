@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/document.ts
-- Generated At: 2026-11-19T20:24:42.908Z
+- Generated At: 2026-11-19T20:46:42.118Z
 
 ## Authored
 ### Purpose
@@ -31,56 +31,56 @@ The grammar of a Live Doc: the model of everything a doc says, `renderLiveDoc`, 
 ### Public Symbols
 #### `LiveDoc` {#symbol-livedoc}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L29)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L31)
 
 ##### `LiveDoc` — Summary
 A Live Doc, as written to disk: everything the file says and nothing else.
 
 #### `SymbolBlock` {#symbol-symbolblock}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L53)
 
 ##### `SymbolBlock` — Summary
 One public symbol: a `####` heading, its detail lines and its documentation sections.
 
 #### `ReferenceRole` {#symbol-referencerole}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L69)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L71)
 
 ##### `ReferenceRole` — Summary
 The reference lines that list types directly; `Parameters` lists them per parameter.
 
 #### `ReferenceLine` {#symbol-referenceline}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L72)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L74)
 
 ##### `ReferenceLine` — Summary
 A line of type references on a symbol.
 
 #### `TypeRef` {#symbol-typeref}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L77)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L79)
 
 ##### `TypeRef` — Summary
 One type in a reference line: a link to the doc that declares it, or a bare name.
 
 #### `DocSection` {#symbol-docsection}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L90)
 
 ##### `DocSection` — Summary
 A `#####` documentation section under a symbol.
 
 #### `Dependency` {#symbol-dependency}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L95)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L97)
 
 ##### `Dependency` — Summary
 One line of the `Dependencies` section.
 
 #### `EntryReason` {#symbol-entryreason}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L118)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L120)
 
 ##### `EntryReason` — Summary
 Why a file is an entry: something outside the code starts it.
@@ -96,14 +96,14 @@ A test is an entry by its archetype and carries no line.
 
 #### `Entry` {#symbol-entry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L121)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L123)
 
 ##### `Entry` — Summary
 One `Entry` line of the Metadata block: the reason and its evidence.
 
 #### `CitedBy` {#symbol-citedby}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L138)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L140)
 
 ##### `CitedBy` — Summary
 One line of the `Cited By` section: a document, outside the Live Docs, whose
@@ -114,21 +114,21 @@ docs, the Explorer and the CLI alike, derives the same related documents
 
 #### `ReExport` {#symbol-reexport}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L146)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L148)
 
 ##### `ReExport` — Summary
 One entry of the `Re-Exported Symbol Anchors` section.
 
 #### `DEFAULT_AUTHORED_BLOCK` {#symbol-default_authored_block}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L181)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L183)
 
 ##### `DEFAULT_AUTHORED_BLOCK` — Summary
 The authored block a new doc starts with.
 
 #### `UNREAD_NOTE` {#symbol-unread_note}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L192)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L194)
 
 ##### `UNREAD_NOTE` — Summary
 The note a new doc of a file no reader handles starts with, in place of
@@ -141,14 +141,14 @@ the pending placeholders it is not authored content of its own.
 
 #### `UNREAD_AUTHORED_BLOCK` {#symbol-unread_authored_block}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L195)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L197)
 
 ##### `UNREAD_AUTHORED_BLOCK` — Summary
 The authored block a new doc of a file no reader handles starts with: {@link DEFAULT_AUTHORED_BLOCK} with {@link UNREAD_NOTE}.
 
 #### `entryWords` {#symbol-entrywords}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L203)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L205)
 - Parameters: `entry`: [`Entry`](#symbol-entry)
 
 ##### `entryWords` — Summary
@@ -159,7 +159,7 @@ Explorer shows them: "program main", "command build of package.json",
 
 #### `symbolName` {#symbol-symbolname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L223)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L225)
 
 ##### `symbolName` — Summary
 The name of a symbol without the parenthesised suffix a heading carries to
@@ -168,7 +168,7 @@ tell it from another of the same name, such as `Widget (interface)` or
 
 #### `codeSpan` {#symbol-codespan}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L345)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L347)
 
 ##### `codeSpan` — Summary
 A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
@@ -177,7 +177,7 @@ as CommonMark reads a code span; a name that is all spaces is written as it is.
 
 #### `takeCodeSpan` {#symbol-takecodespan}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L361)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L363)
 
 ##### `takeCodeSpan` — Summary
 The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
@@ -186,7 +186,7 @@ spaces; undefined where no span begins or it never closes.
 
 #### `encodeLinkPath` {#symbol-encodelinkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L393)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L395)
 
 ##### `encodeLinkPath` — Summary
 A workspace path as a link's path: every character a URL or a markdown link's target cannot hold as itself
@@ -196,7 +196,7 @@ and `-./@_` is written as it is.
 
 #### `decodeLinkPath` {#symbol-decodelinkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L401)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L403)
 
 ##### `decodeLinkPath` — Summary
 A link's path as the workspace path it names, percent-decoded as a browser reads it; a path that is not well-formed
@@ -204,7 +204,7 @@ percent-encoding is read as written, as the Explorer's reader reads one.
 
 #### `renderLiveDoc` {#symbol-renderlivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L424)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L426)
 - Parameters: `doc`: [`LiveDoc`](#symbol-livedoc)
 
 ##### `renderLiveDoc` — Summary
@@ -212,7 +212,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L481)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L483)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -220,14 +220,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L606)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L608)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L614)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L616)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -235,7 +235,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1036)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1038)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -247,7 +247,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1063)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1065)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends

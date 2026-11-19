@@ -6,8 +6,10 @@
  * shape. {@link renderLiveDoc} writes a {@link LiveDoc} out; {@link parseLiveDoc}
  * reads one back and refuses anything the grammar does not describe. The two
  * are inverses: `parseLiveDoc(renderLiveDoc(doc))` equals `doc`, and
- * `renderLiveDoc(parseLiveDoc(text))` equals `text` for every doc the generator
- * has written. That property is what lets the markdown serve as the store that
+ * `renderLiveDoc(parseLiveDoc(text))` equals `text` for every doc this version
+ * of the generator writes. A doc written before 2026-11-19 can hold a form it no
+ * longer writes, which the reader refuses or in two cases reads as another
+ * value; `live-docs:generate` rewrites it. That property is what lets the markdown serve as the store that
  * every other consumer reads.
  *
  * It holds for whatever a repository can hand the generator. Every name, path
