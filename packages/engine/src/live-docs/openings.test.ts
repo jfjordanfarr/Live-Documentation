@@ -113,6 +113,32 @@ describe("database objects", () => {
     ]);
   });
 
+  it("never lets an apostrophe in a bracketed name open a string: the cold run's smallest crash", () => {
+    expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1 }]);
+  });
+
+  it("reads a name quoted in brackets or double quotes as the name itself, whatever it holds", () => {
+    const script = [
+      "CREATE PROCEDURE tests.[test it doesn't fail]",
+      "AS",
+      "BEGIN",
+      "    EXEC tSQLt.FakeTable 'dbo.T';",
+      "END;",
+      "GO",
+      "CREATE PROCEDURE tests.[test fn.sums ]]the[[ open ones] AS SELECT * FROM \"odd \"\"quoted\"\" schema\".[it's];"
+    ].join("\n");
+    expect(sqlDeclarations(script)).toEqual([
+      { kind: "procedure", name: "tests.test it doesn't fail",             line: 1 },
+      { kind: "procedure", name: "tests.[test fn.sums ]]the[[ open ones]", line: 7 }
+    ]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual([
+      "EXEC tSQLt.FakeTable",
+      "FROM [odd \"quoted\" schema].it's"
+    ]);
+    expect(sqlObjectName("tests.[test fn.sums ]]the[[ open ones]")).toEqual({ parts: ["tests", "test fn.sums ]the[[ open ones"], linked: false });
+    expect(sqlObjectName("[Billing].[dbo].[Invoice]")).toEqual({ parts: ["dbo", "invoice"], linked: false });
+  });
+
   it("matches a name to the declared objects of the workspace", () => {
     const index: WorkspaceSymbolIndex = new Map([
       ["dbo.Payment",        [{ liveDocPath: "d", sourcePath: "Database/SqlServer/dbo.Payment.sql",         anchor: "symbol-dbopayment",        kind: "table" }]],

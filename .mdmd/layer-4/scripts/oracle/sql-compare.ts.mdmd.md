@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/sql-compare.ts
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:32:17.571Z
+- Generated At: 2026-11-19T19:37:14.480Z
 
 ## Authored
 ### Purpose
@@ -30,14 +30,17 @@ The ways of naming an object the grading counts as a use.
 
 #### `writtenPart` {#symbol-writtenpart}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L88)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L93)
 
 ##### `writtenPart` — Summary
-One name part as the product writes it in a symbol or a kept name: bare, or in brackets when it holds what would split it.
+One name part as the product writes it in a symbol or a kept name: bare, or
+in brackets when it holds what would split it or misread it (a dot, a
+bracket, a double quote, a space at either end). Written here from the
+product's documented form, not imported from it.
 
 #### `writtenName` {#symbol-writtenname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L93)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L98)
 - Parameters: `name`: [`ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname)
 
 ##### `writtenName` — Summary
@@ -45,35 +48,35 @@ A parser's name in the product's written form: the parts written, from the first
 
 #### `partsOfWritten` {#symbol-partsofwritten}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L100)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L105)
 
 ##### `partsOfWritten` — Summary
 Reads a name the product wrote back into its parts: dots outside brackets split it, brackets come off and `]]` is `]`.
 
 #### `isSqlServerOwn` {#symbol-issqlserverown}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L151)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L156)
 
 ##### `isSqlServerOwn` — Summary
 Whether a used name is SQL Server's own: a system schema, or an `xml` method on a column.
 
 #### `SqlReport` {#symbol-sqlreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L281)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L286)
 
 ##### `SqlReport` — Summary
 What the comparison found.
 
 #### `drawSample` {#symbol-drawsample}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L329)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L334)
 
 ##### `drawSample` — Summary
 Draws `count` of the files, in a Fisher–Yates shuffle of their sorted list by the seed, returned sorted.
 
 #### `compareSql` {#symbol-comparesql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L347)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L352)
 - Parameters: `record`: [`ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
 
 ##### `compareSql` — Summary

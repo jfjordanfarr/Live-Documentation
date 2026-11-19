@@ -264,23 +264,66 @@ export interface SqlObjectName {
   linked: boolean;
 }
 
-const SQL_IDENTIFIER = String.raw`(?:\[[^\]]+\]|"[^"]+"|[A-Za-z_][\w$#]*)`;
+/**
+ * A name quoted in T-SQL's brackets, `]]` standing for `]`, or in double
+ * quotes, `""` standing for `"`, as `QUOTED_IDENTIFIER` (on by default in
+ * SQL Server's tools) reads them; Oracle quotes names in double quotes too.
+ * Either can hold any character: a space, an apostrophe, a dot, a line break.
+ */
+const SQL_QUOTED_NAME = String.raw`\[(?:[^\]]|\]\])*\]|"(?:[^"]|"")*"`;
+const SQL_IDENTIFIER = String.raw`(?:${SQL_QUOTED_NAME}|[A-Za-z_][\w$#]*)`;
 const SQL_NAME = String.raw`${SQL_IDENTIFIER}(?:\.(?:${SQL_IDENTIFIER})?){0,3}`;
 const SQL_DECLARATION = new RegExp(String.raw`\bCREATE\s+(?:OR\s+(?:ALTER|REPLACE)\s+)?(PROCEDURE|PROC|TABLE|VIEW|FUNCTION)\s+(${SQL_NAME})`, "giu");
 const SQL_REFERENCE = new RegExp(String.raw`\b(EXECUTE|EXEC|INSERT\s+INTO|DELETE\s+FROM|UPDATE|FROM|JOIN|MERGE\s+INTO|TRUNCATE\s+TABLE|ALTER\s+TABLE)\s+(${SQL_NAME})`, "giu");
 const SQL_KEYWORDS_AFTER_FROM: ReadonlySet<string> = new Set(["select", "where", "values", "set", "into", "as", "on", "with"]);
+const SQL_HIDDEN = new RegExp(String.raw`${SQL_QUOTED_NAME}|--[^\n]*|\/\*[\s\S]*?(?:\*\/|$)|'(?:[^']|'')*(?:'|$)`, "gu");
 
-/** Reads a written object name: brackets and quotes off, server and database qualifiers off, case folded. */
+/** The parts of a written name, split at the dots outside its quoted names, each quoted name unquoted. */
+export function sqlNameParts(written: string): string[] {
+  const parts: string[] = [];
+  let current = "";
+  for (let index = 0; index < written.length; index += 1) {
+    const char = written[index];
+    if (char === "[" || char === "\"") {
+      const close = char === "[" ? "]" : "\"";
+      let end = index + 1;
+      while (end < written.length && !(written[end] === close && written[end + 1] !== close)) end += written[end] === close ? 2 : 1;
+      current += written.slice(index + 1, end).split(close + close).join(close);
+      index = end;
+    } else if (char === ".") {
+      parts.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current);
+  return parts;
+}
+
+/**
+ * A name's parts written as one name: joined by dots, a part bare unless it
+ * holds what would split it or misread it (a dot, a bracket, a double quote,
+ * a space at either end), which is then quoted in brackets. So
+ * `tests.[test it doesn't fail]` is written `tests.test it doesn't fail`, and
+ * `[test fn.sums]` keeps its brackets, and {@link sqlNameParts} reads either
+ * back into the same parts.
+ */
+export function sqlWrittenName(parts: string[]): string {
+  return parts.map((part) => (/[.[\]"]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part)).join(".");
+}
+
+/** Reads a written object name: quotes off, server and database qualifiers off, case folded. */
 export function sqlObjectName(raw: string): SqlObjectName {
-  const parts = raw.split(".").map((part) => part.replace(/^\[|\]$/gu, "").replace(/^"|"$/gu, "").trim());
+  const parts = sqlNameParts(raw);
   const linked = parts.length === 4 || (parts.length >= 3 && parts.slice(1, -1).some((part) => part === ""));
   const named = parts.filter((part) => part !== "");
   return { parts: (named.length > 2 ? named.slice(-2) : named).map((part) => part.toLowerCase()), linked };
 }
 
-/** The name of a database object as written, brackets and quotes off. */
+/** The name of a database object as written, each part unquoted, written back by {@link sqlWrittenName}. */
 export function sqlDeclaredName(raw: string): string {
-  return raw.split(".").map((part) => part.replace(/^\[|\]$/gu, "").replace(/^"|"$/gu, "").trim()).join(".");
+  return sqlWrittenName(sqlNameParts(raw));
 }
 
 /** The kind of a `CREATE` statement, as a symbol kind. A SQL function is `sql-function`, so that it is never mistaken for a function of a source language. */
@@ -289,9 +332,14 @@ function sqlKind(keyword: string): string {
   return lower === "proc" ? "procedure" : lower === "function" ? "sql-function" : lower;
 }
 
-/** SQL text without its comments and string literals, positions kept. */
+/**
+ * SQL text without its comments and string literals, positions kept. A
+ * quoted name is passed over whole, so that an apostrophe or a dash inside
+ * one never opens a string or a comment; a string or a comment left open
+ * runs to the end of the text.
+ */
 export function stripSql(text: string): string {
-  return text.replace(/--[^\n]*|\/\*[\s\S]*?\*\/|'(?:[^']|'')*'/gu, (match) => " ".repeat(match.length));
+  return text.replace(SQL_HIDDEN, (match) => (match.startsWith("[") || match.startsWith("\"") ? match : " ".repeat(match.length)));
 }
 
 /** One object a script declares. */
@@ -324,8 +372,8 @@ export function sqlReferences(text: string): SqlReference[] {
   const references: SqlReference[] = [];
   for (const match of stripSql(text).matchAll(SQL_REFERENCE)) {
     const raw = sqlDeclaredName(match[2]);
-    const first = raw.split(".")[0].toLowerCase();
-    if (SQL_KEYWORDS_AFTER_FROM.has(first)) {
+    const bare = /^[A-Za-z_][\w$#]*/u.exec(match[2])?.[0];
+    if (bare !== undefined && SQL_KEYWORDS_AFTER_FROM.has(bare.toLowerCase())) {
       continue;
     }
     references.push({ verb: match[1].replace(/\s+/gu, " ").toUpperCase(), name: sqlObjectName(match[2]), raw });

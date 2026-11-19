@@ -21,3 +21,7 @@ tSQLt at `4a921d0d`, 281 `.sql` files, 268 of which the parser reads (13 are SQL
 | right | 855 |
 | missing | 88 |
 | invented | 279 |
+
+## The crash
+
+A name quoted in brackets or double quotes is passed over whole where comments and strings are blanked. After it, on tSQLt: 1,497 of 1,506 objects found (the nine missing are a trigger and eight types, kinds the reader has none for), 830 at the right line, 376 invented (374 tables made in a procedure's body); 897 of 943 dependency lines right, 46 missing, 268 invented. Generation over the whole of tSQLt, nothing excluded, writes all 465 docs and the index.

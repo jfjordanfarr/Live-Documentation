@@ -84,9 +84,14 @@ const ADAPTER_KIND: Partial<Record<ScriptDomCreate["kind"], string>> = { procedu
 // Names
 // ============================================================================
 
-/** One name part as the product writes it in a symbol or a kept name: bare, or in brackets when it holds what would split it. */
+/**
+ * One name part as the product writes it in a symbol or a kept name: bare, or
+ * in brackets when it holds what would split it or misread it (a dot, a
+ * bracket, a double quote, a space at either end). Written here from the
+ * product's documented form, not imported from it.
+ */
 export function writtenPart(part: string): string {
-  return /[.[\]]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part;
+  return /[.[\]"]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part;
 }
 
 /** A parser's name in the product's written form: the parts written, from the first one present, a missing inner part empty. */

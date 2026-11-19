@@ -23,9 +23,7 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 /** The measured disagreements, fixture by fixture. */
 const MEASURED_MISSES: Record<string, string[]> = {
   "fixtures/sql-server": [
-    "object missing: Tests/BillingTests.class.sql:6 procedure BillingTests.test it doesn't count a settled invoice",
-    "object missing: Tests/BillingTests.class.sql:21 procedure BillingTests.[test fn_Balance.sums the open ones]",
-    "object invented: Tests/BillingTests.class.sql:6 procedure \"BillingTests.\"",
+    "object invented: Tests/BillingTests.class.sql:9 table \"BillingTests.Expected\"",
     "line: Procedures/Billing.usp_Statement.sql Billing.usp_Statement at 8, the adapter says 2",
     "line: Schema/Billing.Customer.sql Billing.Customer at 5, the adapter says 2",
     "line: Schema/Billing.fn_Balance.sql Billing.fn_Balance at 3, the adapter says 2",
@@ -35,9 +33,7 @@ const MEASURED_MISSES: Record<string, string[]> = {
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)",
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_openinvoices (table-function)",
     "dependency missing: Schema/Billing.Invoice.sql -> Schema/Billing.Customer.sql :: billing.customer (foreign-key)",
-    "dependency missing: Tests/BillingTests.class.sql = tsqlt.faketable (execute)",
     "dependency missing: Tests/BillingTests.class.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)",
-    "dependency missing: Tests/BillingTests.class.sql = tsqlt.assertequalstable (execute)",
     "dependency invented: Procedures/Billing.usp_Statement.sql = c",
     "dependency invented: Procedures/Billing.usp_Statement.sql = recent",
     "dependency invented: Procedures/Billing.usp_Statement.sql = sys.objects",

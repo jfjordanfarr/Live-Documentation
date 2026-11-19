@@ -4,8 +4,10 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql
-- Entry: opening [`BillingTests.`](#symbol-billingtests)
-- Generated At: 2026-11-19T19:25:52.606Z
+- Entry: opening [`BillingTests.test it doesn't count a settled invoice`](#symbol-billingteststest-it-doesnt-count-a-settled-invoice)
+- Entry: opening [`BillingTests.Expected`](#symbol-billingtestsexpected)
+- Entry: opening [`BillingTests.[test fn_Balance.sums the open ones]`](#symbol-billingteststest-fn_balancesums-the-open-ones)
+- Generated At: 2026-11-19T19:37:18.035Z
 
 ## Authored
 ### Purpose
@@ -17,14 +19,24 @@ A test class in tSQLt's shape: a schema made by `tSQLt.NewTestClass`, and test p
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `BillingTests.` {#symbol-billingtests}
+#### `BillingTests.test it doesn't count a settled invoice` {#symbol-billingteststest-it-doesnt-count-a-settled-invoice}
 - Type: procedure
 - Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql#L6)
+
+#### `BillingTests.Expected` {#symbol-billingtestsexpected}
+- Type: table
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql#L9)
+
+#### `BillingTests.[test fn_Balance.sums the open ones]` {#symbol-billingteststest-fn_balancesums-the-open-ones}
+- Type: procedure
+- Source: [source](../../../../../../../tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql#L21)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `tSQLt.AssertEquals` (contract)
+- `tSQLt.AssertEqualsTable` (contract)
+- `tSQLt.FakeTable` (contract)
 - `tSQLt.NewTestClass` (contract)
 - [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
 <!-- LIVE-DOC:END Dependencies -->

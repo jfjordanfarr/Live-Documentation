@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/openings.ts
-- Generated At: 2026-11-18T00:39:08.329Z
+- Generated At: 2026-11-19T19:37:09.099Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The vocabulary of what a file serves across a process boundary, and how a call f
 - Home and away is a presumption: a browser script calls its own site, so a server at home wins; a C# client calls other systems, so one away wins; when only one side serves the route it is taken, and several servers on the chosen side are all kept, since the files cannot say which answers. It decides the estate's one ambiguity, `api/payments` served by both the portal and the gateway. Confirming the host from configuration instead is a gap the design doc names.
 - The caches are `WeakMap`s keyed on the symbol index and on the file index, so an index is scanned once per generation run and nothing outlives it; `homeOf` takes its file index as an object for that reason.
 - The SQL scanner is regular expressions over text whose comments and string literals are replaced by spaces of the same length, so the line numbers of declarations stay right. A written name folds to its last two parts, lowercased; four parts, or an empty part in the middle, mark a linked server. Measured by `openings.test.ts`.
+- Since 2026-11-19 a name quoted in brackets (`]]` standing for `]`) or in double quotes is passed over whole where comments and strings are blanked, and a written name is split only at the dots outside its quotes ([the SQL reader's probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)). Before, an apostrophe inside brackets opened a string: a tSQLt test named `[test that it doesn't fail]` ran its name across lines into the doc, which the graph reader then refused, and five tSQLt files stopped generation that way ([the cold run](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash)). A name is written back with `sqlWrittenName`, bare unless a part holds a dot, a bracket, a double quote or a space at either end, which is then bracketed, so that `sqlNameParts` reads it back into the same parts.
 - `OPENING_KINDS` and `isToolingFile` (2026-10-15): the symbol kinds that make a file an entry by what it serves, and the file names a tool reads and no file imports (`tsconfig*.json`, `*.config.*`, `Web.config`, `App.config`, `packages.config`, and since 2026-10-16 every package manifest by its name, from the list `homeOf` reads, whether or not it publishes a package), shared by the composition of the `Entry` lines and by the manifest reader, which passes such a file over when it looks for what a command runs.
 - Since 2026-11-17 a development container's second configuration, one folder down (`.devcontainer/<name>/devcontainer.json`), is a tooling entry like the first: it is the third place the Dev Containers specification gives such a file, and this repository gained one that day for the host's graphics card, which the walk from the entry points then reported as a file nothing reaches ([the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#work-notes-turns-8-to-10)). Two folders down is no documented place and is not one here.
 
@@ -195,38 +196,60 @@ cannot say which one answers.
 ##### `SqlObjectName (interface)` — Summary
 An object a database script declares or names: its last two name parts, lowercased, and whether a linked server carries it.
 
-#### `sqlObjectName (function)` {#symbol-sqlobjectname-function}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L274)
-- Returns: [`SqlObjectName`](#symbol-sqlobjectname-interface)
-
-##### `sqlObjectName (function)` — Summary
-Reads a written object name: brackets and quotes off, server and database qualifiers off, case folded.
-
-#### `sqlDeclaredName` {#symbol-sqldeclaredname}
+#### `sqlNameParts` {#symbol-sqlnameparts}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L282)
 
+##### `sqlNameParts` — Summary
+The parts of a written name, split at the dots outside its quoted names, each quoted name unquoted.
+
+#### `sqlWrittenName` {#symbol-sqlwrittenname}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L312)
+
+##### `sqlWrittenName` — Summary
+A name's parts written as one name: joined by dots, a part bare unless it
+holds what would split it or misread it (a dot, a bracket, a double quote,
+a space at either end), which is then quoted in brackets. So
+`tests.[test it doesn't fail]` is written `tests.test it doesn't fail`, and
+`[test fn.sums]` keeps its brackets, and {@link sqlNameParts} reads either
+back into the same parts.
+
+#### `sqlObjectName (function)` {#symbol-sqlobjectname-function}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L317)
+- Returns: [`SqlObjectName`](#symbol-sqlobjectname-interface)
+
+##### `sqlObjectName (function)` — Summary
+Reads a written object name: quotes off, server and database qualifiers off, case folded.
+
+#### `sqlDeclaredName` {#symbol-sqldeclaredname}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L325)
+
 ##### `sqlDeclaredName` — Summary
-The name of a database object as written, brackets and quotes off.
+The name of a database object as written, each part unquoted, written back by {@link sqlWrittenName}.
 
 #### `stripSql` {#symbol-stripsql}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L293)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L341)
 
 ##### `stripSql` — Summary
-SQL text without its comments and string literals, positions kept.
+SQL text without its comments and string literals, positions kept. A
+quoted name is passed over whole, so that an apostrophe or a dash inside
+one never opens a string or a comment; a string or a comment left open
+runs to the end of the text.
 
 #### `SqlDeclaration` {#symbol-sqldeclaration}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L298)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L346)
 
 ##### `SqlDeclaration` — Summary
 One object a script declares.
 
 #### `sqlDeclarations` {#symbol-sqldeclarations}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L305)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L353)
 - Returns: [`SqlDeclaration`](#symbol-sqldeclaration)[]
 
 ##### `sqlDeclarations` — Summary
@@ -234,14 +257,14 @@ Every object a script creates.
 
 #### `SqlReference` {#symbol-sqlreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L315)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L363)
 
 ##### `SqlReference` — Summary
 One object a script or a query names.
 
 #### `sqlReferences` {#symbol-sqlreferences}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L323)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L371)
 - Returns: [`SqlReference`](#symbol-sqlreference)[]
 
 ##### `sqlReferences` — Summary
@@ -249,14 +272,14 @@ Every object the text names after a verb that reads, writes, calls or alters it.
 
 #### `DeclaredSqlObject` {#symbol-declaredsqlobject}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L347)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L395)
 
 ##### `DeclaredSqlObject` — Summary
 A database object some script declares, as the symbol index records it.
 
 #### `declaredSqlObjects` {#symbol-declaredsqlobjects}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L356)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L404)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -265,7 +288,7 @@ Every procedure, table, view and function symbol of the workspace, read once per
 
 #### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L373)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L421)
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlNameMatches` — Summary
@@ -273,7 +296,7 @@ True when a written name names the declared object: schema and object when both 
 
 #### `matchSqlObject` {#symbol-matchsqlobject}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L381)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L429)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
