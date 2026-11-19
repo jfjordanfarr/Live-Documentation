@@ -4,6 +4,76 @@ Current as of November 19, 2026.
 
 A builder's handback to the root, on its branch. Before this round, three readers each read a link's target by a pattern of their own, and they disagreed: the engine (`relatedDocs.ts`), which decides a file's related documents and every document's citations; the Explorer's renderer (`markdown.ts`), which ended a target at its first `)`; and the markdown link audit (`scripts/slopcop/markdownLinks.ts`), which decoded with `decodeURI`. All three now read links by one module, `packages/engine/src/tooling/markdownLinks.ts`, graded by CommonMark's own examples.
 
+## The third leg
+
+This leg sits on top of `21fcc129`. Its commits are `e113ca5e`, `d8d6ba3a`, and the commit that brings this README level.
+
+### 1. The simple fence rule loses true links: stopped, not landed
+
+The rule tried was the root's: a line opens a fence when, after its block-quote markers and indentation, it begins with a fence's run, at any depth. It closes at the next such line that begins with a run at least as long. Links counted, before and after:
+
+| Corpus | commonmark.js | The rule before | The rule with the simple fence rule |
+| --- | --- | --- | --- |
+| This repository (2,005 files) | 51,835 | 51,837 | 51,540 |
+| Dnn.Platform | 2,872 | 2,872 | 2,872 |
+| dbatools | 115 | 115 | 115 |
+| shop | 0 | 0 | 0 |
+| tSQLt | 3 | 3 | 3 |
+
+The rule lost 295 true links, all in one file, `AI-Agent-Workspace/AgentSessionHistory/2025/11/2025-11-14/2025-11-14.md`.
+
+What happens there, lines 388 to 432:
+1. The file is a pasted TypeScript compiler error.
+2. Each error's `~~~~` underline is indented 22 spaces at the top level.
+3. In CommonMark those lines form an indented code block, which ends at the next unindented paragraph.
+4. Under the simple rule, each underline opens a fence. Line 424's run of 67 tildes is never followed by a run as long; the last underline has 64.
+5. So that fence runs to the end of the file and swallows every link after it.
+
+The register entry it was meant to remove (the 2025-12-06 summary) is the other side of the same rule. As instructed, I stopped, reverted the change, and committed nothing for this item. The register still holds its one entry.
+
+A possible next rule, untried: open a deep fence only under a list item or in a block quote, as the root's own reasoning about "the top level" suggests. That needs the reader to know whether a line stands inside a list item.
+
+### 4. The readers on patterns of their own (`e113ca5e`)
+
+- **The docs lint** (`scripts/live-docs/lint.ts`). Its absolute-link check moved to `scripts/live-docs/absoluteLinks.ts` and reads links by the module. A link's shape inside a code span or a fenced block is no longer refused; nor is an autolink. A reference counts as its definition's destination. A destination with parentheses is read whole. The new test fails against the old pattern. The lint passes over this repository's 1,100 docs.
+- **`slugText`** (`githubSlugger.ts`). It replaces the links the module reads with their text, and an image inside a link with its own text. The new case fails against the old pattern, which gave `The plan.md "t") and group/a.md) and x`. No heading anchor in this repository changed, and the symbol audit finds 0 issues.
+- **Not done:** `symbolReferences.ts` and `documentationLinks.ts` still find links by patterns of their own. Since the second leg they decode paths by `linkPath`.
+
+### 2. The inspected symbol's panel (`d8d6ba3a`)
+
+`inspectedSymbolHtml` renders the parsed block:
+- names, parameter names and type names are code, as the doc's reader returns them;
+- types link through the reader's handler;
+- each section's text is rendered on its own.
+
+The written form no longer reaches the panel, so its coming change on the names' branch does not matter here.
+
+The escaped fence, checked by a run on a block whose Summary holds an unclosed ```` ```ts ```` and whose Remarks follow:
+
+| | The name | The Summary's fence | The Remarks after it |
+| --- | --- | --- | --- |
+| Written form, rendered | `"a\nb"` as text, quotes and backslash included | read as text: `Opens an example: ```ts const x = 1;` | intact |
+| The panel now | the name, in code | `<pre><code class="language-ts">` | intact |
+
+A unit test (`detailPanel.test.ts`) holds all three: the names, the fence ending with its section, and the difference from the written form.
+
+**One consequence to look at.** The fixture's docstring line ``#### `notes` `` now renders as the docstring's own heading. Before this leg it rendered as the text `#### notes`.
+
+### 3. Reference links in the fixture (`d8d6ba3a`)
+
+The fixture's Purpose now also cites the plan by `[by reference][plan]`, with the definition in its Notes section. The browser case expects:
+- eight links;
+- the definition hidden;
+- the docstring heading.
+
+### 5. Not run: the bundles, the browser case and the pictures
+
+- The pictures for items 2 and 3 were not taken.
+- `npm run e2e:bundles` was not run in this leg.
+- `tests/e2e/link-targets.spec.ts` (changed in `d8d6ba3a`) and the cases that open the reading panel were not run.
+
+The reason: at 22:02 the browser lane held nine callers, and I was sixth, with five holders ahead allowed up to five minutes each. I withdrew my ticket instead of holding a place I could not use within the time. `npm run build` and the 1,595 unit tests of the Explorer client, the engine's tooling and the scripts pass. A full gate was not run this leg.
+
 ## The second leg
 
 This leg answers the root's review of `c2bfd65f` and sits on top of it, in six commits: `95fb8cf9`, `a6c1c638`, `f540ca5f`, `145bcd25`, `8215a0d0`, and the commit that brings this README level. The sections after this one describe the first leg; where this leg changed something, this section says so and wins.
