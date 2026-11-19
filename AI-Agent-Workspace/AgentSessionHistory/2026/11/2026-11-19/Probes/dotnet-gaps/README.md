@@ -1,6 +1,6 @@
 # The .NET gaps, measured against Microsoft's own tools
 
-Current as of November 19, 2026, first leg. A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader. Nothing here has changed product code yet. Every number counts something an oracle independent of our reader found, then what our reader draws today.
+Current as of November 19, 2026, end of the second leg. A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). Every number counts something an oracle independent of our reader found, then what our reader draws.
 
 ## Corpora and oracles
 
@@ -103,10 +103,66 @@ Not yet counted: `ProjectReference`, configuration file names and `~/` paths wit
 
 Not yet measured. The Roslyn probe already collects every literal handed to a data-access call, with whether `CommandType.StoredProcedure` is among the arguments. mojoPortal names its procedures through `new SqlParameterHelper(connection, "mp_Users_SelectOne", n)` in 79 files and defines them in `.config` files under `Setup/applications/*/SchemaInstallScripts/mssql/`, which no SQL reader reads today.
 
-## What is not done in this leg
+## What the first leg left
 
 - No mend. Gaps 1, 4 and 5 are next, then 3 and 2 as far as the rulings reach.
 - The seeded reading of 100 procedure call sites and the candidate rules' scores.
 - Why DNN's designer pairs are unlinked while mojoPortal's are linked.
 - The case count across every link kind.
 - `.cshtml`, `.vb` and configuration files with no settings, which the brief asked to report.
+
+## Second leg: the mends and the puzzle
+
+Measured with this branch's readers at `f4bd8235`, the same oracles, and fresh generation of both corpora.
+
+### Directives after the mend
+
+| Directive and attribute | DNN: found / drawn before / after | mojoPortal: found / drawn before / after |
+| --- | --- | --- |
+| Control `CodeBehind` | 124 / 0 / 124 | 124 / 0 / 124 |
+| Register `Src` | 95 / 0 / 95 | 48 / 0 / 48 |
+| Page `CodeBehind` | 12 / 12 / 12 | 182 / 182 / 182 |
+| Page `MasterPageFile` | none written | 159 / 0 / 159 |
+| Master `CodeBehind` | none written | 5 / 0 / 5 |
+| WebHandler `CodeBehind` | 3 / 0 / 3 | 28 / 0 / 28 |
+| WebService and Application `CodeBehind` | none written | 2 / 0 / 2 |
+
+The estate's one page was already linked and is unchanged. Paths the oracle finds no file for are kept by their written name.
+
+**Are the `~/` wires the files the application would load?** Twenty resolved `~/` wires drawn from each corpus with seed 1119 (`scripts/tilde_sample.py`), each read against the projects' build files:
+- **DNN: 20 of 20 right.** Every one lands in `DNN Platform/Website`, the web application DNN runs; modules and skins are deployed into it. Eighteen are matched only without regard to case (`~/controls/LabelControl.ascx` is `controls/labelcontrol.ascx` on disk), which Windows serves and the old reader could never have found.
+- **mojoPortal: 11 of 20 right, 9 wrong.** All nine wrong wires go from a page of `mojoPortal.Features.UI` or `SuperFlexiUI` to that project's own `App_MasterPages/layout.Master`. Those copies are 2.2 KB stubs that let the project compile in Visual Studio. The project's post-build step copies its pages into `Web/` and not its master pages, so at run time `~/App_MasterPages/layout.Master` is `Web/App_MasterPages/layout.Master` (8.5 KB). The ruled order, the own project first, picks the stub. The three right wires from feature projects name user controls the post-build step copies, so the own copy is the deployed one.
+
+So the ruled `~/` rule is right for DNN's shape and wrong for nine of twenty of mojoPortal's. This needs a ruling; see the handback.
+
+### Filename case after the mend
+
+Paths that match a workspace file only without regard to case (`scripts/case_count.py`):
+
+| Link kind | DNN | mojoPortal | Estate |
+| --- | ---: | ---: | ---: |
+| `ProjectReference` | 1 of 365 | 7 of 85 | 0 of 3 |
+| Relative directive path | 0 of 142 | 1 of 341 | 0 of 1 |
+| `~/` directive path, resolved | 18 of the 20 sampled | 0 of the 20 sampled | none |
+| Solution's project | 0 of 89 | 2 of 38 | 0 of 5 |
+| `Web.config` / `App.config` spellings | `Web.config` 3, `App.config` 1 | `Web.config` 9, `app.config` 9 | `Web.config` 2, `App.config` 2 |
+
+Before, each of these was lost on Linux. After, each links to the file in its own spelling: for instance DNN's `DotNetNuke.Instrumentation.csproj` names `..\DotNetNuke.Log4Net\DotNetNuke.Log4Net.csproj` and now reaches `DNN Platform/DotNetNuke.Log4net/DotNetNuke.Log4Net.csproj`, where before it kept the name. The old reader already tried both `Web.config` and `web.config`, so the configuration spellings found here were not lost.
+
+Every product path into the .NET readers goes through `generateLiveDocs`, which builds the file index from discovery and passes it to both of its passes: `live-docs:generate`, the history's `summarizeChange`, `sample-build`, `visualize-history-sample` and `oracle:compare`. The estate reader reads generated docs, not sources. The index holds what discovery keeps: not what git ignores, not what the configuration excludes, not the docs folder. A link to such a file used to be drawn when the disk had it, and led to a doc that does not exist; now there is no link, and a project reference is kept by name.
+
+### Solutions after the mend
+
+`dotnet sln list` names 89 projects in DNN, 38 in mojoPortal and 5 in the estate. Drawn after: 89, 35 (the 33 exact and the 2 by case; the 3 missing are kept by name) and 5. Before: none.
+
+### The designer puzzle, explained
+
+The cause is not how the reader chooses among types of one name. DNN's code style writes every member access as `this.member` (StyleCop's rule SA1101). The C# reader records a use of a partial peer's member only when the name stands bare: `cmdSave.Click` is recorded, `this.cmdSave.Click` is not, because the chain that starts with `this` is not followed. Counted by `scripts/this_prefix.py` over every designer pair:
+
+| Code-behind names a designer-only member | DNN: pairs / drawn today | mojoPortal: pairs / drawn today |
+| --- | --- | --- |
+| bare, at least once | 2 / 2 | 276 / 276 |
+| only through `this.` | 107 / 2 | 3 / 0 |
+| not at all | 25 / 1 | 29 / 1 |
+
+Candidate A is already what the reader does for bare names; following `this.` would complete it, and would draw about 107 more links on DNN. Because the cause is not type choice, the compiler comparison over the whole corpora was not run in this leg.
