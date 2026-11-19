@@ -228,6 +228,19 @@ describe("csharpAdapter", () => {
         expect(await links("Mvc/Framework/DnnWebViewPage.cs")).toEqual(["Mvc/Helpers/DnnHelper.cs", "Mvc/Helpers/DnnHelper{TModel}.cs"]);
       });
 
+      it("applies a project's global using directives to every file of that project, and to no other project's", async () => {
+        await write("Core/Core.csproj", sdk());
+        await write("Core/Configuration/AppConfig.cs", ["namespace Shop.Core.Configuration; public static class AppConfig { }"]);
+        await write("Web/Web.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("Web/Components/GlobalUsings.cs", ["global using Shop.Core.Configuration;"]);
+        await write("Web/Controls/NewPageLink.cs", ["namespace Shop.Web.UI;", "public class NewPageLink { bool Enabled() => AppConfig.Enabled; }"]);
+        await write("Admin/Admin.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("Admin/Page.cs", ["namespace Shop.Admin; public class Page { bool Enabled() => AppConfig.Enabled; }"]);
+
+        expect(await links("Web/Controls/NewPageLink.cs")).toEqual(["Core/Configuration/AppConfig.cs"]);
+        expect(await links("Admin/Page.cs")).toEqual([]);
+      });
+
       it("keeps today's reading for a file no project holds, except that several namesakes draw nothing", async () => {
         await write("Lib/Thing.cs", ["namespace Shop { public class Thing { } public class Only { } }"]);
         await write("Other/Thing.cs", ["namespace Shop { public class Thing { } }"]);

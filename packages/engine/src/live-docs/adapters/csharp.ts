@@ -133,6 +133,8 @@ interface RouteUse extends StringUse {
 
 interface FileFacts {
   usings:         string[];
+  /** The namespaces this file's `global using` directives open to every file of its project. */
+  globalUsings:   string[];
   aliases:        Map<string, string>;
   namespaces:     Set<string>;
   types:          DeclaredType[];
@@ -470,6 +472,7 @@ function constraintReferences(clause: SyntaxNode): TypeReference[] {
 class FileExtractor {
   readonly facts: FileFacts = {
     usings:         [],
+    globalUsings:   [],
     aliases:        new Map(),
     namespaces:     new Set(),
     types:          [],
@@ -527,7 +530,10 @@ class FileExtractor {
       return;
     }
     const target = targets[0];
-    if (target) this.facts.usings.push(target.text.replace(/\s+/g, "").replace(/^global::/u, ""));
+    if (!target) return;
+    const namespace = target.text.replace(/\s+/g, "").replace(/^global::/u, "");
+    this.facts.usings.push(namespace);
+    if (node.children.some((child) => child.type === "global")) this.facts.globalUsings.push(namespace);
   }
 
   private visitType(node: SyntaxNode, scope: Scope): void {
@@ -940,6 +946,8 @@ interface TypeTable {
   namespacePrefixes: Set<string>;
   /** The last segment of every qualified name, so that a name no type ends with is set aside in one lookup. */
   lastSegments:    Set<string>;
+  /** The namespaces each file's `global using` directives open, by file. */
+  globalUsings:    Map<string, string[]>;
 }
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
@@ -958,7 +966,7 @@ async function listCSharpFiles(workspaceRoot: string, fileIndex: WorkspaceFileIn
 }
 
 async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {
-  const table: TypeTable = { byQualifiedName: new Map(), namespaces: new Set(), namespacePrefixes: new Set(), lastSegments: new Set() };
+  const table: TypeTable = { byQualifiedName: new Map(), namespaces: new Set(), namespacePrefixes: new Set(), lastSegments: new Set(), globalUsings: new Map() };
   for (const file of await listCSharpFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
@@ -966,6 +974,7 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
     } catch {
       continue;
     }
+    if (facts.globalUsings.length > 0) table.globalUsings.set(file, facts.globalUsings);
     for (const namespace of facts.namespaces) {
       table.namespaces.add(namespace);
       for (let prefix = namespace; prefix; prefix = prefix.slice(0, Math.max(prefix.lastIndexOf("."), 0))) table.namespacePrefixes.add(prefix);
@@ -1055,14 +1064,37 @@ function narrowFor(file: string, reach: ProjectReach): Narrow {
 }
 
 /** The containers the compiler searches for a name used in a scope, nearest first, after the name itself. */
-const containersCache = new WeakMap<Scope, string[]>();
+const containersCache = new WeakMap<Scope, { usings: string[]; containers: string[] }>();
 function containersOf(scope: Scope, facts: FileFacts): string[] {
-  let containers = containersCache.get(scope);
-  if (!containers) {
-    containers = ["", ...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings];
-    containersCache.set(scope, containers);
+  let cached = containersCache.get(scope);
+  if (!cached || cached.usings !== facts.usings) {
+    cached = { usings: facts.usings, containers: ["", ...scope.enclosingTypes, ...namespaceChain(scope.namespace), ...facts.usings] };
+    containersCache.set(scope, cached);
   }
-  return containers;
+  return cached.containers;
+}
+
+/**
+ * The file's facts as name resolution reads them: its own `using` directives
+ * and, after them, the `global using` directives any file of its project
+ * declares, which C# applies to every file of the project.
+ */
+const projectUsingsCache = new WeakMap<TypeTable, Map<string, string[]>>();
+function withProjectUsings(facts: FileFacts, thisFile: string, table: TypeTable, reach: ProjectReach): FileFacts {
+  if (table.globalUsings.size === 0) return facts;
+  const project = reach.projectOf(thisFile);
+  if (project === undefined) return facts;
+  let byProject = projectUsingsCache.get(table);
+  if (!byProject) {
+    byProject = new Map();
+    for (const [file, namespaces] of table.globalUsings) {
+      const owner = reach.projectOf(file);
+      if (owner !== undefined) byProject.set(owner, [...(byProject.get(owner) ?? []), ...namespaces]);
+    }
+    projectUsingsCache.set(table, byProject);
+  }
+  const extra = (byProject.get(project) ?? []).filter((namespace) => !facts.usings.includes(namespace));
+  return extra.length === 0 ? facts : { ...facts, usings: [...facts.usings, ...new Set(extra)] };
 }
 
 /** Resolves a dotted name from a scope: exact, then relative to each container the compiler would search. */
@@ -1199,6 +1231,7 @@ async function toDependencies(
   symbolIndex: WorkspaceSymbolIndex | undefined
 ): Promise<DependencyEntry[]> {
   const narrow   = narrowFor(thisFile, reach);
+  const seen     = withProjectUsings(facts, thisFile, table, reach);
   const byTarget = new Map<string, Set<string>>();
   const link = (file: string, symbol?: string) => {
     const symbols = byTarget.get(file) ?? new Set<string>();
@@ -1207,7 +1240,7 @@ async function toDependencies(
   };
 
   for (const use of facts.nameUses) {
-    const records = resolveChain(use.chain, use.scope, facts, table, narrow);
+    const records = resolveChain(use.chain, use.scope, seen, table, narrow);
     if (records.length === 0 || records.some((record) => record.file === thisFile)) continue;
     for (const record of records) link(record.file, record.type.name);
   }
@@ -1226,7 +1259,7 @@ async function toDependencies(
 
   const configReferences: ConfigReference[] = [];
   for (const use of facts.configUses) {
-    const folded = foldString(use, facts, table, narrow, undefined);
+    const folded = foldString(use, seen, table, narrow, undefined);
     const name   = folded === undefined ? undefined : use.kind === "connectionString" ? connectionName(folded) : folded;
     if (name) configReferences.push({ kind: use.kind, name });
   }
@@ -1237,7 +1270,7 @@ async function toDependencies(
     const targets = new Map<string, ResolvedTypeTarget>();
     for (const scope of scopes) {
       // A type named in a string is loaded by reflection, from whatever assembly is loaded, not bound by the compiler.
-      for (const record of resolveChain(typeName.split("."), scope, facts, table, WHOLE_WORKSPACE)) {
+      for (const record of resolveChain(typeName.split("."), scope, seen, table, WHOLE_WORKSPACE)) {
         if (record.file !== thisFile) targets.set(record.file, { file: record.file, name: record.type.name });
       }
     }
@@ -1255,7 +1288,7 @@ async function toDependencies(
     .sort(([left], [right]) => compareText(left, right))
     .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
 
-  dependencies.push(...contractDependencies(facts, thisFile, table, narrow, fileIndex, symbolIndex));
+  dependencies.push(...contractDependencies(seen, thisFile, table, narrow, fileIndex, symbolIndex));
 
   const external = facts.usings
     .filter((namespace) => namespace !== "System" && !namespace.startsWith("System.") && !isWorkspaceNamespace(namespace, table))
