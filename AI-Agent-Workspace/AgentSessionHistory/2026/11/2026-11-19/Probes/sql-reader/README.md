@@ -41,3 +41,7 @@ A name in the `sys` or `INFORMATION_SCHEMA` schema, and a one-part `OPENJSON`, `
 ## Tables made in a procedure's body
 
 A procedure, function or trigger must be the only statement of its T-SQL batch, so its body runs to the batch's end; a table created there is made when the module runs, and is no longer a symbol of the script, though a use of it in the same file still keeps no name. After it, on tSQLt: 0 objects invented, against 374; 899 of 943 dependency lines right, 44 missing, 1 invented.
+
+## The missing references
+
+The reader now reads every function called by a name of two or more parts, `EXEC @rc = name`, `APPLY`, a `MERGE`'s `USING`, a foreign key's `REFERENCES`, `INSERT`, `DELETE` and `MERGE` without their optional `INTO` or `FROM`, each table of a comma list (`FROM Users u, Roles r`) and a table in parentheses (`LEFT JOIN (dbo.T t JOIN …)`); it sets aside a method of the `xml` type on a column, an event session's events and targets, a Service Broker service, a table variable's alias and PL/SQL's `EXECUTE IMMEDIATE`; and a carriage return alone ends a line. The comma lists, the parenthesised joins, the table-variable aliases and the lone carriage return were found by grading DNN's and dbatools' SQL, which the reader had not been mended against. After it, on tSQLt: 943 of 943 dependency lines right, none missing, none invented.

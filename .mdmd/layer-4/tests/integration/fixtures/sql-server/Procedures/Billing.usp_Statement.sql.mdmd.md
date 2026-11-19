@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Procedures/Billing.usp_Statement.sql
 - Entry: opening [`Billing.usp_Statement`](#symbol-billingusp_statement)
-- Generated At: 2026-11-19T19:54:14.782Z
+- Generated At: 2026-11-19T20:05:49.511Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,9 @@ The SQL Server fixture's busiest procedure, after a comment of seven lines: it e
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Billing.usp_Archive`](./Billing.usp_Archive.sql.mdmd.md#symbol-billingusp_archive)
 - [`Billing.Customer`](../Schema/Billing.Customer.sql.mdmd.md#symbol-billingcustomer)
 - [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
+- [`Billing.fn_Balance`](../Schema/Billing.fn_Balance.sql.mdmd.md#symbol-billingfn_balance)
+- [`Billing.fn_Balance.Billing.fn_OpenInvoices`](../Schema/Billing.fn_Balance.sql.mdmd.md#symbol-billingfn_openinvoices)
 <!-- LIVE-DOC:END Dependencies -->

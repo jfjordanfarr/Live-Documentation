@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Procedures/Billing.usp_Archive.sql
 - Entry: opening [`Billing.usp_Archive`](#symbol-billingusp_archive)
-- Generated At: 2026-11-19T19:25:52.563Z
+- Generated At: 2026-11-19T20:05:49.504Z
 
 ## Authored
 ### Purpose
@@ -24,5 +24,5 @@ A procedure of the SQL Server fixture that deletes from the invoice table withou
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
 <!-- LIVE-DOC:END Dependencies -->

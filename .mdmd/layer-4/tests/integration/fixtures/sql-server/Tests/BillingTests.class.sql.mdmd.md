@@ -6,7 +6,7 @@
 - Code Path: tests/integration/fixtures/sql-server/Tests/BillingTests.class.sql
 - Entry: opening [`BillingTests.test it doesn't count a settled invoice`](#symbol-billingteststest-it-doesnt-count-a-settled-invoice)
 - Entry: opening [`BillingTests.[test fn_Balance.sums the open ones]`](#symbol-billingteststest-fn_balancesums-the-open-ones)
-- Generated At: 2026-11-19T19:57:47.464Z
+- Generated At: 2026-11-19T20:05:49.531Z
 
 ## Authored
 ### Purpose
@@ -34,4 +34,5 @@ A test class in tSQLt's shape: a schema made by `tSQLt.NewTestClass`, and test p
 - `tSQLt.FakeTable` (contract)
 - `tSQLt.NewTestClass` (contract)
 - [`Billing.Invoice`](../Schema/Billing.Invoice.sql.mdmd.md#symbol-billinginvoice)
+- [`Billing.fn_Balance`](../Schema/Billing.fn_Balance.sql.mdmd.md#symbol-billingfn_balance)
 <!-- LIVE-DOC:END Dependencies -->

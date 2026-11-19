@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/sql-server/Schema/Billing.Invoice.sql
 - Entry: opening [`Billing.Invoice`](#symbol-billinginvoice)
-- Generated At: 2026-11-19T19:25:52.590Z
+- Generated At: 2026-11-19T20:05:49.520Z
 
 ## Authored
 ### Purpose
@@ -24,5 +24,5 @@ A table of the SQL Server fixture, its name in brackets, whose foreign key refer
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Billing.Customer`](./Billing.Customer.sql.mdmd.md#symbol-billingcustomer)
 <!-- LIVE-DOC:END Dependencies -->

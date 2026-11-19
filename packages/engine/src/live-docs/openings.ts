@@ -359,6 +359,22 @@ const SQL_SYSTEM_SCHEMAS: ReadonlySet<string> = new Set(["sys", "information_sch
  */
 const SQL_BUILT_IN_TABLE_FUNCTIONS: ReadonlySet<string> = new Set(["openjson", "string_split", "generate_series"]);
 
+/**
+ * The methods of SQL Server's `xml` type. `r.Lines.value('…', 'int')` calls
+ * one on a column, and reads, as text, like a function `value` in a schema
+ * `Lines`; such a call is the column's method, not an object.
+ */
+const SQL_XML_METHODS: ReadonlySet<string> = new Set(["value", "query", "exist", "nodes", "modify"]);
+
+/**
+ * The words after which a name followed by a parenthesis is the thing the
+ * statement names, not a call: `ON dbo.T (column)` of an index or a grant,
+ * `INTO dbo.T (column)` of an `OUTPUT` or `SELECT`, `ALTER FUNCTION dbo.f (@p)`,
+ * an event session's `ADD EVENT sqlserver.rpc_completed (…)` and `ADD TARGET
+ * package0.ring_buffer (…)`.
+ */
+const SQL_WORDS_BEFORE_A_NAMED_THING: readonly string[] = ["ON", "INTO", "FUNCTION", "PROCEDURE", "PROC", "TRIGGER", "VIEW", "TABLE", "TYPE", "INDEX", "EVENT", "TARGET"];
+
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
 
@@ -407,6 +423,22 @@ function blockCommentEnd(text: string, open: number): number {
 const SQL_WORD_START = /[\p{L}_#]/u;
 const SQL_WORD_PART = /[\p{L}\p{N}_@$#]/u;
 
+/** Whether the character code is a letter, `_` or `#`, which can begin a word: ASCII by its code, the rest by Unicode's letters. */
+function startsWord(code: number): boolean {
+  return (code >= 97 && code <= 122) || (code >= 65 && code <= 90) || code === 95 || code === 35 || (code > 127 && SQL_WORD_START.test(String.fromCharCode(code)));
+}
+
+/** Whether the character code can continue a word: a letter, a digit, `_`, `@`, `$` or `#`. */
+function continuesWord(code: number): boolean {
+  return (code >= 97 && code <= 122) || (code >= 65 && code <= 90) || (code >= 48 && code <= 57) || code === 95 || code === 64 || code === 36 || code === 35
+    || (code > 127 && SQL_WORD_PART.test(String.fromCharCode(code)));
+}
+
+/** Whether the character code is white space. */
+function isSpace(code: number): boolean {
+  return code === 32 || (code >= 9 && code <= 13) || (code > 127 && /\s/u.test(String.fromCharCode(code)));
+}
+
 /**
  * SQL text as tokens. Comments are dropped, a string is one token whatever it
  * holds, and a name quoted in T-SQL's brackets (`]]` standing for `]`) or in
@@ -414,7 +446,9 @@ const SQL_WORD_PART = /[\p{L}\p{N}_@$#]/u;
  * in SQL Server's tools, reads them, is one token whose value is the name
  * itself: it can hold any character, an apostrophe, a dot or a line break. A
  * string or comment left open runs to the end of the text. Each token carries
- * the lines it spans, counted in the text as it stands. A `GO` alone on its
+ * the lines it spans, counted in the text as it stands, where a line ends at
+ * a line feed, a carriage return and line feed, or a carriage return alone, as
+ * editors and SQL Server's own parser count them. A `GO` alone on its
  * line, T-SQL's batch separator, and a `/` alone on its line, Oracle's, end a
  * batch.
  */
@@ -423,7 +457,10 @@ function sqlTokens(text: string): SqlToken[] {
   let index = 0;
   let line  = 1;
   const advance = (to: number) => {
-    for (; index < to; index += 1) if (text.charCodeAt(index) === 10) line += 1;
+    for (; index < to; index += 1) {
+      const code = text.charCodeAt(index);
+      if (code === 10 || (code === 13 && text.charCodeAt(index + 1) !== 10)) line += 1;
+    }
   };
   const take = (kind: SqlToken["kind"], to: number, value: string) => {
     const start = line;
@@ -431,10 +468,16 @@ function sqlTokens(text: string): SqlToken[] {
     tokens.push({ kind, value, line: start, end: line });
   };
   while (index < text.length) {
+    const code = text.charCodeAt(index);
+    if (isSpace(code)) { advance(index + 1); continue; }
     const char = text[index];
     const next = text[index + 1];
-    if (/\s/u.test(char)) { advance(index + 1); continue; }
-    if (char === "-" && next === "-") { const end = text.indexOf("\n", index); advance(end === -1 ? text.length : end); continue; }
+    if (char === "-" && next === "-") {
+      let end = index;
+      while (end < text.length && text[end] !== "\n" && text[end] !== "\r") end += 1;
+      advance(end);
+      continue;
+    }
     if (char === "/" && next === "*") { advance(blockCommentEnd(text, index)); continue; }
     if (char === "'" || ((char === "N" || char === "n") && next === "'")) { take("string", quotedEnd(text, char === "'" ? index : index + 1, "'"), ""); continue; }
     if (char === "[" || char === "\"") {
@@ -444,15 +487,15 @@ function sqlTokens(text: string): SqlToken[] {
       take("name", end, inner.split(close + close).join(close));
       continue;
     }
-    if (char === "@" || SQL_WORD_START.test(char)) {
+    if (char === "@" || startsWord(code)) {
       let end = index + 1;
-      while (end < text.length && SQL_WORD_PART.test(text[end])) end += 1;
+      while (end < text.length && continuesWord(text.charCodeAt(end))) end += 1;
       take(char === "@" ? "variable" : "word", end, text.slice(index, end));
       continue;
     }
-    if (/[0-9]/u.test(char)) {
+    if (code >= 48 && code <= 57) {
       let end = index + 1;
-      while (end < text.length && /[0-9A-Za-z_.]/u.test(text[end])) end += 1;
+      while (end < text.length && (continuesWord(text.charCodeAt(end)) || text[end] === ".")) end += 1;
       take("number", end, text.slice(index, end));
       continue;
     }
@@ -498,6 +541,20 @@ function readName(tokens: SqlToken[], start: number): { parts: string[]; end: nu
   return { parts, end };
 }
 
+/**
+ * A call of a function by a name of two or more parts, `schema.function(…)`,
+ * starting at `start`: T-SQL calls a scalar function of a schema only by such
+ * a name, so a call by one part (`CONVERT(…)`, `COUNT(…)`) is the engine's
+ * own. A name that continues another (`).value(`, `@x.value(`, `OBJECT::x`)
+ * or that a word before it makes the thing named is no call.
+ */
+function readCall(tokens: SqlToken[], start: number): { parts: string[]; end: number } | undefined {
+  const previous = tokens[start - 1];
+  if (isSymbol(previous, ".") || isSymbol(previous, "::") || previous?.kind === "variable" || isWord(previous, ...SQL_WORDS_BEFORE_A_NAMED_THING)) return undefined;
+  const name = readName(tokens, start);
+  return name && name.parts.length >= 2 && isSymbol(tokens[name.end], "(") ? name : undefined;
+}
+
 /** The index just past the parenthesised group opening at `open`. */
 function groupEnd(tokens: SqlToken[], open: number): number {
   let depth = 0;
@@ -541,11 +598,52 @@ function commonTableExpressions(tokens: SqlToken[]): Set<string> {
   return names;
 }
 
+/** A table source of a `FROM`, a `JOIN`, an `APPLY` or a `USING`: a table's name (none for a table variable), where its name starts and ends, and its alias. */
+interface TableSource {
+  parts?: string[];
+  start: number;
+  after: number;
+  alias?: string;
+}
+
+/**
+ * The table sources read from `start`, after a `FROM`, a `JOIN`, an `APPLY`
+ * or a `USING`: one, or after a `FROM` each of a comma list (`FROM Users u,
+ * Roles r`). A source may stand in parentheses (`LEFT JOIN (dbo.T t JOIN …)`),
+ * be a table variable, take arguments (a table-valued function), an alias with
+ * its column names, and table hints (`WITH (NOLOCK)`, or the older `(NOLOCK)`).
+ */
+function tableSources(tokens: SqlToken[], start: number, list: boolean): TableSource[] {
+  const sources: TableSource[] = [];
+  let at = start;
+  for (;;) {
+    while (isSymbol(tokens[at], "(")) at += 1;
+    const variable = tokens[at]?.kind === "variable";
+    const name = variable ? undefined : readName(tokens, at);
+    if (!variable && !name) break;
+    const source: TableSource = { parts: name?.parts, start: at, after: name ? name.end : at + 1 };
+    let end = source.after;
+    if (isSymbol(tokens[end], "(")) end = groupEnd(tokens, end);
+    if (isWord(tokens[end], "AS")) end += 1;
+    if (isNameToken(tokens[end])) {
+      source.alias = tokens[end].value;
+      end += 1;
+      if (isSymbol(tokens[end], "(")) end = groupEnd(tokens, end);
+    }
+    if (isWord(tokens[end], "WITH") && isSymbol(tokens[end + 1], "(")) end = groupEnd(tokens, end + 1);
+    sources.push(source);
+    if (!list || !isSymbol(tokens[end], ",")) break;
+    at = end + 1;
+  }
+  return sources;
+}
+
 /**
  * The names the table sources of a statement's own `FROM` are known by, read
  * from `start` to where the statement ends: each table's last part, or its
- * alias. An `UPDATE` or a `DELETE` whose target is one of these names updates
- * that table source, so the target is no object of its own.
+ * alias, a table variable's alias among them (`FROM @Jobs Jobs`). An `UPDATE`
+ * or a `DELETE` whose target is one of these names updates that table source,
+ * so the target is no object of its own.
  */
 function statementSources(tokens: SqlToken[], start: number): Set<string> {
   const names = new Set<string>();
@@ -562,13 +660,10 @@ function statementSources(tokens: SqlToken[], start: number): Set<string> {
       if (SQL_STATEMENT_STARTS.has(word)) break;
     }
     if (!isWord(token, "FROM", "JOIN")) continue;
-    const name = readName(tokens, index + 1);
-    if (!name) continue;
-    names.add(name.parts[name.parts.length - 1].toLowerCase());
-    let after = name.end;
-    if (isSymbol(tokens[after], "(")) after = groupEnd(tokens, after);
-    if (isWord(tokens[after], "AS")) after += 1;
-    if (isNameToken(tokens[after])) names.add(tokens[after].value.toLowerCase());
+    for (const source of tableSources(tokens, index + 1, isWord(token, "FROM"))) {
+      if (source.parts) names.add(source.parts[source.parts.length - 1].toLowerCase());
+      if (source.alias) names.add(source.alias.toLowerCase());
+    }
   }
   return names;
 }
@@ -592,23 +687,32 @@ export interface SqlReference {
 
 /**
  * What a script creates and what it names, read from its tokens batch by
- * batch. A name is no object of the database, and makes no reference, when
- * it is a temporary table (`#name`), a common table expression of its batch,
- * a cursor a `FETCH … FROM` reads, as an `UPDATE`'s or a `DELETE`'s target a
- * table source of the statement's own `FROM`, or the engine's own: a name in
- * a system schema, or a built-in table function.
+ * batch: what it executes (`EXEC @rc = name` too; PL/SQL's `EXECUTE
+ * IMMEDIATE` executes a string, which is not read), reads (`FROM`, `JOIN`,
+ * `APPLY`, a `MERGE`'s `USING`), writes (`INSERT`, `UPDATE`, `DELETE`,
+ * `MERGE`, with or without `INTO` and `FROM`), truncates or alters, what a
+ * foreign key `REFERENCES`, and every function it calls by a name of two or
+ * more parts. A name is no object of the database, and makes no reference,
+ * when it is a temporary table (`#name`), a common table expression of its
+ * batch, a cursor a `FETCH … FROM` reads, a service a `BEGIN DIALOG … FROM`
+ * names, as an `UPDATE`'s or a `DELETE`'s target a table source of the
+ * statement's own `FROM`, or the engine's own: a name in a system schema, a
+ * built-in table function, or a method of the `xml` type.
  */
-function readSql(text: string): { declarations: SqlDeclaration[]; references: SqlReference[] } {
+export function readSql(text: string): { declarations: SqlDeclaration[]; references: SqlReference[] } {
   const declarations: SqlDeclaration[] = [];
   const references: SqlReference[] = [];
   for (const tokens of sqlBatches(sqlTokens(text))) {
     const expressions = commonTableExpressions(tokens);
+    /** Where a table source's name starts that a comma list has read already, so that no later token reads it as a call. */
+    const read = new Set<number>();
     let inBody = false;
     const refer = (verb: string, parts: string[], at: number, target: boolean): void => {
       const last = parts[parts.length - 1];
       if (last.startsWith("#")) return;
       if (parts.length >= 2 && SQL_SYSTEM_SCHEMAS.has(parts[parts.length - 2].toLowerCase())) return;
       if (parts.length === 1 && SQL_BUILT_IN_TABLE_FUNCTIONS.has(last.toLowerCase()) && isSymbol(tokens[at], "(")) return;
+      if (parts.length >= 2 && SQL_XML_METHODS.has(last.toLowerCase()) && isSymbol(tokens[at], "(")) return;
       if (parts.length === 1 && expressions.has(last.toLowerCase())) return;
       if (target && parts.length === 1 && statementSources(tokens, at).has(last.toLowerCase())) return;
       const raw = sqlWrittenName(parts);
@@ -616,8 +720,8 @@ function readSql(text: string): { declarations: SqlDeclaration[]; references: Sq
     };
     for (let index = 0; index < tokens.length; index += 1) {
       const token = tokens[index];
-      if (token.kind !== "word") continue;
-      const word = token.value.toUpperCase();
+      if (token.kind !== "word" && token.kind !== "name") continue;
+      const word = token.kind === "word" ? token.value.toUpperCase() : "";
       const previous = tokens[index - 1];
 
       if (word === "CREATE") {
@@ -641,27 +745,47 @@ function readSql(text: string): { declarations: SqlDeclaration[]; references: Sq
       let target = false;
       if (word === "FROM" && tokens.slice(Math.max(0, index - 3), index).some((before) => isWord(before, "FETCH"))) {
         continue;
-      } else if (word === "EXEC" || word === "EXECUTE" || word === "FROM" || word === "JOIN") {
+      } else if (word === "FROM" && previous?.kind === "variable" && isWord(tokens[index - 2], "DIALOG", "CONVERSATION")) {
+        continue;
+      } else if (word === "EXEC" || word === "EXECUTE") {
+        verb = isWord(tokens[at], "IMMEDIATE") ? undefined : word;
+        if (tokens[at]?.kind === "variable" && isSymbol(tokens[at + 1], "=")) at += 2;
+      } else if (word === "FROM" || word === "JOIN" || word === "APPLY" || (word === "USING" && !isWord(tokens[at + 1], "INDEX"))) {
+        const sources = tableSources(tokens, at, word === "FROM");
+        for (const source of sources) {
+          if (source.parts) refer(word, source.parts, source.after, false);
+          read.add(source.start);
+        }
+        if (sources.length > 0) index = sources[0].after - 1;
+        continue;
+      } else if (word === "REFERENCES") {
         verb = word;
       } else if (word === "UPDATE" && !isWord(previous, "ON")) {
         verb = word;
         target = true;
-      } else if ((word === "INSERT" || word === "MERGE") && isWord(tokens[at], "INTO")) {
-        verb = `${word} INTO`;
-        at += 1;
-      } else if (word === "DELETE" && !isWord(previous, "ON") && isWord(tokens[at], "FROM")) {
-        verb = "DELETE FROM";
-        at += 1;
+      } else if (word === "INSERT" || word === "MERGE") {
+        verb = isWord(tokens[at], "INTO") ? `${word} INTO` : word;
+        at += verb === word ? 0 : 1;
+      } else if (word === "DELETE" && !isWord(previous, "ON")) {
+        verb = isWord(tokens[at], "FROM") ? "DELETE FROM" : word;
+        at += verb === word ? 0 : 1;
         target = true;
       } else if ((word === "TRUNCATE" || word === "ALTER") && isWord(tokens[at], "TABLE")) {
         verb = `${word} TABLE`;
         at += 1;
       }
-      if (!verb) continue;
-      const name = readName(tokens, at);
-      if (!name) continue;
-      refer(verb, name.parts, name.end, target);
-      index = name.end - 1;
+      if (verb) {
+        const name = readName(tokens, at);
+        if (!name) continue;
+        refer(verb, name.parts, name.end, target);
+        index = name.end - 1;
+        continue;
+      }
+
+      const call = read.has(index) ? undefined : readCall(tokens, index);
+      if (!call) continue;
+      refer("CALL", call.parts, call.end, false);
+      index = call.end - 1;
     }
   }
   return { declarations, references };
@@ -713,5 +837,17 @@ export function sqlNameMatches(name: SqlObjectName, declared: SqlObjectName): bo
 
 /** The declared objects a name matches, by {@link sqlNameMatches}. */
 export function matchSqlObject(name: SqlObjectName, index: WorkspaceSymbolIndex): DeclaredSqlObject[] {
-  return declaredSqlObjects(index).filter((object) => sqlNameMatches(name, { parts: object.parts, linked: false }));
+  let byName = sqlObjectsByNameCache.get(index);
+  if (!byName) {
+    byName = new Map();
+    for (const object of declaredSqlObjects(index)) {
+      const last = object.parts[object.parts.length - 1];
+      byName.set(last, [...(byName.get(last) ?? []), object]);
+    }
+    sqlObjectsByNameCache.set(index, byName);
+  }
+  return (byName.get(name.parts[name.parts.length - 1]) ?? []).filter((object) => sqlNameMatches(name, { parts: object.parts, linked: false }));
 }
+
+/** The declared objects by the last part of their name, so that a name is matched only against those it could match; read once per index. */
+const sqlObjectsByNameCache = new WeakMap<WorkspaceSymbolIndex, Map<string, DeclaredSqlObject[]>>();

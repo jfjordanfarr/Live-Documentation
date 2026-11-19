@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/sql-compare.ts
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:37:14.480Z
+- Generated At: 2026-11-19T20:24:00.583Z
 
 ## Authored
 ### Purpose
@@ -62,21 +62,21 @@ Whether a used name is SQL Server's own: a system schema, or an `xml` method on 
 
 #### `SqlReport` {#symbol-sqlreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L286)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L292)
 
 ##### `SqlReport` — Summary
 What the comparison found.
 
 #### `drawSample` {#symbol-drawsample}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L334)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L340)
 
 ##### `drawSample` — Summary
 Draws `count` of the files, in a Fisher–Yates shuffle of their sorted list by the seed, returned sorted.
 
 #### `compareSql` {#symbol-comparesql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L352)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L358)
 - Parameters: `record`: [`ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
 
 ##### `compareSql` — Summary

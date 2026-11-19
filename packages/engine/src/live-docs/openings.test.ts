@@ -86,6 +86,49 @@ describe("database objects", () => {
     expect(sqlReferences(text)).toEqual([{ verb: "FROM", name: { parts: ["dbo", "t"], linked: false }, raw: "dbo.T" }]);
   });
 
+  it("reads what a script calls and applies, executes into a variable, references by a foreign key, and writes without INTO or FROM", () => {
+    const script = [
+      "CREATE TABLE dbo.Line (Id INT, InvoiceId INT REFERENCES dbo.Invoice (Id), Total AS dbo.fn_Total(Id));",
+      "GO",
+      "CREATE PROCEDURE dbo.p AS",
+      "BEGIN",
+      "    DECLARE @rc INT;",
+      "    EXEC @rc = dbo.usp_Archive @Id = 1;",
+      "    INSERT dbo.Audit (Note) VALUES (N'x');",
+      "    DELETE dbo.Old WHERE Id = 1;",
+      "    DELETE o FROM dbo.Older AS o;",
+      "    MERGE dbo.Target AS t USING dbo.Source AS s ON t.Id = s.Id WHEN MATCHED THEN DELETE;",
+      "    IF tSQLt.Private_IsTestClass(@c) = 1",
+      "        SELECT x.y.value('a', 'int'), r.Lines.value('b', 'int') FROM dbo.Lines AS r CROSS APPLY dbo.fn_Split(r.Id) AS f OUTER APPLY r.Doc.nodes('/a') AS n(c);",
+      "    SELECT 1 FROM dbo.Users u WITH (NOLOCK), dbo.Roles AS r, @rows AS w, dbo.fn_Range(1, 2) AS g (n)",
+      "        LEFT JOIN (dbo.Defs d JOIN dbo.Mods m ON m.Id = d.Id) ON 1 = 1;",
+      "    CREATE INDEX ix ON dbo.Line (InvoiceId);",
+      "    GRANT REFERENCES ON dbo.Line TO app;",
+      "    BEGIN DIALOG @h FROM SERVICE [//Billing/Service] TO SERVICE N'//Billing/Service';",
+      "END;",
+      "GO",
+      "CREATE EVENT SESSION calls ON SERVER ADD EVENT sqlserver.rpc_completed (SET collect_statement = 1) ADD TARGET package0.ring_buffer (SET max_memory = 4096);"
+    ].join("\n");
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual([
+      "REFERENCES dbo.Invoice",
+      "CALL dbo.fn_Total",
+      "EXEC dbo.usp_Archive",
+      "INSERT dbo.Audit",
+      "DELETE dbo.Old",
+      "FROM dbo.Older",
+      "MERGE dbo.Target",
+      "USING dbo.Source",
+      "CALL tSQLt.Private_IsTestClass",
+      "FROM dbo.Lines",
+      "APPLY dbo.fn_Split",
+      "FROM dbo.Users",
+      "FROM dbo.Roles",
+      "FROM dbo.fn_Range",
+      "JOIN dbo.Defs",
+      "JOIN dbo.Mods"
+    ]);
+  });
+
   it("reads no name a statement or its batch defines, nor a word T-SQL reserves, as an object", () => {
     const script = [
       "CREATE TYPE dbo.Money FROM DECIMAL(18, 2);",
@@ -96,8 +139,10 @@ describe("database objects", () => {
       "    SELECT * INTO #t FROM totals;",
       "    UPDATE c SET Note = 'x' FROM dbo.Customer AS c JOIN #t ON 1 = 1;",
       "    DELETE FROM t FROM dbo.Old t WHERE t.Id = 1;",
+      "    UPDATE Jobs SET Completed = 1 FROM @Jobs Jobs WHERE JobId = 1;",
       "    UPDATE STATISTICS dbo.Invoice;",
       "    EXECUTE AS USER = 'x';",
+      "    EXECUTE IMMEDIATE 'TRUNCATE TABLE central.day_buffer';",
       "    SELECT * FROM tempdb..#gone;",
       "    INSERT INTO @rows SELECT 1;",
       "    FETCH NEXT FROM columnsLeft INTO @x;",
@@ -109,7 +154,8 @@ describe("database objects", () => {
     expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual([
       "FROM dbo.Invoice",
       "FROM dbo.Customer",
-      "FROM dbo.Old"
+      "FROM dbo.Old",
+      "REFERENCES dbo.Invoice"
     ]);
   });
 
@@ -177,6 +223,13 @@ describe("database objects", () => {
       "SELECT * FROM dbo.Mine JOIN Billing.sys_log ON 1 = 1;"
     ].join("\n");
     expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual(["FROM dbo.Mine", "JOIN Billing.sys_log"]);
+  });
+
+  it("ends a line at a carriage return alone, as editors and SQL Server's parser do", () => {
+    expect(sqlDeclarations("PRINT 1;\r\r\nCREATE TABLE dbo.T (a INT); -- one\rCREATE TABLE dbo.U (a INT);")).toEqual([
+      { kind: "table", name: "dbo.T", line: 3, inBody: false },
+      { kind: "table", name: "dbo.U", line: 4, inBody: false }
+    ]);
   });
 
   it("never lets an apostrophe in a bracketed name open a string: the cold run's smallest crash", () => {

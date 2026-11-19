@@ -198,7 +198,13 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
       (create.scope === "script" ? objects : moduleCreates).push(object);
     }
   }
-  const createdHere = (parts: string[]): boolean => objects.some((object) => names(parts, object.parts));
+  const byLastPart = new Map<string, CreatedObject[]>();
+  for (const object of objects) {
+    const last = object.parts[object.parts.length - 1].toLowerCase();
+    byLastPart.set(last, [...(byLastPart.get(last) ?? []), object]);
+  }
+  const candidates = (parts: string[]): CreatedObject[] => byLastPart.get(parts[parts.length - 1].toLowerCase()) ?? [];
+  const createdHere = (parts: string[]): boolean => candidates(parts).some((object) => names(parts, object.parts));
 
   const lines    = new Map<string, Map<Line, Set<ScriptDomHow>>>();
   const setAside: Record<string, number> = {};
@@ -219,7 +225,7 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
       }
       if (reference.standsFor) { count(reference.standsFor); continue; }
       if (isSqlServerOwn(reference)) { count("SQL Server's own"); continue; }
-      const targets = objects.filter((object) => object.file !== file && names(parts, object.parts));
+      const targets = candidates(parts).filter((object) => object.file !== file && names(parts, object.parts));
       const made: Line[] = targets.length > 0
         ? targets.map((object) => linkLine(object.file, object.name))
         : own.some((created) => names(parts, created)) ? [] : [keptLine(parts)];
