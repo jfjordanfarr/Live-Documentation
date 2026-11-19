@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/world-map.spec.ts
-- Generated At: 2026-11-12T22:44:25.670Z
+- Generated At: 2026-11-19T01:58:19.761Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,9 @@ _No public symbols detected_
 - [`design-audit.TextBox`](./design-audit.ts.mdmd.md#symbol-textbox)
 - [`design-audit.outlines`](./design-audit.ts.mdmd.md#symbol-outlines)
 - [`design-audit.textOverShapes`](./design-audit.ts.mdmd.md#symbol-textovershapes)
+- [`pointer-frames.framesDuring`](./pointer-frames.ts.mdmd.md#symbol-framesduring)
+- [`pointer-frames.recordFrames`](./pointer-frames.ts.mdmd.md#symbol-recordframes)
+- [`pointer-frames.sweepThrough`](./pointer-frames.ts.mdmd.md#symbol-sweepthrough)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 <!-- LIVE-DOC:END Dependencies -->
 

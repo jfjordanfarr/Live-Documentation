@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-directories.spec.ts
-- Generated At: 2026-10-16T21:14:12.320Z
+- Generated At: 2026-11-19T01:58:18.863Z
 
 ## Authored
 ### Purpose
@@ -35,5 +35,6 @@ _No public symbols detected_
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`pointer-frames.restsOn`](./pointer-frames.ts.mdmd.md#symbol-restson)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

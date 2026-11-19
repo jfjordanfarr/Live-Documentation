@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-11-08T18:31:07.970Z
+- Generated At: 2026-11-19T01:58:18.906Z
 
 ## Authored
 ### Purpose
@@ -48,6 +48,10 @@ _No public symbols detected_
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`pointer-frames.framesDuring`](./pointer-frames.ts.mdmd.md#symbol-framesduring)
+- [`pointer-frames.recordFrames`](./pointer-frames.ts.mdmd.md#symbol-recordframes)
+- [`pointer-frames.restsOn`](./pointer-frames.ts.mdmd.md#symbol-restson)
+- [`pointer-frames.sweepThrough`](./pointer-frames.ts.mdmd.md#symbol-sweepthrough)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 <!-- LIVE-DOC:END Dependencies -->
 

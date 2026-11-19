@@ -95,14 +95,14 @@ Since 2026-11-19 ([Turn 22 of the November 18 record](../../../../../../../AI-Ag
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L110)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L111)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L123)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L124)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -110,28 +110,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L132)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L143)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L144)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L172)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L173)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L201)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L202)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -250,6 +250,10 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
+- [`pointerRest.NO_REST`](./pointerRest.ts.mdmd.md#symbol-no_rest)
+- [`PointerRest`](./pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`pointerRest.restAt`](./pointerRest.ts.mdmd.md#symbol-restat)
+- [`pointerRest.restedOn`](./pointerRest.ts.mdmd.md#symbol-restedon)
 - [`wheel.wheelPixels`](./wheel.ts.mdmd.md#symbol-wheelpixels)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
