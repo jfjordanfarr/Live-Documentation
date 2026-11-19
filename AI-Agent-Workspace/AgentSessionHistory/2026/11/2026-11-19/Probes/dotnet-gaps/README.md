@@ -1,6 +1,6 @@
 # The .NET gaps, measured against Microsoft's own tools
 
-Current as of November 19, 2026, end of the second leg. A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). Every number counts something an oracle independent of our reader found, then what our reader draws.
+Current as of November 19, 2026, end of the third leg. A builder measured the six .NET Framework gaps the [cold run](../cold-run/README.md) found, on two public codebases and the repository's estate sample, before changing any reader; the first leg's tables below count what the reader drew before any mend. The second leg mended directives, filename case and solutions, and found the cause of the designer puzzle: see [the second leg](#second-leg-the-mends-and-the-puzzle). The third leg narrowed `~/`, followed `this.`, and compared the C# reader's dependency lines with the compiler's over both corpora: see [the third leg](#third-leg-rulings-built-and-the-compiler-comparison). Every number counts something an oracle independent of our reader found, then what our reader draws.
 
 ## Corpora and oracles
 
@@ -166,3 +166,77 @@ The cause is not how the reader chooses among types of one name. DNN's code styl
 | not at all | 25 / 1 | 29 / 1 |
 
 Candidate A is already what the reader does for bare names; following `this.` would complete it, and would draw about 107 more links on DNN. Because the cause is not type choice, the compiler comparison over the whole corpora was not run in this leg.
+
+## Third leg: rulings built and the compiler comparison
+
+Measured with this branch at `30edd708` (with `main`'s `3feb97fa` picked), fresh generation of both corpora.
+
+### `~/` with one holder only
+
+Ruled: a `~/` path links only when exactly one of the markup's own project and the workspace's web projects holds a file there. Counts after, against the second leg's:
+
+| `~/` paths written in directives | DNN | mojoPortal |
+| --- | ---: | ---: |
+| Written | 99 | 212 |
+| Linked, second leg (own project first) | 92 | 211 |
+| Linked now | 92 | 63 |
+| Several projects hold the path: no link | 0 | 149 |
+| No project holds it: no link | 7 | 0 |
+
+On mojoPortal the 149 are 145 `MasterPageFile="~/App_MasterPages/layout.Master"`, which `Web`, `mojoPortal.Features.UI` and `SuperFlexiUI` each hold, and four master pages whose `CodeBehind` is written as `~/App_MasterPages/layout.Master.cs` (`scripts/tilde_holders.py`). The same seeded draw of twenty resolved wires (seed 1119, from the wires that remain): **DNN 20 of 20 right** (the same twenty as before), **mojoPortal 20 of 20 right**: twelve user controls of `mojoPortal.Features.UI` under `Blog/`, `Forums/` and `List/`, which the project's post-build step copies into `Web/` at the same paths (`xcopy /s … Blog\*.ascx … Web\Blog\`), so the own project's copy is what runs; and eight user controls and master pages of `Web` named from its own pages.
+
+**What reading the deployment would take.** To link a feature page's `layout.Master` to the copy the application serves, a reader would have to evaluate how each web project's build copies its files into another's folder (mojoPortal's `PostBuildEvent` of `xcopy` lines with `$(ProjectDir)`, `$(SolutionDir)` and wildcards; elsewhere `Content` items, `.targets` files or publish profiles) and map each copied file to its destination. The owner knows of no web project in their estate that is copied into a host site at build time, so nothing calls for it yet.
+
+### Why a written path has no link
+
+Adapters have no channel that reaches the end of a generation run: `SourceAnalysisResult` carries symbols, dependencies, re-exports, a program entry and declared entries, and nothing the generator counts or prints. The reason would need one optional field there, for instance `notices?: { reason: string; subject: string }[]`, passed through `analyzeSourceFile`, and a line per reason with its count at the end of `generateLiveDocs`, such as "148 paths beginning ~/ are held by several web projects". None was built, as ruled.
+
+### `this.member` followed
+
+A half of a partial type now links to its peer through `this.member` and `(this).member` as through a bare name. `base.member` does not count (the base list already links the base type), and neither does a member reached through a cast, `((Base)this).member` (the cast's type name links that type). Code-behind to designer, of all pairs:
+
+| | DNN | mojoPortal |
+| --- | ---: | ---: |
+| Pairs | 134 | 308 |
+| Drawn before | 5 | 277 |
+| Drawn after | 112 | 280 |
+
+Every wire gained runs between halves of one partial type, and none was lost (`scripts/new_wires.py`, comparing the second leg's docs with these): DNN gained 109, 107 between a code-behind and its designer and 2 between halves of `EventLogController`; mojoPortal gained 3, all code-behind to designer.
+
+### The C# reader's dependency lines against the compiler's
+
+`scripts/compiler-edges/Program.cs` builds one Roslyn compilation per project from its syntax trees, each referencing the compilations of its `ProjectReference`s, with no framework references, and binds every simple name. A source symbol declared in another file is an edge to each file declaring it (every part of a partial type), labelled by whether a type or only a member carried it; namespaces are not edges. Without the framework, 65% of DNN's 631,719 simple names and 53% of mojoPortal's 567,301 bind; most of the rest are framework names, but a source name reached through a framework type (`Page.Items[…]`) does not bind either, so the compiler's column undercounts. Ours are the C# files' Dependencies lines that name another C# file (`scripts/compare_compiler.py`). Counted as pairs of files:
+
+| | DNN | mojoPortal |
+| --- | ---: | ---: |
+| Our dependency lines from a C# file to a C# file | 20,991 | 8,180 |
+| The compiler's edges | 24,848 | 8,217 |
+| In both | 20,390 (97.1% of ours) | 6,894 (84.3% of ours) |
+| Ours only | 601 | 1,286 |
+| The compiler's only | 4,458 | 1,323 |
+
+Ours that the compiler does not have, by cause:
+
+| Cause | DNN | mojoPortal |
+| --- | ---: | ---: |
+| We chose a namesake: the compiler bound the same name to a type in another file | 30 | 887 |
+| The name is declared in several files and the compiler bound none of them here | 22 | 376 |
+| An attribute named without its suffix, unbound without the framework (an oracle limit) | 243 | 0 |
+| The file names a type the target declares; the compiler did not bind it | 141 | 21 |
+| No name the target declares appears in the file (configuration, reflection, strings) | 164 | 2 |
+| Halves of one partial type with no member use the compiler bound | 1 | 0 |
+
+The namesake rows are wrong wires. mojoPortal keeps one data-layer project per database (`mojoPortal.Data.MSSQL`, `.MySql`, `.SQLite`, `.pgsql`), and each declares the same `mojoPortal.Data.ConnectionString`, `DBFields` and so on. `SuperFlexiData.MSSQL/DBFields.cs` references only the MSSQL project, and the compiler binds `ConnectionString` there; our reader links it to the MySQL, SQLite and pgsql copies as well. The reader resolves a full type name across the whole workspace and does not narrow by the projects the file's project references. About one in six of mojoPortal's C# dependency lines is wrong this way (887 certainly, 376 very likely); DNN has few such duplicates (52). The estate's portal and gateway both declare `Controllers.PaymentsController`, the same shape in miniature.
+
+The compiler's that we lack, by cause:
+
+| Cause | DNN | mojoPortal |
+| --- | ---: | ---: |
+| A member used with no type named (inherited, extension method, through a variable or property) | 3,751 | 1,128 |
+| A type named that only the target declares | 628 | 172 |
+| A type named whose simple name several files declare | 78 | 23 |
+| A member of a partial peer | 1 | 0 |
+
+The first row is by design so far: a dependency line says which declared types a file names, and a file that calls `settings.WebsitePath` on a `LocalSettings` it never names does not list `LocalSettings.cs`. The second and third rows are type names the reader did not resolve; they have not been read one by one.
+
+So "95% of dependency lines resolved" in the cold run counts lines that found a file. Against the compiler, 97% of DNN's C#-to-C# lines and 84% of mojoPortal's are lines the compiler agrees with; the rest are mostly lines that found the wrong one of several same-named types.
