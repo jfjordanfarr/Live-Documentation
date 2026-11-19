@@ -59,6 +59,17 @@ The file is 45% of what it was. It was three current sections over a dated recor
 - **The root read the result whole** before it replaced anything.
 - **Left for another pass:** the thirteen entries under "What they hold about the product", and about twenty more that are partly product decisions, are candidates to move to `direction.md`.
 
+## `ideas.md`
+
+98,486 bytes before (`git show c5493364:AI-Agent-Workspace/Memory/ideas.md`), 92,451 in place; 104 entries before, 88 after.
+
+The file's own rule is to delete an entry when it lands or the owner rejects it, and nobody had applied it for two months. Its editor gave each of the 104 entries a state with evidence ([the ledger](ideas-ledger.md)): 13 landed, 16 partly (rewritten to what remains), 5 rejected or superseded, 13 already among the forms not chosen, 57 still ideas. Sixteen left the file. What stays is arranged by direction's ten subjects, three times over: the owner's ideas first, with their words; then agents' ideas; then forms weighed and not chosen, which answer "did we try that?".
+
+- **Nothing of the owner's left Memory.** Six landed entries held words of theirs found nowhere else; the root moved those quotations into `direction.md` under their subjects before the entries went (`df9aa90e`), each found word for word in its source. One two-word rating of a past chore ("Low priority") was let go; it is in its transcript.
+- **A fresh reader checked every departure against the commits and the code** ([its list](ideas-check.md)): all rightly gone. Of the 13 rewritten entries it found 5 faulty in a part (a thing not built dropped as if built; a stale clause; a parking by the owner left out), and of a sample of 20 still-ideas, 6 in need of a change, two of them already built or answered. All applied; one of its items was reworded by the editor with its reasons.
+- **It caught an error in the new `direction.md`** (see above), which is why its kind of check is now part of the method.
+- **Read whole by the root** before the last pass, and its changed entries after.
+
 ## The other files
 
-`ideas.md` was in its last pass when this was written, and the narrative not begun; their ledgers join this folder as each lands.
+The narrative was not begun when this was written. It is the one file of the four whose size can come down much, since its chapters of October and November 2026 tell a day or two each where the earlier months tell a week or two; its retelling waits on the owner's words in it being checked against the three files now in place, so that none is lost from Memory as a whole.
