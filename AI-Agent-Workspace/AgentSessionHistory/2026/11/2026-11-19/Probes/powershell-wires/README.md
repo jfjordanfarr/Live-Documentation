@@ -549,4 +549,29 @@ A `BeforeAll` sees the file's own level under 3.4.0 and 4.10.1 but not under 5.9
 - **Not read yet:** a file's own statement of its version, such as a `#Requires -Modules @{ ModuleName = 'Pester'; … }` line, a `BeforeDiscovery` or a `-ForEach`, so the stricter reading holds for every file. `BeforeEach`, `AfterAll` and `AfterEach` were not probed for what they see, and the narrowing does not touch them.
 - The adapter's test fails with either half of the rule removed. The oracle test over the fixture agrees.
 
-**On the corpora.** dbatools is unchanged at 7,477. AL-Go goes from 476 to 492 resolved dependencies, with none removed. All 16 new wires are AL-Go tests loading their own action through `$scriptRoot`, which a `BeforeAll` assigns. Sixteen is fewer than thirty, so the sample is the whole set. I read three in their source (`AnalyzeTests.Test.ps1` line 75 dot-sourcing `../AL-Go-Helper.ps1`, `RunHook.Test.ps1`, `CalculateArtifactNames.Test.ps1`) and all three are true. The other thirteen share the same template but were not read line by line. The second judge was not run in this leg.
+**On the corpora.** dbatools is unchanged at 7,477. AL-Go goes from 476 to 492 resolved dependencies, with none removed. All 16 new wires are AL-Go tests loading their own action through `$scriptRoot`, which a `BeforeAll` assigns. Sixteen is fewer than thirty, so the sample is the whole set. I read three in their source (`AnalyzeTests.Test.ps1` line 75 dot-sourcing `../AL-Go-Helper.ps1`, `RunHook.Test.ps1`, `CalculateArtifactNames.Test.ps1`) and all three are true. The other thirteen share the same template but were not read line by line. A second judge read all sixteen, below.
+
+**The second judge** read all sixteen wires in their source, blind to the first verdicts, and found all sixteen true under Pester 5 and under 3 and 4. In each, a `BeforeAll` builds the path and an `It` dot-sources or runs it. The judge also noted:
+- Several of those tests use Pester 5's `Should -Invoke`. Under Pester 4 that assertion fails, but only after the load has run.
+- Under a 3.x release older than the first with `BeforeAll`, no `It` would run at all. The judge did not confirm which release that is.
+
+The oracle, rerun over AL-Go with the rule written its second time, agrees: of 493 pairs it expects, the adapter draws 492 and invents none. The one it misses is the written-out list load in `Invoke-CopilotPRReview.psm1`, a file the grammar still reads with an error.
+
+## More of the grammar's idioms _(added November 19, 2026, late night)_
+
+Three more rules, each with a corpus entry that failed first: `test/corpus/multipliers.txt`, `labels.txt`, `switches.txt`.
+- **A number's multiplier, type suffix and exponent in any case:** `1GB`, `10L`, `1E3`. Upstream allowed only the lower case; PowerShell reads both.
+- **A label that `break` or `continue` names bare:** `continue main`. Upstream allowed only `:main` or an expression.
+- **A switch label in quotes:** `"In Progress" { }`, `'Read-intent only' { }`, and `switch -regex` patterns. Upstream's bare-word token took `"In` for a whole label. A token of the switch's own, which never begins with a quote, leaves a quoted label to the string. Upstream's own switch tests, whose labels are numbers, still pass.
+
+| | dbatools | AL-Go | AzureStack-Tools | tSQLt | shop | All |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| files with an error node, before this round | 68 | 31 | 10 | 3 | 1 | 113 |
+| after | 46 | 30 | 9 | 3 | 1 | 89 |
+| functions missing, before | 5 | 0 | 5 | 0 | 0 | 10 |
+| after | 1 | 0 | 5 | 0 | 0 | 6 |
+
+- No file is newly in error. `Install-DbaInstance.ps1` and the three functions inside it are no longer missing. Its first error was a quoted `switch -regex` label, so that mend most likely freed them, but the mends were not graded one at a time.
+- **`switch` as an expression** (`$x = switch ($y) { … }`) needed no rule of its own. The small cases read without error once the earlier mends were in.
+- **Not mended: a member after a method call, as a command argument** (`-Value $object.GetType().Name`). Upstream reads `$o.GetType()` in argument mode as a member access followed by a separate argument list, a rule of its own (`_command_element`), so nothing can follow the call. Reading it as an invocation would change the trees of upstream's own corpus tests, which the patch does not carry. It needs a decision on carrying upstream's corpus.
+- **Not mended: the typographic quote.** PowerShell 7 here ends a single-quoted string at `’`. Whether Windows PowerShell 5.1's tokenizer does the same was not checked, since 5.1 is not here. That question goes to what only Windows can show.
