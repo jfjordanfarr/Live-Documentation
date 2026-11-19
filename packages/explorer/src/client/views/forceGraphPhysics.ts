@@ -572,6 +572,11 @@ export class SpatialMotion {
   /** A reading of the forces where the spheres stand, in progress over parts, when the last one was left stale. */
   private rereading: { evaluation: FieldEvaluation; next: number } | null = null;
   private pending: TickInProgress | null = null;
+  /**
+   * The spheres of evaluation the last call to `advance` took, across every reading and substep it reached: what a
+   * paced caller divides by the call's time to size its next part (2026-11-19).
+   */
+  evaluated = 0;
 
   constructor(readonly field: SpatialField, readonly positions: Float64Array, readonly settings: MotionSettings, velocity?: Float64Array, anchor?: Float64Array) {
     if (!(settings.step > 0 && Number.isFinite(settings.step) && settings.drag >= 0 && Number.isFinite(settings.drag))) throw new Error("The motion needs a positive step and a nonnegative drag.");
@@ -648,11 +653,12 @@ export class SpatialMotion {
     if (!(spheres > 0)) throw new Error("A part of a tick needs a positive budget of spheres.");
     const x = this.positions, v = this.velocity, n = this.field.count, anchor = this.held ? this.anchor : undefined;
     let left = spheres;
+    this.evaluated = 0;
     if (!this.reading) {
       if (!x.every(Number.isFinite)) throw new Error("The spatial motion needs finite positions and velocities.");
       this.rereading ??= { evaluation: this.field.begin(x, this.force, anchor), next: 0 };
       const read = this.rereading;
-      while (read.next < n && left > 0) { const to = Math.min(n, read.next + left); read.evaluation.step(read.next, to); left -= to - read.next; read.next = to; }
+      while (read.next < n && left > 0) { const to = Math.min(n, read.next + left); read.evaluation.step(read.next, to); left -= to - read.next; this.evaluated += to - read.next; read.next = to; }
       if (read.next < n) return null;
       this.reading = read.evaluation.finish();
       this.rereading = null;
@@ -690,7 +696,7 @@ export class SpatialMotion {
         }
         trial = pending.trial = { h, decay, evaluation: this.field.begin(this.nextPositions, this.next, anchor), next: 0 };
       }
-      while (trial.next < n && left > 0) { const to = Math.min(n, trial.next + left); trial.evaluation.step(trial.next, to); left -= to - trial.next; trial.next = to; }
+      while (trial.next < n && left > 0) { const to = Math.min(n, trial.next + left); trial.evaluation.step(trial.next, to); left -= to - trial.next; this.evaluated += to - trial.next; trial.next = to; }
       if (trial.next < n) return null;
       const endpoint: FieldReading = trial.evaluation.finish();
       const { h, decay } = trial;
