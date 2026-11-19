@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-19T05:17:19.178Z
+- Generated At: 2026-11-19T05:51:24.267Z
 
 ## Authored
 ### Purpose
@@ -340,21 +340,23 @@ Every Arrival choice, in the order the control offers them; the first, reading s
 
 #### `CameraFraming` {#symbol-cameraframing}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L385)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L389)
 
 ##### `CameraFraming` — Summary
-Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it.
+Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",
+a matched alternative for the owner's eye (root's ruling, 2026-11-19), follows as far out as the overview look when every
+target is a whole-file pin.
 
 #### `FRAMINGS` {#symbol-framings}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L388)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L392)
 
 ##### `FRAMINGS` — Summary
 Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L394)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L398)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -362,14 +364,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L397)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L401)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L406)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L410)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -380,42 +382,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L409)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L413)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
 Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L412)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L416)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L521)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L525)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L526)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L530)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L533)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L537)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L539)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L543)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -423,7 +425,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L568)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L572)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
