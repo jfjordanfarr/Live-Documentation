@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/index.ts
-- Generated At: 2026-11-19T04:54:33.206Z
+- Generated At: 2026-11-19T07:17:27.559Z
 
 ## Authored
 ### Purpose
@@ -35,11 +35,11 @@ Creates a Local Map view backed by a {@link LocalViewController}.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L38)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L40)
 
 #### `LocalViewOptions` {#symbol-localviewoptions}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L38)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L40)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
