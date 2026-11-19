@@ -32,4 +32,6 @@ The tolerance asked for was the rest rule's own, 3 × 10⁻⁵ of the picture's 
 
 **A hand.** A part is held to one evaluation at a call after a hand moved a sphere, as every part was, so a drag goes as it went; the pacing reaches further only between such calls.
 
+**Frames now depend on the machine.** Before, a frame drew one substep whatever the machine, so a settle's frames were the picture's alone. Now a frame draws as many substeps as fit in its 10 ms, so a loaded machine draws fewer a frame and takes more frames: the discovery growth took 3,883 frames (215 s) at a load of 24 to 29 with a screenshot every 60 frames, against 2,638 at a load of 2.5, and still rested with all 305 spheres in main's places to the last digit. Under such a load the discovery case's bound of 2,700 frames can be crossed again by the machine, not the picture.
+
 **The lane, on the final build of step 1**, each file alone through the browser lane: `force-graph-structure-cells` 3 passed, `force-graph-discovery` 3 passed (the grown group at rest in 2,638 frames, 46.1 s), `force-graph-exploration` 8 passed (`:206`, the case the first pacing broke, among them), `force-graph-building` 3, `force-graph-defaults` 7, `force-graph-focus` 15, `force-graph-shells` 9, `history-emphasis` 16. Loads 2.3 to 4.0.
