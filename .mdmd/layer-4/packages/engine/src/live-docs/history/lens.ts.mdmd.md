@@ -13,7 +13,7 @@ The lens's key: a hash of the generator's identity and the normalized configurat
 ### Notes
 - Written 2026-10-17 for C1, scenario 13 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md): "A sequence says which generator and configuration made it; the cache is keyed by both; a new lens recomputes", from the owner's one lens of [Turn 3 of October 16](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3).
 - The key is the first sixteen hexadecimal digits of a SHA-256 and names the cache's folder.
-- Since the evening of 2026-10-18 the key is made of the generator's version, its committed and uncommitted tool inputs, with the configuration; the commit rides in the lens and does not key it. The tool checkout's root dependency lock joined those inputs on 2026-10-19, so a dependency-only change recomputes without treating the scanned project's lock as part of the tool.
+- Since the evening of 2026-10-18 the key is made of the generator's version, its committed and uncommitted tool inputs, with the configuration; the commit rides in the lens and does not key it. The tool checkout's root dependency lock joined those inputs on 2026-10-19, so a dependency-only change recomputes without treating the scanned project's lock as part of the tool. The runtime's version of Unicode joined them on 2026-11-19, once the engine's order and its anchors were made to depend on nothing else of the runtime.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

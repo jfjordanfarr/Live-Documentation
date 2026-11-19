@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds `compareText` to its order: alphabetical without regard to case, capitals before small letters where only case differs, and everything else by code unit.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 with the function. The names are the ones the ASP.NET adapter's test sorts, whose expected order the folded comparison keeps.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

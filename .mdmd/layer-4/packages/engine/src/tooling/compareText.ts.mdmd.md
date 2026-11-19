@@ -8,10 +8,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The one order the engine sorts names, labels and paths by, alphabetical without regard to case and then by code unit, so that the docs list their lines in the same order on every machine and every Node.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 after [the independent review of the history's data](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#work-notes-the-historys-data-handed-back-measured-and-sent-to-an-independent-review) found that the engine sorted with `localeCompare`, whose order is the collation of the ICU data Node was built with and of the process's locale: the history's summaries keep the docs' order, and two runs of one generator could have differed. Every `localeCompare` of the engine became this function in one commit; this repository's mirror kept its order line for line.
+- Case is folded with `toLowerCase`, which depends on the version of Unicode the runtime lowers by; the history's lens keys on that version (`generatorIdentity.ts`).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
