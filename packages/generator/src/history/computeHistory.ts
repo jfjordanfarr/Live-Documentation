@@ -29,7 +29,7 @@
  * @module
  */
 
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -140,8 +140,17 @@ export const HEAD_CHECK_RULE =
  */
 const POOL_RECORD = "pool.json";
 
-/** The lock a run holds under the history folder while it writes there. */
-const RUN_LOCK = "run.lock";
+/**
+ * A run's claim on the history folder while it writes there: an empty file named by the machine, the process and a
+ * nonce, `run.<host>.<pid>.<nonce>.lock`, made in one step so that no one ever reads a claim half written.
+ */
+const LOCK_NAME = /^run\.([0-9a-f]{12})\.(\d+)\.([0-9a-z]+)\.lock$/u;
+
+/** How many times a run that met another's claim tries again, a short random wait apart, before it refuses. */
+const LOCK_ATTEMPTS = 6;
+
+/** The marker a lens's cache folder holds once a run wrote a whole history from it: when, and of which head. */
+const WHOLE_MARKER = "whole.json";
 
 /**
  * What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -189,13 +198,17 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   const historyFolder = path.join(workspaceRoot, configuration.root, HISTORY_DIRECTORY);
   const cacheFolder = path.join(historyFolder, lens.key);
   await prepareHistoryFolder(historyFolder, cacheFolder);
-  const release = await holdLock(historyFolder, options.progress);
   const scratch = new Scratch();
-  try {
-    return await scratch.during(() => run(options, { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder, scratch }));
-  } finally {
-    await release();
-  }
+  return scratch.during(async () => {
+    // A signal removes the claim with the scratch folders; a run that ends removes it here.
+    const claim = await holdLock(historyFolder, options.progress);
+    scratch.hold(claim);
+    try {
+      return await run(options, { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder, scratch });
+    } finally {
+      await scratch.release(claim);
+    }
+  });
 }
 
 interface RunContext {
@@ -217,6 +230,12 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const leftovers = await removeLeftovers(historyFolder);
   if (leftovers > 0) {
     options.progress(`removed ${leftovers} files a stopped run left half written`);
+  }
+  if (options.removeSuperseded === true) {
+    // While the current lens fills, only the newest whole lens is kept beside it, so the folder never holds more than two.
+    for (const cache of await supersededCaches(historyFolder, lens.key, "all but the newest whole", relative)) {
+      if (cache.removed) options.progress(`removed ${cache.folder}, the cache of a lens that is neither the current one nor the newest whole one: ${formatBytes(cache.bytes)}`);
+    }
   }
   const textStore = path.join(cacheFolder, TEXT_STORE_DIRECTORY);
   const { missing, damaged } = await uncached(sampled, cacheFolder, textStore, lens.key, options.keepIndex);
@@ -285,9 +304,10 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   });
   options.progress(headCheck.line);
   await writeSequence(sequence, historyFolder, textStore, texts, options.progress);
+  await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
 
   // Only now does the current lens hold every sampled change, so the caches of other lenses can go.
-  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true, relative);
+  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true ? "all" : "none", relative);
   for (const cache of superseded) {
     options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
   }
@@ -313,34 +333,45 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
 }
 
 /**
- * Takes the lock of the history folder, or refuses while another run on this machine holds it; a lock whose run has
- * ended, or that a run on another machine left in a folder copied here, as a restored cache is, is taken over.
+ * Claims the history folder for this run, or refuses while another run on this machine holds a claim.
  *
- * @returns What releases it.
+ * @remarks
+ * Each run makes a claim of its own, an empty file whose name says the machine and the process, and only then lists
+ * the claims there are: it holds the folder when no other claim of a live run stands, and otherwise withdraws its own,
+ * waits a short random while and tries again, refusing after {@link LOCK_ATTEMPTS} tries. Two runs can never both
+ * hold the folder: each made its claim before it looked, so the later to look always sees the other's. A claim whose
+ * process has ended on this machine, or that a run on another machine left in a folder copied here, as a restored
+ * cache is, is removed by whoever meets it, which is safe whoever else removes it too. Until a second review of
+ * 2026-11-19 one lock file was written and then taken over by removing it, and two runs meeting a dead lock at once
+ * could both proceed, one removing the other's fresh lock.
+ *
+ * @returns The claim's path, which the caller removes when the run ends.
  */
-async function holdLock(historyFolder: string, progress: (line: string) => void): Promise<() => Promise<void>> {
-  const lock = path.join(historyFolder, RUN_LOCK);
-  const mine = JSON.stringify({ pid: process.pid, host: os.hostname(), started: new Date().toISOString() });
-  for (;;) {
-    try {
-      await fs.writeFile(lock, mine, { flag: "wx" });
-      return () => fs.rm(lock, { force: true });
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+export async function holdLock(historyFolder: string, progress: (line: string) => void): Promise<string> {
+  const host = createHash("sha256").update(os.hostname()).digest("hex").slice(0, 12);
+  for (let attempt = 1; ; attempt += 1) {
+    const claim = path.join(historyFolder, `run.${host}.${process.pid}.${randomBytes(6).toString("hex")}.lock`);
+    await fs.writeFile(claim, "", { flag: "wx" });
+    let holder: { pid: number; since: Date } | undefined;
+    for (const name of await fs.readdir(historyFolder)) {
+      const other = LOCK_NAME.exec(name);
+      if (other === null || path.join(historyFolder, name) === claim) continue;
+      const pid = Number(other[2]);
+      if (other[1] === host && alive(pid)) {
+        holder ??= { pid, since: (await fs.stat(path.join(historyFolder, name)).catch(() => undefined))?.mtime ?? new Date(0) };
+        continue;
+      }
+      await fs.rm(path.join(historyFolder, name), { force: true });
+      progress(`removed ${name}, the claim of ${other[1] === host ? `process ${pid}, which has ended` : "a run on another machine"}`);
     }
-    let holder: { pid?: number; host?: string; started?: string } = {};
-    try {
-      holder = JSON.parse(await fs.readFile(lock, "utf8")) as typeof holder;
-    } catch {
-      // Unreadable, or removed meanwhile: taken over below, or written afresh at the next turn.
-    }
-    if (holder.host === os.hostname() && typeof holder.pid === "number" && alive(holder.pid)) {
+    if (holder === undefined) return claim;
+    await fs.rm(claim, { force: true });
+    if (attempt >= LOCK_ATTEMPTS) {
       throw new Error(
-        `another history run (process ${holder.pid}, since ${holder.started ?? "an unknown time"}) is writing under ${historyFolder}; wait for it to end, or remove ${lock} if no such process runs`
+        `another history run (process ${holder.pid}, since ${holder.since.toISOString()}) is writing under ${historyFolder}; wait for it to end, or remove its run.*.${holder.pid}.*.lock there if no such process runs`
       );
     }
-    progress(`took over the lock ${lock}, which ${holder.host === os.hostname() ? `process ${holder.pid ?? "?"} left when it ended` : `a run on ${holder.host ?? "another machine"} left`}`);
-    await fs.rm(lock, { force: true });
+    await new Promise((resolve) => setTimeout(resolve, 50 + Math.random() * 200));
   }
 }
 
@@ -446,20 +477,31 @@ async function inBatches<T>(items: readonly T[], work: (item: T) => Promise<void
   }
 }
 
-/** The cache folders under the history folder named by a lens key other than the current one, removed when asked. */
-async function supersededCaches(historyFolder: string, current: string, remove: boolean, relative: (absolute: string) => string): Promise<SupersededCache[]> {
-  const caches: SupersededCache[] = [];
+/**
+ * The cache folders under the history folder named by a lens key other than the current one, each removed as asked:
+ * `all`, `none`, or `all but the newest whole`, which keeps the other lens a whole history was most recently written
+ * from (its `whole.json`), so that a lens that comes back finds its cache.
+ */
+async function supersededCaches(historyFolder: string, current: string, remove: "all" | "none" | "all but the newest whole", relative: (absolute: string) => string): Promise<SupersededCache[]> {
+  const others: Array<{ lens: string; folder: string; whole?: string }> = [];
   for (const entry of await fs.readdir(historyFolder, { withFileTypes: true })) {
     // A lens key is sixteen hexadecimal digits (`lensOf`); nothing else the history folder holds is named so.
     if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || entry.name === current) {
       continue;
     }
     const folder = path.join(historyFolder, entry.name);
-    const bytes = await folderBytes(folder);
-    if (remove) {
-      await fs.rm(folder, { recursive: true, force: true });
+    const whole = await fs.readFile(path.join(folder, WHOLE_MARKER), "utf8").then((text) => (JSON.parse(text) as { at?: string }).at, () => undefined);
+    others.push({ lens: entry.name, folder, ...(typeof whole === "string" ? { whole } : {}) });
+  }
+  const newestWhole = others.filter((other) => other.whole !== undefined).sort((a, b) => compare(b.whole!, a.whole!))[0]?.lens;
+  const caches: SupersededCache[] = [];
+  for (const other of others) {
+    const bytes = await folderBytes(other.folder);
+    const removed = remove === "all" || (remove === "all but the newest whole" && other.lens !== newestWhole);
+    if (removed) {
+      await fs.rm(other.folder, { recursive: true, force: true });
     }
-    caches.push({ lens: entry.name, folder: relative(folder), bytes, removed: remove });
+    caches.push({ lens: other.lens, folder: relative(other.folder), bytes, removed });
   }
   return caches.sort((a, b) => compare(a.lens, b.lens));
 }

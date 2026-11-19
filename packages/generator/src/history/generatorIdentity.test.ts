@@ -105,8 +105,56 @@ function historyModules(): string[] {
  * implements the version control, which writes the commit's tree the process reads.
  */
 function actsForASummary(text: string): boolean {
-  return /from\s+["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) || /\bimplements\s+VersionControl\b/u.test(text);
+  return (
+    /["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) ||
+    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync)\s*\(/u.test(text) ||
+    /\bimplements\s+VersionControl\b/u.test(text)
+  );
 }
+
+/**
+ * The modules of the history folders that start processes for another reason than a summary, each with why it is not
+ * keyed: a module joins this list only by a reviewed reason.
+ */
+const ACTING_UNKEYED: Record<string, string> = {
+  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree"
+};
+
+/** The names of an interface's members, read by the TypeScript parser. */
+function membersOf(file: string, name: string): string[] {
+  const source = ts.createSourceFile(file, readFileSync(path.join(repository, file), "utf8"), ts.ScriptTarget.Latest, true);
+  const found = source.statements.find((statement): statement is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(statement) && statement.name.text === name);
+  if (found === undefined) throw new Error(`${file} declares no interface ${name}`);
+  return found.members.map((member) => (member.name && ts.isIdentifier(member.name) ? member.name.text : member.getText(source)));
+}
+
+/**
+ * What the command, which is not keyed, hands to the keyed code that makes a summary, each with why it cannot change
+ * what a summary says unkeyed: a new member fails the guard until it is shown not to reach a summary, or joins the key.
+ */
+const HANDED_TO_REGENERATION: Record<string, string> = {
+  versionControl: "an implementation of the version control, every one of which is keyed (the rule above)",
+  configuration: "the lens's configuration, which is half of the key itself",
+  lens: "the key itself, written into each summary",
+  cacheFolder: "where summaries and texts are written, never what they say",
+  keepIndex: "whether the full index is kept beside a summary, which the summary does not name",
+  jobs: "how many commits are regenerated at once",
+  deadline: "when to start no further commit",
+  scratch: "where the trees are written and what a signal removes; summaries name workspace-relative paths only",
+  progress: "where progress lines go"
+};
+
+/** What the keyed command side hands the summarizing process, each with what decides it. */
+const HANDED_TO_SUMMARY: Record<string, string> = {
+  tree: "the commit's tree, written by the keyed version control",
+  configuration: "the lens's configuration, half of the key",
+  lens: "the key",
+  commit: "the commit summarized",
+  summaryPath: "where the summary goes",
+  textStore: "where the texts go",
+  indexPath: "where the full index goes, when kept",
+  unwritten: "the entries the keyed tree writer left out"
+};
 
 describe("the lens's key", () => {
   // Read once: parsing the closure's hundred-odd modules takes seconds on a loaded machine.
@@ -125,8 +173,8 @@ describe("the lens's key", () => {
 
   it("keys every module of the history folders that starts a process or writes a commit's tree, which no import shows", () => {
     const acting = historyModules().filter((file) => actsForASummary(readFileSync(path.join(repository, file), "utf8")));
-    expect(acting.sort()).toEqual(["packages/engine/src/live-docs/history/git.ts", "packages/generator/src/history/regenerate.ts"]);
-    expect(acting.filter((file) => !keysTheLens(file))).toEqual([]);
+    expect(acting.sort()).toEqual(["packages/engine/src/live-docs/history/git.ts", "packages/generator/src/history/generatorIdentity.ts", "packages/generator/src/history/regenerate.ts"]);
+    expect(acting.filter((file) => !keysTheLens(file) && ACTING_UNKEYED[file] === undefined)).toEqual([]);
     // Every summary module is reached by import from the summarizing process or the command's side of it, or acts so.
     expect(SUMMARY_MODULES.filter((file) => !summaryClosure().reached.has(file) && !acting.includes(file))).toEqual([]);
   });
@@ -137,6 +185,19 @@ describe("the lens's key", () => {
     expect(actsForASummary(`class GitRepository implements VersionControl {}`)).toBe(true);
     expect(actsForASummary(`import type { VersionControl } from "./versionControl";`)).toBe(false);
     expect(keysTheLens("packages/generator/src/history/computeHistory.ts")).toBe(false);
+    // A process started without importing `child_process` by name, through a dynamic import, a require or a helper.
+    expect(actsForASummary(`const { fork } = await import("node:child_process");`)).toBe(true);
+    expect(actsForASummary(`const cp = require("child_process");`)).toBe(true);
+    expect(actsForASummary(`await execFileAsync("git", ["ls-tree", change], options);`)).toBe(true);
+  });
+
+  it("holds what the command hands to the code that makes a summary to members each shown not to change it unkeyed", () => {
+    // A member added to either, an environment say, fails here until it is shown not to reach a summary or joins the key.
+    expect(membersOf("packages/generator/src/history/regenerate.ts", "RegenerationContext").sort()).toEqual(Object.keys(HANDED_TO_REGENERATION).sort());
+    expect(membersOf("packages/generator/src/history/summarizeChange.ts", "SummaryTask").sort()).toEqual(Object.keys(HANDED_TO_SUMMARY).sort());
+    // The command calls the keyed side by that context alone.
+    const command = readFileSync(path.join(repository, "packages/generator/src/history/computeHistory.ts"), "utf8");
+    expect(command).not.toMatch(/\bfork\s*\(|\bspawn\s*\(|summarizeChange/u);
   });
 
   it("meets no import it cannot follow on the way", () => {

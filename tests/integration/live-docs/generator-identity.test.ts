@@ -165,7 +165,7 @@ describe("the tool lock in the history lens", () => {
     commit(root, "remove the summary");
 
     // The command's side of a summary, the tree's reading, and data beside the history's modules key it too.
-    for (const file of ["git.ts", "table.json"]) {
+    for (const file of ["git.ts", "table.json", "../../../../../tsconfig.base.json"]) {
       const before = identity(modulePath, root);
       fs.writeFileSync(path.join(history, file), `${file}\n`);
       expect(identity(modulePath, root).modified, file).not.toBeNull();

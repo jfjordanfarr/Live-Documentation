@@ -59,6 +59,11 @@ export class Scratch {
     return made;
   }
 
+  /** Holds a file or folder made elsewhere, so that a signal removes it too, until {@link release}. */
+  hold(made: string): void {
+    this.folders.add(made);
+  }
+
   /** Removes a folder and everything in it. */
   async release(folder: string): Promise<void> {
     await fs.rm(folder, { recursive: true, force: true });

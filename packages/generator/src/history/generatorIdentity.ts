@@ -44,6 +44,8 @@ const PACKAGE_ROOT = path.resolve(__dirname, "..", "..");
 
 // The folders whose code makes a summary, as they stand in a checkout of this repository.
 const GENERATOR_FOLDERS = ["packages/engine", "packages/generator"];
+// The file outside them that decides what the summarizing process loads: its paths make it load the packages' sources.
+const GENERATOR_FILES = ["tsconfig.base.json"];
 // This repository's lock names the installed tool dependencies, including parser versions; a scanned project's lock is not ours.
 const TOOL_DEPENDENCY_LOCK = "package-lock.json";
 
@@ -67,10 +69,13 @@ export const SUMMARY_MODULES = [
 export const SUMMARY_ENTRIES = ["packages/generator/src/history/summarizeChange.ts", "packages/generator/src/history/regenerate.ts"];
 
 /**
- * Whether a file of the two packages, by its repository-relative path, keys the lens: every file but a test and the
- * TypeScript modules of the history folders that decide nothing of a summary.
+ * Whether a file, by its repository-relative path, keys the lens: every file of the two packages but a test and the
+ * TypeScript modules of the history folders that decide nothing of a summary, and the base TypeScript configuration.
  */
 export function keysTheLens(file: string): boolean {
+  if (GENERATOR_FILES.includes(file)) {
+    return true;
+  }
   if (!GENERATOR_FOLDERS.some((folder) => file.startsWith(`${folder}/`))) {
     return false;
   }
@@ -110,7 +115,7 @@ async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: 
   const commit = (await git(topLevel, ["rev-parse", "HEAD"])).trim();
   // The committed tool inputs: every keyed file's blob and this tool's dependency lock. ls-tree returns empty when the lock is absent.
   const [tree, lockEntry] = await Promise.all([
-    git(topLevel, ["ls-tree", "-r", "-z", "--full-tree", "HEAD", "--", ...GENERATOR_FOLDERS]),
+    git(topLevel, ["ls-tree", "-r", "-z", "--full-tree", "HEAD", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES]),
     git(topLevel, ["ls-tree", "HEAD", "--", TOOL_DEPENDENCY_LOCK])
   ]);
   // Each entry is `<mode> blob <id>\t<path>`.
@@ -119,7 +124,7 @@ async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: 
   const committedLock = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
   if (committedLock === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
   const workingLock = await workingLockBlob(topLevel);
-  const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS])).filter(keysTheLens);
+  const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES])).filter(keysTheLens);
   if (changed.length === 0 && workingLock === committedLock) {
     return { code, commit, modified: null };
   }

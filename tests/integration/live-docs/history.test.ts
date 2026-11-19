@@ -6,7 +6,8 @@
  * renamed whole; and what `inspect --at` and `inspect --between` answer from
  * the sequence.
  */
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -511,41 +512,77 @@ describe("the history over a repository that commits its mirror", () => {
     expect(sequence.words!.folder).toMatch(/^history-words-[0-9a-f]{16}$/u);
   });
 
-  it("removes what a stopped run left half written, and refuses to write beside a run that holds the lock", () => {
+  it("removes what a stopped run left half written, and refuses to write beside a run that holds the folder", () => {
     const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
     const leftover = path.join(history, lens, `${ids[0]}.json.gz.4242.partial`);
     fs.writeFileSync(leftover, "half");
-    // This test's own process holds the lock, as another run on this machine would.
-    fs.writeFileSync(path.join(history, "run.lock"), JSON.stringify({ pid: process.pid, host: os.hostname(), started: "2026-11-19T00:00:00.000Z" }));
+    const host = createHash("sha256").update(os.hostname()).digest("hex").slice(0, 12);
+    // This test's own process holds a claim, as another run on this machine would.
+    const live = path.join(history, `run.${host}.${process.pid}.test.lock`);
+    fs.writeFileSync(live, "");
     const refused = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
+    fs.rmSync(live);
     expect(refused.exitCode).toBe(1);
     expect(refused.stderr).toContain(`another history run (process ${process.pid}`);
     expect(fs.existsSync(leftover)).toBe(true);
-    // A lock whose process has ended is taken over.
-    fs.writeFileSync(path.join(history, "run.lock"), JSON.stringify({ pid: 2 ** 22 + 1, host: os.hostname() }));
+    // A claim whose process has ended, and one a run on another machine left, are removed.
+    fs.writeFileSync(path.join(history, `run.${host}.${2 ** 22 + 1}.dead.lock`), "");
+    fs.writeFileSync(path.join(history, "run.0123456789ab.42.elsewhere.lock"), "");
     const resumed = runCli(historyScript, ["--workspace", checked, "--jobs", "1"]);
     expect(resumed.exitCode, resumed.stderr).toBe(0);
-    expect(resumed.stderr).toContain("took over the lock");
+    expect(resumed.stderr).toContain(`the claim of process ${2 ** 22 + 1}, which has ended`);
+    expect(resumed.stderr).toContain("the claim of a run on another machine");
     expect(resumed.stderr).toContain("removed 1 files a stopped run left half written");
     expect(fs.existsSync(leftover)).toBe(false);
-    expect(fs.existsSync(path.join(history, "run.lock"))).toBe(false);
+    expect(fs.readdirSync(history).filter((name) => name.endsWith(".lock"))).toEqual([]);
   });
 
-  it("stops when asked before the cache is whole, writes no history, and keeps every other lens's cache", () => {
+  it("removes its claim and its scratch trees when a signal stops it", async () => {
     const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
-    const stale = path.join(history, "0123456789abcdef");
-    fs.mkdirSync(stale, { recursive: true });
+    for (const commit of ids) fs.rmSync(path.join(history, lens, `${commit}.json.gz`));
+    const before = new Set(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-")));
+    const child = spawn(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", checked, "--jobs", "2"], { env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+    let stderr = "";
+    child.stderr.setEncoding("utf8");
+    const exited = new Promise<number | null>((resolve) => child.on("exit", (code) => resolve(code)));
+    // Stopped once its summarizing processes are at work, its trees written and its claim held.
+    await new Promise<void>((resolve) => {
+      child.stderr.on("data", (text: string) => {
+        stderr += text;
+        if (stderr.includes("to regenerate")) resolve();
+      });
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    child.kill("SIGINT");
+    expect(await exited).toBe(130);
+    expect(fs.readdirSync(history).filter((name) => name.endsWith(".lock"))).toEqual([]);
+    expect(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith("live-docs-history-") && !before.has(name))).toEqual([]);
+    // The next run regenerates what the stopped one did not finish.
+    const mended = runCli(historyScript, ["--workspace", checked, "--jobs", "2"]);
+    expect(mended.exitCode, mended.stderr).toBe(0);
+  }, 120_000);
+
+  it("stops when asked before the cache is whole, writes no history, and keeps beside the current lens only the newest whole one", () => {
+    const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
+    // Two older lenses: one a whole history was written from, and one a run never finished.
+    const whole = path.join(history, "0123456789abcdef");
+    const partial = path.join(history, "fedcba9876543210");
+    fs.mkdirSync(whole, { recursive: true });
+    fs.writeFileSync(path.join(whole, "whole.json"), JSON.stringify({ head: "abc", changes: 3, at: "2026-11-01T00:00:00.000Z" }));
+    fs.mkdirSync(partial, { recursive: true });
     fs.rmSync(path.join(history, lens, `${ids[1]}.json.gz`));
     fs.rmSync(path.join(history, "history.json"));
     const stopped = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--stop-after", "0", "--remove-superseded"]);
     expect(stopped.exitCode, stopped.stderr).toBe(3);
     expect(stopped.stdout).toContain(`History incomplete: stopped after 0 minutes, as asked: the cache at .mdmd/history/${lens} holds 2 of the 3 changes sampled`);
     expect(fs.existsSync(path.join(history, "history.json"))).toBe(false);
-    expect(fs.existsSync(stale)).toBe(true);
-    // Once the current lens is whole, the other lens's cache goes.
-    const whole = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--remove-superseded"]);
-    expect(whole.exitCode, whole.stderr).toBe(0);
-    expect(fs.existsSync(stale)).toBe(false);
+    expect(fs.existsSync(whole)).toBe(true);
+    expect(fs.existsSync(partial)).toBe(false);
+    // Once the current lens is whole, the other lens's cache goes, and the current one is marked whole.
+    const done = runCli(historyScript, ["--workspace", checked, "--jobs", "1", "--remove-superseded"]);
+    expect(done.exitCode, done.stderr).toBe(0);
+    expect(fs.existsSync(whole)).toBe(false);
+    expect(JSON.parse(fs.readFileSync(path.join(history, lens, "whole.json"), "utf8"))).toMatchObject({ head: ids[ids.length - 1], changes: 3 });
   });
 });
 
