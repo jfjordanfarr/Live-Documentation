@@ -356,8 +356,10 @@ span.local-disclosure { cursor: default; }
 .directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--state-selected); outline: none; background: var(--selected-subtle); }
 .directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--state-selected); border-radius: 12px; opacity: .5; }
 .directory-ancestor-preview[hidden] { display: none; }
+/* A narrow map raises the strip above the pin tray; it stands above the open history scrubber by the room the scrubber
+   asks for, as the tray does (until 2026-11-19 it did not, and covered the scrubber's buttons at a phone's width). */
 @media (max-width: 850px) {
-  .perspective-controls { bottom: 72px; }
+  .perspective-controls { bottom: calc(72px + var(--history-room)); }
 }
 
 /* Directory containment and dependency rank are independent in the reading view. */
