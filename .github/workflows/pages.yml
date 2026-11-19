@@ -54,20 +54,24 @@ jobs:
 
       - name: Compute complete mainline history
         id: history
-        # A cold run regenerates every commit. Stopping the step before the job
-        # times out lets the next step save what it finished, so that the next
-        # run resumes rather than starting cold again.
+        # The site deploys whether or not the history is whole. The command
+        # starts no commit after its budget and then writes no history (exit
+        # 3); each run resumes from the cache the last one saved. The caches of
+        # other lenses are removed only once the current one is whole.
+        continue-on-error: true
         timeout-minutes: 160
         env:
           CI: "true"
-        # The pool is sized by the runner's memory and processors; the caches
-        # of other lenses are removed, so the saved cache holds the current one.
-        run: npm run live-docs:history -- --remove-superseded
+        run: |
+          set +e
+          npm run live-docs:history -- --remove-superseded --stop-after 140
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit $code
 
       - name: Save history summaries
-        # A failed generation can still leave valid, atomically written commit
-        # summaries that shorten the next run. The job remains failed.
-        if: ${{ !cancelled() && steps.history.outcome != 'skipped' }}
+        # Every run saves what it summarized, so that the next one resumes.
+        if: ${{ always() && steps.history.outcome != 'skipped' }}
         uses: actions/cache/save@v4
         with:
           path: .mdmd/history
@@ -76,7 +80,15 @@ jobs:
       - name: Build static explorer bundle
         env:
           CI: "true"
-        run: npm run live-docs:visualize -- --history all
+        # Only this run's whole history is published; never an earlier run's, or another lens's.
+        run: npm run live-docs:visualize -- --history ${{ steps.history.outcome == 'success' && 'all' || 'none' }}
+
+      - name: Say the site carries no history
+        if: ${{ steps.history.outcome != 'success' }}
+        run: |
+          if [ "${{ steps.history.outputs.code }}" = "3" ]; then why="stopped at its budget before the cache held every commit under the current lens"; else why="failed; its log says why"; fi
+          echo "### Deployed without its history" >> "$GITHUB_STEP_SUMMARY"
+          echo "The history step $why. The site was built without a history. The next run resumes from the cache this one saved." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Disable Jekyll
         run: touch dist/explorer/.nojekyll
