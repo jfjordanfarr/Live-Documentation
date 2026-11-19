@@ -1091,8 +1091,6 @@ function isWorkspaceNamespace(namespace: string, table: TypeTable): boolean {
 async function toDependencies(
   facts: FileFacts,
   thisFile: string,
-  absolutePath: string,
-  workspaceRoot: string,
   content: string,
   table: TypeTable,
   fileIndex: WorkspaceFileIndex | undefined,
@@ -1141,7 +1139,7 @@ async function toDependencies(
     return Array.from(targets.values());
   };
 
-  const dynamic = await extractDynamicDependencies({ content, absolutePath, workspaceRoot, configReferences, resolveType });
+  const dynamic = extractDynamicDependencies({ content, thisFile, fileIndex, configReferences, resolveType });
   for (const entry of dynamic) {
     if (!entry.resolvedPath) continue;
     link(entry.resolvedPath);
@@ -1249,7 +1247,7 @@ export const csharpAdapter: LanguageAdapter = {
     const content  = await fs.readFile(absolutePath, "utf8");
     const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
-      dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, content, table, fileIndex, symbolIndex)
+      dependencies: await toDependencies(facts, thisFile, content, table, fileIndex, symbolIndex)
     };
     if (facts.program) result.program = facts.program;
     return result;

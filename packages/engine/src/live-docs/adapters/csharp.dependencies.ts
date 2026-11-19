@@ -8,12 +8,10 @@
  *
  * @module csharp.dependencies
  */
-import { promises as fs } from "node:fs";
-import path from "node:path";
-
 import { compareText } from "../../tooling/compareText";
-import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry } from "../core";
+import { folderOf, joinWorkspacePath, lookUpWorkspaceFile } from "./dotnetPaths";
+import type { WorkspaceFileIndex } from "./index";
 
 const APP_SETTINGS_PATTERN                  = /ConfigurationManager\.AppSettings\s*\[\s*"([^"]+)"\s*\]/g;
 const CONFIGURATION_INDEXER_PATTERN         = /\b([A-Za-z_][A-Za-z0-9_]*)\s*\[\s*"([^"]+)"\s*\]/g;
@@ -22,7 +20,7 @@ const TYPE_NAME_LITERAL_PATTERN             = /"([A-Z][A-Za-z0-9_]*(?:\.[A-Z][A-
 const HANGFIRE_GENERIC_CALL_PATTERN         = /\b(?:BackgroundJob|IBackgroundJobClient|RecurringJob|IRecurringJobManager)\s*\.\s*(?:Enqueue|Schedule|AddOrUpdate)\s*<\s*([^>\s]+)\s*>/g;
 const HANGFIRE_INSTANCE_GENERIC_CALL_PATTERN = /\b([A-Za-z_][A-Za-z0-9_]*)\s*\.\s*(Enqueue|Schedule|AddOrUpdate)\s*<\s*([^>\s]+)\s*>/g;
 
-const DOTNET_CONFIG_FILES = ["Web.config", "web.config", "App.config", "app.config"];
+const DOTNET_CONFIG_FILES = ["Web.config", "App.config"];
 const APPSETTINGS_FILES   = ["appsettings.json", "appsettings.Development.json", "appsettings.Production.json"];
 
 /** A configuration name the syntax tree found, with its key resolved from a literal or a constant. */
@@ -41,20 +39,21 @@ export interface ResolvedTypeTarget {
 export type TypeResolver = (typeName: string) => ResolvedTypeTarget[];
 
 /** Extracts the configuration, reflection and Hangfire dependencies of one C# file. */
-export async function extractDynamicDependencies(params: {
+export function extractDynamicDependencies(params: {
   content:          string;
-  absolutePath:     string;
-  workspaceRoot:    string;
+  /** The C# file's workspace-relative path. */
+  thisFile:         string;
+  fileIndex:        WorkspaceFileIndex | undefined;
   configReferences: ConfigReference[];
   resolveType:      TypeResolver;
-}): Promise<DependencyEntry[]> {
-  const { content, absolutePath, workspaceRoot, configReferences, resolveType } = params;
+}): DependencyEntry[] {
+  const { content, thisFile, fileIndex, configReferences, resolveType } = params;
   const dependencies: DependencyEntry[] = [];
 
   const configNames = collectConfigKeys(APP_SETTINGS_PATTERN, content);
   for (const reference of configReferences) configNames.add(reference.name);
   if (configNames.size > 0) {
-    const configPath = await locateNearestFile(absolutePath, workspaceRoot, DOTNET_CONFIG_FILES);
+    const configPath = locateNearestFile(thisFile, DOTNET_CONFIG_FILES, fileIndex);
     if (configPath) {
       dependencies.push({ specifier: configPath, resolvedPath: configPath, symbols: Array.from(configNames).sort(), kind: "import" });
     }
@@ -62,7 +61,7 @@ export async function extractDynamicDependencies(params: {
 
   const configurationKeys = collectConfigurationIndexerKeys(content);
   if (configurationKeys.size > 0) {
-    const appsettingsPath = await locateNearestFile(absolutePath, workspaceRoot, APPSETTINGS_FILES);
+    const appsettingsPath = locateNearestFile(thisFile, APPSETTINGS_FILES, fileIndex);
     if (appsettingsPath) {
       dependencies.push({ specifier: appsettingsPath, resolvedPath: appsettingsPath, symbols: Array.from(configurationKeys).sort(), kind: "import" });
     }
@@ -161,31 +160,23 @@ export function collectTypeIdentifiers(content: string, typeName: string): Set<s
   return results;
 }
 
-/** The nearest file with one of the candidate names, from the source file's directory up to the workspace root. */
-export async function locateNearestFile(sourcePath: string, workspaceRoot: string, candidates: string[]): Promise<string | undefined> {
-  const workspaceResolved = path.resolve(workspaceRoot);
-  let current = path.resolve(path.dirname(sourcePath));
+/**
+ * The nearest workspace file with one of the candidate names, from the source
+ * file's folder up to the workspace root, named in any case as Windows reads
+ * it (see {@link lookUpWorkspaceFile}). Candidates are tried in order in each
+ * folder. Where a folder holds two files whose names differ only by case,
+ * there is no answer: Windows could not hold both, and neither is chosen.
+ */
+export function locateNearestFile(thisFile: string, candidates: string[], fileIndex: WorkspaceFileIndex | undefined): string | undefined {
+  let folder = folderOf(thisFile);
   while (true) {
     for (const candidate of candidates) {
-      const absoluteCandidate = path.join(current, candidate);
-      if (await fileExists(absoluteCandidate)) {
-        return normalizeWorkspacePath(path.relative(workspaceRoot, absoluteCandidate));
-      }
+      const lookup = lookUpWorkspaceFile(joinWorkspacePath(folder, candidate), fileIndex);
+      if ("file" in lookup) return lookup.file;
+      if ("ambiguous" in lookup) return undefined;
     }
-    if (current === workspaceResolved) break;
-    const parent = path.dirname(current);
-    if (parent === current) break;
-    current = parent;
-  }
-  return undefined;
-}
-
-/** True when the path names an existing file. */
-export async function fileExists(candidate: string): Promise<boolean> {
-  try {
-    return (await fs.stat(candidate)).isFile();
-  } catch {
-    return false;
+    if (folder === "") return undefined;
+    folder = folderOf(folder);
   }
 }
 

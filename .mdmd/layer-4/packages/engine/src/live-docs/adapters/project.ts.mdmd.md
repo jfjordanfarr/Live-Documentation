@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/project.ts
-- Generated At: 2026-11-19T08:59:52.941Z
+- Generated At: 2026-11-19T20:42:50.455Z
 
 ## Authored
 ### Purpose
@@ -21,26 +21,43 @@ The adapter for .NET project files: what a project stands on. The project is the
 ### Public Symbols
 #### `projectKind` {#symbol-projectkind}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L39)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L41)
 
 ##### `projectKind` — Summary
 What the project builds.
 
 #### `projectAdapter` {#symbol-projectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L54)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L56)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `projectAdapter` — Summary
 Language adapter for .NET project files: the project as a symbol, and what it references as dependencies.
+
+#### `projectStem` {#symbol-projectstem}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L94)
+
+##### `projectStem` — Summary
+The name a project reference stands for when its file cannot be found: the file's stem.
+
+#### `referencedProjectName` {#symbol-referencedprojectname}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L99)
+- Parameters: `symbolIndex`: [`WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
+
+##### `referencedProjectName` — Summary
+The name the referenced project publishes, from the index when it is there, else the file's stem.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `promises`
 - `node:path` - `path`
+- [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
+- [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
+- [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
-- [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)

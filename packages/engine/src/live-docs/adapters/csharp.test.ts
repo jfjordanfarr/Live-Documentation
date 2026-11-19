@@ -7,9 +7,12 @@ import { csharpAdapter } from "./csharp";
 
 describe("csharpAdapter", () => {
   let workspaceRoot: string;
+  /** The workspace's file index: every file the test wrote. */
+  let written: Set<string>;
 
   beforeEach(async () => {
     workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "csharp-adapter-"));
+    written = new Set();
   });
 
   afterEach(async () => {
@@ -20,11 +23,12 @@ describe("csharpAdapter", () => {
     const absolutePath = path.join(workspaceRoot, relativePath);
     await fs.mkdir(path.dirname(absolutePath), { recursive: true });
     await fs.writeFile(absolutePath, `${lines.join("\n")}\n`, "utf8");
+    written.add(relativePath);
     return absolutePath;
   }
 
   async function analyze(relativePath: string) {
-    const result = await csharpAdapter.analyze({ absolutePath: path.join(workspaceRoot, relativePath), workspaceRoot });
+    const result = await csharpAdapter.analyze({ absolutePath: path.join(workspaceRoot, relativePath), workspaceRoot, fileIndex: written });
     if (!result) throw new Error("adapter returned null");
     return result;
   }
@@ -248,6 +252,18 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    it("finds a configuration file named in any case, as Windows does, in its own spelling", async () => {
+      await write("Shop/WEB.CONFIG", ["<configuration><appSettings><add key=\"AuditMode\" value=\"on\" /></appSettings></configuration>"]);
+      await write("Shop/Audit.cs", [
+        "using System.Configuration;",
+        "namespace Shop { public static class Audit { public static string Mode => ConfigurationManager.AppSettings[\"AuditMode\"]; } }"
+      ]);
+
+      expect((await analyze("Shop/Audit.cs")).dependencies).toEqual([
+        { specifier: "Shop/WEB.CONFIG", resolvedPath: "Shop/WEB.CONFIG", symbols: ["AuditMode"], kind: "import" }
+      ]);
+    });
+
     it("links a WCF client to the endpoint it names in configuration", async () => {
       await write("Web.config", ["<configuration><system.serviceModel><client><endpoint name=\"Hub\" contract=\"Shop.IHub\" /></client></system.serviceModel></configuration>"]);
       await write("IHub.cs",   ["namespace Shop { public interface IHub { void Ping(); } }"]);
@@ -390,7 +406,7 @@ describe("csharpAdapter", () => {
         ["dbo.Payment",         [{ liveDocPath: "d", sourcePath: "Database/dbo.Payment.sql",         anchor: "symbol-dbopayment",         kind: "table" }]]
       ]);
 
-      const result = await csharpAdapter.analyze({ absolutePath: contextPath, workspaceRoot, symbolIndex });
+      const result = await csharpAdapter.analyze({ absolutePath: contextPath, workspaceRoot, fileIndex: written, symbolIndex });
 
       expect(result?.dependencies).toEqual([
         { specifier: "PaymentService/App.config",       resolvedPath: "PaymentService/App.config",       symbols: ["PaymentsDb"],          kind: "import" },

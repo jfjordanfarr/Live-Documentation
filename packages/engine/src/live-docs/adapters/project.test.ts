@@ -61,6 +61,28 @@ describe("projectAdapter", () => {
     ]);
   });
 
+  it("finds a project referenced in another case, as Windows does, links it in its own spelling, and keeps by name one of two that differ by case alone", async () => {
+    await fs.mkdir(path.join(workspaceRoot, "Web"), { recursive: true });
+    const projectPath = path.join(workspaceRoot, "Web", "Web.csproj");
+    await fs.writeFile(projectPath, [
+      "<Project>",
+      "  <ItemGroup>",
+      "    <ProjectReference Include=\"..\\mojoPortal.Data.pgSQL\\mojoPortal.Data.pgSQL.csproj\" />",
+      "    <ProjectReference Include=\"..\\Twins\\Twins.csproj\" />",
+      "  </ItemGroup>",
+      "</Project>"
+    ].join("\n"), "utf8");
+    // The index stands for a Windows checkout; it is never asked of the disk, which on Linux tells case apart.
+    const fileIndex = new Set(["Web/Web.csproj", "mojoPortal.Data.pgsql/mojoPortal.Data.pgSQL.csproj", "Twins/twins.csproj", "Twins/TWINS.csproj"]);
+
+    const result = await projectAdapter.analyze({ absolutePath: projectPath, workspaceRoot, fileIndex });
+
+    expect(result?.dependencies).toEqual([
+      { specifier: "mojoPortal.Data.pgsql/mojoPortal.Data.pgSQL.csproj", resolvedPath: "mojoPortal.Data.pgsql/mojoPortal.Data.pgSQL.csproj", symbols: ["mojoPortal.Data.pgSQL"], kind: "import" },
+      { specifier: "Twins", symbols: [], kind: "import" }
+    ]);
+  });
+
   it("tells a web application and a program from a library, and takes the assembly name when given", async () => {
     expect(projectKind("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>")).toBe("web");
     expect(projectKind("<Project><PropertyGroup><ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids></PropertyGroup></Project>")).toBe("web");
