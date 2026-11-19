@@ -11,7 +11,7 @@
 Holds how a history question finds the file a person names at a commit: a doc's path read as its file's, and the file found in any case, with two that differ by case alone named back.
 
 ### Notes
-- Written 2026-11-19 in [the Windows and command-line probe's second leg](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19), when `--at` with `--from` came to fold case as today's questions do. A moment here holds only its files' paths, the least `fileNamedAt` reads; the end-to-end case is in `tests/integration/live-docs/inspect-cli.test.ts`.
+- Written 2026-11-19 in [the Windows and command-line probe's second leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19), when `--at` with `--from` came to fold case as today's questions do. A moment here holds only its files' paths, the least `fileNamedAt` reads; the end-to-end case is in `tests/integration/live-docs/inspect-cli.test.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
