@@ -13,6 +13,7 @@ The part of a sequence an export carries, all of it, the commits since a date or
 ### Notes
 - Written 2026-10-17 for C1, from C7's close in [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md): what an export carries is the exporter's choice and sized, since it "is liable to make certain sizes of things absolutely explode" ([Turn 3 of October 17](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-3)). The static builder's `--history` reads it.
 - A window keeps the source's and the lens's words and says which window it is; its base is where its knowledge begins, which the scrubber's left edge is to say (scenario 8).
+- Since 2026-11-19 a window carries the rows too, re-based with the shape; the ids of the texts its rows name are the source's, so that the words store the static builder writes beside it is the source's, filtered to the texts the window names.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

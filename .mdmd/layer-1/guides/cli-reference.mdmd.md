@@ -131,7 +131,8 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 | `--to <path[#symbol]>` | Destination artifact |
 | `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points the docs declare, what they reach, what nothing reaches and what only a test reaches |
 | `--groups` | List the disconnected groups of files in the graph. |
-| `--at <commit>` | Inspect the generated historical graph at a commit, with `--from` or `--reachable`. |
+| `--at <commit>` | Inspect the generated historical graph at a commit: with `--from`, the file's symbols, dependency lines and links that day; with `--from` and `--to`, the links between two files or two symbols (`path#Symbol`); with `--reachable`, the walk from that commit's entries. |
+| `--words` | With `--at` and `--from`, the file's words that day: its authored block and each symbol's description, or why they cannot be read. |
 | `--between <a> <b>` | Compare two recorded historical graphs. |
 | `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
 | `--max-depth <n>` | Maximum hops (default: 25) |
@@ -140,13 +141,13 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 | `--workspace <path>` | The folder whose docs to read (default: the current directory) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
 
-`--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's wires or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--to` or `--direction`. `--between` also takes no `--from` or `--reachable`.
+`--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's rows and wires, the links between two files or symbols, a file's words, or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--direction`, and only `--at` takes `--to`. `--between` also takes no `--from` or `--reachable`. A doc that stood at a commit in a form today's reader finds no authored block in, as this repository's mirror before 2026-09-27, prints its words as not readable rather than as the generator's placeholder.
 
 ---
 
 ### History
 
-`npm run live-docs:history -- [--every <n>] [--since <date>] [--step commit|day|week|tag] [--jobs <n>]` regenerates sampled mainline commits under one lens into `<root>/history/history.json`, with a cache beside it. `--every` applies only to commit sampling. A repeat run builds only the missing cache entries. The output is derived and never committed; its directory ignores itself. Use the inspection flags above to ask about a recorded commit or compare two of them.
+`npm run live-docs:history -- [--every <n>] [--since <date>] [--step commit|day|week|tag] [--jobs <n>] [--remove-superseded]` regenerates sampled mainline commits under one lens into `<root>/history/history.json`, with a cache beside it and the words of every step in `<root>/history/history-words/`. `--every` applies only to commit sampling. A repeat run builds only the missing cache entries. Without `--jobs` the pool is as many processes as half the machine's memory holds at the peak one last took on this repository, at most one fewer than its processors. Every run lists the cache folders of other lenses with their sizes; `--remove-superseded` removes them. The output is derived and never committed; its directory ignores itself. Use the inspection flags above to ask about a recorded commit or compare two of them.
 
 ### Boards
 

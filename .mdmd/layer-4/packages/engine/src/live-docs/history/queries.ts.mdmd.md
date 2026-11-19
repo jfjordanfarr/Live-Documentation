@@ -17,6 +17,8 @@ The questions a sequence answers headlessly: which step a commit is by a prefix 
 
 `followChanges` and the directories renamed whole across a span (2026-10-18, for the Explorer's C4 in [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): the composition of a run of consecutive changes over the files that stood before them, which `changesBetween` was doing inline, is a function of its own so that the Explorer's cursor can compose the renames of a move the same way; and `ChangesBetween` gains `directoriesRenamed`, the directories renamed whole across the span by the rule each step's are read by, over the files' composed renames, which `inspect --between` prints as "Renamed whole".
 
+Since 2026-11-19 ([Turn 37 of November 18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37)) the questions a 2D card of a past moment will ask, which the CLI asks first, so that the page and the command are peers: `rowsOfFile`, a file's rows at a moment with the links that leave and reach it; `linksBetween`, the links between two files or two symbols in both directions; `symbolNamed`, a symbol a person names by its anchor, its heading, or its heading without the kind the heading adds. A file's words at a moment are `wordsOfFile` in `words.ts`.
+
 Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) `fileOfShape` lists a file's linked documents at a change, and `changesBetween` the links that came and went, a file followed through its renames as its edges are.
 
 ## Generated

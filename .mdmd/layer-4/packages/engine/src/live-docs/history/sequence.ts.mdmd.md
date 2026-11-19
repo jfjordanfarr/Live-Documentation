@@ -17,6 +17,8 @@ Writing a sequence step by step with a keyframe every 256 steps, and reading a s
 
 `changeAt` decodes a step's change once per sequence and hands the same object back after (2026-10-18, for the Explorer's C4), since every reader walks the changes again and again and a page scrubbing through a history asks many times a second; a caller reads a change and never changes it.
 
+Since 2026-11-19 ([Turn 35](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35) and [Turn 37](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37) of November 18) a moment is a shape and the rows of every file. The builder derives both changes of a step, writes them in one delta, replays both through the tables as a reader would, and stops on any difference from the shape and the rows it was given, and on any disagreement between the replayed rows and the replayed shape: the files, symbol counts, entry marks and wire counts the shape carries must be those the rows make, so the two streams of deltas hold each other at every step. A broken codec that dropped a step's reordering of symbols was seen to stop it. The rows are optional to the builder and the writer, so that a caller that reads no summaries, as the Explorer's tests do, builds a sequence of the shape alone; `momentAt` and `rowsChangeAt` read the rows back, and `seek` reads the shape as before. Rows are shared between moments and never changed in place.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
