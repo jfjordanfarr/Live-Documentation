@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T17:55:40.544Z
+- Generated At: 2026-11-19T18:10:05.332Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ One commit's summary, made in a process of its own: the generator run over the c
 - Before the generator runs, each doc of the mirror committed at that commit, where the lens's configuration reads docs, is read for an `## Authored` heading, the one the generator carries a doc's words forward under whether or not the rest meets today's grammar. A doc without one is `unread`: the generator writes its placeholder, and the summary says so rather than pass the placeholder off as that day's words. Over this repository that is the hand-written mirror of October 2025; from December 2025 every doc sampled has an authored block bounded by `## Generated`, though today's strict parser reads the mirror only from 2026-09-27.
 - When it ends the process sends the history command its peak resident memory (`process.resourceUsage().maxRSS`), which sizes the pool.
 - Since [the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md) the process takes the path of a file holding its task, not the task itself, which could outgrow the command line.
+- Since 2026-11-19 the summary keeps every linked and citing document: the generator here runs with no bundle exclusion, and the exclusions are applied where the summaries are read (`bundled.ts`), so that they are not in the lens's key ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-historys-tree-holds-only-what-is-read-and-the-bundles-exclusions-apply-where-summaries-are-read-recorded-2026-11-19)). Whether a linked document stood is asked of the commit's own listing (`git ls-files` against the tree's index), not the disk, since the tree leaves out the files the configuration excludes; `standingFiles` says where the two answers can differ and which is right.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -39,7 +40,7 @@ Generates the change's docs in its working tree and writes its summary, and its 
 
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L176)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L196)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.

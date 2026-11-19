@@ -136,7 +136,27 @@ const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
  * (its index, which the history command made from the change's tree and named in this process's environment), not
  * from the disk: the tree writer leaves out the files the generator never opens, and a document of them may still be
  * linked. A file's blob is in the listing; a symbolic link, a submodule, and an entry the tree could not hold
- * (`unwritten`) are not files that stand. Until 2026-11-19 the disk was asked, which a link to a file answered yes.
+ * (`unwritten`) are not files that stand. Until 2026-11-19 the disk was asked (`stat`, then `isFile`).
+ *
+ * Where the two answers can differ, and which is right:
+ * - A file the tree leaves out by the configuration's `exclude`: the disk says no, the listing yes. The listing is
+ *   right; the file stood at the change, and the disk lacks it only because nothing reads it.
+ * - A symbolic link to a file, or a document reached through a linked folder: the disk, which followed the link, said
+ *   yes; the listing says no. The listing is right by the history's rule that nothing is written or read through a
+ *   link (see `git.ts`): the document a link points at is not a file that stood under that name.
+ * - A disk that takes two spellings for one name (case, Unicode form): the disk said yes to a link spelled otherwise
+ *   than the file; the listing answers by the exact path git holds, the same on every disk. The listing is right: a
+ *   summary must not depend on the disk it was made on, which the lens does not key.
+ * - A file the generator itself writes or prunes during the run: only Live Docs and the graph's index under the docs
+ *   root, which are never related documents (`relatedDocsOf` skips a link to a Live Doc, and the index is not
+ *   markdown). Both answer alike.
+ * - A folder or a submodule at a document's name: neither is a file; the disk said no to the folder (`isFile`), and
+ *   the listing holds neither as a blob. Both answer alike.
+ * - An entry the tree could not hold (`unwritten`): absent from the disk, and taken out of the listing here. Both
+ *   answer alike.
+ * On this repository's first-parent line no commit holds a link or a submodule (`git log --raw` shows no entry of mode
+ * 120000 or 160000), the trees were written on a disk that tells case apart, and a sample of 54 commits summarized
+ * both ways was identical, so no fact changed here.
  */
 async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
   const { stdout } = await execFileAsync("git", ["ls-files", "--stage", "-z"], { cwd: tree, maxBuffer: 1 << 30 });

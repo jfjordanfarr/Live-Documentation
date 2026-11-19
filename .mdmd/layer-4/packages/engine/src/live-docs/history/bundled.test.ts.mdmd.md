@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Holds `bundledSummary` to its rule: the documents `bundleExclude` names leave the links and the `Cited By` lists, an emptied list is absent, an edit of the exclusions is followed, and the summary read is never changed.
 
 ### Notes
-_Pending notes_
+- Written 2026-11-19 with the function. Each case was seen to fail against a function that returns the summary unchanged, but the last, which holds a property such a function shares (it guards against a function that changes what it reads).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
