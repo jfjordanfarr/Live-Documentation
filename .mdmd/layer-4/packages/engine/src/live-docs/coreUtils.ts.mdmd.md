@@ -13,7 +13,7 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `formatSourceLink()` and `formatRelativePathFromDoc()` handle path-to-doc cross-referencing
-- `createSymbolSlug()` produces `symbol-{name}` anchors for markdown headers. Since 2026-11-19 every name gets one: a name the GitHub slug empties, punctuation or symbols only, is anchored by its code points after tildes (`$` is `symbol-~24`), a form no other name's anchor can take since the slug removes every tilde. Before, such a name had no anchor and the history refused every file that exported `$` ([the independent review](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/README.md)).
+- `createSymbolSlug()` produces `symbol-{name}` anchors for markdown headers. Since 2026-11-19 every name gets one: a name the GitHub slug empties, punctuation or symbols only, is anchored by its code points after tildes (`$` is `symbol-~24`), a form no other name's anchor can take since the slug removes every tilde. Before, such a name had no anchor and the history refused every file that exported `$` ([the independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/README.md)).
 - AST helpers (`hasExportModifier`, `hasDefaultModifier`, `getNodeLocation`) wrap common TypeScript inspection patterns
 - All functions are pure with no side effects
 
