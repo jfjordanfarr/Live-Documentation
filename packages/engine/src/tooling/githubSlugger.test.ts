@@ -9,6 +9,9 @@ describe("github slugger", () => {
     expect(slug("The Native Views Are the Base _(Recorded 2026-10-03)_")).toBe("the-native-views-are-the-base-_recorded-2026-10-03_");
     expect(slug(slugText("Use `renderLiveDoc` for [docs](../guide.md) and __strong__ words"))).toBe("use-renderlivedoc-for-docs-and-strong-words");
     expect(slug(slugText("An ![icon](i.png) and a [ref][1] here"))).toBe("an-icon-and-a-ref-here");
+    // A link is read by the markdown link rule: its target may hold parentheses, and one in a code span is code.
+    expect(slugText("The [plan](notes/plan%20(draft).md \"t\") and [group](app/(auth)/a.md) and `[x](y)`")).toBe("The plan and group and [x](y)");
+    expect(slugText("A [![badge](b(1).png)](ci) here")).toBe("A badge here");
     // An underscore inside a word is not emphasis and stays in the slug, as on GitHub.
     expect(slug(slugText("snake_case and __dunder__ and _lead"))).toBe("snake_case-and-dunder-and-lead");
   });
