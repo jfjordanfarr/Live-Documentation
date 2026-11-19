@@ -92,6 +92,8 @@ The data-look-from that now stays written at rest changes nothing drawn.
 
 `tests/e2e/look-change-cost.spec.ts`, two cases on the estate, by count and not by clock: a change between reading and connections restyles the whole map once each way (a restyle of the whole map is measured on the page itself, by setting one custom property on the map); and the fade's class, added and taken away at rest in each look, restyles less than half of what the whole map's restyle touches. Both pass on the mended build; both fail on `main` at `924bec80`: three whole-map restyles each way (the whole map 583 elements on the estate; out, 592, 698 and 703), and the class's coming and going restyling 702 elements in connections against the whole map's 568, 454 against 385 in overview, 757 against 583 in reading.
 
+The specs of the looks, run once each on the mended build (merged with `main` at `5b7c4574` for the last cases): `zoom-looks.spec.ts`, all ten cases, the cross-fade's motion and its sampled sizes at each change among them; `local-map-motion.spec.ts`, four of four; `card-ladder.spec.ts`, six of seven. The one that fails, at line 243, waits for the text "Tuning" alone and times out: the Tuning section's heading now carries the count of changed levers (`#tuning-changed-count`, from the Tuning reset round), so with the search turned off the heading reads "Tuning1". That is the case's locator against the new heading, not the look change.
+
 ## Making it again
 
 From the repository root, with a bundle served (`npx http-server dist/explorer -p 8827 -c-1 --silent`), under the browser lock:
