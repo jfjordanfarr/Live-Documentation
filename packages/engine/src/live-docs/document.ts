@@ -245,6 +245,14 @@ const LINE_TEXT = /^.+$/u;
 /** A lone surrogate, which no file can hold: UTF-8 writes it as U+FFFD. */
 const LONE_SURROGATE = /\p{Cs}/u;
 
+/**
+ * What no line of a doc holds as itself: a line break, a control character other than a tab, which git takes for a
+ * sign of a binary file (a NUL, a carriage return alone) and a renderer may break a line at, and the line and
+ * paragraph separators. A value holding one is quoted, which spells it out.
+ */
+// eslint-disable-next-line no-control-regex -- the control characters are what a line of a doc cannot hold
+const UNWRITTEN = /[\x00-\x08\x0a-\x1f\u2028\u2029]/u;
+
 /** A name, of a symbol, a script, a type, a parameter, a module or a file, as a code span. */
 const NAME: Slot = {
   plain: (value) => (value === "" ? undefined : codeSpan(value)),
@@ -283,14 +291,16 @@ const TEXT: Slot = {
  *
  * @remarks
  * The one rule by which a doc holds any name, path or link a repository can, and reads it back as itself. The plain
- * form cannot carry a line break, a lone surrogate, an empty name, a `)` in a link, or a line terminator in a path;
+ * form cannot carry a line break, a lone surrogate, an empty name, a `)` in a link, or a line terminator in a path,
+ * and is not given a control character other than a tab or a line or paragraph separator, so that git shows and diffs
+ * the doc as text and no renderer breaks a line inside a name ({@link UNWRITTEN});
  * such a value is written in double quotes with JSON's escapes (`"a\nb"`, `"\ud800"`, `""`), with U+2028 and U+2029
  * escaped too so that it stays on its line for every reader. A value whose plain form would begin with `"` is quoted
  * as well, so the first character tells the reader which form it has, and each value has exactly one form. A value
  * the plain form carries is written as the format always wrote it.
  */
 function writeValue(slot: Slot, value: string): string {
-  const plain = value.includes("\n") || LONE_SURROGATE.test(value) ? undefined : slot.plain(value);
+  const plain = UNWRITTEN.test(value) || LONE_SURROGATE.test(value) ? undefined : slot.plain(value);
   return plain === undefined || plain.startsWith('"') ? quote(value) : plain;
 }
 

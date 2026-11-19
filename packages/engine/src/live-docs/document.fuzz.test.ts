@@ -223,6 +223,15 @@ function writeAndRead(doc: LiveDoc, name: string): { text: string; read: LiveDoc
   if (onDisk !== text) {
     fail("the doc does not survive UTF-8 on disk");
   }
+  // Git shows and diffs it as text, and no renderer breaks a line in the middle of a name: no line holds a control
+  // character but a tab, nor a line or paragraph separator; a quoted value spells such a character out.
+  const unwritten = Array.from(text).find((character) => {
+    const code = character.codePointAt(0)!;
+    return (code < 0x20 && code !== 0x09 && code !== 0x0a) || code === 0x2028 || code === 0x2029;
+  });
+  if (unwritten !== undefined) {
+    fail(`the doc holds the character U+${unwritten.codePointAt(0)!.toString(16).padStart(4, "0").toUpperCase()} as it is`);
+  }
   let read: LiveDoc | undefined;
   try {
     read = parseLiveDoc(onDisk);

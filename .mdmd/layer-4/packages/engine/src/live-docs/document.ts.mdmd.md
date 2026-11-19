@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/document.ts
-- Generated At: 2026-11-19T19:15:06.539Z
+- Generated At: 2026-11-19T19:42:17.081Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ The grammar of a Live Doc: the model of everything a doc says, `renderLiveDoc`, 
 - A link is a URL reference: the composer writes a path's characters that a URL or a markdown link's target cannot hold percent-encoded (`encodeLinkPath`: `%`, `#`, `?`, parentheses, angle brackets, a backslash, a space, a control character, a line separator), so `notes/plan (draft).md` is linked as `notes/plan%20%28draft%29.md`, which a markdown viewer opens, and `graph.ts` decodes the path before the first `#` (`decodeLinkPath`). No link of this repository holds such a character, so none moved.
 - A docstring line the reader would take for structure, a heading outside a fence, a section marker anywhere, or a fence no later line closes, is written with a backslash in front (`escapeBody`), which markdown shows as the line's own text; a line already behind backslashes gets one more, and `unescapeBodyLine` takes one off. A heading-like line in a docstring had thrown, and an unclosed fence had swallowed every symbol after it into one section.
 - A line ends at LF or CRLF alike (`Reader`, and `authoredBlockOf`, which reads lines by LF and CRLF only so that a name holding U+2028 and `## Authored` is no heading), so a doc checked out with Windows line endings reads as the one written: a cold run that day found every command stopped at the first doc of such a checkout. The writer still writes LF and never ends a line with a carriage return of its own. `&` is encoded in a link's path too, since CommonMark reads `&amp;` in a target as `&`, and a link's path is decoded whole, read as written where it is not well-formed, as the Explorer's reader reads one.
+- A value holding a control character other than a tab, a NUL or a carriage return among them, or the line or paragraph separator U+2028 or U+2029, is quoted too (`UNWRITTEN`, the root's ruling of 2026-11-19 on the review's proposal), so that git shows and diffs a doc as text, where a NUL or a carriage return alone makes it take a file for binary, and no renderer breaks a line in the middle of a name. Such a name had read back before, so its form moved; no name of this repository holds one.
 - `document.fuzz.test.ts` holds all of this to a seeded generator of hostile names through the real composer, writer and reader.
 
 ## Generated
@@ -167,7 +168,7 @@ tell it from another of the same name, such as `Widget (interface)` or
 
 #### `codeSpan` {#symbol-codespan}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L329)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L339)
 
 ##### `codeSpan` — Summary
 A name as a markdown code span that reads back as the name whatever it holds: fenced by one backtick more than its
@@ -176,7 +177,7 @@ as CommonMark reads a code span; a name that is all spaces is written as it is.
 
 #### `takeCodeSpan` {#symbol-takecodespan}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L345)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L355)
 
 ##### `takeCodeSpan` — Summary
 The code span that begins at `at`, as CommonMark reads one: its fence of backticks, its content up to the next run of
@@ -185,7 +186,7 @@ spaces; undefined where no span begins or it never closes.
 
 #### `encodeLinkPath` {#symbol-encodelinkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L377)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L387)
 
 ##### `encodeLinkPath` — Summary
 A workspace path as a link's path: every character a URL or a markdown link's target cannot hold as itself
@@ -195,7 +196,7 @@ and `-./@_` is written as it is.
 
 #### `decodeLinkPath` {#symbol-decodelinkpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L385)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L395)
 
 ##### `decodeLinkPath` — Summary
 A link's path as the workspace path it names, percent-decoded as a browser reads it; a path that is not well-formed
@@ -203,7 +204,7 @@ percent-encoding is read as written, as the Explorer's reader reads one.
 
 #### `renderLiveDoc` {#symbol-renderlivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L408)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L418)
 - Parameters: `doc`: [`LiveDoc`](#symbol-livedoc)
 
 ##### `renderLiveDoc` — Summary
@@ -211,7 +212,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L465)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L475)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -219,14 +220,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L590)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L600)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L598)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L608)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -234,7 +235,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1020)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1030)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -246,7 +247,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1044)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L1054)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends

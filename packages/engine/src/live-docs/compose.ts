@@ -432,10 +432,11 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
   const sections: DocSection[] = [];
   const pushSection = (title: string, body: string[] | undefined): void => {
     // A section's body is lines: an item that spans several, a description of many lines, is split into them as
-    // example code is, and blank lines at its end go, since a blank line followed by the next heading ends a body. It
-    // is prose, so a lone surrogate, which no file can hold, is the U+FFFD a file would hold in its place; a name with
-    // one is written so that it reads back (`document.ts`).
-    const lines = (body ?? []).flatMap((line) => line.replace(/\p{Cs}/gu, "\ufffd").split(/\r\n?|\n/u));
+    // example code is, at a line or paragraph separator too, and blank lines at its end go, since a blank line followed
+    // by the next heading ends a body. It is prose, so a lone surrogate, which no file can hold, and a control
+    // character other than a tab, which would make git take the doc for a binary file, are each the U+FFFD that stands
+    // for a character not shown; a name holding one is written so that it reads back (`document.ts`).
+    const lines = (body ?? []).flatMap((line) => line.replace(PROSE_UNSHOWN, "\ufffd").split(/\r\n?|\n|\u2028|\u2029/u));
     while (lines.length > 0 && lines[lines.length - 1] === "") {
       lines.pop();
     }
@@ -522,6 +523,10 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
 
   return sections;
 }
+
+/** What prose in a section body cannot hold as itself: a lone surrogate, and a control character other than a tab or a line break. */
+// eslint-disable-next-line no-control-regex -- the control characters are what a doc's prose cannot hold
+const PROSE_UNSHOWN = /\p{Cs}|[\x00-\x08\x0b\x0c\x0e-\x1f]/gu;
 
 function normalizeDocText(value?: string): string[] | undefined {
   if (!value) {
