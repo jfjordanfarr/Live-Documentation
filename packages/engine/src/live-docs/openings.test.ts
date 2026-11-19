@@ -146,6 +146,16 @@ describe("database objects", () => {
     ]);
   });
 
+  it("reads no object of the database engine's own: its system schemas and its built-in table functions", () => {
+    const script = [
+      "SELECT * FROM sys.objects o JOIN INFORMATION_SCHEMA.COLUMNS c ON 1 = 1 CROSS JOIN STRING_SPLIT(@list, ',') s JOIN OPENJSON(@doc) j ON 1 = 1;",
+      "EXEC master.sys.sp_executesql N'SELECT 1';",
+      "EXEC sys.sp_addextendedproperty 'x';",
+      "SELECT * FROM dbo.Mine JOIN Billing.sys_log ON 1 = 1;"
+    ].join("\n");
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw}`)).toEqual(["FROM dbo.Mine", "JOIN Billing.sys_log"]);
+  });
+
   it("never lets an apostrophe in a bracketed name open a string: the cold run's smallest crash", () => {
     expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1 }]);
   });

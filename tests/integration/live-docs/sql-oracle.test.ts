@@ -29,8 +29,7 @@ const MEASURED_MISSES: Record<string, string[]> = {
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)",
     "dependency missing: Procedures/Billing.usp_Statement.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_openinvoices (table-function)",
     "dependency missing: Schema/Billing.Invoice.sql -> Schema/Billing.Customer.sql :: billing.customer (foreign-key)",
-    "dependency missing: Tests/BillingTests.class.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)",
-    "dependency invented: Procedures/Billing.usp_Statement.sql = sys.objects"
+    "dependency missing: Tests/BillingTests.class.sql -> Schema/Billing.fn_Balance.sql :: billing.fn_balance (call)"
   ],
   "programs/csharp/estate": []
 };

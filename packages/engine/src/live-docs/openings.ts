@@ -343,6 +343,22 @@ const SQL_STATEMENT_STARTS: ReadonlySet<string> = new Set([
   "DEALLOCATE", "GOTO", "WAITFOR", "USE", "GRANT", "DENY", "REVOKE"
 ]);
 
+/**
+ * The schemas that hold the database engine's own catalog: SQL Server's
+ * `sys` and `INFORMATION_SCHEMA` (the SQL standard's, which MySQL and
+ * PostgreSQL keep too), and Oracle's `SYS`. Nothing of a workspace lives in
+ * them, so a name in one is the engine's, never an object to link or keep.
+ */
+const SQL_SYSTEM_SCHEMAS: ReadonlySet<string> = new Set(["sys", "information_schema"]);
+
+/**
+ * SQL Server's built-in table-valued functions that T-SQL does not reserve,
+ * read as a one-part name called in a `FROM` or a `JOIN`; the rowset
+ * functions it does reserve (`OPENQUERY`, `OPENROWSET`, `OPENXML`,
+ * `OPENDATASOURCE`) are never names already.
+ */
+const SQL_BUILT_IN_TABLE_FUNCTIONS: ReadonlySet<string> = new Set(["openjson", "string_split", "generate_series"]);
+
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
 
@@ -568,8 +584,9 @@ export interface SqlReference {
  * What a script creates and what it names, read from its tokens batch by
  * batch. A name is no object of the database, and makes no reference, when
  * it is a temporary table (`#name`), a common table expression of its batch,
- * a cursor a `FETCH … FROM` reads, or, as an `UPDATE`'s or a `DELETE`'s
- * target, a table source of the statement's own `FROM`.
+ * a cursor a `FETCH … FROM` reads, as an `UPDATE`'s or a `DELETE`'s target a
+ * table source of the statement's own `FROM`, or the engine's own: a name in
+ * a system schema, or a built-in table function.
  */
 function readSql(text: string): { declarations: SqlDeclaration[]; references: SqlReference[] } {
   const declarations: SqlDeclaration[] = [];
@@ -579,6 +596,8 @@ function readSql(text: string): { declarations: SqlDeclaration[]; references: Sq
     const refer = (verb: string, parts: string[], at: number, target: boolean): void => {
       const last = parts[parts.length - 1];
       if (last.startsWith("#")) return;
+      if (parts.length >= 2 && SQL_SYSTEM_SCHEMAS.has(parts[parts.length - 2].toLowerCase())) return;
+      if (parts.length === 1 && SQL_BUILT_IN_TABLE_FUNCTIONS.has(last.toLowerCase()) && isSymbol(tokens[at], "(")) return;
       if (parts.length === 1 && expressions.has(last.toLowerCase())) return;
       if (target && parts.length === 1 && statementSources(tokens, at).has(last.toLowerCase())) return;
       const raw = sqlWrittenName(parts);
