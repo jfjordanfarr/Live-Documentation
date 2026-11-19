@@ -93,3 +93,23 @@ Both were run once under a load of 12 to 16; neither was run on a quiet machine 
 ### When the search stops (the owner's rule), from the price the search showed through the 80-seed search on today's docs (before the solver's steps; seconds at load 3.9)
 
 The search shows its first picture at a price of 3,444,817, has 3,426,808 at 37.8 s, and finds seed 77 at 42.7 s (3,200,099, 6.6 % lower). The seeds end at 45.9 s at 3,199,385. The 151 joins after that take 28 s more and lower the price by 0.06 %, to 3,197,457 at 65.2 s; the last 58 joins, 8.5 s, lower it by nothing.
+
+## Third leg: does a card's natural width depend on the trial measured before it?
+
+_Taken 2026-11-19 between 19:10 and 19:40 UTC on `184ff2e2`, through the lane, at a load of 8 to 21. Today's docs (`2af0289b`'s), the five-file scope, the 80-seed search (the tuning of `local-map-hidden.spec.ts:51`)._
+
+**The suspicion.** `CardReading.measure` leaves looks on a card at each trial's widths: a name cut, a name's held lines, the foot held. It takes them back only at its own start, so they are still on the cards when the next trial's `widths()` sets `max-content` and reads each card's natural width. If they changed that width, the picture the search ends on would depend on the order its trials were measured in.
+
+**How it was looked at.** A scratch build of the client (not committed) recorded, at every reading of the natural widths, each card's width as read, its width read again with those looks taken back as `measure()` takes them back, the looks on it just before, its rows' order, the look and level of detail, the zoom, the fonts' status and the width cap; then put the looks back, so that the page went on as it does. A second build read the widths with the looks taken back and used those (measuring each card from a clean state).
+
+**Refuted, on both looks.**
+
+| Run | Readings of the natural widths | Card readings | Looks present before a reading | A card's width differing between readings | Differing from the clean reading | Search's end |
+| --- | --- | --- | --- | --- | --- | --- |
+| Reading look (scale 1, fonts loaded, no cap) | 30 (the first paint and the 29 adoptions) | 2,940 (98 cards) | 986 | 0 | 0 | 80 / 231 / 29 / seed 77 / 3,197,457 |
+| Zoomed out by the wheel to the far look (26 readings at scale 0.49, the rest before it got there) | 30 | 2,940 | 986 | 0 | 0 | the same |
+| Reading the widths from the clean state | 30 | 2,940 | | 0 | | the same; every card's final box the same, and the screenshot the same bytes |
+
+No card's width depended on its rows' order either (0 of 98). The looks the card reading leaves are drawn only at the far look (`reading.css`, `[data-lod="far"]`), and even there they change no card's `max-content` width on this scope.
+
+**Built, since the width is the same at every reading.** A seed's or a join's trial measured on the page keeps the natural widths the search measured last (`tryAdoptPicture` in `branch-renderer.ts`, the mechanism `refreshReadingGeometry` already used for the overview's two layouts); a cycle's trial, whose cards wear its own feet, still reads them. What a natural width depends on is stated in the code: what the card holds (its name, the rows it shows and their words, its foot of returning connections), the cap on a card's width and the fonts, which are the system's (the page loads none of its own); within one search the cards change only through a render or `refreshReadingGeometry`, which measure afresh, or a cycle's trial. On the page the search ends the same with the change: 80 seeds, 231 joins, 29 adoptions (26 joins), seed 77, 3,197,457; every card's final box the same; the screenshots the same bytes, at the reading look and zoomed out to the far look. (A first pair at the far look differed in the wires' brightness over 309,582 pixels: the probe had held the pointer over the map while it zoomed and took the picture while the hover's fade was still running; with two seconds for the fade, 0 pixels differ.) What it saves: 29 of the search's 30 layouts of the whole page at its cards' natural widths, which the final profile of the second leg put at 5.0 s of 68 s under a load of 8 (about 7 %); the wall clock under a load of 20 could not show it.
