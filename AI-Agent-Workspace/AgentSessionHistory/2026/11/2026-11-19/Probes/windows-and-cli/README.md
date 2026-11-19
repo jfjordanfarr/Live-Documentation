@@ -375,3 +375,23 @@ The root changed A2 in one respect. Someone who runs `npm run live-docs:generate
 - a folder with no configuration anywhere above it, which is its own workspace.
 
 The two cases run from a subfolder failed against the first leg's rule: `scripts/` found no docs, and `src/deep` was mapped alone. `cli.test.ts` covers `nearestConfiguredFolder`, including a nested configuration and a folder named like the file.
+
+### One parser of the configuration file
+
+The decoding, and the parse with it, moved from `scripts/live-docs/cli.ts` into the engine's configuration module as `parseLiveDocumentationConfigBytes(bytes)`. It decodes by the byte-order mark (UTF-8 with or without one, UTF-16 LE or BE), parses the JSON, and throws `SyntaxError` as `JSON.parse` does. `readConfiguration` in `cli.ts` calls it, and `decodeText` is gone. `cli.test.ts`'s cases for marks and UTF-16 now run through it.
+
+**It takes bytes, not a path.** The Explorer's page bundles this module: `client/pathfind.ts` and two other client files import it, and so does the engine's `pathfind.ts` for `noReaderHandles`. I bundled a module that imports `node:fs/promises` exactly as `buildAssets.ts` bundles the client, and esbuild refused it: `Could not resolve "node:fs/promises"`. So the file is read by the caller, which also keeps its own "cannot read the configuration at …" message and its rule for a missing file. The real client, bundled the same way with the change, builds. If the root wants the reading itself in one place too, that needs a Node-only file beside this module, which was not mine to create.
+
+**For the history's owner, exactly.** In `packages/generator/src/history/computeHistory.ts`, `lensConfiguration`, line 583, replace
+
+```ts
+input = JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
+```
+
+with
+
+```ts
+input = parseLiveDocumentationConfigBytes(await fs.readFile(file));
+```
+
+and import `parseLiveDocumentationConfigBytes` from the configuration module, as the file imports `normalizeLiveDocumentationConfig` now. The surrounding `try` and its message stay as they are. A test: a `.live-docs.config.json` whose bytes begin `EF BB BF`, or are UTF-16 LE after `FF FE`, gives the same lens as the plain file.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-19T20:00:02.818Z
+- Generated At: 2026-11-19T20:03:08.901Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - Written 2026-10-18 when the history build found `generate --version` printing a constant, 0.1.0, or an environment variable, while the generator package is 0.0.0 and the history's lens carries the manifest's version ([the record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#work-notes-continued-the-c1-hand-back)); `inspect` and `lint` printed the same constant, and `inspect` piped into `head` died with an EPIPE trace. A command's version is its package's and nothing of its own, so the three read their manifests here, and the two that print long listings end quietly when the pipe closes.
 - `UsageError`, `optionValue`, `runCommand` and `readConfiguration` (2026-11-12), after [the first-visit evaluation](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md) found the Explorer's builder dying on `--help` with a stack trace and the other commands ending a refused argument each in its own way. Every script a `live-docs:*` npm script runs now takes `--help` and `-h`, and ends through `runCommand` under that npm script's name, so that the hint it prints is a command a person can paste. Each parses its own arguments by hand; `optionValue` is the one rule for the value after an option, refused when it is missing or is itself an option.
 - `readConfiguration` is the rule `generate` and `inspect` already followed, and the history command's lens follows in `computeHistory.ts`; `lint`, `board` and `visualize-static` read only the file given until 2026-11-12, which the npm scripts hid by pinning this repository's configuration, and which made `--workspace <folder>` read this repository's configuration for another folder. The pins went the same day.
-- `decodeText` (2026-11-19): the configuration is read by its byte-order mark, UTF-8 with or without one or UTF-16 in either order, after [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found a configuration saved by Windows PowerShell 5.1, which writes the mark, stopping every command. The PowerShell reader decodes scripts by the same rule for itself; the history's lens reads the configuration by its own copy of `readConfiguration` without it ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
+- The configuration's byte-order mark (2026-11-19): the configuration is read by its mark, UTF-8 with or without one or UTF-16 in either order, after [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found a configuration saved by Windows PowerShell 5.1, which writes the mark, stopping every command. The decoding was this file's `decodeText` until the probe's second leg moved it, with the parsing, into the engine's `parseLiveDocumentationConfigBytes`, which `readConfiguration` calls and the history's lens is to call in place of its own copy, which lacks it. The PowerShell reader decodes scripts by the same rule for itself ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 - `invocationFolder`, `typedPath` and `workspaceFolder` (2026-11-19): every command's help said `--workspace` defaults to "the current directory", but `npm run` starts a script in this checkout's own folder wherever the person stands, so the default workspace and every relative path were this checkout's, which [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) met. The guides run the commands from the root of this checkout, where the two folders are one, so nothing changes there; elsewhere, as under `npm --prefix <checkout> run`, the folder meant is the one npm records in `INIT_CWD`. It is honoured only when npm started this very script, read from `npm_lifecycle_script`, since a process another command or a test starts inherits npm's variables while its own working directory is the one meant.
 - Since the same day `workspaceFolder` refuses a name that is no folder, with the path it looked for: a mistyped `--workspace` reported "processed 0 file(s)" as a success and `generate` made the misspelled folder ([the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles)). Every command takes its workspace through it.
 - Later the same day, at the root's ruling, the workspace when none is named became the nearest folder, from where the command was run up to the file system's root, that holds a `.live-docs.config.json` (`nearestConfiguredFolder`), as git finds a repository, and the folder itself when none does. Until then a command run from `scripts/` of this checkout, or from any folder of a mapped repository, made a new map of that folder; the root's own shell had drifted into a subfolder twice that day ([the probe's second leg](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19)). Relative paths are still taken from where the command was run.
@@ -127,20 +127,9 @@ the options; any other failure prints its message, with how to see where it
 failed, and with `--stack` on the command line, the stack of the failure and
 of each failure that caused it; both exit 1.
 
-#### `decodeText` {#symbol-decodetext}
-- Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L192)
-
-##### `decodeText` — Summary
-A text file's characters, in whichever of the encodings Windows writes by
-default it was saved: UTF-8 with or without a byte-order mark (Windows
-PowerShell 5.1's `Set-Content -Encoding UTF8` writes the mark), or UTF-16
-little- or big-endian after its mark (its `Out-File` and `>`). The mark
-itself is not part of the text.
-
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L206)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L194)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, from the folder the
@@ -148,7 +137,8 @@ command was run from ({@link typedPath}), else the workspace's own
 `.live-docs.config.json` when it has one, else nothing, which leaves the
 shipped defaults. The history command reads its lens by the same rule.
 Saved by Windows PowerShell 5.1 with a byte-order mark, or as UTF-16, it is
-read all the same ({@link decodeText}).
+read all the same, by the engine's one parser of the file
+(`parseLiveDocumentationConfigBytes`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -157,6 +147,7 @@ read all the same ({@link decodeText}).
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
 - [`gitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 <!-- LIVE-DOC:END Dependencies -->

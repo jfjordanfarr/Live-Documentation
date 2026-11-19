@@ -12,7 +12,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import type { LiveDocumentationConfigInput } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { type LiveDocumentationConfigInput, parseLiveDocumentationConfigBytes } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 
 /**
@@ -183,30 +183,18 @@ function stackOf(error: unknown): string {
 }
 
 /**
- * A text file's characters, in whichever of the encodings Windows writes by
- * default it was saved: UTF-8 with or without a byte-order mark (Windows
- * PowerShell 5.1's `Set-Content -Encoding UTF8` writes the mark), or UTF-16
- * little- or big-endian after its mark (its `Out-File` and `>`). The mark
- * itself is not part of the text.
- */
-export function decodeText(bytes: Uint8Array): string {
-  const encoding = bytes[0] === 0xff && bytes[1] === 0xfe ? "utf-16le" : bytes[0] === 0xfe && bytes[1] === 0xff ? "utf-16be" : "utf-8";
-  // The decoder drops the mark of the encoding it decodes.
-  return new TextDecoder(encoding).decode(bytes);
-}
-
-/**
  * The configuration a command reads: the file given, from the folder the
  * command was run from ({@link typedPath}), else the workspace's own
  * `.live-docs.config.json` when it has one, else nothing, which leaves the
  * shipped defaults. The history command reads its lens by the same rule.
  * Saved by Windows PowerShell 5.1 with a byte-order mark, or as UTF-16, it is
- * read all the same ({@link decodeText}).
+ * read all the same, by the engine's one parser of the file
+ * (`parseLiveDocumentationConfigBytes`).
  */
 export async function readConfiguration(workspaceRoot: string, configPath: string | undefined): Promise<LiveDocumentationConfigInput> {
   const file = configPath === undefined ? path.join(workspaceRoot, CONFIGURATION_FILE) : typedPath(configPath);
   try {
-    return JSON.parse(decodeText(await fs.readFile(file))) as LiveDocumentationConfigInput;
+    return parseLiveDocumentationConfigBytes(await fs.readFile(file));
   } catch (error) {
     if (configPath === undefined && (error as NodeJS.ErrnoException).code === "ENOENT") {
       return {};
