@@ -51,11 +51,12 @@ export function rankByNetworkSimplex(count: number, constraints: readonly Constr
     const leaving = tree.leavingEdge(cut, searchFrom);
     if (leaving < 0) { optimal = true; break; }
     searchFrom = leaving + 1;
-    const entering = tree.enteringEdge(leaving, position);
+    const onHeadSide = tree.headSide(leaving);
+    const entering = tree.enteringEdge(onHeadSide, position);
     if (entering < 0) { optimal = true; break; }
     const shift = slack(edges[entering], position);
     // Raising the leaving edge's head side by the entering edge's slack makes the entering edge tight and lowers the cost.
-    for (let v = 0; v < count; v++) if (tree.onHeadSide(leaving, v)) position[v] += shift;
+    for (let v = 0; v < count; v++) if (onHeadSide(v)) position[v] += shift;
     tree.exchange(leaving, entering);
   }
   const least = Math.min(...position);
@@ -232,17 +233,18 @@ class TreeIndex {
     }
   }
 
-  /** Whether `node` lies in the subtree below the tree edge `index`, the side away from the root. */
-  private below(index: number, node: number): boolean {
+  /**
+   * Whether a node is on the head's side of the cut the tree edge `index` makes, one test a node. The edge's lower end
+   * (its child) and that end's postorder range are found once a pivot: a node lies below the edge when its number falls
+   * in the range, and the head lies below exactly when the head is the child, since the other end is the child's parent.
+   * Until 2026-11-19 each test found the child again, twice, for the node and for the head: on this repository's
+   * five-file scope the cut tests took a sixth of the Local Map's continuing search.
+   */
+  headSide(index: number): (node: number) => boolean {
     const edge = this.edges[index];
     const child = this.parentEdge[edge.head] === index ? edge.head : edge.tail;
-    return this.low[child] <= this.lim[node] && this.lim[node] <= this.lim[child];
-  }
-
-  /** Whether `node` is on the head's side of the cut the tree edge `index` makes. */
-  onHeadSide(index: number, node: number): boolean {
-    const edge = this.edges[index];
-    return this.below(index, node) === this.below(index, edge.head);
+    const headBelow = child === edge.head, low = this.low[child], high = this.lim[child], lim = this.lim;
+    return node => (low <= lim[node] && lim[node] <= high) === headBelow;
   }
 
   /** Sum this solve's node balances in the current DFS postorder; each tree edge keeps its own indexed cut slot. */
@@ -274,11 +276,11 @@ class TreeIndex {
   }
 
   /** The non-tree edge from the head side to the tail side of the leaving edge's cut with the least slack. */
-  enteringEdge(leaving: number, position: readonly number[]): number {
+  enteringEdge(onHeadSide: (node: number) => boolean, position: readonly number[]): number {
     let best = -1, bestSlack = Infinity;
     this.edges.forEach((edge, index) => {
       if (this.inTree[index]) return;
-      if (!this.onHeadSide(leaving, edge.tail) || this.onHeadSide(leaving, edge.head)) return;
+      if (!onHeadSide(edge.tail) || onHeadSide(edge.head)) return;
       const s = slack(edge, position);
       if (s < bestSlack) { bestSlack = s; best = index; }
     });
