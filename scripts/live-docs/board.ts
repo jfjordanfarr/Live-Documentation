@@ -72,7 +72,8 @@ function usage(): string {
     "things, doors and wires. Without <board.md>, the board the configuration names as \"board\".",
     "",
     "Options:",
-    "  --workspace <path>   Workspace root (default: the current directory).",
+    "  --workspace <path>   Workspace root (default: the nearest folder, from the current directory up, that",
+    "                       holds a .live-docs.config.json; else the current directory).",
     "  --config <file>      The configuration (default: the workspace's .live-docs.config.json",
     "                       when it has one, else the shipped defaults).",
     "  -h, --help           Print this help."

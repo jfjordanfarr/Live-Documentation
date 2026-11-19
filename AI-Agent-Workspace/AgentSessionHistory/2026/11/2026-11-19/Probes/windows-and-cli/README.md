@@ -360,3 +360,18 @@ Done as the stranger did them, from this branch:
 - `line-endings.ts <index.json>` and `gitignore-endings.cjs`: Part B, item 6, run from this folder with `npx tsx` and `node`.
 
 Everything else was in my private temp folder and was removed with it.
+
+## Second leg, November 19
+
+The root accepted the first leg and ruled on its forks. The rulings are in the root's record; this section says what the second leg changed and found, on top of `dc503fea`.
+
+### "Here", amended: the nearest folder with a configuration
+
+The root changed A2 in one respect. Someone who runs `npm run live-docs:generate` from `scripts/`, or from any folder inside a mapped repository, must get that repository's map, not a new map of the folder. With no `--workspace`, a command now works on the nearest folder that holds a `.live-docs.config.json`, searching from where it was run up to the file system's root, as git finds a repository. When no folder does, it works on the folder it was run from. Relative `--workspace`, `--config` and `--output` are still taken from where the command was run. When the workspace was found above that folder, `generate` says which one it maps: `[live-docs] Mapping C:\work\Repo, the nearest folder above C:\work\Repo\src\deep that holds a .live-docs.config.json.` Every `--help`, the README, the CLI reference and the getting-started guide say the rule, with the example of `scripts/`.
+
+**Tests.** `generate-cli.test.ts` runs five cases through npm:
+- this checkout from its root and from `scripts/`, read by `inspect` from its committed docs;
+- another repository from its root and from `src/deep`, through `npm --prefix`;
+- a folder with no configuration anywhere above it, which is its own workspace.
+
+The two cases run from a subfolder failed against the first leg's rule: `scripts/` found no docs, and `src/deep` was mapped alone. `cli.test.ts` covers `nearestConfiguredFolder`, including a nested configuration and a folder named like the file.

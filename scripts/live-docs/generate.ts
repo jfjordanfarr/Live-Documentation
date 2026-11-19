@@ -12,7 +12,7 @@ import {
 import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
-import { gitIgnoresUnasked, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
+import { gitIgnoresUnasked, invocationFolder, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -129,7 +129,8 @@ function usage(): string {
   return `Usage: npm run live-docs:generate -- [options] [glob ...]\n\n` +
     `Writes a Live Doc for each file of the workspace, and the graph index beside them.\n\n` +
     `Options:\n` +
-    `  --workspace <path>        The folder to document (default: the current directory).\n` +
+    `  --workspace <path>        The folder to document (default: the nearest folder, from the current\n` +
+    `                            directory up, that holds a .live-docs.config.json; else the current directory).\n` +
     `  --config <file>           The configuration (default: the workspace's .live-docs.config.json\n` +
     `                            when it has one, else the shipped defaults).\n` +
     `  --root <path>             In place of the configuration's root.\n` +
@@ -185,6 +186,10 @@ async function main(): Promise<void> {
   }
 
   const workspaceRoot = workspaceFolder(args.workspace);
+  // Said when the workspace is not where the command was run, since the docs are written there.
+  if (args.workspace === undefined && workspaceRoot !== invocationFolder()) {
+    console.log(`[live-docs] Mapping ${workspaceRoot}, the nearest folder above ${invocationFolder()} that holds a .live-docs.config.json.`);
+  }
   const ignores = gitIgnoresUnasked(workspaceRoot);
   if (ignores !== undefined) {
     if ("warning" in ignores) {

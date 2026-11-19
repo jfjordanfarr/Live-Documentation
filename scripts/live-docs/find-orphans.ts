@@ -72,7 +72,8 @@ function usage(): string {
     "Lists the Live Docs whose source file no longer exists, and exits 1 when there is one.\n" +
     "The npm script passes this repository's --docs-root .mdmd --base-layer layer-4.\n\n" +
     "Options:\n" +
-    "  --workspace <path>    Workspace root (default: the current directory).\n" +
+    "  --workspace <path>    Workspace root (default: the nearest folder, from the current directory up, that\n" +
+    "                        holds a .live-docs.config.json; else the current directory).\n" +
     "  --docs-root <path>    The docs root, relative to the workspace (default: .live-documentation).\n" +
     "  --base-layer <name>   The folder under it that mirrors the source (default: source).\n" +
     "  --quiet               Print nothing when there is no orphan.\n" +

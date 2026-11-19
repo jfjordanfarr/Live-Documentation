@@ -10,7 +10,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { invocationFolder, readConfiguration } from "./cli";
+import { invocationFolder, nearestConfiguredFolder, readConfiguration } from "./cli";
 
 const folders: string[] = [];
 
@@ -91,5 +91,32 @@ describe("invocationFolder", () => {
   it("is the working directory outside npm", () => {
     expect(invocationFolder({}, stoodIn, script)).toBe(stoodIn);
     expect(invocationFolder({ INIT_CWD: checkout }, stoodIn, script)).toBe(stoodIn);
+  });
+});
+
+/**
+ * The workspace when none is named: the nearest folder at or above where the
+ * command was run that holds a configuration, as git finds a repository, so
+ * that a shell that has drifted into a subfolder still maps the repository
+ * (the root's ruling of 2026-11-19).
+ */
+describe("nearestConfiguredFolder", () => {
+  it("is the folder itself, or the nearest above it, that holds a .live-docs.config.json", () => {
+    const repository = workspaceWith(Buffer.from("{}", "utf8"));
+    const deep = path.join(repository, "src", "deep");
+    fs.mkdirSync(deep, { recursive: true });
+    expect(nearestConfiguredFolder(repository)).toBe(repository);
+    expect(nearestConfiguredFolder(deep)).toBe(repository);
+    // A nested repository with its own configuration is its own workspace.
+    const nested = path.join(repository, "src");
+    fs.writeFileSync(path.join(nested, ".live-docs.config.json"), "{}", "utf8");
+    expect(nearestConfiguredFolder(deep)).toBe(nested);
+  });
+
+  it("is nothing when no folder up to the root holds one, and a folder of that name is not one", () => {
+    const bare = fs.mkdtempSync(path.join(os.tmpdir(), "cli-bare-"));
+    folders.push(bare);
+    fs.mkdirSync(path.join(bare, "sub", ".live-docs.config.json"), { recursive: true });
+    expect(nearestConfiguredFolder(path.join(bare, "sub"))).toBeUndefined();
   });
 });

@@ -505,7 +505,8 @@ function usage(): string {
     `                           symbol's description, or why they cannot be read.\n` +
     `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files created,\n` +
     `                           deleted, renamed and resized, wires added and removed. From the shape alone.\n` +
-    `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
+    `  --workspace <path>       Workspace root (default: the nearest folder, from the current directory up,\n` +
+    `                           that holds a .live-docs.config.json; else the current directory).\n` +
     `  --root <path>            In place of the configuration's root.\n` +
     `  --base-layer <name>      In place of the configuration's baseLayer.\n` +
     `  --extension <suffix>     In place of the configuration's extension.\n` +

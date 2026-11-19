@@ -46,14 +46,38 @@ export function typedPath(typed: string): string {
   return path.resolve(invocationFolder(), typed);
 }
 
+/** The file whose folder is a workspace, as git's `.git` is a repository's. */
+const CONFIGURATION_FILE = ".live-docs.config.json";
+
+/**
+ * The nearest folder that holds a `.live-docs.config.json`, from `start` up to
+ * the file system's root, as git finds the repository a folder lies in;
+ * `undefined` when none does.
+ */
+export function nearestConfiguredFolder(start: string): string | undefined {
+  for (let folder = path.resolve(start); ; folder = path.dirname(folder)) {
+    if (statSync(path.join(folder, CONFIGURATION_FILE), { throwIfNoEntry: false })?.isFile()) {
+      return folder;
+    }
+    if (path.dirname(folder) === folder) {
+      return undefined;
+    }
+  }
+}
+
 /**
  * The folder a command works on: the one `--workspace` names, from where the
- * person ran the command, else that folder itself. A name that is no folder
- * is refused with the path looked for, since a mistyped one would otherwise
- * map nothing and say so as success, and `generate` would make the folder.
+ * person ran the command; else the nearest folder at or above where they ran
+ * it that holds a `.live-docs.config.json` ({@link nearestConfiguredFolder}),
+ * so that a command run from `scripts/` of this checkout, or from any folder
+ * inside a mapped repository, works on the repository and not on a new map of
+ * the folder; else the folder they ran it from. A name that is no folder is
+ * refused with the path looked for, since a mistyped one would otherwise map
+ * nothing and say so as success, and `generate` would make the folder.
  */
 export function workspaceFolder(given: string | undefined): string {
-  const folder = given === undefined ? invocationFolder() : typedPath(given);
+  const here = invocationFolder();
+  const folder = given === undefined ? nearestConfiguredFolder(here) ?? here : typedPath(given);
   const found = statSync(folder, { throwIfNoEntry: false });
   if (found === undefined) {
     throw new UsageError(`There is no folder at ${folder}; --workspace names the folder to work on.`);
@@ -180,7 +204,7 @@ export function decodeText(bytes: Uint8Array): string {
  * read all the same ({@link decodeText}).
  */
 export async function readConfiguration(workspaceRoot: string, configPath: string | undefined): Promise<LiveDocumentationConfigInput> {
-  const file = configPath === undefined ? path.join(workspaceRoot, ".live-docs.config.json") : typedPath(configPath);
+  const file = configPath === undefined ? path.join(workspaceRoot, CONFIGURATION_FILE) : typedPath(configPath);
   try {
     return JSON.parse(decodeText(await fs.readFile(file))) as LiveDocumentationConfigInput;
   } catch (error) {

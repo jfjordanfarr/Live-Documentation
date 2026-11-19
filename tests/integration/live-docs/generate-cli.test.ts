@@ -13,9 +13,10 @@
  * Explorer's build and the board command read when none is given.
  *
  * Since 2026-11-19, the folder a person runs a command from: a relative
- * `--workspace` and `--config` are taken from it, and it is the workspace when
- * none is named, though npm runs the script in this checkout, which the cold run
- * of that day found every `--help` calling the current directory.
+ * `--workspace` and `--config` are taken from it, though npm runs the script in
+ * this checkout, which the cold run of that day found every `--help` calling
+ * the current directory; and when none is named, the workspace is the nearest
+ * folder at or above it that holds a configuration, else the folder itself.
  *
  * Every command here is a process of its own through tsx, a second or more
  * each, so all of them start together in `beforeAll`, eight at a time, and each
@@ -61,8 +62,12 @@ const BOARD = "# Sample board\n\n## Metadata\n- Layer: 3\n\n## Authored\n### Pur
 
 const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
 
-/** The workspaces the cases run in, made in `beforeAll`; `stand` is a folder a person stands in, holding two repositories, `mine` and `theirs`, and a configuration beside them. */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", unread: "", broken: "", repository: "", noGit: "" };
+/**
+ * The workspaces the cases run in, made in `beforeAll`. `stand` is a folder a person stands in, holding a repository
+ * `mine` and a configuration beside it; `other` is another repository with a configuration of its own and a folder
+ * `src/deep` inside it; `bare` has no configuration, nor has any folder above it, and holds a folder `sub`.
+ */
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "" };
 
 /** Each case's run, by the case's name. */
 const runs = new Map<string, Run>();
@@ -82,10 +87,16 @@ beforeAll(async () => {
   fs.writeFileSync(path.join(at.boarded, "board.md"), BOARD, "utf8");
   at.unboarded = makeWorkspace({});
   at.stand = makeWorkspace({});
-  for (const repository of ["mine", "theirs"]) {
-    fs.cpSync(path.join(at.stand, "src"), path.join(at.stand, repository, "src"), { recursive: true });
-  }
+  fs.cpSync(path.join(at.stand, "src"), path.join(at.stand, "mine", "src"), { recursive: true });
   fs.writeFileSync(path.join(at.stand, "standing.json"), JSON.stringify({ root: "docs", baseLayer: "mirror" }), "utf8");
+  at.other = makeWorkspace({ root: "docs", baseLayer: "mirror" });
+  fs.mkdirSync(path.join(at.other, "src", "deep"));
+  fs.writeFileSync(path.join(at.other, "src", "deep", "b.ts"), "export const b = 2;\n", "utf8");
+  at.bare = fs.mkdtempSync(path.join(os.tmpdir(), "generate-cli-bare-"));
+  workspaces.push(at.bare);
+  fs.mkdirSync(path.join(at.bare, "sub"));
+  fs.writeFileSync(path.join(at.bare, "top.ts"), "export const top = 0;\n", "utf8");
+  fs.writeFileSync(path.join(at.bare, "sub", "c.ts"), "export const c = 3;\n", "utf8");
   // Kinds of file no reader reads, as a .NET Framework repository holds them, in any case, beside a picture, which has nothing to read.
   at.unread = makeWorkspace({});
   for (const name of ["Shop.sln", "src/Legacy.vb", "src/Old.VB", "Database/Install.SqlDataProvider", "logo.png"]) {
@@ -139,7 +150,13 @@ beforeAll(async () => {
     record("generate, mistyped", "generate.ts", ["--workspace", path.join(at.stand, "mien")]),
     record("inspect, mistyped", "inspect.ts", ["--workspace", path.join(at.stand, "mien"), "--reachable"]),
     record("generate, a file", "generate.ts", ["--workspace", path.join(at.stand, "standing.json")]),
-    recordNpm("npm from elsewhere, no workspace", path.join(at.stand, "theirs"), "live-docs:generate", ["--config", path.join("..", "standing.json"), "--dry-run"]),
+    // With no --workspace: this checkout from its root and from a folder in it, read from its committed docs; another
+    // repository from its root and from a folder in it; and a folder with no configuration above it.
+    recordNpm("npm in the checkout", repoRoot, "live-docs:inspect", ["--from", "scripts/live-docs/cli.ts", "--direction", "inbound"]),
+    recordNpm("npm in a folder of the checkout", path.join(repoRoot, "scripts"), "live-docs:inspect", ["--from", "scripts/live-docs/cli.ts", "--direction", "inbound"]),
+    recordNpm("npm in another repository", at.other, "live-docs:generate", ["--dry-run"]),
+    recordNpm("npm in a folder of another repository", path.join(at.other, "src", "deep"), "live-docs:generate", ["--dry-run"]),
+    recordNpm("npm in a folder with no configuration above", path.join(at.bare, "sub"), "live-docs:generate", ["--dry-run"]),
     ...commands.flatMap(([, script]) => ["--help", "-h", "--no-such-option"].map((flag) => record(`${script} ${flag}`, script, [flag])))
   ];
   await inPool(jobs, WIDTH);
@@ -175,10 +192,30 @@ describe("the folder a person runs a command from", () => {
     expect(fs.existsSync(path.join(repoRoot, "mine"))).toBe(false);
   });
 
-  it("is the workspace when none is named", () => {
-    const result = ran("npm from elsewhere, no workspace");
+  it("is in the workspace, when none is named, that the nearest configuration at or above it names: this checkout from its root or from scripts/", () => {
+    for (const name of ["npm in the checkout", "npm in a folder of the checkout"]) {
+      const result = ran(name);
+      expect(result.status, `${name}: ${result.stderr}`).toBe(0);
+      expect(result.stdout, name).toMatch(/^Terminal inbound paths from scripts\/live-docs\/cli\.ts /u);
+    }
+  });
+
+  it("is in the workspace that the nearest configuration names: another repository from its root or from a folder in it", () => {
+    for (const name of ["npm in another repository", "npm in a folder of another repository"]) {
+      const result = ran(name);
+      expect(result.status, `${name}: ${result.stderr}`).toBe(0);
+      expect(result.stdout, name).toContain("Base layer processed 3 file(s) (dry-run)");
+      expect(result.stdout, name).toContain("docs/mirror/src/deep/b.ts.md");
+    }
+    expect(ran("npm in another repository").stdout).not.toContain("the nearest folder above");
+    expect(ran("npm in a folder of another repository").stdout).toContain(`[live-docs] Mapping ${at.other}, the nearest folder above ${path.join(at.other, "src", "deep")} that holds a .live-docs.config.json.`);
+  });
+
+  it("is the workspace itself when no folder at or above it holds a configuration", () => {
+    const result = ran("npm in a folder with no configuration above");
     expect(result.status, result.stderr).toBe(0);
-    expect(result.stdout).toContain("Would create 1 Live Doc(s): docs/mirror/src/a.ts.md");
+    expect(result.stdout).toContain("Base layer processed 1 file(s) (dry-run)");
+    expect(result.stdout).toContain("Would create 1 Live Doc(s): .live-documentation/source/c.ts.md");
   });
 });
 

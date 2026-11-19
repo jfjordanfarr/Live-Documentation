@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/cli.ts
-- Generated At: 2026-11-19T19:37:35.644Z
+- Generated At: 2026-11-19T20:00:02.818Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - `decodeText` (2026-11-19): the configuration is read by its byte-order mark, UTF-8 with or without one or UTF-16 in either order, after [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found a configuration saved by Windows PowerShell 5.1, which writes the mark, stopping every command. The PowerShell reader decodes scripts by the same rule for itself; the history's lens reads the configuration by its own copy of `readConfiguration` without it ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 - `invocationFolder`, `typedPath` and `workspaceFolder` (2026-11-19): every command's help said `--workspace` defaults to "the current directory", but `npm run` starts a script in this checkout's own folder wherever the person stands, so the default workspace and every relative path were this checkout's, which [the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) met. The guides run the commands from the root of this checkout, where the two folders are one, so nothing changes there; elsewhere, as under `npm --prefix <checkout> run`, the folder meant is the one npm records in `INIT_CWD`. It is honoured only when npm started this very script, read from `npm_lifecycle_script`, since a process another command or a test starts inherits npm's variables while its own working directory is the one meant.
 - Since the same day `workspaceFolder` refuses a name that is no folder, with the path it looked for: a mistyped `--workspace` reported "processed 0 file(s)" as a success and `generate` made the misspelled folder ([the cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles)). Every command takes its workspace through it.
+- Later the same day, at the root's ruling, the workspace when none is named became the nearest folder, from where the command was run up to the file system's root, that holds a `.live-docs.config.json` (`nearestConfiguredFolder`), as git finds a repository, and the folder itself when none does. Until then a command run from `scripts/` of this checkout, or from any folder of a mapped repository, made a new map of that folder; the root's own shell had drifted into a subfolder twice that day ([the probe's second leg](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19)). Relative paths are still taken from where the command was run.
 - `--stack` (2026-11-19): every command takes it, through `runCommand`, which lifts it off the command line before the command reads its own options, and prints a failure's stack and each cause's with it. Without it a failure ends with a line saying how to see where it failed. [The cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) had to call the generator from a script of its own to learn which code a crash came from. Which source file a crash concerns is the generator's to say ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 - `gitIgnoresUnasked` (2026-11-19): discovery reads what git ignores by git's own word, and when git cannot answer, the folder's own `.gitignore` alone, which the code said and the person was never told; the [cold run's review](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#windows) suspected it, and [the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md) found a repository's `bin/`, which a nested `.gitignore` hid, documented once git was off the path. `generate` now warns when the folder lies in a repository, found by a `.git` at it or above it, that git cannot be asked about, and notes when it lies in none. Git's own reason is not kept by `gitIgnored`, so the warning names the two usual ones and the command that tells which.
 
@@ -50,19 +51,32 @@ is the one meant.
 ##### `typedPath` — Summary
 A path the person typed, made absolute from the folder they ran the command from ({@link invocationFolder}).
 
+#### `nearestConfiguredFolder` {#symbol-nearestconfiguredfolder}
+- Type: function
+- Source: [source](../../../../scripts/live-docs/cli.ts#L57)
+
+##### `nearestConfiguredFolder` — Summary
+The nearest folder that holds a `.live-docs.config.json`, from `start` up to
+the file system's root, as git finds the repository a folder lies in;
+`undefined` when none does.
+
 #### `workspaceFolder` {#symbol-workspacefolder}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L55)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L78)
 
 ##### `workspaceFolder` — Summary
 The folder a command works on: the one `--workspace` names, from where the
-person ran the command, else that folder itself. A name that is no folder
-is refused with the path looked for, since a mistyped one would otherwise
-map nothing and say so as success, and `generate` would make the folder.
+person ran the command; else the nearest folder at or above where they ran
+it that holds a `.live-docs.config.json` ({@link nearestConfiguredFolder}),
+so that a command run from `scripts/` of this checkout, or from any folder
+inside a mapped repository, works on the repository and not on a new map of
+the folder; else the folder they ran it from. A name that is no folder is
+refused with the path looked for, since a mistyped one would otherwise map
+nothing and say so as success, and `generate` would make the folder.
 
 #### `gitIgnoresUnasked` {#symbol-gitignoresunasked}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L77)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L101)
 
 ##### `gitIgnoresUnasked` — Summary
 What a person must be told of how the files git ignores are found in a
@@ -76,35 +90,35 @@ no repository holds it; nothing when git answers.
 
 #### `packageVersion` {#symbol-packageversion}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L93)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L117)
 
 ##### `packageVersion` — Summary
 The version of one of this repository's packages, from its manifest: a command prints its package's version, never a constant of its own.
 
 #### `endQuietlyWhenThePipeCloses` {#symbol-endquietlywhenthepipecloses}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L100)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L124)
 
 ##### `endQuietlyWhenThePipeCloses` — Summary
 Ends the process quietly when the reader closes the pipe before the listing is done, as `head` does, instead of dying with a stack trace.
 
 #### `UsageError` {#symbol-usageerror}
 - Type: class
-- Source: [source](../../../../scripts/live-docs/cli.ts#L110)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L134)
 
 ##### `UsageError` — Summary
 A command line the command refuses: one plain sentence, printed with where its options are listed and never with a stack.
 
 #### `optionValue` {#symbol-optionvalue}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L113)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L137)
 
 ##### `optionValue` — Summary
 The value after an option, refused when it is missing or is itself an option.
 
 #### `runCommand` {#symbol-runcommand}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L131)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L155)
 
 ##### `runCommand` — Summary
 Runs a command to its end, by the name of the npm script that runs it: a
@@ -115,7 +129,7 @@ of each failure that caused it; both exit 1.
 
 #### `decodeText` {#symbol-decodetext}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L168)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L192)
 
 ##### `decodeText` — Summary
 A text file's characters, in whichever of the encodings Windows writes by
@@ -126,7 +140,7 @@ itself is not part of the text.
 
 #### `readConfiguration` {#symbol-readconfiguration}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L182)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L206)
 
 ##### `readConfiguration` — Summary
 The configuration a command reads: the file given, from the folder the
