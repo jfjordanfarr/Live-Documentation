@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/directory-flow.ts
-- Generated At: 2026-11-19T05:15:58.266Z
+- Generated At: 2026-11-19T05:22:12.736Z
 
 ## Authored
 ### Purpose
@@ -165,25 +165,28 @@ A directory's label on the nominal model: the strip the layout keeps for its han
 
 #### `nominalMeasurer` {#symbol-nominalmeasurer}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L248)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L251)
 - Returns: [`SceneMeasurer`](./branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `ids`: `Iterable`
 
 ##### `nominalMeasurer` — Summary
 The scene's measurer on the nominal model: every file card {@link NOMINAL_CARD}, every closed box {@link NOMINAL_BOX},
 no wider than a card cap when one is set, every directory's label {@link NOMINAL_LABEL} tall, and every line's end at a
-card's node-level hub, half way down it as the stylesheet stands it. A closed box ends no line.
+card's node-level hub, half way down it as the stylesheet stood it until 2026-11-19. The page now stands a hub at its
+name's first line (`hubLine` in wire-gathering.ts); the model keeps the middle, since moving it changes the shapes the
+price chooses (on `scripts/live-docs` Width Cost at nought then no longer widens the default shape), which is the
+owner's to choose. A closed box ends no line.
 
 #### `ShapeSearch` {#symbol-shapesearch}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L262)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L265)
 
 ##### `ShapeSearch` — Summary
 What {@link searchFlowShape} found: the cheapest shape it met and its price, and every shape it priced, in order.
 
 #### `searchFlowShape` {#symbol-searchflowshape}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L279)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L282)
 - Returns: [`ShapeSearch`](#symbol-shapesearch)
 - Parameters: `input`: [`FlowInput`](#symbol-flowinput); `shape`: [`FlowShape`](#symbol-flowshape)
 
@@ -200,7 +203,7 @@ filters takes the same shape on every screen, after any pins and from any link.
 
 #### `wrapChoices` {#symbol-wrapchoices}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L336)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/directory-flow.ts#L339)
 
 ##### `wrapChoices` — Summary
 The rows at which the ranks wrap differently, from the tallest rank's down: each wraps them into more columns than the last.

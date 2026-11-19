@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/returning-connections.test.ts
-- Generated At: 2026-11-15T20:53:46.208Z
+- Generated At: 2026-11-19T05:22:12.976Z
 
 ## Authored
 ### Purpose
@@ -25,8 +25,10 @@ _No public symbols detected_
 - [`branches.rankBranches`](./branches.ts.mdmd.md#symbol-rankbranches)
 - [`returning-connections.BACKWARD_STRENGTHS`](./returning-connections.ts.mdmd.md#symbol-backward_strengths)
 - [`returning-connections.MANY_BACKWARD`](./returning-connections.ts.mdmd.md#symbol-many_backward)
+- [`returning-connections.RETURN_CLEARANCE`](./returning-connections.ts.mdmd.md#symbol-return_clearance)
 - [`returning-connections.backwardStrength`](./returning-connections.ts.mdmd.md#symbol-backwardstrength-function)
 - [`returning-connections.connectionCount`](./returning-connections.ts.mdmd.md#symbol-connectioncount)
+- [`returning-connections.returnRoute`](./returning-connections.ts.mdmd.md#symbol-returnroute)
 - [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

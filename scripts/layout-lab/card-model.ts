@@ -10,6 +10,7 @@
  */
 import { layout, walkLineRanges } from "@chenglou/pretext";
 
+import { hubLine } from "../../packages/explorer/src/client/views/localView/wire-gathering";
 import { buildNormalizedAnchorKey } from "../../packages/explorer/src/client/views/symbolAnchors";
 import type { Capture, CardCapture, ChipCapture, PreparedText, RowCapture } from "./capture";
 import { readingHeight } from "./reading-model";
@@ -129,8 +130,8 @@ export function chipsHeight(items: readonly ChipCapture[], width: number, gap: n
  * each row as tall as its dot, its label's lines, its badges or its controls
  * (the label narrowed by the badges and controls beside it), the rows a gap
  * apart, the test chips wrapped, the directory line, and the notes. A pin is
- * at the middle of its row, the Internals row's a margin lower; the hub at
- * the middle of the card.
+ * at the middle of its row, the Internals row's a margin lower; the hubs where
+ * the capture read them.
  */
 export function cardMetrics(capture: Capture, card: CardCapture, width: number, view: CardView): CardMetrics {
   const c = card.constants ?? capture.constants;
@@ -184,11 +185,35 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   }
   const metrics = registerPins(view.registration, centres, y);
   metrics.width = width;
-  if (card.hubY !== undefined) {
-    metrics.pins.set("outbound:*", card.hubY);
-    if (!view.registration.some(row => row.symbol === "__internals__")) metrics.pins.set("inbound:*", card.hubY);
+  // Both node-level hubs, where a directory's pair lines and the overview's gathered wires end (wire-gathering.ts's
+  // NODE_HUB), stand at the middle of the header's first line (2026-11-19); a file-level reference arrives at the
+  // Internals dot where there is one.
+  const hub = hubCentre(capture, card, content);
+  if (hub !== undefined) {
+    for (const side of ["inbound", "outbound"]) metrics.pins.set(`${side}:#hub`, hub);
+    metrics.pins.set("outbound:*", hub);
+    if (!view.registration.some(row => row.symbol === "__internals__")) metrics.pins.set("inbound:*", hub);
   }
   return metrics;
+}
+
+/** The layout's unit, a sixty-fourth of a pixel, to which the branch renderer rounds what it writes for the page. */
+const LAYOUT_UNIT = 64;
+
+/**
+ * A card's node-level hubs' centre from its top, at a content width, as the branch renderer's `standHubs` stands them:
+ * below the card's padding edge, at the middle of the header's first line by `hubLine`, from the header's height, the
+ * name's line and the controls' room, which wrap with the width (2026-11-19). A name that fits one line beside the room
+ * shares a line with it; a narrower card's name breaks, and its first line is a line of the name. A growing card's hubs
+ * keep their place whatever the width (reading.css), and a card the renderer does not stand keeps the stylesheet's
+ * fallback: both as the capture read them.
+ */
+export function hubCentre(capture: Capture, card: CardCapture, content: number): number | undefined {
+  if (card.hubY === undefined || card.readingWidth !== undefined || !card.titleRoom) return card.hubY;
+  const c = card.constants ?? capture.constants;
+  const header = titleTextHeight(capture, card.title, content - c.titlePaddingRight, card.titleRoom) + (c.titlePaddingTop ?? 0);
+  const line = hubLine(header, capture.fonts[card.title.font].lineHeight, titleRoomBox(card.titleRoom).height);
+  return card.borderWidth + Math.round((card.padding + line) * LAYOUT_UNIT) / LAYOUT_UNIT;
 }
 
 /** Registers row endpoints in construction order, retaining exact and normalized names separately as the browser does. */

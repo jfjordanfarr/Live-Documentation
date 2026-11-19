@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-11-15T23:44:00.896Z
+- Generated At: 2026-11-19T05:22:13.659Z
 
 ## Authored
 ### Purpose
@@ -36,14 +36,14 @@ Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/AgentSess
 ### Public Symbols
 #### `CardView` {#symbol-cardview}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L18)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L19)
 
 ##### `CardView` — Summary
 What a card shows under a configuration: its rows in order, and the lines under it.
 
 #### `CardMetrics (interface)` {#symbol-cardmetrics-interface}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L30)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L31)
 
 ##### `CardMetrics (interface)` — Summary
 The card's height, and every anchor's distance from its top, before rounding; `rowKeys` names the anchors that
@@ -51,7 +51,7 @@ are a row's dots, and `hiddenKeys` the anchors of collapsed rows, which the page
 
 #### `TEXT_TOLERANCE` {#symbol-text_tolerance}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L45)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L46)
 
 ##### `TEXT_TOLERANCE` — Summary
 How far a text may overflow its box and still stay on one line, in CSS pixels: one of Chromium's layout units.
@@ -61,7 +61,7 @@ breaks at the box's edge, so the lab lends it the unit.
 
 #### `textHeight` {#symbol-textheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L48)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L49)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `text`: [`PreparedText`](./capture.ts.mdmd.md#symbol-preparedtext)
 
 ##### `textHeight` — Summary
@@ -69,7 +69,7 @@ The height of a prepared text set in a width, by Pretext's arithmetic, with the 
 
 #### `TitleRoom` {#symbol-titleroom}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L58)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L59)
 
 ##### `TitleRoom` — Summary
 The room a card's header keeps for the node's controls after the file's name (the header round of 2026-11-08), as the
@@ -78,7 +78,7 @@ reading band's last step. Absent in a capture of a page from before it.
 
 #### `titleRoomBox` {#symbol-titleroombox}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L71)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L72)
 - Parameters: `room`: [`TitleRoom`](#symbol-titleroom)
 
 ##### `titleRoomBox` — Summary
@@ -88,7 +88,7 @@ children, one to five.
 
 #### `titleHeight` {#symbol-titleheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L81)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L82)
 - Parameters: `room`: [`TitleRoom`](#symbol-titleroom)
 
 ##### `titleHeight` — Summary
@@ -98,7 +98,7 @@ taller of the two, and otherwise wraps to a line of its own after the name. With
 
 #### `titleTextHeight` {#symbol-titletextheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L91)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L92)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `text`: [`PreparedText`](./capture.ts.mdmd.md#symbol-preparedtext); `room`: [`TitleRoom`](#symbol-titleroom)
 
 ##### `titleTextHeight` — Summary
@@ -106,7 +106,7 @@ A card's title's height at a width: its text laid out by Pretext, with the room 
 
 #### `synthesizedHeight` {#symbol-synthesizedheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L100)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L101)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `synthesizedHeight` — Summary
@@ -114,14 +114,14 @@ The height of a text the page never showed, set in a font from its glyphs' width
 
 #### `chipsHeight` {#symbol-chipsheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L115)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L116)
 
 ##### `chipsHeight` — Summary
 How many lines a row of chips wraps to, and the height they take: each line as tall as its tallest chip, the lines a gap apart.
 
 #### `cardMetrics (function)` {#symbol-cardmetrics-function}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L135)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L136)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `card`: [`CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture); `view`: [`CardView`](#symbol-cardview)
 
@@ -131,12 +131,25 @@ margin, the path, the symbols block (its margin swallowing the meta line's),
 each row as tall as its dot, its label's lines, its badges or its controls
 (the label narrowed by the badges and controls beside it), the rows a gap
 apart, the test chips wrapped, the directory line, and the notes. A pin is
-at the middle of its row, the Internals row's a margin lower; the hub at
-the middle of the card.
+at the middle of its row, the Internals row's a margin lower; the hubs where
+the capture read them.
+
+#### `hubCentre` {#symbol-hubcentre}
+- Type: function
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L211)
+- Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `card`: [`CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture)
+
+##### `hubCentre` — Summary
+A card's node-level hubs' centre from its top, at a content width, as the branch renderer's `standHubs` stands them:
+below the card's padding edge, at the middle of the header's first line by `hubLine`, from the header's height, the
+name's line and the controls' room, which wrap with the width (2026-11-19). A name that fits one line beside the room
+shares a line with it; a narrower card's name breaks, and its first line is a line of the name. A growing card's hubs
+keep their place whatever the width (reading.css), and a card the renderer does not stand keeps the stylesheet's
+fallback: both as the capture read them.
 
 #### `registerPins` {#symbol-registerpins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L195)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L220)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `centres`: `ReadonlyMap`
 
@@ -145,7 +158,7 @@ Registers row endpoints in construction order, retaining exact and normalized na
 
 #### `resolvePin` {#symbol-resolvepin}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L225)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L250)
 - Parameters: `metrics`: [`CardMetrics`](#symbol-cardmetrics-interface)
 
 ##### `resolvePin` — Summary
@@ -156,7 +169,7 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 #### `pinOffset` {#symbol-pinoffset}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L243)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L268)
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.
@@ -165,6 +178,7 @@ A pin's offset, or null where the page would place no wire.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@chenglou/pretext` - `layout`, `walkLineRanges`
+- [`wire-gathering.hubLine`](../../packages/explorer/src/client/views/localView/wire-gathering.ts.mdmd.md#symbol-hubline)
 - [`symbolAnchors.buildNormalizedAnchorKey`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
 - [`capture.CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture) (type-only)

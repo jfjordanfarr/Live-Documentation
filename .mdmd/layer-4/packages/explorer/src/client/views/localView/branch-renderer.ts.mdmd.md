@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-19T04:54:32.735Z
+- Generated At: 2026-11-19T04:41:43.406Z
 
 ## Authored
 ### Purpose
@@ -81,7 +81,7 @@ Since 2026-11-18 a drawn directory publishes its inset (`data-inset`, the box's 
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L40)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -94,7 +94,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L154)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L155)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -102,7 +102,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L159)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L160)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -248,8 +248,11 @@ competition begins from the new picture.
 - [`overview-files.PictureSize`](./overview-files.ts.mdmd.md#symbol-picturesize)
 - [`returning-connections.connectionCount`](./returning-connections.ts.mdmd.md#symbol-connectioncount)
 - [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
+- [`symbol-highlight.attendConnections`](./symbol-highlight.ts.mdmd.md#symbol-attendconnections)
+- [`symbol-highlight.releaseConnections`](./symbol-highlight.ts.mdmd.md#symbol-releaseconnections)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
+- [`wire-gathering.hubLine`](./wire-gathering.ts.mdmd.md#symbol-hubline)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)

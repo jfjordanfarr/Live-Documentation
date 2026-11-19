@@ -17,6 +17,20 @@ import type { LocalEdge } from "./types";
  */
 export const NODE_HUB = "#hub";
 
+/**
+ * Where a card's node-level hubs stand, below the top of its header (the file's name and the room its controls keep), in
+ * the map's own units (2026-11-19): at the middle of the header's first line, where no symbol row can be mistaken for a
+ * hub's end. A name of one line beside the controls' room makes one line as tall as the taller of the two, and the hubs
+ * stand at its middle; every other first line is a line of the name. The page reads the header from itself (the branch
+ * renderer's `standHubs`), and the layout lab's card model computes it from the name's lines, so that both stand a hub
+ * alike. Until then a hub stood half way down its card, level with whichever row stood there, and the owner read a
+ * line's end as that row's.
+ */
+export function hubLine(headerHeight: number, lineHeight: number, roomHeight: number): number {
+  return (headerHeight <= Math.max(lineHeight, roomHeight) + 0.5 ? headerHeight : lineHeight) / 2;
+}
+
+
 /** One wire standing for every wire from one file to another at the overview band. */
 export interface GatheredWire {
   /** The pair's key, the offering file's id and the using file's, in that order. */
@@ -80,5 +94,18 @@ export function gatheredCount(wire: Pick<GatheredWire, "members">): number {
 export function gatheredDescription(wire: GatheredWire, nameOf: (nodeId: string) => string): string {
   const count = gatheredCount(wire);
   return `${nameOf(wire.providerId)} offers ${nameOf(wire.consumerId)} ${count} ${count === 1 ? "reference" : "references"}`;
+}
+
+/**
+ * The accessible description of one drawn connection, in the scan's own names (2026-11-19, first for a returning
+ * connection's laces): a pair line of an opened directory as a gathered wire is described; a reference by its two ends,
+ * a row's symbol named in its file as the row's own name says it ("Post in PaymentService.cs"), an end at a file's
+ * Internals or hub by the file alone.
+ */
+export function wireDescription(edge: LocalEdge, nameOf: (nodeId: string) => string): string {
+  // A pair line carries its count (isPairLine of directory-flow.ts, which imports this module).
+  if (edge.gathered !== undefined) return gatheredDescription({ key: "", providerId: edge.targetId, consumerId: edge.sourceId, members: [edge], back: false }, nameOf);
+  const end = (nodeId: string, symbol: string | undefined): string => (symbol && symbol !== NODE_HUB ? `${symbol} in ${nameOf(nodeId)}` : nameOf(nodeId));
+  return `${end(edge.targetId, edge.targetSymbol)} offers ${end(edge.sourceId, edge.sourceSymbol)}`;
 }
 

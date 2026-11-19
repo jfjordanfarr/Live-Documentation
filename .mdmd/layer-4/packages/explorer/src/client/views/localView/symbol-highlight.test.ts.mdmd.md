@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/symbol-highlight.test.ts
-- Generated At: 2026-11-19T05:15:58.446Z
+- Generated At: 2026-11-19T04:41:43.827Z
 
 ## Authored
 ### Purpose

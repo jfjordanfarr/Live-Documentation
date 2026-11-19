@@ -56,3 +56,37 @@ export const MANY_BACKWARD = 5;
 export function backwardStrength(count: number): BackwardStrength {
   return count >= MANY_BACKWARD ? "many" : count > 0 ? "some" : "none";
 }
+
+/** A box the map lays out, a card's or a closed directory's, in the wires' frame. */
+export interface LaidBox {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+/** How far a returning connection's route keeps from the boxes it passes over, and how far it turns out from its pins. */
+export const RETURN_CLEARANCE = 12;
+
+/**
+ * A returning connection's route while a hover keeps it (2026-11-19): from the offering file's pin, out to the right of
+ * its card, up and back over every box between the two pins, and down into the using file's pin from the left, so that
+ * it crosses no card and no name. Until then it was the one curve from pin to pin, which crossed both cards, and once the
+ * hubs stood at the names it struck both names through; a line through a name reads as its deletion. Running backward
+ * above the picture it reads as the cycle's way back and cannot be taken for a forward wire, which runs left to right
+ * between columns. The run stands `RETURN_CLEARANCE` above the highest box that a run at its height would meet between
+ * the turns; a box above that height meets no run and does not lift it.
+ */
+export function returnRoute(from: { x: number; y: number }, to: { x: number; y: number }, boxes: readonly LaidBox[]): string {
+  const turn = RETURN_CLEARANCE * 4 / 3;
+  const left = Math.min(from.x, to.x) - RETURN_CLEARANCE, right = Math.max(from.x, to.x) + RETURN_CLEARANCE;
+  const across = boxes.filter(box => box.right > left && box.left < right);
+  let y = Math.min(from.y, to.y);
+  for (let lifted = true; lifted;) {
+    lifted = false;
+    for (const box of across) {
+      if (box.top - RETURN_CLEARANCE < y && box.bottom + RETURN_CLEARANCE > y) { y = box.top - RETURN_CLEARANCE; lifted = true; }
+    }
+  }
+  return `M ${from.x} ${from.y} C ${from.x + turn} ${from.y} ${from.x + turn} ${y} ${from.x} ${y} L ${to.x} ${y} C ${to.x - turn} ${y} ${to.x - turn} ${to.y} ${to.x} ${to.y}`;
+}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/zoom.ts
-- Generated At: 2026-11-19T05:15:57.037Z
+- Generated At: 2026-11-19T05:10:42.927Z
 
 ## Authored
 ### Purpose

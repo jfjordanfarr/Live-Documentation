@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/history/zoom.test.ts
-- Generated At: 2026-11-19T05:15:57.031Z
+- Generated At: 2026-11-19T05:10:42.922Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-17T01:03:07.458Z
+- Generated At: 2026-11-19T05:22:12.566Z
 
 ## Authored
 ### Purpose
@@ -37,12 +37,14 @@ Since 2026-11-15 ([Turn 1](../../../../../../../../AI-Agent-Workspace/AgentSessi
 
 Files only means files and what the person pinned by name (2026-11-15, the root's decision on the owner's standing word of October 1, 2026, "I'm not open to having the user open the shape of their software and believe it's all fine and dandy when it's not"; [Turn 1 of that day's record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)): a pinned symbol's own wires are drawn with files only too, from its row's dots, above the pairs' lines, which still count them; none while the picture moves back in from files only, when the pairs' lines are still drawn.
 
+Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)) what the 3D button's cue counts is drawn in the cue's own colour, the palette's `signal.cue`, so that the button and the map cannot disagree and the connections the cue counts can be found: a returning connection's laces are filled with it, its route is stroked with it while a hover shows it, and a forward wire whose route doubles back is marked `doubling` under the very test the count uses (fully present, `routeBacktracks`), which the stylesheet draws in it. The owner's proposal, after their picture of the estate's cycle: "We should probably use that alert color to call attention to the specific wires which are violating the left/right arrangement rule." Half of ten blind testers had read each of a return's two laces as a file linking to itself, and the owner could not tell whether the French Corset was what they were looking at. So a returning lace (`returning`, `attendReturning`) also takes the pointer, within a band of 8 px around it that is not drawn, and the keyboard's focus; pointing at it keeps its whole connection, both laces, its route and both cards, and fades the rest (`lightConnections` of [symbol-highlight.ts](symbol-highlight.ts.mdmd.md)); and it is named by its two ends in the scan's own names (`wireDescription` of [wire-gathering.ts](wire-gathering.ts.mdmd.md)), with the browser's own tooltip, an SVG `<title>`, saying the same words once the pointer rests. A file's own laces are not returns and keep their roles' colours. A card's foot on its returns keeps them the same way (`branch-renderer.ts`).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L17)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L18)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -50,7 +52,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L80)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L81)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -69,7 +71,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L102)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L105)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -79,7 +81,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L146)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -108,20 +110,24 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 - [`overview-files.OVERVIEW_FILES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_files_attribute)
 - [`overview-files.OVERVIEW_LINES_ATTRIBUTE`](./overview-files.ts.mdmd.md#symbol-overview_lines_attribute)
+- [`returning-connections.LaidBox`](./returning-connections.ts.mdmd.md#symbol-laidbox)
 - [`returning-connections.ReturningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-interface)
+- [`returning-connections.returnRoute`](./returning-connections.ts.mdmd.md#symbol-returnroute)
 - [`returning-connections.returningConnections`](./returning-connections.ts.mdmd.md#symbol-returningconnections-function)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
+- [`symbol-highlight.attendConnections`](./symbol-highlight.ts.mdmd.md#symbol-attendconnections)
+- [`symbol-highlight.releaseConnections`](./symbol-highlight.ts.mdmd.md#symbol-releaseconnections)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
-- [`wire-gathering.GatheredWire`](./wire-gathering.ts.mdmd.md#symbol-gatheredwire)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)
 - [`wire-gathering.gatheredCount`](./wire-gathering.ts.mdmd.md#symbol-gatheredcount)
 - [`wire-gathering.gatheredDescription`](./wire-gathering.ts.mdmd.md#symbol-gathereddescription)
 - [`wire-gathering.gatheredWidth`](./wire-gathering.ts.mdmd.md#symbol-gatheredwidth)
 - [`wire-gathering.ownWires`](./wire-gathering.ts.mdmd.md#symbol-ownwires)
+- [`wire-gathering.wireDescription`](./wire-gathering.ts.mdmd.md#symbol-wiredescription)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
 
