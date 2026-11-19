@@ -179,3 +179,36 @@ Summaries are gzipped JSON, one per commit, holding `format`, `lens`, `commit`, 
 - The text store's cost in a warm rebuild.
 - Device-level write bytes. The bytes reported are logical sizes from git and `du`.
 - More than three commits for the anatomy, and only one under strace for opens.
+
+## Who asks about the excluded folder by name (measured later on November 19)
+
+Opening counts reading, but a walk or a `stat` reads only names, and a tree that leaves the excluded folder out changes their answers. Before the tree writer began to leave out what `exclude` names (`df0f792b`), the summarizing process of the code before that commit was run again at the head (`c84fd00f`) and at an early commit (`87b9e7b5`, 83 files under `AI-Agent-Workspace/`). It ran under `strace -f` for `getdents64`, `stat`, `lstat`, `statx`, `access`, `readlink` and `openat`, with a preloaded hook on node's `fs` and on `glob` that named the code behind each call beneath `AI-Agent-Workspace/`.
+
+| Calls beneath the excluded folder | Head | Early |
+| --- | ---: | ---: |
+| folders opened (`openat`) | 1,489 | 42 |
+| folders listed (`getdents64`) | 4,754 | 1,267 |
+| `statx` | 8,210 | 201 |
+| files opened for their content | 0 | 0 |
+
+| Caller | What it asks | Can its answer reach a summary, a warning or an exit code? |
+| --- | --- | --- |
+| Discovery's walk (`discovery.ts`, `walk`, `glob(["**/*"])`), run twice: for the files to document and for the documents | every name in the tree | No. Every path the walk finds is then held to `exclude` (`keptByGitAndConfiguration`) before anything uses it; a file `exclude` names is dropped whatever the walk said. |
+| The search for nested scans (`generator.ts`, `scansWithin`, `glob(["**/<root>/<baseLayer>", "**/.live-docs.config.json"])`) | whether a docs root or a configuration file stands anywhere | **Yes, a warning.** Mended: `scanMarkers` names the two marks once, `scansWithin` and `marksScan` both read them, and `unread` never leaves out a file `marksScan` names. A test (`regenerate.test.ts`) fails without it. |
+| The JSON adapter's `compilerPaths` (`adapters/json.ts`), through TypeScript's `parseJsonConfigFileContent` for the `tsconfig.json` beside a manifest | TypeScript lists every folder under the tsconfig's folder for its file list (`readdirSync`, `realpathSync`; 1,246 calls at the head) | No. Only the parsed `options` are read (`outDir`, `rootDir`); the file list, the one thing the walk decides, is discarded. Left to the builder who owns `json.ts`. |
+| Whether a linked document stands (`summarizeChange.ts`, `stands`, `fs.stat`; 116 at the head, 55 early) | the records a doc links to | **Yes, a summary.** Mended in `df0f792b`: the commit's own listing is asked, not the disk (`standingFiles`). |
+| `git check-ignore`, which the generator starts | given the walked paths on its input | No file under the tree is opened by it (the head's earlier trace with `execve`); it answers from the tree's index, and a tracked file is never ignored. Any answer about an excluded path is dropped by the `exclude` filter after it. |
+
+The language adapters that glob the whole workspace for their own files (`go.ts`, `java.ts`, `rust.ts`, `csharp.ts`) do so only when they are given no file index. The generator always gives one, held to `exclude`, and no such glob ran at either commit.
+
+## The new tree writer, the same three commits one at a time (November 19)
+
+The tree writer of `df0f792b` leaves out what `exclude` names. Measured as in section 1, one commit at a time, at a load of 2.9 to 3.0 (six other agents shared the machine). Bytes are the tree's logical size (`du -sb`), the writer process's `wchar` (bytes it passed to `write`) and `write_bytes` (bytes it sent towards storage), from `/proc/self/io`.
+
+| Commit | Tree written | Bytes: logical / `wchar` / `write_bytes` | Write the tree: wall / processor s | Before (section 1) | Summarizing process: wall / processor s |
+| --- | --- | --- | --- | --- | --- |
+| `87b9e7b5` | 1,130 of 1,213 files | 6.3 MB / 13.0 MB / 9.2 MB | 1.0 / 1.1 | 2.3 / 2.5, 16.7 MB | 12.1 / 14.9 |
+| `535ceefc` | 1,746 of 3,020 files | 8.6 MB / 18.3 MB / 13.4 MB | 1.8 / 2.0 | 5.7 / 7.1, 258 MB | 16.5 / 20.4 |
+| `c84fd00f` | 2,245 of 7,532 files | 14.9 MB / 32.4 MB / 21.4 MB | 2.3 / 2.7 | 17.2–28.5 / 24.8–39.4, 1,017 MB | 20.0 / 24.3 |
+
+The summarizing process's own time is unchanged within the load's noise; its text store was empty for each run, as in section 1. At `87b9e7b5` and `535ceefc` the summary is identical byte for byte to the cache's. At the head it differs only by the links to the session archive it now keeps, which the history takes out where it reads the summaries (the oracle sample of 54 commits).
