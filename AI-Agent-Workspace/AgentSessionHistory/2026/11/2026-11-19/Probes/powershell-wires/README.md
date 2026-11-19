@@ -325,7 +325,7 @@ The seed for every sample is `1119`. Wires are ranked by the SHA-256 of `1119|co
 - `FunctionsToExport` carried like a TypeScript barrel's re-exports, through the existing mechanism, with no wire.
 - No SQL.
 
-All of these are built in `packages/engine/src/live-docs/adapters/powershell.ts`. The decision is in [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#a-powershell-call-reaches-what-its-caller-loads-else-the-only-definition-recorded-2026-11-19).
+All of these are built in `packages/engine/src/live-docs/adapters/powershell.ts`. The decision is in [the decisions log](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md), under "A PowerShell call reaches what its caller loads, else the only definition"; that entry is on the builder's branch with the code until the landing.
 
 **What the oracle found in the first build.** The rules were written a second time over the parser's facts (`scripts/oracle/powershell-wires.ts`), and the built adapter was scored against them on the five corpora. The score found four faults, each mended and each given a test:
 
