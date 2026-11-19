@@ -4,6 +4,83 @@ Current as of November 19, 2026.
 
 A builder's handback to the root, on its branch. Before this round, three readers each read a link's target by a pattern of their own, and they disagreed: the engine (`relatedDocs.ts`), which decides a file's related documents and every document's citations; the Explorer's renderer (`markdown.ts`), which ended a target at its first `)`; and the markdown link audit (`scripts/slopcop/markdownLinks.ts`), which decoded with `decodeURI`. All three now read links by one module, `packages/engine/src/tooling/markdownLinks.ts`, graded by CommonMark's own examples.
 
+## The second leg
+
+This leg answers the root's review of `c2bfd65f` and sits on top of it, in six commits: `95fb8cf9`, `a6c1c638`, `f540ca5f`, `145bcd25`, `8215a0d0`, and the commit that brings this README level. The sections after this one describe the first leg; where this leg changed something, this section says so and wins.
+
+### 1. Reading is linear (`95fb8cf9`)
+
+The review measured six inputs that made a reader read the same characters again and again, and a document holding one could stop a run. One paragraph of 80 KB, timed with the same script before and after:
+
+| Hostile paragraph | Before: read, rendered (load 27) | After: read, rendered (load 31) |
+| --- | --- | --- |
+| A run of unclosed destinations, `[a](` | 69.5 s, 81.6 s | 0.28 s, 0.23 s |
+| Unclosed comments, `<!-- ` | 3.9 s, 4.6 s | 0.10 s, 0.11 s |
+| Unclosed instructions, `<? ` | 5.3 s, 5.0 s | 0.12 s, 0.10 s |
+| Unclosed declarations, `<!a ` | 10.6 s, 12.5 s | 0.14 s, 0.08 s |
+| Many images | 9.9 s, 2.1 s | 0.09 s, 0.22 s |
+| Unmatched `[`, then links | 5.8 s, 8.7 s | 0.08 s, 0.18 s |
+| 20,000 links rendered | 11.4 s | 0.30 s |
+
+What changed:
+- A bare destination's parentheses nest at most 32 deep. cmark sets the same bound, and the specification allows one. With it, any character is scanned by at most about 33 attempts.
+- A comment, a processing instruction, a declaration and CDATA end at a closer. One search finds the closer, and reading reuses it as it goes forward; no regular expression is involved.
+- Making a link deactivates the earlier openers by one number.
+- A code span's closer comes from an index of the paragraph's backtick runs.
+- One sweep tells which tokens stand inside an image.
+- The renderer starts each link's text at its first token, found by a binary search.
+
+The proof counts steps instead of timing them. The reader exposes `readingSteps` and the renderer exposes `renderingSteps`. For ten hostile paragraphs in the reader and three in the renderer, ten times the text must take fewer than twelve times the steps. Lifting the nesting bound, the memoized closer search and the one-number deactivation makes seven of the reader's cases fail, and lifting the renderer's start index makes its three fail.
+
+The count does not see scanning inside a regular expression. The patterns left (tags, autolinks, angle-bracket destinations, labels) are each bounded by their own delimiters, as the module's comments say.
+
+### 2. Whole documents against commonmark.js (`a6c1c638`)
+
+The root `package.json` gains `"commonmark": "^0.31.2"`, the same line the names' builder adds.
+
+`tests/integration/live-docs/markdown-links-commonmark.test.ts` compares the links, images and autolinks the rule reads, destination and title, with those commonmark.js finds. It covers every markdown file the repository tracks, 2,004 files and 51,823 links. A register of named differences holds what is allowed to differ.
+
+The register holds one entry. **I have not decided anything about it.** The entry is `AI-Agent-Workspace/AgentSessionHistory/2025/12/Summarized/2025-12-06.2.SUMMARIZED.md`, lines 126 to 129. There, a ```` ```markdown ```` fence is indented four spaces under a list item; it is the named departure, a fence inside a container. The rule reads the fence as text, so it counts the two example links inside it: `./logger.h.mdmd.md#symbol-log_message` and `./metrics.h.mdmd.md#symbol-compute_average`.
+
+That file is a session summary under `AI-Agent-Workspace`, which the configuration excludes, so it moves nothing on the map. It is still the kind of wrong connection the root named. The same comparison over the four cold corpora's own markdown (132 files, 2,990 links) found no difference.
+
+### 3. Reference links are counted (`8215a0d0`)
+
+As ruled, `markdownLinkTargets` counts reference links. The renderer hides definition lines, using the module's new `leadingDefinitions`, and takes a `definitions` option. `detailPanel.ts` passes the whole authored block's definitions to it. Every file's related documents and every document's citations are unchanged.
+
+**No pictures were taken for this.** No document here holds a relative reference link, and the fixture has none. Unit tests cover it, and both new cases fail on the previous code.
+
+### 4. The readers still on patterns of their own (`f540ca5f`, `145bcd25`)
+
+Done:
+- The graph's `resolveDocLink` and the Explorer's `resolveReaderTarget` (in `reader-links.ts`) take the path and fragment from `linkPath`. Each kept copy is gone.
+- `graph.test.ts` gains a test of its own for `R%26D.md`, `a%23b.md#top`, `why%3F.md?plain=1`, a malformed escape, a bare fragment and an external URL. It fails on the previous `graph.ts`.
+- `symbolReferences.ts` and `documentationLinks.ts` decode with `linkPath` in place of `decodeURI`.
+
+Not done:
+- `symbolReferences.ts` and `documentationLinks.ts` still find links by patterns of their own, and no test of the decoding was added for either.
+- `scripts/live-docs/lint.ts` near line 262 is untouched.
+- `githubSlugger.ts` near line 116 is untouched.
+
+**For the joining:** `decodeLinkPath` in `document.ts` now has no caller among the link readers. I did not delete it, since `document.ts` belongs to the names' builder.
+
+### 5. The inspected-symbol panel: not done
+
+The panel still renders `renderSymbolBlocks`, the doc's written form. So a quoted name still shows with its quotes and backslashes, and a name in a longer backtick fence is still garbled. I have not checked by a run that an escaped fence in a docstring no longer garbles what follows it. There are no pictures for item 5.
+
+### 6. CR-only line numbers in the audit (`a6c1c638`)
+
+`computeLineStarts` in `markdownShared.ts` ends a line at LF, CRLF or a lone CR. A test covers all three endings and an encoded `&`, and it fails on the previous code.
+
+### Verification of this leg
+
+- **`npm run safe:commit`, without the browser.** The docs pipeline, lint, the build and the type check of tests passed. Unit tests: 2,513 of 2,514 passed. The one failure was `generatorIdentity.test.ts`, which timed out at 5 s at a load of 49; alone, at a load of 25, it passed 9 of 9.
+- **Integration, run alone** because the gate stops at a failed stage: 156 of 156 passed. That includes the new oracle over whole documents.
+- **The three audits:** 0 broken links, 0 broken asset references, 0 symbol issues.
+- **Red before.** Each new unit test fails on the code before its change, as described above.
+- **The graph.** The script still reads every file's related documents and every document's citations as before; the only differences are the docs of new files.
+- **Not rerun.** The browser case and the pictures were not taken again in this leg.
+
 ## Where the module lives, and why
 
 The module is `packages/engine/src/tooling/markdownLinks.ts`, beside `githubSlugger.ts`. `tooling/` holds pure helpers that both the Node side and the browser client import, through `@live-documentation/engine/tooling/*`. The client bundle (esbuild, `buildAssets.ts`) already takes `githubSlugger` from there.
