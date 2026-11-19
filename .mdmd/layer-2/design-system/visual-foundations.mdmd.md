@@ -152,7 +152,7 @@ From `palette.ts`, `TODAY.ground` and `TODAY.line`; the three palettes share the
 
 ### Text tones
 
-From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured 2026-11-18. The use counts are `var(--…)` references in the stylesheets, and a few of them are not words: `history.css:43` paints a tick, `local.css:243` an icon, `shell.css:277` a background.
+From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured 2026-11-18, and for the three quiet tones Today took from Proposed on 2026-11-19, measured that day. The use counts are `var(--…)` references in the stylesheets, and a few of them are not words: `history.css:43` paints a tick, `local.css:243` an icon, `shell.css:277` a background.
 
 | Token | Today | Ratio | Proposed and Vivid | Uses | Meaning |
 | --- | --- | --- | --- | --- | --- |
@@ -162,11 +162,11 @@ From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured
 | `text.cardFileName` | `#f2f2f2` | 14.00 | same | | A 2D card's file name |
 | `text.cardSymbolName` | `#ededed` | 13.39 | same | | A symbol's name on a card |
 | `text.cardProse` | `#b0b0b0` | 7.23 | same | | Purpose and descriptions on a card |
-| `text.panelMuted` | `#9ca3bc` | 6.25 | same | 25 | Quiet panel text |
-| `text.muted` | `#888888` | **4.42** | `#939393` | 27 | Paths, counts, metadata |
-| `text.subtle` | `#777777` | **3.50** | `#8a8a8a` | 2 | Quieter still |
-| `text.panelSubtle` | `#6c7484` | **3.34** | `#828a9a` | 19 | The panels' quietest text |
-| `text.disabled` | `#666666` | 2.73 | same | 5 | Named for a disabled control, but none of its five uses is one: it draws the sidebar's section labels, the search's placeholder, "Nothing found", the Ctrl+P hint and the search clear's × |
+| `text.panelMuted` | `#9ca3bc` | 6.25 | same | 26 | Quiet panel text, and the search's Ctrl+P hint on its keycap |
+| `text.muted` | `#939393` | 5.10 | same | 31 | Paths, counts, metadata; the sidebar's section labels, the search's placeholder, "Nothing found" and the search clear's × (until 2026-11-19 `#888888`, 4.42) |
+| `text.subtle` | `#8a8a8a` | 4.54 | same | 2 | Quieter still (until 2026-11-19 `#777777`, 3.50) |
+| `text.panelSubtle` | `#828a9a` | 4.52 | same | 19 | The panels' quietest text (until 2026-11-19 `#6c7484`, 3.34) |
+| `text.disabled` | `#666666` | 2.73 | same | 0 | A disabled control, exempt from contrast. Until 2026-11-19 it drew five live words and signs; since then it draws nothing, and `palette.test.ts` ("the disabled tone") allows it only on a disabled control's selector |
 | `text.onSelected` | `#ffffff` | 3.23 on `#0091ff` | `#111318` on `#f2f2f2` | 3 | Words on a selected fill |
 
 **Rule: words stand at 4.5 to 1 or better (text contrast).**
@@ -174,16 +174,13 @@ From `palette.ts`, `text.*`. The ratios are against a card (`#232326`), measured
 - **The rule.** Every word a person must read stands at 4.5 to 1 against what is behind it, or 3 to 1 if it is large. Large means at least 24 px, or at least 18.66 px and bold.
 - **Why.** Principle: WCAG 2.2 success criterion 1.4.3, Contrast (Minimum), level AA. A disabled control is exempt.
 - **Checked by.**
-  - Unit level: `palette.test.ts` ("a valid palette") holds every text tone at 4.5 to 1 on a card. Today's palette is excused as a stated fact.
-  - Page level: `local-map-tone.spec.ts` and `labels-and-controls.spec.ts`, using `tests/e2e/contrast.ts`.
-- **Status.** *Broken* under Today:
-  - `text.muted` is 4.42 to 1 on a card (a file's path, `view-shared.css:117`; its metadata, `:197`), 3.76 on a card under the pointer and 3.56 on a control. On the panels' grounds it passes: 4.64 on raised, 4.70 on surface, 5.33 on deep. So its 27 uses are not 27 failures; the failures are the uses on a card or lighter.
-  - `text.subtle` (3.50 on a card) and `text.panelSubtle` (3.34) fail on every ground; the best they reach is 4.22 and 4.02, on deep.
-  - `button.action-btn` draws bold white words on `#0091ff` at 3.23 to 1 (`styles/view-shared.css:343–351`).
+  - Unit level: `palette.test.ts` ("a valid palette") holds every text tone at 4.5 to 1 on a card in every palette. Today's palette is excused exactly its nine identity distances and nothing else, so its words are held too (since 2026-11-19). "The disabled tone" allows `text.disabled` only on a selector of a disabled control (`:disabled`, `[disabled]`, `[aria-disabled="true"]`) and in no script.
+  - Page level: `local-map-tone.spec.ts`, `labels-and-controls.spec.ts` and `shell-accessibility.spec.ts` ("the words the sidebar and the search draw stand at 4.5 to 1, and the clear's glyph at 3 to 1"), using `tests/e2e/contrast.ts`.
+- **Status.** Holds for the text tones in every palette since 2026-11-19, when Today took Proposed's `muted`, `subtle` and `panelSubtle` (5.10, 4.54 and 4.52 on a card; they had stood at 4.42, 3.50 and 3.34). `text.muted` still falls under 4.5 on a card under the pointer (4.34) and on a control (4.11).
 
-  Proposed and Vivid kinds lift those tones and hold the rule for them.
+  *Broken* in every palette: `button.action-btn` draws bold white words on `#0091ff` at 3.23 to 1 (`styles/view-shared.css:343–351`). Today's blue is the owner's choice of palette.
 
-  *Broken in every palette*: `text.disabled` (`#666666`), which no palette lifts, draws live words that are not disabled controls: the sidebar's section labels at 2.86 to 1 on raised (`styles/shell.css:920`), the search's placeholder at 2.90 (`styles/search.css:62`), "Nothing found" at 2.86 (`search.css:281`) and the Ctrl+P hint at 2.30 (`search.css:80`). The search clear's × glyph, at 2.90 (`search.css:111`), fails WCAG 1.4.11's 3 to 1 for a control's graphic. A disabled control is exempt; these are not disabled.
+  Mended on 2026-11-19: `text.disabled` had drawn five live words and signs that are not disabled controls, at 2.30 to 2.90. The sidebar's section labels, the search's placeholder, "Nothing found" and the clear's × now take `text.muted` (5.35 to 5.43 on their grounds), and the Ctrl+P hint takes `text.panelMuted` (5.27 on its keycap, where muted stands at 4.30). The clear no longer fades to 0.7, so its glyph clears WCAG 1.4.11's 3 to 1.
 
 **Rule: hierarchy by value on a card.** On a 2D card, rank is told by lightness because the sizes are fixed by the card's fits:
 
@@ -217,7 +214,7 @@ From `palette.ts`. **Identity colours** are hues that tell one category from ano
 | Changed in this commit | `history.changed` | `#ffffff` | `#ffffff` | `#ffffff` | the changed sphere under Glow |
 | The 3D button's cue | `signal.cue` | `#e9b86d` | `#e9b86d` | `#e9b86d` | an amber rise on the 3D button |
 
-Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set most second values to their meaning, but not all: `errorWash` (`#f44336`), `pathFoundWash` (`#4caf50`) and `worldLightPressed` (`#e0f2fe`) keep Today's values in all three palettes, beside `signal.error`, `signal.pathFound` and the light World's blue. The palette's own comment says otherwise ("Every second value equals its meaning", `palette.ts:294`); it is wrong for these three.
+Today also draws a second value for some meanings in `secondValues`: the 2D pins `#0091ff` and `#00d3aa` beside the wires' colours, and the subject card's ring. Proposed and Vivid set every second value to its meaning. The light World's pressed tool cannot be its meaning, a fill under a dark icon, so it is drawn from it as the dark World draws its own: the light form's blue at 16% over the white board (`#d7e7f2`). Until 2026-11-19 `errorWash`, `pathFoundWash` and `worldLightPressed` kept Today's values against the palette's comment; `palette.test.ts` now holds all three in both palettes.
 
 **Rule: blue offers, green uses, at every scale.** What an interface offers is blue. What uses it is green. A 2D wire runs from blue at its offering end to green at its using end.
 
@@ -353,11 +350,11 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
   - `'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace`: the symbol badge;
   - bare `monospace`: the type badge, the search shortcut and the Tuning readouts;
   - the World Map's `ui-monospace, Consolas, monospace`.
-- **Sizes:** 16 distinct values in 173 declarations, from 8 to 28 px.
-  - 13 px: 44; 12 px: 40; 11 px: 33; 10 px: 17. These four carry 134 of the 173.
-  - 14 px: 11; 15 px: 8; 16 px: 4; 18 px: 4; 9 px: 3; 22 px: 2.
+- **Sizes:** 16 distinct values in 172 declarations, from 8 to 28 px (recounted 2026-11-19, after the reader's headings became relative).
+  - 13 px: 43; 12 px: 40; 11 px: 33; 10 px: 17. These four carry 133 of the 172.
+  - 14 px: 10; 15 px: 7; 16 px: 3; 18 px: 4; 9 px: 3; 22 px: 2.
   - 8, 17 and 28 px: 1 each.
-  - The rest are relative: `1em`, `0.9em` and `0.95em`.
+  - The rest are relative: `1em`, `0.9em`, `0.95em`, and `calc(1em + 1px)` to `calc(1em + 3px)` for the reader's headings.
 - **Weights:** 4 values. 600 in 23 places, 500 in 9, 400 in 5, `bold` (700) in 4.
 - **Line heights:** 22 distinct values. The commonest are 1.5 (8), 1.4 (4), 1.65 (4), 1.55 (3) and 1.6 (3); the rest are fixed pixel lines on the 2D map, set from its layout.
 - **Letter spacing:** 10 distinct values, in em and in px.
@@ -380,7 +377,7 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
 - **Checked by.** `local-map-tone.spec.ts`.
 - **Status.** Holds by value on the card. A description is still a pixel larger than the name it describes. That is the accepted cost of the fits, and it is why the value step is large: 7.23 against 13.39 to 1.
 
-  *Broken* in the reading dialog: its body is 15 px (`styles/reading.css:742–744`) and only h4 to h6 are set to `1em` (`:745`), so h1 to h3 keep the reader's 16, 15 and 14 px. An h3 is smaller than the body text under it and an h2 the same size. In the document reader beside the map the headings step by one pixel, 16, 15, 14 and 13, over a 13 px body (`styles/shell.css:578–605`).
+  The reader's headings are sized from the prose they head since 2026-11-19: `calc(1em + 3px)`, `+ 2px`, `+ 1px` and `1em` for h1, h2, h3 and h4 to h6 (`styles/shell.css`, `.reader-prose`). In the panel beside the map that is 16, 15, 14 and 13 px over a 13 px body, as before; in the reading dialog, 18, 17, 16 and 15 px over 15 px. Until then the dialog's h3 stood at 14 px, smaller than the body under it. Checked by `shell-accessibility.spec.ts` ("no heading in the reading dialog is smaller than the prose it heads"). The headings still step by one pixel, which is the type scale's open question below.
 
 **Rule: a container's name is never smaller than its contents' names.**
 

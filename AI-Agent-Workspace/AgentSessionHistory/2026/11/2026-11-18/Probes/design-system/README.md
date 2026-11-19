@@ -4,6 +4,8 @@ _2026-11-19: commit `5a7c78a2` mended plain defects 1, 6 and 11 below, and the W
 
 _Historical record, dated 2026-11-18, written on the night of November 18 to 19. It records what two authors found while writing the Explorer's design system from the code, what a third builder found when checking them, and where that left each finding. Nothing here changed the product. The rules themselves are current documents in [the design system](../../../../../../../.mdmd/layer-2/design-system/design-system.mdmd.md); this folder is the dated list of what those rules could not defend on this day._
 
+_2026-11-19: the shell's accessibility round mended plain defects 2, 4, 7, 9, 10, 12, 13, 14, 16, 17 and 18, defect 3 but for the action button's white on blue, defect 5 for "Nothing found" alone, and defect 8 for Play and Authors alone (`a8dce92a`, `5d60d935`, `16ee9517`, `aacf61d9`; [its pictures](../../Screenshots/shell-accessibility/README.md)). The findings below stand as written that night._
+
 ## What was asked, and by whom
 
 The owner asked for it on 2026-11-18 ([Turns 14 to 16 of the day's record](../../2026-11-18.1.record.md#turn-14)): "something akin to a design bible for our project", to the standard of "professional design standardization materials that would be typically produced, and to the standard of, a professional who works in UI/UX design." Their reason: "when it comes time to document something (as in: to defend the system as it is on paper), I find things that are indefensible and ultimately in need of change". And the test for every rule: "If we have a standard, why is it that standard? If a reason can't be found, is it a standard we should have or keep?"
