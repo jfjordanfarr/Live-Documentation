@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-11-19T20:36:53.874Z
+- Generated At: 2026-11-19T22:20:44.455Z
 
 ## Authored
 ### Purpose
@@ -131,6 +131,12 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/oracle/index-fixture.ts` {#symbol-entriesscriptsoracleindex-fixturets}
+- Type: key
+
+#### `entries:scripts/oracle/PlSqlEmitter.java` {#symbol-entriesscriptsoracleplsqlemitterjava}
+- Type: key
+
+#### `entries:scripts/oracle/plsql-compare.ts` {#symbol-entriesscriptsoracleplsql-comparets}
 - Type: key
 
 #### `entries:scripts/oracle/powershell-ast.ps1` {#symbol-entriesscriptsoraclepowershell-astps1}

@@ -115,6 +115,12 @@
     "scripts/oracle/index-fixture.ts": [
       "command oracle:index of package.json"
     ],
+    "scripts/oracle/PlSqlEmitter.java": [
+      "program"
+    ],
+    "scripts/oracle/plsql-compare.ts": [
+      "command oracle:plsql of package.json"
+    ],
     "scripts/oracle/powershell-ast.ps1": [
       "program"
     ],
