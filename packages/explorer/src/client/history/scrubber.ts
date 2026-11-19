@@ -14,7 +14,14 @@
  * step at a time; the coarse, Previous and Next marked commit, between the
  * marks on the track (`stops`). The slider grammar is on the keys: the arrows
  * move a step, Page Up and Page Down as the coarse pair, Home and End to the
- * ends. While the thumb drags, the steps it crosses are coalesced into one
+ * ends, plus and minus zoom about the step. The buttons and the keys that move
+ * by a step or a mark may carry the thumb past an end of the range, which then
+ * slides to hold it. Since 2026-11-19 the track zooms: a wheel over the track or
+ * its ruler, or a trackpad's pinch, narrows or widens the range about the step
+ * under the pointer; a sideways wheel, or Shift with the wheel, slides it; on
+ * touch two fingers pinch and slide (`zoom.ts`). The step shown may then stand
+ * outside the range, and a mark in the thumb's look at that end of the track
+ * slides the range back to hold it. While the thumb drags, the steps it crosses are coalesced into one
  * call per animation frame, so that the thumb never lags the hand; when it
  * rests, one call says so.
  *
@@ -30,6 +37,7 @@ import { iconButton } from "../panels/icon-button";
 import type { HistoryAxis } from "../types";
 import { findCommits, type HistoryRange } from "./navigation";
 import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
+import { panView, rangeOfView, wheelFactor, zoomView, type View } from "./zoom";
 
 /** How near the pointer, in pixels, a step must stand on the date axis to be the one a click or a drag means. */
 const POINTER_REACH_PX = 3;
@@ -76,7 +84,14 @@ export interface ScrubberOptions {
   /** Show or hide the step panel. */
   onDetails(shown: boolean): void;
   onRange(range: HistoryRange | null): void;
+  /** A zoom or a pan chose the range the track shows, or the whole (null); play goes on. */
+  onView(range: HistoryRange | null): void;
+  /** A button or a key moved the thumb by a step or a mark, perhaps past an end of the range, which slides to hold it. */
+  onMove(step: number): void;
 }
+
+/** How much a press of plus or minus on the slider narrows or widens the range. */
+const KEY_ZOOM = 1.5;
 
 /** The scrubber as the control drives it. */
 export interface Scrubber {
@@ -151,7 +166,13 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   ticks.className = "history-ticks";
   const thumb = document.createElement("div");
   thumb.className = "history-thumb";
-  lane.append(ticks, thumb);
+  // The step shown, when a zoom has left it outside the range: a mark in the thumb's look at that end of the track, a
+  // button that slides the range back to hold it.
+  const elsewhere = document.createElement("button");
+  elsewhere.type = "button";
+  elsewhere.className = "history-elsewhere";
+  elsewhere.hidden = true;
+  lane.append(ticks, thumb, elsewhere);
   track.append(truncated, lane);
   const ruler = document.createElement("div");
   ruler.className = "history-ruler";
@@ -269,32 +290,71 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   startRange.addEventListener("click", () => { if (current) options.onRange([current.step, current.range[1]]); closeFinder(true); });
   endRange.addEventListener("click", () => { if (current) options.onRange([current.range[0], current.step]); closeFinder(true); });
   entire.addEventListener("click", () => { options.onRange(null); track.focus(); });
-  previous.addEventListener("click", () => { if (current) options.onRest(Math.max(current.range[0], current.step - 1)); });
-  next.addEventListener("click", () => { if (current) options.onRest(Math.min(current.range[1], current.step + 1)); });
-  previousMark.addEventListener("click", () => { if (current) options.onRest(nextStop(current.model, current.step, -1)); });
-  nextMark.addEventListener("click", () => { if (current) options.onRest(nextStop(current.model, current.step, 1)); });
+  previous.addEventListener("click", () => { if (current) options.onMove(Math.max(0, current.step - 1)); });
+  next.addEventListener("click", () => { if (current) options.onMove(Math.min(current.steps, current.step + 1)); });
+  previousMark.addEventListener("click", () => { if (current) options.onMove(nextStop(current.model, current.step, -1)); });
+  nextMark.addEventListener("click", () => { if (current) options.onMove(nextStop(current.model, current.step, 1)); });
+  elsewhere.addEventListener("pointerdown", event => event.stopPropagation());
+  elsewhere.addEventListener("click", () => { if (current) options.onMove(current.step); });
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
   rate.addEventListener("change", () => { const chosen = Number(rate.value); if (Number.isFinite(chosen) && chosen > 0) options.onRate(chosen); });
   details.addEventListener("click", () => { if (current) options.onDetails(!current.details); });
   authors.addEventListener("click", () => { if (current) options.onAuthors(!current.authors.shown); });
 
-  // The keys: a step, a stop, an end; each a rest.
+  // The view a zoom or a pan works from: the fractional view the last gesture left, while the range is still what it
+  // rounded to, so that a trackpad's small turns add up; otherwise the range shown.
+  let view: View | null = null;
+  const viewNow = (): View => {
+    const { range, steps } = current!;
+    const shown = range[0] === 0 && range[1] === steps ? null : range;
+    const rounded = view && rangeOfView(view, steps);
+    const same = rounded === null ? shown === null : !!shown && rounded[0] === shown[0] && rounded[1] === shown[1];
+    return view && same ? view : [range[0], range[1]];
+  };
+  const showView = (next: View): void => {
+    view = next;
+    options.onView(rangeOfView(next, current!.steps));
+  };
+  const zoomAbout = (focus: number, factor: number): void => showView(zoomView(viewNow(), focus, factor, current!.steps));
+  const panBy = (pixels: number): void => {
+    const width = lane.getBoundingClientRect().width;
+    const [first, last] = viewNow();
+    if (width > 0 && pixels) showView(panView([first, last], (pixels / width) * (last - first), current!.steps));
+  };
+  // The wheel over the track or its ruler: a vertical turn zooms about the step under the pointer, a trackpad's pinch
+  // (a wheel with Ctrl held) the same more strongly, a sideways turn or Shift with the wheel slides. The listener is not
+  // passive, and the page's own scroll or zoom is prevented only here.
+  slider.addEventListener("wheel", event => {
+    if (!current || current.steps <= 0) return;
+    event.preventDefault();
+    const sideways = event.shiftKey ? event.deltaY || event.deltaX : Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : 0;
+    const scale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? lane.getBoundingClientRect().width : 1;
+    if (sideways) panBy(sideways * scale);
+    else if (event.deltaY) zoomAbout(stepUnder(event.clientX), wheelFactor(event.deltaY, event.deltaMode, event.ctrlKey));
+  }, { passive: false });
+
+  // The keys: a step, a mark, an end, a zoom. A step or a mark may pass an end of the range, which slides to hold it;
+  // Home and End go to the range's ends; plus and minus zoom about the step shown.
   track.addEventListener("keydown", event => {
     if (!current) return;
-    const { step, range: [first, last], model } = current;
+    const { step, steps, range: [first, last], model } = current;
     let next: number;
     switch (event.key) {
-      case "ArrowLeft": case "ArrowDown": next = Math.max(first, step - 1); break;
-      case "ArrowRight": case "ArrowUp": next = Math.min(last, step + 1); break;
+      case "ArrowLeft": case "ArrowDown": next = Math.max(0, step - 1); break;
+      case "ArrowRight": case "ArrowUp": next = Math.min(steps, step + 1); break;
       case "PageDown": next = nextStop(model, step, -1); break;
       case "PageUp": next = nextStop(model, step, 1); break;
       case "Home": next = first; break;
       case "End": next = last; break;
+      case "+": case "=": event.preventDefault(); zoomAbout(step, 1 / KEY_ZOOM); return;
+      case "-": case "_": event.preventDefault(); zoomAbout(step, KEY_ZOOM); return;
       default: return;
     }
     event.preventDefault();
-    if (next !== step) options.onRest(next);
+    if (next === step) return;
+    if (event.key === "Home" || event.key === "End") options.onRest(next);
+    else options.onMove(next);
   });
 
   // The pointer: the steps crossed are coalesced into one call per frame; the release is the rest.
@@ -315,8 +375,34 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       options.onScrub(pending);
     }
   };
+  // Two fingers on the track pinch about their middle and slide with it; the first finger's drag rests where it was.
+  const touches = new Map<number, number>();
+  let pinch: { distance: number; middle: number } | null = null;
+  const twoFingers = (): { distance: number; middle: number } => {
+    const [a, b] = [...touches.values()];
+    return { distance: Math.abs(a - b), middle: (a + b) / 2 };
+  };
   track.addEventListener("pointerdown", event => {
     if (!current || event.button !== 0) return;
+    if (event.pointerType === "touch") {
+      touches.set(event.pointerId, event.clientX);
+      if (touches.size > 2) return;
+      if (touches.size === 2) {
+        event.preventDefault();
+        track.setPointerCapture(event.pointerId);
+        if (dragging) {
+          dragging = false;
+          cancelAnimationFrame(frame);
+          frame = 0;
+          const step = pending ?? current.step;
+          pending = null;
+          scrubbed = null;
+          options.onRest(step);
+        }
+        pinch = twoFingers();
+        return;
+      }
+    }
     event.preventDefault();
     dragging = true;
     track.setPointerCapture(event.pointerId);
@@ -325,11 +411,25 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     if (!frame) frame = requestAnimationFrame(flush);
   });
   track.addEventListener("pointermove", event => {
+    if (touches.has(event.pointerId)) touches.set(event.pointerId, event.clientX);
+    if (pinch && touches.size === 2 && current) {
+      const now = twoFingers();
+      if (now.distance > 0 && pinch.distance > 0) zoomAbout(stepUnder(now.middle), pinch.distance / now.distance);
+      panBy(pinch.middle - now.middle);
+      pinch = now;
+      return;
+    }
     if (!dragging) return;
     pending = stepUnder(event.clientX);
     if (!frame) frame = requestAnimationFrame(flush);
   });
   const release = (event: PointerEvent): void => {
+    touches.delete(event.pointerId);
+    if (pinch) {
+      if (touches.size < 2) pinch = null;
+      if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+      return;
+    }
     if (!dragging) return;
     dragging = false;
     if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
@@ -419,15 +519,24 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       track.setAttribute("aria-valuemax", String(state.range[1]));
       track.setAttribute("aria-valuenow", String(state.step));
       track.setAttribute("aria-valuetext", state.valueText);
-      thumb.style.left = `${(state.model.positions[state.step] ?? 0) * 100}%`;
+      // The step outside the range a zoom left: no thumb on the track, and its mark at the nearer end.
+      const outside = state.step < state.range[0] ? "before" : state.step > state.range[1] ? "after" : null;
+      thumb.hidden = outside !== null;
+      if (!outside) thumb.style.left = `${(state.model.positions[state.step] ?? 0) * 100}%`;
+      elsewhere.hidden = outside === null;
+      elsewhere.classList.toggle("is-after", outside === "after");
+      const elsewhereWords = `Show the current commit, ${state.date}`;
+      elsewhere.setAttribute("aria-label", elsewhereWords);
+      elsewhere.title = elsewhereWords;
       truncated.hidden = state.truncated === null;
       truncated.title = state.truncated ?? "";
       track.classList.toggle("is-truncated", state.truncated !== null);
       ruler.classList.toggle("is-truncated", state.truncated !== null);
       date.textContent = state.date;
       hash.textContent = state.hash;
-      previous.disabled = previousMark.disabled = state.step <= state.range[0];
-      next.disabled = nextMark.disabled = state.step >= state.range[1];
+      // The step buttons pass the range's ends, sliding it to hold the step, and stop only at the history's.
+      previous.disabled = previousMark.disabled = state.step <= 0;
+      next.disabled = nextMark.disabled = state.step >= state.steps;
       play.disabled = state.range[0] === state.range[1];
       readout.disabled = state.commits.length === 0;
       entire.hidden = state.range[0] === 0 && state.range[1] === state.steps;
