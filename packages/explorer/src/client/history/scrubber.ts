@@ -317,7 +317,9 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     view = next;
     options.onView(rangeOfView(next, current!.steps));
   };
-  const zoomAbout = (focus: number, factor: number): void => showView(zoomView(viewNow(), focus, factor, current!.steps));
+  // A zoom keeps its focus where it stands on the track: the pointer's share of the lane, or the step's own place there.
+  const shareAt = (clientX: number): number => { const rect = lane.getBoundingClientRect(); return rect.width > 0 ? (clientX - rect.left) / rect.width : 0.5; };
+  const zoomAbout = (focus: number, factor: number, share?: number): void => showView(zoomView(viewNow(), focus, factor, current!.steps, undefined, share));
   const panBy = (pixels: number): void => {
     const width = lane.getBoundingClientRect().width;
     const [first, last] = viewNow();
@@ -332,7 +334,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     const sideways = event.shiftKey ? event.deltaY || event.deltaX : Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : 0;
     const scale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? lane.getBoundingClientRect().width : 1;
     if (sideways) panBy(sideways * scale);
-    else if (event.deltaY) zoomAbout(stepUnder(event.clientX), wheelFactor(event.deltaY, event.deltaMode, event.ctrlKey));
+    else if (event.deltaY) zoomAbout(stepUnder(event.clientX), wheelFactor(event.deltaY, event.deltaMode, event.ctrlKey), shareAt(event.clientX));
   }, { passive: false });
 
   // The keys: a step, a mark, an end, a zoom. A step or a mark may pass an end of the range, which slides to hold it;
@@ -348,8 +350,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       case "PageUp": next = nextStop(model, step, 1); break;
       case "Home": next = first; break;
       case "End": next = last; break;
-      case "+": case "=": event.preventDefault(); zoomAbout(step, 1 / KEY_ZOOM); return;
-      case "-": case "_": event.preventDefault(); zoomAbout(step, KEY_ZOOM); return;
+      case "+": case "=": event.preventDefault(); zoomAbout(step, 1 / KEY_ZOOM, model.positions[step]); return;
+      case "-": case "_": event.preventDefault(); zoomAbout(step, KEY_ZOOM, model.positions[step]); return;
       default: return;
     }
     event.preventDefault();
@@ -415,7 +417,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     if (touches.has(event.pointerId)) touches.set(event.pointerId, event.clientX);
     if (pinch && touches.size === 2 && current) {
       const now = twoFingers();
-      if (now.distance > 0 && pinch.distance > 0) zoomAbout(stepUnder(now.middle), pinch.distance / now.distance);
+      if (now.distance > 0 && pinch.distance > 0) zoomAbout(stepUnder(now.middle), pinch.distance / now.distance, shareAt(now.middle));
       panBy(pinch.middle - now.middle);
       pinch = now;
       return;
