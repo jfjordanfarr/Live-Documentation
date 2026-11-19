@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/symbol-highlight.ts
-- Generated At: 2026-11-06T20:08:42.140Z
+- Generated At: 2026-11-19T04:41:43.833Z
 
 ## Authored
 ### Purpose
@@ -24,14 +24,14 @@ The same day `connectionsHighlight` and `lightConnections` were added for a retu
 ### Public Symbols
 #### `SymbolHighlightResult` {#symbol-symbolhighlightresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L17)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L18)
 
 ##### `SymbolHighlightResult` — Summary
 Describes the result of computing related symbols from a hover.
 
 #### `computeSymbolHighlight` {#symbol-computesymbolhighlight}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L52)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L69)
 - Returns: [`SymbolHighlightResult`](#symbol-symbolhighlightresult)
 - Parameters: `subgraph`: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph); `options`: [`LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions)
 
@@ -44,16 +44,52 @@ touching the DOM, making it testable.
 
 #### `applySymbolHighlight` {#symbol-applysymbolhighlight}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L165)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L157)
 - Parameters: `highlight`: [`SymbolHighlightResult`](#symbol-symbolhighlightresult)
 
 ##### `applySymbolHighlight` — Summary
 Applies the computed highlight result to the DOM.
 This is the side-effectful part of symbol highlighting.
 
+#### `connectionsHighlight` {#symbol-connectionshighlight}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L185)
+- Returns: [`SymbolHighlightResult`](#symbol-symbolhighlightresult)
+
+##### `connectionsHighlight` — Summary
+The highlight of whole connections, which pointing at a returning connection's lace or at a card's foot on its returns
+keeps (2026-11-19): every drawn thing of each, a return's two laces and its whole route, both its cards and the rows
+at both ends of each link it carries. So the two laces are seen to be one connection, and where it goes.
+
+#### `lightConnections` {#symbol-lightconnections}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L199)
+
+##### `lightConnections` — Summary
+Keeps the given connections and fades the rest, as a row's hover does, by the fades the picture's render set; the
+pointer or the keyboard on a lace or a foot (2026-11-19). Nothing is moved or added.
+
+#### `attendConnections` {#symbol-attendconnections}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L214)
+
+##### `attendConnections` — Summary
+Lets the pointer or the keyboard on an element keep whole connections, a returning lace's or a card's foot on its
+returns (2026-11-19): lit while either rests on it, put out when both have left, and never putting out a highlight it
+did not make, such as a row's hover begun as the element lost the keyboard's focus.
+
+#### `releaseConnections` {#symbol-releaseconnections}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L228)
+
+##### `releaseConnections` — Summary
+Puts out a highlight of whole connections, if one stands: when its element leaves the page under the pointer or the
+keyboard, which then tells it nothing (a cycle's trial redraws the cards' feet, a drawing drops a lace that no longer
+returns), as when the pointer or the focus leaves it.
+
 #### `clearSymbolHighlightDOM` {#symbol-clearsymbolhighlightdom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L239)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L294)
 
 ##### `clearSymbolHighlightDOM` — Summary
 Clears all symbol highlighting from the DOM.
@@ -61,6 +97,7 @@ Clears all symbol highlighting from the DOM.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`directory-flow.isPairLine`](./directory-flow.ts.mdmd.md#symbol-ispairline)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.LocalSubgraphLink`](./types.ts.mdmd.md#symbol-localsubgraphlink) (type-only)
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)

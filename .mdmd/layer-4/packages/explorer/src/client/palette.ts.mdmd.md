@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/palette.ts
-- Generated At: 2026-11-18T22:10:29.371Z
+- Generated At: 2026-11-19T04:41:42.683Z
 
 ## Authored
 ### Purpose
@@ -225,3 +225,8 @@ The stylesheet that sets a palette's custom properties on the page's root: the b
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-2/design-system/visual-foundations.mdmd.md`](../../../../../layer-2/design-system/visual-foundations.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

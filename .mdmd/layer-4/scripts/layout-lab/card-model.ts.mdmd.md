@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-11-15T23:44:00.896Z
+- Generated At: 2026-11-19T04:41:44.232Z
 
 ## Authored
 ### Purpose
@@ -131,12 +131,12 @@ margin, the path, the symbols block (its margin swallowing the meta line's),
 each row as tall as its dot, its label's lines, its badges or its controls
 (the label narrowed by the badges and controls beside it), the rows a gap
 apart, the test chips wrapped, the directory line, and the notes. A pin is
-at the middle of its row, the Internals row's a margin lower; the hub at
-the middle of the card.
+at the middle of its row, the Internals row's a margin lower; the hubs where
+the capture read them.
 
 #### `registerPins` {#symbol-registerpins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L195)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L199)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `centres`: `ReadonlyMap`
 
@@ -145,7 +145,7 @@ Registers row endpoints in construction order, retaining exact and normalized na
 
 #### `resolvePin` {#symbol-resolvepin}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L225)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L229)
 - Parameters: `metrics`: [`CardMetrics`](#symbol-cardmetrics-interface)
 
 ##### `resolvePin` — Summary
@@ -156,7 +156,7 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 #### `pinOffset` {#symbol-pinoffset}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L243)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L247)
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.

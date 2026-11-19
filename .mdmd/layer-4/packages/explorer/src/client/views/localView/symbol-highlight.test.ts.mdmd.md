@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/symbol-highlight.test.ts
-- Generated At: 2026-09-27T23:21:28.558Z
+- Generated At: 2026-11-19T04:41:43.827Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`directory-flow.pairLines`](./directory-flow.ts.mdmd.md#symbol-pairlines)
 - [`symbol-highlight.computeSymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-computesymbolhighlight)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
