@@ -49,7 +49,7 @@ import {
   emitSymbolPathNotFound,
   emitSymbolPathResult
 } from "./inspect/emit";
-import { emitBetween, emitFileAt, emitLinksAt, emitReachableAt, emitWordsAt, historyFolder, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
+import { codePathOf, emitBetween, emitFileAt, emitLinksAt, emitReachableAt, emitWordsAt, historyFolder, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
 import { hasSymbolReference, parseSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
 
 interface ParsedArgs {
@@ -336,16 +336,6 @@ async function answerFromHistory(args: ParsedArgs, workspaceRoot: string, config
     return;
   }
   emitReachableAt(sequence, step, config, args.maxDepth, args.json);
-}
-
-/** A file as the history names it: its workspace-relative path, also when given as its doc's path. */
-function codePathOf(given: string, config: LiveDocumentationConfig): string {
-  const normalized = given.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "");
-  const docsFolder = `${[config.root, config.baseLayer].map((segment) => segment.replace(/^(?:\.\/)+|\/+$/gu, "")).join("/")}/`;
-  if (normalized.startsWith(docsFolder) && normalized.endsWith(config.extension)) {
-    return normalized.slice(docsFolder.length, -config.extension.length);
-  }
-  return normalized;
 }
 
 function parseArgs(argv: string[]): ParsedArgs {

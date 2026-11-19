@@ -21,7 +21,7 @@ import type { LiveDocumentationConfig } from "@live-documentation/engine/config/
 import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type CommitInfo, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { changesBetween, entryMarked, fileOfShape, graphOfShape, linksBetween, rowsOfFile, stepsMatching, symbolNamed } from "@live-documentation/engine/live-docs/history/queries";
 import type { RowLink } from "@live-documentation/engine/live-docs/history/rows";
-import { commitAt, momentAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
+import { commitAt, momentAt, seek, type Moment } from "@live-documentation/engine/live-docs/history/sequence";
 import { sectionsOfDescription } from "@live-documentation/engine/live-docs/history/summary";
 import { textInPart, wordsOfFile, wordsPartFile, type WordsPart } from "@live-documentation/engine/live-docs/history/words";
 import { reachability } from "@live-documentation/engine/live-docs/pathfind";
@@ -31,6 +31,38 @@ const ROWS = "from the rows that day's docs listed: symbols, their type referenc
 
 /** A question the history cannot answer as asked, said plainly. */
 export class HistoryRefusal extends Error {}
+
+/**
+ * A file as a history question names it: its workspace-relative path, also when given as its doc's path, with
+ * backslashes, or with the docs folder and the doc's suffix in any case.
+ */
+export function codePathOf(given: string, config: LiveDocumentationConfig): string {
+  const normalized = given.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "");
+  const docsFolder = `${[config.root, config.baseLayer].map((segment) => segment.replace(/^(?:\.\/)+|\/+$/gu, "")).join("/")}/`;
+  const folded = normalized.toLowerCase();
+  if (folded.startsWith(docsFolder.toLowerCase()) && folded.endsWith(config.extension.toLowerCase())) {
+    return normalized.slice(docsFolder.length, -config.extension.length);
+  }
+  return normalized;
+}
+
+/**
+ * The file a question names, as the moment holds it: the name as written when the moment holds that file, else the
+ * one file it holds whose path differs by case alone, since on Windows a path's case is not the person's to get
+ * right; the name as written when none does, so that the answer says the file did not exist. Two files that differ
+ * by case alone, as a repository made on Linux may hold, are named back.
+ */
+export function fileNamedAt(moment: Moment, given: string): string {
+  if (moment.shape.files.has(given)) {
+    return given;
+  }
+  const folded = given.toLowerCase();
+  const matches = [...moment.shape.files.keys()].filter((codePath) => codePath.toLowerCase() === folded).sort();
+  if (matches.length > 1) {
+    throw new HistoryRefusal(`${given} names ${matches.length} files that differ only in case at that commit: ${matches.join(", ")}; give one as it is spelled.`);
+  }
+  return matches[0] ?? given;
+}
 
 /** The sequence the history command wrote for this workspace; a refusal naming the command when there is none. */
 export async function readHistory(workspaceRoot: string, config: LiveDocumentationConfig): Promise<HistorySequence> {
@@ -72,8 +104,9 @@ export function resolveStep(sequence: HistorySequence, reference: string): numbe
  * them, its rows as its card drew them, each symbol with its kind and type references, its dependency lines, and the
  * links from and to its symbols.
  */
-export function emitFileAt(sequence: HistorySequence, step: number, codePath: string, json: boolean): void {
+export function emitFileAt(sequence: HistorySequence, step: number, named: string, json: boolean): void {
   const moment = momentAt(sequence, step);
+  const codePath = fileNamedAt(moment, named);
   const file = fileOfShape(moment.shape, codePath);
   const rows = rowsOfFile(moment, codePath);
   const commit = commitAt(sequence, step);
@@ -143,7 +176,8 @@ export function emitFileAt(sequence: HistorySequence, step: number, codePath: st
 export function emitLinksAt(sequence: HistorySequence, step: number, from: { codePath: string; symbol?: string }, to: { codePath: string; symbol?: string }, json: boolean): void {
   const moment = momentAt(sequence, step);
   const commit = commitAt(sequence, step);
-  const ends = [from, to].map((given) => {
+  const ends = [from, to].map((named) => {
+    const given = { ...named, codePath: fileNamedAt(moment, named.codePath) };
     const rows = moment.rows.get(given.codePath);
     if (!moment.shape.files.has(given.codePath)) {
       throw new HistoryRefusal(`${given.codePath} does not exist at ${commit.id.slice(0, 8)} (${day(commit)}).`);
@@ -177,9 +211,11 @@ export function historyFolder(workspaceRoot: string, config: LiveDocumentationCo
  * A file's words at a commit: its authored block and each symbol's description as that day's docs held them, read
  * from the part of the words store beside the sequence for the file's directory; or, where they cannot be read, why.
  */
-export async function emitWordsAt(sequence: HistorySequence, step: number, codePath: string, folder: string, json: boolean): Promise<void> {
+export async function emitWordsAt(sequence: HistorySequence, step: number, named: string, folder: string, json: boolean): Promise<void> {
   const commit = commitAt(sequence, step);
-  const words = wordsOfFile(momentAt(sequence, step).rows, codePath);
+  const moment = momentAt(sequence, step);
+  const codePath = fileNamedAt(moment, named);
+  const words = wordsOfFile(moment.rows, codePath);
   if (!words.exists) {
     throw new HistoryRefusal(`${codePath} does not exist at ${commit.id.slice(0, 8)} (${day(commit)}), or the history carries no rows of it.`);
   }

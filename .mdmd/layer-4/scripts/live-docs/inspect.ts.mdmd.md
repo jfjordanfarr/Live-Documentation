@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T19:18:27.969Z
+- Generated At: 2026-11-19T20:08:19.960Z
 
 ## Authored
 ### Purpose
@@ -65,6 +65,7 @@ _No public symbols detected_
 - [`emit.emitSymbolPathNotFound`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathnotfound)
 - [`emit.emitSymbolPathResult`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathresult)
 - [`history.HistoryRefusal`](./inspect/history.ts.mdmd.md#symbol-historyrefusal)
+- [`history.codePathOf`](./inspect/history.ts.mdmd.md#symbol-codepathof)
 - [`history.emitBetween`](./inspect/history.ts.mdmd.md#symbol-emitbetween)
 - [`history.emitFileAt`](./inspect/history.ts.mdmd.md#symbol-emitfileat)
 - [`history.emitLinksAt`](./inspect/history.ts.mdmd.md#symbol-emitlinksat)

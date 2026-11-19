@@ -395,3 +395,7 @@ input = parseLiveDocumentationConfigBytes(await fs.readFile(file));
 ```
 
 and import `parseLiveDocumentationConfigBytes` from the configuration module, as the file imports `normalizeLiveDocumentationConfig` now. The surrounding `try` and its message stay as they are. A test: a `.live-docs.config.json` whose bytes begin `EF BB BF`, or are UTF-16 LE after `FF FE`, gives the same lens as the plain file.
+
+### A history question's file in another case
+
+`inspect --at <commit> --from <file>`, and `--to`, now find the file in any case, as today's questions do. `fileNamedAt` (`scripts/live-docs/inspect/history.ts`) tries the name as spelled, then the one file at that commit whose path differs by case alone. Two such files are named back. A name no file answers to is still said not to have existed. `codePathOf`, which reads a doc's path as its file's, moved beside it and reads the docs folder and suffix in any case. `inspect-cli.test.ts` builds the history's scripted repository at its first commit, writes its history, and asks `--from SRC/App/View.TS`, the doc's path in another case, and `--to` in another case. The first case failed before the mend, and the case of a name no file answers to passed both before and after. `inspect/history.test.ts` covers the two files that differ by case alone.
