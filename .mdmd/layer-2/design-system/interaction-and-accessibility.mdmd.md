@@ -484,7 +484,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | width ≤ 768, ≤ 480 | Knowledge Sources' padding narrows | `styles/sources.css:14-24` |
 | width ≤ 760 | the sidebar overlays the page; the main area keeps a 48 px strip | `styles/shell.css:429-432`; `index.ts:275` |
 | width ≤ 760 or height ≤ 480 | the reader fills the screen, modal, with its own Back, Forward and Close | `styles/shell.css:434-449`; `index.ts:267` |
-| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:94-96`, `:751-754` |
+| width ≤ 600 | the map loses height for the zoom controls; reading cards and the reading dialog tighten | `styles/local.css:585-587`; `styles/reading.css:94-96`, `:758-761` |
 | `pointer: coarse` | larger reading-look controls | `styles/reading.css:98-103` |
 
 **Rule (proposed): breakpoints are named and few.** Today there are six widths (480, 600, 760, 768, 850 and the 480 height) written as literals in five files, two of them 8 px apart. A design system names them once (for example *narrow* ≤ 600, *compact* ≤ 760) and every rule uses the names. Status: proposed; see the findings.

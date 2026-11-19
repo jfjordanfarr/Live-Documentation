@@ -672,7 +672,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 - **The rule.** An appearing thing eases out (fast, then settling). A leaving thing eases in. A thing moving within the view eases out.
 - **Why.** Principle: Material's emphasized and standard easing, and Carbon's entrance and exit curves. Motion that settles reads as arriving, and motion that speeds up reads as going.
 - **Where.**
-  - The three looks' appearance and leaving: `styles/reading.css:656–703`, 160 ms, `ease-out` and `ease-in`.
+  - The three looks' appearance and leaving: `styles/reading.css:658–710`, 160 ms, `ease-out` and `ease-in`.
   - The 2D camera: `easeOutCubic`.
 - **Status.** Holds where stated. Elsewhere `ease` is used without a stated reason.
 
