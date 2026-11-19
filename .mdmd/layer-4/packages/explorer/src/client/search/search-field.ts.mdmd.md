@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/search-field.ts
-- Generated At: 2026-10-22T16:47:54.938Z
+- Generated At: 2026-11-19T00:33:07.290Z
 
 ## Authored
 ### Purpose
@@ -18,27 +18,28 @@ One search field with its results under it, made twice by the bar: the words typ
 - The scope is read at every keystroke (2026-10-14, [Turn 7](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-14/2026-10-14.1.record.md#turn-7)), so that the bar can change the destination's as the newest pin changes. The fold row toggles the apart section, whose rows are drawn faded and marked with the scope's words; the row numbers are written after the HTML, in the order `searchRows` walks with the fold after the offered rows, so that the keyboard and the click agree.
 - Escape marks itself handled (2026-10-20), so the reader behind the field and the World Map's keys leave that Escape alone: one key closes one thing. Before, Escape in the field also closed an open reader.
 - A combobox over a listbox since 2026-10-30, under the remediation plan the owner accepted ([Turn 3](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-30/2026-10-30.1.record.md#turn-3)): the field makes its input `role="combobox"` with `aria-autocomplete="list"` and `aria-controls` naming its results, which it makes the `listbox`; `aria-expanded` follows whether the results show, every row is an `option` with an id of its place, and `aria-activedescendant` names the keyboard's row, so that a screen reader follows the arrows while focus stays in the input. Group headings are presentational. The field sets all of it, so every field made by it, the Knowledge Sources' "Reachable from" among them, carries the same; the keyboard is unchanged.
+- Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) "Nothing found" is said once in the page's status region ([announce.ts](../announce.ts.mdmd.md)) when the results empty, and taken back when words find something again or the field settles (WCAG 2.2 SC 4.1.3). Before, it was drawn alone under `role="presentation"` and a screen reader heard nothing.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SearchFieldOptions` {#symbol-searchfieldoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L11)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L12)
 
 ##### `SearchFieldOptions` — Summary
 What a search field is made from: its input and its results element, the scope it searches, and what is done with the thing chosen.
 
 #### `SearchField` {#symbol-searchfield}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L22)
 
 ##### `SearchField` — Summary
 A search field as the bar drives it: show words while nobody types, take focus, and settle back to the shown words.
 
 #### `createSearchField` {#symbol-createsearchfield}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L38)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L42)
 - Returns: [`SearchField`](#symbol-searchfield)
 - Parameters: `options`: [`SearchFieldOptions`](#symbol-searchfieldoptions)
 
@@ -48,6 +49,8 @@ Make a search field over an input and a results element: typing searches the sco
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`announce`](../announce.ts.mdmd.md#symbol-announce)
+- [`announce.withdraw`](../announce.ts.mdmd.md#symbol-withdraw)
 - [`graph-helpers.escapeHtml`](../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`graph-search.SearchGroup`](./graph-search.ts.mdmd.md#symbol-searchgroup)
 - [`graph-search.SearchHit`](./graph-search.ts.mdmd.md#symbol-searchhit)

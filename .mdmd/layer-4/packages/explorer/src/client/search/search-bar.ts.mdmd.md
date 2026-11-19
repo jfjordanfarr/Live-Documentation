@@ -22,6 +22,8 @@ The search bar at the top of the Explorer: the first field shows the newest pin 
 
 The [November 1 repairs](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-01/2026-11-01.1.record.md#turn-2) added `setIndex`: both fields search the displayed snapshot while history is open, and return to the current inventory afterward. Past-only candidates remain searchable and reachable; the root converts a chosen path to its portable lifetime identity. Historical symbol names are not inferred from today’s docs.
 
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)) the shortcut's hint names the platform's key, `⌘P` on Apple's systems and `Ctrl+P` elsewhere, and the field carries `aria-keyshortcuts` to match; either key works everywhere, as before.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

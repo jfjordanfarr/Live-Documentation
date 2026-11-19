@@ -51,8 +51,10 @@ const describeError = (error: unknown): { message: string; stack: string } => {
 
 /**
  * Says what stopped the Explorer in the status line, as `Error: <message>`. A refusal is also its one sentence where
- * the map would be, at reading size and alone; a fault the reader cannot act on opens the detail panel with its
- * encoded stack.
+ * the map would be, at reading size and alone; a fault the reader cannot act on opens the detail panel under the
+ * heading "The Explorer stopped", its message announced as an alert and its encoded stack below. The panel is made
+ * reachable as the reader's own `reveal` makes it: until 2026-11-19 it was shown still `inert` and `aria-hidden`,
+ * under "Select a Node", where neither a keyboard nor a screen reader could reach it.
  */
 export function reportFatalExplorerError(error: unknown): void {
   console.error("Live Docs Explorer fatal error", error);
@@ -79,13 +81,19 @@ export function reportFatalExplorerError(error: unknown): void {
       sentence.textContent = message;
     }
   } else {
+    const title = document.getElementById("detail-title");
+    if (title) title.textContent = "The Explorer stopped";
     const detailBody = document.getElementById("detail-body");
     if (detailBody) {
-      detailBody.innerHTML = `<pre style="white-space:pre-wrap;color:var(--signal-error);">${encodeHtml(stack)}</pre>`;
+      detailBody.innerHTML = `<p class="fatal-message" role="alert">${encodeHtml(message)}</p><pre class="fatal-stack">${encodeHtml(stack)}</pre>`;
     }
 
-    const overlay = document.getElementById("detail-panel");
-    overlay?.classList.add("visible");
+    const panel = document.getElementById("detail-panel");
+    if (panel) {
+      panel.inert = false;
+      panel.removeAttribute("aria-hidden");
+      panel.classList.add("visible");
+    }
   }
 
   (window as Window & { __liveDocsExplorerError?: unknown }).__liveDocsExplorerError = error;

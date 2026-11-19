@@ -58,6 +58,8 @@ Since 2026-11-18 the 3D layout's Discovery group holds Beyond the Hops, Everythi
 
 Since 2026-11-18 ([Turn 13 of the November 17 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)) Marbles lists On first and selected, and Hidden Files lists Cells under name first and selected, then Cells beside name and Count, the new defaults in the order of their lists in `types.ts`.
 
+Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14); [the pictures and measures](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/shell-accessibility/README.md)) the page has its landmarks: `#main` is a `<main>`, the three views' buttons stand in `<nav aria-label="Views">`, and a skip link, "Skip to the map", is the first stop of the keyboard, shown only while focused (WCAG 2.2 SC 1.3.1 and 2.4.1). `#page-status` is the page's one polite status region ([announce.ts](../client/announce.ts.mdmd.md)). The zoom buttons carry tooltips, the loading line ends in `…`, and the policy's comment gives today's reason for inline styles: the Explorer's own style attributes, since the 3D libraries that injected stylesheets left on 2026-10-29.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -134,6 +136,9 @@ Since 2026-11-18 ([Turn 13 of the November 17 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `map-viewport` {#symbol-map-viewport}
+- Type: variable
+
+#### `page-status` {#symbol-page-status}
 - Type: variable
 
 #### `path-report` {#symbol-path-report}

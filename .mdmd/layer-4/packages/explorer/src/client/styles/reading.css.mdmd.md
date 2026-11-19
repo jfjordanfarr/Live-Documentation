@@ -50,6 +50,8 @@ Files only means files and what the person pinned by name (2026-11-15, the root'
 
 Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1); [the pictures](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/descriptions-kept/README.md)) the connections look draws what Descriptions Zoomed Out keeps. A kept line (`.local-row-kept` in a row with `local-row-kept-on`) is one line under the name at the name's held size, in the prose tone (`--card-prose`), cut with an ellipsis. A name held to one line and cut (`local-name-cut`) draws its cut form from `data-name-cut` in a pseudo-element over its own text, which stays in the page unpainted, so that the whole name is still what is read, selected and measured. The file's line (`.local-file-kept` on a card with `local-file-kept-on`) stands under the held name at `--file-kept-x` and `--file-kept-y`, in the kept lines' type, scaled by the look as the name is. None of them is drawn in the reading look or at the overview.
 
+Since 2026-11-19 the reading dialog no longer sets its own size for h4 to h6: every heading of the reader's prose is sized from that prose in [shell.css](shell.css.mdmd.md), so none is smaller than what it heads ([Turn 14 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-14)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

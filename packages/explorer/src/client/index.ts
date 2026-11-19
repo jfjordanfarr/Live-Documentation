@@ -1209,6 +1209,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     });
   }
 
+  // The skip link moves the keyboard to the views, where the next Tab enters the map, and leaves the address alone:
+  // the exploration lives in its query, and a fragment would be one more thing a shared link carried for nothing.
+  // The views take focus only for this: a click on the map must not focus their frame.
+  document.querySelector<HTMLAnchorElement>(".skip-link")?.addEventListener("click", event => {
+    event.preventDefault();
+    const views = requireElement("views");
+    views.tabIndex = -1;
+    views.addEventListener("blur", () => views.removeAttribute("tabindex"), { once: true });
+    views.focus();
+  });
+
   requireElement("sidebar-toggle").addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
     syncSidebarToggle();
