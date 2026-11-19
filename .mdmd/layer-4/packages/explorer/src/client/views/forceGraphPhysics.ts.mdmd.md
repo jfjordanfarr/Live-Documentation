@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-19T10:51:08.872Z
+- Generated At: 2026-11-19T12:05:52.559Z
 
 ## Authored
 ### Purpose
@@ -124,7 +124,7 @@ are the same either way.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L725)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L731)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.
