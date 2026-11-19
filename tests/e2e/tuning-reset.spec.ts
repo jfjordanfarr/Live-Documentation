@@ -95,16 +95,17 @@ test("the count beside Tuning says how many settings differ, a dot marks each ch
   await expect(reset(page)).toHaveAttribute("aria-pressed", "false");
   await expect(reset(page)).toBeFocused();
 
-  // A lever moved after a reset lets go of what the reset kept: the next press resets again.
+  // A lever moved after a reset lets go of what the reset kept: the next press resets again. Card Gap stands in the
+  // 2D layout group, open in 2D; the 2D wires' group is folded.
   await reset(page).click();
   await expect(reset(page)).toHaveAttribute("aria-pressed", "true");
-  await page.locator("#tuning-stub-min").fill("30");
+  await page.locator("#tuning-item-gap").fill("40");
   await expect(page.locator("#tuning-changed-count")).toHaveText("1");
   await expect(reset(page)).toHaveAttribute("aria-pressed", "false");
   await reset(page).click();
-  await expect(page.locator("#tuning-stub-min")).toHaveValue("8");
+  await expect(page.locator("#tuning-item-gap")).toHaveValue("24");
   await reset(page).click();
-  await expect(page.locator("#tuning-stub-min"), "taken back to the lever as it was moved, not to before the first reset").toHaveValue("30");
+  await expect(page.locator("#tuning-item-gap"), "taken back to the lever as it was moved, not to before the first reset").toHaveValue("40");
   await expect(page.locator("#tuning-column-gap")).toHaveValue("100");
 });
 

@@ -274,7 +274,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 
 **Rule: every control has a name; an icon-only control's name is its tooltip, set once by `iconButton`** (`panels/icon-button.ts`).
 - Why: WCAG 2.2 SC 4.1.2; the owner, 2026-10-01: "There is no reason for "Release", "Pin All", and "Read" to be buttons with text instead of interactible elements whose aria attributes yield a proper accessible textual equivalent for those who are visually imparied or those who wish to hover for a tooltip." ([Turn 44 of the September 30 record](../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/2026-09-30/2026-09-30.2.record.md#turn-44)).
-- Status: holds across the `aria-label`s written; the zoom buttons have carried a tooltip as well as a name since 2026-11-19 (`shared/template.html`; checked by `tests/e2e/shell-accessibility.spec.ts`).
+- Status: holds across the `aria-label`s written; the zoom buttons have carried a tooltip as well as a name since 2026-11-19 (`shared/template.html`; checked by `tests/e2e/shell-accessibility.spec.ts`). A glyph drawn by CSS `content` joins the name unless it is given empty alternative text (`content: "▶" / ""`): Tuning's heading was named "▶ Tuning" until 2026-11-19 (`styles/shell.css`, `.sidebar-details > summary::before`; checked by `tests/e2e/tuning-reset.spec.ts`).
 
 **Rule: the name contains the words drawn on the control** (*label in name*).
 - Why: WCAG 2.2 SC 2.5.3 Label in Name (level A): a speech user says what they see.

@@ -1038,8 +1038,11 @@
     display: none;
 }
 
+/* The disclosure's triangle is drawn, not said: its empty alternative text keeps it out of the heading's accessible name,
+   which was "▶ Tuning" until 2026-11-19. A browser that cannot read alternative text keeps the first declaration. */
 .sidebar-details > summary::before {
     content: "▶";
+    content: "▶" / "";
     display: inline-block;
     margin-right: 8px;
     font-size: 8px;
