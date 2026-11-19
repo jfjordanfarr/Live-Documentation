@@ -1,10 +1,10 @@
-# packages/engine/src/languages/go.ts
+# `packages/engine/src/languages/go.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/go.ts
-- Generated At: 2026-09-27T23:21:30.021Z
+- Code Path: `packages/engine/src/languages/go.ts`
+- Generated At: 2026-11-19T21:10:08.788Z
 
 ## Authored
 ### Purpose

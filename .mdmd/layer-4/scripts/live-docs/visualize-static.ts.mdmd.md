@@ -1,11 +1,11 @@
-# scripts/live-docs/visualize-static.ts
+# `scripts/live-docs/visualize-static.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/visualize-static.ts
+- Code Path: `scripts/live-docs/visualize-static.ts`
 - Entry: command `live-docs:visualize` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.940Z
+- Generated At: 2026-11-19T21:10:19.302Z
 
 ## Authored
 ### Purpose

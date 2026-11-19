@@ -1,10 +1,10 @@
-# scripts/layout-lab/sweep.test.ts
+# `scripts/layout-lab/sweep.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/layout-lab/sweep.test.ts
-- Generated At: 2026-10-06T20:39:26.040Z
+- Code Path: `scripts/layout-lab/sweep.test.ts`
+- Generated At: 2026-11-19T21:10:18.972Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# scripts/slopcop/markdownLinks.test.ts
+# `scripts/slopcop/markdownLinks.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/slopcop/markdownLinks.test.ts
-- Generated At: 2026-09-28T01:00:43.723Z
+- Code Path: `scripts/slopcop/markdownLinks.test.ts`
+- Generated At: 2026-11-19T21:10:19.644Z
 
 ## Authored
 ### Purpose

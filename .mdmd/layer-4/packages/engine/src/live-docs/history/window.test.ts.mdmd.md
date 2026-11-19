@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/window.test.ts
+# `packages/engine/src/live-docs/history/window.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/window.test.ts
-- Generated At: 2026-10-18T00:39:19.342Z
+- Code Path: `packages/engine/src/live-docs/history/window.test.ts`
+- Generated At: 2026-11-19T21:10:12.411Z
 
 ## Authored
 ### Purpose

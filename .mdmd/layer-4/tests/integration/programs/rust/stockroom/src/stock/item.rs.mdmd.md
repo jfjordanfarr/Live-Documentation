@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/stockroom/src/stock/item.rs
+# `tests/integration/programs/rust/stockroom/src/stock/item.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/stockroom/src/stock/item.rs
-- Generated At: 2026-10-02T20:20:08.772Z
+- Code Path: `tests/integration/programs/rust/stockroom/src/stock/item.rs`
+- Generated At: 2026-11-19T21:10:28.388Z
 
 ## Authored
 ### Purpose

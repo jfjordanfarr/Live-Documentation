@@ -1,10 +1,10 @@
-# tests/integration/live-docs/pipeline.test.ts
+# `tests/integration/live-docs/pipeline.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/pipeline.test.ts
-- Generated At: 2026-10-19T16:54:11.517Z
+- Code Path: `tests/integration/live-docs/pipeline.test.ts`
+- Generated At: 2026-11-19T21:10:25.821Z
 
 ## Authored
 ### Purpose

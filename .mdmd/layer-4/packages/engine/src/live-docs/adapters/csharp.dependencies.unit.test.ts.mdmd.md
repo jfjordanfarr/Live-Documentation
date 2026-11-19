@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts
+# `packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts
-- Generated At: 2026-09-27T23:21:30.343Z
+- Code Path: `packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts`
+- Generated At: 2026-11-19T21:10:09.257Z
 
 ## Authored
 ### Purpose

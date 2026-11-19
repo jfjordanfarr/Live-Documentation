@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/wire-gathering.ts
+# `packages/explorer/src/client/views/localView/wire-gathering.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/wire-gathering.ts
-- Generated At: 2026-11-19T04:41:43.849Z
+- Code Path: `packages/explorer/src/client/views/localView/wire-gathering.ts`
+- Generated At: 2026-11-19T21:10:17.175Z
 
 ## Authored
 ### Purpose

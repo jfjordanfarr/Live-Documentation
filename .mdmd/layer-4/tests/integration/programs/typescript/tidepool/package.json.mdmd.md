@@ -1,11 +1,11 @@
-# tests/integration/programs/typescript/tidepool/package.json
+# `tests/integration/programs/typescript/tidepool/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/tidepool/package.json
+- Code Path: `tests/integration/programs/typescript/tidepool/package.json`
 - Entry: tooling
-- Generated At: 2026-11-16T20:15:25.506Z
+- Generated At: 2026-11-19T21:10:28.694Z
 
 ## Authored
 ### Purpose

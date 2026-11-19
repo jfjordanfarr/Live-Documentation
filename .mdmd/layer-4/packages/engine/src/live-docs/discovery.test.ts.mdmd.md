@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/discovery.test.ts
+# `packages/engine/src/live-docs/discovery.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/discovery.test.ts
-- Generated At: 2026-11-19T20:01:35.617Z
+- Code Path: `packages/engine/src/live-docs/discovery.test.ts`
+- Generated At: 2026-11-19T21:10:11.384Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/basics/src/utils.rs
+# `tests/integration/programs/rust/basics/src/utils.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/basics/src/utils.rs
-- Generated At: 2026-10-02T20:20:08.575Z
+- Code Path: `tests/integration/programs/rust/basics/src/utils.rs`
+- Generated At: 2026-11-19T21:10:28.275Z
 
 ## Authored
 ### Purpose

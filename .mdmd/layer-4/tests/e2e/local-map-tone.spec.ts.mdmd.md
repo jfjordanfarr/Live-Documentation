@@ -1,10 +1,10 @@
-# tests/e2e/local-map-tone.spec.ts
+# `tests/e2e/local-map-tone.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-tone.spec.ts
-- Generated At: 2026-11-15T23:13:58.625Z
+- Code Path: `tests/e2e/local-map-tone.spec.ts`
+- Generated At: 2026-11-19T21:10:23.147Z
 
 ## Authored
 ### Purpose

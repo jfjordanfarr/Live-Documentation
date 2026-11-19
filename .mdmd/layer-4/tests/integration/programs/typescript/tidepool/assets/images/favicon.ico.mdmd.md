@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/images/favicon.ico
+# `tests/integration/programs/typescript/tidepool/assets/images/favicon.ico`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/images/favicon.ico
-- Generated At: 2026-11-16T20:15:24.954Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/images/favicon.ico`
+- Generated At: 2026-11-19T21:10:28.641Z
 
 ## Authored
 ### Purpose

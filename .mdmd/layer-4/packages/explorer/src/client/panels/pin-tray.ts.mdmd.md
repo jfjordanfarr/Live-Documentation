@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/pin-tray.ts
+# `packages/explorer/src/client/panels/pin-tray.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/pin-tray.ts
-- Generated At: 2026-11-19T06:19:56.771Z
+- Code Path: `packages/explorer/src/client/panels/pin-tray.ts`
+- Generated At: 2026-11-19T21:10:13.776Z
 
 ## Authored
 ### Purpose

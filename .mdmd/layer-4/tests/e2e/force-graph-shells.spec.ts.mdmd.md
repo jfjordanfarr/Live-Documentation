@@ -1,10 +1,10 @@
-# tests/e2e/force-graph-shells.spec.ts
+# `tests/e2e/force-graph-shells.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/force-graph-shells.spec.ts
-- Generated At: 2026-11-18T20:09:09.224Z
+- Code Path: `tests/e2e/force-graph-shells.spec.ts`
+- Generated At: 2026-11-19T21:10:21.329Z
 
 ## Authored
 ### Purpose

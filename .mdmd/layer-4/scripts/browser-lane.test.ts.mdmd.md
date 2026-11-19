@@ -1,10 +1,10 @@
-# scripts/browser-lane.test.ts
+# `scripts/browser-lane.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/browser-lane.test.ts
-- Generated At: 2026-11-19T07:03:51.094Z
+- Code Path: `scripts/browser-lane.test.ts`
+- Generated At: 2026-11-19T21:10:18.166Z
 
 ## Authored
 ### Purpose

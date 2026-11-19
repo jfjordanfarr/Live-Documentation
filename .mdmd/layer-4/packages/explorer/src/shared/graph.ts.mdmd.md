@@ -1,10 +1,10 @@
-# packages/explorer/src/shared/graph.ts
+# `packages/explorer/src/shared/graph.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/shared/graph.ts
-- Generated At: 2026-11-03T19:06:10.062Z
+- Code Path: `packages/explorer/src/shared/graph.ts`
+- Generated At: 2026-11-19T21:10:17.812Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/served-build.test.ts
+# `tests/e2e/served-build.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/served-build.test.ts
-- Generated At: 2026-11-19T07:03:56.597Z
+- Code Path: `tests/e2e/served-build.test.ts`
+- Generated At: 2026-11-19T21:10:24.137Z
 
 ## Authored
 ### Purpose

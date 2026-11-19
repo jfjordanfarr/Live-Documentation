@@ -1,10 +1,10 @@
-# tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts
+# `tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts
-- Generated At: 2026-09-27T23:21:33.683Z
+- Code Path: `tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts`
+- Generated At: 2026-11-19T21:10:25.517Z
 
 ## Authored
 ### Purpose

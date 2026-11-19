@@ -1,10 +1,10 @@
-# tests/integration/live-docs/expected/repository-entries.json
+# `tests/integration/live-docs/expected/repository-entries.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-11-19T07:32:39.860Z
+- Code Path: `tests/integration/live-docs/expected/repository-entries.json`
+- Generated At: 2026-11-19T21:10:25.629Z
 
 ## Authored
 ### Purpose

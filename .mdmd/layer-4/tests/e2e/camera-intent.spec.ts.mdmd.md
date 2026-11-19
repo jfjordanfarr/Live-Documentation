@@ -1,10 +1,10 @@
-# tests/e2e/camera-intent.spec.ts
+# `tests/e2e/camera-intent.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/camera-intent.spec.ts
-- Generated At: 2026-11-19T05:17:21.382Z
+- Code Path: `tests/e2e/camera-intent.spec.ts`
+- Generated At: 2026-11-19T21:10:19.949Z
 
 ## Authored
 ### Purpose

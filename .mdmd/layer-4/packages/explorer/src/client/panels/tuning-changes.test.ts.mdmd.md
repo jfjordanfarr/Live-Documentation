@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/tuning-changes.test.ts
+# `packages/explorer/src/client/panels/tuning-changes.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/panels/tuning-changes.test.ts
-- Generated At: 2026-11-19T04:53:49.573Z
+- Code Path: `packages/explorer/src/client/panels/tuning-changes.test.ts`
+- Generated At: 2026-11-19T21:10:13.952Z
 
 ## Authored
 ### Purpose

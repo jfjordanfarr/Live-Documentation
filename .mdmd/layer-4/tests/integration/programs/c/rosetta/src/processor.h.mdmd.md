@@ -1,10 +1,10 @@
-# tests/integration/programs/c/rosetta/src/processor.h
+# `tests/integration/programs/c/rosetta/src/processor.h`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/rosetta/src/processor.h
-- Generated At: 2026-10-02T20:20:04.465Z
+- Code Path: `tests/integration/programs/c/rosetta/src/processor.h`
+- Generated At: 2026-11-19T21:10:26.144Z
 
 ## Authored
 ### Purpose

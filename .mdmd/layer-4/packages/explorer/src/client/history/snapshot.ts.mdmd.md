@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/snapshot.ts
+# `packages/explorer/src/client/history/snapshot.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/snapshot.ts
-- Generated At: 2026-11-09T00:01:54.355Z
+- Code Path: `packages/explorer/src/client/history/snapshot.ts`
+- Generated At: 2026-11-19T21:10:13.307Z
 
 ## Authored
 ### Purpose

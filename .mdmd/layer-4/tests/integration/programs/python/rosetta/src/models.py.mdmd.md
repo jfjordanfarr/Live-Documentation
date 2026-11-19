@@ -1,10 +1,10 @@
-# tests/integration/programs/python/rosetta/src/models.py
+# `tests/integration/programs/python/rosetta/src/models.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/rosetta/src/models.py
-- Generated At: 2026-10-02T20:20:07.902Z
+- Code Path: `tests/integration/programs/python/rosetta/src/models.py`
+- Generated At: 2026-11-19T21:10:28.012Z
 
 ## Authored
 ### Purpose

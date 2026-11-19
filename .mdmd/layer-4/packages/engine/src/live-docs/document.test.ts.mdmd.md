@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/document.test.ts
+# `packages/engine/src/live-docs/document.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/document.test.ts
-- Generated At: 2026-11-19T20:42:02.149Z
+- Code Path: `packages/engine/src/live-docs/document.test.ts`
+- Generated At: 2026-11-19T21:10:11.497Z
 
 ## Authored
 ### Purpose

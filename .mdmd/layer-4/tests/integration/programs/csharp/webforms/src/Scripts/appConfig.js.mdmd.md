@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js
+# `tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js
-- Generated At: 2026-10-02T20:20:05.715Z
+- Code Path: `tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js`
+- Generated At: 2026-11-19T21:10:27.065Z
 
 ## Authored
 ### Purpose

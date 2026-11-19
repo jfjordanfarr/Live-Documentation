@@ -1,10 +1,10 @@
-# packages/explorer/src/client/reader-links.ts
+# `packages/explorer/src/client/reader-links.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/reader-links.ts
-- Generated At: 2026-11-04T15:03:15.877Z
+- Code Path: `packages/explorer/src/client/reader-links.ts`
+- Generated At: 2026-11-19T21:10:14.338Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/relatedDocs.ts
+# `packages/engine/src/live-docs/relatedDocs.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/relatedDocs.ts
-- Generated At: 2026-11-19T18:51:39.348Z
+- Code Path: `packages/engine/src/live-docs/relatedDocs.ts`
+- Generated At: 2026-11-19T21:10:12.638Z
 
 ## Authored
 ### Purpose

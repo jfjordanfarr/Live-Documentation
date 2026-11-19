@@ -1,10 +1,10 @@
-# tests/integration/live-docs/round-trip.test.ts
+# `tests/integration/live-docs/round-trip.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/round-trip.test.ts
-- Generated At: 2026-11-19T20:06:17.180Z
+- Code Path: `tests/integration/live-docs/round-trip.test.ts`
+- Generated At: 2026-11-19T21:10:25.906Z
 
 ## Authored
 ### Purpose

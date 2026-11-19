@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Hub/Hub.csproj
+# `tests/integration/programs/csharp/estate/Hub/Hub.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Hub/Hub.csproj
+- Code Path: `tests/integration/programs/csharp/estate/Hub/Hub.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.817Z
+- Generated At: 2026-11-19T21:10:26.621Z
 
 ## Authored
 ### Purpose

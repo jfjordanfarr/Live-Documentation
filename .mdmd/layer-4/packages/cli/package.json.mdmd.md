@@ -1,11 +1,11 @@
-# packages/cli/package.json
+# `packages/cli/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/cli/package.json
+- Code Path: `packages/cli/package.json`
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:38.272Z
+- Generated At: 2026-11-19T21:10:08.595Z
 
 ## Authored
 ### Purpose

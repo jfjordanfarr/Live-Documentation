@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/word-seams.test.ts
+# `packages/explorer/src/client/views/localView/word-seams.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/word-seams.test.ts
-- Generated At: 2026-10-30T19:08:33.726Z
+- Code Path: `packages/explorer/src/client/views/localView/word-seams.test.ts`
+- Generated At: 2026-11-19T21:10:17.184Z
 
 ## Authored
 ### Purpose

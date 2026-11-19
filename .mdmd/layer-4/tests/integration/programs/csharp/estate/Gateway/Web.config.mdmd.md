@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Gateway/Web.config
+# `tests/integration/programs/csharp/estate/Gateway/Web.config`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Gateway/Web.config
+- Code Path: `tests/integration/programs/csharp/estate/Gateway/Web.config`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.760Z
+- Generated At: 2026-11-19T21:10:26.603Z
 
 ## Authored
 ### Purpose

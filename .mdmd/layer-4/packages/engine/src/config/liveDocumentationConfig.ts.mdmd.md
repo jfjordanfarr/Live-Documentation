@@ -1,10 +1,10 @@
-# packages/engine/src/config/liveDocumentationConfig.ts
+# `packages/engine/src/config/liveDocumentationConfig.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-11-12T17:12:02.641Z
+- Code Path: `packages/engine/src/config/liveDocumentationConfig.ts`
+- Generated At: 2026-11-19T21:10:08.732Z
 
 ## Authored
 ### Purpose

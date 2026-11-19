@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/directories.test.ts
+# `packages/engine/src/live-docs/history/directories.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/directories.test.ts
-- Generated At: 2026-10-18T00:39:18.764Z
+- Code Path: `packages/engine/src/live-docs/history/directories.test.ts`
+- Generated At: 2026-11-19T21:10:11.935Z
 
 ## Authored
 ### Purpose

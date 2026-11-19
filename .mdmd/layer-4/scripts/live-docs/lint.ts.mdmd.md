@@ -1,11 +1,11 @@
-# scripts/live-docs/lint.ts
+# `scripts/live-docs/lint.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/lint.ts
+- Code Path: `scripts/live-docs/lint.ts`
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.672Z
+- Generated At: 2026-11-19T21:10:19.234Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/local-map-hidden.spec.ts
+# `tests/e2e/local-map-hidden.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-hidden.spec.ts
-- Generated At: 2026-10-22T16:47:58.504Z
+- Code Path: `tests/e2e/local-map-hidden.spec.ts`
+- Generated At: 2026-11-19T21:10:22.526Z
 
 ## Authored
 ### Purpose

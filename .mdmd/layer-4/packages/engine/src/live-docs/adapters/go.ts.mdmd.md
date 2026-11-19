@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/go.ts
+# `packages/engine/src/live-docs/adapters/go.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/go.ts
-- Generated At: 2026-11-19T08:59:52.800Z
+- Code Path: `packages/engine/src/live-docs/adapters/go.ts`
+- Generated At: 2026-11-19T21:10:09.628Z
 
 ## Authored
 ### Purpose

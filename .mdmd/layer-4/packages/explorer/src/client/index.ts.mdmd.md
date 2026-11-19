@@ -1,11 +1,11 @@
-# packages/explorer/src/client/index.ts
+# `packages/explorer/src/client/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/index.ts
+- Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-19T06:30:57.242Z
+- Generated At: 2026-11-19T21:10:13.573Z
 
 ## Authored
 ### Purpose

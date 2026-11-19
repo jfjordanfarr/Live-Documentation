@@ -1,10 +1,10 @@
-# tests/integration/programs/python/ledger/ledger/storage/__init__.py
+# `tests/integration/programs/python/ledger/ledger/storage/__init__.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/ledger/ledger/storage/__init__.py
-- Generated At: 2026-10-02T20:20:07.392Z
+- Code Path: `tests/integration/programs/python/ledger/ledger/storage/__init__.py`
+- Generated At: 2026-11-19T21:10:27.901Z
 
 ## Authored
 ### Purpose

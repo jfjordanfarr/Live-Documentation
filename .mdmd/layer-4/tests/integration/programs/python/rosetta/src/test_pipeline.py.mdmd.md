@@ -1,10 +1,10 @@
-# tests/integration/programs/python/rosetta/src/test_pipeline.py
+# `tests/integration/programs/python/rosetta/src/test_pipeline.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/python/rosetta/src/test_pipeline.py
-- Generated At: 2026-09-27T23:21:38.307Z
+- Code Path: `tests/integration/programs/python/rosetta/src/test_pipeline.py`
+- Generated At: 2026-11-19T21:10:28.035Z
 
 ## Authored
 ### Purpose

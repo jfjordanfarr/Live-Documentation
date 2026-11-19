@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/sequence.ts
+# `packages/engine/src/live-docs/history/sequence.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/sequence.ts
-- Generated At: 2026-11-19T06:20:28.596Z
+- Code Path: `packages/engine/src/live-docs/history/sequence.ts`
+- Generated At: 2026-11-19T21:10:12.275Z
 
 ## Authored
 ### Purpose

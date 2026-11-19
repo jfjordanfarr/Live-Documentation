@@ -1,10 +1,10 @@
-# packages/generator/src/history/generatorIdentity.ts
+# `packages/generator/src/history/generatorIdentity.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/history/generatorIdentity.ts
-- Generated At: 2026-11-19T12:01:27.318Z
+- Code Path: `packages/generator/src/history/generatorIdentity.ts`
+- Generated At: 2026-11-19T21:10:18.064Z
 
 ## Authored
 ### Purpose

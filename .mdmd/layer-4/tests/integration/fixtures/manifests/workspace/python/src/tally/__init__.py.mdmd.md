@@ -1,10 +1,10 @@
-# tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py
+# `tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py
-- Generated At: 2026-10-16T16:21:50.269Z
+- Code Path: `tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py`
+- Generated At: 2026-11-19T21:10:25.205Z
 
 ## Authored
 ### Purpose

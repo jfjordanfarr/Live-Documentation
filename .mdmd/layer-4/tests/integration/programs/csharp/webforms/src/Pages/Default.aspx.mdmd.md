@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/webforms/src/Pages/Default.aspx
+# `tests/integration/programs/csharp/webforms/src/Pages/Default.aspx`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx
-- Generated At: 2026-10-02T20:20:05.660Z
+- Code Path: `tests/integration/programs/csharp/webforms/src/Pages/Default.aspx`
+- Generated At: 2026-11-19T21:10:27.039Z
 
 ## Authored
 ### Purpose

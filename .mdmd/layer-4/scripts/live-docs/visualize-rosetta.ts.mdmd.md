@@ -1,11 +1,11 @@
-# scripts/live-docs/visualize-rosetta.ts
+# `scripts/live-docs/visualize-rosetta.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/visualize-rosetta.ts
+- Code Path: `scripts/live-docs/visualize-rosetta.ts`
 - Entry: command `live-docs:visualize:rosetta` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-18T19:06:09.467Z
+- Generated At: 2026-11-19T21:10:19.282Z
 
 ## Authored
 ### Purpose

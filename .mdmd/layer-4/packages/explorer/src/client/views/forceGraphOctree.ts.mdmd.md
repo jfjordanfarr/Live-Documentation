@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphOctree.ts
+# `packages/explorer/src/client/views/forceGraphOctree.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/forceGraphOctree.ts
-- Generated At: 2026-10-28T18:35:56.800Z
+- Code Path: `packages/explorer/src/client/views/forceGraphOctree.ts`
+- Generated At: 2026-11-19T21:10:15.104Z
 
 ## Authored
 ### Purpose

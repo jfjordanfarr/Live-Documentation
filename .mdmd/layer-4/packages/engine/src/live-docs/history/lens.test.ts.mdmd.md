@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/lens.test.ts
+# `packages/engine/src/live-docs/history/lens.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/lens.test.ts
-- Generated At: 2026-10-18T00:39:18.892Z
+- Code Path: `packages/engine/src/live-docs/history/lens.test.ts`
+- Generated At: 2026-11-19T21:10:12.076Z
 
 ## Authored
 ### Purpose

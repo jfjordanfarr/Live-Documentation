@@ -1,10 +1,10 @@
-# packages/explorer/src/client/detailPanel.ts
+# `packages/explorer/src/client/detailPanel.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-11-04T16:15:09.316Z
+- Code Path: `packages/explorer/src/client/detailPanel.ts`
+- Generated At: 2026-11-19T21:10:12.887Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/wheel.test.ts
+# `packages/explorer/src/client/views/wheel.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/wheel.test.ts
-- Generated At: 2026-10-12T18:02:22.452Z
+- Code Path: `packages/explorer/src/client/views/wheel.test.ts`
+- Generated At: 2026-11-19T21:10:17.435Z
 
 ## Authored
 ### Purpose

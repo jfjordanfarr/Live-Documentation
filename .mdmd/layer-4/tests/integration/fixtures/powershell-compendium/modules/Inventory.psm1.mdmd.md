@@ -1,10 +1,10 @@
-# tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1
+# `tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1
-- Generated At: 2026-09-30T16:22:06.381Z
+- Code Path: `tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1`
+- Generated At: 2026-11-19T21:10:25.303Z
 
 ## Authored
 ### Purpose

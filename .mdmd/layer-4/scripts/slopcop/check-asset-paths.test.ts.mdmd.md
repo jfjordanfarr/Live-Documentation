@@ -1,10 +1,10 @@
-# scripts/slopcop/check-asset-paths.test.ts
+# `scripts/slopcop/check-asset-paths.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/slopcop/check-asset-paths.test.ts
-- Generated At: 2026-09-28T01:00:43.648Z
+- Code Path: `scripts/slopcop/check-asset-paths.test.ts`
+- Generated At: 2026-11-19T21:10:19.555Z
 
 ## Authored
 ### Purpose

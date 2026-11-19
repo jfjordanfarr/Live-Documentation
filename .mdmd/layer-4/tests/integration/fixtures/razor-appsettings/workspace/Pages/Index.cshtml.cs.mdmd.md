@@ -1,10 +1,10 @@
-# tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs
+# `tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs
-- Generated At: 2026-09-27T23:21:33.029Z
+- Code Path: `tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs`
+- Generated At: 2026-11-19T21:10:25.386Z
 
 ## Authored
 ### Purpose

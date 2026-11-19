@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/PaymentService/PaymentService.csproj
+# `tests/integration/programs/csharp/estate/PaymentService/PaymentService.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/PaymentService/PaymentService.csproj
+- Code Path: `tests/integration/programs/csharp/estate/PaymentService/PaymentService.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.951Z
+- Generated At: 2026-11-19T21:10:26.690Z
 
 ## Authored
 ### Purpose

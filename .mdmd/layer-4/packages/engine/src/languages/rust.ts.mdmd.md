@@ -1,10 +1,10 @@
-# packages/engine/src/languages/rust.ts
+# `packages/engine/src/languages/rust.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/rust.ts
-- Generated At: 2026-09-27T23:21:30.179Z
+- Code Path: `packages/engine/src/languages/rust.ts`
+- Generated At: 2026-11-19T21:10:08.927Z
 
 ## Authored
 ### Purpose

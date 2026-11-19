@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/basic/lib/reporter.rb
+# `tests/integration/programs/ruby/basic/lib/reporter.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/basic/lib/reporter.rb
-- Generated At: 2026-10-02T20:20:08.143Z
+- Code Path: `tests/integration/programs/ruby/basic/lib/reporter.rb`
+- Generated At: 2026-11-19T21:10:28.082Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/scenarios/instrument.ts
+# `tests/e2e/scenarios/instrument.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/scenarios/instrument.ts
-- Generated At: 2026-11-18T19:06:10.585Z
+- Code Path: `tests/e2e/scenarios/instrument.ts`
+- Generated At: 2026-11-19T21:10:23.814Z
 
 ## Authored
 ### Purpose

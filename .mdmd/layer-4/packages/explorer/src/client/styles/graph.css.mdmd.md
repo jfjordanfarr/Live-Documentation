@@ -1,10 +1,10 @@
-# packages/explorer/src/client/styles/graph.css
+# `packages/explorer/src/client/styles/graph.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/styles/graph.css
-- Generated At: 2026-09-27T23:21:27.545Z
+- Code Path: `packages/explorer/src/client/styles/graph.css`
+- Generated At: 2026-11-19T21:10:14.483Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/summary.ts
+# `packages/engine/src/live-docs/history/summary.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-11-19T11:54:02.328Z
+- Code Path: `packages/engine/src/live-docs/history/summary.ts`
+- Generated At: 2026-11-19T21:10:12.328Z
 
 ## Authored
 ### Purpose

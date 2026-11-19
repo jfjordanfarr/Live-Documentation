@@ -1,10 +1,10 @@
-# scripts/doc-tools/enforce-documentation-links.test.ts
+# `scripts/doc-tools/enforce-documentation-links.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/doc-tools/enforce-documentation-links.test.ts
-- Generated At: 2026-09-28T01:00:43.461Z
+- Code Path: `scripts/doc-tools/enforce-documentation-links.test.ts`
+- Generated At: 2026-11-19T21:10:18.271Z
 
 ## Authored
 ### Purpose

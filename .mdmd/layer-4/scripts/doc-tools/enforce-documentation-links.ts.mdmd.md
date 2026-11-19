@@ -1,11 +1,11 @@
-# scripts/doc-tools/enforce-documentation-links.ts
+# `scripts/doc-tools/enforce-documentation-links.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/doc-tools/enforce-documentation-links.ts
+- Code Path: `scripts/doc-tools/enforce-documentation-links.ts`
 - Entry: command `docs:links:enforce` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:41.856Z
+- Generated At: 2026-11-19T21:10:18.287Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/rosetta/lib/types.rb
+# `tests/integration/programs/ruby/rosetta/lib/types.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/rosetta/lib/types.rb
-- Generated At: 2026-10-02T20:20:08.385Z
+- Code Path: `tests/integration/programs/ruby/rosetta/lib/types.rb`
+- Generated At: 2026-11-19T21:10:28.178Z
 
 ## Authored
 ### Purpose

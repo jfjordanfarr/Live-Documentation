@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/csharp.test.ts
+# `packages/engine/src/live-docs/adapters/csharp.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/csharp.test.ts
-- Generated At: 2026-10-22T16:47:51.517Z
+- Code Path: `packages/engine/src/live-docs/adapters/csharp.test.ts`
+- Generated At: 2026-11-19T21:10:09.291Z
 
 ## Authored
 ### Purpose

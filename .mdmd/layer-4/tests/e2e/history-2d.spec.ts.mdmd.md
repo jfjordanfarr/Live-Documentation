@@ -1,10 +1,10 @@
-# tests/e2e/history-2d.spec.ts
+# `tests/e2e/history-2d.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/history-2d.spec.ts
-- Generated At: 2026-11-19T05:52:38.359Z
+- Code Path: `tests/e2e/history-2d.spec.ts`
+- Generated At: 2026-11-19T21:10:21.647Z
 
 ## Authored
 ### Purpose

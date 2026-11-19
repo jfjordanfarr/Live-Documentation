@@ -1,10 +1,10 @@
-# tests/integration/programs/python/rosetta/src/test_processor.py
+# `tests/integration/programs/python/rosetta/src/test_processor.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/python/rosetta/src/test_processor.py
-- Generated At: 2026-09-27T23:21:38.347Z
+- Code Path: `tests/integration/programs/python/rosetta/src/test_processor.py`
+- Generated At: 2026-11-19T21:10:28.042Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# eslint.config.js
+# `eslint.config.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: eslint.config.js
+- Code Path: `eslint.config.js`
 - Entry: tooling
-- Generated At: 2026-10-16T00:58:37.896Z
+- Generated At: 2026-11-19T21:10:08.388Z
 
 ## Authored
 ### Purpose

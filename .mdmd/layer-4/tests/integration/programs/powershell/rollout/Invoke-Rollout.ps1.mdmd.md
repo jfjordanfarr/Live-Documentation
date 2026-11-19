@@ -1,11 +1,11 @@
-# tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1
+# `tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1
+- Code Path: `tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1`
 - Entry: program
-- Generated At: 2026-10-16T21:50:05.183Z
+- Generated At: 2026-11-19T21:10:27.701Z
 
 ## Authored
 ### Purpose

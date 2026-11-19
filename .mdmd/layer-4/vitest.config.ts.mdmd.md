@@ -1,11 +1,11 @@
-# vitest.config.ts
+# `vitest.config.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: vitest.config.ts
+- Code Path: `vitest.config.ts`
 - Entry: tooling
-- Generated At: 2026-11-08T19:07:04.903Z
+- Generated At: 2026-11-19T21:10:29.042Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/directory-state.ts
+# `packages/explorer/src/client/views/localView/directory-state.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/directory-state.ts
-- Generated At: 2026-10-14T02:49:20.160Z
+- Code Path: `packages/explorer/src/client/views/localView/directory-state.ts`
+- Generated At: 2026-11-19T21:10:16.741Z
 
 ## Authored
 ### Purpose

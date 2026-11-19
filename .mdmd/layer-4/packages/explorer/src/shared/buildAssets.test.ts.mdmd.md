@@ -1,10 +1,10 @@
-# packages/explorer/src/shared/buildAssets.test.ts
+# `packages/explorer/src/shared/buildAssets.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/shared/buildAssets.test.ts
-- Generated At: 2026-10-19T17:42:51.289Z
+- Code Path: `packages/explorer/src/shared/buildAssets.test.ts`
+- Generated At: 2026-11-19T21:10:17.735Z
 
 ## Authored
 ### Purpose

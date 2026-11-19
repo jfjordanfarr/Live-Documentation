@@ -1,10 +1,10 @@
-# tests/integration/live-docs/tidepool.test.ts
+# `tests/integration/live-docs/tidepool.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/tidepool.test.ts
-- Generated At: 2026-11-16T20:15:12.588Z
+- Code Path: `tests/integration/live-docs/tidepool.test.ts`
+- Generated At: 2026-11-19T21:10:25.942Z
 
 ## Authored
 ### Purpose

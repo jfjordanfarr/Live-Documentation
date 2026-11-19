@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/step-summary.ts
+# `packages/explorer/src/client/history/step-summary.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/step-summary.ts
-- Generated At: 2026-11-11T07:33:49.842Z
+- Code Path: `packages/explorer/src/client/history/step-summary.ts`
+- Generated At: 2026-11-19T21:10:13.373Z
 
 ## Authored
 ### Purpose

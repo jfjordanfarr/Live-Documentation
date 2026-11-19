@@ -1,10 +1,10 @@
-# tests/e2e/cited-by.spec.ts
+# `tests/e2e/cited-by.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/cited-by.spec.ts
-- Generated At: 2026-10-22T17:22:35.599Z
+- Code Path: `tests/e2e/cited-by.spec.ts`
+- Generated At: 2026-11-19T21:10:20.324Z
 
 ## Authored
 ### Purpose

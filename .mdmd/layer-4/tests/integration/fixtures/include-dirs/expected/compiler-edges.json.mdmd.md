@@ -1,10 +1,10 @@
-# tests/integration/fixtures/include-dirs/expected/compiler-edges.json
+# `tests/integration/fixtures/include-dirs/expected/compiler-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/expected/compiler-edges.json
-- Generated At: 2026-10-16T20:40:23.287Z
+- Code Path: `tests/integration/fixtures/include-dirs/expected/compiler-edges.json`
+- Generated At: 2026-11-19T21:10:25.023Z
 
 ## Authored
 ### Purpose

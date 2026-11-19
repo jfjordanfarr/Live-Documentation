@@ -1,11 +1,11 @@
-# tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
+# `tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
+- Code Path: `tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java`
 - Entry: program [`main`](#symbol-main-method-overload-2)
-- Generated At: 2026-10-15T15:59:04.580Z
+- Generated At: 2026-11-19T21:10:27.451Z
 
 ## Authored
 ### Purpose

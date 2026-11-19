@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/rust.ts
+# `packages/engine/src/live-docs/adapters/rust.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/rust.ts
-- Generated At: 2026-11-19T08:59:53.059Z
+- Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
+- Generated At: 2026-11-19T21:10:10.830Z
 
 ## Authored
 ### Purpose

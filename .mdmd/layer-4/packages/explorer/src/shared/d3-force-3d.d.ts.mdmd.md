@@ -1,10 +1,10 @@
-# packages/explorer/src/shared/d3-force-3d.d.ts
+# `packages/explorer/src/shared/d3-force-3d.d.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/shared/d3-force-3d.d.ts
-- Generated At: 2026-10-22T18:45:25.899Z
+- Code Path: `packages/explorer/src/shared/d3-force-3d.d.ts`
+- Generated At: 2026-11-19T21:10:17.785Z
 
 ## Authored
 ### Purpose

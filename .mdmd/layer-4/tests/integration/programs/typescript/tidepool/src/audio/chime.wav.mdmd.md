@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/src/audio/chime.wav
+# `tests/integration/programs/typescript/tidepool/src/audio/chime.wav`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/src/audio/chime.wav
-- Generated At: 2026-11-16T20:15:25.541Z
+- Code Path: `tests/integration/programs/typescript/tidepool/src/audio/chime.wav`
+- Generated At: 2026-11-19T21:10:28.701Z
 
 ## Authored
 ### Purpose

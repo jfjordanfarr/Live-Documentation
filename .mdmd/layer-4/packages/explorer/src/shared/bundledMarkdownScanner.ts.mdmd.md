@@ -1,10 +1,10 @@
-# packages/explorer/src/shared/bundledMarkdownScanner.ts
+# `packages/explorer/src/shared/bundledMarkdownScanner.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/shared/bundledMarkdownScanner.ts
-- Generated At: 2026-10-22T16:47:56.700Z
+- Code Path: `packages/explorer/src/shared/bundledMarkdownScanner.ts`
+- Generated At: 2026-11-19T21:10:17.766Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# scripts/live-docs/board.ts
+# `scripts/live-docs/board.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/board.ts
+- Code Path: `scripts/live-docs/board.ts`
 - Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.202Z
+- Generated At: 2026-11-19T21:10:19.045Z
 
 ## Authored
 ### Purpose

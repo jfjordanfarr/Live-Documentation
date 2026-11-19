@@ -1,10 +1,10 @@
-# tests/integration/live-docs/include-dirs.test.ts
+# `tests/integration/live-docs/include-dirs.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/include-dirs.test.ts
-- Generated At: 2026-10-16T00:58:48.597Z
+- Code Path: `tests/integration/live-docs/include-dirs.test.ts`
+- Generated At: 2026-11-19T21:10:25.757Z
 
 ## Authored
 ### Purpose

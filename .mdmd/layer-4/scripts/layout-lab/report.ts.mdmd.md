@@ -1,10 +1,10 @@
-# scripts/layout-lab/report.ts
+# `scripts/layout-lab/report.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/report.ts
-- Generated At: 2026-10-13T16:52:35.828Z
+- Code Path: `scripts/layout-lab/report.ts`
+- Generated At: 2026-11-19T21:10:18.784Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/c/modular/src/pipeline.h
+# `tests/integration/programs/c/modular/src/pipeline.h`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/modular/src/pipeline.h
-- Generated At: 2026-10-02T20:20:04.322Z
+- Code Path: `tests/integration/programs/c/modular/src/pipeline.h`
+- Generated At: 2026-11-19T21:10:26.059Z
 
 ## Authored
 ### Purpose

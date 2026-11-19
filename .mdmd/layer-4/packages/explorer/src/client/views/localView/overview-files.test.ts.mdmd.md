@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/overview-files.test.ts
+# `packages/explorer/src/client/views/localView/overview-files.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/overview-files.test.ts
-- Generated At: 2026-11-16T01:26:25.359Z
+- Code Path: `packages/explorer/src/client/views/localView/overview-files.test.ts`
+- Generated At: 2026-11-19T21:10:16.975Z
 
 ## Authored
 ### Purpose

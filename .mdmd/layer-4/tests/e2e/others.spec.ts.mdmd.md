@@ -1,10 +1,10 @@
-# tests/e2e/others.spec.ts
+# `tests/e2e/others.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/others.spec.ts
-- Generated At: 2026-11-19T06:20:01.084Z
+- Code Path: `tests/e2e/others.spec.ts`
+- Generated At: 2026-11-19T21:10:23.314Z
 
 ## Authored
 ### Purpose

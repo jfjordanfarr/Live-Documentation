@@ -1,10 +1,10 @@
-# tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json
+# `tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json
-- Generated At: 2026-10-16T20:40:22.814Z
+- Code Path: `tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json`
+- Generated At: 2026-11-19T21:10:24.795Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/html.ts
+# `packages/engine/src/live-docs/adapters/html.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/html.ts
-- Generated At: 2026-11-19T08:59:52.820Z
+- Code Path: `packages/engine/src/live-docs/adapters/html.ts`
+- Generated At: 2026-11-19T21:10:09.794Z
 
 ## Authored
 ### Purpose

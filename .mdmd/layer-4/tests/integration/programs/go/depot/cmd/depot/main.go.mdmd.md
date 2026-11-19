@@ -1,11 +1,11 @@
-# tests/integration/programs/go/depot/cmd/depot/main.go
+# `tests/integration/programs/go/depot/cmd/depot/main.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/depot/cmd/depot/main.go
+- Code Path: `tests/integration/programs/go/depot/cmd/depot/main.go`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-15T15:49:45.561Z
+- Generated At: 2026-11-19T21:10:27.080Z
 
 ## Authored
 ### Purpose

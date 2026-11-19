@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-alignments.ts
+# `packages/explorer/src/client/views/localView/branch-alignments.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/branch-alignments.ts
-- Generated At: 2026-10-22T16:47:55.371Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-alignments.ts`
+- Generated At: 2026-11-19T21:10:15.659Z
 
 ## Authored
 ### Purpose

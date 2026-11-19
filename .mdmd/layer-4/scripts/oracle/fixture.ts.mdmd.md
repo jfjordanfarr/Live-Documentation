@@ -1,10 +1,10 @@
-# scripts/oracle/fixture.ts
+# `scripts/oracle/fixture.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/oracle/fixture.ts
-- Generated At: 2026-09-27T23:21:31.956Z
+- Code Path: `scripts/oracle/fixture.ts`
+- Generated At: 2026-11-19T21:10:19.356Z
 
 ## Authored
 ### Purpose

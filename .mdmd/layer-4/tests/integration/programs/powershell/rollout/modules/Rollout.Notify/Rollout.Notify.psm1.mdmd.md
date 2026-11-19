@@ -1,10 +1,10 @@
-# tests/integration/programs/powershell/rollout/modules/Rollout.Notify/Rollout.Notify.psm1
+# `tests/integration/programs/powershell/rollout/modules/Rollout.Notify/Rollout.Notify.psm1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/modules/Rollout.Notify/Rollout.Notify.psm1
-- Generated At: 2026-10-16T21:50:05.257Z
+- Code Path: `tests/integration/programs/powershell/rollout/modules/Rollout.Notify/Rollout.Notify.psm1`
+- Generated At: 2026-11-19T21:10:27.761Z
 
 ## Authored
 ### Purpose

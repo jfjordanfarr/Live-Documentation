@@ -1,11 +1,11 @@
-# scripts/live-docs/history.ts
+# `scripts/live-docs/history.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/history.ts
+- Code Path: `scripts/live-docs/history.ts`
 - Entry: command `live-docs:history` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T08:59:55.546Z
+- Generated At: 2026-11-19T21:10:19.097Z
 
 ## Authored
 ### Purpose

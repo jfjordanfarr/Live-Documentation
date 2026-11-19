@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/compose.ts
+# `packages/engine/src/live-docs/compose.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-11-19T20:33:44.020Z
+- Code Path: `packages/engine/src/live-docs/compose.ts`
+- Generated At: 2026-11-19T21:10:11.174Z
 
 ## Authored
 ### Purpose

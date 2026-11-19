@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/csharp.xmldoc.ts
+# `packages/engine/src/live-docs/adapters/csharp.xmldoc.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/csharp.xmldoc.ts
-- Generated At: 2026-11-19T08:59:52.745Z
+- Code Path: `packages/engine/src/live-docs/adapters/csharp.xmldoc.ts`
+- Generated At: 2026-11-19T21:10:09.427Z
 
 ## Authored
 ### Purpose

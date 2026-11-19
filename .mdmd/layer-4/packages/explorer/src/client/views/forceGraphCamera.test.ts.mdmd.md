@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphCamera.test.ts
+# `packages/explorer/src/client/views/forceGraphCamera.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/forceGraphCamera.test.ts
-- Generated At: 2026-11-11T08:52:44.336Z
+- Code Path: `packages/explorer/src/client/views/forceGraphCamera.test.ts`
+- Generated At: 2026-11-19T21:10:14.833Z
 
 ## Authored
 ### Purpose

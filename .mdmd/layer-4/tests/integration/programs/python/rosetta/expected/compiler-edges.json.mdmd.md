@@ -1,10 +1,10 @@
-# tests/integration/programs/python/rosetta/expected/compiler-edges.json
+# `tests/integration/programs/python/rosetta/expected/compiler-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/rosetta/expected/compiler-edges.json
-- Generated At: 2026-10-16T20:40:31.802Z
+- Code Path: `tests/integration/programs/python/rosetta/expected/compiler-edges.json`
+- Generated At: 2026-11-19T21:10:27.988Z
 
 ## Authored
 ### Purpose

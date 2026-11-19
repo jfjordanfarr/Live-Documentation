@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/pyproject.test.ts
+# `packages/engine/src/live-docs/adapters/pyproject.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/pyproject.test.ts
-- Generated At: 2026-10-16T16:21:41.266Z
+- Code Path: `packages/engine/src/live-docs/adapters/pyproject.test.ts`
+- Generated At: 2026-11-19T21:10:10.345Z
 
 ## Authored
 ### Purpose

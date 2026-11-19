@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/sql.ts
+# `packages/engine/src/live-docs/adapters/sql.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/sql.ts
-- Generated At: 2026-11-19T08:59:53.074Z
+- Code Path: `packages/engine/src/live-docs/adapters/sql.ts`
+- Generated At: 2026-11-19T21:10:10.882Z
 
 ## Authored
 ### Purpose

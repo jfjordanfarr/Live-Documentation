@@ -1,10 +1,10 @@
-# scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts
+# `scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts
-- Generated At: 2026-10-22T16:47:57.004Z
+- Code Path: `scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts`
+- Generated At: 2026-11-19T21:10:18.226Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# packages/explorer/src/client/styles.css
+# `packages/explorer/src/client/styles.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/styles.css
+- Code Path: `packages/explorer/src/client/styles.css`
 - Entry: declared
-- Generated At: 2026-11-04T15:03:16.079Z
+- Generated At: 2026-11-19T21:10:14.476Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/card-reading-refresh.spec.ts
+# `tests/e2e/card-reading-refresh.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/card-reading-refresh.spec.ts
-- Generated At: 2026-11-09T04:43:27.440Z
+- Code Path: `tests/e2e/card-reading-refresh.spec.ts`
+- Generated At: 2026-11-19T21:10:20.140Z
 
 ## Authored
 ### Purpose

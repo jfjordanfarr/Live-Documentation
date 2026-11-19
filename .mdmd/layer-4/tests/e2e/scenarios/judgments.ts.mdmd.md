@@ -1,10 +1,10 @@
-# tests/e2e/scenarios/judgments.ts
+# `tests/e2e/scenarios/judgments.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/scenarios/judgments.ts
-- Generated At: 2026-11-18T19:17:17.188Z
+- Code Path: `tests/e2e/scenarios/judgments.ts`
+- Generated At: 2026-11-19T21:10:23.883Z
 
 ## Authored
 ### Purpose

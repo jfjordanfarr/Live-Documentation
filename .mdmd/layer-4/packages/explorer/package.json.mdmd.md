@@ -1,11 +1,11 @@
-# packages/explorer/package.json
+# `packages/explorer/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/package.json
+- Code Path: `packages/explorer/package.json`
 - Entry: tooling
-- Generated At: 2026-10-29T18:09:46.890Z
+- Generated At: 2026-11-19T21:10:12.787Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml
+# `tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml
+- Code Path: `tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:24.867Z
+- Generated At: 2026-11-19T21:10:25.225Z
 
 ## Authored
 ### Purpose

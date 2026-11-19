@@ -134,12 +134,12 @@ describe("the Live Doc grammar", () => {
 
   it("writes exactly the shape the generator has always written", () => {
     expect(renderLiveDoc(EMPTY)).toBe([
-      "# assets/logo.png",
+      "# `assets/logo.png`",
       "",
       "## Metadata",
       "- Layer: 4",
       "- Archetype: asset",
-      "- Code Path: assets/logo.png",
+      "- Code Path: `assets/logo.png`",
       "",
       "## Authored",
       "### Purpose",
@@ -164,7 +164,7 @@ describe("the Live Doc grammar", () => {
 
   it("writes the Entry lines between the Code Path and the Generated At, one per reason with its evidence", () => {
     const lines = renderLiveDoc(FULL).split("\n");
-    const codePath = lines.indexOf("- Code Path: src/widgets/widget.ts");
+    const codePath = lines.indexOf("- Code Path: `src/widgets/widget.ts`");
     expect(lines.slice(codePath + 1, codePath + 8)).toEqual([
       "- Entry: program [`main`](#symbol-main)",
       "- Entry: command `build` of [`package.json`](../../package.json.md)",
@@ -188,7 +188,7 @@ describe("the Live Doc grammar", () => {
 
   it("refuses an Entry line whose evidence does not fit its reason", () => {
     const text = renderLiveDoc(EMPTY);
-    const withLine = (line: string): string => text.replace("- Code Path: assets/logo.png\n", `- Code Path: assets/logo.png\n${line}\n`);
+    const withLine = (line: string): string => text.replace("- Code Path: `assets/logo.png`\n", `- Code Path: \`assets/logo.png\`\n${line}\n`);
     expect(() => parseLiveDoc(withLine("- Entry: opening `GET api/widgets`"))).toThrow(/line 7: unexpected evidence on the opening entry/u);
     expect(() => parseLiveDoc(withLine("- Entry: command `build`"))).toThrow(/unexpected evidence on the command entry/u);
     expect(() => parseLiveDoc(withLine("- Entry: module [`package.json`](../package.json.md)"))).toThrow(/unexpected evidence on the module entry/u);
@@ -243,15 +243,15 @@ describe("the Live Doc grammar", () => {
     const text = renderLiveDoc(doc);
     const lines = text.split("\n");
     for (const line of [
-      '# "we\\nird.ts"',
-      '- Code Path: "we\\nird.ts"',
+      '# `"we\\nird.ts"`',
+      '- Code Path: `"we\\nird.ts"`',
       "- Entry: command ``a`b`` of [``d`x/package.json``](./d`x/package.json.md)",
-      '- Entry: command "" of [`package.json`](./package.json.md)',
-      '- Entry: command "a\\nb" of [`app/(auth)/package.json`]("./app/(auth)/package.json.md")',
-      '#### "a\\nb" {#symbol-0}',
-      '#### "" {#symbol-1}',
-      '#### `""` {#symbol-2}',
-      '#### "\\ud800" {#symbol-3}',
+      '- Entry: command `""` of [`package.json`](./package.json.md)',
+      '- Entry: command `"a\\nb"` of [`app/(auth)/package.json`]("./app/(auth)/package.json.md")',
+      '#### `"a\\nb"` {#symbol-0}',
+      '#### `""` {#symbol-1}',
+      '#### `"\\"\\""` {#symbol-2}',
+      '#### `"\\ud800"` {#symbol-3}',
       "#### `plain` {#symbol-4}",
       '- [`b`]("./app/(auth)/b.ts.md#symbol-b") (type-only)',
       "- ``a`b`` - `x, y`, `z`"
@@ -265,7 +265,7 @@ describe("the Live Doc grammar", () => {
     // A file at the root named `"q".ts`: its plain title would begin with `"`, the quoted form's first character.
     const doc: LiveDoc = { ...EMPTY, codePath: '"q".ts' };
     const text = renderLiveDoc(doc);
-    expect(text.split("\n")[0]).toBe('# "\\"q\\".ts"');
+    expect(text.split("\n")[0]).toBe('# `"\\"q\\".ts"`');
     expect(parseLiveDoc(text)).toEqual(doc);
   });
 

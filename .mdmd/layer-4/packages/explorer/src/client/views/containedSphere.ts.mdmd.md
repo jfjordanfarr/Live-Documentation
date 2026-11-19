@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/containedSphere.ts
+# `packages/explorer/src/client/views/containedSphere.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/containedSphere.ts
-- Generated At: 2026-11-17T04:51:08.356Z
+- Code Path: `packages/explorer/src/client/views/containedSphere.ts`
+- Generated At: 2026-11-19T21:10:14.651Z
 
 ## Authored
 ### Purpose

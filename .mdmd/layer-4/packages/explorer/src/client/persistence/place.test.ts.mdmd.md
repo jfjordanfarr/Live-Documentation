@@ -1,10 +1,10 @@
-# packages/explorer/src/client/persistence/place.test.ts
+# `packages/explorer/src/client/persistence/place.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/persistence/place.test.ts
-- Generated At: 2026-10-02T21:07:39.046Z
+- Code Path: `packages/explorer/src/client/persistence/place.test.ts`
+- Generated At: 2026-11-19T21:10:14.284Z
 
 ## Authored
 ### Purpose

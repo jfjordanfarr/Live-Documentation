@@ -1,11 +1,11 @@
-# packages/generator/package.json
+# `packages/generator/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/package.json
+- Code Path: `packages/generator/package.json`
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:41.779Z
+- Generated At: 2026-11-19T21:10:17.909Z
 
 ## Authored
 ### Purpose

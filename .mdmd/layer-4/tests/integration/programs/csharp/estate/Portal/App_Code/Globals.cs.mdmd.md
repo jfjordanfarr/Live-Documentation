@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Portal/App_Code/Globals.cs
+# `tests/integration/programs/csharp/estate/Portal/App_Code/Globals.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Portal/App_Code/Globals.cs
-- Generated At: 2026-10-02T20:20:05.151Z
+- Code Path: `tests/integration/programs/csharp/estate/Portal/App_Code/Globals.cs`
+- Generated At: 2026-11-19T21:10:26.701Z
 
 ## Authored
 ### Purpose

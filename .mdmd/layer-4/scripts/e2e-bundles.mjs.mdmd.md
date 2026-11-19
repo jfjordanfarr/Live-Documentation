@@ -1,12 +1,12 @@
-# scripts/e2e-bundles.mjs
+# `scripts/e2e-bundles.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/e2e-bundles.mjs
+- Code Path: `scripts/e2e-bundles.mjs`
 - Entry: command `e2e:bundles` of [`package.json`](../package.json.mdmd.md)
 - Entry: command `test:e2e` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T07:09:25.897Z
+- Generated At: 2026-11-19T21:10:18.298Z
 
 ## Authored
 ### Purpose

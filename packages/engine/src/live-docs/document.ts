@@ -237,7 +237,9 @@ export function symbolName(symbol: Pick<SymbolBlock, "name">): string {
 interface Slot {
   /** The plain form of a value, or undefined where the plain form cannot carry it. */
   plain(value: string): string | undefined;
-  /** The plain form that begins at `at` in a line: the value it carries and where it ends; undefined where none does. */
+  /** The quoted form of a value: its JSON string, where the slot writes it. */
+  quoted(value: string): string;
+  /** The value that begins at `at` in a line, in either form, and where it ends; undefined where none does. */
   take(line: string, at: number): Taken | undefined;
 }
 
@@ -261,19 +263,31 @@ const LONE_SURROGATE = /\p{Cs}/u;
 // eslint-disable-next-line no-control-regex -- the control characters are what a line of a doc cannot hold
 const UNWRITTEN = /[\x00-\x08\x0a-\x1f\u2028\u2029]/u;
 
-/** A name, of a symbol, a script, a type, a parameter, a module or a file, as a code span. */
+/**
+ * A name, of a symbol, a script, a type, a parameter, a module or a file, or a file's path in its doc's title, as a code
+ * span, which a markdown viewer shows as it is. Quoted, the JSON string is the span's content, so that a quoted name is
+ * as inert as a plain one; a name that begins with `"` is quoted, so that the span's first character tells the forms
+ * apart.
+ */
 const NAME: Slot = {
-  plain: (value) => (value === "" ? undefined : codeSpan(value)),
+  plain: (value) => (value === "" || value.startsWith('"') ? undefined : codeSpan(value)),
+  quoted: (value) => codeSpan(quote(value)),
   take: (line, at) => {
     const span = takeCodeSpan(line, at);
-    return span && { value: span.content, end: span.end };
+    if (span === undefined || !span.content.startsWith('"')) {
+      return span && { value: span.content, end: span.end };
+    }
+    const quoted = takeQuoted(span.content, 0);
+    return quoted?.end === span.content.length ? { value: quoted.value, end: span.end } : undefined;
   }
 };
 
 /** A link's target, up to the parenthesis that closes the link. */
 const LINK: Slot = {
   plain: (value) => (value !== "" && !value.includes(")") ? value : undefined),
+  quoted: quote,
   take: (line, at) => {
+    if (line[at] === '"') return takeQuoted(line, at);
     const close = line.indexOf(")", at);
     return close > at ? { value: line.slice(at, close), end: close } : undefined;
   }
@@ -282,16 +296,12 @@ const LINK: Slot = {
 /** A source file's path in a `Source` line's link: everything before the last `#L` and line number. */
 const SOURCE: Slot = {
   plain: (value) => (LINE_TEXT.test(value) ? value : undefined),
+  quoted: quote,
   take: (line, at) => {
+    if (line[at] === '"') return takeQuoted(line, at);
     const match = /^(.+)#L\d+\)$/u.exec(line.slice(at));
     return match ? { value: match[1], end: at + match[1].length } : undefined;
   }
-};
-
-/** A path that runs to the end of its line: the title's and the `Code Path` line's. */
-const TEXT: Slot = {
-  plain: (value) => (LINE_TEXT.test(value) ? value : undefined),
-  take: (line, at) => (LINE_TEXT.test(line.slice(at)) ? { value: line.slice(at), end: line.length } : undefined)
 };
 
 /**
@@ -309,12 +319,12 @@ const TEXT: Slot = {
  */
 function writeValue(slot: Slot, value: string): string {
   const plain = UNWRITTEN.test(value) || LONE_SURROGATE.test(value) ? undefined : slot.plain(value);
-  return plain === undefined || plain.startsWith('"') ? quote(value) : plain;
+  return plain === undefined || plain.startsWith('"') ? slot.quoted(value) : plain;
 }
 
 /** Reads a value from a slot at `at`, in either form; undefined unless the text there is exactly what {@link writeValue} writes for it. */
 function takeValue(slot: Slot, line: string, at: number): Taken | undefined {
-  const taken = line[at] === '"' ? takeQuoted(line, at) : slot.take(line, at);
+  const taken = slot.take(line, at);
   return taken && writeValue(slot, taken.value) === line.slice(at, taken.end) ? taken : undefined;
 }
 
@@ -425,7 +435,7 @@ function linked(label: string, target: string): string {
 /** Writes a Live Doc as markdown. The output always ends with one newline. */
 export function renderLiveDoc(doc: LiveDoc): string {
   const lines: string[] = [];
-  const codePath = writeValue(TEXT, doc.codePath);
+  const codePath = name(doc.codePath);
   lines.push(`# ${codePath}`, "", "## Metadata", `- Layer: ${doc.layer}`);
   if (doc.archetype) {
     lines.push(`- Archetype: ${doc.archetype}`);
@@ -615,13 +625,13 @@ export class LiveDocSyntaxError extends Error {
 /** Reads a Live Doc back from markdown, refusing anything outside the grammar. */
 export function parseLiveDoc(text: string): LiveDoc {
   const reader = new Reader(text);
-  const codePath = wholeValue(TEXT, reader.expect(/^# /u, "the title").input, 2) ?? reader.failBefore("unexpected title");
+  const codePath = wholeValue(NAME, reader.expect(/^# /u, "the title").input, 2) ?? reader.failBefore("unexpected title");
   reader.expectBlank();
   reader.expectLine("## Metadata");
   const layer = Number(reader.expect(/^- Layer: (\d+)$/u, "the Layer line")[1]);
   const archetype = reader.take(/^- Archetype: (.+)$/u)?.[1];
   if (layer === 4) {
-    const declared = wholeValue(TEXT, reader.expect(/^- Code Path: /u, "the Code Path line").input, CODE_PATH.length) ?? reader.failBefore("unexpected Code Path");
+    const declared = wholeValue(NAME, reader.expect(/^- Code Path: /u, "the Code Path line").input, CODE_PATH.length) ?? reader.failBefore("unexpected Code Path");
     if (declared !== codePath) {
       reader.fail(`the Code Path (${declared}) differs from the title (${codePath})`);
     }

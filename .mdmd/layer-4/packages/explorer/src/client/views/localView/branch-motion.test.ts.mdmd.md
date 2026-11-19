@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-motion.test.ts
+# `packages/explorer/src/client/views/localView/branch-motion.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/branch-motion.test.ts
-- Generated At: 2026-10-07T02:59:51.424Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-motion.test.ts`
+- Generated At: 2026-11-19T21:10:15.677Z
 
 ## Authored
 ### Purpose

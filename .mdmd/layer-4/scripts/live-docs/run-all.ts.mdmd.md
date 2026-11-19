@@ -1,11 +1,11 @@
-# scripts/live-docs/run-all.ts
+# `scripts/live-docs/run-all.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/run-all.ts
+- Code Path: `scripts/live-docs/run-all.ts`
 - Entry: command `livedocs` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-19T16:53:00.372Z
+- Generated At: 2026-11-19T21:10:19.246Z
 
 ## Authored
 ### Purpose

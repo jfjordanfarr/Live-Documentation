@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Portal/Models/PaymentResultModel.cs
+# `tests/integration/programs/csharp/estate/Portal/Models/PaymentResultModel.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Portal/Models/PaymentResultModel.cs
-- Generated At: 2026-10-02T20:20:05.207Z
+- Code Path: `tests/integration/programs/csharp/estate/Portal/Models/PaymentResultModel.cs`
+- Generated At: 2026-11-19T21:10:26.729Z
 
 ## Authored
 ### Purpose

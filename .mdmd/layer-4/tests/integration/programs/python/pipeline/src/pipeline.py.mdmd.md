@@ -1,10 +1,10 @@
-# tests/integration/programs/python/pipeline/src/pipeline.py
+# `tests/integration/programs/python/pipeline/src/pipeline.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/pipeline/src/pipeline.py
-- Generated At: 2026-10-02T20:20:07.699Z
+- Code Path: `tests/integration/programs/python/pipeline/src/pipeline.py`
+- Generated At: 2026-11-19T21:10:27.966Z
 
 ## Authored
 ### Purpose

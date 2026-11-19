@@ -1,11 +1,11 @@
-# tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1
+# `tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1
+- Code Path: `tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1`
 - Entry: program
-- Generated At: 2026-10-15T15:49:43.681Z
+- Generated At: 2026-11-19T21:10:25.319Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/fonts/ghost.woff2
+# `tests/integration/fixtures/slopcop-assets/workspace/public/fonts/ghost.woff2`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/fonts/ghost.woff2
-- Generated At: 2026-10-16T20:40:25.844Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/fonts/ghost.woff2`
+- Generated At: 2026-11-19T21:10:25.429Z
 
 ## Authored
 ### Purpose

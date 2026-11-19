@@ -1,10 +1,10 @@
-# tests/integration/fixtures/include-dirs/src/app/util.cpp
+# `tests/integration/fixtures/include-dirs/src/app/util.cpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/include-dirs/src/app/util.cpp
-- Generated At: 2026-10-16T00:58:47.655Z
+- Code Path: `tests/integration/fixtures/include-dirs/src/app/util.cpp`
+- Generated At: 2026-11-19T21:10:25.071Z
 
 ## Authored
 ### Purpose

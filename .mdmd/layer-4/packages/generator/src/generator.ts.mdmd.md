@@ -1,11 +1,11 @@
-# packages/generator/src/generator.ts
+# `packages/generator/src/generator.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/generator.ts
+- Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:27:37.755Z
+- Generated At: 2026-11-19T21:10:17.975Z
 
 ## Authored
 ### Purpose

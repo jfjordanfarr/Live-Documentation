@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/sources-facts.ts
+# `packages/explorer/src/client/panels/sources-facts.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/sources-facts.ts
-- Generated At: 2026-11-02T16:50:52.914Z
+- Code Path: `packages/explorer/src/client/panels/sources-facts.ts`
+- Generated At: 2026-11-19T21:10:13.814Z
 
 ## Authored
 ### Purpose

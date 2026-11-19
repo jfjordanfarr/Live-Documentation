@@ -1,11 +1,11 @@
-# tests/integration/programs/powershell/rollout/scripts/Show-RolloutPlan.ps1
+# `tests/integration/programs/powershell/rollout/scripts/Show-RolloutPlan.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/scripts/Show-RolloutPlan.ps1
+- Code Path: `tests/integration/programs/powershell/rollout/scripts/Show-RolloutPlan.ps1`
 - Entry: program
-- Generated At: 2026-10-16T21:23:48.983Z
+- Generated At: 2026-11-19T21:10:27.803Z
 
 ## Authored
 ### Purpose

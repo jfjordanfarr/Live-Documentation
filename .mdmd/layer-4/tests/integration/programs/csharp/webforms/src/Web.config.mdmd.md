@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/webforms/src/Web.config
+# `tests/integration/programs/csharp/webforms/src/Web.config`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/webforms/src/Web.config
+- Code Path: `tests/integration/programs/csharp/webforms/src/Web.config`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:29.491Z
+- Generated At: 2026-11-19T21:10:27.072Z
 
 ## Authored
 ### Purpose

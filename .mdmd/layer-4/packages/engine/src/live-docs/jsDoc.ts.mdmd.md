@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/jsDoc.ts
+# `packages/engine/src/live-docs/jsDoc.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/jsDoc.ts
-- Generated At: 2026-11-19T08:59:53.407Z
+- Code Path: `packages/engine/src/live-docs/jsDoc.ts`
+- Generated At: 2026-11-19T21:10:12.487Z
 
 ## Authored
 ### Purpose

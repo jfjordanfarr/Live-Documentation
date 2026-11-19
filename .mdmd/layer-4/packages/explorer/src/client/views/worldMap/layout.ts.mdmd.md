@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/worldMap/layout.ts
+# `packages/explorer/src/client/views/worldMap/layout.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/worldMap/layout.ts
-- Generated At: 2026-11-12T22:44:13.521Z
+- Code Path: `packages/explorer/src/client/views/worldMap/layout.ts`
+- Generated At: 2026-11-19T21:10:17.629Z
 
 ## Authored
 ### Purpose

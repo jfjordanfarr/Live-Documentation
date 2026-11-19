@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/levels/rockpool.json
+# `tests/integration/programs/typescript/tidepool/levels/rockpool.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/tidepool/levels/rockpool.json
-- Generated At: 2026-11-16T20:15:25.327Z
+- Code Path: `tests/integration/programs/typescript/tidepool/levels/rockpool.json`
+- Generated At: 2026-11-19T21:10:28.685Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/inventory-counts.spec.ts
+# `tests/e2e/inventory-counts.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/inventory-counts.spec.ts
-- Generated At: 2026-10-30T16:26:12.714Z
+- Code Path: `tests/e2e/inventory-counts.spec.ts`
+- Generated At: 2026-11-19T21:10:22.016Z
 
 ## Authored
 ### Purpose

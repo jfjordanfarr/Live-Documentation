@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphPhysics.test.ts
+# `packages/explorer/src/client/views/forceGraphPhysics.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/forceGraphPhysics.test.ts
-- Generated At: 2026-10-28T21:56:32.468Z
+- Code Path: `packages/explorer/src/client/views/forceGraphPhysics.test.ts`
+- Generated At: 2026-11-19T21:10:15.161Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/return-cost.spec.ts
+# `tests/e2e/return-cost.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/return-cost.spec.ts
-- Generated At: 2026-11-16T05:26:14.114Z
+- Code Path: `tests/e2e/return-cost.spec.ts`
+- Generated At: 2026-11-19T21:10:23.710Z
 
 ## Authored
 ### Purpose

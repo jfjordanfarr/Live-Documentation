@@ -1,12 +1,12 @@
-# scripts/live-docs/visualize-sample.ts
+# `scripts/live-docs/visualize-sample.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/visualize-sample.ts
+- Code Path: `scripts/live-docs/visualize-sample.ts`
 - Entry: command `live-docs:visualize:estate` of [`package.json`](../../package.json.mdmd.md)
 - Entry: command `live-docs:visualize:tidepool` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-18T19:06:09.471Z
+- Generated At: 2026-11-19T21:10:19.291Z
 
 ## Authored
 ### Purpose

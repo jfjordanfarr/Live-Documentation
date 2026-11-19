@@ -1,10 +1,10 @@
-# tests/integration/live-docs/generate-cli.test.ts
+# `tests/integration/live-docs/generate-cli.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/generate-cli.test.ts
-- Generated At: 2026-11-12T17:12:34.512Z
+- Code Path: `tests/integration/live-docs/generate-cli.test.ts`
+- Generated At: 2026-11-19T21:10:25.648Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/programs/c/rosetta/src/test_pipeline.c
+# `tests/integration/programs/c/rosetta/src/test_pipeline.c`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/c/rosetta/src/test_pipeline.c
+- Code Path: `tests/integration/programs/c/rosetta/src/test_pipeline.c`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-16T00:58:49.178Z
+- Generated At: 2026-11-19T21:10:26.182Z
 
 ## Authored
 ### Purpose

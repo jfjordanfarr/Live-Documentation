@@ -1,10 +1,10 @@
-# tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs
+# `tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs
-- Generated At: 2026-09-27T23:21:32.766Z
+- Code Path: `tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs`
+- Generated At: 2026-11-19T21:10:24.903Z
 
 ## Authored
 ### Purpose

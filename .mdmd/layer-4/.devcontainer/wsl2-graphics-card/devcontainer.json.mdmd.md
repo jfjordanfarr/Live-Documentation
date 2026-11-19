@@ -1,11 +1,11 @@
-# .devcontainer/wsl2-graphics-card/devcontainer.json
+# `.devcontainer/wsl2-graphics-card/devcontainer.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .devcontainer/wsl2-graphics-card/devcontainer.json
+- Code Path: `.devcontainer/wsl2-graphics-card/devcontainer.json`
 - Entry: tooling
-- Generated At: 2026-11-18T00:38:38.925Z
+- Generated At: 2026-11-19T21:10:08.315Z
 
 ## Authored
 ### Purpose

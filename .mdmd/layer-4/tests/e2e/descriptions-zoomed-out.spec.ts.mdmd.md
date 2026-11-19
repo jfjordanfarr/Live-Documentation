@@ -1,10 +1,10 @@
-# tests/e2e/descriptions-zoomed-out.spec.ts
+# `tests/e2e/descriptions-zoomed-out.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/descriptions-zoomed-out.spec.ts
-- Generated At: 2026-11-16T04:49:28.334Z
+- Code Path: `tests/e2e/descriptions-zoomed-out.spec.ts`
+- Generated At: 2026-11-19T21:10:20.566Z
 
 ## Authored
 ### Purpose

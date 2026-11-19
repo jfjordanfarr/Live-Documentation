@@ -1,11 +1,11 @@
-# packages/engine/tsconfig.json
+# `packages/engine/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/tsconfig.json
+- Code Path: `packages/engine/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-11-18T14:57:57.282Z
+- Generated At: 2026-11-19T21:10:12.776Z
 
 ## Authored
 ### Purpose

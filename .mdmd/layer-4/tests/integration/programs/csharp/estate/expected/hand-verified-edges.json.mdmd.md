@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/expected/hand-verified-edges.json
+# `tests/integration/programs/csharp/estate/expected/hand-verified-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/expected/hand-verified-edges.json
-- Generated At: 2026-10-16T20:40:29.178Z
+- Code Path: `tests/integration/programs/csharp/estate/expected/hand-verified-edges.json`
+- Generated At: 2026-11-19T21:10:26.837Z
 
 ## Authored
 ### Purpose

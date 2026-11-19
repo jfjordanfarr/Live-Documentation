@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/returning-connections.test.ts
+# `packages/explorer/src/client/views/localView/returning-connections.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/returning-connections.test.ts
-- Generated At: 2026-11-19T05:22:12.976Z
+- Code Path: `packages/explorer/src/client/views/localView/returning-connections.test.ts`
+- Generated At: 2026-11-19T21:10:17.029Z
 
 ## Authored
 ### Purpose

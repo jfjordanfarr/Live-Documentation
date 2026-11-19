@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/layout-measure.ts
+# `packages/explorer/src/client/views/localView/layout-measure.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-11-12T17:14:37.867Z
+- Code Path: `packages/explorer/src/client/views/localView/layout-measure.ts`
+- Generated At: 2026-11-19T21:10:16.900Z
 
 ## Authored
 ### Purpose

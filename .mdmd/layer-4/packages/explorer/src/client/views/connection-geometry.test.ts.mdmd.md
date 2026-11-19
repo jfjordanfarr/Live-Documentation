@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/connection-geometry.test.ts
+# `packages/explorer/src/client/views/connection-geometry.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/connection-geometry.test.ts
-- Generated At: 2026-11-16T20:45:30.504Z
+- Code Path: `packages/explorer/src/client/views/connection-geometry.test.ts`
+- Generated At: 2026-11-19T21:10:14.598Z
 
 ## Authored
 ### Purpose

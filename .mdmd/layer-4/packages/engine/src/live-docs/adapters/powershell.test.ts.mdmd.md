@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/powershell.test.ts
+# `packages/engine/src/live-docs/adapters/powershell.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/powershell.test.ts
-- Generated At: 2026-10-16T16:49:36.571Z
+- Code Path: `packages/engine/src/live-docs/adapters/powershell.test.ts`
+- Generated At: 2026-11-19T21:10:10.203Z
 
 ## Authored
 ### Purpose

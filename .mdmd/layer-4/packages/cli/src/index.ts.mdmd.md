@@ -1,12 +1,12 @@
-# packages/cli/src/index.ts
+# `packages/cli/src/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/cli/src/index.ts
+- Code Path: `packages/cli/src/index.ts`
 - Entry: command `live-docs` of [`packages/cli/package.json`](../package.json.mdmd.md)
 - Entry: module of [`packages/cli/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:38.287Z
+- Generated At: 2026-11-19T21:10:08.613Z
 
 ## Authored
 ### Purpose

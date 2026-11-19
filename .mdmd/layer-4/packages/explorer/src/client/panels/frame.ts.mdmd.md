@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/frame.ts
+# `packages/explorer/src/client/panels/frame.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/frame.ts
-- Generated At: 2026-11-19T06:40:39.480Z
+- Code Path: `packages/explorer/src/client/panels/frame.ts`
+- Generated At: 2026-11-19T21:10:13.740Z
 
 ## Authored
 ### Purpose

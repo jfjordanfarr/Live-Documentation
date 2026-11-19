@@ -1,10 +1,10 @@
-# packages/explorer/src/client/reader-sections.test.ts
+# `packages/explorer/src/client/reader-sections.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/reader-sections.test.ts
-- Generated At: 2026-10-30T15:19:37.288Z
+- Code Path: `packages/explorer/src/client/reader-sections.test.ts`
+- Generated At: 2026-11-19T21:10:14.352Z
 
 ## Authored
 ### Purpose

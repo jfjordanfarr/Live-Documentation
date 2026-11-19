@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/symbolAnchors.test.ts
+# `packages/explorer/src/client/views/symbolAnchors.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/symbolAnchors.test.ts
-- Generated At: 2026-09-27T23:21:29.312Z
+- Code Path: `packages/explorer/src/client/views/symbolAnchors.test.ts`
+- Generated At: 2026-11-19T21:10:17.420Z
 
 ## Authored
 ### Purpose

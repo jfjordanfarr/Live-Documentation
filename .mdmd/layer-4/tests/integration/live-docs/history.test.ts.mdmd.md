@@ -1,10 +1,10 @@
-# tests/integration/live-docs/history.test.ts
+# `tests/integration/live-docs/history.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-11-19T12:44:41.865Z
+- Code Path: `tests/integration/live-docs/history.test.ts`
+- Generated At: 2026-11-19T21:10:25.743Z
 
 ## Authored
 ### Purpose

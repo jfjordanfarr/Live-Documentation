@@ -1,11 +1,11 @@
-# tests/integration/programs/typescript/layered/tsconfig.json
+# `tests/integration/programs/typescript/layered/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/typescript/layered/tsconfig.json
+- Code Path: `tests/integration/programs/typescript/layered/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:33.227Z
+- Generated At: 2026-11-19T21:10:28.530Z
 
 ## Authored
 ### Purpose

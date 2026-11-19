@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/frame-crumbs.ts
+# `packages/explorer/src/client/panels/frame-crumbs.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/frame-crumbs.ts
-- Generated At: 2026-11-19T04:34:52.695Z
+- Code Path: `packages/explorer/src/client/panels/frame-crumbs.ts`
+- Generated At: 2026-11-19T21:10:13.715Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/python.ts
+# `packages/engine/src/live-docs/adapters/python.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/python.ts
-- Generated At: 2026-11-19T08:59:52.999Z
+- Code Path: `packages/engine/src/live-docs/adapters/python.ts`
+- Generated At: 2026-11-19T21:10:10.575Z
 
 ## Authored
 ### Purpose

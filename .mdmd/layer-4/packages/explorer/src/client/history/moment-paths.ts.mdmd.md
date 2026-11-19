@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/moment-paths.ts
+# `packages/explorer/src/client/history/moment-paths.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/moment-paths.ts
-- Generated At: 2026-11-01T20:26:49.857Z
+- Code Path: `packages/explorer/src/client/history/moment-paths.ts`
+- Generated At: 2026-11-19T21:10:13.159Z
 
 ## Authored
 ### Purpose

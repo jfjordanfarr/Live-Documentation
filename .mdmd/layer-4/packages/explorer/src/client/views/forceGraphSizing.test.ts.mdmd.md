@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphSizing.test.ts
+# `packages/explorer/src/client/views/forceGraphSizing.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/forceGraphSizing.test.ts
-- Generated At: 2026-10-24T19:41:34.964Z
+- Code Path: `packages/explorer/src/client/views/forceGraphSizing.test.ts`
+- Generated At: 2026-11-19T21:10:15.425Z
 
 ## Authored
 ### Purpose

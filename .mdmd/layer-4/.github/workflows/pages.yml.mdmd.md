@@ -1,10 +1,10 @@
-# .github/workflows/pages.yml
+# `.github/workflows/pages.yml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .github/workflows/pages.yml
-- Generated At: 2026-10-22T00:39:32.713Z
+- Code Path: `.github/workflows/pages.yml`
+- Generated At: 2026-11-19T21:10:08.349Z
 
 ## Authored
 ### Purpose

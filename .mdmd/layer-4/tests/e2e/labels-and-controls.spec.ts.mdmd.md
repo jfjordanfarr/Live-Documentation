@@ -1,10 +1,10 @@
-# tests/e2e/labels-and-controls.spec.ts
+# `tests/e2e/labels-and-controls.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/labels-and-controls.spec.ts
-- Generated At: 2026-11-12T17:14:45.947Z
+- Code Path: `tests/e2e/labels-and-controls.spec.ts`
+- Generated At: 2026-11-19T21:10:22.145Z
 
 ## Authored
 ### Purpose

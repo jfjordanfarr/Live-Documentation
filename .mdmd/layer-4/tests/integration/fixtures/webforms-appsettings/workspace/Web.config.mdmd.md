@@ -1,11 +1,11 @@
-# tests/integration/fixtures/webforms-appsettings/workspace/Web.config
+# `tests/integration/fixtures/webforms-appsettings/workspace/Web.config`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/webforms-appsettings/workspace/Web.config
+- Code Path: `tests/integration/fixtures/webforms-appsettings/workspace/Web.config`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:26.652Z
+- Generated At: 2026-11-19T21:10:25.540Z
 
 ## Authored
 ### Purpose

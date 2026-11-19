@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs
+# `tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs
-- Generated At: 2026-10-02T20:20:05.576Z
+- Code Path: `tests/integration/programs/csharp/rosetta/src/Types/ProcessorConfig.cs`
+- Generated At: 2026-11-19T21:10:26.997Z
 
 ## Authored
 ### Purpose

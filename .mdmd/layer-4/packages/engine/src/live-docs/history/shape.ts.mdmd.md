@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/shape.ts
+# `packages/engine/src/live-docs/history/shape.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/shape.ts
-- Generated At: 2026-11-19T06:20:28.604Z
+- Code Path: `packages/engine/src/live-docs/history/shape.ts`
+- Generated At: 2026-11-19T21:10:12.291Z
 
 ## Authored
 ### Purpose

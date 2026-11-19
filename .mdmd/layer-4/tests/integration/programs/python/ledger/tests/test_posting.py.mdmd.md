@@ -1,10 +1,10 @@
-# tests/integration/programs/python/ledger/tests/test_posting.py
+# `tests/integration/programs/python/ledger/tests/test_posting.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/python/ledger/tests/test_posting.py
-- Generated At: 2026-09-27T23:21:37.739Z
+- Code Path: `tests/integration/programs/python/ledger/tests/test_posting.py`
+- Generated At: 2026-11-19T21:10:27.938Z
 
 ## Authored
 ### Purpose

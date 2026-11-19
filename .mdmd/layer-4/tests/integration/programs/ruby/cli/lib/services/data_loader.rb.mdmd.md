@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/cli/lib/services/data_loader.rb
+# `tests/integration/programs/ruby/cli/lib/services/data_loader.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/cli/lib/services/data_loader.rb
-- Generated At: 2026-10-02T20:20:08.272Z
+- Code Path: `tests/integration/programs/ruby/cli/lib/services/data_loader.rb`
+- Generated At: 2026-11-19T21:10:28.128Z
 
 ## Authored
 ### Purpose

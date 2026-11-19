@@ -1,10 +1,10 @@
-# tests/e2e/browser-launch.ts
+# `tests/e2e/browser-launch.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/browser-launch.ts
-- Generated At: 2026-11-18T00:14:13.415Z
+- Code Path: `tests/e2e/browser-launch.ts`
+- Generated At: 2026-11-19T21:10:19.887Z
 
 ## Authored
 ### Purpose

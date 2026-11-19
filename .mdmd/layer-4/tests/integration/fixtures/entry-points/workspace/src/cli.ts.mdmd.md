@@ -1,12 +1,12 @@
-# tests/integration/fixtures/entry-points/workspace/src/cli.ts
+# `tests/integration/fixtures/entry-points/workspace/src/cli.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/src/cli.ts
+- Code Path: `tests/integration/fixtures/entry-points/workspace/src/cli.ts`
 - Entry: command `demo` of [`tests/integration/fixtures/entry-points/workspace/package.json`](../package.json.mdmd.md)
 - Entry: command `start` of [`tests/integration/fixtures/entry-points/workspace/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:43.503Z
+- Generated At: 2026-11-19T21:10:24.930Z
 
 ## Authored
 ### Purpose

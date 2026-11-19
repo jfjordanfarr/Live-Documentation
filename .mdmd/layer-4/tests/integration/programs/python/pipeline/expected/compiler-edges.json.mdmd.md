@@ -1,10 +1,10 @@
-# tests/integration/programs/python/pipeline/expected/compiler-edges.json
+# `tests/integration/programs/python/pipeline/expected/compiler-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/pipeline/expected/compiler-edges.json
-- Generated At: 2026-10-16T20:40:31.364Z
+- Code Path: `tests/integration/programs/python/pipeline/expected/compiler-edges.json`
+- Generated At: 2026-11-19T21:10:27.944Z
 
 ## Authored
 ### Purpose

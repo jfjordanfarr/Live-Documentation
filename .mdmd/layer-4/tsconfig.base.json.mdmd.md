@@ -1,11 +1,11 @@
-# tsconfig.base.json
+# `tsconfig.base.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tsconfig.base.json
+- Code Path: `tsconfig.base.json`
 - Entry: tooling
-- Generated At: 2026-10-22T18:45:34.158Z
+- Generated At: 2026-11-19T21:10:29.027Z
 
 ## Authored
 ### Purpose

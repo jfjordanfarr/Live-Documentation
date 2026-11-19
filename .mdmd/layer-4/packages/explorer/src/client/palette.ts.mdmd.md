@@ -1,10 +1,10 @@
-# packages/explorer/src/client/palette.ts
+# `packages/explorer/src/client/palette.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/palette.ts
-- Generated At: 2026-11-19T04:29:43.950Z
+- Code Path: `packages/explorer/src/client/palette.ts`
+- Generated At: 2026-11-19T21:10:13.694Z
 
 ## Authored
 ### Purpose

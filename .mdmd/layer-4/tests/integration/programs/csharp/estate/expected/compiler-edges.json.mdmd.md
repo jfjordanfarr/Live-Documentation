@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/expected/compiler-edges.json
+# `tests/integration/programs/csharp/estate/expected/compiler-edges.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/expected/compiler-edges.json
-- Generated At: 2026-10-22T00:39:46.940Z
+- Code Path: `tests/integration/programs/csharp/estate/expected/compiler-edges.json`
+- Generated At: 2026-11-19T21:10:26.826Z
 
 ## Authored
 ### Purpose

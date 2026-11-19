@@ -1,10 +1,10 @@
-# packages/explorer/src/client/errors.ts
+# `packages/explorer/src/client/errors.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/errors.ts
-- Generated At: 2026-11-19T00:33:06.933Z
+- Code Path: `packages/explorer/src/client/errors.ts`
+- Generated At: 2026-11-19T21:10:12.948Z
 
 ## Authored
 ### Purpose

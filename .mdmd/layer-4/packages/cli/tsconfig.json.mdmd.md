@@ -1,11 +1,11 @@
-# packages/cli/tsconfig.json
+# `packages/cli/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/cli/tsconfig.json
+- Code Path: `packages/cli/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-11-18T14:57:55.231Z
+- Generated At: 2026-11-19T21:10:08.622Z
 
 ## Authored
 ### Purpose

@@ -454,7 +454,7 @@ describe("the anchor of every symbol's heading", () => {
   it("writes every name a file can hold into a heading that reads back as that name, backticks, spaces and emptiness included", () => {
     const names = ["a`b", "``x", "`", " a", "a ", "   ", "plain", ""];
     const headings = computePublicSymbolHeadingInfo(names.map((name) => ({ name, kind: "key" })));
-    // An empty name is its own; the doc writes it as `""`, apart from a key spelled with two quotes, which is a code span.
+    // An empty name is its own; the doc writes it quoted, `` `""` ``, and a key spelled with two quotes, which begins with one, quoted too.
     const empty = computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: '""', kind: "key" }, { name: "a", kind: "key" }]);
     expect(empty.map((heading) => [heading.displayName, heading.slug])).toEqual([
       ["", "symbol-~"],
@@ -462,7 +462,7 @@ describe("the anchor of every symbol's heading", () => {
       ["a", "symbol-a"]
     ]);
     const emptyText = renderLiveDoc({ codePath: "keys.json", layer: 4, entries: [], authored: "### Purpose\nHolds keys.", symbols: empty.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [], references: [] })), dependencies: [] });
-    expect(emptyText).toContain('\n#### "" {#symbol-~}\n- Type: key\n\n#### `""` {#symbol-~22~22}\n');
+    expect(emptyText).toContain('\n#### `""` {#symbol-~}\n- Type: key\n\n#### `"\\"\\""` {#symbol-~22~22}\n');
     expect(parseLiveDoc(emptyText).symbols.map((symbol) => symbol.name)).toEqual(["", '""', "a"]);
     const text = renderLiveDoc({
       codePath: "config.json",

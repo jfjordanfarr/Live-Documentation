@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/membrane-outline.ts
+# `packages/explorer/src/client/views/localView/membrane-outline.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/membrane-outline.ts
-- Generated At: 2026-10-06T17:29:23.669Z
+- Code Path: `packages/explorer/src/client/views/localView/membrane-outline.ts`
+- Generated At: 2026-11-19T21:10:16.921Z
 
 ## Authored
 ### Purpose

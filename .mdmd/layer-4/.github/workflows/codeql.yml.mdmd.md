@@ -1,10 +1,10 @@
-# .github/workflows/codeql.yml
+# `.github/workflows/codeql.yml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .github/workflows/codeql.yml
-- Generated At: 2026-10-22T00:39:32.697Z
+- Code Path: `.github/workflows/codeql.yml`
+- Generated At: 2026-11-19T21:10:08.339Z
 
 ## Authored
 ### Purpose

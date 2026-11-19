@@ -1,10 +1,10 @@
-# scripts/layout-lab/card-model.ts
+# `scripts/layout-lab/card-model.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-11-19T05:22:13.659Z
+- Code Path: `scripts/layout-lab/card-model.ts`
+- Generated At: 2026-11-19T21:10:18.539Z
 
 ## Authored
 ### Purpose

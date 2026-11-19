@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Contracts/IPaymentService.cs
+# `tests/integration/programs/csharp/estate/Contracts/IPaymentService.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Contracts/IPaymentService.cs
-- Generated At: 2026-10-02T20:20:04.741Z
+- Code Path: `tests/integration/programs/csharp/estate/Contracts/IPaymentService.cs`
+- Generated At: 2026-11-19T21:10:26.460Z
 
 ## Authored
 ### Purpose

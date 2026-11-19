@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/network-simplex.test.ts
+# `packages/explorer/src/client/views/localView/network-simplex.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/network-simplex.test.ts
-- Generated At: 2026-10-05T22:17:15.169Z
+- Code Path: `packages/explorer/src/client/views/localView/network-simplex.test.ts`
+- Generated At: 2026-11-19T21:10:16.953Z
 
 ## Authored
 ### Purpose

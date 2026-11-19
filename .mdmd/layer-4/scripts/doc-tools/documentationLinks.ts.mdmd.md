@@ -1,10 +1,10 @@
-# scripts/doc-tools/documentationLinks.ts
+# `scripts/doc-tools/documentationLinks.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/doc-tools/documentationLinks.ts
-- Generated At: 2026-10-05T17:11:06.337Z
+- Code Path: `scripts/doc-tools/documentationLinks.ts`
+- Generated At: 2026-11-19T21:10:18.259Z
 
 ## Authored
 ### Purpose

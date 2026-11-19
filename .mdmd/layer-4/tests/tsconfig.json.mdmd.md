@@ -1,11 +1,11 @@
-# tests/tsconfig.json
+# `tests/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/tsconfig.json
+- Code Path: `tests/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-10-22T18:45:34.150Z
+- Generated At: 2026-11-19T21:10:29.021Z
 
 ## Authored
 ### Purpose

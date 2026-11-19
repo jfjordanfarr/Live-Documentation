@@ -1,11 +1,11 @@
-# tests/integration/programs/go/depot/go.mod
+# `tests/integration/programs/go/depot/go.mod`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/depot/go.mod
+- Code Path: `tests/integration/programs/go/depot/go.mod`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:29.552Z
+- Generated At: 2026-11-19T21:10:27.098Z
 
 ## Authored
 ### Purpose

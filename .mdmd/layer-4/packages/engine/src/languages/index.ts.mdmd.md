@@ -1,10 +1,10 @@
-# packages/engine/src/languages/index.ts
+# `packages/engine/src/languages/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/index.ts
-- Generated At: 2026-10-16T16:49:35.816Z
+- Code Path: `packages/engine/src/languages/index.ts`
+- Generated At: 2026-11-19T21:10:08.837Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# scripts/slopcop/assetPaths.ts
+# `scripts/slopcop/assetPaths.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/assetPaths.ts
-- Generated At: 2026-09-28T01:00:43.637Z
+- Code Path: `scripts/slopcop/assetPaths.ts`
+- Generated At: 2026-11-19T21:10:19.544Z
 
 ## Authored
 ### Purpose

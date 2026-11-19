@@ -1,11 +1,11 @@
-# packages/explorer/tsconfig.json
+# `packages/explorer/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/tsconfig.json
+- Code Path: `packages/explorer/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-11-18T14:58:00.580Z
+- Generated At: 2026-11-19T21:10:17.899Z
 
 ## Authored
 ### Purpose

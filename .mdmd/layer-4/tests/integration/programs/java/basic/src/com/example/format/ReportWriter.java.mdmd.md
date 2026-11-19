@@ -1,10 +1,10 @@
-# tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java
+# `tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java
-- Generated At: 2026-10-02T20:20:06.222Z
+- Code Path: `tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java`
+- Generated At: 2026-11-19T21:10:27.416Z
 
 ## Authored
 ### Purpose

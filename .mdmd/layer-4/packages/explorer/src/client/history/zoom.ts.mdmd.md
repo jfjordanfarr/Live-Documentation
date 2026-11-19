@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/zoom.ts
+# `packages/explorer/src/client/history/zoom.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/zoom.ts
-- Generated At: 2026-11-19T05:10:42.927Z
+- Code Path: `packages/explorer/src/client/history/zoom.ts`
+- Generated At: 2026-11-19T21:10:13.438Z
 
 ## Authored
 ### Purpose

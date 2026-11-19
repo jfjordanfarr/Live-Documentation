@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/sources-view.ts
+# `packages/explorer/src/client/panels/sources-view.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-11-02T16:50:52.949Z
+- Code Path: `packages/explorer/src/client/panels/sources-view.ts`
+- Generated At: 2026-11-19T21:10:13.848Z
 
 ## Authored
 ### Purpose

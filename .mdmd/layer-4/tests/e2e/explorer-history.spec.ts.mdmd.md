@@ -1,10 +1,10 @@
-# tests/e2e/explorer-history.spec.ts
+# `tests/e2e/explorer-history.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/explorer-history.spec.ts
-- Generated At: 2026-11-04T18:23:41.406Z
+- Code Path: `tests/e2e/explorer-history.spec.ts`
+- Generated At: 2026-11-19T21:10:20.690Z
 
 ## Authored
 ### Purpose
