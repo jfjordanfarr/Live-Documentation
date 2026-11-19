@@ -10,7 +10,7 @@ import { rankByNetworkSimplex, type Constraint, type Ranking } from "./network-s
  * since the Local Map's search compares the pictures those positions make and a different optimum where two are equal
  * would be a different picture. Checked on seeded random systems, some with every weight and separation small so that
  * ties abound, and on real systems the page solved for this repository's five-file scope during its continuing search
- * (`network-simplex.systems.json`, recorded from the page's own solver on 2026-11-19).
+ * (`__fixtures__/network-simplex.systems.json`, recorded from the page's own solver on 2026-11-19).
  */
 
 /** A seeded acyclic system: each constraint runs from a lower to a higher number in a shuffled order of the nodes. */
@@ -34,7 +34,7 @@ function seededSystem(seed: number, count: number, edges: number, spread: { delt
 
 /** The real systems: `[count, [tail, head, delta, weight, …]]` each. */
 function realSystems(): Array<{ count: number; constraints: Constraint[] }> {
-  const file = path.join(__dirname, "network-simplex.systems.json");
+  const file = path.join(__dirname, "__fixtures__", "network-simplex.systems.json");
   const recorded = JSON.parse(readFileSync(file, "utf8")) as Array<[number, number[]]>;
   return recorded.map(([count, flat]) => {
     const constraints: Constraint[] = [];
