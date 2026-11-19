@@ -125,6 +125,13 @@ export interface LocalMapTuning {
    */
   hiddenFiles: HiddenFilesLook;
   /**
+   * How the camera meets a fresh subject (a link, a search choice, the first open; 2026-11-19): "reading", the default,
+   * the subject's card at reading size with its neighbours cut; "then-neighbours", the same and then, once the picture
+   * has settled and a moment has passed, an ease back to the neighbours; "neighbours", on the neighbours at once. The
+   * neighbours' frame is Fit's, held between reading scale and the connections look's farthest press (camera-intent.ts).
+   */
+  arrival: ArrivalFraming;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -361,6 +368,12 @@ export type HiddenFilesLook = "count" | "cells" | "under";
  * root chose which of the two cell values. The count was the default before.
  */
 export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["under", "cells", "count"];
+
+/** How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the neighbours. */
+export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
+
+/** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
+export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

@@ -372,6 +372,14 @@ span.local-disclosure { cursor: default; }
 .local-directory-band > .local-column { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: rgba(var(--ground-sheen-rgb), 0.011765); stroke: var(--line-membrane); stroke-width: 1px; stroke-linejoin: round; }
+/* A step's newcomer (2026-11-19, camera-intent.ts): what a press inside the map brought, a file's card or an opened
+   directory's membrane, has its outline drawn in the colour of what is active and fades to its own look over about a
+   second, so that the eye finds it after the camera's pan. A fade only, no motion, so the same where the person prefers
+   reduced motion. */
+.node-card.local-step-mark { outline: 2px solid transparent; outline-offset: 3px; animation: local-step-mark var(--step-mark-ms, 1s) ease-out 1; }
+@keyframes local-step-mark { from { outline-color: rgba(var(--state-selected-rgb), 0.9); } to { outline-color: rgba(var(--state-selected-rgb), 0); } }
+.local-membrane-shape.local-step-mark { animation: local-step-mark-membrane var(--step-mark-ms, 1s) ease-out 1; }
+@keyframes local-step-mark-membrane { from { stroke: var(--state-selected); stroke-width: 2.5px; } to { stroke: var(--line-membrane); stroke-width: 1px; } }
 /* A drawn directory's label is its handle (2026-11-15): one line, a button that is the disclosure chevron, the parent's
    path muted and the directory's own name in a file name's tone and weight, with what an encasing directory hides, then
    More and the ancestry control. The label's box is the strip the layout keeps above the cards (directory-handle.ts
