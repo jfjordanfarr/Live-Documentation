@@ -16218,3 +16218,693 @@
 
 ● Agent "Unpin others interaction" is waiting on its own background work · 31m
   53s
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11
+  /2026-11-18/2026-11-18.1.claude-code.export.txt in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+❯ >One limit on tonight: the browser is the bottleneck, and the gate will hold
+  it across the end of the unlimited window at about 05:18 UTC. So the frame
+  and the 2D groundwork are being written without anyone able to look at them
+  yet. I've told each builder to stop at 05:10, commit what it has, and say
+  plainly what has not been seen in a browser. If you want them to carry on
+  past the window once the gate frees the browser, say so. Otherwise those
+  branches are picked up next session.
+
+  I'm okay to let the builders do a little damage tonight and allow fails on
+  e2e tests, and maaaaybe even integration/unit tests if you think it's going
+  to save us enough time. We just need to get the builders running, the code
+  being written, and then we can clean up after. We shouldn't accept bad work,
+  but we should allow the builders to quickly hop in a browser, run their
+  testing screenshots, and get back out. We should drop all the timer-based
+  test requirements that are flaky due to the shared computational resources
+  and cook completely.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Camera-intent round is done: branch `camera-intent-final` on main at
+  `50f2b72b`. Frame 6's doubled text was a moment inside the ease, not the end;
+  at rest the picture is clean.
+
+  ## Frame 6 (your check)
+  - **What it was.** The frame I labelled as the end was taken during the ease.
+  On this repository's heavy picture the screencast's frames can be older than
+  their timestamps, which is how I mislabelled it. The doubled text is the
+  look's own cross-fade from reading to connections (`morphLook`, 160 ms),
+  caught while the page stalled at that look's edge.
+  - **Fixed.**
+    - Frame 6 in both strips is now a still taken about 3 s after the camera
+  stopped. It is clean: every name drawn once.
+    - The doubled frame is kept as
+  `arrival-repo-pathfind-look-change-mid-ease.png`, named for what it is.
+    - The README sentence is corrected.
+  - **How long the picture changes after the camera stops.** I took screenshots
+  as fast as they come from the moment `data-camera` drops, for 2.5 s.
+    - It changes once more: within 0.43 s on `pathfind.ts`, 0.12 s on the
+  estate.
+    - Each change is at most 1 level in 255 (227 px in the sidebar corner on
+  `pathfind.ts`), so invisible.
+    - The very first screenshot at stop is already the final picture
+  (`arrival-repo-pathfind-at-stop.png`).
+    - So no text changes size after the motion ends; there is no second arrival.
+  - **An older stall it was hiding.** Counting frames during the ease on
+  `pathfind.ts`:
+    - 20 frames at 17 ms from scale 1.0 to 0.62.
+    - Then a frame 267 ms late at 0.58, and one 250 ms late at 0.337. The last
+  third is two jumps, at the reading/connections look edge.
+    - A plain wheel zoom (default arrival, main's code path) crossing the same
+  edge shows 233, 167 and 150 ms gaps, so the stall predates this round. I left
+  it, as you said, with pictures and numbers in the README.
+    - On the estate the ease draws 39 frames, none more than 33 ms apart.
+  - **Jarring?** The estate reads as a calm step back. On the repository, the
+  last third's two jumps are the one jarring moment, and they come from the look
+  change, not the arrival.
+
+  ## Branch and commits (oldest first)
+  1. `9823d1e7` Let the 2D camera follow the intent a gesture declares
+  2. `75dd2efd` Pictures of the camera's intent
+  3. `b1c4181a` Hold the newcomer's ring through the pan, and document the
+  camera's intent
+  4. `7a58451d` Hold two browser cases to the camera's new step and the Arrival
+  control
+  5. `5a3c06b9` Correct the arrival pictures
+
+  All cherry-picked clean. `camera-intent` and `camera-intent-on-main` are older
+  copies of the same work and can be dropped.
+
+  ## What it does
+  - **A step** (a cell pinning its file, a directory's skin or closed box
+  opened, a neighbour pinned from a card) keeps the camera's scale. The pressed
+  thing is held through the re-layout. Once the picture settles, the camera pans
+  the least distance that brings the newcomer wholly inside the frame's padding
+  (`revealPan`).
+    - The newcomer is the card, or the opened directory's label plus the first
+  row it holds.
+    - If the newcomer and the pressed handle can't both fit, the newcomer wins.
+    - A card taller than the view is entered at its top.
+    - The newcomer gets a 3 px ring in the existing `--state-selected` colour,
+  held through the 350 ms pan, then faded over the rest of a second. Under
+  reduced motion the pan is a cut.
+  - **An arrival** is chosen by Tuning → 2D Layout → Arrival: Reading Size (the
+  default), Reading, Then Neighbours, or Neighbours.
+    - The end frame is what Fit frames, held between reading scale and
+  `ARRIVAL_FLOOR_RATIO`, the connections look's last press (1.2⁻⁶). It comes
+  from the looks' own `LOOK_LAST_PRESSES` through a new `farthestRatioOf`. Where
+  that floor stops it short, the subject is centred and far neighbours are cut.
+    - The hold is 900 ms and the ease 700 ms.
+    - Any pointerdown, wheel, keydown or touchstart on the map, or a Zoom, Fit
+  or Reset press, ends it where it stands.
+    - The map reports `data-camera="moving"` through the hold and ease.
+    - Under reduced motion it arrives at the end frame at once.
+    - The timing constants are all in `camera-intent.ts`.
+
+  ## Address form for the testers
+  - The lever travels in the `s=` snapshot's layout settings as
+  `layout.localMap.arrival` (`"then-neighbours"` or `"neighbours"`), the same
+  way the other 2D levers do. A link without it reads as Reading Size.
+  - The page writes `s=` into its own address on the next exploration change.
+  - `pathfind.ts`, Reading, Then Neighbours: `/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAd
+  kRMAnEgSzGyhABcALAUwDsBaZx8gc3oCNUAriQDOIAL5j4zGvkzoA1pi6NhAehZdyHVcJLpVCSo1YA
+  TDGtkMAZlpMA6WqPiFIAbVDTIIWQqUr1zJrauvqGYMZm6BaY1rYOTiCiXgBU4gC6YkA`
+  - The estate's `PaymentsContext.cs`, Reading, Then Neighbours:
+  `/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRMAnEgSzGyhABcALAUwDsBaZx8g
+  c3oCNUAriQDOIAL5j4zGgAVMATwC2LWgGVGJMOXSMA9ABFMtTLrlKVwgMKpmtRgA9aAOnSj4hSAG1Q
+  0yCDPKtuqa2nqGxqYKgbRWNnaOLm4gon4AVOIAumJAA`
+  - The estate's `PaymentsContext.cs`, Neighbours:
+  `/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkRMAnEgSzGyhADsBTcgcwAsAjVAV
+  xIGcQBffvFo0ACpgCeAW3q0ALgGV6JMOXT0A9ABFMczBvHTZcngGFU8+gA85AOnR94hSAG1QIyCEMz
+  5SlWs0dPQNJHxNzSxt7RxA+TwAqAQBdfiA`
+
+  ## Numbers
+  - **Cell press (the owner's case, a cell under `live-docs/history` on
+  `pathfind.ts`).**
+    - On main, `codec.ts`'s card lands at x 1,525–1,849 in a frame ending at
+  1,440, and `shape.ts`'s top lands at y 1,137: both out of view.
+    - On this round, `codec.ts` is wholly in view and `shape.ts` is entered at
+  its top (y 70). The scale is kept exactly.
+  - **Arrival.**
+    - The estate ends at scale 0.589 (from 1.45) with every card one connection
+  away wholly in view.
+    - `pathfind.ts` ends at 0.335, the floor, in the connections look, with the
+  subject centred.
+
+  ## Pictures
+  All in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/
+  camera-intent/`, with a README.
+  - **Cell press.** `cell-press-codec-before`, `-after-main` (the handle held,
+  `codec.ts` nowhere, two thirds of the view empty), `-after-mark` (`codec.ts`
+  wholly in view at the right with its blue ring, the handle off the top),
+  `-after` (the ring faded).
+  - **The tall card.** `cell-press-shape-after-main` shows nothing of
+  `shape.ts`; `cell-press-shape-after` enters it at its name row.
+  - **Arrival.** Two six-frame strips, one per picture. In the repository's
+  strip, frames 4 and 5 are the same picture, because no frame was drawn during
+  the stall. Frames 1 and 6 of each are also saved at full size, plus
+  `arrival-repo-pathfind-at-stop.png` and
+  `arrival-repo-pathfind-look-change-mid-ease.png`.
+
+  ## Tests
+  - **New spec `camera-intent.spec.ts`, 7 cases: all pass.** On main (the
+  lever's type and the floor's ratio inlined into a copy of the spec) 6 fail.
+  The seventh, an input ending the arrival, cannot fail on main because nothing
+  eases back there.
+  - **Wider browser run:** 142 tests at one worker on the intermediate base. 140
+  passed. The 2 failures were promises that genuinely changed, now fixed:
+    - `hidden-file-cells`: "keeps the handle in view" now asks for the new card
+  in view, and presses the field's air on a fresh visit.
+    - `tuning.spec`: counts 71 controls.
+    - The run covered `camera-intent`, `hidden-file-cells`, `local-map-framing`,
+  `-pins`, `-directories`, `closed-directory-looks`, `local-map-keyboard`,
+  `-motion`, `-row-motion`, `pin-clicks`, `local-map-hidden`, `tuning`,
+  `force-graph-focus`, `card-reading`, `local-map-path`, `explorer-navigation`,
+  `local-map-learning` and `search-bar`.
+  - **Separately,** the 3D marble case `tuning.spec.ts:137` failed once under
+  load and passed 2 of 2 when rerun alone; it is outside this round.
+  - **On the final base:** `camera-intent`, `hidden-file-cells`, `tuning`,
+  `local-map-framing` and `force-graph-focus`, 40 of 40 pass.
+  - Vitest 1,143 of 1,143; `npm run lint`, `live-docs:generate`,
+  `live-docs:lint` (1,058 files) and `slopcop:markdown` are all clean.
+
+  ## Forks I decided
+  - Return to Reading Size keeps its name and meaning under every Arrival
+  choice.
+  - Once a subject has eased back, a later re-frame of it goes straight to the
+  neighbours with no second hold.
+  - A card taller than the view is entered at its top, not with its name row at
+  the far edge.
+  - Only a newcomer that was not in view before (a card) or not drawn before (a
+  directory's label) gets the reveal and the ring. A closed box opened in view
+  gets both too.
+  - The ring is held through the pan before it fades, because faded from the
+  start it was nearly gone when the pan ended.
+  - The floor is the connections look, because the overview strips each card
+  down to its file name.
+
+  ## Docs
+  - The layer-3 Explorer design now describes the arrival and the step.
+  - Interaction and Accessibility gains the step's rule (*visual momentum*), in
+  its usual form.
+  - Live Docs have authored notes for the new module, its test, the spec and
+  `controller.ts`.
+
+  ## Not done
+  - The look-edge stall (about 250 ms on large pictures) is older than this
+  round and not addressed.
+  - No browser case covers a directory step, and I did not look at one with my
+  own eye.
+  - The closed directories' observers are for later.
+  - The default stays Reading Size until the owner has seen it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Cells' first-frame cost" is waiting on its own background work · 4h 55m
+  13s
+
+● Passing your new rules to the builders now (short browser visits, no waiting
+  on a gate), then landing the camera round, which has just handed back.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  History in 2D: the groundwork, ready for a builder to take up cold.
+
+  Branches in worktree
+  /workspaces/Live-Documentation/.claude/worktrees/agent-ae9c064b34d4535c0:
+  - `history-2d`, cut from `history-zoom`'s head (11393ce0), adds one commit:
+  f1d78dc8 "Describe a moment of the history as the 2D map would draw it at file
+  level". It changes nothing a person meets.
+  - `history-zoom` (366e66e5, 11393ce0) is under it, its browser checks still
+  waiting on your word.
+  - The history unit cases and the new module's pass; the client type-checks and
+  lints clean. I have not run the full unit suite, since that stage needs the
+  lane.
+
+  ## 1. Where the moment lives today, and what ties it to 3D
+
+  **Creation and ownership.**
+  - `index.ts:391` creates the history control with `createHistoryControl({
+  parent: #view-graph, room: #main, … })`. Its scrubber and step panel are DOM
+  children of the 3D container.
+  - `history/history-control.ts` owns all history state: the sequence, the
+  cursor, the step, the range, play, the step panel's toggle, and the ticks'
+  cache.
+  - It builds each moment in `momentAt(step)`: the graph via
+  `snapshotGraphOf(cursor.shape)`, the related-doc links, the changed sets, and
+  the name-mapping functions `fileAt` / `directoryAt` / `fileToday` /
+  `fileReference` / `directoryToday`. The moment's type is in
+  `history/moment.ts`.
+  - It hands each moment out through `onMoment(moment, renames, energy,
+  changes)`.
+
+  **The app already holds the moment.** In `index.ts`, `onMoment` sets the
+  app-level `shownMoment` (line 248, 399), then calls
+  `forceGraphView.setMoment(...)`, `syncRetainedWords`, `renderInspection`,
+  `syncReaderNote` and `syncStatsLine`.
+
+  **What ties it to 3D:**
+  1. `historyControl.sync({ visible: state.view === "map" && state.perspective
+  === "3d", … })` at `index.ts:1025`. The scrubber hides outside 3D.
+  2. The History button is hidden unless in 3D (`index.ts:999`).
+  3. "Leaving 3D returns the picture to today and closes the control" is two
+  calls to `historyControl.leave()`:
+     - in `changePerspective` when switching to 2D (`index.ts:1103`);
+     - in the sidebar's view switch (`index.ts:1188`).
+     - `leave()` (history-control.ts ~492) pauses, closes, clears the notice,
+  the details toggle and the range, moves the cursor to the last step, and calls
+  `onCommit(null)`.
+  4. A commit in the address is applied only in 3D: `index.ts:1379` (start), and
+  `index.ts:1522` (Back/Forward), where the `else` branch calls `leave()`.
+  5. `syncReaderNote` (`index.ts:1639`) says "Today's version. The picture shows
+  <moment>" only when the perspective is 3D.
+
+  **What the address carries.** `state.historyCommit` (`onCommit` →
+  `persistExploration`, written at `index.ts:1807` as `commit`) and
+  `showAuthors`. The range and the zoom are not in the address.
+
+  **Every place the 2D map would have to be told the moment:**
+  - **Its graph.** `createLocalView({ graphData, … })` (`index.ts:313–337`)
+  receives today's graph once, at creation. The controller reads
+  `this.options.graphData` in its render (`views/localView/controller.ts:538`,
+  `:1227`). It needs a `setMoment(graph | null)` like
+  `forceGraphView.setMoment`, then a re-render.
+  - **Its search.** Already app-level: `syncRetainedWords` swaps the search
+  index to the moment's (`index.ts:1041`). It works for either map once the
+  moment survives the switch.
+  - **Its reader.** `detailPanel` already takes `history: () => shownMoment`.
+  Only `syncReaderNote`'s 3D-only test needs widening.
+  - **Its pins that do not stand at the moment.** `historyControl.absence(item)`
+  is map-independent. The tray, the search bar and the reader call it at
+  `index.ts:809, 823, 930, 1043`. Line 809 (`showFile`) is gated to 3D.
+  - **The 2D cards' own facts:**
+    - `testCoverage` comes from today's bundle (`controller.ts:169`).
+    - `cardContext.presentation` marks pinned and subject cards by today's ids.
+  At a moment the ids are the moment's paths (`fileAt` maps them).
+    - Opened directories go through `directoryAt`.
+  - **Its legend.** The 2D legend is static by kind. Nothing changes except what
+  a past moment lacks (symbol rows).
+  - **The sidebar's counts.** Already moment-aware:
+  `statsLineOf((shownMoment?.graph ?? graphData).stats)` (`index.ts:305`).
+  - **The path and its reach.** Already moment-aware through `pathGround()`
+  (`index.ts:252`). The 2D path drawing would need the moment's ground handed to
+  it.
+
+  ## 2. The lift: not started; here is the plan instead
+
+  The pure half needs no lift. The moment and its graph are already behind one
+  seam that either map can read: `HistoryMoment`, held as `shownMoment` in the
+  app shell. `snapshotGraphOf` returns the same `ExplorerGraphPayload` type the
+  2D builder takes (`buildBranches(center, graph, pins, include, options)` in
+  `views/localView/branches.ts:267`).
+
+  What remains is DOM and lifecycle: where the scrubber lives, when it shows,
+  and the 2D view taking a moment. Every step of that changes what a person sees
+  and needs the lane and an eye, so I did not start it.
+
+  Plan, in this order:
+  1. **`history-control.ts`.** Make `visible` mean "the Local Map is the view,
+  in either perspective". Move the scrubber's and panel's parent from
+  `#view-graph` to a container both maps share (the map's own wrapper under
+  `#main`, which already carries `--history-room`). The step panel's corner
+  insets and the reader-docking CSS (`styles/shell.css:410–420`,
+  `styles/history.css:69`) assume the 3D container, so check them by eye at 390,
+  834 and 1400.
+  2. **`index.ts`.**
+     - Drop `historyControl.leave()` from the 2D branch of `changePerspective`,
+  so the moment survives a switch. Keep `leave()` for leaving the map for the
+  other views.
+     - Show the History button in both perspectives.
+     - Apply an address's commit in 2D at start and on Back/Forward (lines 1379,
+  1522).
+     - Widen `syncReaderNote` and the `showFile` gate (line 809) to both
+  perspectives.
+  3. **`views/localView` (controller and index).** Add `setMoment(moment:
+  HistoryMoment | null)`:
+     - Swap `graphData` for `moment.graph`. The pins, subject and opened
+  directories are already read through `fileAt` / `directoryAt` in the shell;
+  mirror the 3D view's use of them.
+     - The cheap default the owner accepted for scrubbing: while the thumb
+  drags, cards keep their places and only light, appear or fade. When it rests,
+  the layout settles with the 2D map's own move.
+     - The history control already separates `onScrub` (energy 0) from `onRest`.
+  Pass that distinction through as the 3D view does.
+  4. **Emphasis in 2D.** Use the changed sets from `HistoryChanges`. The 3D rule
+  ("a change is shown at the innermost thing the picture draws for it", and
+  since tonight "what was asked about is never dimmed") should carry over: a
+  changed card lit, a closed box holding a change lit, the rest faded by Changed
+  Files' mode.
+  5. **Specs.** Today's history specs open the control in 3D; a 2D spec needs
+  the scrubber's new home.
+
+  Risks:
+  - The perspective change's cover and its framing (`changingPerspective`,
+  `revealForTransition`) were built for today's graph on both sides.
+  - Re-keying renames in 2D: the 3D view re-keys its objects through `Renames`.
+  The 2D cards are keyed by node id, so a rename at a step would rebuild the
+  card unless 2D gets the same re-keying.
+  - `testCoverage` and the cards' descriptions are today's (see 4).
+  - The design audit at narrow widths, now that the scrubber stands over the 2D
+  map too.
+
+  ## 3. The pure function for rung 1 (committed)
+
+  - `history/moment-files.ts` exports `fileLevelPicture(shape)`, returning `{
+  graph, directories, lines }`:
+    - `graph` is `snapshotGraphOf(shape)`, the very graph the 3D map draws: a
+  node per file with its kind and symbol count, `publicSymbols: []`, no doc.
+    - `directories` lists every directory holding a file, the root `""` among
+  them.
+    - `lines` has one `LocalEdge` per pair of files each way, from user to
+  offerer, between node-level hubs (`NODE_HUB`), kind `dependency`, direction
+  `inbound`, with `referenceCount` and `gathered` both set to the pair's count.
+  This is the shape `directory-flow.ts`'s `pairLines` gives an opened directory
+  today. Self-references make no line.
+  - `history/moment-files.test.ts` has four cases over the scripted history
+  sample. Its moments at steps 0, 1, 3 and 4 are transcribed from `seek` over
+  `samples/history/`'s own sequence, since building that repository needs git,
+  which belongs to the integration tests. The cases cover a directory renamed
+  whole, a file born with its wire, a file deleted with its wire, and one line
+  per pair each way with its count.
+  - The new module and its test have authored Live Doc Purpose and Notes citing
+  Turn 34 of the November 18 record. That anchor exists on main but not on this
+  branch. Their generated regions wait for the generator.
+
+  ## 4. What in 2D assumes today's docs, and what each should do at a past
+  moment
+
+  Judged by the 3D map's precedents:
+
+  | What | At a past moment | Precedent |
+  | --- | --- | --- |
+  | **Symbol rows** (`card-factory.ts:761–783`, from `node.publicSymbols`) | The
+  moment's nodes carry none, so cards fall to files-only: name, kind and the
+  symbol count. Rung 1 needs nothing more. Rows wait for the history to carry
+  symbols (rung 2). | — |
+  | **Descriptions** (cards' authored summaries, from today's docs) | Hide them.
+  Words of that day are rung 3. | The 3D map draws no description at a moment.
+  |
+  | **Test backing** (`testCoverage` from today's bundle) | Hide it. The history
+  carries no test-to-symbol facts. | — |
+  | **The reader** (`detailPanel`, `card-reading.ts`) | Keep 3D's existing note,
+  widened to 2D: "Today's version. The picture shows <date, commit>"; for a
+  past-only file, "Structure at <moment>. Historical text is not bundled."
+  (`syncReaderNote`). Card-level reading (expanding a card to its doc) should
+  say the same or be disabled. | `syncReaderNote` |
+  | **Symbol-level actions** (pin a symbol, highlight a symbol's connections) |
+  None exist without rows. A symbol pinned today but absent at the moment should
+  be said absent in the tray's words ("not yet created" / "deleted at
+  <commit>"), as files are. | The tray's absence words |
+  | **Backward-connection cue** on the 3D button (`index.ts` ~1009) | Recount
+  from the moment's picture, which it does if it reads the drawn picture. | — |
+  | **Related and citing docs** | The moment carries its own related-doc links
+  (`relatedDocLinksOf`), so draw those. A document today's bundle lacks says so
+  in its label and opens nothing. Citing docs are not in the sequence: hide
+  them. | 3D, since 2026-10-20 / 2026-10-22 |
+
+  The zoom's lane hold still waits for your word. Time now ~04:33 UTC; I'll stop
+  at 05:10 if nothing else comes.
+  ⎿  Resuming agent a926dea  ⎿  Resuming agent a631ff0
+  ⎿  Message queued for delivery to aa7dbd7f336f21a29 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to a3e97c71dbf05676d at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to a86661103d13c03c7 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+  ⎿  Message queued for delivery to ae9c064b34d4535c0 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● Agent "Unpin others interaction" is waiting on its own background work · 34m
+  38s
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Landing the camera round on main: three merge conflicts with the marble
+  removal are resolved, now type-checking and finishing the cherry-pick.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  35m 37s
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## History cost of rungs 2 and 3, measured on this repository
+
+  **Answer.** Rung 2 (symbol rows and symbol-level wires) about doubles the
+  history file: 150 KB gzipped today, about 300–320 KB for the whole year. Rung
+  3 (descriptions) is where the size goes: 1.5–2.7 MB gzipped if it is stored
+  inline in the file. A separate store of description text that holds each
+  version once costs about 0.7 MB gzipped. Rebuilding the history would not get
+  slower: every fact either rung needs is already derived at each commit and
+  then thrown away. Nothing was committed, nothing under `packages/` or `.mdmd/`
+  was touched, and nothing was built or regenerated.
+
+  **How I measured it.** One `git log --first-parent --diff-merges=first-parent
+  --raw -M` over the mirror `.mdmd/layer-4`, then one `git cat-file --batch` for
+  its 9,623 blobs (about 3 seconds). Each doc was parsed with the engine's own
+  `parseLiveDoc`, and links were resolved with `linkTarget`. The steps were
+  walked in mainline order and checked against all 817 steps of
+  `dist/explorer/explorer-history.json`, which runs from the first commit to
+  `5d520791` (2026-11-13). New data was encoded the way `codec.ts` does it:
+  interned ids, empty lists left out, compact JSON. Sizes are gzip at level 9.
+
+  **Where the mirror is usable.** From step 291, `13f66380` (2026-09-27,
+  "chore(grammar): drop the Live Doc ID line…"). From then on today's parser
+  reads 100% of the docs. Before it the mirror uses older formats (`## Source
+  Mapping`, front matter, `**Created:**`), and around step 80 there is no mirror
+  at all. So the measured stretch is steps 292–817: **526 of 817 steps (64%),
+  every step measured exactly, no sampling.** Steps 1–291 (36%) are
+  extrapolated, as marked below.
+
+  ### Numbers
+
+  | | raw | gzipped |
+  |---|---|---|
+  | Today's file (817 steps, 3 keyframes) | 640,859 | 149,575 |
+  | Today's steps within the stretch | 215,636 (mean 410 per step, median 286,
+  p90 671, max 3,764) | |
+  | **Rung 2 additions to steps in the stretch** | 171,862 | 30,601 |
+  | — per step | median 0 (149 of 526 steps non-empty), p90 915, p99 5,478, max
+  8,521 | a non-empty step alone: median 203, p90 684 |
+  | **Rung 2 file** (today's file + stretch steps + name table + keyframes 512
+  and 768) | 1,237,250 | 271,032 |
+  | Rung 2 file, whole year (extrapolated) | ~1.45–1.5 MB | ~300–320 KB |
+  | **Rung 3 additions in the stretch, each changed text replaced whole** |
+  5,779,731 | 1,723,966 |
+  | — per step | median 0 (169 non-empty), p90 39,417, p99 127,232, max 217,085
+  | |
+  | — authored Purpose/Notes vs symbol descriptions | 5,418,628 vs 356,878 |
+  1,607,637 vs 105,123 |
+  | Rung 3 additions as line diffs | 1,948,648 (p90 12,159, max 78,278) |
+  536,851 |
+  | **Rungs 2+3 file, texts replaced whole** | 9,352,922 | 2,721,724 |
+  | **Rungs 2+3 file, line diffs** | 5,521,839 | 1,517,153 (the two text
+  keyframes are about 0.74 MB of it) |
+  | Rungs 2+3 file without any keyframes, line diffs | 2,877,146 | 773,639 |
+  | Every text version in the stretch, each stored once, ordered by path then
+  time | 6,018,994 | 677,880 (xz: 467,568) |
+  | Whole year, rung 3 (extrapolated) | add roughly 1 MB raw / 0.26 MB gzipped
+  for the pre-stretch start state and a keyframe at 256 | |
+
+  What changed in the stretch:
+  - 2,089 symbols added, 238 removed and 4 renamed (a rename was counted only
+  when the kind and the source line both matched).
+  - 4,969 links added and 665 removed.
+  - 1,893 authored blocks and 1,681 symbol descriptions changed.
+
+  **Largest steps.**
+  - **Rung 2:** step 576 `7dd2dbf2` (2026-10-18, the history sequence itself
+  landing; 91 symbols, 298 links, 8.5 KB). Next come step 542 (C/C++ reading;
+  236 symbols), step 445 (the layout lab) and step 323 (the World Map).
+  - **Rung 3:** the November Explorer work. Step 729 `e104f9fa`, "Show the
+  ladder without a switch…", rewrote 43 authored blocks (217 KB whole, 32 KB as
+  diffs). Steps 730, 760, 614 and 742 are similar, all 100–150 KB.
+  - **Links must follow file renames.** Step 296 (`packages/scripts` →
+  `packages/explorer`) produced 1,892 link changes before I made links follow
+  file renames, as today's edges do, and almost none after. That one change took
+  the rung-2 total from 244 KB to 172 KB and the largest step from 41.5 KB to
+  8.5 KB.
+
+  ### Opening a past moment and keyframe spacing
+
+  At the last step:
+  - **Today's shape keyframe:** 52,004 raw / 12,361 gzipped.
+  - **Rung 2 part:** 197,315 raw / 34,433 gzipped (3,465 symbols, 6,219 links).
+  - **Rung 3 part:** 1,722,433 raw / 512,185 gzipped (959 authored blocks, 2,021
+  symbol descriptions).
+  - **What the 2D map needs to open there:** shape plus rung 2 is 243 KB raw /
+  45 KB gzipped. Adding rung 3 makes it 1.97 MB / 557 KB.
+
+  Keyframes every N steps, over the stretch (rung-2 keyframes gzipped; "worst
+  replay" is the largest run of N−1 rung-2 deltas a seek would apply):
+
+  | N | keyframes | rung-2 keyframes | worst replay | text keyframes |
+  |---|---|---|---|---|
+  | 32 | 16 | 401 KB | 27 KB raw | — |
+  | 64 | 8 | 196 KB | — | 2.1 MB |
+  | 128 | 4 | 101 KB | 65 KB raw | — |
+  | 256 (today) | 2 | 55 KB | 105 KB raw | 686 KB |
+  | 512 | 1 | 21 KB | 170 KB raw | — |
+
+  Replaying 255 rung-2 deltas is a few thousand tuples, which is trivial work.
+  So 256 is still right for rung 2. Text should not be keyframed at all.
+
+  ### Build time, from the code
+
+  `derive.ts` only compares two shapes; it derives no docs. The docs are derived
+  in `packages/generator/src/history/summarizeChange.ts`. It runs
+  `generateLiveDocs` on each commit's scratch tree and parses the full
+  `index.json` into a `LiveDocGraph`. Each file there already carries its
+  symbols (name, kind, slug, description sections), its dependencies, its
+  authored text, and edges with `from`, `toSymbol` and kind.
+
+  `summarizeGraph` in `packages/engine/src/live-docs/history/summary.ts` then
+  keeps only `symbols.length`, the entry mark, edge counts per target and doc
+  links, and discards the rest. So **rungs 2 and 3 need no second pass, and the
+  cost of derivation does not change.** The real costs are:
+  1. **One full rebuild (about 85 minutes).** The summary format changes. Any
+  edit to the engine or generator changes the lens key anyway, so this rebuild
+  comes with the change itself.
+  2. **A much larger cache.** Today's head summary is 415 KB and the cache is
+  206 MB for 818 commits. With symbols, links and text, a summary is roughly 2
+  MB, so the cache becomes about 1.5–2 GB unless summaries are gzipped or texts
+  are stored once. The Pages workflow caches this folder. For comparison,
+  `--keep-index` already writes about 1.08 MB gzipped per commit.
+  3. **The in-process sequence build.** The diff, apply and replay check would
+  also cover symbols and links. That work is linear in snapshot size, so
+  seconds, holding one snapshot in memory.
+
+  ### Proposed encoding
+
+  **Rung 2, inline in `history.json`.**
+  - Intern symbol names and kinds once, as paths are interned now. Each symbol
+  gets an id at birth (`[pathId, nameId, kindId]`).
+  - Steps carry symbols born, died and renamed, and links added and removed as
+  `[fromSymbolId | file, toSymbolId | path, kindId, count]`.
+  - A file rename carries its symbols and the links into it, at no cost.
+  - Keep keyframes every 256 steps.
+
+  **Rung 3, in a separate file loaded only when needed.**
+  - Store each distinct text version once, ordered by path then time, so that
+  successive versions compress against each other (6.0 MB raw becomes 678 KB
+  gzipped).
+  - Steps and keyframes refer to texts by id, so a text keyframe is just
+  integers.
+  - Split the file by directory, so a 2D card fetches only the texts it shows.
+
+  ### What I could not measure
+
+  - **Steps 1–291 (36%).** The mirror there is unreadable or missing, so those
+  numbers are extrapolated from the stretch's ratios.
+  - **The mirror is not the lens.** The history regenerates each commit with
+  today's generator; the mirror holds the generator of that day. The mirror
+  lagged the source on only 5 of the stretch's 150 steps that changed shape.
+  Format changes within the stretch may add some false churn I did not separate
+  out. The authored text is a faithful stand-in, because the lens keeps that
+  day's authored words from the committed mirror.
+  - **Symbol renames are undercounted.** Only 4 were found by matching kind and
+  source line; any other rename counts as a removal plus an addition, so the
+  counts are an upper bound.
+  - **The name table is an upper bound.** Link anchors are stored as strings
+  separate from symbol names (5,154 strings, 29.8 KB gzipped); symbol ids would
+  roughly halve it.
+  - **Row order and source lines are not measured.** A line number shifts with
+  nearly every edit above it, so I would store each symbol's order, not its
+  line.
+
+  The scripts and their output are in `/tmp/claude-1000/-workspaces-Live-Documen
+  tation/6450141c-9e11-40e5-95a5-166121c231a3/scratchpad/history-cost/`:
+  `measure.js`, `analyze.py`, `perStep.json`, `keyframes.json`,
+  `formatTrack.json`, `tables.json` and `failures.json`.
+
+● Agent "Measure 2D history's data cost" finished · 6m 47s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The cost of 2D history's rungs 2 and 3 has been measured; I'm filing that with
+  tonight's record, then replying with the numbers.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Your rule is in force: the builders have it in your words, and the full gate
+  with its browser stage now waits until they are done.
+
+  How I read it, so you can correct me
+  - Browser visits are short. Each builder now builds outside the browser lock
+    and takes the browser only for its pictures and its own new tests, five
+    minutes at most. The queue was long mostly because builders were doing
+    builds and wide test runs while holding the browser; one had held it for
+    over twenty minutes.
+  - Nobody stops at 05:10. Each builder carries on until it has looked at its
+    own work in a browser, then hands back.
+  - "Drop the timer-based test requirements": tonight no builder is held to a
+    browser test that fails only because the shared machine was slow. It writes
+    the failure down and moves on. New tests assert what happened and in what
+    order, never a number of milliseconds. I have not deleted or loosened any
+    existing test; that sorting is part of the clean-up after.
+  - Unit tests stay required for the code a builder touched, along with the
+    type-check. They take seconds and need no browser, so skipping them would
+    save nothing.
+  - The bar on the work is unchanged. I still read every diff and look at every
+    picture before anything lands.
+
+  Landed on main: the camera round. It has not been through the browser suite on
+  main; the other checks are running now.
+  - Pressing a cell no longer loses the file. In your case (a cell under
+    live-docs/history while on pathfind.ts), the new card used to land off the
+    right edge. Now the camera keeps its zoom and slides just far enough to
+    bring the new card fully into view, with a brief blue ring on it.
+  - A new lever, Tuning → 2D Layout → Arrival. The default is unchanged.
+    "Reading, Then Neighbours" holds at reading size for about a second, then
+    eases back to show the neighbours. Whether that pull-back should become the
+    default is for your eye.
+  - One older fault found, not fixed. On this repository, zooming out across the
+    point where cards switch from reading to connections freezes for about a
+    quarter of a second, twice. A plain wheel zoom does the same today. It is
+    queued.
+
+  Your "mega gigantic build" fear, measured: it is not gigantic.
+
+  ┌─────────────────────────────────────────────────────────┬───────────────┐
+  │                                                         │ History file, │
+  │                                                         │    gzipped    │
+  ├─────────────────────────────────────────────────────────┼───────────────┤
+  │ Today                                                   │ 150 KB        │
+  ├─────────────────────────────────────────────────────────┼───────────────┤
+  │ With symbol rows at every commit (rung 2)               │ about 300–320 │
+  │                                                         │  KB           │
+  ├─────────────────────────────────────────────────────────┼───────────────┤
+  │ With each day's words inside the file (rung 3)          │ 1.5–2.7 MB    │
+  ├─────────────────────────────────────────────────────────┼───────────────┤
+  │ With each day's words in a separate file, each version  │ about 0.7 MB  │
+  │ stored once, fetched only when a card shows text        │ extra         │
+  └─────────────────────────────────────────────────────────┴───────────────┘
+
+  - Build time does not grow. The history build already works out every symbol
+    and description at each commit, then throws them away and keeps only counts.
+  - The real costs are one full rebuild of the history (about 85 minutes) and a
+    build cache that grows from 206 MB to 1.5–2 GB unless it is compressed.
+  - How far to trust it: measured on this repository only, exactly on the most
+    recent 64% of commits; the older third is extrapolated because the committed
+    docs there are in formats today's parser cannot read.
+
+  Being built now: rung 1 of history in 2D. The groundwork came back clean: the
+  app already holds "the moment", and only a handful of places tie the scrubber
+  to 3D. The same builder is now moving the scrubber so it stands over both maps
+  and keeps its moment when you switch between them.
+
+  Still out: returning connections, the rested pointer, Tuning's reset, Unpin
+  others, the bare frame, and the history zoom's browser check. Links for the
+  camera round follow once main is built for your port.
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  39m 5s
+
+● Agent "Reset Tuning to defaults" is waiting on its own background work · 1h
+  39m 7s
