@@ -424,6 +424,28 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(unchanged).toBeGreaterThan(0); // Force evaluation alone must not cause a redraw of the same positions.
   });
 
+  it("takes as many of a tick's substeps in a paced call as its budget holds, and never more than the tick (2026-11-19)", () => {
+    // A crowd of overlapping spheres: its contacts are stiff, so that a tick takes several substeps of the field.
+    const crowd = (): SpatialNode[] => Array.from({ length: 300 }, (_, index) => ({
+      ...node(`crowd-${index}`, index % 4), x: (index % 10) * 3, y: Math.floor(index / 10) % 10 * 3, z: Math.floor(index / 100) * 3
+    }));
+    const run = (budget?: number): { calls: number; places: number[][]; still: boolean } => {
+      const nodes = crowd(), simulation = forceSimulation(nodes, 3).stop();
+      const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1,
+        ...(budget === undefined ? {} : { budget: () => budget }) });
+      simulation.force("motion", motion);
+      let calls = 0;
+      while (!motion.still && calls < 50_000) { simulation.tick(); calls++; }
+      return { calls, places: placesOf(nodes), still: motion.still };
+    };
+    const whole = run(), generous = run(1e9);
+    expect(whole.still).toBe(true);
+    // The numbers are the whole ticks', however divided; a budget that holds a whole tick takes one a call, after the
+    // first call's single evaluation measures the rate. Held to one evaluation a call, it took a call a substep.
+    expect(generous.places).toEqual(whole.places);
+    expect(generous.calls).toBeLessThanOrEqual(whole.calls + 1);
+  });
+
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
     // The whole toy as one piece: the physics is measured, not the reveal, which has its own tests below.
     const whole = { reveal: { asked: new Set(files.map(file => file.id)) } };
