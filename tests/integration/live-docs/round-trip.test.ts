@@ -8,6 +8,7 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig
 } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { parseBoard } from "../../../packages/engine/src/live-docs/board";
 import { parseLiveDoc, renderLiveDoc } from "../../../packages/engine/src/live-docs/document";
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
@@ -60,6 +61,15 @@ describe("the Live Doc grammar over real docs", () => {
     }
   });
 
+  it("reads a doc and the board of this repository with a byte-order mark and CRLF line endings, as Windows PowerShell writes a file, as without", () => {
+    const config = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, ".live-docs.config.json"), "utf8")) as { board: string };
+    const asWindowsWrites = (text: string): string => `\ufeff${text.split("\n").join("\r\n")}`;
+    const doc = fs.readFileSync(path.join(REPO_ROOT, ".mdmd/layer-4/packages/engine/src/live-docs/document.ts.mdmd.md"), "utf8");
+    expect(parseLiveDoc(asWindowsWrites(doc))).toEqual(parseLiveDoc(doc));
+    const board = fs.readFileSync(path.join(REPO_ROOT, config.board), "utf8");
+    expect(parseBoard(asWindowsWrites(board))).toEqual(parseBoard(board));
+  });
+
   it("describes what the generator writes for every sample program", async () => {
     const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), "live-docs-round-trip-"));
     try {
@@ -83,11 +93,12 @@ describe("the Live Doc grammar over real docs", () => {
         }
       }
 
-      // Checked out again with CRLF line endings, as Git for Windows does: the check calls no doc changed, and a run
-      // rewrites none, its timestamp and its endings kept.
+      // Checked out again with CRLF line endings, as Git for Windows does, and every other doc with a byte-order mark, as
+      // Windows PowerShell writes a file: the check calls no doc changed, and a run rewrites none, its timestamp, its
+      // endings and its mark kept.
       const written = result.files.filter((record) => record.change !== "skipped").map((record) => path.join(workspaceRoot, record.docPath));
-      for (const doc of written) {
-        fs.writeFileSync(doc, fs.readFileSync(doc, "utf8").split("\n").join("\r\n"));
+      for (const [index, doc] of written.entries()) {
+        fs.writeFileSync(doc, `${index % 2 === 0 ? "\ufeff" : ""}${fs.readFileSync(doc, "utf8").split("\n").join("\r\n")}`);
       }
       const checkedOut = new Map(written.map((doc) => [doc, fs.readFileSync(doc, "utf8")]));
       const logger = { info: () => undefined, warn: () => undefined, error: (message: string) => { throw new Error(message); } };

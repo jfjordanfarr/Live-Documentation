@@ -245,11 +245,12 @@ function writeAndRead(doc: LiveDoc, name: string): { text: string; read: LiveDoc
   } catch (error) {
     fail("the doc does not read back as written", error);
   }
-  // As Git for Windows checks it out: every line ending CRLF.
+  // As Git for Windows checks it out, every line ending CRLF, and as Windows PowerShell writes it, a byte-order mark first.
   try {
     expect(parseLiveDoc(onDisk.split("\n").join("\r\n"))).toEqual(doc);
+    expect(parseLiveDoc(`\ufeff${onDisk.split("\n").join("\r\n")}`)).toEqual(doc);
   } catch (error) {
-    fail("the doc with CRLF line endings does not read back as written", error);
+    fail("the doc with CRLF line endings or a byte-order mark does not read back as written", error);
   }
   return { text, read: read! };
 }

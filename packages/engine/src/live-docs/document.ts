@@ -156,6 +156,9 @@ export interface ReExport {
 // Vocabulary
 // ============================================================================
 
+/** U+FEFF at the start of a text: a byte-order mark, which says how the file is encoded and is no part of its first line. */
+const BYTE_ORDER_MARK = "\ufeff";
+
 const MARKER = "<!-- LIVE-DOC:";
 const BEGIN = `${MARKER}BEGIN `;
 const END = `${MARKER}END `;
@@ -1049,7 +1052,8 @@ export function authoredBlockOf(text: string | undefined): string {
 /**
  * Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. A line ends
  * at LF or CRLF alike, so a doc checked out with Windows line endings reads as the one written with LF: the writer
- * never ends a line with a carriage return of its own.
+ * never ends a line with a carriage return of its own. A byte-order mark before the first line, which Windows
+ * PowerShell 5.1 writes whenever a file passes through it, is set aside. A Live Doc and a board are both read here.
  */
 export class Reader {
   private readonly lines: string[];
@@ -1059,7 +1063,7 @@ export class Reader {
     if (!text.endsWith("\n")) {
       throw new LiveDocSyntaxError(text.split("\n").length, "the text must end with a newline");
     }
-    this.lines = text.slice(0, -1).split("\n").map((line) => (line.endsWith("\r") ? line.slice(0, -1) : line));
+    this.lines = text.slice(text.startsWith(BYTE_ORDER_MARK) ? 1 : 0, -1).split("\n").map((line) => (line.endsWith("\r") ? line.slice(0, -1) : line));
   }
 
   /** The current line's number, counted from one. */
