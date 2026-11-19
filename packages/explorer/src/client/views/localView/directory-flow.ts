@@ -243,7 +243,10 @@ export const NOMINAL_LABEL = HANDLE_STRIP;
 /**
  * The scene's measurer on the nominal model: every file card {@link NOMINAL_CARD}, every closed box {@link NOMINAL_BOX},
  * no wider than a card cap when one is set, every directory's label {@link NOMINAL_LABEL} tall, and every line's end at a
- * card's node-level hub, half way down it as the stylesheet stands it. A closed box ends no line.
+ * card's node-level hub, half way down it as the stylesheet stood it until 2026-11-19. The page now stands a hub at its
+ * name's first line (`hubLine` in wire-gathering.ts); the model keeps the middle, since moving it changes the shapes the
+ * price chooses (on `scripts/live-docs` Width Cost at nought then no longer widens the default shape), which is the
+ * owner's to choose. A closed box ends no line.
  */
 export function nominalMeasurer(ids: Iterable<string>, isBox: (id: string) => boolean): SceneMeasurer {
   const items = [...ids];

@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/returning-connections.spec.ts
-- Generated At: 2026-11-19T05:10:47.447Z
+- Generated At: 2026-11-19T04:41:45.795Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Browser cases for a cycle's returning connection on the 2D Local Map, in the picture the owner sent: a hovered row keeps every drawn thing that carries one of its links, Flow's pair lines among them; a returning connection's laces wear the 3D cue's colour, are named by their two ends, and a lace or a card's foot keeps the whole connection; and a card's node-level hubs stand at its file name's first line at every look, sized as the look's dots, with the lines ending there.
 
 ### Notes
-_Pending notes_
+Written on 2026-11-19 from the owner's picture of the estate sample with `PaymentService` and `PaymentService/Data` opened ([Turn 23 of the November 18 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-23)). What a row should keep is read from an oracle apart from the page, the graph's own links in the bundle's data, so that the page does not grade itself. Each case was seen to fail on `main` first: the row's hover with every wire of the picture faded (also at the Flow trial's first commit, 787673ef, and at Flow's becoming the default, 0fab0846), the laces in the roles' blue and green, the hubs 54 px below the name. [The pictures](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/returning-connections/README.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

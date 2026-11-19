@@ -328,15 +328,20 @@ function expectBoxesHeld(audits: readonly Audit[]): void {
     const where = `press ${press}, ${each.lod} step ${each.step}`;
     // Soft, so that a failing walk reports every press it breaks, not only the first.
     expect.soft(each.broken, where).toEqual([]);
-    // Every card's box and every row's box stands where the layout put it, in the map's own units; the hub keeps its
-    // size and its overhang there, the one part designed to stand past its card's edge.
+    // Every card's box and every row's box stands where the layout put it, in the map's own units; the hub, the one part
+    // designed to stand past its card's edge, keeps its centre there and grows about it with the look, as a row's dot
+    // does, never smaller than at reading scale (2026-11-19; until then it kept one size at every press).
     for (const [id, card] of Object.entries(first.cards)) {
       const now = each.cards[id];
       expect(now, `${where}: ${id}`).toBeDefined();
       expect([now.x, now.y, now.w, now.h], `${where}: ${id}`).toEqual([card.x, card.y, card.w, card.h]);
       expect(now.rows, `${where}: ${id}`).toEqual(card.rows);
       expect(now.hub.length, `${where}: ${id}`).toBe(card.hub.length);
-      now.hub.forEach((value, index) => expect(Math.abs(value - card.hub[index]), `${where}: ${id} hub`).toBeLessThan(0.5));
+      if (card.hub.length) {
+        const centre = (hub: number[]): number => hub[1] - hub[0] / 2;
+        expect(Math.abs(centre(now.hub) - centre(card.hub)), `${where}: ${id} hub's centre on its edge`).toBeLessThan(0.5);
+        expect(now.hub[0], `${where}: ${id} hub's size`).toBeGreaterThan(card.hub[0] - 0.5);
+      }
     }
     // Symbol names are one size, their reading size, from reading scale through the far band (the overview's rows are
     // silent but for a pin). File names are one size at every press, and their reading size wherever the zoom stands on
