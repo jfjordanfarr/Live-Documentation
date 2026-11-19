@@ -520,3 +520,47 @@ The owner does not know whether their Oracle side uses packages. On utPLSQL near
 - Lint, build and the tests' type-check passed.
 - Unit: 2,252 tests in 197 files. Integration: 158 tests in 23 files.
 - The documentation link enforcement and the three SlopCop audits passed.
+
+## The fourth leg: the PL/SQL oracle kept, and the four tables
+
+The root accepted the third leg. Packages as a kind wait on the owner, whose Oracle side was never scannable (2026-09-26) and who does not know whether it uses packages. A separate cold run is measuring tonight how the linked server's name could be carried as an address door on the board. Two commits:
+
+- **`027fb095` Keep the PL/SQL oracle so that it can be run again.** The emitter is now `scripts/oracle/PlSqlEmitter.java`, beside the ScriptDom one, and the driver and comparison is `scripts/oracle/plsql-compare.ts`, run as `npm run oracle:plsql -- <folder>`.
+
+  The driver fetches into `~/.cache/live-documentation/oracle-plsql`, a cache folder of the tool's own:
+  - the ANTLR 4.13.2 tool jar (SHA-256 `eae2dfa1…`);
+  - the grammar's four files at grammars-v4 `de38599628d221099c046e92962f70204d852b54`, the last change to `sql/plsql` as of November 19.
+
+  Each file is checked against its SHA-256 sum, written in the script. It then generates and compiles the parser in a scratch folder, blanks SQL*Plus lines for both readers alike, and prints the comparison. Without `java` and `javac` it says so in one line and exits; it installs nothing.
+
+  Its header says what it cannot judge: names, the files the grammar refuses and why, and the blanked SQL*Plus lines. Run again on utPLSQL it reproduced the third leg's figures exactly. Its two files are in the hand-read list of this repository's entry points.
+- **`afe8dd4e` Read Oracle's CREATE GLOBAL TEMPORARY TABLE and the other words before a kind.** The four tables the reader missed were `create global temporary table ut_coverage_sources_tmp`, `ut_compound_data_tmp`, `ut_compound_data_diff_tmp` and `ut_json_data_diff_tmp`. That is a reading fault: the reader looked for `TABLE` right after `CREATE`.
+
+  A global temporary table is a lasting object of its schema; only its rows are temporary. Passed over now:
+  - `GLOBAL` and `PRIVATE TEMPORARY`, `SHARDED`, `DUPLICATED`, `IMMUTABLE` and `BLOCKCHAIN` tables;
+  - `EDITIONABLE` and `NONEDITIONABLE` code, which Oracle's own export writes before every routine and view;
+  - `[NO] FORCE` and `EDITIONING` views.
+
+  An object table, `CREATE TABLE t OF type`, and quoted or schema-qualified names were already read; the test holds them. The test was red before and is green.
+
+  After it, utPLSQL's tables found are 15 of 15, all at the right line, and its other figures are unchanged. ScriptDom's figures on the three T-SQL corpora did not move:
+  - tSQLt: 1,525 of 1,535 objects, and 969 of 969 dependency lines;
+  - DNN's provider scripts: 4,052 of 4,056, and 6,961 of 6,962;
+  - DNN's `.sql`: 51 of 51, and 29 of 29.
+
+### What the reader records today for a linked server's name
+
+For the cold run and the ruling after it, three facts, as the reader stands at `afe8dd4e`:
+
+1. **`OPENQUERY(server, '…')`**, when the query is written out in full: each name the query uses is recorded with the server in the first place and the database empty, as `ORACLE_CENTRAL..CENTRAL.ACCOUNT`. It is marked as reached through a linked server and matched by schema and object alone. The server's name is recorded nowhere else. A query with a computed part is not read, and nothing an `OPENQUERY` creates is a symbol.
+2. **A four-part name** `server.db.schema.object`, or `server..schema.object`: recorded as written, every part kept in the written name, marked as reached through a linked server, and matched by schema and object alone. The server and the database play no part in the match.
+3. **`EXEC (…) AT server`**, when the text is written out in full: the text is read as running on that server. Its uses are written `server..schema.object`, as for `OPENQUERY`, and what it creates is not the script's symbol, being the other server's. A procedure executed by a four-part name, `EXEC server.db.schema.proc`, is a four-part name as in 2.
+
+### Verification of the fourth leg
+
+The full gate without the browser ran at `afe8dd4e`, at load averages near 13 to 17 on 20 threads:
+- Live Docs: 1,108 validated, none changed by the run.
+- Lint, build and the tests' type-check passed. Unit: 2,253 tests in 197 files.
+- Integration: one failure. The hand-read list had the Java emitter's entry as `program`, where the generator rightly writes `program main` for a Java program's main method. That was mended in `c1eeeb1f`.
+
+After the mend, the stages after the unit tests were run one by one, all passing: integration (158 tests in 23 files), the documentation link enforcement, and the three SlopCop audits.
