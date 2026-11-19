@@ -342,7 +342,7 @@ Each value below is a meaning, not decoration. Values are read from the files na
 
 ## Typography
 
-### What is in use
+### What is in use: type
 
 Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; no canvas draws text in its own font.
 
@@ -363,7 +363,7 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
 - **Letter spacing:** 10 distinct values, in em and in px.
 - **Case and style:** `uppercase` in 15 places, all section labels; `italic` in 6.
 
-### Rules
+### Rules for type
 
 **Rule: rank is told by value first, then weight, then size (type hierarchy).**
 
@@ -441,7 +441,7 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
 
 ## Shape
 
-### What is in use
+### What is in use: shape
 
 The values of `border-radius` in the stylesheets on 2026-11-18: 14 distinct values in 107 declarations.
 
@@ -459,7 +459,7 @@ The values of `border-radius` in the stylesheets on 2026-11-18: 14 distinct valu
 | 10px | 3 | The reading dialog; the has-tests halo; the closed directory's tab shape |
 | 0, 9px, 24px, `7px 7px 3px 7px` | 1 each | A cell; the ancestry bar; the round closed shape; the ancestor tab |
 
-### Rules
+### Rules for shape
 
 **Rule: a card's corners are rounded.** A 2D file card has rounded corners.
 
@@ -484,7 +484,7 @@ The values of `border-radius` in the stylesheets on 2026-11-18: 14 distinct valu
 
 ## Spacing and sizing
 
-### What is in use
+### What is in use: spacing and sizing
 
 Counted from the stylesheets on 2026-11-18:
 
@@ -501,7 +501,7 @@ The gaps, by frequency in the first count: 6 (16), 4 (14), 12 (12), 8 (11), 10 (
 - the directory handle's line, air and indent, 15, 6 and 16 (`views/localView/directory-handle.ts:17–41`);
 - the gap between a name and its controls, `CONTROLS_GAP = 4` (`views/localView/held-lines.ts:82`).
 
-### Rules
+### Rules for spacing and sizing
 
 **Rule: a box never changes size with the zoom.** On the 2D map, a card's and a closed directory's box in map space is fixed. Inside it, each part is bounded by the room of the box it belongs to. Where that room runs out, the part follows the map or leaves the picture.
 
@@ -531,7 +531,7 @@ The gaps, by frequency in the first count: 6 (16), 4 (14), 12 (12), 8 (11), 10 (
 
 ## Layering and elevation
 
-### What is in use
+### What is in use: layering
 
 **`z-index`:** 22 distinct values in 44 declarations, falling into two bands:
 
@@ -546,7 +546,7 @@ There are ties at 100: the sidebar, the controls, the path report and the direct
 
 **Frosted panels:** backdrop blur at three values: 8, 10 and 14 px.
 
-### Rules
+### Rules for layering
 
 **Rule: elevation is told by tone first, shadow second.** See the tonal elevation rule under [Grounds and lines](#grounds-and-lines-dark-interior). A shadow is added only to what floats over the map (menus, panels, dialogs), never to what stands in it.
 
@@ -581,7 +581,7 @@ Only the middle one is today's: `0 8px 24px` at 0.4 recurs three times (`styles/
 
 ## Iconography
 
-### What is in use
+### What is in use: icons
 
 **SVG line icons.** 16 SVG icons on a 24-unit grid (`viewBox="0 0 24 24"`), stroked in `currentColor` with round caps and joins. Their drawn sizes are:
 
@@ -608,7 +608,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 
 **Drawn in CSS.** The history dialog's disclosure is drawn with borders (`styles/history.css:99`), and so is the sidebar's summary marker (`styles/shell.css:1004`).
 
-### Rules
+### Rules for icons
 
 **Rule: a repeated action is an icon with a name.** An action that recurs (Pin, More, Close, Read, Recentre) is drawn as an icon, not a word. It carries an accessible name and a tooltip saying what it does.
 
@@ -639,7 +639,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 
 ## Motion
 
-### What is in use
+### What is in use: motion
 
 **CSS.** Durations of 100, 120, 150, 160, 180, 200, 250, 300, 400 and 450 ms for transitions, written sometimes in `s` and sometimes in `ms`. Loops of 1.2 s (loading), 1.4 s (the World's flow), 1.6 s (the 3D map building) and 1.8 s (the 3D button's cue, once). Easings are `ease`, `ease-out`, `ease-in`, `ease-in-out`, `linear`, the default, and `cubic-bezier(0.25, 0.8, 0.25, 1)` once (`styles/shell.css:295`).
 
@@ -655,7 +655,7 @@ Their strokes are 1.5 (most), 1.6 (the view icons), 1.7 (a symbol row's Pin and 
 | 3D focus | 650 ms | `views/forceGraphView.ts:753` |
 | The change between 2D and 3D | 1,400 ms | `views/perspectiveTransition.ts:265` |
 
-### Rules
+### Rules for motion
 
 **Rule: a transition explains a change of place.** Following a connection, changing scale, opening evidence and returning are animated, so that the person keeps their bearings. A change that is not spatial is not animated for its own sake.
 
