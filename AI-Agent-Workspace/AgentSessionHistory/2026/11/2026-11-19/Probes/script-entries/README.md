@@ -98,6 +98,50 @@ Against today's entries. Real scripts are this repository's, its samples' and th
 - `(cd x && node ../a.js)` is still not read: a path is resolved from the manifest's folder, not from a `cd`.
 - `%VAR%` and `$(…)` are still not read. Today finds `node $(npm root)/../scripts/a.js` only because `root)/..` happens to cancel.
 
+## November 19, 2026, later: A was built
+
+The root accepted the measurement, withdrew the recorded rule, and chose **A** over B. The two give the same answers on every real script, so the `--` reading rests on constructed rows alone, both its gains and its one false entry. With the evidence equal, the root took the form with one rule fewer. The root's other rulings:
+- Parentheses stay inside words.
+- Today's filter stays, with no "code only" filter.
+- The `.env` fork above is not built.
+
+**What changed.** `filesRunBy` and `shellCommands` in `packages/engine/src/live-docs/adapters/json.ts` replace the split at `&&`, `||`, `;` and `|`. The new reading is the tokenizer described under "The rules" above. In each command, the first file that is not a tooling input still counts. A quoted word that holds whitespace and names no file is read as a command of its own. The function's remarks name what is still wrong, each with its example. Among them: a wrapper's command after a bare `--` (`dotenv … -- vite-node a.ts`, and this repository's browser lane), with what B would have found and what it would have cost. They also say why a quoted word after `-e` or `-c` is read like any other, naming the engine's old `node -e "…copyFileSync(…)"` build.
+
+**Tests, red against the code before this change and green after.** These are in `json.test.ts`, under "JSON Adapter on package.json scripts, read as a shell reads them":
+
+| Case | Script | Before | After |
+|---|---|---|---|
+| each quoted command concurrently runs, through pnpm and yarn | `concurrently "pnpm exec tsx scripts/a.ts" "yarn tsx scripts/b.ts"` | `scripts/a.ts` | `scripts/a.ts`, `scripts/b.ts` |
+| each quoted command concurrently runs, behind cross-env | `concurrently "cross-env NODE_ENV=dev node a.js" "node b.js"` | `a.js` | `a.js`, `b.js` |
+| a bundler's input and the next quoted command | `concurrently "esbuild src/main.ts --watch" "node b.js"` | `src/main.ts` | `b.js`, `src/main.ts` |
+| concurrently's README form | `concurrently -n api,web "node scripts/api.mjs" "tsx scripts/web.ts --watch"` | `scripts/api.mjs` | `scripts/api.mjs`, `scripts/web.ts` |
+| start-server-and-test's two commands | `start-server-and-test 'node scripts/serve.mjs' http://localhost:3000 'node scripts/check.mjs'` | `scripts/serve.mjs` | `scripts/check.mjs`, `scripts/serve.mjs` |
+| a quoted path with a space is one path | `node "scripts/my script.js"` | `script.js` | `scripts/my script.js` |
+| a comment after a separator | `node a.js; # node b.js` | `a.js`, `b.js` | `a.js` |
+| the bundle a redirection writes (assertion-error) | `deno bundle mod.ts > index.js` | `index.js` | none |
+| the bundle a piped redirection writes (immediate) | `browserify -s immediate ./lib/browser.js \| derequire > dist/immediate.js` | `dist/immediate.js`, `lib/browser.js` | `lib/browser.js` |
+| a transform's input on stdin and its output (immediate) | `browserify-transform-cli … < ./lib/index.js > ./lib/browser.js` | `lib/index.js` | none |
+| text a here-string feeds | `cat <<< "node b.js"` | `b.js` | none |
+
+The other tests in that block were green before the change and stay green:
+- The 25 more cases of that table, whose answer the change keeps.
+- The 12 known wrong answers. Each is pinned under a name that says so, and each test also asserts that it is not the right answer. They are:
+  - the two dotenv forms and the browser lane, after a bare `--`;
+  - `--env-file .env`;
+  - a program after `-r`;
+  - `(cd x && node ../a.js)`;
+  - `%VAR%`;
+  - `$(git rev-parse --show-toplevel)/…`, which replaces the accidental `$(npm root)/..` row;
+  - `babel -o legacy.js index.js`;
+  - `cp src/a.js dist/`;
+  - `echo "node b.js …"`;
+  - `tee check.log`.
+- The engine's old copying build in a workspace whose `tsconfig` maps `dist/` to `src/`. It declares nothing. A trial that split `(` and `)` as a shell does turned this test red, so it can fail.
+
+**The two proofs.**
+- `npm run live-docs:generate` updated one doc: `json.ts`'s. Only its time and its two symbols' line numbers changed. Every other doc of the 1,091 was unchanged, including `json.test.ts`'s, whose authored notes were then written by hand.
+- The adapter before the change and the built adapter after it were run over every `package.json` version on main's first-parent line and at the head: 181 versions, of which 179 can be read; the other two are deletions. Each was resolved against its own commit's tree and `tsconfig` files. All 179 declare the same entries, 1,993 in all. The measurement's harness, run again on the built adapter, gives the prototype of A's answer on all 1,026 rows. It differs from the old adapter's answer on 14 rows: the 6 published scripts above with a redirection, and 8 constructed rows.
+
 ## Every row
 
 In each rule's column, `=` means the same entries as today; `+` an entry the rule adds and `−` one it drops, each marked T, F or A. A column for one variant, the recorded rule with today's filter in place of code, is left out of the row tables and kept in the totals; its differences are judged in the last column.
