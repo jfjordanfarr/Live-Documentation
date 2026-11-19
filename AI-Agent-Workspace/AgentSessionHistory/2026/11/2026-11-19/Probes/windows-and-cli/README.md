@@ -474,3 +474,142 @@ All passed, and the tree was clean.
 - The reading seam waits for the adapters' builders, as the root ruled.
 - The orphans case turns red only once the writer's quoted form is joined.
 - The fate of `packages/cli` is the owner's.
+
+## Third leg, November 19
+
+The root ruled the reading seam in, once the SQL and PowerShell readers' builders had handed back. It added the generator finishing a run that meets a file it cannot map, `exclude` following git's `core.ignorecase`, and a check on how refusals are printed. This section says what the third leg built, on top of `17532f56`.
+
+### One reading step for every language reader
+
+`packages/engine/src/tooling/sourceText.ts` holds `decodeSourceText(bytes)` and `readSourceText(path)`. The rule, in order:
+
+1. A byte-order mark decides: UTF-8, UTF-16 LE, UTF-16 BE. The mark is not part of the text.
+2. UTF-16 without a mark is taken only where it is certain. That means an even number of bytes, in which every pair is one zero byte and one that is not, with the zero always on the same side. In other words, every character lies between U+0001 and U+00FF. No text in a one-byte encoding holds a zero byte in every other place. **Refused as a guess:** UTF-16 without a mark that holds any character above U+00FF. Telling it apart would mean weighing how often zero bytes occur, and a wrong guess reads a file as nonsense. Such a file holds zero bytes, so it falls to rule 5.
+3. Bytes that are valid UTF-8 and hold no zero byte are UTF-8.
+4. Bytes that are not UTF-8, hold no zero byte, and hold no control character other than tab, line feed, vertical tab, form feed, carriage return and 0x1A are read as Windows-1252.
+5. Anything else is not read. The reader gets empty text, the file is named, and the run goes on.
+
+The decoders are the platform's own `TextDecoder`. `sourceText.test.ts` checks real bytes for each rule and each refusal. Where PowerShell 7 is installed (it is here, 7.7.0), it also checks each readable case against `Get-Content -Raw -Encoding` with the encoding Windows would use: `utf8NoBOM`, `utf8`, `Unicode`, `BigEndianUnicode` and `1252`. All agree, code unit for code unit.
+
+**The readers this leg moved onto the step** (each `fs.readFile(x, "utf8")` became `readSourceText(x)`):
+- the TypeScript/JavaScript reader (`sourceAnalysis.ts`, and the symbol-index pass in `discovery.ts`), the re-export follower (`dependencies.ts`) and the DOM heuristic (`heuristics/dom.ts`);
+- the adapters for Java, Go and `go.mod`, Rust and `Cargo.toml`, C and C++, Python, Ruby, JSON, HTML, CSS, `pom.xml`, and the TOML manifests.
+
+`json.ts:166` reads a `tsconfig` through TypeScript's own `ts.sys.readFile`, which already decodes by the mark, and stays.
+
+`sourceEncodings.test.ts` saves one file per language as UTF-16 LE and BE with a mark, and as Windows-1252, each with a non-ASCII word in what the reader reports. It holds each one's symbols, descriptions and dependency lines to its UTF-8 twin. All 21 cases failed before the change.
+
+**How a run says which rule read its files.** The generator classifies each file a reader reads with `decodeSourceText` and returns the files read as UTF-16, as Windows-1252, and not read as text. `generate` prints a line for each, for example `[live-docs] 1 file read as Windows-1252, since it is not UTF-8: src/ansi.py.` A file that is no text is named on stderr with the reason. The generator reads each such file's bytes a second time to classify them; the readers still open the file themselves.
+
+**The simplest correct form.** The generator reads each file's bytes once, decodes them with `decodeSourceText`, counts the rule, and hands the text to `analyzeSourceFile`. That function passes it to `analyzeWithLanguageAdapters` as `content`, and no reader opens its own file. The step was built for either form: `decodeSourceText` takes bytes, `readSourceText` a path. That form would change:
+- `analyzeSourceFile` and `buildWorkspaceIndexes`, to take or read the text once;
+- `LanguageAdapter.analyze`'s input, to carry `content`;
+- the first line of each adapter.
+
+The secondary reads (`go.mod`, `Cargo.toml`, a re-exporting file, DOM markup) would keep `readSourceText`. This leg did not change any signature.
+
+**The history's tree writer.** It already writes each commit's files as git stores them, byte for byte (`git` blobs written to the scratch tree without decoding), so the history's regeneration reads them through the same step with no change. I confirmed this by reading the tree writer's use of the blob bytes, not by a run.
+
+### The generator finishes a run that meets a file it cannot map
+
+`generator.ts` now wraps each file's work in one `try`, from the binary sniff to the write. Before writing, it reads the doc back with `parseLiveDoc`. A file that cannot be read, or whose doc the reader refuses, is skipped and recorded in `failed` with its source path and the reason. The run goes on to write every other doc, prune, and write the index over what it could map. `generate` then prints, on stderr:
+
+```
+[live-docs] Could not map 1 file; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".
+  src/hostile.ts: Live Documentation wrote a doc for it that its own reader refuses: line 19: expected a symbol heading, found "not a line of the grammar"
+```
+
+It then exits 1. A failed file's old doc is removed only when the reader refuses it and it holds no authored words: that is the leftover of an earlier run that stopped on the file.
+
+**The test.** `generator.unmappable.test.ts` wraps the writer so that one file of three gets a doc the reader refuses, and makes a second workspace with a file that cannot be opened. Both cases failed before the change, the first with `.live-documentation/source/src/hostile.ts.md: line 19: …` as the cold run met it. The CLI's lines for the reading rules are covered in `generate-cli.test.ts`.
+
+**What I changed in `generator.ts`,** away from the ordering near line 137 and from `classifyChange`:
+- imports: `hasReader`, and `decodeSourceText, type SourceTextReading`;
+- the result's `failed` and `readings` fields, and the `SourceReadings` type;
+- two arrays beside `results`;
+- in the loop, `try {` before the binary sniff, the reading count, the read-back before `results.push`, and the `catch` after the write that records the failure and calls `removeRefusedDoc`;
+- the two fields in the return;
+- `noteReading` and `removeRefusedDoc` after `generateLiveDocs`.
+
+The loop's body inside the new `try` is left at its old indentation so that the join with the other branch's changes to this file stays small. Indent it at the join.
+
+### `exclude` follows git's `core.ignorecase`
+
+`gitIgnoresCase` in `tooling/gitIgnored.ts` asks `git config --type=bool --get core.ignorecase`. Discovery matches every `exclude` pattern without regard to case only when the answer is `true`. Git sets that on a clone made on Windows or macOS. Otherwise a pattern matches exactly: when the setting is false, absent, or git cannot be asked. `matchesPathPattern` takes the flag. The archetype overrides and the declared entry points still match exactly. The new cases in `discovery.test.ts` imitate each setting with `git config core.ignorecase true` and `false` on a fresh repository, and with the setting absent. In each, `exclude: ["vendor/**"]` is checked against `Vendor/Lib.cs`. The `true` case failed before the change.
+
+### Refusals printed whole
+
+`runCommand` prints a failure's `error.message` whole, on its first line, and with `--stack` the whole stack, whose first line is the message. A refused command line prints the `UsageError`'s message whole, then the pointer to `--help`. The generator's new failures print each reason whole after the source path. So a reader's message that ends by saying `live-docs:generate` rewrites a doc reaches the person whole, whichever path it takes. This was read in the code, not run, since that message lives on the names' branch.
+
+### For whoever joins the branches: the readers in other builders' files
+
+Each of these files reads its own source as UTF-8, or decodes it for itself. Each line becomes a call to the one step. Add `import { readSourceText } from "../../tooling/sourceText";`, and drop `fs` from the file's imports where nothing else uses it.
+
+| File and line, as on `17532f56` | Replace | With |
+| --- | --- | --- |
+| `adapters/sql.ts:27` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/aspnet.ts:18` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/csharp.ts:893` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/csharp.ts:1249` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/dotnetConfig.ts:75` | `const content = await fs.readFile(absolutePath, "utf8");` | `const content = await readSourceText(absolutePath);` |
+| `adapters/project.ts:58` | `const content  = await fs.readFile(absolutePath, "utf8");` | `const content  = await readSourceText(absolutePath);` |
+| `adapters/powershell.ts:934` | `const content = decodeScript(await fs.readFile(absolutePath));` | `const content = await readSourceText(absolutePath);` |
+
+After the last swap, `decodeScript` (`powershell.ts:902–906`) has no caller and goes. The one step reads by the same marks and also reads Windows-1252, which is what Windows PowerShell 5.1 itself assumes for a script without a mark. `openings.ts` and `csharp.dependencies.ts` open no source file; the latter probes for files by name (Part B, item 2). `dotnetPaths.ts` and `solution.ts` are not on this branch. If they read a file, the same swap applies. For each swapped reader, the test to add is `sourceEncodings.test.ts`'s case with a `.sql`, `.cs`, `.aspx`, `.config`, `.csproj` or `.ps1` file, which belongs in that file's own leg.
+
+### A channel for what a reader leaves undrawn
+
+The root added this to the leg. An analysis result may now carry `notices?: SourceNotice[]`, each `{ reason, subject }` (`coreTypes.ts`). A reason is a short fixed phrase the reader chooses, so that counts add up across files. `analyzeSourceFile` hands an adapter's result on whole, so the notices pass through it with no change. `generateLiveDocs` counts them a reason at a time, each subject as `<source path>: <subject>`, and returns them as `notices`. `generate` prints a line for each reason, such as `[live-docs] paths several projects hold, left unlinked: 149.`, in the same place as the unread kinds and the reading rules. `--verbose`, new on `generate`, lists the subjects after the count. Nothing of it is written into a Live Doc.
+
+`generator.notices.test.ts` wraps the analysis with a fake reader that gives two reasons across three of four files, and checks the counts, the subjects and a doc with no trace of them. It failed before the channel existed. The command's line itself is not covered by a test, since a fake reader cannot be put into the command's own process.
+
+**The one line each reader would add,** for whoever joins the branches. Each goes where the reader decides to leave the thing undrawn, with a `notices` array returned on its result:
+
+- **.NET** (`csharp.dependencies.ts` or `aspnet.ts`, where a `~/` path is left unlinked because several projects hold the file):
+
+  ```ts
+  notices.push({ reason: "paths several projects hold, left unlinked", subject: specifier });
+  ```
+
+- **SQL** (`sql.ts`, where a string is passed over because part of it is computed):
+
+  ```ts
+  notices.push({ reason: "SQL strings computed in part, not read", subject: `line ${line}` });
+  ```
+
+- **PowerShell** (`powershell.ts`, where a load names no path the text can fix, as `. $file.FullName`):
+
+  ```ts
+  notices.push({ reason: "loads whose path the text does not fix, not followed", subject: `line ${line}: ${command}` });
+  ```
+
+### The third leg's verification
+
+All runs used a private TMPDIR.
+
+- **`npm run safe:commit` without the browser passed whole on its last run**, at a load average of 28 to 34:
+  - the Live Docs pipeline, with all 1,099 docs unchanged, and lint;
+  - ESLint, the build and the tests' type-check;
+  - 203 unit files with 2,298 tests, and 21 integration files with 170 tests;
+  - documentation link enforcement and the three SlopCop audits;
+  - a clean tree afterwards.
+- **The run before it, before the notices channel, at a load average of 31 to 33,** had two unit cases overrun the five-second deadline:
+  - `generatorIdentity.test.ts`'s lens-key case, at 5.8 s;
+  - `forceGraphOctree.test.ts`'s octree case, at 6.0 s.
+
+  Both passed in the next run.
+- **Before its mend:**
+  - The readers' 21 encoding cases failed.
+  - The generator's two unmappable-file cases failed.
+  - The `exclude` case with `core.ignorecase` true failed.
+  - The notices case failed.
+  - The reading step's own cases were written with it.
+  - The command's new lines (the reading rules, the unmappable files) were not run against the old command, which printed none of them.
+- **The browser stage was not run.** This leg changes no Explorer file. It does add engine files and imports that the picture tests' neighbourhoods may draw: `tooling/sourceText.ts`, imported by sixteen readers and by `generator.ts`.
+
+**Unfinished, or another's:**
+- the swaps in the readers other builders hold, given above;
+- the generator reading each file once and handing the readers its text;
+- the loop body's indentation inside the new `try`;
+- the three readers' notice lines;
+- a test of the command's notice line.

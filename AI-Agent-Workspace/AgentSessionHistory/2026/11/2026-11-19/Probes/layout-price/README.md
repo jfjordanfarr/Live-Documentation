@@ -145,9 +145,94 @@ So the whole of the gain is wire: order 77's lines run a quarter of a million pi
 
 Of the 82 orders, 17 are cheaper than the first picture. One is order 77. The other sixteen are two pictures within a percent of each other: orders 5, 6, 15, 16, 28, 41, 51, 74 and 76 all give 3,429,330 (−0.46 %), and orders 10, 11, 46, 60, 61 and 68 give 3,429,419 (−0.45 %); order 37 gives 3,443,476. The sweeps from any start fall into a few pictures, and one start in 82 falls into order 77's. More sweeps do not find it: the first picture's starts swept 8, 16 or 32 times give the first picture again, to the pixel of wire. A seed laid out alone took 411 to 1,130 ms, median 549 ms, at a load of 16 to 22 (the page's own solver; the first picture's three starts 2.5 s).
 
-### Not done
+### The sample (second leg)
 
-The sample of thirty maps of this repository and the estate, by a seeded draw, needs a capture of each from the browser, about a minute each through the lane at today's load; it was not taken. Nor was a different deterministic rule for the first order tried (the median in place of the barycenter, or a pass that swaps neighbours while crossings fall, as Graphviz's `dot` does after its median sweeps): the order step already sweeps every start four times by the barycenter, and sweeping longer changed nothing here.
+[`sample-maps.ts`](sample-maps.ts), seed 20261119, drew thirty maps: of this repository's source (under `packages/` and `scripts/`, no tests), eight single files as a link opens them, eight files with their own directory opened, eight sets of two to four files pinned whole; of the estate, two of each. [`capture-addresses.ts`](capture-addresses.ts) captured them through the lane in two holds of fifteen. The first hold ran; **the second waited behind nine other holders past this leg's end and was stopped**, so the sets of pins and the estate are not in the table. [`run-sample.sh`](run-sample.sh) prices every map's first picture against seeds 1 to 80 alone; [`sample-summary.ts`](sample-summary.ts) tabulates them and holds each lab first picture to the page's.
+
+| Map | Cards | Lab's first picture is the page's | Best of 80 against the first | Orders better / by more than 1 % | Median rule's first against today's |
+| --- | --- | --- | --- | --- | --- |
+| `client/errors.ts` | 3 | yes | 0 | 0 / 0 | 0 |
+| `slopcop/assetPaths.ts` | 3 | yes | 0 | 0 / 0 | 0 |
+| `client/graph-helpers.ts` | 12 | yes | 0 | 0 / 0 | −0.29 % |
+| `layout-lab/restarts.ts` | 12 | yes | 0 | 0 / 0 | +2.31 % |
+| `slopcop/symbolReferences.ts` | 5 | yes | 0 | 0 / 0 | 0 |
+| `localView/branch-routing.ts` | 6 | yes | 0 | 0 / 0 | +1.29 % |
+| `layout-lab/spatial.ts` | 12 | yes | 0 | 0 / 0 | 0 |
+| `views/forceGraphWrappers.ts` | 11 | yes | −0.36 % | 1 / 0 | +1.18 % |
+| `languages/rust.ts`, its directory opened | 12 | yes | −0.55 % | 7 / 0 | 0 |
+| `localView/branch-search.ts`, its directory opened | 82 | no (placement 946,457 against 1,384,623) | −0.33 % | 1 / 0 | +1.60 % |
+| `history/lens.ts`, its directory opened | 33 | nearly (placement 312,949 against 313,429) | **−5.50 %** | 58 / 58 | −3.64 % |
+| `slopcop/markdownShared.ts`, its directory opened | 14 | yes | 0 | 0 / 0 | 0 |
+| `history/directories.ts`, its directory opened | 32 | nearly (163,512 against 165,672) | 0 | 0 / 0 | +13.44 % |
+| `adapters/cargo.ts`, its directory opened | 61 | no (216,349 against 225,767; 3,295 against 3,745 wide) | **−5.51 %** | 14 / 9 | −0.39 % |
+| `config/liveDocumentationConfig.ts`, its directory opened | 56 | yes | −0.08 % | 9 / 0 | +2.50 % |
+
+What it says, with the caveat that the lab's card model is off the page on four of the seven opened directories (an opened directory stands in flow order, and the model is a few to some hundreds of pixels short there, as on the estate):
+
+- **Single files:** the first picture is the best of 80 on seven of eight, and the eighth is 0.36 % from it. No gain to find.
+- **Directories opened:** two of seven have a gain of 5.5 %. On `history/lens.ts`'s, 58 of the 80 orders beat the first by more than 1 %: the first order there is unusually bad, not one lucky order good. On `adapters/cargo.ts`'s, 14 orders beat it, 9 by more than 1 %. The other five are within 0.6 %.
+- **The five files** are the third map with a large gain, and the only one where it is a single order in 82.
+
+### A fixed rule for the first order: the median
+
+Measured in a scratch copy of the sources with the order step's barycenter replaced by the median of the neighbours' places (the textbook alternative, Gansner et al.'s), nothing else changed and nothing in this worktree. On the five files the median's first picture is 3,458,214, 0.38 % dearer than today's; sweeping it 8, 16 or 32 times changes nothing. Its own order 77 is 3,188,345, 7.45 % under today's first, so order 77's basin belongs to that start's shuffle, not to the sweep's rule. On the fifteen maps it is no better a rule: equal on five, better on three (−0.29 %, −0.39 %, and −3.64 % on `history/lens.ts`'s), dearer on seven (up to +13.44 %). A pass that swaps neighbours while crossings fall was not tried.
+
+So no fixed rule tried reaches order 77's kind of gain: on the five files the gain is one start in 82 under either rule, and where a first order is broadly bad (`history/lens.ts`'s) the median recovers two thirds of it but costs elsewhere.
+
+## Second leg: candidates A and B searched and drawn
+
+_Taken 2026-11-19 between 21:30 and 22:15 UTC on `6d96e11f`, at a load of 13 to 33. Built in this probe only, nothing in the product's price: [`candidates.ts`](candidates.ts) says what each candidate adds to the page's price, and [`search-moves.ts`](search-moves.ts) judges the first picture's starts and every trial by it. Every search here lays its levellings out with the shuttle's mend as it will land (each levelling's ties nearest the shown picture's cards and slots)._
+
+### The two candidates
+
+- **A.** An outline's steps are counted only between neighbouring columns that both hold the directory's own cards. Today counts every nonzero step at Membrane Simplicity's 200.
+- **B at 1.5.** Every drawn outline's height costs 1.5 px of wire a pixel. Between the bounds you set (1.11 refuses 23, 2.78 still keeps 25) I took 1.5 for one reason: it stays below Membrane Evenness's 2 a pixel of step, so the October 7 stretching, an outline squared by stretching a segment d px to take away a step of d px, still pays in the price (it saves 2d of evenness and costs 1.5d), while a levelling of a one-way staircase, which saves no evenness, costs 1.5 a pixel against the 200 its step saves. The placement still stretches as today: B only judges.
+
+### What the pictures needed
+
+[`capture-addresses.ts`](capture-addresses.ts) captures the page at any address with the lab's own `captureFromPage`, through the lane, one browser for several addresses; [`lean.ts`](lean.ts) builds the exploration from the address's state (the subject, the pins, the directories opened, an opened directory standing in flow order from the top, as the page does). No lab file changed. Held to the page by [`check-capture.ts`](check-capture.ts):
+
+- `pathfind.ts` as a link opens it: the lab's first picture is the page's (16 cards, placement 97,117, 2,920 × 3,342), and today's search makes the packet's three levellings at its prices (337,834, 337,634, 337,434).
+- The estate with `PaymentService` and `PaymentService/Data` opened: the same 6 cards and width, but 765 px tall where the page is 786, and a placement measure of 1,761 against 1,866. The card model is about 21 px short somewhere in this flow picture, which I did not run down. The search makes the packet's one levelling all the same: `PaymentsContext.cs` 165 px down (the page's 186), the L made a rectangle, the price 6.0 % lower (the page's 6.5 %).
+- The five files: the lab's own capture, which reproduces the page to the pixel.
+
+### Which levellings each takes
+
+| | Today | A | B at 1.5 |
+| --- | --- | --- | --- |
+| Five files, move 22 (a 7 px jog) | taken | refused | taken |
+| Move 23 (`scripts/live-docs`, a name lifted 60 px, +180 px of outline) | taken | **taken** | refused |
+| Move 24 (`packages`, +300) | taken | refused | refused |
+| Move 25 (`explorer/src/shared`, +72 under a card) | taken | taken | taken |
+| Moves 28 and 29 (`scripts`, `scripts/live-docs`, +608 each) | taken | refused | refused |
+| Moves 26 and 27 (`approximation.ts` and the cards under it up 87 and 150 px, outlines −368 and −750) | taken | **not reached** | taken |
+| The estate's levelling (an L made a rectangle, a card level with its neighbours) | taken | taken | taken |
+| `pathfind.ts`'s three (+300, +492, +120 px of outline; with the shuttle's mend none moves a card) | taken | refused | refused |
+| Five files, whole search (80 orders) | 29 moves | 20 moves | 28 moves |
+
+Two things the table does not say by itself:
+
+- **A also changes earlier moves.** With fewer steps to count, its search takes order 2 as well (orders 1, 2, 5 and 77), and after order 77 it makes six levellings where today makes thirteen: it never reaches today's 26 and 27, which lift `approximation.ts` and the cards under it and shrink two outlines by 368 and 750 px. The packet's builder saw those two as harmless; they are the kind of levelling that tidies.
+- **B goes further than refusing.** After order 77 its search takes, besides today's 26 and 27, six levellings that today's price never reached, each pulling an outline in round its cards by moving cards: outlines 654, 418, 696, 2,535, 688 and 4,424 px shorter, cards moved by up to 1,165 px, the wires 27,432 px longer in all (12,876 px in its last move). At 1.5 a pixel of outline against 1 a pixel of wire, B trades wire for snug outlines, which today's price was built never to do (a box's height costs a millionth of a wire's pixel in the placement for that reason).
+
+### The pictures
+
+Each at reading size, the lab's geometry drawn plain by [`draw.ts`](draw.ts) (outlines by the page's own `membranePath`, cards as boxes with their file's name, wires straight from pin to pin; not the page's look), four panels: today before the move, today after it, the end of A's own search, the end of B's own search. [`draw-places.sh`](draw-places.sh) draws them from [`run-candidates.sh`](run-candidates.sh)'s runs.
+
+- Move 23: [five-move-23.png](pictures/five-move-23.png). Today's after and A's end are the same picture: `scripts/live-docs/inspect` made level across its two columns, its name standing over empty ground in the column where it has no card. B's end has `emit.ts` about 150 px lower with both outlines drawn snug round it, under a taller band of the outline above them.
+- Move 24: [five-move-24.png](pictures/five-move-24.png). Today's after lifts the tops of `packages` and `packages/engine/src` 60 px in the first column, which holds no card here, so both names stand over a wider empty band; A and B keep the step.
+- Move 25: [five-move-25.png](pictures/five-move-25.png). The outline's foot under the large card on the left comes down 72 px to the level of its neighbour, enclosing that much ground under the card. Taken by all three, so A's and B's ends look like today's after.
+- Moves 28 and 29: [five-move-28.png](pictures/five-move-28.png), [five-move-29.png](pictures/five-move-29.png). Today's after draws `scripts` 608 px down round an empty column. A's end has today's before's outlines, with `approximation.ts` and the cards under it 237 px lower, where today's moves 26 and 27 lifted them and A's search never got. B's end leaves the cards of the right-hand column where they were, has taken `approximation.ts` out of this view, and leaves the column on the left bare from top to bottom, outside any outline.
+- `pathfind.ts`: [pathfind-levellings.png](pictures/pathfind-levellings.png). Today's three levellings make `packages` and `packages/engine/src` level along their tops, both names standing over empty bands 60 to 224 px tall above columns that hold no card at that height; A and B keep the first picture.
+- The estate: [estate-levelling.png](pictures/estate-levelling.png). All three take it: the L of `PaymentService/Data` becomes a rectangle and `PaymentsContext.cs` comes level with `PostPaymentRow.cs`.
+
+![Move 28 under each price](pictures/five-move-28.png)
+
+![The estate's levelling under each price](pictures/estate-levelling.png)
+
+### My recommendation
+
+A, of the two. It refuses three of the five (24, 28, 29), all three of `pathfind.ts`'s and the 7 px jog, keeps the estate's and 25, and changes nothing else about how a picture is made: it counts the term that moved, the steps, only where a step separates cards. It keeps 23, whose step does separate cards (`inspect`'s two columns both hold its files), so the name lifted over an empty column stays; and it stops short of 26 and 27, which I would rather keep. B at 1.5 refuses 23 too, but it is a new trade of wire for outline height that redraws the late picture in ways today's price never asked for (six levellings today's price never reached, 27,432 px of wire), and the pictures show its snug outlines bought with cards far from their partners. B at a rate low enough not to do that (under about 0.33, where it would refuse only 28 and 29) was not run. Neither should land before the owner sees these pictures.
 
 ## Seen on the way
 

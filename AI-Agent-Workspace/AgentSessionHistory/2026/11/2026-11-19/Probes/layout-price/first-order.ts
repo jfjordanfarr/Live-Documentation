@@ -4,7 +4,9 @@
  * price churn aside, and the first picture's starts swept more times. Prints each picture's terms against the first's,
  * which columns' orders differ from the first's, and the milliseconds each took (give the load beside them).
  *
- *   npx tsx --tsconfig ./tsconfig.base.json <this file> <capture.json> <bundle/scope> <N> [out.json]
+ *   npx tsx --tsconfig ./tsconfig.base.json <this file> <capture.json> <bundle/scope|capture> <N> [out.json]
+ *
+ * `capture` as the scope reads the scope from a capture taken by `capture-addresses.ts`.
  */
 import * as fs from "node:fs";
 
@@ -20,7 +22,7 @@ const TERMS = ["vertical", "crossings", "height", "width", "unevenness", "steps"
 
 async function main(): Promise<void> {
   const capture = await readCaptureFile(captureFile);
-  const run = findScope(scopeKey);
+  const run = scopeKey === "capture" ? { bundle: capture.bundle, base: capture.base, scopeName: capture.scopeName, scope: capture.files, subject: capture.subject } as ReturnType<typeof findScope> : findScope(scopeKey);
   const graph = await loadBundleGraph(run);
   const config = baselineConfig();
   const lean = new Lean(capture, graph, run, config);
@@ -39,7 +41,7 @@ async function main(): Promise<void> {
   const seeds = rows.filter(r => r.name.startsWith("seed "));
   const best = seeds.reduce((a, b) => (b.price < a.price ? b : a));
   const pct = (price: number): string => `${(100 * (price - first.price) / first.price).toFixed(2)} %`;
-  console.log(`${scopeKey}: first ${first.price} (${first.name}); best of ${seeds.length} seeds ${best.name} ${best.price} (${pct(best.price)}); seeds cheaper than the first: ${seeds.filter(r => r.price < first.price).length}`);
+  console.log(`${scopeKey === "capture" ? capture.scopeName : scopeKey}: ${first.columns.flat().length} cards; first ${first.price} (${first.name}); best of ${seeds.length} seeds ${best.name} ${best.price} (${pct(best.price)}); seeds cheaper than the first: ${seeds.filter(r => r.price < first.price).length}`);
   for (const r of [first, best, ...rows.filter(r => r.name.includes("sweeps"))]) {
     const diff = TERMS.map(k => `${k} ${r[k] - first[k]}`).join(", ");
     const changed = r.columns.map((column, c) => (JSON.stringify(column) === JSON.stringify(first.columns[c]) ? null : c)).filter(c => c !== null);
