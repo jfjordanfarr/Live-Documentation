@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/lens.ts
-- Generated At: 2026-11-19T08:59:53.286Z
+- Generated At: 2026-11-19T17:55:37.245Z
 
 ## Authored
 ### Purpose
@@ -20,19 +20,22 @@ The lens's key: a hash of the generator's identity and the normalized configurat
 ### Public Symbols
 #### `lensOf` {#symbol-lensof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L20)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L23)
 - Returns: [`HistoryLens`](./format.ts.mdmd.md#symbol-historylens)
 - Parameters: `generator`: [`GeneratorIdentity`](./format.ts.mdmd.md#symbol-generatoridentity); `configuration`: [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `lensOf` — Summary
 The lens of a generator and a normalized configuration, with its key. The key is made of the generator's version,
 its committed code and tool dependency lock, its uncommitted changes to either, the runtime's version of Unicode,
-and the configuration; the commit
+and the configuration but its bundle exclusions; the commit
 the generator runs from rides in the lens for the reader but does not key it, so unrelated commits keep the cache.
+Since 2026-11-19 `bundleExclude` does not key it either: a summary keeps every linked and citing document, and the
+exclusions are applied where the summaries are read (`bundled.ts`), so that an edit of them rewrites the sequence
+from the cache. The lens itself still carries the whole configuration, for the reader.
 
 #### `canonicalJson` {#symbol-canonicaljson}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L27)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L31)
 
 ##### `canonicalJson` — Summary
 JSON with every object's keys in sorted order, so that two equal values always hash alike.

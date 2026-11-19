@@ -56,8 +56,9 @@ export interface WorkingTree {
    */
   environment: Record<string, string>;
   /**
-   * The change's files the tree does not hold, each with the reason: a path that would leave the tree, a name the
-   * disk cannot hold, or an entry beneath a link or clashing with another; the summary says each was not read.
+   * The change's files the tree does not hold, each with the reason: a symbolic link, which is never written, a path
+   * that would leave the tree, a name the disk cannot hold, or an entry clashing with another; the summary says each
+   * was not read. The files left out by the caller's choice are not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
   /** Removes the tree and whatever the version control kept of it. */
@@ -74,8 +75,12 @@ export interface VersionControl {
   mainline(): Promise<MainlineChange[]>;
   /** The ids of the changes a tag names. */
   tagged(): Promise<Set<string>>;
-  /** Writes the tree of a change into `directory`, which must not exist yet. */
-  workingTree(change: string, directory: string): Promise<WorkingTree>;
+  /**
+   * Writes the tree of a change into `directory`, which must not exist yet, but for the files `leaveOut` names by their
+   * repository-relative paths: those the reader of the tree never opens, which are neither written nor named unwritten,
+   * and which the tree's own listing still holds.
+   */
+  workingTree(change: string, directory: string, leaveOut?: (path: string) => boolean): Promise<WorkingTree>;
   /** What happened between two changes. */
   changesBetween(from: string, to: string): Promise<VersionChanges>;
 }

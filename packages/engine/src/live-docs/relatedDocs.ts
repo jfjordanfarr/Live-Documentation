@@ -145,7 +145,8 @@ function citedFile(documentPath: string, link: string, files: ReadonlySet<string
   return resolved !== undefined && files.has(resolved) ? resolved : undefined;
 }
 
-function excluded(workspacePath: string, exclude: readonly string[]): boolean {
+/** Whether the configuration's bundle exclusions (`bundleExclude`) name a document, by its workspace-relative path. */
+export function excluded(workspacePath: string, exclude: readonly string[]): boolean {
   return exclude.some((pattern) => minimatch(workspacePath, pattern, { dot: true }));
 }
 

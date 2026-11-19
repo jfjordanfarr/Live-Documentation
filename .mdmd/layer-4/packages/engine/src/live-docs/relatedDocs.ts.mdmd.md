@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/relatedDocs.ts
-- Generated At: 2026-10-22T16:47:53.629Z
+- Generated At: 2026-11-19T17:55:37.502Z
 
 ## Authored
 ### Purpose
@@ -73,6 +73,13 @@ other, or not at all.
 - `exclude`: Workspace-relative glob patterns of documents that are neither bundled nor linked (`bundleExclude`).
 - `files`: The workspace-relative paths of the documented files, the generator's file index.
 - `location`: Where the Live Docs are, so that a link to a doc names its file.
+
+#### `excluded` {#symbol-excluded}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L149)
+
+##### `excluded` — Summary
+Whether the configuration's bundle exclusions (`bundleExclude`) name a document, by its workspace-relative path.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

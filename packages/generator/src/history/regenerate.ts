@@ -14,9 +14,12 @@
  * let a tracked file a `.gitignore` names into a summary had changed what
  * summaries said without changing the key.
  *
- * The summarizing process is given the person's environment without git's
- * variables, and the tree's own: git's answer of what the tree tracks and
- * ignores is then the tree's, whatever the person's shell had set.
+ * The summarizing process is given only the variables of the person's
+ * environment it needs ({@link summarizingEnvironment}), the tree's own, and
+ * only the node flags it needs ({@link summarizingFlags}): git's answer of
+ * what the tree tracks and ignores is then the tree's, whatever the person's
+ * shell had set. Since 2026-11-19 the tree leaves out what the summarizing
+ * process never opens ({@link unread}).
  *
  * @module
  */
@@ -26,8 +29,10 @@ import { rmSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
@@ -132,7 +137,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       const began = Date.now();
       const scratch = await context.scratch.folder("live-docs-history-");
       try {
-        const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)));
+        const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)), unread(context.configuration));
         const { warned, report } = await runSummary(
           {
             tree: tree.root,
@@ -178,6 +183,19 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 }
 
 /**
+ * The files of a change's tree the summarizing process never opens, by their repository-relative paths, which the tree
+ * writer leaves out: those the configuration's `exclude` names, by discovery's own rule (`matchesPathPattern`), but
+ * never a file under the docs root, which the generator reads and rewrites whatever `exclude` says. The tree's listing
+ * still holds them, which is how the summary asks whether a linked document stands. Measured on 2026-11-19 over this
+ * repository: the process opened no file of the excluded `AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild
+ * wrote.
+ */
+export function unread(configuration: LiveDocumentationConfig): (file: string) => boolean {
+  const docsRoot = `${configuration.root.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "").replace(/\/+$/u, "")}/`;
+  return (file) => !file.startsWith(docsRoot) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern));
+}
+
+/**
  * The variables of the command's environment the summarizing process is given, by name, and no other, so that nothing
  * the person's shell set, `NODE_OPTIONS` among them, changes what it loads or how it reads: `PATH`, by which it finds
  * git; the temporary folders, where the platform keeps them; on Windows the system's folders, without which a process
@@ -197,6 +215,16 @@ export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<s
 }
 
 /**
+ * The flags node is started with for the summarizing process, and no other: none for the built JavaScript, and for
+ * the TypeScript module, under tsx, tsx's loader alone. Until 2026-11-19 `fork` passed on the command's own flags
+ * (`process.execArgv`), so that a flag given to node or tsx, as `--conditions` or `--stack-size`, reached the process
+ * that makes a summary, where the lens could not see it.
+ */
+export function summarizingFlags(worker: string): string[] {
+  return path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
+}
+
+/**
  * Runs one summary in a process of its own, the generator's code loaded
  * afresh, and waits for it.
  *
@@ -210,7 +238,7 @@ async function runSummary(task: SummaryTask, scratch: Scratch, folder: string, e
   const taskFile = path.join(folder, "task.json");
   await fs.writeFile(taskFile, JSON.stringify(task), "utf8");
   return new Promise((resolve, reject) => {
-    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment });
+    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment, execArgv: summarizingFlags(worker) });
     scratch.started(child);
     let errors = "";
     let report: SummaryReport | undefined;

@@ -3,8 +3,10 @@ import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
+
 import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
-import { summarizingEnvironment } from "./regenerate";
+import { summarizingEnvironment, summarizingFlags, unread } from "./regenerate";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
@@ -175,7 +177,13 @@ describe("the lens's key", () => {
 
   it("keys every module of the history folders that starts a process or writes a commit's tree, which no import shows", () => {
     const acting = historyModules().filter((file) => actsForASummary(readFileSync(path.join(repository, file), "utf8")));
-    expect(acting.sort()).toEqual(["packages/engine/src/live-docs/history/git.ts", "packages/generator/src/history/generatorIdentity.ts", "packages/generator/src/history/regenerate.ts"]);
+    expect(acting.sort()).toEqual([
+      "packages/engine/src/live-docs/history/git.ts",
+      "packages/generator/src/history/generatorIdentity.ts",
+      "packages/generator/src/history/regenerate.ts",
+      // Since 2026-11-19 it asks the tree's own listing which linked documents stand.
+      "packages/generator/src/history/summarizeChange.ts"
+    ]);
     expect(acting.filter((file) => !keysTheLens(file) && ACTING_UNKEYED[file] === undefined)).toEqual([]);
     // Every summary module is reached by import from the summarizing process or the command's side of it, or acts so.
     expect(SUMMARY_MODULES.filter((file) => !summaryClosure().reached.has(file) && !acting.includes(file))).toEqual([]);
@@ -200,6 +208,28 @@ describe("the lens's key", () => {
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
     expect(regenerate).toContain("{ ...summarizingEnvironment(process.env), ...tree.environment }");
     expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
+  });
+
+  it("starts the summarizing process with node flags of its own, never the command's", () => {
+    // `fork` passes the command's `process.execArgv` unless told otherwise (the fourth review of 2026-11-19).
+    const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
+    expect(regenerate).toMatch(/fork\(worker, \[taskFile\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
+    expect(summarizingFlags("/x/summarizeChange.js")).toEqual([]);
+    const flags = summarizingFlags("/x/summarizeChange.ts");
+    expect(flags).toHaveLength(2);
+    expect(flags[0]).toBe("--import");
+    expect(flags[1]).toMatch(/^file:\/\/.*\/tsx\//u);
+  });
+
+  it("writes into a commit's tree only what the summarizing process reads: what the configuration excludes is left out, the docs root never", () => {
+    const leaveOut = unread({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, root: "./docs/", exclude: ["archive/**", "docs/**", "**/*.png"] });
+    expect(leaveOut("archive/2026/day.record.md")).toBe(true);
+    expect(leaveOut("assets/logo.png")).toBe(true);
+    expect(leaveOut("src/a.ts")).toBe(false);
+    // The generator reads and rewrites the docs root whatever `exclude` says.
+    expect(leaveOut("docs/layer-4/src/a.ts.md")).toBe(false);
+    expect(leaveOut("docs/logo.png")).toBe(false);
+    expect(unread(DEFAULT_LIVE_DOCUMENTATION_CONFIG)("anything/at/all.png")).toBe(false);
   });
 
   it("holds what the command hands to the code that makes a summary to members each shown not to change it unkeyed", () => {

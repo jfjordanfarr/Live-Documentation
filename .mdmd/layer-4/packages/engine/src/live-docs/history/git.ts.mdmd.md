@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-11-19T12:44:37.009Z
+- Generated At: 2026-11-19T17:55:37.235Z
 
 ## Authored
 ### Purpose
@@ -79,15 +79,19 @@ Why the entry cannot be written, or undefined where it can.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L267)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L274)
 
 ##### `writeStoredTree` — Summary
 Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
-where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
-folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
+where its mode says so, streamed to disk as git gives them; an empty folder where another repository's commit
+stands, as a checkout leaves a submodule it has not initialized. A file `leaveOut` names is not written and not named:
+the caller's reader never opens it (since 2026-11-19, what the configuration excludes, which wrote 511 of a rebuild's
+521 GB in this repository).
 
 Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
-reason, when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
+reason, when it is a symbolic link, which the history never writes (since 2026-11-19: a link the generator wrote
+through, as one at its docs root, carried its writes and its pruning outside the scratch folder, and an empty or
+unwritable target failed the commit); when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
 disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
 something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
 hold its name. Of two entries that clash, the first in the tree's order is written.
@@ -100,7 +104,7 @@ The entries not written, in the tree's order.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L463)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L473)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -108,14 +112,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L475)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L485)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L487)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L497)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary

@@ -109,7 +109,7 @@ class GitRepository implements VersionControl {
    * replacement objects, from that process, though git's answer could not depend on them: every file the tree holds
    * is tracked, and a tracked file is never ignored.
    */
-  async workingTree(change: string, directory: string): Promise<WorkingTree> {
+  async workingTree(change: string, directory: string, leaveOut?: (path: string) => boolean): Promise<WorkingTree> {
     const index = `${directory}.index`;
     await fs.mkdir(directory);
     let removal: Promise<void> | undefined;
@@ -118,7 +118,7 @@ class GitRepository implements VersionControl {
     let unwritten: UnwrittenEntry[];
     try {
       await this.git(["read-tree", change], { GIT_INDEX_FILE: index });
-      unwritten = await writeStoredTree(this.root, change, directory);
+      unwritten = await writeStoredTree(this.root, change, directory, leaveOut ? { leaveOut } : undefined);
     } catch (error) {
       await remove();
       throw error;
@@ -219,16 +219,19 @@ const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "EN
  *
  * @returns Why the entry cannot be written, or undefined where it can.
  */
-export async function placeEntry(parts: readonly string[], disk: TreeDisk): Promise<string | undefined> {
+export async function placeEntry(parts: readonly string[], disk: TreeDisk, folders: Set<string> = new Set()): Promise<string | undefined> {
   try {
     for (let depth = 1; depth < parts.length; depth += 1) {
       const folder = parts.slice(0, depth).join("/");
+      // A folder this writer made or found is one still: it never replaces one, and nothing else writes in the tree meanwhile.
+      if (folders.has(folder)) continue;
       const standing = await disk.entry(folder);
       if (standing === "absent") {
         await disk.makeFolder(folder);
       } else if (standing !== "folder") {
         return `it lies beneath ${folder}, which is ${standing === "link" ? "a symbolic link" : "a file"} on this disk, and nothing is written through it`;
       }
+      folders.add(folder);
     }
     const standing = await disk.entry(parts.join("/"));
     if (standing !== "absent") {
@@ -252,11 +255,15 @@ interface TreeEntry {
 
 /**
  * Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
- * where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
- * folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
+ * where its mode says so, streamed to disk as git gives them; an empty folder where another repository's commit
+ * stands, as a checkout leaves a submodule it has not initialized. A file `leaveOut` names is not written and not named:
+ * the caller's reader never opens it (since 2026-11-19, what the configuration excludes, which wrote 511 of a rebuild's
+ * 521 GB in this repository).
  *
  * Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
- * reason, when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
+ * reason, when it is a symbolic link, which the history never writes (since 2026-11-19: a link the generator wrote
+ * through, as one at its docs root, carried its writes and its pruning outside the scratch folder, and an empty or
+ * unwritable target failed the commit); when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
  * disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
  * something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
  * hold its name. Of two entries that clash, the first in the tree's order is written.
@@ -264,9 +271,16 @@ interface TreeEntry {
  * @param disk - The disk, asked; the real one under `directory` unless a test stands one in.
  * @returns The entries not written, in the tree's order.
  */
-export async function writeStoredTree(root: string, change: string, directory: string, options?: { platform?: NodeJS.Platform; disk?: TreeDisk }): Promise<UnwrittenEntry[]> {
+export async function writeStoredTree(
+  root: string,
+  change: string,
+  directory: string,
+  options?: { platform?: NodeJS.Platform; disk?: TreeDisk; leaveOut?: (path: string) => boolean }
+): Promise<UnwrittenEntry[]> {
   const platform = options?.platform ?? process.platform;
   const disk = options?.disk ?? realDisk(directory);
+  const leaveOut = options?.leaveOut ?? ((): boolean => false);
+  const folders = new Set<string>();
   const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT, env: READ_AS_STORED })).stdout;
   const unwritten: UnwrittenEntry[] = [];
   const entries: TreeEntry[] = [];
@@ -284,13 +298,19 @@ export async function writeStoredTree(root: string, change: string, directory: s
       unwritten.push({ path: relative, reason: "its path would leave the tree or name a .git, which git refuses to check out" });
     } else if (platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
       unwritten.push({ path: relative, reason: "its name cannot be written on Windows, where git refuses to check it out" });
-    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
+    } else if (mode === LINK_MODE) {
+      unwritten.push({ path: relative, reason: "it is a symbolic link, and the history writes none, so that nothing it writes or reads goes through one" });
+    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== SUBMODULE_MODE) {
       unwritten.push({ path: relative, reason: `its mode ${mode} is one no checkout writes` });
     } else if (relative.includes("�")) {
       // Git's listing is read as UTF-8, so a name that is not would be written under another name than its own.
       unwritten.push({ path: relative, reason: "its name is not valid UTF-8, so it cannot be written under its own name" });
     } else if (named.has(relative)) {
       unwritten.push({ path: relative, reason: "the tree names it twice" });
+    } else if (leaveOut(relative)) {
+      // Left out by the caller, as a file its reader never opens: neither written nor named, and still in the tree's
+      // listing. Asked last, so that an entry refused above is named whether or not the caller would have left it out.
+      named.add(relative);
     } else {
       named.add(relative);
       entries.push({ mode, id, relative, parts });
@@ -298,7 +318,7 @@ export async function writeStoredTree(root: string, change: string, directory: s
   }
   // An entry that becomes no folder or file of its own: one refused, or a submodule's empty folder.
   const place = async (entry: TreeEntry): Promise<boolean> => {
-    const reason = await placeEntry(entry.parts, disk);
+    const reason = await placeEntry(entry.parts, disk, folders);
     if (reason !== undefined) {
       unwritten.push({ path: entry.relative, reason });
       return false;
@@ -374,23 +394,14 @@ async function writeBlobs(
   let next = 0;
   let header = Buffer.alloc(0);
   // The object being read: its entry, the bytes still to come, and where they go, if anywhere.
-  let body: { entry: TreeEntry; remaining: number; handle?: fs.FileHandle; link?: Buffer[] } | undefined;
+  let body: { entry: TreeEntry; remaining: number; handle?: fs.FileHandle } | undefined;
   // The line break that follows an object's bytes, still to be passed over.
   let separator = false;
   const finish = async (): Promise<void> => {
     if (body === undefined) return;
-    const { entry, handle, link } = body;
+    const { handle } = body;
     body = undefined;
     if (handle !== undefined) await handle.close();
-    if (link !== undefined) {
-      try {
-        await fs.symlink(Buffer.concat(link).toString("utf8"), path.join(directory, ...entry.parts));
-      } catch (error) {
-        const code = (error as NodeJS.ErrnoException).code;
-        if (code === undefined || !NAME_FAILURES.has(code)) throw error;
-        cannotHold(entry, code);
-      }
-    }
     next += 1;
     separator = true;
   };
@@ -417,7 +428,6 @@ async function writeBlobs(
         if (body !== undefined) {
           const piece = chunk.subarray(at, at + body.remaining);
           if (body.handle !== undefined) await body.handle.write(piece);
-          else body.link?.push(Buffer.from(piece));
           body.remaining -= piece.length;
           at += piece.length;
           if (body.remaining === 0) await finish();
@@ -438,7 +448,7 @@ async function writeBlobs(
         }
         await placeUpTo(entry);
         const wanted = await place(entry);
-        body = { entry, remaining: Number(size), ...(wanted ? (entry.mode === LINK_MODE ? { link: [] } : { handle: await open(entry) }) : {}) };
+        body = { entry, remaining: Number(size), ...(wanted ? { handle: await open(entry) } : {}) };
         if (body.remaining === 0) await finish();
       }
     }

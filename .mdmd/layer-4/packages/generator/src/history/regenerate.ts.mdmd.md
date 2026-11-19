@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/regenerate.ts
-- Generated At: 2026-11-19T12:44:39.339Z
+- Generated At: 2026-11-19T17:55:40.535Z
 
 ## Authored
 ### Purpose
@@ -23,21 +23,21 @@ What the history command does on a summary's behalf before the summarizing proce
 ### Public Symbols
 #### `summaryPath` {#symbol-summarypath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L38)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L43)
 
 ##### `summaryPath` — Summary
 Where a change's summary lies in the lens's cache folder.
 
 #### `indexPath` {#symbol-indexpath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L43)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L48)
 
 ##### `indexPath` — Summary
 Where a change's full graph index lies in the lens's cache folder, when the cache keeps it.
 
 #### `Scratch` {#symbol-scratch}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L51)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L56)
 
 ##### `Scratch` — Summary
 The scratch folders of a run under the system's temporary folder and the processes it started, all removed or ended
@@ -45,14 +45,14 @@ when a signal stops it: a folder is held from the moment it is made, before anyt
 
 #### `RegenerationContext` {#symbol-regenerationcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L102)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L107)
 
 ##### `RegenerationContext` — Summary
 What regenerating needs.
 
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L121)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L126)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
@@ -62,13 +62,36 @@ of its own, starting none after the deadline when there is one.
 ##### `regenerate` — Returns
 How long each change regenerated took, in milliseconds, and the largest peak memory a process reported.
 
+#### `unread` {#symbol-unread}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L193)
+- Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `unread` — Summary
+The files of a change's tree the summarizing process never opens, by their repository-relative paths, which the tree
+writer leaves out: those the configuration's `exclude` names, by discovery's own rule (`matchesPathPattern`), but
+never a file under the docs root, which the generator reads and rewrites whatever `exclude` says. The tree's listing
+still holds them, which is how the summary asks whether a linked document stands. Measured on 2026-11-19 over this
+repository: the process opened no file of the excluded `AI-Agent-Workspace/`, which held 511 of the 521 GB a rebuild
+wrote.
+
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L190)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L208)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
 The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set.
+
+#### `summarizingFlags` {#symbol-summarizingflags}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L223)
+
+##### `summarizingFlags` — Summary
+The flags node is started with for the summarizing process, and no other: none for the built JavaScript, and for
+the TypeScript module, under tsx, tsx's loader alone. Until 2026-11-19 `fork` passed on the command's own flags
+(`process.execArgv`), so that a flag given to node or tsx, as `--conditions` or `--stack-size`, reached the process
+that makes a summary, where the lens could not see it.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -77,7 +100,9 @@ The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} 
 - `node:fs` - `promises`, `rmSync`
 - `node:os` - `os`
 - `node:path` - `path`
+- `node:url` - `pathToFileURL`
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`archetype.matchesPathPattern`](../../../engine/src/live-docs/archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)

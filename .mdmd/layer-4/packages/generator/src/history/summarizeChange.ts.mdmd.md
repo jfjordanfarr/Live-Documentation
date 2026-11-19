@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T12:44:39.347Z
+- Generated At: 2026-11-19T17:55:40.544Z
 
 ## Authored
 ### Purpose
@@ -24,14 +24,14 @@ One commit's summary, made in a process of its own: the generator run over the c
 ### Public Symbols
 #### `SummaryTask` {#symbol-summarytask}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L59)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L60)
 
 ##### `SummaryTask` — Summary
 What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L79)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L80)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -39,7 +39,7 @@ Generates the change's docs in its working tree and writes its summary, and its 
 
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L159)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L176)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.
@@ -52,6 +52,7 @@ What the process tells the history command when it has written the summary.
 - `node:path` - `path`
 - `node:zlib` - `gzipSync`
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)

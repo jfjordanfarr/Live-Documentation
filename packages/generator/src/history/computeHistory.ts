@@ -43,6 +43,7 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { bundledSummary } from "@live-documentation/engine/live-docs/history/bundled";
 import { Interner } from "@live-documentation/engine/live-docs/history/codec";
 import { HISTORY_DIRECTORY, HISTORY_FILE, type CommitInfo, type HistoryLens, type HistorySequence, type Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
@@ -58,7 +59,7 @@ import { textsOfFile, WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-
 
 import { generatorIdentity } from "./generatorIdentity";
 import { headDifferences } from "./headCheck";
-import { indexPath, regenerate, Scratch, summaryPath } from "./regenerate";
+import { indexPath, regenerate, Scratch, summaryPath, unread } from "./regenerate";
 
 /** What to compute. */
 export interface HistoryOptions {
@@ -278,6 +279,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const unwritten: Array<[string, string, string]> = [];
   const builder = await buildSequence(sampled, {
     unwritten,
+    bundleExclude: configuration.bundleExclude,
     versionControl,
     lens,
     cacheFolder,
@@ -614,6 +616,8 @@ interface SequenceContext {
   texts: Interner;
   /** Filled with the files each summary says its tree did not hold. */
   unwritten: Array<[commit: string, path: string, reason: string]>;
+  /** The configuration's bundle exclusions, applied to each summary as it is read (`bundled.ts`). */
+  bundleExclude: readonly string[];
 }
 
 /**
@@ -629,7 +633,9 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
     subject: change.subject
   });
   const textId = (hash: string): number => context.texts.id(hash);
-  const read = (change: MainlineChange): Promise<CommitSummary> => readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id);
+  // What the history reads of a summary is what the bundle shows: the documents `bundleExclude` names are left out here.
+  const read = async (change: MainlineChange): Promise<CommitSummary> =>
+    bundledSummary(await readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id), context.bundleExclude);
   const notRead = (change: MainlineChange, summary: CommitSummary): void => {
     for (const [file, reason] of summary.unwritten ?? []) context.unwritten.push([change.id, file, reason]);
   };
@@ -698,7 +704,7 @@ async function checkHead(sequence: HistorySequence, context: HeadCheckContext): 
   const scratch = await context.scratch.folder("live-docs-history-head-");
   let committed: LiveDocGraph;
   try {
-    const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)));
+    const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)), unread(context.configuration));
     try {
       committed = await readLiveDocGraph({ workspaceRoot: tree.root, config: context.configuration });
     } catch (error) {

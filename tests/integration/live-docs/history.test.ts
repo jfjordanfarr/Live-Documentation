@@ -588,7 +588,7 @@ describe("the history over a repository that commits its mirror", () => {
 
 /**
  * A repository whose one commit leaves thousands of entries out of its tree, made with `git hash-object` and `git
- * mktree`: a link `vendor` and a tree `vendor` of the same name, every file of which lies beneath the link.
+ * mktree`: a tree `vendor` of symbolic links, none of which the history writes.
  */
 describe("the history over a commit whose tree leaves thousands of entries out", () => {
   it("completes, names every entry not read, and keeps the list where a person finds it after the run", () => {
@@ -600,26 +600,25 @@ describe("the history over a commit whose tree leaves thousands of entries out",
     temporary.push(files);
     fs.mkdirSync(files);
     const names = Array.from({ length: 3000 }, (_, index) => `module-with-a-long-name-${String(index).padStart(5, "0")}.ts`);
-    names.forEach((name, index) => fs.writeFileSync(path.join(files, name), `export const value${index} = ${index};\n`));
+    names.forEach((name, index) => fs.writeFileSync(path.join(files, name), `/elsewhere/${index}.ts`));
     const ids = run(["hash-object", "-w", "--stdin-paths"], names.map((name) => path.join(files, name)).join("\n")).split("\n");
-    const vendor = run(["mktree"], names.map((name, index) => `100644 blob ${ids[index]}\t${name}\n`).join(""));
-    const link = run(["hash-object", "-w", "--stdin"], "/elsewhere");
+    const vendor = run(["mktree"], names.map((name, index) => `120000 blob ${ids[index]}\t${name}\n`).join(""));
     const kept = run(["hash-object", "-w", "--stdin"], "/** Kept. */\nexport const kept = 1;\n");
-    const root = run(["mktree"], `100644 blob ${kept}\tkept.ts\n120000 blob ${link}\tvendor\n040000 tree ${vendor}\tvendor\n`);
+    const root = run(["mktree"], `100644 blob ${kept}\tkept.ts\n040000 tree ${vendor}\tvendor\n`);
     const commit = run(["commit-tree", root, "-m", "A tree that leaves thousands of entries out"], undefined);
     run(["update-ref", "refs/heads/main", commit]);
 
     const result = runCli(historyScript, ["--workspace", repository, "--jobs", "1"]);
     expect(result.exitCode, result.stderr.slice(-2000)).toBe(0);
     // Every entry not read is said, not the first few.
-    expect(result.stderr.split("\n").filter((line) => line.includes("which is a symbolic link on this disk"))).toHaveLength(3000);
+    expect(result.stderr.split("\n").filter((line) => line.includes("it is a symbolic link, and the history writes none"))).toHaveLength(3000);
     expect(result.stderr).toContain("3000 files at 1 commits were not read");
     // Where the run says the list is: the history folder under the default docs root, since this repository configures none.
     const listed = /The list is (\S+)/u.exec(result.stderr)![1];
     const history = path.dirname(path.join(repository, listed));
     const list = fs.readFileSync(path.join(repository, listed), "utf8").split("\n").filter((line) => line !== "" && !line.startsWith("#"));
     expect(list).toHaveLength(3000);
-    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit lies beneath vendor, which is a symbolic link on this disk, and nothing is written through it`);
+    expect(list[0]).toBe(`${commit}\t"vendor/${names[0]}"\tit is a symbolic link, and the history writes none, so that nothing it writes or reads goes through one`);
     const sequence = JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence;
     const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history, sequence.lens.key, `${commit}.json.gz`))).toString("utf8")) as CommitSummary;
     expect(summary.unwritten).toHaveLength(3000);

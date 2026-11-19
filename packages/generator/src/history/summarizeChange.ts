@@ -48,6 +48,7 @@ import path from "node:path";
 import { gzipSync } from "node:zlib";
 
 import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
@@ -77,7 +78,10 @@ export interface SummaryTask {
 
 /** Generates the change's docs in its working tree and writes its summary, and its index when asked. */
 export async function summarizeChange(task: SummaryTask): Promise<void> {
-  const { tree, configuration } = task;
+  const { tree } = task;
+  // Every linked and citing document is kept: the bundle's exclusions are applied where the summaries are read
+  // (`bundled.ts`), so that the summary does not depend on them and an edit of them needs no new summary.
+  const configuration: LiveDocumentationConfig = { ...task.configuration, bundleExclude: [] };
   const authored = await authoredReading(tree, configuration);
   const result = await generateLiveDocs({
     workspaceRoot: tree,
@@ -95,7 +99,8 @@ export async function summarizeChange(task: SummaryTask): Promise<void> {
   const graph: LiveDocGraph = indexText
     ? (JSON.parse(indexText) as LiveDocGraph)
     : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: {} };
-  const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, await standingRelatedDocs(graph, tree, configuration), authored);
+  const standing = await standingFiles(tree, task.unwritten ?? []);
+  const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, standingRelatedDocs(graph, standing, configuration), authored);
   if (task.unwritten && task.unwritten.length > 0) {
     summary.unwritten = task.unwritten.map((entry): [string, string] => [entry.path, entry.reason]);
   }
@@ -126,21 +131,33 @@ async function authoredReading(tree: string, configuration: LiveDocumentationCon
 // The heading `authoredBlockOf` looks for, under which the generator carries a doc's authored words forward.
 const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
 
-/** Each file's related documents, as the bundle reads them, that stand as files in the change's tree. */
-async function standingRelatedDocs(graph: LiveDocGraph, tree: string, configuration: LiveDocumentationConfig): Promise<Map<string, string[]>> {
-  const standing = new Map<string, Promise<boolean>>();
-  const stands = (document: string): Promise<boolean> => {
-    let answer = standing.get(document);
-    if (!answer) {
-      answer = fs.stat(path.join(tree, document)).then((stat) => stat.isFile(), () => false);
-      standing.set(document, answer);
-    }
-    return answer;
-  };
+/**
+ * The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
+ * (its index, which the history command made from the change's tree and named in this process's environment), not
+ * from the disk: the tree writer leaves out the files the generator never opens, and a document of them may still be
+ * linked. A file's blob is in the listing; a symbolic link, a submodule, and an entry the tree could not hold
+ * (`unwritten`) are not files that stand. Until 2026-11-19 the disk was asked, which a link to a file answered yes.
+ */
+async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
+  const { stdout } = await execFileAsync("git", ["ls-files", "--stage", "-z"], { cwd: tree, maxBuffer: 1 << 30 });
+  const notWritten = new Set(unwritten.map((entry) => entry.path));
+  const standing = new Set<string>();
+  for (const entry of stdout.split("\0")) {
+    // Each entry is `<mode> <id> <stage>\t<path>`.
+    const tab = entry.indexOf("\t");
+    if (tab < 0) continue;
+    const mode = entry.slice(0, entry.indexOf(" "));
+    const file = entry.slice(tab + 1);
+    if ((mode === "100644" || mode === "100755") && !notWritten.has(file)) standing.add(file);
+  }
+  return standing;
+}
+
+/** Each file's related documents, every one the docs link to with no bundle exclusion, that stand as files in the change's tree. */
+function standingRelatedDocs(graph: LiveDocGraph, standing: ReadonlySet<string>, configuration: LiveDocumentationConfig): Map<string, string[]> {
   const related = new Map<string, string[]>();
   for (const file of Object.values(graph.files)) {
-    const documents = relatedDocsOf(file, graph, configuration.bundleExclude);
-    const present = (await Promise.all(documents.map(async (document) => ((await stands(document)) ? document : null)))).filter((document): document is string => document !== null);
+    const present = relatedDocsOf(file, graph, configuration.bundleExclude).filter((document) => standing.has(document));
     if (present.length > 0) {
       related.set(file.codePath, present);
     }

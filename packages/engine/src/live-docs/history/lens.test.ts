@@ -27,6 +27,16 @@ describe("lensOf", () => {
     ];
     expect(new Set([base, ...keys]).size).toBe(5);
   });
+
+  it("keeps the lens across an edit of the bundle exclusions, which are applied where summaries are read, and moves it with an edit of exclude", () => {
+    const base = normalizeLiveDocumentationConfig({ exclude: ["archive/**"], bundleExclude: ["archive/**/*.md"] });
+    const edited = normalizeLiveDocumentationConfig({ exclude: ["archive/**"], bundleExclude: ["archive/**/*.md", "old-archive/**/*.md"] });
+    expect(lensOf(GENERATOR, edited).key).toBe(lensOf(GENERATOR, base).key);
+    // The lens still carries the whole configuration for its reader.
+    expect(lensOf(GENERATOR, edited).configuration.bundleExclude).toEqual(["archive/**/*.md", "old-archive/**/*.md"]);
+    const excluded = normalizeLiveDocumentationConfig({ exclude: ["archive/**", "old-archive/**"], bundleExclude: ["archive/**/*.md"] });
+    expect(lensOf(GENERATOR, excluded).key).not.toBe(lensOf(GENERATOR, base).key);
+  });
 });
 
 describe("canonicalJson", () => {
