@@ -301,7 +301,7 @@ describe("auditedFiles", () => {
     }) as unknown as typeof fs.readdirSync);
     try {
       // Until this round glob read `docs` as empty, and `docs/a.md` went unaudited in silence.
-      expect(() => audited(root)).toThrow(`cannot read the folder ${path.join(root, "docs")}, whose files the audit would read (EMFILE: too many open files, scandir '${path.join(root, "docs")}'): make it readable, have git ignore it, or name it in the audit's ignore globs.`);
+      expect(() => audited(root)).toThrow(`cannot read the folder ${path.join(root, "docs")} (EMFILE: too many open files, scandir '${path.join(root, "docs")}'), and the audit cannot tell that everything in it would be left out: make it readable, name it in the audit's ignore globs, or, where it lies in a repository, have that repository's git ignore the folder itself.`);
     } finally {
       spy.mockRestore();
     }
@@ -334,12 +334,28 @@ describe("auditedFiles", () => {
       } catch (error) {
         stopped = error;
       }
-      expect(stopped).toMatchObject({ message: expect.stringMatching(/^cannot read the folder .*docs, whose files the audit would read \(EACCES: permission denied, scandir .*\): make it readable, have git ignore it, or name it in the audit's ignore globs\.$/u) });
+      expect(stopped).toMatchObject({ message: expect.stringMatching(/^cannot read the folder .*docs \(EACCES: permission denied, scandir .*\), and the audit cannot tell that everything in it would be left out: make it readable, name it in the audit's ignore globs, or, where it lies in a repository, have that repository's git ignore the folder itself\.$/u) });
       expect(machineFailure(stopped)).toBe(true);
       // The audit's own ignore globs leave it unread.
       expect(audited(root, ["**/*.md"], ["docs/**"])).toEqual(["README.md"]);
     } finally {
       for (const folder of locked) fs.chmodSync(folder, 0o755);
+    }
+  });
+
+  it("stops at an unreadable folder in no repository though the workspace's .gitignore names it, and says git is a way past it only within a repository", () => {
+    const root = workspace();
+    write(root, { "README.md": "", ".gitignore": "pgdata/\n", "pgdata/b.md": "" });
+    fs.chmodSync(path.join(root, "pgdata"), 0);
+    try {
+      // The system's word, and git's: the folder cannot be read, and no repository holds the workspace.
+      expect(() => fs.readdirSync(path.join(root, "pgdata"))).toThrow(/EACCES/u);
+      expect(spawnSync("git", ["-C", root, "rev-parse", "--show-toplevel"], { encoding: "utf8" }).status).not.toBe(0);
+      // The audits read no `.gitignore` of their own, so the root one cannot pass it over; the reviewer's run of
+      // 2026-11-20, where the message still told a person to have git ignore it.
+      expect(() => audited(root)).toThrow(`cannot read the folder ${path.join(root, "pgdata")} (EACCES: permission denied, scandir '${path.join(root, "pgdata")}'), and the audit cannot tell that everything in it would be left out: make it readable, name it in the audit's ignore globs, or, where it lies in a repository, have that repository's git ignore the folder itself.`);
+    } finally {
+      fs.chmodSync(path.join(root, "pgdata"), 0o755);
     }
   });
 

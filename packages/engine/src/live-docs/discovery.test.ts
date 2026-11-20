@@ -704,7 +704,7 @@ describe("the folders git ignores whole", () => {
     try {
       // Until this round glob read `src` as empty: `src/b.ts` was missing, and its doc would have been pruned as stale.
       const stopped = await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false }).catch((error: unknown) => error);
-      expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")}, whose files the scan would keep (EMFILE: failed, scandir '${path.join(root, "src")}'): make it readable, have git ignore it, or name it in the configuration's exclude.`, cause: { code: "EMFILE" } });
+      expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")} (EMFILE: failed, scandir '${path.join(root, "src")}'), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (src/), or name src/** in the configuration's exclude.`, cause: { code: "EMFILE" } });
       expect(machineFailure(stopped)).toBe(true);
       await expect(discoverDocuments({ workspaceRoot: root, config })).rejects.toMatchObject({ cause: { code: "EMFILE" } });
     } finally {
@@ -750,9 +750,10 @@ describe("the folders git ignores whole", () => {
 });
 
 /**
- * A folder that cannot be read stops the scan only where the scan would have kept what is in it (the root's ruling of
- * 2026-11-20, corrected after the reviewer's second look): one its own repository's git ignores, or that `exclude`
- * names whole, is passed over as its files would have been, a database's unreadable volume beside the code above all.
+ * A folder that cannot be read stops the scan unless the scan can tell that everything in it would be left out (the
+ * root's ruling of 2026-11-20, corrected after the reviewer's second look, its words after the third): one its own
+ * repository's git ignores, or that `exclude` names whole, is passed over as its files would have been, a database's
+ * unreadable volume beside the code above all.
  */
 describe("a folder that cannot be read", () => {
   const folders: string[] = [];
@@ -797,7 +798,38 @@ describe("a folder that cannot be read", () => {
     // Until this round the scan stopped: `exclude` is applied after the walk.
     expect(await scanned(root, { exclude: ["locked/**"] })).toEqual({ files: ["a.ts"], documents: [] });
     // A pattern that leaves some of it kept leaves it to stop the scan.
-    await expect(scanned(root, { exclude: ["locked/*.md"] })).rejects.toThrow(/^cannot read the folder .*locked, whose files the scan would keep/u);
+    await expect(scanned(root, { exclude: ["locked/*.md"] })).rejects.toThrow(/^cannot read the folder .*locked \(EACCES: .*\), and the scan cannot tell that everything in it would be left out: /u);
+  });
+
+  it("stops the scan at a folder named in exclude by a pattern that leaves some of it kept, and names the one that works", async () => {
+    const root = await workspace({ "a.ts": "", "open/x.ts": "" });
+    git(root, "init", "-q");
+    await lock(root, "open");
+    // In the configuration's glob language none of these matches every path below `open/`: `open` and `open/` match no
+    // path below it, `open/*` none two folders down, and `**/open/**` none at all, since `**` stands for one or more
+    // characters and a top-level `open` has none before it. The reviewer's runs, 2026-11-20: until this round the
+    // message sent a person to `exclude` without saying which pattern works, and each of these did not.
+    for (const pattern of ["open", "open/", "open/*", "**/open/**"]) {
+      const stopped = await scanned(root, { exclude: [pattern] }).catch((error: unknown) => error);
+      expect(stopped, pattern).toMatchObject({ message: `cannot read the folder ${path.join(root, "open")} (EACCES: permission denied, scandir '${path.join(root, "open")}'), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (open/), or name open/** in the configuration's exclude.`, cause: { code: "EACCES" } });
+    }
+  });
+
+  it("stops the scan where git's rule names a folder's contents and not the folder, and passes it over where the rule names the folder", async () => {
+    const root = await workspace({ "a.ts": "", "cache/x.ts": "" });
+    git(root, "init", "-q");
+    await lock(root, "cache");
+    const listing = (): string => spawnSync("git", ["-C", root, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8" }).stdout;
+    await fs.writeFile(path.join(root, ".gitignore"), "cache/*\n");
+    // Git's own word: it cannot read `cache/`, so a rule for what is in it never names it, and the scan cannot tell that
+    // every file in it would be left out. Stopping is right; until this round the message said its files would be kept.
+    expect(listing()).toBe("");
+    const stopped = await scanned(root).catch((error: unknown) => error);
+    expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "cache")} (EACCES: permission denied, scandir '${path.join(root, "cache")}'), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (cache/), or name cache/** in the configuration's exclude.` });
+    // The remedy the message names: a rule for the folder itself, which git names without reading it.
+    await fs.writeFile(path.join(root, ".gitignore"), "cache/\n");
+    expect(listing()).toBe("cache/\0");
+    expect(await scanned(root)).toEqual({ files: [".gitignore", "a.ts"], documents: [] });
   });
 
   it("passes over a folder a nested repository's own rules ignore, and one a clone's own rules ignore where no repository is around", async () => {
@@ -818,7 +850,7 @@ describe("a folder that cannot be read", () => {
     git(root, "init", "-q");
     await lock(root, "src");
     const stopped = await scanned(root).catch((error: unknown) => error);
-    expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")}, whose files the scan would keep (EACCES: permission denied, scandir '${path.join(root, "src")}'): make it readable, have git ignore it, or name it in the configuration's exclude.` });
+    expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")} (EACCES: permission denied, scandir '${path.join(root, "src")}'), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (src/), or name src/** in the configuration's exclude.` });
     // Still the machine's failure, so that a history worker publishes nothing made with it.
     expect(machineFailure(stopped)).toBe(true);
     await expect(discoverDocuments({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}) })).rejects.toThrow(/^cannot read the folder /u);

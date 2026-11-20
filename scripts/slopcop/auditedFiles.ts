@@ -71,11 +71,13 @@ export function auditedFiles(
     warn(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): every file found is audited.`);
   }
   // A folder that cannot be read is passed over where its own repository's git ignores it, as its files would have
-  // been; any other stops the audit, keeping the system's failure as its cause (2026-11-20).
+  // been; any other stops the audit, keeping the system's failure as its cause (2026-11-20). The audit cannot tell that
+  // its files would be read: git cannot read it either, so a rule for its contents never names it. And the audits read
+  // no `.gitignore` of their own, so where the folder lies in no repository git cannot be the way past it.
   const folders = judging?.answer([...unreadable.keys()]);
   const kept = [...unreadable].find(([relative]) => !folders?.ignored.has(relative));
   if (kept) {
-    throw new Error(`cannot read the folder ${path.resolve(workspaceRoot, kept[0])}, whose files the audit would read (${kept[1].message}): make it readable, have git ignore it, or name it in the audit's ignore globs.`, { cause: kept[1] });
+    throw new Error(`cannot read the folder ${path.resolve(workspaceRoot, kept[0])} (${kept[1].message}), and the audit cannot tell that everything in it would be left out: make it readable, name it in the audit's ignore globs, or, where it lies in a repository, have that repository's git ignore the folder itself.`, { cause: kept[1] });
   }
   const answer = judging?.answer([...discovered.values()]);
   if (answer && answer.unjudged.size > 0) {

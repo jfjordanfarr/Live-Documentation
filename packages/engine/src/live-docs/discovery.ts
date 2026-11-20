@@ -395,9 +395,14 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
  * where its files would have been left out (its own repository's git ignores
  * it, or `exclude` names everything in it) it is passed over in silence, as
  * they would have been, a database's unreadable volume beside the code among
- * them; any other stops the scan with an error that names the folder, the
- * system's reason and the three ways past it, and keeps the system's failure
- * as its cause, so that it is still read as the machine's (2026-11-20).
+ * them. Any other stops the scan, which is not to say its files would be kept:
+ * git cannot read the folder either, so a rule for its contents (`cache/*`)
+ * never names it, and the scan cannot tell. The error names the folder, the
+ * system's reason and three ways past it that work: make it readable, have git
+ * ignore the folder itself (`<folder>/`), or name `<folder>/**` in `exclude`,
+ * which in the configuration's glob language names everything in it, where
+ * `<folder>`, `<folder>/` and `<folder>/*` do not. It keeps the system's
+ * failure as its cause, so that it is still read as the machine's (2026-11-20).
  */
 async function keptByGitAndConfiguration(
   considered: readonly WalkedFile[],
@@ -425,7 +430,7 @@ async function keptByGitAndConfiguration(
   const excludedWhole = (folder: string): boolean => config.exclude.some((pattern) => [`${folder}/\0`, `${folder}/\0/\0`].every((probe) => matchesPathPattern(probe, pattern, ignoreCase)));
   const kept = unreadable.find(({ relative }) => !ignored(folders, relative, true) && !excludedWhole(relative));
   if (kept) {
-    throw new Error(`cannot read the folder ${kept.absolute}, whose files the scan would keep (${kept.error.message}): make it readable, have git ignore it, or name it in the configuration's exclude.`, { cause: kept.error });
+    throw new Error(`cannot read the folder ${kept.absolute} (${kept.error.message}), and the scan cannot tell that everything in it would be left out: make it readable, have git ignore the folder itself (${kept.relative}/), or name ${kept.relative}/** in the configuration's exclude.`, { cause: kept.error });
   }
   return considered.filter(({ relative }) => !ignored(git, relative, false) && !excluded(relative));
 }
