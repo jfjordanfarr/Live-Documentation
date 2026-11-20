@@ -506,8 +506,25 @@ describe("the lock's half of the lens's key", () => {
     expect(installationDifference(lock, installed((packages) => void (packages["node_modules/playwright-core"].version = "1.0.0")))).toBeNull();
     // Where npm left no record, nothing is checked.
     expect(installationDifference(lock, null)).toBeNull();
-    // This repository as it stands.
-    expect(installationDifference(lock, readFileSync(path.join(repository, "node_modules", ".package-lock.json"), "utf8"))).toBeNull();
+    // A nearer copy the lock does not name: `npm install --no-save -w packages/engine typescript@4.9.5` leaves the lock and
+    // the hoisted copy as they were, and the engine loads the older one (the reviewer's second look, 2026-11-20).
+    const nested = installed((packages) => void (packages["packages/engine/node_modules/typescript"] = { version: "4.9.5", resolved: "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz", integrity: "sha512-older" }));
+    expect(installationDifference(lock, nested)).toContain("packages/engine/node_modules/typescript");
+    // A registry mirror: the record names another `resolved` for the same content, which is no other installation.
+    const mirrored = installed((packages) => void (packages["node_modules/typescript"].resolved = "https://mirror.example/typescript/-/typescript-5.9.3.tgz"));
+    expect(installationDifference(lock, mirrored)).toBeNull();
+  });
+
+  it("stops at an installed link to a folder whose files the lens does not key, and at a record it cannot read, naming the record", () => {
+    const lock = readFileSync(path.join(repository, "package-lock.json"), "utf8");
+    const record = JSON.parse(lock) as { packages: LockPackages };
+    delete record.packages[""];
+    // `npm link` of the runtime: the record holds a link to a folder of the person's, which the key would hold by its path.
+    record.packages["node_modules/web-tree-sitter"] = { resolved: "../web-tree-sitter", link: true };
+    record.packages["../web-tree-sitter"] = { version: "0.27.0" };
+    expect(() => installationDifference(lock, JSON.stringify(record))).toThrow(/node_modules\/\.package-lock\.json links node_modules\/web-tree-sitter to \.\.\/web-tree-sitter/u);
+    expect(() => installationDifference(lock, "{")).toThrow(/node_modules\/\.package-lock\.json/u);
+    expect(() => installationDifference(lock, JSON.stringify({ lockfileVersion: 1 }))).toThrow(/node_modules\/\.package-lock\.json has no packages map/u);
   });
 
   it("carries the installation and the working lock into the key's modified half, only where they differ in keyed entries", async () => {
