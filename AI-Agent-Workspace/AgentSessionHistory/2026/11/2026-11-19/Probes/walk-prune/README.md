@@ -219,3 +219,79 @@ Every run that loaded the machine went through the lane (`node scripts/browser-l
 ## Temporary files
 
 Removed at the end of the round: the experiment repositories and reproductions under this worktree's `AI-Agent-Workspace/tmp/wp/`, everything under `/tmp/claude-1000/wp/` (the frozen copies, drafts, scripts, outputs and `TMPDIR`), and the bench and fixture scripts in the builder's scratchpad.
+
+## Judging every path by its name: the review's findings mended
+
+_Added on November 20, 2026, from 10:35 UTC, by a second builder for the root (the `discovery-mend` holds of the lane), on `725e2e252` of the branch `history-fast-joined`, after an independent review of the two commits above. The text above is left as it stood; this section corrects it where it says so. Git 2.56.1, Node 26.13.1. The experiments were run with plain git in folders under the builder's worktree's ignored `AI-Agent-Workspace/tmp/dm/` (the harness refused git commands it could not see stay inside the worktree, so each was written to a script and run with `bash`), removed at the end._
+
+### What was wrong
+
+`git check-ignore --stdin` reads each path as a pathspec, a wildcard pattern, and counts a path as tracked when its pattern matches a tracked file, and then does not report it. So an untracked file whose name holds `[ ] * ? \` was kept when a tracked file matched its name read as a pattern, though git ignores it (`git status --ignored` lists it): `a[1]/build/x.ts` beside a tracked `a1/build/x.ts` with `build/` ignored, `a[1].log` beside a tracked `a1.log` with `*.log` ignored, `b?/x.log` beside `bc/x.log`, `a\b/out/x.ts` beside a tracked `ab/out/x.ts`. Before the walk was shortened this was a false positive in every case; after it, the same kind of file was dropped where its folder was ignored whole and kept where it was not. A top-level name beginning with `:` was read as pathspec magic: `:abc.ts` was judged as `abc.ts`, and `:(x).ts` and `:!x.ts` made git refuse the whole call.
+
+### The form chosen, by experiment
+
+- `--literal-pathspecs` and `GIT_LITERAL_PATHSPECS=1` are refused by `check-ignore` ("pathspec magic not supported by this command: 'literal'"), as the review found.
+- `git check-ignore --no-index --stdin -z` judges each path by the excludes patterns alone, its name read as a name: every wildcard case above is reported ignored. It reads no index, so it also reports tracked files the patterns name (`a1.log`, `a1/build/x.ts`), and a folder that holds a tracked file (`a1/build`).
+- `--no-index` alone does not answer the colon: a bare `:abc.ts` is still judged as `abc.ts`, and `:(x).ts` and `:!x.ts` are still refused. Given as `./:abc.ts`, `./:(x).ts`, `./:!x.ts`, each is judged as its own name. Git prints each path as it was given, `./` and all.
+- So `gitIgnoreAnswer` (in `packages/engine/src/tooling/gitIgnored.ts`) asks `git ls-files -z` for the tracked files, then `git check-ignore --no-index --stdin -z` with every path given as `./path`, strips the `./` from what git prints, and takes out every path that is tracked or is a folder holding a tracked file. That last rule is what plain `check-ignore` counts as tracked when its pathspec is read literally (a path equal to an index entry, or a leading folder of one), so a folder's answer is unchanged: `scansAbove` in the generator and the command line's check ask about folders.
+- In a repository of 2 tracked files the two calls take 22 ms together; the cost in the main checkout and in a tree of a past commit is under [the measurements](#measurements).
+
+### What the mended question answers, where git used to refuse
+
+Tried on one repository holding each case (a submodule `lib` made by adding a nested repository with a commit to the index, which gives the same gitlink, mode 160000, as `git submodule add`; the harness refused `git -c protocol.file.allow=always submodule add` the night before):
+
+| A file… | Before the review (git refused, or answered as shown) | Now |
+| --- | --- | --- |
+| inside an initialised submodule | Git refused the whole call (`Pathspec 'lib/lib.ts' is in submodule 'lib'`). Discovery read **the workspace's root `.gitignore` alone, for every file of the workspace**; the audits read every file found. | Judged as a file in a plain folder: by the outer repository's `.gitignore` files, `.git/info/exclude` and global excludes, **and the submodule's own `.gitignore` files** (`lib/own.tmp`, ignored by `lib/.gitignore`, is ignored; so is `lib/deep/hidden/h.ts`, by `lib/deep/.gitignore`), **but not the submodule's `.git/info/exclude`** (`lib/excl-in-sub.ts`, which the submodule's git ignores, is kept). A file the submodule tracks is judged by the patterns all the same (`lib/x.gen`, tracked by the submodule, is ignored by the outer `*.gen`); the root `.gitignore` alone did the same before. The rest of the workspace keeps git's word. The submodule's files are still scanned, as before. |
+| inside a nested repository that is not a submodule | Answered, as now. | The same as a submodule's: the outer rules and the nested repository's own `.gitignore` files, not its `.git/info/exclude`. Unchanged. |
+| reached through a link to a folder (only under a configured glob that does not begin with `**`, which glob follows through links) | Git refused the whole call (`pathspec 'app/linked/s.ts' is beyond a symbolic link`), with `--no-index` too. Discovery read the root `.gitignore` alone for every file; the audits read every file. | Asked as its link, a path git does judge: when git ignores the link, or a folder it lies in, the file is ignored. Otherwise git cannot judge it, and for that file alone discovery reads the root `.gitignore` and the audits read it; the run warns. The rest of the workspace keeps git's word. |
+| at the top level, named `:abc.ts` | Judged as `abc.ts`. | Judged as `:abc.ts`. |
+| at the top level, named `:(x).ts` or `:!x.ts` | Git refused the whole call; discovery read the root `.gitignore` alone for every file, the audits every file. | Judged by its name. |
+
+Why a link is asked as its link: the full walk finds `build/link/r.ts` under a link inside a folder git ignores, and git ignores everything beneath an ignored folder; reading the root `.gitignore` alone there kept the file whenever `build/` was named elsewhere, a false positive, and made the short walk's answer differ from the full one's. That was the one reason the walk had to be left whole for patterns that may pass through a link. For a link git does not ignore, git has no word: the link is one entry to git, and nothing beneath it is a path of the repository. Today's fallback is kept for exactly those files. Whether the scan should read files through such a link at all is not decided here.
+
+### The short walk, made true and simpler
+
+- **"Every file under a folder git ignores whole is one the filter would have dropped" was false as written** (corrects [the mend](#the-mend-ask-git-first-which-folders-it-ignores-whole) and the first rule [above](#where-the-same-by-construction-needed-three-more-rules)): the filter asked git by pattern, and kept an ignored file whose name a tracked file matched. Judged by name, it holds: a folder git names whole is either named by a pattern, and git ignores everything beneath it, or every entry in it is ignored, and so on down; no such folder holds a tracked file; and a link inside one is ignored with it, so a path through it is too.
+- **No second, full walk.** In a short walk git can no longer refuse a path: a submodule's and a colon's paths are judged, and a path through a link is asked as its link. Git refusing the files' question now means git cannot answer at all, and then it named no folder either, so the walk was whole. Removed from both walkers; the repository with a submodule now costs `ls-files` for the folders, one short walk, `ls-files` for the tracked files and one `check-ignore`, where the review counted five steps and two refusals.
+- **`walksNoLinkToAFolder` removed**, and with it discovery's `patterns.every` and the audits' pattern-by-pattern choice: every walk is shortened, since what lies beneath a link inside an ignored folder is ignored either way.
+- **The filters of `./` and of `:` removed** from `foldersGitIgnoresWhole`. The `./` filter did nothing (git's `./` became `"."`, never the workspace's own path `""`); now `./` is read as `""`, and a workspace inside a folder an outer repository ignores whole reads as empty, which is git's answer, since every file in it is ignored.
+- **`foldersReadAsEmpty` no longer offers `promises.readdir`**, which glob 14.0.6 never calls (it walks with `readdir` and `readdirSync`), and discovery's test no longer spies on it.
+- **One engine helper for both walkers**: `withoutGitIgnored` over `gitIgnoreAnswer`. The audits' module is now the walk and that call; it no longer re-implements the filter to tell a refusal apart.
+
+### Tests, and each seen red
+
+New and changed cases: in `gitIgnored.test.ts`, `gitIgnoreAnswer`'s four (wildcard names beside tracked ones, colon names and a folder holding a tracked file, a submodule, a nested repository and two links, outside a repository) and `foldersReadAsEmpty`'s case twins; in `discovery.test.ts` and `auditedFiles.test.ts`, the wildcard names, the submodule, the links (with a tracked file in `build/`, so that the walk does reach beneath the link there), the colon names, the workspace inside an ignored folder, and in discovery's, folders differing in case alone with `core.ignorecase` false. And the oracle, `discovery.oracle.test.ts`: thirty small repositories made from seeds 1 to 30 (tracked and untracked files; `.gitignore` files at every depth with negations; `.git/info/exclude`; folders ignored whole and in part; names with `[ ] * ? \`, a space, `café` and `ж`; beside each wildcard name the plain name it matches as a pattern, tracked more often than not; files force-added under ignored folders; a tracked file gone from the disk; case twins, with `core.ignorecase` true and false), each compared with `git ls-files -z --cached --others --exclude-standard` less the documents and what is not on the disk, and its documents with the documents git lists. A failure names its seed, and `ORACLE_SEED=<n>` runs that seed alone. Left out of it, and said in its comment: submodules, nested repositories and links to folders, whose files git does not list one by one (held by the written cases), a case twin of a tracked file where `core.ignorecase` is true, which git takes for the tracked file itself, and a `.GIT` folder (below). It takes about 10 s on this machine under load. Against the code before, the first thirty seeds without the wildcard twins all passed, as the review's thousands had to find the fault; with them, seven of thirty (7, 9, 16, 18, 21, 24, 25) are red against the code before and against the question asked without `--no-index`, and none against the mended code. Four hundred further seeds (31 to 430) were run once with the mended code, in a copy of the test removed afterwards: all 400 passed, in 154 s.
+
+Each mutation was applied to the source, the four test files run, and the source restored and compared byte for byte (`mutate.py` in the builder's scratchpad, removed at the end):
+
+| Mutation | Red cases |
+| --- | --- |
+| The code before (`725e2e252`), with `gitIgnoreAnswer` made from its `gitIgnored` | 21 of 74: the oracle on seven seeds, and every new written case of the wildcard names, the colon names, the submodule, the links and the workspace inside an ignored folder, in all three files |
+| Asked without `--no-index` | 13: the oracle on the same seven seeds; the wildcard names and the submodule, in all three files |
+| Asked without the `./` prefix | 3: the colon names (helpers' and audits'); the audits' workspace inside an ignored folder, whose `:(bad).md` git then refuses |
+| Tracked files not taken out | 26: the oracle on 14 seeds, and every case with a tracked file under an ignored folder |
+| Only exactly tracked paths taken out, not a folder holding one | 1: the helpers' case of a folder holding a tracked file (no walk asks about a folder; `scansAbove` and the command line's check do) |
+| A path through a link left unjudged, never judged by its link | 3: the link cases, in all three files |
+| A path through a link asked as itself | 3: the same (git refuses it, and the answer is lost for every file) |
+| Folders compared without regard to case in `foldersReadAsEmpty` | 3: the case twins (helpers' and discovery's), and the oracle on one seed |
+| Pruning switched off | 4: the counts of folders read (discovery's and the audits'), and `foldersReadAsEmpty`'s two cases |
+| The workspace itself (`./`) never read as empty | 3, each only through an assertion of the listing (`foldersGitIgnoresWhole(…)` equal to `[""]`): reading the workspace as empty changes no answer, since git ignores every file in it, and only spares the walk |
+| Files git cannot judge given git's word in discovery | 1: discovery's link case |
+
+Each mutation turned at least one case red; with the mended code, all 74 cases of the four files pass.
+
+### A negligible difference, recorded and not mended
+
+With `core.ignorecase` true on a disk that tells case apart, git takes a folder `.GIT` (in any case but `.git`) for its own store: tried here, `git ls-files --others --exclude-standard` lists nothing in it, and `--ignored --directory` does not name it (the review saw it named whole; this run did not). Glob's `**/.git/**` and discovery's rule for `.git` match the name exactly, so discovery walks it and documents its files. Only a repository made on a disk that does not tell case apart and copied onto one that does could hold one.
+
+### Further corrections to the text above
+
+- "`git --literal-pathspecs check-ignore` … would answer the second case; it was not tried" ([the defect](#a-defect-found-and-left)): it is refused by `check-ignore`, and `--no-index` alone does not answer it either; a `./` prefix does.
+- "begins with a `:` git reads as pathspec magic" was said to make git refuse: a `:` path is not always refused. `:abc.ts` is answered, wrongly, as `abc.ts`; only `:(…)` with an unknown magic word and `:!` are refused.
+- The mutation "the workspace itself (`./`) left unwalked" went red only through a set-size assertion of the listing (`foldersGitIgnoresWhole(…).size`), not through any list of files: the `./` filter changed no answer.
+- Git names not only the folder it ignores whole but, where the folder is named because every entry in it is ignored, the folders inside it too, each with a trailing slash (`onlylogs/` and `onlylogs/sub/`, tried here); inside a folder an excludes pattern names (`ign/`), nothing beneath it. Reading the nested ones as empty as well changes nothing.
+
+### Measurements
+
+Waiting for the lane, which a whole rebuild of the history holds until about 11:20 UTC: discovery's lists and times before and after in the main checkout, this worktree and the samples, the audits' JSON, a tree of one past commit, and the gate. They are added below when taken.

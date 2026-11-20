@@ -144,10 +144,11 @@ export async function generateLiveDocs(
     workspaceRoot,
     config: normalizedConfig,
     include: new Set(),
-    changedOnly: false
+    changedOnly: false,
+    warn: (message) => logger.warn(message)
   });
   const includedFiles = includeSet.size > 0
-    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false })
+    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false, warn: (message) => logger.warn(message) })
     : workspaceFiles;
   // An explicit include may name a source outside the configured globs. It is
   // still part of the workspace context for this run, but only included files

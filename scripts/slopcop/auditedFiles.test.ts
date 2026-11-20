@@ -142,51 +142,64 @@ describe("auditedFiles", () => {
     }
   });
 
-  it("reads every file, as before, where git refuses a path in a submodule", () => {
+  it("judges each path by its name, a name a tracked file's wildcard pattern would match among them", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n", "build/a.md": "", "module/b.md": "", "README.md": "" });
+    write(root, { ".gitignore": "build/\n*.log.md\n", "a1/build/x.md": "", "a[1]/build/x.md": "", "a1.log.md": "", "a[1].log.md": "", "b?/out/x.md": "", "bc/out/x.md": "", "a\\b/out/x.md": "", "ab/out/x.md": "", "ab/.gitignore": "out/\n", "a\\b/.gitignore": "out/\n", "kept.md": "" });
+    git(root, "init", "-q");
+    git(root, "add", "-f", "a1/build/x.md", "a1.log.md", "bc/out/x.md", "ab/out/x.md");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "out/\n");
+    // Asked as patterns, `a[1]/build/x.md` matched the tracked `a1/build/x.md` and was kept, and so each of the others.
+    expect(audited(root)).toEqual(["a1.log.md", "a1/build/x.md", "ab/out/x.md", "bc/out/x.md", "kept.md"]);
+  });
+
+  it("judges a submodule's files by name, by the outer repository's excludes and the submodule's own .gitignore files", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "build/\n", "build/a.md": "", "module/b.md": "", "module/.gitignore": "own.md\n", "module/own.md": "", "module/build/c.md": "", "README.md": "" });
     git(path.join(root, "module"), "init", "-q");
-    git(path.join(root, "module"), "add", "b.md");
+    git(path.join(root, "module"), "add", "b.md", ".gitignore");
     git(path.join(root, "module"), "commit", "-qm", "module");
     git(root, "init", "-q");
     git(root, "add", "module");
 
-    // Git refuses `module/b.md`, and the audit then reads every file found, the ignored build among them.
-    expect(audited(root)).toEqual(["README.md", "build/a.md", "module/b.md"]);
+    // Until 2026-11-20 git refused `module/b.md`, and the audit then read every file found, the ignored build among them.
+    expect(audited(root)).toEqual(["README.md", "module/b.md"]);
   });
 
-  it("walks in full a pattern that may pass through a link to a folder inside an ignored folder", () => {
+  it("asks of a path through a link to a folder as its link: ignored with the link, else read", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n", "src/real/r.md": "", "README.md": "" });
-    fs.mkdirSync(path.join(root, "build"));
+    write(root, { ".gitignore": "build/\n", "src/real/r.md": "", "README.md": "", "build/kept.md": "" });
+    fs.mkdirSync(path.join(root, "open"));
     fs.symlinkSync(path.join("..", "src", "real"), path.join(root, "build", "link"));
+    fs.symlinkSync(path.join("..", "src", "real"), path.join(root, "open", "link"));
     git(root, "init", "-q");
+    // A tracked file keeps `build` from being a folder git ignores whole, so that the walk finds what is under its link.
+    git(root, "add", "-f", "build/kept.md");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "*.md\n!README.md\n!src/**\n");
 
-    // `*/**/*.md` follows `build/link`, and git refuses `build/link/r.md`; then every file found is read, as before.
-    expect(audited(root, ["*/**/*.md"])).toEqual(["build/link/r.md", "src/real/r.md"]);
-    expect(audited(root)).toEqual(["README.md", "src/real/r.md"]);
+    // `*/**/*.md` follows both links; git judges no path beyond one, so `build/link/r.md` goes with the ignored
+    // `build/link`, and `open/link/r.md`, whose link git does not ignore, is read as every file is that git cannot judge.
+    expect(audited(root, ["*/**/*.md"])).toEqual(["build/kept.md", "open/link/r.md", "src/real/r.md"]);
+    expect(audited(root)).toEqual(["README.md", "build/kept.md", "src/real/r.md"]);
   });
 
-  it("walks a folder whose path begins with a colon, which git may read as pathspec magic and refuse", () => {
+  it("judges a folder or a file whose path begins with a colon by its name", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n/:*\n", "build/a.md": "", "README.md": "", ":(bad)/c.md": "" });
+    write(root, { ".gitignore": "build/\n/:*\n!/:kept.md\n", "build/a.md": "", "README.md": "", ":(bad)/c.md": "", ":!x.md": "", ":kept.md": "" });
     git(root, "init", "-q");
 
-    // Git refuses `:(bad)/c.md`, so the answer is as before: every file found.
-    expect(audited(root)).toEqual([":(bad)/c.md", "README.md", "build/a.md"]);
-    expect([...foldersGitIgnoresWhole(root)]).toEqual(["build"]);
+    // Until 2026-11-20 git refused `:(bad)/c.md`, and the audit then read every file found.
+    expect(audited(root)).toEqual([":kept.md", "README.md"]);
+    expect([...foldersGitIgnoresWhole(root)].sort()).toEqual([":(bad)", "build"]);
   });
 
-  it("walks a workspace that lies inside a folder an outer repository ignores, as before", () => {
+  it("reads nothing of a workspace that lies inside a folder an outer repository ignores", () => {
     const outer = workspace();
-    write(outer, { ".gitignore": "inner/\n", "inner/a.md": "", "inner/sub/b.md": "" });
+    write(outer, { ".gitignore": "inner/\n", "inner/a.md": "", "inner/sub/b.md": "", "inner/:(bad).md": "" });
     git(outer, "init", "-q");
     const root = path.join(outer, "inner");
+    // Git names the workspace itself (`./`), and it reads as empty.
     expect(audited(root)).toEqual([]);
-    // Git names the workspace itself (`./`), which is walked all the same: a top-level name git refuses changes the answer.
-    write(root, { ":(bad).md": "" });
-    expect(audited(root)).toEqual([":(bad).md", "a.md", "sub/b.md"]);
-    expect(foldersGitIgnoresWhole(root).size).toBe(0);
+    expect([...foldersGitIgnoresWhole(root)]).toEqual([""]);
   });
 
   it("walks everything where git cannot answer: outside a repository, and with no git on the path", () => {
