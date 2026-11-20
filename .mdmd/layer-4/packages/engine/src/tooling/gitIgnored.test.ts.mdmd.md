@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/gitIgnored.test.ts`
-- Generated At: 2026-11-20T13:47:31.916Z
+- Generated At: 2026-11-20T15:50:32.142Z
 
 ## Authored
 ### Purpose
@@ -30,5 +30,6 @@ _No public symbols detected_
 - [`gitIgnored.foldersReadAsEmpty`](./gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
 - [`gitIgnored`](./gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`gitIgnored.gitIgnores`](./gitIgnored.ts.mdmd.md#symbol-gitignores-function)
+- [`gitIgnored.liesInNoRepository`](./gitIgnored.ts.mdmd.md#symbol-liesinnorepository)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

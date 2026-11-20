@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/generator.test.ts`
-- Generated At: 2026-11-19T21:10:17.952Z
+- Generated At: 2026-11-20T15:50:33.825Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `execFileSync`
+- `node:fs` - `nodeFs`
 - `node:fs/promises`
 - `node:os`
 - `node:path`
@@ -39,5 +40,5 @@ _No public symbols detected_
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`summary.summarizeGraph`](../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

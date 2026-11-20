@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
 import { gitIgnores } from "../tooling/gitIgnored";
-import { discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
+import { buildWorkspaceIndexes, discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
 
 const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
 
@@ -455,7 +455,7 @@ describe("the folders git ignores whole", () => {
     };
     expect(await told()).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
     expect(warnings).toEqual([]);
-    // Outside any repository, by git's own word, the rule for no git is the rule: nothing to warn of.
+    // Outside every repository, by the folder's own structure, the rule for no git is the rule: nothing to warn of.
     const plain = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-plain-"));
     folders.push(plain);
     await fs.writeFile(path.join(plain, "a.ts"), "");
@@ -607,5 +607,146 @@ describe("the folders git ignores whole", () => {
     // Git names the workspace itself (`./`), which reads as empty; every file in it is ignored.
     expect(await found(root)).toEqual({ files: [], documents: [] });
     expect([...foldersGitIgnoresWhole(root)]).toEqual([""]);
+  });
+
+  it("judges each repository's files by its own git in a workspace that lies in no repository, the rest by its .gitignore, and warns of nothing", async () => {
+    // The reviewer's shape (2026-11-20): a folder of clones scanned as one, with a `.gitignore` of its own.
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-clones-"));
+    folders.push(root);
+    const files: Record<string, string> = { ".gitignore": "*.cfg\n", "a.ts": "", "loose.cfg": "", "proj/.gitignore": "dist/\n", "proj/a.ts": "", "proj/settings.cfg": "", "proj/dist/bundle.js": "", "proj/README.md": "", "proj/dist/README.md": "" };
+    for (const [relative, text] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(root, relative)), { recursive: true });
+      await fs.writeFile(path.join(root, relative), text);
+    }
+    git(path.join(root, "proj"), "init", "-q");
+    git(path.join(root, "proj"), "add", ".gitignore", "a.ts", "settings.cfg");
+    // Git's own word first: no repository at the workspace; `proj` tracks `settings.cfg` and ignores `dist/`.
+    expect(spawnSync("git", ["-C", root, "rev-parse"], { encoding: "utf8" }).status).toBe(128);
+    expect(spawnSync("git", ["-C", path.join(root, "proj"), "status", "--porcelain", "--ignored", "-uall"], { encoding: "utf8" }).stdout).toBe("A  .gitignore\nA  a.ts\nA  settings.cfg\n?? README.md\n!! dist/README.md\n!! dist/bundle.js\n");
+    const warnings: string[] = [];
+    const config = normalizeLiveDocumentationConfig({});
+    const documented = (await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) })).map((file) => path.relative(root, file).split(path.sep).join("/"));
+    // Until this round the workspace's `*.cfg` judged every file and `proj` was never asked: `proj/dist/bundle.js` was
+    // documented and `proj/settings.cfg`, which `proj` tracks, left out, in silence.
+    expect(documented).toEqual([".gitignore", "a.ts", "proj/.gitignore", "proj/a.ts", "proj/settings.cfg"]);
+    expect(await discoverDocuments({ workspaceRoot: root, config, warn: (message) => warnings.push(message) })).toEqual(["proj/README.md"]);
+    expect(warnings).toEqual([]);
+  });
+
+  it("finds a file tracked during the walk in a folder the first listing left unread, by walking again", async () => {
+    const root = await repository({ ".gitignore": "gen/\n", "a.ts": "", "gen/out.ts": "" });
+    const listing = (): string => spawnSync("git", ["-C", root, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8" }).stdout;
+    expect(listing()).toBe("gen/\0");
+    // A stand-in for a person or a tool: the walk's first read of a folder tracks `gen/out.ts`, after the listing that
+    // left `gen/` unread and before the one that judges.
+    const readdir = nodeFs.readdir;
+    let added = false;
+    const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+      if (!added) {
+        added = true;
+        git(root, "add", "-f", "gen/out.ts");
+      }
+      return Reflect.apply(readdir, nodeFs, args);
+    }) as unknown as typeof nodeFs.readdir);
+    let result: string[];
+    try {
+      result = (await found(root)).files;
+    } finally {
+      spy.mockRestore();
+    }
+    // Git's own word after the walk: `gen/` holds a tracked file, and is no longer ignored whole.
+    expect(listing()).toBe("");
+    // Until this round the tracked file was missing, in silence, until the next run.
+    expect(result).toEqual([".gitignore", "a.ts", "gen/out.ts"]);
+  });
+
+  it("stops the walk where a folder cannot be read for a cause of the machine's, and reads an absent one as empty", async () => {
+    const root = await repository({ ".gitignore": "build/\n", "a.ts": "", "src/b.ts": "", "build/c.ts": "" });
+    const readdir = nodeFs.readdir;
+    const failing = (code: string): (() => void) => {
+      const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+        const folder = String(args[0]);
+        if (path.relative(root, folder) === "src") {
+          const callback = args[args.length - 1] as (error: NodeJS.ErrnoException) => void;
+          process.nextTick(callback, Object.assign(new Error(`${code}: failed, scandir '${folder}'`), { code, syscall: "scandir", path: folder }));
+          return;
+        }
+        return Reflect.apply(readdir, nodeFs, args);
+      }) as unknown as typeof nodeFs.readdir);
+      return () => spy.mockRestore();
+    };
+    const config = normalizeLiveDocumentationConfig({});
+    let restore = failing("EMFILE");
+    try {
+      // Until this round glob read `src` as empty: `src/b.ts` was missing, and its doc would have been pruned as stale.
+      await expect(discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false })).rejects.toMatchObject({ code: "EMFILE", path: path.join(root, "src") });
+      await expect(discoverDocuments({ workspaceRoot: root, config })).rejects.toMatchObject({ code: "EMFILE" });
+    } finally {
+      restore();
+    }
+    restore = failing("ENOENT");
+    try {
+      // A folder gone between its listing and its read holds nothing to document.
+      expect((await found(root)).files).toEqual([".gitignore", "a.ts"]);
+    } finally {
+      restore();
+    }
+  });
+
+  it("finds nothing to document behind a link that loops or passes through a file", async () => {
+    const root = await repository({ "a.ts": "" });
+    await fs.symlink("loop.ts", path.join(root, "loop.ts"));
+    await fs.symlink("a.ts/x", path.join(root, "through.ts"));
+    await fs.symlink("loop.md", path.join(root, "loop.md"));
+    // Read by the file system, each fails as a link to nothing: it loops, or passes through a file.
+    await expect(fs.stat(path.join(root, "loop.ts"))).rejects.toMatchObject({ code: "ELOOP" });
+    await expect(fs.stat(path.join(root, "through.ts"))).rejects.toMatchObject({ code: "ENOTDIR" });
+    // Until this round each stopped the whole walk, and a whole generate with it.
+    expect(await found(root)).toEqual({ files: ["a.ts"], documents: [] });
+  });
+});
+
+describe("the index pass", () => {
+  const folders: string[] = [];
+  afterEach(async () => {
+    for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
+  });
+
+  it("names a file whose reading throws for a cause of the file's, and stops at a failure of the machine's", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-index-"));
+    folders.push(root);
+    await fs.writeFile(path.join(root, "a.ts"), "export const a = 1;\n");
+    await fs.writeFile(path.join(root, "b.ts"), "export const b = 1;\n");
+    const indexes = async (): Promise<Awaited<ReturnType<typeof buildWorkspaceIndexes>>> =>
+      buildWorkspaceIndexes({ targetFiles: [path.join(root, "a.ts"), path.join(root, "b.ts")], workspaceRoot: root, liveDocsRoot: ".mdmd/layer-4", docExtension: ".mdmd.md" });
+    const readFile = nodeFs.promises.readFile;
+    // Only the first read of `a.ts` fails, as a transient failure would.
+    const failingOnce = (error: Error): (() => void) => {
+      let failed = false;
+      const spy = vi.spyOn(nodeFs.promises, "readFile").mockImplementation(((...args: unknown[]) => {
+        if (!failed && String(args[0]) === path.join(root, "a.ts")) {
+          failed = true;
+          return Promise.reject(error);
+        }
+        return Reflect.apply(readFile, nodeFs.promises, args);
+      }) as unknown as typeof nodeFs.promises.readFile);
+      return () => spy.mockRestore();
+    };
+    let restore = failingOnce(new RangeError("Maximum call stack size exceeded"));
+    try {
+      // Until this round the throw was swallowed: `a` was missing from the index, with no mark and no name.
+      const { symbols, unmapped } = await indexes();
+      expect([...unmapped.keys()]).toEqual([path.join(root, "a.ts")]);
+      expect(symbols.has("a")).toBe(false);
+      expect(symbols.has("b")).toBe(true);
+    } finally {
+      restore();
+    }
+    restore = failingOnce(Object.assign(new Error("EMFILE: too many open files, open"), { code: "EMFILE", syscall: "open" }));
+    try {
+      await expect(indexes()).rejects.toMatchObject({ code: "EMFILE" });
+    } finally {
+      restore();
+    }
   });
 });

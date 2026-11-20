@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { foldersReadAsEmpty, gitIgnored, gitIgnores, type GitIgnoreAnswer } from "./gitIgnored";
+import { foldersReadAsEmpty, gitIgnored, gitIgnores, liesInNoRepository, type GitIgnoreAnswer } from "./gitIgnored";
 
 const gitIgnoreAnswer = (root: string, paths: readonly string[]): GitIgnoreAnswer | null => gitIgnores(root)?.answer(paths) ?? null;
 const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
@@ -51,10 +51,13 @@ describe("gitIgnored", () => {
     expect([...(gitIgnored(root, ["a.log", "b.md", "kept.log", "nested/c.md", "nested"]) ?? [])].sort()).toEqual(["a.log", "nested", "nested/c.md"]);
   });
 
-  it("cannot answer outside a repository", () => {
+  it("names nothing outside every repository, where git has no word and the caller's rule for no git judges", () => {
     const root = workspace();
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
     writeFileSync(path.join(root, "a.log"), "x\n");
-    expect(gitIgnored(root, ["a.log"])).toBeNull();
+    expect(spawnSync("git", ["-C", root, "rev-parse"], { encoding: "utf8" }).status).toBe(128);
+    expect(liesInNoRepository(root)).toBe(true);
+    expect([...(gitIgnored(root, ["a.log"]) ?? ["no answer"])]).toEqual([]);
   });
 });
 
@@ -285,17 +288,19 @@ describe("gitIgnoreAnswer", () => {
 
   it("asks a link to a repository's top of that repository directly, and leaves unjudged a link to a repository git refuses, to a plain folder and into the middle of a repository", () => {
     const outside = workspace();
-    files(outside, ["repo/o.ts", "repo/o.local.ts", "bad/b.ts", "plain/p.ts", "mid/sub/m.ts", "mid/sub/m.local.ts", "mid/strayed/s.local.ts"]);
+    files(outside, ["repo/o.ts", "repo/o.local.ts", "bad/b.ts", "plain/p.ts", "mid/sub/m.ts", "mid/sub/m.local.ts", "mid/strayed/s.local.ts", "mid/hollow/h.local.ts"]);
     for (const folder of ["repo", "bad", "mid"]) git(path.join(outside, folder), "init", "-q");
     // A folder in the middle of `mid` whose `.git` names no repository: git there finds `mid` above it.
     writeFileSync(path.join(outside, "mid", "strayed", ".git"), "gitdir: nowhere\n");
+    // And one whose `.git` is an empty folder, which git climbs past to `mid`.
+    mkdirSync(path.join(outside, "mid", "hollow", ".git"));
     appendFileSync(path.join(outside, "repo", ".git", "info", "exclude"), "*.local.ts\n");
     appendFileSync(path.join(outside, "mid", ".git", "info", "exclude"), "*.local.ts\n");
     appendFileSync(path.join(outside, "bad", ".git", "config"), "[broken\n");
     const root = workspace();
     git(root, "init", "-q");
     mkdirSync(path.join(root, "links"));
-    for (const [link, target] of [["repo", "repo"], ["bad", "bad"], ["plain", "plain"], ["mid", "mid/sub"], ["strayed", "mid/strayed"]]) symlinkSync(path.join(outside, target), path.join(root, "links", link));
+    for (const [link, target] of [["repo", "repo"], ["bad", "bad"], ["plain", "plain"], ["mid", "mid/sub"], ["strayed", "mid/strayed"], ["hollow", "mid/hollow"]]) symlinkSync(path.join(outside, target), path.join(root, "links", link));
     // To the repository around, a link is a file: asked about it, git prints the link and nothing beyond it. Asked from
     // the linked folder, git answers as the linked repository there: at its top for `repo`, a subfolder for `mid`.
     const run = (cwd: string, ...args: string[]): string => spawnSync("git", ["--literal-pathspecs", "-C", cwd, ...args], { encoding: "utf8" }).stdout;
@@ -304,9 +309,14 @@ describe("gitIgnoreAnswer", () => {
     expect(run(path.join(root, "links", "mid"), "rev-parse", "--show-prefix")).toBe("sub/\n");
     // Git refuses where a `.git` names no repository; it does not climb to `mid`.
     expect(spawnSync("git", ["-C", path.join(root, "links", "strayed"), "rev-parse", "--show-prefix"], { encoding: "utf8" }).status).toBe(128);
-    const paths = ["links/repo/o.ts", "links/repo/o.local.ts", "links/bad/b.ts", "links/plain/p.ts", "links/mid/m.ts", "links/mid/m.local.ts", "links/strayed/s.local.ts"];
+    // Past an empty `.git/` it climbs, and answers as `mid` with a prefix: not the linked repository's top.
+    expect(run(path.join(root, "links", "hollow"), "rev-parse", "--show-prefix")).toBe("hollow/\n");
+    expect(run(path.join(root, "links", "hollow"), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory")).toBe("./\0h.local.ts\0");
+    const paths = ["links/repo/o.ts", "links/repo/o.local.ts", "links/bad/b.ts", "links/plain/p.ts", "links/mid/m.ts", "links/mid/m.local.ts", "links/strayed/s.local.ts", "links/hollow/h.local.ts"];
     // Until this round a link was never asked: both of `repo`'s files were unjudged, though the texts said otherwise.
-    expect(answer(root, paths)).toEqual({ ignored: ["links/repo/o.local.ts"], unjudged: ["links/bad/b.ts", "links/mid/m.local.ts", "links/mid/m.ts", "links/plain/p.ts", "links/strayed/s.local.ts"] });
+    // And until the next, `links/hollow/h.local.ts` was judged ignored by `mid`, the repository around the place the
+    // link leads to, in silence.
+    expect(answer(root, paths)).toEqual({ ignored: ["links/repo/o.local.ts"], unjudged: ["links/bad/b.ts", "links/hollow/h.local.ts", "links/mid/m.local.ts", "links/mid/m.ts", "links/plain/p.ts", "links/strayed/s.local.ts"] });
   });
 
   it("leaves unjudged a submodule whose folder's case differs from its gitlink where git folds case, and judges as ignored what the listing around names in a folder git says nothing of", () => {
@@ -392,11 +402,62 @@ describe("gitIgnoreAnswer", () => {
     }
   });
 
-  it("cannot answer outside a repository, and answers an empty list", () => {
+  it("says a path outside every repository lies in none, and answers an empty list", () => {
     const root = workspace();
-    expect(gitIgnoreAnswer(root, ["a.ts"])).toBeNull();
+    files(root, ["a.ts"]);
+    expect(gitIgnoreAnswer(root, ["a.ts"])).toEqual({ ignored: new Set(), unjudged: new Set(), outside: new Set(["a.ts"]) });
     git(root, "init", "-q");
     expect(answer(root, [])).toEqual({ ignored: [], unjudged: [] });
+  });
+
+  it("asks each repository within a workspace that lies in no repository directly, and says what lies outside every one", () => {
+    const root = workspace();
+    // The reviewer's shape: a folder of clones, scanned as one, with a `.gitignore` of its own that no git reads.
+    writeFileSync(path.join(root, ".gitignore"), "*.cfg\n");
+    files(root, ["a.ts", "loose/x.cfg", "loose/b.ts", "proj/a.ts", "proj/settings.cfg", "proj/dist/bundle.js", "sub/inner/y.ts", "sub/inner/x.local.ts", "bad/b.ts", "hollow/h.ts"]);
+    writeFileSync(path.join(root, "proj", ".gitignore"), "dist/\n");
+    git(path.join(root, "proj"), "init", "-q");
+    git(path.join(root, "proj"), "add", ".gitignore", "a.ts", "settings.cfg");
+    git(path.join(root, "sub", "inner"), "init", "-q");
+    appendFileSync(path.join(root, "sub", "inner", ".git", "info", "exclude"), "*.local.ts\n");
+    git(path.join(root, "bad"), "init", "-q");
+    appendFileSync(path.join(root, "bad", ".git", "config"), "[broken\n");
+    // An empty `.git/`: git climbs past it and, above, finds no repository either.
+    mkdirSync(path.join(root, "hollow", ".git"));
+    const run = (cwd: string, ...args: string[]): { status: number | null; stdout: string } => spawnSync("git", ["-C", cwd, ...args], { encoding: "utf8" });
+    // Git's own word first: none at the workspace; each repository's own status; none at the empty `.git`.
+    expect(run(root, "rev-parse").status).toBe(128);
+    expect(run(path.join(root, "proj"), "status", "--porcelain", "--ignored", "-uall").stdout).toBe("A  .gitignore\nA  a.ts\nA  settings.cfg\n!! dist/bundle.js\n");
+    expect(run(path.join(root, "sub", "inner"), "status", "--porcelain", "--ignored", "-uall").stdout).toBe("?? y.ts\n!! x.local.ts\n");
+    expect(run(path.join(root, "bad"), "status").status).toBe(128);
+    expect(run(path.join(root, "hollow"), "rev-parse").status).toBe(128);
+    const paths = ["a.ts", "loose/x.cfg", "loose/b.ts", "proj/a.ts", "proj/settings.cfg", "proj/dist/bundle.js", "sub/inner/y.ts", "sub/inner/x.local.ts", "bad/b.ts", "hollow/h.ts"];
+    // Until this round git gave no answer at all here, and the workspace's `.gitignore` judged every file: the tracked
+    // `proj/settings.cfg` left out, `proj/dist/bundle.js` documented, in silence.
+    expect(gitIgnoreAnswer(root, paths)).toEqual({
+      ignored: new Set(["proj/dist/bundle.js", "sub/inner/x.local.ts"]),
+      unjudged: new Set(["bad/b.ts", "hollow/h.ts"]),
+      outside: new Set(["a.ts", "loose/x.cfg", "loose/b.ts"])
+    });
+    // Nothing is left unread where the workspace has no listing of its own.
+    expect(foldersGitIgnoresWhole(root).size).toBe(0);
+  });
+
+  it("asks a nested repository whose name git would read as a pattern or as magic by its name", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    files(root, [":(x)lib/a.local.ts", ":(x)lib/b.ts", "a[1]/a.local.ts", "a[1]/b.ts", "a1/c.ts"]);
+    for (const folder of [":(x)lib", "a[1]"]) {
+      git(path.join(root, folder), "init", "-q");
+      appendFileSync(path.join(root, folder, ".git", "info", "exclude"), "*.local.ts\n");
+    }
+    const question = (literal: boolean, folder: string): { status: number | null; stdout: string } =>
+      spawnSync("git", [...(literal ? ["--literal-pathspecs"] : []), "-C", root, "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", folder, ".git"], { encoding: "utf8" });
+    // Read as a pathspec, `:(x)lib` is magic git refuses; read as a name, git prints the folder whole: another repository.
+    expect(question(false, ":(x)lib").status).toBe(128);
+    expect(question(true, ":(x)lib").stdout).toBe(":(x)lib/\0");
+    expect(question(true, "a[1]").stdout).toBe("a[1]/\0");
+    expect(answer(root, [":(x)lib/a.local.ts", ":(x)lib/b.ts", "a[1]/a.local.ts", "a[1]/b.ts", "a1/c.ts"])).toEqual({ ignored: [":(x)lib/a.local.ts", "a[1]/a.local.ts"], unjudged: [] });
   });
 });
 
