@@ -49,7 +49,9 @@ function snapshot(folder: string): Map<string, string> {
 async function writtenAnew(repository: string, change: string, configuration: LiveDocumentationConfig): Promise<{ entries: Map<string, string>; unwritten: unknown[] }> {
   const directory = path.join(fs.mkdtempSync(path.join(privateTemporary, "anew-")), "tree");
   fs.mkdirSync(directory);
-  const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, treeOptions(configuration, directory));
+  // The git directory as the command finds it: in a linked worktree, as this repository's checkout may be, `.git` is a file.
+  const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+  const unwritten = await writeStoredTree(store, change, directory, treeOptions(configuration, directory));
   const entries = snapshot(directory);
   fs.rmSync(path.dirname(directory), { recursive: true, force: true });
   return { entries, unwritten };
