@@ -24,8 +24,8 @@ import sys
 #   carried to the tree, 49 a nearer copy of the installation's, 50 the index pass's throw handed to the file's pass;
 #   51 and 52 the case setting keyed by the command and carried on a task; 53 to 55 the depth measure's reach past
 #   forEachChild: a node's JSDoc, a bracketed JSDoc parameter's default, the left operand of a less-than; 56 to 65
-#   the read rule's second look, and 66 to 72 the depth measure's answers to its second review, each named where its
-#   edit stands);
+#   the read rule's second look, 66 to 72 the depth measure's answers to its second review, and 73 to 80 one commit
+#   a worker by default, each named where its edit stands);
 #   with none, `check` alone reads every guard at once (apply and revert ask for a number). Since the second review
 #   of 2026-11-20 each guard is broken by itself in a run of its own, so that one held by no test shows; the leftovers'
 #   round found guard 17 (the reason written anew) and the branch of guard 49 held by no test before it, and gave each one.
@@ -66,8 +66,8 @@ edits = [
      "          if (!report.published) {\n",
      "          if (false as boolean) {\n"),
     ("packages/generator/src/history/regenerate.ts",
-     "      const full = report.heldMemory > bound || report.heapShare > 1 / 2;\n",
-     "      const full = report.heldMemory < 0;\n"),
+     "      const full = keep && (report.heldMemory > bound || report.heapShare > 1 / 2);\n",
+     "      const full = keep && report.heldMemory < 0;\n"),
     # Since the review of the workers' final code (2026-11-20, the tree and git round): 11 the walk's counts ignored;
     # 12 the identity left out of the stamp; 13 the short names' rule off; 14 the command's own calls reaching a remote;
     # 15 a git call of the command added without what every call sets; 16 the repository's own settings let into the
@@ -116,8 +116,8 @@ edits = [
      "      ...treeSettings(options?.ignoresCase),\n",
      "      ...treeSettings(),\n"),
     ("packages/engine/src/live-docs/history/lens.ts",
-     "  const made = repository.ignoresCase ? { repository: { ignoresCase: true } } : {};\n",
-     "  const made = {};\n"),
+     "  const repository = made.ignoresCase === true ? { repository: { ignoresCase: true } } : {};\n",
+     "  const repository = {};\n"),
     # Since the review of 2026-11-20 at e1e27e33a: a tree-sitter tree beyond the reading depth left unmarked
     # (treeSitter.test.ts); a file the generator could not map left unmarked; its committed doc kept in the history's
     # tree (history-workers); a machine's failure published (regenerate.test.ts's stand-ins hold the pool's side).
@@ -223,8 +223,8 @@ edits = [
     # case setting true (history.test.ts, the repository that matches names without regard to case); 52 the worker's
     # task carrying no case setting (regenerate.test.ts, the task a worker is sent).
     ("packages/generator/src/history/computeHistory.ts",
-     "  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase() });\n",
-     "  const lens = lensOf(generator, configuration, { ignoresCase: (await versionControl.ignoresCase()) && false });\n"),
+     "  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase(), keepWorkers",
+     "  const lens = lensOf(generator, configuration, { ignoresCase: (await versionControl.ignoresCase()) && false, keepWorkers"),
     ("packages/generator/src/history/regenerate.ts",
      "    ignoresCase: context.lens.ignoresCase === true,\n",
      "    // guard 52: the case setting left out of the task\n"),
@@ -310,12 +310,43 @@ edits = [
     ("packages/engine/src/live-docs/processMark.test.ts",
      ".toBe(\"5.9.3\");",
      ".toBe(\"0.0.0\");"),
+    # One commit a worker by default, 2026-11-20, as its builder gave them, each seen red by it in this form: 73 a
+    # worker kept though none was asked for (regenerate.test.ts, "starts a worker for each change", and the machine's
+    # retry); 74 the lens not keyed by kept workers (lens.test.ts); 75 the run's one line for a worker a change
+    # (regenerate.test.ts, "says once"); 76 the command not keying it (history.test.ts); 77 a tree "written anew" said
+    # at every change of a run that keeps none (regenerate.test.ts); 78 the lens not carrying the field
+    # (lens.test.ts); 79 "decided by a fresh process" said where every change is one's (regenerate.test.ts); 80 the
+    # command's flag (history-workers.test.ts, the cases with workers kept).
+    ("packages/generator/src/history/regenerate.ts",
+     "      if (!keep || report.marked.length > 0 || !report.published || full) {",
+     "      if (report.marked.length > 0 || !report.published || full) {"),
+    ("packages/engine/src/live-docs/history/lens.ts",
+     "  const workers = made.keepWorkers === true ? { workers: { kept: true } } : {};",
+     "  const workers = made.keepWorkers === true ? {} : {};"),
+    ("packages/generator/src/history/regenerate.ts",
+     "      : \"each change is summarized by a process of its own, which writes the change's tree anew and is ended after it\"",
+     "      : \"\""),
+    ("packages/generator/src/history/computeHistory.ts",
+     "keepWorkers: options.keepWorkers === true });",
+     "keepWorkers: false });"),
+    ("packages/generator/src/history/regenerate.ts",
+     "          const anew = !keep || report.broughtForward ? undefined",
+     "          const anew = report.broughtForward ? undefined"),
+    ("packages/engine/src/live-docs/history/lens.ts",
+     ", ...(made.keepWorkers === true ? { keepWorkers: true as const } : {}) };",
+     " };"),
+    ("packages/generator/src/history/regenerate.ts",
+     "          if (keep && report.marked.length > 0) {",
+     "          if (report.marked.length > 0) {"),
+    ("scripts/live-docs/history.ts",
+     "        parsed.keepWorkers = true;",
+     "        parsed.keepWorkers = false;"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
           39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
-          66, 67, 68, 69, 70, 71, 72]
+          66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 # Only `check` takes every guard at once. Several edits stand on one line (the stamp's four fields), so that applying
 # all stops halfway and reverting what was applied garbles that line, as it did once on 2026-11-20 at the root's hand.
