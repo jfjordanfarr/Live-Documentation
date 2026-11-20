@@ -11,7 +11,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
-import { markProcess, READING_DEPTH } from "../processMark";
+import { markProcess, TREE_DEPTH } from "../processMark";
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
@@ -102,7 +102,7 @@ function beyondDepth(tree: Tree): boolean {
   try {
     let depth = 1;
     for (;;) {
-      if (depth > READING_DEPTH) return true;
+      if (depth > TREE_DEPTH) return true;
       if (cursor.gotoFirstChild()) {
         depth += 1;
         continue;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-20T15:12:45.856Z
+- Generated At: 2026-11-20T15:18:14.549Z
 
 ## Authored
 ### Purpose
@@ -71,6 +71,7 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`openings.isToolingFile`](../openings.ts.mdmd.md#symbol-istoolingfile)
 - [`processMark.READING_DEPTH`](../processMark.ts.mdmd.md#symbol-reading_depth)
+- [`processMark.TREE_DEPTH`](../processMark.ts.mdmd.md#symbol-tree_depth)
 - [`processMark.jsonChildren`](../processMark.ts.mdmd.md#symbol-jsonchildren)
 - [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
 - [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)

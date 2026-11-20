@@ -33,7 +33,7 @@ import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText"
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
-import { jsonChildren, markProcess, nestingBeyondDepth, READING_DEPTH } from "../processMark";
+import { jsonChildren, markProcess, nestingBeyondDepth, READING_DEPTH, TREE_DEPTH } from "../processMark";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { ManifestDependencies, manifestContext, packageSymbols, stringOf, tableOf, type ManifestContext } from "./manifest";
 
@@ -327,7 +327,7 @@ function compilerPaths(directory: string): { outDir: string; rootDirs: string[] 
   const read = ts.readConfigFile(tsconfig, (file) => ts.sys.readFile(file));
   if (read.error || !read.config) return undefined;
   // TypeScript's reader of JSON recurses as its parser does: measured once it has read, as after a parse of a module.
-  nestingBeyondDepth(read.config as unknown, jsonChildren);
+  nestingBeyondDepth(read.config as unknown, jsonChildren, READING_DEPTH);
   const options = ts.parseJsonConfigFileContent(read.config, ts.sys, directory, undefined, tsconfig).options;
   if (!options.outDir) return undefined;
   const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
@@ -578,7 +578,7 @@ export const jsonAdapter: LanguageAdapter = {
       };
     }
     // `JSON.parse` holds no stack; the walks below recurse, so a value nested deeper than a fresh process could walk marks the process.
-    nestingBeyondDepth(parsed, jsonChildren);
+    nestingBeyondDepth(parsed, jsonChildren, TREE_DEPTH);
 
     if (path.basename(absolutePath) === PACKAGE_JSON) {
       return analyzePackageManifest(parsed, manifestContext({ absolutePath, workspaceRoot, fileIndex, symbolIndex }));

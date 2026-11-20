@@ -84,8 +84,8 @@ describe("anything thrown while a tree is taken, read or released", () => {
     // `x = (((…)))`: the module, the statement, the assignment, then a parenthesized expression a level, then `1`.
     const nested = (levels: number): string => `x = ${"(".repeat(levels)}1${")".repeat(levels)}\n`;
     const depthOf = (root: SyntaxNode): number => 1 + Math.max(0, ...root.children.map(depthOf));
-    const atDepth = mark.READING_DEPTH - 4;
-    expect(await own.readTree("python", nested(atDepth), depthOf)).toBe(mark.READING_DEPTH);
+    const atDepth = mark.TREE_DEPTH - 4;
+    expect(await own.readTree("python", nested(atDepth), depthOf)).toBe(mark.TREE_DEPTH);
     expect(mark.processMarks()).toEqual([]);
     await own.readTree("python", nested(atDepth + 1), () => undefined);
     expect(mark.processMarks()).toEqual(["deep"]);

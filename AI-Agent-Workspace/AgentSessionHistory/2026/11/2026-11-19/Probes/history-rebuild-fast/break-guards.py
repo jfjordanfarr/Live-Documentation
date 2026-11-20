@@ -17,7 +17,8 @@ import sys
 #   setting keyed; and, renumbered when the two rounds of 2026-11-20 were joined, the summaries' round's guards, which
 #   its own record numbers 11 to 21: 25 the depth, 26 the unmapped mark, 27 the old doc, 28 the machine's failure,
 #   29 the TypeScript depth, 30 the tree's folder in a reason, 31 the environment removed, 32 the machine's stop,
-#   33 the JSON depth, 34 an adapter's own read, 35 a doc path too long); with none, every guard at once. Since the
+#   33 the JSON depth, 34 an adapter's own read, 35 a doc path too long, 36 C's cache of facts, 37 Rust's cache of
+#   facts, 38 the nesting bound raised); with none, every guard at once. Since the
 #   second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
@@ -126,9 +127,10 @@ edits = [
      "  if (machine === null) return"),
     # A TypeScript tree beyond the reading depth left unmarked (history-workers, the four changes); a reason left
     # naming the tree's folder (history-workers, two workers in two folders).
+    # Since the two bounds of 2026-11-20, the mark of either.
     ("packages/engine/src/live-docs/processMark.ts",
-     "      markProcess(\"deep\");\n      return true;\n    }\n    ts.forEachChild(",
-     "      return true;\n    }\n    ts.forEachChild("),
+     "  if (beyond) markProcess(\"deep\");\n",
+     "  void beyond;\n"),
     ("packages/generator/src/history/summarizeChange.ts",
      "reason: withoutTree(failure.reason, tree),",
      "reason: failure.reason,"),
@@ -142,7 +144,7 @@ edits = [
      "            if (report.machineFailure && false) throw new Error("),
     # A JSON document beyond the reading depth left unmarked (json.test.ts).
     ("packages/engine/src/live-docs/adapters/json.ts",
-     "    nestingBeyondDepth(parsed, jsonChildren);\n",
+     "    nestingBeyondDepth(parsed, jsonChildren, TREE_DEPTH);\n",
      "    void parsed;\n"),
     # A failure of the machine's swallowed by an adapter's own read (history-workers, the C reader's include).
     ("packages/engine/src/live-docs/adapters/c.ts",
@@ -152,10 +154,21 @@ edits = [
     ("packages/generator/src/generator.ts",
      "code === \"ENAMETOOLONG\") return undefined;",
      "code === \"ENAMETOOLONG\") throw error;"),
+    # C's and Rust's caches of a file's facts kept past a run (adapter-fact-caches.test.ts, a case each).
+    ("packages/engine/src/live-docs/adapters/c.ts",
+     "    factsCache.clear();\n    listingCache.clear();\n",
+     "    listingCache.clear();\n"),
+    ("packages/engine/src/live-docs/adapters/rust.ts",
+     "    factsCache.clear();\n    packageCache.clear();\n",
+     "    packageCache.clear();\n"),
+    # The nesting bound raised past half a fresh process's limits (reading-depth.test.ts: 8 nesting constructs at 800).
+    ("packages/engine/src/live-docs/processMark.ts",
+     "export const READING_DEPTH = 200;\n",
+     "export const READING_DEPTH = 400;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

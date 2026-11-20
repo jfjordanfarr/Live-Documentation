@@ -34,7 +34,7 @@ import path from "node:path";
 
 import { readSourceText } from "../../tooling/sourceText";
 import type { DeclaredEntry, SourceAnalysisResult } from "../coreTypes";
-import { nestingBeyondDepth } from "../processMark";
+import { nestingBeyondDepth, TREE_DEPTH } from "../processMark";
 import type { LanguageAdapter } from "./index";
 import { ManifestDependencies, manifestContext, packageSymbols, publishedName, sortDeclared, workspaceFile, type ManifestContext } from "./manifest";
 
@@ -207,7 +207,7 @@ export const pomAdapter: LanguageAdapter = {
     const document = readXmlElements(await readSourceText(input.absolutePath));
     // The document is read by an explicit stack; `descendantsNamed` recurses, so a document nested deeper than a fresh
     // process could walk marks the process (`processMark.ts`).
-    nestingBeyondDepth(document, (element) => element.children);
+    nestingBeyondDepth(document, (element) => element.children, TREE_DEPTH);
     const project = childAt(document, "project");
     if (!project) return { symbols: [], dependencies: [] };
     const context = manifestContext(input);

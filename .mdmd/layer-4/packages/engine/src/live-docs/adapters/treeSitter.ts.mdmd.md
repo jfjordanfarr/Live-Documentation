@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T14:07:45.958Z
+- Generated At: 2026-11-20T15:07:20.549Z
 
 ## Authored
 ### Purpose
@@ -65,7 +65,7 @@ depth is measured since a later review of that day.
 ### Dependencies
 - `node:fs` - `existsSync`
 - `node:path` - `path`
-- [`processMark.READING_DEPTH`](../processMark.ts.mdmd.md#symbol-reading_depth)
+- [`processMark.TREE_DEPTH`](../processMark.ts.mdmd.md#symbol-tree_depth)
 - [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
 - `web-tree-sitter` - `Language`, `Node`, `Parser`, `Tree`
 <!-- LIVE-DOC:END Dependencies -->

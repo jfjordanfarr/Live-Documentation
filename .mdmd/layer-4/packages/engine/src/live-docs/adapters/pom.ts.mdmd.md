@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/pom.ts`
-- Generated At: 2026-11-20T14:44:17.916Z
+- Generated At: 2026-11-20T15:18:14.567Z
 
 ## Authored
 ### Purpose
@@ -88,6 +88,7 @@ Language adapter for `pom.xml`: the artifact as a symbol, its parent and depende
 - [`manifest.workspaceFile`](./manifest.ts.mdmd.md#symbol-workspacefile)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`processMark.TREE_DEPTH`](../processMark.ts.mdmd.md#symbol-tree_depth)
 - [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
