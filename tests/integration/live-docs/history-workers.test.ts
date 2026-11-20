@@ -20,6 +20,7 @@ import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/c
 import type { LiveDocGraph } from "../../../packages/engine/src/live-docs/graph";
 import type { HistoryLens } from "../../../packages/engine/src/live-docs/history/format";
 import { summarizedConfiguration } from "../../../packages/engine/src/live-docs/history/lens";
+import { READING_DEPTH } from "../../../packages/engine/src/live-docs/processMark";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import { regenerate, Scratch, summarizingEnvironment, summarizingFlags, type Worker } from "../../../packages/generator/src/history/regenerate";
 import type { WorkerReport, WorkerTask } from "../../../packages/generator/src/history/summarizeChange";
@@ -336,9 +337,10 @@ describe("a file nested between a fresh process's limit and a warm one's", () =>
   // more: a table nested 1,000 deep is read warm and not fresh (the independent review of 2026-11-20 at `e1e27e33a`).
   // A file beyond the reading depth marks the worker, so that a fresh process decides the change.
   it("gives the summary a fresh process makes of the change alone, byte for byte, whichever worker meets it", () => {
-    // Forty tables nested within the reading depth warm a worker's parser, which V8 then compiles to smaller frames; the
-    // last change removes them, so that a fresh process given it alone is not warmed by them within its own generation.
-    const warm = Object.fromEntries(Array.from({ length: 40 }, (_, index) => [`src/warm/t${index}.ts`, nestedTable(`t${index}`, 250)]));
+    // Forty tables nested just within the reading depth (a table's module adds five levels above its arrays) warm a
+    // worker's parser, which V8 then compiles to smaller frames; the last change removes them, so that a fresh process
+    // given it alone is not warmed by them within its own generation.
+    const warm = Object.fromEntries(Array.from({ length: 40 }, (_, index) => [`src/warm/t${index}.ts`, nestedTable(`t${index}`, READING_DEPTH - 10)]));
     const script = [
       { ...SCRIPT[0], write: { ...SCRIPT[0].write, ...warm } },
       ...SCRIPT.slice(1, 3),

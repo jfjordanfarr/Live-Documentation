@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-workers.test.ts`
-- Generated At: 2026-11-20T14:29:18.324Z
+- Generated At: 2026-11-20T14:57:42.003Z
 
 ## Authored
 ### Purpose
@@ -33,6 +33,7 @@ _No public symbols detected_
 - [`graph.LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`format.HistoryLens`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)
 - [`lens.summarizedConfiguration`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
+- [`processMark.READING_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-reading_depth)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`regenerate.Scratch`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-scratch)
 - [`regenerate.Worker`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-worker)
