@@ -41,9 +41,12 @@
  * but the two packages' is refused, since the key would hold such a folder's
  * files by its version alone. The key is the committed lock's, the same on
  * every platform; the installation is held to it where npm recorded what it
- * installed (`node_modules/.package-lock.json`), a keyed entry installed
- * otherwise than the working lock says, or a required one not installed,
- * joining the modified half ({@link installationDifference}). Where npm left
+ * installed (`node_modules/.package-lock.json`): the record is walked as the
+ * lock is, and a keyed place the installation reaches that the lock does not
+ * (a nearer copy), a required one it does not reach, or one whose version or
+ * integrity differs joins the modified half ({@link installationDifference});
+ * another `resolved` for the same integrity, a registry mirror's, does not.
+ * Where npm left
  * no record, nothing is checked, and a `node_modules` installed by other
  * means or changed by hand is trusted. The key holds neither the runtime's
  * own version, so that an upgrade of Node is outside it (only its version of
@@ -137,24 +140,31 @@ interface LockEntry {
  * root it does not hold cannot be keyed, and throws, as does a link to any folder but a start, whose files the code
  * half of the key does not hold.
  *
+ * Walked over npm's record of an installation (`record`), whatever is missing is passed over rather than thrown at,
+ * since the comparison with the lock's walk finds it not installed; a link to any folder but a start still throws,
+ * naming the record.
+ *
  * @param starts - The places of the workspaces whose code makes a summary.
  * @param roots - The packages loaded that no dependency of the workspaces names ({@link LOCK_ROOTS}).
+ * @param record - Whether `packages` is npm's record of an installation rather than the lock.
  */
 export function keyedLockEntries(
   packages: Readonly<Record<string, LockEntry>>,
   starts: readonly string[] = GENERATOR_FOLDERS,
-  roots: ReadonlyArray<{ from: string; name: string }> = LOCK_ROOTS
+  roots: ReadonlyArray<{ from: string; name: string }> = LOCK_ROOTS,
+  record = false
 ): Map<string, Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>> {
+  const source = record ? INSTALLATION_RECORD : TOOL_DEPENDENCY_LOCK;
   const reached = new Map<string, Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>>();
   const pending: string[] = [];
   const resolve = (from: string, name: string, required: boolean): void => {
     const place = nearestPlace(packages, from, name);
     if (place !== undefined) pending.push(place);
-    else if (required) throw new Error(`${TOOL_DEPENDENCY_LOCK} holds no ${name} that ${from || "the repository"} can load`);
+    else if (required && !record) throw new Error(`${source} holds no ${name} that ${from || "the repository"} can load`);
   };
   for (const start of starts) {
-    if (packages[start] === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} holds no entry for ${start}`);
-    pending.push(start);
+    if (packages[start] !== undefined) pending.push(start);
+    else if (!record) throw new Error(`${source} holds no entry for ${start}`);
   }
   for (const root of roots) resolve(root.from, root.name, true);
   while (pending.length > 0) {
@@ -165,7 +175,8 @@ export function keyedLockEntries(
     if (entry.link === true && entry.resolved !== undefined) {
       // A linked folder's files are keyed only where the code half keys them; any other folder the lock would key by
       // its version alone, so it is refused rather than trusted (the review of 2026-11-20).
-      if (!starts.includes(entry.resolved)) throw new Error(`${TOOL_DEPENDENCY_LOCK} links ${place} to ${entry.resolved}, a folder whose files the lens does not key; only ${starts.join(" and ")} may be linked`);
+      if (!starts.includes(entry.resolved)) throw new Error(`${source} links ${place} to ${entry.resolved}, a folder whose files the lens does not key; only ${starts.join(" and ")} may be linked`);
+      if (packages[entry.resolved] === undefined) continue;
       pending.push(entry.resolved);
       continue;
     }
@@ -193,36 +204,56 @@ function nearestPlace(packages: Readonly<Record<string, LockEntry>>, from: strin
 
 /**
  * Where the installation differs from the lock in the entries the lens keys, as text for the key's modified half, or
- * `null` where it does not: each keyed entry npm records as installed that does not hold what the lock holds of it, and
- * each keyed entry not installed that the lock does not mark optional (another platform's binary is optional, and is
- * not installed here). The installation is read from npm's own record of it, `node_modules/.package-lock.json`, which
- * `npm ci` and `npm install` write; where there is no record, nothing is checked and `null` is returned, so that a
- * `node_modules` installed by other means, or changed by hand, is trusted to be the lock's.
+ * `null` where it does not. The installation is read from npm's own record of it, `node_modules/.package-lock.json`,
+ * which `npm ci` and `npm install` write, walked as the lock is walked ({@link keyedLockEntries}), so that a copy the
+ * lock does not name and the code would load first, one nested under a workspace by an install that did not save it
+ * say, is found where it stands. The two keyed sets are compared place by place: a place the installation reaches and
+ * the lock does not differs; a place the lock reaches and the installation does not differs unless the lock marks it
+ * optional (another platform's binary is optional, and is not installed here); a place both reach differs where its
+ * content does, by its version and integrity where both hold an integrity, a registry mirror's other `resolved` being
+ * no other content, and by every keyed field where they do not (a git source, a link). A link of the installation to a
+ * folder whose files the lens does not key, as `npm link` writes, throws, naming the record. Where there is no record,
+ * nothing is checked and `null` is returned, so that a `node_modules` installed by other means, or changed by hand, is
+ * trusted to be the lock's.
  *
  * @param lock - The working lock, which the key's modified half already holds where it differs from the committed one.
  * @param installed - npm's record of what it installed, or `null` where there is none.
  */
 export function installationDifference(lock: string | null, installed: string | null): string | null {
   if (lock === null || installed === null) return null;
-  const packages = packagesOf(lock);
-  const present = packagesOf(installed);
+  const packages = packagesOf(lock, TOOL_DEPENDENCY_LOCK);
+  const locked = keyedLockEntries(packages);
+  const present = keyedLockEntries(packagesOf(installed, INSTALLATION_RECORD), GENERATOR_FOLDERS, LOCK_ROOTS, true);
   const differing: Array<[string, unknown]> = [];
-  for (const [place, fields] of [...keyedLockEntries(packages)].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) {
-    const entry = present[place];
-    if (entry === undefined) {
+  for (const place of [...new Set([...locked.keys(), ...present.keys()])].sort()) {
+    const want = locked.get(place);
+    const have = present.get(place);
+    if (have === undefined) {
       if (packages[place].optional !== true) differing.push([place, "not installed"]);
-      continue;
+    } else if (want === undefined) {
+      differing.push([place, have]);
+    } else if (!sameContent(want, have)) {
+      differing.push([place, have]);
     }
-    const held = keyedFieldsOf(entry);
-    if (JSON.stringify(held) !== JSON.stringify(fields)) differing.push([place, held]);
   }
   return differing.length === 0 ? null : JSON.stringify(differing);
 }
 
-/** The `packages` map of a lock, or of npm's record of an installation, of version 2 or 3. */
-function packagesOf(lock: string): Record<string, LockEntry> {
-  const { packages } = JSON.parse(lock) as { packages?: Record<string, LockEntry> };
-  if (packages === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} has no packages map; only a lock of version 2 or 3 can be keyed`);
+/** Whether two keyed entries hold the same content: by version and integrity where both hold one, by every keyed field where not. */
+function sameContent(a: Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>, b: Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>): boolean {
+  if (a.integrity !== undefined && b.integrity !== undefined) return a.version === b.version && a.integrity === b.integrity;
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+/** The `packages` map of a lock, or of npm's record of an installation, of version 2 or 3, named in an error by `source`. */
+function packagesOf(text: string, source: string): Record<string, LockEntry> {
+  let packages: Record<string, LockEntry> | undefined;
+  try {
+    ({ packages } = JSON.parse(text) as { packages?: Record<string, LockEntry> });
+  } catch (error) {
+    throw new Error(`${source} cannot be read: ${(error as Error).message}`, { cause: error });
+  }
+  if (packages === undefined) throw new Error(`${source} has no packages map; only a lock of version 2 or 3 can be keyed`);
   return packages;
 }
 
@@ -238,7 +269,7 @@ function keyedFieldsOf(entry: LockEntry): Partial<Pick<LockEntry, (typeof KEYED_
  */
 export function lockIdentity(lock: string | null): string {
   if (lock === null) return "absent";
-  const entries = [...keyedLockEntries(packagesOf(lock))].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  const entries = [...keyedLockEntries(packagesOf(lock, TOOL_DEPENDENCY_LOCK))].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
   return createHash("sha256").update(JSON.stringify(entries)).digest("hex").slice(0, 16);
 }
 
