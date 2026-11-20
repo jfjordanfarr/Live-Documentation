@@ -1,10 +1,11 @@
+import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, appendFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { withoutGitIgnored } from "./gitIgnored";
+import { foldersGitIgnoresWhole, foldersReadAsEmpty, walksNoLinkToAFolder, withoutGitIgnored } from "./gitIgnored";
 
 const tempDirs: string[] = [];
 
@@ -46,5 +47,64 @@ describe("withoutGitIgnored", () => {
     const files = [path.join(root, "a.log")];
     expect(withoutGitIgnored(root, files)).toEqual(files);
     expect(withoutGitIgnored(root, [])).toEqual([]);
+  });
+});
+
+describe("foldersGitIgnoresWhole", () => {
+  const searchPath = process.env.PATH;
+  afterEach(() => {
+    process.env.PATH = searchPath;
+  });
+
+  it("names each folder git ignores whole once, descends into one that holds a tracked file, and leaves out a path beginning with a colon", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    writeFileSync(path.join(root, ".gitignore"), "build/\nmixed/\n*.log\n/:*\nempty/\n");
+    for (const file of ["build/a/b.txt", "mixed/kept.txt", "mixed/dropped.txt", "mixed/sub/c.txt", "logs/x.log", "part/y.log", "part/kept.txt", ":(bad)/c.txt"]) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), "x\n");
+    }
+    mkdirSync(path.join(root, "empty"));
+    git(root, "add", "-f", "mixed/kept.txt");
+
+    // `logs/` holds only what is ignored; an empty ignored folder is named too, and holds nothing to walk.
+    expect([...foldersGitIgnoresWhole(root)].sort()).toEqual(["build", "empty", "logs", "mixed/sub"]);
+    // From a folder inside the workspace, the folders are named from there.
+    expect([...foldersGitIgnoresWhole(path.join(root, "mixed"))]).toEqual(["sub"]);
+    // From an ignored folder, git names the folder itself (`./`), which is left out.
+    expect(foldersGitIgnoresWhole(path.join(root, "build")).size).toBe(0);
+  });
+
+  it("names none outside a repository, or with no git on the path", () => {
+    const root = workspace();
+    mkdirSync(path.join(root, "build"));
+    writeFileSync(path.join(root, "build", "a.txt"), "x\n");
+    writeFileSync(path.join(root, ".gitignore"), "build/\n");
+    expect(foldersGitIgnoresWhole(root).size).toBe(0);
+    git(root, "init", "-q");
+    expect([...foldersGitIgnoresWhole(root)]).toEqual(["build"]);
+    process.env.PATH = workspace();
+    expect(foldersGitIgnoresWhole(root).size).toBe(0);
+  });
+});
+
+describe("walksNoLinkToAFolder", () => {
+  it("is true only for `**` and one name, with at most one star", () => {
+    for (const pattern of ["**/*", "**/*.md", "**/README", "**/*.{html,htm,css}", "**/{a,b}.md"]) expect(walksNoLinkToAFolder(pattern), pattern).toBe(true);
+    for (const pattern of ["*.md", "src/**/*.md", "*/**/*.md", "**/src/*.md", "**/{a,b/c}.md", "**/{*,}*", "**/*{,x}*", "**/a\\b", "./**/*.md", "**"]) {
+      expect(walksNoLinkToAFolder(pattern), pattern).toBe(false);
+    }
+  });
+});
+
+describe("foldersReadAsEmpty", () => {
+  it("hides the named folders' contents from glob, and no other folder's", () => {
+    const root = workspace();
+    for (const file of ["skip/a.md", "skip/deep/b.md", "skipped/c.md", "keep/skip/d.md"]) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), "");
+    }
+    const unread = foldersReadAsEmpty(root, new Set(["skip"]));
+    expect(globSync("**/*.md", { cwd: root, fs: unread, posix: true }).sort()).toEqual(["keep/skip/d.md", "skipped/c.md"]);
   });
 });

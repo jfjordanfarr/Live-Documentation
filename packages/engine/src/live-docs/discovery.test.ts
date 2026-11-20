@@ -1,10 +1,12 @@
 import { execFileSync } from "node:child_process";
+import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
+import { foldersGitIgnoresWhole } from "../tooling/gitIgnored";
 import { discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
 
 /**
@@ -246,5 +248,165 @@ describe("exclude and the case of a path", () => {
   it("matches exactly where git does not, and where git says nothing", async () => {
     expect(await found(await repository(false))).toEqual(["App.cs", "Vendor/Lib.cs"]);
     expect(await found(await repository(undefined))).toEqual(["App.cs", "Vendor/Lib.cs"]);
+  });
+});
+
+/**
+ * Since 2026-11-20 the walk does not read the folders git ignores whole, and finds the same files and documents as
+ * before. Each case is one where a wrong shortening would find another list: a folder that holds a tracked file, the
+ * kinds of excludes file, nested repositories, odd names, git's case rule, and the paths git refuses, after which
+ * discovery reads the root `.gitignore` alone. A folder `.git/info/exclude` names stands for what that rule keeps and
+ * git's own answer drops.
+ */
+describe("the folders git ignores whole", () => {
+  const folders: string[] = [];
+  const globalConfig = process.env.GIT_CONFIG_GLOBAL;
+  afterEach(async () => {
+    for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
+    if (globalConfig === undefined) delete process.env.GIT_CONFIG_GLOBAL;
+    else process.env.GIT_CONFIG_GLOBAL = globalConfig;
+  });
+
+  async function repository(files: Record<string, string>): Promise<string> {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-ignored-"));
+    folders.push(root);
+    for (const [relative, text] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(root, relative)), { recursive: true });
+      await fs.writeFile(path.join(root, relative), text);
+    }
+    git(root, "init", "-q");
+    return root;
+  }
+
+  function git(root: string, ...args: string[]): void {
+    execFileSync("git", ["-C", root, "-c", "user.email=test@example.com", "-c", "user.name=test", ...args], { stdio: "ignore" });
+  }
+
+  async function found(root: string, config: LiveDocumentationConfigInput = {}): Promise<{ files: string[]; documents: string[] }> {
+    const normalized = normalizeLiveDocumentationConfig(config);
+    const files = await discoverTargetFiles({ workspaceRoot: root, config: normalized, include: new Set(), changedOnly: false });
+    return { files: files.map((file) => path.relative(root, file).split(path.sep).join("/")), documents: await discoverDocuments({ workspaceRoot: root, config: normalized }) };
+  }
+
+  it("never reads a folder git ignores whole, and reads one that holds a tracked file", async () => {
+    const root = await repository({ ".gitignore": "build/\nmixed/\n", "a.ts": "", "README.md": "", "build/deep/b.ts": "", "mixed/kept.ts": "", "mixed/sub/c.ts": "" });
+    git(root, "add", "-f", "mixed/kept.ts");
+    // Every folder the shortened walks read, they read through the file system they hand glob, which reads the others
+    // with `fs.readdir`; walks that shortened nothing would read none through it, and are red here too.
+    const read: string[] = [];
+    const note = (folder: unknown): void => {
+      read.push(path.relative(root, String(folder)).split(path.sep).join("/"));
+    };
+    const readdir = nodeFs.readdir;
+    const readdirPromised = nodeFs.promises.readdir;
+    const spies = [
+      vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+        note(args[0]);
+        return Reflect.apply(readdir, nodeFs, args);
+      }) as unknown as typeof nodeFs.readdir),
+      vi.spyOn(nodeFs.promises, "readdir").mockImplementation(((...args: unknown[]) => {
+        note(args[0]);
+        return Reflect.apply(readdirPromised, nodeFs.promises, args);
+      }) as unknown as typeof nodeFs.promises.readdir)
+    ];
+    let result: { files: string[]; documents: string[] };
+    try {
+      result = await found(root);
+    } finally {
+      for (const spy of spies) spy.mockRestore();
+    }
+    expect(result).toEqual({ files: [".gitignore", "a.ts", "mixed/kept.ts"], documents: ["README.md"] });
+    // Both walks, the files' and the documents', read the workspace and `mixed`, and nothing else.
+    expect([...new Set(read)].sort()).toEqual(["", "mixed"]);
+  });
+
+  it("keeps a tracked file inside an ignored folder and what no excludes file names, and drops what each kind names", async () => {
+    const excludes = path.join(await fs.mkdtemp(path.join(os.tmpdir(), "discovery-global-")), "excludes");
+    folders.push(path.dirname(excludes));
+    await fs.writeFile(excludes, "global/\n");
+    await fs.writeFile(`${excludes}.gitconfig`, `[core]\n\texcludesFile = ${excludes}\n`);
+    process.env.GIT_CONFIG_GLOBAL = `${excludes}.gitconfig`;
+    const root = await repository({
+      ".gitignore": "build/\nmixed/\n*.log\n", "a.ts": "",
+      "build/b.ts": "", "build/deep/README.md": "",
+      "mixed/kept.ts": "", "mixed/dropped.ts": "", "mixed/sub/c.ts": "", "mixed/sub/NOTES.md": "",
+      "logs/x.log": "", "part/y.log": "", "part/kept.ts": "",
+      "sub/.gitignore": "local/\n", "sub/local/d.ts": "", "sub/kept.ts": "",
+      "excluded/e.ts": "", "global/g.ts": "", "global/README.md": "", "README.md": ""
+    });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+    git(root, "add", "-f", "mixed/kept.ts");
+
+    expect(await found(root)).toEqual({ files: [".gitignore", "a.ts", "mixed/kept.ts", "part/kept.ts", "sub/.gitignore", "sub/kept.ts"], documents: ["README.md"] });
+    expect([...foldersGitIgnoresWhole(root)].sort()).toEqual(["build", "excluded", "global", "logs", "mixed/sub", "sub/local"]);
+  });
+
+  it("does not walk a nested repository or a worktree inside an ignored folder, and reads one elsewhere as before", async () => {
+    const root = await repository({ ".gitignore": "ignored/\n", "a.ts": "", "ignored/nested/n.ts": "", "open/nested/m.ts": "", "open/nested/.gitignore": "build/\n", "open/nested/build/out.ts": "" });
+    git(root, "add", ".gitignore", "a.ts");
+    git(root, "commit", "-qm", "first");
+    git(path.join(root, "ignored", "nested"), "init", "-q");
+    git(path.join(root, "open", "nested"), "init", "-q");
+    git(root, "worktree", "add", "-q", "--detach", "ignored/worktree");
+
+    // Git reads the nested repository's .gitignore for the paths it is given, as it did before; its `.git` is never documented.
+    expect((await found(root)).files).toEqual([".gitignore", "a.ts", "open/nested/.gitignore", "open/nested/m.ts"]);
+    expect([...foldersGitIgnoresWhole(root)]).toEqual(["ignored"]);
+  });
+
+  it("reads names with spaces, glob characters, other alphabets and a newline as names", async () => {
+    const odd = "a [b]*{c,d} é\nf";
+    const root = await repository({ ".gitignore": "/odd*\n", [`odd ${odd}/x.ts`]: "", [`kept ${odd}/y.ts`]: "", "[b]/z.ts": "" });
+    expect((await found(root)).files).toEqual([".gitignore", "[b]/z.ts", `kept ${odd}/y.ts`]);
+    expect([...foldersGitIgnoresWhole(root)]).toEqual([`odd ${odd}`]);
+  });
+
+  it("follows git's case rule where git matches names without regard to case, and exactly where it does not", async () => {
+    for (const ignoreCase of [true, false]) {
+      const root = await repository({ ".gitignore": "Build/\n", "build/a.ts": "", "b.ts": "" });
+      git(root, "config", "core.ignorecase", String(ignoreCase));
+      expect((await found(root)).files).toEqual(ignoreCase ? [".gitignore", "b.ts"] : [".gitignore", "b.ts", "build/a.ts"]);
+    }
+  });
+
+  it("reads the root .gitignore alone, as before, where git refuses a path inside a submodule", async () => {
+    const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "module/b.ts": "", "c.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+    git(path.join(root, "module"), "init", "-q");
+    git(path.join(root, "module"), "add", "b.ts");
+    git(path.join(root, "module"), "commit", "-qm", "module");
+    git(root, "add", "module");
+
+    expect((await found(root)).files).toEqual([".gitignore", "c.ts", "excluded/e.ts", "module/b.ts"]);
+  });
+
+  it("walks in full a configured glob that may pass through a link to a folder", async () => {
+    const root = await repository({ ".gitignore": "build/\n", "src/real/r.ts": "", "excluded/e.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+    await fs.mkdir(path.join(root, "build"));
+    await fs.symlink(path.join("..", "src", "real"), path.join(root, "build", "link"));
+
+    // `*/**/*.ts` follows `build/link`, and git refuses `build/link/r.ts`: then the root .gitignore alone is read.
+    expect((await found(root, { glob: ["*/**/*.ts"] })).files).toEqual(["excluded/e.ts", "src/real/r.ts"]);
+    expect((await found(root)).files).toEqual([".gitignore", "src/real/r.ts"]);
+  });
+
+  it("walks a folder whose path begins with a colon, which git may read as pathspec magic and refuse", async () => {
+    const root = await repository({ ".gitignore": "build/\n/:*\n", "build/a.ts": "", ":(bad)/c.ts": "", "excluded/e.ts": "", "d.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+
+    expect((await found(root)).files).toEqual([".gitignore", "d.ts", "excluded/e.ts"]);
+    expect([...foldersGitIgnoresWhole(root)].sort()).toEqual(["build", "excluded"]);
+  });
+
+  it("walks a workspace that lies inside a folder an outer repository ignores, as before", async () => {
+    const outer = await repository({ ".gitignore": "inner/\n", "inner/a.ts": "", "inner/README.md": "" });
+    const root = path.join(outer, "inner");
+    expect(await found(root)).toEqual({ files: [], documents: [] });
+    // Git names the workspace itself (`./`), which is walked all the same: a top-level name git refuses changes the answer.
+    await fs.writeFile(path.join(root, ":(bad).ts"), "");
+    // Git refuses `:(bad).ts` among the files, and the inner folder has no .gitignore; the documents' walk asks of the readme alone.
+    expect(await found(root)).toEqual({ files: [":(bad).ts", "a.ts"], documents: [] });
+    expect(foldersGitIgnoresWhole(root).size).toBe(0);
   });
 });

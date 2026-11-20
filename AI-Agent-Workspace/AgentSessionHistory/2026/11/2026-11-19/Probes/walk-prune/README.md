@@ -7,7 +7,7 @@ _Historical evidence: a record of November 20, 2026 (UTC), taken from 06:07 UTC 
 - **The walks read every folder git ignores, file by file, only to drop each file afterwards.** In the main checkout, with 28 builders' worktrees under `.claude/worktrees/`, discovery's walk of the files took 63.6 s and of the documents 19.6 s, where this worktree took 1.4 s and 0.4 s; the markdown audit took 16.9 s and the symbol audit 19.0 s.
 - **The mend asks git once, before the walk, for the folders it ignores whole** (`git ls-files -z --others --ignored --exclude-standard --directory`: 38 ms in the main checkout, 37 folders), and the walk reads them as empty. What is kept is the same by construction, with three rules for the paths git refuses (below).
 - **The audits (first commit): the same files and findings, about a tenth of the time.** In the main checkout, alternated twice at a load of 4 falling to 2: markdown 16.9 and 16.6 s before, 1.8 and 1.7 s after; symbols 19.0 and 18.7 s, 1.9 and 1.8 s; assets 2.5 and 2.5 s, 0.4 and 0.4 s (each the whole command, about a second of it starting `tsx`). The lists of files read were compared exactly (1,695, 1,692 and 21, identical), and each command's JSON output was byte for byte the same.
-- **Discovery (second commit, held on the branch for review):** see [Discovery, before and after](#discovery-before-and-after).
+- **Discovery (second commit, held on the branch for review): the same files and documents, a fortieth of the time.** In the main checkout, in one hold at a load of 2.7: the files' walk 52.5 s before, 1.3 s after; the documents' 18.7 s, 0.4 s; 1,120 files and 65 documents, identical, and identical on all 35 sample workspaces. The Live Docs pipeline in its writing-free form (`npm run livedocs -- --check`) took 84.2 s before and **14.6 s** after in the main checkout, which is the clean worktree's 14.2 s. The gate without the browser, over both commits in the builder's worktree, was green in 194 s. The commit moves the history's key, and gives a history rebuild nothing ([below](#what-the-second-commit-gives-a-history-rebuild)).
 - **A defect kept on purpose, written down to be mended:** in a repository with a submodule (or a top-level name beginning with `:`, or a link to a folder under a configured glob), git refuses the whole question, and discovery and the audits silently lose git's answer for every file ([the reproductions](#a-defect-found-and-left)).
 
 ## What was found, and why the walks were slow
@@ -81,7 +81,47 @@ Each command's `--json` output was byte for byte the same before and after, in b
 
 ## Discovery, before and after
 
-The second commit (on the builder's branch, held for an independent review) shortens discovery's two walks the same way, with the helpers moved beside `gitIgnored` in the engine. It changes two files the history's cache keys on, `packages/engine/src/live-docs/discovery.ts` and `packages/engine/src/tooling/gitIgnored.ts`, so it **moves the history's key** and costs a rebuild of every past commit's summary; its other files (`discovery.test.ts`, `gitIgnored.test.ts`, the audits under `scripts/`, the Live Docs under `.mdmd/`, this record) are not keyed. Its measurements are added to this record with it.
+The second commit (on the builder's branch, held for an independent review) shortens discovery's two walks the same way, with the helpers moved beside `gitIgnored` in the engine. It changes two files the history's cache keys on, `packages/engine/src/live-docs/discovery.ts` and `packages/engine/src/tooling/gitIgnored.ts`, so it **moves the history's key** and costs a rebuild of every past commit's summary; its other files (`discovery.test.ts`, `gitIgnored.test.ts`, the audits under `scripts/`, the Live Docs under `.mdmd/`, this record) are not keyed.
+
+`walkedAndKept` serves both walks: when every pattern passes no link (the default `**/*` and the documents' `**/*`; not an include set), it asks git for the folders it ignores whole, walks with them read as empty, and asks git about the files found; if git refuses, it walks again in full and judges as before (`keptByGitAndConfiguration`, which now takes git's answer when the caller has it). The helpers moved from `scripts/slopcop/auditedFiles.ts` to `packages/engine/src/tooling/gitIgnored.ts`, and the audits import them from there.
+
+In one hold from 07:53 to 08:00, load 2.6 at the start and 1.7 before the gate, with the frozen copy of `26d734043` against the second commit's code (`/tmp/claude-1000/wp/after2`):
+
+| Walk, main checkout | Before | After | Kept, before and after |
+| --- | ---: | ---: | --- |
+| Files (`discoverTargetFiles`) | 52.5 s | 1.29 s | 1,120 and 1,120, identical |
+| Documents (`discoverDocuments`) | 18.7 s | 0.40 s | 65 and 65, identical |
+| Git's listing of the folders it ignores whole | | 0.03 s (37 folders) | |
+| `npm run livedocs -- --check` (generate and lint, writing nothing) | 84.2 s | 14.6 s | |
+
+- The lists were also identical to the first measurement's, at 06:29 (63.6 s and 19.6 s then, at a load of 3.9).
+- On the samples, run again before and after in the same hold since this worktree's own files had changed: every folder under `tests/integration/fixtures` and `tests/integration/programs`, the experiment repositories (`e2`, which holds a submodule, `e3` and four folders inside it: a subfolder, an ignored folder, a worktree inside an ignored folder, a nested repository), the three reproductions of the defect below, and this worktree: **35 workspaces, no list differing**.
+- `npm run livedocs` whole, writing, in this worktree: 12.0 s.
+- So the pipeline's 82.7 s in the main checkout, measured before this round, was discovery: with it mended, the main checkout's pipeline takes what a clean worktree's does. `scansWithin`'s 2.9 s (below) did not show as a difference in this run.
+
+The new tests: `discovery.test.ts` gains nine cases (`the folders git ignores whole`), `gitIgnored.test.ts` the helpers' cases. Run first with the new tests and helpers but the **old** `discovery.ts`, 66 of the 67 cases of discovery's, the helpers' and the audits' test files passed: the expected lists are today's behaviour; the one red case was discovery's count of folders read, which is red without the shortening. With the new `discovery.ts`, 67 of 67. Seven mutations, each turned at least one case red:
+
+| Mutation | Red cases |
+| --- | --- |
+| No second walk after git refuses | the submodule case; the colon case |
+| Every pattern shortened | the configured glob through a link |
+| Pruning switched off in discovery | the count of folders read |
+| Pruning switched off in the audits | the audits' count of folders read |
+| The workspace itself (`./`) left unwalked | the helpers' listing case; the workspace inside an ignored folder |
+| A folder beginning with `:` left unwalked | the helpers' listing case; the colon case |
+| A folder holding a tracked file (`mixed`) added to those left unwalked | eight cases, the tracked file's among them |
+
+The engine's build and eslint over the changed files were clean. **The gate without the browser** (`npm run safe:commit`), over both commits in this worktree, through the lane: **green in 194 s** (unit tests 214 files, 2,703 cases; integration 24 files, 231 cases; the markdown audit 1,698 files, assets 21, symbols 1,695, nothing found). The first commit was not gated by itself.
+
+### What the second commit gives a history rebuild
+
+Nothing, and a little more work: about two `git ls-files` calls per commit, at tens of milliseconds each. This is read from the code, not measured in a history tree.
+
+- **No folder can be left unwalked.** A history tree (`workingTree` in `packages/engine/src/live-docs/history/git.ts`) holds only the commit's tracked files, written out beside an index read from the commit's tree. Git then has no untracked file to name, so `foldersGitIgnoresWhole` comes back empty and the walk runs in full, exactly as before.
+- **The cost is one extra call per walk.** Discovery walks twice, once for the files and once for the documents. The extra call took 31 to 41 ms in the main checkout and in this worktree tonight. A history tree has no `node_modules`, so it should cost no more.
+- **`git check-ignore` is unchanged.** It is asked about the same list as before. It costs 1.3 s a commit in a history tree by the other builder's measure, and it can only answer "nothing", since a tracked file is never ignored.
+
+The two changes can be joined knowingly. Skipping `check-ignore` where every file found is tracked is that builder's to weigh. It would be a third rule beside this commit's two walks, which it does not touch.
 
 ## The cases and the tests that hold them
 
@@ -173,3 +213,9 @@ Every run that loaded the machine went through the lane (`node scripts/browser-l
 - *After the first commit*: the same, with the committed code copied to `/tmp/claude-1000/wp/after1`, the audits alternated before and after twice, and a second bench script (`bench-audits.mts`) comparing the old walk's lists with `auditedFiles`'s for each audit's configured patterns.
 - *The first commit's tree* was checked in one hold, from 07:52 to 07:53 at a load of 2.7 (after 59 minutes behind a browser stage): `npm run livedocs` (1,122 files validated), the markdown audit (1,698 files, no broken link) and the symbol audit (1,695, no issue), eslint and the type-check of `scripts/slopcop`, its tests (42 passed), the reads test red with the pruning switched off, and the three reproductions above. The full gate was not run on this commit by itself; it ran over both commits together.
 - *Mutations*: each wrong shortening was applied to a copy of the source with `perl`, the tests run, and the file restored and compared byte for byte.
+- *The second commit* was tested and measured in one hold, 07:53 to 08:00: its drafted files put in place, the tests run against the old `discovery.ts` and then the new, the mutations, the engine's build and eslint, the code copied to `/tmp/claude-1000/wp/after2`, discovery timed and its lists compared before and after on the samples and the main checkout, `run-all.ts --check` from each copy with the main checkout as the working folder (the generator's `--check` writes nothing, and lint only reads), `npm run livedocs` in this worktree, and the gate. The hold first kept a copy of the first commit's files, from which that commit was made afterwards; nothing was committed inside a hold.
+- The lane was held by others for most of the round: the first commit's files waited 59 minutes behind a browser stage for their 32-second hold.
+
+## Temporary files
+
+Removed at the end of the round: the experiment repositories and reproductions under this worktree's `AI-Agent-Workspace/tmp/wp/`, everything under `/tmp/claude-1000/wp/` (the frozen copies, drafts, scripts, outputs and `TMPDIR`), and the bench and fixture scripts in the builder's scratchpad.
