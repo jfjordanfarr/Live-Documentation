@@ -527,6 +527,51 @@ describe("a failure of the machine's, not the file's", () => {
     expect(fs.readdirSync(cache)).toEqual([]);
   }, 120_000);
 
+  // Discovery's first pass (`buildWorkspaceIndexes`) swallowed every throw until 2026-11-20: a reviewer failed only the
+  // first read of `src/a.ts`, the index pass's, and a real worker published a summary in which `alpha`'s home was the
+  // barrel, unmarked and unwarned. Now each throw of that pass is kept with its file and thrown again in the generator's
+  // pass over that file. A first read failing so, given to one worker through node's own `--import`.
+  const firstReadOfA = (failure: string): string =>
+    `import { createRequire } from "node:module"; const promises = createRequire(${JSON.stringify(runtime)})("node:fs/promises"); const readFile = promises.readFile; let failed = false; promises.readFile = function (file, ...rest) { if (!failed && String(file).endsWith("src/a.ts")) { failed = true; return Promise.reject(${failure}); } return readFile.call(this, file, ...rest); };`;
+  const barrel = (name: string) => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, name));
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
+    const [commit] = buildRepository(repository, [{ message: "A barrel", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(config)}\n`, "src/a.ts": "export function alpha(): number {\n  return 1;\n}\n", "src/index.ts": "export * from \"./a\";\n", "src/use.ts": "import { alpha } from \"./index\";\n\nexport const used = alpha();\n" } }]);
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    return { store, task: workerTask(config, fs.mkdtempSync(path.join(privateTemporary, "cache-")), commit) };
+  };
+
+  it("is not written when only the index pass's first read of a file fails so", async () => {
+    const { store, task } = barrel("index-pass-");
+    const worker = startRealWorker(store, [firstReadOfA(`Object.assign(new Error("EMFILE: too many open files, open 'src/a.ts'"), { code: "EMFILE", syscall: "open", errno: -24 })`)]);
+    try {
+      const report = await worker.summarize(task);
+      expect([report.published, report.machineFailure?.path]).toEqual([false, "src/a.ts"]);
+      expect(report.machineFailure?.error).toMatch(/^EMFILE/u);
+      expect(fs.readdirSync(path.dirname(task.summaryPath))).toEqual([]);
+    } finally {
+      worker.end();
+    }
+  }, 120_000);
+
+  it("names the file as not mapped when its first read fails for a cause of its own, and gives it no row", async () => {
+    const { store, task } = barrel("index-pass-own-");
+    const worker = startRealWorker(store, [firstReadOfA(`new Error("the file's own failure")`)]);
+    try {
+      const report = await worker.summarize(task);
+      expect([report.published, report.machineFailure]).toEqual([true, undefined]);
+      const summary = readSummary(task);
+      expect(summary.unmapped).toEqual([["src/a.ts", "the file's own failure"]]);
+      // With the throw swallowed, `src/a.ts` was mapped without its symbols indexed, and `use.ts`'s import of `alpha`
+      // read `{ to: "src/index.ts", toSymbol: "symbol-alpha" }`: the barrel as the home of a symbol whose file the
+      // summary held. Now the file has no row. That import still reads so (the barrel's re-export, read from `a.ts` by
+      // the reader of re-exports), which waits on a ruling (2026-11-20).
+      expect(summary.files).not.toContain("src/a.ts");
+    } finally {
+      worker.end();
+    }
+  }, 120_000);
+
   // An adapter's own read, which caught every failure as "not read" until 2026-11-20: the C reader opens the file an
   // include names (`table.def`, which no reader of the generator's own reads), and a failure of the machine's there
   // must reach the generator's catch rather than leave the include's names out of a published summary.
