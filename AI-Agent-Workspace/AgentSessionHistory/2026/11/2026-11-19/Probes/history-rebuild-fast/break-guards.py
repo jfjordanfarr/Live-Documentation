@@ -341,12 +341,19 @@ edits = [
     ("scripts/live-docs/history.ts",
      "        parsed.keepWorkers = true;",
      "        parsed.keepWorkers = false;"),
+    # After the review of one commit a worker, the same day: 81 a run over kept workers' summaries not saying so on
+    # its closing line (history-workers.test.ts, "says so on its closing line"). Guard 73 is now also held by a case
+    # with real workers that counts the scratch folders a run makes (history-workers.test.ts, "starts a worker for
+    # every commit by default").
+    ("scripts/live-docs/history.ts",
+     "  const keptWorkers = run.sequence.lens.keepWorkers === true ? ` ${KEPT_WORKERS}` : \"\";",
+     "  const keptWorkers = run.sequence.lens.keepWorkers === true ? \"\" : \"\";"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
           39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
-          66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+          66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 # Only `check` takes every guard at once. Several edits stand on one line (the stamp's four fields), so that applying
 # all stops halfway and reverting what was applied garbles that line, as it did once on 2026-11-20 at the root's hand.
