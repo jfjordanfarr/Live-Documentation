@@ -84,8 +84,9 @@ function change(number: number): MainlineChange {
  * A pool whose workers are stand-ins: each answers its nth change (from 0) with what `report` gives, and every call is
  * logged as `worker:change`, and `worker:end` when a worker is ended.
  */
-async function standInPool(changes: number, jobs: number, memory: number, report: (worker: number, nth: number) => Partial<WorkerReport>): Promise<{ calls: string[]; published: string[]; timings: number[] }> {
+async function standInPool(changes: number, jobs: number, memory: number, report: (worker: number, nth: number) => Partial<WorkerReport>): Promise<{ calls: string[]; published: string[]; timings: number[]; lines: string[] }> {
   const calls: string[] = [];
+  const lines: string[] = [];
   const published: string[] = [];
   let started = 0;
   const startWorker = async (): Promise<Worker> => {
@@ -113,10 +114,10 @@ async function standInPool(changes: number, jobs: number, memory: number, report
     jobs,
     memory,
     scratch: new Scratch(),
-    progress: () => undefined,
+    progress: (line) => lines.push(line),
     startWorker
   });
-  return { calls, published, timings };
+  return { calls, published, timings, lines };
 }
 
 describe("a worker whose tree-sitter runtime faulted", () => {
@@ -153,6 +154,53 @@ describe("a file that failed for a cause of the machine's", () => {
 
   it("stops the run, naming the change, the file and the error, when the fresh worker fails so too", async () => {
     await expect(standInPool(1, 1, 1e12, () => machine)).rejects.toThrow(`the summary of ${"1".padStart(40, "0")} failed twice for a cause of the machine's: src/a.ts: EMFILE: too many open files`);
+  });
+});
+
+/**
+ * What the run's last lines say of the changes a fresh process decided and of the files the generator could not map,
+ * each counted as it is named. Until a review of 2026-11-20 the files were counted once at every change that held one,
+ * so that one file standing unmapped through 500 changes read as 500 files, and a change counted as decided by a fresh
+ * process only where the fresh process was itself marked: a change refused by a warm worker for a mark the fresh one
+ * does not repeat, the very case the mark exists for, had its own line and was missing from the totals.
+ */
+describe("the run's last lines", () => {
+  const deep = { path: "src/deep.ts", reason: "Maximum call stack size exceeded" };
+  const other = { path: "src/other.ts", reason: "ENAMETOOLONG: name too long, open '.mdmd/layer-4/src/other.ts.mdmd.md'" };
+
+  it("count the files the generator could not map once each, and the changes at which any was", async () => {
+    // A file not mapped marks the worker, so each such change is a fresh worker's first, and the worker is ended after it.
+    const unmapped = [[deep], [deep, other], []];
+    const { lines } = await standInPool(3, 1, 1e12, (worker) => (unmapped[worker].length > 0 ? { marked: ["unmapped"], unmapped: unmapped[worker] } : {}));
+    expect(lines).toContain("2 files the generator could not map, at 2 of the 3 changes regenerated; each summary names its own");
+    expect(lines).toContain("2 of the 3 changes regenerated were decided by a fresh process: a file the generator could not map");
+  });
+
+  it("count a change a warm worker was marked at and a fresh one decided, by what the warm worker was marked for", async () => {
+    const refused = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 1 ? { marked: ["deep"], published: false } : {}));
+    expect(refused.lines).toContain(`${"2".padStart(40, "0").slice(0, 8)}: its worker, which had summarized earlier changes, was marked: a file nested beyond the reading depth; summarized again in a fresh worker`);
+    expect(refused.lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file nested beyond the reading depth");
+    // The fresh worker marked for another reason: the change is counted by the first worker's, once.
+    const otherwise = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 1 ? { marked: ["deep"], published: false } : worker === 1 ? { marked: ["unmapped"], unmapped: [deep] } : {}));
+    expect(otherwise.lines.filter((line) => line.includes("decided by a fresh process"))).toEqual([
+      `${"2".padStart(40, "0").slice(0, 8)}: decided by a fresh process, its worker ended after it: a file the generator could not map`,
+      "1 of the 2 changes regenerated were decided by a fresh process: a file nested beyond the reading depth"
+    ]);
+  });
+
+  it("count a change tried again for a cause of the machine's among those a fresh process decided", async () => {
+    const machine = { published: false, marked: ["unmapped" as const], unmapped: [deep], machineFailure: { path: deep.path, error: "EMFILE: too many open files" } };
+    const { lines } = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 0 ? machine : {}));
+    expect(lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file that failed for a cause of the machine's");
+    // The worker that failed so was marked, as the generator marks it for every file it could not map.
+    expect(lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file the generator could not map");
+    expect(lines.some((line) => line.includes("files the generator could not map, at"))).toBe(false);
+  });
+
+  it("say once, with the number of changes that gave it, each file the generator warned it could not map", async () => {
+    const warned = [`could not map ${deep.path}: ${deep.reason}`];
+    const { lines } = await standInPool(3, 1, 1e12, (_worker, nth) => (nth < 2 ? { warned } : {}));
+    expect(lines).toContain(`the generator warned at 2 of the 3 changes regenerated: could not map ${deep.path}: ${deep.reason}`);
   });
 });
 

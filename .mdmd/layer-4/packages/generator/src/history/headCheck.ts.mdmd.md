@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/headCheck.ts`
-- Generated At: 2026-11-20T14:11:52.462Z
+- Generated At: 2026-11-20T15:42:27.266Z
 
 ## Authored
 ### Purpose
@@ -57,16 +57,19 @@ A moment of the history, as replayed: its shape and its rows.
 
 #### `leftOutAtHead` {#symbol-leftoutathead}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L146)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L149)
 - Parameters: `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `leftOut`: `ReadonlyMap`
 
 ##### `leftOutAtHead` — Summary
-The committed files the check at the head does not compare, each with why: those whose source the head's tree did not
-hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree writer leaves
-out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names one on a disk
-that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check where the history
-is right. The check that read the committed docs from git's object store compared them until the independent review
-of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names out of both sides.
+The committed files the check at the head does not compare, each with why: those whose source the history did not read
+at the head, by one of the head summary's own lists, which the caller hands one at a time: the entries its tree did
+not hold (`unwritten`), or the files the generator could not map (`unmapped`, passed over since a review of
+2026-11-20; a person's workspace keeps such a file's doc of an earlier day, the history's tree does not). The tree
+writer leaves out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names
+one on a disk that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check where
+the history is right. The check that read the committed docs from git's object store compared them until the
+independent review of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names
+out of both sides.
 
 A file whose doc alone was left out is compared as any other: the history read its source, so a difference in what
 the doc alone carries is reported. Until the review's second pass a doc's own path left out passed its whole file
@@ -77,11 +80,11 @@ writer that drops an entry and reports it is passed over too, though named with 
 is no weaker than the check before the whole change, which dropped such entries from both sides and said nothing.
 
 ##### `leftOutAtHead` — Parameters
-- `leftOut`: Each entry the head's tree did not hold, by its path, with why.
+- `leftOut`: Each file of one list the history did not read at the head, by its path, with why.
 
 #### `headDifferences` {#symbol-headdifferences}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L161)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L164)
 - Parameters: `replayed`: [`ReplayedMoment`](#symbol-replayedmoment); `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `notCompared`: `ReadonlySet`
 
 ##### `headDifferences` — Summary

@@ -187,8 +187,37 @@ const LOCK_NAME = /^run\.([0-9a-f]{12})\.(\d+)\.([0-9a-z]+)\.lock$/u;
 /** How many times a run that met another's claim tries again, a short random wait apart, before it refuses. */
 const LOCK_ATTEMPTS = 6;
 
-/** The list beside the sequence of the entries the history did not write into a commit's tree, and so did not read, each with why. */
-const UNWRITTEN_LIST = "unwritten.txt";
+/**
+ * What the history did not read of a commit's files, by kind, as each commit's summary names them: the entries its tree
+ * did not hold (`unwritten`), and the files the generator could not map there (`unmapped`). The sequence does not carry
+ * them, and such a file reads in it as gone at that commit; each kind is listed beside the sequence (`list`, a line each:
+ * the commit, the path and the reason), said on every run, carried in the record a run goes on from, and passed over by
+ * the check at the head, by one path through this module. Until a review of 2026-11-20 only the first kind was: the
+ * second was written into each summary and read by nothing, so that after the run that made the summary no command and
+ * no file said a file was not mapped, and the check at the head reported its committed doc as a difference.
+ */
+const NOT_READ = {
+  unwritten: {
+    list: "unwritten.txt",
+    heading: "The entries the history did not write into each commit's tree, and so did not read",
+    said: "were not written into their trees and so not read, each for the reason the list gives (a symbolic link that leads to no file of the tree, a name this disk cannot hold)",
+    atHead: "the head's tree did not hold them"
+  },
+  unmapped: {
+    list: "unmapped.txt",
+    heading: "The files the generator could not map at each commit, and so did not read",
+    said: "could not be mapped by the generator, each for the reason the list gives",
+    atHead: "the generator could not map them at the head"
+  }
+} as const;
+
+/** A kind of what the history did not read of a commit's files ({@link NOT_READ}). */
+type NotReadKind = keyof typeof NOT_READ;
+
+const NOT_READ_KINDS = Object.keys(NOT_READ) as NotReadKind[];
+
+/** What the history did not read, by kind: each commit, a path and why, in the line's order and each summary's. */
+type NotRead = Record<NotReadKind, Array<[commit: string, path: string, reason: string]>>;
 
 /** The marker a lens's cache folder holds once a run wrote a whole history from it: when, and of which head. */
 const WHOLE_MARKER = "whole.json";
@@ -388,7 +417,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     await summarize(derived.damaged);
     derived = await deriveSequence(sampled, reading);
   }
-  const { builder, texts, read, unwritten } = derived;
+  const { builder, texts, read, notRead } = derived;
   const sequence = builder.finish();
   options.progress(derived.line);
   const headCheck = await checkHead(sequence, {
@@ -396,19 +425,22 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     configuration,
     lens,
     textOf: (id) => read[id],
-    leftOut: unwritten.filter(([commit]) => commit === end.head).map(([, file, reason]): [string, string] => [file, reason]),
+    leftOut: atCommit(notRead, end.head),
     asked: options.checkHead === true,
     ownConfiguration: options.configPath === undefined,
     head: end.head
   });
   options.progress(headCheck.line);
   const written = await writeSequence(sequence, historyFolder, read, options.progress);
-  await writeContinuation(historyFolder, { format: CONTINUATION_FORMAT, key: reading.key, sequence: written, texts: texts.values, firstNamed: derived.firstNamed, unwritten });
-  const unwrittenList = await writeUnwritten(historyFolder, unwritten);
-  if (unwrittenList !== undefined) {
-    options.progress(
-      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not written into their trees and so not read, each for the reason the list gives (a symbolic link that leads to no file of the tree, a name this disk cannot hold); they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
-    );
+  await writeContinuation(historyFolder, { format: CONTINUATION_FORMAT, key: reading.key, sequence: written, texts: texts.values, firstNamed: derived.firstNamed, ...notRead });
+  for (const kind of NOT_READ_KINDS) {
+    const entries = notRead[kind];
+    const list = await writeNotRead(historyFolder, kind, entries);
+    if (list === undefined) continue;
+    // Each file once, and each commit once, however many commits a file stood unread through.
+    const files = new Set(entries.map(([, file]) => file)).size;
+    const commits = new Set(entries.map(([commit]) => commit)).size;
+    options.progress(`${files} files at ${commits} commits ${NOT_READ[kind].said}; they read in the history as gone at those commits. The list is ${relative(list)}`);
   }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
 
@@ -681,8 +713,8 @@ type Derived =
       read: string[];
       /** For each text's id, the place in the sequence of the change whose summary first named it. */
       firstNamed: number[];
-      /** The files each change's summary says its tree did not hold. */
-      unwritten: Array<[commit: string, path: string, reason: string]>;
+      /** The files each change's summary says the history did not read there, by kind: its tree did not hold them, or the generator could not map them. */
+      notRead: NotRead;
       /** What the progress says of how the sequence was made. */
       line: string;
     }
@@ -738,7 +770,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
   };
   let texts = new Interner();
   let firstNamed: number[] = [];
-  let unwritten: Array<[string, string, string]> = [];
+  let notRead = noneNotRead();
   // Each text's id, given where it is first named, and the place of the change that first named it.
   const textId =
     (index: number) =>
@@ -748,8 +780,10 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
       if (id === known) firstNamed.push(index);
       return id;
     };
-  const notRead = (index: number, summary: CommitSummary): void => {
-    for (const [file, reason] of summary.unwritten ?? []) unwritten.push([sampled[index].id, file, reason]);
+  const noteNotRead = (index: number, summary: CommitSummary): void => {
+    for (const kind of NOT_READ_KINDS) {
+      for (const [file, reason] of summary[kind] ?? []) notRead[kind].push([sampled[index].id, file, reason]);
+    }
   };
 
   let builder: SequenceBuilder | undefined;
@@ -760,7 +794,8 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
     const last = written.sequence.steps.length;
     texts = new Interner(written.record.texts);
     firstNamed = [...written.record.firstNamed];
-    unwritten = written.record.unwritten.map(([commit, file, reason]): [string, string, string] => [commit, file, reason]);
+    const recorded = written.record;
+    notRead = Object.fromEntries(NOT_READ_KINDS.map((kind) => [kind, recorded[kind].map(([commit, file, reason]): [string, string, string] => [commit, file, reason])])) as NotRead;
     const summary = await read(last);
     if (summary === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), unread, wentOn: true };
     try {
@@ -775,10 +810,10 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
   if (builder === undefined) {
     texts = new Interner();
     firstNamed = [];
-    unwritten = [];
+    notRead = noneNotRead();
     const first = await read(0);
     if (first !== undefined) {
-      notRead(0, first);
+      noteNotRead(0, first);
       builder = new SequenceBuilder(head, commitOf(sampled[0]), shapeOfSummary(first), rowsOfSummary(first, textId(0)));
     }
     start = 1;
@@ -789,7 +824,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
   for (let index = start; index < sampled.length; index += 1) {
     const summary = await read(index);
     if (summary === undefined) continue;
-    notRead(index, summary);
+    noteNotRead(index, summary);
     // A summary after a damaged one is still read, for what it names, so that one reading finds every damaged change.
     const rows = rowsOfSummary(summary, textId(index));
     if (builder !== undefined && damaged.size === 0) builder.add(commitOf(sampled[index]), shapeOfSummary(summary), words[index - start], rows);
@@ -820,7 +855,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
     texts,
     read: textsRead,
     firstNamed,
-    unwritten,
+    notRead,
     line: line ?? `every step replayed to the shape and the rows it was derived from, ${sampled.length - 1} steps${why}`
   };
 }
@@ -843,19 +878,20 @@ async function atOnce<T, R>(items: readonly T[], size: number, work: (item: T, i
 
 /**
  * The file beside the sequence that says how the last run made it, so that the next run may go on from it: the
- * sequence's own hash, the key it was read under, the texts' hashes by their ids, where each was first named, and the
- * entries the changes' trees did not hold.
+ * sequence's own hash, the key it was read under, the texts' hashes by their ids, where each was first named, and what
+ * the history did not read of the changes' files ({@link NOT_READ}).
  */
 const CONTINUATION_FILE = "history-resume.json";
 
 /**
  * The version of {@link CONTINUATION_FILE}'s format. Since the independent review of 2026-11-20 (its second), the record
- * also holds its own hash (`check`), so that a record damaged after it was written is not believed.
+ * also holds its own hash (`check`), so that a record damaged after it was written is not believed; since a review of
+ * the same day (format 3), the files the generator could not map (`unmapped`) beside the entries the trees did not hold.
  */
-const CONTINUATION_FORMAT = "live-docs-history-resume/2";
+const CONTINUATION_FORMAT = "live-docs-history-resume/3";
 
 /** What {@link CONTINUATION_FILE} holds. */
-interface ContinuationRecord {
+interface ContinuationRecord extends NotRead {
   format: typeof CONTINUATION_FORMAT;
   /** The key the sequence was read under ({@link continuationKey}). */
   key: string;
@@ -865,8 +901,6 @@ interface ContinuationRecord {
   texts: string[];
   /** For each text's id, the place in the sequence (0 is its base) of the change whose summary first named it. */
   firstNamed: number[];
-  /** The entries each change's tree did not hold: the change, the path and why. */
-  unwritten: Array<[commit: string, path: string, reason: string]>;
   /**
    * The SHA-256 of the record's other fields ({@link recordCheck}). A text's hash changed in the record names a text no
    * summary writes, and two swapped give each id the other's words; neither shows at the last moment, which is all the
@@ -877,7 +911,7 @@ interface ContinuationRecord {
 
 /** The hash a record holds of its other fields, in the order the format lists them. */
 function recordCheck(record: Omit<ContinuationRecord, "check">): string {
-  return createHash("sha256").update(JSON.stringify([record.format, record.key, record.sequence, record.texts, record.firstNamed, record.unwritten])).digest("hex");
+  return createHash("sha256").update(JSON.stringify([record.format, record.key, record.sequence, record.texts, record.firstNamed, ...NOT_READ_KINDS.map((kind) => record[kind])])).digest("hex");
 }
 
 /**
@@ -899,8 +933,10 @@ function recordOf(value: unknown): ContinuationRecord | { reason: string } {
     Array.isArray(record.firstNamed) &&
     record.firstNamed.length === record.texts.length &&
     record.firstNamed.every((place) => Number.isInteger(place) && place >= 0) &&
-    Array.isArray(record.unwritten) &&
-    record.unwritten.every((entry) => Array.isArray(entry) && entry.length === 3 && entry.every((part) => typeof part === "string")) &&
+    NOT_READ_KINDS.every((kind) => {
+      const entries: unknown = record[kind];
+      return Array.isArray(entries) && entries.every((entry) => Array.isArray(entry) && entry.length === 3 && entry.every((part) => typeof part === "string"));
+    }) &&
     record.check === recordCheck(record as ContinuationRecord);
   return sound ? (record as ContinuationRecord) : { reason: "its record does not read" };
 }
@@ -967,21 +1003,32 @@ async function writeContinuation(historyFolder: string, record: Omit<Continuatio
   await writeInPlace(path.join(historyFolder, CONTINUATION_FILE), JSON.stringify({ ...record, check: recordCheck(record) }));
 }
 
+/** Nothing not read, of either kind. */
+function noneNotRead(): NotRead {
+  return { unwritten: [], unmapped: [] };
+}
+
+/** What the history did not read at one commit, by kind: each path with why, for the check at the head. */
+function atCommit(notRead: NotRead, commit: string): Record<NotReadKind, Array<[path: string, reason: string]>> {
+  const at = (kind: NotReadKind): Array<[string, string]> => notRead[kind].filter(([change]) => change === commit).map(([, file, reason]): [string, string] => [file, reason]);
+  return { unwritten: at("unwritten"), unmapped: at("unmapped") };
+}
+
 /**
- * Writes beside the sequence every entry the history did not write into a commit's tree, and so did not read, with
- * why (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
- * that list where there is none. The sequence does not carry them: such a file reads in it as gone at that commit.
+ * Writes beside the sequence every file of one kind the history did not read at a commit, with why ({@link NOT_READ}:
+ * `<history folder>/unwritten.txt` or `unmapped.txt`, a line each: the commit, the path and the reason), or removes that
+ * list where there is none. The sequence does not carry them: such a file reads in it as gone at that commit.
  *
  * @returns The list's path, when there is one.
  */
-async function writeUnwritten(historyFolder: string, unwritten: ReadonlyArray<[commit: string, path: string, reason: string]>): Promise<string | undefined> {
-  const file = path.join(historyFolder, UNWRITTEN_LIST);
-  if (unwritten.length === 0) {
+async function writeNotRead(historyFolder: string, kind: NotReadKind, entries: ReadonlyArray<[commit: string, path: string, reason: string]>): Promise<string | undefined> {
+  const file = path.join(historyFolder, NOT_READ[kind].list);
+  if (entries.length === 0) {
     await fs.rm(file, { force: true });
     return undefined;
   }
-  const lines = unwritten.map(([commit, entry, reason]) => `${commit}\t${JSON.stringify(entry)}\t${reason}`);
-  await writeInPlace(file, `# The entries the history did not write into each commit's tree, and so did not read: commit, path, reason.\n${lines.join("\n")}\n`);
+  const lines = entries.map(([commit, entry, reason]) => `${commit}\t${JSON.stringify(entry)}\t${reason}`);
+  await writeInPlace(file, `# ${NOT_READ[kind].heading}: commit, path, reason.\n${lines.join("\n")}\n`);
   return file;
 }
 
@@ -992,8 +1039,11 @@ interface HeadCheckContext {
   lens: HistoryLens;
   /** Each text the sequence names, by its id, as the reading held it to its hash. */
   textOf: (id: number) => string;
-  /** The entries the head's summary says its tree did not hold, each with why: the history does not read them, so the check does not compare them. */
-  leftOut: ReadonlyArray<[path: string, reason: string]>;
+  /**
+   * The files the head's summary says the history did not read there, by kind ({@link NOT_READ}: its tree did not hold
+   * them, or the generator could not map them), each with why: the check does not compare them.
+   */
+  leftOut: Record<NotReadKind, ReadonlyArray<[path: string, reason: string]>>;
   /** Whether the person asked for the check, asserting that the docs committed at the head were made by this generator under this configuration. */
   asked: boolean;
   /** Whether the lens's configuration is the workspace's own, the one its committed mirror was made under. */
@@ -1034,13 +1084,13 @@ async function checkHead(sequence: HistorySequence, context: HeadCheckContext): 
     return { applied: false, line: `the check at the head was skipped: no Live Docs are committed at ${context.head.slice(0, 8)}` };
   }
   const moment = momentAt(sequence, sequence.steps.length);
-  const notCompared = leftOutAtHead(committed, new Map(context.leftOut));
-  const differences = headDifferences(moment, committed, context.textOf, new Set(notCompared.keys()));
-  // What the head's tree did not hold is named, with why, so that nothing the check passes over is passed over silently.
-  const passedOver =
-    notCompared.size > 0
-      ? `; not compared, since the head's tree did not hold them and so the history does not read them: ${[...notCompared].map(([file, reason]) => `${file} (${reason})`).join("; ")}`
-      : "";
+  const notCompared = NOT_READ_KINDS.map((kind) => [kind, leftOutAtHead(committed, new Map(context.leftOut[kind]))] as const);
+  const differences = headDifferences(moment, committed, context.textOf, new Set(notCompared.flatMap(([, files]) => [...files.keys()])));
+  // What the history did not read at the head is named, with why, so that nothing the check passes over is passed over silently.
+  const passedOver = notCompared
+    .filter(([, files]) => files.size > 0)
+    .map(([kind, files]) => `; not compared, since ${NOT_READ[kind].atHead} and so the history does not read them: ${[...files].map(([file, reason]) => `${file} (${reason})`).join("; ")}`)
+    .join("");
   if (differences.length > 0) {
     throw new Error(
       `the history's last step is not the graph of the Live Docs committed at ${context.head.slice(0, 8)}: ${differences.slice(0, 5).join("; ")}${passedOver}. ` +

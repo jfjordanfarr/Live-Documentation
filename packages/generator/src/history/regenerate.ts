@@ -162,9 +162,12 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   const warnings = new Map<string, number>();
   // Why trees were written anew rather than brought forward, each with the number of changes, said once at the end.
   const writtenAnew = new Map<string, number>();
-  // The changes a fresh process decided, by the reason its worker was marked, and the files not mapped.
-  const decided = new Map<ProcessMark, number>();
-  let unmapped = 0;
+  // The changes a fresh process decided, by each reason the worker that first took the change was marked or failed for
+  // (until a review of 2026-11-20, only where the fresh process was marked itself); and the files the generator could
+  // not map, each once, with the number of changes at which any was (until then, a file once at every such change).
+  const decided = new Map<DecidedBy, number>();
+  const unmappedFiles = new Set<string>();
+  let unmappedChanges = 0;
   const started = Date.now();
   const runs: MainlineChange[][] = [];
   const length = Math.max(1, Math.ceil(changes.length / (context.jobs * 4)));
@@ -197,6 +200,9 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           if (!open()) break;
           const began = Date.now();
           let report = await summarize(change);
+          // Why a fresh process decides the change, where one does: what the worker that first took it was marked for,
+          // and a failure of the machine's. A worker's first change is a fresh process's; a later one marked is refused.
+          const reasons: DecidedBy[] = [...report.marked, ...(report.machineFailure ? (["machine"] as const) : [])];
           if (!report.published) {
             // Either the worker was marked during a change after its first, so that its derivation may be an earlier
             // change's, or a file failed for a cause of the machine's: the change goes to a fresh worker, whose first
@@ -210,9 +216,10 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           if (report.marked.length > 0) {
             // Published by a worker whose first change it was: what a fresh process makes of the change alone.
             context.progress(`${change.id.slice(0, 8)}: decided by a fresh process, its worker ended after it: ${marks(report.marked)}`);
-            for (const reason of report.marked) decided.set(reason, (decided.get(reason) ?? 0) + 1);
           }
-          unmapped += report.unmapped.length;
+          for (const reason of reasons) decided.set(reason, (decided.get(reason) ?? 0) + 1);
+          for (const file of report.unmapped) unmappedFiles.add(file.path);
+          if (report.unmapped.length > 0) unmappedChanges += 1;
           if (report.unwritten.length > 0) {
             context.progress(`${change.id.slice(0, 8)}: ${report.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
             for (const entry of report.unwritten) {
@@ -250,10 +257,13 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
     for (const [reason, count] of [...writtenAnew].sort(([a], [b]) => (a < b ? -1 : 1))) {
       context.progress(`trees written anew at ${count} of the ${changes.length} changes regenerated: ${reason}`);
     }
-    for (const [reason, count] of decided) {
-      context.progress(`${count} of the ${changes.length} changes regenerated were decided by a fresh process: ${MARK_WORDS[reason]}`);
+    for (const [reason, words] of Object.entries(DECIDED_WORDS) as Array<[DecidedBy, string]>) {
+      const count = decided.get(reason);
+      if (count !== undefined) context.progress(`${count} of the ${changes.length} changes regenerated were decided by a fresh process: ${words}`);
     }
-    if (unmapped > 0) context.progress(`${unmapped} files the generator could not map, over the changes regenerated; each summary names its own`);
+    if (unmappedFiles.size > 0) {
+      context.progress(`${unmappedFiles.size} files the generator could not map, at ${unmappedChanges} of the ${changes.length} changes regenerated; each summary names its own`);
+    }
   }
   if (failure !== undefined) {
     throw failure;
@@ -397,6 +407,12 @@ const MARK_WORDS: Record<ProcessMark, string> = {
   unmapped: "a file the generator could not map",
   runtime: "a fault of the tree-sitter runtime"
 };
+
+/** Why a fresh process decided a change: a mark of the worker that first took it, or a failure of the machine's there. */
+type DecidedBy = ProcessMark | "machine";
+
+/** Each reason a fresh process decided a change, in the words and the order of the run's last lines. */
+const DECIDED_WORDS: Record<DecidedBy, string> = { ...MARK_WORDS, machine: "a file that failed for a cause of the machine's" };
 
 function marks(reasons: readonly ProcessMark[]): string {
   return reasons.map((reason) => MARK_WORDS[reason]).join("; ");
