@@ -70,6 +70,9 @@ function plainUtf8(commit: string, file: string): boolean {
   return answer;
 }
 
+/** A value for a sample's line: its JSON cut short, and the word for a value that has none (a field one summary lacks). */
+const shown = (value: unknown): string => (JSON.stringify(value) ?? "undefined").slice(0, 140);
+
 const NAME_CHARACTERS = /[`\\*_\u0000-\u001f]/u;
 
 interface Finding {
@@ -150,7 +153,7 @@ console.log(`compared ${compared} commits: ${identical} identical, ${compared - 
 for (const [key, count] of [...counts].sort((x, y) => (x[0] < y[0] ? -1 : 1))) {
   console.log(`  ${count}\t${key}`);
   for (const finding of findings.filter((entry) => `${entry.verdict} ${entry.field}: ${entry.because}` === key).slice(0, samplesWanted)) {
-    console.log(`      ${finding.commit.slice(0, 8)} ${finding.file ?? ""}: ${JSON.stringify(finding.old).slice(0, 140)} -> ${JSON.stringify(finding.new).slice(0, 140)}`);
+    console.log(`      ${finding.commit.slice(0, 8)} ${finding.file ?? ""}: ${shown(finding.old)} -> ${shown(finding.new)}`);
   }
 }
 if (reportFile) writeFileSync(reportFile, JSON.stringify(findings, null, 1));
