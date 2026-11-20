@@ -262,7 +262,9 @@ describe("a failure of the machine's, met by a catch round a read", () => {
     const found = modules.flatMap((module) => swallowingCatches(module, reading));
     expect(found.filter((place) => !(place in ALLOWED))).toEqual([]);
     expect(Object.keys(ALLOWED).filter((place) => !found.includes(place))).toEqual([]);
-  });
+    // Parsing every source of two packages takes about two seconds alone and more than five beside the whole unit
+    // suite, where the first gate on the joined code cut it at the default limit (2026-11-20).
+  }, 60_000);
 
   it("sees a catch that swallows a read, by each form, and passes one that hands it on", () => {
     // `wrapped` reads a file in this module, `load` in another, imported by name or as a namespace.
