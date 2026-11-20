@@ -120,7 +120,10 @@ function actsForASummary(text: string): boolean {
  * keyed: a module joins this list only by a reviewed reason.
  */
 const ACTING_UNKEYED: Record<string, string> = {
-  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree"
+  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree",
+  // Since 2026-11-20, in place of writing the head's whole tree for the check.
+  "packages/generator/src/history/headCheck.ts":
+    "reads the Live Docs committed at the head from git's object store for the check at the head, after every summary is made; nothing it reads reaches a summary"
 };
 
 /** The names of an interface's members, read by the TypeScript parser. */
@@ -180,6 +183,7 @@ describe("the lens's key", () => {
     expect(acting.sort()).toEqual([
       "packages/engine/src/live-docs/history/git.ts",
       "packages/generator/src/history/generatorIdentity.ts",
+      "packages/generator/src/history/headCheck.ts",
       "packages/generator/src/history/regenerate.ts",
       // Since 2026-11-19 it asks the tree's own listing which linked documents stand.
       "packages/generator/src/history/summarizeChange.ts"

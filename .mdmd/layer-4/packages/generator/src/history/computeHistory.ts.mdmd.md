@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-19T22:40:12.820Z
+- Generated At: 2026-11-20T08:22:37.385Z
 
 ## Authored
 ### Purpose
@@ -14,56 +14,58 @@ The history command: the mainline read and sampled, every sampled commit the cac
 - Written 2026-10-17 for C1 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md), as its shape reads: for every commit not yet in the cache under the current lens, check it out into a detached worktree, generate the docs there with the lens's configuration, read the derived index, write a compact summary and remove the worktree. [The probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/Probes/change-over-time/README.md) ran the same by hand over 122 commits, three at a time, in ten minutes of wall clock. The decisions it carries are in [Turn 3 of October 16](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3), and [Turn 3](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-3) and [Turn 5](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-5) of October 17.
 - One process per commit, so that no process holds more than one graph (scenario 4); the pool's size is the caller's to give, or this module's to derive (below). Since 2026-11-19 a scratch tree registers nothing with the repository (`git.ts`), so trees are made at once. Since a later edit that day ([the independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/README.md)) the trees and the summarizing processes are `regenerate.ts`'s, which keys the lens, since what it writes and passes decides what a summary says; this module, which reads summaries into a sequence, does not.
 - The lens's configuration is the file given, or the workspace's own as it stands, applied to every commit, so that a change of the tool never looks like a change of the code (scenario 5, and the plan's recommendation of the configuration at the head). Its docs root must lie inside the workspace.
-- The cache is `<root>/history/<lens>/<commit>.json.gz` since 2026-11-19 (`<commit>.json` before), with `<commit>.index.json.gz` under `--keep-index` and the lens's text store under `texts/`; a commit counts as cached when its summary, and its index when asked for, are there, and since the review the summary reads as this lens's and every text it names is in the store and is the text of its hash; any other is summarized again, a changed text removed first, so that a store damaged or copied in part mends itself rather than failing every later run.
+- The cache is `<root>/history/<lens>/<commit>.json.gz` since 2026-11-19 (`<commit>.json` before), with `<commit>.index.json.gz` under `--keep-index` and the lens's text store under `texts/`; a commit counts as cached when its summary, and its index when asked for, are there, and since the review the summary reads as this lens's and every text it names is in the store and is the text of its hash; any other is summarized again, a changed text removed first, so that a store damaged or copied in part mends itself rather than failing every later run. Until 2026-11-20 every summary was read for this at the run's start; since, it is found where the sequence reads a summary (below).
 - Since 2026-11-19, for the owner's three rungs of history in 2D ([Turn 35](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-35) and [Turn 37](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37) of November 18, "How do we mitigate these costs and risks?"): the sequence is built from each summary's shape and rows, its texts given ids as they are first met; the words of every step are written beside the sequence, each read from the text store and held to its hash, in a folder named by their content (`history-words-<hash>/`) written before the sequence that names it, so that a run stopped between the two never leaves a sequence naming parts that are gone; and the last step is held to the graph read afresh from the Live Docs committed at the head (`headCheck.ts`) when asked with `--check-head`, or when the generator runs unmodified from that commit under the workspace's own configuration, as over this repository (`HEAD_CHECK_RULE`). Elsewhere the run says the check was skipped and why; where it applies, a difference, or docs that do not read, stop the run. The message names the likely cause, a mirror not regenerated after the last change of the source, which the repository's own freshness check also refuses.
 - The pool, without `--jobs`, is as many processes as half the memory this process may use holds at the peak one was measured to take on the repository, at most one fewer than the processors it may run on (`poolSize`, `usableMachine`): a container's memory limit is read through `process.constrainedMemory`, and the processors are `os.availableParallelism`, which a limit of processor time (`docker run --cpus`) does not lower. Each process sends its peak resident memory when it ends; a run records its largest in `<root>/history/pool.json` (`nextPoolRecord`), the largest of every run under the same lens, so that a run regenerating only the newest commit does not shrink it, and under a new lens the larger of the old and new until the new lens has measured as many commits. Before any measurement it expects 768 MiB, the 526 MB measured over this repository rounded up. Until 2026-11-19 the CLI chose two processes under 8 GiB and else at most three, whatever the machine.
 - Every run lists the cache folders of other lenses (sixteen hexadecimal digits, not the current key) with their sizes, and `--remove-superseded` removes them, only once the current lens holds every sampled commit; nothing is removed unasked. One run at a time writes under a history folder: it holds `run.lock` there, refuses while a live process on this machine holds it, and takes over a lock whose process has ended or that came from another machine with a restored cache. At its start it removes every `*.partial` a stopped run left. `--stop-after` starts no commit past a budget; a run stopped so writes no history and throws `HistoryStopped`, which the CLI turns into exit code 3, so that the Pages workflow deploys the site without a history rather than not at all. The history folder writes its own `.gitignore`, so that no repository commits it: nothing derived from local history is committed (the owner, 2025-11-10).
-- A run stopped by a signal removes its scratch trees, the check at the head's included, before it exits (`Scratch` in `regenerate.ts`).
+- A run stopped by a signal removes its scratch trees before it exits (`Scratch` in `regenerate.ts`).
 - Since [the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md) the lock is a claim per run (`holdLock`): an empty file named `run.<host>.<pid>.<nonce>.lock`, made in one step, after which the run lists the claims and holds the folder only when no other live one stands, else withdraws, waits a random moment and tries again. Two runs meeting a dead lock had both been able to proceed under the old single file. A signal removes the claim (`Scratch.hold`). With `--remove-superseded`, the run keeps beside the current lens only the newest whole one, marked by the `whole.json` a run writes once it wrote a history from a lens.
 - Since [the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md) the run lists beside the sequence, in `unwritten.txt`, every file a summary says its tree did not hold, the commit, the path and the reason a line, and says where (the list's header speaks of what this disk could not hold, though some reasons, a link in the commit or a name that is not UTF-8, hold on every disk); the sequence does not carry them, so such a file reads in it as gone at that commit.
-- Since 2026-11-19 each summary is read through `bundledSummary` with the configuration's `bundleExclude`, the one place the bundle's exclusions are applied to the history; the head check's tree is written as the summarizing process's is (`treeOptions`). The run's line and `unwritten.txt` say an entry was not written into its tree, with the reason, no longer that the disk could not hold it.
+- Since 2026-11-19 each summary is read through `bundledSummary` with the configuration's `bundleExclude`, the one place the bundle's exclusions are applied to the history. The run's line and `unwritten.txt` say an entry was not written into its tree, with the reason, no longer that the disk could not hold it.
+
+- Since 2026-11-20 ([the record of making a run fast](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) a run reads each summary it needs once and every text once: whether a cached summary reads, and whether the texts it names are sound, is found where the sequence reads it (`deriveSequence`), and such a commit is summarized again and the sequence read again, where before every summary was read twice and every text twice. A run goes on from the sequence the last run wrote, when the record beside it (`history-resume.json`) names its bytes under this run's key (the lens, `sequenceCodeIdentity` of the code that reads summaries into a sequence, and the whole configuration) and its every commit is the first of those sampled now as this run would write it; then only the last written commit's summary and the new ones are read, and the bytes written are those of a whole derivation (`--rederive`), which the integration test and the record hold to each other. The steps' git words are asked before any summary is read, eight at once, since starting a process from a large heap was most of their cost; the check at the head reads the committed docs from git's object store (`headCheck.ts`) instead of writing the head's whole tree. None of it moves the lens's key: this module, `headCheck.ts`, `sequence.ts` and `generatorIdentity.ts` are not keyed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L66)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L89)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
 #### `SupersededCache` {#symbol-supersededcache}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L92)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L117)
 
 ##### `SupersededCache` — Summary
 A cache folder under the history folder that belongs to another lens than the current one.
 
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L104)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L129)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
 #### `HistoryStopped` {#symbol-historystopped}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L131)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L156)
 
 ##### `HistoryStopped` — Summary
 A run that stopped, as asked, before the cache held every sampled change: no sequence was written.
 
 #### `HEAD_CHECK_RULE` {#symbol-head_check_rule}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L136)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L161)
 
 ##### `HEAD_CHECK_RULE` — Summary
 When the check at the head applies, in the words the command prints when it skips it.
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L165)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L190)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -72,7 +74,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L172)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L197)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -81,7 +83,7 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L183)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L208)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -91,7 +93,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L189)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L214)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -99,7 +101,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L364)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L413)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -119,14 +121,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L535)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L534)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L563)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L562)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -139,7 +141,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L817)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1026)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -158,7 +160,6 @@ A size in the units a person reads it in.
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`graphFiles.readLiveDocGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`bundled.bundledSummary`](../../../engine/src/live-docs/history/bundled.ts.mdmd.md#symbol-bundledsummary)
 - [`codec.Interner`](../../../engine/src/live-docs/history/codec.ts.mdmd.md#symbol-interner)
 - [`format.CommitInfo`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo)
@@ -168,6 +169,7 @@ A size in the units a person reads it in.
 - [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 - [`format.Sampling`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling)
 - [`git.openGitRepository`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
+- [`lens.canonicalJson`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-canonicaljson)
 - [`lens.lensOf`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
 - [`rows.linksOf`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
 - [`rows.rowsOfSummary`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowsofsummary)
@@ -184,15 +186,15 @@ A size in the units a person reads it in.
 - [`VersionControl`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
 - [`words.WORDS_DIRECTORY`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-words_directory)
 - [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead)
-- [`words.textsOfFile`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-textsoffile)
 - [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)
+- [`generatorIdentity.sequenceCodeIdentity`](./generatorIdentity.ts.mdmd.md#symbol-sequencecodeidentity)
+- [`headCheck.committedLiveDocGraph`](./headCheck.ts.mdmd.md#symbol-committedlivedocgraph)
 - [`headCheck.headDifferences`](./headCheck.ts.mdmd.md#symbol-headdifferences)
 - [`regenerate.Scratch`](./regenerate.ts.mdmd.md#symbol-scratch)
 - [`regenerate.indexPath`](./regenerate.ts.mdmd.md#symbol-indexpath)
 - [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
 - [`regenerate.summaryPath`](./regenerate.ts.mdmd.md#symbol-summarypath)
-- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

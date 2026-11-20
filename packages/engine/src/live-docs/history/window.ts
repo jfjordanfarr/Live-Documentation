@@ -26,7 +26,7 @@ export function windowOf(sequence: HistorySequence, selection: HistorySelection)
   }
   const first = firstStep(sequence, selection);
   const start = momentAt(sequence, first);
-  const writer = new SequenceWriter({ lens: sequence.lens, source: sequence.source, window: selection }, commitAt(sequence, first), start.shape, start.rows);
+  const writer = SequenceWriter.beginning({ lens: sequence.lens, source: sequence.source, window: selection }, commitAt(sequence, first), start.shape, start.rows);
   for (let step = first + 1; step <= sequence.steps.length; step += 1) {
     writer.append(commitAt(sequence, step), changeAt(sequence, step), rowsChangeAt(sequence, step));
   }

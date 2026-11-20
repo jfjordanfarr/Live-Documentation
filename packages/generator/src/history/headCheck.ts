@@ -23,9 +23,95 @@
  * @module
  */
 
-import { linkTarget, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { spawn } from "node:child_process";
+import path from "node:path";
+
+import { LiveDocSyntaxError, parseLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
+import { deriveLiveDocGraph, linkTarget, type DocLocation, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { followLink } from "@live-documentation/engine/live-docs/history/git";
 import { compareLinks, linksOf, type FileRows, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
 import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
+
+/**
+ * The graph of the Live Docs committed at a commit, read from git's object store: every file of the commit's tree under
+ * the docs root's base layer whose name ends in the docs' extension, a regular or an executable file, or a symbolic link
+ * that leads through the commit's own listing to one ({@link followLink}, as the history's tree writer follows it), each
+ * blob's bytes read as UTF-8 and parsed as `readLiveDocGraph` parses a doc on disk.
+ *
+ * @remarks
+ * Until 2026-11-20 the commit's whole tree was written to a scratch folder for this, as each commit's tree is written
+ * for its summary, and the docs read back from the disk: 5 to 7 s of every run at this repository's head, almost all
+ * of it the writing of files the check never reads. What the disk could change, the object store does not: a name the
+ * disk takes for another's (two docs whose names differ by case alone, on a disk that folds case) or one it cannot
+ * hold is read here under its own name, as the commit stores it. The generator writes no such names.
+ */
+export async function committedLiveDocGraph(repository: string, commit: string, location: DocLocation): Promise<LiveDocGraph> {
+  const asStored = { GIT_NO_REPLACE_OBJECTS: "1" };
+  const listing = (await execFileAsync("git", ["-C", repository, "ls-tree", "-r", "-z", "--full-tree", commit], { cwd: repository, maxBuffer: 1 << 30, env: asStored })).stdout;
+  const byPath = new Map<string, { mode: string; id: string }>();
+  for (const line of listing.split("\0")) {
+    if (line === "") continue;
+    // Each entry is `<mode> <type> <id>\t<path>`.
+    const tab = line.indexOf("\t");
+    const [mode, , id] = line.slice(0, tab).split(" ");
+    byPath.set(line.slice(tab + 1), { mode, id });
+  }
+  const folder = `${path.posix.join(location.root, location.baseLayer)}/`;
+  const docs = [...byPath].filter(([file]) => file.startsWith(folder) && file.endsWith(location.extension));
+  const links = docs.filter(([, entry]) => entry.mode === "120000");
+  const linkTargets = await readBlobs(repository, [...new Set(links.map(([, entry]) => entry.id))]);
+  const targets = new Map(links.map(([file, entry]) => [file, linkTargets.get(entry.id)?.toString("utf8") ?? ""]));
+  const blobOf = new Map<string, string>();
+  for (const [file, entry] of docs) {
+    if (entry.mode === "100644" || entry.mode === "100755") blobOf.set(file, entry.id);
+    else if (entry.mode === "120000") {
+      const end = followLink(file, byPath, targets);
+      if ("file" in end) blobOf.set(file, end.file.id);
+    }
+  }
+  const blobs = await readBlobs(repository, [...new Set(blobOf.values())]);
+  const parsed = [...blobOf].map(([docPath, id]) => {
+    try {
+      return { docPath, doc: parseLiveDoc(blobs.get(id)!.toString("utf8")) };
+    } catch (error) {
+      // As `readLiveDocGraph` words it: one form for each value, and a doc an earlier generator wrote can hold another.
+      throw error instanceof LiveDocSyntaxError ? new Error(`${docPath}: ${error.message}. The grammar reads one form of each value; if the doc was written by an earlier version of the generator, \`live-docs:generate\` rewrites it.`) : error;
+    }
+  });
+  return deriveLiveDocGraph(parsed, location);
+}
+
+/** The blobs of the given ids, whole, by id, read by one `git cat-file --batch`. */
+async function readBlobs(repository: string, ids: readonly string[]): Promise<Map<string, Buffer>> {
+  const found = new Map<string, Buffer>();
+  if (ids.length === 0) return found;
+  const reader = spawn("git", ["-C", repository, "cat-file", "--batch"], { cwd: repository, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, GIT_NO_REPLACE_OBJECTS: "1" } });
+  const chunks: Buffer[] = [];
+  let errors = "";
+  reader.stdout.on("data", (chunk: Buffer) => chunks.push(chunk));
+  reader.stderr.setEncoding("utf8");
+  reader.stderr.on("data", (text: string) => {
+    errors += text;
+  });
+  reader.stdin.on("error", () => undefined);
+  const code = await new Promise<number | null>((resolve, reject) => {
+    reader.on("error", reject);
+    reader.on("close", resolve);
+    reader.stdin.end(ids.map((id) => `${id}\n`).join(""));
+  });
+  if (code !== 0) throw new Error(`git cat-file failed reading the committed Live Docs (exit ${code}): ${errors.trim() || "no word"}`);
+  const all = Buffer.concat(chunks);
+  let at = 0;
+  for (const id of ids) {
+    const lineEnd = all.indexOf(0x0a, at);
+    const [answered, type, size] = all.subarray(at, lineEnd).toString("utf8").split(" ");
+    if (answered !== id || type !== "blob") throw new Error(`git cat-file answered ${answered} ${type} where the blob ${id} was asked for`);
+    found.set(id, all.subarray(lineEnd + 1, lineEnd + 1 + Number(size)));
+    at = lineEnd + 1 + Number(size) + 1;
+  }
+  return found;
+}
 
 /** A moment of the history, as replayed: its shape and its rows. */
 export interface ReplayedMoment {

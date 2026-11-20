@@ -28,6 +28,7 @@ interface ParsedArgs {
   authors: boolean;
   removeSuperseded: boolean;
   checkHead: boolean;
+  rederive: boolean;
   stopAfter?: number;
 }
 
@@ -49,6 +50,7 @@ async function main(): Promise<void> {
       authors: args.authors,
       removeSuperseded: args.removeSuperseded,
       checkHead: args.checkHead,
+      rederive: args.rederive,
       stopAfterMinutes: args.stopAfter,
       progress: (line) => process.stderr.write(`[history] ${line}\n`)
     });
@@ -117,7 +119,7 @@ function nonEmpty(change: object): Record<string, unknown> {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false };
+  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false, rederive: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -167,6 +169,9 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       case "--check-head":
         parsed.checkHead = true;
+        break;
+      case "--rederive":
+        parsed.rederive = true;
         break;
       case "--stop-after": {
         // 0 starts no commit: the run writes a history only when the cache already holds every one.
@@ -220,6 +225,9 @@ function usage(): string {
     `                       this generator under this configuration. Without it the check applies only\n` +
     `                       when this generator runs unmodified from the commit the history ends at,\n` +
     `                       under the workspace's own configuration, and is skipped elsewhere.\n` +
+    `  --rederive           Derive every step of the sequence from the summaries again. Without it a run\n` +
+    `                       goes on from the sequence the last run wrote when only new commits follow it\n` +
+    `                       and the lens, the code that reads summaries and the configuration are the same.\n` +
     `  --stop-after <min>   Start no commit after this many minutes of regeneration. A run stopped so\n` +
     `                       writes no history, keeps what it summarized for the next run, and exits 3.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +

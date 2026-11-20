@@ -503,6 +503,54 @@ describe("the history over a repository that commits its mirror", () => {
     expect(refused.stderr).toContain("the symbols of src/select.ts differ");
   });
 
+  it("goes on from the sequence it wrote when the line has only grown, to the bytes a whole derivation writes, and derives whole where the record is missing or another's or the line was rewritten", () => {
+    const grown = fs.mkdtempSync(path.join(os.tmpdir(), "history-grown-"));
+    temporary.push(grown);
+    git(os.tmpdir(), ["clone", "--quiet", checked, grown]);
+    const written = path.join(grown, ".mdmd", "history");
+    const bytes = (): { sequence: string; words: Record<string, string> } => {
+      const sequence = fs.readFileSync(path.join(written, "history.json"), "utf8");
+      const folder = path.join(written, (JSON.parse(sequence) as HistorySequence).words!.folder);
+      return { sequence, words: Object.fromEntries(fs.readdirSync(folder).map((name) => [name, fs.readFileSync(path.join(folder, name), "utf8")])) };
+    };
+    const once = runCli(historyScript, ["--workspace", grown, "--jobs", "2"]);
+    expect(once.exitCode, once.stderr).toBe(0);
+    expect(once.stderr).toContain("every step replayed to the shape and the rows it was derived from, 2 steps");
+    const earlierRecord = fs.readFileSync(path.join(written, "history-resume.json"), "utf8");
+    // The line grows by a change of the source.
+    fs.appendFileSync(path.join(grown, "src", "select.ts"), "\n/** Selects the last of many. */\nexport function last(queries: string[]): string {\n  return queries[queries.length - 1];\n}\n");
+    git(grown, ["commit", "--quiet", "-am", "Select the last of many"]);
+    const went = runCli(historyScript, ["--workspace", grown, "--jobs", "2"]);
+    expect(went.exitCode, went.stderr).toBe(0);
+    expect(went.stderr).toContain("went on from the sequence the last run wrote, its 3 changes replayed when it was written, and replayed the 1 new steps");
+    expect(went.stdout).toContain("1 regenerated");
+    const continued = bytes();
+    // A run stopped between the sequence and its record leaves a sequence without one, or the next run finds beside the
+    // sequence a record of another: either way every step is derived, to the same bytes.
+    fs.rmSync(path.join(written, "history-resume.json"));
+    const unrecorded = runCli(historyScript, ["--workspace", grown, "--jobs", "2"]);
+    expect(unrecorded.stderr).toContain("the sequence the last run wrote was not gone on from: no record of how it was made stands beside it");
+    expect(bytes()).toEqual(continued);
+    fs.writeFileSync(path.join(written, "history-resume.json"), earlierRecord);
+    const misrecorded = runCli(historyScript, ["--workspace", grown, "--jobs", "2"]);
+    expect(misrecorded.stderr).toContain("the sequence the last run wrote was not gone on from: it is not the sequence its record describes");
+    expect(bytes()).toEqual(continued);
+    const whole = runCli(historyScript, ["--workspace", grown, "--jobs", "2", "--rederive"]);
+    expect(whole.exitCode, whole.stderr).toBe(0);
+    expect(whole.stderr).toContain("every step replayed to the shape and the rows it was derived from, 3 steps; the sequence the last run wrote was not gone on from: asked with --rederive");
+    expect(bytes()).toEqual(continued);
+    // The last change rewritten: the sequence written names a change the line no longer holds, so every step is derived.
+    git(grown, ["reset", "--quiet", "--hard", "HEAD~1"]);
+    fs.appendFileSync(path.join(grown, "src", "select.ts"), "\n/** Selects the first of many. */\nexport function first(queries: string[]): string {\n  return queries[0];\n}\n");
+    git(grown, ["commit", "--quiet", "-am", "Select the first of many"]);
+    const rewritten = runCli(historyScript, ["--workspace", grown, "--jobs", "2"]);
+    expect(rewritten.exitCode, rewritten.stderr).toBe(0);
+    expect(rewritten.stderr).toContain("the sequence the last run wrote was not gone on from: its changes are not the first of the changes sampled now");
+    const rederived = bytes();
+    expect(runCli(historyScript, ["--workspace", grown, "--jobs", "2", "--rederive"]).exitCode).toBe(0);
+    expect(bytes()).toEqual(rederived);
+  }, 180_000);
+
   it("summarizes again a change whose text is missing or changed, rather than failing every later run", () => {
     const lens = (JSON.parse(fs.readFileSync(path.join(history, "history.json"), "utf8")) as HistorySequence).lens.key;
     const store = path.join(history, lens, TEXT_STORE_DIRECTORY);

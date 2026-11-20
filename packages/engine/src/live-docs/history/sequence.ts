@@ -21,7 +21,7 @@
  * @module
  */
 
-import { decodeChange, decodeRows, decodeRowsChange, decodeShape, encodeChange, encodeRows, encodeRowsChange, encodeShape, newInterners, type Interners, type RowTables } from "./codec";
+import { decodeChange, decodeRows, decodeRowsChange, decodeShape, encodeChange, encodeRows, encodeRowsChange, encodeShape, Interner, newInterners, type Interners, type RowTables } from "./codec";
 import { deriveChange } from "./derive";
 import {
   HISTORY_FORMAT,
@@ -56,24 +56,42 @@ export interface Moment {
 
 /** Writes a sequence from its base and one change per step. */
 export class SequenceWriter {
-  private readonly interners: Interners = newInterners();
-  private readonly base: SnapshotTuples & { commit: CommitInfo };
-  private readonly steps: HistoryStep[] = [];
-  private readonly keyframes: Keyframe[] = [];
-  private current: Moment;
+  private constructor(
+    private readonly head: SequenceHead,
+    private readonly interners: Interners,
+    private readonly base: SnapshotTuples & { commit: CommitInfo },
+    private readonly steps: HistoryStep[],
+    private readonly keyframes: Keyframe[],
+    private current: Moment
+  ) {}
 
   /**
    * A sequence that begins at `commit`, whose shape is `shape` and whose rows are `rows`; without rows, the sequence
    * carries the shape alone, as a sequence made by a caller that reads no summaries does.
    */
-  constructor(
-    private readonly head: SequenceHead,
-    commit: CommitInfo,
-    shape: Shape,
-    rows: Rows = new Map()
-  ) {
-    this.base = { commit, ...this.snapshot({ shape, rows }) };
-    this.current = { shape: decodeShape(this.base, this.tables()), rows: decodeRows(this.base.rows, this.tables()) };
+  static beginning(head: SequenceHead, commit: CommitInfo, shape: Shape, rows: Rows = new Map()): SequenceWriter {
+    const interners = newInterners();
+    const base = { commit, ...snapshotOf({ shape, rows }, interners) };
+    const tables = tablesOf(interners);
+    return new SequenceWriter(head, interners, base, [], [], { shape: decodeShape(base, tables), rows: decodeRows(base.rows, tables) });
+  }
+
+  /**
+   * A writer that goes on from a sequence written earlier as though it had written every step of it itself: its tables
+   * hold the written sequence's strings under the same ids, in the same order, its base, steps and keyframes are the
+   * written ones, and its last moment is the written sequence's last moment as a reader replays it.
+   *
+   * @remarks
+   * The writer's moment and a reader's replay of the same steps hold the same content, since both are read back
+   * through the same tables; what the writer writes next depends on that content alone, because a keyframe is
+   * encoded in path order and then sorted by id, every string it names is already in the tables, and a step's delta
+   * is encoded from the derived change, never from the moment. So the steps written after are those a writer that
+   * wrote the whole sequence would write, byte for byte (added on 2026-11-20 for the history command, which goes on
+   * from the sequence it wrote last when the line has only grown; `computeHistory.ts`).
+   */
+  static continuing(head: SequenceHead, written: HistorySequence): SequenceWriter {
+    const interners: Interners = { paths: new Interner(written.paths), archetypes: new Interner(written.archetypes), names: new Interner(written.names) };
+    return new SequenceWriter(head, interners, written.base, [...written.steps], [...written.keyframes], momentAt(written, written.steps.length));
   }
 
   /**
@@ -87,7 +105,7 @@ export class SequenceWriter {
     const replayed = decodeChange(delta, this.tables());
     this.current = { shape: applyChange(this.current.shape, replayed), rows: applyRowsChange(this.current.rows, replayed, decodeRowsChange(delta, this.tables())) };
     if (this.steps.length % KEYFRAME_INTERVAL === 0) {
-      this.keyframes.push({ step: this.steps.length, ...this.snapshot(this.current) });
+      this.keyframes.push({ step: this.steps.length, ...snapshotOf(this.current, this.interners) });
     }
     return this.current.shape;
   }
@@ -113,13 +131,17 @@ export class SequenceWriter {
     };
   }
 
-  private snapshot(moment: Moment): SnapshotTuples {
-    return { ...encodeShape(moment.shape, this.interners), rows: encodeRows(moment.rows, this.interners) };
-  }
-
   private tables(): RowTables {
-    return { paths: this.interners.paths.values, archetypes: this.interners.archetypes.values, names: this.interners.names.values };
+    return tablesOf(this.interners);
   }
+}
+
+function snapshotOf(moment: Moment, interners: Interners): SnapshotTuples {
+  return { ...encodeShape(moment.shape, interners), rows: encodeRows(moment.rows, interners) };
+}
+
+function tablesOf(interners: Interners): RowTables {
+  return { paths: interners.paths.values, archetypes: interners.archetypes.values, names: interners.names.values };
 }
 
 /**
@@ -132,14 +154,33 @@ export class SequenceBuilder {
   private readonly carriesRows: boolean;
 
   /** A sequence whose base is the first sampled change. */
-  constructor(head: SequenceHead, commit: CommitInfo, shape: Shape, rows?: Rows) {
-    this.writer = new SequenceWriter(head, commit, shape, rows);
+  constructor(head: SequenceHead, commit: CommitInfo, shape: Shape, rows?: Rows, writer?: SequenceWriter) {
+    this.writer = writer ?? SequenceWriter.beginning(head, commit, shape, rows);
     this.carriesRows = rows !== undefined;
     this.previous = { shape, rows: rows ?? new Map<string, FileRows>() };
     const disagreements = this.carriesRows ? rowsAgainstShape(this.previous.rows, shape) : [];
     if (disagreements.length > 0) {
       throw new Error(`the rows of ${commit.id} disagree with its shape: ${disagreements.join("; ")}`);
     }
+  }
+
+  /**
+   * A builder that goes on from a sequence written earlier ({@link SequenceWriter.continuing}), given the shape and the
+   * rows of its last change as read afresh from that change's summary, which the next step is derived from as it would
+   * be had the whole sequence been built here.
+   *
+   * @throws When the written sequence's last moment, replayed, is not that shape and those rows: what the step to it
+   *   was held to when it was written, and so a sign that the written sequence is not the one those summaries make.
+   */
+  static continuing(head: SequenceHead, written: HistorySequence, shape: Shape, rows: Rows): SequenceBuilder {
+    const writer = SequenceWriter.continuing(head, written);
+    const replayed = writer.moment();
+    const last = written.steps.length === 0 ? written.base.commit : written.steps[written.steps.length - 1].commit;
+    const differences = [...shapeDifferences(shape, replayed.shape), ...rowsDifferences(rows, replayed.rows), ...rowsAgainstShape(replayed.rows, replayed.shape)];
+    if (differences.length > 0) {
+      throw new Error(`replaying the written sequence to ${last.id} does not give its moment: ${differences.slice(0, 5).join("; ")}`);
+    }
+    return new SequenceBuilder(head, last, shape, rows, writer);
   }
 
   /**

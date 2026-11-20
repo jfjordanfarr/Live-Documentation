@@ -98,11 +98,36 @@ export function keysTheLens(file: string): boolean {
  */
 export async function generatorIdentity(): Promise<GeneratorIdentity> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
-  const checkout = await checkoutOf(PACKAGE_ROOT);
+  const checkout = await checkoutOf(PACKAGE_ROOT, keysTheLens);
   return { version: manifest.version, code: checkout?.code ?? null, commit: checkout?.commit ?? null, modified: checkout?.modified ?? null, unicode: process.versions.unicode ?? null };
 }
 
-async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: string; modified: string | null } | undefined> {
+/**
+ * Whether a file, by its repository-relative path, is code the history command may run while it reads summaries into
+ * a sequence: every file of the two packages but a test, whether it keys the lens or not, and the base TypeScript
+ * configuration. A superset of what does that work (`computeHistory.ts` and the modules of the history folders it
+ * reads summaries with), so that a module whose part in the reading nobody has weighed is counted rather than trusted.
+ */
+export function readsSummaries(file: string): boolean {
+  return GENERATOR_FILES.includes(file) || (GENERATOR_FOLDERS.some((folder) => file.startsWith(`${folder}/`)) && !file.endsWith(".test.ts"));
+}
+
+/**
+ * The identity of the code that turns summaries into a sequence, as {@link generatorIdentity} is the identity of the
+ * code that makes a summary: a hash of the generator's package version, of every file {@link readsSummaries} counts as
+ * committed and of the tool dependency lock, of their uncommitted changes, and of the runtime's version of Unicode,
+ * which the order of names depends on. The commit it runs from is left out, as the lens leaves it out. Where the
+ * generator is installed rather than run from a checkout, its version stands for its code. Added on 2026-11-20 for
+ * the history command, which goes on from the sequence it wrote last only under the same identity.
+ */
+export async function sequenceCodeIdentity(): Promise<string> {
+  const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
+  const checkout = await checkoutOf(PACKAGE_ROOT, readsSummaries);
+  const identity = { version: manifest.version, code: checkout?.code ?? null, modified: checkout?.modified ?? null, unicode: process.versions.unicode ?? null };
+  return createHash("sha256").update(JSON.stringify(identity)).digest("hex").slice(0, 16);
+}
+
+async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean): Promise<{ code: string; commit: string; modified: string | null } | undefined> {
   let topLevel: string;
   try {
     topLevel = (await git(packageRoot, ["rev-parse", "--show-toplevel"])).trim();
@@ -121,12 +146,12 @@ async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: 
     git(topLevel, ["ls-tree", "HEAD", "--", TOOL_DEPENDENCY_LOCK])
   ]);
   // Each entry is `<mode> blob <id>\t<path>`.
-  const keyed = tree.split("\0").filter((entry) => entry !== "" && keysTheLens(entry.slice(entry.indexOf("\t") + 1)));
-  const code = createHash("sha256").update(keyed.join("\n")).update("tool-lock\0").update(lockEntry || "absent\n").digest("hex").slice(0, 16);
+  const files = tree.split("\0").filter((entry) => entry !== "" && keyed(entry.slice(entry.indexOf("\t") + 1)));
+  const code = createHash("sha256").update(files.join("\n")).update("tool-lock\0").update(lockEntry || "absent\n").digest("hex").slice(0, 16);
   const committedLock = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
   if (committedLock === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
   const workingLock = await workingLockBlob(topLevel);
-  const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES])).filter(keysTheLens);
+  const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES])).filter(keyed);
   if (changed.length === 0 && workingLock === committedLock) {
     return { code, commit, modified: null };
   }
