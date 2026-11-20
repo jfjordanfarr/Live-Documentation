@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/sourceText.ts`
-- Generated At: 2026-11-20T15:12:46.680Z
+- Generated At: 2026-11-20T15:53:17.138Z
 
 ## Authored
 ### Purpose
@@ -65,5 +65,6 @@ swallowed the machine's failures too, and a file read in one went into a summary
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `promises`
+- [`processMark.failedCall`](../live-docs/processMark.ts.mdmd.md#symbol-failedcall)
 - [`processMark.machineFailure`](../live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 <!-- LIVE-DOC:END Dependencies -->

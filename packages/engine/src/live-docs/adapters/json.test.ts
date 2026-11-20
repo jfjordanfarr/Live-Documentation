@@ -35,6 +35,76 @@ describe("JSON Adapter", () => {
     expect(mark.processMarks()).toEqual(["deep"]);
   });
 
+  /** A manifest whose one script runs `dist/cli.js`, the tsconfig beside it mapping that back to `src/cli.ts`. */
+  const manifestBesideTsconfig = (tsconfig: string, script = "node dist/cli.js") => {
+    fs.writeFileSync(path.join(tempDir, "package.json"), JSON.stringify({ name: "tool", scripts: { start: script } }));
+    fs.writeFileSync(path.join(tempDir, "tsconfig.json"), tsconfig);
+    return { absolutePath: path.join(tempDir, "package.json"), workspaceRoot: tempDir, fileIndex: new Set(["package.json", "tsconfig.json", "src/cli.ts"]) };
+  };
+  const compiled = (extra: string) => `{ "compilerOptions": { "outDir": "dist", "rootDir": "src" }${extra} }`;
+
+  // TypeScript's reader of JSON recurses as its parser does, so a tsconfig takes the nesting bound (the depth probe of
+  // 2026-11-20); until a review of that day no case held its measure.
+  it("marks the process for a tsconfig beside a manifest nested beyond the nesting bound, and not for one at it", async () => {
+    vi.resetModules();
+    const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
+    const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
+    // The tsconfig's object is a level, each array one more, and the `1` within one more.
+    const deep = (levels: number) => compiled(`, "x": ${"[".repeat(levels)}1${"]".repeat(levels)}`);
+    const atBound = await own.analyze(manifestBesideTsconfig(deep(mark.READING_DEPTH - 2)));
+    expect(atBound?.declares).toEqual([{ reason: "command", file: "src/cli.ts", name: "start" }]);
+    expect(mark.processMarks()).toEqual([]);
+    await own.analyze(manifestBesideTsconfig(deep(mark.READING_DEPTH - 1)));
+    expect(mark.processMarks()).toEqual(["deep"]);
+  });
+
+  // `ts.sys.readFile`, which read the tsconfig until 2026-11-20, reads every failure as no file.
+  it("throws a failure of the machine's in reading the tsconfig beside a manifest, and reads one of the file's as no tsconfig", async () => {
+    vi.resetModules();
+    const failing = path.join(tempDir, "tsconfig.json");
+    vi.doMock("node:fs", async (importOriginal) => {
+      const actual = await importOriginal<typeof import("node:fs")>();
+      const readFileSync = ((file: fs.PathOrFileDescriptor, ...rest: unknown[]) =>
+        file === failing && fs.existsSync(`${failing}.fail`)
+          ? (() => { throw Object.assign(new Error(`EMFILE: too many open files, open '${failing}'`), { code: "EMFILE", syscall: "open", errno: -24 }); })()
+          : (actual.readFileSync as (...given: unknown[]) => unknown)(file, ...rest)) as typeof actual.readFileSync;
+      return { ...actual, default: { ...actual, readFileSync }, readFileSync };
+    });
+    try {
+      const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
+      const input = manifestBesideTsconfig(compiled(""));
+      expect((await own.analyze(input))?.declares).toEqual([{ reason: "command", file: "src/cli.ts", name: "start" }]);
+      fs.writeFileSync(`${failing}.fail`, "");
+      await expect(own.analyze(input)).rejects.toThrow("EMFILE: too many open files");
+      // A tsconfig that is a folder: the disk's word on the name, read as no tsconfig, so `dist/cli.js` maps to nothing.
+      fs.rmSync(`${failing}.fail`);
+      fs.rmSync(failing);
+      fs.mkdirSync(failing);
+      expect((await own.analyze(input))?.declares).toBeUndefined();
+    } finally {
+      vi.doUnmock("node:fs");
+    }
+  });
+
+  // Each quoted word that holds words is read a level down by `filesRunBy`'s own recursion, the tree's bound. Every
+  // level must escape the quotes of each below it, so no script a manifest holds reaches 400 levels; the bound is made
+  // small here to hold the count.
+  it("marks the process for a script whose quoted command lines nest beyond the tree's bound, and not for one at it", async () => {
+    vi.resetModules();
+    vi.doMock("../processMark", async (importOriginal) => ({ ...(await importOriginal<typeof import("../processMark")>()), TREE_DEPTH: 3 }));
+    try {
+      const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
+      const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
+      // The script is level 1, and each quoted command line within it one more: `x y` is read at the third level here.
+      await own.analyze(manifestBesideTsconfig(compiled(""), `sh -c 'sh -c "x y"'`));
+      expect(mark.processMarks()).toEqual([]);
+      await own.analyze(manifestBesideTsconfig(compiled(""), `sh -c "sh -c 'sh -c \\"x y\\"'"`));
+      expect(mark.processMarks()).toEqual(["deep"]);
+    } finally {
+      vi.doUnmock("../processMark");
+    }
+  });
+
   describe("file index requirement", () => {
     it("returns empty dependencies when file index is not provided", async () => {
       const jsonPath = path.join(tempDir, "config.json");

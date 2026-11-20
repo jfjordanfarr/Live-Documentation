@@ -34,7 +34,7 @@
  */
 import { promises as fs } from "node:fs";
 
-import { machineFailure } from "../live-docs/processMark";
+import { failedCall, machineFailure } from "../live-docs/processMark";
 
 /** How a file's bytes became text, or why they did not. */
 export type SourceTextReading =
@@ -111,5 +111,5 @@ export async function readSourceText(absolutePath: string): Promise<string> {
  * swallowed the machine's failures too, and a file read in one went into a summary as empty.
  */
 export function throwIfMachineFailure(error: unknown): void {
-  if (machineFailure(error) && (error as { code?: unknown }).code !== "ENOENT") throw error;
+  if (machineFailure(error) && failedCall(error) !== "ENOENT") throw error;
 }

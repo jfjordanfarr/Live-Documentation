@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
 
-import { standingFiles } from "./summarizeChange";
+import { standingFiles, withoutTree } from "./summarizeChange";
 
 /**
  * Whether a linked document stood at a commit is asked of the commit's own listing, never the disk (the second pass of
@@ -52,5 +52,25 @@ describe("the files that stand in a commit's tree", () => {
       }
       await tree.remove();
     }
+  });
+});
+
+/**
+ * A reason a summary carries names no path of the tree's folder, and writes a path within it as every summary writes a
+ * path, so that it is the same bytes whichever worker, folder and machine made it (since 2026-11-20): a Windows reason is
+ * imitated by its separator.
+ */
+describe("a reason with the tree's folder taken out", () => {
+  it("writes the path within the tree with `/` where the machine writes `\\`, and leaves the runtime's own words", () => {
+    const tree = "C:\\Users\\Ada Lovelace\\AppData\\Local\\Temp\\lw-a1\\tree00";
+    const reason = `EPERM: operation not permitted, rename '${tree}\\.mdmd\\layer-4\\src\\a b.ts.mdmd.md' -> '${tree}\\.mdmd\\x.md'`;
+    expect(withoutTree(reason, tree, path.win32)).toBe("EPERM: operation not permitted, rename '.mdmd/layer-4/src/a b.ts.mdmd.md' -> '.mdmd/x.md'");
+    expect(withoutTree(`ENOTDIR: not a directory, scandir '${tree}'`, tree, path.win32)).toBe("ENOTDIR: not a directory, scandir ''");
+    expect(withoutTree("Maximum call stack size exceeded", tree, path.win32)).toBe("Maximum call stack size exceeded");
+  });
+
+  it("is the same on this machine as before, a path within the tree already written with `/`", () => {
+    const tree = "/tmp/lw-a1/tree00";
+    expect(withoutTree(`ENAMETOOLONG: name too long, open '${tree}/.mdmd/src/n.ts.mdmd.md'`, tree, path.posix)).toBe("ENAMETOOLONG: name too long, open '.mdmd/src/n.ts.mdmd.md'");
   });
 });

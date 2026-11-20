@@ -48,6 +48,7 @@ import { lstatSync, promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+import { NAME_FAILURES } from "../../tooling/pathUtils";
 import { execFileAsync } from "../gitUtils";
 import type { MainlineChange, MainlineEnd, VersionChanges, VersionControl, WorkingTree, WorkingTreeOptions } from "./versionControl";
 
@@ -280,9 +281,13 @@ function treeSettings(ignoresCase?: boolean): Record<string, string> {
 
 /**
  * Whether the repository whose git directory is `store` has git match names without regard to case, by git's own word
- * (`core.ignorecase` as a boolean, false where it is not set), read as the tree's calls read it, the person's global and
- * system configuration set aside: the value a summary's discovery uses, which the lens keys ({@link
- * VersionControl.ignoresCase}). Git sets it true on a clone made where the disk does not tell case apart.
+ * (`core.ignorecase` as a boolean, false where it is not set): the value the lens keys ({@link
+ * VersionControl.ignoresCase}), and to which every tree's environment then pins the setting ({@link treeSettings}), so
+ * that a summary's discovery uses it and no other. Git sets it true on a clone made where the disk does not tell case
+ * apart. What is read, exactly: the repository's own configuration, the person's global and system files set aside, in
+ * the command's own environment, so that a value the person's environment gives as `git -c` would
+ * (`GIT_CONFIG_PARAMETERS`, `GIT_CONFIG_COUNT`) is read too. That environment is not set aside, since the key and every
+ * summary agree on whatever value was read: the tree pins that value, and a person who gives another gets another key.
  */
 async function readIgnoresCase(store: string): Promise<boolean> {
   const answer = await historyGit(["config", "--type=bool", "--default=false", "--get", "core.ignorecase"], { cwd: store, env: { GIT_DIR: store, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: os.devNull } });
@@ -373,13 +378,6 @@ export function realDisk(directory: string): TreeDisk {
 // character the file system forbids, no trailing dot or space, and no device name.
 // eslint-disable-next-line no-control-regex -- the control characters are what Windows forbids in a name
 const WINDOWS_FORBIDDEN = /[\\:<>"|?*\u0000-\u001f]|[. ]$|^(?:con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\..*)?$/iu;
-
-/**
- * The failures of the disk that mean it cannot hold a name or a path, rather than that it failed: a name too long, a
- * name it does not accept, a name that is already another's by its own rule of names, a path through something that
- * is not a folder. An entry that meets one is left out and named; any other failure fails the tree.
- */
-export const NAME_FAILURES: ReadonlySet<string> = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
 
 /**
  * Prepares the place of one entry on the disk, asking the disk at each step: every folder above it, one level at a

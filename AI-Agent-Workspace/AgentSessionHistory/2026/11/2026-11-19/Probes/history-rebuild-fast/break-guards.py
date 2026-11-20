@@ -18,9 +18,12 @@ import sys
 #   its own record numbers 11 to 21: 25 the depth, 26 the unmapped mark, 27 the old doc, 28 the machine's failure,
 #   29 the TypeScript depth, 30 the tree's folder in a reason, 31 the environment removed, 32 the machine's stop,
 #   33 the JSON depth, 34 an adapter's own read, 35 a doc path too long, 36 C's cache of facts, 37 Rust's cache of
-#   facts, 38 the nesting bound raised); with none, every guard at once. Since the
-#   second review of 2026-11-20 each guard is
-#   broken by itself in a run of its own, so that one held by no test shows.
+#   facts, 38 the nesting bound raised; and the leftovers' round of 2026-11-20: 39 the re-export reader's rethrow,
+#   40 a provider's depth, 41 a tsconfig's depth, 42 a script's count, 43 that count's bound, 44 a tsconfig's failure
+#   of the machine's, 45 a POM's depth, 46 the chain of causes, 47 a reason's separator, 48 the task's case setting
+#   carried to the tree, 49 a nearer copy of the installation's); with none, every guard at once. Since the second review
+#   of 2026-11-20 each guard is broken by itself in a run of its own, so that one held by no test shows; the leftovers'
+#   round found guard 17 (the reason written anew) and the branch of guard 49 held by no test before it, and gave each one.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
 # directory's guards are broken one at a time by hand, as the record's section on the review says. Since the fourth
 # round the root is the checkout this script lies in, seven folders up.
@@ -83,8 +86,8 @@ edits = [
      "    GIT_CONFIG_COUNT: String(settings.length),\n",
      "    GIT_CONFIG_COUNT: \"0\",\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), marked",
-     "marked"),
+     "broughtForward: tree.broughtForward, ...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), marked",
+     "broughtForward: tree.broughtForward, marked"),
     # The second pass of that round: 18 to 21 each field of the stamp but the identity left out of its comparison
     # (git.test.ts, sameStamp); 22 the generator rewriting each source file, same bytes, after writing its doc
     # (history-tree-forward.test.ts, the samples case, which holds that nothing of the product writes a kept file).
@@ -165,10 +168,52 @@ edits = [
     ("packages/engine/src/live-docs/processMark.ts",
      "export const READING_DEPTH = 200;\n",
      "export const READING_DEPTH = 400;\n"),
+    # Since the review of the workers' leftovers (2026-11-20, from 15:30 UTC), each held by a case of its own:
+    # 39 the re-export reader swallowing a failure of the machine's, 40 a provider behind `export *` left unmeasured
+    # (dependencies.test.ts); 41 the tsconfig beside a manifest left unmeasured, 42 a script's quoted command lines left
+    # uncounted, 43 their count held to the nesting bound again, 44 a failure of the machine's in reading a tsconfig
+    # read as no tsconfig (json.test.ts); 45 a POM left unmeasured (pom.test.ts); 46 a failed call wrapped by a library
+    # sorted as the file's (processMark.test.ts); 47 a path within the tree left in the machine's separator
+    # (summarizeChange.test.ts); 48 the task's case setting not carried to the worker's tree (history-workers);
+    # 49 a nearer copy reached only through the installation not reported (generatorIdentity.test.ts).
+    ("packages/engine/src/live-docs/dependencies.ts",
+     "    throwIfMachineFailure(error);\n    params.stack.delete(normalized);\n",
+     "    void error;\n    params.stack.delete(normalized);\n"),
+    ("packages/engine/src/live-docs/dependencies.ts",
+     "  typeScriptBeyondDepth(sourceFile);\n",
+     "  void sourceFile;\n"),
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "  nestingBeyondDepth(read.config as unknown, jsonChildren, READING_DEPTH);\n",
+     "  void read;\n"),
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "  if (depth > TREE_DEPTH) markProcess(\"deep\");\n",
+     "  void depth;\n"),
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "  if (depth > TREE_DEPTH) markProcess(\"deep\");\n",
+     "  if (depth > READING_DEPTH) markProcess(\"deep\");\n"),
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "      failures.push(error);\n",
+     "      void error;\n"),
+    ("packages/engine/src/live-docs/adapters/pom.ts",
+     "    nestingBeyondDepth(document, (element) => element.children, TREE_DEPTH);\n",
+     "    void document;\n"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "link = (link as { cause?: unknown }).cause)",
+     "link = undefined)"),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "(rest) => rest.split(paths.sep).join(\"/\")",
+     "(rest) => rest"),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "\"tree00\")), ...(task.ignoresCase !== undefined ? { ignoresCase: task.ignoresCase } : {}) };",
+     "\"tree00\")) };"),
+    ("packages/generator/src/history/generatorIdentity.ts",
+     "    } else if (want === undefined) {\n      differing.push([place, have]);\n",
+     "    } else if (want === undefined) {\n      void have;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T15:07:20.549Z
+- Generated At: 2026-11-20T15:53:16.475Z
 
 ## Authored
 ### Purpose
@@ -55,7 +55,7 @@ throws a `RangeError` wherever the stack ran out, in the module or in the adapte
 load to the tree's release marks the process (`runtime`, `processMark.ts`), whatever its class, the adapter's own
 error among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module
 of unknown state make a summary. Before `read` is called the tree's depth is measured by a cursor, without
-recursion, and a tree deeper than `READING_DEPTH` marks the process too (`deep`): a fresh process might run out of
+recursion, and a tree deeper than `TREE_DEPTH` marks the process too (`deep`): a fresh process might run out of
 stack in the adapter's walk where this one does not, or the other way round. Until 2026-11-20 only a `RuntimeError`
 thrown inside `parse` marked it, and the adapters walked and released their trees themselves (`parseSource`); the
 depth is measured since a later review of that day.

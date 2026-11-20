@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ResolvedSymbolLocation, WorkspaceSymbolIndex } from "../coreTypes";
 import { childAt, childrenAt, pomAdapter, readXmlElements, textAt } from "./pom";
@@ -59,6 +59,23 @@ describe("pomAdapter", () => {
 
   afterEach(async () => {
     await fs.rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  // The reader keeps its own stack and `descendantsNamed` recurses, so a POM takes the tree's bound (the depth probe of
+  // 2026-11-20); until a review of that day no case held its measure.
+  it("marks the process for a POM whose elements nest beyond the tree's bound, and not for one at it", async () => {
+    vi.resetModules();
+    const own = await vi.importActual<typeof import("./pom")>("./pom");
+    const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
+    // The document is a level, and each element one more.
+    const nested = (levels: number) => `<project>${"<a>".repeat(levels - 1)}${"</a>".repeat(levels - 1)}</project>`;
+    const input = { absolutePath: path.join(workspaceRoot, "pom.xml"), workspaceRoot, fileIndex: new Set(["pom.xml"]) };
+    await write("pom.xml", nested(mark.TREE_DEPTH - 1));
+    await own.pomAdapter.analyze(input);
+    expect(mark.processMarks()).toEqual([]);
+    await write("pom.xml", nested(mark.TREE_DEPTH));
+    await own.pomAdapter.analyze(input);
+    expect(mark.processMarks()).toEqual(["deep"]);
   });
 
   it("publishes groupId:artifactId, the groupId inherited from the parent, links the parent and a sibling, resolves versions, and counts no managed dependency", async () => {

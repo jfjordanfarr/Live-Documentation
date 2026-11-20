@@ -2,7 +2,7 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import path from "node:path";
 import ts from "typescript";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { augmentWithReExportedSymbols, collectDependencies, mergeDependencyEntries, resolveDependency } from "./dependencies";
 import { collectExportedSymbols } from "./symbolExtraction";
@@ -98,5 +98,59 @@ describe("collectDependencies", () => {
     expect(merged.filter((entry) => entry.reExportAll)).toHaveLength(1);
     const reExports = (await augmentWithReExportedSymbols({ sourceAbsolute: absolutePath, workspaceRoot: workspace, dependencies: merged, existingSymbols: collectExportedSymbols(bothSource) })).reExports;
     expect(reExports.map((entry) => entry.name)).toEqual(["Item"]);
+  });
+});
+
+describe("the reader of a provider behind `export *`", () => {
+  let workspace: string;
+
+  beforeEach(async () => {
+    workspace = await fs.mkdtemp(path.join(os.tmpdir(), "re-export-reader-"));
+  });
+
+  afterEach(async () => {
+    vi.doUnmock("../tooling/sourceText");
+    await fs.rm(workspace, { recursive: true, force: true });
+  });
+
+  /** The re-exports of an entry that only re-exports `./provider.ts` whole, read by a fresh copy of the modules. */
+  const reExportsOf = async (provider: string) => {
+    await fs.writeFile(path.join(workspace, "provider.ts"), provider, "utf8");
+    const own = await vi.importActual<typeof import("./dependencies")>("./dependencies");
+    return own.augmentWithReExportedSymbols({
+      sourceAbsolute: path.join(workspace, "entry.ts"),
+      workspaceRoot: workspace,
+      dependencies: [{ specifier: "./provider", resolvedPath: "provider.ts", symbols: [], kind: "import", reExportAll: true }],
+      existingSymbols: []
+    });
+  };
+
+  // A provider the analysis pass never parses (one the configuration excludes, say) is parsed here alone, so it is
+  // measured here; until a review of 2026-11-20 no case held that measure.
+  it("marks the process for a provider nested beyond the nesting bound, and not for one at it", async () => {
+    vi.resetModules();
+    const mark = await vi.importActual<typeof import("./processMark")>("./processMark");
+    // An exported table: its statement lies four levels down, each array is one more, and the `1` within one more.
+    const table = (levels: number) => `export const table = ${"[".repeat(levels)}1${"]".repeat(levels)};\n`;
+    const nesting = (text: string) => mark.typeScriptExtent(ts.createSourceFile("provider.ts", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS)).nesting;
+    expect([nesting(table(mark.READING_DEPTH - 5)), nesting(table(mark.READING_DEPTH - 4))]).toEqual([mark.READING_DEPTH, mark.READING_DEPTH + 1]);
+    expect((await reExportsOf(table(mark.READING_DEPTH - 5))).reExports.map((entry) => entry.name)).toEqual(["table"]);
+    expect(mark.processMarks()).toEqual([]);
+    await reExportsOf(table(mark.READING_DEPTH - 4));
+    expect(mark.processMarks()).toEqual(["deep"]);
+  });
+
+  // Too many open files, a file Windows holds: no property of the provider, so never read as a provider exporting nothing.
+  it("throws a failure of the machine's in reading the provider, and reads one of the file's as exporting nothing", async () => {
+    vi.resetModules();
+    let failure: Error | undefined;
+    vi.doMock("../tooling/sourceText", async (importOriginal) => {
+      const actual = await importOriginal<typeof import("../tooling/sourceText")>();
+      return { ...actual, readSourceText: (file: string) => (failure !== undefined && file.endsWith("provider.ts") ? Promise.reject(failure) : actual.readSourceText(file)) };
+    });
+    failure = Object.assign(new Error("EMFILE: too many open files, open 'provider.ts'"), { code: "EMFILE", syscall: "open", errno: -24 });
+    await expect(reExportsOf("export const a = 1;\n")).rejects.toThrow("EMFILE: too many open files");
+    failure = new Error("the provider's bytes could not be read");
+    expect((await reExportsOf("export const a = 1;\n")).reExports).toEqual([]);
   });
 });
