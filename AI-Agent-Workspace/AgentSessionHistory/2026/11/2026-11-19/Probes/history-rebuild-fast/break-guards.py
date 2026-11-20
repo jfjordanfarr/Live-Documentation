@@ -215,11 +215,20 @@ edits = [
     ("packages/generator/src/generator.ts",
      "      if (unindexed.has(absoluteSourcePath)) throw unindexed.get(absoluteSourcePath);\n",
      "      void unindexed;\n"),
+    # Joined by the root on 2026-11-20, from the builder of what the history tells: 51 the command never keying the
+    # case setting true (history.test.ts, the repository that matches names without regard to case); 52 the worker's
+    # task carrying no case setting (regenerate.test.ts, the task a worker is sent).
+    ("packages/generator/src/history/computeHistory.ts",
+     "  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase() });\n",
+     "  const lens = lensOf(generator, configuration, { ignoresCase: (await versionControl.ignoresCase()) && false });\n"),
+    ("packages/generator/src/history/regenerate.ts",
+     "    ignoresCase: context.lens.ignoresCase === true,\n",
+     "    // guard 52: the case setting left out of the task\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:
