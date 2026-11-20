@@ -37,6 +37,25 @@ describe("lensOf", () => {
     const excluded = normalizeLiveDocumentationConfig({ exclude: ["archive/**", "old-archive/**"], bundleExclude: ["archive/**/*.md"] });
     expect(lensOf(GENERATOR, excluded).key).not.toBe(lensOf(GENERATOR, base).key);
   });
+
+  // Since 2026-11-20 a worker summarizes one change unless asked to go on (`--keep-workers`), which is not yet shown to
+  // make the summaries a fresh process makes: summaries made the two ways never share a cache folder.
+  it("keys workers kept apart, only where they are, and leaves the key without them as it was", () => {
+    const without = lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG);
+    const kept = lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG, { keepWorkers: true });
+    expect(kept.key).not.toBe(without.key);
+    expect(kept.keepWorkers).toBe(true);
+    expect("keepWorkers" in without).toBe(false);
+    expect(lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG, { keepWorkers: false })).toEqual(without);
+    // Apart from the repository's case setting, which keys the lens too.
+    const folding = lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG, { ignoresCase: true });
+    const both = lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG, { ignoresCase: true, keepWorkers: true });
+    expect(new Set([without.key, kept.key, folding.key, both.key]).size).toBe(4);
+    expect(lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG, { ignoresCase: true, keepWorkers: false })).toEqual(folding);
+    // Without workers kept, the keys `lensOf` made at 00111bf11, before they were keyed, for this generator and the
+    // defaults, telling case apart and not (computed by that commit's `lens.ts`; they move with an edit of the defaults).
+    expect([without.key, folding.key]).toEqual(["587ec49b68f17e85", "10ecdb83cf780cd8"]);
+  });
 });
 
 describe("summarizedConfiguration", () => {

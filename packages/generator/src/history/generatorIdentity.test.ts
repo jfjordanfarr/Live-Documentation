@@ -153,7 +153,9 @@ const HANDED_TO_REGENERATION: Record<string, string> = {
   // process cannot (the review of 2026-11-20 at e1e27e33a): they change no summary because a change whose summary could
   // depend on a worker's past (a file beyond the reading depth, a file not mapped, a fault of the runtime) is decided by
   // a fresh process (`processMark.ts`, history-workers.test.ts); before that review these reasons said less than that.
-  jobs: "how many commits are regenerated at once, and so which commits a worker summarizes after others; what a worker derives depends on its past only where a fresh process decides (processMark.ts)",
+  // Since a later ruling of the same day a worker summarizes one commit, and `jobs` decides that only where the lens,
+  // whose key holds it, says workers are kept (`--keep-workers`).
+  jobs: "how many commits are regenerated at once, and, where the lens keys workers kept, which commits a worker summarizes after others; what a worker derives depends on its past only where a fresh process decides (processMark.ts)",
   // Since the review's fourth round, 2026-11-20.
   memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts), and its next summary a fresh process's, the same as a warm worker's where no mark is set (processMark.ts)",
   startWorker: "a test's stand-in for the pool's own keyed starter; the command hands none",

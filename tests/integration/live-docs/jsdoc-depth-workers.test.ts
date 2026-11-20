@@ -27,9 +27,9 @@ afterAll(() => {
   fs.rmSync(privateTemporary, { recursive: true, force: true });
 });
 
-/** The history command over `workspace` with `jobs` workers; what it said. */
-function history(workspace: string, jobs: number): string {
-  const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", workspace, "--jobs", String(jobs)], {
+/** The history command over `workspace` with `jobs` workers, kept from change to change where `keep` says (`--keep-workers`); what it said. */
+function history(workspace: string, jobs: number, keep?: "keep workers"): string {
+  const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", workspace, "--jobs", String(jobs), ...(keep ? ["--keep-workers"] : [])], {
     encoding: "utf8",
     env: { ...process.env, TMPDIR: privateTemporary }
   });
@@ -38,7 +38,10 @@ function history(workspace: string, jobs: number): string {
   return result.stderr + result.stdout;
 }
 
-/** Every summary of the one lens's cache, unzipped, by its file's name. */
+/**
+ * Every summary of the one lens's cache, unzipped, by its file's name, with the lens's key, which each names once as its
+ * own field, put as `<lens>`: a cache made with workers kept is keyed apart from one made a process for each change.
+ */
 function summaries(workspace: string): Map<string, string> {
   const historyFolder = path.join(workspace, ".mdmd", "history");
   const lenses = fs.readdirSync(historyFolder, { withFileTypes: true }).filter((entry) => entry.isDirectory() && /^[0-9a-f]{16}$/u.test(entry.name));
@@ -46,7 +49,10 @@ function summaries(workspace: string): Map<string, string> {
   const cache = path.join(historyFolder, lenses[0].name);
   const found = new Map<string, string>();
   for (const name of fs.readdirSync(cache)) {
-    if (/^[0-9a-f]{40}\.json\.gz$/u.test(name)) found.set(name, zlib.gunzipSync(fs.readFileSync(path.join(cache, name))).toString("utf8"));
+    if (!/^[0-9a-f]{40}\.json\.gz$/u.test(name)) continue;
+    const parts = zlib.gunzipSync(fs.readFileSync(path.join(cache, name))).toString("utf8").split(`"lens":"${lenses[0].name}"`);
+    expect(parts, name).toHaveLength(2);
+    found.set(name, parts.join(`"lens":"<lens>"`));
   }
   return found;
 }
@@ -66,7 +72,7 @@ describe("a JSDoc comment nested between a fresh process's limit and a warm one'
     const apart = fs.mkdtempSync(path.join(privateTemporary, "apart-"));
     const commits = buildRepository(together, script);
     expect(buildRepository(apart, script)).toEqual(commits);
-    const one = history(together, 1);
+    const one = history(together, 1, "keep workers");
     history(apart, commits.length);
     // The warm worker read the file and was marked for its depth, so that the change went to a fresh worker: without
     // this the case would stay green on a Node that warms less, where both workers leave the file out.
