@@ -21,7 +21,9 @@ import sys
 #   facts, 38 the nesting bound raised; and the leftovers' round of 2026-11-20: 39 the re-export reader's rethrow,
 #   40 a provider's depth, 41 a tsconfig's depth, 42 a script's count, 43 that count's bound, 44 a tsconfig's failure
 #   of the machine's, 45 a POM's depth, 46 the chain of causes, 47 a reason's separator, 48 the task's case setting
-#   carried to the tree, 49 a nearer copy of the installation's, 50 the index pass's throw handed to the file's pass);
+#   carried to the tree, 49 a nearer copy of the installation's, 50 the index pass's throw handed to the file's pass;
+#   51 and 52 the case setting keyed by the command and carried on a task; 53 to 55 the depth measure's reach past
+#   forEachChild: a node's JSDoc, a bracketed JSDoc parameter's default, the left operand of a less-than);
 #   with none, every guard at once. Since the second review
 #   of 2026-11-20 each guard is broken by itself in a run of its own, so that one held by no test shows; the leftovers'
 #   round found guard 17 (the reason written anew) and the branch of guard 49 held by no test before it, and gave each one.
@@ -224,11 +226,24 @@ edits = [
     ("packages/generator/src/history/regenerate.ts",
      "    ignoresCase: context.lens.ignoresCase === true,\n",
      "    // guard 52: the case setting left out of the task\n"),
+    # The depth measure's mend of 2026-11-20, after the review found a JSDoc comment counted shallow: 53 a node's JSDoc
+    # not walked (jsdoc-depth-workers.test.ts; reading-depth.test.ts's JSDoc constructs); 54 a bracketed JSDoc
+    # parameter's default not read again (reading-depth.test.ts, "a parameter's default"); 55 the left operand of `<`
+    # taken as a chain step (reading-depth.test.ts, "a < b < …").
+    ("packages/engine/src/live-docs/processMark.ts",
+     "  const comments = (node as { jsDoc?: readonly ts.JSDoc[] }).jsDoc ?? NONE;\n",
+     "  const comments = NONE;\n"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "|| !node.isBracketed) return comments;",
+     "|| node.isBracketed) return comments;"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "parent.left === child && parent.operatorToken.kind !== ts.SyntaxKind.LessThanToken",
+     "parent.left === child"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]
+          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:
