@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
 
 import type { WorkspaceFileIndex } from "./index";
 import { jsonAdapter } from "./json";
@@ -15,6 +15,24 @@ describe("JSON Adapter", () => {
 
   afterEach(() => {
     fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  // The adapter's walks of a document recurse, and a warm process has more stack to spare than a fresh one, so a
+  // document nested beyond the bound marks the process whether or not anything overflowed (2026-11-20). `JSON.parse`
+  // holds no stack, so only those walks recurse over its value, as over a chain: the tree's bound.
+  it("marks the process for a document nested beyond the tree's bound, and not for one at it", async () => {
+    vi.resetModules();
+    const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
+    const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
+    // A document of arrays `levels` deep is that deep by the measure: each array a level, and the `1` within one more.
+    const nested = (levels: number): string => `${"[".repeat(levels)}1${"]".repeat(levels)}`;
+    const jsonPath = path.join(tempDir, "deep.json");
+    fs.writeFileSync(jsonPath, nested(mark.TREE_DEPTH - 1));
+    await own.analyze({ absolutePath: jsonPath, workspaceRoot: tempDir });
+    expect(mark.processMarks()).toEqual([]);
+    fs.writeFileSync(jsonPath, nested(mark.TREE_DEPTH));
+    await own.analyze({ absolutePath: jsonPath, workspaceRoot: tempDir });
+    expect(mark.processMarks()).toEqual(["deep"]);
   });
 
   describe("file index requirement", () => {

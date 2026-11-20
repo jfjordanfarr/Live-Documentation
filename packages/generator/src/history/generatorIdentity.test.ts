@@ -146,9 +146,13 @@ const HANDED_TO_REGENERATION: Record<string, string> = {
   lens: "the key itself, written into each summary",
   cacheFolder: "where summaries and texts are written, never what they say",
   keepIndex: "whether the full index is kept beside a summary, which the summary does not name",
-  jobs: "how many commits are regenerated at once",
+  // `jobs` and `memory` decide which commits a worker summarizes after others, and a warm worker can read a file a fresh
+  // process cannot (the review of 2026-11-20 at e1e27e33a): they change no summary because a change whose summary could
+  // depend on a worker's past (a file beyond the reading depth, a file not mapped, a fault of the runtime) is decided by
+  // a fresh process (`processMark.ts`, history-workers.test.ts); before that review these reasons said less than that.
+  jobs: "how many commits are regenerated at once, and so which commits a worker summarizes after others; what a worker derives depends on its past only where a fresh process decides (processMark.ts)",
   // Since the review's fourth round, 2026-11-20.
-  memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts)",
+  memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts), and its next summary a fresh process's, the same as a warm worker's where no mark is set (processMark.ts)",
   startWorker: "a test's stand-in for the pool's own keyed starter; the command hands none",
   deadline: "when to start no further commit",
   scratch: "where the trees are written and what a signal removes; summaries name workspace-relative paths only",

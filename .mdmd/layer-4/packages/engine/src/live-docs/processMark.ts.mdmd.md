@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/processMark.ts`
-- Generated At: 2026-11-20T15:07:21.021Z
+- Generated At: 2026-11-20T15:18:15.060Z
 
 ## Authored
 ### Purpose
@@ -12,8 +12,9 @@ Says whether what this process derived could depend on the process's own past, a
 
 ### Notes
 - Made on 2026-11-20, after an independent review of the workers showed a warm worker reading a TypeScript file nested 1,000 deep that a fresh process could not (the stack a process has to spare depends on what V8 has already compiled), and a file the generator failed on dropped from a summary in silence. Until then only the runtime's fault marked the process (`runtimeFaulted` in `treeSitter.ts`).
-- The depth is measured without recursion: by `ts.forEachChild` over an explicit stack for TypeScript, right after each parse (`sourceAnalysis.ts`, and the parse of a provider behind `export *` in `dependencies.ts`), and by a tree-sitter cursor in `readTree` before the adapter's walk.
-- Two bounds since the second probe of 2026-11-20 ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-speed/depth-probe.md)). `READING_DEPTH`, 200, bounds the nesting TypeScript's parser reaches by recursion. A step of a chain it reads by a loop adds nothing to the nesting: a binary expression's left operand, a call's expression, a property or element access's object. `TREE_DEPTH`, 400, bounds every level of any tree, TypeScript's or tree-sitter's, over which only the generator's own walks recurse. One depth for both had first been set at 200, from the lowest cold limit (nested tuple types, 453). It marked `htmlEntities.ts`, a concatenation 255 deep with a nesting of 17, in 174 changes. `reading-depth.test.ts` holds each bound's margin and their sum.
+- The depth is measured without recursion: by `ts.forEachChild` over an explicit stack for TypeScript, right after each parse (`sourceAnalysis.ts`, and the parse of a provider behind `export *` in `dependencies.ts`), by a tree-sitter cursor in `readTree` before the adapter's walk, and by `nestingBeyondDepth` over a parsed JSON value (the JSON adapter's documents and a tsconfig it reads) and a POM's elements; the JSON adapter counts the levels of a script's quoted words as it reads them.
+- `machineFailure` lives here too, since the engine's readers that swallow a failure to read a file (`dependencies.ts`) must let a failure of the machine's through, and the history's worker must refuse to write a summary made with one (`summarizeChange.ts`); its list of a name's or a path's codes is a copy of the tree writer's in `history/git.ts`.
+- Two bounds since the second probe of 2026-11-20 ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-speed/depth-probe.md)). `READING_DEPTH`, 200, bounds the nesting TypeScript's parser reaches by recursion. A step of a chain it reads by a loop adds nothing to the nesting: a binary expression's left operand, a call's expression, a property or element access's object. `TREE_DEPTH`, 400, bounds every level of any tree, TypeScript's or tree-sitter's, over which only the generator's own walks recurse. One depth for both had first been set at 200, from the lowest cold limit (nested tuple types, 453). It marked `htmlEntities.ts`, a concatenation 255 deep with a nesting of 17, in 174 changes. `reading-depth.test.ts` holds each bound's margin and their sum. A JSON value takes the bound of whatever built it. A tsconfig read by TypeScript's reader of JSON, which recurses as its parser does, takes the nesting bound. A value built by `JSON.parse`, which holds no stack, or a POM's elements, built by an explicit stack, is recursed over only by our own walks, and takes the tree's bound.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -64,9 +65,40 @@ Marks the process: what it derives from now on may depend on its past.
 ##### `processMarks` — Summary
 Every reason the process was marked for, in a fixed order; none when it was not.
 
+#### `machineFailure` {#symbol-machinefailure}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L71)
+
+##### `machineFailure` — Summary
+Whether a failure is the machine's rather than the file's: a system call that failed (the error names its `syscall`
+and its `code`) for a cause other than the name's or the path's, which the history's tree writer leaves out and names
+(`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds) would make
+a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
+that swallows a failure to read a file lets this kind through (`dependencies.ts`).
+
+#### `nestingBeyondDepth` {#symbol-nestingbeyonddepth}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L88)
+- Parameters: `root`: `T`; `node`: `T`
+
+##### `nestingBeyondDepth` — Summary
+Whether a tree a reader built of a file's content is deeper than `bound`, by an explicit stack over `children`, so
+that the measure itself never runs short of stack: a parsed JSON value (`jsonChildren`), an XML document's elements.
+A tree deeper marks the process (`deep`). The bound is the one of the mechanism that recursed over the value. A
+value built without the stack, by `JSON.parse` (a fresh node read an array nested 1,000,000 deep, by the probe of
+2026-11-20) or by the POM reader's explicit stack, is recursed over only by our own walks, as a chain is:
+{@link TREE_DEPTH}. A value TypeScript's reader of JSON built recurses as its parser does: {@link READING_DEPTH}.
+
+#### `jsonChildren` {#symbol-jsonchildren}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L107)
+
+##### `jsonChildren` — Summary
+The values a parsed JSON value holds: an array's items, an object's values, nothing of a scalar.
+
 #### `typeScriptExtent` {#symbol-typescriptextent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L85)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L133)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptExtent` — Summary
@@ -76,7 +108,7 @@ itself never runs short of stack. With `bounded`, the walk stops as soon as eith
 
 #### `typeScriptBeyondDepth` {#symbol-typescriptbeyonddepth}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L106)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L154)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptBeyondDepth` — Summary

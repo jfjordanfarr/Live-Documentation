@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/json.test.ts`
-- Generated At: 2026-11-19T21:10:09.998Z
+- Generated At: 2026-11-20T14:44:17.859Z
 
 ## Authored
 ### Purpose
@@ -29,5 +29,5 @@ _No public symbols detected_
 - `node:path`
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`json.jsonAdapter`](./json.ts.mdmd.md#symbol-jsonadapter)
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

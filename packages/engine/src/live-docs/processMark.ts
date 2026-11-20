@@ -62,6 +62,54 @@ export function processMarks(): ProcessMark[] {
 }
 
 /**
+ * Whether a failure is the machine's rather than the file's: a system call that failed (the error names its `syscall`
+ * and its `code`) for a cause other than the name's or the path's, which the history's tree writer leaves out and names
+ * (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds) would make
+ * a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
+ * that swallows a failure to read a file lets this kind through (`dependencies.ts`).
+ */
+export function machineFailure(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  const { syscall, code } = error as { syscall?: unknown; code?: unknown };
+  return typeof syscall === "string" && typeof code === "string" && !NAME_FAILURES.has(code);
+}
+
+/** The codes by which a disk says it cannot hold a name or a path, rather than that it failed, as the tree writer reads them (`history/git.ts`). */
+const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
+
+/**
+ * Whether a tree a reader built of a file's content is deeper than `bound`, by an explicit stack over `children`, so
+ * that the measure itself never runs short of stack: a parsed JSON value (`jsonChildren`), an XML document's elements.
+ * A tree deeper marks the process (`deep`). The bound is the one of the mechanism that recursed over the value. A
+ * value built without the stack, by `JSON.parse` (a fresh node read an array nested 1,000,000 deep, by the probe of
+ * 2026-11-20) or by the POM reader's explicit stack, is recursed over only by our own walks, as a chain is:
+ * {@link TREE_DEPTH}. A value TypeScript's reader of JSON built recurses as its parser does: {@link READING_DEPTH}.
+ */
+export function nestingBeyondDepth<T>(root: T, children: (node: T) => readonly T[], bound: typeof READING_DEPTH | typeof TREE_DEPTH): boolean {
+  const nodes: T[] = [root];
+  const depths: number[] = [1];
+  while (nodes.length > 0) {
+    const node = nodes.pop()!;
+    const depth = depths.pop()!;
+    if (depth > bound) {
+      markProcess("deep");
+      return true;
+    }
+    for (const child of children(node)) {
+      nodes.push(child);
+      depths.push(depth + 1);
+    }
+  }
+  return false;
+}
+
+/** The values a parsed JSON value holds: an array's items, an object's values, nothing of a scalar. */
+export function jsonChildren(value: unknown): readonly unknown[] {
+  if (Array.isArray(value)) return value;
+  return typeof value === "object" && value !== null ? Object.values(value) : [];
+}
+
+/**
  * Whether TypeScript's parser reaches `child` from `parent` by a loop, so that the step adds nothing to the nesting:
  * - the left operand of a binary expression: `parseBinaryExpressionRest` folds `a + b + c` left-deep in a loop (an
  *   operator binding tighter, or one that groups to the right, `a = b = c`, `a ** b ** c`, is parsed by recursion for

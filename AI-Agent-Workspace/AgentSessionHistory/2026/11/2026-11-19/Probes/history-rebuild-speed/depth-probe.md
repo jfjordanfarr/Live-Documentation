@@ -25,6 +25,14 @@ _A record of November 20, 2026 (UTC), not current documentation. Measured by a b
 | 64 tree-sitter constructs, eight grammars | depth | 800, twice 400 |
 | 6 joint cases: nested tuple types, the lowest nesting construct, inside each of the six chains, as the chain's left-most operand | nesting and depth at once | nesting 300 and depth 600, one and a half times both bounds |
 
+With the first builder's branch joined (its `007ce9855`), the readers it brought under a bound were added to the test. Each takes the bound of the mechanism that built the value:
+- **A JSON document read by `JSON.parse`** takes the tree's bound, since `JSON.parse` holds no stack (a fresh node read an array nested 1,000,000 deep, by the first builder's probe) and only our walks recurse over it. Read cold at 800.
+- **A POM's elements** take the tree's bound, since the reader keeps its own stack. Read cold at 800.
+- **A tsconfig read by TypeScript's reader of JSON**, which recurses as its parser does, takes the nesting bound. Read cold at 400.
+- **The TOML reader** refuses past its own fixed count in every process alike. A case holds that it reads 1,000 levels, refuses 10,000, and that a fresh worker given the refused `Cargo.toml` reads it as invalid, unmarked.
+
+All 111 cases were read, in 54 s.
+
 No case failed, so neither bound was lowered. A chain step the parser in fact recursed for would have shown as a chain failing at 800 with a frame of the parser's; none did.
 
 **This repository by both counts** (908 TypeScript-family files, 283 tree-sitter files at the round's commit):

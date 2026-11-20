@@ -323,7 +323,7 @@ export async function generateLiveDocs(
       const docAbsolutePath = resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute;
       // Where no stale doc is kept for its words (the history's scratch tree), no doc written on another day stands in
       // for a file this run could not map; a person's workspace keeps it, for its words, and the command says so.
-      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });
+      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);
       else await removeRefusedDoc(docAbsolutePath, options.dryRun ?? false);
     }
   }
@@ -389,6 +389,18 @@ async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promi
     if (error instanceof LiveDocSyntaxError && !hasMeaningfulAuthoredContent(authoredBlockOf(text))) {
       await fs.rm(docAbsolutePath, { force: true });
     }
+  }
+}
+
+/**
+ * Removes the doc of a file this run could not map, where no stale doc is kept for its words: a doc written on another
+ * day must not stand in for it. A doc path longer than the disk holds holds no doc, so there is nothing to remove.
+ */
+async function removeDocOfUnmapped(docAbsolutePath: string): Promise<void> {
+  try {
+    await fs.rm(docAbsolutePath, { force: true });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENAMETOOLONG") throw error;
   }
 }
 

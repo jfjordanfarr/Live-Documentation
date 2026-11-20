@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-20T14:07:48.338Z
+- Generated At: 2026-11-20T14:29:16.130Z
 
 ## Authored
 ### Purpose
@@ -58,20 +58,9 @@ committed on another day was removed by the generator, so that it never stands i
 - `publishable`: Asked once the generator has run, before anything is written: whether what it derived may be kept.
 - `warn`: Where each line the generator warns goes, for the history command to gather across the changes.
 
-#### `machineFailure` {#symbol-machinefailure}
-- Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L147)
-
-##### `machineFailure` — Summary
-Whether a file failed for a cause of the machine's rather than of the file's: a system call that failed (the error
-names its `syscall` and its `code`) for a cause other than the name's or the path's, which the tree writer leaves out
-and names (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds)
-would make a summary that a later run would not, so it is never written; the history tries the change once more in
-a fresh worker and stops if it fails again.
-
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L177)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L161)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -93,7 +82,7 @@ lay in `regenerate.ts`, whose process wrote every tree.
 
 #### `standingFiles` {#symbol-standingfiles}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L218)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L202)
 - Parameters: `unwritten`: `ReadonlyArray`
 
 ##### `standingFiles` — Summary
@@ -110,14 +99,14 @@ the disk was asked here (`stat`, then `isFile`).
 
 #### `WorkerTask` {#symbol-workertask}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L253)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L237)
 
 ##### `WorkerTask` — Summary
 What the history command asks of a worker: one change summarized, its tree written or brought forward by the worker.
 
 #### `WorkerReport` {#symbol-workerreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L256)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L240)
 
 ##### `WorkerReport` — Summary
 What a worker answers for each task.
@@ -143,6 +132,7 @@ What a worker answers for each task.
 - [`versionControl.WorkingTree`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtree) (type-only)
 - [`versionControl.WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions) (type-only)
 - [`ProcessMark`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmark)
+- [`processMark.machineFailure`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`processMark.processMarks`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmarks)
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)

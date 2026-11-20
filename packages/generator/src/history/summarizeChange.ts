@@ -59,7 +59,7 @@ import { openGitStore } from "@live-documentation/engine/live-docs/history/git";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
 import type { WorkingTree, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
-import { processMarks, type ProcessMark } from "@live-documentation/engine/live-docs/processMark";
+import { machineFailure, processMarks, type ProcessMark } from "@live-documentation/engine/live-docs/processMark";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
 import { generateLiveDocs } from "../generator";
@@ -136,22 +136,6 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   }
   return { published: true, unmapped };
 }
-
-/**
- * Whether a file failed for a cause of the machine's rather than of the file's: a system call that failed (the error
- * names its `syscall` and its `code`) for a cause other than the name's or the path's, which the tree writer leaves out
- * and names (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds)
- * would make a summary that a later run would not, so it is never written; the history tries the change once more in
- * a fresh worker and stops if it fails again.
- */
-export function machineFailure(error: unknown): boolean {
-  if (typeof error !== "object" || error === null) return false;
-  const { syscall, code } = error as { syscall?: unknown; code?: unknown };
-  return typeof syscall === "string" && typeof code === "string" && !NAME_FAILURES.has(code);
-}
-
-/** The codes by which a disk says it cannot hold a name or a path, rather than that it failed, as the tree writer reads them (`git.ts`). */
-const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
 
 /** A reason with every mention of the tree's folder taken out, so that it reads the same whichever worker and folder made it. */
 function withoutTree(reason: string, tree: string): string {

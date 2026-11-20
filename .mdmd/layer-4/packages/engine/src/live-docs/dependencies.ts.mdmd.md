@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/dependencies.ts`
-- Generated At: 2026-11-20T14:07:46.044Z
+- Generated At: 2026-11-20T14:29:14.092Z
 
 ## Authored
 ### Purpose
@@ -119,6 +119,7 @@ Object containing augmented symbols and re-export info
 - [`coreTypes.ReExportedSymbolInfo`](./coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (type-only)
 - [`coreUtils.displayDependencyKey`](./coreUtils.ts.mdmd.md#symbol-displaydependencykey)
 - [`coreUtils.getNodeLocation`](./coreUtils.ts.mdmd.md#symbol-getnodelocation)
+- [`processMark.machineFailure`](./processMark.ts.mdmd.md#symbol-machinefailure)
 - [`processMark.typeScriptBeyondDepth`](./processMark.ts.mdmd.md#symbol-typescriptbeyonddepth)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)

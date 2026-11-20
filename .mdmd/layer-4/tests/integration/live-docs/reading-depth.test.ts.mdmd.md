@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/reading-depth.test.ts`
-- Generated At: 2026-11-20T15:07:24.891Z
+- Generated At: 2026-11-20T15:18:18.442Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,7 @@ A worker forked as the pool forks one (`summarizingFlags`, `summarizingEnvironme
 - Seen red with the depth at 400: 8 of the 96 constructs, nested arrays among them, are unmapped at 800 deep for `Maximum call stack size exceeded`.
 - A TypeScript construct's depth is extrapolated from 8, 16, 32 and 64 levels, which must grow by the same step. The test's own process is warm and deep in the runner's calls, and TypeScript's parser recursing there overflowed at 800 deep in a first form of the test. Tree-sitter trees are measured where they are written.
 - Later the same day the one depth became two bounds, after it had marked `htmlEntities.ts`, a concatenation 255 deep with a nesting of 17. The chains, each step of the measure's set alone, and the joint cases were added, and all 107 cases read cold.
+- With the first builder's readers joined the same day, three values a reader builds are read cold at twice their bound. A JSON document read by `JSON.parse` and a POM's elements go to 800, since only our own walks recurse over them. A tsconfig read by TypeScript's reader of JSON goes to 400. The TOML reader refuses past its own fixed count in every process, so no bound of ours applies; a case shows it reads 1,000 levels, refuses 10,000, and a fresh worker given the refused manifest is unmarked. 111 cases.
 - Takes 45 to 72 s with four workers at a time on a shared machine.
 
 ## Generated
@@ -34,16 +35,19 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`pom.readXmlElements`](../../../packages/engine/src/live-docs/adapters/pom.ts.mdmd.md#symbol-readxmlelements)
 - [`treeSitter.SyntaxNode`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.readTree`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-readtree)
 - [`lens.summarizedConfiguration`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - [`processMark.READING_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-reading_depth)
 - [`processMark.TREE_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-tree_depth)
+- [`processMark.jsonChildren`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-jsonchildren)
 - [`processMark.typeScriptExtent`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-typescriptextent)
 - [`regenerate.summarizingEnvironment`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingenvironment)
 - [`regenerate.summarizingFlags`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingflags)
 - [`summarizeChange.WorkerReport`](../../../packages/generator/src/history/summarizeChange.ts.mdmd.md#symbol-workerreport) (type-only)
 - [`summarizeChange.WorkerTask`](../../../packages/generator/src/history/summarizeChange.ts.mdmd.md#symbol-workertask) (type-only)
+- `smol-toml` - `parse`
 - [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
 - [`scripted-repository.git`](./scripted-repository.ts.mdmd.md#symbol-git)
 - `typescript` - `ts`

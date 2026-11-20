@@ -11,7 +11,8 @@ import sys
 #   (regenerate.test.ts); a worker's memory left unbounded (regenerate.test.ts).
 # usage: break-guards.py apply|revert|check [guard], a guard by its number (1 the blob, 2 the walk, 3 the stamp,
 #   4 the folders above, 5 the environment, 6 the mark, 7 the refusal, 8 the first change, 9 the fresh worker,
-#   10 the memory bound, 11 the depth, 12 the unmapped mark, 13 the old doc, 14 the machine's failure); with none,
+#   10 the memory bound, 11 the depth, 12 the unmapped mark, 13 the old doc, 14 the machine's failure, 15 the
+#   TypeScript depth, 16 the tree's folder in a reason, 17 the environment removed, 18 the machine's stop, 19 the JSON depth); with none,
 #   every guard at once. Since the second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
@@ -63,15 +64,47 @@ edits = [
      "      markProcess(\"unmapped\");\n",
      "      void 0;\n"),
     ("packages/generator/src/generator.ts",
-     "      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });\n",
-     "      if (options.keepAuthoredStaleDocs === undefined && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });\n"),
+     "      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);\n",
+     "      if (options.keepAuthoredStaleDocs === undefined && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);\n"),
     ("packages/generator/src/history/summarizeChange.ts",
      "  if (machine !== undefined) return",
      "  if (machine === null) return"),
+    # A TypeScript tree beyond the reading depth left unmarked (history-workers, the four changes); a reason left
+    # naming the tree's folder (history-workers, two workers in two folders).
+    # Since the two bounds of 2026-11-20, the mark of either.
+    ("packages/engine/src/live-docs/processMark.ts",
+     "  if (beyond) markProcess(\"deep\");\n",
+     "  void beyond;\n"),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "reason: withoutTree(failure.reason, tree),",
+     "reason: failure.reason,"),
+    # The tree's environment left in the worker after its summary (history-workers, the tree's git environment).
+    ("packages/generator/src/history/summarizeChange.ts",
+     "      for (const name of Object.keys(environment)) delete process.env[name];\n",
+     "      void environment;\n"),
+    # The pool going on after a fresh worker's failure of the machine's (regenerate.test.ts's stand-ins, history-workers).
+    ("packages/generator/src/history/regenerate.ts",
+     "            if (report.machineFailure) throw new Error(",
+     "            if (report.machineFailure && false) throw new Error("),
+    # A JSON document beyond the reading depth left unmarked (json.test.ts).
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "    nestingBeyondDepth(parsed, jsonChildren, TREE_DEPTH);\n",
+     "    void parsed;\n"),
+    # C's and Rust's caches of a file's facts kept past a run (adapter-fact-caches.test.ts, a case each).
+    ("packages/engine/src/live-docs/adapters/c.ts",
+     "    factsCache.clear();\n    listingCache.clear();\n",
+     "    listingCache.clear();\n"),
+    ("packages/engine/src/live-docs/adapters/rust.ts",
+     "    factsCache.clear();\n    packageCache.clear();\n",
+     "    packageCache.clear();\n"),
+    # The nesting bound raised past half a fresh process's limits (reading-depth.test.ts: 8 nesting constructs at 800).
+    ("packages/engine/src/live-docs/processMark.ts",
+     "export const READING_DEPTH = 200;\n",
+     "export const READING_DEPTH = 400;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

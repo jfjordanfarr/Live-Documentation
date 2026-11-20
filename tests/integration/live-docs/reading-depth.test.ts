@@ -15,13 +15,15 @@ import { fork } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { parse as parseToml } from "smol-toml";
 import ts from "typescript";
 import { afterAll, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { readXmlElements } from "../../../packages/engine/src/live-docs/adapters/pom";
 import { readTree, type SyntaxNode } from "../../../packages/engine/src/live-docs/adapters/treeSitter";
 import { summarizedConfiguration } from "../../../packages/engine/src/live-docs/history/lens";
-import { READING_DEPTH, TREE_DEPTH, typeScriptExtent } from "../../../packages/engine/src/live-docs/processMark";
+import { jsonChildren, READING_DEPTH, TREE_DEPTH, typeScriptExtent } from "../../../packages/engine/src/live-docs/processMark";
 import { summarizingEnvironment, summarizingFlags } from "../../../packages/generator/src/history/regenerate";
 import type { WorkerReport, WorkerTask } from "../../../packages/generator/src/history/summarizeChange";
 import { buildRepository, git } from "./scripted-repository";
@@ -249,10 +251,11 @@ const lane = lanes(4);
  * What a worker started as the pool starts one (`regenerate.ts`: tsx's loader, the pool's environment) reports of its
  * first change: a repository of one commit holding the file and the configuration.
  */
-async function firstChange(file: string, text: string): Promise<WorkerReport> {
+async function firstChange(file: string, text: string, beside: Record<string, string> = {}): Promise<WorkerReport> {
   const repository = fs.mkdtempSync(path.join(privateTemporary, "repo-"));
+  const files = Object.fromEntries(Object.entries({ ...beside, [file]: text }).map(([name, content]) => [`src/${name}`, content]));
   const [commit] = buildRepository(repository, [
-    { message: "One nested file", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(CONFIG)}\n`, [`src/${file}`]: text } }
+    { message: "One nested file", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(CONFIG)}\n`, ...files } }
   ]);
   const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
   const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
@@ -339,5 +342,47 @@ describe("the reading bounds", () => {
     expect(measured.depth).toBeGreaterThanOrEqual(depthWanted);
     const report = await lane(() => firstChange("m.ts", jointText(chain, k, m)));
     expectReadCold(report, `tuple types ${k} levels inside ${name} ${m} links: nested ${measured.nesting}, ${measured.depth} deep`);
+  }, 600_000);
+
+  // A value a reader built of a file's content, measured as `nestingBeyondDepth` measures it (the root 1), to the bound
+  // of the mechanism that built it: `JSON.parse` and the POM's reader hold no stack, so only our own walks recurse over
+  // their values, under the tree's bound; TypeScript's reader of a tsconfig recurses as its parser does, under the nesting bound.
+  const valueDepth = <T>(root: T, children: (node: T) => readonly T[]): number => {
+    let deepest = 0;
+    const nodes: Array<[T, number]> = [[root, 1]];
+    while (nodes.length > 0) {
+      const [node, depth] = nodes.pop()!;
+      deepest = Math.max(deepest, depth);
+      for (const child of children(node)) nodes.push([child, depth + 1]);
+    }
+    return deepest;
+  };
+  const arrays = (levels: number): string => `${r("[", levels)}1${r("]", levels)}`;
+  it.concurrent.each([
+    ["a JSON document, read by `JSON.parse`", treeTarget, (levels: number) => ({ file: "deep.json", text: arrays(levels) }), (text: string) => valueDepth(JSON.parse(text), jsonChildren)],
+    ["a POM's elements", treeTarget, (levels: number) => ({ file: "pom.xml", text: `<project>${r("<a>", levels)}${r("</a>", levels)}</project>` }), (text: string) => valueDepth(readXmlElements(text), (element) => element.children)],
+    [
+      "a tsconfig beside a package's manifest, read by TypeScript's reader of JSON",
+      nestingTarget,
+      (levels: number) => ({ file: "tsconfig.json", text: `{"compilerOptions": {}, "x": ${arrays(levels)}}`, beside: { "package.json": `{"name": "x"}` } }),
+      (text: string) => valueDepth(JSON.parse(text), jsonChildren)
+    ]
+  ] as const)("are at most half what a fresh process reads: %s, at twice its bound", async (name, target, write, depthOf) => {
+    let levels = 1;
+    while (depthOf(write(levels).text) < target) levels += 1;
+    const written = write(levels);
+    const report = await lane(() => firstChange(written.file, written.text, "beside" in written ? written.beside : {}));
+    expectReadCold(report, `${name} at ${levels} levels, ${depthOf(written.text)} deep`);
+  }, 600_000);
+
+  // The TOML reader (`smol-toml`, behind the Cargo and pyproject readers) recurses, but refuses past a fixed count of
+  // its own, whatever the stack: the same in every process, so no bound of ours is needed (the first builder's probe of
+  // 2026-11-20: 1,000 levels read, 10,000 refused). A fresh worker given the refused manifest reads it as invalid.
+  it("leaves the TOML reader to its own fixed limit, the same in every process", async () => {
+    const manifest = (levels: number): string => `[package]\nname = "x"\nversion = "0.1.0"\n\n[package.metadata]\nx = ${arrays(levels)}\n`;
+    expect(() => parseToml(manifest(1_000))).not.toThrow();
+    expect(() => parseToml(manifest(10_000))).toThrow(/nested/u);
+    const report = await lane(() => firstChange("Cargo.toml", manifest(10_000)));
+    expect({ unmapped: report.unmapped, marked: report.marked, published: report.published }).toEqual({ unmapped: [], marked: [], published: true });
   }, 600_000);
 });
