@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/processMark.ts`
-- Generated At: 2026-11-20T14:29:14.432Z
+- Generated At: 2026-11-20T14:44:18.885Z
 
 ## Authored
 ### Purpose
@@ -65,9 +65,26 @@ and its `code`) for a cause other than the name's or the path's, which the histo
 a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
 that swallows a failure to read a file lets this kind through (`dependencies.ts`).
 
+#### `nestingBeyondDepth` {#symbol-nestingbeyonddepth}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L68)
+- Parameters: `root`: `T`; `node`: `T`
+
+##### `nestingBeyondDepth` — Summary
+Whether a tree a reader built of a file's content is deeper than {@link READING_DEPTH}, by an explicit stack over
+`children`, so that the measure itself never runs short of stack: a parsed JSON value (`jsonChildren`), an XML
+document's elements. A tree deeper marks the process (`deep`).
+
+#### `jsonChildren` {#symbol-jsonchildren}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L87)
+
+##### `jsonChildren` — Summary
+The values a parsed JSON value holds: an array's items, an object's values, nothing of a scalar.
+
 #### `typeScriptBeyondDepth` {#symbol-typescriptbeyonddepth}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L67)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L96)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptBeyondDepth` — Summary

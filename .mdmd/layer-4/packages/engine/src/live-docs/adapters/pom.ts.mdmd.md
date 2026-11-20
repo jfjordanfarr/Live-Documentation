@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/pom.ts`
-- Generated At: 2026-11-19T22:40:10.068Z
+- Generated At: 2026-11-20T14:44:17.916Z
 
 ## Authored
 ### Purpose
@@ -22,14 +22,14 @@ The adapter for Maven project files (`pom.xml`, matched by its exact name): the 
 ### Public Symbols
 #### `XmlElement` {#symbol-xmlelement}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L47)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L48)
 
 ##### `XmlElement` — Summary
 An element of an XML document: its local name, its children, and the text directly inside it.
 
 #### `readXmlElements` {#symbol-readxmlelements}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L71)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L72)
 - Returns: [`XmlElement`](#symbol-xmlelement)
 
 ##### `readXmlElements` — Summary
@@ -42,7 +42,7 @@ are the root elements.
 
 #### `childAt` {#symbol-childat}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L150)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L151)
 - Returns: [`XmlElement`](#symbol-xmlelement)
 - Parameters: `element`: [`XmlElement`](#symbol-xmlelement)
 
@@ -51,7 +51,7 @@ The first child element at the path of names below `element`.
 
 #### `childrenAt` {#symbol-childrenat}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L159)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L160)
 - Returns: [`XmlElement`](#symbol-xmlelement)[]
 - Parameters: `element`: [`XmlElement`](#symbol-xmlelement)
 
@@ -60,7 +60,7 @@ Every element at the path of names below `element`.
 
 #### `textAt` {#symbol-textat}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L168)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L169)
 - Parameters: `element`: [`XmlElement`](#symbol-xmlelement)
 
 ##### `textAt` — Summary
@@ -68,7 +68,7 @@ The trimmed text of the element at the path, or `undefined` when there is none o
 
 #### `pomAdapter` {#symbol-pomadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L201)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/pom.ts#L202)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pomAdapter` — Summary
@@ -88,6 +88,7 @@ Language adapter for `pom.xml`: the artifact as a symbol, its parent and depende
 - [`manifest.workspaceFile`](./manifest.ts.mdmd.md#symbol-workspacefile)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`processMark.nestingBeyondDepth`](../processMark.ts.mdmd.md#symbol-nestingbeyonddepth)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
