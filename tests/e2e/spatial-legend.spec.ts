@@ -170,9 +170,11 @@ async function still(page: Page): Promise<void> {
 }
 
 /** A visit with a choice of how a closed directory is drawn, beside the suite's own setting. */
-const choosing = (page: Page, localMap: Record<string, string>): Promise<void> => page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-  key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
-});
+const choosing = async (page: Page, localMap: Record<string, string>): Promise<void> => {
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
+  });
+};
 
 /** The colours the closed directories' cells are drawn in at this moment, read from the picture, as the names the 3D map gives them. */
 const kindsDrawn = async (page: Page): Promise<string[]> => {
