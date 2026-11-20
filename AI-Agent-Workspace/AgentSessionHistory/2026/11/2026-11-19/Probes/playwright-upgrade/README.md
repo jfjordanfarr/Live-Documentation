@@ -6,7 +6,8 @@ _Historical evidence: a record of November 20, 2026 (UTC), from 05:43 UTC, by a 
 
 - **The cause of the stuck install is gone from 1.60.0 on**, and confirmed so here: Playwright 1.65.1 and 1.61.1 each installed their browsers under Node 26.13.1 in well under a minute, where 1.58.2 never returned.
 - **But Chromium 151 and later no longer reach the graphics card here**: their GPU process finds no EGL configuration it can use in Mesa's `d3d12` driver and falls back to SwiftShader without a word. Playwright's own headless shells, probed under the suite's unchanged launch: 145, 148 and 149 draw on the card; 151, 153, 156 and 159 draw in software. The newest Playwright whose shell still reaches the card is **1.61.1** (Chromium 149.0.7827.55); 1.62.0 is the first to lose it.
-- **So this repository moves to Playwright 1.61.1, and is held there** until the browser reaches the card another way (the last section). The root ruled so on the first handback.
+- **So this repository moves to Playwright 1.61.1, and is held there** until the browser reaches the card another way (the ways that can be seen, none tried, are at the end of section 3). The root ruled so on the first handback, and that the pin be exact and Dependabot held below 1.62.
+- **One helper's types followed Playwright's**: from 1.59, `page.addInitScript` resolves to a handle, and one spec helper declared to return nothing no longer type-checked; it now awaits the call (section 7). The gate without the browser then passed.
 - **The whole browser stage on 1.61.1, on the card**: 609 cases, 600 passed, 2 failed, 7 skipped, in 43.3 minutes against the baseline's 43.0, and 81.8 minutes of case time against 80.4 (the cases that passed in both: +1.4%). One case newly failed, `explorer-navigation.spec.ts:126`, which passed alone three times in three at the baseline's time and passed beside its stage neighbour three times, with its wait four fifths full: a case on its time limit under load, not the browser. Five newly passed. `force-graph-discovery.spec.ts:70` failed in both, as known. `npm audit` before and after: 0 vulnerabilities.
 
 ## Why
@@ -161,7 +162,15 @@ Read on playwright.dev (the release notes page), not run. Nothing in 1.59 to 1.6
 
 ## 7. The gate without the browser
 
-@@GATE@@
+`npm run safe:commit`, in the lane. **The first run, at 08:26 UTC, failed** at the type-check of the tests, which the browser stage does not do (Playwright transpiles a spec without checking its types):
+
+```text
+tests/e2e/spatial-legend.spec.ts(173,83): error TS2322: Type 'Promise<Disposable>' is not assignable to type 'Promise<void>'.
+```
+
+From Playwright 1.59.0, `page.addInitScript` resolves to a `Disposable` that can remove the script (read in `playwright-core`'s `types.d.ts` of 1.58.2, 1.59.0 and 1.60.0, by `npm pack`); `spatial-legend.spec.ts`'s helper `choosing` was declared to return `Promise<void>` by returning that promise. Its assumption was about Playwright's types, not the product, so it was mended: the helper now awaits the call and returns nothing (commit `495f075a6`). The case's assertions are untouched, so what it can catch is unchanged; it passed once alone afterwards, on the card (`spatial-legend.spec.ts:217`, 4.2 s). The type-check found no other place that relied on the old types.
+
+**The second run, at 08:29 UTC, passed**, in 199 s (load 3.3): the Live Docs pipeline, lint, build, the tests' type-check, 2,680 unit tests in 213 files, 231 integration tests in 24 files, the documentation links and the three SlopCop audits.
 
 ## What is in this folder
 
