@@ -9,6 +9,7 @@ import { glob } from "glob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { throwIfMachineFailure } from "../tooling/sourceText";
 import type { Board } from "./board";
 import { folderOf } from "./boardGraph";
 import { LiveDocSyntaxError, parseLiveDoc } from "./document";
@@ -63,10 +64,13 @@ export interface EstateReading {
  */
 export async function readEstateGraph(args: { workspaceRoot: string; config: DocLocation; board: Board; boardPath: string }): Promise<EstateReading> {
   const workspaceRoot = path.resolve(args.workspaceRoot);
+  // A probe that fails for a cause of the machine's is not a folder without docs: the read stops with it rather than
+  // leave a scan out of the estate unsaid (since 2026-11-20).
   const hasDocs = async (folder: string): Promise<boolean> => {
     try {
       return (await fs.stat(path.join(workspaceRoot, folder, args.config.root, args.config.baseLayer))).isDirectory();
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       return false;
     }
   };

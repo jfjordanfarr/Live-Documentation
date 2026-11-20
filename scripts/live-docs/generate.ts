@@ -9,6 +9,7 @@ import {
   noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
@@ -320,16 +321,28 @@ async function main(): Promise<void> {
     console.log(`[live-docs] ${reason}: ${subjects.length}${args.verbose ? `: ${subjects.join("; ")}` : ""}.`);
   }
 
-  // The files the run could not map, each by its source path and the reason; the rest of the map was written.
-  if (layer4Result.failed.length > 0) {
-    console.error(`[live-docs] Could not map ${files(layer4Result.failed.length)}; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".`);
-    for (const { sourcePath, reason, error } of layer4Result.failed) {
+  // The files the run could not map, each by its source path and the reason; the rest of the map was written. A file
+  // that failed for a cause of the machine's (a permission refused, too many open files, a full disk) is said apart:
+  // neither it nor the tool is at fault, and the system's reason says what to mend (since 2026-11-20).
+  const unreadable = layer4Result.failed.filter(({ error }) => machineFailure(error));
+  const unmapped = layer4Result.failed.filter(({ error }) => !machineFailure(error));
+  const named = (failures: typeof layer4Result.failed): void => {
+    for (const { sourcePath, reason, error } of failures) {
       console.error(`  ${sourcePath}: ${reason}`);
       // Under --stack, where it failed: the stack of the error the run went on past, and of each that caused it.
       if (stackWanted()) console.error(stackOf(error).replace(/^/gmu, "    "));
     }
-    process.exitCode = 1;
+  };
+  if (unreadable.length > 0) {
+    const one = unreadable.length === 1;
+    console.error(`[live-docs] Could not read ${files(unreadable.length)}, or something ${one ? "it needs" : "they need"}, and went on without ${one ? "it" : "them"}; the rest of the map was written. The system's reason:`);
+    named(unreadable);
   }
+  if (unmapped.length > 0) {
+    console.error(`[live-docs] Could not map ${files(unmapped.length)}; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".`);
+    named(unmapped);
+  }
+  if (layer4Result.failed.length > 0) process.exitCode = 1;
 
   if (args.check && (layer4Result.written > 0 || layer4Result.deleted > 0)) {
     console.error(`Live Docs differ from source: ${layer4Counts.created} would be created, ${layer4Counts.updated} updated, ${layer4Result.deleted} deleted. Run live-docs:generate and commit the result.`);

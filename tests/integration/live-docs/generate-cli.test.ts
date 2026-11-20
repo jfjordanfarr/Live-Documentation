@@ -69,7 +69,13 @@ const MDMD = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
  * `mine` and a configuration beside it; `other` is another repository with a configuration of its own and a folder
  * `src/deep` inside it; `bare` has no configuration, nor has any folder above it, and holds a folder `sub`.
  */
-const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "", orphans: "", encodings: "" };
+const at = { own: "", given: "", mapped: "", boarded: "", unboarded: "", stand: "", other: "", bare: "", unread: "", broken: "", repository: "", noGit: "", orphans: "", encodings: "", failing: "" };
+
+/** A file the run cannot open, refused by the machine's permissions, which a person running as root is not refused. */
+const LOCKED = "src/locked.py";
+const CAN_LOCK = process.platform !== "win32" && process.getuid?.() !== 0;
+/** A name the disk holds, whose doc's name it does not (`<name>.mdmd.md` is longer than 255 bytes): a fault of the tool's. */
+const LONG = `src/${"n".repeat(247)}.ts`;
 
 /**
  * The code paths of the orphans workspace's docs, each written by the engine's own writer: an ordinary file, a file
@@ -118,6 +124,15 @@ beforeAll(async () => {
   fs.writeFileSync(path.join(at.encodings, "src", "wide.py"), Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from("def wide():\r\n    pass\r\n", "utf16le")]));
   fs.writeFileSync(path.join(at.encodings, "src", "ansi.py"), Buffer.from([...Buffer.from("# caf"), 0xe9, ...Buffer.from("\r\ndef ansi():\r\n    pass\r\n")]));
   fs.writeFileSync(path.join(at.encodings, "src", "noise.py"), Buffer.from([0x64, 0x65, 0x66, 0x00, 0x01, 0xff, 0x00]));
+  // A file the machine will not let the run read, and one whose doc's path the disk cannot hold.
+  at.failing = makeWorkspace(MDMD);
+  fs.writeFileSync(path.join(at.failing, LONG), "export const x = 1;\n", "utf8");
+  // The doc's folder stands, as after a first run, so that the doc's own name is what the disk refuses.
+  fs.mkdirSync(path.join(at.failing, ".mdmd", "layer-4", "src"), { recursive: true });
+  if (CAN_LOCK) {
+    fs.writeFileSync(path.join(at.failing, LOCKED), "def locked():\n    pass\n", "utf8");
+    fs.chmodSync(path.join(at.failing, LOCKED), 0o000);
+  }
   at.orphans = makeWorkspace({});
   for (const codePath of [...ORPHAN_SOURCES, "src/gone.ts"]) {
     if (codePath !== "src/a.ts" && codePath !== "src/gone.ts") {
@@ -176,6 +191,7 @@ beforeAll(async () => {
     record("generate, unread kinds", "generate.ts", ["--workspace", at.unread, "--dry-run"]),
     record("orphans", "find-orphans.ts", ["--workspace", at.orphans]),
     record("generate, encodings", "generate.ts", ["--workspace", at.encodings, "--dry-run"]),
+    record("generate, failing files", "generate.ts", ["--workspace", at.failing, "--dry-run"]),
     record("generate, a repository", "generate.ts", ["--workspace", at.repository, "--dry-run"]),
     record("generate, a repository without git", "generate.ts", ["--workspace", at.repository, "--dry-run"], { PATH: at.noGit }),
     record("lint, failing", "lint.ts", ["--workspace", at.broken]),
@@ -196,6 +212,7 @@ beforeAll(async () => {
 }, 600_000);
 
 afterAll(() => {
+  if (CAN_LOCK && at.failing) fs.chmodSync(path.join(at.failing, LOCKED), 0o644);
   for (const workspace of workspaces.splice(0)) {
     fs.rmSync(workspace, { recursive: true, force: true });
   }
@@ -285,6 +302,21 @@ describe("what git ignores", () => {
   it("is said to be read from the workspace's .gitignore alone outside a repository", () => {
     const result = ran("generate, unread kinds");
     expect(result.stdout).toContain(`[live-docs] Not in a git repository, so of what to leave out only ${path.join(at.unread, ".gitignore")} and the configuration's exclude are read.`);
+  });
+});
+
+describe("a file the run could not map", () => {
+  // Until 2026-11-20 every such file was said to be the tool's fault, a permission refused among them.
+  it("is said to be the tool's fault, and one the machine would not let the run read is said apart, with the system's reason", () => {
+    const result = ran("generate, failing files");
+    expect(result.status).toBe(1);
+    const tools = `[live-docs] Could not map 1 file; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".\n  ${LONG}: ENAMETOOLONG: name too long`;
+    expect(result.stderr).toContain(tools);
+    if (!CAN_LOCK) return;
+    expect(result.stderr).toContain(`[live-docs] Could not read 1 file, or something it needs, and went on without it; the rest of the map was written. The system's reason:\n  ${LOCKED}: EACCES: permission denied, open '${path.join(at.failing, LOCKED)}'\n`);
+    // Named once, and not under the line that says the fault is the tool's.
+    expect(result.stderr.split(LOCKED)).toHaveLength(3);
+    expect(result.stderr.indexOf(LOCKED)).toBeLessThan(result.stderr.indexOf("[live-docs] Could not map"));
   });
 });
 
