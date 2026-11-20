@@ -38,7 +38,10 @@ function history(workspace: string, jobs: number): string {
   return result.stderr + result.stdout;
 }
 
-/** Every file of a lens's cache folder by its path within it: a summary unzipped, a text as stored. */
+/**
+ * Every summary and text of a lens's cache folder by its path within it: a summary unzipped, a text as stored. The
+ * run's own records beside them (`whole.json`, which names when and how the run went) are no part of a summary.
+ */
 function cacheOf(workspace: string): Map<string, string> {
   const historyFolder = path.join(workspace, ".mdmd", "history");
   const lenses = fs.readdirSync(historyFolder, { withFileTypes: true }).filter((entry) => entry.isDirectory() && /^[0-9a-f]{16}$/u.test(entry.name));
@@ -48,8 +51,11 @@ function cacheOf(workspace: string): Map<string, string> {
   for (const entry of fs.readdirSync(cache, { recursive: true, withFileTypes: true })) {
     if (!entry.isFile()) continue;
     const file = path.join(entry.parentPath, entry.name);
+    const relative = path.relative(cache, file).split(path.sep).join("/");
+    const summary = /^[0-9a-f]{40}\.json\.gz$/u.test(relative);
+    if (!summary && !relative.startsWith("texts/")) continue;
     const bytes = fs.readFileSync(file);
-    files.set(path.relative(cache, file).split(path.sep).join("/"), entry.name.endsWith(".gz") ? zlib.gunzipSync(bytes).toString("utf8") : bytes.toString("utf8"));
+    files.set(relative, summary ? zlib.gunzipSync(bytes).toString("utf8") : bytes.toString("utf8"));
   }
   return files;
 }
@@ -67,7 +73,7 @@ describe("a worker's summaries, change after change in one process", () => {
     expect(buildRepository(apart, script), name).toEqual(commits);
     const one = history(together, 1);
     // One worker, its tree brought forward at every change after the first.
-    expect(one.match(/regenerated: /gu)).toHaveLength(commits.length);
+    expect(one.match(/\d+\/\d+ regenerated: /gu)).toHaveLength(commits.length);
     expect(one.match(/its tree written anew/gu)).toHaveLength(1);
     history(apart, commits.length);
     const a = cacheOf(together);

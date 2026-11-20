@@ -187,7 +187,8 @@ describe("a tree brought forward from one change to another, against the tree wr
     step("an excluded picture changed", () => write("assets/logo.png", "another picture"));
     step("a doc of the mirror committed", () => write(".mdmd/layer-4/src/b.ts.mdmd.md", "# b\n"));
     step("nothing", () => undefined);
-    const configuration = normalizeLiveDocumentationConfig({ exclude: ["assets/**"] });
+    // The docs root named, since the generator's writes below stand in for it there (the default root is another).
+    const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", exclude: ["assets/**"] });
     // On a disk that takes `A.ts` and `a.ts` for one name (Windows, macOS), the tree is rightly written anew there.
     const probe = fs.mkdtempSync(path.join(privateTemporary, "case-"));
     fs.writeFileSync(path.join(probe, "A"), "");
