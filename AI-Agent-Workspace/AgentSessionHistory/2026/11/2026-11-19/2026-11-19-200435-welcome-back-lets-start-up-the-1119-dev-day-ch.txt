@@ -14488,3 +14488,842 @@
 
 ● Task "Fifty-minute fallback timer while builders run" still running in
   background
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19-200435-welco
+  me-back-lets-start-up-the-1119-dev-day-ch.txt in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+
+❯ >May the per-file Markdown doc stop being the store? Yes, no, or not yet.
+
+  I've read your above response and I see your aim is plan B. You are welcome
+  to do so. I think it's time to try, eh?
+
+  >Do you want that test page?
+
+  I wouldn't dare run anything on that machine until I'm really confident our
+  software has been battle-tested against many others.
+
+  This is why we have had tests in the past which clone real other open source
+  code repositories and perform scans on them.
+
+  If you need experience running it through different OSes, perhaps a
+  docker-in-docker or whatnot could be of use to us?
+
+  What we have right now is not, in my opinion, sufficiently stable or polished
+  for me to attempt to run on my work dev machine as of yet.
+
+  Searched for 2 patterns, read 1 file, listed 2 directories, ran 5 shell commands (ctrl+o to expand)
+
+● Agent "History's linked documents at old commits" is waiting on its own
+  background work · 41m 47s
+● Recording your answer first, then I'll reply with the order of work it sets;
+  the engine joining is still running its own checks.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  P1 is built and the false wire from `RunTests.psm1` is gone. Your folder-words
+  rule is measured but not built, because 8 of the 64 files it moves are wrong.
+  The Pester rule is built and checked against Pester 3.4.0, 4.10.1 and 5.9.1
+  run here, and three more grammar idioms are mended. `safe:commit` without the
+  browser passes in one run at my tip, `29b3bb24`. The leg took about 30
+  minutes.
+
+  Three new commits on my branch, on top of `112d4f02`: `1add3544` (P1),
+  `edbaa05c` (Pester rule) and `29b3bb24` (grammar). The worktree is clean; no
+  push, no amend, `main` untouched. The probe README has three new sections for
+  this leg.
+
+  ## 1. P1 (`1add3544`) and the directory's words
+  **P1.** A PowerShell file is a test by its own name only as `Name.Tests.ps1`
+  or `Name.Test.ps1`, ignoring case. Other languages keep their name
+  conventions. The archetype test and the adapter test both failed first.
+  - Files that move from test to implementation: AL-Go 4 (`RunTests.ps1`,
+  `RunTests.psm1`, `AnalyzeTests.ps1`, `GetOwnerForE2ETests.ps1`) and tSQLt 4 (3
+  build steps and 1 experiment). Nothing else on any corpus, and no doc of this
+  repository.
+  - The false wire `Actions/RunTests/RunTests.psm1` → `Tests/RunTests.Test.ps1`
+  is gone. AL-Go goes from 477 to 476 resolved dependencies, with no other
+  change.
+
+  **The directory's words: not built.** I measured your rule (a capital after a
+  small letter or a digit begins a word). It moves 64 files from implementation
+  to test on the corpora, and none on this repository:
+
+  | Corpus | Folder | Files | Right? |
+  |---|---|---|---|
+  | AL-Go | `e2eTests/` and beneath | 42 | yes |
+  | tSQLt | `TestUtil/`, `TestUtilTests/`, `tSQLtCLR/tSQLtTestUtilCLR/` | 17 |
+  yes: tSQLt's support for its own tests |
+  | AL-Go | `Actions/RunTests/` | 3 | **no**: the action that runs tests |
+  | AL-Go | `Actions/AnalyzeTests/` | 3 | **no**: the action that analyses test
+  results |
+  | DNN | `Seo.Web/src/components/testUrl/` | 2 | **no**: a UI component that
+  tests a URL |
+
+  The rule cannot tell a kind of test (`e2eTests`, `UnitTests`) from something
+  done to tests (`RunTests`) or a feature (`testUrl`). It would also call
+  `RunTests.psm1` a test again by its folder, which brings back the false wire
+  P1 removed. This is the list you asked for in that case.
+
+  ## 2. Pester: what reaches an `It` (`edbaa05c`)
+  **Checked against Pester itself.**
+  - I saved 3.4.0, 4.10.1 and 5.9.1 with `Save-PSResource -Path` into my private
+  folder: 0.4, 2.1 and 1.1 MB, nothing installed.
+  - I ran a probe test file under each, in the PowerShell 7.7 here.
+  - To get 3.4.0 to load on Linux I edited that private copy once: I removed its
+  `Get-WmiObject` entry, which it uses only for a result file's OS line. I also
+  set `$env:TEMP`.
+
+  | Assigned or dot-sourced where | 3.4.0 | 4.10.1 | 5.9.1 |
+  |---|---|---|---|
+  | the file's own level | reaches `It` | reaches `It` | **no** |
+  | a `Describe`'s or `Context`'s body | yes | yes | **no** |
+  | `$script:` in a `Describe`'s body | yes | yes | yes |
+  | a `BeforeAll`, `BeforeEach`, or a `Context`'s `BeforeAll` | yes | yes | yes
+  |
+
+  A `BeforeAll` sees the file's own level under 3.4.0 and 4.10.1 but not under
+  5.9.1. It sees a `Describe` body's variable under none of the three.
+
+  **The rule.** It is written in the adapter and a second time in the oracle's
+  emitter (`Test-PesterSetupReaches`, `Test-PesterRunBlockBetween`).
+  - A variable assigned once in a `BeforeAll` or `BeforeEach` is followed into
+  the `It` blocks of its `Describe` or `Context`, nested ones included.
+  - A variable assigned at the file's own level, or in a `Describe` or `Context`
+  body, is no longer followed into an `It` or a `BeforeAll`. That case is true
+  under 3 and 4 but false under 5, so it is not drawn.
+  - The adapter test fails with either half removed.
+
+  **Not done in the rule:**
+  - It does not read a file's own statement of its version (`#Requires -Modules
+  Pester`, `BeforeDiscovery`, `-ForEach`), so the stricter reading holds for
+  every file.
+  - I did not probe what `BeforeEach`, `AfterAll` or `AfterEach` see, and the
+  narrowing does not touch them.
+
+  **Graded on the corpora.** AL-Go goes from 476 to 492, with none removed;
+  dbatools is unchanged.
+  - All 16 new wires are tests loading their own action through a `$scriptRoot`
+  that a `BeforeAll` assigns. With fewer than 30, the sample is the whole set.
+  - I read 3 in source, all true. A second judge (a subagent, blind to my
+  verdicts) read all 16: all true under Pester 5 and under 3/4.
+  - The oracle, rerun over AL-Go, expects 493 pairs; the adapter draws 492 of
+  them and invents none. The one miss is the old written-out-list load in a file
+  the grammar still reads with an error.
+
+  ## 3. Grammar idioms (`29b3bb24`)
+  Each mend has a corpus entry that failed first (`test/corpus/multipliers.txt`,
+  `labels.txt`, `switches.txt`). `build.sh` reproduces the committed wasm byte
+  for byte.
+
+  | | Files with an error node | Functions PowerShell sees that the grammar
+  misses |
+  |---|---|---|
+  | Before this round | 113 | 10 |
+  | After | 89 | 6 |
+
+  No file is newly in error. dbatools goes from 68 to 46 error files, and its
+  missing functions from 5 to 1.
+
+  **The mends:**
+  - A number's multiplier, type suffix and exponent in any case: `1GB`, `10L`,
+  `1E3`.
+  - A bare loop label after `break` or `continue`: `continue main`.
+  - A quoted switch label: `"In Progress" { }`, including `switch -regex`
+  patterns. Upstream's own switch tests still pass.
+  - `Install-DbaInstance.ps1` and the three functions inside it are no longer
+  missing. Its first error was a quoted `-regex` label, so that mend most likely
+  freed them, but I did not grade the mends one at a time.
+
+  **Switch as an expression** needed no rule of its own; the small cases read
+  without error after the earlier mends.
+
+  **Not mended:**
+  - **A member after a method call, as a command argument** (`-Value
+  $o.GetType().Name`). Upstream's `_command_element` reads `$o.GetType()` in
+  argument mode as a member access followed by a separate argument list. Fixing
+  that changes the trees in upstream's own corpus, which the patch does not
+  carry. Do we carry upstream corpus changes in the patch?
+  - **The typographic quote.** PowerShell 7 here ends a single-quoted string at
+  `’`. Whether Windows PowerShell 5.1 does is unverified, and it is marked so in
+  the probe for what only Windows can show.
+
+  ## 4. `safe:commit` at `29b3bb24`, without the browser, one run
+  All stages passed, at load 2 to 18, in under five minutes: Live Docs (0
+  changed), lint, build, type-check, unit 2266/2266, integration 155/155, doc
+  links, and the three audits. No timeouts.
+
+  ## For the readers' gathering
+  In `packages/engine/src/live-docs/adapters/powershell.ts`, the `for (const
+  command of commands)` loop at line 1355 holds each command:
+  - **Line 1363**, `else facts.dotSources.push(written);`: here `written ===
+  undefined` is a dot-source whose path the text does not fix.
+  - **Line 1375**, `else facts.moduleImports.push(...strings);`: the same for
+  `Import-Module`, where an entry of `strings` is `undefined`.
+
+  At both places `command.startPosition.row + 1` and `command.text` give the
+  line and the command. Facts are reused by file hash, so the notice belongs in
+  the facts there. Line 1539, in `loadsOf`, is where such a load becomes `to:
+  undefined` for the workspace.
+
+  ## Cleanup and files
+  - My private temp folder is removed, including the saved Pester copies;
+  `~/.cache/tree-sitter` is left as it is.
+  - The probe and its results are kept in `/tmp/claude-1000/-workspaces-Live-Doc
+  umentation/a0685a3a-b7de-45e3-bcf9-44c55d10db4e/scratchpad/psw/pester-probe/`.
+
+  Files changed:
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/src/live-docs/archetype.ts`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/src/live-docs/adapters/powershell.ts`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/sc
+  ripts/oracle/powershell-ast.ps1`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/pa
+  ckages/engine/grammars/powershell/grammar.patch`
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a29a6d3f4a47f410b/AI
+  -Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wire
+  s/README.md`
+
+  Their tests, the new corpus files and the regenerated Live Docs are in the
+  same commits.
+
+● Agent "PowerShell wires: measure, then build" finished · 1h 43m 56s
+
+● PowerShell's builder has handed back; I'm reviewing that one now (the engine
+  joining is still running its checks), then I'll reply to you.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "History's linked documents at old commits" is waiting on its own
+  background work · 44m 9s
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+● Both audits are clean; committing the record, the two probes and the Memory
+  update, then the reply.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Understood on both.
+
+  The store. I'll try it on a branch. Until you accept the result, the guide's
+  "Markdown is canonical" stands and the per-file docs stay. It starts after the
+  engine landing and the three readers land, so it is built on the readers as
+  they will be. Its first step builds nothing: a survey of everything that reads
+  a per-file doc today and what each needs from it.
+
+  Your work machine. That bar is yours. I won't ask again; I'll bring you
+  evidence.
+
+  - The tests you remember: the benchmark that cloned real libraries was retired
+    on September 27, because the cloned code never fed its score. Today
+    builders did run the tool on real public repositories (1,790 PowerShell
+    scripts, two T-SQL codebases, a large .NET Framework platform), and most of
+    today's faults came from those runs. But they were one-off runs, and no
+    command on main repeats them. I'll make that a standing run: each repository
+    pinned to a commit, the tool run cold on it, and the result kept.
+  - Docker: a container shares its host's kernel, so Docker inside this Linux
+    container can only give us other Linux systems. The faults found today are
+    Windows' own: line endings, filename case, backslashes, UTF-16 text,
+    PowerShell 5.1's handling of --. GitHub's Windows runners are real Windows
+    Server with Windows PowerShell 5.1 and .NET Framework 4.8, free for a public
+    repository. All four of our workflows run on Ubuntu only, so I'll add a
+    Windows job, which runs when you push.
+
+  Order from here:
+  1. The engine landing (its builder is still running its checks).
+  2. The readers' landing.
+  3. The standing run and the Windows job.
+  4. The store change, graded by that run: the same sources must give the same
+     connections before and after.
+
+  The parked picture work resumes one builder at a time as the browser frees up.
+
+  PowerShell's builder handed back and is parked; eight are parked now. A third
+  rule of mine was wrong tonight: reading a folder's name by its words cannot
+  tell e2eTests from RunTests. The builder measured it and rightly did not build
+  it.
+
+  If you know public repositories that resemble your work's code, name them and
+  they go into the run.
+
+› Message from general-purpose
+  ## Result
+  The joining is done on branch `worktree-agent-a4f78f17415dc6ce3`, tip
+  `a1d580016`, all by merges: no rebase, no amend, no push. The gate without the
+  browser (`npm run safe:commit`) is green in one run, on Node v22.23.5 (the
+  Node on PATH) with `TMPDIR=/tmp/claude-1000/e6`, at a load average of 9.2 at
+  the start and 9.4 at the end:
+  - Unit: 213 files, 2,680 tests passed.
+  - Integration: 24 files, 231 tests passed. No expected failures remain: the
+  three waiting cases now pass for real.
+
+  After it, `npm run build` and `npm run e2e:bundles` both succeeded, so the tip
+  is ready for the browser stage; I did not take the lane. The markdown audit
+  shows 0 broken links and the symbol audit 0 issues. The worktree is clean. I
+  removed nothing in `/tmp` except my own folders.
+
+  ## Merges and their conflicts
+  Every Live Doc conflict was in a header or generated line (title, Code Path,
+  Generated At, Source lines): I took either side and regenerated. Where
+  authored words conflicted, I kept both.
+  1. **`main`** (`23a4b20eb`). Two record files collided:
+  `engine-round-review/README.md` took main's (it holds both review passes);
+  `history-rebuild-cost/README.md` took ours, since main's copy was the first
+  version I wrote.
+  2. **Names, 27b56e73** (`5f72130a3`). 16 Live Docs, all headers. The decisions
+  log keeps both entries ("Every Name of a Commit's Tree Stands…" and "Every
+  Name a Repository Can Hold Reads Back…"). `relatedDocs`' authored note keeps
+  both lines.
+  3. **Links, 135e93ad** (`84f532510`). 16 Live Doc headers. The
+  `markdown-link-targets` probe took the branch's longer version. The
+  `commonmark` line appears once in `package.json`.
+  4. **Windows and command line, 18d8d8c83** (`4f84a5efe`). 34 Live Docs
+  (headers and Source lines) and `scripts/live-docs/lint.ts`, where I kept both
+  imports (`absoluteLinks`, and `workspaceFolder` from `./cli`); both are used.
+  5. **Script entries, c9cbfb5d** (`d444a4940`). One Live Doc header, and the
+  `script-entries` probe took the branch's longer version.
+  6. **Node 26, fb453d74** (`a3ba5611a`), cherry-picked cleanly. npm warns
+  `EBADENGINE` on Node 22, and everything still runs.
+  7. **`main` again** (clean) and **the `packages/cli` deletion, 5599d307c**
+  (`170704ced`). I took every deletion and resolved one Live Doc header. For the
+  lock I took ours and regenerated it with `npm install --ignore-scripts`. The
+  diff against ours is exactly the removal of the `packages/cli` workspace, its
+  link and its package entry. `commonmark ^0.31.2` stays, the engines lines read
+  `>=26.0.0`, and no version moved.
+
+  ## Mends, each with its test
+  1. **Citing path from the reader** (`f354c6ebc`). The summary keeps the Cited
+  By line's name, which since the names' branch is the exact workspace path.
+  Before, it read the link with its own decoding, which mangled `#` and `%`;
+  that code and the rows' `citedByLabel` are gone.
+     - The unit case (`docs/C#.md`, `docs/50%41off.md`, a name with a backtick)
+  was red, now green.
+     - Both waiting integration cases pass with `--check-head`.
+     - The `)` case was already passing (the reader's mend), so it is an
+  ordinary case now too.
+  2. **`computeHistory` configuration** (`170f5c453`). It now uses
+  `parseLiveDocumentationConfigBytes`. A new case with a UTF-16 configuration
+  that has a byte-order mark was red, now green.
+  3. **Seven reading swaps** (`8f6bd2290`, import order in `6aa816da4`) in
+  `sql`, `aspnet`, `csharp` (twice), `dotnetConfig`, `project` and `powershell`.
+  `decodeScript` is gone, and `fs` was dropped where nothing else used it.
+  `sourceEncodings.test.ts` gained `.sql`, `.cs`, `.aspx`, `.config`, `.csproj`
+  and `.ps1`: 14 cases red against the old readers, green after. Nothing else in
+  those files changed.
+  4. **Notices pushed, not spread** (`728736a8a`). At 200,000 notices of one
+  reason, pushing took 90 ms; the spread had reached 36,000 after 20 s. The
+  notices test stays green.
+  5. **Binary sniff** (`8f9e9fd24`). `isBinaryContent` now applies the reading
+  step's own rule, an exported `unmarkedUtf16`. A TypeScript file saved as
+  UTF-16 without a mark was an "asset"; it now gets its UTF-8 twin's archetype
+  and symbols. The new test is `generator.utf16.test.ts`; its typing was fixed
+  in `7dfd3287c`.
+  6. **`--stack` on generate** (`728736a8a`). Each failure keeps its `error`.
+  `cli.ts` exports `stackWanted()` and `stackOf()`, and `generate` prints each
+  failure's stack under the flag. The unmappable test now asks for the error:
+  red before, green now.
+  7. **Loop body indented** inside the `try` (`728736a8a`).
+  8. **`decodeLinkPath` removed** (`ddc0b7fbc`): only its test still called it,
+  and that test now reads the path back as a browser does.
+  9. **Container limit, stated plainly** in the link module's header and at the
+  register entry (`050b38981`). Words only.
+  10. **`find-orphans` fallback** (`ef75580b5`), as you wrote it. A refused doc
+  lying away from its source was red (two orphans listed), now green (one).
+  11. **Skill** (`63e563f69`). `reference.md`'s title and Code Path are now in
+  code spans. Its symbol-heading search and the Code Path search both find
+  `generator.ts`'s doc.
+  12. **`entryWords`' JSDoc** names `packages/generator/package.json`
+  (`ddc0b7fbc`).
+  13. **Links from code, notes and the decisions log**: both audits are clean
+  after the merge of `main`, and every record path named in code resolves.
+  Nothing needed re-making.
+  14. **Serial pass** (`969ed83a3`). `generatorIdentity.test.ts` and
+  `document.fuzz.test.ts` now run in `unit-serial`, with the reason written
+  beside each in `vitest.config.ts`. That pass ran 5 files, 74 tests, green.
+
+  ## Docs that moved
+  `d7734b4ae`: 83 docs.
+  - 62 moved by only their title, Code Path and Generated At lines: docs no
+  branch had regenerated in the names' written form. I read the diff with a
+  classifier.
+  - 20 moved because of the mends: the reading swaps, the sniff, the removed
+  decoder and label helper, the generator, the link module's words, and their
+  Source lines.
+  - 1 is new, for the UTF-16 test.
+
+  So not every doc moved: the names' branch had already brought its 1,000-plus
+  docs into the new form on its own branch, and they came in by the merge. The
+  final regenerate moved nothing (1,120 unchanged).
+
+  ## Met along the way, not on your list
+  - **The entries case** (`a1d580016`). The script-entries branch expected a
+  bare `- Code Path: src/cli.ts`. The joined writer writes it in a code span, so
+  the case was red in the gate. I changed the expectation; I did not touch the
+  product.
+  - **The names' branch's own copy of that test also has the bare form**, so the
+  case would have been red on that branch too. Someone may want to know why it
+  passed there.
+  - **The import order of the seven swaps** failed lint; `6aa816da4` reorders it
+  and touches nothing else in those files.
+
+  ## The rebuild and comparison, prepared, not run
+  The commands are in `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19
+  /Probes/history-rebuild-cost/README.md`, last section, with two committed
+  scripts beside it: `lens-key.ts` and `compare-summaries.ts`.
+  - **Key at the tip:** `b4294caf0e7d629f`. It stays the same after the merge
+  into `main` unless `main` brings other changes to keyed files; run
+  `lens-key.ts` there to print it.
+  - **Rebuild**, from the main checkout after the merge:
+    ```sh
+    npm ci && npm run build
+    mkdir -p /tmp/claude-1000/rb
+    cp .mdmd/history/history.json /tmp/claude-1000/rb/history-before.json
+    TMPDIR=/tmp/claude-1000/rb npm run live-docs:history -- --check-head --jobs
+  10 --stop-after 300 > /tmp/claude-1000/rb/run.log 2>&1
+    ```
+    - It writes `.mdmd/history/b4294caf0e7d629f/` beside the old cache and
+  rewrites `history.json`, the words folder and `pool.json`. **Never pass
+  `--remove-superseded`**, which would delete the old cache.
+    - Expect 2 to 3 hours at load 20 to 40, about 1.5 hours if the machine is
+  quiet.
+    - The default heap is enough: a process peaks at about 570 MB. If one runs
+  out, use `NODE_OPTIONS=--max-old-space-size=4096`, which now reaches the
+  summarizing process.
+    - To resume, run the same command again; a run stopped by its budget exits
+  3.
+  - **Comparison:**
+    ```sh
+    npx tsx --tsconfig ./tsconfig.base.json AI-Agent-Workspace/AgentSessionHisto
+  ry/2026/11/2026-11-19/Probes/history-rebuild-cost/compare-summaries.ts
+  .mdmd/history/c186af7356b58191 .mdmd/history/<key> --samples 5 --json
+  /tmp/claude-1000/rb/compare.json
+    ```
+    - It sets `lens` and `format` aside, and reads each new summary through
+  `bundledSummary` with the old configuration's `bundleExclude` (from
+  `c84fd00f`).
+    - Differences a branch is meant to cause are counted as **meant**, with
+  samples: `docLinks` and `citedBy` (links branch); `entries` (script entries);
+  symbols, dependencies, re-exports and archetype of files that are not plain
+  UTF-8 (Windows branch); names the names' branch now writes differently.
+    - Everything else is a **fault** (missing files, `authored`, `unread`,
+  `unwritten`, or a field its branch doesn't explain), and the script exits 1.
+    - As a check, I ran it on the old cache against itself: 1,263 commits
+  identical, no fault.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "History's linked documents at old commits" finished · 50m 33s
+
+● The engine joining has handed back with its gate green; I'm reviewing it now,
+  before anything is rebuilt or merged.
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● The join's fixes check out, so I'm starting the history rebuild on its branch,
+  which should take about an hour and a half; nothing goes to main until the
+  comparison with the old cache is clean. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Fifty-minute fallback timer while builders run" completed
+  (exit code 0)
+
+● Setting down the survey brief for the store change while the rebuild runs; it
+  is read-only work for one builder, so I can review it as the rebuild finishes.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Agent(Survey: facts without per-file docs) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Audits clean; committing the record, then a short status for you while the
+  rebuild and the survey run.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The engine joining came back with its checks green, and I've read every one of
+  its mends; nothing needed sending back.
+
+  - The history rebuild is running now, on the joined branch, not on main. It
+    regenerates all 1,271 changes and should take about an hour. When it ends I
+    compare every commit's result with the old cache. Only if that comparison is
+    clean does the branch merge to main, followed by the browser cases on a
+    quiet machine.
+  - The store change's survey is out, with one builder, earlier than I told you.
+    I had said it would start after the landings; that holds for the building.
+    The survey only reads and measures, and I can review it while I wait on the
+    rebuild. Its main measurement is to make the connections straight from
+    source, never written as Markdown, and hold them against what we get today
+    through the docs, on this repository and three real ones.
+
+  Nothing else is running. Eight builders stay parked with their work on their
+  branches.
+
+  One thing you'll need to do once the landing is on main: rebuild the
+  devcontainer, so it picks up Node 26. Until then everything still runs on Node
+  22, with a warning from npm.
+
+› Message from general-purpose
+  ## The headline
+  Writing the facts to Markdown and reading them back loses nothing. I compared,
+  field by field, the graph made straight from the generator's in-memory models
+  with the graph read back from the docs it writes (`index.json`). Over 14,336
+  files on four workspaces there were 0 differences. The comparison can fail:
+  one renamed symbol, one dropped edge and one removed file were all caught.
+
+  So the trial's case is cost, not lost facts. The parser, the value slots' read
+  side and the reversible escapes (about 900 of `document.ts`'s 1,253 lines),
+  plus about 1,000 lines of tests, exist only so a written doc reads back as its
+  model.
+
+  Commit **78feba0e3** on the worktree's branch, on top of a1d580016. No product
+  file was changed. The record is a dated probe, marked historical at its top:
+  - `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/facts-with
+  out-docs/README.md` (all seven parts)
+  - `probe.cjs`: the comparison, plus an "analysis alone" mode that writes
+  nothing. It wraps `renderLiveDoc` in the built CommonJS engine before the
+  generator loads.
+  - `time-inspect.sh`
+  - `results/*.json`: small per-run results.
+
+  The corpora were copied into a private folder, which I deleted afterwards. The
+  cold folder was never written to.
+
+  ## Part 2: the comparison
+  | Workspace | Files (models / docs) | Differing fields | Only in the docs'
+  graph |
+  | --- | --- | ---: | --- |
+  | This repository | 1,118 / 1,120 | 0 | 2 |
+  | dbatools | 1,977 / 1,977 | 0 | 0 |
+  | tSQLt | 465 / 465 | 0 | 0 |
+  | DNN | 10,776 / 10,776 | 0 | 0 |
+
+  - **The two extra files** (`.vscode/settings.json`, `d3-force-3d.d.ts`) are
+  stale docs kept for their authored words. They appear only because my copy
+  ignored those files. Runs with `--include` or `--changed` would add more of
+  this kind.
+  - **No corpus stopped generation.** I removed tSQLt's old five-file exclude
+  and every corpus still finished.
+  - **The model itself is already shaped by Markdown.** Its links are
+  percent-encoded paths relative to where the doc would sit, and the graph
+  decodes them again. Dropping the render, read-back and write alone frees
+  nothing more; the links would have to become a file plus a symbol.
+  - **A bug this hides:** `compose.ts:407` assumes the docs folder sits exactly
+  two folders below the workspace.
+
+  ## Part 3: costs
+  High load throughout (about 21), so the time differences are rough.
+
+  | Workspace | Full run: s, peak MB | Analysis alone: s, peak MB | Docs written
+  | One graph file: pretty / compact / gzipped |
+  | --- | --- | --- | --- | --- |
+  | This repository | 56.1, 485 | 56.1, 417 | 1,120, 4.3 MB | 9.45 / 6.75 / 1.16
+  MB |
+  | dbatools | 78.3, 492 | 68.7, 488 | 1,977, 4.0 MB, 9.3 MB on disk | 5.6 / 4.2
+  / 0.67 MB |
+  | tSQLt | 25.3, 310 | 24.6, 305 | 465, 1.2 MB | 2.3 / 1.6 / 0.13 MB |
+  | DNN | 250.8, 1,566 | 202.5, 1,161 | 10,776, 22.8 MB text, 61.9 MB on disk |
+  60.1 / 39.0 / 3.14 MB |
+
+  - **Deriving the graph from the models** takes 0.03–1.1 s.
+  - **`inspect`, one question on DNN:** 10.4–11.8 s today. Deriving the graph
+  from the docs is 6.5–7.5 s of that; reading `index.json` instead would be
+  1.4–1.9 s. With no stored graph it would mean re-analysing everything, 25–202
+  s per question across the corpora.
+  - **History:** from the history-rebuild-cost record's own numbers, with no new
+  run, the docs' share is about 7–13 % of one commit's time. The cost sits in
+  the index pass and the analysis, which removing the docs does not touch.
+
+  ## Where this contradicts the brief or your recommendation
+  1. **The count:** a1d580016 has 1,120 docs, not 1,093.
+  2. **The skill is wrong:** `reference.md:49` says the command line and the
+  Explorer read `index.json`. Both actually re-derive the graph from the docs.
+  The only product reader of `index.json` is the history's
+  `summarizeChange.ts:97`.
+  3. **"Beside the board":** the estate reader already reads each scan's own
+  folder (`graphFiles.ts:64–101`). Facts kept beside the board would make one
+  scan's facts depend on which board names it, and a scan on two boards would be
+  generated twice. I would keep them inside the scan, in a folder that ignores
+  itself.
+  4. **"Words as ordinary documents that link a file" loses something.** Today
+  720 links from authored words to 158 documents count as the file's relations.
+  Moved into separate documents, those become document-to-document links, which
+  the graph does not carry. The history would also lose them, because its
+  sequence carries only the forward links.
+
+     If every doc became a citing document, the bundle would go from 158 to
+  1,278 documents. The 3D documentation overlay would gain 1,120 nodes, each
+  tied to one file, and Knowledge Sources could not tell a file's own words from
+  a design document.
+  5. **Without docs the stored graph is a cache.** That reverses the 2026-09-28
+  reason "it is not a cache", and should be put to the owner as a reversal.
+
+  ## Forks, with my choice for each
+  - **Where the facts live:** inside the scanned folder, in a folder that
+  ignores itself. Commit nothing derived.
+  - **How a consumer knows they are fresh:** the stored graph carries a
+  fingerprint (the generator identity the history already computes, the
+  configuration, and a listing of the discovered files). On a mismatch, say
+  "stale" and regenerate. The per-file store of the 2026-10-19 decision stays
+  the later work; the fingerprint check is what its resolution step would run
+  first anyway.
+  - **The commands and checks:**
+    - `generate` writes the stored graph, and `--check` becomes the fingerprint
+  check. Drop `--include` and `--changed` until the per-file store exists.
+    - `lint` keeps only its structural checks over the graph.
+    - `find-orphans` is deleted.
+    - The gate's "Live Docs" stage and CI become "generate, then lint".
+    - Pages generates before building.
+    - The history's check at the head compares against a fresh generation, and
+  should say plainly what it no longer checks.
+  - **The export:** a one-way, on-demand Markdown export, never read back. The
+  Explorer's download already does exactly this.
+  - **A file's own top comment:** one general reader by comment syntax as the
+  floor, with each language's own reader overriding it where one exists. In the
+  model, call it `description`, not "opening", which already means a route or
+  procedure.
+  - **What the agent skill reads:** `inspect --json`, plus one new "everything
+  about this file" question.
+  - **New fork: where a file's own words live.** One words document per file at
+  a path convention. In this repository that is the same path, words only, so
+  the 8,724 existing links to those paths (from 173 documents) and the history
+  keep working. Its links count as the file's.
+
+  ## The road
+  Seven steps; each leaves a working product and a green gate.
+  1. The generator returns the graph it made, and the history takes it instead
+  of reading `index.json`.
+  2. Read each file's top comment into the model.
+  3. Consumers read the stored graph with its fingerprint.
+  4. Move the words into their own documents.
+  5. Stop writing per-file docs; deletes the parser and the round-trip tests.
+  6. Links in the model become a file plus a symbol.
+  7. Add the export command.
+
+  Every step except 7 changes code the history's cache is keyed on. I would land
+  1–3 in one rebuild and 4–6 in a second.
+
+  ## Not done
+  - No browser; the 1,278-document bundle was counted, not drawn.
+  - No phase-by-phase split of the analysis.
+  - The cost of the fingerprint check itself (a discovery walk plus `git
+  ls-files -s` on DNN) is the next thing I would measure.
+
+  The census of part 1 came from one read-only subagent of my tier
+  (general-purpose) run in parallel. I checked four of its claims against the
+  code and all held.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Survey: facts without per-file docs" finished · 28m 49s
+
+● The survey is back, and it corrects parts of what I recommended to you; I'm
+  reading its record in full before I say more.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Writing my reading of the survey into its record and the day's notes, then
+  I'll tell you what it changes.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Audits clean; committing the survey with my reading, then the summary of what
+  it changes.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The survey of the store change is back, and it corrects my recommendation in
+  three places. The full record (AI-Agent-Workspace/AgentSessionHistory/2026/11/
+  2026-11-19/Probes/facts-without-docs/README.md) has my reading at the end.
+
+  The finding. The builder made the connections straight from source, never
+  written as Markdown, and held them against what we get today through the docs.
+  Across this repository and three real ones (14,336 files) there was no
+  difference, and a deliberately planted fault was caught. So Markdown is not
+  losing facts. What it costs is:
+
+  - Machinery: about 1,900 lines of code and tests whose only job is reading a
+    doc back.
+  - Files: on the large .NET repository, 10,776 docs taking 62 MB on disk,
+    against one 3 MB file.
+  - Time: there, the command line takes 10 to 12 seconds to answer one question;
+    about 7 of those are spent re-reading the docs.
+
+  Where I was wrong:
+
+  1. "Facts beside the board." They belong inside each scanned folder, in a
+     folder git ignores by itself. Beside the board, the same repository named
+     by two boards would be scanned twice and could disagree.
+  2. "Written words as loose documents that link a file." Each file should keep
+     one words-only document of its own, at the path it has today, written only
+     when a person writes one. Loose documents would lose 720 of this
+     repository's file-to-document links and add 1,120 extra bodies to the 3D
+     map.
+  3. The history gains almost nothing. The docs are about a tenth of one
+     commit's time there.
+
+  What the change gives up:
+
+  - A commit's diff would no longer show the facts changing beside the code.
+  - The stored facts become a cache that must prove it is fresh. On September 28
+    we chose the index design because it was not a cache. Today's docs are also
+    a derived copy, kept fresh by a gate stage; the new form would be checked
+    by every command instead.
+
+  I still recommend going ahead, after the engine and reader landings, in two
+  steps:
+
+  1. Change no fact. The docs are still written, so the two ways can be compared
+     on every repository.
+  2. Move the words and stop writing the docs.
+
+  One question, which doesn't block step 1: should this repository keep
+  committing a Markdown copy of the facts, written one way and never read back,
+  so diffs and GitHub still show them? I would not, and would export on demand
+  instead.
+
+  The history rebuild is at 554 of 1,271 changes and should finish in about 45
+  minutes. Nothing else is running.
+
+● Background command "Fifty-minute fallback timer while the survey and the
+  rebuild run" completed (exit code 0)
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+● Bringing the month's inventory level with today's folders while the rebuild
+  finishes; one edit missed its anchor, fixing it.
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Audits clean; committing the inventory, then waiting on the rebuild's last
+  third.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Early look at the comparison: the 851 commits rebuilt so far match the old
+  cache exactly. Before I trust that, I'm checking the comparison can fail on
+  real data.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Early result while the rebuild finishes: of the 851 commits rebuilt so far,
+  every one matches the old cache exactly. I also checked the comparison can
+  fail: holding one commit against a different one gives 948 faults.
+
+  The rebuild is at 861 of 1,271 and should end in about 45 minutes. When it
+  does I run the full comparison, and only if that is clean does the engine work
+  merge to main. Nothing else is running.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19-200435-welco
+  me-back-lets-start-up-the-1119-dev-day-ch.txt in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+
+❯ >Eight builders stay parked with their work on their branches.
+  >
+  > One thing you'll need to do once the landing is on main: rebuild the
+  devcontainer, so it picks up Node 26. Until then everything still runs on
+  Node 22, with a warning from npm.
+
+  Ah, another rebuild. Okay. Will do when you say it's ready for a rebuild.
+
+  >One question, which doesn't block step 1: should this repository keep
+  committing a Markdown copy of the facts, written one way and never read back,
+  so diffs and GitHub still show them? I would not, and would export on demand
+  instead.
+
+  Export on demand, I'd expect.
+
+  >"Written words as loose documents that link a file." Each file should keep
+  one words-only document of its own, at the path it has today, written only
+  when a person writes one. Loose documents would lose 720 of this repository's
+  file-to-document links and add 1,120 extra bodies to the 3D map.
+
+  Here's where I'm not sure I agree. I feel like our ability to detect whether
+  a piece of documentation (markdown) _talks about_ (has a valid path to) a
+  particular code file is still functionality we should have (optionally; if
+  the user for some reason has sensitive(?) documentation or something, they
+  don't have to enable this as part of the scan). Furthermore, in the really
+  nice docstrings you get with languages like csharp, you genuinely can have a
+  docstring carrying a valid reference to another class somewhere in the
+  project. The final place where we would putatively lose links is in places
+  where the code-file-level docstring would be a bit nonsensical or
+  intellisense/linting-unfriendly if we placed a link to a project markdown
+  file in there (reasonable when you've got situations where documentation
+  files are not visible to a solution or project). Are there any other kinds of
+  documentation-related linking scenarios I haven't thought of that we still
+  give up?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checking three facts in the code before I answer your question about what else
+  would be given up.
+
+  Searched for 3 patterns, ran 2 shell commands · 1 failed (ctrl+o to expand)
+
+● Recorded your answers; running the audits and committing, then my answer to
+  your question.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Your rule is the simpler one, and I'm taking it for the trial: a document
+  relates to every file it links. I've withdrawn my path convention for a
+  per-file words document.
+
+  Detecting that a document talks about a file was never at risk. It exists
+  today as Cited By, with a switch (citedBy) and a list of documents to leave
+  out (bundleExclude), both of which you asked for on October 22.
+
+  Docstring references are read today but not drawn. A C# <see cref> shows as
+  text in the symbol's description and makes no connection on the map. It could
+  become a connection of its own kind, since a cref resolves the way a type name
+  does. That would be new work, not something the change loses.
+
+  What else is given up, beyond the case you named:
+
+  1. A note's onward links. Today a file's note is part of the file's doc, so a
+     link in it to the decisions log makes the decisions log a related document
+     of that file. Once the note is an ordinary document, that link runs from
+     one document to another, which the map does not carry. That is the 720.
+  2. Related documents in the history. The history records only links from a
+     file's own words out to documents, not documents that link a file. After
+     the change it would show no documents until it learns the other direction,
+     which can be built.
+  3. Telling a file's own description from a mention. On your kinds of code
+     almost no file opens with a comment: 45 of 3,973 C# files and 7 of 281
+     T-SQL scripts in the public samples. There a description can only come from
+     a document that links the file, and the Explorer would have no way to tell
+     that document from one that mentions the file in passing.
+  4. Pointers to why a file exists. Our notes hold 1,688 links to the session
+     records. They are not drawn on the map, but they are how a maintainer finds
+     the reasoning.
+  5. This repository's existing links into the mirror: 371 in current design
+     documents, which would be repointed at the source files, and 8,353 mentions
+     in archived records.
+
+  One thing is not given up: links from a document to a single symbol. None of
+  the 371 current links uses one.
+
+  What becomes of this repository's 1,120 notes is then a migration question for
+  the second step. I'll measure the options before bringing it to you.
+
+  The history rebuild is at 1,085 of 1,271, with about fifteen minutes to go.
+  I'll say when the devcontainer is ready to rebuild.
+
+❯ >A note's onward links. Today a file's note is part of the file's doc, so a
+  link in it to the decisions log makes the decisions log a related document of
+  that file. Once the note is an ordinary document, that link runs from one
+  document to another, which the map does not carry. That is the 720.
+
+  Buuuuuuut? What did we just do away with? Oh! That's right! The big gigantic
+  set of markdown documents that would have caused a duplicate entire galaxy of
+  the workspace in the 3D local map if all markdown documents were nodes in
+  the map.
+
+  Soooo now we can just... include.... non-gitignored docs as a type of node
+  that we map, no?
