@@ -29,7 +29,7 @@ import path from "node:path";
 import { rustSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -606,7 +606,8 @@ async function packageDirOf(directory: string, workspaceRoot: string): Promise<s
   try {
     await fs.access(path.join(directory, "Cargo.toml"));
     found = directory;
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     const parent = path.dirname(directory);
     found = directory.startsWith(workspaceRoot) && parent !== directory ? await packageDirOf(parent, workspaceRoot) : undefined;
   }
@@ -672,7 +673,8 @@ async function buildModuleTable(workspaceRoot: string, fileIndex: WorkspaceFileI
       const facts = await fileFacts(path.join(workspaceRoot, file));
       known.set(file, facts);
       return facts;
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       return undefined;
     }
   };

@@ -16,7 +16,7 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -102,7 +102,8 @@ async function resolveProjectReference(include: string, projectFile: string, wor
   if (fileIndex?.has(relative)) return relative;
   try {
     return (await fs.stat(absolute)).isFile() ? relative : undefined;
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return undefined;
   }
 }

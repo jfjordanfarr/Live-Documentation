@@ -21,6 +21,7 @@ import {
 } from "@live-documentation/engine/live-docs/document";
 import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtils";
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 import {
@@ -315,8 +316,15 @@ export async function generateLiveDocs(
       await fs.writeFile(docPaths.absolute, rendered, "utf8");
       written += 1;
     } catch (error) {
+      // Whatever was thrown, a stack run short among it, a process that lives across generations may have read the file
+      // where a fresh one would not, or the other way round (`processMark.ts`).
+      markProcess("unmapped");
       failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error), error });
-      await removeRefusedDoc(resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute, options.dryRun ?? false);
+      const docAbsolutePath = resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute;
+      // Where no stale doc is kept for its words (the history's scratch tree), no doc written on another day stands in
+      // for a file this run could not map; a person's workspace keeps it, for its words, and the command says so.
+      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);
+      else await removeRefusedDoc(docAbsolutePath, options.dryRun ?? false);
     }
   }
 
@@ -371,7 +379,12 @@ function noteReading(readings: SourceReadings, sourcePath: string, reading: Sour
  * A doc the reader reads, or one that holds authored words, is left as it is.
  */
 async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promise<void> {
-  const text = await readFileIfExists(docAbsolutePath);
+  // A doc path longer than the disk holds holds no doc: the file is named as one that could not be mapped, and the run
+  // goes on (until 2026-11-20 this read's failure stopped the whole run).
+  const text = await readFileIfExists(docAbsolutePath).catch((error: unknown) => {
+    if ((error as NodeJS.ErrnoException).code === "ENAMETOOLONG") return undefined;
+    throw error;
+  });
   if (text === undefined || dryRun) {
     return;
   }
@@ -381,6 +394,18 @@ async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promi
     if (error instanceof LiveDocSyntaxError && !hasMeaningfulAuthoredContent(authoredBlockOf(text))) {
       await fs.rm(docAbsolutePath, { force: true });
     }
+  }
+}
+
+/**
+ * Removes the doc of a file this run could not map, where no stale doc is kept for its words: a doc written on another
+ * day must not stand in for it. A doc path longer than the disk holds holds no doc, so there is nothing to remove.
+ */
+async function removeDocOfUnmapped(docAbsolutePath: string): Promise<void> {
+  try {
+    await fs.rm(docAbsolutePath, { force: true });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENAMETOOLONG") throw error;
   }
 }
 

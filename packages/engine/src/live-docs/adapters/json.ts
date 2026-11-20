@@ -29,10 +29,11 @@ import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
+import { jsonChildren, markProcess, nestingBeyondDepth, READING_DEPTH } from "../processMark";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { ManifestDependencies, manifestContext, packageSymbols, stringOf, tableOf, type ManifestContext } from "./manifest";
 
@@ -160,7 +161,9 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
  *   Windows path, `node scripts\a.ts`, is read: the backslash stays in the
  *   word, and the path's resolution turns it into `/`.
  */
-function filesRunBy(script: string, toSource: (candidate: string) => string | undefined): string[] {
+function filesRunBy(script: string, toSource: (candidate: string) => string | undefined, depth = 1): string[] {
+  // Each quoted word that holds words is read a level down: past the reading depth, the process is marked (`processMark.ts`).
+  if (depth > READING_DEPTH) markProcess("deep");
   const files: string[] = [];
   for (const words of shellCommands(script)) {
     let runs = false;
@@ -172,7 +175,7 @@ function filesRunBy(script: string, toSource: (candidate: string) => string | un
           runs = true;
         }
       } else if (word.spaced) {
-        files.push(...filesRunBy(word.text, toSource));
+        files.push(...filesRunBy(word.text, toSource, depth + 1));
       }
     }
   }
@@ -323,6 +326,8 @@ function compilerPaths(directory: string): { outDir: string; rootDirs: string[] 
   if (!ts.sys.fileExists(tsconfig)) return undefined;
   const read = ts.readConfigFile(tsconfig, (file) => ts.sys.readFile(file));
   if (read.error || !read.config) return undefined;
+  // TypeScript's reader of JSON recurses as its parser does: measured once it has read, as after a parse of a module.
+  nestingBeyondDepth(read.config as unknown, jsonChildren);
   const options = ts.parseJsonConfigFileContent(read.config, ts.sys, directory, undefined, tsconfig).options;
   if (!options.outDir) return undefined;
   const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
@@ -557,7 +562,8 @@ export const jsonAdapter: LanguageAdapter = {
     let content: string;
     try {
       content = await readSourceText(absolutePath);
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       return null;
     }
 
@@ -571,6 +577,8 @@ export const jsonAdapter: LanguageAdapter = {
         dependencies: []
       };
     }
+    // `JSON.parse` holds no stack; the walks below recurse, so a value nested deeper than a fresh process could walk marks the process.
+    nestingBeyondDepth(parsed, jsonChildren);
 
     if (path.basename(absolutePath) === PACKAGE_JSON) {
       return analyzePackageManifest(parsed, manifestContext({ absolutePath, workspaceRoot, fileIndex, symbolIndex }));

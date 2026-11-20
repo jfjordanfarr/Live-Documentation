@@ -36,7 +36,7 @@ import path from "node:path";
 import { cSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -664,7 +664,8 @@ function listingOf(directory: string): Listing | undefined {
     const stats = statSync(directory);
     if (!stats.isDirectory()) return undefined;
     mtimeMs = stats.mtimeMs;
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return undefined;
   }
   const cached = listingCache.get(directory);
@@ -675,7 +676,8 @@ function listingOf(directory: string): Listing | undefined {
     if (entry.isSymbolicLink()) {
       try {
         isDirectory = statSync(path.join(directory, entry.name)).isDirectory();
-      } catch {
+      } catch (error) {
+        throwIfMachineFailure(error);
         continue;
       }
     }
@@ -791,7 +793,8 @@ async function usedNames(facts: FileFacts, headerPath: string): Promise<string[]
   let header: FileFacts;
   try {
     header = await fileFacts(headerPath);
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return [];
   }
   const names = new Set<string>();

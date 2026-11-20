@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T22:40:12.780Z
+- Generated At: 2026-11-20T14:07:48.246Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L61)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L62)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -43,14 +43,14 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L82)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L83)
 
 ##### `SourceReadings` — Summary
 The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L123)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L124)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -114,6 +114,7 @@ behind the `Entry` lines (2026-10-15).
 - [`gitUtils.detectChangedFiles`](../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
+- [`processMark.markProcess`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-markprocess)
 - [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext)
 - [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)

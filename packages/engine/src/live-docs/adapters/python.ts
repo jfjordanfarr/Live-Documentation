@@ -32,7 +32,7 @@ import path from "node:path";
 import { pythonSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseDocstring } from "./python.docstring";
@@ -418,7 +418,8 @@ function directoryEntries(directory: string): Set<string> {
   let mtimeMs: number;
   try {
     mtimeMs = statSync(directory).mtimeMs;
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return new Set();
   }
   const cached = directoryCache.get(directory);
@@ -433,7 +434,8 @@ function isFile(candidate: string): boolean {
   if (!directoryEntries(path.dirname(candidate)).has(path.basename(candidate))) return false;
   try {
     return statSync(candidate).isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }

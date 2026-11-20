@@ -11,6 +11,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
+import { markProcess, READING_DEPTH } from "../processMark";
+
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
 
@@ -57,17 +59,6 @@ export function grammarParser(grammar: string): Promise<Parser> {
   return pending;
 }
 
-let faulted = false;
-
-/**
- * Whether anything thrown in this process while a tree was taken, read or released ({@link readTree}): after such a
- * throw no parser of the process is known sound, and a process that lives across many generations, as the history's
- * worker does, publishes nothing more and ends (`summarizeChange.ts`).
- */
-export function runtimeFaulted(): boolean {
-  return faulted;
-}
-
 /**
  * Parses `source` with the named grammar, hands the tree's root to `read`, which must be synchronous, and releases the
  * tree, returning what `read` returned. The only way the adapters take a tree.
@@ -78,10 +69,13 @@ export function runtimeFaulted(): boolean {
  * abort sets a flag the module keeps and throws one, an exit of the module throws its `ExitStatus`, a stack overflow
  * throws a `RangeError` wherever the stack ran out, in the module or in the adapter's walk, and `parse` holds no
  * `finally` round its call. Which of these a throw was cannot be told from the error, so any throw from the grammar's
- * load to the tree's release marks the process ({@link runtimeFaulted}), whatever its class, the adapter's own error
- * among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module of
- * unknown state make a summary. Until 2026-11-20 only a `RuntimeError` thrown inside `parse` marked it, and the
- * adapters walked and released their trees themselves (`parseSource`).
+ * load to the tree's release marks the process (`runtime`, `processMark.ts`), whatever its class, the adapter's own
+ * error among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module
+ * of unknown state make a summary. Before `read` is called the tree's depth is measured by a cursor, without
+ * recursion, and a tree deeper than `READING_DEPTH` marks the process too (`deep`): a fresh process might run out of
+ * stack in the adapter's walk where this one does not, or the other way round. Until 2026-11-20 only a `RuntimeError`
+ * thrown inside `parse` marked it, and the adapters walked and released their trees themselves (`parseSource`); the
+ * depth is measured since a later review of that day.
  */
 export async function readTree<T>(grammar: string, source: string, read: (root: SyntaxNode) => T): Promise<T> {
   try {
@@ -91,12 +85,34 @@ export async function readTree<T>(grammar: string, source: string, read: (root: 
       throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
     }
     try {
+      if (beyondDepth(tree)) markProcess("deep");
       return read(tree.rootNode);
     } finally {
       tree.delete();
     }
   } catch (error) {
-    faulted = true;
+    markProcess("runtime");
     throw error;
+  }
+}
+
+/** Whether a tree is deeper than `READING_DEPTH`, walked by a cursor one node at a time, so that the measure needs no stack of its own. */
+function beyondDepth(tree: Tree): boolean {
+  const cursor = tree.walk();
+  try {
+    let depth = 1;
+    for (;;) {
+      if (depth > READING_DEPTH) return true;
+      if (cursor.gotoFirstChild()) {
+        depth += 1;
+        continue;
+      }
+      while (!cursor.gotoNextSibling()) {
+        if (!cursor.gotoParent()) return false;
+        depth -= 1;
+      }
+    }
+  } finally {
+    cursor.delete();
   }
 }

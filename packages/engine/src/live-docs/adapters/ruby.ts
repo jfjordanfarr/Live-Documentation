@@ -2,7 +2,7 @@ import { statSync } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -365,7 +365,8 @@ function resolveRequirePath(directory: string, workspaceRoot: string, specifier:
 function isFile(candidate: string): boolean {
   try {
     return statSync(candidate).isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }

@@ -13,7 +13,12 @@ import sys
 #   4 the folders above, 5 the environment, 6 the mark, 7 the refusal, 8 the first change, 9 the fresh worker,
 #   10 the memory bound, 11 the walk's counts, 12 the identity, 13 the short names, 14 nothing remote, 15 one place,
 #   16 the repository's settings, 17 the reason written anew, 18 to 21 the stamp's size, modification time, change
-#   time and mode, 22 nothing of the product writes a kept file); with none, every guard at once. Since the second review of 2026-11-20 each guard is
+#   time and mode, 22 nothing of the product writes a kept file, 23 the case setting pinned in a tree, 24 the case
+#   setting keyed; and, renumbered when the two rounds of 2026-11-20 were joined, the summaries' round's guards, which
+#   its own record numbers 11 to 21: 25 the depth, 26 the unmapped mark, 27 the old doc, 28 the machine's failure,
+#   29 the TypeScript depth, 30 the tree's folder in a reason, 31 the environment removed, 32 the machine's stop,
+#   33 the JSON depth, 34 an adapter's own read, 35 a doc path too long); with none, every guard at once. Since the
+#   second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
 # directory's guards are broken one at a time by hand, as the record's section on the review says. Since the fourth
@@ -40,14 +45,14 @@ edits = [
      "  let tree: WorkingTree | undefined;\n  const summarize",
      "  let tree: WorkingTree | undefined;\n  let firstEnvironment: Record<string, string> | undefined;\n  const summarize"),
     ("packages/engine/src/live-docs/adapters/treeSitter.ts",
-     "    faulted = true;\n",
-     "    faulted = faulted;\n"),
+     "    markProcess(\"runtime\");\n",
+     "    void 0;\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "  if (!publishable()) return false;\n",
+     "  if (!publishable()) return { published: false, unmapped };\n",
      "  publishable();\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "warn, () => first || !runtimeFaulted());",
-     "warn, () => !runtimeFaulted());"),
+     "warn, () => first || processMarks().length === 0);",
+     "warn, () => processMarks().length === 0);"),
     ("packages/generator/src/history/regenerate.ts",
      "          if (!report.published) {\n",
      "          if (false as boolean) {\n"),
@@ -77,8 +82,8 @@ edits = [
      "    GIT_CONFIG_COUNT: String(settings.length),\n",
      "    GIT_CONFIG_COUNT: \"0\",\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), runtimeFaulted",
-     "runtimeFaulted"),
+     "...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), marked",
+     "marked"),
     # The second pass of that round: 18 to 21 each field of the stamp but the identity left out of its comparison
     # (git.test.ts, sameStamp); 22 the generator rewriting each source file, same bytes, after writing its doc
     # (history-tree-forward.test.ts, the samples case, which holds that nothing of the product writes a kept file).
@@ -104,10 +109,53 @@ edits = [
     ("packages/engine/src/live-docs/history/lens.ts",
      "  const made = repository.ignoresCase ? { repository: { ignoresCase: true } } : {};\n",
      "  const made = {};\n"),
+    # Since the review of 2026-11-20 at e1e27e33a: a tree-sitter tree beyond the reading depth left unmarked
+    # (treeSitter.test.ts); a file the generator could not map left unmarked; its committed doc kept in the history's
+    # tree (history-workers); a machine's failure published (regenerate.test.ts's stand-ins hold the pool's side).
+    ("packages/engine/src/live-docs/adapters/treeSitter.ts",
+     "      if (beyondDepth(tree)) markProcess(\"deep\");\n",
+     "      beyondDepth(tree);\n"),
+    ("packages/generator/src/generator.ts",
+     "      markProcess(\"unmapped\");\n",
+     "      void 0;\n"),
+    ("packages/generator/src/generator.ts",
+     "      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);\n",
+     "      if (options.keepAuthoredStaleDocs === undefined && !options.dryRun) await removeDocOfUnmapped(docAbsolutePath);\n"),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "  if (machine !== undefined) return",
+     "  if (machine === null) return"),
+    # A TypeScript tree beyond the reading depth left unmarked (history-workers, the four changes); a reason left
+    # naming the tree's folder (history-workers, two workers in two folders).
+    ("packages/engine/src/live-docs/processMark.ts",
+     "      markProcess(\"deep\");\n      return true;\n    }\n    ts.forEachChild(",
+     "      return true;\n    }\n    ts.forEachChild("),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "reason: withoutTree(failure.reason, tree),",
+     "reason: failure.reason,"),
+    # The tree's environment left in the worker after its summary (history-workers, the tree's git environment).
+    ("packages/generator/src/history/summarizeChange.ts",
+     "      for (const name of Object.keys(environment)) delete process.env[name];\n",
+     "      void environment;\n"),
+    # The pool going on after a fresh worker's failure of the machine's (regenerate.test.ts's stand-ins, history-workers).
+    ("packages/generator/src/history/regenerate.ts",
+     "            if (report.machineFailure) throw new Error(",
+     "            if (report.machineFailure && false) throw new Error("),
+    # A JSON document beyond the reading depth left unmarked (json.test.ts).
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "    nestingBeyondDepth(parsed, jsonChildren);\n",
+     "    void parsed;\n"),
+    # A failure of the machine's swallowed by an adapter's own read (history-workers, the C reader's include).
+    ("packages/engine/src/live-docs/adapters/c.ts",
+     "    header = await fileFacts(headerPath);\n  } catch (error) {\n    throwIfMachineFailure(error);\n",
+     "    header = await fileFacts(headerPath);\n  } catch (error) {\n    void error;\n"),
+    # A doc path the disk cannot hold stopping a person's whole run (generator.test.ts).
+    ("packages/generator/src/generator.ts",
+     "code === \"ENAMETOOLONG\") return undefined;",
+     "code === \"ENAMETOOLONG\") throw error;"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

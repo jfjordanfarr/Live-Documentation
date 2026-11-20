@@ -93,7 +93,7 @@ async function standInPool(changes: number, jobs: number, memory: number, report
     let nth = 0;
     return {
       summarize: async (task) => {
-        const said: WorkerReport = { peakMemory: 1, unwritten: [], warned: [], broughtForward: nth > 0, runtimeFaulted: false, published: true, heldMemory: 1, heapShare: 0, ...report(worker, nth++) };
+        const said: WorkerReport = { peakMemory: 1, unwritten: [], warned: [], broughtForward: nth > 0, marked: [], published: true, unmapped: [], heldMemory: 1, heapShare: 0, ...report(worker, nth++) };
         calls.push(`${worker}:${Number(task.id)}`);
         if (said.published) published.push(`${Number(task.id)}`);
         return said;
@@ -123,20 +123,36 @@ describe("a worker whose tree-sitter runtime faulted", () => {
   // A fault after a worker's first change may come of a state an earlier change left, which a fresh process would not
   // make (the independent review of 2026-11-20, its fourth round): that change goes once more, to a fresh worker.
   it("has its change summarized again by a fresh worker, written once, and the worker ended", async () => {
-    const { calls, published, timings } = await standInPool(3, 1, 1e12, (worker, nth) => (worker === 0 && nth === 1 ? { runtimeFaulted: true, published: false } : {}));
+    const { calls, published, timings } = await standInPool(3, 1, 1e12, (worker, nth) => (worker === 0 && nth === 1 ? { marked: ["runtime"], published: false } : {}));
     expect(calls).toEqual(["0:1", "0:2", "0:end", "1:2", "1:3", "1:end"]);
     expect(published).toEqual(["1", "2", "3"]);
     expect(timings).toHaveLength(3);
   });
 
   it("in its first change is ended after it, the change written as a fresh process makes it and never summarized again", async () => {
-    const { calls, published } = await standInPool(2, 1, 1e12, (_worker, nth) => (nth === 0 ? { runtimeFaulted: true } : {}));
+    const { calls, published } = await standInPool(2, 1, 1e12, (_worker, nth) => (nth === 0 ? { marked: ["runtime"] } : {}));
     expect(calls).toEqual(["0:1", "0:end", "1:2", "1:end"]);
     expect(published).toEqual(["1", "2"]);
   });
 
   it("fails the run where a fresh worker does not write its first change", async () => {
-    await expect(standInPool(1, 1, 1e12, () => ({ runtimeFaulted: true, published: false }))).rejects.toThrow("a fresh worker did not write");
+    await expect(standInPool(1, 1, 1e12, () => ({ marked: ["runtime"], published: false }))).rejects.toThrow("a fresh worker did not write");
+  });
+});
+
+describe("a file that failed for a cause of the machine's", () => {
+  // A failed system call (too many open files, a full disk) is no property of the change, so its summary is never
+  // written: the change is tried once more by a fresh worker, and the run stops if it fails again (2026-11-20).
+  const machine = { published: false, marked: ["unmapped" as const], unmapped: [{ path: "src/a.ts", reason: "EMFILE: too many open files, open 'src/a.ts'" }], machineFailure: { path: "src/a.ts", error: "EMFILE: too many open files, open 'src/a.ts'" } };
+
+  it("is tried once more by a fresh worker, even in a worker's first change", async () => {
+    const { calls, published } = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 0 ? machine : {}));
+    expect(calls).toEqual(["0:1", "0:end", "1:1", "1:2", "1:end"]);
+    expect(published).toEqual(["1", "2"]);
+  });
+
+  it("stops the run, naming the change, the file and the error, when the fresh worker fails so too", async () => {
+    await expect(standInPool(1, 1, 1e12, () => machine)).rejects.toThrow(`the summary of ${"1".padStart(40, "0")} failed twice for a cause of the machine's: src/a.ts: EMFILE: too many open files`);
   });
 });
 
@@ -174,9 +190,9 @@ describe("a worker's summary", () => {
       const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4" });
       const cache = path.join(scratch, "cache");
       const task = { tree, configuration, lens: "stand-in", commit: "0".repeat(40), summaryPath: path.join(cache, "s.json.gz"), textStore: path.join(cache, "texts"), indexPath: path.join(cache, "s.index.json.gz") };
-      await expect(summarizeChange(task, () => undefined, () => false)).resolves.toBe(false);
+      await expect(summarizeChange(task, () => undefined, () => false)).resolves.toEqual({ published: false, unmapped: [] });
       await expect(fs.readdir(scratch)).resolves.toEqual(["tree"]);
-      await expect(summarizeChange(task, () => undefined, () => true)).resolves.toBe(true);
+      await expect(summarizeChange(task, () => undefined, () => true)).resolves.toEqual({ published: true, unmapped: [] });
       expect((await fs.readdir(cache)).sort()).toEqual(["s.index.json.gz", "s.json.gz", "texts"]);
     } finally {
       await fs.rm(scratch, { recursive: true, force: true });

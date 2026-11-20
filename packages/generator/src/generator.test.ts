@@ -16,6 +16,27 @@ import { summarizeGraph } from "@live-documentation/engine/live-docs/history/sum
 
 import { generateLiveDocs } from "./generator";
 
+describe("a source whose doc's path the disk cannot hold", () => {
+  // A name of 250 characters is a file the disk holds; its doc's name, eight characters longer, is not. Until
+  // 2026-11-20 the doc's removal after the failure read it, and that read's failure stopped the whole run.
+  it("is named as a file that could not be mapped, and the run goes on", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-long-name-"));
+    try {
+      const long = `src/${"n".repeat(247)}.ts`;
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.writeFile(path.join(root, long), "export const x = 1;\n");
+      await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+      const quiet = (): undefined => undefined;
+      const result = await generateLiveDocs({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }), logger: { info: quiet, warn: quiet, error: quiet } });
+      expect(result.failed.map((failure) => failure.sourcePath)).toEqual([long]);
+      expect(result.failed[0].reason).toMatch(/^ENAMETOOLONG/u);
+      expect(result.files.map((file) => file.sourcePath)).toContain("src/a.ts");
+    } finally {
+      await fs.rm(root, { recursive: true, force: true });
+    }
+  });
+});
+
 describe("generateLiveDocs pruning", () => {
   let workspaceRoot: string;
 
