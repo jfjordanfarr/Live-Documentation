@@ -23,7 +23,8 @@ import sys
 #   of the machine's, 45 a POM's depth, 46 the chain of causes, 47 a reason's separator, 48 the task's case setting
 #   carried to the tree, 49 a nearer copy of the installation's, 50 the index pass's throw handed to the file's pass;
 #   51 and 52 the case setting keyed by the command and carried on a task; 53 to 55 the depth measure's reach past
-#   forEachChild: a node's JSDoc, a bracketed JSDoc parameter's default, the left operand of a less-than);
+#   forEachChild: a node's JSDoc, a bracketed JSDoc parameter's default, the left operand of a less-than; 56 to 65
+#   the read rule's second look, each named where its edit stands);
 #   with none, every guard at once. Since the second review
 #   of 2026-11-20 each guard is broken by itself in a run of its own, so that one held by no test shows; the leftovers'
 #   round found guard 17 (the reason written anew) and the branch of guard 49 held by no test before it, and gave each one.
@@ -239,11 +240,50 @@ edits = [
     ("packages/engine/src/live-docs/processMark.ts",
      "parent.left === child && parent.operatorToken.kind !== ts.SyntaxKind.LessThanToken",
      "parent.left === child"),
+    # The read rule's second look, 2026-11-20, as its builder gave them: 56 a mended catch round a read swallowing again
+    # (sourceText.boundary.test.ts); 57 the docs root's probe before pruning read as gone, and 58 a folder above the
+    # workspace read as no scan (generator.test.ts, and the structural test); 59 the tidying after a pruned doc stopping
+    # the run (generator.test.ts, and the structural test's list); 60 the estate's probe for a scan's docs read as none
+    # (the structural test alone); 61 a failed read of .gitignore read as none where git cannot judge
+    # (discovery.test.ts); 62 a failed probe of the engine's own grammar loading the bundled one (treeSitter.test.ts);
+    # 63 a failed probe of a folder's .git read as no repository (gitIgnored.test.ts); 64 a worker's warning of a file
+    # it could not map (history-worker-warning.test.ts); 65 the command's words for a failure of the machine's
+    # (generate-cli.test.ts). The broken forms of 63 and 65 leave an import unused, which tsx runs all the same.
+    ("packages/engine/src/live-docs/adapters/go.ts",
+     "      facts = await fileFacts(path.join(workspaceRoot, file));\n    } catch (error) {\n      throwIfMachineFailure(error);\n      continue;\n",
+     "      facts = await fileFacts(path.join(workspaceRoot, file));\n    } catch (error) {\n      continue;\n"),
+    ("packages/generator/src/generator.ts",
+     "    return stats.isDirectory();\n  } catch (error) {\n    throwIfMachineFailure(error);\n    return false;\n",
+     "    return stats.isDirectory();\n  } catch (error) {\n    return false;\n"),
+    ("packages/generator/src/generator.ts",
+     "      return true;\n    } catch (error) {\n      throwIfMachineFailure(error);\n    }\n",
+     "      return true;\n    } catch (error) {\n      void error;\n    }\n"),
+    ("packages/generator/src/generator.ts",
+     "    } catch {\n      break;\n    }\n",
+     "    } catch (error) {\n      throwIfMachineFailure(error);\n      break;\n    }\n"),
+    ("packages/engine/src/live-docs/graphFiles.ts",
+     "    } catch (error) {\n      throwIfMachineFailure(error);\n      return false;\n",
+     "    } catch (error) {\n      return false;\n"),
+    ("packages/engine/src/live-docs/discovery.ts",
+     "  } catch (error) {\n    throwIfMachineFailure(error);\n    // No `.gitignore`, or a name the disk cannot hold: nothing to ignore.\n",
+     "  } catch (error) {\n    // No `.gitignore`, or a name the disk cannot hold: nothing to ignore.\n"),
+    ("packages/engine/src/live-docs/adapters/treeSitter.ts",
+     "    // A name too long, or a loop of links, is not there either; any other failure is the machine's.\n    throwIfMachineFailure(error);\n",
+     "    // A name too long, or a loop of links, is not there either; any other failure is the machine's.\n    void error;\n"),
+    ("packages/engine/src/tooling/gitIgnored.ts",
+     'fs.statSync(path.join(at, ".git"), { throwIfNoEntry: false }) !== undefined',
+     'fs.existsSync(path.join(at, ".git"))'),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "  for (const failure of unmapped) warn(`could not map ${failure.path}: ${failure.reason}`);\n",
+     ""),
+    ("scripts/live-docs/generate.ts",
+     "  const unreadable = layer4Result.failed.filter(({ error }) => machineFailure(error));\n  const unmapped = layer4Result.failed.filter(({ error }) => !machineFailure(error));\n",
+     "  const unreadable = layer4Result.failed.filter(() => false);\n  const unmapped = layer4Result.failed;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
+          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:
