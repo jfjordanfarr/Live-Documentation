@@ -145,10 +145,11 @@ export async function generateLiveDocs(
     workspaceRoot,
     config: normalizedConfig,
     include: new Set(),
-    changedOnly: false
+    changedOnly: false,
+    warn: (message) => logger.warn(message)
   });
   const includedFiles = includeSet.size > 0
-    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false })
+    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false, warn: (message) => logger.warn(message) })
     : workspaceFiles;
   // An explicit include may name a source outside the configured globs. It is
   // still part of the workspace context for this run, but only included files
@@ -182,7 +183,7 @@ export async function generateLiveDocs(
   // The documents that cite each file, for the `Cited By` sections, read from every markdown document discovery finds
   // whatever subset this run renders, so that a section says the same whichever run wrote it.
   const citedByIndex = normalizedConfig.citedBy
-    ? citingDocuments(await readMarkdownDocuments(workspaceRoot, normalizedConfig), fileIndex, normalizedConfig, normalizedConfig.bundleExclude)
+    ? citingDocuments(await readMarkdownDocuments(workspaceRoot, normalizedConfig, (message) => logger.warn(message)), fileIndex, normalizedConfig, normalizedConfig.bundleExclude)
     : new Map<string, string[]>();
   if (normalizedConfig.citedBy) {
     logger.info(`Read the documents' links: ${[...citedByIndex.values()].reduce((sum, documents) => sum + documents.length, 0)} citations of ${citedByIndex.size} files`);
@@ -410,8 +411,8 @@ async function removeDocOfUnmapped(docAbsolutePath: string): Promise<void> {
 }
 
 /** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */
-async function readMarkdownDocuments(workspaceRoot: string, config: LiveDocumentationConfig): Promise<DocumentText[]> {
-  const documents = (await discoverDocuments({ workspaceRoot, config })).filter(isMarkdownDocument);
+async function readMarkdownDocuments(workspaceRoot: string, config: LiveDocumentationConfig, warn: (message: string) => void): Promise<DocumentText[]> {
+  const documents = (await discoverDocuments({ workspaceRoot, config, warn })).filter(isMarkdownDocument);
   return Promise.all(documents.map(async (relative) => ({ path: relative, text: await fs.readFile(path.join(workspaceRoot, relative), "utf8") })));
 }
 

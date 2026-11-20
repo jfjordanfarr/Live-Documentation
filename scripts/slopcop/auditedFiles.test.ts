@@ -1,26 +1,20 @@
-import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { foldersGitIgnoresWhole, withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnores } from "@live-documentation/engine/tooling/gitIgnored";
 
 import { auditedFiles } from "./auditedFiles";
 
 /**
- * Every case holds the shortened walk to the walk the audits made until 2026-11-20, kept here as the oracle: each
- * pattern matched over the whole workspace, then what git ignores dropped, every file kept when git cannot answer. A
- * case is red when the shortened walk leaves a file out that the oracle keeps, or keeps one the oracle drops.
+ * Every case names the files it expects, written out from what git itself says of the repository it makes (`git
+ * status --ignored`). Until the review of the third form (2026-11-20) each case was also held to an oracle, the old
+ * full walk judged by `withoutGitIgnored`; since that judging came to read the very listing the audits read, the
+ * oracle graded the code by itself, and it is gone: the written lists are the cases' only measure.
  */
-function oracle(root: string, patterns: string[], ignoreGlobs: string[]): string[] {
-  const found = new Set<string>();
-  for (const pattern of patterns) {
-    for (const match of globSync(pattern, { cwd: root, ignore: ignoreGlobs, nodir: true, dot: true })) found.add(path.resolve(root, match));
-  }
-  return withoutGitIgnored(root, Array.from(found).sort());
-}
+const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
 
 const folders: string[] = [];
 // The variables a case sets, restored one by one: the process's own environment is the one git is started with.
@@ -51,11 +45,9 @@ function git(root: string, ...args: string[]): void {
   if (result.status !== 0) throw new Error(`git ${args.join(" ")} failed: ${result.stderr}`);
 }
 
-/** The audited files as workspace-relative paths, after checking them against the oracle. */
+/** The audited files as workspace-relative paths. */
 function audited(root: string, patterns = ["**/*.md"], ignoreGlobs = ["**/node_modules/**"]): string[] {
-  const files = auditedFiles(root, patterns, ignoreGlobs);
-  expect(files).toEqual(oracle(root, patterns, ignoreGlobs));
-  return files.map((file) => path.relative(root, file).split(path.sep).join("/"));
+  return auditedFiles(root, patterns, ignoreGlobs).map((file) => path.relative(root, file).split(path.sep).join("/"));
 }
 
 describe("auditedFiles", () => {
@@ -78,7 +70,7 @@ describe("auditedFiles", () => {
     } finally {
       spy.mockRestore();
     }
-    expect(files).toEqual(oracle(root, ["**/*.md"], ["**/.git/**"]));
+    expect(files).toEqual([path.join(root, "README.md"), path.join(root, "mixed", "kept.md")]);
     expect([...read].sort()).toEqual(["", "mixed"]);
   });
 
@@ -142,51 +134,113 @@ describe("auditedFiles", () => {
     }
   });
 
-  it("reads every file, as before, where git refuses a path in a submodule", () => {
+  it("judges each path by its name, a name a tracked file's wildcard pattern would match among them", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n", "build/a.md": "", "module/b.md": "", "README.md": "" });
+    write(root, { ".gitignore": "build/\n*.log.md\n", "a1/build/x.md": "", "a[1]/build/x.md": "", "a1.log.md": "", "a[1].log.md": "", "b?/out/x.md": "", "bc/out/x.md": "", "a\\b/out/x.md": "", "ab/out/x.md": "", "ab/.gitignore": "out/\n", "a\\b/.gitignore": "out/\n", "kept.md": "" });
+    git(root, "init", "-q");
+    git(root, "add", "-f", "a1/build/x.md", "a1.log.md", "bc/out/x.md", "ab/out/x.md");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "out/\n");
+    // Asked as patterns, `a[1]/build/x.md` matched the tracked `a1/build/x.md` and was kept, and so each of the others.
+    expect(audited(root)).toEqual(["a1.log.md", "a1/build/x.md", "ab/out/x.md", "bc/out/x.md", "kept.md"]);
+  });
+
+  it("judges a submodule's files by the submodule's own git", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "build/\n*.gen.md\n", "build/a.md": "", "module/b.md": "", "module/.gitignore": "own.md\n", "module/own.md": "", "module/mine.md": "", "module/x.gen.md": "", "module/build/c.md": "", "README.md": "" });
     git(path.join(root, "module"), "init", "-q");
-    git(path.join(root, "module"), "add", "b.md");
+    git(path.join(root, "module"), "add", "b.md", "x.gen.md", ".gitignore");
     git(path.join(root, "module"), "commit", "-qm", "module");
+    fs.appendFileSync(path.join(root, "module", ".git", "info", "exclude"), "mine.md\n");
     git(root, "init", "-q");
     git(root, "add", "module");
 
-    // Git refuses `module/b.md`, and the audit then reads every file found, the ignored build among them.
-    expect(audited(root)).toEqual(["README.md", "build/a.md", "module/b.md"]);
+    // The outer `build/` and `*.gen.md` reach no file of the submodule; its own `.gitignore` and `.git/info/exclude` do.
+    // Until this form `module/build/c.md` and the tracked `module/x.gen.md` were dropped, and `module/mine.md` read.
+    expect(audited(root)).toEqual(["README.md", "module/b.md", "module/build/c.md", "module/x.gen.md"]);
   });
 
-  it("walks in full a pattern that may pass through a link to a folder inside an ignored folder", () => {
+  it("asks of a path through a link to a folder as its link: ignored with the link, else read", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n", "src/real/r.md": "", "README.md": "" });
-    fs.mkdirSync(path.join(root, "build"));
+    write(root, { ".gitignore": "build/\n", "src/real/r.md": "", "README.md": "", "build/kept.md": "" });
+    fs.mkdirSync(path.join(root, "open"));
     fs.symlinkSync(path.join("..", "src", "real"), path.join(root, "build", "link"));
+    fs.symlinkSync(path.join("..", "src", "real"), path.join(root, "open", "link"));
     git(root, "init", "-q");
+    // A tracked file keeps `build` from being a folder git ignores whole, so that the walk finds what is under its link.
+    git(root, "add", "-f", "build/kept.md");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "*.md\n!README.md\n!src/**\n");
 
-    // `*/**/*.md` follows `build/link`, and git refuses `build/link/r.md`; then every file found is read, as before.
-    expect(audited(root, ["*/**/*.md"])).toEqual(["build/link/r.md", "src/real/r.md"]);
-    expect(audited(root)).toEqual(["README.md", "src/real/r.md"]);
+    // `*/**/*.md` follows both links; git judges no path beyond one, so `build/link/r.md` goes with the ignored
+    // `build/link`, and `open/link/r.md`, whose link git does not ignore, is read as every file is that git cannot judge.
+    expect(audited(root, ["*/**/*.md"])).toEqual(["build/kept.md", "open/link/r.md", "src/real/r.md"]);
+    expect(audited(root)).toEqual(["README.md", "build/kept.md", "src/real/r.md"]);
   });
 
-  it("walks a folder whose path begins with a colon, which git may read as pathspec magic and refuse", () => {
+  it("judges a folder or a file whose path begins with a colon by its name", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n/:*\n", "build/a.md": "", "README.md": "", ":(bad)/c.md": "" });
+    write(root, { ".gitignore": "build/\n/:*\n!/:kept.md\n", "build/a.md": "", "README.md": "", ":(bad)/c.md": "", ":!x.md": "", ":kept.md": "" });
     git(root, "init", "-q");
 
-    // Git refuses `:(bad)/c.md`, so the answer is as before: every file found.
-    expect(audited(root)).toEqual([":(bad)/c.md", "README.md", "build/a.md"]);
-    expect([...foldersGitIgnoresWhole(root)]).toEqual(["build"]);
+    // Until 2026-11-20 git refused `:(bad)/c.md`, and the audit then read every file found.
+    expect(audited(root)).toEqual([":kept.md", "README.md"]);
+    expect([...foldersGitIgnoresWhole(root)].sort()).toEqual([":(bad)", "build"]);
   });
 
-  it("walks a workspace that lies inside a folder an outer repository ignores, as before", () => {
+  it("reads nothing of a workspace that lies inside a folder an outer repository ignores", () => {
     const outer = workspace();
-    write(outer, { ".gitignore": "inner/\n", "inner/a.md": "", "inner/sub/b.md": "" });
+    write(outer, { ".gitignore": "inner/\n", "inner/a.md": "", "inner/sub/b.md": "", "inner/:(bad).md": "" });
     git(outer, "init", "-q");
     const root = path.join(outer, "inner");
+    // Git names the workspace itself (`./`), and it reads as empty.
     expect(audited(root)).toEqual([]);
-    // Git names the workspace itself (`./`), which is walked all the same: a top-level name git refuses changes the answer.
-    write(root, { ":(bad).md": "" });
-    expect(audited(root)).toEqual([":(bad).md", "a.md", "sub/b.md"]);
-    expect(foldersGitIgnoresWhole(root).size).toBe(0);
+    expect([...foldersGitIgnoresWhole(root)]).toEqual([""]);
+  });
+
+  it("judges by git's listing taken after the walk a folder a build makes while the walk runs", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "dist/\n", "README.md": "" });
+    git(root, "init", "-q");
+    // A stand-in for a build: the walk's first read of a folder makes `dist/` and a file in it, after the listing that
+    // shortens the walk and before the one that judges it.
+    const readdirSync = fs.readdirSync;
+    let built = false;
+    const spy = vi.spyOn(fs, "readdirSync").mockImplementation(((...args: unknown[]) => {
+      if (!built) {
+        built = true;
+        write(root, { "dist/out.md": "" });
+      }
+      return Reflect.apply(readdirSync, fs, args);
+    }) as unknown as typeof fs.readdirSync);
+    try {
+      expect(audited(root)).toEqual(["README.md"]);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("walks whole and reads every file where the listing fails, before the walk or after it, and says so", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "build/\n", "build/a.md": "", "excluded/e.md": "", "README.md": "" });
+    git(root, "init", "-q");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+    // A git whose listing fails, as one whose output passes the buffer would, from the `after`-th listing on.
+    const bin = workspace();
+    const real = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+    const count = path.join(bin, "count");
+    fs.writeFileSync(path.join(bin, "git"), `#!/bin/sh\nfor a in "$@"; do if [ "$a" = ls-files ]; then n=$(cat "${count}"); echo $((n + 1)) > "${count}"; [ "$n" -ge "$GIT_FAILS_AFTER" ] && exit 128; fi; done\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    process.env.PATH = `${bin}${path.delimiter}${process.env.PATH ?? ""}`;
+    try {
+      for (const after of ["0", "1"]) {
+        fs.writeFileSync(count, "0");
+        process.env.GIT_FAILS_AFTER = after;
+        const warnings: string[] = [];
+        // The walk the first listing shortened, which left `excluded/` unread, is made again whole where the second fails.
+        expect(auditedFiles(root, ["**/*.md"], [], (message) => warnings.push(message)).map((file) => path.relative(root, file)), `failing after ${after}`).toEqual(["README.md", "build/a.md", "excluded/e.md"]);
+        expect(warnings, `failing after ${after}`).toEqual([expect.stringMatching(after === "0" ? /what it ignores in \S+ \(git exited with 128\): every file/u : /what it ignores in \S+ after the walk \(git exited with 128\)/u)]);
+      }
+    } finally {
+      delete process.env.GIT_FAILS_AFTER;
+    }
   });
 
   it("walks everything where git cannot answer: outside a repository, and with no git on the path", () => {

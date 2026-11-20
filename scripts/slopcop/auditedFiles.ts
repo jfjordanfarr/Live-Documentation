@@ -3,23 +3,16 @@
  * folders git ignores whole.
  *
  * @remarks
- * The audits match their patterns over the whole workspace and then ask git which of the files found it ignores
- * (`gitIgnored`), so that a checkout's ignored copies of the repository, builds and caches are never audited. Until
- * 2026-11-20 the walk read every one of those folders file by file only to throw the files away: in the main checkout,
- * with its builders' worktrees under `.claude/worktrees/`, the markdown audit took 19.5 s where a clean worktree took
- * 2.1 s. Now git is asked once, before the walk, for the folders it ignores whole (`foldersGitIgnoresWhole`), and the
- * walk reads each of those folders as empty (`foldersReadAsEmpty`). What the audit reads is the same by construction:
- * every file under such a folder is untracked and ignored, so the filter that follows the walk would have dropped it.
- *
- * Two rules keep that true where it would not otherwise hold, for git refuses the whole question (`gitIgnored` is
- * then `null`, and the audit reads every file the walk found) when one path it is given lies inside a submodule, passes
- * through a link to a folder, or begins with a `:` git reads as pathspec magic. A pattern is walked this way only when
- * it is a leading `**` and one name (`walksNoLinkToAFolder`), under which glob follows no link to a folder; and when
- * git refuses the files of the shortened walk, the walk is made again in full and judged as before. A submodule never
- * lies in a folder git ignores whole, since its folder is tracked, so git refuses the full walk as it refused the short
- * one; and the folders whose own paths git could refuse are never among those it ignores whole. The helpers live with
- * `gitIgnored` in the engine, where discovery shortens its walks the same way; this module was their first home, under
- * `scripts/`, so that the audits' change moved no key of the history's cache.
+ * The audits match their patterns over the whole workspace and leave out what git ignores, so that a checkout's ignored
+ * copies of the repository, builds and caches are never audited. Until 2026-11-20 the walk read every one of those
+ * folders file by file only to throw the files away: in the main checkout, with its builders' worktrees under
+ * `.claude/worktrees/`, the markdown audit took 19.5 s where a clean worktree took 2.1 s. Now git is asked what it
+ * ignores (`gitIgnores` in the engine, where discovery asks the same) before the walk, which reads the folders it
+ * ignores whole as empty, and again after it, to judge the files found. A file git cannot judge, one reached through a
+ * link to a folder git does not ignore or in a nested repository git cannot be asked about, is read; and where git cannot answer at
+ * all, the walk is whole and every file found is read. Either is told to `warn` (2026-11-20), but where git says the
+ * workspace lies in no repository. This module was the helpers' first home, under `scripts/`, so
+ * that the audits' first change moved no key of the history's cache.
  *
  * The records of the measurements and the cases: the probe of 2026-11-20 under
  * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
@@ -29,47 +22,45 @@
 import { globSync, type FSOption } from "glob";
 import path from "node:path";
 
-import {
-  foldersGitIgnoresWhole,
-  foldersReadAsEmpty,
-  gitIgnored,
-  walksNoLinkToAFolder,
-  withoutGitIgnored
-} from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnores, type GitUnanswered } from "@live-documentation/engine/tooling/gitIgnored";
 
 /**
  * The files the patterns match under `workspaceRoot` and git does not ignore, as absolute paths, sorted; every file
  * they match when git cannot answer. Each pattern is matched by itself, with `ignoreGlobs` left out of the walk, as the
  * audits always matched them.
  */
-export function auditedFiles(workspaceRoot: string, patterns: readonly string[], ignoreGlobs: readonly string[]): string[] {
-  const folders = foldersGitIgnoresWhole(workspaceRoot);
-  if (folders.size > 0) {
-    const files = matching(workspaceRoot, patterns, ignoreGlobs, foldersReadAsEmpty(workspaceRoot, folders));
-    const relative = files.map((file) => path.relative(workspaceRoot, file).split(path.sep).join("/"));
-    const ignored = gitIgnored(workspaceRoot, relative);
-    if (ignored) {
-      return files.filter((_file, index) => !ignored.has(relative[index]));
+export function auditedFiles(
+  workspaceRoot: string,
+  patterns: readonly string[],
+  ignoreGlobs: readonly string[],
+  warn: (message: string) => void = (message) => console.warn(message)
+): string[] {
+  const walk = (unread: FSOption | undefined): Map<string, string> => {
+    const discovered = new Map<string, string>();
+    for (const pattern of patterns) {
+      for (const match of globSync(pattern, { cwd: workspaceRoot, ignore: [...ignoreGlobs], nodir: true, dot: true, ...(unread ? { fs: unread } : {}) })) {
+        const absolute = path.resolve(workspaceRoot, match);
+        discovered.set(absolute, path.relative(workspaceRoot, absolute).split(path.sep).join("/"));
+      }
     }
-    // Git refused one of the paths, and refuses the same path in the full walk: there every file found is read.
+    return discovered;
+  };
+  let unanswered: GitUnanswered | undefined;
+  const told = (why: GitUnanswered): void => {
+    unanswered = why;
+  };
+  const pruning = gitIgnores(workspaceRoot, told);
+  let discovered = walk(pruning?.unread);
+  // Judged by a listing taken after the walk, as discovery judges; where it fails, the walk is made again whole.
+  const judging = pruning && gitIgnores(workspaceRoot, told);
+  if (pruning && !judging) discovered = walk(undefined);
+  if (!judging && unanswered && !unanswered.noRepository) {
+    warn(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): every file found is audited.`);
   }
-  return withoutGitIgnored(workspaceRoot, matching(workspaceRoot, patterns, ignoreGlobs, undefined));
-}
-
-/** The files each pattern matches, as absolute paths, sorted; a pattern that passes no link is walked on `unread`. */
-function matching(workspaceRoot: string, patterns: readonly string[], ignoreGlobs: readonly string[], unread: FSOption | undefined): string[] {
-  const discovered = new Set<string>();
-  for (const pattern of patterns) {
-    const matches = globSync(pattern, {
-      cwd: workspaceRoot,
-      ignore: [...ignoreGlobs],
-      nodir: true,
-      dot: true,
-      ...(unread && walksNoLinkToAFolder(pattern) ? { fs: unread } : {})
-    });
-    for (const match of matches) {
-      discovered.add(path.resolve(workspaceRoot, match));
-    }
+  const answer = judging?.answer([...discovered.values()]);
+  if (answer && answer.unjudged.size > 0) {
+    const [first] = answer.unjudged;
+    warn(`git cannot say what it ignores of ${answer.unjudged.size} file(s), such as ${first}, reached through a link to a folder that is not a repository's top, which git does not follow, or in a folder holding a .git that git could not be asked about: they are audited.`);
   }
-  return Array.from(discovered).sort();
+  return [...discovered.keys()].filter((absolute) => !answer?.ignored.has(discovered.get(absolute) ?? "")).sort();
 }
