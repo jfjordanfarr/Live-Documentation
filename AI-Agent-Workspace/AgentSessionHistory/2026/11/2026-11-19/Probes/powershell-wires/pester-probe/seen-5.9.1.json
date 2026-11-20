@@ -1,0 +1,13 @@
+{
+  "fileLevel": false,
+  "describeBody": false,
+  "describeScript": true,
+  "beforeAll": true,
+  "beforeEach": true,
+  "contextBody": false,
+  "contextBeforeAll": true,
+  "Get-AtFile": false,
+  "Get-InDescribe": false,
+  "Get-InBeforeAll": true,
+  "Get-InBeforeEach": true
+}
