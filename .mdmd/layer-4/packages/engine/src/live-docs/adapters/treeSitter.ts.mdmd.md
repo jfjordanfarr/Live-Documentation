@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T10:59:48.803Z
+- Generated At: 2026-11-20T11:36:34.427Z
 
 ## Authored
 ### Purpose
@@ -35,9 +35,20 @@ One parser per grammar, created on first use and kept for the life of the proces
 runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
 generations never fails a file for a failure of the past.
 
+#### `runtimeFaulted` {#symbol-runtimefaulted}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L72)
+
+##### `runtimeFaulted` — Summary
+Whether a parse in this process threw from inside the runtime's WebAssembly, a trap or an abort
+(`WebAssembly.RuntimeError`). The runtime restores none of its state when a call into it throws (`parse` holds no
+`finally` around its call into the module, and an abort sets a flag the module keeps), and every grammar's parser
+shares the one module, so after such a throw no parser of the process is known sound: a process that lives across
+many generations ends rather than parse again (the history's workers, since 2026-11-20).
+
 #### `parseSource` {#symbol-parsesource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L61)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L77)
 
 ##### `parseSource` — Summary
 Parses `source` with the named grammar. The caller owns the tree and should `delete()` it when done.

@@ -50,6 +50,7 @@ import path from "node:path";
 import { gzipSync } from "node:zlib";
 
 import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { runtimeFaulted } from "@live-documentation/engine/live-docs/adapters/treeSitter";
 import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
 import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
@@ -219,6 +220,11 @@ export interface WorkerReport {
   warned: string[];
   /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
   broughtForward: boolean;
+  /**
+   * Whether a parse in this process has thrown from inside the tree-sitter runtime (`runtimeFaulted`), after which no
+   * parser of the process is known sound: the command ends the worker (`regenerate.ts`).
+   */
+  runtimeFaulted: boolean;
 }
 
 /**
@@ -243,6 +249,9 @@ export interface WorkerReport {
  *   another change (until the review, the folder was renamed for every change and the worker ended after a hundred);
  * - a grammar's load: kept when it succeeds, dropped when it fails, so that the next file asks again (until the review,
  *   a failed load was kept and the worker ended after any change in which a file failed);
+ * - the parsers, sound unless a parse threw from inside the runtime's WebAssembly, which restores none of its state:
+ *   the worker then says so (`runtimeFaulted`) and the command ends it, the narrowest form of the rule the review
+ *   withdrew;
  * - the temporary names of the summary and the texts, by the process's id: one task at a time, the next sent only
  *   when this one has answered;
  * - the peak memory, sent as the process's own since it began, which is what a lane of the pool holds.
@@ -269,7 +278,7 @@ function work(store: string, folder: string): void {
       for (const name of Object.keys(environment)) delete process.env[name];
     }
     // The peak as the operating system counts it, since the process began; `maxRSS` is in kibibytes.
-    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward };
+    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, runtimeFaulted: runtimeFaulted() };
   };
   // One task at a time: the command sends the next only when this one has answered.
   process.on("message", (task: WorkerTask) => {

@@ -177,6 +177,12 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           for (const message of new Set(report.warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
           }
+          // A parse that threw from inside the tree-sitter runtime leaves no parser of the process known sound: the
+          // worker ends, and the next change starts in a new one (`runtimeFaulted` in `treeSitter.ts`).
+          if (report.runtimeFaulted) {
+            await worker.end();
+            worker = undefined;
+          }
           timings.push(Date.now() - began);
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
           const wall = (Date.now() - started) / timings.length;

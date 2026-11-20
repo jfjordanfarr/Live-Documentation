@@ -1,7 +1,30 @@
 import { describe, expect, it, vi } from "vitest";
-import { Language } from "web-tree-sitter";
+import { Language, Parser } from "web-tree-sitter";
 
-import { grammarParser, parseSource, type SyntaxNode } from "./treeSitter";
+import { grammarParser, parseSource, runtimeFaulted, type SyntaxNode } from "./treeSitter";
+
+describe("a parse that throws from inside the runtime", () => {
+  // The runtime restores none of its state when a call into its WebAssembly throws, so the process says so, and the
+  // history's worker ends after the task (until 2026-11-20 a worker ended after any failed file, for any cause).
+  it("marks the process as no longer sound, and a throw of another kind does not", async () => {
+    await grammarParser("c-sharp");
+    const parse = vi.spyOn(Parser.prototype, "parse");
+    try {
+      parse.mockImplementationOnce(() => {
+        throw new TypeError("not a string");
+      });
+      await expect(parseSource("c-sharp", "class A {}")).rejects.toThrow("not a string");
+      expect(runtimeFaulted()).toBe(false);
+      parse.mockImplementationOnce(() => {
+        throw new (globalThis as unknown as { WebAssembly: { RuntimeError: new (message: string) => Error } }).WebAssembly.RuntimeError("memory access out of bounds");
+      });
+      await expect(parseSource("c-sharp", "class A {}")).rejects.toThrow("memory access out of bounds");
+      expect(runtimeFaulted()).toBe(true);
+    } finally {
+      parse.mockRestore();
+    }
+  });
+});
 
 describe("the grammar loader", () => {
   // A process that lives across many generations, as the history's worker does, must not fail every later file of a

@@ -57,10 +57,32 @@ export function grammarParser(grammar: string): Promise<Parser> {
   return pending;
 }
 
+// The platform's class of a WebAssembly trap or abort; the engine compiles without the WebAssembly library's types.
+const RUNTIME_ERROR = (globalThis as unknown as { WebAssembly: { RuntimeError: new (message?: string) => Error } }).WebAssembly.RuntimeError;
+
+let faulted = false;
+
+/**
+ * Whether a parse in this process threw from inside the runtime's WebAssembly, a trap or an abort
+ * (`WebAssembly.RuntimeError`). The runtime restores none of its state when a call into it throws (`parse` holds no
+ * `finally` around its call into the module, and an abort sets a flag the module keeps), and every grammar's parser
+ * shares the one module, so after such a throw no parser of the process is known sound: a process that lives across
+ * many generations ends rather than parse again (the history's workers, since 2026-11-20).
+ */
+export function runtimeFaulted(): boolean {
+  return faulted;
+}
+
 /** Parses `source` with the named grammar. The caller owns the tree and should `delete()` it when done. */
 export async function parseSource(grammar: string, source: string): Promise<Tree> {
   const parser = await grammarParser(grammar);
-  const tree   = parser.parse(source);
+  let tree: Tree | null;
+  try {
+    tree = parser.parse(source);
+  } catch (error) {
+    if (error instanceof RUNTIME_ERROR) faulted = true;
+    throw error;
+  }
   if (!tree) {
     throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
   }

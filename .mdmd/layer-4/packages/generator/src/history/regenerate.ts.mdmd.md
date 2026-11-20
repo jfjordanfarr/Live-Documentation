@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T10:59:54.949Z
+- Generated At: 2026-11-20T11:36:35.971Z
 
 ## Authored
 ### Purpose
@@ -75,7 +75,7 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L295)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L301)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -86,7 +86,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L326)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L332)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
