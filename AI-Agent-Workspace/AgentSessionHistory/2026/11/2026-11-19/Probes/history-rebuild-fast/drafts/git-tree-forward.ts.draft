@@ -1,0 +1,187 @@
+export async function writeStoredTree(
+  root: string,
+  change: string,
+  directory: string,
+  options?: WorkingTreeOptions & { platform?: NodeJS.Platform; disk?: TreeDisk }
+): Promise<UnwrittenEntry[]> {
+  return (await writePlan(root, change, directory, await planTree(root, change, options), options?.disk ?? realDisk(directory))).unwritten;
+}
+
+/** A change's tree as the writer writes it: the entries it writes, in the tree's order, and those its listing refuses, with why. */
+interface TreePlan {
+  entries: TreeEntry[];
+  refused: UnwrittenEntry[];
+  /** Each path's place in the tree's order, by which the entries left out are listed. */
+  position: Map<string, number>;
+}
+
+/** What a tree's writer left on the disk: every entry it wrote, by its repository-relative path. */
+export type WrittenEntries = ReadonlyMap<string, Readonly<TreeEntry>>;
+
+/** The entries of a change's tree the writer writes, and those it refuses by the listing alone: every rule of {@link writeStoredTree} that does not ask the disk. */
+async function planTree(root: string, change: string, options?: WorkingTreeOptions & { platform?: NodeJS.Platform }): Promise<TreePlan> {
+  const platform = options?.platform ?? process.platform;
+  const contentless = options?.contentless ?? ((): boolean => false);
+  const docsRoot = options?.docsRoot;
+  const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT, env: READ_AS_STORED })).stdout;
+  const refused: UnwrittenEntry[] = [];
+  const entries: TreeEntry[] = [];
+  const named = new Set<string>();
+  const position = new Map<string, number>();
+  const listed: Array<{ mode: string; id: string; relative: string }> = [];
+  for (const line of listing.split("\0")) {
+    if (line === "") continue;
+    // Each entry is `<mode> <type> <id>\t<path>`.
+    const tab = line.indexOf("\t");
+    const [mode, , id] = line.slice(0, tab).split(" ");
+    listed.push({ mode, id, relative: line.slice(tab + 1) });
+  }
+  // The commit's own listing, which a link is followed through, never the disk.
+  const byPath = new Map(listed.map(({ mode, id, relative }) => [relative, { mode, id }]));
+  const links = listed.filter((entry) => entry.mode === LINK_MODE);
+  const linkBlobs = await readSmallBlobs(root, [...new Set(links.map((entry) => entry.id))]);
+  const targets = new Map(links.map((entry) => [entry.relative, linkBlobs.get(entry.id)?.toString("utf8") ?? ""]));
+  // A copy at the docs root or above it would stand where the generator needs a folder; beneath it a copy is a plain file.
+  const atOrAboveDocsRoot = (relative: string): boolean => docsRoot !== undefined && (relative === docsRoot || docsRoot.startsWith(`${relative}/`));
+  for (const { mode, id, relative } of listed) {
+    if (!position.has(relative)) position.set(relative, position.size);
+    const parts = relative.split("/");
+    if (parts.some((part) => part === "" || part === "." || part === ".." || part.toLowerCase() === ".git")) {
+      refused.push({ path: relative, reason: "its path would leave the tree or name a .git, which git refuses to check out" });
+    } else if (platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
+      refused.push({ path: relative, reason: "its name cannot be written on Windows, where git refuses to check it out" });
+    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== SUBMODULE_MODE && mode !== LINK_MODE) {
+      refused.push({ path: relative, reason: `its mode ${mode} is one no checkout writes` });
+    } else if (relative.includes("�")) {
+      // Git's listing is read as UTF-8, so a name that is not would be written under another name than its own.
+      refused.push({ path: relative, reason: "its name is not valid UTF-8, so it cannot be written under its own name" });
+    } else if (named.has(relative)) {
+      refused.push({ path: relative, reason: "the tree names it twice" });
+    } else if (mode === LINK_MODE && atOrAboveDocsRoot(relative)) {
+      refused.push({ path: relative, reason: "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow" });
+    } else if (mode === LINK_MODE) {
+      // A link to a file of the tree is written as a copy of that file, so that a reader finds there what it finds in
+      // a checkout and nothing is ever written or read through a link; any other is named.
+      const end = followLink(relative, byPath, targets);
+      if ("reason" in end) {
+        refused.push({ path: relative, reason: end.reason });
+      } else {
+        named.add(relative);
+        entries.push({ mode: end.file.mode, id: end.file.id, relative, parts, ...(contentless(relative) ? { empty: true as const } : {}) });
+      }
+    } else {
+      named.add(relative);
+      entries.push({ mode, id, relative, parts, ...(mode !== SUBMODULE_MODE && contentless(relative) ? { empty: true as const } : {}) });
+    }
+  }
+  return { entries, refused, position };
+}
+
+/**
+ * Writes a plan's entries under `directory`, asking the disk before each ({@link placeEntry}), and returns every entry
+ * left out, the listing's and the disk's, in the tree's order, and every entry written.
+ *
+ * @param folders - The folders the writer may take as standing without asking the disk: none for a tree written anew.
+ */
+async function writePlan(
+  root: string,
+  change: string,
+  directory: string,
+  plan: TreePlan,
+  disk: TreeDisk,
+  folders: Set<string> = new Set()
+): Promise<{ unwritten: UnwrittenEntry[]; written: Map<string, TreeEntry> }> {
+  const unwritten: UnwrittenEntry[] = [...plan.refused];
+  // An entry that becomes no folder or file of its own: one refused, or a submodule's empty folder.
+  const place = async (entry: TreeEntry): Promise<boolean> => {
+    const reason = await placeEntry(entry.parts, disk, folders);
+    if (reason !== undefined) {
+      unwritten.push({ path: entry.relative, reason });
+      return false;
+    }
+    if (entry.mode === SUBMODULE_MODE) {
+      try {
+        await disk.makeFolder(entry.relative);
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code === undefined || !NAME_FAILURES.has(code)) throw error;
+        unwritten.push({ path: entry.relative, reason: `this disk cannot hold its name (${code})` });
+      }
+      return false;
+    }
+    return true;
+  };
+  await writeBlobs(root, change, directory, plan.entries, place, (entry, code) => unwritten.push({ path: entry.relative, reason: `this disk cannot hold its name (${code})` }));
+  const left = new Set(unwritten.map((entry) => entry.path));
+  const written = new Map(plan.entries.filter((entry) => !left.has(entry.relative)).map((entry) => [entry.relative, entry]));
+  // In the tree's order, whether an entry was refused by its name or by the disk.
+  return { unwritten: unwritten.sort((a, b) => (plan.position.get(a.path) ?? 0) - (plan.position.get(b.path) ?? 0)), written };
+}
+
+/**
+ * Brings a tree the writer wrote for one change to another change in place, so that it holds what {@link
+ * writeStoredTree} writes for that change into an empty folder: file for file, byte for byte, mode for mode, and
+ * nothing else. Every entry the old tree holds otherwise than the new change's plan writes it (another blob, mode or
+ * emptiness, or not at all) is removed, and so is every folder no entry of the new change lies in; the docs root, where
+ * the summarizing process wrote and pruned, is removed whole; then every entry the plan writes and the old tree does
+ * not hold so is written, in the tree's order, the disk asked before each as for a tree written anew.
+ *
+ * @remarks
+ * A tree written anew settles a clash of two names the disk takes for one by the tree's order, the first written; a
+ * tree brought forward could settle it otherwise, since the name standing may be the later one. So wherever the disk
+ * refuses an entry, or a folder that should be empty is not, the tree is not brought forward and the caller writes it
+ * anew: a brought-forward tree never holds an entry the disk refused.
+ *
+ * @param previous - What the writer wrote of the old change, as this function or {@link writePlan} returned it.
+ * @returns The entries left out of the new change's tree and those written, or undefined where it was not brought
+ *   forward, the folder then in no state to be read.
+ */
+export async function bringTreeForward(
+  root: string,
+  change: string,
+  directory: string,
+  previous: WrittenEntries,
+  options?: WorkingTreeOptions & { platform?: NodeJS.Platform; disk?: TreeDisk }
+): Promise<{ unwritten: UnwrittenEntry[]; written: Map<string, TreeEntry> } | undefined> {
+  const docsRoot = options?.docsRoot;
+  // Without a docs root inside the tree, nothing says where the summarizing process wrote.
+  if (docsRoot === undefined) return undefined;
+  const disk = options?.disk ?? realDisk(directory);
+  const plan = await planTree(root, change, options);
+  const within = (file: string, folder: string): boolean => file === folder || file.startsWith(`${folder}/`);
+  await fs.rm(path.join(directory, ...docsRoot.split("/")), { recursive: true, force: true });
+  const next = new Map(plan.entries.map((entry) => [entry.relative, entry]));
+  const kept = new Map<string, TreeEntry>();
+  const gone: Array<Readonly<TreeEntry>> = [];
+  for (const [file, entry] of previous) {
+    if (within(file, docsRoot)) continue;
+    const wanted = next.get(file);
+    if (wanted !== undefined && wanted.mode === entry.mode && wanted.id === entry.id && wanted.empty === entry.empty) kept.set(file, wanted);
+    else gone.push(entry);
+  }
+  try {
+    for (const entry of gone) {
+      const at = path.join(directory, ...entry.parts);
+      if (entry.mode === SUBMODULE_MODE) await fs.rmdir(at);
+      else await fs.unlink(at);
+    }
+    // Every folder the old tree made that no entry of the new one lies in goes, the deepest first; one not empty means
+    // the tree holds what its writer did not write.
+    const needed = foldersOf(next);
+    const standing = [...foldersOf(previous)].filter((folder) => !needed.has(folder) && !within(folder, docsRoot));
+    for (const folder of standing.sort((a, b) => b.split("/").length - a.split("/").length)) {
+      await fs.rmdir(path.join(directory, ...folder.split("/")));
+    }
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code === "ENOENT" || code === "ENOTEMPTY" || code === "EEXIST" || code === "ENOTDIR" || code === "EISDIR") return undefined;
+    throw error;
+  }
+  // The folders that stand: every folder an entry kept lies in, outside the docs root.
+  const folders = new Set([...foldersOf(kept)].filter((folder) => !within(folder, docsRoot)));
+  const toWrite = plan.entries.filter((entry) => !kept.has(entry.relative));
+  const { unwritten, written } = await writePlan(root, change, directory, { entries: toWrite, refused: plan.refused, position: plan.position }, disk, folders);
+  if (unwritten.length !== plan.refused.length) return undefined;
+  for (const [file, entry] of kept) written.set(file, entry);
+  return { unwritten, written };
+}

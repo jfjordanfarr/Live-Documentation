@@ -1,0 +1,62 @@
+// ---- summarizeChange.ts: summarizeChange(task, warn) returns how many files the generator failed on ----
+
+/** What the history command asks of a worker: to summarize one change, its tree written or brought forward by the worker. */
+export interface WorkerTask {
+  change: string;
+  /** The task as a process of its own was given it until 2026-11-20, but for its tree, which the worker writes. */
+  task: Omit<SummaryTask, "tree" | "unwritten">;
+}
+
+/** What a worker answers for each task. */
+export interface WorkerReport extends SummaryReport {
+  /** The entries of the change's tree the worker did not write, and why; the summary says they were not read. */
+  unwritten: Array<{ path: string; reason: string }>;
+  /** What the generator warned, a line each. */
+  warned: string[];
+  /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
+  broughtForward: boolean;
+  /** How many files the generator could not document; the command ends a worker after a task with any (`regenerate.ts`). */
+  failed: number;
+}
+
+/** The variables a tree's environment sets ({@link WorkingTree.environment}), cleared before each tree is written. */
+const TREE_VARIABLES = ["GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL", "GIT_NO_REPLACE_OBJECTS"];
+
+/**
+ * A worker: a process the history command starts once, which summarizes changes one at a time as it is sent them, in
+ * a tree it keeps under `folder` and brings forward from each change to the next, renamed for each so that no file's
+ * absolute path at one change is its path at another.
+ *
+ * @remarks
+ * What a process keeps from one summary to the next (the record of 2026-11-20, `Probes/history-rebuild-fast`, takes
+ * each by name): the tree's git variables are cleared before the next tree is written and set to that tree's before it
+ * is summarized, so that no git call of one change asks another's index; the adapters' caches, kept by absolute path
+ * and never cleared, never meet a path again, since every change's tree has a folder of its own; the grammars a
+ * process loads are a function of the grammar; and the peak memory sent is the process's since it began, which is
+ * what a lane of the pool needs.
+ */
+async function work(repository: string, folder: string): Promise<void> {
+  const versionControl = await openGitRepository(repository);
+  let tree: WorkingTree | undefined;
+  let count = 0;
+  // One task at a time: the command sends the next only when this one has answered.
+  process.on("message", (message: WorkerTask) => {
+    void (async () => {
+      const directory = path.join(folder, `t${count}`);
+      count += 1;
+      const options = treeOptions(message.task.configuration, directory);
+      for (const name of TREE_VARIABLES) delete process.env[name];
+      tree = tree === undefined ? await versionControl.workingTree(message.change, directory, options) : await tree.bringTo(message.change, directory, options);
+      Object.assign(process.env, tree.environment);
+      const warned: string[] = [];
+      const failed = await summarizeChange({ ...message.task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, (line) => warned.push(line));
+      const report: WorkerReport = { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, failed };
+      process.send?.(report);
+    })().catch((error: unknown) => {
+      process.stderr.write(`${error instanceof Error ? (error.stack ?? error.message) : String(error)}\n`);
+      process.exit(1);
+    });
+  });
+  // The command ends a worker by closing the channel between them.
+  process.on("disconnect", () => process.exit(0));
+}
