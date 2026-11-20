@@ -50,8 +50,8 @@ edits = [
      "          if (!report.published) {\n",
      "          if (false as boolean) {\n"),
     ("packages/generator/src/history/regenerate.ts",
-     " || report.heldMemory > bound || report.heapShare > 1 / 2) {\n",
-     ") {\n"),
+     "      const full = report.heldMemory > bound || report.heapShare > 1 / 2;\n",
+     "      const full = report.heldMemory < 0;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.

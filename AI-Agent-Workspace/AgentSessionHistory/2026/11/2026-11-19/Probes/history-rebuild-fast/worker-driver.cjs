@@ -44,6 +44,10 @@ childProcess.fork = function (...args) {
   return child;
 };
 const { regenerate, Scratch } = require(path.join(root, "packages/generator/dist/history/regenerate.js"));
+// Since the review's fourth round the pool bounds each worker by its share of the memory it was sized by, as the command hands it.
+const { poolMemory, usableMachine } = require(path.join(root, "packages/generator/dist/history/computeHistory.js"));
+const os = require("node:os");
+const memory = poolMemory(usableMachine({ totalMemory: os.totalmem(), constrainedMemory: process.constrainedMemory(), processors: os.availableParallelism() }));
 
 const rssOf = (pid) => {
   try {
@@ -102,7 +106,7 @@ async function main() {
   const before = { stat: procStat(), load: loadavg() };
   began = performance.now();
   const scratch = new Scratch();
-  const result = await scratch.during(() => regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: false, jobs, scratch, progress }));
+  const result = await scratch.during(() => regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: false, jobs, memory, scratch, progress }));
   const wall = (performance.now() - began) / 1000;
   clearInterval(sampler);
   const after = { stat: procStat(), load: loadavg() };

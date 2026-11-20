@@ -177,7 +177,9 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       peakMemory = Math.max(peakMemory, report.peakMemory);
       // A worker that holds more than its share of the pool's memory, or half its heap's limit, is replaced too, so that
       // what still grows with each change, unfound, never fails a run (its next change is a fresh worker's first).
-      if (report.runtimeFaulted || !report.published || report.heldMemory > bound || report.heapShare > 1 / 2) {
+      const full = report.heldMemory > bound || report.heapShare > 1 / 2;
+      if (full) context.progress(`${change.id.slice(0, 8)}: its worker holds ${formatMegabytes(report.heldMemory)}, ${Math.round(report.heapShare * 100)}% of its heap's limit, against ${formatMegabytes(bound)} and a half; replaced`);
+      if (report.runtimeFaulted || !report.published || full) {
         await worker.end();
         worker = undefined;
       }
@@ -363,6 +365,10 @@ function heapLimit(flags: readonly string[]): string[] {
 export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
   const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
   return [...loader, ...heapLimit(commandFlags)];
+}
+
+function formatMegabytes(bytes: number): string {
+  return `${Math.round(bytes / 2 ** 20)} MiB`;
 }
 
 function seconds(milliseconds: number): string {
