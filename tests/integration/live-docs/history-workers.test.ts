@@ -8,7 +8,7 @@
  * without that flag; the two caches must agree byte for byte, summaries and texts, but for the lens's key each summary
  * names, which keeps the two apart (the record of 2026-11-20, `Probes/history-rebuild-fast`).
  */
-import { fork, spawnSync } from "node:child_process";
+import { fork, spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -152,7 +152,60 @@ describe("the history without workers kept and with them, over one repository", 
     expectSameButTheLens({ lens: keptLens, files: cacheOf(workspace, keptLens) }, { lens: fresh, files: cacheOf(workspace, fresh) });
     expect([...cacheOf(workspace, fresh).keys()].filter((file) => file.endsWith(".json.gz"))).toHaveLength(commits.length);
   }, 300_000);
+
+  // A worker reused in the default mode said nothing of itself: the run's lines are the pool's own words, and the
+  // summaries of these commits are the same either way (the reviewer of 2026-11-20, with the pool's end of a worker
+  // after every change taken out). Each worker makes a scratch folder of its own under the run's temporary folder
+  // (`live-docs-history-…`) and removes it when it ends, so the names made during the run count the workers.
+  it("starts a worker for every commit by default, and one for them all where workers are kept", async () => {
+    const workspace = fs.mkdtempSync(path.join(privateTemporary, "count-"));
+    const commits = buildRepository(workspace, SCRIPT);
+    expect(await workerFolders(workspace, [])).toHaveLength(commits.length);
+    fs.rmSync(path.join(workspace, ".mdmd", "history"), { recursive: true, force: true });
+    expect(await workerFolders(workspace, ["--keep-workers"])).toHaveLength(1);
+  }, 300_000);
+
+  // The pool's own line that workers are kept is said only where it regenerates, so a run over a whole cache made with
+  // workers kept wrote the history from those summaries without a word (the reviewer of 2026-11-20).
+  it("says so on its closing line whenever its summaries were made with workers kept, a run that regenerates nothing too", () => {
+    const workspace = fs.mkdtempSync(path.join(privateTemporary, "said-"));
+    buildRepository(workspace, SCRIPT.slice(0, 2));
+    const said = "Its summaries were made by workers kept from commit to commit (--keep-workers), not yet shown to be those a process of its own makes.";
+    const made = history(workspace, 1, "keep workers");
+    expect(made).toContain(said);
+    const again = history(workspace, 1, "keep workers");
+    expect(again).toContain("0 regenerated");
+    expect(again).not.toContain("workers are kept from change to change");
+    expect(again).toContain(said);
+    // Without workers kept the closing line says nothing of them.
+    expect(history(workspace, 1)).not.toContain(said);
+  }, 300_000);
 });
+
+/**
+ * The names of the workers' scratch folders made while the history command runs over `workspace` at one worker, with
+ * `flags`, under a temporary folder of the run's own, as the folder's watcher sees them made.
+ */
+async function workerFolders(workspace: string, flags: readonly string[]): Promise<string[]> {
+  const temporary = fs.mkdtempSync(path.join(privateTemporary, "t-"));
+  const made = new Set<string>();
+  const watcher = fs.watch(temporary, (_event, name) => {
+    if (name !== null && name.startsWith("live-docs-history-")) made.add(name);
+  });
+  try {
+    const child = spawn(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", workspace, "--jobs", "1", ...flags], { env: { ...process.env, TMPDIR: temporary }, stdio: ["ignore", "ignore", "pipe"] });
+    let errors = "";
+    child.stderr.setEncoding("utf8");
+    child.stderr.on("data", (text: string) => {
+      errors = `${errors}${text}`.slice(-4000);
+    });
+    const code = await new Promise<number | null>((resolve) => child.once("exit", resolve));
+    expect(code, errors).toBe(0);
+  } finally {
+    watcher.close();
+  }
+  return [...made];
+}
 
 // A whole second, so that the time set reads back exactly (a time read with its fraction does not).
 const HELD_TIME = 1_700_000_000;

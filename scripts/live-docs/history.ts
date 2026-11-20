@@ -63,8 +63,11 @@ async function main(): Promise<void> {
     process.exitCode = STOPPED;
     return;
   }
+  // Said on every run whose lens keeps workers, one that regenerates nothing included, whose pool says nothing then.
+  const keptWorkers = run.sequence.lens.keepWorkers === true ? ` ${KEPT_WORKERS}` : "";
   if (args.json) {
     printJson(run.sequence);
+    if (keptWorkers !== "") process.stderr.write(`[history]${keptWorkers}\n`);
   } else {
     const bytes = Buffer.byteLength(JSON.stringify(run.sequence));
     const regenerated =
@@ -74,11 +77,14 @@ async function main(): Promise<void> {
     const kept = run.superseded.filter((cache) => !cache.removed);
     const others = kept.length > 0 ? ` The caches of ${kept.length} other lenses hold ${formatBytes(kept.reduce((sum, cache) => sum + cache.bytes, 0))}; --remove-superseded removes them.` : "";
     console.log(
-      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${regenerated}; ${run.cached} from the cache at ${run.cache}, which holds ${formatBytes(run.cacheBytes)}.${others}\n` +
+      `Wrote ${run.file}: ${run.sequence.steps.length + 1} changes from ${run.sequence.base.commit.id.slice(0, 8)} to ${run.sequence.source.head.slice(0, 8)}, ${formatBytes(bytes)}; ${regenerated}; ${run.cached} from the cache at ${run.cache}, which holds ${formatBytes(run.cacheBytes)}.${keptWorkers}${others}\n` +
         `${run.headCheck.applied ? "Checked" : "Not checked"}: ${run.headCheck.line}.`
     );
   }
 }
+
+/** What the closing line says of a history whose lens keeps workers (`--keep-workers`), whether or not this run regenerated any commit. */
+const KEPT_WORKERS = "Its summaries were made by workers kept from commit to commit (--keep-workers), not yet shown to be those a process of its own makes.";
 
 /** The exit code of a run stopped by --stop-after before the cache held every sampled commit. */
 const STOPPED = 3;
@@ -223,8 +229,8 @@ function usage(): string {
     `  --keep-workers       Let a worker go on from one commit to the next, bringing its tree forward,\n` +
     `                       rather than give every commit a process of its own. Faster, but not yet shown\n` +
     `                       to make the summaries a fresh process makes: for a file nested hundreds of\n` +
-    `                       levels deep a summary may depend on the worker. Not for a history that is\n` +
-    `                       kept. Its summaries have a cache of their own, under a lens of their own.\n` +
+    `                       levels deep a summary may depend on the worker. Not for a history you mean\n` +
+    `                       to keep. Its summaries have a cache of their own, under a lens of their own.\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
     `  --no-authors         Leave the authors' names out of the sequence.\n` +
     `  --remove-superseded  Remove the caches of other lenses, which every run lists with their sizes,\n` +
