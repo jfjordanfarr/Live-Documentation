@@ -24,12 +24,19 @@ import type { GeneratorIdentity, HistoryLens } from "./format";
  * 2026-11-20 it keys the lens, and the trees' environment answers the generator with the value keyed, so that the key and
  * the summary read one value; before, it reached summaries unkeyed, and a cache moved between machines could hold
  * summaries made under the other. Where it is false the key is made as before it was keyed.
+ *
+ * So too whether the summarizing workers were kept from one change to the next (`keepWorkers`, the history command's
+ * `--keep-workers`), which is not yet shown to make the summaries a fresh process makes: since 2026-11-20 it keys the
+ * lens where it is true, so that summaries made with workers kept never share a cache folder with those made one change
+ * a worker, and the pool reads it from the lens (`regenerate.ts`), one source for the key and the run. Where it is false
+ * the key is made as before it was keyed.
  */
-export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig, repository: { ignoresCase: boolean } = { ignoresCase: false }): HistoryLens {
+export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig, made: { ignoresCase?: boolean; keepWorkers?: boolean } = {}): HistoryLens {
   const keyed = { version: generator.version, code: generator.code, modified: generator.modified, unicode: generator.unicode ?? null };
-  const made = repository.ignoresCase ? { repository: { ignoresCase: true } } : {};
-  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarizedConfiguration(configuration), ...made })).digest("hex").slice(0, 16);
-  return { key, generator, configuration, ...(repository.ignoresCase ? { ignoresCase: true as const } : {}) };
+  const repository = made.ignoresCase === true ? { repository: { ignoresCase: true } } : {};
+  const workers = made.keepWorkers === true ? { workers: { kept: true } } : {};
+  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarizedConfiguration(configuration), ...repository, ...workers })).digest("hex").slice(0, 16);
+  return { key, generator, configuration, ...(made.ignoresCase === true ? { ignoresCase: true as const } : {}), ...(made.keepWorkers === true ? { keepWorkers: true as const } : {}) };
 }
 
 /**

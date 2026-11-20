@@ -7,8 +7,10 @@
  * The history command starts a few processes, each of which summarizes one
  * change at a time, so that no process ever holds more than one graph (the
  * plan's scenario 4: one process holding every snapshot would outgrow a V8
- * heap); until 2026-11-20 it started one process per change ({@link work}
- * says what a process now keeps between changes). The docs are written into the working
+ * heap). Each process summarizes one change and is ended, unless the command
+ * keeps its workers (`--keep-workers`, not yet shown to make the summaries a
+ * fresh process makes), when it summarizes a run of changes in turn ({@link
+ * work} says what a process then keeps between changes). The docs are written into the working
  * tree's own docs root, inside the scratch checkout and never into the real
  * one, and the lens's configuration is applied verbatim, so that its docs root
  * is never documented as source.

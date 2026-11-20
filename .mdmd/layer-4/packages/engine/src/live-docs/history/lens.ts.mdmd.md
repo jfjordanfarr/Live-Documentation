@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/lens.ts`
-- Generated At: 2026-11-20T14:56:05.720Z
+- Generated At: 2026-11-20T19:52:24.978Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,14 @@ The lens's key: a hash of the generator's identity and the normalized configurat
 - Since the evening of 2026-10-18 the key is made of the generator's version, its committed and uncommitted tool inputs, with the configuration; the commit rides in the lens and does not key it. The tool checkout's root dependency lock joined those inputs on 2026-10-19, so a dependency-only change recomputes without treating the scanned project's lock as part of the tool. The runtime's version of Unicode joined them on 2026-11-19, once the engine's order and its anchors were made to depend on nothing else of the runtime.
 - Since 2026-11-19 the configuration's bundle exclusions do not key it: a summary keeps every linked and citing document and the exclusions are applied where the summaries are read (`bundled.ts`), so an edit of them rewrites the sequence from the cache rather than discarding it; the lens still carries the whole configuration for its reader ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#every-name-of-a-commits-tree-stands-and-the-bundles-exclusions-apply-where-summaries-are-read-recorded-2026-11-19)).
 - Since a later edit of 2026-11-19 one function, `summarizedConfiguration`, gives the configuration a summary is made under, the lens's without `bundleExclude` and without `board`, which no module of the engine or the generator reads; the key hashes it and the history command hands it to the summarizing process, so that what is keyed is by construction what a summary is made under. The module is in the key since (`SUMMARY_MODULES`).
+- Since the evening of 2026-11-20 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#a-worker-summarizes-one-commit-unless-asked-to-keep-going-recorded-2026-11-20)) whether the summarizing workers were kept from one commit to the next (`keepWorkers`, the history command's `--keep-workers`) keys the lens where it is true, as the repository's `core.ignorecase` does, so that summaries made with workers kept, which are not yet shown to be a fresh process's, never share a cache folder with those made one commit a worker; the lens carries it, and the pool reads it there. Where it is false the key is the one made before it was keyed, which `lens.test.ts` holds against the keys that commit's code made.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `lensOf` {#symbol-lensof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L28)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L34)
 - Returns: [`HistoryLens`](./format.ts.mdmd.md#symbol-historylens)
 - Parameters: `generator`: [`GeneratorIdentity`](./format.ts.mdmd.md#symbol-generatoridentity); `configuration`: [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -40,9 +41,15 @@ generator applies to `exclude`, so that a clone made on Windows excludes `Docs/`
 the summary read one value; before, it reached summaries unkeyed, and a cache moved between machines could hold
 summaries made under the other. Where it is false the key is made as before it was keyed.
 
+So too whether the summarizing workers were kept from one change to the next (`keepWorkers`, the history command's
+`--keep-workers`), which is not yet shown to make the summaries a fresh process makes: since 2026-11-20 it keys the
+lens where it is true, so that summaries made with workers kept never share a cache folder with those made one change
+a worker, and the pool reads it from the lens (`regenerate.ts`), one source for the key and the run. Where it is false
+the key is made as before it was keyed.
+
 #### `summarizedConfiguration` {#symbol-summarizedconfiguration}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L47)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L54)
 - Returns: [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -60,7 +67,7 @@ search of their sources, and stay in until that is shown by more than a search.
 
 #### `canonicalJson` {#symbol-canonicaljson}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L53)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/lens.ts#L60)
 
 ##### `canonicalJson` — Summary
 JSON with every object's keys in sorted order, so that two equal values always hash alike.

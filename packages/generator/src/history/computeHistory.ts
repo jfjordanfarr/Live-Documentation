@@ -6,9 +6,10 @@
  * @remarks
  * The mainline is read from the version control and sampled. Every sampled
  * change the cache lacks under the lens is summarized in a scratch tree by a
- * pool of worker processes, each started once and given runs of consecutive
- * changes, keeping its tree from one change to the next (`regenerate.ts`;
- * until 2026-11-20 a process of its own for each change); then the sequence is derived from
+ * pool of worker processes, a process of its own for each change, or, asked
+ * with `keepWorkers`, each started once and given runs of consecutive
+ * changes, keeping its tree from one change to the next (`regenerate.ts`);
+ * then the sequence is derived from
  * consecutive summaries and what the version control says between them, each
  * step replayed as it is written, and written beside the cache. A second run
  * regenerates only what the cache lacks. Nothing here is committed, and
@@ -120,6 +121,12 @@ export interface HistoryOptions {
   stopAfterMinutes?: number;
   /** Derive every step of the sequence from the summaries, rather than go on from the sequence the last run wrote. */
   rederive?: boolean;
+  /**
+   * Keep each worker from one change of its run to the next, rather than give every change a process of its own: faster,
+   * and not yet shown to make every summary a fresh process makes (a file nested hundreds of levels deep may read in a
+   * warm worker and not in a fresh one). It keys the lens (`lensOf`), so such summaries have a cache folder of their own.
+   */
+  keepWorkers?: boolean;
   /** Where progress goes, a line at a time. */
   progress: (line: string) => void;
 }
@@ -263,7 +270,7 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   // Both identities are taken before any work, so that the record a run leaves is keyed with the code that did the run,
   // even when the code on disk changes while it runs (the independent review of 2026-11-20, finding 1).
   const [generator, code] = await Promise.all([generatorIdentity(), sequenceCodeIdentity()]);
-  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase() });
+  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase(), keepWorkers: options.keepWorkers === true });
 
   const end = await versionControl.mainlineEnd();
   const mainline = await versionControl.mainline();

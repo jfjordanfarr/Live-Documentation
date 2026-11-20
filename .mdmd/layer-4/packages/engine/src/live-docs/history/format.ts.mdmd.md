@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/format.ts`
-- Generated At: 2026-11-20T14:56:05.674Z
+- Generated At: 2026-11-20T19:52:24.924Z
 
 ## Authored
 ### Purpose
@@ -200,35 +200,35 @@ The lens: one generator and one configuration, applied to every change of the se
 
 #### `Sampling` {#symbol-sampling}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L228)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L233)
 
 ##### `Sampling` — Summary
 Which changes of the mainline were regenerated.
 
 #### `HistorySource` {#symbol-historysource}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L243)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L248)
 
 ##### `HistorySource` — Summary
 Where the sequence was read from.
 
 #### `HistoryWindow` {#symbol-historywindow}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L262)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L267)
 
 ##### `HistoryWindow` — Summary
 The part of a sequence an export carries, when it carries less than the whole.
 
 #### `HistorySequence` {#symbol-historysequence}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L265)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L270)
 
 ##### `HistorySequence` — Summary
 The sequence: `history.json`.
 
 #### `HistoryHead` {#symbol-historyhead}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L287)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L292)
 
 ##### `HistoryHead` — Summary
 What a sequence says of itself without its body, which the bundle's data carries beside the history file's name.

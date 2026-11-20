@@ -10,6 +10,10 @@
  * one WebAssembly module is in a state no one knows (`runtime`, `readTree` in `adapters/treeSitter.ts`). A mark too
  * many costs a change summarized again in a fresh process; a mark too few lets a process of unknown state make a
  * summary. A mark is kept for the process's life: the history ends a worker after a marked change (`regenerate.ts`).
+ * Since a later ruling of 2026-11-20 the history ends every worker after one change unless asked to keep them
+ * (`--keep-workers`), since three reviews of the count below each found valid code it called shallow that a warm
+ * worker reads and a fresh one cannot: the marks and the bounds serve kept workers alone, and with one change a worker
+ * no summary depends on them.
  *
  * Two things use the stack, and each has its bound. TypeScript's parser recurses for true nesting (brackets, types, a
  * call inside an argument), with large frames: its cold limits lie between 453 and about 1,000 levels. A chain such as

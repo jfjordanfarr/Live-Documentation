@@ -3,10 +3,10 @@
  * of its summaries must be the summary a fresh process makes of that change in a tree written anew. The scripted
  * repository's seven commits hold what a process could carry wrongly from one change to the next: files git tracks
  * though an ignore file names them (asked of the tree's own index through the tree's git environment), documents
- * linked from the docs that come and go (asked of the same index), files renamed, removed and rewritten. One run gives
- * every change to one worker; another gives each change a worker of its own (as many workers as changes, each taking
- * one); the two caches must agree byte for byte, summaries and texts (the record of 2026-11-20,
- * `Probes/history-rebuild-fast`).
+ * linked from the docs that come and go (asked of the same index), files renamed, removed and rewritten. One run keeps
+ * one worker for every change (`--keep-workers`); another gives each change a worker of its own, as the command does
+ * without that flag; the two caches must agree byte for byte, summaries and texts, but for the lens's key each summary
+ * names, which keeps the two apart (the record of 2026-11-20, `Probes/history-rebuild-fast`).
  */
 import { fork, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
@@ -37,8 +37,9 @@ afterAll(() => {
   fs.rmSync(privateTemporary, { recursive: true, force: true });
 });
 
-function history(workspace: string, jobs: number): string {
-  const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", workspace, "--jobs", String(jobs)], {
+/** The history command over `workspace` with `jobs` workers, kept from change to change where `keep` says (`--keep-workers`); what it said. */
+function history(workspace: string, jobs: number, keep?: "keep workers"): string {
+  const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", workspace, "--jobs", String(jobs), ...(keep ? ["--keep-workers"] : [])], {
     encoding: "utf8",
     env: { ...process.env, TMPDIR: privateTemporary }
   });
@@ -47,15 +48,25 @@ function history(workspace: string, jobs: number): string {
   return result.stderr + result.stdout;
 }
 
+/** The lens keys of the workspace's cache folders, sorted. */
+function lensFolders(workspace: string): string[] {
+  const historyFolder = path.join(workspace, ".mdmd", "history");
+  return fs
+    .readdirSync(historyFolder, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && /^[0-9a-f]{16}$/u.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+}
+
 /**
  * Every summary and text of a lens's cache folder by its path within it: a summary unzipped, a text as stored. The
- * run's own records beside them (`whole.json`, which names when and how the run went) are no part of a summary.
+ * run's own records beside them (`whole.json`, which names when and how the run went) are no part of a summary. The
+ * workspace's one lens unless `lens` names one.
  */
-function cacheOf(workspace: string): Map<string, string> {
-  const historyFolder = path.join(workspace, ".mdmd", "history");
-  const lenses = fs.readdirSync(historyFolder, { withFileTypes: true }).filter((entry) => entry.isDirectory() && /^[0-9a-f]{16}$/u.test(entry.name));
-  expect(lenses).toHaveLength(1);
-  const cache = path.join(historyFolder, lenses[0].name);
+function cacheOf(workspace: string, lens?: string): Map<string, string> {
+  const lenses = lensFolders(workspace);
+  if (lens === undefined) expect(lenses).toHaveLength(1);
+  const cache = path.join(workspace, ".mdmd", "history", lens ?? lenses[0]);
   const files = new Map<string, string>();
   for (const entry of fs.readdirSync(cache, { recursive: true, withFileTypes: true })) {
     if (!entry.isFile()) continue;
@@ -67,6 +78,26 @@ function cacheOf(workspace: string): Map<string, string> {
     files.set(relative, summary ? zlib.gunzipSync(bytes).toString("utf8") : bytes.toString("utf8"));
   }
   return files;
+}
+
+/**
+ * Holds two caches to the same bytes, summaries and texts, but for the lens's key each summary names, once, which must
+ * be its own cache's (`kept` made with workers kept, `fresh` with a process for each change).
+ */
+function expectSameButTheLens(kept: { lens: string; files: Map<string, string> }, fresh: { lens: string; files: Map<string, string> }): void {
+  expect(kept.lens).not.toBe(fresh.lens);
+  expect([...kept.files.keys()].sort()).toEqual([...fresh.files.keys()].sort());
+  for (const [file, text] of fresh.files) {
+    const ours = kept.files.get(file)!;
+    if (file.endsWith(".json.gz")) {
+      // The lens is named once, as the summary's own field, and nowhere else.
+      expect(ours.split(`"lens":"${kept.lens}"`), file).toHaveLength(2);
+      expect(text.split(`"lens":"${fresh.lens}"`), file).toHaveLength(2);
+      expect(ours.split(`"lens":"${kept.lens}"`).join(`"lens":"${fresh.lens}"`), file).toBe(text);
+    } else {
+      expect(ours, file).toBe(text);
+    }
+  }
 }
 
 describe("a worker's summaries, change after change in one process", () => {
@@ -85,16 +116,41 @@ describe("a worker's summaries, change after change in one process", () => {
     const apart = fs.mkdtempSync(path.join(privateTemporary, "apart-"));
     const commits = buildRepository(together, script);
     expect(buildRepository(apart, script), name).toEqual(commits);
-    const one = history(together, 1);
+    const one = history(together, 1, "keep workers");
     // One worker, its tree brought forward at every change after the first, or written anew at every one.
     expect(one.match(/\d+\/\d+ regenerated: /gu)).toHaveLength(commits.length);
     expect(one.match(/its tree written anew/gu)).toHaveLength(trees === "brought forward" ? 1 : commits.length);
     history(apart, commits.length);
     const a = cacheOf(together);
-    const b = cacheOf(apart);
-    expect([...a.keys()].sort()).toEqual([...b.keys()].sort());
-    for (const [file, text] of b) expect(a.get(file), file).toBe(text);
+    expectSameButTheLens({ lens: lensFolders(together)[0], files: a }, { lens: lensFolders(apart)[0], files: cacheOf(apart) });
     expect([...a.keys()].filter((file) => file.endsWith(".json.gz"))).toHaveLength(commits.length);
+  }, 300_000);
+});
+
+/**
+ * Since a ruling of 2026-11-20 the command gives every change a process of its own unless asked to keep its workers
+ * (`--keep-workers`), which is not yet shown to make the summaries a fresh process makes and so keys a lens of its own.
+ */
+describe("the history without workers kept and with them, over one repository", () => {
+  it("makes the same summaries byte for byte, each naming its own lens, in two cache folders", () => {
+    const workspace = fs.mkdtempSync(path.join(privateTemporary, "both-"));
+    const commits = buildRepository(workspace, SCRIPT);
+    const apart = history(workspace, 2);
+    // Each change a process of its own, said once, and no tree brought forward.
+    expect(apart).toContain("each change is summarized by a process of its own, which writes the change's tree anew and is ended after it");
+    expect(apart).not.toContain("its tree written anew");
+    const [fresh] = lensFolders(workspace);
+    const kept = history(workspace, 1, "keep workers");
+    expect(kept).toContain("workers are kept from change to change (--keep-workers)");
+    // A cache of its own: every change regenerated again, none read from the other lens's folder.
+    expect(kept).toContain(`0 in the cache under lens ${lensFolders(workspace).find((lens) => lens !== fresh)}, ${commits.length} to regenerate`);
+    const folders = lensFolders(workspace);
+    expect(folders).toHaveLength(2);
+    const keptLens = folders.find((lens) => lens !== fresh)!;
+    const sequence = JSON.parse(fs.readFileSync(path.join(workspace, ".mdmd", "history", "history.json"), "utf8")) as { lens: HistoryLens };
+    expect([sequence.lens.key, sequence.lens.keepWorkers]).toEqual([keptLens, true]);
+    expectSameButTheLens({ lens: keptLens, files: cacheOf(workspace, keptLens) }, { lens: fresh, files: cacheOf(workspace, fresh) });
+    expect([...cacheOf(workspace, fresh).keys()].filter((file) => file.endsWith(".json.gz"))).toHaveLength(commits.length);
   }, 300_000);
 });
 
@@ -350,14 +406,13 @@ describe("a file nested between a fresh process's limit and a warm one's", () =>
     const apart = fs.mkdtempSync(path.join(privateTemporary, "deep-apart-"));
     const commits = buildRepository(together, script);
     expect(buildRepository(apart, script)).toEqual(commits);
-    const one = history(together, 1);
+    const one = history(together, 1, "keep workers");
     history(apart, commits.length);
     const a = cacheOf(together);
     const b = cacheOf(apart);
     const last = `${commits[3]}.json.gz`;
     expect(JSON.parse(a.get(last)!).files.length, "files in the warm worker's summary").toBe(JSON.parse(b.get(last)!).files.length);
-    expect([...a.keys()].sort()).toEqual([...b.keys()].sort());
-    for (const [file, text] of b) expect(a.get(file), file).toBe(text);
+    expectSameButTheLens({ lens: lensFolders(together)[0], files: a }, { lens: lensFolders(apart)[0], files: b });
     // The warm worker read the table, and was marked for its depth alone; the fresh process could not map it.
     expect(one).toContain(`${commits[3].slice(0, 8)}: its worker, which had summarized earlier changes, was marked: a file nested beyond the reading depth; summarized again in a fresh worker`);
     expect(one).toContain(`${commits[3].slice(0, 8)}: decided by a fresh process, its worker ended after it: a file the generator could not map`);

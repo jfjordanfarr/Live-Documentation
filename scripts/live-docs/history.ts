@@ -29,6 +29,7 @@ interface ParsedArgs {
   removeSuperseded: boolean;
   checkHead: boolean;
   rederive: boolean;
+  keepWorkers: boolean;
   stopAfter?: number;
 }
 
@@ -51,6 +52,7 @@ async function main(): Promise<void> {
       removeSuperseded: args.removeSuperseded,
       checkHead: args.checkHead,
       rederive: args.rederive,
+      keepWorkers: args.keepWorkers,
       stopAfterMinutes: args.stopAfter,
       progress: (line) => process.stderr.write(`[history] ${line}\n`)
     });
@@ -119,7 +121,7 @@ function nonEmpty(change: object): Record<string, unknown> {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false, rederive: false };
+  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false, rederive: false, keepWorkers: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -173,6 +175,9 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--rederive":
         parsed.rederive = true;
         break;
+      case "--keep-workers":
+        parsed.keepWorkers = true;
+        break;
       case "--stop-after": {
         // 0 starts no commit: the run writes a history only when the cache already holds every one.
         const value = optionValue(argv, ++index, current);
@@ -215,6 +220,11 @@ function usage(): string {
     `  --jobs <n>           Commits regenerated at once, a worker each (default: as many as half the\n` +
     `                       memory holds at the peak a process last took here, at most one fewer than\n` +
     `                       the processors).\n` +
+    `  --keep-workers       Let a worker go on from one commit to the next, bringing its tree forward,\n` +
+    `                       rather than give every commit a process of its own. Faster, but not yet shown\n` +
+    `                       to make the summaries a fresh process makes: for a file nested hundreds of\n` +
+    `                       levels deep a summary may depend on the worker. Not for a history that is\n` +
+    `                       kept. Its summaries have a cache of their own, under a lens of their own.\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
     `  --no-authors         Leave the authors' names out of the sequence.\n` +
     `  --remove-superseded  Remove the caches of other lenses, which every run lists with their sizes,\n` +

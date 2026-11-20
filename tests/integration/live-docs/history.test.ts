@@ -852,6 +852,30 @@ describe("the history over a repository that matches names without regard to cas
 });
 
 /**
+ * Workers kept from change to change (`--keep-workers`, `keepWorkers`) key the lens where they are, since they are not
+ * yet shown to make the summaries a fresh process makes (a ruling of 2026-11-20). The pool's end, which reads the lens,
+ * is held in `regenerate.test.ts`, and the command's summaries made both ways in `history-workers.test.ts`; this holds
+ * that what the command is asked reaches the sequence's lens, and that without it the lens is the one made before.
+ */
+describe("the history with workers kept and without", () => {
+  it("keys its lens with them where they are kept, and leaves the lens as it was where they are not", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "kept-"));
+    fs.mkdirSync(path.join(here, "src"));
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One file"]]) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    const lensWhen = async (keepWorkers: boolean): Promise<HistorySequence["lens"]> =>
+      (await computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, keepWorkers, progress: () => undefined })).sequence.lens;
+    const kept = await lensWhen(true);
+    const apart = await lensWhen(false);
+    expect(kept.keepWorkers).toBe(true);
+    expect(kept.key).toBe(lensOf(kept.generator, kept.configuration, { keepWorkers: true }).key);
+    expect(kept.key).not.toBe(apart.key);
+    expect(apart).toEqual(lensOf(apart.generator, apart.configuration));
+  }, 300_000);
+});
+
+/**
  * A repository whose one commit leaves thousands of entries out of its tree, made with `git hash-object` and `git
  * mktree`: a tree `vendor` of symbolic links out of the tree, which the history does not follow.
  */

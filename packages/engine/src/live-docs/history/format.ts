@@ -222,6 +222,11 @@ export interface HistoryLens {
   configuration: LiveDocumentationConfig;
   /** Present where the repository matches names without regard to case, which the key holds (`lensOf`). */
   ignoresCase?: true;
+  /**
+   * Present where a worker that summarized a change took the next one of its run (`--keep-workers`), which the key holds
+   * (`lensOf`) and the pool reads; absent, every change was summarized by a process of its own.
+   */
+  keepWorkers?: true;
 }
 
 /** Which changes of the mainline were regenerated. */

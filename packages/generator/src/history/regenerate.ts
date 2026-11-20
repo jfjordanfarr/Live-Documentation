@@ -1,16 +1,22 @@
 /**
  * What the history command does on a summary's behalf: a pool of workers
  * started, each a summarizing process given its environment and its flags,
- * and handed the changes to summarize one at a time, a run of consecutive
- * changes after another; each worker writes its own tree in a scratch folder
- * of its own and brings it forward from change to change
- * (`summarizeChange.ts`), and the folder is removed when the worker ends.
+ * and handed one change to summarize, after which it is ended; each worker
+ * writes its own tree in a scratch folder of its own (`summarizeChange.ts`),
+ * and the folder is removed when the worker ends. Where the lens says workers
+ * are kept (`--keep-workers`), a worker is handed the changes of a run of
+ * consecutive changes one at a time and brings its tree forward from change
+ * to change.
  *
  * @remarks
- * Since 2026-11-20 the workers live across changes and write their own
- * trees; before, each change had a process of its own and this module wrote
- * every tree on the command's main thread (the record of that day,
- * `Probes/history-rebuild-fast`).
+ * Since 2026-11-20 the workers write their own trees; before, this module
+ * wrote every tree on the command's main thread (the record of that day,
+ * `Probes/history-rebuild-fast`). For a few hours that day every worker
+ * lived across changes, and a count of each file's nesting
+ * (`processMark.ts`) sent a change a warm worker could read and a fresh one
+ * could not to a fresh worker; three reviews each found valid code the count
+ * missed, and a worker since summarizes one change unless asked to go on (the
+ * decisions log, 2026-11-20).
  *
  * Split from `computeHistory.ts` on 2026-11-19, so that the code deciding
  * which files and which environment a summary sees is in the lens's key
@@ -139,16 +145,15 @@ export interface RegenerationContext {
 }
 
 /**
- * Regenerates the changes in a pool of `jobs` workers, starting none after the deadline when there is one: processes
- * each started once, each taking runs of the line's consecutive changes in turn and keeping its tree from one change
- * to the next (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, and not a
- * process and a tree of its own.
+ * Regenerates the changes in a pool of `jobs` workers, starting none after the deadline when there is one: a process
+ * and a tree of its own for each change, unless the lens says workers are kept (`keepWorkers`), when processes each
+ * started once take runs of the line's consecutive changes in turn and keep their tree from one change to the next
+ * (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one.
  *
  * @remarks
- * Until 2026-11-20 each change had a process of its own, and this module wrote every tree on the command's one main
- * thread, which is what the pool waited for; the record of that day (`Probes/history-rebuild-fast`) measures both. The
- * runs are short, about four to a worker, so that changes costing more at the line's end than at its start still
- * spread over every worker.
+ * Until 2026-11-20 this module wrote every tree on the command's one main thread, which is what the pool waited for;
+ * the record of that day (`Probes/history-rebuild-fast`) measures both. The runs are short, about four to a worker,
+ * so that changes costing more at the line's end than at its start still spread over every kept worker.
  *
  * @returns How long each change regenerated took, in milliseconds, and the largest peak memory a worker reported.
  */
@@ -176,19 +181,27 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   const open = (): boolean => failure === undefined && (context.deadline === undefined || Date.now() < context.deadline);
   const start = context.startWorker ?? startWorker;
   const bound = workerBound(context.memory, context.jobs);
+  // Whether a worker goes on to the next change of its run, as the lens keys it; else every change is a worker's first.
+  const keep = context.lens.keepWorkers === true;
+  context.progress(
+    keep
+      ? "workers are kept from change to change (--keep-workers), each bringing its tree forward: not yet shown to make every summary a process of its own makes"
+      : "each change is summarized by a process of its own, which writes the change's tree anew and is ended after it"
+  );
   const lane = async (): Promise<void> => {
     let worker: Worker | undefined;
-    // One change summarized by the lane's worker, or by a fresh one where there is none. A worker whose derivation may
-    // depend on its own past (`marked`, `processMark.ts`) is ended, and the next change starts in a new one.
+    // One change summarized by the lane's worker, or by a fresh one where there is none. Without workers kept, a worker
+    // is ended after every change; with them, a worker whose derivation may depend on its own past (`marked`,
+    // `processMark.ts`) is ended, and the next change starts in a new one.
     const summarize = async (change: MainlineChange): Promise<WorkerReport> => {
       worker ??= await start(context);
       const report = await worker.summarize(change);
       peakMemory = Math.max(peakMemory, report.peakMemory);
-      // A worker that holds more than its share of the pool's memory, or half its heap's limit, is replaced too, so that
-      // what still grows with each change, unfound, never fails a run (its next change is a fresh worker's first).
-      const full = report.heldMemory > bound || report.heapShare > 1 / 2;
+      // A kept worker that holds more than its share of the pool's memory, or half its heap's limit, is replaced too, so
+      // that what still grows with each change, unfound, never fails a run (its next change is a fresh worker's first).
+      const full = keep && (report.heldMemory > bound || report.heapShare > 1 / 2);
       if (full) context.progress(`${change.id.slice(0, 8)}: its worker holds ${formatMegabytes(report.heldMemory)}, ${Math.round(report.heapShare * 100)}% of its heap's limit, against ${formatMegabytes(bound)} and a half; replaced`);
-      if (report.marked.length > 0 || !report.published || full) {
+      if (!keep || report.marked.length > 0 || !report.published || full) {
         await worker.end();
         worker = undefined;
       }
@@ -204,10 +217,11 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           // and a failure of the machine's. A worker's first change is a fresh process's; a later one marked is refused.
           // The generator's catch marks every failure as a file not mapped before anyone knows whose it is, so a failure
           // of the machine's counts under its own reason alone, and the mark under its reason only where another file
-          // of the change could not be mapped (the root's ruling, 2026-11-20).
+          // of the change could not be mapped (the root's ruling, 2026-11-20). Without workers kept every change is a
+          // fresh process's, and only a failure of the machine's, which sends it to another, is told.
           const machine = report.machineFailure;
           const notMappedBeside = machine === undefined || report.unmapped.some((file) => file.path !== machine.path);
-          const reasons: DecidedBy[] = [...report.marked.filter((mark) => mark !== "unmapped" || notMappedBeside), ...(machine ? (["machine"] as const) : [])];
+          const reasons: DecidedBy[] = [...(keep ? report.marked.filter((mark) => mark !== "unmapped" || notMappedBeside) : []), ...(machine ? (["machine"] as const) : [])];
           if (!report.published) {
             // Either the worker was marked during a change after its first, so that its derivation may be an earlier
             // change's, or a file failed for a cause of the machine's: the change goes to a fresh worker, whose first
@@ -218,7 +232,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
             if (report.machineFailure) throw new Error(`the summary of ${change.id} failed twice for a cause of the machine's: ${report.machineFailure.path}: ${report.machineFailure.error}`);
             if (!report.published) throw new Error(`a fresh worker did not write the summary of ${change.id}`);
           }
-          if (report.marked.length > 0) {
+          if (keep && report.marked.length > 0) {
             // Published by a worker whose first change it was: what a fresh process makes of the change alone.
             context.progress(`${change.id.slice(0, 8)}: decided by a fresh process, its worker ended after it: ${marks(report.marked)}`);
           }
@@ -234,7 +248,8 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           for (const message of new Set(report.warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
           }
-          const anew = report.broughtForward ? undefined : (report.writtenAnew ?? "no reason given");
+          // Without workers kept every tree is written anew, which the run's first line says once.
+          const anew = !keep || report.broughtForward ? undefined : (report.writtenAnew ?? "no reason given");
           if (anew !== undefined) writtenAnew.set(anew, (writtenAnew.get(anew) ?? 0) + 1);
           timings.push(Date.now() - began);
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
@@ -284,7 +299,7 @@ export function workerBound(memory: number, jobs: number): number {
   return memory / Math.max(1, jobs);
 }
 
-/** A summarizing process started once, which summarizes changes one at a time in a tree it keeps. */
+/** A summarizing process, which summarizes the changes it is handed one at a time in a tree it keeps until it is ended. */
 export interface Worker {
   summarize(change: MainlineChange): Promise<WorkerReport>;
   /** Ends the process and removes its folder, its tree in it. */
