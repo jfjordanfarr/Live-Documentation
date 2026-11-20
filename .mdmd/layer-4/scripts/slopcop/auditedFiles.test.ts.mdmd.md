@@ -8,14 +8,14 @@
 
 ## Authored
 ### Purpose
-Holds the audits' shortened walk to the walk they made before 2026-11-20, case by case: every kind of excludes file, a tracked file inside an ignored folder, nested repositories and worktrees, odd names, git's case rule, and each path git refuses ([the probe of 2026-11-20](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#the-cases-and-the-tests-that-hold-them)).
+Holds the audits' shortened walk to the walk they made before 2026-11-20, case by case: every kind of excludes file, a tracked file inside an ignored folder, nested repositories and worktrees, odd names, git's case rule, names a tracked file's wildcard pattern would match, a submodule, links to a folder, names beginning with `:`, and a workspace inside an ignored folder ([the probe of 2026-11-20](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#the-cases-and-the-tests-that-hold-them)).
 
 ### Notes
 - The oracle is the old walk itself, kept in the test: each pattern globbed over the whole workspace, then `withoutGitIgnored`. Every case asserts that the new list equals it, and names the files it expects.
 - The oracle would pass as well if nothing were shortened, and the speed would then be lost without a word, so one case counts the folders read through the file system the walk hands glob: a folder git ignores whole is never read, one that holds a tracked file is. With the pruning switched off it is red (the root's request, 2026-11-20).
-- Each case was run red against a wrong shortening when written: no second walk after git refuses, the workspace or a folder beginning with `:` left unwalked, a pattern that may follow a link shortened, a folder holding a tracked file left unwalked.
+- Each case was run red against a wrong shortening when written: no second walk after git refuses, the workspace or a folder beginning with `:` left unwalked, a pattern that may follow a link shortened, a folder holding a tracked file left unwalked. The same day git came to be asked about each path by its name, the second walk and the rule for links went, and the cases of the paths git refused were rewritten to git's answer by name; each was red against the code before ([the review's findings, mended](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#judging-every-path-by-its-name-the-reviews-findings-mended)). The oracle shares its judge, `withoutGitIgnored`, with the walk it holds: it tests the shortening, and `discovery.oracle.test.ts` holds the judge to git.
 - The global excludes file is set for a case through `GIT_CONFIG_GLOBAL`, and git is taken off the path through `PATH`; both are restored one by one after each case, since the process's own environment is the one git is started with.
-- The helpers' own cases (which patterns may be shortened, the file system that reads folders as empty) moved to `packages/engine/src/tooling/gitIgnored.test.ts` with the helpers, the commit after this file was written.
+- The helpers' own cases (the file system that reads folders as empty) moved to `packages/engine/src/tooling/gitIgnored.test.ts` with the helpers, the commit after this file was written.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

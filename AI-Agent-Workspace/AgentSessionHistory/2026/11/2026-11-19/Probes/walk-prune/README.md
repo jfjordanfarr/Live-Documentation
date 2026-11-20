@@ -248,6 +248,16 @@ Tried on one repository holding each case (a submodule `lib` made by adding a ne
 | at the top level, named `:abc.ts` | Judged as `abc.ts`. | Judged as `:abc.ts`. |
 | at the top level, named `:(x).ts` or `:!x.ts` | Git refused the whole call; discovery read the root `.gitignore` alone for every file, the audits every file. | Judged by its name. |
 
+The three reproductions of [the defect](#a-defect-found-and-left), made again and run through discovery from a frozen copy of the code before and of the mended code (the generator's and the audit's command lines are run in the lane, [below](#measurements)):
+
+| Reproduction | Files before | Files now | Documents before | Documents now |
+| --- | --- | --- | --- | --- |
+| A submodule | `app/.gitignore`, `app/main.ts`, `app/secret.ts`, `lib/lib.ts` | `app/.gitignore`, `app/main.ts`, `lib/lib.ts` | none | none |
+| A top-level `:(x)` | `:(x).ts`, `app/.gitignore`, `app/main.ts`, `app/secret.ts` | `:(x).ts`, `app/.gitignore`, `app/main.ts` | `:(x).md`, `app/notes.md` | `:(x).md` |
+| A link under `app/**/*.ts` | `app/linked/shared.ts`, `app/main.ts`, `app/secret.ts` | `app/linked/shared.ts`, `app/main.ts` | `shared/shared.md` | `shared/shared.md` |
+
+`app/secret.ts` and `app/notes.md`, which the nested `app/.gitignore` hides, are left out now in every case; the submodule's `lib/lib.ts` is still documented; `app/linked/shared.ts`, which git cannot judge, is kept by the root `.gitignore` alone, and the run warns of it.
+
 Why a link is asked as its link: the full walk finds `build/link/r.ts` under a link inside a folder git ignores, and git ignores everything beneath an ignored folder; reading the root `.gitignore` alone there kept the file whenever `build/` was named elsewhere, a false positive, and made the short walk's answer differ from the full one's. That was the one reason the walk had to be left whole for patterns that may pass through a link. For a link git does not ignore, git has no word: the link is one entry to git, and nothing beneath it is a path of the repository. Today's fallback is kept for exactly those files. Whether the scan should read files through such a link at all is not decided here.
 
 ### The short walk, made true and simpler
