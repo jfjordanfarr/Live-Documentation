@@ -1,0 +1,31 @@
+The root's measurement, 2026-11-20 between 17:21 and 17:25 UTC, through the lane (137.5 s), bare node, the joining branch's TypeScript:
+node stack-share-probe.cjs <typescript>   (share 1/3)
+
+share 0.333, node v26.13.1, typescript 5.9.3
+construct | F fresh, whole stack | W warm, whole stack | S warm, the share | W/F | S/F
+tuple types | 457 | 1786 | 591 | 3.91 | 1.29 | ballast 1705.8 µs
+type arguments | 509 | 2908 | 963 | 5.71 | 1.89 | ballast 1766.5 µs
+arrays | 654 | 1983 | 656 | 3.03 | 1.00 | ballast 1716.4 µs
+calls | 602 | 2050 | 679 | 3.41 | 1.13 | ballast 1708 µs
+parentheses | 680 | 2603 | 861 | 3.83 | 1.27 | ballast 1717.5 µs
+comparisons side by side | 515 | 2401 | 793 | 4.66 | 1.54 | ballast 1487.1 µs
+a < b < c | 510 | 2358 | 780 | 4.62 | 1.53 | ballast 1491.1 µs
+JSDoc tuple types | 456 | 1783 | 588 | 3.91 | 1.29 | ballast 1643.3 µs
+JSDoc default | 654 | 1982 | 654 | 3.03 | 1.00 | ballast 1640.9 µs
+object literals | 499 | 2154 | 713 | 4.32 | 1.43 | ballast 1627.9 µs
+arrow bodies | 966 | 2775 | 917 | 2.87 | 0.95 | ballast 1650.1 µs
+conditionals | 2808 | 8330 | 2755 | 2.97 | 0.98 | ballast 1564.1 µs
+object types | 446 | 1984 | 544 | 4.45 | 1.22 | ballast 1604.5 µs
+JSX elements | 1557 | 3471 | 1147 | 2.23 | 0.74 | ballast 1534.9 µs
+
+F: the most levels a fresh process reads (a process per trial). W: the most a process reads after 300 parses of the
+same shape at 100 levels. S: the most that warmed process reads when two thirds of its stack are first taken up by
+plain recursion. "ballast": what taking up the stack costs per parse as the probe does it (finding the stack's room
+by running out of it, then descending), in microseconds.
+
+What it shows: a warmed process reads 2.2 to 5.7 times deeper than a fresh one, by construct. So no one share of the
+stack makes "a warm worker read it with this share" imply "a fresh process reads it with the whole": a third is too
+much for eleven of the fourteen, and the share that would hold for the worst measured here (under a sixth) rests on a
+ratio that differs by construct and is not known for a construct not measured. A bound by the stack really used is
+therefore no more closed than a bound by counting, costs time at every parse, and its answer depends on the process's
+state; only a count of the file's own structure gives the same answer in every process. The idea is set aside.

@@ -1,6 +1,118 @@
 # The reading depth: how deep a fresh process reads each kind of nesting
 
-_A record of November 20, 2026 (UTC), not current documentation. Measured by a builder for the root in its own worktree from `ef57f201b`, under Node 26, on the machine of this folder's README, every machine-loading run through the browser lane. The current rule is `READING_DEPTH` and `TREE_DEPTH` in `packages/engine/src/live-docs/processMark.ts`, held by `tests/integration/live-docs/reading-depth.test.ts`. The first round, one depth for every construct, is kept below as it was found. The second round, two bounds, follows it and supersedes its answer. The third round, what the measure did not reach, was added later that day by another builder from `894bcfaa7`, and comes first._
+_A record of November 20, 2026 (UTC), not current documentation. Measured by a builder for the root in its own worktree from `ef57f201b`, under Node 26, on the machine of this folder's README, every machine-loading run through the browser lane. The current rule is `READING_DEPTH` and `TREE_DEPTH` in `packages/engine/src/live-docs/processMark.ts`, held by `tests/integration/live-docs/reading-depth.test.ts`. The first round, one depth for every construct, is kept below as it was found. The second round, two bounds, follows it and supersedes its answer. The third round, what the measure did not reach, was added later that day by another builder from `894bcfaa7`. The fourth round, the audit of every place the parser reads and throws away, was added by the same builder on its branch at `67f2d8113`. They come first, the newest at the top._
+
+## The fourth round: every place the parser reads and throws away
+
+**Why an audit, and the idea set aside.** An independent reviewer showed at `67f2d8113` that the third round's rule for `<` followed only the tree's left spine: `f(a < a, a < a, …)` and `[a < a, …]` in a `.ts` file read fresh to 516 and fail at 517, while the measure gave nesting 7. The promise had become a list, and the list was not closed. The root weighed bounding the parser by the stack it really uses, a warmed process parsing with only a share of its stack left. It measured this between 17:21 and 17:25 UTC: `stack-share-probe.cjs` and its table `stack-share-probe.out`, beside this record. A warmed process reads 2.2 to 5.7 times deeper than a fresh one, depending on the construct. So no one share makes "a warm worker read it with this share" imply "a fresh process reads it whole", except by a ratio that differs by construct and is unknown for one not measured. It is no more closed than counting, costs time at every parse, and its answer depends on the process's state. **The idea is set aside; the bound stays a count of the file's own structure.**
+
+**What makes the count closed.** The tree mirrors every parse that is kept, a node per level. So the count can miss only what the parser reads and throws away, or keeps outside the tree. Those places are finite in `parser.ts`: every call of `tryParse`, `lookAhead` and `speculationHelper`, and every parse whose result is dropped. Below is each of them in TypeScript 5.9.3, by its line in the installed `node_modules/typescript/lib/typescript.js` (85 lines match the three names between the parser's first and last line, 33,100 to 40,100; three are the helpers' own definitions). The dropped results were found by a search for a parse call standing alone as a statement: two, `skipParameterStart`'s binding pattern and the JSDoc default. Each site is one of three kinds:
+- **bounded:** it reads a fixed few tokens, or loops over tokens, at a constant depth of stack;
+- **mirrored:** the kept parse reads the same tokens to the same depth, or the attempt is itself kept;
+- **deeper than the tree:** for these, the rule that counts it and the construct that holds it.
+
+`processMark.test.ts` pins the version: its case fails when the installed TypeScript is not 5.9.3, and its message says to redo this table before changing the expected version.
+
+| Line | Site | Kind | What reads it, and the rule |
+| --- | --- | --- | --- |
+| 33266, 33274 | JSON text: a number, then not `:` | bounded | |
+| 33448 | `reparseTopLevelAwait`: statements holding `await` parsed again as top-level await | mirrored | the second parse is kept |
+| 34095, 34138 | `nextTokenCanFollowModifier` | bounded | |
+| 34111, 34114 | after `default`, after `export` | bounded | |
+| 34163 | `isTypeMemberStart` | bounded | modifiers looped over |
+| 34165 | `isClassMemberStart` | bounded | modifiers looped over |
+| 34186 | `isValidHeritageClauseObjectLiteral` | bounded | |
+| 34224, 34266, 34318 | `from` and a string; a start of expression; `</` | bounded | |
+| 34708 | an identifier on the same line | bounded | |
+| 34935 | JSDoc `function` then `(` | bounded | |
+| 35191 | `isUnambiguouslyIndexSignature` | bounded | |
+| 35273 | `new` then `(` or `<` | bounded | |
+| 35398 | `isTupleElementName` | bounded | |
+| 35527, 38496 | `parseKeywordAndNoDot` | bounded | |
+| 35551, 35625 | `-` then a number | bounded | |
+| 35566, 35568 | `isStartOfTypeOfImportType`, `isStartOfMappedType` | bounded | |
+| 35576 | `asserts` then a name | bounded | |
+| 35627, 35653 | `isStartOfParenthesizedOrFunctionType`, `nextTokenIsStartOfType`: `isStartOfType` at `(` looks ahead again, once for each `(` of a run | mirrored | the kept parse reads the same parentheses as parenthesized types, with more frames a level |
+| 35696 | the constraint of `infer X extends T` | mirrored | dropped before a `?` outside a conditional's `extends`, then read again as a conditional type's |
+| 35764 | `isUnambiguouslyStartOfFunctionType` → `skipParameterStart`: a binding pattern parsed and dropped | mirrored | the kept parse reads the same tokens as a tuple or a parameter; `([[a]]) => void` fails cold at 1,000 levels (the third round) |
+| 35767 | `abstract` then `new` | bounded | |
+| 35807 | `parseTypePredicatePrefix` | bounded | |
+| 35879, 35979 | `import` then `(`, `<` or `.`; a name on the same line | bounded | |
+| 36055 | `parsePossibleParenthesizedArrowFunctionExpression`, tried: parameters (patterns, initializers), a return type and a body, dropped when no arrow | mirrored | the kept parse reads the same tokens as an expression. Where the attempt reads a type the kept parse reads as an expression (`c ? (a) : b`, the return type `b`), the type's own `<` runs are counted by the rule for `<` below; `(a = (a = …))` fails cold at 437 levels, two of nesting each (the third round) |
+| 36059 | `isParenthesizedArrowFunctionExpressionWorker` | bounded | |
+| 36096, 36126, 36169 | modifiers then a name; an arrow in JSX; `isUnParenthesizedAsyncArrowFunctionWorker` | bounded | |
+| 36357, 36446 | a name on the same line; JSX's `<` then a name or `>` | bounded | |
+| 36465, 36468 | `import` then `(`, `<`, `.` | bounded | |
+| 36502 | type arguments after `super` | deeper than the tree | the rule for `<` below |
+| 36563 | an adjacent JSX element | mirrored | the attempt always returns a node, so it is always kept |
+| 36828 | `?.` then a name, `[` or a template | bounded | |
+| 36924, 36965 | **`parseTypeArgumentsInExpression`**, after every member expression and after `?.` | **deeper than the tree** | **the rule for `<` below** |
+| 37062, 37347, 37348 | `function` on the same line; `using` and `await using` | bounded | |
+| 37602, 37617 | the next token; `isDeclaration2` | bounded | modifiers looped over |
+| 37649 to 37707 | the starts of statements and declarations | bounded | |
+| 38032, 38085, 38086, 38093 | `of`; `"constructor"` | bounded | |
+| 38274, 38277, 38341, 38445 | modifiers, `static {`, `implements` | bounded | |
+| 38580, 38608, 38611 | `require(`, `type`, `defer` in imports | bounded | |
+| 39192, 39202 | JSDoc: the end of the comment | bounded | |
+| 39424, 39523, 39572 | JSDoc: a link's prefix; `@see`'s link | bounded | |
+| 39501 | **JSDoc: a bracketed parameter's default, `parseExpression()`, dropped** | **deeper than the tree** | **read again alone**, cut where the expression ends: the first `]` outside every bracket and template it opens, found by TypeScript's scanner in a loop, a `/` read as a regular expression where an operand may start; in a JSX file read to the tag's end once a `<` is met. The tag's prose is otherwise never read; a `RangeError` in the second read counts as beyond every bound and is never thrown. Held by "a parameter's default" in `.ts`, `.js` and `.jsx`, and by the unit cases of the reviewer's three prose shapes |
+| 39540, 39701, 39763 | **JSDoc: each following tag tried as a child of a nested parameter, of a typedef, of a callback, and dropped when it is not one** | **deeper than the tree** | the rejected tag is read at the depth of the nesting, then again where it stands. So a JSDoc comment counts as its deepest node plus the nesting of its deepest nested type literal below the comment. A first form counted every comment as twice its height; it marked the worker case's warming files (JSDoc tuples 150 deep counted 300) and was dropped. Held by "nested parameters, then a deep tag tried as their child and thrown away" in three file kinds |
+| 39774 | JSDoc: a callback's `@return`, tried and dropped when it is another tag | deeper than the tree | the same rule as the line above |
+| (the walk) | a node's JSDoc, which `forEachChild` never reaches | kept outside the tree | walked as nesting (the third round) |
+
+**The rule for `<`.** It applies in a file that is not JavaScript's: `.ts`, `.tsx`, `.mts` and `.cts`. In `.js`, `.jsx`, `.mjs` and `.cjs`, `parseTypeArgumentsInExpression` returns at once on its `JavaScriptFile` flag, so no attempt is made. After every member expression the parser calls it. At a `<` (or `<<`, read again as `<`) it reads a list of types, `parseDelimitedList(TypeArguments, parseType)`, whose terminator is any token but a comma.
+- **What a run goes on through:** commas between the list's types. Within one type it goes on through `|` and `&` (flat loops), `.` (an entity name's loop), brackets (tuples), parentheses (parenthesized and function types), braces (type literals, whose members part on `,` and `;`), `typeof` and the JSDoc prefixes `!` and `?`. An arrow function with an expression body is read as a function type whose return type holds the rest of the list, one level deeper. Each type reference followed by `<` opens a list one level deeper.
+- **Where it ends:** at the first token that no type and no comma continues. That is a closing bracket it did not open, `;` or a statement's end outside a brace it opened, `(` after a type reference, `?`, `=`, an operator such as `+`, or a literal or an indexed access followed by `<`.
+- **Why it never leaves its statement:** a closing bracket, a `;` and the start of a following statement each end the list. A block inside it (an arrow's body) is read as a type literal and ended at its `}`.
+- **Nor does it pass from one member of a class to the next:** members are parted by `;` or a line's end, never by a comma, and the list ends at the first token that is not a comma once a type is done. So each class member is a region of its own, as a statement is.
+- **So within a statement**, the attempt is at most as deep as:
+  - the deepest of the statement's nodes, where it starts;
+  - plus the levels of the statement's structure it reads through, which the tree holds;
+  - plus one level for each comparison and each arrow function with an expression body anywhere in the statement, statements within it included.
+- **The count:** `base + 2 × (max − base) + units`, for every statement (or class member) with a comparison of its own. A statement without one starts no attempt and is not counted.
+- **Why statements within it count, since the root's review of `7aa915f11`:** an arrow's block body read inside a run is a type literal, and a statement written as a label's (`x: a < a, …`) is a member whose type a run goes on through. At `7aa915f11` the comment named that path as not followed. Counting every unit of the whole statement covers it, and every other path inside the statement, with no reasoning about what a block read as a type literal lets through. It cold-fails at 518, and it is a construct of the margin test.
+  - A unit case holds that the count of a statement deep in its parentheses grows by one for each comparison of a label's statement in its arrow's block. It was red under the earlier rule, which added nothing.
+  - A class is its members' regions: a unit case of a class with a comparing property and 500 comparing methods counts as one with 5. It counted 513 against 18 with the members not regions.
+- **One rule, not two:** the third round's "the left operand of `<` is nesting" is gone, since this one holds `a < b < c` too.
+- **Blocks:** a block's statements are not chained to one another. The measure's unit case holds that a `describe` call around 500 statements of comparisons counts as one around 5, since the call holds no comparison of its own. The cold probe agrees: `f(a < a);` repeated as statements was read at 12,800 lines, and a run through an arrow's block body (`a < a, () => { a < a; }`) fails at 750 units, not nested by the block.
+- **What it costs:** a statement with a comparison of its own and large bodies within it (`if (a < b) { … }`, `for (…; i < n; …) { … }`) counts all their comparisons.
+- **Each term is held by a case that goes red without it:**
+  - the comparisons: 25 of the 27 comparison constructs and two unit cases;
+  - the arrow term: "comparisons each in an arrow's expression body" (`f(a < a, () => a < a, …)`) fails cold at 359 units, below twice the bound by a count of one a unit; without the term a fresh worker could not map it at 389, in `.ts` and `.tsx`;
+  - the JSDoc literal term: "nested parameters, then a deep tag tried as their child" fails cold at 100 levels, with the tag four times as deep as the nesting; without the term a fresh worker could not map it at 99 levels, counted 402, in three file kinds.
+
+**Cold limits in a bare node, a process per trial:**
+
+| Shape | Fails at |
+| --- | --- |
+| `f(a < a, …)`, `[a < a, …]` | 521 comparisons |
+| joined by `\|` | 512 |
+| with an arrow's expression body between (`a < a, () => a < a`) | 212 pairs, three levels each by the count |
+| with an arrow's block body between | 750 pairs |
+| each in an arrow's expression body, `f(a < a, () => a < a, …)` | 359 |
+| in a label's statement in an arrow's block body, `f(a < a, () => { x: a < a, … })` | 518 |
+| `typeof a < a` side by side | 534 |
+| `!a < a` side by side | 465, the lowest per unit: twice the bound is 400, read by a fresh worker |
+
+**The margin test's new constructs**, in `.ts` and `.tsx` each, at nesting 400 by the count:
+- the reviewer's two;
+- joined by `|`, joined by `&`;
+- with an arrow's expression body between, and with an arrow's block body between;
+- `!a < a`, `typeof a < a` and `a.b < a.b` side by side;
+- comparisons in nested parentheses, and in a tuple's place.
+
+The JSDoc constructs gain the rejected child tag in three file kinds.
+
+**This working copy by the count** (911 TypeScript-family files):
+- **At `7aa915f11`:** the largest count was 55 (`…/2026-11-08/Probes/defaults-verification/scripts/builder/visibility-probe.mts`). The rule changed 260 files, by 26 at most, against `67f2d8113`'s measure without its second read of defaults.
+- **After the root's review:** the largest count is 59, the same file. Then come `…/2026-11-18/Probes/text-shape/trials.ts` at 57 and `packages/explorer/src/client/views/forceGraphPhysics.ts` at 51. The whole-statement count changed 89 files against `7aa915f11`, by 11 at most.
+- That is far below 200, and no file marks a worker.
+
+**The default's cut in a JSX file.** A JSX element's text may hold a `]` that the scanner cannot tell from the default's end, which would cut the text shorter than the default. So in a `.tsx` or `.jsx` file, once a `<` is met, the default is read to the tag's end: a longer text, which can only count more. A unit case of `[a=<a>]{[[…200…]]}</a>]` marks; it did not without this.
+
+**Not settled.** Nothing of the attempt's paths that this round knows of. The constructs whose levels take more frames than a type argument's (`!a`, the lowest at 465, and `typeof a` at 534) are in the margin test; a reviewer may look for more such prefixes.
+
+**A known limit, not mended.** TypeScript's parser takes exponential time on `async (a = async (a = …))`: the reviewer measured 0.3 s at 10 levels and 43.6 s at 20, the same in every process. A worker given such a file never answers, and the pool has no time limit for a change. This is older than this work, and the same in a process per commit. It is recorded here, not mended.
 
 ## The third round: what a walk by `forEachChild` does not reach
 

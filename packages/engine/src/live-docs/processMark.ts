@@ -19,9 +19,11 @@
  * real code, a long concatenation, nowhere near any limit (`htmlEntities.ts`, 255 deep, in 174 changes).
  *
  * What the bounds promise holds for the constructs `tests/integration/live-docs/reading-depth.test.ts` reads, each cold
- * at twice its bound; a construct outside that list is outside the promise. The measure counts what TypeScript's parser
- * built, JSDoc comments among it, and what it parsed and threw away where the record of 2026-11-20 found it
- * (`Probes/history-rebuild-speed/depth-probe.md`, its third round, lists what a walk by `ts.forEachChild` misses).
+ * at twice its bound, and the places the audit of 2026-11-20 lists; a construct outside them is outside the promise.
+ * The measure counts what TypeScript's parser built, JSDoc comments among it, and what it reads and throws away. The
+ * audit of every such place in TypeScript 5.9.3 (each `tryParse`, `lookAhead` and `speculationHelper`, and each parse
+ * whose result is dropped) is the fourth round of `Probes/history-rebuild-speed/depth-probe.md`. `processMark.test.ts`
+ * fails on any other version of TypeScript until the audit is made again.
  *
  * Until 2026-11-20 only the runtime's fault marked the process; the review of that day showed a warm worker reading a
  * file nested between a fresh process's limit and its own, which nothing marked. The tree's depth and the nesting were
@@ -134,18 +136,16 @@ export function jsonChildren(value: unknown): readonly unknown[] {
  * - the left operand of a binary expression: `parseBinaryExpressionRest` folds `a + b + c` left-deep in a loop (an
  *   operator binding tighter, or one that groups to the right, `a = b = c`, `a ** b ** c`, is parsed by recursion for
  *   its right operand, which is nesting), and the expression of an `as` or a `satisfies` cast, folded in the same loop
- *   (the type is parsed by recursion, and is nesting). The left operand of `<` is nesting: in TypeScript the parser
- *   first tries each operand followed by `<` as an expression with type arguments, by recursion through every later
- *   `<` (`parseTypeArgumentsInExpression`, then thrown away), so `a < a < a` recurses as `Array<Array<…>>` does;
+ *   (the type is parsed by recursion, and is nesting); what the parser tries at a `<` and throws away is counted apart
+ *   ({@link Region});
  * - the expression a call is made on, `a()()`, the object of a property access, `a.b.c`, or of an element access,
  *   `a[0][0]`, the expression of a non-null assertion, `a!!`, and the tag of a tagged template, `` a`x``y` ``:
  *   `parseCallExpressionRest` and `parseMemberExpressionRest` take each next link in a loop (the arguments, the index
  *   and the template are parsed by recursion, and are nesting).
- * Each is held by a construct of its own, read cold at twice {@link TREE_DEPTH}, in `reading-depth.test.ts`; so is `<`,
- * at twice {@link READING_DEPTH}.
+ * Each is held by a construct of its own, read cold at twice {@link TREE_DEPTH}, in `reading-depth.test.ts`.
  */
 function continuesChain(parent: ts.Node, child: ts.Node): boolean {
-  if (ts.isBinaryExpression(parent)) return parent.left === child && parent.operatorToken.kind !== ts.SyntaxKind.LessThanToken;
+  if (ts.isBinaryExpression(parent)) return parent.left === child;
   if (ts.isCallExpression(parent) || ts.isPropertyAccessExpression(parent) || ts.isElementAccessExpression(parent)) return parent.expression === child;
   if (ts.isNonNullExpression(parent) || ts.isAsExpression(parent) || ts.isSatisfiesExpression(parent)) return parent.expression === child;
   if (ts.isTaggedTemplateExpression(parent)) return parent.tag === child;
@@ -155,51 +155,169 @@ function continuesChain(parent: ts.Node, child: ts.Node): boolean {
 const NONE: readonly ts.Node[] = [];
 
 /**
+ * A statement's part in what the parser tries at a `<` and throws away. In a file that is not JavaScript's (`.ts`,
+ * `.tsx`, `.mts`, `.cts`), after every expression followed by `<` the parser first tries type arguments
+ * (`parseTypeArgumentsInExpression`): a list of types parted by commas, each type able to hold `|` and `&`, brackets,
+ * parentheses, braces and function types, and each type reference followed by `<` opening a list one level deeper. The
+ * attempt reads on until a token no type and no comma continues, then throws all it read away, so that
+ * `f(a < a, a < a, …)` recurses as deep as it has comparisons while its tree is flat. Since a closing bracket, a `;` and
+ * a statement's end each end the list, the attempt never leaves the statement it starts in, nor reads a following
+ * statement. Nor does it pass from one member of a class to the next: members are parted by `;` or a line's end, never
+ * by a comma, and the list ends at the first token that is not a comma once a type is done; so each class member is a
+ * region as a statement is. So within a statement the attempt is at most as deep as the deepest of the statement's
+ * nodes (where it starts), plus the levels of the statement's structure it reads through (brackets and arrows, which
+ * the tree holds), plus one level for each comparison and each arrow function with an expression body anywhere in the
+ * statement, statements within it included: an arrow the attempt reads as a function type whose return type holds the
+ * rest of the list, a level deeper, while the tree holds the arrow as a sibling ({@link opensAttempt}); and counting
+ * the statements within it covers whatever path through a block, read as a type literal, the attempt may take. The
+ * statement is counted so, `base + 2 × (max − base) + units`, beside the walk's count of each node.
+ */
+interface Region {
+  /** The statement's nesting. */
+  base: number;
+  /** The most nesting of any node within the statement, statements within it included. */
+  max: number;
+  /** The `<` comparisons and arrow functions with an expression body within the statement, statements within it included. */
+  own: number;
+  /** Whether the statement holds a comparison of its own, where an attempt starts; without one it is not counted. */
+  compares: boolean;
+  /** For a JSDoc comment instead of a statement: the most nesting of a nested type literal within it, where its tags are tried as children. */
+  literal: number | undefined;
+  /** The statement it lies in. */
+  outer: Region | undefined;
+}
+
+/** Whether a node takes an attempt at type arguments a level deeper than its tree shows: a `<` comparison, or an arrow function with an expression body ({@link Region}). */
+function opensAttempt(node: ts.Node): boolean {
+  if (ts.isBinaryExpression(node)) return node.operatorToken.kind === ts.SyntaxKind.LessThanToken;
+  return ts.isArrowFunction(node) && !ts.isBlock(node.body);
+}
+
+/**
+ * The text of a bracketed JSDoc parameter's default, from `start`, where the parser's one expression ends: the first
+ * `]` outside every bracket and template the default opens, found by TypeScript's own scanner in a loop, a `/` read as a
+ * regular expression where an operand may start. Without such a `]`, the text to `end`; and the same in a JSX file
+ * once a `<` is met, since a JSX element's text may hold a `]` the scanner cannot tell from the end. A text cut longer
+ * than the default can only count more; it is never cut shorter.
+ */
+function defaultText(file: ts.SourceFile, start: number, end: number): string {
+  const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, file.languageVariant, file.text, undefined, start, end - start);
+  const open: ts.SyntaxKind[] = [];
+  let previous = ts.SyntaxKind.Unknown;
+  for (let token = scanner.scan(); token !== ts.SyntaxKind.EndOfFileToken; previous = token, token = scanner.scan()) {
+    if (token === ts.SyntaxKind.LessThanToken && file.languageVariant === ts.LanguageVariant.JSX) break;
+    if ((token === ts.SyntaxKind.SlashToken || token === ts.SyntaxKind.SlashEqualsToken) && !ENDS_AN_OPERAND.has(previous)) token = scanner.reScanSlashToken();
+    if (token === ts.SyntaxKind.CloseBraceToken && open.at(-1) === ts.SyntaxKind.TemplateHead) token = scanner.reScanTemplateToken(false);
+    if (token === ts.SyntaxKind.OpenParenToken || token === ts.SyntaxKind.OpenBracketToken || token === ts.SyntaxKind.OpenBraceToken || token === ts.SyntaxKind.TemplateHead) open.push(token);
+    else if (token === ts.SyntaxKind.CloseBracketToken && open.length === 0) return file.text.slice(start, scanner.getTokenStart());
+    else if (token === ts.SyntaxKind.CloseParenToken || token === ts.SyntaxKind.CloseBracketToken || token === ts.SyntaxKind.CloseBraceToken || token === ts.SyntaxKind.TemplateTail) open.pop();
+  }
+  return file.text.slice(start, end);
+}
+
+/** The tokens after which a `/` divides: an operand's last token. */
+const ENDS_AN_OPERAND = new Set<ts.SyntaxKind>([
+  ts.SyntaxKind.Identifier,
+  ts.SyntaxKind.PrivateIdentifier,
+  ts.SyntaxKind.ThisKeyword,
+  ts.SyntaxKind.SuperKeyword,
+  ts.SyntaxKind.TrueKeyword,
+  ts.SyntaxKind.FalseKeyword,
+  ts.SyntaxKind.NullKeyword,
+  ts.SyntaxKind.NumericLiteral,
+  ts.SyntaxKind.BigIntLiteral,
+  ts.SyntaxKind.StringLiteral,
+  ts.SyntaxKind.NoSubstitutionTemplateLiteral,
+  ts.SyntaxKind.TemplateTail,
+  ts.SyntaxKind.CloseParenToken,
+  ts.SyntaxKind.CloseBracketToken,
+  ts.SyntaxKind.CloseBraceToken,
+  ts.SyntaxKind.PlusPlusToken,
+  ts.SyntaxKind.MinusMinusToken
+]);
+
+/**
  * What TypeScript's parser read of a node and keeps outside `ts.forEachChild`'s reach: the node's JSDoc comments, whose
  * type expressions, names and tags `ts.createSourceFile` parses with the node, by the same recursive parsers, and which
  * `forEachChild` visits within but never reaches from the node; and the default of a bracketed JSDoc parameter or
  * property, `@param {number} [a=[[1]]]`, which `parseBracketNameInPropertyAndParamTag` parses by `parseExpression` and
- * keeps nothing of, read again here from after its `=` to the tag's end inside a parenthesis, as a file of its own
- * (`file`'s name, so of its kind): what follows the default in the tag is read with it, which can only count more.
+ * keeps nothing of, read again here alone ({@link defaultText}) inside a parenthesis, as a file of its own (`file`'s
+ * name, so of its kind). The tag's prose after the default is never read. The audit of every place the parser reads
+ * and throws away, or keeps outside the tree, is in the record of 2026-11-20 (`depth-probe.md`, its fourth round).
  */
 function unvisited(node: ts.Node, file: ts.SourceFile): readonly ts.Node[] {
   const comments = (node as { jsDoc?: readonly ts.JSDoc[] }).jsDoc ?? NONE;
   if (!(ts.isJSDocParameterTag(node) || ts.isJSDocPropertyTag(node)) || !node.isBracketed) return comments;
-  const rest = file.text.slice(node.name.end, node.end);
-  const equals = /^[\s*`]*=/u.exec(rest);
-  return equals ? [...comments, ts.createSourceFile(file.fileName, `(${rest.slice(equals[0].length)}`, ts.ScriptTarget.Latest)] : comments;
+  const equals = /^[\s*`]*=/u.exec(file.text.slice(node.name.end, node.end));
+  if (!equals) return comments;
+  const read = ts.createSourceFile(file.fileName, `(${defaultText(file, node.name.end + equals[0].length, node.end)})`, ts.ScriptTarget.Latest);
+  return [...comments, read];
 }
 
 /**
  * A TypeScript tree's nesting, the most levels its parser reaches by recursion (a step of a chain adds nothing), and
  * its depth, every level counted, the root 1 in each, by an explicit stack over `ts.forEachChild` and what it does not
- * reach ({@link unvisited}), each counted as nesting, so that the measure itself never runs short of stack. With
- * `bounded`, the walk stops as soon as either passes its bound.
+ * reach ({@link unvisited}), each counted as nesting, and each statement's attempts at type arguments ({@link Region}),
+ * so that the measure itself never runs short of stack. A default read again that runs short of stack where the parser
+ * did not counts as nested beyond every bound. With `bounded`, the walk stops as soon as either passes its bound.
  */
 export function typeScriptExtent(root: ts.SourceFile, bounded = false): { nesting: number; depth: number } {
   const nodes: ts.Node[] = [root];
   const files: ts.SourceFile[] = [root];
+  const regions: Region[] = [{ base: 1, max: 1, own: 0, compares: false, literal: undefined, outer: undefined }];
   const levels: number[] = [1, 1];
+  const compared: Region[] = [];
   let nesting = 0;
   let depth = 0;
   while (nodes.length > 0) {
     const node = nodes.pop()!;
     const file = files.pop()!;
+    let region = regions.pop()!;
     const nodeDepth = levels.pop()!;
     const nodeNesting = levels.pop()!;
     nesting = Math.max(nesting, nodeNesting);
     depth = Math.max(depth, nodeDepth);
     if (bounded && (nesting > READING_DEPTH || depth > TREE_DEPTH)) break;
+    if (ts.isStatement(node) || ts.isClassElement(node)) region = { base: nodeNesting, max: nodeNesting, own: 0, compares: false, literal: undefined, outer: region };
+    if (ts.isJSDoc(node)) {
+      // A JSDoc comment's tags are tried as children of a nested parameter or property and thrown away when they are
+      // not, at the depth of the nesting (`parseNestedTypeLiteral`, `parseTypedefTag`, `parseJSDocSignature`), then
+      // read again where they stand: so the comment counts as deep as its height plus its nested type literals' nesting.
+      region = { base: nodeNesting, max: nodeNesting, own: 0, compares: true, literal: nodeNesting, outer: region };
+      compared.push(region);
+    }
+    if (ts.isJSDocTypeLiteral(node) && region.literal !== undefined && region.literal < nodeNesting) region.literal = nodeNesting;
+    for (let enclosing: Region | undefined = region; enclosing !== undefined && enclosing.max < nodeNesting; enclosing = enclosing.outer) enclosing.max = nodeNesting;
+    const opens = (file.flags & ts.NodeFlags.JavaScriptFile) === 0 && opensAttempt(node);
+    if (opens) for (let enclosing: Region | undefined = region; enclosing !== undefined; enclosing = enclosing.outer) enclosing.own += 1;
+    if (opens && ts.isBinaryExpression(node) && !region.compares) {
+      region.compares = true;
+      compared.push(region);
+    }
     ts.forEachChild(node, (child) => {
       nodes.push(child);
       files.push(file);
+      regions.push(region);
       levels.push(continuesChain(node, child) ? nodeNesting : nodeNesting + 1, nodeDepth + 1);
     });
-    for (const child of unvisited(node, file)) {
+    let beyond: readonly ts.Node[];
+    try {
+      beyond = unvisited(node, file);
+    } catch (error) {
+      if (!(error instanceof RangeError)) throw error;
+      nesting = Number.POSITIVE_INFINITY;
+      break;
+    }
+    for (const child of beyond) {
       nodes.push(child);
       files.push(ts.isSourceFile(child) ? child : file);
+      regions.push(region);
       levels.push(nodeNesting + 1, nodeDepth + 1);
     }
+  }
+  for (const part of compared) {
+    const counted = part.literal === undefined ? part.base + 2 * (part.max - part.base) + part.own : part.max + (part.literal - part.base);
+    nesting = Math.max(nesting, counted);
   }
   return { nesting, depth };
 }
