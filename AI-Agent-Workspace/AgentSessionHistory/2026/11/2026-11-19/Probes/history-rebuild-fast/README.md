@@ -197,8 +197,8 @@ _Written by the next builder for the root, in its own worktree on the branch at 
 **Step 2, prepared and not run** (the whole line, every commit held to the oracle). This branch keys the lens `dbb818c340fc3d05` (the workers' run computed it from the committed code), so its summaries name that key, and `same-summaries-any-lens.cjs` holds them to the oracle's byte for byte with the key set aside. It was seen able to fail: two of the oracle's summaries copied under another key, one with a character changed after its key, gave one identical, one fault and exit 1. From the worktree's root, after `npm run build`:
 
 ```sh
-mkdir -p /tmp/claude-1000/rb/tmp
-node scripts/browser-lane.mjs --label rebuild-workers --max-seconds 5400 -- env TMPDIR=/tmp/claude-1000/rb/tmp npm run live-docs:history -- --check-head --jobs 14 > /tmp/claude-1000/rb/run.log 2>&1
+mkdir -p /tmp/claude-1000/rw2/tmp   # a folder of its own: rb, rg and rv2 there are other builders'
+node scripts/browser-lane.mjs --label rebuild-workers --max-seconds 5400 -- env TMPDIR=/tmp/claude-1000/rw2/tmp npm run live-docs:history -- --check-head --jobs 14 > /tmp/claude-1000/rw2/run.log 2>&1
 node AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/same-summaries-any-lens.cjs /workspaces/Live-Documentation/.mdmd/history/b4294caf0e7d629f .mdmd/history/dbb818c340fc3d05
 ```
 
