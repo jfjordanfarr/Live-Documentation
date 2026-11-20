@@ -4,17 +4,22 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/reading-depth.test.ts`
-- Generated At: 2026-11-20T14:49:09.842Z
+- Generated At: 2026-11-20T15:07:24.891Z
 
 ## Authored
 ### Purpose
-Holds the margin of `READING_DEPTH` (`processMark.ts`) over a fresh process's stack, and is its proof. Below that depth a history summary must not depend on which worker made it, which holds only if no process, however cold, overflows there. Every kind of nesting the readers meet is written alone in a repository of one commit: TypeScript's brackets, scopes, types and long chains, and the brackets, blocks and chains of each tree-sitter grammar the product reads, 96 in all. Each is nested to twice the depth by the depth's own measure. A worker forked as the pool forks one (`summarizingFlags`, `summarizingEnvironment`) is given it as its first change, and must read it unmapped by nothing and marked for its depth alone. The test goes red on the day a later TypeScript, grammar or Node lowers a cold limit below twice the depth.
+Holds the margins of the two reading bounds of `processMark.ts` over a fresh process's stack, and is their proof. Within the bounds a history summary must not depend on which worker made it, which holds only if no process, however cold, overflows there.
+
+Every kind of nesting the readers meet is written alone in a repository of one commit, 101 in all: TypeScript's brackets, scopes, types and chains, and the brackets, blocks and chains of each tree-sitter grammar the product reads. Each goes to twice the bound it belongs to, by that bound's own count. A TypeScript nesting construct goes to twice `READING_DEPTH` in nesting. A TypeScript chain, and every tree-sitter construct, goes to twice `TREE_DEPTH` in depth. Six joint cases put nested tuple types, the lowest nesting construct, inside each chain, at one and a half times both bounds at once.
+
+A worker forked as the pool forks one (`summarizingFlags`, `summarizingEnvironment`) is given each case as its first change. It must read it unmapped by nothing and marked for its depth alone. The test goes red on the day a later TypeScript, grammar or Node lowers a cold limit below these.
 
 ### Notes
 - Written on 2026-11-20, when probing every construct moved the depth from a provisional 300 to 200. Nested tuple types fail cold at 453 deep, type arguments at 506 and nested calls at 598. The table and limits are in [the probe's record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-speed/depth-probe.md).
 - Seen red with the depth at 400: 8 of the 96 constructs, nested arrays among them, are unmapped at 800 deep for `Maximum call stack size exceeded`.
 - A TypeScript construct's depth is extrapolated from 8, 16, 32 and 64 levels, which must grow by the same step. The test's own process is warm and deep in the runner's calls, and TypeScript's parser recursing there overflowed at 800 deep in a first form of the test. Tree-sitter trees are measured where they are written.
-- Takes 45 to 64 s with four workers at a time on a shared machine.
+- Later the same day the one depth became two bounds, after it had marked `htmlEntities.ts`, a concatenation 255 deep with a nesting of 17. The chains, each step of the measure's set alone, and the joint cases were added, and all 107 cases read cold.
+- Takes 45 to 72 s with four workers at a time on a shared machine.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -33,6 +38,8 @@ _No public symbols detected_
 - [`treeSitter.readTree`](../../../packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md#symbol-readtree)
 - [`lens.summarizedConfiguration`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - [`processMark.READING_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-reading_depth)
+- [`processMark.TREE_DEPTH`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-tree_depth)
+- [`processMark.typeScriptExtent`](../../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-typescriptextent)
 - [`regenerate.summarizingEnvironment`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingenvironment)
 - [`regenerate.summarizingFlags`](../../../packages/generator/src/history/regenerate.ts.mdmd.md#symbol-summarizingflags)
 - [`summarizeChange.WorkerReport`](../../../packages/generator/src/history/summarizeChange.ts.mdmd.md#symbol-workerreport) (type-only)

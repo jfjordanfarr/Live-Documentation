@@ -54,7 +54,10 @@ describe("the one way to a tree-sitter tree", () => {
     const offenders: string[] = [];
     for (const file of files) {
       if (file === LOADER) continue;
-      const found = reachesTheRuntime(await fs.readFile(file, "utf8"));
+      const text = await fs.readFile(file, "utf8");
+      // Only a text that holds one of the two names can name it; the parse is kept for those few.
+      if (!text.includes("web-tree-sitter") && !text.includes("grammarParser")) continue;
+      const found = reachesTheRuntime(text);
       if (found.imports) offenders.push(`${path.relative(repoRoot, file)} imports web-tree-sitter`);
       if (found.namesGrammarParser) offenders.push(`${path.relative(repoRoot, file)} names grammarParser`);
     }

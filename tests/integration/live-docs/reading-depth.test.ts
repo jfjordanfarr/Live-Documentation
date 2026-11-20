@@ -1,12 +1,15 @@
 /**
- * The reading depth's margin, and its proof. A file nested deeper than `READING_DEPTH` marks the process that reads
- * it, and the history gives a marked change to a fresh process (`processMark.ts`); below the depth, a summary must not
- * depend on which worker made it, which holds only if no process, however cold, runs out of stack there. The ruling
- * of 2026-11-20 sets the depth at most half the smallest depth at which a fresh process fails any kind of nesting a
- * reader can meet. So each kind is written here, alone in a repository of one commit, nested to twice the depth by
- * the depth's own measure, and given as the first change of a worker started as the pool starts one: the worker must
- * read it, unmapped by nothing, marked for its depth alone. A later TypeScript, grammar or Node that lowers a cold limit
- * below twice the depth turns this red (the record of 2026-11-20, `Probes/history-rebuild-speed/depth-probe.md`).
+ * The reading bounds' margin, and their proof. A file nested beyond `READING_DEPTH` or deeper than `TREE_DEPTH` marks
+ * the process that reads it, and the history gives a marked change to a fresh process (`processMark.ts`); within the
+ * bounds, a summary must not depend on which worker made it, which holds only if no process, however cold, runs out of
+ * stack there. The ruling of 2026-11-20 sets each bound at most half the smallest depth at which a fresh process fails
+ * a construct it bounds. So each kind of nesting is written here, alone in a repository of one commit, and given as the
+ * first change of a worker started as the pool starts one: the worker must read it, unmapped by nothing, marked for its
+ * depth alone. TypeScript's nesting constructs, which its parser reaches by recursion, are nested to twice the nesting
+ * bound; its chains, which its parser reads by a loop, and every tree-sitter construct, to twice the tree's bound, by
+ * the bounds' own measures. Since the two add up on one stack, the lowest nesting construct is also wrapped in each
+ * chain at one and a half times both bounds at once. A later TypeScript, grammar or Node that lowers a cold limit
+ * below these turns this red (the record of 2026-11-20, `Probes/history-rebuild-speed/depth-probe.md`).
  */
 import { fork } from "node:child_process";
 import * as fs from "node:fs";
@@ -18,7 +21,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { readTree, type SyntaxNode } from "../../../packages/engine/src/live-docs/adapters/treeSitter";
 import { summarizedConfiguration } from "../../../packages/engine/src/live-docs/history/lens";
-import { READING_DEPTH } from "../../../packages/engine/src/live-docs/processMark";
+import { READING_DEPTH, TREE_DEPTH, typeScriptExtent } from "../../../packages/engine/src/live-docs/processMark";
 import { summarizingEnvironment, summarizingFlags } from "../../../packages/generator/src/history/regenerate";
 import type { WorkerReport, WorkerTask } from "../../../packages/generator/src/history/summarizeChange";
 import { buildRepository, git } from "./scripted-repository";
@@ -42,8 +45,11 @@ const r = (text: string, n: number): string => text.repeat(n);
 const indented = (line: string, n: number, last: string): string =>
   Array.from({ length: n }, (_, i) => `${" ".repeat(i)}${line}\n`).join("") + `${" ".repeat(n)}${last}\n`;
 
-/** A kind of nesting: the file it is written in, and its text at `n` levels or terms. */
-type Construct = [name: string, file: string, text: (n: number) => string];
+/**
+ * A kind of nesting: the file it is written in, its text at `n` levels or terms, and, for a TypeScript chain, which
+ * its parser reads by a loop and which is bounded by the tree's depth, `chain`.
+ */
+type Construct = [name: string, file: string, text: (n: number) => string, chain?: "chain"];
 
 /**
  * Every kind of nesting the readers meet: for TypeScript its brackets, its nested scopes and its long chains, left
@@ -76,11 +82,18 @@ const CONSTRUCTS: Construct[] = [
   ["TypeScript: nested functions", "m.ts", (n) => `export ${r("function f() {", n)}${r("}", n)}\n`],
   ["TypeScript: nested namespaces", "m.ts", (n) => `export ${r("namespace A {", n)}${r("}", n)}\n`],
   ["TypeScript: class expressions", "m.ts", (n) => `export const x = ${r("class { x = ", n)}1${r(" }", n)};\n`],
-  ["TypeScript: a + b + …", "m.ts", (n) => `declare const a: number;\nexport const x = a${r(" + a", n)};\n`],
-  ["TypeScript: a.b().c()…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(".b()", n)};\n`],
-  ["TypeScript: a.b.c…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(".b", n)};\n`],
-  ["TypeScript: a[0][0]…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("[0]", n)};\n`],
+  // The chains: each step the measure takes for a loop of the parser's, alone, and mixed.
+  ["TypeScript: a + b + …", "m.ts", (n) => `declare const a: number;\nexport const x = a${r(" + a", n)};\n`, "chain"],
+  ["TypeScript: a, b, …", "m.ts", (n) => `declare const a: number;\nexport const x = (a${r(", a", n)});\n`, "chain"],
+  ["TypeScript: a()()…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("()", n)};\n`, "chain"],
+  ["TypeScript: a.b.c…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(".b", n)};\n`, "chain"],
+  ["TypeScript: a[0][0]…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("[0]", n)};\n`, "chain"],
+  ["TypeScript: a.b().c()…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(".b()", n)};\n`, "chain"],
+  // The same steps the other way round, which the parser takes by recursion: nesting.
   ["TypeScript: a = b = …", "m.ts", (n) => `let a: unknown;\nexport const x = ${r("a = ", n)}1;\n`],
+  ["TypeScript: a ** b ** …", "m.ts", (n) => `declare const a: number;\nexport const x = a${r(" ** a", n)};\n`],
+  ["TypeScript: a + (b + (…))", "m.ts", (n) => `declare const a: number;\nexport const x = ${r("a + (", n)}a${r(")", n)};\n`],
+  ["TypeScript: a[a[…]]", "m.ts", (n) => `declare const a: any;\nexport const x = ${r("a[", n)}0${r("]", n)};\n`],
   ["TypeScript: !!a", "m.ts", (n) => `declare const a: unknown;\nexport const x = ${r("!", n)}a;\n`],
 
   ["Python: parentheses", "m.py", (n) => `x = ${r("(", n)}1${r(")", n)}\n`],
@@ -159,20 +172,11 @@ const CONSTRUCTS: Construct[] = [
 ];
 
 /** A file's depth as `processMark.ts` counts it: the root 1, each child of `ts.forEachChild` one more. Also whether TypeScript reported a syntax error. */
-function typeScriptDepth(file: string, text: string): { depth: number; malformed: boolean } {
+function typeScriptMeasure(file: string, text: string): { nesting: number; depth: number; malformed: boolean } {
   const kind = file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
   const root = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
-  let deepest = 0;
-  const nodes: Array<[ts.Node, number]> = [[root, 1]];
-  while (nodes.length > 0) {
-    const [node, depth] = nodes.pop()!;
-    deepest = Math.max(deepest, depth);
-    ts.forEachChild(node, (child) => {
-      nodes.push([child, depth + 1]);
-    });
-  }
   const diagnostics = (root as unknown as { parseDiagnostics: readonly unknown[] }).parseDiagnostics;
-  return { depth: deepest, malformed: diagnostics.length > 0 };
+  return { ...typeScriptExtent(root), malformed: diagnostics.length > 0 };
 }
 
 /** A tree's depth as `treeSitter.ts` counts it: by a cursor, the root 1. */
@@ -197,15 +201,17 @@ function cursorDepth(root: SyntaxNode): number {
   }
 }
 
-async function depthOf([, file, text]: Construct, n: number): Promise<{ depth: number; malformed: boolean }> {
+/** The count that bounds the construct, `depth` here: its nesting for a TypeScript nesting construct, its tree's depth otherwise. */
+async function depthOf([, file, text, chain]: Construct, n: number): Promise<{ depth: number; malformed: boolean }> {
   const grammar = GRAMMARS[path.extname(file)];
-  if (!grammar) return typeScriptDepth(file, text(n));
-  return readTree(grammar, text(n), (root) => ({ depth: cursorDepth(root), malformed: root.hasError }));
+  if (grammar) return readTree(grammar, text(n), (root) => ({ depth: cursorDepth(root), malformed: root.hasError }));
+  const measured = typeScriptMeasure(file, text(n));
+  return { depth: chain ? measured.depth : measured.nesting, malformed: measured.malformed };
 }
 
 /**
- * The fewest levels at which the construct is `target` deep or deeper by the measure, its depth there, and whether it
- * is written as the language writes it. A tree-sitter tree is parsed outside the stack and walked by a cursor, so it is
+ * The fewest levels at which the construct is `target` deep or deeper by the count that bounds it, that count there,
+ * and whether it is written as the language writes it. A tree-sitter tree is parsed outside the stack and walked by a cursor, so it is
  * measured where it is written. TypeScript's parser recurses, and this test's own process, warm and deep in the test
  * runner's calls, may overflow where the worker does not: its depth is measured at 8, 16, 32 and 64 levels, where it
  * must grow by the same steps, and found at `target` from them.
@@ -282,20 +288,56 @@ async function firstChange(file: string, text: string): Promise<WorkerReport> {
   }
 }
 
-describe("the reading depth", () => {
-  const target = 2 * READING_DEPTH;
+/** Read, unmapped by nothing (a stack overflow would leave the file unmapped), and marked for its depth alone. */
+function expectReadCold(report: WorkerReport, what: string): void {
+  expect({ unmapped: report.unmapped, marked: report.marked, published: report.published }, what).toEqual({ unmapped: [], marked: ["deep"], published: true });
+}
 
-  it.concurrent.each(CONSTRUCTS)(`is at most half the depth a fresh process reads: %s, at ${target} deep`, async (...construct) => {
+/**
+ * The chains the lowest nesting construct is wrapped in: around `seed`, `m` links, each as in `CONSTRUCTS`. The seed is
+ * the innermost operand, the left-most, so that the chain and the nesting add up on one path.
+ */
+const JOINT_CHAINS: Array<[name: string, text: (seed: string, m: number) => string]> = [
+  ["a + b + …", (seed, m) => `${seed}${r(" + a", m)}`],
+  ["a, b, …", (seed, m) => `(${seed}${r(", a", m)})`],
+  ["a()()…", (seed, m) => `${seed}${r("()", m)}`],
+  ["a.b.c…", (seed, m) => `${seed}${r(".b", m)}`],
+  ["a[0][0]…", (seed, m) => `${seed}${r("[0]", m)}`],
+  ["a.b().c()…", (seed, m) => `${seed}${r(".b()", m)}`]
+];
+/** Nested tuple types, the nesting construct a fresh process fails soonest (the probe of 2026-11-20), as the chain's seed. */
+const tupleSeed = (k: number): string => `(a as ${r("[", k)}number${r("]", k)})`;
+const jointText = (chain: (seed: string, m: number) => string, k: number, m: number): string => `declare const a: any;\nexport const x = ${chain(tupleSeed(k), m)};\n`;
+
+describe("the reading bounds", () => {
+  const nestingTarget = 2 * READING_DEPTH;
+  const treeTarget = 2 * TREE_DEPTH;
+
+  it.concurrent.each(CONSTRUCTS)(`are at most half what a fresh process reads: %s, at twice its bound`, async (...construct) => {
+    const target = construct[3] === "chain" || GRAMMARS[path.extname(construct[1])] ? treeTarget : nestingTarget;
     const { n, ...measured } = await nestedTo(construct, target);
-    // The construct is written as the language writes it, and is as deep as twice the reading depth.
+    // The construct is written as the language writes it, and is as deep as twice its bound.
     expect(measured.malformed, `${construct[0]} at ${n} levels`).toBe(false);
     expect(measured.depth).toBeGreaterThanOrEqual(target);
     const report = await lane(() => firstChange(construct[1], construct[2](n)));
-    // Read, unmapped by nothing (a stack overflow would leave the file unmapped), and marked for its depth alone.
-    expect({ unmapped: report.unmapped, marked: report.marked, published: report.published }, `${construct[0]} at ${n} levels, ${measured.depth} deep`).toEqual({
-      unmapped: [],
-      marked: ["deep"],
-      published: true
-    });
+    expectReadCold(report, `${construct[0]} at ${n} levels, ${measured.depth} deep by its bound's count`);
+  }, 600_000);
+
+  // The parser's recursion and the generator's own walks add up on one stack: the lowest nesting construct inside
+  // each chain, nested to one and a half times the nesting bound and as deep as one and a half times the tree's.
+  it.concurrent.each(JOINT_CHAINS)("are at most two thirds of what a fresh process reads together: nested tuple types inside %s", async (name, chain) => {
+    const nestingWanted = 1.5 * READING_DEPTH;
+    const depthWanted = 1.5 * TREE_DEPTH;
+    const measure = (k: number, m: number) => typeScriptMeasure("m.ts", jointText(chain, k, m));
+    let k = 1;
+    while (measure(k, 1).nesting < nestingWanted) k += 1;
+    let m = 1;
+    while (measure(k, m).depth < depthWanted) m += 1;
+    const measured = measure(k, m);
+    expect(measured.malformed, `${name} at ${k} and ${m} levels`).toBe(false);
+    expect(measured.nesting).toBeGreaterThanOrEqual(nestingWanted);
+    expect(measured.depth).toBeGreaterThanOrEqual(depthWanted);
+    const report = await lane(() => firstChange("m.ts", jointText(chain, k, m)));
+    expectReadCold(report, `tuple types ${k} levels inside ${name} ${m} links: nested ${measured.nesting}, ${measured.depth} deep`);
   }, 600_000);
 });
