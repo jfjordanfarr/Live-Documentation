@@ -618,6 +618,10 @@ With frozen engine builds of the base and of this round under the worktree's ign
 - **The generator's search for scans within the workspace** (`scansWithin` in `packages/generator/src/generator.ts`) still walks every ignored folder before asking git.
 - **A link, met where no repository is around, to a plain folder in the middle of a repository** is taken for more of no repository: judged by the root `.gitignore` with no warning, where inside a repository the same link is unjudged and warned. Telling the two apart would mean asking git at every link in a folder of clones.
 
+### The gate
+
+`npm run safe:commit`, through the lane. Over the first commit, red at the unit tests in `generator.unmappable.test.ts`, which led to item 9's hand-over (above). Over the second, ending 16:17 UTC: build, lint, the type-check of the tests and the unit tests green (216 files, 2,869 cases), and red at the integration tests in `tests/integration/live-docs/generator-identity.test.ts` alone, 6 of its 7 cases, each with "package-lock.json holds no entry for packages/engine", thrown by `keyedLockEntries` in `generatorIdentity.ts` over the minimal lock the test writes (`{"packages":{"tool":"first"}}`): the narrower cache key joined on this branch meeting that test, in files this round did not touch. The stages after the integration tests (the Live Docs' lint and the audits) did not run. Not confirmed on the base by a run of its own, for want of time.
+
 ### Commands the harness refused this round
 
 None.
