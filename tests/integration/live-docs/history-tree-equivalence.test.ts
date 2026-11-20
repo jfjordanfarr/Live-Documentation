@@ -24,17 +24,23 @@ afterAll(() => {
   fs.rmSync(privateTemporary, { recursive: true, force: true });
 });
 
-/** Every sample workspace: each folder of the fixtures, and each program of each language. */
+/**
+ * Every sample workspace: each folder of the fixtures, and each program of each language, as git tracks them. Until
+ * 2026-11-20 they were listed from the folders on disk, so an empty folder left beside the samples, which git keeps
+ * nothing of, made a case that failed at `git commit` with nothing to commit.
+ */
 function workspaces(): string[] {
-  const integration = path.join(repoRoot, "tests", "integration");
-  const fixtures = fs.readdirSync(path.join(integration, "fixtures"), { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => path.join("fixtures", entry.name));
-  const programs = fs
-    .readdirSync(path.join(integration, "programs"), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .flatMap((language) =>
-      fs.readdirSync(path.join(integration, "programs", language.name), { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => path.join("programs", language.name, entry.name))
-    );
-  return [...fixtures, ...programs].sort();
+  const tracked = execFileSync("git", ["ls-files", "-z", "--", "tests/integration/fixtures", "tests/integration/programs"], { cwd: repoRoot, encoding: "utf8" })
+    .split("\0")
+    .filter(Boolean)
+    .map((file) => file.split("/").slice(2));
+  const samples = new Set<string>();
+  for (const parts of tracked) {
+    // A fixture is a folder of `fixtures`; a program is a folder of a language's folder of `programs`.
+    const depth = parts[0] === "fixtures" ? 2 : 3;
+    if (parts.length > depth) samples.add(path.join(...parts.slice(0, depth)));
+  }
+  return [...samples].sort();
 }
 
 /** Every file under a folder, by its path relative to it, with its bytes. */
