@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T14:07:48.324Z
+- Generated At: 2026-11-20T15:28:04.774Z
 
 ## Authored
 ### Purpose
@@ -75,7 +75,7 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `workerBound` {#symbol-workerbound}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L261)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L268)
 
 ##### `workerBound` — Summary
 The resident memory past which a worker is replaced after a change: its share of the memory the pool was sized by,
@@ -83,14 +83,14 @@ so that the workers together never hold more than the pool planned for, whatever
 
 #### `Worker` {#symbol-worker}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L266)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L273)
 
 ##### `Worker` — Summary
 A summarizing process started once, which summarizes changes one at a time in a tree it keeps.
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L350)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L358)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -101,7 +101,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L381)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L389)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

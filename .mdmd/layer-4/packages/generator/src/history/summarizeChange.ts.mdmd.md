@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-20T14:29:16.130Z
+- Generated At: 2026-11-20T15:28:04.784Z
 
 ## Authored
 ### Purpose
@@ -35,14 +35,14 @@ What one process is asked to do.
 
 #### `SummaryOutcome` {#symbol-summaryoutcome}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L88)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L90)
 
 ##### `SummaryOutcome` — Summary
 What became of a change's summary, as the worker reports it ({@link WorkerReport}).
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L102)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L104)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -60,7 +60,7 @@ committed on another day was removed by the generator, so that it never stands i
 
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L161)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L163)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -82,7 +82,7 @@ lay in `regenerate.ts`, whose process wrote every tree.
 
 #### `standingFiles` {#symbol-standingfiles}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L202)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L204)
 - Parameters: `unwritten`: `ReadonlyArray`
 
 ##### `standingFiles` — Summary
@@ -99,14 +99,14 @@ the disk was asked here (`stat`, then `isFile`).
 
 #### `WorkerTask` {#symbol-workertask}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L237)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L239)
 
 ##### `WorkerTask` — Summary
 What the history command asks of a worker: one change summarized, its tree written or brought forward by the worker.
 
 #### `WorkerReport` {#symbol-workerreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L240)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L242)
 
 ##### `WorkerReport` — Summary
 What a worker answers for each task.
