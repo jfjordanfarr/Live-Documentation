@@ -159,6 +159,8 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   }
   // What the generator warned, once each with the number of changes that gave it, rather than again at every change.
   const warnings = new Map<string, number>();
+  // Why trees were written anew rather than brought forward, each with the number of changes, said once at the end.
+  const writtenAnew = new Map<string, number>();
   const started = Date.now();
   const runs: MainlineChange[][] = [];
   const length = Math.max(1, Math.ceil(changes.length / (context.jobs * 4)));
@@ -208,11 +210,13 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           for (const message of new Set(report.warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
           }
+          const anew = report.broughtForward ? undefined : (report.writtenAnew ?? "no reason given");
+          if (anew !== undefined) writtenAnew.set(anew, (writtenAnew.get(anew) ?? 0) + 1);
           timings.push(Date.now() - began);
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
           const wall = (Date.now() - started) / timings.length;
           context.progress(
-            `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}${report.broughtForward ? "" : ", its tree written anew"}; ${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
+            `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}${anew === undefined ? "" : `, its tree written anew: ${anew}`};${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
           );
         }
       }
@@ -230,6 +234,9 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   } finally {
     for (const [message, count] of warnings) {
       context.progress(`the generator warned at ${count} of the ${changes.length} changes regenerated: ${message}`);
+    }
+    for (const [reason, count] of [...writtenAnew].sort(([a], [b]) => (a < b ? -1 : 1))) {
+      context.progress(`trees written anew at ${count} of the ${changes.length} changes regenerated: ${reason}`);
     }
   }
   if (failure !== undefined) {

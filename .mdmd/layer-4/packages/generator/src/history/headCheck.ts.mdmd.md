@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/headCheck.ts`
-- Generated At: 2026-11-20T10:22:07.563Z
+- Generated At: 2026-11-20T14:11:52.462Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ The check at the head: the history's last step, replayed through every step from
 ### Public Symbols
 #### `committedLiveDocGraph` {#symbol-committedlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L57)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L55)
 - Parameters: `location`: [`DocLocation`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-doclocation)
 
 ##### `committedLiveDocGraph` — Summary
@@ -50,14 +50,14 @@ next change that moves the lens anyway.
 
 #### `ReplayedMoment` {#symbol-replayedmoment}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L126)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L123)
 
 ##### `ReplayedMoment` — Summary
 A moment of the history, as replayed: its shape and its rows.
 
 #### `leftOutAtHead` {#symbol-leftoutathead}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L149)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L146)
 - Parameters: `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `leftOut`: `ReadonlyMap`
 
 ##### `leftOutAtHead` — Summary
@@ -81,7 +81,7 @@ is no weaker than the check before the whole change, which dropped such entries 
 
 #### `headDifferences` {#symbol-headdifferences}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L164)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L161)
 - Parameters: `replayed`: [`ReplayedMoment`](#symbol-replayedmoment); `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `notCompared`: `ReadonlySet`
 
 ##### `headDifferences` — Summary
@@ -94,17 +94,17 @@ Where a replayed moment differs from a graph derived from committed Live Docs, i
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `spawn`
 - `node:path` - `path`
 - [`document.LiveDocSyntaxError`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.parseLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`graph.DocLocation`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-doclocation)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`graph.linkTarget`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-linktarget-function)
 - [`git.followLink`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-followlink)
+- [`git.historyGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-historygit)
+- [`git.spawnHistoryGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-spawnhistorygit)
 - [`rows.FileRows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-filerows)
 - [`rows.RowLink`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
 - [`Rows`](../../../engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rows)

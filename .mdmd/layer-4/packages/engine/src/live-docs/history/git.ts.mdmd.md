@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/git.ts`
-- Generated At: 2026-11-20T12:13:09.291Z
+- Generated At: 2026-11-20T14:11:49.219Z
 
 ## Authored
 ### Purpose
@@ -46,23 +46,53 @@ handed it: every call names the repository by `GIT_DIR`, so git never looks for 
 and the process needs none of the person's configuration, whose `safe.directory` a bare environment cannot see. Until
 2026-11-20 these calls were `git -C <top level>`, and a worker could not open a repository that needed one.
 
+#### `HISTORY_GIT_ENVIRONMENT` {#symbol-history_git_environment}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L271)
+
+##### `HISTORY_GIT_ENVIRONMENT` — Summary
+What every git call of the history command sets, in one place, the command's own (the mainline, the renames, the check
+at the head, the lens's reading of this tool's checkout), the tree writer's and those of a process in the tree, whose
+environment is made from it: git stays on the local clone, a partial clone's missing object failing the call rather
+than being fetched (`GIT_NO_LAZY_FETCH`) and nothing ever asking for credentials at a terminal
+(`GIT_TERMINAL_PROMPT`); and a commit is read as stored, the repository's replacement objects (`refs/replace`), local
+state no other clone shares, set aside (`GIT_NO_REPLACE_OBJECTS`). Until 2026-11-20 the command's own calls set only
+the last, so that rename detection in a partial clone without blobs could fetch them from its remote.
+
+#### `historyGit` {#symbol-historygit}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L278)
+
+##### `historyGit` — Summary
+Runs git as every call of the history command runs it, with {@link HISTORY_GIT_ENVIRONMENT} over the process's own
+environment and `env`, and returns what it writes. A guard holds that no module of the history command starts git
+otherwise (`git.test.ts`, "every git call of the history command").
+
+#### `spawnHistoryGit` {#symbol-spawnhistorygit}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L283)
+- Returns: `ChildProcessWithoutNullStreams`
+
+##### `spawnHistoryGit` — Summary
+Starts `git` with `args` as {@link historyGit} runs it, its three streams piped, for a reader fed through its input.
+
 #### `UnwrittenEntry` {#symbol-unwrittenentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L249)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L294)
 
 ##### `UnwrittenEntry` — Summary
 An entry of a change's tree that was not written into its working tree, and why.
 
 #### `DiskEntry` {#symbol-diskentry}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L255)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L300)
 
 ##### `DiskEntry` — Summary
 What a path under a tree's folder is on the disk, read without following a link.
 
 #### `TreeDisk` {#symbol-treedisk}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L261)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L306)
 
 ##### `TreeDisk` — Summary
 The disk a tree is written to, as the writer asks it, by paths relative to the tree's folder: the real disk
@@ -70,7 +100,7 @@ The disk a tree is written to, as the writer asks it, by paths relative to the t
 
 #### `realDisk` {#symbol-realdisk}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L274)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L319)
 - Returns: [`TreeDisk`](#symbol-treedisk)
 
 ##### `realDisk` — Summary
@@ -78,7 +108,7 @@ The real disk under a folder.
 
 #### `placeEntry` {#symbol-placeentry}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L317)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L362)
 - Parameters: `disk`: [`TreeDisk`](#symbol-treedisk)
 
 ##### `placeEntry` — Summary
@@ -92,14 +122,14 @@ Why the entry cannot be written, or undefined where it can.
 
 #### `LinkEnd` {#symbol-linkend}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L390)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L452)
 
 ##### `LinkEnd` — Summary
 Where a symbolic link of a commit's tree leads, read through the tree's own listing and never through the disk.
 
 #### `followLink` {#symbol-followlink}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L403)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L465)
 - Returns: [`LinkEnd`](#symbol-linkend)
 - Parameters: `listing`: `ReadonlyMap`; `targets`: `ReadonlyMap`
 
@@ -117,7 +147,7 @@ the reason it is not followed.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L514)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L576)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeStoredTree` — Summary
@@ -146,7 +176,7 @@ The entries not written, in the tree's order.
 
 #### `WrittenEntries` {#symbol-writtenentries}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L524)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L586)
 - Returns: `ReadonlyMap`
 
 ##### `WrittenEntries` — Summary
@@ -154,14 +184,14 @@ What the writer left on the disk of a change's tree: every entry it wrote, by it
 
 #### `WrittenTree` {#symbol-writtentree}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L527)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L589)
 
 ##### `WrittenTree` — Summary
 A tree as the writer left it: the entries left out, in the tree's order, and those written.
 
 #### `writeTreeAnew` {#symbol-writetreeanew}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L533)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L595)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeTreeAnew` — Summary
@@ -169,7 +199,7 @@ A tree as the writer left it: the entries left out, in the tree's order, and tho
 
 #### `bringTreeForward` {#symbol-bringtreeforward}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L674)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L743)
 - Parameters: `previous`: [`WrittenEntries`](#symbol-writtenentries); `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `bringTreeForward` — Summary
@@ -193,14 +223,20 @@ written anew with the generator run between).
 
 ##### `bringTreeForward` — Parameters
 - `previous`: What the writer wrote of the old change, as this function or {@link writeTreeAnew} returned it.
+On Windows a tree holding a name with `~` and a digit is not brought forward (since 2026-11-20, finding 6 of that
+day's independent review; reasoned from how NTFS gives short names, and not run on Windows). A disk that makes 8.3
+short names gives `ABCDEF~1.TXT` to whichever long name of that stem it meets first, so which long name holds it, and
+whether an entry literally named `ABCDEF~1.TXT` is refused as the same name, depends on the order the names were
+made. A tree written anew makes them in the tree's order; a tree brought forward made its kept names for an earlier
+change, so the disk could refuse there what it accepts anew, or the reverse, and the two trees differ.
 
 ##### `bringTreeForward` — Returns
-The new change's tree as written, or undefined where it was not brought forward, the folder then in no
+The new change's tree as written, or why it was not brought forward (`writtenAnew`), the folder then in no
 state to be read.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L922)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L1011)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -208,14 +244,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L934)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L1023)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L946)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L1035)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
@@ -224,7 +260,7 @@ The renames and content changes of `git diff --name-status -z`.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `spawn`
+- `node:child_process` - `ChildProcessWithoutNullStreams`, `spawn`
 - `node:fs` - `lstatSync`, `promises`
 - `node:os` - `os`
 - `node:path` - `path`

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/generatorIdentity.ts`
-- Generated At: 2026-11-20T09:32:49.175Z
+- Generated At: 2026-11-20T14:11:52.451Z
 
 ## Authored
 ### Purpose
@@ -101,8 +101,8 @@ steps derived anew than those written.
 - `node:crypto` - `createHash`
 - `node:fs` - `promises`
 - `node:path` - `path`
-- [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`format.GeneratorIdentity`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-generatoridentity) (type-only)
+- [`git.historyGit`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-historygit)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

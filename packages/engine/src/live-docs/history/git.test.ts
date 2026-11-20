@@ -1,7 +1,8 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { bringTreeForward, followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, writeStoredTree, writeTreeAnew, type DiskEntry, type TreeDisk } from "./git";
@@ -158,7 +159,13 @@ describe("a commit's tree for the history", () => {
       // Nothing fetched for a partial clone's missing object, and no prompt for credentials (since 2026-11-20); the
       // tree's writer sets the same, the tree's environment being made from the writer's.
       GIT_NO_LAZY_FETCH: "1",
-      GIT_TERMINAL_PROMPT: "0"
+      GIT_TERMINAL_PROMPT: "0",
+      // The repository's own settings that could change the tree's answers, set aside as `-c` sets them (since 2026-11-20).
+      GIT_CONFIG_COUNT: "2",
+      GIT_CONFIG_KEY_0: "core.fsmonitor",
+      GIT_CONFIG_VALUE_0: "false",
+      GIT_CONFIG_KEY_1: "core.excludesFile",
+      GIT_CONFIG_VALUE_1: os.devNull
     });
     expect(a.unwritten).toEqual([]);
     expect(execFileSync("git", ["ls-files"], { cwd: a.root, env: { ...isolated, ...a.environment }, encoding: "utf8" }).split("\n").filter(Boolean).sort()).toEqual(["link.ts", "run.sh", "src/a.ts"]);
@@ -436,7 +443,9 @@ describe("a tree the writer must not follow out of its folder", () => {
     const kept = await folder();
     const { written } = await writeTreeAnew(path.join(repository, ".git"), before, kept, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" });
     // Kept, `readme.md` would stand where the tree written anew holds `README.md`: the tree is written anew instead.
-    expect(await bringTreeForward(path.join(repository, ".git"), after, kept, written, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" })).toBeUndefined();
+    expect(await bringTreeForward(path.join(repository, ".git"), after, kept, written, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" })).toEqual({
+      writtenAnew: "the disk left out an entry the listing did not, which a tree written anew settles by the tree's order: another entry already stands at its name on this disk, which takes the two names for one"
+    });
     // On a disk that tells the two apart, as Linux's does, it is brought forward, and holds what is written anew.
     const real = await folder();
     const first = await writeTreeAnew(path.join(repository, ".git"), before, real, { platform: "linux", docsRoot: ".mdmd" });
@@ -445,9 +454,9 @@ describe("a tree the writer must not follow out of its folder", () => {
     await fs.rm(path.join(real, "PROBE"));
     const brought = await bringTreeForward(path.join(repository, ".git"), after, real, first.written, { platform: "linux", docsRoot: ".mdmd" });
     if (folds) {
-      expect(brought).toBeUndefined();
+      expect(brought).toHaveProperty("writtenAnew");
     } else {
-      expect(brought?.unwritten).toEqual([]);
+      expect(brought).toMatchObject({ unwritten: [] });
       expect((await fs.readdir(real)).sort()).toEqual(["README.md", "readme.md"]);
       expect(await fs.readFile(path.join(real, "README.md"), "utf8")).toBe("new\n");
     }
@@ -468,6 +477,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     try {
       const next = await first.bringTo(after, { docsRoot: ".mdmd" });
       expect(next.broughtForward).toBe(false);
+      expect(next.writtenAnew).toBe("the disk refused to put it right in place (EACCES)");
       expect(path.dirname(next.root)).toBe(parent);
       expect(path.basename(next.root)).not.toBe("tree00");
       expect(path.basename(next.root)).toHaveLength("tree00".length);
@@ -478,48 +488,158 @@ describe("a tree the writer must not follow out of its folder", () => {
     }
   });
 
-  it("does not bring a tree forward where a kept file was rewritten, re-moded or replaced in place since it was written", async () => {
-    // `keep.txt` is the same blob at both changes, so it is kept; between them something changes it on the disk, each
-    // time at the same length, so that only its time, its mode or its identity can tell. Until 2026-11-20 the walk
-    // read names alone, and the tree came forward holding what neither change holds.
-    const store = path.join(repository, ".git");
-    const before = commit(tree([["100644", "blob", blob("a\n"), "a.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
-    const after = commit(tree([["100644", "blob", blob("b\n"), "b.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
-    const touches: Array<[string, (file: string) => Promise<void>]> = [
-      ["rewritten", (file) => fs.writeFile(file, "KEPT\n")],
-      ["re-moded", (file) => fs.chmod(file, 0o755)],
-      ["replaced", async (file) => {
-        await fs.writeFile(`${file}.new`, "kept\n");
-        await fs.rename(`${file}.new`, file);
-      }]
-    ];
-    for (const [touched, touch] of touches) {
+  /**
+   * A kept file changed on the disk between two changes. `keep.txt` is the same blob at both changes, so it is kept;
+   * between them something changes it on the disk, each time at the same length, so that only its time, its mode or its
+   * identity can tell. Until 2026-11-20 the walk read names alone, and the tree came forward holding what neither change
+   * holds. Each case stands on a ground some disks lack, and where this one lacks it the case says so and is skipped,
+   * rather than fail with the product sound or pass without having tested anything (the independent review of
+   * 2026-11-20).
+   */
+  describe("a kept file changed in place since it was written", () => {
+    const CHANGED = { writtenAnew: "a file kept from the last change was changed on the disk since it was written" };
+    let store: string;
+    let before: string;
+    let after: string;
+
+    beforeAll(() => {
+      store = path.join(repository, ".git");
+      before = commit(tree([["100644", "blob", blob("a\n"), "a.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
+      after = commit(tree([["100644", "blob", blob("b\n"), "b.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
+    });
+
+    /** The old change's tree written anew in a fresh folder, that folder, and its kept file. */
+    async function written(): Promise<{ directory: string; file: string; first: Awaited<ReturnType<typeof writeTreeAnew>> }> {
       const directory = await folder();
       const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
-      await touch(path.join(directory, "keep.txt"));
-      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }), touched).toBeUndefined();
+      return { directory, file: path.join(directory, "keep.txt"), first };
     }
-    // Rewritten at the same length with its modification time put back exactly: only the change time tells. The stamp
-    // is taken here at a whole second, which reads back exactly where a time with its fraction would not.
-    {
-      const directory = await folder();
-      const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
-      const file = path.join(directory, "keep.txt");
+
+    /**
+     * Whether a file written now beside `directory`, on its disk, carries a later time of the kind named than `than`,
+     * waiting up to three seconds for the disk's clock to tick (two seconds is FAT's step): the ground of a case in which
+     * a rewrite is told by its time. The probe stands beside the tree, never in it.
+     */
+    async function clockPassed(directory: string, time: "mtimeMs" | "ctimeMs", than: number): Promise<boolean> {
+      const probe = path.join(path.dirname(directory), "clock-probe");
+      for (const began = Date.now(); Date.now() - began < 3000; await new Promise((resolve) => setTimeout(resolve, 5))) {
+        await fs.writeFile(probe, String(Date.now()));
+        if ((await fs.lstat(probe))[time] > than) return true;
+      }
+      return false;
+    }
+
+    it("is seen where it was rewritten at the same size, once the disk's clock has ticked", async (context) => {
+      const { directory, file, first } = await written();
+      // Without the wait, a disk whose clock ticks coarsely (FAT, or Linux before 6.13) can rewrite within one tick, which
+      // no stamp sees (`FileStamp`); the case would then be red with the product sound.
+      if (!(await clockPassed(directory, "mtimeMs", first.written.get("keep.txt")!.stamp!.mtimeMs))) context.skip("this disk's clock did not tick within three seconds, so no rewrite can be told by its time here");
+      await fs.writeFile(file, "KEPT\n");
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" })).toEqual(CHANGED);
+    });
+
+    it("is seen where it was re-moded, on a disk that keeps POSIX modes", async (context) => {
+      const { directory, file, first } = await written();
+      // Windows keeps no POSIX mode: `chmod(0o755)` of a plain file changes nothing there, and the case would be red with
+      // the product sound. The disk is asked, with a probe beside the tree.
+      const probe = path.join(path.dirname(directory), "mode-probe");
+      await fs.writeFile(probe, "", { mode: 0o644 });
+      await fs.chmod(probe, 0o755);
+      if (((await fs.lstat(probe)).mode & 0o111) === 0) context.skip("this disk keeps no POSIX mode, so a file cannot be re-moded here");
+      await fs.chmod(file, 0o755);
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" })).toEqual(CHANGED);
+    });
+
+    it("is seen where it was replaced by a rename", async () => {
+      const { directory, file, first } = await written();
+      await fs.writeFile(`${file}.new`, "kept\n");
+      await fs.rename(`${file}.new`, file);
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" })).toEqual(CHANGED);
+    });
+
+    it("is seen by its identity alone, every other part of its stamp the same", async () => {
+      // The stamp the writer would have taken of a file of another identity: what the disk now says of the file that
+      // replaced it, but for the identity, so that only the identity can tell whatever the clock did (the independent
+      // review of 2026-11-20 found the identity held only on runs where the clock did not tick between two writes).
+      const { directory, file, first } = await written();
+      const identity = (await fs.lstat(file)).ino;
+      await fs.writeFile(`${file}.new`, "kept\n");
+      await fs.rename(`${file}.new`, file);
+      const now = await fs.lstat(file);
+      expect(now.ino).not.toBe(identity);
+      const stamp = { size: now.size, mtimeMs: now.mtimeMs, ctimeMs: now.ctimeMs, mode: now.mode, ino: identity };
+      const stamped = new Map([...first.written].map(([relative, entry]) => [relative, relative === "keep.txt" ? { ...entry, stamp } : entry]));
+      expect(await bringTreeForward(store, after, directory, stamped, { platform: "linux", docsRoot: ".mdmd" })).toEqual(CHANGED);
+    });
+
+    it("is seen where it was rewritten at the same size with its modification time put back, by its change time", async (context) => {
+      // The stamp is taken here at a whole second, which reads back exactly where a time with its fraction would not.
+      const { directory, file, first } = await written();
       await fs.utimes(file, 1_700_000_000, 1_700_000_000);
       const at = await fs.lstat(file);
       const stamp = { size: at.size, mtimeMs: at.mtimeMs, ctimeMs: at.ctimeMs, mode: at.mode, ino: at.ino };
-      const written = new Map([...first.written].map(([relative, entry]) => [relative, relative === "keep.txt" ? { ...entry, stamp } : entry]));
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      const stamped = new Map([...first.written].map(([relative, entry]) => [relative, relative === "keep.txt" ? { ...entry, stamp } : entry]));
+      if (!(await clockPassed(directory, "ctimeMs", stamp.ctimeMs))) context.skip("this disk's change time did not tick within three seconds, or it keeps none, so no rewrite can be told by it here");
       await fs.writeFile(file, "KEPT\n");
       await fs.utimes(file, 1_700_000_000, 1_700_000_000);
       expect((await fs.lstat(file)).mtimeMs).toBe(stamp.mtimeMs);
-      expect(await bringTreeForward(store, after, directory, written, { platform: "linux", docsRoot: ".mdmd" }), "its time put back").toBeUndefined();
+      expect(await bringTreeForward(store, after, directory, stamped, { platform: "linux", docsRoot: ".mdmd" })).toEqual(CHANGED);
+    });
+
+    it("is brought forward where nothing touched it", async () => {
+      const { directory, first } = await written();
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" })).toMatchObject({ unwritten: [] });
+      expect((await fs.readdir(directory)).sort()).toEqual(["b.txt", "keep.txt"]);
+    });
+  });
+
+  it("does not bring a tree forward where a file, a folder or a submodule's folder it kept is gone, which only the walk's counts see", async () => {
+    // Every name the walk finds is one written, so only its counts see a written name gone (the independent review of
+    // 2026-11-20 broke the counts and every test stayed green). Each kept entry is the same at both changes.
+    const store = path.join(repository, ".git");
+    const kept: Array<[string, string, string, string]> = [
+      ["040000", "tree", tree([["100644", "blob", blob("deep\n"), "deep.txt"]]), "folder"],
+      ["100644", "blob", blob("kept\n"), "keep.txt"],
+      ["160000", "commit", commit(tree([["100644", "blob", blob("x\n"), "x.txt"]])), "sub"]
+    ];
+    const before = commit(tree([["100644", "blob", blob("a\n"), "a.txt"], ...kept]));
+    const after = commit(tree([["100644", "blob", blob("b\n"), "b.txt"], ...kept]));
+    const gone: Array<[string, (directory: string) => Promise<void>]> = [
+      ["a kept file", (directory) => fs.rm(path.join(directory, "keep.txt"))],
+      ["a kept folder, whole", (directory) => fs.rm(path.join(directory, "folder"), { recursive: true })],
+      ["a kept submodule's folder", (directory) => fs.rmdir(path.join(directory, "sub"))]
+    ];
+    for (const [what, remove] of gone) {
+      const directory = await folder();
+      const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
+      await remove(directory);
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }), what).toEqual({ writtenAnew: "a file or folder its writer wrote was gone" });
     }
-    // Untouched, it is brought forward.
+    // Untouched, all three are brought forward.
     const directory = await folder();
     const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
-    expect((await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }))?.unwritten).toEqual([]);
-    expect((await fs.readdir(directory)).sort()).toEqual(["b.txt", "keep.txt"]);
+    expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" })).toMatchObject({ unwritten: [] });
+    expect((await fs.readdir(directory)).sort()).toEqual(["b.txt", "folder", "keep.txt", "sub"]);
+  });
+
+  it("does not bring a tree forward on Windows where a name it leaves or makes holds ~ and a digit, which short names make depend on the order of writing", async () => {
+    // Finding 6 of the independent review of 2026-11-20, reasoned and not run on Windows: on a disk that makes 8.3 short
+    // names, `ABCDEFGHIJ.TXT` written first takes `ABCDEF~1.TXT`, and a literal `ABCDEF~1.TXT` is then refused; in a
+    // tree brought forward the long name may hold `~2`, and the literal is written. The platform is imitated by its seam.
+    const store = path.join(repository, ".git");
+    const plain = blob("kept\n");
+    const without = commit(tree([["100644", "blob", blob("a\n"), "ABCDEFGHIJ.TXT"], ["100644", "blob", plain, "kept.txt"]]));
+    const holding = commit(tree([["100644", "blob", blob("b\n"), "ABCDEF~1.TXT"], ["100644", "blob", blob("a\n"), "ABCDEFGHIJ.TXT"], ["100644", "blob", plain, "kept.txt"]]));
+    const SHORT = { writtenAnew: "a name holds ~ and a digit, which on Windows a short name may take or not by the order the names were made" };
+    for (const [from, to, label] of [[without, holding, "makes"], [holding, without, "leaves"]] as const) {
+      const windows = await folder();
+      const first = await writeTreeAnew(store, from, windows, { platform: "win32", docsRoot: ".mdmd" });
+      expect(await bringTreeForward(store, to, windows, first.written, { platform: "win32", docsRoot: ".mdmd" }), label).toEqual(SHORT);
+      // Elsewhere the same step is brought forward.
+      const linux = await folder();
+      const other = await writeTreeAnew(store, from, linux, { platform: "linux", docsRoot: ".mdmd" });
+      expect(await bringTreeForward(store, to, linux, other.written, { platform: "linux", docsRoot: ".mdmd" }), label).toMatchObject({ unwritten: [] });
+    }
   });
 
   it("gives up bringing a tree forward, by name, where the disk refuses a removal as Windows does", async () => {
@@ -538,7 +658,7 @@ describe("a tree the writer must not follow out of its folder", () => {
           return real.remove(relative, what);
         }
       };
-      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd", disk: refusing }), code).toBeUndefined();
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd", disk: refusing }), code).toEqual({ writtenAnew: `the disk refused to put it right in place (${code})` });
       expect(await fs.readFile(path.join(directory, "a.txt"), "utf8"), code).toBe("a\n");
     }
   });
@@ -633,4 +753,186 @@ describe("a tree the writer must not follow out of its folder", () => {
       await fs.chmod(directory, 0o755);
     }
   }, 60_000);
+});
+
+describe("every git call of the history command", () => {
+  const isolated = { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
+  const git = (cwd: string, args: string[], env: NodeJS.ProcessEnv = isolated): string => execFileSync("git", args, { cwd, env, encoding: "utf8" }).trim();
+  let scratch: string;
+
+  beforeAll(async () => {
+    scratch = await fs.mkdtemp(path.join(os.tmpdir(), "history-git-calls-"));
+  });
+
+  afterAll(async () => {
+    await fs.rm(scratch, { recursive: true, force: true });
+  });
+
+  /**
+   * The modules of the history command, tests aside: its two folders and its entry. A module that starts git otherwise
+   * than through `historyGit` or `spawnHistoryGit` fails here, each start allowed elsewhere named with why.
+   */
+  it("starts git only through the two functions that set what every call sets, so that a call added without them fails here", async () => {
+    const root = path.resolve(__dirname, "..", "..", "..", "..", "..");
+    const folders = ["packages/engine/src/live-docs/history", "packages/generator/src/history"];
+    const modules = [
+      ...(await Promise.all(folders.map(async (folder) => (await fs.readdir(path.join(root, folder))).filter((name) => name.endsWith(".ts") && !name.endsWith(".test.ts")).map((name) => `${folder}/${name}`)))).flat(),
+      "scripts/live-docs/history.ts"
+    ];
+    // Each module's starts of git that do not go through the two functions, by how many it may have and why.
+    const allowed: Record<string, [count: number, why: string]> = {
+      "packages/engine/src/live-docs/history/git.ts": [2, "the two functions themselves"],
+      "packages/generator/src/history/summarizeChange.ts": [1, "`standingFiles` runs in the tree's environment, which the tree writer makes from what every call sets (held above)"]
+    };
+    const starts: Record<string, number> = {};
+    for (const module of modules) {
+      const text = await fs.readFile(path.join(root, module), "utf8");
+      const count = text.match(/(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|exec|execSync)\s*\(\s*["'`]git["'`]/gu)?.length ?? 0;
+      if (count > 0 || module in allowed) starts[module] = count;
+    }
+    expect(starts).toEqual(Object.fromEntries(Object.entries(allowed).map(([module, [count]]) => [module, count])));
+  });
+
+  it("never fetches from a remote, as rename detection would in a partial clone without blobs", async () => {
+    // The independent review of 2026-11-20: `changesBetween` (`git diff -M50%`) ran without `GIT_NO_LAZY_FETCH`, and in
+    // a partial clone without blobs rename detection fetched them from the clone's remote.
+    const origin = path.join(scratch, "origin");
+    await fs.mkdir(origin);
+    git(origin, ["init", "--quiet", "-b", "main"]);
+    git(origin, ["config", "uploadpack.allowFilter", "true"]);
+    const lines = Array.from({ length: 40 }, (_, index) => `export const value${index} = ${index};`);
+    await fs.writeFile(path.join(origin, "old.ts"), `${lines.join("\n")}\n`);
+    git(origin, ["add", "--all"]);
+    git(origin, ["commit", "--quiet", "-m", "a file"]);
+    const from = git(origin, ["rev-parse", "HEAD"]);
+    await fs.rm(path.join(origin, "old.ts"));
+    // Renamed with one line changed, so that only the blobs' contents can tell it a rename.
+    await fs.writeFile(path.join(origin, "new.ts"), `${[...lines.slice(0, 39), "export const changed = 1;"].join("\n")}\n`);
+    git(origin, ["add", "--all"]);
+    git(origin, ["commit", "--quiet", "-m", "the file renamed and changed"]);
+    const to = git(origin, ["rev-parse", "HEAD"]);
+    const renamed = git(origin, ["rev-parse", `${to}:new.ts`]);
+    const clone = path.join(scratch, "clone");
+    git(scratch, ["clone", "--quiet", "--no-checkout", "--filter=blob:none", pathToFileURL(origin).href, clone]);
+    const missing = (): boolean => {
+      try {
+        execFileSync("git", ["cat-file", "-e", renamed], { cwd: clone, env: { ...isolated, GIT_NO_LAZY_FETCH: "1" }, stdio: "ignore" });
+        return false;
+      } catch {
+        return true;
+      }
+    };
+    expect(missing(), "the clone holds no blob to begin with").toBe(true);
+    const repo = await openGitRepository(clone);
+    // Without the blobs, git cannot weigh the rename: the call fails or reads no rename, and fetches nothing.
+    await repo.changesBetween(from, to).then(
+      (changes) => expect(changes.renamed).toEqual([]),
+      (error: unknown) => expect(String(error)).toMatch(/git/u)
+    );
+    expect(missing(), "the blob is still not in the clone").toBe(true);
+  }, 60_000);
+});
+
+/**
+ * The repository's own configuration, which `GIT_CONFIG_GLOBAL` and `GIT_CONFIG_NOSYSTEM` do not set aside, against the
+ * tree's calls: the tree writer's, and the generator's in the tree (`ls-files`, `check-ignore`). The file-system monitor
+ * and the excludes file are set aside (`SET_ASIDE` in `git.ts`), each case red with them let in; the split index and the
+ * sparse checkout are not, and their cases, green with them let in, hold why: should a version of git apply them to
+ * these calls, they fail.
+ */
+describe("the repository's own settings and a tree's calls", () => {
+  const isolated = { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
+  let scratch: string;
+  let repository: string;
+  let change: string;
+
+  const git = (args: string[]): string => execFileSync("git", args, { cwd: repository, env: isolated, encoding: "utf8" }).trim();
+
+  beforeAll(async () => {
+    scratch = await fs.mkdtemp(path.join(os.tmpdir(), "history-settings-"));
+    repository = path.join(scratch, "repository");
+    await fs.mkdir(path.join(repository, "d"), { recursive: true });
+    await fs.mkdir(path.join(repository, "e"));
+    git(["init", "--quiet", "-b", "main"]);
+    await fs.writeFile(path.join(repository, "d", "a.ts"), "export const a = 1;\n");
+    await fs.writeFile(path.join(repository, "e", "b.ts"), "export const b = 1;\n");
+    git(["add", "--all"]);
+    git(["commit", "--quiet", "-m", "two folders"]);
+    change = git(["rev-parse", "HEAD"]);
+  });
+
+  afterAll(async () => {
+    await fs.rm(scratch, { recursive: true, force: true });
+  });
+
+  /** The change's tree as a worker makes it, and what `run` gives in it with the tree's environment, as the generator runs git there. */
+  async function inTree<T>(run: (root: string, env: NodeJS.ProcessEnv) => Promise<T> | T): Promise<T> {
+    const tree = await (await openGitRepository(repository)).workingTree(change, path.join(await fs.mkdtemp(path.join(scratch, "tree-")), "tree00"), { docsRoot: ".mdmd" });
+    try {
+      return await run(tree.root, { ...isolated, ...tree.environment });
+    } finally {
+      await tree.remove();
+    }
+  }
+
+  it("runs no program the repository names as its file-system monitor", async () => {
+    const marker = path.join(scratch, "monitor-ran");
+    const monitor = path.join(scratch, "monitor.sh");
+    await fs.writeFile(monitor, `#!/bin/sh\necho ran >> '${marker}'\n`, { mode: 0o755 });
+    git(["config", "core.fsmonitor", monitor]);
+    try {
+      const listed = await inTree((root, env) => execFileSync("git", ["ls-files", "-z"], { cwd: root, env, encoding: "utf8" }).split("\0").filter(Boolean));
+      expect(listed.sort()).toEqual(["d/a.ts", "e/b.ts"]);
+      await expect(fs.access(marker)).rejects.toThrow();
+    } finally {
+      git(["config", "--unset", "core.fsmonitor"]);
+    }
+  });
+
+  it("writes nothing into the repository's git directory where the repository asks for a split index", async () => {
+    git(["config", "core.splitIndex", "true"]);
+    try {
+      const before = (await fs.readdir(path.join(repository, ".git"))).sort();
+      await inTree(() => undefined);
+      expect((await fs.readdir(path.join(repository, ".git"))).sort()).toEqual(before);
+    } finally {
+      git(["config", "--unset", "core.splitIndex"]);
+    }
+  });
+
+  it("lists every file of the tree as in it where the repository asks for a sparse checkout", async () => {
+    git(["config", "core.sparseCheckout", "true"]);
+    git(["config", "core.sparseCheckoutCone", "true"]);
+    git(["config", "index.sparse", "true"]);
+    await fs.mkdir(path.join(repository, ".git", "info"), { recursive: true });
+    await fs.writeFile(path.join(repository, ".git", "info", "sparse-checkout"), "/*\n!/*/\n/d/\n");
+    try {
+      // `-t` tags each entry: `H` for a file in the tree, `S` for one marked as not in it.
+      const listed = await inTree((root, env) => execFileSync("git", ["ls-files", "-t", "--stage", "-z"], { cwd: root, env, encoding: "utf8" }).split("\0").filter(Boolean));
+      expect(listed.map((entry) => `${entry.slice(0, 1)} ${entry.slice(entry.indexOf("\t") + 1)}`).sort()).toEqual(["H d/a.ts", "H e/b.ts"]);
+    } finally {
+      git(["config", "--unset", "core.sparseCheckout"]);
+      git(["config", "--unset", "core.sparseCheckoutCone"]);
+      git(["config", "--unset", "index.sparse"]);
+      await fs.rm(path.join(repository, ".git", "info", "sparse-checkout"));
+    }
+  });
+
+  it("ignores none of the generator's writes by an excludes file the repository names", async () => {
+    const excludes = path.join(scratch, "excludes");
+    await fs.writeFile(excludes, "*.mdmd.md\n");
+    git(["config", "core.excludesFile", excludes]);
+    try {
+      const ignored = await inTree(async (root, env) => {
+        await fs.mkdir(path.join(root, ".mdmd"));
+        await fs.writeFile(path.join(root, ".mdmd", "a.ts.mdmd.md"), "# a\n");
+        // As `gitIgnored` asks: 0 when some path is ignored, 1 when none is.
+        const result = spawnSync("git", ["check-ignore", "--stdin", "-z"], { cwd: root, env, input: ".mdmd/a.ts.mdmd.md\0", encoding: "utf8" });
+        return [result.status, result.stdout];
+      });
+      expect(ignored).toEqual([1, ""]);
+    } finally {
+      git(["config", "--unset", "core.excludesFile"]);
+    }
+  });
 });

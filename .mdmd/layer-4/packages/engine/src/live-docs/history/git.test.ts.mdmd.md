@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/git.test.ts`
-- Generated At: 2026-11-20T09:35:01.526Z
+- Generated At: 2026-11-20T14:11:49.168Z
 
 ## Authored
 ### Purpose
@@ -23,10 +23,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `execFileSync`
+- `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`
+- `node:url` - `pathToFileURL`
 - [`git.DiskEntry`](./git.ts.mdmd.md#symbol-diskentry)
 - [`git.TreeDisk`](./git.ts.mdmd.md#symbol-treedisk)
 - [`git.bringTreeForward`](./git.ts.mdmd.md#symbol-bringtreeforward)

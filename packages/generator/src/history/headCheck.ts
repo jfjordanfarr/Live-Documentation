@@ -23,13 +23,11 @@
  * @module
  */
 
-import { spawn } from "node:child_process";
 import path from "node:path";
 
 import { LiveDocSyntaxError, parseLiveDoc } from "@live-documentation/engine/live-docs/document";
-import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
 import { deriveLiveDocGraph, linkTarget, type DocLocation, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
-import { followLink } from "@live-documentation/engine/live-docs/history/git";
+import { followLink, historyGit, spawnHistoryGit } from "@live-documentation/engine/live-docs/history/git";
 import { compareLinks, linksOf, type FileRows, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
 import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
 
@@ -55,8 +53,7 @@ import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
  * next change that moves the lens anyway.
  */
 export async function committedLiveDocGraph(repository: string, commit: string, location: DocLocation): Promise<LiveDocGraph> {
-  const asStored = { GIT_NO_REPLACE_OBJECTS: "1" };
-  const listing = (await execFileAsync("git", ["-C", repository, "ls-tree", "-r", "-z", "--full-tree", commit], { cwd: repository, maxBuffer: 1 << 30, env: asStored })).stdout;
+  const listing = await historyGit(["-C", repository, "ls-tree", "-r", "-z", "--full-tree", commit], { cwd: repository });
   const byPath = new Map<string, { mode: string; id: string }>();
   for (const line of listing.split("\0")) {
     if (line === "") continue;
@@ -95,7 +92,7 @@ export async function committedLiveDocGraph(repository: string, commit: string, 
 async function readBlobs(repository: string, ids: readonly string[]): Promise<Map<string, Buffer>> {
   const found = new Map<string, Buffer>();
   if (ids.length === 0) return found;
-  const reader = spawn("git", ["-C", repository, "cat-file", "--batch"], { cwd: repository, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, GIT_NO_REPLACE_OBJECTS: "1" } });
+  const reader = spawnHistoryGit(["-C", repository, "cat-file", "--batch"], { cwd: repository });
   const chunks: Buffer[] = [];
   let errors = "";
   reader.stdout.on("data", (chunk: Buffer) => chunks.push(chunk));

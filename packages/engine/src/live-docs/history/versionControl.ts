@@ -65,6 +65,8 @@ export interface WorkingTree {
   unwritten: Array<{ path: string; reason: string }>;
   /** Whether the tree was brought forward from another change's tree ({@link WorkingTree.bringTo}) rather than written anew. */
   broughtForward: boolean;
+  /** Why the tree was written anew rather than brought forward, a phrase such as "the tree held a name its writer did not write"; absent when it was brought forward. */
+  writtenAnew?: string;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
   /**

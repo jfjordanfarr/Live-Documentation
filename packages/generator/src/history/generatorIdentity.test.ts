@@ -111,7 +111,7 @@ function historyModules(): string[] {
 function actsForASummary(text: string): boolean {
   return (
     /["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) ||
-    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync)\s*\(/u.test(text) ||
+    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync|historyGit|spawnHistoryGit)\s*\(/u.test(text) ||
     /\bimplements\s+VersionControl\b/u.test(text)
   );
 }
