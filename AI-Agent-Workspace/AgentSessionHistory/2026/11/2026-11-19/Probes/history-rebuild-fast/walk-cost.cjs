@@ -36,7 +36,7 @@ async function main() {
   for (let round = 0; round < 5; round += 1) {
     const start = performance.now();
     for (const found of await fs.promises.readdir(directory, { recursive: true, withFileTypes: true })) {
-      if (found.isFile()) await fs.promises.lstat(path.join(found.parentPath, found.name));
+      if (found.isFile()) fs.lstatSync(path.join(found.parentPath, found.name));
     }
     stamped.push(+(performance.now() - start).toFixed(1));
   }
