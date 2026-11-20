@@ -6,8 +6,19 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
-import { foldersGitIgnoresWhole } from "../tooling/gitIgnored";
+import { gitIgnores } from "../tooling/gitIgnored";
 import { discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
+
+const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
+
+/** Whether this disk tells apart two names that differ in case alone, as Linux's do and Windows' and macOS's do not. */
+const diskTellsCaseApart = ((): boolean => {
+  const probe = nodeFs.mkdtempSync(path.join(os.tmpdir(), "case-probe-"));
+  nodeFs.writeFileSync(path.join(probe, "a"), "");
+  const apart = !nodeFs.existsSync(path.join(probe, "A"));
+  nodeFs.rmSync(probe, { recursive: true, force: true });
+  return apart;
+})();
 
 /**
  * A workspace with a file for every rule: hidden files and folders, files no
@@ -371,7 +382,8 @@ describe("the folders git ignores whole", () => {
     expect((await found(root)).files).toEqual([".gitignore", "a1.log", "a1/build/x.ts", "ab/out/x.ts", "bc/out/x.ts", "kept.ts"]);
   });
 
-  it("reads as empty only the folder git names, not one whose name differs from it in case alone", async () => {
+  // Two such folders can only be made where the disk tells case apart; on a disk that folds case there is one.
+  it.runIf(diskTellsCaseApart)("reads as empty only the folder git names, not one whose name differs from it in case alone, where the disk tells case apart", async () => {
     const root = await repository({ ".gitignore": "/Build/\n", "Build/a.ts": "", "build/b.ts": "" });
     git(root, "config", "core.ignorecase", "false");
     expect((await found(root)).files).toEqual([".gitignore", "build/b.ts"]);
@@ -429,32 +441,64 @@ describe("the folders git ignores whole", () => {
     expect([...foldersGitIgnoresWhole(root)].sort()).toEqual([":(bad)", "build", "excluded"]);
   });
 
-  it("judges by git's word whatever GIT_*_PATHSPECS the environment holds, and walks whole by the rule for no git where the listing fails", async () => {
+  it("walks whole by the rule for no git where the listing fails, before the walk or after it", async () => {
     const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "b.local.ts": "", "c.ts": "" });
     await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n*.local.ts\n");
-    for (const name of ["GIT_LITERAL_PATHSPECS", "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS", "GIT_ICASE_PATHSPECS"]) {
-      process.env[name] = "1";
-      try {
-        // Until this form `excluded/` was left unread by git's listing while `check-ignore`, refused, left the files
-        // found to the root .gitignore alone, which kept `b.local.ts`: a mixture of two rules.
-        expect(await found(root), name).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
-      } finally {
-        delete process.env[name];
-      }
-    }
-    // A git whose listing fails, as one whose output passes the buffer would: no folder is left unread, and the root
-    // .gitignore alone judges, as with no git at all.
+    expect(await found(root)).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
+    // A git whose listing fails, as one whose output passes the buffer would, from the `after`-th listing on: no folder
+    // is left unread, and the root .gitignore alone judges, as with no git at all.
     const bin = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-git-"));
     folders.push(bin);
     const real = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
-    await fs.writeFile(path.join(bin, "git"), `#!/bin/sh\nfor a in "$@"; do [ "$a" = ls-files ] && exit 128; done\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    const count = path.join(bin, "count");
+    await fs.writeFile(path.join(bin, "git"), `#!/bin/sh\nfor a in "$@"; do if [ "$a" = ls-files ]; then n=$(cat "${count}"); echo $((n + 1)) > "${count}"; [ "$n" -ge "$GIT_FAILS_AFTER" ] && exit 128; fi; done\nexec "${real}" "$@"\n`, { mode: 0o755 });
     const searchPath = process.env.PATH;
     process.env.PATH = `${bin}${path.delimiter}${searchPath ?? ""}`;
     try {
-      expect(await found(root)).toEqual({ files: [".gitignore", "b.local.ts", "c.ts", "excluded/e.ts"], documents: [] });
+      // Failing from the first listing, and from the second, the one taken after the walk to judge it: the walk the
+      // first listing shortened, which left `excluded/` unread, is made again whole.
+      for (const after of ["0", "1"]) {
+        await fs.writeFile(count, "0");
+        process.env.GIT_FAILS_AFTER = after;
+        expect(await found(root), `failing after ${after}`).toEqual({ files: [".gitignore", "b.local.ts", "c.ts", "excluded/e.ts"], documents: [] });
+      }
     } finally {
       process.env.PATH = searchPath;
+      delete process.env.GIT_FAILS_AFTER;
     }
+  });
+
+  it("judges by git's listing taken after the walk a folder a build makes while the walk runs", async () => {
+    const root = await repository({ ".gitignore": "dist/\n", "a.ts": "" });
+    // A stand-in for a build: the walk's first read of a folder makes `dist/` and a file in it, after the listing that
+    // shortens the walk and before the one that judges it.
+    const readdir = nodeFs.readdir;
+    let built = false;
+    const spy = vi.spyOn(nodeFs, "readdir").mockImplementation(((...args: unknown[]) => {
+      if (!built) {
+        built = true;
+        nodeFs.mkdirSync(path.join(root, "dist"));
+        nodeFs.writeFileSync(path.join(root, "dist", "out.js"), "");
+      }
+      return Reflect.apply(readdir, nodeFs, args);
+    }) as unknown as typeof nodeFs.readdir);
+    try {
+      // Judged by the listing taken before the walk, `dist/out.js` was kept: a build output given a doc.
+      expect((await found(root)).files).toEqual([".gitignore", "a.ts"]);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("warns from both walks of a file in a nested repository git cannot be asked about, documents included", async () => {
+    const root = await repository({ "a.ts": "", "nest/b.ts": "", "nest/README.md": "" });
+    git(path.join(root, "nest"), "init", "-q");
+    await fs.writeFile(path.join(root, "nest", ".git", "index"), "not an index\n");
+    const warnings: string[] = [];
+    const config = normalizeLiveDocumentationConfig({});
+    await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
+    expect(await discoverDocuments({ workspaceRoot: root, config, warn: (message) => warnings.push(message) })).toEqual(["nest/README.md"]);
+    expect(warnings).toEqual([expect.stringContaining("of 1 file(s), such as nest/b.ts,"), expect.stringContaining("of 1 file(s), such as nest/README.md,")]);
   });
 
   it("finds nothing in a workspace that lies inside a folder an outer repository ignores", async () => {

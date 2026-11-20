@@ -239,13 +239,13 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
  *
  * @returns Workspace-relative paths with forward slashes, sorted.
  */
-export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config">): Promise<string[]> {
+export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config" | "warn">): Promise<string[]> {
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const baseLayer = docsRoot === undefined ? undefined : normalizeWorkspacePath(path.join(docsRoot, options.config.baseLayer));
   const kept = await walkedAndKept(options.workspaceRoot, ["**/*"], baseLayer !== undefined ? [`${baseLayer}/**`] : [], (entry) => {
     const segments = entry.relative.split("/");
     return !segments.includes(".git") && !segments.includes("node_modules") && isDocument(segments[segments.length - 1]);
-  }, options.config);
+  }, options.config, options.warn);
   return kept.map((entry) => entry.relative);
 }
 
@@ -257,9 +257,10 @@ export async function discoverDocuments(options: Pick<DiscoverOptions, "workspac
  * Until 2026-11-20 the walk read every folder git ignores, file by file, only for the filter to throw each file away:
  * in the main checkout, with its builders' worktrees under `.claude/worktrees/`, the walk of the files took 64 s where
  * a clean worktree took 1.4 s, as a repository's `bin/`, `obj/`, `target/` or `.venv/` costs every scan. Now git is
- * asked once for what it ignores ({@link gitIgnores}); the walk reads the folders it ignores whole as empty, and the
- * same listing judges the files found, so that what is left unread is exactly what is judged ignored. Where git
- * cannot answer, the walk is whole and the rule for no git judges it. The measurements and every case, each held by
+ * asked for what it ignores ({@link gitIgnores}) before the walk, which reads the folders it ignores whole as empty,
+ * and again after it, to judge the files found as git judges them once the walk is done: a folder a build makes
+ * during the walk is walked and then judged ignored, as it was before the walk was shortened. Where git cannot answer,
+ * the walk is whole and the rule for no git judges it. The measurements and every case, each held by
  * a test: the probe of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
  */
 async function walkedAndKept(
@@ -270,8 +271,13 @@ async function walkedAndKept(
   config: LiveDocumentationConfig,
   warn?: (message: string) => void
 ): Promise<WalkedFile[]> {
-  const git = gitIgnores(workspaceRoot);
-  return keptByGitAndConfiguration((await walk(workspaceRoot, patterns, neverWalked, git?.unread)).filter(considers), workspaceRoot, config, git, warn);
+  const pruning = gitIgnores(workspaceRoot);
+  let found = await walk(workspaceRoot, patterns, neverWalked, pruning?.unread);
+  // Judged by a listing taken after the walk, so that a folder a build made while the walk ran is judged as git judges
+  // it now; where that listing fails, the walk is made again whole, for the rule for no git.
+  const judging = pruning && gitIgnores(workspaceRoot);
+  if (pruning && !judging) found = await walk(workspaceRoot, patterns, neverWalked, undefined);
+  return keptByGitAndConfiguration(found.filter(considers), workspaceRoot, config, judging, warn);
 }
 
 /** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
@@ -331,13 +337,14 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
 /**
  * The files git does not ignore and the configuration does not exclude, in
  * the order given. What git ignores is read by git's own word when the
- * workspace is a repository, from the listing the walk was shortened by
+ * workspace is a repository, from git's listing taken after the walk
  * ({@link gitIgnores}): a nested `.gitignore`, `.git/info/exclude` and the
  * global excludes file count, a tracked file is never ignored, as git itself
  * has it (committing a file under an ignored folder is a decision), and a
- * nested repository's files are judged by its own git. Without git, the
- * workspace's `.gitignore` alone; and so too for a path git cannot judge, one
- * that passes through a link to a folder git does not ignore or lies in a
+ * nested repository's files, one reached through a link among them, are
+ * judged by its own git. Without git, the workspace's `.gitignore` alone; and
+ * so too for a path git cannot judge, one that passes through a link to a
+ * folder that holds no repository and that git does not ignore, or lies in a
  * nested repository git cannot be asked about, which `warn` is told of, since
  * what another `.gitignore`, `.git/info/exclude` or the global excludes hide
  * there gets docs.
@@ -352,7 +359,7 @@ async function keptByGitAndConfiguration(
   const git = gitIgnoresHere?.answer(considered.map((entry) => entry.relative)) ?? null;
   if (git !== null && git.unjudged.size > 0) {
     const [first] = git.unjudged;
-    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder, which git does not follow, or in a nested repository git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
+    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder that holds no repository, which git does not follow, or in a nested repository git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
   }
   const gitignoreFilter = git === null || git.unjudged.size > 0 ? await createGitignoreFilter(workspaceRoot) : null;
   // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on

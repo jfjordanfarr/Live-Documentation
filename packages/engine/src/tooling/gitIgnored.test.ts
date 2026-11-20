@@ -1,13 +1,23 @@
 import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
-import { appendFileSync, mkdirSync, mkdtempSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { foldersGitIgnoresWhole, foldersReadAsEmpty, gitIgnores, withoutGitIgnored, type GitIgnoreAnswer } from "./gitIgnored";
+import { foldersReadAsEmpty, gitIgnored, gitIgnores, type GitIgnoreAnswer } from "./gitIgnored";
 
 const gitIgnoreAnswer = (root: string, paths: readonly string[]): GitIgnoreAnswer | null => gitIgnores(root)?.answer(paths) ?? null;
+const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
+
+/** Whether this disk tells apart two names that differ in case alone, as Linux's do and Windows' and macOS's do not. */
+const diskTellsCaseApart = ((): boolean => {
+  const probe = mkdtempSync(path.join(tmpdir(), "case-probe-"));
+  writeFileSync(path.join(probe, "a"), "");
+  const apart = !existsSync(path.join(probe, "A"));
+  rmSync(probe, { recursive: true, force: true });
+  return apart;
+})();
 
 const tempDirs: string[] = [];
 
@@ -29,8 +39,8 @@ function git(cwd: string, ...args: string[]): void {
   if (result.status !== 0) throw new Error(`git ${args.join(" ")} failed: ${result.stderr}`);
 }
 
-describe("withoutGitIgnored", () => {
-  it("drops what .gitignore and .git/info/exclude name, and keeps a tracked file whatever ignores it", () => {
+describe("gitIgnored", () => {
+  it("names what .gitignore and .git/info/exclude ignore, and never a tracked file whatever ignores it", () => {
     const root = workspace();
     git(root, "init", "-q");
     writeFileSync(path.join(root, ".gitignore"), "*.log\n");
@@ -38,17 +48,13 @@ describe("withoutGitIgnored", () => {
     mkdirSync(path.join(root, "nested"));
     for (const file of ["a.log", "b.md", "kept.log", "nested/c.md"]) writeFileSync(path.join(root, file), "x\n");
     git(root, "add", "-f", "kept.log");
-
-    const files = ["a.log", "b.md", "kept.log", "nested/c.md"].map((file) => path.join(root, file));
-    expect(withoutGitIgnored(root, files)).toEqual([path.join(root, "b.md"), path.join(root, "kept.log")]);
+    expect([...(gitIgnored(root, ["a.log", "b.md", "kept.log", "nested/c.md", "nested"]) ?? [])].sort()).toEqual(["a.log", "nested", "nested/c.md"]);
   });
 
-  it("keeps every file outside a repository, and answers an empty list with an empty list", () => {
+  it("cannot answer outside a repository", () => {
     const root = workspace();
     writeFileSync(path.join(root, "a.log"), "x\n");
-    const files = [path.join(root, "a.log")];
-    expect(withoutGitIgnored(root, files)).toEqual(files);
-    expect(withoutGitIgnored(root, [])).toEqual([]);
+    expect(gitIgnored(root, ["a.log"])).toBeNull();
   });
 });
 
@@ -90,11 +96,16 @@ describe("gitIgnoreAnswer", () => {
 
   it("judges a path in a submodule or a nested repository by that repository's own git, and asks of a path through a link as its link", () => {
     const root = workspace();
-    files(root, ["lib/lib.ts", "lib/own.tmp", "lib/x.gen", "lib/y.gen", "lib/excl.ts", "nest/n.ts", "nest/own.tmp", "nest/x.gen", "nest/excl.ts", "hid/h.ts", "shared/s.ts", "ign/kept.ts"]);
+    files(root, ["lib/lib.ts", "lib/own.tmp", "lib/kept.tmp", "lib/x.gen", "lib/y.gen", "lib/excl.ts", "nest/n.ts", "nest/own.tmp", "nest/x.gen", "nest/excl.ts", "hid/h.ts", "shared/s.ts", "ign/kept.ts", "sep/s.ts", "sep/s.tmp", "sep/z.gen"]);
     writeFileSync(path.join(root, "lib", ".gitignore"), "*.tmp\n");
     writeFileSync(path.join(root, "nest", ".gitignore"), "*.tmp\n");
     git(path.join(root, "lib"), "init", "-q");
     git(path.join(root, "lib"), "add", "lib.ts", "x.gen", ".gitignore");
+    git(path.join(root, "lib"), "add", "-f", "kept.tmp");
+    // A repository whose `.git` is a file naming its store elsewhere, the form a submodule and a linked worktree take.
+    const store = path.join(workspace(), "sep.git");
+    git(root, "init", "-q", "--separate-git-dir", store, "sep");
+    appendFileSync(path.join(store, "info", "exclude"), "*.tmp\n");
     git(path.join(root, "lib"), "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-qm", "lib");
     appendFileSync(path.join(root, "lib", ".git", "info", "exclude"), "excl.ts\n");
     git(path.join(root, "nest"), "init", "-q");
@@ -110,14 +121,15 @@ describe("gitIgnoreAnswer", () => {
     // (`lib/x.gen`) is never ignored; the outer `*.gen` reaches no file of theirs. The outer repository decides only
     // whether a nested repository's folder is ignored (`hid/`). Until this form, `lib/x.gen` and `nest/x.gen` were
     // judged ignored by the outer pattern, and `lib/excl.ts` and `nest/excl.ts` kept.
-    const paths = ["lib/lib.ts", "lib/own.tmp", "lib/x.gen", "lib/y.gen", "lib/excl.ts", "nest/n.ts", "nest/own.tmp", "nest/x.gen", "nest/excl.ts", "hid/h.ts", "ign/link/s.ts", "open/s.ts", "ign/kept.ts"];
-    const expected = { ignored: ["hid/h.ts", "ign/link/s.ts", "lib/excl.ts", "lib/own.tmp", "nest/excl.ts", "nest/own.tmp"], unjudged: ["open/s.ts"] };
+    const paths = ["lib/lib.ts", "lib/own.tmp", "lib/kept.tmp", "lib/x.gen", "lib/y.gen", "lib/excl.ts", "nest/n.ts", "nest/own.tmp", "nest/x.gen", "nest/excl.ts", "hid/h.ts", "ign/link/s.ts", "open/s.ts", "ign/kept.ts", "sep/s.ts", "sep/s.tmp", "sep/z.gen"];
+    const expected = { ignored: ["hid/h.ts", "ign/link/s.ts", "lib/excl.ts", "lib/own.tmp", "nest/excl.ts", "nest/own.tmp", "sep/s.tmp"], unjudged: ["open/s.ts"] };
     expect(answer(root, paths)).toEqual(expected);
     // With git tied to the outer repository by its variables, as the history ties it to a tree, each nested repository
-    // is still asked by its own `.git`.
-    const tied = { GIT_DIR: process.env.GIT_DIR, GIT_WORK_TREE: process.env.GIT_WORK_TREE };
+    // is still asked by its own `.git` and its own index (where `lib/kept.tmp` is tracked).
+    const tied = { GIT_DIR: process.env.GIT_DIR, GIT_WORK_TREE: process.env.GIT_WORK_TREE, GIT_INDEX_FILE: process.env.GIT_INDEX_FILE };
     process.env.GIT_DIR = path.join(root, ".git");
     process.env.GIT_WORK_TREE = root;
+    process.env.GIT_INDEX_FILE = path.join(root, ".git", "index");
     try {
       expect(answer(root, paths)).toEqual(expected);
     } finally {
@@ -128,12 +140,55 @@ describe("gitIgnoreAnswer", () => {
     }
   });
 
-  it("leaves unjudged a path in a nested repository whose git cannot answer", () => {
+  it("judges by the outer listing a folder whose .git names no repository, or below which the outer index holds an entry", () => {
     const root = workspace();
     git(root, "init", "-q");
-    files(root, ["broken/a.ts", "b.ts"]);
+    writeFileSync(path.join(root, ".gitignore"), "*.log\nbuild/\n");
+    files(root, ["broken/a.ts", "broken/x.log", "broken/build/b.ts", "vendor/lib/a.ts", "vendor/lib/x.log", "c.ts"]);
+    git(root, "add", ".");
+    git(root, "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-qm", "c");
+    files(root, ["added/n.ts", "added/x.log", "added/later.ts"]);
+    git(root, "add", "-N", "added/later.ts");
     writeFileSync(path.join(root, "broken", ".git"), "gitdir: nowhere\n");
-    expect(answer(root, ["broken/a.ts", "b.ts"])).toEqual({ ignored: [], unjudged: ["broken/a.ts"] });
+    // A folder holding a repository of its own below which the outer index has a tracked entry, and one with only an
+    // intent-to-add entry: git takes both for its own folders (the review of the third form, 2026-11-20).
+    git(path.join(root, "vendor", "lib"), "init", "-q");
+    appendFileSync(path.join(root, "vendor", "lib", ".git", "info", "exclude"), "a.ts\n");
+    git(path.join(root, "added"), "init", "-q");
+    appendFileSync(path.join(root, "added", ".git", "info", "exclude"), "n.ts\n");
+    const paths = ["broken/a.ts", "broken/x.log", "broken/build/b.ts", "vendor/lib/a.ts", "vendor/lib/x.log", "added/n.ts", "added/x.log", "added/later.ts", "c.ts"];
+    // Until this was mended, `broken/` was left unjudged, `vendor/lib/a.ts` (tracked) judged ignored by the inner
+    // exclude and `vendor/lib/x.log` kept, and `added/` judged by its inner repository.
+    expect(answer(root, paths)).toEqual({ ignored: ["added/x.log", "broken/build/b.ts", "broken/x.log", "vendor/lib/x.log"], unjudged: [] });
+  });
+
+  it("leaves unjudged a path in a real nested repository whose git cannot answer", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    files(root, ["nest/a.ts", "b.ts"]);
+    git(path.join(root, "nest"), "init", "-q");
+    // An index git cannot read: git finds the repository, and its listing fails.
+    writeFileSync(path.join(root, "nest", ".git", "index"), "not an index\n");
+    expect(answer(root, ["nest/a.ts", "b.ts"])).toEqual({ ignored: [], unjudged: ["nest/a.ts"] });
+  });
+
+  it("asks a nested repository with the person's command-line configuration, as git does a submodule", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    files(root, ["a.secret.ts", "nest/b.secret.ts", "nest/c.ts"]);
+    git(path.join(root, "nest"), "init", "-q");
+    const excludes = path.join(workspace(), "excludes");
+    writeFileSync(excludes, "*.secret.ts\n");
+    const given = { GIT_CONFIG_COUNT: process.env.GIT_CONFIG_COUNT, GIT_CONFIG_KEY_0: process.env.GIT_CONFIG_KEY_0, GIT_CONFIG_VALUE_0: process.env.GIT_CONFIG_VALUE_0 };
+    Object.assign(process.env, { GIT_CONFIG_COUNT: "1", GIT_CONFIG_KEY_0: "core.excludesFile", GIT_CONFIG_VALUE_0: excludes });
+    try {
+      expect(answer(root, ["a.secret.ts", "nest/b.secret.ts", "nest/c.ts"])).toEqual({ ignored: ["a.secret.ts", "nest/b.secret.ts"], unjudged: [] });
+    } finally {
+      for (const [name, value] of Object.entries(given)) {
+        if (value === undefined) delete process.env[name];
+        else process.env[name] = value;
+      }
+    }
   });
 
   it("cannot answer outside a repository, and answers an empty list", () => {
@@ -223,31 +278,15 @@ describe("git's own classification, where re-making it failed", () => {
     const inner = path.join(outer, "ign", "ws");
     expect(ignored(inner, ["."])).toEqual([]);
     expect(ignored(inner, ["kept.ts", "other.ts"])).toEqual(["other.ts"]);
-    // Asked from the workspace, or from the repository's top limited to it, git 2.56.1 fails two folders inside an
-    // ignored one ("directory entry not superset of prefix"); asked from the top with no limit, it names `ign/`, so
-    // the workspace is ignored whole. Until this form no folder was named there, and the walk was whole.
+    // Asked from the workspace, or from the repository's top limited to it, git 2.56.1 fails anywhere inside a folder it
+    // ignores whole ("directory entry not superset of prefix"; `./` is printed only from that folder itself); asked from
+    // the top with no limit, it names `ign/`, so the workspace is ignored whole. Until this form no folder was named
+    // there, and the walk was whole.
     const deep = path.join(outer, "ign", "a", "b", "ws");
     expect([...foldersGitIgnoresWhole(deep)]).toEqual([""]);
     expect(ignored(deep, [".", "c.ts"])).toEqual([".", "c.ts"]);
   });
 
-  it("answers the same whatever GIT_*_PATHSPECS the person's environment holds", () => {
-    const root = workspace();
-    git(root, "init", "-q");
-    writeFileSync(path.join(root, ".gitignore"), "build/\n");
-    appendFileSync(path.join(root, ".git", "info", "exclude"), "*.local.ts\n");
-    files(root, ["build/a.ts", "b.local.ts", "c.ts", "sub/A.ts"]);
-    const paths = ["build/a.ts", "b.local.ts", "c.ts", "sub/A.ts"];
-    for (const name of ["GIT_LITERAL_PATHSPECS", "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS", "GIT_ICASE_PATHSPECS"]) {
-      process.env[name] = "1";
-      try {
-        expect(ignored(root, paths), name).toEqual(["b.local.ts", "build/a.ts"]);
-        expect([...foldersGitIgnoresWhole(path.join(root, "sub"))], name).toEqual([]);
-      } finally {
-        delete process.env[name];
-      }
-    }
-  });
 });
 
 describe("foldersGitIgnoresWhole", () => {
@@ -299,7 +338,8 @@ describe("foldersReadAsEmpty", () => {
     expect(globSync("**/*.md", { cwd: root, fs: unread, posix: true }).sort()).toEqual(["keep/skip/d.md", "skipped/c.md"]);
   });
 
-  it("tells apart two folders whose names differ in case alone", () => {
+  // Two such folders can only be made where the disk tells case apart; on a disk that folds case there is one.
+  it.runIf(diskTellsCaseApart)("tells apart two folders whose names differ in case alone, where the disk does", () => {
     const root = workspace();
     for (const file of ["Skip/a.md", "skip/b.md"]) {
       mkdirSync(path.dirname(path.join(root, file)), { recursive: true });

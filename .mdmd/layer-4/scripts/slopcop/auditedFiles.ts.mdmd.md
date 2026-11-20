@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/slopcop/auditedFiles.ts`
-- Generated At: 2026-11-20T11:55:31.929Z
+- Generated At: 2026-11-20T13:06:22.948Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ audits always matched them.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `globSync`
+- `glob` - `FSOption`, `globSync`
 - `node:path` - `path`
 - [`gitIgnored.gitIgnores`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 <!-- LIVE-DOC:END Dependencies -->

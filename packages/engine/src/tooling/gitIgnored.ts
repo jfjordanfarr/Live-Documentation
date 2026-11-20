@@ -15,17 +15,19 @@
  *
  * Since 2026-11-20 (the third form of that day) git is asked one question,
  * `git ls-files --others --ignored --exclude-standard --directory`, and its
- * listing is both what the walk leaves unread and what it judges ignored
- * ({@link gitIgnores}): the walk reads each folder the listing names whole as
- * empty ({@link foldersReadAsEmpty}), so that a checkout's ignored copies of
- * the repository, builds and caches are never read file by file (in the main
- * checkout, with its builders' worktrees, discovery's walk of the files took
- * 64 s where a clean worktree took 1.4 s), and a path is ignored when it, or a
- * folder above it, is in the listing. The two forms before it re-made git's
- * classification with `git check-ignore`, and differed from git where a
- * `.gitignore` is kept off the disk, where case folds, and where a file took a
- * tracked folder's place. The measurements and the cases: the probe of
- * 2026-11-20 under
+ * listing is what the walk leaves unread and what it judges ignored
+ * ({@link gitIgnores}): a walk asks once before it and reads each folder the
+ * listing names whole as empty ({@link foldersReadAsEmpty}), so that a
+ * checkout's ignored copies of the repository, builds and caches are never
+ * read file by file (in the main checkout, with its builders' worktrees,
+ * discovery's walk of the files took 64 s where a clean worktree took 1.4 s),
+ * and asks again after it to judge what it found, so that a folder a build
+ * makes during the walk is judged as git judges it then. A path is ignored
+ * when it, or a folder above it, is in the listing. The two forms before it
+ * re-made git's classification with `git check-ignore`, and differed from git
+ * where a `.gitignore` is kept off the disk, where case folds, and where a
+ * file took a tracked folder's place. The measurements and the cases: the
+ * probe of 2026-11-20 under
  * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
  *
  * @module
@@ -41,8 +43,9 @@ export interface GitIgnoreAnswer {
   /** The paths git ignores: each, or a folder above it, is in the listing of the repository that holds it. */
   ignored: Set<string>;
   /**
-   * The paths git cannot judge: each passes through a link to a folder that git does not ignore, and a path beyond a
-   * link is no path of the repository to git; or lies in a nested repository whose git could not be asked.
+   * The paths git cannot judge: each passes through a link to a folder that holds no repository and that git does
+   * not ignore, and a path beyond a link is no path of the repository to git; or lies in a nested repository whose git
+   * could not be asked.
    */
   unjudged: Set<string>;
 }
@@ -55,6 +58,13 @@ export interface GitIgnores {
   readonly unread: FSOption;
   /** What git says of each of the paths (workspace-relative, forward slashes; `.` or `""` for the workspace itself). */
   answer(relativePaths: readonly string[]): GitIgnoreAnswer;
+}
+
+/** A repository the judging has met: its listing, and the folders that hold an entry of its index, read when needed. */
+interface Repository {
+  readonly root: string;
+  readonly entries: Set<string> | null;
+  holdsIndexed?: Set<string>;
 }
 
 /**
@@ -72,59 +82,70 @@ export interface GitIgnores {
  * checkout or skip-worktree keeps off the disk from the index, folds case
  * where `core.ignorecase` says so (a tracked `Build/a.ts` is the file
  * `build/a.ts` on the disk), and names a file that took the place of a
- * tracked folder. Asked from a workspace two or more folders inside a folder
- * git ignores whole, git fails ("directory entry not superset of prefix", and
- * so too from the repository's top limited to the workspace's folder); it is
- * then asked from the top with no limit, and the folder above the workspace
- * that it names means that the workspace is ignored whole. The person's
- * `GIT_*_PATHSPECS` variables, which can make git refuse its question, are
- * not passed on to any call.
+ * tracked folder. Asked from the very folder git ignores whole, git prints it
+ * as `./`; asked from a folder anywhere inside one, git fails ("directory
+ * entry not superset of prefix", and so too from the repository's top limited
+ * to the workspace's folder). It is then asked from the top with no limit,
+ * and the folder above the workspace that it names means that the workspace
+ * is ignored whole.
  *
  * Git does not descend into a nested repository, a submodule or not, nor
- * follow a link. So each repository judges its own paths: a path below a
- * folder that holds a `.git` is judged by that repository's own listing,
- * asked with the variables that tie git to a repository taken out of the
- * environment (`git rev-parse --local-env-vars`, as git does when it enters a
- * submodule), and the outer repository decides only whether that folder is
- * ignored. A path beyond a link to a folder is ignored when the link or a
- * folder above it is, and is otherwise unjudged. The cases, tried on git
- * 2.56.1, are the tests beside this module and discovery's.
+ * follow a link. A folder below the workspace is another repository when it
+ * holds a `.git`, the index of the repository around it has no entry below it
+ * (a gitlink at the folder itself is a submodule's), and git, asked there,
+ * finds a repository whose top is that folder: as git itself has it, a folder
+ * whose `.git` names no repository, or below which the outer index holds a
+ * tracked or intent-to-add entry, is the outer repository's own, and the
+ * outer listing judges it. A path in another repository is judged by that
+ * repository's own listing, asked with the variables that tie git to a
+ * repository taken out of the environment but the command line's
+ * configuration, as git does when it enters a submodule; the outer repository
+ * decides only whether that folder is ignored, and a path in a repository
+ * whose git cannot be asked is unjudged. A path beyond a link to a folder is
+ * ignored when the link or a folder above it is, judged by the linked
+ * repository when the link leads to one, and is otherwise unjudged. The cases,
+ * tried on git 2.56.1, are the tests beside this module and discovery's.
  */
 export function gitIgnores(workspaceRoot: string): GitIgnores | null {
   const own = listing(workspaceRoot, false);
   if (!own) return null;
-  const listings = new Map<string, Set<string> | null>([["", own.entries]]);
-  const kinds = new Map<string, "repository" | "link" | "folder">();
-  const kindOf = (folder: string): "repository" | "link" | "folder" => {
+  const outer: Repository = { root: "", entries: own.entries };
+  const kinds = new Map<string, Repository | "link" | "folder">();
+  const kindOf = (folder: string, around: Repository): Repository | "link" | "folder" => {
     let kind = kinds.get(folder);
     if (kind === undefined) {
       const at = path.join(workspaceRoot, folder);
-      kind = fs.existsSync(path.join(at, ".git")) ? "repository" : fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() ? "link" : "folder";
+      kind = fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() ? "link" : "folder";
+      if (fs.existsSync(path.join(at, ".git")) && !indexHolds(around, folder.slice(around.root === "" ? 0 : around.root.length + 1)) && topOfItsOwn(at)) {
+        kind = { root: folder, entries: listing(at, true)?.entries ?? null };
+      }
       kinds.set(folder, kind);
     }
     return kind;
   };
-  const listingOf = (repository: string): Set<string> | null => {
-    if (!listings.has(repository)) listings.set(repository, listing(path.join(workspaceRoot, repository), true)?.entries ?? null);
-    return listings.get(repository) ?? null;
+  const indexHolds = (repository: Repository, folder: string): boolean => {
+    if (!repository.holdsIndexed) {
+      repository.holdsIndexed = new Set();
+      const result = spawnSync("git", ["-C", path.join(workspaceRoot, repository.root), "ls-files", "-z"], { encoding: "utf8", env: gitEnvironment(repository.root !== ""), maxBuffer: 1 << 28 });
+      for (const entry of result.status === 0 ? result.stdout.split("\0") : []) {
+        for (let slash = entry.lastIndexOf("/"); slash > 0; slash = entry.lastIndexOf("/", slash - 1)) repository.holdsIndexed.add(entry.slice(0, slash));
+      }
+    }
+    return repository.holdsIndexed.has(folder);
   };
   const judged = (relative: string): "ignored" | "kept" | "unjudged" => {
     if (own.entries.has("")) return "ignored";
     const parts = relative === "" || relative === "." ? [] : relative.split("/");
-    let repository = "";
-    let entries = own.entries;
+    let repository = outer;
     for (let end = 1; end <= parts.length; end += 1) {
       const prefix = parts.slice(0, end).join("/");
-      if (entries.has(repository === "" ? prefix : prefix.slice(repository.length + 1))) return "ignored";
+      if (repository.entries?.has(repository.root === "" ? prefix : prefix.slice(repository.root.length + 1))) return "ignored";
       if (end === parts.length) break;
-      const kind = kindOf(prefix);
-      if (kind === "link") return "unjudged";
-      if (kind === "repository") {
-        const nested = listingOf(prefix);
-        if (!nested) return "unjudged";
-        repository = prefix;
-        entries = nested;
-      }
+      const kind = kindOf(prefix, repository);
+      if (typeof kind === "object") {
+        if (!kind.entries) return "unjudged";
+        repository = kind;
+      } else if (kind === "link") return "unjudged";
     }
     return "kept";
   };
@@ -152,34 +173,14 @@ export function gitIgnored(workspaceRoot: string, relativePaths: readonly string
 }
 
 /**
- * The folders under `workspaceRoot` that git ignores whole ({@link gitIgnores}), as workspace-relative paths with
- * forward slashes and no trailing slash, `""` for the workspace itself; none when git cannot answer.
- */
-export function foldersGitIgnoresWhole(workspaceRoot: string): ReadonlySet<string> {
-  return gitIgnores(workspaceRoot)?.folders ?? new Set();
-}
-
-/**
  * Whether git matches names without regard to case in the repository that
  * holds `workspaceRoot`: its `core.ignorecase`, which git sets true on a clone
  * made where the file system does not tell case apart, as on Windows. False
  * when the setting is false or absent, or git cannot answer.
  */
 export function gitIgnoresCase(workspaceRoot: string): boolean {
-  const result = spawnSync("git", ["-C", workspaceRoot, "config", "--type=bool", "--get", "core.ignorecase"], { encoding: "utf8", env: gitEnvironment(false) });
+  const result = spawnSync("git", ["-C", workspaceRoot, "config", "--type=bool", "--get", "core.ignorecase"], { encoding: "utf8" });
   return !result.error && result.status === 0 && result.stdout.trim() === "true";
-}
-
-/**
- * The files among `files` (absolute or workspace-relative) that git does not
- * ignore, a file git cannot judge among them; all of `files` when git cannot
- * answer.
- */
-export function withoutGitIgnored(workspaceRoot: string, files: readonly string[]): string[] {
-  const relative = files.map((file) => toWorkspacePath(workspaceRoot, file));
-  const ignored = gitIgnored(workspaceRoot, relative);
-  if (!ignored) return [...files];
-  return files.filter((_file, index) => !ignored.has(relative[index]));
 }
 
 /**
@@ -199,24 +200,33 @@ export function foldersReadAsEmpty(workspaceRoot: string, folders: ReadonlySet<s
   };
 }
 
-/** The variables that make git read pathspecs otherwise than as written, or refuse them: never passed on. */
-const PATHSPEC_VARIABLES = ["GIT_LITERAL_PATHSPECS", "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS", "GIT_ICASE_PATHSPECS"];
+/**
+ * The variables git itself keeps when it enters a submodule, of those that tie it to a repository: the configuration
+ * given on the command line (`git -c`, and `GIT_CONFIG_COUNT` with its numbered keys and values).
+ */
+const KEPT_IN_A_SUBMODULE: ReadonlySet<string> = new Set(["GIT_CONFIG_PARAMETERS", "GIT_CONFIG_COUNT"]);
 
 /** The variables that tie git to one repository (`git rev-parse --local-env-vars`), read once, for a nested repository's question. */
 let localVariables: readonly string[] | undefined;
 
 /**
- * The environment of a git call: the process's own, less {@link PATHSPEC_VARIABLES}, and for a nested repository less
- * the variables that tie git to a repository, so that git finds the nested repository by its own `.git`.
+ * The environment of a git call: the process's own, and for a nested repository less the variables that tie git to a
+ * repository but {@link KEPT_IN_A_SUBMODULE}, as git's own `prepare_submodule_repo_env` makes it, so that git finds
+ * the nested repository by its own `.git` and still reads the person's command-line configuration.
  */
 function gitEnvironment(nested: boolean): NodeJS.ProcessEnv {
   const env = { ...process.env };
-  for (const name of PATHSPEC_VARIABLES) delete env[name];
   if (nested) {
-    localVariables ??= spawnSync("git", ["rev-parse", "--local-env-vars"], { encoding: "utf8", env }).stdout?.split("\n").filter((name) => name.length > 0) ?? [];
-    for (const name of localVariables) delete env[name];
+    localVariables ??= spawnSync("git", ["rev-parse", "--local-env-vars"], { encoding: "utf8" }).stdout?.split("\n").filter((name) => name.length > 0) ?? [];
+    for (const name of localVariables) if (!KEPT_IN_A_SUBMODULE.has(name)) delete env[name];
   }
   return env;
+}
+
+/** Whether git, asked in `folder` as a repository of its own, finds one whose top is that folder. */
+function topOfItsOwn(folder: string): boolean {
+  const result = spawnSync("git", ["-C", folder, "rev-parse", "--show-cdup"], { encoding: "utf8", env: gitEnvironment(true) });
+  return !result.error && result.status === 0 && result.stdout.trim() === "";
 }
 
 /**
@@ -233,8 +243,8 @@ function listing(folder: string, nested: boolean): { entries: Set<string>; folde
   let prefix = "";
   let printed = listed(["-C", folder]);
   if (!printed) {
-    // Asked from a folder two or more folders inside one it ignores whole, git fails ("directory entry not superset of
-    // prefix"), as it does when it cannot answer at all; asked from the repository's top, it names that folder.
+    // Asked from a folder inside one it ignores whole, git fails ("directory entry not superset of prefix"), as it does
+    // when it cannot answer at all; asked from the repository's top, it names that folder.
     const where = spawnSync("git", ["-C", folder, "rev-parse", "--show-cdup", "--show-prefix"], { encoding: "utf8", env });
     if (where.error || where.status !== 0) return null;
     const newline = where.stdout.indexOf("\n");

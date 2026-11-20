@@ -1,26 +1,20 @@
-import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { foldersGitIgnoresWhole, withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnores } from "@live-documentation/engine/tooling/gitIgnored";
 
 import { auditedFiles } from "./auditedFiles";
 
 /**
- * Every case holds the shortened walk to the walk the audits made until 2026-11-20, kept here as the oracle: each
- * pattern matched over the whole workspace, then what git ignores dropped, every file kept when git cannot answer. A
- * case is red when the shortened walk leaves a file out that the oracle keeps, or keeps one the oracle drops.
+ * Every case names the files it expects, written out from what git itself says of the repository it makes (`git
+ * status --ignored`). Until the review of the third form (2026-11-20) each case was also held to an oracle, the old
+ * full walk judged by `withoutGitIgnored`; since that judging came to read the very listing the audits read, the
+ * oracle graded the code by itself, and it is gone: the written lists are the cases' only measure.
  */
-function oracle(root: string, patterns: string[], ignoreGlobs: string[]): string[] {
-  const found = new Set<string>();
-  for (const pattern of patterns) {
-    for (const match of globSync(pattern, { cwd: root, ignore: ignoreGlobs, nodir: true, dot: true })) found.add(path.resolve(root, match));
-  }
-  return withoutGitIgnored(root, Array.from(found).sort());
-}
+const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
 
 const folders: string[] = [];
 // The variables a case sets, restored one by one: the process's own environment is the one git is started with.
@@ -51,11 +45,9 @@ function git(root: string, ...args: string[]): void {
   if (result.status !== 0) throw new Error(`git ${args.join(" ")} failed: ${result.stderr}`);
 }
 
-/** The audited files as workspace-relative paths, after checking them against the oracle. */
+/** The audited files as workspace-relative paths. */
 function audited(root: string, patterns = ["**/*.md"], ignoreGlobs = ["**/node_modules/**"]): string[] {
-  const files = auditedFiles(root, patterns, ignoreGlobs);
-  expect(files).toEqual(oracle(root, patterns, ignoreGlobs));
-  return files.map((file) => path.relative(root, file).split(path.sep).join("/"));
+  return auditedFiles(root, patterns, ignoreGlobs).map((file) => path.relative(root, file).split(path.sep).join("/"));
 }
 
 describe("auditedFiles", () => {
@@ -78,7 +70,7 @@ describe("auditedFiles", () => {
     } finally {
       spy.mockRestore();
     }
-    expect(files).toEqual(oracle(root, ["**/*.md"], ["**/.git/**"]));
+    expect(files).toEqual([path.join(root, "README.md"), path.join(root, "mixed", "kept.md")]);
     expect([...read].sort()).toEqual(["", "mixed"]);
   });
 

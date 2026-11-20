@@ -10,11 +10,19 @@
  * `.git/info/exclude`, folders ignored whole and in part, names with `[ ] * ? \`, spaces and other alphabets, beside
  * each wildcard name the plain name it matches as a pattern (tracked more often than not), top-level names beginning
  * with `:` (`:abc`, `:(x)`, `:!y`), files force-added under ignored folders, a tracked file gone from the disk, case
- * twins with `core.ignorecase` true and false; and, made on purpose since random names never make them, a tracked
- * `.gitignore` marked skip-worktree and deleted, a file in the place of a tracked folder, and a tracked folder whose
- * case differs on the disk where `core.ignorecase` is true. Nested repositories, a submodule and a plain one, have a
- * property of their own: each repository's files are judged by that repository's own status, and the outer
- * repository's decides only whether a nested repository's folder is ignored.
+ * twins with `core.ignorecase` true and false (made only where the disk tells case apart), patterns that name a
+ * folder's contents but not the folder, folder negations, and a slash or `**` inside a pattern; and, made on purpose
+ * since random names never make them, a tracked `.gitignore` marked skip-worktree and deleted, a file in the place of
+ * a tracked folder, and a tracked folder whose case differs on the disk where `core.ignorecase` is true. Nested
+ * repositories have a property of their own: a submodule, a plain nested repository and one whose `.git` is a file,
+ * each judged by its own status, the outer status deciding only whether its folder is ignored; and beside them two
+ * folders that hold a `.git` and are the outer repository's own, as git has them, judged by the outer status: one
+ * below which the outer index holds a tracked or an intent-to-add entry, and one whose `.git` names no repository.
+ *
+ * What the main property cannot see: the folders git ignores whole are left unread, so a file below one never reaches
+ * the judging, and with folders in the listing never judged it still passes all thirty seeds. The nested property
+ * catches that, in six of its fifteen, as do the written cases of links, of nested repositories inside ignored
+ * folders and of a folder made during the walk.
  *
  * The deviations from git that are known and remain, left out of the repositories made here: a case twin of a tracked
  * file where `core.ignorecase` is true, which git takes for the tracked file itself while discovery documents both
@@ -24,7 +32,7 @@
  * of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/` says why.
  */
 import { execFileSync } from "node:child_process";
-import { appendFileSync, mkdirSync, mkdtempSync, readdirSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -49,10 +57,21 @@ function random(seed: number): () => number {
   };
 }
 
-const NAMES = ["a", "b", "a1", "a[1]", "[ab]", "b?", "bc", "a\\b", "ab", "a*", "x y", "café", "Build", "build", "out", "Out", "deep", "keep", "ж"];
+/** Whether this disk tells apart two names that differ in case alone, as Linux's do and Windows' and macOS's do not. */
+const diskTellsCaseApart = ((): boolean => {
+  const probe = mkdtempSync(path.join(os.tmpdir(), "case-probe-"));
+  writeFileSync(path.join(probe, "a"), "");
+  const apart = !existsSync(path.join(probe, "A"));
+  rmSync(probe, { recursive: true, force: true });
+  return apart;
+})();
+
+// Names that differ in case alone (`Build` and `build`, `Out` and `out`) are made only where the disk tells case apart;
+// on a disk that folds case, as Windows' and macOS's do, they would be one file.
+const NAMES = ["a", "b", "a1", "a[1]", "[ab]", "b?", "bc", "a\\b", "ab", "a*", "x y", "café", ...(diskTellsCaseApart ? ["Build", "Out"] : []), "build", "out", "deep", "keep", "ж"];
 const TOP_NAMES = [":abc", ":(x)", ":!y"];
 const SUFFIXES = [".ts", ".log", ".tmp", ".md", ".txt", ""];
-const PATTERNS = ["build/", "*.log", "!keep.log", "out/", "a*", "/a1", "*.tmp", "!b.tmp", "x y/", "café", "Build/", "**/deep", "[ab]1/", "a\\[1\\]", "b?", "!a.ts", "*.md", "!*.md", "deep/", "/out", "*", "!b", "\\*", "/:*", "!/:abc.ts"];
+const PATTERNS = ["build/", "*.log", "!keep.log", "out/", "a*", "/a1", "*.tmp", "!b.tmp", "x y/", "café", "Build/", "**/deep", "[ab]1/", "a\\[1\\]", "b?", "!a.ts", "*.md", "!*.md", "deep/", "/out", "*", "!b", "\\*", "/:*", "!/:abc.ts", "build/*", "!build/", "!deep/", "deep/*.ts", "a/**/b", "a/b", "out/**"];
 
 function git(root: string, ...args: string[]): string {
   return execFileSync("git", ["-C", root, "-c", "user.email=test@example.com", "-c", "user.name=test", ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
@@ -127,7 +146,7 @@ function fill(root: string, next: () => number, top: boolean): void {
       gitignores.push(file);
     }
   }
-  if (next() < 0.5) appendFileSync(path.join(root, ".git", "info", "exclude"), `${pick(PATTERNS)}\n`);
+  if (next() < 0.5) appendFileSync(path.join(git(root, "rev-parse", "--absolute-git-dir").trim(), "info", "exclude"), `${pick(PATTERNS)}\n`);
 
   // Where git matches without regard to case, a case twin of a tracked path is the tracked path to git: none is tracked.
   const lowered = new Map<string, Set<string>>();
@@ -203,6 +222,27 @@ describe("discovery against git status, over random repositories", () => {
         git(root, "add", "-f", folder);
       }
     }
+    // A nested repository whose `.git` is a file naming its store elsewhere, the form a submodule and a linked worktree take.
+    const store = mkdtempSync(path.join(os.tmpdir(), "discovery-oracle-store-"));
+    folders.push(store);
+    rmSync(path.join(root, "n3"), { recursive: true, force: true });
+    git(root, "init", "-q", "--separate-git-dir", path.join(store, "n3.git"), "n3");
+    fill(path.join(root, "n3"), next, false);
+    nested.push("n3");
+    // Folders that hold a `.git` and are the outer repository's own all the same, as git has them, judged by the outer
+    // status: one below which the outer index holds a tracked or an intent-to-add entry, and one whose `.git` names no
+    // repository.
+    for (const folder of ["o1", "b1"]) {
+      rmSync(path.join(root, folder), { recursive: true, force: true });
+      for (const name of ["t.ts", "u.log", "v.tmp", "w.md"]) {
+        mkdirSync(path.join(root, folder, "sub"), { recursive: true });
+        writeFileSync(path.join(root, folder, next() < 0.5 ? name : `sub/${name}`), "x\n");
+      }
+    }
+    git(root, "add", "-f", ...(next() < 0.5 ? [] : ["-N"]), "--", ...onDisk(root, "o1").slice(0, 1));
+    git(path.join(root, "o1"), "init", "-q");
+    appendFileSync(path.join(root, "o1", ".git", "info", "exclude"), "*.ts\n*.md\n");
+    writeFileSync(path.join(root, "b1", ".git"), "gitdir: nowhere\n");
     const outer = ignoredByStatus(root);
     const inner = new Map(nested.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
     const kept = onDisk(root).filter((file) => {
