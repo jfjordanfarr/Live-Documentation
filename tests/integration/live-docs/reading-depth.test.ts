@@ -371,7 +371,9 @@ describe("the reading bounds", () => {
     let levels = 1;
     while (depthOf(write(levels).text) < target) levels += 1;
     const written = write(levels);
-    const report = await lane(() => firstChange(written.file, written.text, "beside" in written ? written.beside : {}));
+    // The rows are read as a union whose third member has no one shape; what stands beside the file is named here.
+    const beside: Record<string, string> = "beside" in written ? (written.beside as Record<string, string>) : {};
+    const report = await lane(() => firstChange(written.file, written.text, beside));
     expectReadCold(report, `${name} at ${levels} levels, ${depthOf(written.text)} deep`);
   }, 600_000);
 
