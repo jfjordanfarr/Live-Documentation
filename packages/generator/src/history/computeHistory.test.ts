@@ -12,7 +12,7 @@ import { shapeOfSummary } from "@live-documentation/engine/live-docs/history/sha
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
 
 import { formatBytes, holdLock, nextPoolRecord, poolSize, UNMEASURED_PEAK_MEMORY, usableMachine } from "./computeHistory";
-import { headDifferences, type ReplayedMoment } from "./headCheck";
+import { headDifferences, leftOutAtHead, type ReplayedMoment } from "./headCheck";
 
 describe("the check at the head", () => {
   const doc = (codePath: string, fields: Partial<LiveDoc>): { docPath: string; doc: LiveDoc } => ({
@@ -58,6 +58,32 @@ describe("the check at the head", () => {
     const missing = { ...replayed, rows: new Map(replayed.rows) };
     missing.rows.delete("src/b.ts");
     expect(headDifferences(missing, committed, textOf)).toContain("src/b.ts has a committed doc and is not in the history's last step");
+  });
+
+  it("compares no committed file the head's tree left out, nor a link to or from it, and names each with why", () => {
+    // The head's tree left `src/a.ts` out (on Windows, say, a name it reserves), so the history never read it nor its links.
+    const unread = { ...replayed, rows: new Map(replayed.rows) };
+    unread.rows.delete("src/a.ts");
+    const reason = "its name cannot be written on Windows, where git refuses to check it out";
+    const notCompared = leftOutAtHead(committed, new Map([["src/a.ts", reason]]));
+    expect([...notCompared]).toEqual([["src/a.ts", reason]]);
+    expect(headDifferences(unread, committed, textOf, new Set(notCompared.keys()))).toEqual([]);
+    // Compared, the file and each of its links would fail the check where the history is right.
+    const compared = headDifferences(unread, committed, textOf);
+    expect(compared).toContain("src/a.ts has a committed doc and is not in the history's last step");
+    expect(compared).toContain("the link src/a.ts#make -returns-> src/b.ts#b x1 is missing");
+    // A file whose doc alone the tree left out is compared as any other, since the history read its source: a symbol
+    // the replay lost is found (the review's second pass). An entry no committed file is, is passed over not at all.
+    const docAlone = leftOutAtHead(committed, new Map([[".mdmd/layer-4/src/a.ts.mdmd.md", reason]]));
+    expect([...docAlone]).toEqual([]);
+    const a = replayed.rows.get("src/a.ts")!;
+    const lost = { ...replayed, rows: new Map(replayed.rows) };
+    lost.rows.set("src/a.ts", { ...a, symbols: [] });
+    expect(headDifferences(lost, committed, textOf, new Set(docAlone.keys())).some((line) => line.startsWith("the symbols of src/a.ts differ"))).toBe(true);
+    expect([...leftOutAtHead(committed, new Map([["vendor/elsewhere.ts", reason]]))]).toEqual([]);
+    // What is not left out is still compared: the other file's words lost are found.
+    unread.rows.set("src/b.ts", { ...unread.rows.get("src/b.ts")!, authored: "unread" });
+    expect(headDifferences(unread, committed, textOf, new Set(notCompared.keys()))).toEqual([expect.stringContaining("the authored of src/b.ts differ")]);
   });
 });
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/c.ts`
-- Generated At: 2026-11-19T22:40:09.821Z
+- Generated At: 2026-11-20T12:42:56.062Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ The C and C++ adapter: parses a file with the C++ grammar of the tree-sitter bun
 ### Public Symbols
 #### `IncludeStrategy` {#symbol-includestrategy}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L640)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L645)
 
 ##### `IncludeStrategy` — Summary
 Where a quoted include is looked for, the compiler's `-I` flags being
@@ -34,7 +34,7 @@ first, a greedy rule that can pick a decoy.
 
 #### `DEFAULT_INCLUDE_STRATEGY` {#symbol-default_include_strategy}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L643)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L648)
 - Returns: [`IncludeStrategy`](#symbol-includestrategy)
 
 ##### `DEFAULT_INCLUDE_STRATEGY` — Summary
@@ -42,7 +42,7 @@ The strategy the adapter resolves includes with: the one that matched the compil
 
 #### `resolveInclude` {#symbol-resolveinclude}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L754)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L759)
 
 ##### `resolveInclude` — Summary
 The workspace-relative path, with forward slashes, of the file a quoted
@@ -51,7 +51,7 @@ workspace. A specifier without an extension is also tried with `.h`.
 
 #### `analyzeCSource` {#symbol-analyzecsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L821)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L826)
 
 ##### `analyzeCSource` — Summary
 Analyzes one C or C++ file from its text, without the generator: its
@@ -59,7 +59,7 @@ symbols, its includes resolved under the strategy, and its program entry.
 
 #### `cAdapter` {#symbol-cadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L835)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L840)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cAdapter` — Summary
@@ -72,8 +72,9 @@ Language adapter for C and C++: tree-sitter symbols, `#include` dependencies wit
 - `node:path` - `path`
 - [`index.cSyntax`](../../languages/index.ts.mdmd.md#symbol-csyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
+- [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
-- [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
+- [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/go.ts`
-- Generated At: 2026-11-19T22:40:09.948Z
+- Generated At: 2026-11-20T12:42:56.142Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L631)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L633)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goAdapter` — Summary
@@ -37,7 +37,7 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
-- [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
+- [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)

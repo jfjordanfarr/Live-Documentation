@@ -6,7 +6,8 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 
 import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
-import { summarizingEnvironment, summarizingFlags, treeOptions } from "./regenerate";
+import { summarizingEnvironment, summarizingFlags } from "./regenerate";
+import { treeOptions } from "./summarizeChange";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
@@ -120,7 +121,10 @@ function actsForASummary(text: string): boolean {
  * keyed: a module joins this list only by a reviewed reason.
  */
 const ACTING_UNKEYED: Record<string, string> = {
-  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree"
+  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree",
+  // Since 2026-11-20, in place of writing the head's whole tree for the check.
+  "packages/generator/src/history/headCheck.ts":
+    "reads the Live Docs committed at the head from git's object store for the check at the head, after every summary is made; nothing it reads reaches a summary"
 };
 
 /** The names of an interface's members, read by the TypeScript parser. */
@@ -136,12 +140,16 @@ function membersOf(file: string, name: string): string[] {
  * what a summary says unkeyed: a new member fails the guard until it is shown not to reach a summary, or joins the key.
  */
 const HANDED_TO_REGENERATION: Record<string, string> = {
-  versionControl: "an implementation of the version control, every one of which is keyed (the rule above)",
+  // Since 2026-11-20, when the workers began to write their own trees, in place of the command's version control.
+  store: "the git directory of the repository whose changes are summarized, each named by its id, which each worker hands every call of the keyed tree writer by GIT_DIR",
   configuration: "the lens's configuration, which is half of the key itself",
   lens: "the key itself, written into each summary",
   cacheFolder: "where summaries and texts are written, never what they say",
   keepIndex: "whether the full index is kept beside a summary, which the summary does not name",
   jobs: "how many commits are regenerated at once",
+  // Since the review's fourth round, 2026-11-20.
+  memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts)",
+  startWorker: "a test's stand-in for the pool's own keyed starter; the command hands none",
   deadline: "when to start no further commit",
   scratch: "where the trees are written and what a signal removes; summaries name workspace-relative paths only",
   progress: "where progress lines go"
@@ -180,6 +188,7 @@ describe("the lens's key", () => {
     expect(acting.sort()).toEqual([
       "packages/engine/src/live-docs/history/git.ts",
       "packages/generator/src/history/generatorIdentity.ts",
+      "packages/generator/src/history/headCheck.ts",
       "packages/generator/src/history/regenerate.ts",
       // Since 2026-11-19 it asks the tree's own listing which linked documents stand.
       "packages/generator/src/history/summarizeChange.ts"
@@ -213,10 +222,14 @@ describe("the lens's key", () => {
   it("gives the summarizing process a named environment, and nothing else of the person's", () => {
     const given = summarizingEnvironment({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json", NODE_OPTIONS: "--require evil.js", GIT_DIR: "/elsewhere", LANG: "tr_TR.UTF-8", HOME: "/home/ada" });
     expect(given).toEqual({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json" });
-    // The process is started with that environment and the tree's own, never the command's whole one.
+    // A worker is started with that environment, never the command's whole one, and sets each tree's own only while it
+    // summarizes in that tree (since 2026-11-20; `history-workers.test.ts` holds a worker's later changes to a fresh
+    // process's summaries of them, which a stale index would change).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toContain("{ ...summarizingEnvironment(process.env), ...tree.environment }");
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*env: summarizingEnvironment\(process\.env\),/u);
     expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
+    const worker = readFileSync(path.join(repository, "packages/generator/src/history/summarizeChange.ts"), "utf8");
+    expect(worker).toMatch(/const \{ environment \} = tree;\s*Object\.assign\(process\.env, environment\);\s*try \{[^]*?await summarizeChange\([^]*?\} finally \{\s*for \(const name of Object\.keys\(environment\)\) delete process\.env\[name\];/u);
   });
 
   it("hands the summarizing process the configuration the key holds, made by one function", () => {
@@ -232,7 +245,7 @@ describe("the lens's key", () => {
   it("starts the summarizing process with node flags of its own, never the command's", () => {
     // `fork` passes the command's `process.execArgv` unless told otherwise (the fourth review of 2026-11-19).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toMatch(/fork\(worker, \[taskFile\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
     expect(summarizingFlags("/x/summarizeChange.js")).toEqual([]);
     const flags = summarizingFlags("/x/summarizeChange.ts");
     expect(flags).toHaveLength(2);

@@ -34,9 +34,9 @@ import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
-import type { LanguageAdapter } from "./index";
+import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseDocstring } from "./python.docstring";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one module
@@ -353,11 +353,8 @@ function isMainGuard(condition: SyntaxNode | null): boolean {
 }
 
 async function extractFacts(source: string): Promise<ModuleFacts> {
-  const tree  = await parseSource("python", source);
   const facts: ModuleFacts = { imports: [], declarations: [], boundNames: new Set(), identifiers: new Set(), chains: [], mainGuard: false };
-  try {
-    const root = tree.rootNode;
-
+  await readTree("python", source, (root) => {
     const visitImports = (node: SyntaxNode): void => {
       if (node.type === "import_statement" || node.type === "import_from_statement") {
         facts.imports.push(...readImport(node));
@@ -385,9 +382,7 @@ async function extractFacts(source: string): Promise<ModuleFacts> {
 
     collectUses(root, facts);
     facts.mainGuard = root.namedChildren.some((statement) => statement.type === "if_statement" && isMainGuard(statement.childForFieldName("condition")));
-  } finally {
-    tree.delete();
-  }
+  });
   return facts;
 }
 
@@ -395,7 +390,17 @@ async function extractFacts(source: string): Promise<ModuleFacts> {
 // Workspace: module facts by file, and import resolution
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names, with `directoryCache` below: a run with another index, or
+// none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
 const factsCache = new Map<string, { mtimeMs: number; facts: Promise<ModuleFacts> }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) {
+    factsCache.clear();
+    directoryCache.clear();
+  }
+  factsRun = fileIndex;
+}
 
 async function moduleFacts(absolutePath: string): Promise<ModuleFacts> {
   const mtimeMs = statSync(absolutePath).mtimeMs;
@@ -662,7 +667,8 @@ async function toDependencies(
 export const pythonAdapter: LanguageAdapter = {
   id:         "python",
   extensions: [".py"],
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts = await moduleFacts(absolutePath);
     const { dependencies, bindings } = await toDependencies(facts, absolutePath, workspaceRoot);
     const symbols = toSymbols(facts, bindings);

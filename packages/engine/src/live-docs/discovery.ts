@@ -9,14 +9,14 @@
  * @module
  */
 
-import { glob } from "glob";
+import { glob, type FSOption } from "glob";
 import ignore, { type Ignore } from "ignore";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { gitIgnored, gitIgnoresCase } from "../tooling/gitIgnored";
+import { foldersGitIgnoresWhole, foldersReadAsEmpty, gitIgnored, gitIgnoresCase, walksNoLinkToAFolder } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
@@ -178,7 +178,8 @@ export function docsRootWithin(workspaceRoot: string, config: LiveDocumentationC
  * The configured globs, or the include set when one is given, are matched
  * over the whole workspace in one walk, hidden files and folders included, so
  * that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
- * like any other file; the folders that are never documented are not walked.
+ * like any other file; the folders that are never documented are not walked,
+ * nor, where git can say so, the folders git ignores whole ({@link walkedAndKept}).
  * Then, in this order, the matches are dropped that are never documented
  * ({@link isNeverDocumented}: `.git`, `node_modules`, the docs root, lock
  * files, documents), that git ignores by its own word (a `.gitignore` at
@@ -212,9 +213,8 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
   const patterns = options.include.size > 0 ? Array.from(options.include) : options.config.glob;
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   // Not walked at all: what isNeverDocumented would drop file by file, `node_modules` above all.
-  const walked = await walk(options.workspaceRoot, patterns, docsRoot !== undefined ? [`${docsRoot}/**`] : []);
-  const considered = walked.filter((entry) => !isNeverDocumented(entry.relative, docsRoot));
-  const kept = await keptByGitAndConfiguration(considered, options.workspaceRoot, options.config);
+  const kept = await walkedAndKept(options.workspaceRoot, patterns, docsRoot !== undefined ? [`${docsRoot}/**`] : [],
+    (entry) => !isNeverDocumented(entry.relative, docsRoot), options.config);
   if (!options.changedOnly) {
     return kept.map((entry) => entry.absolute);
   }
@@ -239,12 +239,47 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
 export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config">): Promise<string[]> {
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const baseLayer = docsRoot === undefined ? undefined : normalizeWorkspacePath(path.join(docsRoot, options.config.baseLayer));
-  const walked = await walk(options.workspaceRoot, ["**/*"], baseLayer !== undefined ? [`${baseLayer}/**`] : []);
-  const considered = walked.filter((entry) => {
+  const kept = await walkedAndKept(options.workspaceRoot, ["**/*"], baseLayer !== undefined ? [`${baseLayer}/**`] : [], (entry) => {
     const segments = entry.relative.split("/");
     return !segments.includes(".git") && !segments.includes("node_modules") && isDocument(segments[segments.length - 1]);
-  });
-  return (await keptByGitAndConfiguration(considered, options.workspaceRoot, options.config)).map((entry) => entry.relative);
+  }, options.config);
+  return kept.map((entry) => entry.relative);
+}
+
+/**
+ * The files the patterns match that `considers` takes and git and the configuration keep
+ * ({@link keptByGitAndConfiguration}), found without reading the folders git ignores whole.
+ *
+ * @remarks
+ * Until 2026-11-20 the walk read every folder git ignores, file by file, only for the filter to throw each file away:
+ * in the main checkout, with its builders' worktrees under `.claude/worktrees/`, the walk of the files took 64 s where
+ * a clean worktree took 1.4 s, as a repository's `bin/`, `obj/`, `target/` or `.venv/` costs every scan. Now git is
+ * asked first for the folders it ignores whole ({@link foldersGitIgnoresWhole}) and the walk reads them as empty. The
+ * files kept are the same by construction: every file under such a folder is untracked and ignored, and the filter
+ * would have dropped it. That holds while git answers for the files the walk found. It may refuse one, as it refuses a
+ * path inside a submodule, and the rule is then to read the root `.gitignore` alone, which may keep files in those
+ * folders: so the walk is made again in full, and judged as before. A submodule never lies in a folder git ignores
+ * whole, since its folder is tracked, so git refuses the full walk as it refused the short one; a walk that could find
+ * a path git refuses inside those folders alone is not shortened ({@link walksNoLinkToAFolder}), nor is a folder whose
+ * own path git could refuse. The measurements and every case, each held by a test: the probe of 2026-11-20 under
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
+ */
+async function walkedAndKept(
+  workspaceRoot: string,
+  patterns: readonly string[],
+  neverWalked: readonly string[],
+  considers: (entry: WalkedFile) => boolean,
+  config: LiveDocumentationConfig
+): Promise<WalkedFile[]> {
+  const folders = patterns.every(walksNoLinkToAFolder) ? foldersGitIgnoresWhole(workspaceRoot) : new Set<string>();
+  if (folders.size > 0) {
+    const considered = (await walk(workspaceRoot, patterns, neverWalked, foldersReadAsEmpty(workspaceRoot, folders))).filter(considers);
+    const ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative));
+    if (ignoredByGit) {
+      return keptByGitAndConfiguration(considered, workspaceRoot, config, ignoredByGit);
+    }
+  }
+  return keptByGitAndConfiguration((await walk(workspaceRoot, patterns, neverWalked)).filter(considers), workspaceRoot, config);
 }
 
 /** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
@@ -257,16 +292,18 @@ interface WalkedFile {
  * One walk of the workspace: the patterns matched over the whole of it, hidden
  * files and folders included, so that `.devcontainer/devcontainer.json` or
  * `.vscode/settings.json` is read like any other file; `.git`, `node_modules`
- * and the folders named are not walked at all.
+ * and the folders named are not walked at all, and the folders `unread`
+ * reads as empty ({@link foldersReadAsEmpty}) are not read.
  */
-async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[]): Promise<WalkedFile[]> {
+async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread?: FSOption): Promise<WalkedFile[]> {
   const matches = await glob([...patterns], {
     cwd: workspaceRoot,
     nodir: true,
     withFileTypes: true,
     dot: true,
     windowsPathsNoEscape: true,
-    ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked]
+    ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked],
+    ...(unread ? { fs: unread } : {})
   });
   const files: WalkedFile[] = [];
   for (const match of matches) {
@@ -305,10 +342,16 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
  * workspace is a repository: a nested `.gitignore`, `.git/info/exclude` and
  * the global excludes file count, and a tracked file is never ignored, as git
  * itself has it (committing a file under an ignored folder is a decision).
- * Without git, the workspace's `.gitignore` alone.
+ * Without git, or when git refuses one of the paths, the workspace's
+ * `.gitignore` alone. `ignoredByGit` is git's answer for `considered`, when
+ * the caller has asked already.
  */
-async function keptByGitAndConfiguration(considered: readonly WalkedFile[], workspaceRoot: string, config: LiveDocumentationConfig): Promise<WalkedFile[]> {
-  const ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative));
+async function keptByGitAndConfiguration(
+  considered: readonly WalkedFile[],
+  workspaceRoot: string,
+  config: LiveDocumentationConfig,
+  ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative))
+): Promise<WalkedFile[]> {
   const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(workspaceRoot);
   // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on
   // a clone made on Windows, else exactly (2026-11-19).

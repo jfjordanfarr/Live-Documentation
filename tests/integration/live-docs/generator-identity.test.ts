@@ -63,6 +63,12 @@ function identity(modulePath: string, cwd: string): GeneratorIdentity {
   return JSON.parse(execFileSync(process.execPath, ["-e", runIdentity, modulePath], { cwd, encoding: "utf8" })) as GeneratorIdentity;
 }
 
+/** The identity of the code that reads summaries into a sequence, of the fixture's checkout, with the variables given. */
+function sequenceCode(modulePath: string, cwd: string, env: NodeJS.ProcessEnv = process.env): string {
+  const run = "require(process.argv[1]).sequenceCodeIdentity().then(value => process.stdout.write(value), error => { console.error(error); process.exitCode = 1; });";
+  return execFileSync(process.execPath, ["-e", run, modulePath], { cwd, encoding: "utf8", env });
+}
+
 function key(value: GeneratorIdentity): string {
   return lensOf(value, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key;
 }
@@ -172,6 +178,49 @@ describe("the tool lock in the history lens", () => {
       commit(root, `add ${file}`);
       expect(identity(modulePath, root).code, file).not.toBe(before.code);
     }
+  });
+
+  it("names the code that reads summaries into a sequence, every module of the history folders but a test, an uncommitted edit included", () => {
+    // The history command goes on from the sequence it wrote last only under the same identity: an edit of the codec
+    // that the lens does not see must move it, before it is committed as after, or yesterday's reading goes on as today's.
+    const { root, modulePath } = fixture(true);
+    const history = path.join(root, "packages", "engine", "src", "live-docs", "history");
+    fs.mkdirSync(history, { recursive: true });
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 1;\n");
+    fs.writeFileSync(path.join(history, "codec.test.ts"), "test(1);\n");
+    commit(root, "the codec");
+    const initial = sequenceCode(modulePath, root);
+    const lens = key(identity(modulePath, root));
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 2;\n");
+    const dirty = sequenceCode(modulePath, root);
+    expect(dirty).not.toBe(initial);
+    expect(key(identity(modulePath, root))).toBe(lens);
+    fs.writeFileSync(path.join(history, "codec.ts"), "export const codec = 3;\n");
+    expect(sequenceCode(modulePath, root)).not.toBe(dirty);
+    commit(root, "change the codec");
+    const committed = sequenceCode(modulePath, root);
+    expect(committed).not.toBe(initial);
+    // A test, a file outside the two packages and a commit of neither leave it as it was.
+    fs.writeFileSync(path.join(history, "codec.test.ts"), "test(2);\n");
+    fs.writeFileSync(path.join(root, "README.md"), "a change outside the tool's code\n");
+    expect(sequenceCode(modulePath, root)).toBe(committed);
+    commit(root, "a test and the readme");
+    expect(sequenceCode(modulePath, root)).toBe(committed);
+  });
+
+  it("names the git the steps' words come from, so that another git's words are not gone on from as this one's", () => {
+    // A git that says it is another version and is otherwise the same, first on the path, as a container rebuilt with
+    // another git would be: the lens, which keys the summaries, does not move, and the reading's identity does.
+    const { root, modulePath } = fixture(true);
+    const real = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+    const other = fs.mkdtempSync(path.join(scratch, "other-git-"));
+    fs.writeFileSync(path.join(other, "git"), `#!/bin/sh\nif [ "$1" = "-C" ] && [ "$3" = "--version" ]; then echo "git version 0.0.0.other"; exit 0; fi\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    const elsewhere = { ...process.env, PATH: `${other}${path.delimiter}${process.env.PATH ?? ""}` };
+    expect(execFileSync("git", ["-C", root, "--version"], { encoding: "utf8", env: elsewhere }).trim()).toBe("git version 0.0.0.other");
+    expect(sequenceCode(modulePath, root, elsewhere)).not.toBe(sequenceCode(modulePath, root));
+    expect(sequenceCode(modulePath, root, elsewhere)).toBe(sequenceCode(modulePath, root, elsewhere));
+    const lensElsewhere = JSON.parse(execFileSync(process.execPath, ["-e", runIdentity, modulePath], { cwd: root, encoding: "utf8", env: elsewhere })) as GeneratorIdentity;
+    expect(key(lensElsewhere)).toBe(key(identity(modulePath, root)));
   });
 
   it("does not mistake an installed generator's host lock for this tool's lock", () => {

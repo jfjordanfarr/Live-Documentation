@@ -5,9 +5,9 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { foldersGitIgnoresWhole, withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 
-import { auditedFiles, foldersGitIgnoresWhole, foldersReadAsEmpty, walksNoLinkToAFolder } from "./auditedFiles";
+import { auditedFiles } from "./auditedFiles";
 
 /**
  * Every case holds the shortened walk to the walk the audits made until 2026-11-20, kept here as the oracle: each
@@ -199,23 +199,5 @@ describe("auditedFiles", () => {
     process.env.PATH = workspace();
     expect(foldersGitIgnoresWhole(root).size).toBe(0);
     expect(audited(root)).toEqual(["README.md", "build/a.md"]);
-  });
-});
-
-describe("walksNoLinkToAFolder", () => {
-  it("is true only for `**` and one name, with at most one star", () => {
-    for (const pattern of ["**/*", "**/*.md", "**/README", "**/*.{html,htm,css}", "**/{a,b}.md"]) expect(walksNoLinkToAFolder(pattern), pattern).toBe(true);
-    for (const pattern of ["*.md", "src/**/*.md", "*/**/*.md", "**/src/*.md", "**/{a,b/c}.md", "**/{*,}*", "**/*{,x}*", "**/a\\b", "./**/*.md", "**"]) {
-      expect(walksNoLinkToAFolder(pattern), pattern).toBe(false);
-    }
-  });
-});
-
-describe("foldersReadAsEmpty", () => {
-  it("hides the named folders' contents from glob, and no other folder's", () => {
-    const root = workspace();
-    write(root, { "skip/a.md": "", "skip/deep/b.md": "", "skipped/c.md": "", "keep/skip/d.md": "" });
-    const unread = foldersReadAsEmpty(root, new Set(["skip"]));
-    expect(globSync("**/*.md", { cwd: root, fs: unread, posix: true }).sort()).toEqual(["keep/skip/d.md", "skipped/c.md"]);
   });
 });

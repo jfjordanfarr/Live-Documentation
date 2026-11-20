@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-reading.test.ts`
-- Generated At: 2026-11-19T22:40:15.159Z
+- Generated At: 2026-11-20T09:32:50.728Z
 
 ## Authored
 ### Purpose
@@ -29,11 +29,14 @@ _No public symbols detected_
 - `node:path`
 - `node:zlib`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
+- [`git.writeStoredTree`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-writestoredtree)
 - [`sequence.momentAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
 - [`summary.CommitSummary`](../../../packages/engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary) (type-only)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`headCheck.committedLiveDocGraph`](../../../packages/generator/src/history/headCheck.ts.mdmd.md#symbol-committedlivedocgraph)
 - [`scripted-repository.FIXTURE_GIT_ENV`](./scripted-repository.ts.mdmd.md#symbol-fixture_git_env)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

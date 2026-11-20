@@ -19,6 +19,8 @@
 - Since 2026-11-12 `-h` prints the usage as `--help` does, and a refused argument ends through `runCommand` in [cli.ts](cli.ts.mdmd.md), one line with the command that lists the options.
 - Since 2026-11-19 ([Turn 37 of November 18](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37), "How do we mitigate these costs and risks?") the pool's default is the history command's (`poolSize`), from the machine's memory and processors and the peak a summarizing process last took, in place of two processes under 8 GiB and else at most three; `--remove-superseded` removes the caches of other lenses, which every run lists with their sizes; and the summary line says the wall clock, the pool, the largest process's peak and the cache's size.
 
+- Since 2026-11-20 ([the record of making a run fast](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) `--rederive` derives every step of the sequence from the summaries, where a run otherwise goes on from the sequence the last run wrote when the line has only grown.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

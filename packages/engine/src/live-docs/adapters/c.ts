@@ -46,8 +46,8 @@ import type {
   SymbolDocumentationParameter
 } from "../core";
 import type { ProgramEntry } from "../coreTypes";
-import type { LanguageAdapter } from "./index";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -606,15 +606,20 @@ function capitalize(value: string): string {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names, with `listingCache` below: a run with another index, or
+// none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) {
+    factsCache.clear();
+    listingCache.clear();
+  }
+  factsRun = fileIndex;
+}
 
 async function extractFacts(content: string, absolutePath: string): Promise<FileFacts> {
-  const tree = await parseSource("cpp", content);
-  try {
-    return new FileExtractor(isCppFile(absolutePath)).extract(tree.rootNode);
-  } finally {
-    tree.delete();
-  }
+  return readTree("cpp", content, (root) => new FileExtractor(isCppFile(absolutePath)).extract(root));
 }
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
@@ -835,7 +840,8 @@ export async function analyzeCSource(options: { content: string; absolutePath: s
 export const cAdapter: LanguageAdapter = {
   id: "c-basic",
   extensions: cSyntax.extensions,
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const content = await readSourceText(absolutePath);
     return analyzeCSource({ content, absolutePath, workspaceRoot });
   }

@@ -27,29 +27,76 @@ function grammarFile(grammar: string): string {
 let runtime: Promise<void> | undefined;
 const parsers = new Map<string, Promise<Parser>>();
 
-/** One parser per grammar, created on first use and kept for the life of the process. */
+/**
+ * One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
+ * runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
+ * generations never fails a file for a failure of the past.
+ */
 export function grammarParser(grammar: string): Promise<Parser> {
   let pending = parsers.get(grammar);
   if (!pending) {
-    pending = (async () => {
-      runtime ??= Parser.init();
-      await runtime;
+    const loading = (async () => {
+      const started = (runtime ??= Parser.init());
+      try {
+        await started;
+      } catch (error) {
+        if (runtime === started) runtime = undefined;
+        throw error;
+      }
       const language = await Language.load(grammarFile(grammar));
       const parser   = new Parser();
       parser.setLanguage(language);
       return parser;
     })();
-    parsers.set(grammar, pending);
+    pending = loading;
+    parsers.set(grammar, loading);
+    loading.catch(() => {
+      if (parsers.get(grammar) === loading) parsers.delete(grammar);
+    });
   }
   return pending;
 }
 
-/** Parses `source` with the named grammar. The caller owns the tree and should `delete()` it when done. */
-export async function parseSource(grammar: string, source: string): Promise<Tree> {
-  const parser = await grammarParser(grammar);
-  const tree   = parser.parse(source);
-  if (!tree) {
-    throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
+let faulted = false;
+
+/**
+ * Whether anything thrown in this process while a tree was taken, read or released ({@link readTree}): after such a
+ * throw no parser of the process is known sound, and a process that lives across many generations, as the history's
+ * worker does, publishes nothing more and ends (`summarizeChange.ts`).
+ */
+export function runtimeFaulted(): boolean {
+  return faulted;
+}
+
+/**
+ * Parses `source` with the named grammar, hands the tree's root to `read`, which must be synchronous, and releases the
+ * tree, returning what `read` returned. The only way the adapters take a tree.
+ *
+ * @remarks
+ * Every node `read` touches is a call into the runtime's one WebAssembly module, which every grammar's parser shares,
+ * and the runtime restores none of its state when such a call throws: a trap throws a `WebAssembly.RuntimeError`, an
+ * abort sets a flag the module keeps and throws one, an exit of the module throws its `ExitStatus`, a stack overflow
+ * throws a `RangeError` wherever the stack ran out, in the module or in the adapter's walk, and `parse` holds no
+ * `finally` round its call. Which of these a throw was cannot be told from the error, so any throw from the grammar's
+ * load to the tree's release marks the process ({@link runtimeFaulted}), whatever its class, the adapter's own error
+ * among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module of
+ * unknown state make a summary. Until 2026-11-20 only a `RuntimeError` thrown inside `parse` marked it, and the
+ * adapters walked and released their trees themselves (`parseSource`).
+ */
+export async function readTree<T>(grammar: string, source: string, read: (root: SyntaxNode) => T): Promise<T> {
+  try {
+    const parser = await grammarParser(grammar);
+    const tree: Tree | null = parser.parse(source);
+    if (!tree) {
+      throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
+    }
+    try {
+      return read(tree.rootNode);
+    } finally {
+      tree.delete();
+    }
+  } catch (error) {
+    faulted = true;
+    throw error;
   }
-  return tree;
 }

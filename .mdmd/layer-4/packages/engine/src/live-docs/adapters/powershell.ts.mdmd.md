@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-19T22:40:10.097Z
+- Generated At: 2026-11-20T12:42:56.235Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 ### Public Symbols
 #### `analyzePowerShellSource` {#symbol-analyzepowershellsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L909)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L903)
 
 ##### `analyzePowerShellSource` — Summary
 Analyzes one PowerShell file from its text, without the generator: a
@@ -37,7 +37,7 @@ what it names and the root module it declares. Paths are resolved against
 
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L924)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L918)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary
@@ -52,7 +52,7 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`manifest.packageSymbols`](./manifest.ts.mdmd.md#symbol-packagesymbols)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
-- [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
+- [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)

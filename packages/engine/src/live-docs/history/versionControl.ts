@@ -7,12 +7,14 @@
  * change formats later").
  *
  * @remarks
- * Five things and nothing more: where the mainline ends and whether the copy
+ * Six things and nothing more: where the mainline ends and whether the copy
  * holds all of it; the mainline's changes, oldest first; the changes a tag
- * names; a working tree at a change, removed after; and what happened between
+ * names; a working tree at a change, removed after; what happened between
  * two changes, the renames the version control infers and the files whose
- * content changed in place. Every path is relative to the workspace. Nothing
- * here reaches a remote or asks for credentials.
+ * content changed in place; and where the repository is kept, which the
+ * processes that write trees are handed (since 2026-11-20). Every path is
+ * relative to the workspace. Nothing here reaches a remote or asks for
+ * credentials.
  *
  * @module
  */
@@ -61,8 +63,17 @@ export interface WorkingTree {
    * entry clashing with another. The summary says each was not read. A file written empty is not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
+  /** Whether the tree was brought forward from another change's tree ({@link WorkingTree.bringTo}) rather than written anew. */
+  broughtForward: boolean;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
+  /**
+   * The tree of another change, holding exactly what {@link VersionControl.workingTree} writes for that change: this
+   * tree brought forward in its own folder, touching only what differs, or, wherever that is refused, written anew in a
+   * fresh folder beside it, its `root` then another, and this one left for the removal of the folder above it. This
+   * tree is not to be used after.
+   */
+  bringTo(change: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
 }
 
 /** What the caller asks of a change's tree beyond the change's own entries. */
@@ -84,6 +95,11 @@ export interface WorkingTreeOptions {
 export interface VersionControl {
   /** The name written into the sequence's head as the system its history was read from. */
   readonly system: "git";
+  /**
+   * Where the version control keeps the repository, found once by the command in the person's environment and handed
+   * to each process that writes trees, so that none looks for the repository itself: for git, its git directory.
+   */
+  readonly store: string;
   /** Where the mainline ends, and whether the copy holds all of it. */
   mainlineEnd(): Promise<MainlineEnd>;
   /** Every change on the mainline, oldest first: the first is where the copy's knowledge begins. */

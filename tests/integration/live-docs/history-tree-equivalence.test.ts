@@ -15,7 +15,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { writeStoredTree } from "../../../packages/engine/src/live-docs/history/git";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { treeOptions } from "../../../packages/generator/src/history/regenerate";
+import { treeOptions } from "../../../packages/generator/src/history/summarizeChange";
 import { FIXTURE_GIT_ENV } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
@@ -90,7 +90,7 @@ describe("the history's tree, every name standing and an excluded image, font or
         const reduced = path.join(fs.mkdtempSync(path.join(privateTemporary, "tree-")), "tree");
         fs.mkdirSync(reduced);
         const options = treeOptions(config, reduced);
-        expect(await writeStoredTree(repository, commit, reduced, options), `${workspace} without ${folder}`).toEqual([]);
+        expect(await writeStoredTree(path.join(repository, ".git"), commit, reduced, options), `${workspace} without ${folder}`).toEqual([]);
         emptiedInAll += [...filesOf(reduced).keys()].filter((file) => options.contentless!(file)).length;
         for (const root of [whole, reduced]) {
           await generateLiveDocs({ workspaceRoot: root, config, keepAuthoredStaleDocs: false, logger: quiet, now });

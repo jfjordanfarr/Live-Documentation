@@ -34,7 +34,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseRustDocumentation } from "./rust.rustdoc";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file, module by module
@@ -537,21 +537,26 @@ class FileExtractor {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names, with `packageCache` below: a run with another index, or
+// none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) {
+    factsCache.clear();
+    packageCache.clear();
+  }
+  factsRun = fileIndex;
+}
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
   const content = await readSourceText(absolutePath);
-  const tree    = await parseSource("rust", content);
-  try {
-    const facts = new FileExtractor().extract(tree.rootNode);
-    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
-    return facts;
-  } finally {
-    tree.delete();
-  }
+  const facts   = await readTree("rust", content, (root) => new FileExtractor().extract(root));
+  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  return facts;
 }
 
 // ---------------------------------------------------------------------------
@@ -896,6 +901,7 @@ export const rustAdapter: LanguageAdapter = {
   id:         "rust",
   extensions: [".rs"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts    = await fileFacts(absolutePath);
     const table    = await moduleTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));

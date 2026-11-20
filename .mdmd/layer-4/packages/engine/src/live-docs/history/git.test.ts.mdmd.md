@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/git.test.ts`
-- Generated At: 2026-11-19T21:10:12.025Z
+- Generated At: 2026-11-20T09:35:01.526Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`git.DiskEntry`](./git.ts.mdmd.md#symbol-diskentry)
 - [`git.TreeDisk`](./git.ts.mdmd.md#symbol-treedisk)
+- [`git.bringTreeForward`](./git.ts.mdmd.md#symbol-bringtreeforward)
 - [`git.followLink`](./git.ts.mdmd.md#symbol-followlink)
 - [`git.openGitRepository`](./git.ts.mdmd.md#symbol-opengitrepository)
 - [`git.parseMainline`](./git.ts.mdmd.md#symbol-parsemainline)
@@ -37,5 +38,6 @@ _No public symbols detected_
 - [`git.placeEntry`](./git.ts.mdmd.md#symbol-placeentry)
 - [`git.realDisk`](./git.ts.mdmd.md#symbol-realdisk)
 - [`git.writeStoredTree`](./git.ts.mdmd.md#symbol-writestoredtree)
+- [`git.writeTreeAnew`](./git.ts.mdmd.md#symbol-writetreeanew)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

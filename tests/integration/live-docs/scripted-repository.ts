@@ -159,6 +159,11 @@ export interface ScriptedCommit {
   remove?: string[];
   /** Files written that an ignore file names, added all the same, as `git add --force` adds them: tracked, and ignored. */
   forceAdd?: string[];
+  /**
+   * Files put in the commit by the index alone, never on the disk, as a name the disk cannot hold must be (one of 300
+   * characters, say); a commit that does not name one again drops it.
+   */
+  indexOnly?: Record<string, string>;
 }
 
 /** The seven commits, oldest first. */
@@ -437,6 +442,10 @@ export function buildRepository(root: string, script: ScriptedCommit[] = SCRIPT)
     }
     git(root, ["add", "--all"]);
     if (commit.forceAdd) git(root, ["add", "--force", ...commit.forceAdd]);
+    for (const [file, text] of Object.entries(commit.indexOnly ?? {})) {
+      const blob = execFileSync("git", ["hash-object", "-w", "--stdin"], { cwd: root, env: FIXTURE_GIT_ENV, input: text, encoding: "utf8" }).trim();
+      git(root, ["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
+    }
     git(root, ["commit", "--quiet", "-m", commit.message], { GIT_AUTHOR_DATE: commit.date, GIT_COMMITTER_DATE: commit.date });
     ids.push(git(root, ["rev-parse", "HEAD"]).trim());
   }

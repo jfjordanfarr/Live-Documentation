@@ -63,7 +63,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { DeclaredEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -635,9 +635,8 @@ function declaredParameters(node: SyntaxNode): string[] {
 
 /** Reads one script or module. */
 async function extractFacts(content: string): Promise<FileFacts> {
-  const tree = await parseSource("powershell", content);
-  try {
-    const { functions, types, commands, usings, comments } = collect(tree.rootNode);
+  return readTree("powershell", content, (root) => {
+    const { functions, types, commands, usings, comments } = collect(root);
     const facts: FileFacts = { functions: [], types: [], dotSources: [], moduleImports: [], usingModules: [], requires: [] };
     for (const node of functions) {
       const name = node.namedChildren.find((child) => child.type === "function_name")?.text;
@@ -687,9 +686,7 @@ async function extractFacts(content: string): Promise<FileFacts> {
     }
     for (const comment of comments) facts.requires.push(...requiredModules(comment.text));
     return facts;
-  } finally {
-    tree.delete();
-  }
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -865,9 +862,8 @@ function manifestEntries(value: DataValue): Array<{ name: string; version?: stri
 
 /** Reads one `.psd1`: a module manifest's module, what it names and the root module it declares; nothing of a data file. */
 async function analyzeDataFile(content: string, sourcePath: string, files: WorkspaceFileIndex | undefined): Promise<SourceAnalysisResult> {
-  const tree = await parseSource("powershell", content);
-  try {
-    const table = dataFileTable(tree.rootNode);
+  return readTree("powershell", content, (root): SourceAnalysisResult => {
+    const table = dataFileTable(root);
     if (!table || !MANIFEST_KEYS.some((key) => table.has(key))) return { symbols: [], dependencies: [] };
     const directory = path.posix.dirname(sourcePath);
     const linked    = new Set<string>();
@@ -890,9 +886,7 @@ async function analyzeDataFile(content: string, sourcePath: string, files: Works
     ];
     const symbols = packageSymbols(path.posix.basename(sourcePath).replace(/\.psd1$/i, ""));
     return declares.length > 0 ? { symbols, dependencies, declares } : { symbols, dependencies };
-  } finally {
-    tree.delete();
-  }
+  });
 }
 
 // ---------------------------------------------------------------------------
