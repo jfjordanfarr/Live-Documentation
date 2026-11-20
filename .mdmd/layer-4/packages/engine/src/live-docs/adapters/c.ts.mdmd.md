@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/c.ts`
-- Generated At: 2026-11-20T12:42:56.062Z
+- Generated At: 2026-11-20T15:12:45.632Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ The strategy the adapter resolves includes with: the one that matched the compil
 
 #### `resolveInclude` {#symbol-resolveinclude}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L759)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L761)
 
 ##### `resolveInclude` — Summary
 The workspace-relative path, with forward slashes, of the file a quoted
@@ -51,7 +51,7 @@ workspace. A specifier without an extension is also tried with `.h`.
 
 #### `analyzeCSource` {#symbol-analyzecsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L826)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L829)
 
 ##### `analyzeCSource` — Summary
 Analyzes one C or C++ file from its text, without the generator: its
@@ -59,7 +59,7 @@ symbols, its includes resolved under the strategy, and its program entry.
 
 #### `cAdapter` {#symbol-cadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L840)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/c.ts#L843)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cAdapter` — Summary
@@ -85,6 +85,7 @@ Language adapter for C and C++: tree-sitter symbols, `#include` dependencies wit
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
+- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

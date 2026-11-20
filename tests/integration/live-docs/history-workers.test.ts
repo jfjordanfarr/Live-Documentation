@@ -477,4 +477,25 @@ describe("a failure of the machine's, not the file's", () => {
     // Nothing of the change reached the cache.
     expect(fs.readdirSync(cache)).toEqual([]);
   }, 120_000);
+
+  // An adapter's own read, which caught every failure as "not read" until 2026-11-20: the C reader opens the file an
+  // include names (`table.def`, which no reader of the generator's own reads), and a failure of the machine's there
+  // must reach the generator's catch rather than leave the include's names out of a published summary.
+  it("is not written when only an adapter's own read of a file fails so", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "adapter-read-"));
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
+    const [commit] = buildRepository(repository, [{ message: "A table", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(config)}\n`, "src/main.c": `#include "table.def"\n\nint main(void) {\n  return ROWS;\n}\n`, "src/table.def": "#define ROWS 3\n" } }]);
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
+    const included = failure.split("src/m.py").join("src/table.def");
+    const worker = startRealWorker(store, [included]);
+    try {
+      const report = await worker.summarize(workerTask(config, cache, commit));
+      expect([report.published, report.machineFailure?.path]).toEqual([false, "src/main.c"]);
+      expect(report.machineFailure?.error).toMatch(/^EMFILE/u);
+      expect(fs.readdirSync(cache)).toEqual([]);
+    } finally {
+      worker.end();
+    }
+  }, 120_000);
 });

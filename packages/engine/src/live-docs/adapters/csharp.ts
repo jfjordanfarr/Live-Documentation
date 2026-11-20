@@ -32,7 +32,7 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -939,7 +939,8 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
     let facts: FileFacts;
     try {
       facts = await fileFacts(path.join(workspaceRoot, file));
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       continue;
     }
     for (const namespace of facts.namespaces) table.namespaces.add(namespace);

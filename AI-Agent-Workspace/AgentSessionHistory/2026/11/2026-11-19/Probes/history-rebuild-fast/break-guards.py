@@ -90,6 +90,14 @@ edits = [
     ("packages/engine/src/live-docs/adapters/json.ts",
      "    nestingBeyondDepth(parsed, jsonChildren, TREE_DEPTH);\n",
      "    void parsed;\n"),
+    # A failure of the machine's swallowed by an adapter's own read (history-workers, the C reader's include).
+    ("packages/engine/src/live-docs/adapters/c.ts",
+     "    header = await fileFacts(headerPath);\n  } catch (error) {\n    throwIfMachineFailure(error);\n",
+     "    header = await fileFacts(headerPath);\n  } catch (error) {\n    void error;\n"),
+    # A doc path the disk cannot hold stopping a person's whole run (generator.test.ts).
+    ("packages/generator/src/generator.ts",
+     "code === \"ENAMETOOLONG\") return undefined;",
+     "code === \"ENAMETOOLONG\") throw error;"),
     # C's and Rust's caches of a file's facts kept past a run (adapter-fact-caches.test.ts, a case each).
     ("packages/engine/src/live-docs/adapters/c.ts",
      "    factsCache.clear();\n    listingCache.clear();\n",
@@ -104,7 +112,7 @@ edits = [
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

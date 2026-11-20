@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/ruby.ts`
-- Generated At: 2026-11-19T22:40:10.194Z
+- Generated At: 2026-11-20T15:12:46.000Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,7 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
+- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
