@@ -18,9 +18,15 @@
  * was read cold at 800. One number for both had to sit at the parser's level and so marked the commonest deep shape in
  * real code, a long concatenation, nowhere near any limit (`htmlEntities.ts`, 255 deep, in 174 changes).
  *
+ * What the bounds promise holds for the constructs `tests/integration/live-docs/reading-depth.test.ts` reads, each cold
+ * at twice its bound; a construct outside that list is outside the promise. The measure counts what TypeScript's parser
+ * built, JSDoc comments among it, and what it parsed and threw away where the record of 2026-11-20 found it
+ * (`Probes/history-rebuild-speed/depth-probe.md`, its third round, lists what a walk by `ts.forEachChild` misses).
+ *
  * Until 2026-11-20 only the runtime's fault marked the process; the review of that day showed a warm worker reading a
  * file nested between a fresh process's limit and its own, which nothing marked. The tree's depth and the nesting were
- * one count, under one bound, until later that day.
+ * one count, under one bound, until later that day; and until later still the measure never reached a JSDoc comment,
+ * which the parser reads as deep as the code (a JSDoc tuple 650 deep was counted 5, read warm and not fresh).
  *
  * @module
  */
@@ -31,13 +37,14 @@ import { NAME_FAILURES } from "../tooling/pathUtils";
 
 /**
  * How many levels of a TypeScript tree its parser may reach by recursion before the process is marked: at most half
- * the smallest depth at which a fresh process on node's default stack fails a nesting construct, so that below it no
- * process fails for want of stack, whatever it has run before. The probe of 2026-11-20 (node 26, a worker as the pool
- * starts one, under tsx or built) found the smallest in nested tuple types (`[[[number]]]`), which a fresh process
- * fails at 453 levels; type arguments (`Array<Array<…>>`) at 506, nested calls at 598, nested arrays at about 660.
- * Counted by {@link typeScriptExtent}, where a step of a chain adds nothing. `tests/integration/live-docs/
- * reading-depth.test.ts` reads every nesting construct cold at twice this bound, and goes red on the day a later
- * TypeScript or node lowers a limit below it.
+ * the smallest depth at which a fresh process on node's default stack fails a nesting construct the margin's test
+ * holds, so that below it no process fails for want of stack on such a construct, whatever it has run before. The
+ * probe of 2026-11-20 (node 26, a worker as the pool starts one, under tsx or built) found the smallest in nested tuple
+ * types (`[[[number]]]`), which a fresh process fails at 453 levels, in code or in a JSDoc comment; type arguments
+ * (`Array<Array<…>>`) at 506, nested calls at 598, nested arrays at about 660. Counted by {@link typeScriptExtent},
+ * where a step of a chain adds nothing. `tests/integration/live-docs/reading-depth.test.ts` reads each nesting
+ * construct it lists cold at twice this bound, and goes red on the day a later TypeScript or node lowers a limit below
+ * it; a construct it does not list is outside this claim.
  */
 export const READING_DEPTH = 200;
 
@@ -126,30 +133,58 @@ export function jsonChildren(value: unknown): readonly unknown[] {
  * Whether TypeScript's parser reaches `child` from `parent` by a loop, so that the step adds nothing to the nesting:
  * - the left operand of a binary expression: `parseBinaryExpressionRest` folds `a + b + c` left-deep in a loop (an
  *   operator binding tighter, or one that groups to the right, `a = b = c`, `a ** b ** c`, is parsed by recursion for
- *   its right operand, which is nesting);
- * - the expression a call is made on, `a()()`, and the object of a property access, `a.b.c`, or of an element access,
- *   `a[0][0]`: `parseCallExpressionRest` and `parseMemberExpressionRest` take each next link in a loop (the arguments
- *   and the index are parsed by recursion, and are nesting).
- * Each is held by a construct of its own, read cold at twice {@link TREE_DEPTH}, in `reading-depth.test.ts`.
+ *   its right operand, which is nesting), and the expression of an `as` or a `satisfies` cast, folded in the same loop
+ *   (the type is parsed by recursion, and is nesting). The left operand of `<` is nesting: in TypeScript the parser
+ *   first tries each operand followed by `<` as an expression with type arguments, by recursion through every later
+ *   `<` (`parseTypeArgumentsInExpression`, then thrown away), so `a < a < a` recurses as `Array<Array<…>>` does;
+ * - the expression a call is made on, `a()()`, the object of a property access, `a.b.c`, or of an element access,
+ *   `a[0][0]`, the expression of a non-null assertion, `a!!`, and the tag of a tagged template, `` a`x``y` ``:
+ *   `parseCallExpressionRest` and `parseMemberExpressionRest` take each next link in a loop (the arguments, the index
+ *   and the template are parsed by recursion, and are nesting).
+ * Each is held by a construct of its own, read cold at twice {@link TREE_DEPTH}, in `reading-depth.test.ts`; so is `<`,
+ * at twice {@link READING_DEPTH}.
  */
 function continuesChain(parent: ts.Node, child: ts.Node): boolean {
-  if (ts.isBinaryExpression(parent)) return parent.left === child;
+  if (ts.isBinaryExpression(parent)) return parent.left === child && parent.operatorToken.kind !== ts.SyntaxKind.LessThanToken;
   if (ts.isCallExpression(parent) || ts.isPropertyAccessExpression(parent) || ts.isElementAccessExpression(parent)) return parent.expression === child;
+  if (ts.isNonNullExpression(parent) || ts.isAsExpression(parent) || ts.isSatisfiesExpression(parent)) return parent.expression === child;
+  if (ts.isTaggedTemplateExpression(parent)) return parent.tag === child;
   return false;
+}
+
+const NONE: readonly ts.Node[] = [];
+
+/**
+ * What TypeScript's parser read of a node and keeps outside `ts.forEachChild`'s reach: the node's JSDoc comments, whose
+ * type expressions, names and tags `ts.createSourceFile` parses with the node, by the same recursive parsers, and which
+ * `forEachChild` visits within but never reaches from the node; and the default of a bracketed JSDoc parameter or
+ * property, `@param {number} [a=[[1]]]`, which `parseBracketNameInPropertyAndParamTag` parses by `parseExpression` and
+ * keeps nothing of, read again here from after its `=` to the tag's end inside a parenthesis, as a file of its own
+ * (`file`'s name, so of its kind): what follows the default in the tag is read with it, which can only count more.
+ */
+function unvisited(node: ts.Node, file: ts.SourceFile): readonly ts.Node[] {
+  const comments = (node as { jsDoc?: readonly ts.JSDoc[] }).jsDoc ?? NONE;
+  if (!(ts.isJSDocParameterTag(node) || ts.isJSDocPropertyTag(node)) || !node.isBracketed) return comments;
+  const rest = file.text.slice(node.name.end, node.end);
+  const equals = /^[\s*`]*=/u.exec(rest);
+  return equals ? [...comments, ts.createSourceFile(file.fileName, `(${rest.slice(equals[0].length)}`, ts.ScriptTarget.Latest)] : comments;
 }
 
 /**
  * A TypeScript tree's nesting, the most levels its parser reaches by recursion (a step of a chain adds nothing), and
- * its depth, every level counted, the root 1 in each, by an explicit stack over `ts.forEachChild`, so that the measure
- * itself never runs short of stack. With `bounded`, the walk stops as soon as either passes its bound.
+ * its depth, every level counted, the root 1 in each, by an explicit stack over `ts.forEachChild` and what it does not
+ * reach ({@link unvisited}), each counted as nesting, so that the measure itself never runs short of stack. With
+ * `bounded`, the walk stops as soon as either passes its bound.
  */
-export function typeScriptExtent(root: ts.Node, bounded = false): { nesting: number; depth: number } {
+export function typeScriptExtent(root: ts.SourceFile, bounded = false): { nesting: number; depth: number } {
   const nodes: ts.Node[] = [root];
+  const files: ts.SourceFile[] = [root];
   const levels: number[] = [1, 1];
   let nesting = 0;
   let depth = 0;
   while (nodes.length > 0) {
     const node = nodes.pop()!;
+    const file = files.pop()!;
     const nodeDepth = levels.pop()!;
     const nodeNesting = levels.pop()!;
     nesting = Math.max(nesting, nodeNesting);
@@ -157,14 +192,20 @@ export function typeScriptExtent(root: ts.Node, bounded = false): { nesting: num
     if (bounded && (nesting > READING_DEPTH || depth > TREE_DEPTH)) break;
     ts.forEachChild(node, (child) => {
       nodes.push(child);
+      files.push(file);
       levels.push(continuesChain(node, child) ? nodeNesting : nodeNesting + 1, nodeDepth + 1);
     });
+    for (const child of unvisited(node, file)) {
+      nodes.push(child);
+      files.push(ts.isSourceFile(child) ? child : file);
+      levels.push(nodeNesting + 1, nodeDepth + 1);
+    }
   }
   return { nesting, depth };
 }
 
 /** Whether a TypeScript tree is nested beyond {@link READING_DEPTH} or deeper than {@link TREE_DEPTH}; either marks the process (`deep`). */
-export function typeScriptBeyondDepth(root: ts.Node): boolean {
+export function typeScriptBeyondDepth(root: ts.SourceFile): boolean {
   const { nesting, depth } = typeScriptExtent(root, true);
   const beyond = nesting > READING_DEPTH || depth > TREE_DEPTH;
   if (beyond) markProcess("deep");
