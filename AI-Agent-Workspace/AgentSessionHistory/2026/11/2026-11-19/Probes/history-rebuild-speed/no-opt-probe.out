@@ -1,0 +1,36 @@
+The root's measurement, 2026-11-20 from 19:12:16 to 19:17:10 UTC, one lane hold of 294.0 s, on the proof branch's
+checkout (00111bf11): no-opt-probe.sh. The lines below are the run's own output, copied from the conversation after
+the scratch folder that held the file was cleared; the day's record holds the same figures in a table.
+
+browser-lane: root-probe holds the lane (waited 0.0 s, cap 900 s)
+== limits with --no-maglev --no-turbofan, 19:12:16
+share 0.750, node v26.13.1, typescript 5.9.3
+construct | F fresh, whole stack | W warm, whole stack | S warm, the share | W/F | S/F
+tuple types | 457 | 476 | 356 | 1.04 | 0.78 | ballast 2633.8 µs
+type arguments | 509 | 531 | 397 | 1.04 | 0.78 | ballast 2728.8 µs
+arrays | 654 | 682 | 510 | 1.04 | 0.78 | ballast 2555.5 µs
+calls | 602 | 628 | 470 | 1.04 | 0.78 | ballast 2391.4 µs
+parentheses | 680 | 709 | 531 | 1.04 | 0.78 | ballast 2191.7 µs
+comparisons side by side | 508 | 530 | 396 | 1.04 | 0.78 | ballast 2086.1 µs
+a < b < c | 510 | 531 | 398 | 1.04 | 0.78 | ballast 3363.7 µs
+JSDoc tuple types | 456 | 475 | 355 | 1.04 | 0.78 | ballast 2746.4 µs
+JSDoc default | 654 | 681 | 510 | 1.04 | 0.78 | ballast 2865.6 µs
+object literals | 499 | 520 | 389 | 1.04 | 0.78 | ballast 2597.8 µs
+arrow bodies | 966 | 1007 | 754 | 1.04 | 0.78 | ballast 3081.2 µs
+conditionals | 2552 | 2656 | 1988 | 1.04 | 0.78 | ballast 2629.7 µs
+object types | 446 | 465 | 348 | 1.04 | 0.78 | ballast 2875.8 µs
+JSX elements | 1557 | 1621 | 1214 | 1.04 | 0.78 | ballast 2562.9 µs
+== generation as it is, 19:16:03
+generate [] exit 0 in 11.6 s; [live-docs] Base layer processed 1134 file(s): 0 created, 0 updated, 1134 unchanged, 0 skipped, 0 deleted.
+generate [--no-maglev --no-turbofan] exit 0 in 31.7 s; [live-docs] Base layer processed 1134 file(s): 0 created, 0 updated, 1134 unchanged, 0 skipped, 0 deleted.
+generate [--no-turbofan] exit 0 in 11.9 s; [live-docs] Base layer processed 1134 file(s): 0 created, 0 updated, 1134 unchanged, 0 skipped, 0 deleted.
+generate [--no-maglev] exit 0 in 11.3 s; [live-docs] Base layer processed 1134 file(s): 0 created, 0 updated, 1134 unchanged, 0 skipped, 0 deleted.
+== done 19:17:10
+browser-lane: released after 294.0 s, exit 0
+
+What it shows. With the two optimizing compilers off, a warmed process reads 1.04 times what a fresh one does, the
+same for every construct, where with them on it read 2.23 to 5.71 times (stack-share-probe.out): the compilers are
+what makes a warm process read deeper. With three quarters of the stack a warmed process then reads 0.78 of the fresh
+limit in every row, so a bound by the stack really used would be sound there, by a margin that does not depend on the
+construct. Its price: a generation takes 31.7 s against 11.6 s. Either compiler alone off costs nothing, and was not
+measured for what it leaves of the difference.

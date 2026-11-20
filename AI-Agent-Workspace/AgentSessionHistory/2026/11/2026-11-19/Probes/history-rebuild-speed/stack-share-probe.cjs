@@ -6,6 +6,10 @@
 //
 // For each construct: F, the most levels a fresh process reads (a process per trial); W, the most a warmed process
 // reads with the whole stack; S, the most a warmed process reads with the share. Wanted: S well below F.
+//
+// Every process it starts is given the node flags this one was started with (since the second measurement of
+// 2026-11-20, no-opt-probe.sh, which starts it with V8's optimizing compilers off); with none, it runs as it did for
+// stack-share-probe.out.
 "use strict";
 const { spawnSync } = require("node:child_process");
 const tsPath = process.argv[2];
@@ -89,7 +93,7 @@ if (process.argv[4] === "warm") {
 console.log(`share ${share.toFixed(3)}, node ${process.version}, typescript ${ts.version}`);
 console.log("construct | F fresh, whole stack | W warm, whole stack | S warm, the share | W/F | S/F");
 for (const name of Object.keys(CONSTRUCTS)) {
-  const fresh = most((n) => spawnSync(process.execPath, [__filename, tsPath, String(share), "trial", name, String(n)]).status === 0);
-  const warm = JSON.parse(spawnSync(process.execPath, [__filename, tsPath, String(share), "warm", name], { encoding: "utf8" }).stdout);
+  const fresh = most((n) => spawnSync(process.execPath, [...process.execArgv, __filename, tsPath, String(share), "trial", name, String(n)]).status === 0);
+  const warm = JSON.parse(spawnSync(process.execPath, [...process.execArgv, __filename, tsPath, String(share), "warm", name], { encoding: "utf8" }).stdout);
   console.log(`${name} | ${fresh} | ${warm.whole} | ${warm.shared} | ${(warm.whole / fresh).toFixed(2)} | ${(warm.shared / fresh).toFixed(2)} | ballast ${warm.microsecondsEach} µs`);
 }
