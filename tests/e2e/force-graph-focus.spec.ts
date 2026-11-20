@@ -14,101 +14,50 @@ import { currentSnapshot } from "./search-bar";
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
 const DOCUMENT = "packages/engine/src/live-docs/document.ts";
 
+/**
+ * The subject's name is shown, and the point it names stands within 8 px of the centre of the room the controls leave.
+ * Both are read in one look: a name the page has hidden keeps the place it last stood at, so a place read after a look
+ * that found it shown may be the place of a name gone since. Until 2026-11-20 they were read in turn, and after Centre on
+ * the case took for the file's place the place where its hidden name had last stood, 14 to 46 px from where the file
+ * rested, at the room's centre to a tenth of a pixel (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md).
+ */
 async function expectFocused(page: Page, id: string): Promise<void> {
   const label = page.locator(".force-graph-focus");
   await expect(label).toHaveAttribute("data-node-id", id);
   await expect(label).toBeVisible();
   await expect.poll(() => page.locator("#graph-svg").evaluate(element => {
     const marker = element.querySelector<HTMLElement>(".force-graph-focus")!;
+    if (marker.hidden || !marker.checkVisibility()) return Infinity;
     const frame = element.getBoundingClientRect();
     const controls = [...document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), .history-scrubber:not([hidden])")]
       .map(control => control.getBoundingClientRect()).filter(box => box.width && box.top > frame.top && box.bottom <= frame.bottom + 1);
     const bottom = Math.min(frame.bottom, ...controls.map(box => box.top)) - frame.top;
     return Math.hypot(parseFloat(marker.style.left) - element.clientWidth / 2, parseFloat(marker.style.top) - bottom / 2);
-  })).toBeLessThan(8);
+  }), { message: `${id}'s name is shown within 8 px of the room's centre (Infinity while it is hidden)` }).toBeLessThan(8);
 }
 
 /**
- * What a press at each point would take hold of, read from the buffers last drawn: the nearest thing the ray from the
- * camera through the point meets, a drawn sphere (a file's, or a directory's drawn as a sphere) or a skin of the
- * wrappers (a group's wrapper or a directory shell, each standing for its seed), or nothing, the background. The page
- * picks the same way (`nodeAt` in forceGraphRenderer.ts): a skin met before any sphere takes the press for its seed, a
- * skin bursting open takes none. Spheres are met as true spheres at their drawn centre and radius, skins as their
- * uploaded triangles. Each point is also checked to have the canvas itself under it, no name or control.
+ * What a press at each point would take hold of, asked of the page's own picker, which a press uses (`nodeAt` in
+ * forceGraphRenderer.ts, offered to whoever observes the scene as `spatialPick`): the file or directory of the nearest
+ * sphere the ray meets, or the seed of a wrapper's skin met before any sphere, a directory shell's included, or null,
+ * the background. Each point is also checked to have the canvas itself under it, no name or control, since only a press
+ * on the canvas reaches the picture. Until 2026-11-20 the case met the drawn spheres and skins with rays of its own,
+ * written to agree with the picker (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md).
  */
-async function pressedAt(page: Page, points: Array<{ x: number; y: number }>): Promise<Array<{ id: string | null; skin: boolean; canvas: boolean }>> {
+async function pressedAt(page: Page, points: Array<{ x: number; y: number }>): Promise<Array<{ id: string | null; canvas: boolean }>> {
   return page.evaluate(points => {
-    type V3 = { x: number; y: number; z: number; clone(): V3; set(x: number, y: number, z: number): V3; sub(v: V3): V3; normalize(): V3; unproject(camera: unknown): V3; applyMatrix4(m: unknown): V3 };
-    type Attribute = { count: number; getX(i: number): number; getY(i: number): number; getZ(i: number): number };
-    const inspected = window as unknown as {
-      renderedGraph: { scene: { traverse(visit: (object: unknown) => void): void; getObjectByName(name: string): unknown }; camera: { position: V3; updateMatrixWorld(): void } };
-      drawnInstance(mesh: unknown, entry: unknown): { center: V3; radius: number; visible: boolean };
-    };
-    const { scene, camera } = inspected.renderedGraph;
-    camera.updateMatrixWorld();
-    const canvas = document.querySelector("#graph-svg canvas")!, rect = canvas.getBoundingClientRect();
-    const spheres: Array<{ id: string; center: V3; radius: number }> = [];
-    scene.traverse(object => {
-      const mesh = object as { userData: { spatialBatch?: { kind: string; entries: Array<{ enabled: boolean; data: { id: string } }> } } };
-      if (mesh.userData?.spatialBatch?.kind !== "nodes") return;
-      for (const entry of mesh.userData.spatialBatch.entries) {
-        if (!entry.enabled) continue;
-        const drawn = inspected.drawnInstance(mesh, entry);
-        spheres.push({ id: entry.data.id, center: drawn.center, radius: drawn.radius });
-      }
-    });
-    const skin = scene.getObjectByName("Spatial wrappers") as {
-      visible: boolean; matrixWorld: unknown; userData: { spatialWrappers: { popping: string[]; ranges: Array<{ seed: string }> } };
-      geometry: { getAttribute(name: string): Attribute; getIndex(): Attribute | null; drawRange: { start: number; count: number } };
-    } | undefined;
-    const triangles: Array<{ seed: string; a: V3; b: V3; c: V3 }> = [];
-    if (skin?.visible) {
-      const position = skin.geometry.getAttribute("position"), group = skin.geometry.getAttribute("wrapperGroup"), index = skin.geometry.getIndex()!;
-      const { ranges, popping } = skin.userData.spatialWrappers;
-      const end = Math.min(index.count, skin.geometry.drawRange.start + skin.geometry.drawRange.count);
-      const vertex = (i: number): V3 => camera.position.clone().set(position.getX(i), position.getY(i), position.getZ(i)).applyMatrix4(skin.matrixWorld);
-      for (let i = skin.geometry.drawRange.start; i + 2 < end; i += 3) {
-        const seed = ranges[group.getX(index.getX(i))]?.seed;
-        if (seed === undefined || popping.includes(seed)) continue;
-        triangles.push({ seed, a: vertex(index.getX(i)), b: vertex(index.getX(i + 1)), c: vertex(index.getX(i + 2)) });
-      }
-    }
-    const dot = (u: V3, v: V3): number => u.x * v.x + u.y * v.y + u.z * v.z;
-    const cross = (u: V3, v: V3): V3 => camera.position.clone().set(u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x);
-    return points.map(({ x, y }) => {
-      const origin = camera.position.clone();
-      const direction = camera.position.clone().set((x - rect.left) / rect.width * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1, 0.5)
-        .unproject(camera).sub(origin).normalize();
-      let nearest = Infinity, id: string | null = null, onSkin = false;
-      for (const sphere of spheres) {
-        const offset = origin.clone().sub(sphere.center), b = dot(offset, direction), c = dot(offset, offset) - sphere.radius * sphere.radius;
-        const discriminant = b * b - c;
-        if (discriminant < 0) continue;
-        const t = -b - Math.sqrt(discriminant);
-        if (t > 0 && t < nearest) { nearest = t; id = sphere.id; onSkin = false; }
-      }
-      // Möller and Trumbore's intersection of a ray and a triangle, from either side.
-      for (const { seed, a, b, c } of triangles) {
-        const e1 = b.clone().sub(a), e2 = c.clone().sub(a), p = cross(direction, e2), det = dot(e1, p);
-        if (Math.abs(det) < 1e-12) continue;
-        const s = origin.clone().sub(a), u = dot(s, p) / det;
-        if (u < 0 || u > 1) continue;
-        const q = cross(s, e1), v = dot(direction, q) / det;
-        if (v < 0 || u + v > 1) continue;
-        const t = dot(e2, q) / det;
-        if (t > 0 && t < nearest) { nearest = t; id = seed; onSkin = true; }
-      }
-      return { id, skin: onSkin, canvas: document.elementFromPoint(x, y) === canvas };
-    });
+    const { scene } = (window as unknown as { renderedGraph: { scene: { userData: { spatialPick(x: number, y: number): string | null } } } }).renderedGraph;
+    const canvas = document.querySelector("#graph-svg canvas");
+    return points.map(({ x, y }) => ({ id: scene.userData.spatialPick(x, y), canvas: document.elementFromPoint(x, y) === canvas }));
   }, points);
 }
 
 /**
  * A point on a file's rendered sphere where a press takes hold of that file ({@link pressedAt}): its centre when nothing
- * stands in front of it there, else a point part way out on its disc; null when nearer spheres or a skin cover the whole
+ * stands in front of it there, else a point part way out on its disc; null when nearer spheres or skins cover the whole
  * of it. Pathfind.ts came to cover graph.ts at the camera's centre once the graph gained its files (2026-10-15); the
  * translucent `packages/explorer` shell came to stand in front of it once the repository grew (2026-11-19), and a press
- * there takes that shell rather than graph.ts, which only the skins' own geometry tells (2026-11-20).
+ * there takes that shell rather than graph.ts.
  */
 async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: number } | null> {
   const target = (await renderedNodes(page)).find(node => node.id === id)!;
@@ -116,7 +65,7 @@ async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: nu
   const candidates = [0, 0.5, 0.75].flatMap(scale => directions.map(([dx, dy]) =>
     ({ x: target.x + dx * target.screenRadius * scale, y: target.y + dy * target.screenRadius * scale })));
   const pressed = await pressedAt(page, candidates);
-  const index = pressed.findIndex(each => each.canvas && !each.skin && each.id === id);
+  const index = pressed.findIndex(each => each.canvas && each.id === id);
   return index < 0 ? null : candidates[index];
 }
 
@@ -196,6 +145,19 @@ test("a focused URL centers its node, direct clicks pin it, and More opens its d
   await page.locator("#detail-panel").getByRole("button", { name: "Centre on graph.ts", exact: true }).click();
   // Opening the Local Map respects the representation already chosen.
   await expectFocused(page, GRAPH);
+  // The file's actions, holding focus since the reader gave it back to More, came along with it and stand beside it, not
+  // over it: left behind by the camera's flight, they had covered it and hidden its name (2026-11-20).
+  const actions = page.locator(".force-graph-actions");
+  await expect(actions).toHaveAttribute("data-node-id", GRAPH);
+  await expect(actions).toBeVisible();
+  const beside = async (): Promise<{ across: number; apart: number; radius: number }> => {
+    const box = (await actions.boundingBox())!, sphere = (await renderedNodes(page)).find(node => node.id === GRAPH)!;
+    return { across: Math.abs(box.x + box.width / 2 - sphere.x), apart: Math.max(box.y - sphere.y, sphere.y - box.y - box.height), radius: sphere.screenRadius };
+  };
+  await expect.poll(async () => (await beside()).across, { message: "how far across the actions' middle stands from graph.ts's, in pixels" }).toBeLessThan(2);
+  const { apart, radius } = await beside();
+  expect(apart, "how far above or below graph.ts's centre its actions' nearer edge stands, in pixels: 8, or more for a larger sphere").toBeGreaterThan(7);
+  expect(apart, `the same, within graph.ts's radius (${radius.toFixed(1)} px) and a little of it`).toBeLessThan(radius + 12);
   await expect(page.locator("#view-graph.active")).toBeVisible();
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();

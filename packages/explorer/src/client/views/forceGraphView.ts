@@ -464,6 +464,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   };
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
+  /** The place in the picture the actions were last set beside: their sphere's, until keyboard focus holds them. */
+  let actionAnchor: { id: string; x: number; y: number; z: number } | null = null;
   let menuTargetId: string | null = null;
   let menuEpoch = 0;
   let inspectedActionId: string | null = null;
@@ -1174,26 +1176,38 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
   }
 
-  /** Keep the accessible controls with the sphere while the simulation or camera moves. */
+  /**
+   * Keep the accessible controls with the sphere while the simulation or camera moves. A settling sphere must not pull a
+   * control away from a person aiming at it or using the keyboard: under the pointer or an open menu the controls stand
+   * still on the screen; holding keyboard focus they stay at the place in the picture where their sphere stood, which
+   * the camera carries, or with the sphere itself while the camera follows it or holds it in place, as it does the
+   * subject. Until 2026-11-20 keyboard focus held them still on the screen too, so that a flight of the camera left them
+   * behind over whatever it brought under them: Centre on in the reader gives focus back to More, and the file it
+   * centred came to rest under its own actions, which hid its name.
+   */
   function positionActionStrip(): void {
     if (!actionStrip || !actionTargetId || !forceGraphInstance) return;
     if (draggingNode || draggingCamera) { actionStrip.hidden = true; return; }
-    // A settling sphere must not pull a control away from a person aiming at it or using the keyboard.
-    if (!actionStrip.hidden && (menuTargetId || pointerOverActions || actionStrip.contains(document.activeElement))) return;
+    if (!actionStrip.hidden && (menuTargetId || pointerOverActions)) return;
+    const focusHeld = !actionStrip.hidden && actionStrip.contains(document.activeElement);
     const node = nodeCache.get(actionTargetId);
+    // A control holding focus is not hidden from under it.
     if (!node || !Number.isFinite(node.x) || !Number.isFinite(node.y) || !Number.isFinite(node.z)) {
-      actionStrip.hidden = true;
+      if (!focusHeld) actionStrip.hidden = true;
       return;
     }
+    const cameraHolds = actionTargetId === focusedId && (following || subjectAnchor !== null);
+    const anchor = focusHeld && !cameraHolds && actionAnchor?.id === actionTargetId ? actionAnchor
+      : actionAnchor = { id: actionTargetId, x: node.x!, y: node.y!, z: node.z! };
     const instance = forceGraphInstance;
     const camera = instance.camera();
     camera.lookAt((instance.controls() as { target: Vector3 }).target);
     camera.updateMatrixWorld();
-    const point = new Vector3(node.x, node.y, node.z);
+    const point = new Vector3(anchor.x, anchor.y, anchor.z);
     const depth = point.clone().project(camera).z;
     const screen = instance.graph2ScreenCoords(point.x, point.y, point.z);
     if (depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > instance.width() || screen.y > instance.height()) {
-      actionStrip.hidden = true;
+      if (!focusHeld) actionStrip.hidden = true;
       return;
     }
     actionStrip.hidden = false;
@@ -1365,6 +1379,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (pointerHoverId) pointerHoverId = renamedId(pointerHoverId, pendingRenames);
       if (restedId) restedId = renamedId(restedId, pendingRenames);
       if (actionTargetId) actionTargetId = renamedId(actionTargetId, pendingRenames);
+      if (actionAnchor) actionAnchor.id = renamedId(actionAnchor.id, pendingRenames);
       if (menuTargetId) menuTargetId = renamedId(menuTargetId, pendingRenames);
       if (inspectedActionId) inspectedActionId = renamedId(inspectedActionId, pendingRenames);
       if (focusedId) focusedId = renamedId(focusedId, pendingRenames);

@@ -31,6 +31,8 @@ Since November 8, 2026 initialization supplies the actual renderer to the buffer
 
 Since 2026-11-19 `wireAt` picks the wire under the pointer without showing its words, so that the view can show them only once the pointer has rested on it (`pointerRest.ts`); `showWireAt` uses it.
 
+Since 2026-11-20 the scene offers whoever observes it, as the browser cases do through Three's developer hook, `userData.spatialPick(clientX, clientY)`: the id `nodeAt` gives for a press at that point of the page, or null. It changes nothing. A case that must press a sphere, or turn the camera from the background, asks it rather than meeting the drawn spheres and skins with rays of its own written to agree with this picker, as `force-graph-focus.spec.ts` had done for a day ([the measurements](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md#the-focus-case-run-down)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -57,6 +57,9 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.world.add(this.ambient, this.directional);
     this.paintGround();
     this.buffers = createSpatialBuffers(this.world, options.style, this.gpu);
+    // What a press at a point of the page would take, by the picker a press uses, for whoever observes the scene as the
+    // browser cases do; it changes nothing (2026-11-20, so that a case need not compute the pick a second time).
+    this.world.userData.spatialPick = (clientX: number, clientY: number): string | null => this.nodeAt(clientX, clientY)?.id ?? null;
     this.paint = { render: (): void => {
       const resistance = this.options.resistance();
       if (this.pendingData) { this.buffers.setData(this.data); this.pendingData = false; }
