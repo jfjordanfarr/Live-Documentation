@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T07:57:12.406Z
+- Generated At: 2026-11-20T11:09:11.809Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `docsRootWithin` {#symbol-docsrootwithin}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L166)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L168)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `docsRootWithin` — Summary
@@ -43,7 +43,7 @@ itself, or somewhere outside it.
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L212)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L215)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -69,6 +69,7 @@ git marks as changed, for quick iterations over touched files.
 - `options.changedOnly`: When `true`, restricts results to files with local modifications.
 - `options.config`: Live Documentation configuration describing default globs and overrides.
 - `options.include`: Optional override set limiting discovery to pre-selected relative paths.
+- `options.warn`: Told when git cannot judge some of the files found ({@link keptByGitAndConfiguration}).
 - `options.workspaceRoot`: Absolute path to the repository root the CLI is operating in.
 
 ##### `discoverTargetFiles` — Returns
@@ -89,7 +90,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L239)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L242)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -108,7 +109,7 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `inWorkspaceOrder` {#symbol-inworkspaceorder}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L335)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L328)
 - Returns: `T`[]
 - Parameters: `files`: `T`[]
 
@@ -177,9 +178,8 @@ parser; every other file is read by its language adapter.
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`gitIgnored.foldersGitIgnoresWhole`](../tooling/gitIgnored.ts.mdmd.md#symbol-foldersgitignoreswhole)
 - [`gitIgnored.foldersReadAsEmpty`](../tooling/gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
-- [`gitIgnored`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
+- [`gitIgnored.gitIgnoreAnswer`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignoreanswer-function)
 - [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)
-- [`gitIgnored.walksNoLinkToAFolder`](../tooling/gitIgnored.ts.mdmd.md#symbol-walksnolinktoafolder)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`

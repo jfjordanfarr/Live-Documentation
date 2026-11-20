@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.oracle.test.ts`
-- Generated At: 2026-11-20T11:00:00.000Z
+- Generated At: 2026-11-20T11:09:11.793Z
 
 ## Authored
 ### Purpose
@@ -20,3 +20,15 @@ Discovery held to git itself: over thirty small repositories made at random from
 ### Public Symbols
 _No public symbols detected_
 <!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `node:child_process` - `execFileSync`
+- `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `rmSync`, `unlinkSync`, `writeFileSync`
+- `node:os` - `os`
+- `node:path` - `path`
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments)
+- [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
+- `vitest` - `afterEach`, `describe`, `expect`, `it`
+<!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/gitIgnored.test.ts`
-- Generated At: 2026-11-20T07:57:12.660Z
+- Generated At: 2026-11-20T11:09:12.080Z
 
 ## Authored
 ### Purpose
@@ -23,12 +23,12 @@ _No public symbols detected_
 ### Dependencies
 - `glob` - `globSync`
 - `node:child_process` - `spawnSync`
-- `node:fs` - `appendFileSync`, `mkdirSync`, `mkdtempSync`, `rmSync`, `writeFileSync`
+- `node:fs` - `appendFileSync`, `mkdirSync`, `mkdtempSync`, `rmSync`, `symlinkSync`, `writeFileSync`
 - `node:os` - `tmpdir`
 - `node:path` - `path`
 - [`gitIgnored.foldersGitIgnoresWhole`](./gitIgnored.ts.mdmd.md#symbol-foldersgitignoreswhole)
 - [`gitIgnored.foldersReadAsEmpty`](./gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
-- [`gitIgnored.walksNoLinkToAFolder`](./gitIgnored.ts.mdmd.md#symbol-walksnolinktoafolder)
+- [`gitIgnored.gitIgnoreAnswer`](./gitIgnored.ts.mdmd.md#symbol-gitignoreanswer-function)
 - [`gitIgnored.withoutGitIgnored`](./gitIgnored.ts.mdmd.md#symbol-withoutgitignored)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

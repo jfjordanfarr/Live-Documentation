@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/gitIgnored.ts`
-- Generated At: 2026-11-20T07:57:12.663Z
+- Generated At: 2026-11-20T11:09:12.084Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,61 @@ What git ignores, asked of git itself: `gitIgnoreAnswer` asks git once about eve
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `GitIgnoreAnswer (interface)` {#symbol-gitignoreanswer-interface}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L38)
+
+##### `GitIgnoreAnswer (interface)` — Summary
+What git says of a list of paths: which it ignores, and which it cannot judge.
+
+#### `gitIgnoreAnswer (function)` {#symbol-gitignoreanswer-function}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L79)
+- Returns: [`GitIgnoreAnswer`](#symbol-gitignoreanswer-interface)
+
+##### `gitIgnoreAnswer (function)` — Summary
+What git says of each of `relativePaths` (relative to `workspaceRoot`,
+forward slashes): whether it ignores it, judged by the path's own name,
+and which paths it cannot judge. `null` when git cannot answer at all,
+because it is not installed, `workspaceRoot` is not inside a repository, or
+git does not trust its owner.
+
+##### `gitIgnoreAnswer (function)` — Remarks
+Plain `git check-ignore` reads each path as a pathspec, a pattern, and does
+not report a path whose pattern matches a tracked file: an untracked
+`a[1].log` beside a tracked `a1.log` was kept though `*.log` ignores it, and
+`a\b/out/x.ts` beside a tracked `ab/out/x.ts`. It also refuses the whole
+call for one path inside a submodule or beginning with `:(` or `:!`, and
+reads a leading `:abc.ts` as `abc.ts`. So git is asked with `--no-index`,
+which judges each path by the excludes patterns alone, and each path is
+given as `./path`, which git reads as the name itself however it begins;
+the paths that are tracked, or are a folder holding a tracked file (the
+paths plain `check-ignore` takes for tracked when read literally), are then
+taken out, from `git ls-files`, since a tracked file is never ignored.
+
+Two kinds of path git still answers in its own way. Inside a submodule or a
+nested repository, a path is judged as one in a plain folder: by the outer
+repository's excludes and every `.gitignore` on its way, the inner
+repository's own included, but not the inner repository's
+`.git/info/exclude`, and a file the inner repository tracks may be judged
+ignored. And git refuses any path that passes through a link to a folder:
+such a path is asked as its link, so that what lies under a link git
+ignores, or under a folder git ignores, is ignored, and is otherwise
+unjudged. The cases, tried on git 2.56.1: the probe named in the module's
+remarks.
+
 #### `gitIgnored` {#symbol-gitignored}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L106)
 
 ##### `gitIgnored` — Summary
 The paths among `relativePaths` (relative to `workspaceRoot`, forward
-slashes) that git ignores: untracked and named by an excludes pattern. A
-tracked file is never among them. `null` when git cannot answer, because it
-is not installed or `workspaceRoot` is not inside a repository, or refuses
-one of the paths: one inside a submodule, one that passes through a link to
-a folder, or one that begins with a `:` git reads as pathspec magic.
+slashes) that git ignores ({@link gitIgnoreAnswer}); `null` when git cannot
+answer. A path git cannot judge is not among them.
 
 #### `gitIgnoresCase` {#symbol-gitignorescase}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L62)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L116)
 
 ##### `gitIgnoresCase` — Summary
 Whether git matches names without regard to case in the repository that
@@ -43,15 +83,16 @@ when the setting is false or absent, or git cannot answer.
 
 #### `withoutGitIgnored` {#symbol-withoutgitignored}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L71)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L126)
 
 ##### `withoutGitIgnored` — Summary
 The files among `files` (absolute or workspace-relative) that git does not
-ignore; all of `files` when git cannot answer.
+ignore, a file git cannot judge among them; all of `files` when git cannot
+answer.
 
 #### `foldersGitIgnoresWhole` {#symbol-foldersgitignoreswhole}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L95)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L146)
 
 ##### `foldersGitIgnoresWhole` — Summary
 The folders under `workspaceRoot` that git ignores whole, untracked and
@@ -59,34 +100,16 @@ named by an excludes pattern, as workspace-relative paths with forward
 slashes and no trailing slash; none when git cannot answer. `git ls-files
 --others --ignored --exclude-standard --directory` names such a folder once,
 with a trailing slash, and not its contents: a folder an excludes pattern
-names, or one whose every entry is ignored. It descends into an ignored
-folder that holds a tracked file and names what is ignored inside it, and it
-never descends into a nested repository, whose folders are walked as before.
-
-Two that git names are left out, so that no walk's answer depends on whether
-they were read: the workspace itself (git's `./`, when the workspace lies in
-an ignored folder of an outer repository), and a folder whose path begins
-with a `:`. Git reads such a path as pathspec magic and may refuse it
-({@link gitIgnored}), and a caller then keeps what it keeps when git cannot
-answer, which may hold the folder's files.
-
-#### `walksNoLinkToAFolder` {#symbol-walksnolinktoafolder}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L119)
-
-##### `walksNoLinkToAFolder` — Summary
-Whether glob, matching `pattern`, can never pass through a link to a
-folder: true for `**` and one name, a name with no `/` or `\` and at most
-one `*`, so that no expansion of its braces makes a deeper part or a second
-`**`. Glob follows no link under a leading `**`, and matches the name only
-against each folder's entries. Under any other pattern it may follow one,
-and git refuses the path ({@link gitIgnored}): a walk that read a folder git
-ignores whole as empty could then lose the one path that made git refuse,
-and with it the answer the caller gives when git cannot answer.
+names, or one whose every entry is ignored, whose ignored files and folders
+it then names as well. It descends into an ignored folder that holds a
+tracked file and names what is ignored inside it, and it never descends
+into a nested repository, whose folders are walked as before. When the
+workspace itself lies in a folder an outer repository ignores, git names it
+(`./`), and it is the workspace's own path, `""`.
 
 #### `foldersReadAsEmpty` {#symbol-foldersreadasempty}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L133)
+- Source: [source](../../../../../../packages/engine/src/tooling/gitIgnored.ts#L160)
 - Returns: `FSOption`
 - Parameters: `folders`: `ReadonlySet`
 
@@ -95,8 +118,9 @@ A file system for glob (its `fs` option) in which each of `folders`
 (workspace-relative, forward slashes) reads as empty, and every other folder
 as it is. Glob takes ignore patterns or an object in their place, not both,
 and its callers already pass patterns: reading the folders as empty leaves
-those patterns as they are. A glob that stopped calling these functions
-would walk the folders again, and lose no file.
+those patterns as they are. Glob 14 walks with `readdir` and `readdirSync`
+alone; a glob that stopped calling these would walk the folders again, and
+lose no file.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

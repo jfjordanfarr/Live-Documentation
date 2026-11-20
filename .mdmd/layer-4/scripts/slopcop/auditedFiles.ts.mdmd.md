@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/slopcop/auditedFiles.ts`
-- Generated At: 2026-11-20T07:57:14.391Z
+- Generated At: 2026-11-20T11:09:13.936Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Collects the files each SlopCop audit reads: what its patterns match, less what 
 ### Public Symbols
 #### `auditedFiles` {#symbol-auditedfiles}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/auditedFiles.ts#L45)
+- Source: [source](../../../../scripts/slopcop/auditedFiles.ts#L33)
 
 ##### `auditedFiles` — Summary
 The files the patterns match under `workspaceRoot` and git does not ignore, as absolute paths, sorted; every file
@@ -30,11 +30,9 @@ audits always matched them.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `FSOption`, `globSync`
+- `glob` - `globSync`
 - `node:path` - `path`
 - [`gitIgnored.foldersGitIgnoresWhole`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-foldersgitignoreswhole)
 - [`gitIgnored.foldersReadAsEmpty`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
-- [`gitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
-- [`gitIgnored.walksNoLinkToAFolder`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-walksnolinktoafolder)
 - [`gitIgnored.withoutGitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-withoutgitignored)
 <!-- LIVE-DOC:END Dependencies -->
