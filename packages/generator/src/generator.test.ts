@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -870,5 +871,67 @@ describe("a file whose reading throws in the index pass alone", () => {
       spy.mockRestore();
       await fs.rm(root, { recursive: true, force: true });
     }
+  });
+});
+
+describe("a probe of the run's own folders that fails for a cause of the machine's", () => {
+  // Until 2026-11-20 each of the three probes read any failure as "not there": the docs root as gone, so that no stale
+  // doc was pruned, a scan above as none, and a folder left by a pruned doc as one to leave. Each now stops the run.
+  const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+  const quiet = (): undefined => undefined;
+  const logger = { info: quiet, warn: quiet, error: quiet };
+  const tooMany = (syscall: string, file: string): Error => Object.assign(new Error(`EMFILE: too many open files, ${syscall} '${file}'`), { code: "EMFILE", syscall, errno: -24 });
+  let root: string;
+  let staleDoc: string;
+
+  /** A workspace whose last run documented `src/gone/b.ts`, since removed, so that its doc is stale and alone in its folder. */
+  beforeEach(async () => {
+    root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-probe-"));
+    await fs.mkdir(path.join(root, "src", "gone"), { recursive: true });
+    await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+    await fs.writeFile(path.join(root, "src", "gone", "b.ts"), "export const b = 1;\n");
+    await generateLiveDocs({ workspaceRoot: root, config, logger });
+    await fs.rm(path.join(root, "src", "gone"), { recursive: true });
+    staleDoc = path.join(root, ".mdmd", "layer-4", "src", "gone", "b.ts.mdmd.md");
+    expect(nodeFs.existsSync(staleDoc)).toBe(true);
+  });
+
+  afterEach(async () => {
+    vi.restoreAllMocks();
+    syncBuiltinESMExports();
+    await fs.rm(root, { recursive: true, force: true });
+  });
+
+  /** Fails the first call of `name` on `target` that `when` allows, as the machine would, and passes every other. */
+  const failOnce = (name: "stat" | "readdir", target: string, when: () => boolean = () => true): void => {
+    const original = nodeFs.promises[name] as (...args: unknown[]) => Promise<unknown>;
+    let armed = true;
+    vi.spyOn(nodeFs.promises, name).mockImplementation(((...args: unknown[]) => {
+      if (armed && String(args[0]) === target && when()) {
+        armed = false;
+        return Promise.reject(tooMany(name, target));
+      }
+      return Reflect.apply(original, nodeFs.promises, args);
+    }) as never);
+    // `generator.ts` imports `node:fs/promises` as a module, whose bindings follow the object only when synced.
+    syncBuiltinESMExports();
+  };
+
+  it("at the docs root before pruning is not a docs root gone: the run stops, and no doc is pruned on the guess", async () => {
+    failOnce("stat", path.join(root, ".mdmd", "layer-4"));
+    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, stat");
+    expect(nodeFs.existsSync(staleDoc)).toBe(true);
+  });
+
+  it("at a folder above the workspace is not a folder without a scan: the run stops", async () => {
+    failOnce("stat", path.join(path.dirname(root), ".mdmd", "layer-4"));
+    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, stat");
+  });
+
+  it("at the folder a pruned doc leaves is not a folder to leave unsaid: the run stops", async () => {
+    const left = path.dirname(staleDoc);
+    failOnce("readdir", left, () => !nodeFs.existsSync(staleDoc));
+    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, readdir");
+    expect(nodeFs.existsSync(left)).toBe(true);
   });
 });

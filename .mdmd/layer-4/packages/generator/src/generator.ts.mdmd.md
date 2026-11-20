@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-20T14:07:48.246Z
+- Generated At: 2026-11-20T16:43:07.829Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-11-19 what makes a folder a scan of its own is named once (`scanMarkers`: a docs root or this tool's configuration file) and read by the search above the workspace and the search below it; a matcher of the same marks for the history's tree writer was built that day and removed when the tree began to write every name. still written and still warned of.
 
 - Since 2026-11-19 ([the probe's third leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#third-leg-november-19)) a file the run cannot map, because it cannot be read or because the doc written for it is one the grammar's own reader refuses, is skipped and named in `failed` by its source path with the reason, and the run goes on to write every other doc and the index; each doc is read back by `parseLiveDoc` before it is written. Until then one refused doc stopped the run after every doc was written and before the index, naming the doc and not the source, and the next run called the docs of the failed run unchanged. A failed file's old doc is removed only when the reader refuses it and it holds no authored words. The run also classifies each file a reader reads by the one reading step (`decodeSourceText`) and returns in `readings` the files read as UTF-16, as Windows-1252, and not read as text.
+- Since 2026-11-20 the run's three probes of its own folders, `directoryExists` before pruning, `isScan` above the workspace and `cleanupEmptyParents` after a pruned doc, hand a failure of the machine's to `throwIfMachineFailure` ([sourceText.ts](../../engine/src/tooling/sourceText.ts.mdmd.md)), so that it stops the run rather than read as a folder gone, a folder without a scan, or one to leave; before, each read every failure so, and a docs root that could not be probed was pruned of nothing, unsaid. The reviewer's second look of that day found them; a case each holds them.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -124,6 +125,7 @@ behind the `Entry` lines (2026-10-15).
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 - [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading)
 - [`sourceText.decodeSourceText`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
+- [`sourceText.throwIfMachineFailure`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

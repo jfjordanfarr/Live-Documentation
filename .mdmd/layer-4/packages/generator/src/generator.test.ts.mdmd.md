@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/generator.test.ts`
-- Generated At: 2026-11-20T16:06:10.177Z
+- Generated At: 2026-11-20T16:43:07.817Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 - `node:child_process` - `execFileSync`
 - `node:fs` - `nodeFs`
 - `node:fs/promises`
+- `node:module` - `syncBuiltinESMExports`
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graphFiles.ts`
-- Generated At: 2026-11-19T21:10:11.716Z
+- Generated At: 2026-11-20T16:43:05.858Z
 
 ## Authored
 ### Purpose
@@ -14,13 +14,14 @@ The graph on disk: `readLiveDocGraph` reads every doc under the configured root 
 - Written 2026-09-28. The docs are read in parallel: on this workspace's mount a serial read of 562 docs takes about 1.5 s and a parallel one about 0.3 s, while parsing them all takes about 15 ms, which is why no consumer caches the index and every one derives it afresh.
 - A doc the grammar refuses stops the read with its path and line; a doc nobody may hand-edit can only be malformed by a generator bug or a preserved orphan.
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-09/2026-10-09.1.record.md#turn-10)) `readEstateGraph` reads the scans a board names: the workspace root when it has docs and the folder of every thing whose `From` has them, each read as its own graph and merged by `deriveEstateGraph`; a scan inside another is reported and not read, the outer standing for it, since a scan never lies inside another scan (the owner's rule, Turn 3 of the same session). One scan at the root is today's single graph, so a board over one workspace reads as before. Every scan is read with the one configuration given; a thing with a configuration of its own is not read by it yet.
+- Since 2026-11-20 the probe of whether a folder has docs (`hasDocs`) hands a failure of the machine's to `throwIfMachineFailure` ([sourceText.ts](../tooling/sourceText.ts.mdmd.md)), so that the read stops with it rather than leave the scan out of the estate unsaid; the structural case `sourceText.boundary.test.ts` found it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `readLiveDocGraph` {#symbol-readlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L24)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L25)
 
 ##### `readLiveDocGraph` — Summary
 Reads every Live Doc under the configured root and derives the graph.
@@ -30,14 +31,14 @@ nobody may hand-edit can only be malformed by a generator bug.
 
 #### `EstateReading` {#symbol-estatereading}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L45)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L46)
 
 ##### `EstateReading` — Summary
 What reading an estate found: its graph, the scans it read, and what it found wanting.
 
 #### `readEstateGraph` {#symbol-readestategraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L64)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L65)
 
 ##### `readEstateGraph` — Summary
 Reads the graph of the estate a board describes.
@@ -52,7 +53,7 @@ them what each left unlinked. One scan at the root is today's single graph.
 
 #### `writeLiveDocGraph` {#symbol-writelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L109)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graphFiles.ts#L113)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `writeLiveDocGraph` — Summary
@@ -78,6 +79,7 @@ The workspace-relative path written.
 - [`graph.GRAPH_INDEX_FILE`](./graph.ts.mdmd.md#symbol-graph_index_file)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

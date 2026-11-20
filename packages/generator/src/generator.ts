@@ -29,7 +29,7 @@ import {
   toWorkspaceFileUri,
   toWorkspaceRelativePath
 } from "@live-documentation/engine/tooling/pathUtils";
-import { decodeSourceText, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
+import { decodeSourceText, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -467,14 +467,15 @@ async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfi
   return [...folders].sort();
 }
 
+/** Whether a folder above the workspace is a scan of its own; a probe that fails for a cause of the machine's stops the run rather than read as no scan (since 2026-11-20). */
 async function isScan(folder: string, config: LiveDocumentationConfig): Promise<boolean> {
   const { docsRoot, configurationFile } = scanMarkers(config);
   for (const candidate of [path.join(folder, docsRoot), path.join(folder, configurationFile)]) {
     try {
       await fs.stat(candidate);
       return true;
-    } catch {
-      // Not there.
+    } catch (error) {
+      throwIfMachineFailure(error);
     }
   }
   return false;
@@ -557,17 +558,24 @@ async function pruneStaleLiveDocs(args: {
   return removed;
 }
 
-/** Whether the generated-doc directory exists before pruning it. */
+/**
+ * Whether the generated-doc directory exists before pruning it. A probe that fails for a cause of the machine's is not
+ * a folder that is gone: the run stops with it, so that no pruning is skipped or done on a guess (since 2026-11-20).
+ */
 async function directoryExists(candidate: string): Promise<boolean> {
   try {
     const stats = await fs.stat(candidate);
     return stats.isDirectory();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }
 
-/** Removes empty folders left by a deleted doc, stopping before the docs root. */
+/**
+ * Removes empty folders left by a deleted doc, stopping before the docs root, or at a folder that is gone or holds
+ * something; a failure of the machine's stops the run (since 2026-11-20; before, it left the folder silently).
+ */
 async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<void> {
   const stop = path.resolve(stopDir);
   let current = path.resolve(startDir);
@@ -580,7 +588,8 @@ async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<v
       }
       await fs.rmdir(current);
       current = path.dirname(current);
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       break;
     }
   }
