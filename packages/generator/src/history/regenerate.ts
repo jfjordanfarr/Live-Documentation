@@ -202,7 +202,12 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           let report = await summarize(change);
           // Why a fresh process decides the change, where one does: what the worker that first took it was marked for,
           // and a failure of the machine's. A worker's first change is a fresh process's; a later one marked is refused.
-          const reasons: DecidedBy[] = [...report.marked, ...(report.machineFailure ? (["machine"] as const) : [])];
+          // The generator's catch marks every failure as a file not mapped before anyone knows whose it is, so a failure
+          // of the machine's counts under its own reason alone, and the mark under its reason only where another file
+          // of the change could not be mapped (the root's ruling, 2026-11-20).
+          const machine = report.machineFailure;
+          const notMappedBeside = machine === undefined || report.unmapped.some((file) => file.path !== machine.path);
+          const reasons: DecidedBy[] = [...report.marked.filter((mark) => mark !== "unmapped" || notMappedBeside), ...(machine ? (["machine"] as const) : [])];
           if (!report.published) {
             // Either the worker was marked during a change after its first, so that its derivation may be an earlier
             // change's, or a file failed for a cause of the machine's: the change goes to a fresh worker, whose first

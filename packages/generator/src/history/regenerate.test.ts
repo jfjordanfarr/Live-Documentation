@@ -188,13 +188,25 @@ describe("the run's last lines", () => {
     ]);
   });
 
-  it("count a change tried again for a cause of the machine's among those a fresh process decided", async () => {
-    const machine = { published: false, marked: ["unmapped" as const], unmapped: [deep], machineFailure: { path: deep.path, error: "EMFILE: too many open files" } };
-    const { lines } = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 0 ? machine : {}));
-    expect(lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file that failed for a cause of the machine's");
-    // The worker that failed so was marked, as the generator marks it for every file it could not map.
-    expect(lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file the generator could not map");
-    expect(lines.some((line) => line.includes("files the generator could not map, at"))).toBe(false);
+  it("count a change tried again for a cause of the machine's under that reason alone, and a file truly not mapped beside it under its own", async () => {
+    // The generator's catch marks the worker for every failure before anyone knows whose it is, so a failure of the
+    // machine's comes with the mark of a file not mapped: counted under it, the person would read that a file of theirs
+    // could not be mapped when nothing is wrong with the file (the root, 2026-11-20).
+    const failure = { path: deep.path, error: "EMFILE: too many open files" };
+    const machine = { published: false, marked: ["unmapped" as const], unmapped: [deep], machineFailure: failure };
+    const alone = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 0 ? machine : {}));
+    expect(alone.lines.filter((line) => line.includes("changes regenerated were decided by a fresh process"))).toEqual([
+      "1 of the 2 changes regenerated were decided by a fresh process: a file that failed for a cause of the machine's"
+    ]);
+    expect(alone.lines.some((line) => line.includes("files the generator could not map, at"))).toBe(false);
+    // The same change holding a file beyond the depth and another the generator truly could not map: each still counts.
+    const beside = { ...machine, marked: ["deep" as const, "unmapped" as const], unmapped: [deep, other] };
+    const both = await standInPool(2, 1, 1e12, (worker, nth) => (worker === 0 && nth === 0 ? beside : {}));
+    expect(both.lines.filter((line) => line.includes("changes regenerated were decided by a fresh process"))).toEqual([
+      "1 of the 2 changes regenerated were decided by a fresh process: a file nested beyond the reading depth",
+      "1 of the 2 changes regenerated were decided by a fresh process: a file the generator could not map",
+      "1 of the 2 changes regenerated were decided by a fresh process: a file that failed for a cause of the machine's"
+    ]);
   });
 
   it("say once, with the number of changes that gave it, each file the generator warned it could not map", async () => {
