@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/generator.test.ts`
-- Generated At: 2026-11-20T15:50:33.825Z
+- Generated At: 2026-11-20T16:06:10.177Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`document.UNREAD_NOTE`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-unread_note)
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`summary.summarizeGraph`](../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
+- [`processMark.machineFailure`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

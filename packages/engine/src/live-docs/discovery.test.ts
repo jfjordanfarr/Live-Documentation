@@ -712,7 +712,7 @@ describe("the index pass", () => {
     for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
   });
 
-  it("names a file whose reading throws for a cause of the file's, and stops at a failure of the machine's", async () => {
+  it("names a file whose reading throws, with what it threw, a failure of the machine's among it", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-index-"));
     folders.push(root);
     await fs.writeFile(path.join(root, "a.ts"), "export const a = 1;\n");
@@ -744,7 +744,7 @@ describe("the index pass", () => {
     }
     restore = failingOnce(Object.assign(new Error("EMFILE: too many open files, open"), { code: "EMFILE", syscall: "open" }));
     try {
-      await expect(indexes()).rejects.toMatchObject({ code: "EMFILE" });
+      expect([...(await indexes()).unmapped.values()]).toEqual([expect.objectContaining({ code: "EMFILE", syscall: "open" })]);
     } finally {
       restore();
     }

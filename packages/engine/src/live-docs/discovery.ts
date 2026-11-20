@@ -410,8 +410,9 @@ export interface WorkspaceIndexes {
   symbols: WorkspaceSymbolIndex;
   entries: WorkspaceEntryIndex;
   /**
-   * The files whose reading threw in this pass for a cause of the file's, by absolute path, with what was thrown: none
-   * of their symbols is in the index, so the generator names each as a file it could not map (2026-11-20).
+   * The files whose reading threw in this pass, by absolute path, with what was thrown: none of their symbols is in the
+   * index, so the generator names each as a file it could not map, with that error, which the history reads as the
+   * machine's or the file's as it reads any other (2026-11-20).
    */
   unmapped: Map<string, unknown>;
 }
@@ -429,9 +430,12 @@ export interface WorkspaceIndexes {
  * `Entry` line. TypeScript and JavaScript files are read with the built-in
  * parser; every other file is read by its language adapter.
  *
- * A failure of the machine's while a file is read (too many open files) stops
- * the pass; anything else a file throws, a stack run short among it, leaves
- * its symbols out and names it in `unmapped`. Until 2026-11-20 every throw was
+ * Whatever a file throws while it is read, a failure of the machine's (too
+ * many open files) or a stack run short, leaves its symbols out and names it in
+ * `unmapped` with the error, which the generator carries to its list of files
+ * it could not map, as it does a throw of its own per-file pass: there a
+ * person's run names the file and goes on, and the history publishes no summary
+ * made with a failure of the machine's. Until 2026-11-20 every throw was
  * swallowed, and a symbol whose file failed here was linked to the barrel that
  * re-exports it, with no mark and no warning.
  *
@@ -514,7 +518,6 @@ export async function buildWorkspaceIndexes(options: {
         }
       }
     } catch (error) {
-      throwIfMachineFailure(error);
       unmapped.set(absolutePath, error);
       continue;
     }

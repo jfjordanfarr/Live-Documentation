@@ -14,6 +14,7 @@ import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
+import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 
 import { generateLiveDocs } from "./generator";
 
@@ -837,7 +838,7 @@ describe("generateLiveDocs and names of punctuation only", () => {
 describe("a file whose reading throws in the index pass alone", () => {
   // Until 2026-11-20 the index pass swallowed every throw: a file whose first read failed there was mapped by the
   // second, its symbols missing from the index, a re-exported one's home the barrel, with no mark and no name.
-  it("is named as a file that could not be mapped, and a failure of the machine's there stops the run", async () => {
+  it("is named as a file that could not be mapped, with the error it threw there, which the history reads as the machine's", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-index-pass-"));
     const readFile = nodeFs.promises.readFile;
     let failure: Error | undefined;
@@ -859,8 +860,12 @@ describe("a file whose reading throws in the index pass alone", () => {
       failure = new RangeError("Maximum call stack size exceeded");
       const result = await generate();
       expect(result.failed.map(({ sourcePath, reason }) => [sourcePath, reason])).toEqual([["src/a.ts", "Maximum call stack size exceeded"]]);
+      // As a failure of the per-file pass, the machine's failure is carried with its error, by which the history's
+      // summary (`summarizeChange.ts`) publishes nothing and summarizes the change again in a fresh worker.
       failure = Object.assign(new Error("EMFILE: too many open files, open"), { code: "EMFILE", syscall: "open" });
-      await expect(generate()).rejects.toMatchObject({ code: "EMFILE" });
+      const machine = await generate();
+      expect(machine.failed.map(({ sourcePath }) => sourcePath)).toEqual(["src/a.ts"]);
+      expect(machineFailure(machine.failed[0].error)).toBe(true);
     } finally {
       spy.mockRestore();
       await fs.rm(root, { recursive: true, force: true });

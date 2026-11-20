@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T15:50:31.791Z
+- Generated At: 2026-11-20T16:06:08.100Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - `discoverDocuments` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the workspace's documents for the generator's `Cited By` sections, found by the same walk as the files (now shared as `walk` and `keptByGitAndConfiguration`): every document anywhere, whatever the configured globs name, since a document anywhere may link to a file and a doc's words may link to a document anywhere; less what git ignores and what `exclude` names; never `.git`, `node_modules` or the generated docs' base layer, while the authored documents a repository keeps under its docs root beside that layer count. The configured globs still decide which files get docs.
 - Since 2026-11-19 discovery orders the files it finds by their workspace-relative paths with forward slashes, by code unit (`inWorkspaceOrder`), not by their absolute paths as the platform spells them: on Windows a backslash sorts after the digits and the capitals, so `Shop.Data2\` came before `Shop.Data\`, the reverse of Linux, and since the order is the one in which files register their symbols, a type two files declare alike could resolve to another file on each. The generator's `--include` list is ordered the same way. On Linux the order is the one it always was, so no doc moved. Found by imitating Windows that day.
 - Since 2026-11-20 the two walks do not read the folders git ignores whole (`walkedAndKept`): git is asked first (`gitIgnores` in the engine's tooling) and glob reads those folders as empty. In the main checkout, with 28 builders' worktrees under `.claude/worktrees/`, the files' walk had taken 63.6 s and the documents' 19.6 s, where a clean worktree took 1.4 s and 0.4 s. The first version also walked again in full where git refused a path, and the second asked `git check-ignore` about each path by its name; since the third form, the same day, the one listing that shortens the walk also judges what it found, so what is left unread is exactly what is judged ignored, a nested repository's files are judged by its own git, and where the listing fails the walk is whole and the root `.gitignore` alone judges. A file git cannot judge, reached through a link to a folder git does not ignore or in a nested repository git cannot be asked about, is judged by the root `.gitignore` alone, and the generator warns of it from both walks; and since the fourth form, the same day, a walk made whole because git could not be asked is never silent either, but where git says there is no repository ([the fourth form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#gits-own-view-of-a-folder-the-fourth-form)). Each case, and one that counts the folders read, is in `discovery.test.ts`; `discovery.oracle.test.ts` holds discovery to `git status` over random repositories ([the probe of 2026-11-20](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md), and [the third form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#reading-gits-own-listing-the-third-form)).
-- Since the seventh round, the same day ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#several-clones-in-one-scan-and-the-machines-failures-the-seventh-round)): a folder the first listing left unread that the second does not ignore whole (a file tracked in it during the walk) makes the walk run again by the second listing, so that no file is lost because its folder was left unwalked; a folder read that fails for a cause of the machine's stops the walk, naming the folder, where glob read it as empty and its files' docs would have been pruned as stale; a link that loops or passes through a file leads to nothing to document, where it stopped the walk; a workspace that lies in no repository, a folder of clones, is judged repository by repository, the files outside every one by the root `.gitignore` with no warning; and the warnings say both things the root `.gitignore` can do in git's place, document what the repository ignores and leave out what it tracks. The index pass rethrows a failure of the machine's and hands each file that threw for a cause of its own to the generator (`unmapped`), which names it as a file it could not map; until then every throw was swallowed, and a symbol whose file failed there was linked to the barrel that re-exports it, with no mark and no warning.
+- Since the seventh round, the same day ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#several-clones-in-one-scan-and-the-machines-failures-the-seventh-round)): a folder the first listing left unread that the second does not ignore whole (a file tracked in it during the walk) makes the walk run again by the second listing, so that no file is lost because its folder was left unwalked; a folder read that fails for a cause of the machine's stops the walk, naming the folder, where glob read it as empty and its files' docs would have been pruned as stale; a link that loops or passes through a file leads to nothing to document, where it stopped the walk; a workspace that lies in no repository, a folder of clones, is judged repository by repository, the files outside every one by the root `.gitignore` with no warning; and the warnings say both things the root `.gitignore` can do in git's place, document what the repository ignores and leave out what it tracks. The index pass hands each file that threw to the generator with its error (`unmapped`), which names it as a file it could not map, as it does a throw of its own per-file pass, so that a person's run names it and goes on and the history publishes no summary made with a failure of the machine's; until then every throw was swallowed, and a symbol whose file failed there was linked to the barrel that re-exports it, with no mark and no warning.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -129,7 +129,7 @@ The two indexes the first pass builds: the symbols every file publishes, and the
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L444)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L448)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -144,9 +144,12 @@ its main module) to what declares it, so that the file's doc carries the
 `Entry` line. TypeScript and JavaScript files are read with the built-in
 parser; every other file is read by its language adapter.
 
-A failure of the machine's while a file is read (too many open files) stops
-the pass; anything else a file throws, a stack run short among it, leaves
-its symbols out and names it in `unmapped`. Until 2026-11-20 every throw was
+Whatever a file throws while it is read, a failure of the machine's (too
+many open files) or a stack run short, leaves its symbols out and names it in
+`unmapped` with the error, which the generator carries to its list of files
+it could not map, as it does a throw of its own per-file pass: there a
+person's run names the file and goes on, and the history publishes no summary
+made with a failure of the machine's. Until 2026-11-20 every throw was
 swallowed, and a symbol whose file failed here was linked to the barrel that
 re-exports it, with no mark and no warning.
 
