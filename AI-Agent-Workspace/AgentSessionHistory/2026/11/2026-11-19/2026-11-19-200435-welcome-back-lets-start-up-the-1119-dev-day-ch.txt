@@ -15327,3 +15327,117 @@
 
   Soooo now we can just... include.... non-gitignored docs as a type of node
   that we map, no?
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Yes, and I've recorded it; writing it into direction and then answering.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Yes. You've found the simpler system.
+
+  In October you turned down "a doc for a doc": if a document were mapped like a
+  file, it would have needed a Live Doc of its own. With the mirror gone, a
+  Markdown document can be a file like any other. It gets a reader, its links
+  become connections, and its headings become what it offers. In the same
+  decision you left open "a document's own links, which linked documentation
+  does not read"; this fills that gap.
+
+  What it does to the list I gave you:
+
+  - A note's onward links (the 720): no longer lost. The note is a node, and its
+    links to the file and to the decisions log are both drawn.
+  - Related documents in the history: no longer lost. A document's links are
+    part of each commit's graph like any other connection.
+  - Still open: telling a file's own description from a mention, the pointers to
+    session records, and repointing this repository's existing links into the
+    mirror.
+
+  What it lets us delete. Three special mechanisms fold into the one graph: the
+  rule for which documents count as related, the generated Cited By section, and
+  the history's separate record of document links.
+
+  Two distinctions I would keep:
+
+  1. A mention is not a dependency. Document links keep their own colour (violet
+     today), and "what depends on this file?" must not answer with a README
+     unless you ask for mentions.
+  2. A document nothing links is not dead code. It is listed as an unlinked
+     document, not among unused files.
+
+  Scale here: apart from the 1,093 mirror docs and the session archive (which
+  our configuration excludes), this repository tracks 58 Markdown documents.
+  Today's bundle already draws 158 documents as bodies in the 3D map, because it
+  includes parts of the archive.
+
+  Three things are not settled:
+
+  - Unlinked documents. In October you leaned towards leaving out a document
+    that links nothing and is linked by nothing. I would draw it, under a filter
+    for documents.
+  - The 2D map. How a document looks there needs designing and your eye.
+  - The switch. Whether one switch keeps documents out entirely, or only their
+    text.
+
+  Nothing is built yet; this goes into the store change's design. The history
+  rebuild is at 1,143 of 1,271.
+
+● Background command "Run the one history rebuild at the joined tip, in the
+  joining's worktree" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The rebuild finished cleanly in 106 minutes with its head check passed;
+  running the full comparison against the old cache now.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The comparison shows all 1,224 commits on main's line match in the new cache,
+  with the other 39 belonging to a side branch. I'm recording that and merging
+  next. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The merge command didn't accept its message that way; nothing changed.
+  Retrying with the message from a file.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Merged to main as 86ba38c3. Now bringing the history up to the merged head
+  (about a hundred changes) and installing main's own modules.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Main's tools run on the merged head and its links are clean; waiting on the
+  history's last hundred changes, then the gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The engine round is on main as 86ba38c3, not pushed.
+
+  - Rebuild: all 1,271 changes regenerated and the head check passed.
+  - Comparison: every one of the 1,224 commits that both caches hold on main's
+    line is identical. The old cache's other 39 summaries belong to a merged
+    side branch, which the history doesn't walk.
+  - Merge: no conflicts. The main checkout is installed and built, and both
+    audits are clean on the merged head.
+
+  Still to do before I call it ready:
+
+  1. Bring the history up to the merged head. This is running now: 94 changes,
+     about fifteen minutes.
+  2. Run the gate without the browser.
+  3. Run the browser cases with nothing else running.
+
+  Please hold the devcontainer rebuild until the browser cases have run; I'll
+  say when.
+
+● Background command "Bring the history to the merged head in the joining's
+  worktree" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The history now reaches the merged head (1,321 changes, head check passed).
+  Running the gate without the browser at the merged commit.
+
+  Ran 1 shell command (ctrl+o to expand)
