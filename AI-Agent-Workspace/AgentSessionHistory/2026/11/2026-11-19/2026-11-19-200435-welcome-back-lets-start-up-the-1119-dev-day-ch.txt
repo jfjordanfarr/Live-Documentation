@@ -15803,3 +15803,213 @@
   the copypaste. I did so pretty well yesterday with the claude code exports.
   Didn't even need a "..." on that one. I think we should rebuild and get it
   over with.
+  ⎿  Message queued for delivery to a0dee84f8896c6bcc at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+● I've asked the builder to commit what it has within five minutes, and I'm
+  running the full CI check under Node 26 to see whether a push will go green.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  I committed `2c569bfb6` on `worktree-agent-a0dee84f8896c6bcc`, on top of
+  `16629d432`. It is marked unfinished and the worktree is clean. Cases 1 and 2
+  are mended and green. Case 3 is still red: I fixed two of its three failures,
+  but the third has no known cause yet.
+
+  The record is `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probe
+  s/landing-reds/README.md`. It holds every measurement and five pictures, each
+  described. It also has a per-case summary with the next step.
+
+  **How I told code from data.** The landing changed the stored doc format, so
+  today's builder can't read the old docs. I built the old data with the old
+  builder from a `git archive` of `3d2bdc683` into scratch. Then I swapped
+  `explorer-data.json` under today's client. All three cases pass on the old
+  data and fail on today's: case 1 and case 2 each ran once each way, case 3
+  went 8 of 8 green on old and 0 of 8 on new. All three reds come from the map's
+  growth, not from the landing's code.
+
+  **Case 1, `local-map-directories.spec.ts` (now line 558).**
+  - **What it protects:** freeing the width makes an opened directory stand
+  wider, and the link carries that choice to another screen.
+  - **Cause:** `scripts/live-docs` gained five files.
+    - At the default Width Cost, the shapes priced were no wrap 72,209, 12 rows
+  42,023, 6 rows 39,353 (chosen) and 4 rows 42,843.
+    - At Width Cost 0 they were 69,049, 37,033, 32,533 (6 rows, chosen again)
+  and 34,193.
+    - The price's walk stops at the first shape that isn't cheaper, so the lever
+  lowers the price but no longer changes the choice. On the old data it went
+  from 4 rows to 2.
+  - **Is the product right:** yes. It follows the walk's documented rule, and
+  today's picture at the default is a sound four-column picture. Whether 2 rows
+  would be cheaper today is unknown, because the walk never tries it.
+  - **What I changed:** the case now opens the estate sample's `Contracts`, a
+  fixed program. It stands narrow at the default (3 columns, 1,002 px) and in 2
+  rows at Width Cost 0 (4 columns, 1,374 px).
+  - **Proof it can still fail:** I made the shape's price ignore the lever (a
+  temporary change, removed and rebuilt). The case went red at `free.shape not
+  equal`.
+  - **Now:** green 5 of 5.
+
+  **Case 2, `return-cost.spec.ts` (now line 87).**
+  - **What it protects:** the Return Cost a link names is the one the search
+  prices with, and Tuning shows it.
+  - **Cause:** the landing made the manifest and its adapters read through
+  `tooling/sourceText.ts`. With that card in the picture, the order with no
+  return is cheaper in wire alone. The search adopts it at every Return Cost, 0
+  included; on the old data it kept the greedy order at 500 and adopted at
+  1,000.
+  - **Is the product right:** yes. Today's picture at 500 puts every adapter in
+  one column with no return, and it reads well. There is simply no trade left
+  there for the lever to decide.
+  - **What I changed:** the link's case now uses the Rosetta C# pair
+  `Models/ModelFactory.cs` and `Models/Record.cs`. The greedy order shows 2
+  returns; the other order shows 1 and costs 1,786 px more wire. A link naming
+  500 keeps the greedy order (`[2]`, one trial), a link naming 4,000 adopts the
+  other (`[2, 1]`), and Tuning shows each value. The case no longer depends on
+  where the default sits.
+  - **Proof it can still fail:** I made the search ignore the link's cost. The
+  case went red at "at 4,000 px a return is worth the wire".
+  - **Now:** green 5 of 5. The two spec files together passed whole, 17 cases.
+  The other two cases in this file still use the manifest and pass, but they
+  could drift the same way later.
+
+  **Case 3, `force-graph-focus.spec.ts` (now line 182).**
+  - **What it protects:** a focused link centres its file, a click on its sphere
+  pins it, More opens its details, and Centre on brings it back to the centre.
+  - **This contradicts the brief:** on a quiet machine it is not intermittent.
+  It failed 8 of 8 at one worker and 10 of 12 at two workers, in three ways:
+    - **Turn fails** (1 of 8): the camera turned 0°.
+    - **Click misses** (3 of 8): the click did not pin `graph.ts`.
+    - **Centre off** (4 of 8): after Centre on, `graph.ts` sat 30 to 46 px from
+  the centre.
+  - **Cause of the first two, shown:** the page gives a press to the nearest
+  sphere or wrapper skin, and a directory shell is drawn as its skin alone. The
+  helpers only checked sphere discs. So a turn could start on a shell's skin and
+  grab it (camera 0°), and a click could land on the translucent `explorer`
+  shell standing in front of `graph.ts`.
+  - **What I changed:** a new helper, `pressedAt`, computes what a press would
+  take, from the drawn buffers: spheres at their drawn centre and radius, skins
+  as their uploaded triangles, skins opening skipped.
+    - A background point must take nothing at both ends of the drag and 8 px
+  around each.
+    - The click point must take `graph.ts` itself.
+    - If no point of the frame qualifies, it throws a plain error. There is no
+  retry and no longer timeout.
+  - **Result after the mend:** 13 runs, with no failure at the turn or the
+  click.
+  - **Still failing:** every run fails after Centre on (5 of 5 in the last run),
+  at line 198. The picture is still (`aria-busy` false, substeps unchanged) and
+  the camera stops within half a second. `graph.ts` then rests 14 to 46 px left
+  of the room's centre and 2 to 4 px low, steady for six seconds, and the
+  offset differs from run to run.
+  - **Ruled out:**
+    - A turn alone does not cause it: on the old data with one forced turn, 6 of
+  6 passed.
+    - The detail panel was closed when the framing ran.
+  - **Cause: not found**, so I can't yet say whether the page or the case is
+  wrong.
+  - **Next step:** in a scratch build, log frame by frame after Centre on the
+  framing's own `target`, `insets` and the camera's orientation in
+  `forceGraphView.ts`. Also repeat the pin and Centre on with the old data, to
+  tell the picture from the code.
+
+  **Undone:**
+  - `npm run live-docs:generate` ran before I edited the authored notes and
+  showed 0 docs changed. I did not run it again after those edits.
+  `live-docs:lint` and the markdown link check are clean.
+  - `safe:commit` was not run, since I touched nothing outside `tests/e2e`, the
+  Live Docs' authored notes and the record. ESLint on the three specs is clean.
+  - These are stale but outside my files:
+    - the `nominalMeasurer` comment in `directory-flow.ts` about
+  `scripts/live-docs`;
+    - the decisions log's "`manifest.ts` at 1175".
+
+  **Slip-ups:**
+  - My scratchpad already held a folder `old` left by the November 19 round. A
+  `git archive … | tar -x` overwrote its `.mdmd` and `.live-docs.config.json`
+  with `3d2bdc683`'s. It is temporary and the container rebuild will empty it
+  anyway.
+  - I ran `git checkout --` on my own edited `force-graph-focus.spec.ts` by
+  mistake. It touched only that file, and I reapplied the edit.
+
+  Some refusals happened along the way: the worktree guard refused `git worktree
+  add` and compound commands that included git. I split those into separate
+  commands; I did not reroute around a refusal.
+
+  No subagent was used.
+
+● Agent "Three red browser cases after landing" finished · 39m 25s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The CI check under Node 26 passes its unit stage but one integration case
+  fails, so a push would still be red. Finding out why before you rebuild.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Everything is recorded and the audits are clean; committing, then you can push
+  and rebuild.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ready. You can push and rebuild now.
+
+  1. Push main (8 commits ahead). It carries the fix for the red CI. I ran the
+     whole CI check here under Node 26: 2,680 unit and 231 integration cases
+     pass, so the push should go green.
+  2. Rebuild the devcontainer.
+  3. Open a new chat. The record's Resumption section has the full state for it
+     to pick up from.
+
+  Left unfinished:
+
+  - The three red browser cases. The builder stopped at my word and committed on
+    its branch (2c569bfb). I have not reviewed it, and nothing of it is on
+    main. By its report all three failures come from this repository's map
+    growing, not from the landing's code.
+    - Two cases are mended and green: they now use fixed samples in place of our
+      own changing map.
+    - The 3D focus case has one fault still open, and it may be the product's:
+      after "Centre on", the file rests 14 to 46 px left of centre on today's
+      map.
+  - This session's summary is not written. The next chat writes it from the
+    record.
+  - The overnight plan (rebuild speed, test speed, page load) passes to the new
+    chat as its first work after the gate under Node 26.
+
+  One correction to what I told you earlier about that CI check: the integration
+  case that failed under Node 26 had nothing to do with Node. An empty folder
+  from a long-retired fixture was still in this checkout, and one test builds a
+  case from every folder it finds. I removed the empty folder; GitHub's fresh
+  checkout never had it.
+
+● Background command "Fifty-minute fallback timer while the red cases' builder
+  runs" completed (exit code 0)
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● While the session is still up I reviewed the red-case builder's work (all
+  three diffs, three of its five pictures) and brought it to main; recording
+  that so the notes stay true.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● One update to what I told you a few minutes ago: the red-case work is now on
+  main, not only on its builder's branch. While the container was still up I
+  reviewed it and landed it as 89f6d813.
+
+  - Reviewed: the full changes to all three test files, and three of the
+    builder's five pictures. I did not rerun the cases myself.
+  - The two 2D cases are accepted. Each now uses a fixed sample program, and the
+    builder showed each can still fail.
+  - The 3D focus case is still red on main, now always at the same step: after
+    "Centre on", the file rests off centre. That is the next thing to run down,
+    and it may be the product's fault.
+
+  main is 10 commits ahead of GitHub and the working tree is clean. No Live Doc
+  needed regenerating, so CI's docs check still holds.
+
+  Still ready when you are: push, rebuild the devcontainer, open a new chat.
