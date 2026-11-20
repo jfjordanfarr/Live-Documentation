@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/processMark.ts`
-- Generated At: 2026-11-20T14:07:46.361Z
+- Generated At: 2026-11-20T14:29:14.432Z
 
 ## Authored
 ### Purpose
@@ -53,9 +53,20 @@ Marks the process: what it derives from now on may depend on its past.
 ##### `processMarks` — Summary
 Every reason the process was marked for, in a fixed order; none when it was not.
 
+#### `machineFailure` {#symbol-machinefailure}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L54)
+
+##### `machineFailure` — Summary
+Whether a failure is the machine's rather than the file's: a system call that failed (the error names its `syscall`
+and its `code`) for a cause other than the name's or the path's, which the history's tree writer leaves out and names
+(`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds) would make
+a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
+that swallows a failure to read a file lets this kind through (`dependencies.ts`).
+
 #### `typeScriptBeyondDepth` {#symbol-typescriptbeyonddepth}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L67)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptBeyondDepth` — Summary

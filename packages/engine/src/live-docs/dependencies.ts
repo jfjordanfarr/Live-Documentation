@@ -22,7 +22,7 @@ import type {
   ReExportedSymbolInfo
 } from "./coreTypes";
 import { displayDependencyKey, getNodeLocation } from "./coreUtils";
-import { typeScriptBeyondDepth } from "./processMark";
+import { machineFailure, typeScriptBeyondDepth } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
@@ -539,7 +539,10 @@ async function gatherExportedSymbolsFromFile(params: {
   let content: string;
   try {
     content = await readSourceText(normalized);
-  } catch {
+  } catch (error) {
+    // A file that cannot be read is read as exporting nothing, but a failure of the machine's (too many open files, a
+    // file Windows holds) is no property of the file and is thrown, so that no summary is made with it (`processMark.ts`).
+    if (machineFailure(error)) throw error;
     params.stack.delete(normalized);
     params.cache.set(normalized, []);
     return [];
