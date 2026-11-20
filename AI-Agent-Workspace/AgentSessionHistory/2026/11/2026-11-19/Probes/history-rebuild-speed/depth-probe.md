@@ -1,6 +1,42 @@
 # The reading depth: how deep a fresh process reads each kind of nesting
 
-_A record of November 20, 2026 (UTC), not current documentation. Measured by a builder for the root in its own worktree from `ef57f201b`, under Node 26, on the machine of this folder's README, every machine-loading run through the browser lane. The current rule is `READING_DEPTH` and `TREE_DEPTH` in `packages/engine/src/live-docs/processMark.ts`, held by `tests/integration/live-docs/reading-depth.test.ts`. The first round, one depth for every construct, is kept below as it was found. The second round, two bounds, follows it and supersedes its answer._
+_A record of November 20, 2026 (UTC), not current documentation. Measured by a builder for the root in its own worktree from `ef57f201b`, under Node 26, on the machine of this folder's README, every machine-loading run through the browser lane. The current rule is `READING_DEPTH` and `TREE_DEPTH` in `packages/engine/src/live-docs/processMark.ts`, held by `tests/integration/live-docs/reading-depth.test.ts`. The first round, one depth for every construct, is kept below as it was found. The second round, two bounds, follows it and supersedes its answer. The third round, what the measure did not reach, was added later that day by another builder from `894bcfaa7`, and comes first._
+
+## The third round: what a walk by `forEachChild` does not reach
+
+**The fault.** An independent reviewer found that the measure walked with `ts.forEachChild`, which never visits a node's `jsDoc`, while `ts.createSourceFile` parses the type expressions of every JSDoc comment eagerly, by the same recursive type parser. A JSDoc tuple 650 deep was counted nesting 5. With the history command over two commits (forty warming files of JSDoc and type tuples 150 deep, then a change removing them and adding `src/doc.ts` with a JSDoc tuple 650 deep), one worker published the second change with `src/doc.ts` in it, unmarked; a worker given only that change named the file not mapped (`Maximum call stack size exceeded`). That run is now the case `tests/integration/live-docs/jsdoc-depth-workers.test.ts`: red with the JSDoc walk taken out (the warm summary holds `src/doc.ts`, the fresh one names it unmapped), green with it.
+
+**So the claim was narrower than its words.** "Below the bounds no process fails, whatever it has run before" holds for the constructs the margin test reads, and only for those. The words in `processMark.ts`, in the test and in the decisions log now say so.
+
+**What TypeScript 5.9.3's parser builds or reads that a walk by `forEachChild` from the source file does not reach, or reaches at another depth than the parser recursed to,** from reading `parseJSDocCommentWorker`, the type and expression parsers and `forEachChildTable` in the installed `typescript.js`, each checked by a cold parse in a bare node, doubling then bisecting the levels:
+
+| What | The parser | `forEachChild` | Done | Bare node, cold |
+| --- | --- | --- | --- | --- |
+| A node's JSDoc comments (`node.jsDoc`), in every file kind, `.ts` included (`createSourceFile` parses JSDoc in full by default) | parses each comment where it attaches it, its tags' types by the recursive type parser | visits inside a JSDoc node (tags, type expressions, type literals' property tags, signatures, template parameters, typedef names) but never reaches one from its node | walked, each JSDoc one level of nesting below its node | tuple types fail at 459 levels, as in code; object types 450; function types 409; type arguments 512; `?(` nullable types 353 (two levels each) |
+| The default of a bracketed JSDoc parameter or property, `@param {number} [a=[[1]]]` | `parseBracketNameInPropertyAndParamTag` parses it by `parseExpression` and keeps nothing | nothing to visit | read again, from after its `=` to the tag's end inside a parenthesis, as a file of its own kind, and counted below the tag | arrays fail at 656 levels, parentheses 681 |
+| `a < a < a`, in TypeScript files | before each operand is taken as a comparison, `parseTypeArgumentsInExpression` tries it as type arguments, recursing through every later `<`, and throws the attempt away | a chain, folded left-deep | the left operand of `<` is nesting, in every file kind (in JavaScript the attempt is never made, so there it counts more than the parser took; it costs a mark, never a summary) | fails at 512 levels, as `Array<Array<…>>`; `a < (a < (…))` at 298 (two levels each) |
+| The binding pattern `isUnambiguouslyStartOfFunctionType` reads ahead of a parenthesized type (`([[a]]) => void`) | parsed by `lookAhead`, then thrown away; the real parse reads the same tokens | the tree holds the real parse | nothing: it recursed less than the real parse | fails at 1,000 levels |
+| Arrow-function speculation over `(a = (a = …))` | each level tried as parameters, then as an expression | the tree holds the expression | nothing: two levels each in the tree | fails at 437 levels |
+| `JSDocNamepathType` (`module:x`) | built with no type | absent from the table | nothing: a leaf | |
+| A typedef's or callback's dotted name, `@typedef {T} a.b.c` | `parseJSDocTypeNameWithNamespace` recurses per dot into nested module declarations | visited, one level each | counted with the JSDoc | fails at 6,000 levels |
+| Nested JSDoc parameters, `@param {Object} a`, `a.a`, `a.a.a` | `parseNestedTypeLiteral` recurses per level through speculative child tags | visited, three levels each and the dotted name's | counted with the JSDoc | fails at 812 levels |
+| Postfix steps the parser takes in loops: `a!`, `a as T`, `a satisfies T`, a tagged template's tag | `parseMemberExpressionRest`, `parseBinaryExpressionRest` | one level each | now chain steps (the reviewer's over-count: 300 `!` read as nesting 305) | each 51,200 levels read cold |
+| Postfix type steps in a loop: `T[]`, `T["a"]`, JSDoc `T?` and `T!`; `a.b.c` in a type or a JSDoc name | `parsePostfixTypeOrHigher`, `parseEntityName`, `parseJSDocEntityName` loops | one level each | left counted as nesting: it costs marks, never a summary (array types and indexed access were read at 800 in the first round) | |
+
+**Not settled.** Which other `tryParse` and `lookAhead` attempts recurse further than the tree they leave was settled only for the three above; the parser holds more of them (JSX against type assertions, generic arrow functions in `.tsx`, `parseTypeArguments` after `typeof`). The checker is not run by the generator, so no checker recursion was looked at. Constructs outside the margin test are outside the claim.
+
+**The margin test** now holds 147 cases, all read cold in 104 s on the shared machine. Its new cases:
+- `a < b < …` and `a < (b < (…))`, nesting, at 400;
+- `a!!…`, `a as … as …`, `a satisfies … satisfies …`, `` a`` `` …, chains, at 800 deep;
+- in a `.ts`, a `.js` and a `.jsx` file each, JSDoc tuple types, type arguments, object types, function types, nullable types, a parameter's default, a template's default, an augmented class's type arguments, a typedef's namespaces and nested parameters, nesting, at 400.
+
+No case failed, so neither bound moved: `READING_DEPTH` 200, `TREE_DEPTH` 400.
+
+**Why TypeScript's types sit lowest, in part.** A JSDoc tuple fails cold at the same 459 levels as a tuple type in code, with none of the code's expression and statement frames below it, so the limit is the type parser's own: each level of a tuple goes from `parseType` through the union, intersection, operator, conditional-context, postfix and non-array steps to `parseTupleType`, then through the bracketed and delimited list's element steps back to `parseType`, more frames than an array literal's level takes. Read from the parser, not traced.
+
+**This repository by both counts** (910 TypeScript-family files under the working copy, by the built measure): unchanged at the top. Deepest by nesting `tests/e2e/force-graph-identity.spec.ts` 37 (depth 41), then probe scripts at 33; deepest by depth `htmlEntities.ts` 255 (nesting 17), `scripts/live-docs/inspect.ts` 51. The mend changed the counts of 49 files, none near a bound. No file marks a worker.
+
+**The measure's cost.** Timed beside the measure before the mend over the same 910 parsed trees, bounded, three rounds on the shared machine: 398 and 468 ms a round before, 569 and 632 ms after, about a third more. Not timed within a generation; at the second round's 250 ms of 11.2 s, a third more is about 340 ms, 3 %.
 
 ## The second round: two bounds, counted in one pass
 
@@ -107,7 +143,7 @@ Three constructs had to be written again before they read as their languages wri
 
 **Red at twice 400.** With `READING_DEPTH` at 400 the test fails 8 of its 96 cases at 800 deep: nested arrays (795 levels), parentheses, nested calls, type arguments, type arguments in a call, tuple types, parenthesized types and class expressions. Each is unmapped by the worker for `Maximum call stack size exceeded`. The other 88 are read. At 300 it failed calls and type arguments at 600. At 250 it failed tuple types at 500.
 
-**Why TypeScript's types sit lowest** is not established here. A worker reports only the overflow's message, not its stack. TypeScript's own parser is one place it can happen: in a first form of the test, the test's own process parsed the 800-deep files to measure them and overflowed in `parseArrayLiteralExpression` and `parseParenthesizedExpression`. The test now measures a TypeScript construct at 8, 16, 32 and 64 levels and extrapolates, and requires its depth to grow by the same step at each. Which walk overflows first in a worker was not traced.
+**Why TypeScript's types sit lowest** is not established here (the third round, above, answers part). A worker reports only the overflow's message, not its stack. TypeScript's own parser is one place it can happen: in a first form of the test, the test's own process parsed the 800-deep files to measure them and overflowed in `parseArrayLiteralExpression` and `parseParenthesizedExpression`. The test now measures a TypeScript construct at 8, 16, 32 and 64 levels and extrapolates, and requires its depth to grow by the same step at each. Which walk overflows first in a worker was not traced.
 
 ### What the one depth cost in this repository
 

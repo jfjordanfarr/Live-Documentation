@@ -3,7 +3,7 @@
  * the process that reads it, and the history gives a marked change to a fresh process (`processMark.ts`); within the
  * bounds, a summary must not depend on which worker made it, which holds only if no process, however cold, runs out of
  * stack there. The ruling of 2026-11-20 sets each bound at most half the smallest depth at which a fresh process fails
- * a construct it bounds. So each kind of nesting is written here, alone in a repository of one commit, and given as the
+ * a construct it bounds. So each kind of nesting this file lists, and only those, is written here, alone in a repository of one commit, and given as the
  * first change of a worker started as the pool starts one: the worker must read it, unmapped by nothing, marked for its
  * depth alone. TypeScript's nesting constructs, which its parser reaches by recursion, are nested to twice the nesting
  * bound; its chains, which its parser reads by a loop, and every tree-sitter construct, to twice the tree's bound, by
@@ -53,9 +53,15 @@ const indented = (line: string, n: number, last: string): string =>
  */
 type Construct = [name: string, file: string, text: (n: number) => string, chain?: "chain"];
 
+/** A JSDoc comment holding `tag`, on a declaration. */
+const jsDoc = (tag: string, declaration = "export const x = 1;"): string => `/** ${tag} */\n${declaration}\n`;
+
 /**
- * Every kind of nesting the readers meet: for TypeScript its brackets, its nested scopes and its long chains, left
- * and right; for each tree-sitter grammar the product reads, its brackets, its blocks and its chains.
+ * The kinds of nesting this test holds, and the bounds' claim covers no other: for TypeScript its brackets, its nested
+ * scopes, its long chains, left and right, and what its parser reads in a JSDoc comment, in a TypeScript and in a
+ * JavaScript file; for each tree-sitter grammar the product reads, its brackets, its blocks and its chains. What
+ * TypeScript's parser builds that a walk by `ts.forEachChild` does not reach, and how the measure meets each, is listed
+ * in the record of 2026-11-20 (`Probes/history-rebuild-speed/depth-probe.md`, its third round).
  */
 const CONSTRUCTS: Construct[] = [
   ["TypeScript: nested arrays", "m.ts", (n) => `export const x = ${r("[", n)}1${r("]", n)};\n`],
@@ -97,6 +103,31 @@ const CONSTRUCTS: Construct[] = [
   ["TypeScript: a + (b + (…))", "m.ts", (n) => `declare const a: number;\nexport const x = ${r("a + (", n)}a${r(")", n)};\n`],
   ["TypeScript: a[a[…]]", "m.ts", (n) => `declare const a: any;\nexport const x = ${r("a[", n)}0${r("]", n)};\n`],
   ["TypeScript: !!a", "m.ts", (n) => `declare const a: unknown;\nexport const x = ${r("!", n)}a;\n`],
+  // `<` is nesting: the parser tries each operand as an expression with type arguments, through every later `<`.
+  ["TypeScript: a < b < …", "m.ts", (n) => `declare const a: number;\nexport const x = a${r(" < a", n)};\n`],
+  ["TypeScript: a < (b < (…))", "m.ts", (n) => `declare const a: any;\nexport const x = ${r("a < (", n)}a${r(")", n)};\n`],
+  // The steps the parser's loops take that the measure counted as nesting until 2026-11-20: chains.
+  ["TypeScript: a!!…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("!", n)};\n`, "chain"],
+  ["TypeScript: a as … as …", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(" as any", n)};\n`, "chain"],
+  ["TypeScript: a satisfies … satisfies …", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(" satisfies any", n)};\n`, "chain"],
+  ["TypeScript: tagged templates a``…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("``", n)};\n`, "chain"],
+  // What the parser reads in a JSDoc comment, which `ts.forEachChild` never reaches from the node it documents.
+  ...(["m.ts", "m.js", "m.jsx"] as const).flatMap((file): Construct[] => [
+    [`JSDoc in ${file}: tuple types`, file, (n) => jsDoc(`@type {${r("[", n)}number${r("]", n)}}`)],
+    [`JSDoc in ${file}: type arguments`, file, (n) => jsDoc(`@type {${r("Array<", n)}number${r(">", n)}}`)],
+    [`JSDoc in ${file}: object types`, file, (n) => jsDoc(`@type {${r("{a: ", n)}number${r("}", n)}}`)],
+    [`JSDoc in ${file}: function types`, file, (n) => jsDoc(`@type {${r("function(", n)}number${r(")", n)}}`)],
+    [`JSDoc in ${file}: nullable types`, file, (n) => jsDoc(`@type {${r("?(", n)}number${r(")", n)}}`)],
+    [`JSDoc in ${file}: a parameter's default, read and kept nothing of`, file, (n) => jsDoc(`@param {number} [a=${r("[", n)}1${r("]", n)}]`, "export function f(a) {}")],
+    [`JSDoc in ${file}: a template's default`, file, (n) => jsDoc(`@template [T=${r("[", n)}number${r("]", n)}]`, "export function f() {}")],
+    [`JSDoc in ${file}: an augmented class's type arguments`, file, (n) => jsDoc(`@augments {A<${r("Array<", n)}number${r(">", n)}>}`, "export class C extends Object {}")],
+    [`JSDoc in ${file}: a typedef's namespaces`, file, (n) => jsDoc(`@typedef {number} ${r("a.", n)}b`)],
+    [
+      `JSDoc in ${file}: nested parameters`,
+      file,
+      (n) => `/**\n${Array.from({ length: n }, (_, i) => ` * @param {Object} ${Array.from({ length: i + 1 }, () => "a").join(".")}\n`).join("")} */\nexport function f(a) {}\n`
+    ]
+  ]),
 
   ["Python: parentheses", "m.py", (n) => `x = ${r("(", n)}1${r(")", n)}\n`],
   ["Python: lists", "m.py", (n) => `x = ${r("[", n)}1${r("]", n)}\n`],
@@ -173,10 +204,9 @@ const CONSTRUCTS: Construct[] = [
   ["PowerShell: a.b().c()…", "m.ps1", (n) => `$x = $a${r(".b()", n)}\n`]
 ];
 
-/** A file's depth as `processMark.ts` counts it: the root 1, each child of `ts.forEachChild` one more. Also whether TypeScript reported a syntax error. */
+/** A file's nesting and depth as `processMark.ts` counts them, the root 1, of its kind by its name. Also whether TypeScript reported a syntax error. */
 function typeScriptMeasure(file: string, text: string): { nesting: number; depth: number; malformed: boolean } {
-  const kind = file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
-  const root = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
+  const root = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
   const diagnostics = (root as unknown as { parseDiagnostics: readonly unknown[] }).parseDiagnostics;
   return { ...typeScriptExtent(root), malformed: diagnostics.length > 0 };
 }
