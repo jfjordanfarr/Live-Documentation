@@ -1,6 +1,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
 import * as os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -174,6 +175,28 @@ describe("discoverTargetFiles", () => {
   it("documents the build once the .gitignore no longer ignores it", async () => {
     await fs.rm(path.join(workspace, ".gitignore"));
     expect(await discover()).toContain("dist/bundle.js");
+  });
+
+  // Until 2026-11-20 a read of `.gitignore` that failed for any cause read as no `.gitignore`, and the build it ignores
+  // was mapped. The workspace lies in no repository, so `.gitignore` is read by discovery itself.
+  it("rejects with a read of the .gitignore that fails for a cause of the machine's, rather than map what it ignores", async () => {
+    const gitignore = path.join(workspace, ".gitignore");
+    const readFile = nodeFs.promises.readFile;
+    for (const [code, message] of [["EMFILE", "too many open files"], ["EACCES", "permission denied"]]) {
+      const spy = vi.spyOn(nodeFs.promises, "readFile").mockImplementation(((...args: unknown[]) =>
+        String(args[0]) === gitignore
+          ? Promise.reject(Object.assign(new Error(`${code}: ${message}, open '${gitignore}'`), { code, syscall: "open" }))
+          : Reflect.apply(readFile, nodeFs.promises, args)) as typeof nodeFs.promises.readFile);
+      // `discovery.ts` imports `node:fs/promises` as a module, whose bindings follow the object only when synced.
+      syncBuiltinESMExports();
+      try {
+        await expect(discover(), code).rejects.toThrow(`${code}: ${message}`);
+      } finally {
+        spy.mockRestore();
+        syncBuiltinESMExports();
+      }
+    }
+    expect(await discover()).not.toContain("dist/bundle.js");
   });
 
   it("skips what the configuration excludes, by path or by glob, and nothing beside", async () => {

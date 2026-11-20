@@ -48,10 +48,10 @@ const READS = new Set([
 const ALLOWED: Record<string, string> = {
   "packages/generator/src/generator.ts › generateLiveDocs":
     "The per-file catch every other hands to: it names the file in `failed`, with the error, by which a person's run says why and a history worker publishes nothing.",
+  "packages/generator/src/generator.ts › cleanupEmptyParents":
+    "Tidying after a pruned doc: no doc and no fact is read from an empty folder, a run stopped here would pass on a second try with nothing mended (the doc is gone, the folder never visited again), and on Windows a folder another program holds is ordinary. Any failure leaves the folder.",
   "packages/engine/src/live-docs/discovery.ts › buildWorkspaceIndexes":
     "The index pass keeps the failure for the file (`unmapped`), and the per-file pass throws it again into the per-file catch (`unindexed` in `generator.ts`).",
-  "packages/engine/src/live-docs/discovery.ts › createGitignoreFilter":
-    "Not yet mended, 2026-11-20: a failed read of `.gitignore` reads as none, and what it ignores is mapped where git cannot judge. `discovery.ts` was another builder's that day; to mend there.",
   "packages/engine/src/live-docs/history/textStore.ts › putTexts":
     "A text the probe cannot see is written, and the store is addressed by content: writing it again is harmless, and a write that fails throws its own failure.",
   "packages/generator/src/history/computeHistory.ts › holdLock": "The time a lock was taken, for the message naming its holder; nothing of a file is read.",
@@ -121,10 +121,10 @@ function functionName(node: ts.Node): string | undefined {
   return undefined;
 }
 
-/** A source's functions by name, and the names it imports from the other sources, each resolved to its module. */
+/** A source's functions by name, with the calls each makes, and the names it imports from the other sources, each resolved to its module. */
 interface Module {
   source: Source;
-  functions: Map<string, ts.Node[]>;
+  functions: Map<string, ts.CallExpression[]>;
   imports: Map<string, { from: string; name: string }>;
   namespaces: Map<string, string>;
 }
@@ -139,12 +139,12 @@ function resolvedImport(fromFile: string, specifier: string, known: ReadonlySet<
 }
 
 function moduleOf(source: Source, known: ReadonlySet<string>): Module {
-  const functions = new Map<string, ts.Node[]>();
+  const functions = new Map<string, ts.CallExpression[]>();
   const imports = new Map<string, { from: string; name: string }>();
   const namespaces = new Map<string, string>();
   for (const node of nodesOf(source.tree)) {
     const name = ts.isFunctionLike(node) ? functionName(node) : undefined;
-    if (name !== undefined) functions.set(name, [...(functions.get(name) ?? []), node]);
+    if (name !== undefined) functions.set(name, [...(functions.get(name) ?? []), ...nodesOf(node).filter(ts.isCallExpression)]);
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier) && node.importClause?.namedBindings) {
       const from = resolvedImport(source.file, node.moduleSpecifier.text, known);
       const bindings = node.importClause.namedBindings;
@@ -182,9 +182,9 @@ function readingFunctions(modules: readonly Module[]): Set<string> {
   for (let grew = true; grew; ) {
     grew = false;
     for (const module of modules) {
-      for (const [name, nodes] of module.functions) {
+      for (const [name, calls] of module.functions) {
         const key = `${module.source.file}#${name}`;
-        if (reading.has(key) || !nodes.some((node) => nodesOf(node).some((inner) => ts.isCallExpression(inner) && callReads(module, inner, reading)))) continue;
+        if (reading.has(key) || !calls.some((call) => callReads(module, call, reading))) continue;
         reading.add(key);
         grew = true;
       }
@@ -222,7 +222,9 @@ function enclosingName(node: ts.Node): string {
 /**
  * Every catch in a source whose guarded code reads or probes a file and that does not hand what it caught on, by its
  * place, `<file> › <function>`, a second in the same function `… (2)`: `try { … } catch (e) { … }`, and the promise
- * form, `read(…).catch((e) => …)`, the read in the expression the catch is chained to.
+ * form, `read(…).catch((e) => …)`, the read in the expression the catch is chained to. And every probe that answers
+ * "no" for every failure by itself, with no catch to find: `existsSync`, and `fs.exists` (a function of the module's
+ * own named `exists` is its own, and read as any other), by `<file> › <function>: existsSync`.
  */
 function swallowingCatches(module: Module, reading: ReadonlySet<string>): string[] {
   const { file, tree } = module.source;
@@ -243,6 +245,10 @@ function swallowingCatches(module: Module, reading: ReadonlySet<string>): string
       const handler = node.arguments[0];
       const parameter = handler && (ts.isArrowFunction(handler) || ts.isFunctionExpression(handler)) ? handler.parameters[0]?.name : undefined;
       if (!handler || !(ts.isArrowFunction(handler) || ts.isFunctionExpression(handler)) || !handsOn(parameter && ts.isIdentifier(parameter) ? parameter.text : undefined, handler.body)) name(node);
+    }
+    if (ts.isCallExpression(node)) {
+      const called = calledName(node);
+      if (called === "existsSync" || (called === "exists" && !module.functions.has("exists"))) places.push(`${file} › ${enclosingName(node)}: ${called}`);
     }
   }
   return places;
@@ -281,7 +287,16 @@ describe("a failure of the machine's, met by a catch round a read", () => {
     ]) {
       expect(swallowed(text), text).toEqual(["f"]);
     }
+    for (const [text, called] of [
+      [`function f() { return existsSync("x"); }`, "existsSync"],
+      [`function f() { return fs.existsSync("x") ? 1 : 2; }`, "existsSync"],
+      [`function f(done) { fs.exists("x", done); }`, "exists"]
+    ]) {
+      expect(swallowed(text), text).toEqual([`f: ${called}`]);
+    }
     for (const text of [
+      `async function exists(file) { try { await fs.access(file); return true; } catch (error) { throwIfMachineFailure(error); return false; } }\nasync function f() { return exists("x"); }`,
+      `function f() { return fs.statSync("x", { throwIfNoEntry: false }) !== undefined; }`,
       `async function f() { try { await fs.readFile("x"); } catch (error) { throwIfMachineFailure(error); return undefined; } }`,
       `async function f() { try { await fs.readFile("x"); } catch (error) { if (error.code === "ENOENT") return undefined; throw error; } }`,
       `async function f() { try { await fs.readFile("x"); } catch (error) { throw new Error("could not read x", { cause: error }); } }`,

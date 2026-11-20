@@ -7,10 +7,11 @@
  * otherwise it comes from `@vscode/tree-sitter-wasm`, whose own JavaScript
  * entry point cannot be required from Node, so only its `.wasm` files are used.
  */
-import { existsSync } from "node:fs";
+import { statSync } from "node:fs";
 import path from "node:path";
 import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
+import { throwIfMachineFailure } from "../../tooling/sourceText";
 import { markProcess, TREE_DEPTH } from "../processMark";
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
@@ -20,10 +21,22 @@ export type SyntaxNode = Node;
 const OWN_GRAMMARS = path.resolve(__dirname, "..", "..", "..", "grammars");
 const BUNDLED_GRAMMARS = path.join(path.dirname(require.resolve("@vscode/tree-sitter-wasm/package.json")), "wasm");
 
-/** The `.wasm` file a grammar is loaded from: the engine's own build when there is one, the bundled one otherwise. */
+/**
+ * The `.wasm` file a grammar is loaded from: the engine's own build when there is one, the bundled one otherwise. A
+ * probe of the engine's own that fails for a cause of the machine's throws, so that the load fails and is dropped
+ * (`grammarParser`): until 2026-11-20 `existsSync` read it as no build of the engine's, and the bundled, unpatched
+ * grammar was loaded and kept for the process's life, reading every later file of that language by another grammar.
+ */
 function grammarFile(grammar: string): string {
   const own = path.join(OWN_GRAMMARS, grammar, `tree-sitter-${grammar}.wasm`);
-  return existsSync(own) ? own : path.join(BUNDLED_GRAMMARS, `tree-sitter-${grammar}.wasm`);
+  try {
+    // `throwIfNoEntry: false` answers nothing for a file not there, or a path through something not a folder.
+    if (statSync(own, { throwIfNoEntry: false }) !== undefined) return own;
+  } catch (error) {
+    // A name too long, or a loop of links, is not there either; any other failure is the machine's.
+    throwIfMachineFailure(error);
+  }
+  return path.join(BUNDLED_GRAMMARS, `tree-sitter-${grammar}.wasm`);
 }
 
 let runtime: Promise<void> | undefined;

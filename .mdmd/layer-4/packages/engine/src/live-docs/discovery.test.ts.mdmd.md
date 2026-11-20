@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.test.ts`
-- Generated At: 2026-11-20T15:50:31.777Z
+- Generated At: 2026-11-20T16:58:04.562Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `nodeFs`
 - `node:fs/promises`
+- `node:module` - `syncBuiltinESMExports`
 - `node:os`
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)

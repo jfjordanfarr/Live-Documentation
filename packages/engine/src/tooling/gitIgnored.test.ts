@@ -1,9 +1,9 @@
 import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import nodeFs, { appendFileSync, existsSync, mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { foldersReadAsEmpty, gitIgnored, gitIgnores, liesInNoRepository, type GitIgnoreAnswer } from "./gitIgnored";
 
@@ -441,6 +441,27 @@ describe("gitIgnoreAnswer", () => {
     });
     // Nothing is left unread where the workspace has no listing of its own.
     expect(foldersGitIgnoresWhole(root).size).toBe(0);
+  });
+
+  // Until 2026-11-20 `existsSync` probed each folder's `.git`, and read a probe that failed for a cause of the machine's
+  // as no repository there: that repository's ignored files were judged by the one around, or by none.
+  it("throws a probe of a folder's .git that fails for a cause of the machine's, and reads a .git that is a dangling link as none", () => {
+    const root = workspace();
+    files(root, ["proj/a.ts", "dangling/b.ts"]);
+    git(path.join(root, "proj"), "init", "-q");
+    symlinkSync(path.join(root, "nowhere"), path.join(root, "dangling", ".git"));
+    expect(gitIgnoreAnswer(root, ["dangling/b.ts"])).toEqual({ ignored: new Set(), unjudged: new Set(), outside: new Set(["dangling/b.ts"]) });
+    const probed = path.join(root, "proj", ".git");
+    const statSync = nodeFs.statSync;
+    const probe = vi.spyOn(nodeFs, "statSync").mockImplementation(((...args: unknown[]) => {
+      if (String(args[0]) === probed) throw Object.assign(new Error(`EMFILE: too many open files, stat '${probed}'`), { code: "EMFILE", syscall: "stat", errno: -24 });
+      return Reflect.apply(statSync, nodeFs, args);
+    }) as typeof nodeFs.statSync);
+    try {
+      expect(() => gitIgnoreAnswer(root, ["proj/a.ts"])).toThrow("EMFILE: too many open files, stat");
+    } finally {
+      probe.mockRestore();
+    }
   });
 
   it("asks a nested repository whose name git would read as a pattern or as magic by its name", () => {

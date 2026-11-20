@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/gitIgnored.test.ts`
-- Generated At: 2026-11-20T15:50:32.142Z
+- Generated At: 2026-11-20T16:58:05.066Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - `glob` - `globSync`
 - `node:child_process` - `spawnSync`
-- `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `realpathSync`, `renameSync`, `rmSync`, `symlinkSync`, `writeFileSync`
+- `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `nodeFs`, `realpathSync`, `renameSync`, `rmSync`, `symlinkSync`, `writeFileSync`
 - `node:os` - `tmpdir`
 - `node:path` - `path`
 - [`gitIgnored.GitIgnoreAnswer`](./gitIgnored.ts.mdmd.md#symbol-gitignoreanswer)
@@ -31,5 +31,5 @@ _No public symbols detected_
 - [`gitIgnored`](./gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`gitIgnored.gitIgnores`](./gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`gitIgnored.liesInNoRepository`](./gitIgnored.ts.mdmd.md#symbol-liesinnorepository)
-- `vitest` - `afterEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
