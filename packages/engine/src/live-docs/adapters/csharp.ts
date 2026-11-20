@@ -55,7 +55,7 @@ import {
 import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarget } from "./csharp.dependencies";
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // What one file declares and names
@@ -899,14 +899,9 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
     return cached.facts;
   }
   const content = await readSourceText(absolutePath);
-  const tree    = await parseSource("c-sharp", content);
-  try {
-    const facts = new FileExtractor().extract(tree.rootNode);
-    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
-    return facts;
-  } finally {
-    tree.delete();
-  }
+  const facts   = await readTree("c-sharp", content, (root) => new FileExtractor().extract(root));
+  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  return facts;
 }
 
 // ---------------------------------------------------------------------------

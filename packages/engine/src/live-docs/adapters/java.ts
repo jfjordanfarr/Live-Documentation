@@ -30,7 +30,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseJavaDoc } from "./java.javadoc";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one compilation unit
@@ -509,14 +509,9 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
   const content = await readSourceText(absolutePath);
-  const tree    = await parseSource("java", content);
-  try {
-    const facts = new FileExtractor().extract(tree.rootNode);
-    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
-    return facts;
-  } finally {
-    tree.delete();
-  }
+  const facts   = await readTree("java", content, (root) => new FileExtractor().extract(root));
+  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  return facts;
 }
 
 // ---------------------------------------------------------------------------

@@ -47,7 +47,7 @@ import type {
 } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -619,12 +619,7 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
 }
 
 async function extractFacts(content: string, absolutePath: string): Promise<FileFacts> {
-  const tree = await parseSource("cpp", content);
-  try {
-    return new FileExtractor(isCppFile(absolutePath)).extract(tree.rootNode);
-  } finally {
-    tree.delete();
-  }
+  return readTree("cpp", content, (root) => new FileExtractor(isCppFile(absolutePath)).extract(root));
 }
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {

@@ -32,7 +32,7 @@ import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -437,14 +437,9 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
   const content = await readSourceText(absolutePath);
-  const tree    = await parseSource("go", content);
-  try {
-    const facts = new FileExtractor().extract(tree.rootNode);
-    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
-    return facts;
-  } finally {
-    tree.delete();
-  }
+  const facts   = await readTree("go", content, (root) => new FileExtractor().extract(root));
+  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  return facts;
 }
 
 // ---------------------------------------------------------------------------

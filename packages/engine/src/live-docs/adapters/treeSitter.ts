@@ -57,34 +57,46 @@ export function grammarParser(grammar: string): Promise<Parser> {
   return pending;
 }
 
-// The platform's class of a WebAssembly trap or abort; the engine compiles without the WebAssembly library's types.
-const RUNTIME_ERROR = (globalThis as unknown as { WebAssembly: { RuntimeError: new (message?: string) => Error } }).WebAssembly.RuntimeError;
-
 let faulted = false;
 
 /**
- * Whether a parse in this process threw from inside the runtime's WebAssembly, a trap or an abort
- * (`WebAssembly.RuntimeError`). The runtime restores none of its state when a call into it throws (`parse` holds no
- * `finally` around its call into the module, and an abort sets a flag the module keeps), and every grammar's parser
- * shares the one module, so after such a throw no parser of the process is known sound: a process that lives across
- * many generations ends rather than parse again (the history's workers, since 2026-11-20).
+ * Whether anything thrown in this process while a tree was taken, read or released ({@link readTree}): after such a
+ * throw no parser of the process is known sound, and a process that lives across many generations, as the history's
+ * worker does, publishes nothing more and ends (`summarizeChange.ts`).
  */
 export function runtimeFaulted(): boolean {
   return faulted;
 }
 
-/** Parses `source` with the named grammar. The caller owns the tree and should `delete()` it when done. */
-export async function parseSource(grammar: string, source: string): Promise<Tree> {
-  const parser = await grammarParser(grammar);
-  let tree: Tree | null;
+/**
+ * Parses `source` with the named grammar, hands the tree's root to `read`, which must be synchronous, and releases the
+ * tree, returning what `read` returned. The only way the adapters take a tree.
+ *
+ * @remarks
+ * Every node `read` touches is a call into the runtime's one WebAssembly module, which every grammar's parser shares,
+ * and the runtime restores none of its state when such a call throws: a trap throws a `WebAssembly.RuntimeError`, an
+ * abort sets a flag the module keeps and throws one, an exit of the module throws its `ExitStatus`, a stack overflow
+ * throws a `RangeError` wherever the stack ran out, in the module or in the adapter's walk, and `parse` holds no
+ * `finally` round its call. Which of these a throw was cannot be told from the error, so any throw from the grammar's
+ * load to the tree's release marks the process ({@link runtimeFaulted}), whatever its class, the adapter's own error
+ * among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module of
+ * unknown state make a summary. Until 2026-11-20 only a `RuntimeError` thrown inside `parse` marked it, and the
+ * adapters walked and released their trees themselves (`parseSource`).
+ */
+export async function readTree<T>(grammar: string, source: string, read: (root: SyntaxNode) => T): Promise<T> {
   try {
-    tree = parser.parse(source);
+    const parser = await grammarParser(grammar);
+    const tree: Tree | null = parser.parse(source);
+    if (!tree) {
+      throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
+    }
+    try {
+      return read(tree.rootNode);
+    } finally {
+      tree.delete();
+    }
   } catch (error) {
-    if (error instanceof RUNTIME_ERROR) faulted = true;
+    faulted = true;
     throw error;
   }
-  if (!tree) {
-    throw new Error(`tree-sitter produced no tree for the ${grammar} grammar`);
-  }
-  return tree;
 }
