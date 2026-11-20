@@ -116,6 +116,10 @@ const CONSTRUCTS: Construct[] = [
     [`comparisons joined by | in ${file}`, file, (n) => `${COMPARED}export const x = ${Array.from({ length: n }, () => "a < a").join(" | ")};\n`],
     [`comparisons joined by & in ${file}`, file, (n) => `${COMPARED}export const x = ${Array.from({ length: n }, () => "a < a").join(" & ")};\n`],
     [`comparisons with an arrow's expression body between, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a < a, () => a < a").join(", ")});\n`],
+    // Each arrow a level deeper than its tree: without the arrow's term a fresh process fails below twice the bound (359 cold).
+    [`comparisons each in an arrow's expression body, in ${file}`, file, (n) => `${COMPARED}f(a < a, ${Array.from({ length: n }, () => "() => a < a").join(", ")});\n`],
+    // A statement written as a label's, in an arrow's block body, is a member whose type a run goes on through (518 cold).
+    [`comparisons in a label's statement in an arrow's block body, in ${file}`, file, (n) => `${COMPARED}f(a < a, () => { x: ${Array.from({ length: n }, () => "a < a").join(", ")}; });\n`],
     [`comparisons with an arrow's block body between, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a < a, () => { a < a; }").join(", ")});\n`],
     [`comparisons of !a side by side, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "!a < a").join(", ")});\n`],
     [`comparisons of typeof a side by side, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "typeof a < a").join(", ")});\n`],
@@ -142,7 +146,9 @@ const CONSTRUCTS: Construct[] = [
     [
       `JSDoc in ${file}: nested parameters, then a deep tag tried as their child and thrown away`,
       file,
-      (n) => `/**\n${Array.from({ length: n }, (_, i) => ` * @param {Object} ${Array.from({ length: i + 1 }, () => "a").join(".")}\n`).join("")} * @param {${r("[", n)}number${r("]", n)}} b\n */\nexport function f(a, b) {}\n`
+      // The tag four times as deep as the nesting: without the nested literals' term a fresh process fails below twice
+      // the bound (100 levels cold, nested 100 and the tuple 400).
+      (n) => `/**\n${Array.from({ length: n }, (_, i) => ` * @param {Object} ${Array.from({ length: i + 1 }, () => "a").join(".")}\n`).join("")} * @param {${r("[", 4 * n)}number${r("]", 4 * n)}} b\n */\nexport function f(a, b) {}\n`
     ],
     [
       `JSDoc in ${file}: nested parameters`,

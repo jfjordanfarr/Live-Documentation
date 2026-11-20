@@ -28,6 +28,9 @@ describe("the TypeScript measure", () => {
     const deep = `/** @param {number} [a=${"[".repeat(READING_DEPTH)}1${"]".repeat(READING_DEPTH)}] its prose ] */\nexport function f(a) {}\n`;
     expect(typeScriptBeyondDepth(parsed("m.ts", deep))).toBe(true);
     expect(typeScriptBeyondDepth(parsed("m.js", deep))).toBe(true);
+    // A JSX element's text may hold a `]` that is not the default's end: in a JSX file the default is read to the tag's end.
+    const element = `/** @param {number} [a=<a>]{${"[".repeat(READING_DEPTH)}1${"]".repeat(READING_DEPTH)}}</a>] its prose */\nexport function f(a) {}\n`;
+    expect(typeScriptBeyondDepth(parsed("m.tsx", element))).toBe(true);
   });
 
   it("counts the comparisons a type-argument attempt runs through, within a statement and not across statements", () => {
@@ -40,6 +43,20 @@ describe("the TypeScript measure", () => {
     const body = (n: number): string => `describe("x", () => {\n${"  expect(a < b, c < d).toBe(true);\n".repeat(n)}});\n`;
     expect(nestingOf("m.ts", body(500))).toBe(nestingOf("m.ts", body(5)));
     expect(nestingOf("m.ts", body(500))).toBeLessThan(20);
+  });
+
+  it("counts within a statement every comparison of the statements it holds, a label's path through a block among them", () => {
+    // A block an attempt reads is a type literal, and a statement written as a label's (`x: a < a, …`) is a member whose
+    // type a run goes on through. The outer statement, deep in its parentheses, counts the block's comparisons too.
+    const labeled = (n: number): string =>
+      `declare function f(...a: unknown[]): void;\ndeclare const a: any;\nf(${"(".repeat(50)}a${")".repeat(50)} < a, () => { x: ${Array.from({ length: n }, () => "a < a").join(", ")}; });\n`;
+    expect(nestingOf("m.ts", labeled(64)) - nestingOf("m.ts", labeled(32))).toBe(32);
+  });
+
+  it("counts a class member's comparisons as a statement's, never another member's", () => {
+    // A run cannot pass from one member to the next: members are parted by `;` or a line's end, never by a comma.
+    const members = (n: number): string => `declare const a: number, b: number;\nexport class C {\n  x = a < b;\n${Array.from({ length: n }, (_, i) => `  m${i}() { return a < b; }\n`).join("")}}\n`;
+    expect(nestingOf("m.ts", members(500))).toBe(nestingOf("m.ts", members(5)));
   });
 });
 

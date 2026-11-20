@@ -162,21 +162,22 @@ const NONE: readonly ts.Node[] = [];
  * attempt reads on until a token no type and no comma continues, then throws all it read away, so that
  * `f(a < a, a < a, …)` recurses as deep as it has comparisons while its tree is flat. Since a closing bracket, a `;` and
  * a statement's end each end the list, the attempt never leaves the statement it starts in, nor reads a following
- * statement; a block it reads within it, an arrow function's, it reads as a type literal, whose members hold a type
- * only where a statement is written as a label's (`x: a < b`), a path this count does not follow (the record's fourth
- * round, not settled). So within a statement the attempt is at most as deep as the deepest of the statement's nodes
- * (where it starts), plus the levels of the statement's own structure it reads through (brackets and arrows, which the
- * tree holds), plus one level for each comparison of the statement's own (in no statement within it) and for each arrow
- * function of its own with an expression body, which the attempt reads as a function type whose return type holds the
- * rest of the list, a level deeper, while the tree holds the arrow as a sibling ({@link opensAttempt}). The statement
- * is counted so, `base + 2 × (max − base) + own`, beside the walk's count of each node.
+ * statement. Nor does it pass from one member of a class to the next: members are parted by `;` or a line's end, never
+ * by a comma, and the list ends at the first token that is not a comma once a type is done; so each class member is a
+ * region as a statement is. So within a statement the attempt is at most as deep as the deepest of the statement's
+ * nodes (where it starts), plus the levels of the statement's structure it reads through (brackets and arrows, which
+ * the tree holds), plus one level for each comparison and each arrow function with an expression body anywhere in the
+ * statement, statements within it included: an arrow the attempt reads as a function type whose return type holds the
+ * rest of the list, a level deeper, while the tree holds the arrow as a sibling ({@link opensAttempt}); and counting
+ * the statements within it covers whatever path through a block, read as a type literal, the attempt may take. The
+ * statement is counted so, `base + 2 × (max − base) + units`, beside the walk's count of each node.
  */
 interface Region {
   /** The statement's nesting. */
   base: number;
   /** The most nesting of any node within the statement, statements within it included. */
   max: number;
-  /** The statement's own `<` comparisons and arrow functions with an expression body, none counted within a statement within it. */
+  /** The `<` comparisons and arrow functions with an expression body within the statement, statements within it included. */
   own: number;
   /** Whether the statement holds a comparison of its own, where an attempt starts; without one it is not counted. */
   compares: boolean;
@@ -195,13 +196,16 @@ function opensAttempt(node: ts.Node): boolean {
 /**
  * The text of a bracketed JSDoc parameter's default, from `start`, where the parser's one expression ends: the first
  * `]` outside every bracket and template the default opens, found by TypeScript's own scanner in a loop, a `/` read as a
- * regular expression where an operand may start. Without such a `]`, the text to `end`.
+ * regular expression where an operand may start. Without such a `]`, the text to `end`; and the same in a JSX file
+ * once a `<` is met, since a JSX element's text may hold a `]` the scanner cannot tell from the end. A text cut longer
+ * than the default can only count more; it is never cut shorter.
  */
 function defaultText(file: ts.SourceFile, start: number, end: number): string {
   const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, file.languageVariant, file.text, undefined, start, end - start);
   const open: ts.SyntaxKind[] = [];
   let previous = ts.SyntaxKind.Unknown;
   for (let token = scanner.scan(); token !== ts.SyntaxKind.EndOfFileToken; previous = token, token = scanner.scan()) {
+    if (token === ts.SyntaxKind.LessThanToken && file.languageVariant === ts.LanguageVariant.JSX) break;
     if ((token === ts.SyntaxKind.SlashToken || token === ts.SyntaxKind.SlashEqualsToken) && !ENDS_AN_OPERAND.has(previous)) token = scanner.reScanSlashToken();
     if (token === ts.SyntaxKind.CloseBraceToken && open.at(-1) === ts.SyntaxKind.TemplateHead) token = scanner.reScanTemplateToken(false);
     if (token === ts.SyntaxKind.OpenParenToken || token === ts.SyntaxKind.OpenBracketToken || token === ts.SyntaxKind.OpenBraceToken || token === ts.SyntaxKind.TemplateHead) open.push(token);
@@ -274,7 +278,7 @@ export function typeScriptExtent(root: ts.SourceFile, bounded = false): { nestin
     nesting = Math.max(nesting, nodeNesting);
     depth = Math.max(depth, nodeDepth);
     if (bounded && (nesting > READING_DEPTH || depth > TREE_DEPTH)) break;
-    if (ts.isStatement(node)) region = { base: nodeNesting, max: nodeNesting, own: 0, compares: false, literal: undefined, outer: region };
+    if (ts.isStatement(node) || ts.isClassElement(node)) region = { base: nodeNesting, max: nodeNesting, own: 0, compares: false, literal: undefined, outer: region };
     if (ts.isJSDoc(node)) {
       // A JSDoc comment's tags are tried as children of a nested parameter or property and thrown away when they are
       // not, at the depth of the nesting (`parseNestedTypeLiteral`, `parseTypedefTag`, `parseJSDocSignature`), then
@@ -285,7 +289,7 @@ export function typeScriptExtent(root: ts.SourceFile, bounded = false): { nestin
     if (ts.isJSDocTypeLiteral(node) && region.literal !== undefined && region.literal < nodeNesting) region.literal = nodeNesting;
     for (let enclosing: Region | undefined = region; enclosing !== undefined && enclosing.max < nodeNesting; enclosing = enclosing.outer) enclosing.max = nodeNesting;
     const opens = (file.flags & ts.NodeFlags.JavaScriptFile) === 0 && opensAttempt(node);
-    if (opens) region.own += 1;
+    if (opens) for (let enclosing: Region | undefined = region; enclosing !== undefined; enclosing = enclosing.outer) enclosing.own += 1;
     if (opens && ts.isBinaryExpression(node) && !region.compares) {
       region.compares = true;
       compared.push(region);

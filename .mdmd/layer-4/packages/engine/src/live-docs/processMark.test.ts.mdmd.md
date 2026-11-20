@@ -13,7 +13,8 @@ Proves how a failure is told to be the machine's rather than the file's: a faile
 Also holds three things of the TypeScript measure:
 - the version of TypeScript its audit of the parser's speculative reads was made for, a pin whose message says to redo the audit before moving it;
 - that a bracketed JSDoc default is read again alone, never with the tag's prose, and never throws;
-- that a statement's comparisons count where a type-argument attempt can run through them, in TypeScript and not in JavaScript, and that statements in a block are not chained.
+- that a statement's comparisons count where a type-argument attempt can run through them, in TypeScript and not in JavaScript, and that statements in a block are not chained;
+- that a statement counts the comparisons of the statements it holds, a label's statement in an arrow's block body among them, while each class member counts only its own; and that a JSDoc default in a JSX file is read to the tag's end.
 
 ### Notes
 - Written on 2026-11-20, when a review of the history's workers found that a failed call a library wraps in an error of its own (keeping it as `cause`) sorted as the file's, so that a summary could be made with it; the record is `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md`.
