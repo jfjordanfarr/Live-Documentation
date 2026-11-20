@@ -281,11 +281,11 @@ describe("a worker whose tree-sitter runtime faults", () => {
     const first = start();
     try {
       const sound = await first.summarize(commits[0]);
-      expect([sound.published, sound.runtimeFaulted]).toEqual([true, false]);
+      expect([sound.published, sound.marked]).toEqual([true, []]);
       const kept = fs.readdirSync(cache, { recursive: true });
       fs.writeFileSync(fault, "");
       const faulted = await first.summarize(commits[1]);
-      expect([faulted.published, faulted.runtimeFaulted]).toEqual([false, true]);
+      expect([faulted.published, faulted.marked]).toEqual([false, ["unmapped", "runtime"]]);
       // Nothing of the change reached the cache: no summary, no text.
       expect(fs.readdirSync(cache, { recursive: true })).toEqual(kept);
     } finally {
@@ -294,8 +294,11 @@ describe("a worker whose tree-sitter runtime faults", () => {
     const fresh = start();
     try {
       const report = await fresh.summarize(commits[1]);
-      expect([report.published, report.runtimeFaulted]).toEqual([true, true]);
-      expect(fs.existsSync(task(commits[1]).summaryPath)).toBe(true);
+      expect([report.published, report.marked]).toEqual([true, ["unmapped", "runtime"]]);
+      // The file the fault left unmapped is named, not dropped in silence, and no doc of another day stands in for it.
+      const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(task(commits[1]).summaryPath)).toString("utf8")) as { files: Array<{ path: string }>; unmapped?: Array<[string, string]> };
+      expect(summary.unmapped).toEqual([["src/m.py", "a stand-in trap"]]);
+      expect(summary.files.map((file) => file.path)).not.toContain("src/m.py");
     } finally {
       fresh.end();
       fs.rmSync(fault, { force: true });

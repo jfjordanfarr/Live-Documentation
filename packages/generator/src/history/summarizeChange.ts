@@ -51,7 +51,6 @@ import { getHeapStatistics } from "node:v8";
 import { gzipSync } from "node:zlib";
 
 import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { runtimeFaulted } from "@live-documentation/engine/live-docs/adapters/treeSitter";
 import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
 import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
@@ -60,6 +59,7 @@ import { openGitStore } from "@live-documentation/engine/live-docs/history/git";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
 import type { WorkingTree, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
+import { processMarks, type ProcessMark } from "@live-documentation/engine/live-docs/processMark";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
 import { generateLiveDocs } from "../generator";
@@ -84,16 +84,22 @@ export interface SummaryTask {
   unwritten?: Array<{ path: string; reason: string }>;
 }
 
+/** What became of a change's summary, as the worker reports it ({@link WorkerReport}). */
+export type SummaryOutcome = Pick<WorkerReport, "published" | "machineFailure" | "unmapped">;
+
 /**
  * Generates the change's docs in its working tree and writes its summary, and its index when asked, unless
- * `publishable` says no once the generator has run: then nothing of the change is written, neither a text nor the
- * summary nor the index.
+ * `publishable` says no once the generator has run, or a file failed for a cause of the machine's rather than the
+ * file's ({@link machineFailure}): then nothing of the change is written, neither a text nor the summary nor the index.
+ *
+ * A file the generator could not map for a cause of its own is carried in the summary (`unmapped`), with a reason that
+ * names no path of the tree, so that it reads the same whichever worker and whichever folder made it; its doc
+ * committed on another day was removed by the generator, so that it never stands in for the file.
  *
  * @param warn - Where each line the generator warns goes, for the history command to gather across the changes.
  * @param publishable - Asked once the generator has run, before anything is written: whether what it derived may be kept.
- * @returns Whether the summary was written.
  */
-export async function summarizeChange(task: SummaryTask, warn: (line: string) => void, publishable: () => boolean): Promise<boolean> {
+export async function summarizeChange(task: SummaryTask, warn: (line: string) => void, publishable: () => boolean): Promise<SummaryOutcome> {
   // The configuration the summary is made under (`summarizedConfiguration`), as the command hands it: with no bundle
   // exclusion, so that every linked and citing document is kept and the exclusions are applied where summaries are read.
   const { tree, configuration } = task;
@@ -104,7 +110,12 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
     keepAuthoredStaleDocs: false,
     logger: { info: () => undefined, warn, error: warn }
   });
-  if (!publishable()) return false;
+  const failures = result.failed.map((failure) => ({ path: failure.sourcePath, reason: withoutTree(failure.reason, tree), error: failure.error }));
+  const unmapped = failures.map(({ path: file, reason }) => ({ path: file, reason })).sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+  const machine = failures.find((failure) => machineFailure(failure.error));
+  if (machine !== undefined) return { published: false, machineFailure: { path: machine.path, error: machine.reason }, unmapped };
+  for (const failure of unmapped) warn(`could not map ${failure.path}: ${failure.reason}`);
+  if (!publishable()) return { published: false, unmapped };
   // A change with no file the globs match has no docs and no index: its shape is empty.
   const indexText = result.index ? await fs.readFile(path.join(tree, result.index), "utf8") : undefined;
   const graph: LiveDocGraph = indexText
@@ -115,12 +126,36 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   if (task.unwritten && task.unwritten.length > 0) {
     summary.unwritten = task.unwritten.map((entry): [string, string] => [entry.path, entry.reason]);
   }
+  if (unmapped.length > 0) {
+    summary.unmapped = unmapped.map((failure): [string, string] => [failure.path, failure.reason]);
+  }
   await putTexts(task.textStore, texts);
   await writeInPlace(task.summaryPath, gzipSync(JSON.stringify(summary)));
   if (task.indexPath) {
     await writeInPlace(task.indexPath, gzipSync(indexText ?? JSON.stringify(graph)));
   }
-  return true;
+  return { published: true, unmapped };
+}
+
+/**
+ * Whether a file failed for a cause of the machine's rather than of the file's: a system call that failed (the error
+ * names its `syscall` and its `code`) for a cause other than the name's or the path's, which the tree writer leaves out
+ * and names (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds)
+ * would make a summary that a later run would not, so it is never written; the history tries the change once more in
+ * a fresh worker and stops if it fails again.
+ */
+export function machineFailure(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  const { syscall, code } = error as { syscall?: unknown; code?: unknown };
+  return typeof syscall === "string" && typeof code === "string" && !NAME_FAILURES.has(code);
+}
+
+/** The codes by which a disk says it cannot hold a name or a path, rather than that it failed, as the tree writer reads them (`git.ts`). */
+const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
+
+/** A reason with every mention of the tree's folder taken out, so that it reads the same whichever worker and folder made it. */
+function withoutTree(reason: string, tree: string): string {
+  return [tree + path.sep, tree + "/", tree].reduce((text, prefix) => text.split(prefix).join(""), reason);
 }
 
 /**
@@ -228,16 +263,21 @@ export interface WorkerReport {
   /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
   broughtForward: boolean;
   /**
-   * Whether anything has thrown in this process while a tree-sitter tree was taken, read or released (`runtimeFaulted`),
-   * after which no parser of the process is known sound: the command ends the worker (`regenerate.ts`).
+   * Every reason the process is marked for (`processMark.ts`): a file beyond the reading depth, a file the generator
+   * could not map, a fault of the tree-sitter runtime; after any, what the worker derives may depend on its past, and the
+   * command ends it (`regenerate.ts`). None when it is not marked.
    */
-  runtimeFaulted: boolean;
+  marked: ProcessMark[];
   /**
-   * Whether the change's summary and texts were written. A worker whose runtime faulted during a change after its first
-   * writes nothing of it, and the command gives the change to a fresh worker; a worker's first change is what a fresh
-   * process makes, and is written whatever it is.
+   * Whether the change's summary and texts were written. A worker marked during a change after its first writes nothing
+   * of it, and the command gives the change to a fresh worker; a worker's first change is what a fresh process makes,
+   * and is written whatever it is, unless a file failed for a cause of the machine's (`machineFailure`).
    */
   published: boolean;
+  /** The file that failed for a cause of the machine's, and the error, when that is why the change was not written. */
+  machineFailure?: { path: string; error: string };
+  /** The files the generator could not map, each with the reason, which the summary carries (`unmapped`). */
+  unmapped: Array<{ path: string; reason: string }>;
   /** The memory the worker holds once the change is done, resident, in bytes, by which the command bounds a worker. */
   heldMemory: number;
   /** The share of its JavaScript heap's limit the worker holds once the change is done, by which the command bounds a worker too. */
@@ -289,7 +329,7 @@ function work(store: string, folder: string): void {
     const options = treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00"));
     tree = tree === undefined ? await trees.workingTree(task.commit, path.join(folder, "tree00"), options) : await tree.bringTo(task.commit, options);
     const warned: string[] = [];
-    let published: boolean;
+    let outcome: SummaryOutcome;
     const { environment } = tree;
     Object.assign(process.env, environment);
     try {
@@ -297,13 +337,14 @@ function work(store: string, folder: string): void {
       const warn = (message: string): void => {
         warned.push(...message.split("\n").map((line) => line.trim()).filter(Boolean));
       };
-      // A fault carried from an earlier change could make a summary a fresh process would not; one in the first is a fresh process's own.
-      published = await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, warn, () => first || !runtimeFaulted());
+      // A mark (a deep file, a file not mapped, a fault of the runtime) means a summary may be one a fresh process would
+      // not make; a mark in the first change is a fresh process's own.
+      outcome = await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, warn, () => first || processMarks().length === 0);
     } finally {
       for (const name of Object.keys(environment)) delete process.env[name];
     }
     // The peak as the operating system counts it, since the process began; `maxRSS` is in kibibytes.
-    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, runtimeFaulted: runtimeFaulted(), published, ...heldMemory() };
+    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, marked: processMarks(), ...outcome, ...heldMemory() };
   };
   // One task at a time: the command sends the next only when this one has answered.
   process.on("message", (task: WorkerTask) => {

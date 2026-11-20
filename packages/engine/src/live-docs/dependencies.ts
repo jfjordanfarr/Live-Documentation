@@ -22,6 +22,7 @@ import type {
   ReExportedSymbolInfo
 } from "./coreTypes";
 import { displayDependencyKey, getNodeLocation } from "./coreUtils";
+import { typeScriptBeyondDepth } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
@@ -552,6 +553,8 @@ async function gatherExportedSymbolsFromFile(params: {
     true,
     scriptKind
   );
+  // A provider behind `export *` may be a file the analysis pass never parses (one the configuration excludes, say).
+  typeScriptBeyondDepth(sourceFile);
 
   const directSymbols = collectExportedSymbols(sourceFile);
   const dependencies = await collectDependencies({

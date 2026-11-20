@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T13:01:15.792Z
+- Generated At: 2026-11-20T14:07:48.324Z
 
 ## Authored
 ### Purpose
@@ -26,21 +26,21 @@ What the history command does on a summary's behalf: a pool of workers (`summari
 ### Public Symbols
 #### `summaryPath` {#symbol-summarypath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L49)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L50)
 
 ##### `summaryPath` — Summary
 Where a change's summary lies in the lens's cache folder.
 
 #### `indexPath` {#symbol-indexpath}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L54)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L55)
 
 ##### `indexPath` — Summary
 Where a change's full graph index lies in the lens's cache folder, when the cache keeps it.
 
 #### `Scratch` {#symbol-scratch}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L62)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L63)
 
 ##### `Scratch` — Summary
 The scratch folders of a run under the system's temporary folder and the processes it started, all removed or ended
@@ -48,14 +48,14 @@ when a signal stops it: a folder is held from the moment it is made, before anyt
 
 #### `RegenerationContext` {#symbol-regenerationcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L116)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L117)
 
 ##### `RegenerationContext` — Summary
 What regenerating needs.
 
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L154)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L155)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
@@ -75,7 +75,7 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `workerBound` {#symbol-workerbound}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L245)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L261)
 
 ##### `workerBound` — Summary
 The resident memory past which a worker is replaced after a change: its share of the memory the pool was sized by,
@@ -83,14 +83,14 @@ so that the workers together never hold more than the pool planned for, whatever
 
 #### `Worker` {#symbol-worker}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L250)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L266)
 
 ##### `Worker` — Summary
 A summarizing process started once, which summarizes changes one at a time in a tree it keeps.
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L334)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L350)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -101,7 +101,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L365)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L381)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
@@ -127,6 +127,7 @@ node's default heap could not be made by any means.
 - [`lens.summarizedConfiguration`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
+- [`ProcessMark`](../../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-processmark) (type-only)
 - [`summarizeChange.WorkerReport`](./summarizeChange.ts.mdmd.md#symbol-workerreport) (type-only)
 - [`summarizeChange.WorkerTask`](./summarizeChange.ts.mdmd.md#symbol-workertask) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

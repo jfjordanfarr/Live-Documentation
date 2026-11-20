@@ -42,6 +42,7 @@ import type { HistoryLens } from "@live-documentation/engine/live-docs/history/f
 import { summarizedConfiguration } from "@live-documentation/engine/live-docs/history/lens";
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange } from "@live-documentation/engine/live-docs/history/versionControl";
+import type { ProcessMark } from "@live-documentation/engine/live-docs/processMark";
 
 import type { WorkerReport, WorkerTask } from "./summarizeChange";
 
@@ -159,6 +160,9 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   }
   // What the generator warned, once each with the number of changes that gave it, rather than again at every change.
   const warnings = new Map<string, number>();
+  // The changes a fresh process decided, by the reason its worker was marked, and the files not mapped.
+  const decided = new Map<ProcessMark, number>();
+  let unmapped = 0;
   const started = Date.now();
   const runs: MainlineChange[][] = [];
   const length = Math.max(1, Math.ceil(changes.length / (context.jobs * 4)));
@@ -169,8 +173,8 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   const bound = workerBound(context.memory, context.jobs);
   const lane = async (): Promise<void> => {
     let worker: Worker | undefined;
-    // One change summarized by the lane's worker, or by a fresh one where there is none. A worker after which no parser
-    // of its process is known sound (`runtimeFaulted` in `treeSitter.ts`) is ended, and the next change starts in a new one.
+    // One change summarized by the lane's worker, or by a fresh one where there is none. A worker whose derivation may
+    // depend on its own past (`marked`, `processMark.ts`) is ended, and the next change starts in a new one.
     const summarize = async (change: MainlineChange): Promise<WorkerReport> => {
       worker ??= await start(context);
       const report = await worker.summarize(change);
@@ -179,7 +183,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       // what still grows with each change, unfound, never fails a run (its next change is a fresh worker's first).
       const full = report.heldMemory > bound || report.heapShare > 1 / 2;
       if (full) context.progress(`${change.id.slice(0, 8)}: its worker holds ${formatMegabytes(report.heldMemory)}, ${Math.round(report.heapShare * 100)}% of its heap's limit, against ${formatMegabytes(bound)} and a half; replaced`);
-      if (report.runtimeFaulted || !report.published || full) {
+      if (report.marked.length > 0 || !report.published || full) {
         await worker.end();
         worker = undefined;
       }
@@ -192,13 +196,21 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           const began = Date.now();
           let report = await summarize(change);
           if (!report.published) {
-            // The runtime faulted during a change after the worker's first, so its state may be an earlier change's: the
-            // change goes to a fresh worker, whose first change is what a fresh process makes and is written whatever
-            // it is, so that no change is summarized a third time nor written twice.
-            context.progress(`${change.id.slice(0, 8)}: the tree-sitter runtime faulted in a worker that had summarized earlier changes; summarized again in a fresh worker`);
+            // Either the worker was marked during a change after its first, so that its derivation may be an earlier
+            // change's, or a file failed for a cause of the machine's: the change goes to a fresh worker, whose first
+            // change is what a fresh process makes and is written whatever it is but for the machine's failure, so that
+            // no change is summarized a third time nor written twice.
+            context.progress(`${change.id.slice(0, 8)}: ${report.machineFailure ? `${report.machineFailure.path} failed for a cause of the machine's (${report.machineFailure.error})` : `its worker, which had summarized earlier changes, was marked: ${marks(report.marked)}`}; summarized again in a fresh worker`);
             report = await summarize(change);
+            if (report.machineFailure) throw new Error(`the summary of ${change.id} failed twice for a cause of the machine's: ${report.machineFailure.path}: ${report.machineFailure.error}`);
             if (!report.published) throw new Error(`a fresh worker did not write the summary of ${change.id}`);
           }
+          if (report.marked.length > 0) {
+            // Published by a worker whose first change it was: what a fresh process makes of the change alone.
+            context.progress(`${change.id.slice(0, 8)}: decided by a fresh process, its worker ended after it: ${marks(report.marked)}`);
+            for (const reason of report.marked) decided.set(reason, (decided.get(reason) ?? 0) + 1);
+          }
+          unmapped += report.unmapped.length;
           if (report.unwritten.length > 0) {
             context.progress(`${change.id.slice(0, 8)}: ${report.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
             for (const entry of report.unwritten) {
@@ -231,6 +243,10 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
     for (const [message, count] of warnings) {
       context.progress(`the generator warned at ${count} of the ${changes.length} changes regenerated: ${message}`);
     }
+    for (const [reason, count] of decided) {
+      context.progress(`${count} of the ${changes.length} changes regenerated were decided by a fresh process: ${MARK_WORDS[reason]}`);
+    }
+    if (unmapped > 0) context.progress(`${unmapped} files the generator could not map, over the changes regenerated; each summary names its own`);
   }
   if (failure !== undefined) {
     throw failure;
@@ -365,6 +381,17 @@ function heapLimit(flags: readonly string[]): string[] {
 export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
   const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
   return [...loader, ...heapLimit(commandFlags)];
+}
+
+/** What each mark of a worker means, in the words of the run's lines. */
+const MARK_WORDS: Record<ProcessMark, string> = {
+  deep: "a file nested beyond the reading depth",
+  unmapped: "a file the generator could not map",
+  runtime: "a fault of the tree-sitter runtime"
+};
+
+function marks(reasons: readonly ProcessMark[]): string {
+  return reasons.map((reason) => MARK_WORDS[reason]).join("; ");
 }
 
 function formatMegabytes(bytes: number): string {

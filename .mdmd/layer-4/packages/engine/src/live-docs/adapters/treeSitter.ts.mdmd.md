@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T12:42:56.340Z
+- Generated At: 2026-11-20T14:07:45.958Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 ### Public Symbols
 #### `SyntaxNode` {#symbol-syntaxnode}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L15)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L17)
 - Returns: `Node`
 
 ##### `SyntaxNode` — Summary
@@ -29,25 +29,16 @@ A node of a parsed tree; the runtime's own name for it collides with the DOM typ
 
 #### `grammarParser` {#symbol-grammarparser}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L35)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L37)
 
 ##### `grammarParser` — Summary
 One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
 runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
 generations never fails a file for a failure of the past.
 
-#### `runtimeFaulted` {#symbol-runtimefaulted}
-- Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L67)
-
-##### `runtimeFaulted` — Summary
-Whether anything thrown in this process while a tree was taken, read or released ({@link readTree}): after such a
-throw no parser of the process is known sound, and a process that lives across many generations, as the history's
-worker does, publishes nothing more and ends (`summarizeChange.ts`).
-
 #### `readTree` {#symbol-readtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L86)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L80)
 - Returns: `T`
 - Parameters: `root`: [`SyntaxNode`](#symbol-syntaxnode)
 
@@ -61,16 +52,21 @@ and the runtime restores none of its state when such a call throws: a trap throw
 abort sets a flag the module keeps and throws one, an exit of the module throws its `ExitStatus`, a stack overflow
 throws a `RangeError` wherever the stack ran out, in the module or in the adapter's walk, and `parse` holds no
 `finally` round its call. Which of these a throw was cannot be told from the error, so any throw from the grammar's
-load to the tree's release marks the process ({@link runtimeFaulted}), whatever its class, the adapter's own error
-among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module of
-unknown state make a summary. Until 2026-11-20 only a `RuntimeError` thrown inside `parse` marked it, and the
-adapters walked and released their trees themselves (`parseSource`).
+load to the tree's release marks the process (`runtime`, `processMark.ts`), whatever its class, the adapter's own
+error among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module
+of unknown state make a summary. Before `read` is called the tree's depth is measured by a cursor, without
+recursion, and a tree deeper than `READING_DEPTH` marks the process too (`deep`): a fresh process might run out of
+stack in the adapter's walk where this one does not, or the other way round. Until 2026-11-20 only a `RuntimeError`
+thrown inside `parse` marked it, and the adapters walked and released their trees themselves (`parseSource`); the
+depth is measured since a later review of that day.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `existsSync`
 - `node:path` - `path`
+- [`processMark.READING_DEPTH`](../processMark.ts.mdmd.md#symbol-reading_depth)
+- [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
 - `web-tree-sitter` - `Language`, `Node`, `Parser`, `Tree`
 <!-- LIVE-DOC:END Dependencies -->
 

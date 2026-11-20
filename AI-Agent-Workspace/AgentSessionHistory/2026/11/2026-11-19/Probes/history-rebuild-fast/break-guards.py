@@ -11,7 +11,8 @@ import sys
 #   (regenerate.test.ts); a worker's memory left unbounded (regenerate.test.ts).
 # usage: break-guards.py apply|revert|check [guard], a guard by its number (1 the blob, 2 the walk, 3 the stamp,
 #   4 the folders above, 5 the environment, 6 the mark, 7 the refusal, 8 the first change, 9 the fresh worker,
-#   10 the memory bound); with none, every guard at once. Since the second review of 2026-11-20 each guard is
+#   10 the memory bound, 11 the depth, 12 the unmapped mark, 13 the old doc, 14 the machine's failure); with none,
+#   every guard at once. Since the second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
 # directory's guards are broken one at a time by hand, as the record's section on the review says. Since the fourth
@@ -38,24 +39,39 @@ edits = [
      "  let tree: WorkingTree | undefined;\n  const summarize",
      "  let tree: WorkingTree | undefined;\n  let firstEnvironment: Record<string, string> | undefined;\n  const summarize"),
     ("packages/engine/src/live-docs/adapters/treeSitter.ts",
-     "    faulted = true;\n",
-     "    faulted = faulted;\n"),
+     "    markProcess(\"runtime\");\n",
+     "    void 0;\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "  if (!publishable()) return false;\n",
+     "  if (!publishable()) return { published: false, unmapped };\n",
      "  publishable();\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "warn, () => first || !runtimeFaulted());",
-     "warn, () => !runtimeFaulted());"),
+     "warn, () => first || processMarks().length === 0);",
+     "warn, () => processMarks().length === 0);"),
     ("packages/generator/src/history/regenerate.ts",
      "          if (!report.published) {\n",
      "          if (false as boolean) {\n"),
     ("packages/generator/src/history/regenerate.ts",
      "      const full = report.heldMemory > bound || report.heapShare > 1 / 2;\n",
      "      const full = report.heldMemory < 0;\n"),
+    # Since the review of 2026-11-20 at e1e27e33a: a tree-sitter tree beyond the reading depth left unmarked
+    # (treeSitter.test.ts); a file the generator could not map left unmarked; its committed doc kept in the history's
+    # tree (history-workers); a machine's failure published (regenerate.test.ts's stand-ins hold the pool's side).
+    ("packages/engine/src/live-docs/adapters/treeSitter.ts",
+     "      if (beyondDepth(tree)) markProcess(\"deep\");\n",
+     "      beyondDepth(tree);\n"),
+    ("packages/generator/src/generator.ts",
+     "      markProcess(\"unmapped\");\n",
+     "      void 0;\n"),
+    ("packages/generator/src/generator.ts",
+     "      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });\n",
+     "      if (options.keepAuthoredStaleDocs === undefined && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });\n"),
+    ("packages/generator/src/history/summarizeChange.ts",
+     "  if (machine !== undefined) return",
+     "  if (machine === null) return"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/sourceAnalysis.ts`
-- Generated At: 2026-11-19T22:40:10.777Z
+- Generated At: 2026-11-20T14:07:46.374Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 ### Public Symbols
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/sourceAnalysis.ts#L66)
+- Source: [source](../../../../../../packages/engine/src/live-docs/sourceAnalysis.ts#L67)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex); `symbolIndex`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `analyzeSourceFile` — Summary
@@ -67,6 +67,7 @@ if (analysis.symbols.length === 0) {
 - [`dependencies.shouldInferDomDependencies`](./dependencies.ts.mdmd.md#symbol-shouldinferdomdependencies)
 - [`dom.inferDomDependencies`](./heuristics/dom.ts.mdmd.md#symbol-inferdomdependencies)
 - [`routes.inferRouteDependencies`](./heuristics/routes.ts.mdmd.md#symbol-inferroutedependencies)
+- [`processMark.typeScriptBeyondDepth`](./processMark.ts.mdmd.md#symbol-typescriptbeyonddepth)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)

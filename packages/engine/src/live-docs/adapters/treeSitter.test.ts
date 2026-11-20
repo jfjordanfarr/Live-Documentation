@@ -48,18 +48,18 @@ describe("anything thrown while a tree is taken, read or released", () => {
           await fs.writeFile(file, "import os\n\ndef f():\n    return os.sep\n");
           // A module of its own, so that the mark starts unset and the grammar is loaded anew.
           vi.resetModules();
-          const own = await vi.importActual<typeof import("./treeSitter")>("./treeSitter");
+          const own = await vi.importActual<typeof import("../processMark")>("../processMark");
           await run(root, file);
-          expect(own.runtimeFaulted()).toBe(false);
+          expect(own.processMarks()).toEqual([]);
           vi.resetModules();
-          const fresh = await vi.importActual<typeof import("./treeSitter")>("./treeSitter");
+          const fresh = await vi.importActual<typeof import("../processMark")>("../processMark");
           const spy = make();
           try {
             await run(root, file);
           } finally {
             spy.mockRestore();
           }
-          expect(fresh.runtimeFaulted()).toBe(true);
+          expect(fresh.processMarks()).toEqual(["runtime"]);
         } finally {
           await fs.rm(root, { recursive: true, force: true });
         }
@@ -70,8 +70,25 @@ describe("anything thrown while a tree is taken, read or released", () => {
   it("leaves the process unmarked when nothing throws", async () => {
     vi.resetModules();
     const own = await vi.importActual<typeof import("./treeSitter")>("./treeSitter");
+    const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
     await expect(own.readTree("python", "import os\n", (root) => root.type)).resolves.toBe("module");
-    expect(own.runtimeFaulted()).toBe(false);
+    expect(mark.processMarks()).toEqual([]);
+  });
+
+  // A warm process has more stack to spare than a fresh one, so a tree deeper than the reading depth marks the process
+  // whether or not anything overflowed (the review of 2026-11-20).
+  it("marks the process for a tree deeper than the reading depth, and not for one at it", async () => {
+    vi.resetModules();
+    const own = await vi.importActual<typeof import("./treeSitter")>("./treeSitter");
+    const mark = await vi.importActual<typeof import("../processMark")>("../processMark");
+    // `x = (((…)))`: the module, the statement, the assignment, then a parenthesized expression a level, then `1`.
+    const nested = (levels: number): string => `x = ${"(".repeat(levels)}1${")".repeat(levels)}\n`;
+    const depthOf = (root: SyntaxNode): number => 1 + Math.max(0, ...root.children.map(depthOf));
+    const atDepth = mark.READING_DEPTH - 4;
+    expect(await own.readTree("python", nested(atDepth), depthOf)).toBe(mark.READING_DEPTH);
+    expect(mark.processMarks()).toEqual([]);
+    await own.readTree("python", nested(atDepth + 1), () => undefined);
+    expect(mark.processMarks()).toEqual(["deep"]);
   });
 });
 

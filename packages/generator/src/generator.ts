@@ -21,6 +21,7 @@ import {
 } from "@live-documentation/engine/live-docs/document";
 import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtils";
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 import {
@@ -315,8 +316,15 @@ export async function generateLiveDocs(
       await fs.writeFile(docPaths.absolute, rendered, "utf8");
       written += 1;
     } catch (error) {
+      // Whatever was thrown, a stack run short among it, a process that lives across generations may have read the file
+      // where a fresh one would not, or the other way round (`processMark.ts`).
+      markProcess("unmapped");
       failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error), error });
-      await removeRefusedDoc(resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute, options.dryRun ?? false);
+      const docAbsolutePath = resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute;
+      // Where no stale doc is kept for its words (the history's scratch tree), no doc written on another day stands in
+      // for a file this run could not map; a person's workspace keeps it, for its words, and the command says so.
+      if (options.keepAuthoredStaleDocs === false && !options.dryRun) await fs.rm(docAbsolutePath, { force: true });
+      else await removeRefusedDoc(docAbsolutePath, options.dryRun ?? false);
     }
   }
 
