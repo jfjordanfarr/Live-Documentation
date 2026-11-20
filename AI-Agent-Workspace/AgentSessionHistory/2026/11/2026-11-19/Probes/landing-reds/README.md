@@ -107,3 +107,14 @@ _Taken on November 20, 2026, 04:00 to 06:40 UTC, by the builder of the round `fo
 
 - **The page's mend undone** (actions holding focus standing still on the screen again): red 3 of 3 (06:15, load 17 from another builder's work), each at the check after Centre on (`force-graph-focus.spec.ts:147`), "the name is shown within 8 px of the room's centre", received Infinity: the name hidden. The before picture above is the first of these.
 - **The framing made to forget the controls along the bottom** (`frameCameraSpheres` centring in the whole frame's height): red 2 of 2 (06:28, load 12.7), each at the first check, the focused URL (`:134`), received 32 px: half the controls' 64 px. So the case measures an off-centre camera, and not only a hidden name.
+
+## The mend made simpler
+
+_Taken on November 20, 2026, 06:35 to 07:10 UTC, by the same builder, at the root's review of the run-down; through the lane, on the container's own browser (Playwright's headless shell 1208 in its usual folder, Mesa's EGL installed by the root at about 05:57), whose first line named D3D12 (RTX 3090) in every hold._
+
+The root asked that actions holding keyboard focus simply go with their sphere: keyboard focus is no place on the screen, so a settling sphere cannot pull a control away from it, and no reason was recorded for the rule of 2026-10-20 having named the keyboard beside the pointer. Keeping instead the place in the picture where the sphere had stood left the actions behind whenever the camera did not hold that sphere, and the review's leftover was the same fault met from the other side. No reason against it was found in a case or the record, so it is built: `positionActionStrip` returns early only under the pointer or an open menu, and a control holding focus is not hidden from under it. The design system gains the rule (2.2, "A thing's actions go with what they act on, except under the pointer or an open menu").
+
+- The focus case, ten times at one worker (06:52 to 06:55, load 0.8 to 2.3): **10 of 10**.
+- The whole spec file at the gate's two workers (06:55 to 06:58, load 2.3 to 1.6): the fifteen cases it now holds **15 of 15**; the sixteenth, the trial below, failed as it did alone and is not kept.
+- A case-level check was tried and left out: on the estate sample, `PaymentResultModel.cs`'s Pin pressed with the mouse, the pointer moved off, the grown picture let rest, then the actions' middle against the sphere's. In 5 of 5 runs alone and 1 at two workers the sphere had moved **0.0 px** on the screen after its own pin, so the check could not fail whatever the actions did; a journey where a focused strip's sphere moves on its own is not cheap to find steady.
+- With the mend undone the page is the code before this round: the red of the run-down above (3 of 3 at the check after Centre on, the name hidden) is that proof, and was not run again.
