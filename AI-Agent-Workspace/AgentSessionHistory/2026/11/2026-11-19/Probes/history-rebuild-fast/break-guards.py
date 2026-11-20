@@ -5,7 +5,9 @@ import sys
 #           the folders above a nested docs root left (the nested case);
 #   summarizeChange.ts: every task summarized with the first task's tree environment (history.test.ts).
 # usage: break.py apply|revert
-root = "/workspaces/Live-Documentation/.claude/worktrees/agent-ac4457f22534d6432/"
+# Updated 2026-11-20 for the review's mends (the worktree, and the worker's tree environment as it now reads); the
+# caches' and the git directory's guards are broken one at a time by hand, as the record's section on the review says.
+root = "/workspaces/Live-Documentation/.claude/worktrees/agent-ac9957babf9636e7b/"
 edits = [
     ("packages/engine/src/live-docs/history/git.ts",
      "wanted.mode === entry.mode && wanted.id === entry.id && wanted.empty === entry.empty",
@@ -17,11 +19,11 @@ edits = [
      "    for (const folder of above.reverse().filter(",
      "    for (const folder of [].filter("),
     ("packages/generator/src/history/summarizeChange.ts",
-     "    Object.assign(process.env, tree.environment);\n",
-     "    firstEnvironment ??= tree.environment;\n    Object.assign(process.env, firstEnvironment);\n"),
+     "    Object.assign(process.env, environment);\n",
+     "    firstEnvironment ??= environment;\n    Object.assign(process.env, firstEnvironment);\n"),
     ("packages/generator/src/history/summarizeChange.ts",
-     "  let count = 0;\n  const summarize",
-     "  let count = 0;\n  let firstEnvironment: Record<string, string> | undefined;\n  const summarize"),
+     "  let tree: WorkingTree | undefined;\n  const summarize",
+     "  let tree: WorkingTree | undefined;\n  let firstEnvironment: Record<string, string> | undefined;\n  const summarize"),
 ]
 mode = sys.argv[1]
 for file, good, bad in edits:
