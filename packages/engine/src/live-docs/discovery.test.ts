@@ -378,16 +378,21 @@ describe("the folders git ignores whole", () => {
     expect([...foldersGitIgnoresWhole(root)]).toEqual(["Build"]);
   });
 
-  it("judges a submodule's files by name, by the outer repository's excludes and the submodule's own .gitignore files", async () => {
-    const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "module/b.ts": "", "module/.gitignore": "own.ts\n", "module/own.ts": "", "module/build/m.ts": "", "c.ts": "" });
-    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+  it("judges a submodule's files by the submodule's own git, and a nested repository's by its own", async () => {
+    const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "module/b.ts": "", "module/.gitignore": "own.ts\n", "module/own.ts": "", "module/mine.ts": "", "module/x.gen": "", "module/build/m.ts": "", "nest/n.ts": "", "nest/y.gen": "", "nest/mine.ts": "", "c.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n*.gen\n");
     git(path.join(root, "module"), "init", "-q");
-    git(path.join(root, "module"), "add", "b.ts", ".gitignore");
+    git(path.join(root, "module"), "add", "b.ts", "x.gen", ".gitignore");
     git(path.join(root, "module"), "commit", "-qm", "module");
+    await fs.appendFile(path.join(root, "module", ".git", "info", "exclude"), "mine.ts\n");
+    git(path.join(root, "nest"), "init", "-q");
+    await fs.appendFile(path.join(root, "nest", ".git", "info", "exclude"), "mine.ts\n");
     git(root, "add", "module");
 
-    // Until 2026-11-20 git refused `module/b.ts`, and the root .gitignore alone was read, which kept `excluded/e.ts`.
-    expect((await found(root)).files).toEqual([".gitignore", "c.ts", "module/.gitignore", "module/b.ts"]);
+    // The outer `build/` and `*.gen` reach no file of the inner repositories, which their own git does not ignore; their
+    // own `.gitignore` and `.git/info/exclude` do. Until this form `module/build/m.ts`, `module/x.gen` (which the
+    // submodule tracks) and `nest/y.gen` were dropped by the outer rules, and `module/mine.ts` and `nest/mine.ts` kept.
+    expect((await found(root)).files).toEqual([".gitignore", "c.ts", "module/.gitignore", "module/b.ts", "module/build/m.ts", "module/x.gen", "nest/n.ts", "nest/y.gen"]);
   });
 
   it("asks of a path through a link to a folder as its link: ignored with the link, else judged by the root .gitignore alone", async () => {
@@ -412,7 +417,7 @@ describe("the folders git ignores whole", () => {
     await warned(["**/*"]);
     expect(warnings).toEqual([]);
     await warned(["*/**/*.ts"]);
-    expect(warnings).toEqual([expect.stringContaining("of 3 file(s) reached through a link to a folder, such as open/link/")]);
+    expect(warnings).toEqual([expect.stringContaining("of 3 file(s), such as open/link/r.ts, reached through a link to a folder")]);
   });
 
   it("judges a folder or a file whose path begins with a colon by its name", async () => {
@@ -422,6 +427,34 @@ describe("the folders git ignores whole", () => {
     // Until 2026-11-20 git refused `:(bad)/c.ts` and `:!x.ts`, and the root .gitignore alone was read.
     expect((await found(root)).files).toEqual([".gitignore", ":kept.ts", "d.ts"]);
     expect([...foldersGitIgnoresWhole(root)].sort()).toEqual([":(bad)", "build", "excluded"]);
+  });
+
+  it("judges by git's word whatever GIT_*_PATHSPECS the environment holds, and walks whole by the rule for no git where the listing fails", async () => {
+    const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "b.local.ts": "", "c.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n*.local.ts\n");
+    for (const name of ["GIT_LITERAL_PATHSPECS", "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS", "GIT_ICASE_PATHSPECS"]) {
+      process.env[name] = "1";
+      try {
+        // Until this form `excluded/` was left unread by git's listing while `check-ignore`, refused, left the files
+        // found to the root .gitignore alone, which kept `b.local.ts`: a mixture of two rules.
+        expect(await found(root), name).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
+      } finally {
+        delete process.env[name];
+      }
+    }
+    // A git whose listing fails, as one whose output passes the buffer would: no folder is left unread, and the root
+    // .gitignore alone judges, as with no git at all.
+    const bin = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-git-"));
+    folders.push(bin);
+    const real = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+    await fs.writeFile(path.join(bin, "git"), `#!/bin/sh\nfor a in "$@"; do [ "$a" = ls-files ] && exit 128; done\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    const searchPath = process.env.PATH;
+    process.env.PATH = `${bin}${path.delimiter}${searchPath ?? ""}`;
+    try {
+      expect(await found(root)).toEqual({ files: [".gitignore", "b.local.ts", "c.ts", "excluded/e.ts"], documents: [] });
+    } finally {
+      process.env.PATH = searchPath;
+    }
   });
 
   it("finds nothing in a workspace that lies inside a folder an outer repository ignores", async () => {

@@ -16,7 +16,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { foldersGitIgnoresWhole, foldersReadAsEmpty, gitIgnoreAnswer, gitIgnoresCase } from "../tooling/gitIgnored";
+import { gitIgnores, gitIgnoresCase, type GitIgnores } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
@@ -257,11 +257,10 @@ export async function discoverDocuments(options: Pick<DiscoverOptions, "workspac
  * Until 2026-11-20 the walk read every folder git ignores, file by file, only for the filter to throw each file away:
  * in the main checkout, with its builders' worktrees under `.claude/worktrees/`, the walk of the files took 64 s where
  * a clean worktree took 1.4 s, as a repository's `bin/`, `obj/`, `target/` or `.venv/` costs every scan. Now git is
- * asked first for the folders it ignores whole ({@link foldersGitIgnoresWhole}) and the walk reads them as empty. The
- * files kept are those a full walk keeps: git judges every path under such a folder ignored, a path reached through a
- * link included, since it is asked as its link and the link lies in the folder ({@link gitIgnoreAnswer}). Where git
- * cannot answer it names no folder, and the walk is whole. The measurements and every case, each held by a test: the
- * probe of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
+ * asked once for what it ignores ({@link gitIgnores}); the walk reads the folders it ignores whole as empty, and the
+ * same listing judges the files found, so that what is left unread is exactly what is judged ignored. Where git
+ * cannot answer, the walk is whole and the rule for no git judges it. The measurements and every case, each held by
+ * a test: the probe of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/`.
  */
 async function walkedAndKept(
   workspaceRoot: string,
@@ -271,8 +270,8 @@ async function walkedAndKept(
   config: LiveDocumentationConfig,
   warn?: (message: string) => void
 ): Promise<WalkedFile[]> {
-  const unread = foldersReadAsEmpty(workspaceRoot, foldersGitIgnoresWhole(workspaceRoot));
-  return keptByGitAndConfiguration((await walk(workspaceRoot, patterns, neverWalked, unread)).filter(considers), workspaceRoot, config, warn);
+  const git = gitIgnores(workspaceRoot);
+  return keptByGitAndConfiguration((await walk(workspaceRoot, patterns, neverWalked, git?.unread)).filter(considers), workspaceRoot, config, git, warn);
 }
 
 /** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
@@ -288,7 +287,7 @@ interface WalkedFile {
  * and the folders named are not walked at all, and the folders `unread`
  * reads as empty ({@link foldersReadAsEmpty}) are not read.
  */
-async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread: FSOption): Promise<WalkedFile[]> {
+async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread: FSOption | undefined): Promise<WalkedFile[]> {
   const matches = await glob([...patterns], {
     cwd: workspaceRoot,
     nodir: true,
@@ -296,7 +295,7 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     dot: true,
     windowsPathsNoEscape: true,
     ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked],
-    fs: unread
+    ...(unread ? { fs: unread } : {})
   });
   const files: WalkedFile[] = [];
   for (const match of matches) {
@@ -332,25 +331,28 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
 /**
  * The files git does not ignore and the configuration does not exclude, in
  * the order given. What git ignores is read by git's own word when the
- * workspace is a repository, each path judged by its name: a nested
- * `.gitignore`, `.git/info/exclude` and the global excludes file count, and a
- * tracked file is never ignored, as git itself has it (committing a file under
- * an ignored folder is a decision). Without git, the workspace's `.gitignore`
- * alone; and so too for a path git cannot judge, one that passes through a link
- * to a folder git does not ignore ({@link gitIgnoreAnswer}), which `warn` is told
- * of, since what another `.gitignore`, `.git/info/exclude` or the global
- * excludes hide there gets docs.
+ * workspace is a repository, from the listing the walk was shortened by
+ * ({@link gitIgnores}): a nested `.gitignore`, `.git/info/exclude` and the
+ * global excludes file count, a tracked file is never ignored, as git itself
+ * has it (committing a file under an ignored folder is a decision), and a
+ * nested repository's files are judged by its own git. Without git, the
+ * workspace's `.gitignore` alone; and so too for a path git cannot judge, one
+ * that passes through a link to a folder git does not ignore or lies in a
+ * nested repository git cannot be asked about, which `warn` is told of, since
+ * what another `.gitignore`, `.git/info/exclude` or the global excludes hide
+ * there gets docs.
  */
 async function keptByGitAndConfiguration(
   considered: readonly WalkedFile[],
   workspaceRoot: string,
   config: LiveDocumentationConfig,
+  gitIgnoresHere: GitIgnores | null,
   warn?: (message: string) => void
 ): Promise<WalkedFile[]> {
-  const git = gitIgnoreAnswer(workspaceRoot, considered.map((entry) => entry.relative));
+  const git = gitIgnoresHere?.answer(considered.map((entry) => entry.relative)) ?? null;
   if (git !== null && git.unjudged.size > 0) {
     const [first] = git.unjudged;
-    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s) reached through a link to a folder, such as ${first}, since git follows no link: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
+    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder, which git does not follow, or in a nested repository git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
   }
   const gitignoreFilter = git === null || git.unjudged.size > 0 ? await createGitignoreFilter(workspaceRoot) : null;
   // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on

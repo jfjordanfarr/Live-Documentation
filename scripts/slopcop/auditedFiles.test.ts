@@ -152,17 +152,19 @@ describe("auditedFiles", () => {
     expect(audited(root)).toEqual(["a1.log.md", "a1/build/x.md", "ab/out/x.md", "bc/out/x.md", "kept.md"]);
   });
 
-  it("judges a submodule's files by name, by the outer repository's excludes and the submodule's own .gitignore files", () => {
+  it("judges a submodule's files by the submodule's own git", () => {
     const root = workspace();
-    write(root, { ".gitignore": "build/\n", "build/a.md": "", "module/b.md": "", "module/.gitignore": "own.md\n", "module/own.md": "", "module/build/c.md": "", "README.md": "" });
+    write(root, { ".gitignore": "build/\n*.gen.md\n", "build/a.md": "", "module/b.md": "", "module/.gitignore": "own.md\n", "module/own.md": "", "module/mine.md": "", "module/x.gen.md": "", "module/build/c.md": "", "README.md": "" });
     git(path.join(root, "module"), "init", "-q");
-    git(path.join(root, "module"), "add", "b.md", ".gitignore");
+    git(path.join(root, "module"), "add", "b.md", "x.gen.md", ".gitignore");
     git(path.join(root, "module"), "commit", "-qm", "module");
+    fs.appendFileSync(path.join(root, "module", ".git", "info", "exclude"), "mine.md\n");
     git(root, "init", "-q");
     git(root, "add", "module");
 
-    // Until 2026-11-20 git refused `module/b.md`, and the audit then read every file found, the ignored build among them.
-    expect(audited(root)).toEqual(["README.md", "module/b.md"]);
+    // The outer `build/` and `*.gen.md` reach no file of the submodule; its own `.gitignore` and `.git/info/exclude` do.
+    // Until this form `module/build/c.md` and the tracked `module/x.gen.md` were dropped, and `module/mine.md` read.
+    expect(audited(root)).toEqual(["README.md", "module/b.md", "module/build/c.md", "module/x.gen.md"]);
   });
 
   it("asks of a path through a link to a folder as its link: ignored with the link, else read", () => {
