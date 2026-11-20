@@ -16,7 +16,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { foldersReadAsEmpty, gitIgnores, gitIgnoresCase, type GitIgnores, type GitUnanswered } from "../tooling/gitIgnored";
+import { foldersReadAsEmpty, gitIgnores, gitIgnoresCase, type GitIgnoreAnswer, type GitIgnores, type GitUnanswered } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
@@ -34,6 +34,7 @@ import type {
 } from "./coreTypes";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
+import { machineFailure } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
@@ -293,7 +294,7 @@ async function walkedAndKept(
   if (!judging && unanswered) {
     warn?.(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): so only ${path.join(workspaceRoot, ".gitignore")} is read, by which a file the repository tracks may be left out, and what another .gitignore, .git/info/exclude or the global excludes hide gets docs; mend git, or name it in the configuration's exclude.`);
   }
-  return keptByGitAndConfiguration(found.filter(considers), workspaceRoot, config, judging, warn);
+  return keptByGitAndConfiguration(found.files.filter(considers), found.unreadable, workspaceRoot, config, judging, warn);
 }
 
 /** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
@@ -302,19 +303,26 @@ interface WalkedFile {
   relative: string;
 }
 
+/** A folder the walk could not read for a cause of the machine's: its paths, and the failure. */
+interface UnreadableFolder extends WalkedFile {
+  error: NodeJS.ErrnoException;
+}
+
 /**
  * One walk of the workspace: the patterns matched over the whole of it, hidden
  * files and folders included, so that `.devcontainer/devcontainer.json` or
  * `.vscode/settings.json` is read like any other file; `.git`, `node_modules`
  * and the folders named are not walked at all, and the folders in `unread`
  * read as empty ({@link foldersReadAsEmpty}) and are not read. A folder whose
- * read fails for a cause of the machine's stops the walk with that failure,
- * which names the folder: glob would read it as empty, and its files would be
- * missing from the scan, and their docs pruned as stale, in silence
- * (2026-11-20).
+ * read fails for a cause of the machine's is named in `unreadable`, for the
+ * judging to pass it over where its files would have been left out, and else
+ * to stop the scan: glob reads it as empty, and its files would be missing
+ * from the scan, and their docs pruned as stale, in silence (2026-11-20).
+ * Absence, and a link that loops or passes through a file, are the folder's
+ * own answer, read as glob reads them.
  */
-async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread: ReadonlySet<string> | undefined): Promise<WalkedFile[]> {
-  const failures: NodeJS.ErrnoException[] = [];
+async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[], unread: ReadonlySet<string> | undefined): Promise<{ files: WalkedFile[]; unreadable: UnreadableFolder[] }> {
+  const unreadable: UnreadableFolder[] = [];
   const matches = await glob([...patterns], {
     cwd: workspaceRoot,
     nodir: true,
@@ -322,10 +330,13 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     dot: true,
     windowsPathsNoEscape: true,
     ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked],
-    fs: foldersReadAsEmpty(workspaceRoot, unread ?? new Set(), (error) => failures.push(error))
+    fs: foldersReadAsEmpty(workspaceRoot, unread ?? new Set(), (error) => {
+      if (machineFailure(error) && error.code !== "ENOENT") {
+        const absolute = path.resolve(workspaceRoot, error.path ?? "");
+        unreadable.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)), error });
+      }
+    })
   });
-  // Absence, a link that loops or passes through a file: the folder's own answer, read as glob reads it.
-  for (const failure of failures) throwIfMachineFailure(failure);
   const files: WalkedFile[] = [];
   for (const match of matches) {
     const absolute = match.fullpath();
@@ -347,7 +358,7 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     }
     files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
   }
-  return inWorkspaceOrder(files);
+  return { files: inWorkspaceOrder(files), unreadable };
 }
 
 /**
@@ -376,9 +387,18 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
  * in a folder holding a `.git` that git cannot be asked about or said nothing
  * of, which `warn` is told of, since there a file its repository ignores may
  * get a doc and one its repository tracks may be left out.
+ *
+ * A folder the walk could not read is judged by the same rules, as a folder:
+ * where its files would have been left out (its own repository's git ignores
+ * it, or `exclude` names everything in it) it is passed over in silence, as
+ * they would have been, a database's unreadable volume beside the code among
+ * them; any other stops the scan with an error that names the folder, the
+ * system's reason and the three ways past it, and keeps the system's failure
+ * as its cause, so that it is still read as the machine's (2026-11-20).
  */
 async function keptByGitAndConfiguration(
   considered: readonly WalkedFile[],
+  unreadable: readonly UnreadableFolder[],
   workspaceRoot: string,
   config: LiveDocumentationConfig,
   gitIgnoresHere: GitIgnores | null,
@@ -389,16 +409,22 @@ async function keptByGitAndConfiguration(
     const [first] = git.unjudged;
     warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder that is not a repository's top, which git does not follow, or in a folder holding a .git that git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, so a file their repository ignores may get a doc, and a file their repository tracks may be left out; name it in the configuration's exclude.`);
   }
-  const gitignoreFilter = git === null || git.unjudged.size > 0 || git.outside.size > 0 ? await createGitignoreFilter(workspaceRoot) : null;
+  const folders = gitIgnoresHere?.answer(unreadable.map((entry) => entry.relative)) ?? null;
+  const byRootRules = (answer: GitIgnoreAnswer | null): boolean => answer === null || answer.unjudged.size > 0 || answer.outside.size > 0;
+  const gitignoreFilter = byRootRules(git) || (unreadable.length > 0 && byRootRules(folders)) ? await createGitignoreFilter(workspaceRoot) : null;
+  const ignored = (answer: GitIgnoreAnswer | null, relative: string, folder: boolean): boolean =>
+    answer !== null && !answer.unjudged.has(relative) && !answer.outside.has(relative) ? answer.ignored.has(relative) : gitignoreFilter?.ignores(folder ? `${relative}/` : relative) === true;
   // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on
   // a clone made on Windows, else exactly (2026-11-19).
   const ignoreCase = config.exclude.length > 0 && gitIgnoresCase(workspaceRoot);
-  return considered.filter(({ relative }) => {
-    if (git !== null && !git.unjudged.has(relative) && !git.outside.has(relative) ? git.ignored.has(relative) : gitignoreFilter?.ignores(relative)) {
-      return false;
-    }
-    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
-  });
+  const excluded = (relative: string): boolean => config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
+  // A folder is excluded whole when a pattern matches every path below it: one segment and two, of a name no pattern holds.
+  const excludedWhole = (folder: string): boolean => config.exclude.some((pattern) => [`${folder}/\0`, `${folder}/\0/\0`].every((probe) => matchesPathPattern(probe, pattern, ignoreCase)));
+  const kept = unreadable.find(({ relative }) => !ignored(folders, relative, true) && !excludedWhole(relative));
+  if (kept) {
+    throw new Error(`cannot read the folder ${kept.absolute}, whose files the scan would keep (${kept.error.message}): make it readable, have git ignore it, or name it in the configuration's exclude.`, { cause: kept.error });
+  }
+  return considered.filter(({ relative }) => !ignored(git, relative, false) && !excluded(relative));
 }
 
 // ============================================================================

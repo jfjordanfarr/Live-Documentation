@@ -166,15 +166,19 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
     let repository = outer;
     // Past a folder git has no word on, the listing around still judges what it names below it: git named it, so git
     // entered there; beyond a link or inside a repository it does not enter, it names nothing. Where no repository is
-    // around, a link to a folder that is no repository's top leads to more of no repository.
+    // around, a link to a folder that is no repository's top leads to more of no repository, and past a folder whose
+    // git does not answer the descent goes on, each deeper `.git` asked: a working clone below a broken one is judged
+    // by its own git, and only what lies outside every clone that answers stays unjudged (2026-11-20).
     let unsure = false;
     for (let end = 1; end <= parts.length; end += 1) {
       const prefix = parts.slice(0, end).join("/");
       if (repository?.entries.has(repository.root === "" ? prefix : prefix.slice(repository.root.length + 1))) return "ignored";
-      if (end === parts.length || unsure) continue;
+      if (end === parts.length || (unsure && repository !== null)) continue;
       const kind = kindOf(prefix, repository);
-      if (typeof kind === "object") repository = kind;
-      else if (kind === "unanswered" || (kind === "link" && repository !== null)) unsure = true;
+      if (typeof kind === "object") {
+        repository = kind;
+        unsure = false;
+      } else if (kind === "unanswered" || (kind === "link" && repository !== null)) unsure = true;
     }
     return unsure ? "unjudged" : repository === null ? "outside" : "kept";
   };

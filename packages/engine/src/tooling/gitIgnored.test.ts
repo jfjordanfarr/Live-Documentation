@@ -443,6 +443,33 @@ describe("gitIgnoreAnswer", () => {
     expect(foldersGitIgnoresWhole(root).size).toBe(0);
   });
 
+  it("asks a working clone below a folder whose git does not answer, where no repository is around, and counts a link to a plain folder there as outside", () => {
+    const root = workspace();
+    const parents = ["gitfile", "hollow", "badconfig", "format"];
+    files(root, parents.flatMap((parent) => [`${parent}/loose.ts`, `${parent}/clone/a.ts`, `${parent}/clone/dist/out.ts`]));
+    for (const parent of parents) {
+      writeFileSync(path.join(root, parent, "clone", ".gitignore"), "dist/\n");
+      git(path.join(root, parent, "clone"), "init", "-q");
+    }
+    writeFileSync(path.join(root, "gitfile", ".git"), "gitdir: nowhere\n");
+    mkdirSync(path.join(root, "hollow", ".git"));
+    for (const parent of ["badconfig", "format"]) git(path.join(root, parent), "init", "-q");
+    appendFileSync(path.join(root, "badconfig", ".git", "config"), "[broken\n");
+    git(path.join(root, "format"), "config", "core.repositoryformatversion", "99");
+    const plain = workspace();
+    files(plain, ["p.ts"]);
+    symlinkSync(plain, path.join(root, "linked"));
+    // Git's own word first: no answer at any parent, nor in the linked folder; each clone answers for itself.
+    for (const folder of [root, plain, ...parents.map((parent) => path.join(root, parent))]) expect(spawnSync("git", ["-C", folder, "rev-parse"], { encoding: "utf8" }).status, folder).toBe(128);
+    for (const parent of parents) expect(spawnSync("git", ["-C", path.join(root, parent, "clone"), "status", "--porcelain", "--ignored", "-uall"], { encoding: "utf8" }).stdout, parent).toBe("?? .gitignore\n?? a.ts\n!! dist/out.ts\n");
+    // Until this round nothing below an unanswered folder was asked: every clone's `dist/out.ts` was unjudged, and kept.
+    expect(gitIgnoreAnswer(root, [...parents.flatMap((parent) => [`${parent}/loose.ts`, `${parent}/clone/a.ts`, `${parent}/clone/dist/out.ts`]), "linked/p.ts"])).toEqual({
+      ignored: new Set(parents.map((parent) => `${parent}/clone/dist/out.ts`)),
+      unjudged: new Set(parents.map((parent) => `${parent}/loose.ts`)),
+      outside: new Set(["linked/p.ts"])
+    });
+  });
+
   it("asks a nested repository whose name git would read as a pattern or as magic by its name", () => {
     const root = workspace();
     git(root, "init", "-q");
