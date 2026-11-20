@@ -24,8 +24,9 @@ import sys
 #   carried to the tree, 49 a nearer copy of the installation's, 50 the index pass's throw handed to the file's pass;
 #   51 and 52 the case setting keyed by the command and carried on a task; 53 to 55 the depth measure's reach past
 #   forEachChild: a node's JSDoc, a bracketed JSDoc parameter's default, the left operand of a less-than; 56 to 65
-#   the read rule's second look, each named where its edit stands);
-#   with none, every guard at once. Since the second review
+#   the read rule's second look, and 66 to 72 the depth measure's answers to its second review, each named where its
+#   edit stands);
+#   with none, `check` alone reads every guard at once (apply and revert ask for a number). Since the second review
 #   of 2026-11-20 each guard is broken by itself in a run of its own, so that one held by no test shows; the leftovers'
 #   round found guard 17 (the reason written anew) and the branch of guard 49 held by no test before it, and gave each one.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
@@ -229,8 +230,9 @@ edits = [
      "    // guard 52: the case setting left out of the task\n"),
     # The depth measure's mend of 2026-11-20, after the review found a JSDoc comment counted shallow: 53 a node's JSDoc
     # not walked (jsdoc-depth-workers.test.ts; reading-depth.test.ts's JSDoc constructs); 54 a bracketed JSDoc
-    # parameter's default not read again (reading-depth.test.ts, "a parameter's default"); 55 the left operand of `<`
-    # taken as a chain step (reading-depth.test.ts, "a < b < …").
+    # parameter's default not read again (reading-depth.test.ts, "a parameter's default"; processMark.test.ts); 55, as
+    # it reads since the measure's second review that day, comparisons not counted (processMark.test.ts, two cases; 25
+    # of the 27 comparison constructs of reading-depth.test.ts).
     ("packages/engine/src/live-docs/processMark.ts",
      "  const comments = (node as { jsDoc?: readonly ts.JSDoc[] }).jsDoc ?? NONE;\n",
      "  const comments = NONE;\n"),
@@ -238,8 +240,8 @@ edits = [
      "|| !node.isBracketed) return comments;",
      "|| node.isBracketed) return comments;"),
     ("packages/engine/src/live-docs/processMark.ts",
-     "parent.left === child && parent.operatorToken.kind !== ts.SyntaxKind.LessThanToken",
-     "parent.left === child"),
+     "  if (ts.isBinaryExpression(node)) return node.operatorToken.kind === ts.SyntaxKind.LessThanToken;\n",
+     "  if (ts.isBinaryExpression(node)) return false;\n"),
     # The read rule's second look, 2026-11-20, as its builder gave them: 56 a mended catch round a read swallowing again
     # (sourceText.boundary.test.ts); 57 the docs root's probe before pruning read as gone, and 58 a folder above the
     # workspace read as no scan (generator.test.ts, and the structural test); 59 the tidying after a pruned doc stopping
@@ -275,16 +277,50 @@ edits = [
      'fs.existsSync(path.join(at, ".git"))'),
     ("packages/generator/src/history/summarizeChange.ts",
      "  for (const failure of unmapped) warn(`could not map ${failure.path}: ${failure.reason}`);\n",
-     ""),
+     "  // guard 64: no warning of a file the generator could not map\n"),
     ("scripts/live-docs/generate.ts",
      "  const unreadable = layer4Result.failed.filter(({ error }) => machineFailure(error));\n  const unmapped = layer4Result.failed.filter(({ error }) => !machineFailure(error));\n",
      "  const unreadable = layer4Result.failed.filter(() => false);\n  const unmapped = layer4Result.failed;\n"),
+    # The depth measure's answers to its second review, 2026-11-20, as its builder gave them: 66 a JSDoc default read
+    # again with the tag's prose (processMark.test.ts, 158 against 8); 67 an expression-bodied arrow not counted
+    # (reading-depth.test.ts, "comparisons each in an arrow's expression body", .ts and .tsx); 68 the JSDoc nested
+    # literals' term (reading-depth.test.ts, "nested parameters, then a deep tag tried as their child", three kinds);
+    # 69 a statement's comparisons counted in its own region alone (processMark.test.ts, the label's path); 70 class
+    # members not regions (processMark.test.ts, the class: 513 against 18); 71 a JSX default not read to the tag's end
+    # (processMark.test.ts, the JSX element); 72 the pin of the TypeScript version the parser's audit was made for
+    # (processMark.test.ts, the version case).
+    ("packages/engine/src/live-docs/processMark.ts",
+     "  const scanner = ts.createScanner(",
+     "  if (start >= 0) return file.text.slice(start, end);\n  const scanner = ts.createScanner("),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "  return ts.isArrowFunction(node) && !ts.isBlock(node.body);\n",
+     "  return false;\n"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     ": part.max + (part.literal - part.base);",
+     ": part.max;"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "enclosing !== undefined; enclosing = enclosing.outer) enclosing.own += 1;",
+     "enclosing === region; enclosing = enclosing.outer) enclosing.own += 1;"),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "    if (ts.isStatement(node) || ts.isClassElement(node)) region =",
+     "    if (ts.isStatement(node)) region ="),
+    ("packages/engine/src/live-docs/processMark.ts",
+     "    if (token === ts.SyntaxKind.LessThanToken && file.languageVariant === ts.LanguageVariant.JSX) break;\n",
+     "    // guard 71: the JSX default cut where a `]` in its text stands\n"),
+    ("packages/engine/src/live-docs/processMark.test.ts",
+     ".toBe(\"5.9.3\");",
+     ".toBe(\"0.0.0\");"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
 guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
+          39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
+          66, 67, 68, 69, 70, 71, 72]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
+# Only `check` takes every guard at once. Several edits stand on one line (the stamp's four fields), so that applying
+# all stops halfway and reverting what was applied garbles that line, as it did once on 2026-11-20 at the root's hand.
+if mode != "check" and chosen is None:
+    sys.exit("give a guard's number: the guards are broken one at a time, and only check takes them all")
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:
     path = root + file
