@@ -216,7 +216,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
           const wall = (Date.now() - started) / timings.length;
           context.progress(
-            `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}${anew === undefined ? "" : `, its tree written anew: ${anew}`};${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
+            `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}${anew === undefined ? "" : `, its tree written anew: ${anew}`}; ${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
           );
         }
       }

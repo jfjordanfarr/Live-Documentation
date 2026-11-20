@@ -212,7 +212,7 @@ describe("a tree written anew", () => {
       startWorker
     });
     const regenerated = lines.filter((line) => /^\d+\/4 regenerated: /u.test(line));
-    expect(regenerated.map((line) => line.split(" in ")[1].replace(/^[\d.]+ s/u, "").split(";")[0])).toEqual([
+    expect(regenerated.map((line) => line.split(" in ")[1].replace(/^[\d.]+ s/u, "").split("; ")[0])).toEqual([
       ", its tree written anew: no earlier tree stood to bring forward",
       "",
       ", its tree written anew: the tree held a name its writer did not write",
