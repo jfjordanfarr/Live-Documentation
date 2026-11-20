@@ -23,9 +23,101 @@
  * @module
  */
 
-import { linkTarget, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import path from "node:path";
+
+import { LiveDocSyntaxError, parseLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { deriveLiveDocGraph, linkTarget, type DocLocation, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { followLink, historyGit, spawnHistoryGit } from "@live-documentation/engine/live-docs/history/git";
 import { compareLinks, linksOf, type FileRows, type RowLink, type Rows } from "@live-documentation/engine/live-docs/history/rows";
 import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
+
+/**
+ * The graph of the Live Docs committed at a commit, read from git's object store: every file of the commit's tree under
+ * the docs root's base layer whose name ends in the docs' extension, a regular or an executable file, or a symbolic link
+ * that leads through the commit's own listing to one ({@link followLink}, given the target of every link of the listing,
+ * as the history's tree writer gives it), each blob's bytes read as UTF-8 and parsed as `readLiveDocGraph` parses a doc
+ * on disk.
+ *
+ * @remarks
+ * Until 2026-11-20 the commit's whole tree was written to a scratch folder for this, as each commit's tree is written
+ * for its summary, and the docs read back from the disk: 5 to 7 s of every run at this repository's head, almost all
+ * of it the writing of files the check never reads. What the disk could change, the object store does not: a name the
+ * tree writer leaves out of a tree (one Windows reserves, a name two entries share on a disk that folds case or
+ * normalization, one that is not UTF-8) is read here under its own name, as the commit stores it. The check compares
+ * no such file ({@link leftOutAtHead}). For the first form of this reader the independent review of 2026-11-20 found
+ * that only the targets of the links among the docs were read, so that a doc that is a link to a link outside the base
+ * layer, or reached through a folder that is a link, was taken for a link to nothing.
+ *
+ * The listing and the batch reader repeat two of `git.ts`'s readers, which this module does not import because that
+ * file keys the history's lens and an edit of it would derive every summary again; they are to be folded into it at the
+ * next change that moves the lens anyway.
+ */
+export async function committedLiveDocGraph(repository: string, commit: string, location: DocLocation): Promise<LiveDocGraph> {
+  const listing = await historyGit(["-C", repository, "ls-tree", "-r", "-z", "--full-tree", commit], { cwd: repository });
+  const byPath = new Map<string, { mode: string; id: string }>();
+  for (const line of listing.split("\0")) {
+    if (line === "") continue;
+    // Each entry is `<mode> <type> <id>\t<path>`.
+    const tab = line.indexOf("\t");
+    const [mode, , id] = line.slice(0, tab).split(" ");
+    byPath.set(line.slice(tab + 1), { mode, id });
+  }
+  const folder = `${path.posix.join(location.root, location.baseLayer)}/`;
+  const docs = [...byPath].filter(([file]) => file.startsWith(folder) && file.endsWith(location.extension));
+  // Every link of the listing, wherever it stands: a link to a doc may lead through others, and through folders that are links.
+  const links = [...byPath].filter(([, entry]) => entry.mode === "120000");
+  const linkTargets = await readBlobs(repository, [...new Set(links.map(([, entry]) => entry.id))]);
+  const targets = new Map(links.map(([file, entry]) => [file, linkTargets.get(entry.id)?.toString("utf8") ?? ""]));
+  const blobOf = new Map<string, string>();
+  for (const [file, entry] of docs) {
+    if (entry.mode === "100644" || entry.mode === "100755") blobOf.set(file, entry.id);
+    else if (entry.mode === "120000") {
+      const end = followLink(file, byPath, targets);
+      if ("file" in end) blobOf.set(file, end.file.id);
+    }
+  }
+  const blobs = await readBlobs(repository, [...new Set(blobOf.values())]);
+  const parsed = [...blobOf].map(([docPath, id]) => {
+    try {
+      return { docPath, doc: parseLiveDoc(blobs.get(id)!.toString("utf8")) };
+    } catch (error) {
+      // As `readLiveDocGraph` words it: one form for each value, and a doc an earlier generator wrote can hold another.
+      throw error instanceof LiveDocSyntaxError ? new Error(`${docPath}: ${error.message}. The grammar reads one form of each value; if the doc was written by an earlier version of the generator, \`live-docs:generate\` rewrites it.`) : error;
+    }
+  });
+  return deriveLiveDocGraph(parsed, location);
+}
+
+/** The blobs of the given ids, whole, by id, read by one `git cat-file --batch`. */
+async function readBlobs(repository: string, ids: readonly string[]): Promise<Map<string, Buffer>> {
+  const found = new Map<string, Buffer>();
+  if (ids.length === 0) return found;
+  const reader = spawnHistoryGit(["-C", repository, "cat-file", "--batch"], { cwd: repository });
+  const chunks: Buffer[] = [];
+  let errors = "";
+  reader.stdout.on("data", (chunk: Buffer) => chunks.push(chunk));
+  reader.stderr.setEncoding("utf8");
+  reader.stderr.on("data", (text: string) => {
+    errors += text;
+  });
+  reader.stdin.on("error", () => undefined);
+  const code = await new Promise<number | null>((resolve, reject) => {
+    reader.on("error", reject);
+    reader.on("close", resolve);
+    reader.stdin.end(ids.map((id) => `${id}\n`).join(""));
+  });
+  if (code !== 0) throw new Error(`git cat-file failed reading the committed Live Docs (exit ${code}): ${errors.trim() || "no word"}`);
+  const all = Buffer.concat(chunks);
+  let at = 0;
+  for (const id of ids) {
+    const lineEnd = all.indexOf(0x0a, at);
+    const [answered, type, size] = all.subarray(at, lineEnd).toString("utf8").split(" ");
+    if (answered !== id || type !== "blob") throw new Error(`git cat-file answered ${answered} ${type} where the blob ${id} was asked for`);
+    found.set(id, all.subarray(lineEnd + 1, lineEnd + 1 + Number(size)));
+    at = lineEnd + 1 + Number(size) + 1;
+  }
+  return found;
+}
 
 /** A moment of the history, as replayed: its shape and its rows. */
 export interface ReplayedMoment {
@@ -34,13 +126,44 @@ export interface ReplayedMoment {
 }
 
 /**
+ * The committed files the check at the head does not compare, each with why: those whose source the history did not read
+ * at the head, by one of the head summary's own lists, which the caller hands one at a time: the entries its tree did
+ * not hold (`unwritten`), or the files the generator could not map (`unmapped`, passed over since a review of
+ * 2026-11-20; a person's workspace keeps such a file's doc of an earlier day, the history's tree does not). The tree
+ * writer leaves out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names
+ * one on a disk that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check where
+ * the history is right. The check that read the committed docs from git's object store compared them until the
+ * independent review of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names
+ * out of both sides.
+ *
+ * A file whose doc alone was left out is compared as any other: the history read its source, so a difference in what
+ * the doc alone carries is reported. Until the review's second pass a doc's own path left out passed its whole file
+ * over, a symbol the replay had lost included; in the real cases the source and the doc are left out together.
+ *
+ * The limit: what is passed over comes from the history's own account of what its tree left out. A fault of the tree's
+ * writer that drops an entry and reports it is passed over too, though named with its reason in the check's line; that
+ * is no weaker than the check before the whole change, which dropped such entries from both sides and said nothing.
+ *
+ * @param leftOut - Each file of one list the history did not read at the head, by its path, with why.
+ */
+export function leftOutAtHead(committed: LiveDocGraph, leftOut: ReadonlyMap<string, string>): Map<string, string> {
+  const notCompared = new Map<string, string>();
+  for (const file of Object.values(committed.files).sort((a, b) => compare(a.codePath, b.codePath))) {
+    const reason = leftOut.get(file.codePath);
+    if (reason !== undefined) notCompared.set(file.codePath, reason);
+  }
+  return notCompared;
+}
+
+/**
  * Where a replayed moment differs from a graph derived from committed Live Docs, in words.
  *
  * @param textOf - The text the replayed rows name by an id.
+ * @param notCompared - The files left out of the comparison ({@link leftOutAtHead}), with every link to or from them.
  */
-export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGraph, textOf: (id: number) => string): string[] {
+export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGraph, textOf: (id: number) => string, notCompared: ReadonlySet<string> = new Set()): string[] {
   const differences: string[] = [];
-  const paths = new Set([...Object.keys(committed.files), ...replayed.rows.keys()]);
+  const paths = new Set([...Object.keys(committed.files), ...replayed.rows.keys()].filter((file) => !notCompared.has(file)));
   for (const path of [...paths].sort(compare)) {
     const file = committed.files[path];
     const rows = replayed.rows.get(path);
@@ -60,7 +183,8 @@ export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGrap
       }
     }
   }
-  differences.push(...linkDifferences(linksOfGraph(committed), linksOf(replayed.rows)));
+  const compared = (link: RowLink): boolean => !notCompared.has(link.from) && !notCompared.has(link.to);
+  differences.push(...linkDifferences(linksOfGraph(committed).filter(compared), linksOf(replayed.rows).filter(compared)));
   return differences;
 }
 

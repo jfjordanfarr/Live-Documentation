@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/pathUtils.ts`
-- Generated At: 2026-11-19T21:10:12.768Z
+- Generated At: 2026-11-20T15:53:17.127Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,19 @@ Resolve a workspace-relative path (or absolute path) to a file URI.
 
 ##### `normalizeWorkspacePath` — Summary
 Normalise a path so directory separators are POSIX-style.
+
+#### `NAME_FAILURES` {#symbol-name_failures}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/tooling/pathUtils.ts#L53)
+- Returns: `ReadonlySet`
+
+##### `NAME_FAILURES` — Summary
+The failures of a disk that mean it cannot hold a name or a path, rather than that it failed: a name too long, a name
+it does not accept, a name that is already another's by its own rule of names, a path through something that is not a
+folder. The history's tree writer leaves out and names an entry that meets one (`history/git.ts`), and any other
+failed system call is the machine's, not the file's (`machineFailure`, `live-docs/processMark.ts`). Kept here, the one
+light module both reach, since 2026-11-20: before, each held a copy, and `processMark.ts` loads TypeScript, which the
+history command's own process otherwise never loads.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

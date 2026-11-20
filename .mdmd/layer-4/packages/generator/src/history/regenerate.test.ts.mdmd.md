@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/history/regenerate.test.ts`
-- Generated At: 2026-11-19T22:40:12.844Z
+- Generated At: 2026-11-20T16:31:01.644Z
 
 ## Authored
 ### Purpose
@@ -26,8 +26,19 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)
 - [`git.writeStoredTree`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-writestoredtree)
+- [`lens.lensOf`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
+- [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
+- [`computeHistory.poolMemory`](./computeHistory.ts.mdmd.md#symbol-poolmemory)
+- [`regenerate.Scratch`](./regenerate.ts.mdmd.md#symbol-scratch)
+- [`regenerate.Worker`](./regenerate.ts.mdmd.md#symbol-worker)
+- [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
+- [`regenerate.workerBound`](./regenerate.ts.mdmd.md#symbol-workerbound)
+- [`regenerate.workerTask`](./regenerate.ts.mdmd.md#symbol-workertask)
+- [`summarizeChange.WorkerReport`](./summarizeChange.ts.mdmd.md#symbol-workerreport)
+- [`summarizeChange`](./summarizeChange.ts.mdmd.md#symbol-summarizechange)
+- [`summarizeChange.treeOptions`](./summarizeChange.ts.mdmd.md#symbol-treeoptions)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

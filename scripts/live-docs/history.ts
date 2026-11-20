@@ -28,6 +28,7 @@ interface ParsedArgs {
   authors: boolean;
   removeSuperseded: boolean;
   checkHead: boolean;
+  rederive: boolean;
   stopAfter?: number;
 }
 
@@ -49,6 +50,7 @@ async function main(): Promise<void> {
       authors: args.authors,
       removeSuperseded: args.removeSuperseded,
       checkHead: args.checkHead,
+      rederive: args.rederive,
       stopAfterMinutes: args.stopAfter,
       progress: (line) => process.stderr.write(`[history] ${line}\n`)
     });
@@ -117,7 +119,7 @@ function nonEmpty(change: object): Record<string, unknown> {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false };
+  const parsed: ParsedArgs = { help: false, json: false, step: "commit", keepIndex: false, authors: true, removeSuperseded: false, checkHead: false, rederive: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -168,6 +170,9 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--check-head":
         parsed.checkHead = true;
         break;
+      case "--rederive":
+        parsed.rederive = true;
+        break;
       case "--stop-after": {
         // 0 starts no commit: the run writes a history only when the cache already holds every one.
         const value = optionValue(argv, ++index, current);
@@ -207,7 +212,7 @@ function usage(): string {
     `  --step <unit>        commit (default), day, week or tag: which commits are regenerated.\n` +
     `  --every <n>          Every n-th commit, with --step commit.\n` +
     `  --since <date>       Only commits on or after the date.\n` +
-    `  --jobs <n>           Commits regenerated at once, one process each (default: as many as half the\n` +
+    `  --jobs <n>           Commits regenerated at once, a worker each (default: as many as half the\n` +
     `                       memory holds at the peak a process last took here, at most one fewer than\n` +
     `                       the processors).\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +
@@ -220,6 +225,10 @@ function usage(): string {
     `                       this generator under this configuration. Without it the check applies only\n` +
     `                       when this generator runs unmodified from the commit the history ends at,\n` +
     `                       under the workspace's own configuration, and is skipped elsewhere.\n` +
+    `  --rederive           Derive every step of the sequence from the summaries again. Without it a run\n` +
+    `                       goes on from the sequence the last run wrote when only new commits follow it\n` +
+    `                       and the lens, the code that reads summaries, git and the configuration are the\n` +
+    `                       same; any change to the engine or the generator derives every step once.\n` +
     `  --stop-after <min>   Start no commit after this many minutes of regeneration. A run stopped so\n` +
     `                       writes no history, keeps what it summarized for the next run, and exits 3.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +

@@ -7,12 +7,14 @@
  * change formats later").
  *
  * @remarks
- * Five things and nothing more: where the mainline ends and whether the copy
+ * Six things and nothing more: where the mainline ends and whether the copy
  * holds all of it; the mainline's changes, oldest first; the changes a tag
- * names; a working tree at a change, removed after; and what happened between
+ * names; a working tree at a change, removed after; what happened between
  * two changes, the renames the version control infers and the files whose
- * content changed in place. Every path is relative to the workspace. Nothing
- * here reaches a remote or asks for credentials.
+ * content changed in place; and where the repository is kept, which the
+ * processes that write trees are handed (since 2026-11-20). Every path is
+ * relative to the workspace. Nothing here reaches a remote or asks for
+ * credentials.
  *
  * @module
  */
@@ -61,8 +63,19 @@ export interface WorkingTree {
    * entry clashing with another. The summary says each was not read. A file written empty is not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
+  /** Whether the tree was brought forward from another change's tree ({@link WorkingTree.bringTo}) rather than written anew. */
+  broughtForward: boolean;
+  /** Why the tree was written anew rather than brought forward, a phrase such as "the tree held a name its writer did not write"; absent when it was brought forward. */
+  writtenAnew?: string;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
+  /**
+   * The tree of another change, holding exactly what {@link VersionControl.workingTree} writes for that change: this
+   * tree brought forward in its own folder, touching only what differs, or, wherever that is refused, written anew in a
+   * fresh folder beside it, its `root` then another, and this one left for the removal of the folder above it. This
+   * tree is not to be used after.
+   */
+  bringTo(change: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
 }
 
 /** What the caller asks of a change's tree beyond the change's own entries. */
@@ -78,12 +91,22 @@ export interface WorkingTreeOptions {
    * it is not written even as a copy, since a copy there would stand where a folder is needed.
    */
   docsRoot?: string;
+  /**
+   * Whether the version control matches names without regard to case, as the lens keyed it ({@link
+   * VersionControl.ignoresCase}): a process in the tree is answered with this value and no other.
+   */
+  ignoresCase?: boolean;
 }
 
 /** What the history command needs of a version control. */
 export interface VersionControl {
   /** The name written into the sequence's head as the system its history was read from. */
   readonly system: "git";
+  /**
+   * Where the version control keeps the repository, found once by the command in the person's environment and handed
+   * to each process that writes trees, so that none looks for the repository itself: for git, its git directory.
+   */
+  readonly store: string;
   /** Where the mainline ends, and whether the copy holds all of it. */
   mainlineEnd(): Promise<MainlineEnd>;
   /** Every change on the mainline, oldest first: the first is where the copy's knowledge begins. */
@@ -94,4 +117,9 @@ export interface VersionControl {
   workingTree(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
   /** What happened between two changes. */
   changesBetween(from: string, to: string): Promise<VersionChanges>;
+  /**
+   * Whether the repository matches names without regard to case (for git, its own `core.ignorecase`), which the
+   * generator applies to `exclude` and so reaches a summary: the lens keys it (since 2026-11-20).
+   */
+  ignoresCase(): Promise<boolean>;
 }

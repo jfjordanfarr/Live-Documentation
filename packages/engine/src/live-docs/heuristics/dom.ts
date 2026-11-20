@@ -3,7 +3,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry } from "../core";
 
 interface DomDependencyParams {
@@ -256,7 +256,8 @@ function escapeRegex(value: string): string {
 async function readDirectoryEntries(dir: string): Promise<Dirent[] | null> {
   try {
     return await fs.readdir(dir, { withFileTypes: true });
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return null;
   }
 }
@@ -271,7 +272,8 @@ async function readFileCached(filePath: string, cache: FileContentCache): Promis
     const content = await readSourceText(filePath);
     cache.set(filePath, content);
     return content;
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     cache.set(filePath, null);
     return null;
   }

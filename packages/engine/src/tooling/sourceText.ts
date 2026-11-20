@@ -34,6 +34,8 @@
  */
 import { promises as fs } from "node:fs";
 
+import { failedCall, machineFailure } from "../live-docs/processMark";
+
 /** How a file's bytes became text, or why they did not. */
 export type SourceTextReading =
   | { encoding: "utf-8" | "utf-8-with-mark" | "utf-16le" | "utf-16be" | "utf-16le-without-mark" | "utf-16be-without-mark" | "windows-1252"; text: string }
@@ -99,4 +101,15 @@ export function unmarkedUtf16(bytes: Uint8Array): "utf-16le" | "utf-16be" | unde
 export async function readSourceText(absolutePath: string): Promise<string> {
   const reading = decodeSourceText(await fs.readFile(absolutePath));
   return reading.encoding === "unread" ? "" : reading.text;
+}
+
+/**
+ * For a catch around a read or a probe of a file that reads a failure as "not read" or "not there": throws on a failure
+ * of the machine's (`machineFailure`: too many open files, a full disk, a file another process holds), so that it
+ * reaches the generator's catch, which names it, and the history writes no summary made with it; returns for any
+ * other, absence (`ENOENT`) among them, which is the file's answer. Since 2026-11-20; before, every such catch
+ * swallowed the machine's failures too, and a file read in one went into a summary as empty.
+ */
+export function throwIfMachineFailure(error: unknown): void {
+  if (machineFailure(error) && failedCall(error) !== "ENOENT") throw error;
 }

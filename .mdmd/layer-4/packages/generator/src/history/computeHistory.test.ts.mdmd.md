@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/history/computeHistory.test.ts`
-- Generated At: 2026-11-19T21:10:17.992Z
+- Generated At: 2026-11-20T09:32:49.150Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,6 @@ _No public symbols detected_
 - [`computeHistory.usableMachine`](./computeHistory.ts.mdmd.md#symbol-usablemachine)
 - [`headCheck.ReplayedMoment`](./headCheck.ts.mdmd.md#symbol-replayedmoment)
 - [`headCheck.headDifferences`](./headCheck.ts.mdmd.md#symbol-headdifferences)
+- [`headCheck.leftOutAtHead`](./headCheck.ts.mdmd.md#symbol-leftoutathead)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

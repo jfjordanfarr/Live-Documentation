@@ -1,12 +1,16 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { isBuiltin } from "node:module";
+import { devNull, tmpdir } from "node:os";
 import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { HISTORY_FOLDERS, keysTheLens, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
-import { summarizingEnvironment, summarizingFlags, treeOptions } from "./regenerate";
+import { checkoutOf, HISTORY_FOLDERS, installationDifference, keyedLockEntries, keysTheLens, LOCK_ROOTS, lockIdentity, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
+import { summarizingEnvironment, summarizingFlags } from "./regenerate";
+import { treeOptions } from "./summarizeChange";
 
 const repository = path.resolve(__dirname, "..", "..", "..", "..");
 
@@ -110,7 +114,7 @@ function historyModules(): string[] {
 function actsForASummary(text: string): boolean {
   return (
     /["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) ||
-    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync)\s*\(/u.test(text) ||
+    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync|historyGit|spawnHistoryGit)\s*\(/u.test(text) ||
     /\bimplements\s+VersionControl\b/u.test(text)
   );
 }
@@ -120,7 +124,10 @@ function actsForASummary(text: string): boolean {
  * keyed: a module joins this list only by a reviewed reason.
  */
 const ACTING_UNKEYED: Record<string, string> = {
-  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree"
+  "packages/generator/src/history/generatorIdentity.ts": "computes the key itself; its git calls read this tool's checkout, never a commit's tree",
+  // Since 2026-11-20, in place of writing the head's whole tree for the check.
+  "packages/generator/src/history/headCheck.ts":
+    "reads the Live Docs committed at the head from git's object store for the check at the head, after every summary is made; nothing it reads reaches a summary"
 };
 
 /** The names of an interface's members, read by the TypeScript parser. */
@@ -136,12 +143,20 @@ function membersOf(file: string, name: string): string[] {
  * what a summary says unkeyed: a new member fails the guard until it is shown not to reach a summary, or joins the key.
  */
 const HANDED_TO_REGENERATION: Record<string, string> = {
-  versionControl: "an implementation of the version control, every one of which is keyed (the rule above)",
+  // Since 2026-11-20, when the workers began to write their own trees, in place of the command's version control.
+  store: "the git directory of the repository whose changes are summarized, each named by its id, which each worker hands every call of the keyed tree writer by GIT_DIR",
   configuration: "the lens's configuration, which is half of the key itself",
   lens: "the key itself, written into each summary",
   cacheFolder: "where summaries and texts are written, never what they say",
   keepIndex: "whether the full index is kept beside a summary, which the summary does not name",
-  jobs: "how many commits are regenerated at once",
+  // `jobs` and `memory` decide which commits a worker summarizes after others, and a warm worker can read a file a fresh
+  // process cannot (the review of 2026-11-20 at e1e27e33a): they change no summary because a change whose summary could
+  // depend on a worker's past (a file beyond the reading depth, a file not mapped, a fault of the runtime) is decided by
+  // a fresh process (`processMark.ts`, history-workers.test.ts); before that review these reasons said less than that.
+  jobs: "how many commits are regenerated at once, and so which commits a worker summarizes after others; what a worker derives depends on its past only where a fresh process decides (processMark.ts)",
+  // Since the review's fourth round, 2026-11-20.
+  memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts), and its next summary a fresh process's, the same as a warm worker's where no mark is set (processMark.ts)",
+  startWorker: "a test's stand-in for the pool's own keyed starter; the command hands none",
   deadline: "when to start no further commit",
   scratch: "where the trees are written and what a signal removes; summaries name workspace-relative paths only",
   progress: "where progress lines go"
@@ -157,7 +172,9 @@ const HANDED_TO_SUMMARY: Record<string, string> = {
   textStore: "where the texts go",
   indexPath: "where the full index goes, when kept",
   // A limit, written down in the decision: what a disk cannot hold depends on the disk, which the key does not hold.
-  unwritten: "the entries the keyed tree writer left out, as the disk it wrote to answered"
+  unwritten: "the entries the keyed tree writer left out, as the disk it wrote to answered",
+  // Since 2026-11-20: the repository's `core.ignorecase`, which the generator applies to `exclude`.
+  ignoresCase: "whether the repository matches names without regard to case, which the key holds (`lensOf`) and the trees answer with"
 };
 
 describe("the lens's key", () => {
@@ -180,6 +197,7 @@ describe("the lens's key", () => {
     expect(acting.sort()).toEqual([
       "packages/engine/src/live-docs/history/git.ts",
       "packages/generator/src/history/generatorIdentity.ts",
+      "packages/generator/src/history/headCheck.ts",
       "packages/generator/src/history/regenerate.ts",
       // Since 2026-11-19 it asks the tree's own listing which linked documents stand.
       "packages/generator/src/history/summarizeChange.ts"
@@ -213,10 +231,14 @@ describe("the lens's key", () => {
   it("gives the summarizing process a named environment, and nothing else of the person's", () => {
     const given = summarizingEnvironment({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json", NODE_OPTIONS: "--require evil.js", GIT_DIR: "/elsewhere", LANG: "tr_TR.UTF-8", HOME: "/home/ada" });
     expect(given).toEqual({ PATH: "/usr/bin", TMPDIR: "/tmp", TSX_TSCONFIG_PATH: "./tsconfig.base.json" });
-    // The process is started with that environment and the tree's own, never the command's whole one.
+    // A worker is started with that environment, never the command's whole one, and sets each tree's own only while it
+    // summarizes in that tree (since 2026-11-20; `history-workers.test.ts` holds a worker's later changes to a fresh
+    // process's summaries of them, which a stale index would change).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toContain("{ ...summarizingEnvironment(process.env), ...tree.environment }");
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*env: summarizingEnvironment\(process\.env\),/u);
     expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
+    const worker = readFileSync(path.join(repository, "packages/generator/src/history/summarizeChange.ts"), "utf8");
+    expect(worker).toMatch(/const \{ environment \} = tree;\s*Object\.assign\(process\.env, environment\);\s*try \{[^]*?await summarizeChange\([^]*?\} finally \{\s*for \(const name of Object\.keys\(environment\)\) delete process\.env\[name\];/u);
   });
 
   it("hands the summarizing process the configuration the key holds, made by one function", () => {
@@ -232,7 +254,7 @@ describe("the lens's key", () => {
   it("starts the summarizing process with node flags of its own, never the command's", () => {
     // `fork` passes the command's `process.execArgv` unless told otherwise (the fourth review of 2026-11-19).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toMatch(/fork\(worker, \[taskFile\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
     expect(summarizingFlags("/x/summarizeChange.js")).toEqual([]);
     const flags = summarizingFlags("/x/summarizeChange.ts");
     expect(flags).toHaveLength(2);
@@ -316,5 +338,278 @@ describe("the lens's key", () => {
     expect(keysTheLens("packages/generator/src/history/computeHistory.ts")).toBe(false);
     expect(keysTheLens("packages/generator/src/history/headCheck.ts")).toBe(false);
     expect(keysTheLens("packages/explorer/src/client/index.ts")).toBe(false);
+  });
+});
+
+type LockPackages = Record<string, Record<string, unknown>>;
+
+/** This repository's lock as committed at a commit. */
+function committedLock(commit: string): string {
+  return execFileSync("git", ["-C", repository, "show", `${commit}:package-lock.json`], { encoding: "utf8", maxBuffer: 1 << 28 });
+}
+
+/** The working lock with `change` made to its `packages` map, as text. */
+function changedLock(change: (packages: LockPackages) => void): string {
+  const lock = JSON.parse(readFileSync(path.join(repository, "package-lock.json"), "utf8")) as { packages: LockPackages };
+  change(lock.packages);
+  return JSON.stringify(lock, null, 2);
+}
+
+/** The package a bare specifier names: its scope and name, or its first segment. */
+function packageOf(specifier: string): string {
+  const segments = specifier.split("/");
+  return specifier.startsWith("@") ? segments.slice(0, 2).join("/") : segments[0];
+}
+
+/**
+ * Each package the code of the two packages loads, tests aside, by an import or by `require.resolve`, that its own
+ * manifest does not declare and `roots` does not name from its folder: a package found only because npm hoists it.
+ */
+function undeclaredImports(roots: ReadonlyArray<{ from: string; name: string }>): string[] {
+  const found: string[] = [];
+  for (const folder of ["packages/engine", "packages/generator"]) {
+    const manifest = JSON.parse(readFileSync(path.join(repository, folder, "package.json"), "utf8")) as { name: string; dependencies?: Record<string, string>; optionalDependencies?: Record<string, string>; peerDependencies?: Record<string, string> };
+    const declared = new Set([manifest.name, ...Object.keys({ ...manifest.dependencies, ...manifest.optionalDependencies, ...manifest.peerDependencies }), ...roots.filter((root) => root.from === folder).map((root) => root.name)]);
+    const files = readdirSync(path.join(repository, folder, "src"), { recursive: true, encoding: "utf8" })
+      .filter((file) => file.endsWith(".ts") && !file.endsWith(".test.ts"))
+      .map((file) => `${folder}/src/${file.split(path.sep).join("/")}`);
+    for (const file of files) {
+      const text = readFileSync(path.join(repository, file), "utf8");
+      const resolved = [...text.matchAll(/require\.resolve\(\s*["'`]([^"'`]+)["'`]/gu)].map((match) => match[1]);
+      for (const specifier of [...runtimeImports(file, text).specifiers, ...resolved]) {
+        if (specifier.startsWith(".") || isBuiltin(specifier)) continue;
+        const name = packageOf(specifier);
+        // The workspaces' own aliases, which the base configuration's paths resolve to their sources.
+        if (name === "@live-documentation/engine" && folder === "packages/engine") continue;
+        if (!declared.has(name)) found.push(`${file} loads ${name}`);
+      }
+    }
+  }
+  return [...new Set(found)].sort();
+}
+
+describe("the lock's half of the lens's key", () => {
+  it("did not move when the browser tests' Playwright was pinned to another version", () => {
+    // The pin of 2026-11-20 (b5e8d8226): the lock's bytes changed, and until this rule the whole history was rebuilt.
+    const before = committedLock("b5e8d8226~1");
+    const after = committedLock("b5e8d8226");
+    expect(after).not.toBe(before);
+    expect(lockIdentity(after)).toBe(lockIdentity(before));
+  });
+
+  it("moves with the compiler, the tree-sitter runtime, the bundled grammars, and an integrity alone", () => {
+    const today = lockIdentity(changedLock(() => undefined));
+    const moved = (change: (packages: LockPackages) => void): string => lockIdentity(changedLock(change));
+    expect(moved((packages) => void (packages["node_modules/typescript"].version = "5.9.4"))).not.toBe(today);
+    expect(moved((packages) => void (packages["node_modules/web-tree-sitter"].version = "0.27.1"))).not.toBe(today);
+    // The grammars this repository does not build itself come in one package of WebAssembly files.
+    expect(moved((packages) => void (packages["node_modules/@vscode/tree-sitter-wasm"].version = "0.3.1"))).not.toBe(today);
+    expect(moved((packages) => void (packages["node_modules/glob"].integrity = "sha512-another"))).not.toBe(today);
+    // The launcher, which no manifest of the two packages declares.
+    expect(moved((packages) => void (packages["node_modules/tsx"].resolved = "https://registry.example/tsx.tgz"))).not.toBe(today);
+  });
+
+  it("does not move with a package no summary loads, nor with what of a keyed entry decides no installed byte", () => {
+    const today = lockIdentity(changedLock(() => undefined));
+    const moved = (change: (packages: LockPackages) => void): string => lockIdentity(changedLock(change));
+    expect(moved((packages) => void (packages["node_modules/playwright-core"].version = "9.9.9"))).toBe(today);
+    expect(moved((packages) => void (packages["node_modules/eslint"] = { version: "0.0.1" }))).toBe(today);
+    expect(moved((packages) => void (packages["node_modules/typescript"].dev = true))).toBe(today);
+    expect(moved((packages) => void (packages["node_modules/typescript"].license = "MIT"))).toBe(today);
+    expect(moved((packages) => void (packages[""].devDependencies = {}))).toBe(today);
+  });
+
+  it("keeps an identity of its own for an absent lock, and refuses a lock it cannot read", () => {
+    expect(lockIdentity(null)).toBe("absent");
+    expect(lockIdentity(null)).not.toBe(lockIdentity(changedLock(() => undefined)));
+    expect(() => lockIdentity(JSON.stringify({ lockfileVersion: 1, dependencies: {} }))).toThrow(/no packages map/u);
+  });
+
+  it("finds a package where Node finds it: a nested entry for the package that holds it, the hoisted one for the rest", () => {
+    const packages = {
+      "packages/w": { dependencies: { a: "^1", c: "^1" } },
+      "node_modules/a": { version: "1.0.0", dependencies: { b: "^2" } },
+      "node_modules/a/node_modules/b": { version: "2.0.0" },
+      "node_modules/b": { version: "3.0.0" },
+      "node_modules/c": { version: "1.0.0", dependencies: { b: "^3" } },
+      "node_modules/d": { version: "1.0.0" }
+    };
+    expect([...keyedLockEntries(packages, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/a", "node_modules/a/node_modules/b", "node_modules/b", "node_modules/c", "packages/w"]);
+    const onlyA = { ...packages, "packages/w": { dependencies: { a: "^1" } } };
+    expect([...keyedLockEntries(onlyA, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/a", "node_modules/a/node_modules/b", "packages/w"]);
+    // A scoped package's nested entry wins over the hoisted one for the package that holds it.
+    const scoped = { "packages/w": { dependencies: { "@s/a": "^1" } }, "node_modules/@s/a": { dependencies: { b: "^2" } }, "node_modules/@s/a/node_modules/b": { version: "2.0.0" }, "node_modules/b": { version: "3.0.0" } };
+    expect([...keyedLockEntries(scoped, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/@s/a", "node_modules/@s/a/node_modules/b", "packages/w"]);
+    // A root is found from the folder it names, nearest first.
+    const rooted = { "packages/w": {}, "packages/w/node_modules/t": { version: "1.0.0" }, "node_modules/t": { version: "2.0.0" } };
+    expect([...keyedLockEntries(rooted, ["packages/w"], [{ from: "packages/w", name: "t" }]).keys()].sort()).toEqual(["packages/w", "packages/w/node_modules/t"]);
+  });
+
+  it("follows a workspace's link into the workspace's own entry, and its dependencies from there", () => {
+    const packages = {
+      "packages/x": { dependencies: { "@s/y": "file:../y" } },
+      "node_modules/@s/y": { resolved: "packages/y", link: true },
+      "packages/y": { version: "0.0.0", dependencies: { d: "^1" } },
+      "packages/y/node_modules/d": { version: "1.0.0" },
+      "node_modules/d": { version: "2.0.0" }
+    };
+    const keyed = keyedLockEntries(packages, ["packages/x", "packages/y"], []);
+    expect([...keyed.keys()].sort()).toEqual(["node_modules/@s/y", "packages/x", "packages/y", "packages/y/node_modules/d"]);
+    expect(keyed.get("node_modules/@s/y")).toEqual({ resolved: "packages/y", link: true });
+  });
+
+  it("refuses a link to a folder whose files the code half does not key", () => {
+    // A `file:` folder dependency: npm writes a link and a folder entry with a version, and the folder's files would be
+    // keyed by that version alone (the review of 2026-11-20).
+    const packages = {
+      "packages/x": { dependencies: { z: "file:../../lib/z" } },
+      "node_modules/z": { resolved: "lib/z", link: true },
+      "lib/z": { version: "1.0.0" }
+    };
+    expect(() => keyedLockEntries(packages, ["packages/x"], [])).toThrow(/links node_modules\/z to lib\/z, a folder whose files the lens does not key/u);
+  });
+
+  it("keys the launcher the command runs under as well as the one its workers run under, where the lock holds two", () => {
+    // The command starts under the repository's own tsx (`npm run` puts the top's `node_modules/.bin` on the path) and
+    // compiles the command's side of a summary with it; a worker starts under the tsx found from the generator.
+    const packages = {
+      "packages/engine": {},
+      "packages/generator": {},
+      "node_modules/glob": { version: "14.0.0" },
+      "node_modules/tsx": { version: "4.0.0" },
+      "packages/generator/node_modules/tsx": { version: "5.0.0" }
+    };
+    expect([...keyedLockEntries(packages).keys()].sort()).toEqual(["node_modules/glob", "node_modules/tsx", "packages/engine", "packages/generator", "packages/generator/node_modules/tsx"]);
+  });
+
+  it("passes over an optional dependency or a peer the lock does not hold, refuses a missing dependency, and ends at a cycle", () => {
+    const packages = {
+      "packages/w": { dependencies: { a: "^1" }, optionalDependencies: { fsevents: "^2" }, peerDependencies: { react: "^18" } },
+      "node_modules/a": { version: "1.0.0", dependencies: { b: "^1" }, peerDependencies: { w: "*" } },
+      "node_modules/b": { version: "1.0.0", dependencies: { a: "^1" } }
+    };
+    expect([...keyedLockEntries(packages, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/a", "node_modules/b", "packages/w"]);
+    const missing = { ...packages, "node_modules/b": { version: "1.0.0", dependencies: { gone: "^1" } } };
+    expect(() => keyedLockEntries(missing, ["packages/w"], [])).toThrow(/holds no gone that node_modules\/b can load/u);
+    expect(() => keyedLockEntries(packages, ["packages/w"], [{ from: "packages/w", name: "tsx" }])).toThrow(/holds no tsx/u);
+  });
+
+  it("finds an installation that is not the lock's where npm recorded what it installed, and only there", () => {
+    const lock = readFileSync(path.join(repository, "package-lock.json"), "utf8");
+    // npm's record of what it installed, `node_modules/.package-lock.json`: the lock's entries but the top's, as installed.
+    const installed = (change: (packages: LockPackages) => void): string => {
+      const record = JSON.parse(lock) as { packages: LockPackages };
+      delete record.packages[""];
+      change(record.packages);
+      return JSON.stringify(record);
+    };
+    expect(installationDifference(lock, installed(() => undefined))).toBeNull();
+    // A checkout or a pull without `npm ci`: the compiler installed is behind the lock's.
+    expect(installationDifference(lock, installed((packages) => void (packages["node_modules/typescript"].version = "5.8.3")))).toContain("node_modules/typescript");
+    expect(installationDifference(lock, installed((packages) => void delete packages["node_modules/web-tree-sitter"]))).toContain("node_modules/web-tree-sitter");
+    // Another platform's binary, optional, is not installed here, and a package no summary loads is not asked about.
+    expect(installationDifference(lock, installed((packages) => void delete packages["node_modules/@esbuild/win32-x64"]))).toBeNull();
+    expect(installationDifference(lock, installed((packages) => void (packages["node_modules/playwright-core"].version = "1.0.0")))).toBeNull();
+    // Where npm left no record, nothing is checked.
+    expect(installationDifference(lock, null)).toBeNull();
+    // A nearer copy reached only through the installation, every place the lock names still installed and reached: the
+    // generator loads its own `glob` while the engine still loads the hoisted one, so nothing but the nearer copy differs
+    // (a review of 2026-11-20; in the compiler's case below the hoisted place also reads as not installed).
+    const nearerGlob = installed((packages) => void (packages["packages/generator/node_modules/glob"] = { version: "10.4.5", resolved: "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz", integrity: "sha512-older" }));
+    expect(JSON.parse(installationDifference(lock, nearerGlob) ?? "[]")).toEqual([["packages/generator/node_modules/glob", { version: "10.4.5", resolved: "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz", integrity: "sha512-older" }]]);
+    // A nearer copy the lock does not name: `npm install --no-save -w packages/engine typescript@4.9.5` leaves the lock and
+    // the hoisted copy as they were, and the engine loads the older one (the reviewer's second look, 2026-11-20).
+    const nested = installed((packages) => void (packages["packages/engine/node_modules/typescript"] = { version: "4.9.5", resolved: "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz", integrity: "sha512-older" }));
+    expect(installationDifference(lock, nested)).toContain("packages/engine/node_modules/typescript");
+    // A registry mirror: the record names another `resolved` for the same content, which is no other installation.
+    const mirrored = installed((packages) => void (packages["node_modules/typescript"].resolved = "https://mirror.example/typescript/-/typescript-5.9.3.tgz"));
+    expect(installationDifference(lock, mirrored)).toBeNull();
+  });
+
+  it("stops at an installed link to a folder whose files the lens does not key, and at a record it cannot read, naming the record", () => {
+    const lock = readFileSync(path.join(repository, "package-lock.json"), "utf8");
+    const record = JSON.parse(lock) as { packages: LockPackages };
+    delete record.packages[""];
+    // `npm link` of the runtime: the record holds a link to a folder of the person's, which the key would hold by its path.
+    record.packages["node_modules/web-tree-sitter"] = { resolved: "../web-tree-sitter", link: true };
+    record.packages["../web-tree-sitter"] = { version: "0.27.0" };
+    expect(() => installationDifference(lock, JSON.stringify(record))).toThrow(/node_modules\/\.package-lock\.json links node_modules\/web-tree-sitter to \.\.\/web-tree-sitter/u);
+    expect(() => installationDifference(lock, "{")).toThrow(/node_modules\/\.package-lock\.json/u);
+    expect(() => installationDifference(lock, JSON.stringify({ lockfileVersion: 1 }))).toThrow(/node_modules\/\.package-lock\.json has no packages map/u);
+  });
+
+  it("carries the installation and the working lock into the key's modified half, only where they differ in keyed entries", async () => {
+    // A repository of the test's own making, laid out as this one: the two packages, a committed lock with a few keyed
+    // entries and one no summary loads, and npm's record of the installation beside it.
+    const top = mkdtempSync(path.join(tmpdir(), "lens-checkout-"));
+    try {
+      const environment = { ...process.env, GIT_CONFIG_GLOBAL: devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
+      const run = (...args: string[]): void => void execFileSync("git", args, { cwd: top, env: environment, stdio: "ignore" });
+      const lock = {
+        name: "fixture",
+        lockfileVersion: 3,
+        packages: {
+          "": { name: "fixture", workspaces: ["packages/engine", "packages/generator"], devDependencies: { eslint: "^10.0.0", tsx: "^4.0.0" } },
+          "packages/engine": { name: "@fixture/engine", version: "0.0.0", dependencies: { glob: "^14.0.0", typescript: "^5.0.0" } },
+          "packages/generator": { name: "@fixture/generator", version: "0.0.0" },
+          "node_modules/glob": { version: "14.0.6", resolved: "https://registry.example/glob-14.0.6.tgz", integrity: "sha512-glob" },
+          "node_modules/typescript": { version: "5.9.3", resolved: "https://registry.example/typescript-5.9.3.tgz", integrity: "sha512-typescript" },
+          "node_modules/tsx": { version: "4.23.15", resolved: "https://registry.example/tsx-4.23.15.tgz", integrity: "sha512-tsx", dev: true },
+          "node_modules/eslint": { version: "10.15.0", resolved: "https://registry.example/eslint-10.15.0.tgz", integrity: "sha512-eslint", dev: true }
+        }
+      };
+      const write = (file: string, text: string): void => {
+        mkdirSync(path.dirname(path.join(top, file)), { recursive: true });
+        writeFileSync(path.join(top, file), text);
+      };
+      const record = (change: (packages: LockPackages) => void = () => undefined): void => {
+        const installed = JSON.parse(JSON.stringify(lock)) as { packages: LockPackages };
+        delete installed.packages[""];
+        change(installed.packages);
+        write("node_modules/.package-lock.json", JSON.stringify(installed, null, 2));
+      };
+      const workingLock = (change: (packages: LockPackages) => void): void => {
+        const changed = JSON.parse(JSON.stringify(lock)) as { packages: LockPackages };
+        change(changed.packages);
+        write("package-lock.json", JSON.stringify(changed, null, 2));
+      };
+      write("packages/engine/src/index.ts", "export const engine = 1;\n");
+      write("packages/generator/src/index.ts", "export const generator = 1;\n");
+      write("tsconfig.base.json", "{}\n");
+      write("package-lock.json", JSON.stringify(lock, null, 2));
+      write(".gitignore", "node_modules/\n");
+      run("init", "--quiet", "-b", "main");
+      run("add", "--all");
+      run("commit", "--quiet", "-m", "A checkout");
+      const modified = async (): Promise<string | null> => (await checkoutOf(path.join(top, "packages", "generator"), keysTheLens))!.modified;
+
+      record();
+      expect(await modified()).toBeNull();
+      // An installation a pull left behind: the compiler installed at another version than the lock's.
+      record((packages) => void (packages["node_modules/typescript"].version = "5.8.3"));
+      const behind = await modified();
+      expect(behind).not.toBeNull();
+      // A package no summary loads installed at another version is not asked about.
+      record((packages) => void (packages["node_modules/eslint"].version = "9.0.0"));
+      expect(await modified()).toBeNull();
+      // Where npm left no record, nothing is checked.
+      rmSync(path.join(top, "node_modules"), { recursive: true });
+      expect(await modified()).toBeNull();
+
+      // The working lock against the committed one: a change inside the keyed set counts, one outside it does not.
+      workingLock((packages) => void (packages["node_modules/eslint"].version = "10.16.0"));
+      expect(await modified()).toBeNull();
+      workingLock((packages) => void (packages["node_modules/typescript"].version = "5.9.4"));
+      expect(await modified()).not.toBeNull();
+    } finally {
+      rmSync(top, { recursive: true, force: true });
+    }
+  });
+
+  it("names as roots every package the two packages load without declaring it", () => {
+    expect(undeclaredImports(LOCK_ROOTS)).toEqual([]);
+    // The check can fail: the generator's code imports `glob`, which only the engine declares.
+    expect(undeclaredImports(LOCK_ROOTS.filter((root) => root.name !== "glob"))).toContain("packages/generator/src/generator.ts loads glob");
+    expect(undeclaredImports(LOCK_ROOTS.filter((root) => root.name !== "tsx"))).toContain("packages/generator/src/history/regenerate.ts loads tsx");
   });
 });

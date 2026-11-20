@@ -18,7 +18,7 @@ import { parse as parseToml } from "smol-toml";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DeclaredEntry, DependencyEntry, PublicSymbolEntry, ResolvedSymbolLocation, WorkspaceSymbolIndex } from "../coreTypes";
 import { PACKAGE_KIND } from "../openings";
 import type { WorkspaceFileIndex } from "./index";
@@ -53,7 +53,8 @@ export function stringOf(value: unknown): string | undefined {
 export async function readToml(absolutePath: string): Promise<Record<string, unknown> | undefined> {
   try {
     return tableOf(parseToml(await readSourceText(absolutePath)));
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return undefined;
   }
 }

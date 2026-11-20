@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history.test.ts`
-- Generated At: 2026-11-19T21:10:25.743Z
+- Generated At: 2026-11-20T16:31:03.903Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`git.openGitRepository`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
+- [`lens.lensOf`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
 - [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
 - [`rows.linksOf`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
 - [`sequence.changeAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
@@ -58,6 +59,7 @@ _No public symbols detected_
 - [`staticBuilder.buildStaticExplorer`](../../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`StaticExplorerData`](../../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`computeHistory`](../../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-computehistory)
 - [`scripted-repository.CHECKED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-checked_config)
 - [`scripted-repository.CHECKED_SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-checked_script)
 - [`scripted-repository.FIXTURE_GIT_ENV`](./scripted-repository.ts.mdmd.md#symbol-fixture_git_env)
@@ -66,7 +68,7 @@ _No public symbols detected_
 - [`scripted-repository.SCRIPTED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-scripted_config)
 - [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
 - [`scripted-repository.git`](./scripted-repository.ts.mdmd.md#symbol-git)
-- `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
+- `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

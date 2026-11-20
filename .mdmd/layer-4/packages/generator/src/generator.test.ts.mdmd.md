@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/generator/src/generator.test.ts`
-- Generated At: 2026-11-19T21:10:17.952Z
+- Generated At: 2026-11-20T16:43:07.817Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `execFileSync`
+- `node:fs` - `nodeFs`
 - `node:fs/promises`
+- `node:module` - `syncBuiltinESMExports`
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
@@ -38,6 +40,7 @@ _No public symbols detected_
 - [`document.UNREAD_NOTE`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-unread_note)
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`summary.summarizeGraph`](../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
+- [`processMark.machineFailure`](../../engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

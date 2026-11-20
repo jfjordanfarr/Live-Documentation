@@ -25,6 +25,7 @@ import {
 } from "./dependencies";
 import { inferDomDependencies } from "./heuristics/dom";
 import { inferRouteDependencies } from "./heuristics/routes";
+import { typeScriptBeyondDepth } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
@@ -95,6 +96,8 @@ export async function analyzeSourceFile(
     true,
     scriptKind
   );
+  // Measured before any walk of ours, so that a file a fresh process might not read marks the process (`processMark.ts`).
+  typeScriptBeyondDepth(sourceFile);
 
   const directSymbols = collectExportedSymbols(sourceFile);
   let dependencies = await collectDependencies({

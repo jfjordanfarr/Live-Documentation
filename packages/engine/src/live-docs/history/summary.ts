@@ -147,6 +147,12 @@ export interface CommitSummary {
    * (`WorkingTree.unwritten`); absent when the tree held every file.
    */
   unwritten?: Array<[path: string, reason: string]>;
+  /**
+   * The change's files the generator could not map, sorted, each with the reason, which names no path of the tree
+   * (`summarizeChange.ts`): none of them is in `files`, and no doc committed for one stood in for it; absent when the
+   * generator mapped every file (since 2026-11-20; until then such a file was left out in silence).
+   */
+  unmapped?: Array<[path: string, reason: string]>;
 }
 
 /**

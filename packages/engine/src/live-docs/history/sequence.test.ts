@@ -168,6 +168,26 @@ describe("the sequence's rows", () => {
     expect(() => builder.add(commit(1), smallShape(1), { renamed: [], modified: [] })).toThrow("gives no rows");
   });
 
+  it("goes on from a sequence written earlier, read back from its file, to the bytes the whole built at once would write", () => {
+    // Stopped before a keyframe, so that the one written after is held to the whole, and at and after it, so that the one
+    // carried is; each part read back from its JSON, as the history command reads it.
+    const end = KEYFRAME_INTERVAL + 5;
+    const whole = JSON.stringify(buildWithRows(end));
+    for (const stop of [3, KEYFRAME_INTERVAL - 1, KEYFRAME_INTERVAL, KEYFRAME_INTERVAL + 2]) {
+      const written = JSON.parse(JSON.stringify(buildWithRows(stop))) as ReturnType<SequenceBuilder["finish"]>;
+      const builder = SequenceBuilder.continuing({ lens: LENS, source: SOURCE }, written, smallShape(stop), growingRows(stop));
+      for (let index = stop + 1; index <= end; index += 1) {
+        builder.add(commit(index), smallShape(index), { renamed: [], modified: [] }, growingRows(index));
+      }
+      expect(JSON.stringify(builder.finish()), `stopped at ${stop}`).toBe(whole);
+    }
+  }, 30_000);
+
+  it("refuses to go on from a sequence whose last moment is not the one it is given", () => {
+    const written = buildWithRows(6);
+    expect(() => SequenceBuilder.continuing({ lens: LENS, source: SOURCE }, written, smallShape(5), growingRows(5))).toThrow("replaying the written sequence to c6 does not give its moment");
+  });
+
   it("carries the rows through a window re-based on its first change", () => {
     const sequence = buildWithRows(12);
     const window = windowOf(sequence, { rule: "last", count: 4 });

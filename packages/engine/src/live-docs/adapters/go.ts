@@ -28,11 +28,11 @@ import path from "node:path";
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // Facts about one file
@@ -423,21 +423,23 @@ class FileExtractor {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
+// a process that generates commit after commit in one folder never reads a fact of another commit.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
+  factsRun = fileIndex;
+}
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
   const content = await readSourceText(absolutePath);
-  const tree    = await parseSource("go", content);
-  try {
-    const facts = new FileExtractor().extract(tree.rootNode);
-    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
-    return facts;
-  } finally {
-    tree.delete();
-  }
+  const facts   = await readTree("go", content, (root) => new FileExtractor().extract(root));
+  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  return facts;
 }
 
 // ---------------------------------------------------------------------------
@@ -467,7 +469,8 @@ async function buildPackageTable(workspaceRoot: string, fileIndex: WorkspaceFile
     let facts: FileFacts;
     try {
       facts = await fileFacts(path.join(workspaceRoot, file));
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       continue;
     }
     const directory = normalizeWorkspacePath(path.dirname(file)) || ".";
@@ -502,7 +505,8 @@ async function moduleOf(absolutePath: string, workspaceRoot: string): Promise<Go
       const content = await readSourceText(path.join(directory, "go.mod"));
       const match   = /^module\s+(\S+)/mu.exec(content);
       if (match) return { path: match[1], root: normalizeWorkspacePath(path.relative(workspaceRoot, directory)) || "." };
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       // no go.mod here; look one level up
     }
     const parent = path.dirname(directory);
@@ -632,6 +636,7 @@ export const goAdapter: LanguageAdapter = {
   id:         "go",
   extensions: [".go"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts    = await fileFacts(absolutePath);
     const table    = await packageTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));

@@ -24,15 +24,17 @@
  * @module
  */
 
+import { readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { decodeSourceText, readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
+import { jsonChildren, markProcess, nestingBeyondDepth, READING_DEPTH, TREE_DEPTH } from "../processMark";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { ManifestDependencies, manifestContext, packageSymbols, stringOf, tableOf, type ManifestContext } from "./manifest";
 
@@ -160,7 +162,11 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
  *   Windows path, `node scripts\a.ts`, is read: the backslash stays in the
  *   word, and the path's resolution turns it into `/`.
  */
-function filesRunBy(script: string, toSource: (candidate: string) => string | undefined): string[] {
+function filesRunBy(script: string, toSource: (candidate: string) => string | undefined, depth = 1): string[] {
+  // Each quoted word that holds words is read a level down, by this function's own recursion (`shellCommands` reads by a
+  // loop, and `JSON.parse` built the script without the stack): past the tree's bound, the process is marked
+  // (`processMark.ts`). No script reaches it in practice, since each level must escape the quotes of every level below.
+  if (depth > TREE_DEPTH) markProcess("deep");
   const files: string[] = [];
   for (const words of shellCommands(script)) {
     let runs = false;
@@ -172,7 +178,7 @@ function filesRunBy(script: string, toSource: (candidate: string) => string | un
           runs = true;
         }
       } else if (word.spaced) {
-        files.push(...filesRunBy(word.text, toSource));
+        files.push(...filesRunBy(word.text, toSource, depth + 1));
       }
     }
   }
@@ -317,13 +323,44 @@ function sourcesOf(built: string): string[] {
   return [built, ...(sources[extension] ?? []).map((candidate) => `${base}${candidate}`)];
 }
 
-/** Where the tsconfig beside a manifest writes its output and reads its sources, as absolute paths; absent without a tsconfig or an outDir. */
+/**
+ * Where the tsconfig beside a manifest writes its output and reads its sources, as absolute paths; absent without a
+ * tsconfig or an outDir.
+ *
+ * @remarks
+ * TypeScript reads the tsconfig, and each one it extends, through the host it is handed, and turns whatever that host
+ * throws into a diagnostic; its own host, `ts.sys`, reads every failure as no file. So the host here reads the disk by
+ * the one rule of the readers (`decodeSourceText`), keeps a failure of the machine's (`throwIfMachineFailure`), and
+ * throws it once TypeScript has read: a tsconfig that could not be read for a cause of the machine's never reads as one
+ * with no paths (since 2026-11-20). The files the tsconfig includes are not listed, since only its options are read.
+ */
 function compilerPaths(directory: string): { outDir: string; rootDirs: string[] } | undefined {
+  const failures: unknown[] = [];
+  const kept = <T>(call: () => T, otherwise: T): T => {
+    try {
+      return call();
+    } catch (error) {
+      failures.push(error);
+      return otherwise;
+    }
+  };
+  const host: ts.ParseConfigHost = {
+    useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
+    readDirectory: () => [],
+    fileExists: (file) => kept(() => statSync(file).isFile(), false),
+    readFile: (file) => kept(() => {
+      const reading = decodeSourceText(readFileSync(file));
+      return reading.encoding === "unread" ? undefined : reading.text;
+    }, undefined)
+  };
   const tsconfig = path.join(directory, "tsconfig.json");
-  if (!ts.sys.fileExists(tsconfig)) return undefined;
-  const read = ts.readConfigFile(tsconfig, (file) => ts.sys.readFile(file));
+  const read = ts.readConfigFile(tsconfig, (file) => host.readFile(file));
+  failures.forEach(throwIfMachineFailure);
   if (read.error || !read.config) return undefined;
-  const options = ts.parseJsonConfigFileContent(read.config, ts.sys, directory, undefined, tsconfig).options;
+  // TypeScript's reader of JSON recurses as its parser does: measured once it has read, as after a parse of a module.
+  nestingBeyondDepth(read.config as unknown, jsonChildren, READING_DEPTH);
+  const options = ts.parseJsonConfigFileContent(read.config, host, directory, undefined, tsconfig).options;
+  failures.forEach(throwIfMachineFailure);
   if (!options.outDir) return undefined;
   const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
   return { outDir: path.resolve(directory, options.outDir), rootDirs: rootDirs.map((root) => path.resolve(directory, root)) };
@@ -557,7 +594,8 @@ export const jsonAdapter: LanguageAdapter = {
     let content: string;
     try {
       content = await readSourceText(absolutePath);
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       return null;
     }
 
@@ -571,6 +609,8 @@ export const jsonAdapter: LanguageAdapter = {
         dependencies: []
       };
     }
+    // `JSON.parse` holds no stack; the walks below recurse, so a value nested deeper than a fresh process could walk marks the process.
+    nestingBeyondDepth(parsed, jsonChildren, TREE_DEPTH);
 
     if (path.basename(absolutePath) === PACKAGE_JSON) {
       return analyzePackageManifest(parsed, manifestContext({ absolutePath, workspaceRoot, fileIndex, symbolIndex }));

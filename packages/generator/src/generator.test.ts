@@ -1,8 +1,10 @@
 import { execFileSync } from "node:child_process";
+import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
@@ -13,8 +15,30 @@ import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
+import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 
 import { generateLiveDocs } from "./generator";
+
+describe("a source whose doc's path the disk cannot hold", () => {
+  // A name of 250 characters is a file the disk holds; its doc's name, eight characters longer, is not. Until
+  // 2026-11-20 the doc's removal after the failure read it, and that read's failure stopped the whole run.
+  it("is named as a file that could not be mapped, and the run goes on", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-long-name-"));
+    try {
+      const long = `src/${"n".repeat(247)}.ts`;
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.writeFile(path.join(root, long), "export const x = 1;\n");
+      await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+      const quiet = (): undefined => undefined;
+      const result = await generateLiveDocs({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }), logger: { info: quiet, warn: quiet, error: quiet } });
+      expect(result.failed.map((failure) => failure.sourcePath)).toEqual([long]);
+      expect(result.failed[0].reason).toMatch(/^ENAMETOOLONG/u);
+      expect(result.files.map((file) => file.sourcePath)).toContain("src/a.ts");
+    } finally {
+      await fs.rm(root, { recursive: true, force: true });
+    }
+  });
+});
 
 describe("generateLiveDocs pruning", () => {
   let workspaceRoot: string;
@@ -287,6 +311,17 @@ describe("generateLiveDocs and nested scans", () => {
     expect(warnings).toEqual([`This folder lies inside the scan at ${workspaceRoot}. Its docs are written all the same, but a scan never lies inside another: a board that names both reads only the scan at ${workspaceRoot}.`]);
     // The warning says the docs are written, and they are.
     expect(await fs.readdir(path.join(workspaceRoot, "packages", "foo", DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer, "src"))).toEqual(["index.ts.md"]);
+  });
+
+  it("hands its warning to the documents' walk as to the files', for a nested repository whose git refuses", async () => {
+    execFileSync("git", ["init", "-q"], { cwd: workspaceRoot });
+    await fs.mkdir(path.join(workspaceRoot, "nest"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "nest", "README.md"), "# Nest\n", "utf8");
+    execFileSync("git", ["init", "-q"], { cwd: path.join(workspaceRoot, "nest") });
+    // A configuration git cannot read: git takes the folder for another repository and cannot answer there.
+    await fs.appendFile(path.join(workspaceRoot, "nest", ".git", "config"), "[broken\n", "utf8");
+    await generateLiveDocs({ workspaceRoot, config: normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] }), logger });
+    expect(warnings).toEqual([expect.stringContaining("of 1 file(s), such as nest/README.md,")]);
   });
 
   it("says nothing when no scan nests", async () => {
@@ -798,5 +833,109 @@ describe("generateLiveDocs and names of punctuation only", () => {
     } finally {
       await fs.rm(workspaceRoot, { recursive: true, force: true });
     }
+  });
+});
+
+describe("a file whose reading throws in the index pass alone", () => {
+  // Until 2026-11-20 the index pass swallowed every throw: a file whose first read failed there was mapped by the
+  // second, its symbols missing from the index, a re-exported one's home the barrel, with no mark and no name.
+  it("is named as a file that could not be mapped, with the error it threw there, which the history reads as the machine's", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-index-pass-"));
+    const readFile = nodeFs.promises.readFile;
+    let failure: Error | undefined;
+    const spy = vi.spyOn(nodeFs.promises, "readFile").mockImplementation(((...args: unknown[]) => {
+      if (failure && String(args[0]) === path.join(root, "src", "a.ts")) {
+        const thrown = failure;
+        failure = undefined;
+        return Promise.reject(thrown);
+      }
+      return Reflect.apply(readFile, nodeFs.promises, args);
+    }) as unknown as typeof nodeFs.promises.readFile);
+    try {
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+      await fs.writeFile(path.join(root, "src", "index.ts"), "export * from \"./a\";\n");
+      const quiet = (): undefined => undefined;
+      const generate = async (): Promise<Awaited<ReturnType<typeof generateLiveDocs>>> =>
+        generateLiveDocs({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }), dryRun: true, logger: { info: quiet, warn: quiet, error: quiet } });
+      failure = new RangeError("Maximum call stack size exceeded");
+      const result = await generate();
+      expect(result.failed.map(({ sourcePath, reason }) => [sourcePath, reason])).toEqual([["src/a.ts", "Maximum call stack size exceeded"]]);
+      // As a failure of the per-file pass, the machine's failure is carried with its error, by which the history's
+      // summary (`summarizeChange.ts`) publishes nothing and summarizes the change again in a fresh worker.
+      failure = Object.assign(new Error("EMFILE: too many open files, open"), { code: "EMFILE", syscall: "open" });
+      const machine = await generate();
+      expect(machine.failed.map(({ sourcePath }) => sourcePath)).toEqual(["src/a.ts"]);
+      expect(machineFailure(machine.failed[0].error)).toBe(true);
+    } finally {
+      spy.mockRestore();
+      await fs.rm(root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("a probe of the run's own folders that fails for a cause of the machine's", () => {
+  // Until 2026-11-20 both probes read any failure as "not there": the docs root as gone, so that no stale doc was pruned,
+  // and a folder above as no scan. Each now stops the run.
+  const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+  const quiet = (): undefined => undefined;
+  const logger = { info: quiet, warn: quiet, error: quiet };
+  const tooMany = (syscall: string, file: string): Error => Object.assign(new Error(`EMFILE: too many open files, ${syscall} '${file}'`), { code: "EMFILE", syscall, errno: -24 });
+  let root: string;
+  let staleDoc: string;
+
+  /** A workspace whose last run documented `src/gone/b.ts`, since removed, so that its doc is stale and alone in its folder. */
+  beforeEach(async () => {
+    root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-probe-"));
+    await fs.mkdir(path.join(root, "src", "gone"), { recursive: true });
+    await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+    await fs.writeFile(path.join(root, "src", "gone", "b.ts"), "export const b = 1;\n");
+    await generateLiveDocs({ workspaceRoot: root, config, logger });
+    await fs.rm(path.join(root, "src", "gone"), { recursive: true });
+    staleDoc = path.join(root, ".mdmd", "layer-4", "src", "gone", "b.ts.mdmd.md");
+    expect(nodeFs.existsSync(staleDoc)).toBe(true);
+  });
+
+  afterEach(async () => {
+    vi.restoreAllMocks();
+    syncBuiltinESMExports();
+    await fs.rm(root, { recursive: true, force: true });
+  });
+
+  /** Fails the first call of `name` on `target` that `when` allows, as the machine would, and passes every other. */
+  const failOnce = (name: "stat" | "readdir", target: string, when: () => boolean = () => true): void => {
+    const original = nodeFs.promises[name] as (...args: unknown[]) => Promise<unknown>;
+    let armed = true;
+    vi.spyOn(nodeFs.promises, name).mockImplementation(((...args: unknown[]) => {
+      if (armed && String(args[0]) === target && when()) {
+        armed = false;
+        return Promise.reject(tooMany(name, target));
+      }
+      return Reflect.apply(original, nodeFs.promises, args);
+    }) as never);
+    // `generator.ts` imports `node:fs/promises` as a module, whose bindings follow the object only when synced.
+    syncBuiltinESMExports();
+  };
+
+  it("at the docs root before pruning is not a docs root gone: the run stops, and no doc is pruned on the guess", async () => {
+    failOnce("stat", path.join(root, ".mdmd", "layer-4"));
+    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, stat");
+    expect(nodeFs.existsSync(staleDoc)).toBe(true);
+  });
+
+  it("at a folder above the workspace is not a folder without a scan: the run stops", async () => {
+    failOnce("stat", path.join(path.dirname(root), ".mdmd", "layer-4"));
+    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, stat");
+  });
+
+  // The tidying after a pruned doc is the exception: no fact is read from an empty folder, and a run stopped there would
+  // pass on a second try with nothing mended, so a failure of any kind leaves the folder (the root's ruling, 2026-11-20).
+  it("at the folder a pruned doc leaves leaves the folder: the run completes, and the stale doc is removed", async () => {
+    const left = path.dirname(staleDoc);
+    failOnce("readdir", left, () => !nodeFs.existsSync(staleDoc));
+    const result = await generateLiveDocs({ workspaceRoot: root, config, logger });
+    expect(result.deletedFiles).toEqual([".mdmd/layer-4/src/gone/b.ts.mdmd.md"]);
+    expect(nodeFs.existsSync(staleDoc)).toBe(false);
+    expect(nodeFs.existsSync(left)).toBe(true);
   });
 });

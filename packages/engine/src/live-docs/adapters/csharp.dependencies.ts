@@ -13,6 +13,7 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry } from "../core";
 
 const APP_SETTINGS_PATTERN                  = /ConfigurationManager\.AppSettings\s*\[\s*"([^"]+)"\s*\]/g;
@@ -184,7 +185,8 @@ export async function locateNearestFile(sourcePath: string, workspaceRoot: strin
 export async function fileExists(candidate: string): Promise<boolean> {
   try {
     return (await fs.stat(candidate)).isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }

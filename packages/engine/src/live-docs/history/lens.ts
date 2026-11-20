@@ -17,11 +17,19 @@ import type { GeneratorIdentity, HistoryLens } from "./format";
  * and the configuration a summary is made under ({@link summarizedConfiguration}); the commit the generator runs from
  * rides in the lens for the reader but does not key it, so unrelated commits keep the cache. The lens itself carries
  * the whole configuration, for the reader.
+ *
+ * With the configuration goes what the repository itself decides of how a summary is made: whether its version control
+ * matches names without regard to case (`VersionControl.ignoresCase`, for git its own `core.ignorecase`), which the
+ * generator applies to `exclude`, so that a clone made on Windows excludes `Docs/` where a pattern names `docs/`. Since
+ * 2026-11-20 it keys the lens, and the trees' environment answers the generator with the value keyed, so that the key and
+ * the summary read one value; before, it reached summaries unkeyed, and a cache moved between machines could hold
+ * summaries made under the other. Where it is false the key is made as before it was keyed.
  */
-export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig): HistoryLens {
+export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig, repository: { ignoresCase: boolean } = { ignoresCase: false }): HistoryLens {
   const keyed = { version: generator.version, code: generator.code, modified: generator.modified, unicode: generator.unicode ?? null };
-  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarizedConfiguration(configuration) })).digest("hex").slice(0, 16);
-  return { key, generator, configuration };
+  const made = repository.ignoresCase ? { repository: { ignoresCase: true } } : {};
+  const key = createHash("sha256").update(canonicalJson({ generator: keyed, configuration: summarizedConfiguration(configuration), ...made })).digest("hex").slice(0, 16);
+  return { key, generator, configuration, ...(repository.ignoresCase ? { ignoresCase: true as const } : {}) };
 }
 
 /**

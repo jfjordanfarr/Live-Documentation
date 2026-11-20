@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/dependencies.test.ts`
-- Generated At: 2026-11-19T21:10:11.318Z
+- Generated At: 2026-11-20T15:53:16.586Z
 
 ## Authored
 ### Purpose
@@ -32,5 +32,5 @@ _No public symbols detected_
 - [`dependencies.resolveDependency`](./dependencies.ts.mdmd.md#symbol-resolvedependency)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - `typescript` - `ts`
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

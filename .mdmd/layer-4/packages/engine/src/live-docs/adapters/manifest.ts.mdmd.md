@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/manifest.ts`
-- Generated At: 2026-11-19T22:40:10.052Z
+- Generated At: 2026-11-20T15:12:45.865Z
 
 ## Authored
 ### Purpose
@@ -57,7 +57,7 @@ A TOML document's root table, or `undefined` when the file cannot be read or is 
 
 #### `packageSymbols` {#symbol-packagesymbols}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L62)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L63)
 - Returns: [`PublicSymbolEntry`](../coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
 ##### `packageSymbols` — Summary
@@ -65,7 +65,7 @@ The package a manifest names, as its one public symbol at line 1; none without a
 
 #### `workspaceFile` {#symbol-workspacefile}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L67)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L68)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `workspaceFile` — Summary
@@ -73,7 +73,7 @@ The workspace-relative path of `absolute` when it is a workspace file other than
 
 #### `manifestIn` {#symbol-manifestin}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L74)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L75)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `manifestIn` — Summary
@@ -81,7 +81,7 @@ The manifest named `manifestName` in the directory a manifest writes, relative t
 
 #### `manifestsPublishing` {#symbol-manifestspublishing}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L106)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L107)
 - Returns: `PublishedPackage`[]
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
@@ -93,7 +93,7 @@ loosely (Python's).
 
 #### `publishedName` {#symbol-publishedname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L116)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L117)
 - Parameters: `context`: [`ManifestContext`](#symbol-manifestcontext-interface)
 
 ##### `publishedName` — Summary
@@ -101,14 +101,14 @@ The package a workspace manifest publishes, by the index, or `fallback` when the
 
 #### `ManifestDependencies` {#symbol-manifestdependencies}
 - Type: class
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L125)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L126)
 
 ##### `ManifestDependencies` — Summary
 What one manifest stands on, gathered and then written in the precedents' order: linked manifests by path, then externals by name.
 
 #### `sortDeclared` {#symbol-sortdeclared}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L167)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/manifest.ts#L168)
 - Returns: [`DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry)[]
 - Parameters: `declared`: `Iterable`
 
@@ -129,6 +129,7 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
+- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `smol-toml` - `parse`
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -2,7 +2,7 @@ import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter } from "./index";
@@ -160,7 +160,8 @@ async function fileExists(filePath: string): Promise<boolean> {
   try {
     const stats = await fs.stat(filePath);
     return stats.isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }
@@ -168,7 +169,8 @@ async function fileExists(filePath: string): Promise<boolean> {
 function fileExistsSync(filePath: string): boolean {
   try {
     return statSync(filePath).isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }
