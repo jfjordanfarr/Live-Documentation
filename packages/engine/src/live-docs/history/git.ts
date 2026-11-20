@@ -182,12 +182,11 @@ class GitTrees {
       throw error;
     }
     const environment = {
-      GIT_DIR: this.store,
+      ...storeEnvironment(this.store),
       GIT_WORK_TREE: directory,
       GIT_INDEX_FILE: index,
       GIT_CONFIG_NOSYSTEM: "1",
-      GIT_CONFIG_GLOBAL: os.devNull,
-      GIT_NO_REPLACE_OBJECTS: "1"
+      GIT_CONFIG_GLOBAL: os.devNull
     };
     return {
       root: directory,
@@ -200,7 +199,11 @@ class GitTrees {
         const brought = await bringTreeForward(this.store, next, directory, tree.written, options);
         if (brought !== undefined) return this.treeAt(next, directory, () => Promise.resolve({ ...brought, broughtForward: true }));
         const fresh = await freshFolderBeside(directory);
-        return this.treeAt(next, fresh, async () => ({ ...(await writeTreeAnew(this.store, next, fresh, options)), broughtForward: false }));
+        const anew = await this.treeAt(next, fresh, async () => ({ ...(await writeTreeAnew(this.store, next, fresh, options)), broughtForward: false }));
+        // The old tree goes at once where nothing holds it; one the disk will not let go waits for the removal of the folder
+        // above it, and nothing reads it meanwhile.
+        await fs.rm(directory, { recursive: true, force: true }).catch(() => undefined);
+        return anew;
       }
     };
   }
@@ -220,7 +223,7 @@ async function atStore(store: string, args: readonly string[], env?: Record<stri
 
 /** What every call of the tree's writer sets: the repository by its git directory, and its commits read as stored. */
 function storeEnvironment(store: string): Record<string, string> {
-  return { GIT_DIR: store, ...READ_AS_STORED };
+  return { GIT_DIR: store, ...READ_AS_STORED, ...NOTHING_REMOTE };
 }
 
 /**
@@ -228,6 +231,13 @@ function storeEnvironment(store: string): Record<string, string> {
  * local state no other clone shares, do not stand in for the commit's own trees and blobs.
  */
 const READ_AS_STORED = { GIT_NO_REPLACE_OBJECTS: "1" };
+
+/**
+ * What every call of the tree's writer and of a process in the tree sets so that git stays on the local clone: a
+ * partial clone's missing object fails the call rather than being fetched (`GIT_NO_LAZY_FETCH`), and nothing ever asks
+ * for credentials at a terminal (`GIT_TERMINAL_PROMPT`).
+ */
+const NOTHING_REMOTE = { GIT_NO_LAZY_FETCH: "1", GIT_TERMINAL_PROMPT: "0" };
 
 /** The modes of a tree's entries: a file, an executable file, a symbolic link, and another repository's commit. */
 const FILE_MODE = "100644";
@@ -342,20 +352,22 @@ interface TreeEntry {
   stamp?: FileStamp;
 }
 
-/** A file as `lstat` describes it: its size, its modification time, its mode and its identity on the disk. */
+/** A file as `lstat` describes it: its size, its modification and change times, its mode and its identity on the disk. */
 interface FileStamp {
   size: number;
   mtimeMs: number;
+  /** The change time, which no one can set back: it catches a rewrite whose modification time was put back. */
+  ctimeMs: number;
   mode: number;
   ino: number;
 }
 
-function stampOf(stat: { size: number; mtimeMs: number; mode: number; ino: number }): FileStamp {
-  return { size: stat.size, mtimeMs: stat.mtimeMs, mode: stat.mode, ino: stat.ino };
+function stampOf(stat: { size: number; mtimeMs: number; ctimeMs: number; mode: number; ino: number }): FileStamp {
+  return { size: stat.size, mtimeMs: stat.mtimeMs, ctimeMs: stat.ctimeMs, mode: stat.mode, ino: stat.ino };
 }
 
 function sameStamp(a: FileStamp, b: FileStamp): boolean {
-  return a.size === b.size && a.mtimeMs === b.mtimeMs && a.mode === b.mode && a.ino === b.ino;
+  return a.size === b.size && a.mtimeMs === b.mtimeMs && a.ctimeMs === b.ctimeMs && a.mode === b.mode && a.ino === b.ino;
 }
 
 /**

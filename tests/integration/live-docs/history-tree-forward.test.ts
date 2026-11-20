@@ -65,7 +65,6 @@ async function holdAlong(repository: string, changes: readonly string[], configu
   // The changes whose tree written anew meets a name this disk takes for another's (on Windows and macOS, `A.ts` beside
   // `a.ts`), where a tree is rightly not brought forward: the counts hold on a disk that folds case and on one that does not.
   let clashes = 0;
-  const left: string[] = [];
   const directory = path.join(folder, "tree00");
   let tree = await versionControl.workingTree(changes[0], directory, treeOptions(configuration, directory));
   try {
@@ -82,16 +81,12 @@ async function holdAlong(repository: string, changes: readonly string[], configu
       expect([...oracle.entries.keys()].filter((entry) => !brought.has(entry)), `${label}: entries the new tree holds and the brought one does not`).toEqual([]);
       for (const [entry, value] of oracle.entries) expect(brought.get(entry), `${label}: ${entry}`).toBe(value);
       expect(tree.unwritten, `${label}: the entries left out`).toEqual(oracle.unwritten);
-      // A tree brought forward stays in its folder; one written anew stands in a fresh folder of a name as long, the one
-      // that could not be put right left beside it for the worker's end. Nothing else stands there but the tree's index.
+      // A tree brought forward stays in its folder; one written anew stands in a fresh folder of a name as long, and the
+      // old one, which nothing here holds, is gone at once. Nothing else stands there but the tree's index.
       const name = path.basename(tree.root);
-      if (tree.broughtForward) {
-        expect(tree.root, `${label}: the tree's folder`).toBe(before);
-      } else {
-        expect(name, `${label}: the fresh folder's name`).toHaveLength(path.basename(before).length);
-        left.push(path.basename(before));
-      }
-      expect(fs.readdirSync(folder).sort(), `${label}: the folder holding the trees`).toEqual([name, `${name}.index`, ...left].sort());
+      if (tree.broughtForward) expect(tree.root, `${label}: the tree's folder`).toBe(before);
+      else expect(name, `${label}: the fresh folder's name`).toHaveLength(path.basename(before).length);
+      expect(fs.readdirSync(folder).sort(), `${label}: the folder holding the trees`).toEqual([name, `${name}.index`]);
     }
   } finally {
     await tree.remove();

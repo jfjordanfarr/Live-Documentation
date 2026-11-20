@@ -68,19 +68,24 @@ function cacheOf(workspace: string): Map<string, string> {
 
 describe("a worker's summaries, change after change in one process", () => {
   // The seven commits, with documents linked that come and go; a file git tracks though an ignore file names it; renames.
+  // A name of 300 characters, which no disk here holds, in every commit: every tree after the first is written anew in a
+  // fresh folder, so each tree's git environment differs from the last's, and a worker that kept an earlier tree's
+  // would ask the wrong index (the second review of 2026-11-20 found no other case holding that guard by itself).
+  const LONG_NAME = { [`long/${"x".repeat(300)}.txt`]: "a name no disk here holds\n" };
   it.each([
-    ["the scripted repository", SCRIPT],
-    ["the repository with a file tracked and ignored", CHECKED_SCRIPT],
-    ["the repository of renames onto a dead file's path", COLLISION_SCRIPT]
-  ])("are those of a fresh process for each change, byte for byte: %s", (name, script) => {
+    ["the scripted repository", SCRIPT, "brought forward"],
+    ["the repository with a file tracked and ignored", CHECKED_SCRIPT, "brought forward"],
+    ["the repository of renames onto a dead file's path", COLLISION_SCRIPT, "brought forward"],
+    ["the scripted repository with a name no disk here holds", SCRIPT.map((commit) => ({ ...commit, indexOnly: LONG_NAME })), "written anew"]
+  ])("are those of a fresh process for each change, byte for byte: %s", (name, script, trees) => {
     const together = fs.mkdtempSync(path.join(privateTemporary, "together-"));
     const apart = fs.mkdtempSync(path.join(privateTemporary, "apart-"));
     const commits = buildRepository(together, script);
     expect(buildRepository(apart, script), name).toEqual(commits);
     const one = history(together, 1);
-    // One worker, its tree brought forward at every change after the first.
+    // One worker, its tree brought forward at every change after the first, or written anew at every one.
     expect(one.match(/\d+\/\d+ regenerated: /gu)).toHaveLength(commits.length);
-    expect(one.match(/its tree written anew/gu)).toHaveLength(1);
+    expect(one.match(/its tree written anew/gu)).toHaveLength(trees === "brought forward" ? 1 : commits.length);
     history(apart, commits.length);
     const a = cacheOf(together);
     const b = cacheOf(apart);
@@ -154,6 +159,25 @@ describe("the language adapters' caches, in one process generating commit after 
       },
       { "src/Shapes.cs": `namespace Demo\n{\n    public class Widget\n    {\n    }\n}\n` },
       ["src/Shapes.cs"]
+    ],
+    [
+      "Java: a type's file is rewritten in place to declare the type a program uses",
+      {
+        "src/demo/Program.java": `package demo;\n\npublic class Program {\n    public Widget make() {\n        return new Widget();\n    }\n}\n`,
+        "src/demo/Shapes.java": `package demo;\n\nclass Gadget {\n}\n`
+      },
+      { "src/demo/Shapes.java": `package demo;\n\nclass Widget {\n}\n` },
+      ["src/demo/Shapes.java"]
+    ],
+    [
+      "Go: a package's file is rewritten in place to declare the function a program calls",
+      {
+        "go.mod": `module example.com/demo\n\ngo 1.21\n`,
+        "main.go": `package main\n\nimport "example.com/demo/lib"\n\nfunc main() {\n\tlib.Helper()\n}\n`,
+        "lib/lib.go": `package lib\n\n// Other does nothing.\nfunc Other() {}\n`
+      },
+      { "lib/lib.go": `package lib\n\n// Helper does nothing.\nfunc Helper() {}\n` },
+      ["lib/lib.go"]
     ]
   ])("derive what a fresh process derives: %s", async (_name, first, second, held) => {
     const reused = fs.mkdtempSync(path.join(privateTemporary, "reused-"));

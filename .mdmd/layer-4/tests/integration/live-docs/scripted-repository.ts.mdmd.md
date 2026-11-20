@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/scripted-repository.ts`
-- Generated At: 2026-11-19T21:10:25.929Z
+- Generated At: 2026-11-20T12:13:12.282Z
 
 ## Authored
 ### Purpose
@@ -71,7 +71,7 @@ One commit of the script: its message, its date, and what it does to the tree.
 
 #### `SCRIPT` {#symbol-script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L165)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L170)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `SCRIPT` — Summary
@@ -79,14 +79,14 @@ The seven commits, oldest first.
 
 #### `git` {#symbol-git}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L295)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L300)
 
 ##### `git` — Summary
 Runs git in the fixture, isolated from the person's configuration.
 
 #### `COLLISION_SCRIPT` {#symbol-collision_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L307)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L312)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `COLLISION_SCRIPT` — Summary
@@ -98,7 +98,7 @@ lines resolved to the dropped object led nowhere after a play through this repos
 
 #### `GROWTH_SCRIPT` {#symbol-growth_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L339)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L344)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `GROWTH_SCRIPT` — Summary
@@ -106,7 +106,7 @@ A separate fixed history grows one root file into a 64-file import chain, to exe
 
 #### `VEIL_SCRIPT` {#symbol-veil_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L379)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L384)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `VEIL_SCRIPT` — Summary
@@ -118,14 +118,14 @@ deletes one.
 
 #### `CHECKED_CONFIG` {#symbol-checked_config}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L396)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L401)
 
 ##### `CHECKED_CONFIG` — Summary
 The lens of the checked sample, whose main file is its entry.
 
 #### `CHECKED_SCRIPT` {#symbol-checked_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L407)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L412)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `CHECKED_SCRIPT` — Summary
@@ -136,7 +136,7 @@ the mirror the generator writes at the head, so that the history's last step can
 
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L423)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L428)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 <!-- LIVE-DOC:END Public Symbols -->
 

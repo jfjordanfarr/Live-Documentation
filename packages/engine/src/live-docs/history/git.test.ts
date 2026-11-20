@@ -154,7 +154,11 @@ describe("a commit's tree for the history", () => {
       GIT_INDEX_FILE: path.join(scratch, "a.index"),
       GIT_CONFIG_NOSYSTEM: "1",
       GIT_CONFIG_GLOBAL: os.devNull,
-      GIT_NO_REPLACE_OBJECTS: "1"
+      GIT_NO_REPLACE_OBJECTS: "1",
+      // Nothing fetched for a partial clone's missing object, and no prompt for credentials (since 2026-11-20); the
+      // tree's writer sets the same, the tree's environment being made from the writer's.
+      GIT_NO_LAZY_FETCH: "1",
+      GIT_TERMINAL_PROMPT: "0"
     });
     expect(a.unwritten).toEqual([]);
     expect(execFileSync("git", ["ls-files"], { cwd: a.root, env: { ...isolated, ...a.environment }, encoding: "utf8" }).split("\n").filter(Boolean).sort()).toEqual(["link.ts", "run.sh", "src/a.ts"]);
@@ -449,7 +453,9 @@ describe("a tree the writer must not follow out of its folder", () => {
     }
   });
 
-  it("writes a tree anew in a fresh folder beside it wherever the disk refuses to put it right, and leaves that folder as it was", async () => {
+  // A folder whose mode forbids writing refuses an unlink to anyone but root, so in a container run as root the refusal
+  // this case needs cannot be had; there it is skipped, and the refusals by name below go through the stand-in disk.
+  it.skipIf(process.getuid?.() === 0)("writes a tree anew in a fresh folder beside it wherever the disk refuses to put it right, and leaves that folder as it was", async () => {
     // The old change holds `locked/a.txt`, which the new one drops; the disk refuses its removal (a folder this user may
     // not write, as Windows refuses while a scanner holds a file open). Until 2026-11-20 the fall-back then removed the
     // same folder, which the disk refused again, and that refusal failed the worker.
@@ -492,6 +498,22 @@ describe("a tree the writer must not follow out of its folder", () => {
       const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
       await touch(path.join(directory, "keep.txt"));
       expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }), touched).toBeUndefined();
+    }
+    // Rewritten at the same length with its modification time put back exactly: only the change time tells. The stamp
+    // is taken here at a whole second, which reads back exactly where a time with its fraction would not.
+    {
+      const directory = await folder();
+      const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
+      const file = path.join(directory, "keep.txt");
+      await fs.utimes(file, 1_700_000_000, 1_700_000_000);
+      const at = await fs.lstat(file);
+      const stamp = { size: at.size, mtimeMs: at.mtimeMs, ctimeMs: at.ctimeMs, mode: at.mode, ino: at.ino };
+      const written = new Map([...first.written].map(([relative, entry]) => [relative, relative === "keep.txt" ? { ...entry, stamp } : entry]));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await fs.writeFile(file, "KEPT\n");
+      await fs.utimes(file, 1_700_000_000, 1_700_000_000);
+      expect((await fs.lstat(file)).mtimeMs).toBe(stamp.mtimeMs);
+      expect(await bringTreeForward(store, after, directory, written, { platform: "linux", docsRoot: ".mdmd" }), "its time put back").toBeUndefined();
     }
     // Untouched, it is brought forward.
     const directory = await folder();
