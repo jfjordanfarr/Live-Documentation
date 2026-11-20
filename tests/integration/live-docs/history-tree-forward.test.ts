@@ -9,8 +9,8 @@
  * The rule of bringing a tree forward rests on this (`bringTreeForward` in `git.ts`; the record of 2026-11-20,
  * `Probes/history-rebuild-fast`).
  */
-import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";

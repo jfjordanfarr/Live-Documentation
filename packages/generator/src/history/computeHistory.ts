@@ -361,8 +361,10 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
       // fail every run until --rederive; it says what the damage was: a summary that still does not read, or a text the
       // record of the written sequence names and the summaries made again do not write.
       const short = (changes: readonly MainlineChange[]): string => changes.map((change) => change.id.slice(0, 8)).join(", ");
-      const unread = still.filter((change) => derived.unread.has(change.id));
-      const unwrittenTexts = still.filter((change) => !derived.unread.has(change.id));
+      // Taken here, where the run is known not to be whole: inside the callbacks below the variable is not narrowed.
+      const doNotRead = derived.unread;
+      const unread = still.filter((change) => doNotRead.has(change.id));
+      const unwrittenTexts = still.filter((change) => !doNotRead.has(change.id));
       const what = [
         ...(unread.length > 0 ? [`the summaries of ${short(unread)} still do not read`] : []),
         ...(unwrittenTexts.length > 0 ? [`the record of the sequence the last run wrote still names texts that the summaries of ${short(unwrittenTexts)} do not write`] : [])
