@@ -22,12 +22,15 @@ import ts from "typescript";
 /**
  * How deep a file's syntax tree may be before the process is marked: well under the depth at which a fresh process
  * on node's default stack fails to read a construct the readers meet, so that below it no process fails for want of
- * stack, whatever it has run before. Under half of the smallest cold limit the probe of 2026-11-20 found (node 26, the
- * built engine): TypeScript's nested arrays, which a fresh process fails at 656 levels, about 660 deep by this measure;
- * nested objects at 496 levels (about 1,000 deep), parentheses at 672 (about 680). That probe covered three constructs
- * of the many the readers meet.
+ * stack, whatever it has run before. At most half of the smallest cold limit the probe of 2026-11-20 found (node 26,
+ * a worker as the pool starts one, under tsx or built): TypeScript's nested tuple types (`[[[number]]]`), which a fresh
+ * process fails at 450 levels, 453 deep by this measure; type arguments (`Array<Array<…>>`) at 506 deep, nested calls
+ * at 598, nested arrays at about 660. Every other kind of nesting the readers meet, in TypeScript and in each
+ * tree-sitter grammar, is read cold at twice this depth, which `tests/integration/live-docs/reading-depth.test.ts`
+ * holds: it goes red on the day a later TypeScript, grammar or node lowers a limit below twice the depth. It was 300,
+ * provisional, set from three constructs, until the probe of all of them the same day found three below 600.
  */
-export const READING_DEPTH = 300;
+export const READING_DEPTH = 200;
 
 /** Why a process is marked: a file beyond {@link READING_DEPTH}, a file the generator could not map, or a fault of the tree-sitter runtime. */
 export type ProcessMark = "deep" | "unmapped" | "runtime";
