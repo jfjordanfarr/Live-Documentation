@@ -7,11 +7,12 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
 import { writeStoredTree } from "@live-documentation/engine/live-docs/history/git";
+import { lensOf } from "@live-documentation/engine/live-docs/history/lens";
 import type { MainlineChange } from "@live-documentation/engine/live-docs/history/versionControl";
 
 import { generateLiveDocs } from "../generator";
 import { poolMemory } from "./computeHistory";
-import { regenerate, Scratch, workerBound, type Worker } from "./regenerate";
+import { regenerate, Scratch, workerBound, workerTask, type Worker } from "./regenerate";
 import { summarizeChange, treeOptions, type WorkerReport } from "./summarizeChange";
 
 /**
@@ -213,6 +214,23 @@ describe("the run's last lines", () => {
     const warned = [`could not map ${deep.path}: ${deep.reason}`];
     const { lines } = await standInPool(3, 1, 1e12, (_worker, nth) => (nth < 2 ? { warned } : {}));
     expect(lines).toContain(`the generator warned at 2 of the 3 changes regenerated: could not map ${deep.path}: ${deep.reason}`);
+  });
+});
+
+/**
+ * Git's `core.ignorecase` is part of the lens, and each worker's tree pins git's setting to the value keyed. The worker's
+ * end of that route is held by a real worker (`history-workers.test.ts`), which builds its own task; until the review
+ * of the cache's key (2026-11-20) nothing held the command's end, the task the pool sends.
+ */
+describe("the task a worker is sent", () => {
+  const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4" });
+  const generator = { version: "0.0.0", code: "0a1b2c3d4e5f6a7b", commit: "dec184ec", modified: null };
+  const context = (ignoresCase: boolean) => ({ configuration, lens: lensOf(generator, configuration, { ignoresCase }), cacheFolder: "cache", keepIndex: false });
+
+  it("carries the lens's word that the repository matches names without regard to case: true where the lens says so, false where it does not", () => {
+    expect(workerTask(change(1), context(true)).ignoresCase).toBe(true);
+    expect(workerTask(change(1), context(false)).ignoresCase).toBe(false);
+    expect(workerTask(change(1), context(true)).lens).not.toBe(workerTask(change(1), context(false)).lens);
   });
 });
 

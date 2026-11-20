@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history.test.ts`
-- Generated At: 2026-11-20T09:32:50.751Z
+- Generated At: 2026-11-20T16:31:03.903Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`git.openGitRepository`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
+- [`lens.lensOf`](../../../packages/engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
 - [`rows.RowLink`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-rowlink)
 - [`rows.linksOf`](../../../packages/engine/src/live-docs/history/rows.ts.mdmd.md#symbol-linksof)
 - [`sequence.changeAt`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)

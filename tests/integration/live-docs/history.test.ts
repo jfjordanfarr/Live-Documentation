@@ -19,6 +19,7 @@ import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/c
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
 import { openGitRepository } from "../../../packages/engine/src/live-docs/history/git";
+import { lensOf } from "../../../packages/engine/src/live-docs/history/lens";
 import { linksOf, type RowLink } from "../../../packages/engine/src/live-docs/history/rows";
 import { changeAt, momentAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import { edgeKey, type Shape } from "../../../packages/engine/src/live-docs/history/shape";
@@ -39,6 +40,24 @@ const codeIdentity = vi.hoisted(() => ({ value: undefined as string | undefined 
 vi.mock("../../../packages/generator/src/history/generatorIdentity", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../../packages/generator/src/history/generatorIdentity")>();
   return { ...actual, sequenceCodeIdentity: async () => codeIdentity.value ?? (await actual.sequenceCodeIdentity()) };
+});
+
+/**
+ * What the repository the command opens answers when asked whether it matches names without regard to case (git's own
+ * `core.ignorecase`): its own word unless a case stands another in, as a clone on a disk that folds case would answer.
+ */
+const ignoresCaseAnswer = vi.hoisted(() => ({ value: undefined as boolean | undefined }));
+vi.mock("../../../packages/engine/src/live-docs/history/git", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../../packages/engine/src/live-docs/history/git")>();
+  return {
+    ...actual,
+    openGitRepository: async (workspaceRoot: string) => {
+      const opened = await actual.openGitRepository(workspaceRoot);
+      const answer = ignoresCaseAnswer.value;
+      if (answer !== undefined) opened.ignoresCase = async () => answer;
+      return opened;
+    }
+  };
 });
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
@@ -798,6 +817,38 @@ describe("the history over a repository that commits its mirror", () => {
     expect(fs.existsSync(whole)).toBe(false);
     expect(JSON.parse(fs.readFileSync(path.join(history, lens, "whole.json"), "utf8"))).toMatchObject({ head: ids[ids.length - 1], changes: 3 });
   });
+});
+
+/**
+ * Git's `core.ignorecase` keys the lens where it is true, and the command hands the lens to every worker. The worker's
+ * end of the route is held in `history-workers.test.ts` and the pool's task in `regenerate.test.ts`; this holds the
+ * command's: what the repository answers reaches the sequence's lens (the review of the cache's key, 2026-11-20, which
+ * cut the route at both ends with every unit test of the history green).
+ */
+describe("the history over a repository that matches names without regard to case", () => {
+  it("keys its lens with it where the repository says so, and leaves the lens as it was where it does not", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "case-"));
+    fs.mkdirSync(path.join(here, "src"));
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One file"]]) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    const lensWhen = async (ignoresCase: boolean): Promise<HistorySequence["lens"]> => {
+      ignoresCaseAnswer.value = ignoresCase;
+      try {
+        const run = await computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, progress: () => undefined });
+        return run.sequence.lens;
+      } finally {
+        ignoresCaseAnswer.value = undefined;
+      }
+    };
+    const folding = await lensWhen(true);
+    const telling = await lensWhen(false);
+    expect(folding.ignoresCase).toBe(true);
+    expect(folding.key).toBe(lensOf(folding.generator, folding.configuration, { ignoresCase: true }).key);
+    expect(folding.key).not.toBe(telling.key);
+    // Where the repository tells case apart, the lens is the one made before the setting was keyed.
+    expect(telling).toEqual(lensOf(telling.generator, telling.configuration));
+  }, 300_000);
 });
 
 /**
