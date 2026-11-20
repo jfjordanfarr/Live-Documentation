@@ -209,7 +209,8 @@ class GitTrees {
 /** A new empty folder beside `directory`, its name as long as `directory`'s where that has six characters or more: the last six made anew (`mkdtemp`). */
 async function freshFolderBeside(directory: string): Promise<string> {
   const name = path.basename(directory);
-  return fs.mkdtemp(path.join(path.dirname(directory), name.slice(0, Math.max(0, name.length - 6))));
+  // The separator written out: `path.join` would drop it before an empty prefix, and the folder would be made beside the parent.
+  return fs.mkdtemp(`${path.dirname(directory)}${path.sep}${name.slice(0, Math.max(0, name.length - 6))}`);
 }
 
 /** Runs git on the repository whose git directory is `store`, named by `GIT_DIR` ({@link openGitStore}), and returns what it writes. */

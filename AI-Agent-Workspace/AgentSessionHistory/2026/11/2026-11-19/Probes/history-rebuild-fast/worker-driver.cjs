@@ -102,7 +102,7 @@ async function main() {
   const before = { stat: procStat(), load: loadavg() };
   began = performance.now();
   const scratch = new Scratch();
-  const result = await scratch.during(() => regenerate(changes, { repository: root, configuration, lens, cacheFolder, keepIndex: false, jobs, scratch, progress }));
+  const result = await scratch.during(() => regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: false, jobs, scratch, progress }));
   const wall = (performance.now() - began) / 1000;
   clearInterval(sampler);
   const after = { stat: procStat(), load: loadavg() };

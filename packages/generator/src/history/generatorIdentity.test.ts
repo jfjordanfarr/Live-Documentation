@@ -141,7 +141,7 @@ function membersOf(file: string, name: string): string[] {
  */
 const HANDED_TO_REGENERATION: Record<string, string> = {
   // Since 2026-11-20, when the workers began to write their own trees, in place of the command's version control.
-  repository: "the repository whose changes are summarized, each named by its id, which each worker opens with the keyed version control",
+  store: "the git directory of the repository whose changes are summarized, each named by its id, which each worker hands every call of the keyed tree writer by GIT_DIR",
   configuration: "the lens's configuration, which is half of the key itself",
   lens: "the key itself, written into each summary",
   cacheFolder: "where summaries and texts are written, never what they say",
@@ -223,10 +223,10 @@ describe("the lens's key", () => {
     // summarizes in that tree (since 2026-11-20; `history-workers.test.ts` holds a worker's later changes to a fresh
     // process's summaries of them, which a stale index would change).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.repository, folder\], \{[^}]*env: summarizingEnvironment\(process\.env\),/u);
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*env: summarizingEnvironment\(process\.env\),/u);
     expect(regenerate).not.toMatch(/env:\s*(?:\{\s*\.\.\.process\.env|process\.env)/u);
     const worker = readFileSync(path.join(repository, "packages/generator/src/history/summarizeChange.ts"), "utf8");
-    expect(worker).toMatch(/Object\.assign\(process\.env, tree\.environment\);\s*try \{[^}]*summarizeChange\([^]*?\} finally \{\s*for \(const name of TREE_VARIABLES\) delete process\.env\[name\];/u);
+    expect(worker).toMatch(/const \{ environment \} = tree;\s*Object\.assign\(process\.env, environment\);\s*try \{[^]*?await summarizeChange\([^]*?\} finally \{\s*for \(const name of Object\.keys\(environment\)\) delete process\.env\[name\];/u);
   });
 
   it("hands the summarizing process the configuration the key holds, made by one function", () => {
@@ -242,7 +242,7 @@ describe("the lens's key", () => {
   it("starts the summarizing process with node flags of its own, never the command's", () => {
     // `fork` passes the command's `process.execArgv` unless told otherwise (the fourth review of 2026-11-19).
     const regenerate = readFileSync(path.join(repository, "packages/generator/src/history/regenerate.ts"), "utf8");
-    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.repository, folder\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
+    expect(regenerate).toMatch(/fork\(worker, \["--worker", context\.store, folder\], \{[^}]*execArgv: summarizingFlags\(worker\)/u);
     expect(summarizingFlags("/x/summarizeChange.js")).toEqual([]);
     const flags = summarizingFlags("/x/summarizeChange.ts");
     expect(flags).toHaveLength(2);

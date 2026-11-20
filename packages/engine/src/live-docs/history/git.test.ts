@@ -438,6 +438,29 @@ describe("a tree the writer must not follow out of its folder", () => {
     }
   });
 
+  it("writes a tree anew in a fresh folder beside it wherever the disk refuses to put it right, and leaves that folder as it was", async () => {
+    // The old change holds `locked/a.txt`, which the new one drops; the disk refuses its removal (a folder this user may
+    // not write, as Windows refuses while a scanner holds a file open). Until 2026-11-20 the fall-back then removed the
+    // same folder, which the disk refused again, and that refusal failed the worker.
+    const locked = tree([["100644", "blob", blob("a\n"), "a.txt"]]);
+    const before = commit(tree([["100644", "blob", blob("k\n"), "keep.txt"], ["040000", "tree", locked, "locked"]]));
+    const after = commit(tree([["100644", "blob", blob("k\n"), "keep.txt"]]));
+    const parent = path.dirname(await folder());
+    const first = await (await openGitRepository(repository)).workingTree(before, path.join(parent, "tree00"), { docsRoot: ".mdmd" });
+    await fs.chmod(path.join(first.root, "locked"), 0o555);
+    try {
+      const next = await first.bringTo(after, { docsRoot: ".mdmd" });
+      expect(next.broughtForward).toBe(false);
+      expect(path.dirname(next.root)).toBe(parent);
+      expect(path.basename(next.root)).not.toBe("tree00");
+      expect(path.basename(next.root)).toHaveLength("tree00".length);
+      expect(await fs.readdir(next.root)).toEqual(["keep.txt"]);
+      expect(await fs.readdir(path.join(first.root, "locked"))).toEqual(["a.txt"]);
+    } finally {
+      await fs.chmod(path.join(first.root, "locked"), 0o755);
+    }
+  });
+
   it("decides each entry's place by what the disk answers: a folder made a level at a time, a link or a file refused, a taken name refused", async () => {
     const answers = new Map<string, DiskEntry>([["vendor", "link"], ["docs", "folder"], ["docs/a.md", "other"], ["readme", "other"]]);
     const made: string[] = [];

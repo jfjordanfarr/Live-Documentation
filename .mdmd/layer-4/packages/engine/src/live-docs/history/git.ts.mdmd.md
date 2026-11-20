@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/git.ts`
-- Generated At: 2026-11-20T10:59:49.622Z
+- Generated At: 2026-11-20T11:06:32.805Z
 
 ## Authored
 ### Purpose
@@ -47,21 +47,21 @@ and the process needs none of the person's configuration, whose `safe.directory`
 
 #### `UnwrittenEntry` {#symbol-unwrittenentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L238)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L239)
 
 ##### `UnwrittenEntry` — Summary
 An entry of a change's tree that was not written into its working tree, and why.
 
 #### `DiskEntry` {#symbol-diskentry}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L244)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L245)
 
 ##### `DiskEntry` — Summary
 What a path under a tree's folder is on the disk, read without following a link.
 
 #### `TreeDisk` {#symbol-treedisk}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L250)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L251)
 
 ##### `TreeDisk` — Summary
 The disk a tree is written to, as the writer asks it, by paths relative to the tree's folder: the real disk
@@ -69,7 +69,7 @@ The disk a tree is written to, as the writer asks it, by paths relative to the t
 
 #### `realDisk` {#symbol-realdisk}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L258)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L259)
 - Returns: [`TreeDisk`](#symbol-treedisk)
 
 ##### `realDisk` — Summary
@@ -77,7 +77,7 @@ The real disk under a folder.
 
 #### `placeEntry` {#symbol-placeentry}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L296)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L297)
 - Parameters: `disk`: [`TreeDisk`](#symbol-treedisk)
 
 ##### `placeEntry` — Summary
@@ -91,14 +91,14 @@ Why the entry cannot be written, or undefined where it can.
 
 #### `LinkEnd` {#symbol-linkend}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L336)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L337)
 
 ##### `LinkEnd` — Summary
 Where a symbolic link of a commit's tree leads, read through the tree's own listing and never through the disk.
 
 #### `followLink` {#symbol-followlink}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L349)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L350)
 - Returns: [`LinkEnd`](#symbol-linkend)
 - Parameters: `listing`: `ReadonlyMap`; `targets`: `ReadonlyMap`
 
@@ -116,7 +116,7 @@ the reason it is not followed.
 
 #### `writeStoredTree` {#symbol-writestoredtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L460)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L461)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeStoredTree` — Summary
@@ -145,7 +145,7 @@ The entries not written, in the tree's order.
 
 #### `WrittenEntries` {#symbol-writtenentries}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L470)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L471)
 - Returns: `ReadonlyMap`
 
 ##### `WrittenEntries` — Summary
@@ -153,14 +153,14 @@ What the writer left on the disk of a change's tree: every entry it wrote, by it
 
 #### `WrittenTree` {#symbol-writtentree}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L473)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L474)
 
 ##### `WrittenTree` — Summary
 A tree as the writer left it: the entries left out, in the tree's order, and those written.
 
 #### `writeTreeAnew` {#symbol-writetreeanew}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L479)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L480)
 - Parameters: `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `writeTreeAnew` — Summary
@@ -168,7 +168,7 @@ A tree as the writer left it: the entries left out, in the tree's order, and tho
 
 #### `bringTreeForward` {#symbol-bringtreeforward}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L619)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L620)
 - Parameters: `previous`: [`WrittenEntries`](#symbol-writtenentries); `options`: [`WorkingTreeOptions`](./versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 
 ##### `bringTreeForward` — Summary
@@ -199,7 +199,7 @@ state to be read.
 
 #### `parseMainline` {#symbol-parsemainline}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L857)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L858)
 - Returns: [`MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange)[]
 
 ##### `parseMainline` — Summary
@@ -207,14 +207,14 @@ The changes of `git rev-list --format` with the mainline's format, oldest first 
 
 #### `parseTags` {#symbol-parsetags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L869)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L870)
 
 ##### `parseTags` — Summary
 The changes the tags of `git for-each-ref --format='%(objectname) %(*objectname)'` name: an annotated tag's peeled change, a light tag's own.
 
 #### `parseNameStatus` {#symbol-parsenamestatus}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L881)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/git.ts#L882)
 - Returns: [`VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges)
 
 ##### `parseNameStatus` — Summary
