@@ -106,6 +106,8 @@ npx playwright test --config tests/e2e/playwright.config.ts force-graph-identity
 
 The run's first line names the renderer: `D3D12 (...)` with the card's name, or `SwiftShader` in software. A run stops at once when the card is there and the browser is not drawing on it. To run on the processor although a card is there, as GitHub Codespaces and CI do, set `LIVE_DOCS_BROWSER_RENDERER=software`.
 
+**Playwright is pinned at exactly 1.61.1** for the card, in `package.json` and in Dependabot's configuration. The headless Chromium of Playwright 1.62 and later (Chromium 151 on) finds no EGL configuration it can use in Mesa's `d3d12` driver, gives up on the card and draws in software; Chromium 149, Playwright 1.61.1's, reaches it (measured on November 20, 2026, with each release's own browser: [the record](../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/playwright-upgrade/README.md#3-chromium-151-and-later-lose-the-graphics-card)). Playwright before 1.60 cannot install its browser under Node 26 at all: its unpacking stalls. The pin is lifted when a later release's browser draws on the card under the suite's launch, which that record's `gpu-probe.ts` shows in one command.
+
 The ordinary configuration stays the default because Docker refuses to create a container whose device does not exist, which would break it everywhere but Windows.
 
 ## What a Rebuild Keeps

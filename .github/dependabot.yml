@@ -5,6 +5,13 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      # Held at 1.61.1, pinned exactly in package.json: the headless Chromium of Playwright 1.62 and later (151 on)
+      # does not reach the host's graphics card through Mesa's d3d12 driver, and the browser suite then stops on its
+      # first line. Lift this when a later release's browser draws on the card under the suite's launch, as
+      # AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/playwright-upgrade/README.md shows how to test.
+      - dependency-name: "@playwright/test"
+        versions: [">= 1.62.0"]
     groups:
       # Group all minor/patch dev dependencies into a single PR
       dev-dependencies:

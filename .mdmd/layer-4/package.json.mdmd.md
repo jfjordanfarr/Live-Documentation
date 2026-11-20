@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `package.json`
 - Entry: tooling
-- Generated At: 2026-11-19T21:17:31.573Z
+- Generated At: 2026-11-20T08:09:25.349Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 ### Dependencies
 - `@chenglou/pretext@^0.0.9`
 - `@eslint/js@^10.0.1`
-- `@playwright/test@^1.58.2`
+- `@playwright/test@1.61.1`
 - `@sourcegraph/scip-typescript@^0.4.0`
 - `@types/node@^25.3.2`
 - `@vitest/coverage-v8@^4.1.12`
