@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-workers.test.ts`
-- Generated At: 2026-11-20T11:00:00.570Z
+- Generated At: 2026-11-20T12:42:59.789Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ _No public symbols detected_
 - `node:fs`
 - `node:os`
 - `node:path`
+- `node:url` - `pathToFileURL`
 - `node:zlib`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graph.LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)

@@ -47,6 +47,7 @@
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { getHeapStatistics } from "node:v8";
 import { gzipSync } from "node:zlib";
 
 import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
@@ -84,11 +85,15 @@ export interface SummaryTask {
 }
 
 /**
- * Generates the change's docs in its working tree and writes its summary, and its index when asked.
+ * Generates the change's docs in its working tree and writes its summary, and its index when asked, unless
+ * `publishable` says no once the generator has run: then nothing of the change is written, neither a text nor the
+ * summary nor the index.
  *
  * @param warn - Where each line the generator warns goes, for the history command to gather across the changes.
+ * @param publishable - Asked once the generator has run, before anything is written: whether what it derived may be kept.
+ * @returns Whether the summary was written.
  */
-export async function summarizeChange(task: SummaryTask, warn: (line: string) => void): Promise<void> {
+export async function summarizeChange(task: SummaryTask, warn: (line: string) => void, publishable: () => boolean): Promise<boolean> {
   // The configuration the summary is made under (`summarizedConfiguration`), as the command hands it: with no bundle
   // exclusion, so that every linked and citing document is kept and the exclusions are applied where summaries are read.
   const { tree, configuration } = task;
@@ -99,6 +104,7 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
     keepAuthoredStaleDocs: false,
     logger: { info: () => undefined, warn, error: warn }
   });
+  if (!publishable()) return false;
   // A change with no file the globs match has no docs and no index: its shape is empty.
   const indexText = result.index ? await fs.readFile(path.join(tree, result.index), "utf8") : undefined;
   const graph: LiveDocGraph = indexText
@@ -114,6 +120,7 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   if (task.indexPath) {
     await writeInPlace(task.indexPath, gzipSync(indexText ?? JSON.stringify(graph)));
   }
+  return true;
 }
 
 /**
@@ -221,10 +228,20 @@ export interface WorkerReport {
   /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
   broughtForward: boolean;
   /**
-   * Whether a parse in this process has thrown from inside the tree-sitter runtime (`runtimeFaulted`), after which no
-   * parser of the process is known sound: the command ends the worker (`regenerate.ts`).
+   * Whether anything has thrown in this process while a tree-sitter tree was taken, read or released (`runtimeFaulted`),
+   * after which no parser of the process is known sound: the command ends the worker (`regenerate.ts`).
    */
   runtimeFaulted: boolean;
+  /**
+   * Whether the change's summary and texts were written. A worker whose runtime faulted during a change after its first
+   * writes nothing of it, and the command gives the change to a fresh worker; a worker's first change is what a fresh
+   * process makes, and is written whatever it is.
+   */
+  published: boolean;
+  /** The memory the worker holds once the change is done, resident, in bytes, by which the command bounds a worker. */
+  heldMemory: number;
+  /** The share of its JavaScript heap's limit the worker holds once the change is done, by which the command bounds a worker too. */
+  heapShare: number;
 }
 
 /**
@@ -249,12 +266,17 @@ export interface WorkerReport {
  *   another change (until the review, the folder was renamed for every change and the worker ended after a hundred);
  * - a grammar's load: kept when it succeeds, dropped when it fails, so that the next file asks again (until the review,
  *   a failed load was kept and the worker ended after any change in which a file failed);
- * - the parsers, sound unless a parse threw from inside the runtime's WebAssembly, which restores none of its state:
- *   the worker then says so (`runtimeFaulted`) and the command ends it, the narrowest form of the rule the review
- *   withdrew;
+ * - the parsers, sound unless something threw while a tree was taken, read or released (`readTree`), since the
+ *   runtime's one WebAssembly module restores none of its state: a change in which that happened, after the worker's
+ *   first, is not written, the worker saying so before anything of it reaches the cache (`published`), and the command
+ *   ends the worker and gives the change to a fresh one, whose first change is what a fresh process makes and is
+ *   written whatever it is (until the review's fourth round the change was written and the worker ended after it, and
+ *   only a `RuntimeError` thrown inside a parse was seen);
  * - the temporary names of the summary and the texts, by the process's id: one task at a time, the next sent only
  *   when this one has answered;
- * - the peak memory, sent as the process's own since it began, which is what a lane of the pool holds.
+ * - the peak memory, sent as the process's own since it began, which is what a lane of the pool holds;
+ * - whatever else grows with each change, unfound (the review's fourth round): the memory the worker holds after each
+ *   change is sent, and the command replaces a worker that holds more than its share (`regenerate.ts`).
  * The working folder is the command's and never a tree, so nothing of the worker's holds a tree's folder open between
  * tasks.
  */
@@ -262,10 +284,12 @@ function work(store: string, folder: string): void {
   const trees = openGitStore(store);
   let tree: WorkingTree | undefined;
   const summarize = async (task: WorkerTask): Promise<WorkerReport> => {
+    const first = tree === undefined;
     // One name for the worker's life, six characters long, so that a fresh folder beside it is named as long (`git.ts`).
     const options = treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00"));
     tree = tree === undefined ? await trees.workingTree(task.commit, path.join(folder, "tree00"), options) : await tree.bringTo(task.commit, options);
     const warned: string[] = [];
+    let published: boolean;
     const { environment } = tree;
     Object.assign(process.env, environment);
     try {
@@ -273,12 +297,13 @@ function work(store: string, folder: string): void {
       const warn = (message: string): void => {
         warned.push(...message.split("\n").map((line) => line.trim()).filter(Boolean));
       };
-      await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, warn);
+      // A fault carried from an earlier change could make a summary a fresh process would not; one in the first is a fresh process's own.
+      published = await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, warn, () => first || !runtimeFaulted());
     } finally {
       for (const name of Object.keys(environment)) delete process.env[name];
     }
     // The peak as the operating system counts it, since the process began; `maxRSS` is in kibibytes.
-    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, runtimeFaulted: runtimeFaulted() };
+    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, runtimeFaulted: runtimeFaulted(), published, ...heldMemory() };
   };
   // One task at a time: the command sends the next only when this one has answered.
   process.on("message", (task: WorkerTask) => {
@@ -292,6 +317,12 @@ function work(store: string, folder: string): void {
   });
   // The command ends a worker by closing the channel between them.
   process.on("disconnect", () => process.exit(0));
+}
+
+/** What the worker holds now: its resident memory, and the share of its heap's limit its heap holds. */
+function heldMemory(): Pick<WorkerReport, "heldMemory" | "heapShare"> {
+  const { rss, heapUsed } = process.memoryUsage();
+  return { heldMemory: rss, heapShare: heapUsed / getHeapStatistics().heap_size_limit };
 }
 
 if (require.main === module) {

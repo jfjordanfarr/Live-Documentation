@@ -124,10 +124,17 @@ export interface RegenerationContext {
   cacheFolder: string;
   keepIndex: boolean;
   jobs: number;
+  /**
+   * The memory the pool may hold, in bytes, by which it was sized (`poolMemory` in `computeHistory.ts`): a worker that
+   * holds more than its share of it, this over `jobs`, after a change is replaced ({@link workerBound}).
+   */
+  memory: number;
   /** When to start no further change, in milliseconds since the epoch; the changes running then are finished. */
   deadline?: number;
   scratch: Scratch;
   progress: (line: string) => void;
+  /** What starts a worker: {@link startWorker} unless a test hands a stand-in. */
+  startWorker?: (context: RegenerationContext) => Promise<Worker>;
 }
 
 /**
@@ -158,16 +165,38 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   for (let start = 0; start < changes.length; start += length) runs.push(changes.slice(start, start + length));
   let failure: Error | undefined;
   const open = (): boolean => failure === undefined && (context.deadline === undefined || Date.now() < context.deadline);
+  const start = context.startWorker ?? startWorker;
+  const bound = workerBound(context.memory, context.jobs);
   const lane = async (): Promise<void> => {
     let worker: Worker | undefined;
+    // One change summarized by the lane's worker, or by a fresh one where there is none. A worker after which no parser
+    // of its process is known sound (`runtimeFaulted` in `treeSitter.ts`) is ended, and the next change starts in a new one.
+    const summarize = async (change: MainlineChange): Promise<WorkerReport> => {
+      worker ??= await start(context);
+      const report = await worker.summarize(change);
+      peakMemory = Math.max(peakMemory, report.peakMemory);
+      // A worker that holds more than its share of the pool's memory, or half its heap's limit, is replaced too, so that
+      // what still grows with each change, unfound, never fails a run (its next change is a fresh worker's first).
+      if (report.runtimeFaulted || !report.published || report.heldMemory > bound || report.heapShare > 1 / 2) {
+        await worker.end();
+        worker = undefined;
+      }
+      return report;
+    };
     try {
       for (let run = runs.shift(); run !== undefined && open(); run = runs.shift()) {
         for (const change of run) {
           if (!open()) break;
-          worker ??= await startWorker(context);
           const began = Date.now();
-          const report = await worker.summarize(change);
-          peakMemory = Math.max(peakMemory, report.peakMemory);
+          let report = await summarize(change);
+          if (!report.published) {
+            // The runtime faulted during a change after the worker's first, so its state may be an earlier change's: the
+            // change goes to a fresh worker, whose first change is what a fresh process makes and is written whatever
+            // it is, so that no change is summarized a third time nor written twice.
+            context.progress(`${change.id.slice(0, 8)}: the tree-sitter runtime faulted in a worker that had summarized earlier changes; summarized again in a fresh worker`);
+            report = await summarize(change);
+            if (!report.published) throw new Error(`a fresh worker did not write the summary of ${change.id}`);
+          }
           if (report.unwritten.length > 0) {
             context.progress(`${change.id.slice(0, 8)}: ${report.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
             for (const entry of report.unwritten) {
@@ -176,12 +205,6 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           }
           for (const message of new Set(report.warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
-          }
-          // A parse that threw from inside the tree-sitter runtime leaves no parser of the process known sound: the
-          // worker ends, and the next change starts in a new one (`runtimeFaulted` in `treeSitter.ts`).
-          if (report.runtimeFaulted) {
-            await worker.end();
-            worker = undefined;
           }
           timings.push(Date.now() - began);
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
@@ -213,8 +236,16 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   return { timings, peakMemory };
 }
 
+/**
+ * The resident memory past which a worker is replaced after a change: its share of the memory the pool was sized by,
+ * so that the workers together never hold more than the pool planned for, whatever grows in them.
+ */
+export function workerBound(memory: number, jobs: number): number {
+  return memory / Math.max(1, jobs);
+}
+
 /** A summarizing process started once, which summarizes changes one at a time in a tree it keeps. */
-interface Worker {
+export interface Worker {
   summarize(change: MainlineChange): Promise<WorkerReport>;
   /** Ends the process and removes its folder, its tree in it. */
   end(): Promise<void>;

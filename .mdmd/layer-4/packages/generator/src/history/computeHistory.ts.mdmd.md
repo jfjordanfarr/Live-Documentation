@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-20T10:59:54.870Z
+- Generated At: 2026-11-20T12:42:58.046Z
 
 ## Authored
 ### Purpose
@@ -82,9 +82,16 @@ How many summarizing processes a machine runs at once: as many as half its memor
 one, since the person's own work goes on beside the run, and one fewer than its processors, since each process
 keeps one busy and the command and git need one; never fewer than one.
 
+#### `poolMemory` {#symbol-poolmemory}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L214)
+
+##### `poolMemory` — Summary
+The memory the pool may hold, half the machine's, by which it is sized ({@link poolSize}) and each worker bounded (`workerBound`).
+
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L219)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L224)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -94,7 +101,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L225)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L230)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -102,7 +109,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L453)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L458)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -122,14 +129,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L574)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L579)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L602)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L607)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -142,7 +149,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1116)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1121)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.

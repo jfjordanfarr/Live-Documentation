@@ -12,6 +12,7 @@ import { fork, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { pathToFileURL } from "node:url";
 import * as zlib from "node:zlib";
 import { afterAll, describe, expect, it } from "vitest";
 
@@ -233,6 +234,71 @@ describe("a worker in a repository git would not look for with a bare environmen
       expect(summary.files.map((file) => file.path)).toContain("src/app/main.ts");
     } finally {
       child.disconnect();
+    }
+  }, 120_000);
+});
+
+describe("a worker whose tree-sitter runtime faults", () => {
+  // The runtime restores none of its state when a call into it throws, so a fault after a worker's first change may come
+  // of a state an earlier change left (the independent review of 2026-11-20, its fourth round). A trap is stood in for
+  // by node's own `--import`, given to this worker alone: every parse throws a `RuntimeError` once a file stands.
+  it("writes nothing of a change after its first in which it faulted, and a fresh worker writes that change", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "faulted-"));
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" };
+    const commits = buildRepository(repository, [
+      { message: "A module", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(config)}\n`, "src/m.py": "import os\n" } },
+      { message: "The module grows", date: "2026-01-06T10:00:00+00:00", write: { "src/m.py": "import os\n\n\ndef f():\n    return os.sep\n" } }
+    ]);
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
+    const fault = path.join(privateTemporary, `fault-${process.pid}`);
+    const runtime = pathToFileURL(path.join(repoRoot, "package.json")).href;
+    const trap = `import { createRequire } from "node:module"; import { existsSync } from "node:fs"; const { Parser } = createRequire(${JSON.stringify(runtime)})("web-tree-sitter"); const parse = Parser.prototype.parse; Parser.prototype.parse = function (...given) { if (existsSync(${JSON.stringify(fault)})) throw new WebAssembly.RuntimeError("a stand-in trap"); return parse.apply(this, given); };`;
+    const worker = path.join(repoRoot, "packages", "generator", "src", "history", "summarizeChange.ts");
+    const task = (commit: string): WorkerTask => ({
+      configuration: summarizedConfiguration(normalizeLiveDocumentationConfig(config)),
+      lens: "0123456789abcdef",
+      commit,
+      summaryPath: path.join(cache, `${commit}.json.gz`),
+      textStore: path.join(cache, "texts")
+    });
+    const start = () => {
+      const folder = fs.mkdtempSync(path.join(privateTemporary, "worker-"));
+      const child = fork(worker, ["--worker", store, folder], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: summarizingEnvironment({ ...process.env, TMPDIR: privateTemporary, TSX_TSCONFIG_PATH: tsconfigPath }), execArgv: [...summarizingFlags(worker), "--import", `data:text/javascript,${encodeURIComponent(trap)}`] });
+      let errors = "";
+      child.stderr?.setEncoding("utf8");
+      child.stderr?.on("data", (text: string) => {
+        errors += text;
+      });
+      const summarize = (commit: string): Promise<WorkerReport> =>
+        new Promise<WorkerReport>((resolve, reject) => {
+          child.once("message", (message) => resolve(message as WorkerReport));
+          child.once("exit", (code) => reject(new Error(`the worker ended (exit ${code}): ${errors}`)));
+          child.send(task(commit));
+        });
+      return { summarize, end: () => child.disconnect() };
+    };
+    const first = start();
+    try {
+      const sound = await first.summarize(commits[0]);
+      expect([sound.published, sound.runtimeFaulted]).toEqual([true, false]);
+      const kept = fs.readdirSync(cache, { recursive: true });
+      fs.writeFileSync(fault, "");
+      const faulted = await first.summarize(commits[1]);
+      expect([faulted.published, faulted.runtimeFaulted]).toEqual([false, true]);
+      // Nothing of the change reached the cache: no summary, no text.
+      expect(fs.readdirSync(cache, { recursive: true })).toEqual(kept);
+    } finally {
+      first.end();
+    }
+    const fresh = start();
+    try {
+      const report = await fresh.summarize(commits[1]);
+      expect([report.published, report.runtimeFaulted]).toEqual([true, true]);
+      expect(fs.existsSync(task(commits[1]).summaryPath)).toBe(true);
+    } finally {
+      fresh.end();
+      fs.rmSync(fault, { force: true });
     }
   }, 120_000);
 });

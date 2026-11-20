@@ -206,8 +206,13 @@ export const UNMEASURED_PEAK_MEMORY = 768 * 1024 ** 2;
  * keeps one busy and the command and git need one; never fewer than one.
  */
 export function poolSize(machine: { totalMemory: number; processors: number; peakMemory: number }): number {
-  const byMemory = Math.floor(machine.totalMemory / 2 / machine.peakMemory);
+  const byMemory = Math.floor(poolMemory(machine) / machine.peakMemory);
   return Math.max(1, Math.min(machine.processors - 1, byMemory));
+}
+
+/** The memory the pool may hold, half the machine's, by which it is sized ({@link poolSize}) and each worker bounded (`workerBound`). */
+export function poolMemory(machine: { totalMemory: number }): number {
+  return machine.totalMemory / 2;
 }
 
 /**
@@ -310,7 +315,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     const at = Math.max(1, Math.min(machineJobs, changes.length));
     jobsUsed = Math.max(jobsUsed, at);
     const began = Date.now();
-    const regeneration = await regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs: at, scratch: context.scratch, deadline, progress: options.progress });
+    const regeneration = await regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs: at, memory: poolMemory(machine), scratch: context.scratch, deadline, progress: options.progress });
     regenerationMilliseconds += Date.now() - began;
     timings.push(...regeneration.timings);
     peakMemory = Math.max(peakMemory, regeneration.peakMemory);

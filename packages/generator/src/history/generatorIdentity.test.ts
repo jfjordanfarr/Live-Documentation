@@ -147,6 +147,9 @@ const HANDED_TO_REGENERATION: Record<string, string> = {
   cacheFolder: "where summaries and texts are written, never what they say",
   keepIndex: "whether the full index is kept beside a summary, which the summary does not name",
   jobs: "how many commits are regenerated at once",
+  // Since the review's fourth round, 2026-11-20.
+  memory: "when a worker is replaced, after which its next commit's tree is written anew, the same tree as one brought forward (history-tree-forward.test.ts)",
+  startWorker: "a test's stand-in for the pool's own keyed starter; the command hands none",
   deadline: "when to start no further commit",
   scratch: "where the trees are written and what a signal removes; summaries name workspace-relative paths only",
   progress: "where progress lines go"
