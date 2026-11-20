@@ -8,7 +8,7 @@ import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/con
 import { writeStoredTree } from "@live-documentation/engine/live-docs/history/git";
 
 import { generateLiveDocs } from "../generator";
-import { treeOptions } from "./regenerate";
+import { treeOptions } from "./summarizeChange";
 
 /**
  * What the history's tree holds (`treeOptions`) against what the generator looks for in a tree by names alone: every

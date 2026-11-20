@@ -15,7 +15,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { writeStoredTree } from "../../../packages/engine/src/live-docs/history/git";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { treeOptions } from "../../../packages/generator/src/history/regenerate";
+import { treeOptions } from "../../../packages/generator/src/history/summarizeChange";
 import { FIXTURE_GIT_ENV } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");

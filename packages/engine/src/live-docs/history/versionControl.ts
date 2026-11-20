@@ -61,8 +61,16 @@ export interface WorkingTree {
    * entry clashing with another. The summary says each was not read. A file written empty is not among them.
    */
   unwritten: Array<{ path: string; reason: string }>;
+  /** Whether the tree was brought forward from another change's tree ({@link WorkingTree.bringTo}) rather than written anew. */
+  broughtForward: boolean;
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
+  /**
+   * The tree of another change, at `directory`, which must not exist yet: this tree moved there and brought forward,
+   * touching only what differs, or written anew where it cannot be, holding exactly what {@link
+   * VersionControl.workingTree} writes there for that change. This tree is gone after.
+   */
+  bringTo(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
 }
 
 /** What the caller asks of a change's tree beyond the change's own entries. */

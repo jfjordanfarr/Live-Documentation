@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, writeStoredTree, type DiskEntry, type TreeDisk } from "./git";
+import { bringTreeForward, followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, writeStoredTree, writeTreeAnew, type DiskEntry, type TreeDisk } from "./git";
 
 const OUT = "it is a symbolic link out of the tree, which the history does not follow";
 const NOWHERE = "it is a symbolic link to nothing the commit holds";
@@ -406,6 +406,35 @@ describe("a tree the writer must not follow out of its folder", () => {
       expect(await writeStoredTree(repository, change, real, { platform: "linux" })).toEqual([{ path: link, reason: OUT }]);
       expect(await fs.readFile(path.join(real, other, "evil.txt"), "utf8")).toBe("evil\n");
       expect(await fs.readdir(outside)).toEqual([]);
+    }
+  });
+
+  it("does not bring a tree forward on a disk that takes two names for one, where a tree written anew keeps the first in the tree's order", async () => {
+    // The old change holds `readme.md`; the new one holds `README.md` and `readme.md`, which such a disk takes for one.
+    const before = commit(tree([["100644", "blob", blob("old\n"), "readme.md"]]));
+    const after = commit(tree([["100644", "blob", blob("new\n"), "README.md"], ["100644", "blob", blob("old\n"), "readme.md"]]));
+    const anew = await folder();
+    expect(await writeStoredTree(repository, after, anew, { platform: "linux", disk: foldingDisk(anew), docsRoot: ".mdmd" })).toEqual([
+      { path: "readme.md", reason: "another entry already stands at its name on this disk, which takes the two names for one" }
+    ]);
+    expect(await fs.readdir(anew)).toEqual(["README.md"]);
+    const kept = await folder();
+    const { written } = await writeTreeAnew(repository, before, kept, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" });
+    // Kept, `readme.md` would stand where the tree written anew holds `README.md`: the tree is written anew instead.
+    expect(await bringTreeForward(repository, after, kept, written, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" })).toBeUndefined();
+    // On a disk that tells the two apart, as Linux's does, it is brought forward, and holds what is written anew.
+    const real = await folder();
+    const first = await writeTreeAnew(repository, before, real, { platform: "linux", docsRoot: ".mdmd" });
+    await fs.writeFile(path.join(real, "PROBE"), "");
+    const folds = await fs.stat(path.join(real, "probe")).then(() => true, () => false);
+    await fs.rm(path.join(real, "PROBE"));
+    const brought = await bringTreeForward(repository, after, real, first.written, { platform: "linux", docsRoot: ".mdmd" });
+    if (folds) {
+      expect(brought).toBeUndefined();
+    } else {
+      expect(brought?.unwritten).toEqual([]);
+      expect((await fs.readdir(real)).sort()).toEqual(["README.md", "readme.md"]);
+      expect(await fs.readFile(path.join(real, "README.md"), "utf8")).toBe("new\n");
     }
   });
 

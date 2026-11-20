@@ -212,7 +212,7 @@ function usage(): string {
     `  --step <unit>        commit (default), day, week or tag: which commits are regenerated.\n` +
     `  --every <n>          Every n-th commit, with --step commit.\n` +
     `  --since <date>       Only commits on or after the date.\n` +
-    `  --jobs <n>           Commits regenerated at once, one process each (default: as many as half the\n` +
+    `  --jobs <n>           Commits regenerated at once, a worker each (default: as many as half the\n` +
     `                       memory holds at the peak a process last took here, at most one fewer than\n` +
     `                       the processors).\n` +
     `  --keep-index         Keep each commit's full index.json, gzipped, in the cache.\n` +

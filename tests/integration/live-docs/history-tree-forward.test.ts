@@ -2,11 +2,12 @@
  * A tree brought forward from one change to another, held to the tree written anew for the other as the oracle: file
  * for file, byte for byte, mode for mode, folder for folder, with nothing extra, and the same entries left out. Over
  * the sample workspaces of the integration tests, committed in turn into one repository so that each step changes the
- * tree whole, the generator run over each tree before it is brought forward as the history runs it; over small edits
- * of one sample, each a kind of entry changing (a file's bytes, its mode, a file become a folder and back, a link
- * retargeted, an excluded picture written empty); and over this repository's own commits, near and far apart, forward
- * and back. The rule of bringing a tree forward rests on this (`bringTreeForward` in `git.ts`; the record of
- * 2026-11-20, `Probes/history-rebuild-fast`).
+ * tree whole, the generator run over each tree before it is brought forward as a worker of the history runs it; over
+ * small edits of one sample, each a kind of entry changing (a file's bytes, its mode, a file added, removed, renamed,
+ * become a folder and back, two names differing by case, a link made, retargeted and led nowhere, an excluded picture
+ * written empty, a committed doc added); and over this repository's own commits, near and far apart, forward and back.
+ * The rule of bringing a tree forward rests on this (`bringTreeForward` in `git.ts`; the record of 2026-11-20,
+ * `Probes/history-rebuild-fast`).
  */
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
@@ -15,11 +16,11 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { normalizeLiveDocumentationConfig, type LiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { normalizeLiveDocumentationConfig, parseLiveDocumentationConfigBytes, DEFAULT_LIVE_DOCUMENTATION_CONFIG, type LiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { openGitRepository, writeStoredTree } from "../../../packages/engine/src/live-docs/history/git";
 import type { WorkingTree } from "../../../packages/engine/src/live-docs/history/versionControl";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { treeOptions } from "../../../packages/generator/src/history/regenerate";
+import { treeOptions } from "../../../packages/generator/src/history/summarizeChange";
 import { FIXTURE_GIT_ENV } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
@@ -74,6 +75,8 @@ async function holdAlong(repository: string, changes: readonly string[], configu
       expect([...oracle.entries.keys()].filter((entry) => !brought.has(entry)), `${label}: entries the new tree holds and the brought one does not`).toEqual([]);
       for (const [entry, value] of oracle.entries) expect(brought.get(entry), `${label}: ${entry}`).toBe(value);
       expect(tree.unwritten, `${label}: the entries left out`).toEqual(oracle.unwritten);
+      // Nothing of an earlier tree is left beside the one in use: its folder and its index went with it.
+      expect(fs.readdirSync(folder).sort(), `${label}: the folder holding the trees`).toEqual([`t${index}`, `t${index}.index`]);
     }
   } finally {
     await tree.remove();
@@ -116,9 +119,17 @@ describe("a tree brought forward from one change to another, against the tree wr
     const repository = fs.mkdtempSync(path.join(privateTemporary, "samples-"));
     git(repository, ["init", "--quiet", "-b", "main"]);
     const changes: string[] = [];
-    for (const workspace of workspaces()) {
+    const samples = workspaces();
+    expect(samples.length).toBeGreaterThan(40);
+    for (const workspace of samples) {
       emptied(repository);
-      fs.cpSync(path.join(repoRoot, "tests", "integration", workspace), repository, { recursive: true, verbatimSymlinks: true });
+      // Each sample as git tracks it, so that a leftover folder on this disk is no part of it.
+      const files = execFileSync("git", ["ls-files", "-z", "--", path.join("tests", "integration", workspace)], { cwd: repoRoot, encoding: "utf8" }).split("\0").filter(Boolean);
+      for (const file of files) {
+        const target = path.join(repository, path.relative(path.join("tests", "integration", workspace), file));
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.cpSync(path.join(repoRoot, file), target, { verbatimSymlinks: true });
+      }
       changes.push(commitAll(repository, workspace));
     }
     // One configuration for the line, as the history applies the lens's to every change: the defaults, a picture excluded.
@@ -150,7 +161,9 @@ describe("a tree brought forward from one change to another, against the tree wr
     };
     step("a file's bytes", () => write("src/a.ts", "export const a = 2;\n"));
     step("a file's mode", () => fs.chmodSync(path.join(repository, "tool.sh"), 0o755));
-    step("a file removed, its folder with it", () => fs.rmSync(path.join(repository, "src", "deep"), { recursive: true }));
+    step("a file added", () => write("src/added.ts", "export const added = 1;\n"));
+    step("a file renamed", () => fs.renameSync(path.join(repository, "src", "added.ts"), path.join(repository, "src", "renamed.ts")));
+    step("a file removed, its folder emptied with it", () => fs.rmSync(path.join(repository, "src", "deep"), { recursive: true }));
     step("a file become a folder", () => {
       fs.rmSync(path.join(repository, "src", "b.ts"));
       write("src/b.ts/inner.ts", "export const inner = 1;\n");
@@ -159,8 +172,10 @@ describe("a tree brought forward from one change to another, against the tree wr
       fs.rmSync(path.join(repository, "src", "b.ts"), { recursive: true });
       write("src/b.ts", "export const b = 2;\n");
     });
-    step("a link to a file", () => fs.symlinkSync("a.ts", path.join(repository, "src", "link.ts")));
-    step("the file the link leads to", () => write("src/a.ts", "export const a = 3;\n"));
+    step("a name beside one differing by case", () => write("src/A.ts", "export const A = 1;\n"));
+    step("the first of the two removed", () => fs.rmSync(path.join(repository, "src", "a.ts")));
+    step("a link to a file", () => fs.symlinkSync("A.ts", path.join(repository, "src", "link.ts")));
+    step("the file the link leads to", () => write("src/A.ts", "export const A = 3;\n"));
     step("the link retargeted", () => {
       fs.rmSync(path.join(repository, "src", "link.ts"));
       fs.symlinkSync("b.ts", path.join(repository, "src", "link.ts"));
@@ -170,29 +185,75 @@ describe("a tree brought forward from one change to another, against the tree wr
       fs.symlinkSync("gone.ts", path.join(repository, "src", "link.ts"));
     });
     step("an excluded picture changed", () => write("assets/logo.png", "another picture"));
-    step("a doc of the mirror committed", () => write(".mdmd/layer-4/src/a.ts.mdmd.md", "# a\n"));
+    step("a doc of the mirror committed", () => write(".mdmd/layer-4/src/b.ts.mdmd.md", "# b\n"));
     step("nothing", () => undefined);
     const configuration = normalizeLiveDocumentationConfig({ exclude: ["assets/**"] });
+    // On a disk that takes `A.ts` and `a.ts` for one name (Windows, macOS), the tree is rightly written anew there.
+    const probe = fs.mkdtempSync(path.join(privateTemporary, "case-"));
+    fs.writeFileSync(path.join(probe, "A"), "");
+    const folding = fs.existsSync(path.join(probe, "a"));
     const forward = await holdAlong(repository, changes, configuration, async (tree) => {
-      // What the summarizing process does in the docs root: a doc written, one changed, the index written.
+      // What the generator does in the docs root: a doc written, one rewritten, one pruned, the index written.
       fs.mkdirSync(path.join(tree.root, ".mdmd", "layer-4", "src"), { recursive: true });
-      fs.writeFileSync(path.join(tree.root, ".mdmd", "layer-4", "src", "b.ts.mdmd.md"), "# b\n");
+      fs.writeFileSync(path.join(tree.root, ".mdmd", "layer-4", "src", "b.ts.mdmd.md"), "# b, as the generator writes it\n");
+      fs.writeFileSync(path.join(tree.root, ".mdmd", "layer-4", "src", "x.ts.mdmd.md"), "# x\n");
+      fs.rmSync(path.join(tree.root, ".mdmd", "layer-1", "notes.md"), { force: true });
       fs.writeFileSync(path.join(tree.root, ".mdmd", "index.json"), "{}\n");
     });
-    expect(forward).toBe(changes.length - 1);
+    expect(forward).toBe(changes.length - 1 - (folding ? 1 : 0));
   }, 120_000);
+
+  it("equals the new tree where the docs root lies in folders the change does not hold, which the generator made", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "nested-"));
+    git(repository, ["init", "--quiet", "-b", "main"]);
+    fs.mkdirSync(path.join(repository, "src"));
+    fs.writeFileSync(path.join(repository, "src", "a.ts"), "export const a = 1;\n");
+    const first = commitAll(repository, "a file");
+    fs.writeFileSync(path.join(repository, "src", "a.ts"), "export const a = 2;\n");
+    const second = commitAll(repository, "the file changed");
+    const configuration = normalizeLiveDocumentationConfig({ root: "site/docs" });
+    const forward = await holdAlong(repository, [first, second, first], configuration, async (tree) => {
+      fs.mkdirSync(path.join(tree.root, "site", "docs", "layer-4"), { recursive: true });
+      fs.writeFileSync(path.join(tree.root, "site", "docs", "index.json"), "{}\n");
+    });
+    expect(forward).toBe(2);
+  }, 60_000);
+
+  it("is written anew where the generator left something outside the docs root, and equals the new tree", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "stray-"));
+    git(repository, ["init", "--quiet", "-b", "main"]);
+    fs.mkdirSync(path.join(repository, "src", "gone"), { recursive: true });
+    fs.writeFileSync(path.join(repository, "src", "gone", "a.ts"), "export const a = 1;\n");
+    const first = commitAll(repository, "a folder");
+    fs.rmSync(path.join(repository, "src", "gone"), { recursive: true });
+    fs.writeFileSync(path.join(repository, "src", "b.ts"), "export const b = 1;\n");
+    const second = commitAll(repository, "the folder gone");
+    fs.writeFileSync(path.join(repository, "src", "b.ts"), "export const b = 2;\n");
+    const third = commitAll(repository, "a file changed");
+    const configuration = normalizeLiveDocumentationConfig({});
+    // A file no writer of the tree made, in a folder the next change no longer holds, then in one it keeps: bringing
+    // forward gives up both times, the first when the folder will not go, the second when the names are counted.
+    let step = 0;
+    const forward = await holdAlong(repository, [first, second, third], configuration, async (tree) => {
+      step += 1;
+      fs.writeFileSync(path.join(tree.root, "src", ...(step === 1 ? ["gone", "stray.txt"] : ["stray.txt"])), "left behind\n");
+    });
+    expect(forward).toBe(0);
+  }, 60_000);
 
   it("equals the new tree between this repository's own commits, near and far apart, forward and back", async () => {
     const line = git(repoRoot, ["rev-list", "--first-parent", "--reverse", "HEAD"]).split("\n");
-    const configuration = normalizeLiveDocumentationConfig(JSON.parse(fs.readFileSync(path.join(repoRoot, ".live-docs.config.json"), "utf8")) as Partial<LiveDocumentationConfig>);
+    const input = parseLiveDocumentationConfigBytes(fs.readFileSync(path.join(repoRoot, ".live-docs.config.json")));
+    const configuration = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, ...input });
     const head = line.length - 1;
     const changes = [line[head - 1], line[head], line[Math.min(100, head)], line[head - 2]];
-    await holdAlong(repoRoot, changes, configuration, async (tree) => {
-      // The docs root as the summarizing process leaves it: docs rewritten and pruned, the index written.
+    const forward = await holdAlong(repoRoot, changes, configuration, async (tree) => {
+      // The docs root as the generator leaves it: docs rewritten and pruned, the index written.
       const root = path.join(tree.root, configuration.root);
       fs.mkdirSync(root, { recursive: true });
       fs.writeFileSync(path.join(root, "index.json"), "{}\n");
       fs.writeFileSync(path.join(root, "stray.mdmd.md"), "# stray\n");
     });
+    expect(forward).toBe(changes.length - 1);
   }, 300_000);
 });

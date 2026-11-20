@@ -1,10 +1,17 @@
 /**
- * What the history command does on a summary's behalf before the summarizing
- * process runs: each change's tree written into a scratch folder, the process
- * started in it with the task and the environment it is given, and the folder
- * removed after; a pool runs a few changes at once.
+ * What the history command does on a summary's behalf: a pool of workers
+ * started, each a summarizing process given its environment and its flags,
+ * and handed the changes to summarize one at a time, a run of consecutive
+ * changes after another; each worker writes its own tree in a scratch folder
+ * of its own and brings it forward from change to change
+ * (`summarizeChange.ts`), and the folder is removed when the worker ends.
  *
  * @remarks
+ * Since 2026-11-20 the workers live across changes and write their own
+ * trees; before, each change had a process of its own and this module wrote
+ * every tree on the command's main thread (the record of that day,
+ * `Probes/history-rebuild-fast`).
+ *
  * Split from `computeHistory.ts` on 2026-11-19, so that the code deciding
  * which files and which environment a summary sees is in the lens's key
  * (`generatorIdentity.ts`), while the command's reading of summaries into a
@@ -14,12 +21,11 @@
  * let a tracked file a `.gitignore` names into a summary had changed what
  * summaries said without changing the key.
  *
- * The summarizing process is given only the variables of the person's
- * environment it needs ({@link summarizingEnvironment}), the tree's own, and
- * only the node flags it needs ({@link summarizingFlags}): git's answer of
- * what the tree tracks and ignores is then the tree's, whatever the person's
- * shell had set. Since 2026-11-19 a file no reader of the tree reads is
- * written empty ({@link treeOptions}).
+ * A worker is given only the variables of the person's environment it needs
+ * ({@link summarizingEnvironment}) and only the node flags it needs ({@link
+ * summarizingFlags}); it sets each tree's own environment while it
+ * summarizes in that tree: git's answer of what the tree tracks and ignores
+ * is then the tree's, whatever the person's shell had set.
  *
  * @module
  */
@@ -31,15 +37,13 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
-import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
+import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
 import { summarizedConfiguration } from "@live-documentation/engine/live-docs/history/lens";
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
-import type { MainlineChange, VersionControl, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
+import type { MainlineChange } from "@live-documentation/engine/live-docs/history/versionControl";
 
-import type { SummaryReport, SummaryTask } from "./summarizeChange";
+import type { WorkerReport, WorkerTask } from "./summarizeChange";
 
 /** Where a change's summary lies in the lens's cache folder. */
 export function summaryPath(cacheFolder: string, change: string): string {
@@ -107,7 +111,8 @@ export class Scratch {
 
 /** What regenerating needs. */
 export interface RegenerationContext {
-  versionControl: VersionControl;
+  /** The top level of the repository whose changes are summarized, which each worker opens with the keyed version control. */
+  repository: string;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
   cacheFolder: string;
@@ -120,10 +125,26 @@ export interface RegenerationContext {
 }
 
 /**
- * Regenerates the changes, `jobs` at a time, each in a scratch tree under the system's temporary folder and a process
- * of its own, starting none after the deadline when there is one.
+ * How many changes one worker summarizes before it is ended and another started in its place: a bound on what the
+ * language adapters' caches, kept by absolute path for the life of a process and never cleared, hold in one process,
+ * since each change's tree has a folder of its own name (the record of 2026-11-20, `Probes/history-rebuild-fast`,
+ * measures a worker's memory over a long run).
+ */
+export const TASKS_A_WORKER = 100;
+
+/**
+ * Regenerates the changes in a pool of `jobs` workers, starting none after the deadline when there is one: processes
+ * each started once, each taking runs of the line's consecutive changes in turn and keeping its tree from one change
+ * to the next (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, and not a
+ * process and a tree of its own.
  *
- * @returns How long each change regenerated took, in milliseconds, and the largest peak memory a process reported.
+ * @remarks
+ * Until 2026-11-20 each change had a process of its own, and this module wrote every tree on the command's one main
+ * thread, which is what the pool waited for; the record of that day (`Probes/history-rebuild-fast`) measures both. The
+ * runs are short, about four to a worker, so that changes costing more at the line's end than at its start still
+ * spread over every worker.
+ *
+ * @returns How long each change regenerated took, in milliseconds, and the largest peak memory a worker reported.
  */
 export async function regenerate(changes: readonly MainlineChange[], context: RegenerationContext): Promise<{ timings: number[]; peakMemory: number }> {
   const timings: number[] = [];
@@ -134,78 +155,141 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
   // What the generator warned, once each with the number of changes that gave it, rather than again at every change.
   const warnings = new Map<string, number>();
   const started = Date.now();
-  try {
-    await inPool(changes, context.jobs, context.deadline, async (change) => {
-      const began = Date.now();
-      const scratch = await context.scratch.folder("live-docs-history-");
-      try {
-        const directory = path.join(scratch, path.basename(scratch));
-        const tree = await context.versionControl.workingTree(change.id, directory, treeOptions(context.configuration, directory));
-        const { warned, report } = await runSummary(
-          {
-            tree: tree.root,
-            configuration: summarizedConfiguration(context.configuration),
-            lens: context.lens.key,
-            commit: change.id,
-            summaryPath: summaryPath(context.cacheFolder, change.id),
-            textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
-            indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined,
-            ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {})
-          },
-          context.scratch,
-          scratch,
-          { ...summarizingEnvironment(process.env), ...tree.environment }
-        );
-        peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
-        if (tree.unwritten.length > 0) {
-          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
-          for (const entry of tree.unwritten) {
-            context.progress(`  ${entry.path}: ${entry.reason}`);
+  const runs: MainlineChange[][] = [];
+  const length = Math.max(1, Math.ceil(changes.length / (context.jobs * 4)));
+  for (let start = 0; start < changes.length; start += length) runs.push(changes.slice(start, start + length));
+  let failure: Error | undefined;
+  const open = (): boolean => failure === undefined && (context.deadline === undefined || Date.now() < context.deadline);
+  const lane = async (): Promise<void> => {
+    let worker: Worker | undefined;
+    try {
+      for (let run = runs.shift(); run !== undefined && open(); run = runs.shift()) {
+        for (const change of run) {
+          if (!open()) break;
+          if (worker !== undefined && worker.tasks >= TASKS_A_WORKER) {
+            await worker.end();
+            worker = undefined;
           }
+          worker ??= await startWorker(context);
+          const began = Date.now();
+          const report = await worker.summarize(change);
+          peakMemory = Math.max(peakMemory, report.peakMemory);
+          if (report.unwritten.length > 0) {
+            context.progress(`${change.id.slice(0, 8)}: ${report.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
+            for (const entry of report.unwritten) {
+              context.progress(`  ${entry.path}: ${entry.reason}`);
+            }
+          }
+          for (const message of new Set(report.warned)) {
+            warnings.set(message, (warnings.get(message) ?? 0) + 1);
+          }
+          // A file the generator failed on may have failed for a cause the process keeps, a grammar's load above all
+          // (`treeSitter.ts` keeps a failed load for the process's life): the worker ends, and the next change starts anew.
+          if (report.failed > 0) {
+            await worker.end();
+            worker = undefined;
+          }
+          timings.push(Date.now() - began);
+          const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
+          const wall = (Date.now() - started) / timings.length;
+          context.progress(
+            `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}${report.broughtForward ? "" : ", its tree written anew"}; ${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
+          );
         }
-        for (const message of new Set(warned)) {
-          warnings.set(message, (warnings.get(message) ?? 0) + 1);
-        }
-      } finally {
-        // The tree and its index lie inside the scratch folder, and nothing of them is registered anywhere else.
-        await context.scratch.release(scratch);
       }
-      timings.push(Date.now() - began);
-      const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
-      const wall = (Date.now() - started) / timings.length;
-      context.progress(
-        `${timings.length}/${changes.length} regenerated: ${change.id.slice(0, 8)} in ${seconds(Date.now() - began)}; ${seconds(mean)} a change, ${seconds(wall)} of wall clock a change at ${context.jobs} at a time`
-      );
-    });
+    } catch (error) {
+      failure ??= error instanceof Error ? error : new Error(String(error));
+    } finally {
+      // A worker that cannot be ended or its folder removed fails the run once every lane has stopped, as a summary does.
+      await worker?.end().catch((error: unknown) => {
+        failure ??= error instanceof Error ? error : new Error(String(error));
+      });
+    }
+  };
+  try {
+    await Promise.all(Array.from({ length: Math.min(context.jobs, changes.length) }, lane));
   } finally {
     for (const [message, count] of warnings) {
       context.progress(`the generator warned at ${count} of the ${changes.length} changes regenerated: ${message}`);
     }
   }
+  if (failure !== undefined) {
+    throw failure;
+  }
   return { timings, peakMemory };
 }
 
+/** A summarizing process started once, which summarizes changes one at a time in a tree it keeps. */
+interface Worker {
+  /** How many changes it was given. */
+  tasks: number;
+  summarize(change: MainlineChange): Promise<WorkerReport>;
+  /** Ends the process and removes its folder, its tree in it. */
+  end(): Promise<void>;
+}
+
 /**
- * What the history asks of a change's tree written at `tree`: every name stands, and every file holds its content but
- * one kind. A file is written empty only when the configuration's `exclude` names it (by discovery's own rule,
- * `matchesPathPattern`), it lies outside the docs root (discovery's `docsRootWithin`), which the generator reads and
- * rewrites whatever `exclude` says, and it is an image, a font or a recording (`isMediaAsset`), whose bytes no reader
- * reads whatever names it: an import of a picture or a resolver's probe finds the name, as over a checkout. Any other
- * file is written whole, since a reader may open any text file another file names (the C reader opens whatever an
- * include names, `.def` and `.inc` among them, though no reader handles those kinds on their own). A symbolic link at
- * or above the docs root is not written even as a copy.
- *
- * Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
- * this repository that the summarizing process opened none; for a few hours after, every excluded file no reader
- * handles was written empty, until the review's second pass found the C reader opening such files.
+ * Starts a worker (`summarizeChange.ts`, as TypeScript under tsx or as JavaScript once built) in a scratch folder of its
+ * own, where it writes its trees, with the node flags of {@link summarizingFlags} and the environment of {@link
+ * summarizingEnvironment} and nothing else of the command's; each tree's own environment is set by the worker for the
+ * task that summarizes in it.
  */
-export function treeOptions(configuration: LiveDocumentationConfig, tree: string): WorkingTreeOptions {
-  const docsRoot = docsRootWithin(tree, configuration);
-  const inDocsRoot = (file: string): boolean => docsRoot !== undefined && (file === docsRoot || file.startsWith(`${docsRoot}/`));
-  return {
-    contentless: (file) => !inDocsRoot(file) && isMediaAsset(file) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern)),
-    ...(docsRoot !== undefined ? { docsRoot } : {})
+async function startWorker(context: RegenerationContext): Promise<Worker> {
+  const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
+  const folder = await context.scratch.folder("live-docs-history-");
+  const child = fork(worker, ["--worker", context.repository, folder], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: summarizingEnvironment(process.env), execArgv: summarizingFlags(worker) });
+  context.scratch.started(child);
+  let errors = "";
+  child.stderr?.setEncoding("utf8");
+  child.stderr?.on("data", (text: string) => {
+    // Only the last lines are said when it fails.
+    errors = `${errors}${text}`.slice(-8192);
+  });
+  let current: { change: string; resolve: (report: WorkerReport) => void; reject: (error: Error) => void } | undefined;
+  const failed = (why: string): void => {
+    current?.reject(new Error(`the summary of ${current.change} failed (${why}): ${errors.trim().split("\n").slice(-5).join(" | ")}`));
+    current = undefined;
   };
+  // Ended only when the process has: an error (a message that could not be sent, say) fails the task, and the process
+  // is ended, its folder removed only once it is gone. A process that never started never exits.
+  const exited = new Promise<void>((resolve) => {
+    child.on("error", (error) => {
+      failed(error.message);
+      if (child.pid === undefined) resolve();
+      else child.kill();
+    });
+    child.once("exit", (code, signal) => {
+      failed(signal ?? `exit ${code}`);
+      resolve();
+    });
+  });
+  child.on("message", (message) => {
+    current?.resolve(message as WorkerReport);
+    current = undefined;
+  });
+  const handle: Worker = {
+    tasks: 0,
+    summarize: (change) =>
+      new Promise<WorkerReport>((resolve, reject) => {
+        handle.tasks += 1;
+        current = { change: change.id, resolve, reject };
+        const task: WorkerTask = {
+          configuration: summarizedConfiguration(context.configuration),
+          lens: context.lens.key,
+          commit: change.id,
+          summaryPath: summaryPath(context.cacheFolder, change.id),
+          textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
+          indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
+        };
+        child.send(task);
+      }),
+    end: async () => {
+      if (child.connected) child.disconnect();
+      await exited;
+      await context.scratch.release(folder);
+    }
+  };
+  return handle;
 }
 
 /**
@@ -258,66 +342,6 @@ function heapLimit(flags: readonly string[]): string[] {
 export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
   const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
   return [...loader, ...heapLimit(commandFlags)];
-}
-
-/**
- * Runs one summary in a process of its own, the generator's code loaded
- * afresh, and waits for it.
- *
- * @returns The lines the generator warned on its way, and what the process reported when it ended.
- */
-async function runSummary(task: SummaryTask, scratch: Scratch, folder: string, environment: Record<string, string>): Promise<{ warned: string[]; report?: SummaryReport }> {
-  // The worker sits beside this module, as TypeScript under tsx or as JavaScript once built.
-  const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
-  // The task goes in a file of the scratch folder, never on the command line, whose length the platform limits: a
-  // commit whose tree leaves thousands of entries out would otherwise fail to start (`spawn E2BIG`).
-  const taskFile = path.join(folder, "task.json");
-  await fs.writeFile(taskFile, JSON.stringify(task), "utf8");
-  return new Promise((resolve, reject) => {
-    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment, execArgv: summarizingFlags(worker) });
-    scratch.started(child);
-    let errors = "";
-    let report: SummaryReport | undefined;
-    child.on("message", (message) => {
-      report = message as SummaryReport;
-    });
-    child.stderr?.setEncoding("utf8");
-    child.stderr?.on("data", (text: string) => {
-      errors += text;
-    });
-    child.on("error", reject);
-    child.on("exit", (code, signal) => {
-      if (code === 0) {
-        resolve({ warned: errors.split("\n").map((line) => line.trim()).filter(Boolean), report });
-      } else {
-        reject(new Error(`the summary of ${task.commit} failed (${signal ?? `exit ${code}`}): ${errors.trim().split("\n").slice(-5).join(" | ")}`));
-      }
-    });
-  });
-}
-
-/**
- * Runs `work` over the items, at most `size` at once; after a failure, or past the deadline, no new item starts, and the
- * first failure is thrown once the running ones end.
- */
-async function inPool<T>(items: readonly T[], size: number, deadline: number | undefined, work: (item: T) => Promise<void>): Promise<void> {
-  let next = 0;
-  let failure: Error | undefined;
-  const lane = async (): Promise<void> => {
-    while (failure === undefined && next < items.length && (deadline === undefined || Date.now() < deadline)) {
-      const item = items[next];
-      next += 1;
-      try {
-        await work(item);
-      } catch (error) {
-        failure ??= error instanceof Error ? error : new Error(String(error));
-      }
-    }
-  };
-  await Promise.all(Array.from({ length: Math.min(size, items.length) }, lane));
-  if (failure !== undefined) {
-    throw failure;
-  }
 }
 
 function seconds(milliseconds: number): string {
