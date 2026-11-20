@@ -15574,3 +15574,162 @@
 
   The browser cases are at 176 and still running, with no failure in the last
   lines I read.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19-200435-welco
+  me-back-lets-start-up-the-1119-dev-day-ch.txt in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+  ⎿  [Image #1]
+  ⎿  [Image #2]
+
+❯ WHOA, we need to adjust our git workflow strategy. Looks like every single
+  commit was causing a pages build. We either gotta switch to a dev branch with
+  periodic merges to main (up to, say, 20 per day), or adjust the workflow to
+  stop if a newer commit exists on the branch? The commits get pushed in fairly
+  large batches, and my assumption was that the workflow would just run on the
+  latest when pushing a large batch of commits. I was clearly mistaken.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Looking at the Pages workflow and its recent runs before I answer; your two
+  pictures are being filed with the record.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+❯ Hmmm I guess if it's 44 or 46 workflow runs.... maybe it is from the stacks
+  and that's just how many stacks got pushed, and I just gotta push less
+  frequently?
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Checking one thing that doesn't fit yet: run #274 rebuilt the whole history
+  although its push changed no engine code.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Your second reading is the right one: one run per push, never per commit. I
+  read GitHub's public record of the last five Pages runs to check:
+
+  ┌──────┬───────────────┬───────────┬─────────────────────────────────────┐
+  │ Run  │  Commits in   │ History   │                 Why                 │
+  │      │   the push    │   step    │                                     │
+  ├──────┼───────────────┼───────────┼─────────────────────────────────────┤
+  │ #274 │ 109           │ 109 min   │ Full rebuild caused by the old      │
+  │      │               │           │ cache key (since fixed)             │
+  ├──────┼───────────────┼───────────┼─────────────────────────────────────┤
+  │ #275 │ 4             │ 43 s      │ No engine change                    │
+  ├──────┼───────────────┼───────────┼─────────────────────────────────────┤
+  │ #276 │ 49            │ 120 min   │ Full rebuild: engine code changed   │
+  ├──────┼───────────────┼───────────┼─────────────────────────────────────┤
+  │ #277 │ 200           │ 50 min    │ Full rebuild: tonight's engine      │
+  │      │               │           │ landing                             │
+  ├──────┼───────────────┼───────────┼─────────────────────────────────────┤
+  │ #278 │ 1             │ 67 s      │ No engine change                    │
+  └──────┴───────────────┴───────────┴─────────────────────────────────────┘
+
+  The durations in your screenshot include waiting. #275 shows 1 h 18 m, but 76
+  minutes of that was queueing behind #274. The workflow runs one at a time and
+  keeps only the newest waiting push, which is what you had assumed.
+
+  Pushing less often would save very little. A push that changes no engine code
+  costs about two minutes. The minutes are in the full history rebuilds on
+  GitHub's machine: 279 of the 882 came from those three runs.
+
+  - #274 was waste. The cache key at the time included package.json, so an
+    unrelated change threw the cache away. That was fixed on November 19: the
+    history command now decides what can be reused.
+  - #276 and #277 were real. Each engine landing that reaches main costs one
+    rebuild there, however many commits or pushes carry it. It is the same
+    rebuild I ran here tonight, and tonight's landing made it lighter: 50
+    minutes instead of two hours.
+
+  What's coming: two or three more engine landings (the readers, then the store
+  change in two steps), so about 50 minutes each, once.
+
+  I would change neither the workflow nor the branches. As far as I know GitHub
+  doesn't bill standard-runner minutes on a public repository, so the cost is
+  the wait and not money; your billing page will confirm that.
+
+  The browser cases are past 590 with 4 failure marks so far. I'll run those
+  down when the stage ends, before calling the landing ready.
+
+● Background command "Run the gate's browser stage through the lane at the
+  merged commit" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Browser stage done: 593 passed, 4 failed, 7 skipped. One of the four is the
+  known long 3D settle that waits on your Settle Hold choice; reading the other
+  three failures now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The landing touched only the reader's link handling in the Explorer, leaving
+  the 3D and 2D layout code alone, and added 27 files to the repository map. I'm
+  rerunning the three unexplained cases on their own to rule out chance.
+  · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Two of the three are red again alone, one passes alone; sending one builder to
+  run each down to its cause.
+
+● Agent(Three red browser cases after landing) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The browser cases ran alone on the machine: 593 of 604 passed, 7 were skipped
+  and 4 failed. The cases that were red under load earlier in the day all
+  passed.
+
+  The four failures:
+
+  - The long 3D settle (force-graph-discovery.spec.ts:70). It is still moving at
+    2,715 steps against a bound of 2,700. This is the one that waits on your
+    Settle Hold choice in the packet, and it was red before the landing.
+  - A camera turn in the 3D focus case (force-graph-focus.spec.ts:108). It
+    failed in the full run and passed when I reran it alone, so the case is
+    unstable.
+  - Two 2D layout cases (local-map-directories.spec.ts:553 and
+    return-cost.spec.ts:75). Both failed again when rerun alone.
+
+  The landing did not touch the 3D map or the 2D layout code; in the Explorer it
+  changed only the reader's link handling. It did add 27 files to this
+  repository's own map, and the two 2D cases check exact pictures of that map.
+  So my lead is that the map moved under them, as it did under four other cases
+  on November 19. I have not shown that yet.
+
+  One builder is now running the last three down to their causes. For each it
+  has to show whether the product is still right on today's map, and prove that
+  any mended case can still fail. Nothing else is running.
+
+  On the devcontainer rebuild: the Node 26 files are on main, so the rebuild
+  itself is safe whenever you choose. It will end this chat's running work,
+  though, so I'd hold it until that builder is back and I've written the notes
+  the next chat resumes from. I'll say when.
+
+● Background command "Fifty-minute fallback timer while the browser stage runs"
+  completed (exit code 0)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Wrote the notes a new chat would resume from, since the devcontainer rebuild
+  will end every parked builder's memory; committing them now while the red-case
+  builder works.
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● A correction to something I told you earlier: the script that lists our
+  messages does show the ones you send while I'm working. It labels them "owner,
+  while root worked", and it listed both of yours tonight. My own filter around
+  its output dropped those lines. Nothing in the script needs mending; I've
+  corrected the record where it said otherwise.
+
+  Also done while the builder works: the record now has resumption notes
+  covering the landing, every parked branch with what is unfinished on it, your
+  decisions from tonight and the order of work. A new chat can pick up from
+  those after the devcontainer rebuild.
+
+  The builder is still running down the three red browser cases; nothing else is
+  running.
