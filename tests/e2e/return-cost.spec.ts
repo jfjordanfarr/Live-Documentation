@@ -11,18 +11,20 @@ import { localMapSettled } from "./still-picture";
  * and Tuning's Return Cost for every returning reference, and moves to one only when it pays for its move. The 3D
  * button's count and the cards' feet follow the move. `adapters/manifest.ts` opened alone holds a cycle with the
  * adapters around it: the greedy order draws one returning connection; returning fewer stands every adapter in one
- * column right of the manifest and draws none, which the search adopts from a Return Cost of about 1,175 px of wire
- * (measured in the lab on real card sizes), so at the default and not at 500.
+ * column right of the manifest and draws none. On 2026-11-16 the search adopted that order from a Return Cost of about
+ * 1,175 px of wire (measured in the lab on real card sizes); since the manifest and its adapters came to read their
+ * source through `tooling/sourceText.ts` (2026-11-20) it is the cheaper picture at any Return Cost, so the first two
+ * cases read the move and the first draw there, and the cost itself is read on a fixed program (the last case).
  */
 const MANIFEST = "packages/engine/src/live-docs/adapters/manifest.ts";
 
-const link = (returnCost?: number): string => `/?s=${compressSnapshot({
-  ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: MANIFEST,
+const link = (returnCost?: number, node = MANIFEST, site = "/"): string => `${site}?s=${compressSnapshot({
+  ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: node,
   ...(returnCost === undefined ? null : { layout: { localMap: { returnCost } } })
 })}`;
 
-/** Opens the manifest with the search seeded as asked, and records every count of returning connections the overlay shows. */
-async function open(page: Page, localMap: Record<string, number>, returnCost?: number): Promise<void> {
+/** Opens the address, the manifest's by default, with the search seeded as asked, and records every count of returning connections the overlay shows. */
+async function open(page: Page, localMap: Record<string, number>, address = link()): Promise<void> {
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } }) });
   await page.addInitScript(() => {
     const counts: number[] = [];
@@ -34,7 +36,7 @@ async function open(page: Page, localMap: Record<string, number>, returnCost?: n
       }
     }).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-backward-connections"] });
   });
-  await page.goto(link(returnCost));
+  await page.goto(address);
   await page.waitForSelector("#map-container .local-placed", { timeout: 30_000 });
   await localMapSettled(page, 60_000);
 }
@@ -72,11 +74,30 @@ test("with the search off, the picture stays as first drawn: the greedy order, i
   await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveAttribute("data-backward", "some");
 });
 
-test("a link that names a Return Cost reopens the picture the search makes at it, and Tuning shows the cost", async ({ page }) => {
+/**
+ * The Rosetta C# program's `Models/ModelFactory.cs` and `Models/Record.cs` use each other: the greedy order draws two
+ * returning references, and standing the pair the other way round returns one at the cost of longer wires. On 2026-11-20
+ * the page priced that order 1,786 px of wire dearer than the shown picture at no Return Cost, so the search adopts it
+ * from a Return Cost of about 1,800 px and not below: kept at 500, adopted at 4,000, both on the lever's range and far
+ * from the line, and on a fixed program that this repository's growth does not move.
+ */
+const MODEL_FACTORY = "src/Models/ModelFactory.cs";
+const ROSETTA_CSHARP = "/samples/rosetta/csharp/";
+
+test("a link that names a Return Cost reopens the picture the search makes at it, and Tuning shows the cost", async ({ page, context }) => {
   test.setTimeout(90_000);
-  await open(page, { searchStarts: 4, searchPatience: 4, moveMs: 0 }, 500);
-  expect((await read(page)).counts, "at 500 px a return is not worth the wire the cheaper order spends").toEqual([1]);
+  const searching = { searchStarts: 4, searchPatience: 4, moveMs: 0 };
+  await open(page, searching, link(500, MODEL_FACTORY, ROSETTA_CSHARP));
+  const cheap = await read(page);
+  expect(cheap.tried, "the pair's other order was tried").toBe(1);
+  expect(cheap.counts, "at 500 px a return is not worth the wire the other order spends").toEqual([2]);
   await expect(page.locator("#tuning-return-cost")).toHaveValue("500");
+  // The same picture at a dearer return, in a page of its own: the search moves, and the cue counts one return.
+  const dear = await context.newPage();
+  await open(dear, searching, link(4000, MODEL_FACTORY, ROSETTA_CSHARP));
+  expect((await read(dear)).counts, "at 4,000 px a return is worth the wire").toEqual([2, 1]);
+  await expect(dear.locator("#tuning-return-cost")).toHaveValue("4000");
+  await dear.close();
   await page.goto(link());
   await page.waitForSelector("#map-container .local-placed", { timeout: 30_000 });
   await localMapSettled(page, 60_000);

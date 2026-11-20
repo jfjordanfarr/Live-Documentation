@@ -29,53 +29,127 @@ async function expectFocused(page: Page, id: string): Promise<void> {
 }
 
 /**
- * A point on a file's rendered sphere that no nearer sphere covers: its centre when that is clear, else a point
- * part way out on its disc; null when a bigger neighbour standing in front covers the whole of it (pathfind.ts
- * came to cover graph.ts at the camera's centre once the graph gained its files, 2026-10-15).
+ * What a press at each point would take hold of, read from the buffers last drawn: the nearest thing the ray from the
+ * camera through the point meets, a drawn sphere (a file's, or a directory's drawn as a sphere) or a skin of the
+ * wrappers (a group's wrapper or a directory shell, each standing for its seed), or nothing, the background. The page
+ * picks the same way (`nodeAt` in forceGraphRenderer.ts): a skin met before any sphere takes the press for its seed, a
+ * skin bursting open takes none. Spheres are met as true spheres at their drawn centre and radius, skins as their
+ * uploaded triangles. Each point is also checked to have the canvas itself under it, no name or control.
+ */
+async function pressedAt(page: Page, points: Array<{ x: number; y: number }>): Promise<Array<{ id: string | null; skin: boolean; canvas: boolean }>> {
+  return page.evaluate(points => {
+    type V3 = { x: number; y: number; z: number; clone(): V3; set(x: number, y: number, z: number): V3; sub(v: V3): V3; normalize(): V3; unproject(camera: unknown): V3; applyMatrix4(m: unknown): V3 };
+    type Attribute = { count: number; getX(i: number): number; getY(i: number): number; getZ(i: number): number };
+    const inspected = window as unknown as {
+      renderedGraph: { scene: { traverse(visit: (object: unknown) => void): void; getObjectByName(name: string): unknown }; camera: { position: V3; updateMatrixWorld(): void } };
+      drawnInstance(mesh: unknown, entry: unknown): { center: V3; radius: number; visible: boolean };
+    };
+    const { scene, camera } = inspected.renderedGraph;
+    camera.updateMatrixWorld();
+    const canvas = document.querySelector("#graph-svg canvas")!, rect = canvas.getBoundingClientRect();
+    const spheres: Array<{ id: string; center: V3; radius: number }> = [];
+    scene.traverse(object => {
+      const mesh = object as { userData: { spatialBatch?: { kind: string; entries: Array<{ enabled: boolean; data: { id: string } }> } } };
+      if (mesh.userData?.spatialBatch?.kind !== "nodes") return;
+      for (const entry of mesh.userData.spatialBatch.entries) {
+        if (!entry.enabled) continue;
+        const drawn = inspected.drawnInstance(mesh, entry);
+        spheres.push({ id: entry.data.id, center: drawn.center, radius: drawn.radius });
+      }
+    });
+    const skin = scene.getObjectByName("Spatial wrappers") as {
+      visible: boolean; matrixWorld: unknown; userData: { spatialWrappers: { popping: string[]; ranges: Array<{ seed: string }> } };
+      geometry: { getAttribute(name: string): Attribute; getIndex(): Attribute | null; drawRange: { start: number; count: number } };
+    } | undefined;
+    const triangles: Array<{ seed: string; a: V3; b: V3; c: V3 }> = [];
+    if (skin?.visible) {
+      const position = skin.geometry.getAttribute("position"), group = skin.geometry.getAttribute("wrapperGroup"), index = skin.geometry.getIndex()!;
+      const { ranges, popping } = skin.userData.spatialWrappers;
+      const end = Math.min(index.count, skin.geometry.drawRange.start + skin.geometry.drawRange.count);
+      const vertex = (i: number): V3 => camera.position.clone().set(position.getX(i), position.getY(i), position.getZ(i)).applyMatrix4(skin.matrixWorld);
+      for (let i = skin.geometry.drawRange.start; i + 2 < end; i += 3) {
+        const seed = ranges[group.getX(index.getX(i))]?.seed;
+        if (seed === undefined || popping.includes(seed)) continue;
+        triangles.push({ seed, a: vertex(index.getX(i)), b: vertex(index.getX(i + 1)), c: vertex(index.getX(i + 2)) });
+      }
+    }
+    const dot = (u: V3, v: V3): number => u.x * v.x + u.y * v.y + u.z * v.z;
+    const cross = (u: V3, v: V3): V3 => camera.position.clone().set(u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x);
+    return points.map(({ x, y }) => {
+      const origin = camera.position.clone();
+      const direction = camera.position.clone().set((x - rect.left) / rect.width * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1, 0.5)
+        .unproject(camera).sub(origin).normalize();
+      let nearest = Infinity, id: string | null = null, onSkin = false;
+      for (const sphere of spheres) {
+        const offset = origin.clone().sub(sphere.center), b = dot(offset, direction), c = dot(offset, offset) - sphere.radius * sphere.radius;
+        const discriminant = b * b - c;
+        if (discriminant < 0) continue;
+        const t = -b - Math.sqrt(discriminant);
+        if (t > 0 && t < nearest) { nearest = t; id = sphere.id; onSkin = false; }
+      }
+      // Möller and Trumbore's intersection of a ray and a triangle, from either side.
+      for (const { seed, a, b, c } of triangles) {
+        const e1 = b.clone().sub(a), e2 = c.clone().sub(a), p = cross(direction, e2), det = dot(e1, p);
+        if (Math.abs(det) < 1e-12) continue;
+        const s = origin.clone().sub(a), u = dot(s, p) / det;
+        if (u < 0 || u > 1) continue;
+        const q = cross(s, e1), v = dot(direction, q) / det;
+        if (v < 0 || u + v > 1) continue;
+        const t = dot(e2, q) / det;
+        if (t > 0 && t < nearest) { nearest = t; id = seed; onSkin = true; }
+      }
+      return { id, skin: onSkin, canvas: document.elementFromPoint(x, y) === canvas };
+    });
+  }, points);
+}
+
+/**
+ * A point on a file's rendered sphere where a press takes hold of that file ({@link pressedAt}): its centre when nothing
+ * stands in front of it there, else a point part way out on its disc; null when nearer spheres or a skin cover the whole
+ * of it. Pathfind.ts came to cover graph.ts at the camera's centre once the graph gained its files (2026-10-15); the
+ * translucent `packages/explorer` shell came to stand in front of it once the repository grew (2026-11-19), and a press
+ * there takes that shell rather than graph.ts, which only the skins' own geometry tells (2026-11-20).
  */
 async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: number } | null> {
-  const nodes = await renderedNodes(page);
-  const target = nodes.find(node => node.id === id)!;
-  const nearer = nodes.filter(node => node.id !== id && node.depth < target.depth);
-  const covered = (x: number, y: number): boolean => nearer.some(node => Math.hypot(node.x - x, node.y - y) <= node.screenRadius + 2);
-  const candidates = [[0, 0], ...Array.from({ length: 8 }, (_, i) => [Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)])];
-  for (const scale of [0, 0.5, 0.75]) {
-    for (const [dx, dy] of candidates) {
-      const x = target.x + dx * target.screenRadius * scale;
-      const y = target.y + dy * target.screenRadius * scale;
-      if (!covered(x, y) && await page.evaluate(({ x, y }) =>
-        document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas"), { x, y })) return { x, y };
-    }
-  }
-  return null;
+  const target = (await renderedNodes(page)).find(node => node.id === id)!;
+  const directions = [[0, 0], ...Array.from({ length: 8 }, (_, i) => [Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)])];
+  const candidates = [0, 0.5, 0.75].flatMap(scale => directions.map(([dx, dy]) =>
+    ({ x: target.x + dx * target.screenRadius * scale, y: target.y + dy * target.screenRadius * scale })));
+  const pressed = await pressedAt(page, candidates);
+  const index = pressed.findIndex(each => each.canvas && !each.skin && each.id === id);
+  return index < 0 ? null : candidates[index];
 }
 
 /** How far a turn's drag goes, in pixels across and down. */
 const TURN = { x: 90, y: 30 };
 
+/** How far around each end of a turn's drag a press must still take hold of nothing, in pixels: a margin for a picture still moving. */
+const BACKGROUND_MARGIN = 8;
+
 /**
- * A point of the picture's background where a turn's drag may begin and end: no drawn sphere within 8 px of either end,
- * and the canvas itself under both, no name or control. Once the map has built, a press on a sphere grabs it and the
- * drag carries the sphere while the camera stays (`force-graph-building.spec.ts`), a directory shell's sphere as much as
- * a file's. Until 2026-11-19 the case pressed at a fixed point, the frame's centre and 200 px down and right, which the
- * repository's grown picture put inside the `packages/engine` shell: its eight turns dragged that shell and the camera
- * never moved (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/map-reds/README.md`). That point is still
- * tried first; the rest of the frame is searched in steps of a tenth.
+ * A point of the picture's background where a turn's drag may begin and end: at either end, and at every point 8 px
+ * around it, a press takes hold of nothing ({@link pressedAt}), with the canvas itself under it. Once the map has built,
+ * a press on a sphere or a skin grabs it and the drag carries it while the camera stays (`force-graph-building.spec.ts`).
+ * Until 2026-11-19 the case pressed at a fixed point, the frame's centre and 200 px down and right, which the repository's
+ * grown picture put inside the `packages/engine` shell; then until 2026-11-20 it asked only that no sphere's disc lie
+ * within 8 px, and a directory shell is drawn as its skin alone, so the press could still land on a skin, grab its
+ * shell, and leave the camera where it stood (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md`).
+ * The old fixed point is still tried first; the rest of the frame is searched in steps of a tenth. When no point of the
+ * frame takes a press as a turn, the case says so rather than turn from a wrong one.
  */
 async function backgroundPoint(page: Page): Promise<{ x: number; y: number }> {
-  const nodes = await renderedNodes(page);
   const box = (await page.locator("#graph-svg canvas").boundingBox())!;
-  const clear = (x: number, y: number): boolean => nodes.every(node => Math.hypot(node.x - x, node.y - y) > node.screenRadius + 8);
-  const onCanvas = (x: number, y: number): Promise<boolean> => page.evaluate(({ x, y }) =>
-    document.elementFromPoint(x, y) === document.querySelector("#graph-svg canvas"), { x, y });
   const candidates = [{ x: box.x + box.width / 2 + 200, y: box.y + box.height / 2 + 200 }];
   for (let row = 1; row < 10; row++) for (let column = 1; column < 10; column++) {
     candidates.push({ x: box.x + box.width * column / 10, y: box.y + box.height * row / 10 });
   }
-  for (const { x, y } of candidates) {
-    if (clear(x, y) && clear(x + TURN.x, y + TURN.y) && await onCanvas(x, y) && await onCanvas(x + TURN.x, y + TURN.y)) return { x, y };
-  }
-  throw new Error("no point of the picture's background is clear of spheres to turn the camera from");
+  const around = ({ x, y }: { x: number; y: number }) => [{ x, y }, ...Array.from({ length: 8 }, (_, i) =>
+    ({ x: x + BACKGROUND_MARGIN * Math.cos(i * Math.PI / 4), y: y + BACKGROUND_MARGIN * Math.sin(i * Math.PI / 4) }))];
+  const probes = candidates.map(start => [...around(start), ...around({ x: start.x + TURN.x, y: start.y + TURN.y })]);
+  const pressed = await pressedAt(page, probes.flat());
+  const index = candidates.findIndex((_, i) => pressed.slice(i * 18, (i + 1) * 18).every(each => each.canvas && each.id === null));
+  if (index < 0) throw new Error("no point of the frame takes a press as a turn of the camera: every candidate lies on a sphere, a skin or a control");
+  return candidates[index];
 }
 
 /** The camera's line of sight, the third column of its world matrix. */
@@ -102,7 +176,7 @@ async function uncover(page: Page, id: string): Promise<{ x: number; y: number }
     const turned = Math.acos(Math.min(1, before[0] * after[0] + before[1] * after[1] + before[2] * after[2])) * 180 / Math.PI;
     expect(turned, `turn ${turn + 1} turned the camera rather than carrying a sphere`).toBeGreaterThan(5);
   }
-  throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
+  throw new Error(`${id} stayed covered by nearer spheres or skins after eight turns of the camera`);
 }
 
 test("a focused URL centers its node, direct clicks pin it, and More opens its details", async ({ page }) => {

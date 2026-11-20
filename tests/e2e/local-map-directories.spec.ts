@@ -549,10 +549,15 @@ test("Opened Directory defaults to Flow, the grid is chosen in Tuning and travel
 });
 
 // How the boxes, the files no line joins and a tall rank stand is the picture's price's to choose, its width set against
-// its height (the owner's leave, 2026-11-13): the page prices several shapes and draws the cheapest.
+// its height (the owner's leave, 2026-11-13): the page prices several shapes and draws the cheapest. The directory is the
+// estate sample's `Contracts`, a fixed program whose shape turns with the lever: at the default Width Cost it stands in
+// its narrow shape, three columns, and with the width free its tallest rank wraps into two rows, four columns. Until
+// 2026-11-20 the case opened this repository's `scripts/live-docs`, whose shape moved with every file the repository
+// gained; once it gained five, Width Cost at nought lowered every shape's price and still chose the same one, and the
+// case went red with the product unchanged (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md`).
 test("with Opened Directory at Flow, the price chooses how a directory stands, Width Cost turns the choice, and the link shows it again", async ({ page }) => {
   test.setTimeout(120_000);
-  const LIVE_DOCS_SCRIPTS = "scripts/live-docs";
+  const CONTRACTS = "Contracts";
   const shapeOf = (target: Page) => target.evaluate(() => {
     const root = document.querySelector<HTMLElement>("#map-container .branch-mode")!;
     return {
@@ -564,7 +569,7 @@ test("with Opened Directory at Flow, the price chooses how a directory stands, W
   });
   const layoutOf = (address: string): Record<string, unknown> | undefined =>
     decompressSnapshot(new URL(address).searchParams.get("s") ?? "").layout?.localMap as Record<string, unknown> | undefined;
-  await page.goto(opened(LIVE_DOCS_SCRIPTS, "flow"));
+  await page.goto(`/samples/estate${opened(CONTRACTS, "flow")}`);
   await settled(page);
   const chosen = await shapeOf(page);
   // Several shapes were priced, and the one drawn is the cheapest of them.

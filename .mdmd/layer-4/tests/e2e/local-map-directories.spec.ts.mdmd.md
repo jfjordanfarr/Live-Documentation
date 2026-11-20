@@ -22,6 +22,8 @@ Since Flow became Opened Directory's default on 2026-11-13 a closed box opening 
 
 Since 2026-11-18, when Hidden Files' default became Cells under name ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), the encasing membrane's case chooses Count, whose words and whose rule that a count is drawn whole or not at all it reads; `hidden-file-cells.spec.ts` reads the cells.
 
+Since 2026-11-20 the case on the price's choice of a directory's shape opens the estate sample's `Contracts`, a fixed program whose shape turns with Width Cost (narrow at the default, its tallest rank in two rows with the width free), in place of this repository's `scripts/live-docs`. Once that directory gained five files with the engine round, Width Cost at nought lowered every shape's price there and still chose the same one, and the case went red with the product unchanged; it goes red again when the shape's price is made to ignore the lever ([the measurements](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landing-reds/README.md#width-cost-on-scriptslive-docs)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
