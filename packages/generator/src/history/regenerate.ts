@@ -334,16 +334,7 @@ async function startWorker(context: RegenerationContext): Promise<Worker> {
     summarize: (change) =>
       new Promise<WorkerReport>((resolve, reject) => {
         current = { change: change.id, resolve, reject };
-        const task: WorkerTask = {
-          configuration: summarizedConfiguration(context.configuration),
-          lens: context.lens.key,
-          ignoresCase: context.lens.ignoresCase === true,
-          commit: change.id,
-          summaryPath: summaryPath(context.cacheFolder, change.id),
-          textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
-          indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
-        };
-        child.send(task);
+        child.send(workerTask(change, context));
       }),
     end: async () => {
       if (child.connected) child.disconnect();
@@ -352,6 +343,25 @@ async function startWorker(context: RegenerationContext): Promise<Worker> {
     }
   };
   return handle;
+}
+
+/**
+ * What a worker is sent for one change: the lens's configuration as a summary is made under it, its key, the change, and
+ * where the summary, its texts and its index go; and whether the repository matches names without regard to case, as
+ * the lens keyed it, `true` where the lens says so and `false` where it does not (never absent), to which the worker's
+ * trees pin git's `core.ignorecase`, so that the generator reads the value the key holds. Made apart from {@link
+ * startWorker} since the review of the cache's key (2026-11-20), so that a case holds the command's end of that route.
+ */
+export function workerTask(change: MainlineChange, context: Pick<RegenerationContext, "configuration" | "lens" | "cacheFolder" | "keepIndex">): WorkerTask {
+  return {
+    configuration: summarizedConfiguration(context.configuration),
+    lens: context.lens.key,
+    ignoresCase: context.lens.ignoresCase === true,
+    commit: change.id,
+    summaryPath: summaryPath(context.cacheFolder, change.id),
+    textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),
+    indexPath: context.keepIndex ? indexPath(context.cacheFolder, change.id) : undefined
+  };
 }
 
 /**

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T15:57:03.435Z
+- Generated At: 2026-11-20T16:31:01.657Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ What the history command does on a summary's behalf: a pool of workers (`summari
 - The summarizing process is handed `summarizedConfiguration` of the lens's configuration, the one the key holds, and its node flags carry the command's own `--max-old-space-size` and no other of the command's (`summarizingFlags`).
 - Since 2026-11-20 ([the record of that day](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) the workers live across commits and write their own trees; before, this module wrote every commit's tree on the command's one main thread and started a process for each, and a rebuild waited on that thread. The task file, the one-process pool (`inPool`, `runSummary`) and the version control in `RegenerationContext` went with it; the context names the repository each worker opens. The notes above on the tree's environment and on `treeOptions` describe what the worker now does (`summarizeChange.ts`). A worker that cannot be ended, or whose folder cannot be removed, fails the run once every lane has stopped, and a worker's folder is removed only once its process has exited.
 - Later on 2026-11-20 ([the sixth round of the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-sixth-round-what-the-person-is-told-of-a-file-not-mapped-november-20-from-1530-utc)) a review found two of the run's last lines counting what they did not say: the files the generator could not map were counted once at every commit that held one, and a commit counted as decided by a fresh process only where the fresh process was itself marked, so that a commit a warm worker was refused for a mark the fresh one does not repeat was missing from the totals. The files are now counted once each, with the number of commits at which any was, and every commit a fresh process decided is counted by what the worker that first took it was marked for, and by a failure of the machine's where that sent it there (`DECIDED_WORDS`). A failure of the machine's counts under its own reason alone: the generator's catch marks every failure as a file not mapped before anyone knows whose it is, so that mark counts only where another file of the commit could not be mapped (the root's ruling on the round's handback). The stand-in pool's cases in `regenerate.test.ts` hold both and the gathered warning that names a file not mapped.
+- The task a worker is sent is made by `workerTask` since the review of the cache's key, the same day ([the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-commands-end-of-the-case-setting-november-20-from-1617-utc)), which cut the route of git's `core.ignorecase` from the lens to a worker's tree here with no test of the history going red: it sends the lens's `ignoresCase`, `true` where the lens says so and `false` where it does not, and a case of `regenerate.test.ts` holds it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -89,9 +90,22 @@ so that the workers together never hold more than the pool planned for, whatever
 ##### `Worker` — Summary
 A summarizing process started once, which summarizes changes one at a time in a tree it keeps.
 
+#### `workerTask` {#symbol-workertask}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L355)
+- Returns: [`WorkerTask`](./summarizeChange.ts.mdmd.md#symbol-workertask)
+- Parameters: `change`: [`MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange)
+
+##### `workerTask` — Summary
+What a worker is sent for one change: the lens's configuration as a summary is made under it, its key, the change, and
+where the summary, its texts and its index go; and whether the repository matches names without regard to case, as
+the lens keyed it, `true` where the lens says so and `false` where it does not (never absent), to which the worker's
+trees pin git's `core.ignorecase`, so that the generator reads the value the key holds. Made apart from {@link
+ * startWorker} since the review of the cache's key (2026-11-20), so that a case holds the command's end of that route.
+
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L373)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L383)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -102,7 +116,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L404)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L414)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

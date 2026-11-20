@@ -365,3 +365,11 @@ _A builder in its own worktree, reset to `9f3b74ec5` (the joining branch's tip, 
 - **Found, not mended**: a tsconfig that another extends is read by TypeScript's recursive reader of JSON but not measured; only the tsconfig beside the manifest is. A deep `extends` target would be read by a warm worker and not a fresh one, unmarked.
 - **Refused by the harness**: a probe that set `GIT_CONFIG` for `git config` in a scratch repository (not retried, by the rule; the words above avoid needing it); a chained command naming `git.test.ts` among unit files (run as plain separate commands, as the refusal said).
 
+### The command's end of the case setting (November 20, from 16:17 UTC)
+
+_The sixth round's builder, its worktree fast-forwarded to the joined branch (`edb0ba3d6`), on a finding of the cache key's reviewer._
+
+The reviewer cut the route from git's `core.ignorecase` to a worker's tree at the command's end in two places at once, `computeHistory.ts` never keying `true` and `regenerate.ts` sending no `ignoresCase` in a worker's task, and every unit test of the generator's history, with `git.test.ts` and `lens.test.ts`, stayed green (104 of 104): the real worker's case builds its own task. **The reviewer's smallest mend, as ruled:** the task a worker is sent is made by a small exported function, `workerTask` in `regenerate.ts` (no other behaviour; it sends `ignoresCase: true` where the lens says so and `false`, never absent, where it does not, as the code already did), and two cases, each red with its end cut:
+- `regenerate.test.ts`, "the task a worker is sent", over lenses made by `lensOf` with the setting true and false: **red** with `ignoresCase` left out of the task (`expected undefined to be true`).
+- `history.test.ts`, "the history over a repository that matches names without regard to case": `computeHistory` in this process over a repository of one commit, the repository it opens stood in for (`openGitRepository` mocked, its `ignoresCase()` answering true, then false): the sequence's lens says `ignoresCase: true` under the key `lensOf` gives with it, and answering false gives the lens `lensOf` made before the setting was keyed. **Red** with `computeHistory.ts` keying `false` whatever the repository answers (`expected undefined to be true`).
+
