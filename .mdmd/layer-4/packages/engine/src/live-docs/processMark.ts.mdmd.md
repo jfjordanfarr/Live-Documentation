@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/processMark.ts`
-- Generated At: 2026-11-20T15:18:15.060Z
+- Generated At: 2026-11-20T15:53:17.023Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Says whether what this process derived could depend on the process's own past, a
 ### Public Symbols
 #### `READING_DEPTH` {#symbol-reading_depth}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L40)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L42)
 
 ##### `READING_DEPTH` — Summary
 How many levels of a TypeScript tree its parser may reach by recursion before the process is marked: at most half
@@ -35,7 +35,7 @@ TypeScript or node lowers a limit below it.
 
 #### `TREE_DEPTH` {#symbol-tree_depth}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L47)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L49)
 
 ##### `TREE_DEPTH` — Summary
 How deep any syntax tree, TypeScript's or tree-sitter's, may be before the process is marked, every level counted:
@@ -44,14 +44,14 @@ the probe of 2026-11-20 tried was read cold at 800, twice this bound, which `rea
 
 #### `ProcessMark` {#symbol-processmark}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L50)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L52)
 
 ##### `ProcessMark` — Summary
 Why a process is marked: a file beyond {@link READING_DEPTH} or {@link TREE_DEPTH}, a file the generator could not map, or a fault of the tree-sitter runtime.
 
 #### `markProcess` {#symbol-markprocess}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L55)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L57)
 - Parameters: `reason`: [`ProcessMark`](#symbol-processmark)
 
 ##### `markProcess` — Summary
@@ -59,7 +59,7 @@ Marks the process: what it derives from now on may depend on its past.
 
 #### `processMarks` {#symbol-processmarks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L60)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L62)
 - Returns: [`ProcessMark`](#symbol-processmark)[]
 
 ##### `processMarks` — Summary
@@ -67,18 +67,27 @@ Every reason the process was marked for, in a fixed order; none when it was not.
 
 #### `machineFailure` {#symbol-machinefailure}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L71)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L73)
 
 ##### `machineFailure` — Summary
-Whether a failure is the machine's rather than the file's: a system call that failed (the error names its `syscall`
-and its `code`) for a cause other than the name's or the path's, which the history's tree writer leaves out and names
+Whether a failure is the machine's rather than the file's: a system call that failed ({@link failedCall}) for a cause
+other than the name's or the path's (`NAME_FAILURES`), which the history's tree writer leaves out and names
 (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds) would make
 a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
-that swallows a failure to read a file lets this kind through (`dependencies.ts`).
+that swallows a failure to read a file lets this kind through (`throwIfMachineFailure`, `tooling/sourceText.ts`).
+
+#### `failedCall` {#symbol-failedcall}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L83)
+
+##### `failedCall` — Summary
+The code of the failed system call an error is, or wraps: the first error along its chain of causes (`cause`, as a
+library that wraps a failure in an error of its own keeps it) that names its `syscall` and its `code`. Until
+2026-11-20 only the error itself was read, so a failed call a library wrapped sorted as the file's.
 
 #### `nestingBeyondDepth` {#symbol-nestingbeyonddepth}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L101)
 - Parameters: `root`: `T`; `node`: `T`
 
 ##### `nestingBeyondDepth` — Summary
@@ -91,14 +100,14 @@ value built without the stack, by `JSON.parse` (a fresh node read an array neste
 
 #### `jsonChildren` {#symbol-jsonchildren}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L107)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L120)
 
 ##### `jsonChildren` — Summary
 The values a parsed JSON value holds: an array's items, an object's values, nothing of a scalar.
 
 #### `typeScriptExtent` {#symbol-typescriptextent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L133)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L146)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptExtent` — Summary
@@ -108,7 +117,7 @@ itself never runs short of stack. With `bounded`, the walk stops as soon as eith
 
 #### `typeScriptBeyondDepth` {#symbol-typescriptbeyonddepth}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L154)
+- Source: [source](../../../../../../packages/engine/src/live-docs/processMark.ts#L167)
 - Parameters: `root`: `ts.Node`
 
 ##### `typeScriptBeyondDepth` — Summary
@@ -117,5 +126,6 @@ Whether a TypeScript tree is nested beyond {@link READING_DEPTH} or deeper than 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`pathUtils.NAME_FAILURES`](../tooling/pathUtils.ts.mdmd.md#symbol-name_failures)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

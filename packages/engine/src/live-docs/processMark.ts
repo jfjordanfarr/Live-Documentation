@@ -27,6 +27,8 @@
 
 import ts from "typescript";
 
+import { NAME_FAILURES } from "../tooling/pathUtils";
+
 /**
  * How many levels of a TypeScript tree its parser may reach by recursion before the process is marked: at most half
  * the smallest depth at which a fresh process on node's default stack fails a nesting construct, so that below it no
@@ -62,20 +64,31 @@ export function processMarks(): ProcessMark[] {
 }
 
 /**
- * Whether a failure is the machine's rather than the file's: a system call that failed (the error names its `syscall`
- * and its `code`) for a cause other than the name's or the path's, which the history's tree writer leaves out and names
+ * Whether a failure is the machine's rather than the file's: a system call that failed ({@link failedCall}) for a cause
+ * other than the name's or the path's (`NAME_FAILURES`), which the history's tree writer leaves out and names
  * (`unwritten`) for the same codes. Such a failure (too many open files, a full disk, a file Windows holds) would make
  * a summary a later run would not, so the history never writes one made with it (`summarizeChange.ts`), and a reader
- * that swallows a failure to read a file lets this kind through (`dependencies.ts`).
+ * that swallows a failure to read a file lets this kind through (`throwIfMachineFailure`, `tooling/sourceText.ts`).
  */
 export function machineFailure(error: unknown): boolean {
-  if (typeof error !== "object" || error === null) return false;
-  const { syscall, code } = error as { syscall?: unknown; code?: unknown };
-  return typeof syscall === "string" && typeof code === "string" && !NAME_FAILURES.has(code);
+  const code = failedCall(error);
+  return code !== undefined && !NAME_FAILURES.has(code);
 }
 
-/** The codes by which a disk says it cannot hold a name or a path, rather than that it failed, as the tree writer reads them (`history/git.ts`). */
-const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
+/**
+ * The code of the failed system call an error is, or wraps: the first error along its chain of causes (`cause`, as a
+ * library that wraps a failure in an error of its own keeps it) that names its `syscall` and its `code`. Until
+ * 2026-11-20 only the error itself was read, so a failed call a library wrapped sorted as the file's.
+ */
+export function failedCall(error: unknown): string | undefined {
+  const seen = new Set<unknown>();
+  for (let link = error; typeof link === "object" && link !== null && !seen.has(link); link = (link as { cause?: unknown }).cause) {
+    seen.add(link);
+    const { syscall, code } = link as { syscall?: unknown; code?: unknown };
+    if (typeof syscall === "string" && typeof code === "string") return code;
+  }
+  return undefined;
+}
 
 /**
  * Whether a tree a reader built of a file's content is deeper than `bound`, by an explicit stack over `children`, so

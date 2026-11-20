@@ -72,7 +72,7 @@ export function grammarParser(grammar: string): Promise<Parser> {
  * load to the tree's release marks the process (`runtime`, `processMark.ts`), whatever its class, the adapter's own
  * error among them: a mark too many costs a change summarized again in a fresh process; a mark too few lets a module
  * of unknown state make a summary. Before `read` is called the tree's depth is measured by a cursor, without
- * recursion, and a tree deeper than `READING_DEPTH` marks the process too (`deep`): a fresh process might run out of
+ * recursion, and a tree deeper than `TREE_DEPTH` marks the process too (`deep`): a fresh process might run out of
  * stack in the adapter's walk where this one does not, or the other way round. Until 2026-11-20 only a `RuntimeError`
  * thrown inside `parse` marked it, and the adapters walked and released their trees themselves (`parseSource`); the
  * depth is measured since a later review of that day.
@@ -96,7 +96,11 @@ export async function readTree<T>(grammar: string, source: string, read: (root: 
   }
 }
 
-/** Whether a tree is deeper than `READING_DEPTH`, walked by a cursor one node at a time, so that the measure needs no stack of its own. */
+/**
+ * Whether a tree is deeper than `TREE_DEPTH`, walked by a cursor one node at a time, so that the measure needs no stack
+ * of its own: the tree's bound, since tree-sitter's parser does not use JavaScript's stack and only the adapter's walk
+ * recurses over the tree.
+ */
 function beyondDepth(tree: Tree): boolean {
   const cursor = tree.walk();
   try {

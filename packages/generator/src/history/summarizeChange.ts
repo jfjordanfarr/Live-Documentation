@@ -139,9 +139,17 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   return { published: true, unmapped };
 }
 
-/** A reason with every mention of the tree's folder taken out, so that it reads the same whichever worker and folder made it. */
-function withoutTree(reason: string, tree: string): string {
-  return [tree + path.sep, tree + "/", tree].reduce((text, prefix) => text.split(prefix).join(""), reason);
+/**
+ * A reason with every mention of the tree's folder taken out, so that it reads the same whichever worker and folder made
+ * it, and the path within the tree that follows a mention, to the next quote or line's end (node quotes the path of a
+ * failed call), written with `/`, as the summaries write every path, so that on Windows too it is the same bytes (since
+ * 2026-11-20). What stays bound to the machine is the runtime's own message around it: a failed call's description, or
+ * an overflow's wording, is the runtime's and its platform's, not ours.
+ */
+export function withoutTree(reason: string, tree: string, paths: Pick<typeof path, "sep"> = path): string {
+  const within = (text: string, prefix: string): string =>
+    text.split(prefix).map((part, index) => (index === 0 ? part : part.replace(/^[^'"\r\n]*/u, (rest) => rest.split(paths.sep).join("/")))).join("");
+  return [...new Set([tree + paths.sep, tree + "/"])].reduce(within, reason).split(tree).join("");
 }
 
 /**

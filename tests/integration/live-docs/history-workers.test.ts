@@ -448,6 +448,55 @@ describe("the tree's git environment", () => {
   }, 120_000);
 });
 
+describe("what the lens keyed, carried to the worker's tree", () => {
+  // Git's `core.ignorecase` keys the lens, and each worker's tree pins git's setting to the keyed value, so that
+  // discovery's own question to git (`gitIgnoresCase`) is answered with it: `exclude` then matches as the key says. Until
+  // a review of 2026-11-20 no test held the route from the task to the tree: the task's value taken out of the tree's
+  // options left every unit test of the history green.
+  it("is the task's case setting, not the repository's own file's, in what discovery excludes", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "case-"));
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", exclude: ["src/skip.ts"] };
+    const [commit] = buildRepository(repository, [{ message: "Two modules", date: "2026-01-05T10:00:00+00:00", write: { ".live-docs.config.json": `${JSON.stringify(config)}\n`, "src/Skip.ts": "export const skip = 1;\n", "src/keep.ts": "export const keep = 1;\n" } }]);
+    // The repository's own file says names are matched exactly, so `src/skip.ts` names `src/Skip.ts` only by the task's value.
+    git(repository, ["config", "core.ignorecase", "false"]);
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
+    const worker = startRealWorker(store);
+    try {
+      const task: WorkerTask = { ...workerTask(config, cache, commit), ignoresCase: true };
+      expect((await worker.summarize(task)).published).toBe(true);
+      const { files } = readSummary(task);
+      expect(files).toContain("src/keep.ts");
+      expect(files).not.toContain("src/Skip.ts");
+    } finally {
+      worker.end();
+    }
+  }, 120_000);
+});
+
+describe("why a worker's tree was written anew", () => {
+  // The reason goes from the tree to the worker's report and on to the change's line; until a review of 2026-11-20 no
+  // test read it from a real worker, and the count of "its tree written anew" also matches the pool's fall-back words.
+  it("is in the worker's report: no earlier tree for its first change, and the disk's refusal for the next", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "anew-"));
+    // A name of 300 characters, which no disk here holds, in both commits: the second tree cannot be brought forward.
+    const long = { [`long/${"x".repeat(300)}.txt`]: "a name no disk here holds\n" };
+    const commits = buildRepository(repository, SCRIPT.slice(0, 2).map((commit) => ({ ...commit, indexOnly: long })));
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
+    const worker = startRealWorker(store);
+    try {
+      const first = await worker.summarize(workerTask(SCRIPTED_CONFIG, cache, commits[0]));
+      expect([first.broughtForward, first.writtenAnew]).toEqual([false, "no earlier tree stood to bring forward"]);
+      const second = await worker.summarize(workerTask(SCRIPTED_CONFIG, cache, commits[1]));
+      expect(second.broughtForward).toBe(false);
+      expect(second.writtenAnew).toMatch(/^the disk left out an entry the listing did not, which a tree written anew settles by the tree's order: .*ENAMETOOLONG/u);
+    } finally {
+      worker.end();
+    }
+  }, 120_000);
+});
+
 describe("a failure of the machine's, not the file's", () => {
   // Too many open files, a full disk, a file Windows holds: no property of the change, so a summary made with one is
   // never written. A stand-in failure of `readFile` on one file, given to every worker, through node's own `--import`.

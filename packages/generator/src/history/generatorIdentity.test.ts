@@ -512,6 +512,11 @@ describe("the lock's half of the lens's key", () => {
     expect(installationDifference(lock, installed((packages) => void (packages["node_modules/playwright-core"].version = "1.0.0")))).toBeNull();
     // Where npm left no record, nothing is checked.
     expect(installationDifference(lock, null)).toBeNull();
+    // A nearer copy reached only through the installation, every place the lock names still installed and reached: the
+    // generator loads its own `glob` while the engine still loads the hoisted one, so nothing but the nearer copy differs
+    // (a review of 2026-11-20; in the compiler's case below the hoisted place also reads as not installed).
+    const nearerGlob = installed((packages) => void (packages["packages/generator/node_modules/glob"] = { version: "10.4.5", resolved: "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz", integrity: "sha512-older" }));
+    expect(JSON.parse(installationDifference(lock, nearerGlob) ?? "[]")).toEqual([["packages/generator/node_modules/glob", { version: "10.4.5", resolved: "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz", integrity: "sha512-older" }]]);
     // A nearer copy the lock does not name: `npm install --no-save -w packages/engine typescript@4.9.5` leaves the lock and
     // the hoisted copy as they were, and the engine loads the older one (the reviewer's second look, 2026-11-20).
     const nested = installed((packages) => void (packages["packages/engine/node_modules/typescript"] = { version: "4.9.5", resolved: "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz", integrity: "sha512-older" }));
