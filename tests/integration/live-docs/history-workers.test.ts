@@ -8,14 +8,20 @@
  * one); the two caches must agree byte for byte, summaries and texts (the record of 2026-11-20,
  * `Probes/history-rebuild-fast`).
  */
-import { spawnSync } from "node:child_process";
+import { fork, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import * as zlib from "node:zlib";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { buildRepository, CHECKED_SCRIPT, COLLISION_SCRIPT, SCRIPT } from "./scripted-repository";
+import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "../../../packages/engine/src/live-docs/graph";
+import { summarizedConfiguration } from "../../../packages/engine/src/live-docs/history/lens";
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { summarizingEnvironment, summarizingFlags } from "../../../packages/generator/src/history/regenerate";
+import type { WorkerReport, WorkerTask } from "../../../packages/generator/src/history/summarizeChange";
+import { buildRepository, CHECKED_SCRIPT, COLLISION_SCRIPT, git, SCRIPT, SCRIPTED_CONFIG } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -82,4 +88,127 @@ describe("a worker's summaries, change after change in one process", () => {
     for (const [file, text] of b) expect(a.get(file), file).toBe(text);
     expect([...a.keys()].filter((file) => file.endsWith(".json.gz"))).toHaveLength(commits.length);
   }, 300_000);
+});
+
+// A whole second, so that the time set reads back exactly (a time read with its fraction does not).
+const HELD_TIME = 1_700_000_000;
+
+/** The workspace's files, written over what stands; `held` names the files and folders whose modification time is then set to one time. */
+function writeOver(folder: string, files: Record<string, string>, held: readonly string[] = []): void {
+  for (const [file, text] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(folder, file)), { recursive: true });
+    fs.writeFileSync(path.join(folder, file), text);
+  }
+  for (const relative of held) fs.utimesSync(path.join(folder, relative), HELD_TIME, HELD_TIME);
+}
+
+/** What the generator derives of each file of the workspace: its edges, and the files it reaches and is reached from. */
+async function generatedGraph(folder: string): Promise<Record<string, unknown>> {
+  const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+  const quiet = (): undefined => undefined;
+  const result = await generateLiveDocs({ workspaceRoot: folder, config: configuration, keepAuthoredStaleDocs: false, logger: { info: quiet, warn: quiet, error: quiet } });
+  expect(result.failed).toEqual([]);
+  const graph = JSON.parse(fs.readFileSync(path.join(folder, result.index!), "utf8")) as LiveDocGraph;
+  return Object.fromEntries(Object.entries(graph.files).map(([file, doc]) => [file, { edges: doc.edges, outbound: doc.outbound, inbound: doc.inbound }]));
+}
+
+describe("the language adapters' caches, in one process generating commit after commit in one folder", () => {
+  // A worker generates every change of its run in one folder, as the history's tree is brought forward in place. What
+  // an adapter keeps of a file or a folder by its absolute path lives for one generation: the second generation must
+  // derive what a fresh process derives, which a fresh folder stands for here, since no cache has met its paths. Each
+  // case is built so that a fact kept from the first generation would give another graph: a cache with no guard (Rust's
+  // packages), and caches guarded by a modification time, which a coarse disk or a fast writer can leave unchanged
+  // (held here). Until 2026-11-20 these caches lived for the process, and the worker renamed its tree at every change.
+  it.each([
+    [
+      "Rust: a library gains the manifest that names its crate, and the program is touched",
+      {
+        "app/Cargo.toml": `[package]\nname = "app"\nversion = "0.1.0"\n\n[dependencies]\nfancy = { path = "../mylib" }\n`,
+        "app/src/main.rs": `use fancy::greet;\n\nfn main() {\n    greet();\n}\n`,
+        "mylib/src/lib.rs": `/// Says hello.\npub fn greet() {}\n`
+      },
+      { "mylib/Cargo.toml": `[package]\nname = "fancy"\nversion = "0.1.0"\n`, "app/src/main.rs": `use fancy::greet;\n\nfn main() {\n    greet();\n    greet();\n}\n` },
+      []
+    ],
+    [
+      "Python: a module appears in a folder whose time stands, and another is rewritten in place",
+      {
+        "app/__init__.py": "",
+        "app/main.py": `from .helpers import shout\nfrom .lib import second\n\n\ndef run():\n    return shout(second())\n`,
+        "app/lib.py": `def first():\n    return 1\n`
+      },
+      { "app/helpers.py": `def shout(text):\n    return text\n`, "app/lib.py": `def second():\n    return 2\n` },
+      ["app", "app/lib.py"]
+    ],
+    [
+      "C: a header appears in a folder whose time stands",
+      { "src/main.c": `#include "util.h"\n\nint main(void) {\n  return twice(1);\n}\n` },
+      { "src/util.h": `int twice(int value);\n` },
+      ["src"]
+    ],
+    [
+      "C#: a type's file is rewritten in place to declare the type a program uses",
+      {
+        "src/Program.cs": `namespace Demo\n{\n    public class Program\n    {\n        public Widget Make() => new Widget();\n    }\n}\n`,
+        "src/Shapes.cs": `namespace Demo\n{\n    public class Gadget\n    {\n    }\n}\n`
+      },
+      { "src/Shapes.cs": `namespace Demo\n{\n    public class Widget\n    {\n    }\n}\n` },
+      ["src/Shapes.cs"]
+    ]
+  ])("derive what a fresh process derives: %s", async (_name, first, second, held) => {
+    const reused = fs.mkdtempSync(path.join(privateTemporary, "reused-"));
+    writeOver(reused, first, held);
+    const before = await generatedGraph(reused);
+    // As a tree brought forward: the docs root removed whole, the change's files written over the last change's.
+    fs.rmSync(path.join(reused, ".mdmd"), { recursive: true, force: true });
+    writeOver(reused, second, held);
+    const fresh = fs.mkdtempSync(path.join(privateTemporary, "fresh-"));
+    writeOver(fresh, { ...first, ...second });
+    const expected = await generatedGraph(fresh);
+    // The case means something only where the change changes the graph.
+    expect(expected).not.toEqual(before);
+    expect(await generatedGraph(reused)).toEqual(expected);
+  }, 120_000);
+});
+
+describe("a worker in a repository git would not look for with a bare environment", () => {
+  // A Docker bind mount with another owner, a container job, a repository on another drive: git's discovery refuses a
+  // repository whose folder another owns unless the person's configuration names it `safe.directory`, which a worker's
+  // bare environment cannot see. Git's own knob for that refusal stands in for the other owner; the pool's environment
+  // strips it, so the worker is forked here with it. Until 2026-11-20 the worker looked for the repository itself.
+  it("makes its summary, handed the repository's git directory", async () => {
+    const repository = fs.mkdtempSync(path.join(privateTemporary, "owned-"));
+    const [commit] = buildRepository(repository, SCRIPT.slice(0, 1));
+    const store = git(repository, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).trim();
+    const cache = fs.mkdtempSync(path.join(privateTemporary, "cache-"));
+    const folder = fs.mkdtempSync(path.join(privateTemporary, "worker-"));
+    const worker = path.join(repoRoot, "packages", "generator", "src", "history", "summarizeChange.ts");
+    const environment = { ...summarizingEnvironment({ ...process.env, TMPDIR: privateTemporary, TSX_TSCONFIG_PATH: tsconfigPath }), GIT_TEST_ASSUME_DIFFERENT_OWNER: "1" };
+    const child = fork(worker, ["--worker", store, folder], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment, execArgv: summarizingFlags(worker) });
+    let errors = "";
+    child.stderr?.setEncoding("utf8");
+    child.stderr?.on("data", (text: string) => {
+      errors += text;
+    });
+    const task: WorkerTask = {
+      configuration: summarizedConfiguration(normalizeLiveDocumentationConfig(SCRIPTED_CONFIG)),
+      lens: "0123456789abcdef",
+      commit,
+      summaryPath: path.join(cache, `${commit}.json.gz`),
+      textStore: path.join(cache, "texts")
+    };
+    try {
+      const report = await new Promise<WorkerReport>((resolve, reject) => {
+        child.once("message", (message) => resolve(message as WorkerReport));
+        child.once("exit", (code) => reject(new Error(`the worker ended (exit ${code}): ${errors}`)));
+        child.send(task);
+      });
+      expect(report.unwritten).toEqual([]);
+      const summary = JSON.parse(zlib.gunzipSync(fs.readFileSync(task.summaryPath)).toString("utf8")) as { commit: string; files: Array<{ path: string }> };
+      expect(summary.commit).toBe(commit);
+      expect(summary.files.map((file) => file.path)).toContain("src/app/main.ts");
+    } finally {
+      child.disconnect();
+    }
+  }, 120_000);
 });

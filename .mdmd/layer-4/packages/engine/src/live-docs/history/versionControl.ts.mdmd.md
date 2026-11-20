@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/versionControl.ts`
-- Generated At: 2026-11-20T09:35:01.620Z
+- Generated At: 2026-11-20T10:59:49.955Z
 
 ## Authored
 ### Purpose
@@ -50,14 +50,14 @@ A working tree at one change, in a directory of the caller's choosing, until it 
 
 #### `WorkingTreeOptions` {#symbol-workingtreeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L77)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L78)
 
 ##### `WorkingTreeOptions` — Summary
 What the caller asks of a change's tree beyond the change's own entries.
 
 #### `VersionControl` {#symbol-versioncontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L92)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L93)
 
 ##### `VersionControl` — Summary
 What the history command needs of a version control.

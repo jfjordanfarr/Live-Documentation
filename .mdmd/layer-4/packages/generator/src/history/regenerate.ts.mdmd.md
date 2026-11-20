@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T09:35:03.050Z
+- Generated At: 2026-11-20T10:59:54.949Z
 
 ## Authored
 ### Purpose
@@ -48,24 +48,14 @@ when a signal stops it: a folder is held from the moment it is made, before anyt
 
 #### `RegenerationContext` {#symbol-regenerationcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L113)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L116)
 
 ##### `RegenerationContext` — Summary
 What regenerating needs.
 
-#### `TASKS_A_WORKER` {#symbol-tasks_a_worker}
-- Type: const
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L133)
-
-##### `TASKS_A_WORKER` — Summary
-How many changes one worker summarizes before it is ended and another started in its place: a bound on what the
-language adapters' caches, kept by absolute path for the life of a process and never cleared, hold in one process,
-since each change's tree has a folder of its own name (the record of 2026-11-20, `Probes/history-rebuild-fast`,
-measures a worker's memory over a long run).
-
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L149)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L147)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
@@ -85,7 +75,7 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L311)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L295)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -96,7 +86,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L342)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L326)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

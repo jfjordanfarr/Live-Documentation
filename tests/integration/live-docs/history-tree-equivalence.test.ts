@@ -90,7 +90,7 @@ describe("the history's tree, every name standing and an excluded image, font or
         const reduced = path.join(fs.mkdtempSync(path.join(privateTemporary, "tree-")), "tree");
         fs.mkdirSync(reduced);
         const options = treeOptions(config, reduced);
-        expect(await writeStoredTree(repository, commit, reduced, options), `${workspace} without ${folder}`).toEqual([]);
+        expect(await writeStoredTree(path.join(repository, ".git"), commit, reduced, options), `${workspace} without ${folder}`).toEqual([]);
         emptiedInAll += [...filesOf(reduced).keys()].filter((file) => options.contentless!(file)).length;
         for (const root of [whole, reduced]) {
           await generateLiveDocs({ workspaceRoot: root, config, keepAuthoredStaleDocs: false, logger: quiet, now });

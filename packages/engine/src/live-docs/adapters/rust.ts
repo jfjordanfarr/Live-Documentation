@@ -537,7 +537,17 @@ class FileExtractor {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names, with `packageCache` below: a run with another index, or
+// none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) {
+    factsCache.clear();
+    packageCache.clear();
+  }
+  factsRun = fileIndex;
+}
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
@@ -896,6 +906,7 @@ export const rustAdapter: LanguageAdapter = {
   id:         "rust",
   extensions: [".rs"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts    = await fileFacts(absolutePath);
     const table    = await moduleTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));

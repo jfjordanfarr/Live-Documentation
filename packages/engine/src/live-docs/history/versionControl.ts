@@ -66,11 +66,12 @@ export interface WorkingTree {
   /** Removes the tree and whatever the version control kept of it. */
   remove(): Promise<void>;
   /**
-   * The tree of another change, at `directory`, which must not exist yet: this tree moved there and brought forward,
-   * touching only what differs, or written anew where it cannot be, holding exactly what {@link
-   * VersionControl.workingTree} writes there for that change. This tree is gone after.
+   * The tree of another change, holding exactly what {@link VersionControl.workingTree} writes for that change: this
+   * tree brought forward in its own folder, touching only what differs, or, wherever that is refused, written anew in a
+   * fresh folder beside it, its `root` then another, and this one left for the removal of the folder above it. This
+   * tree is not to be used after.
    */
-  bringTo(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
+  bringTo(change: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
 }
 
 /** What the caller asks of a change's tree beyond the change's own entries. */
@@ -92,6 +93,11 @@ export interface WorkingTreeOptions {
 export interface VersionControl {
   /** The name written into the sequence's head as the system its history was read from. */
   readonly system: "git";
+  /**
+   * Where the version control keeps the repository, found once by the command in the person's environment and handed
+   * to each process that writes trees, so that none looks for the repository itself: for git, its git directory.
+   */
+  readonly store: string;
   /** Where the mainline ends, and whether the copy holds all of it. */
   mainlineEnd(): Promise<MainlineEnd>;
   /** Every change on the mainline, oldest first: the first is where the copy's knowledge begins. */

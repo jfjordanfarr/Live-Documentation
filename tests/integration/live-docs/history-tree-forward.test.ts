@@ -49,7 +49,7 @@ function snapshot(folder: string): Map<string, string> {
 async function writtenAnew(repository: string, change: string, configuration: LiveDocumentationConfig): Promise<{ entries: Map<string, string>; unwritten: unknown[] }> {
   const directory = path.join(fs.mkdtempSync(path.join(privateTemporary, "anew-")), "tree");
   fs.mkdirSync(directory);
-  const unwritten = await writeStoredTree(repository, change, directory, treeOptions(configuration, directory));
+  const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, treeOptions(configuration, directory));
   const entries = snapshot(directory);
   fs.rmSync(path.dirname(directory), { recursive: true, force: true });
   return { entries, unwritten };
@@ -66,7 +66,7 @@ async function holdAlong(repository: string, changes: readonly string[], configu
     for (let index = 1; index < changes.length; index += 1) {
       await between(tree);
       directory = path.join(folder, `t${index}`);
-      tree = await tree.bringTo(changes[index], directory, treeOptions(configuration, directory));
+      tree = await tree.bringTo(changes[index], treeOptions(configuration, tree.root));
       if (tree.broughtForward) forward += 1;
       const oracle = await writtenAnew(repository, changes[index], configuration);
       const brought = snapshot(tree.root);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-19T21:10:10.907Z
+- Generated At: 2026-11-20T10:59:48.803Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,16 @@ A node of a parsed tree; the runtime's own name for it collides with the DOM typ
 
 #### `grammarParser` {#symbol-grammarparser}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L31)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L35)
 
 ##### `grammarParser` — Summary
-One parser per grammar, created on first use and kept for the life of the process.
+One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
+runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
+generations never fails a file for a failure of the past.
 
 #### `parseSource` {#symbol-parsesource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L48)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L61)
 
 ##### `parseSource` — Summary
 Parses `source` with the named grammar. The caller owns the tree and should `delete()` it when done.

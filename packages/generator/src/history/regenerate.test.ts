@@ -50,7 +50,7 @@ describe("a commit's tree as the history writes it, emptying the images and reco
   it("writes every name, empties the excluded images and recordings, and the generator warns of a nested scan as over a checkout", async () => {
     const tree = path.join(scratch, "tree");
     await fs.mkdir(tree);
-    expect(await writeStoredTree(repository, commit, tree, treeOptions(configuration, tree))).toEqual([]);
+    expect(await writeStoredTree(path.join(repository, ".git"), commit, tree, treeOptions(configuration, tree))).toEqual([]);
     // No reader reads a picture's or a recording's bytes: their names stand, empty. A note, and a configuration file, are whole.
     expect(await fs.readFile(path.join(tree, "archive", "picture.png"), "utf8")).toBe("");
     expect(await fs.readFile(path.join(tree, "archive", "clip.webm"), "utf8")).toBe("");

@@ -310,7 +310,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     const at = Math.max(1, Math.min(machineJobs, changes.length));
     jobsUsed = Math.max(jobsUsed, at);
     const began = Date.now();
-    const regeneration = await regenerate(changes, { repository: workspaceRoot, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs: at, scratch: context.scratch, deadline, progress: options.progress });
+    const regeneration = await regenerate(changes, { store: versionControl.store, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs: at, scratch: context.scratch, deadline, progress: options.progress });
     regenerationMilliseconds += Date.now() - began;
     timings.push(...regeneration.timings);
     peakMemory = Math.max(peakMemory, regeneration.peakMemory);

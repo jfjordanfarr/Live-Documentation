@@ -75,9 +75,12 @@ export class Scratch {
     this.folders.add(made);
   }
 
-  /** Removes a folder and everything in it. */
+  /**
+   * Removes a folder and everything in it, retrying a removal refused for a while (as Windows refuses while a scanner
+   * holds a file open), so that a tree a worker could not put right and left beside its own goes with the worker.
+   */
   async release(folder: string): Promise<void> {
-    await fs.rm(folder, { recursive: true, force: true });
+    await fs.rm(folder, { recursive: true, force: true, maxRetries: 5 });
     this.folders.delete(folder);
   }
 
@@ -111,8 +114,11 @@ export class Scratch {
 
 /** What regenerating needs. */
 export interface RegenerationContext {
-  /** The top level of the repository whose changes are summarized, which each worker opens with the keyed version control. */
-  repository: string;
+  /**
+   * The git directory of the repository whose changes are summarized (the version control's `store`), found by the
+   * command in the person's environment, which each worker is handed so that it never looks for the repository itself.
+   */
+  store: string;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
   cacheFolder: string;
@@ -123,14 +129,6 @@ export interface RegenerationContext {
   scratch: Scratch;
   progress: (line: string) => void;
 }
-
-/**
- * How many changes one worker summarizes before it is ended and another started in its place: a bound on what the
- * language adapters' caches, kept by absolute path for the life of a process and never cleared, hold in one process,
- * since each change's tree has a folder of its own name (the record of 2026-11-20, `Probes/history-rebuild-fast`,
- * measures a worker's memory over a long run).
- */
-export const TASKS_A_WORKER = 100;
 
 /**
  * Regenerates the changes in a pool of `jobs` workers, starting none after the deadline when there is one: processes
@@ -166,10 +164,6 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       for (let run = runs.shift(); run !== undefined && open(); run = runs.shift()) {
         for (const change of run) {
           if (!open()) break;
-          if (worker !== undefined && worker.tasks >= TASKS_A_WORKER) {
-            await worker.end();
-            worker = undefined;
-          }
           worker ??= await startWorker(context);
           const began = Date.now();
           const report = await worker.summarize(change);
@@ -182,12 +176,6 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
           }
           for (const message of new Set(report.warned)) {
             warnings.set(message, (warnings.get(message) ?? 0) + 1);
-          }
-          // A file the generator failed on may have failed for a cause the process keeps, a grammar's load above all
-          // (`treeSitter.ts` keeps a failed load for the process's life): the worker ends, and the next change starts anew.
-          if (report.failed > 0) {
-            await worker.end();
-            worker = undefined;
           }
           timings.push(Date.now() - began);
           const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;
@@ -221,8 +209,6 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 
 /** A summarizing process started once, which summarizes changes one at a time in a tree it keeps. */
 interface Worker {
-  /** How many changes it was given. */
-  tasks: number;
   summarize(change: MainlineChange): Promise<WorkerReport>;
   /** Ends the process and removes its folder, its tree in it. */
   end(): Promise<void>;
@@ -237,7 +223,7 @@ interface Worker {
 async function startWorker(context: RegenerationContext): Promise<Worker> {
   const worker = path.join(__dirname, `summarizeChange${path.extname(__filename)}`);
   const folder = await context.scratch.folder("live-docs-history-");
-  const child = fork(worker, ["--worker", context.repository, folder], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: summarizingEnvironment(process.env), execArgv: summarizingFlags(worker) });
+  const child = fork(worker, ["--worker", context.store, folder], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: summarizingEnvironment(process.env), execArgv: summarizingFlags(worker) });
   context.scratch.started(child);
   let errors = "";
   child.stderr?.setEncoding("utf8");
@@ -268,10 +254,8 @@ async function startWorker(context: RegenerationContext): Promise<Worker> {
     current = undefined;
   });
   const handle: Worker = {
-    tasks: 0,
     summarize: (change) =>
       new Promise<WorkerReport>((resolve, reject) => {
-        handle.tasks += 1;
         current = { change: change.id, resolve, reject };
         const task: WorkerTask = {
           configuration: summarizedConfiguration(context.configuration),

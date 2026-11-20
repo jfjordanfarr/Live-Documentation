@@ -1,6 +1,23 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { Language } from "web-tree-sitter";
 
-import { parseSource, type SyntaxNode } from "./treeSitter";
+import { grammarParser, parseSource, type SyntaxNode } from "./treeSitter";
+
+describe("the grammar loader", () => {
+  // A process that lives across many generations, as the history's worker does, must not fail every later file of a
+  // grammar for one load that failed (until 2026-11-20 the failed load was kept for the process's life).
+  it("drops a load that fails, so that the next asks again", async () => {
+    const load = vi.spyOn(Language, "load").mockRejectedValueOnce(new Error("refused once"));
+    try {
+      await expect(grammarParser("java")).rejects.toThrow("refused once");
+      const parser = await grammarParser("java");
+      expect(parser.parse("class A {}")?.rootNode.type).toBe("program");
+      expect(load).toHaveBeenCalledTimes(2);
+    } finally {
+      load.mockRestore();
+    }
+  });
+});
 
 /** Every ERROR and MISSING node of a tree, by its text. */
 function errors(node: SyntaxNode): string[] {

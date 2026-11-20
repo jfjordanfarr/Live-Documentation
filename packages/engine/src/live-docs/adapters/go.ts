@@ -423,7 +423,14 @@ class FileExtractor {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
+// a process that generates commit after commit in one folder never reads a fact of another commit.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
+  factsRun = fileIndex;
+}
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
@@ -632,6 +639,7 @@ export const goAdapter: LanguageAdapter = {
   id:         "go",
   extensions: [".go"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts    = await fileFacts(absolutePath);
     const table    = await packageTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));

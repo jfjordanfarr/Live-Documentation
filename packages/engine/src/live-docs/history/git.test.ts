@@ -214,7 +214,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const sub = tree([["100644", "blob", blob("evil\n"), "evil.txt"]]);
     const change = commit(tree([["120000", "blob", blob(outside), "a"], ["040000", "tree", sub, "a"], ["100644", "blob", blob("kept\n"), "b.txt"]]));
     const directory = await folder();
-    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux" });
+    const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" });
     expect(await fs.readdir(outside)).toEqual([]);
     expect(unwritten).toEqual([{ path: "a", reason: OUT }]);
     expect(await fs.readFile(path.join(directory, "a", "evil.txt"), "utf8")).toBe("evil\n");
@@ -244,7 +244,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     ];
     const change = commit(tree(entries.sort((x, y) => (x[3] < y[3] ? -1 : 1))));
     const directory = await folder();
-    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux" });
+    const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" });
     const read = (file: string): Promise<string> => fs.readFile(path.join(directory, file), "utf8");
     expect(await read("CLAUDE.md")).toBe("# Agents\n");
     expect(await read("lib/b.ts")).toBe("export const b = 1;\n");
@@ -303,16 +303,16 @@ describe("a tree the writer must not follow out of its folder", () => {
     const at = commit(tree(entries));
     const beneath = commit(tree([["040000", "tree", tree([["040000", "tree", mirror, "layer-4"]]), "docs"], ["100644", "blob", kept, "kept.txt"]]));
     const directory = await folder();
-    expect(await writeStoredTree(repository, at, directory, { platform: "linux", docsRoot: ".mdmd/layer-4" })).toEqual([{ path: ".mdmd", reason: DOCS_ROOT }]);
+    expect(await writeStoredTree(path.join(repository, ".git"), at, directory, { platform: "linux", docsRoot: ".mdmd/layer-4" })).toEqual([{ path: ".mdmd", reason: DOCS_ROOT }]);
     const other = await folder();
-    expect(await writeStoredTree(repository, beneath, other, { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([]);
+    expect(await writeStoredTree(path.join(repository, ".git"), beneath, other, { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([]);
     expect(await fs.readFile(path.join(other, "docs", "layer-4", "a.ts.md"), "utf8")).toBe("kept\n");
     // Above the root: a copy at `docs` would stand where the generator needs a folder.
     const above = commit(tree([["120000", "blob", blob("kept.txt"), "docs"], ["100644", "blob", kept, "kept.txt"]]));
-    expect(await writeStoredTree(repository, above, await folder(), { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([{ path: "docs", reason: DOCS_ROOT }]);
+    expect(await writeStoredTree(path.join(repository, ".git"), above, await folder(), { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([{ path: "docs", reason: DOCS_ROOT }]);
     // Without a docs root asked for, the same link is a copy of the file it leads to.
     const third = await folder();
-    expect(await writeStoredTree(repository, at, third, { platform: "linux" })).toEqual([]);
+    expect(await writeStoredTree(path.join(repository, ".git"), at, third, { platform: "linux" })).toEqual([]);
     expect(await fs.readFile(path.join(third, ".mdmd"), "utf8")).toBe("kept\n");
   });
 
@@ -320,7 +320,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const archive = tree([["100644", "blob", blob("big\n"), "picture.png"], ["100755", "blob", blob("#!/bin/sh\n"), "run.sh"], ["120000", "blob", blob(outside), "zlink"]]);
     const change = commit(tree([["040000", "tree", archive, "archive"], ["100644", "blob", blob("kept\n"), "kept.txt"]]));
     const directory = await folder();
-    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux", contentless: (file) => file.startsWith("archive/") });
+    const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux", contentless: (file) => file.startsWith("archive/") });
     expect(unwritten).toEqual([{ path: "archive/zlink", reason: OUT }]);
     expect((await fs.readdir(directory)).sort()).toEqual(["archive", "kept.txt"]);
     expect(await fs.readFile(path.join(directory, "archive", "picture.png"), "utf8")).toBe("");
@@ -342,7 +342,7 @@ describe("a tree the writer must not follow out of its folder", () => {
       },
       makeFolder: (relative) => real.makeFolder(relative)
     };
-    expect(await writeStoredTree(repository, change, directory, { platform: "linux", disk })).toEqual([]);
+    expect(await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux", disk })).toEqual([]);
     expect(asked.filter((relative) => relative === "docs" || relative === "docs/deep")).toEqual(["docs", "docs/deep"]);
     expect(await fs.readdir(path.join(directory, "docs", "deep"))).toHaveLength(5);
   });
@@ -397,13 +397,13 @@ describe("a tree the writer must not follow out of its folder", () => {
       const sub = tree([["100644", "blob", blob("evil\n"), "evil.txt"]]);
       const change = commit(tree([["120000", "blob", blob(outside), link], ["040000", "tree", sub, other], ["100644", "blob", blob("kept\n"), "kept.txt"]].sort((x, y) => (x[3] < y[3] ? -1 : 1)) as Array<[string, string, string, string]>));
       const directory = await folder();
-      const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux", disk: foldingDisk(directory) });
+      const unwritten = await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux", disk: foldingDisk(directory) });
       expect(await fs.readdir(outside), `${link} and ${other}`).toEqual([]);
       // The link is never written, whatever the order: the file beneath the other spelling lands in the tree.
       expect(unwritten, `${link} and ${other}`).toEqual([{ path: link, reason: OUT }]);
       // This machine's disk tells the two names apart, and writes the file the same.
       const real = await folder();
-      expect(await writeStoredTree(repository, change, real, { platform: "linux" })).toEqual([{ path: link, reason: OUT }]);
+      expect(await writeStoredTree(path.join(repository, ".git"), change, real, { platform: "linux" })).toEqual([{ path: link, reason: OUT }]);
       expect(await fs.readFile(path.join(real, other, "evil.txt"), "utf8")).toBe("evil\n");
       expect(await fs.readdir(outside)).toEqual([]);
     }
@@ -414,21 +414,21 @@ describe("a tree the writer must not follow out of its folder", () => {
     const before = commit(tree([["100644", "blob", blob("old\n"), "readme.md"]]));
     const after = commit(tree([["100644", "blob", blob("new\n"), "README.md"], ["100644", "blob", blob("old\n"), "readme.md"]]));
     const anew = await folder();
-    expect(await writeStoredTree(repository, after, anew, { platform: "linux", disk: foldingDisk(anew), docsRoot: ".mdmd" })).toEqual([
+    expect(await writeStoredTree(path.join(repository, ".git"), after, anew, { platform: "linux", disk: foldingDisk(anew), docsRoot: ".mdmd" })).toEqual([
       { path: "readme.md", reason: "another entry already stands at its name on this disk, which takes the two names for one" }
     ]);
     expect(await fs.readdir(anew)).toEqual(["README.md"]);
     const kept = await folder();
-    const { written } = await writeTreeAnew(repository, before, kept, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" });
+    const { written } = await writeTreeAnew(path.join(repository, ".git"), before, kept, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" });
     // Kept, `readme.md` would stand where the tree written anew holds `README.md`: the tree is written anew instead.
-    expect(await bringTreeForward(repository, after, kept, written, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" })).toBeUndefined();
+    expect(await bringTreeForward(path.join(repository, ".git"), after, kept, written, { platform: "linux", disk: foldingDisk(kept), docsRoot: ".mdmd" })).toBeUndefined();
     // On a disk that tells the two apart, as Linux's does, it is brought forward, and holds what is written anew.
     const real = await folder();
-    const first = await writeTreeAnew(repository, before, real, { platform: "linux", docsRoot: ".mdmd" });
+    const first = await writeTreeAnew(path.join(repository, ".git"), before, real, { platform: "linux", docsRoot: ".mdmd" });
     await fs.writeFile(path.join(real, "PROBE"), "");
     const folds = await fs.stat(path.join(real, "probe")).then(() => true, () => false);
     await fs.rm(path.join(real, "PROBE"));
-    const brought = await bringTreeForward(repository, after, real, first.written, { platform: "linux", docsRoot: ".mdmd" });
+    const brought = await bringTreeForward(path.join(repository, ".git"), after, real, first.written, { platform: "linux", docsRoot: ".mdmd" });
     if (folds) {
       expect(brought).toBeUndefined();
     } else {
@@ -461,7 +461,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const id = blob("odd\n");
     const root = execFileSync("git", ["mktree"], { cwd: repository, env: isolated, input: Buffer.concat([Buffer.from(`100644 blob ${id}\tbad-`), Buffer.from([0xff, 0xfe]), Buffer.from(`.txt\n100644 blob ${id}\tgood.txt\n`)]), encoding: "utf8" }).trim();
     const directory = await folder();
-    const unwritten = await writeStoredTree(repository, commit(root), directory, { platform: "linux" });
+    const unwritten = await writeStoredTree(path.join(repository, ".git"), commit(root), directory, { platform: "linux" });
     expect(unwritten.map((entry) => entry.reason)).toEqual(["its name is not valid UTF-8, so it cannot be written under its own name"]);
     expect(await fs.readdir(directory)).toEqual(["good.txt"]);
   });
@@ -470,17 +470,17 @@ describe("a tree the writer must not follow out of its folder", () => {
     const long = `${"n".repeat(300)}.txt`;
     const change = commit(tree([["100644", "blob", blob("long\n"), long], ["100644", "blob", blob("kept\n"), "kept.txt"]]));
     const directory = await folder();
-    expect(await writeStoredTree(repository, change, directory, { platform: "linux" })).toEqual([{ path: long, reason: "this disk cannot hold its name (ENAMETOOLONG)" }]);
+    expect(await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" })).toEqual([{ path: long, reason: "this disk cannot hold its name (ENAMETOOLONG)" }]);
     expect(await fs.readdir(directory)).toEqual(["kept.txt"]);
   });
 
   it("leaves out on Windows a name that would climb out of the folder or that Windows cannot hold, and writes it elsewhere as the name it is", async () => {
     const change = commit(tree([["100644", "blob", blob("climb\n"), "..\\..\\x"], ["100644", "blob", blob("drive\n"), "c:d"], ["100644", "blob", blob("plain\n"), "plain.txt"]]));
     const windows = await folder();
-    expect((await writeStoredTree(repository, change, windows, { platform: "win32" })).map((entry) => entry.path)).toEqual(["..\\..\\x", "c:d"]);
+    expect((await writeStoredTree(path.join(repository, ".git"), change, windows, { platform: "win32" })).map((entry) => entry.path)).toEqual(["..\\..\\x", "c:d"]);
     expect(await fs.readdir(windows)).toEqual(["plain.txt"]);
     const linux = await folder();
-    expect(await writeStoredTree(repository, change, linux, { platform: "linux" })).toEqual([]);
+    expect(await writeStoredTree(path.join(repository, ".git"), change, linux, { platform: "linux" })).toEqual([]);
     expect((await fs.readdir(linux)).sort()).toEqual(["..\\..\\x", "c:d", "plain.txt"]);
   });
 
@@ -489,7 +489,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const change = commit(tree([["100644", "blob", original, "kept.txt"]]));
     git(["replace", original, blob("as replaced locally\n")]);
     const directory = await folder();
-    await writeStoredTree(repository, change, directory, { platform: "linux" });
+    await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" });
     expect(await fs.readFile(path.join(directory, "kept.txt"), "utf8")).toBe("as committed\n");
   });
 
@@ -505,7 +505,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     };
     const change = commit(tree(Object.entries(contents).map(([name, content]) => ["100644", "blob", blob(content), name])));
     const directory = await folder();
-    await writeStoredTree(repository, change, directory, { platform: "linux" });
+    await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" });
     for (const [name, content] of Object.entries(contents)) {
       expect((await fs.readFile(path.join(directory, name))).equals(content), name).toBe(true);
     }
@@ -522,7 +522,7 @@ describe("a tree the writer must not follow out of its folder", () => {
     const directory = await folder();
     await fs.chmod(directory, 0o555);
     try {
-      await expect(writeStoredTree(repository, change, directory, { platform: "linux" })).rejects.toThrow(/EACCES|permission denied/u);
+      await expect(writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux" })).rejects.toThrow(/EACCES|permission denied/u);
     } finally {
       await fs.chmod(directory, 0o755);
     }

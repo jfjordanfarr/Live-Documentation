@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-20T09:35:03.059Z
+- Generated At: 2026-11-20T10:59:54.988Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L91)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L90)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -43,12 +43,9 @@ Generates the change's docs in its working tree and writes its summary, and its 
 ##### `summarizeChange` — Parameters
 - `warn`: Where each line the generator warns goes, for the history command to gather across the changes.
 
-##### `summarizeChange` — Returns
-How many files the generator could not document.
-
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L136)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L134)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -70,7 +67,7 @@ lay in `regenerate.ts`, whose process wrote every tree.
 
 #### `standingFiles` {#symbol-standingfiles}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L177)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L175)
 - Parameters: `unwritten`: `ReadonlyArray`
 
 ##### `standingFiles` — Summary
@@ -87,14 +84,14 @@ the disk was asked here (`stat`, then `isFile`).
 
 #### `WorkerTask` {#symbol-workertask}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L212)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L210)
 
 ##### `WorkerTask` — Summary
 What the history command asks of a worker: one change summarized, its tree written or brought forward by the worker.
 
 #### `WorkerReport` {#symbol-workerreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L215)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L213)
 
 ##### `WorkerReport` — Summary
 What a worker answers for each task.
@@ -112,7 +109,7 @@ What a worker answers for each task.
 - [`discovery.docsRootWithin`](../../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-docsrootwithin)
 - [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`git.openGitRepository`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
+- [`git.openGitStore`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitstore)
 - [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)
 - [`textStore.putTexts`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-puttexts)

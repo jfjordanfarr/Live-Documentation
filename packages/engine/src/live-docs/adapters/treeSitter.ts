@@ -27,19 +27,32 @@ function grammarFile(grammar: string): string {
 let runtime: Promise<void> | undefined;
 const parsers = new Map<string, Promise<Parser>>();
 
-/** One parser per grammar, created on first use and kept for the life of the process. */
+/**
+ * One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
+ * runtime's or the grammar's, is dropped, so that the next file asks again and a process that lives across many
+ * generations never fails a file for a failure of the past.
+ */
 export function grammarParser(grammar: string): Promise<Parser> {
   let pending = parsers.get(grammar);
   if (!pending) {
-    pending = (async () => {
-      runtime ??= Parser.init();
-      await runtime;
+    const loading = (async () => {
+      const started = (runtime ??= Parser.init());
+      try {
+        await started;
+      } catch (error) {
+        if (runtime === started) runtime = undefined;
+        throw error;
+      }
       const language = await Language.load(grammarFile(grammar));
       const parser   = new Parser();
       parser.setLanguage(language);
       return parser;
     })();
-    parsers.set(grammar, pending);
+    pending = loading;
+    parsers.set(grammar, loading);
+    loading.catch(() => {
+      if (parsers.get(grammar) === loading) parsers.delete(grammar);
+    });
   }
   return pending;
 }

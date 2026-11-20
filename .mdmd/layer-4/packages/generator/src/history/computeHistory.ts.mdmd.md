@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-20T10:22:07.539Z
+- Generated At: 2026-11-20T10:59:54.870Z
 
 ## Authored
 ### Purpose
@@ -102,7 +102,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L451)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L453)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -122,14 +122,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L572)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L574)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L600)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L602)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -142,7 +142,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1114)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1116)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.

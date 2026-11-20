@@ -883,7 +883,14 @@ class FileExtractor {
 // Per-file facts, cached by modification time
 // ---------------------------------------------------------------------------
 
+// Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
+// a process that generates commit after commit in one folder never reads a fact of another commit.
 const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+let factsRun: WorkspaceFileIndex | undefined;
+function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
+  if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
+  factsRun = fileIndex;
+}
 
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
@@ -1235,6 +1242,7 @@ export async function resolveWorkspaceTypes(
   fileIndex: WorkspaceFileIndex | undefined,
   qualifiedName: string
 ): Promise<ResolvedTypeTarget[]> {
+  beginRun(fileIndex);
   const table = await typeTable(workspaceRoot, fileIndex);
   return (table.byQualifiedName.get(qualifiedName) ?? []).map((record) => ({ file: record.file, name: record.type.name }));
 }
@@ -1244,6 +1252,7 @@ export const csharpAdapter: LanguageAdapter = {
   id:         "csharp",
   extensions: [".cs"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
+    beginRun(fileIndex);
     const facts    = await fileFacts(absolutePath);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));

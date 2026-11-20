@@ -270,7 +270,7 @@ describe("the committed docs read from the object store, through symbolic links"
     // The oracle: the commit's tree as the history's tree writer writes it, read from the disk by the doc reader.
     const tree = fs.mkdtempSync(path.join(privateTemporary, "linked-tree-"));
     // The folder that is a link is not written as one, and what is read through it is written as a copy.
-    expect((await writeStoredTree(here, commit, tree)).map((entry) => entry.path)).toEqual(["store"]);
+    expect((await writeStoredTree(path.join(here, ".git"), commit, tree)).map((entry) => entry.path)).toEqual(["store"]);
     const onDisk = await readLiveDocGraph({ workspaceRoot: tree, config });
     expect(Object.keys(committed.files)).toEqual(expect.arrayContaining(["src/a.ts", "src/b.ts"]));
     expect(Object.keys(committed.files).sort()).toEqual(Object.keys(onDisk.files).sort());

@@ -1,5 +1,5 @@
 /**
- * One change's summary, made in a process of its own: the generator run over
+ * One change's summary, made by a worker the history command started: the generator run over
  * the change's working tree under the lens's configuration, and the shape of
  * the graph it derived written to the cache.
  *
@@ -38,7 +38,7 @@
  * After each change, the process sends the history command its peak resident
  * memory, which sizes the pool.
  *
- * Run as a process, it is a worker (`--worker <repository> <folder>`), sent its tasks over the channel to the command,
+ * Run as a process, it is a worker (`--worker <git directory> <folder>`), sent its tasks over the channel to the command,
  * since 2026-11-20; before, it took one task from a file and ended.
  *
  * @module
@@ -54,7 +54,7 @@ import { matchesPathPattern } from "@live-documentation/engine/live-docs/archety
 import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
-import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
+import { openGitStore } from "@live-documentation/engine/live-docs/history/git";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
 import type { WorkingTree, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
@@ -86,9 +86,8 @@ export interface SummaryTask {
  * Generates the change's docs in its working tree and writes its summary, and its index when asked.
  *
  * @param warn - Where each line the generator warns goes, for the history command to gather across the changes.
- * @returns How many files the generator could not document.
  */
-export async function summarizeChange(task: SummaryTask, warn: (line: string) => void): Promise<number> {
+export async function summarizeChange(task: SummaryTask, warn: (line: string) => void): Promise<void> {
   // The configuration the summary is made under (`summarizedConfiguration`), as the command hands it: with no bundle
   // exclusion, so that every linked and citing document is kept and the exclusions are applied where summaries are read.
   const { tree, configuration } = task;
@@ -114,7 +113,6 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   if (task.indexPath) {
     await writeInPlace(task.indexPath, gzipSync(indexText ?? JSON.stringify(graph)));
   }
-  return result.failed.length;
 }
 
 /**
@@ -221,60 +219,57 @@ export interface WorkerReport {
   warned: string[];
   /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
   broughtForward: boolean;
-  /** How many files the generator could not document; the command ends a worker after a task with any (`regenerate.ts`). */
-  failed: number;
 }
 
 /**
- * The variables of a tree's environment ({@link WorkingTree.environment}), set in the worker's own environment only
- * while it summarizes that tree's change.
- */
-const TREE_VARIABLES = ["GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL", "GIT_NO_REPLACE_OBJECTS"];
-
-/**
  * A worker: a process the history command starts once, which summarizes changes one at a time as it is sent them, in a
- * tree it keeps under `folder`, written for its first change and brought forward from each change to the next under a
- * new name (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, not a process and a
- * tree of its own.
+ * tree it keeps under `folder`, written for its first change and brought forward from each change to the next in the
+ * same folder (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, not a process
+ * and a tree of its own. The repository is named by its git directory, `store`, which the command found in the
+ * person's environment: the worker's own is bare, and git, asked to look for a repository there, could not see the
+ * person's `safe.directory` (`openGitStore`).
  *
  * @remarks
  * Until 2026-11-20 every change had a process of its own, and the history command wrote every tree on its own main
  * thread, which was what a rebuild waited for; the record of that day (`Probes/history-rebuild-fast`) measures both.
- * What a process keeps from one summary to the next, each by name (that record, and section 7 of
- * `Probes/history-rebuild-speed` beside it):
+ * What a process keeps from one summary to the next, each by name (that record, its section on the independent
+ * review, and section 7 of `Probes/history-rebuild-speed` beside it):
  * - the tree's git variables, which the generator's git calls inherit without naming them (`gitIgnored`,
- *   `gitIgnoresCase`, {@link standingFiles}): set from the tree's environment just before the summary, and removed
- *   just after, so that no tree is written with another's, and no change is summarized with another's index;
- * - the language adapters' caches of what they read of a file, kept by absolute path for the process's life and
- *   guarded by a modification time or by nothing: each change's tree has a folder of its own name, so no path is met
- *   twice, and the command ends a worker after a number of changes, which bounds what those caches hold;
- * - a grammar's load, kept by the process whether it succeeds or fails: the command ends a worker after any change in
- *   which the generator failed a file, so that a cause the process keeps fails one change, as with a process each;
+ *   `gitIgnoresCase`, {@link standingFiles}): set from the tree's environment just before the summary, and those same
+ *   names removed just after, so that no tree is written with another's, and no change is summarized with another's
+ *   index;
+ * - the language adapters' caches of what they read of a file, by absolute path: each lives for one generation, cleared
+ *   when a run with another file index begins, so the tree's one folder name for the worker's life meets no fact of
+ *   another change (until the review, the folder was renamed for every change and the worker ended after a hundred);
+ * - a grammar's load: kept when it succeeds, dropped when it fails, so that the next file asks again (until the review,
+ *   a failed load was kept and the worker ended after any change in which a file failed);
  * - the temporary names of the summary and the texts, by the process's id: one task at a time, the next sent only
  *   when this one has answered;
  * - the peak memory, sent as the process's own since it began, which is what a lane of the pool holds.
  * The working folder is the command's and never a tree, so nothing of the worker's holds a tree's folder open between
  * tasks.
  */
-async function work(repository: string, folder: string): Promise<void> {
-  const versionControl = await openGitRepository(repository);
+function work(store: string, folder: string): void {
+  const trees = openGitStore(store);
   let tree: WorkingTree | undefined;
-  let count = 0;
   const summarize = async (task: WorkerTask): Promise<WorkerReport> => {
-    const directory = path.join(folder, `t${count}`);
-    count += 1;
-    const options = treeOptions(task.configuration, directory);
-    tree = tree === undefined ? await versionControl.workingTree(task.commit, directory, options) : await tree.bringTo(task.commit, directory, options);
+    // One name for the worker's life, six characters long, so that a fresh folder beside it is named as long (`git.ts`).
+    const options = treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00"));
+    tree = tree === undefined ? await trees.workingTree(task.commit, path.join(folder, "tree00"), options) : await tree.bringTo(task.commit, options);
     const warned: string[] = [];
-    let failed: number;
-    Object.assign(process.env, tree.environment);
+    const { environment } = tree;
+    Object.assign(process.env, environment);
     try {
-      failed = await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, (line) => warned.push(line));
+      // Each line of a warning counts on its own, trimmed, as each line of a process's own output did until 2026-11-20.
+      const warn = (message: string): void => {
+        warned.push(...message.split("\n").map((line) => line.trim()).filter(Boolean));
+      };
+      await summarizeChange({ ...task, tree: tree.root, ...(tree.unwritten.length > 0 ? { unwritten: tree.unwritten } : {}) }, warn);
     } finally {
-      for (const name of TREE_VARIABLES) delete process.env[name];
+      for (const name of Object.keys(environment)) delete process.env[name];
     }
     // The peak as the operating system counts it, since the process began; `maxRSS` is in kibibytes.
-    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, failed };
+    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward };
   };
   // One task at a time: the command sends the next only when this one has answered.
   process.on("message", (task: WorkerTask) => {
@@ -291,14 +286,10 @@ async function work(repository: string, folder: string): Promise<void> {
 }
 
 if (require.main === module) {
-  const [mode, repository, folder] = process.argv.slice(2);
-  if (mode !== "--worker" || repository === undefined || folder === undefined) {
-    process.stderr.write("usage: summarizeChange --worker <repository> <folder>\n");
+  const [mode, store, folder] = process.argv.slice(2);
+  if (mode !== "--worker" || store === undefined || folder === undefined) {
+    process.stderr.write("usage: summarizeChange --worker <git directory> <folder>\n");
     process.exit(2);
   }
-  for (const name of TREE_VARIABLES) delete process.env[name];
-  work(repository, folder).catch((error: unknown) => {
-    process.stderr.write(`${error instanceof Error ? (error.stack ?? error.message) : String(error)}\n`);
-    process.exit(1);
-  });
+  work(store, folder);
 }
