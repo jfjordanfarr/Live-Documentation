@@ -38,6 +38,38 @@ function commit(root: string, message: string): void {
   git(root, "-c", "user.name=Identity Fixture", "-c", "user.email=identity@example.test", "commit", "-qm", message);
 }
 
+/**
+ * A lock shaped as this tool's own: the top, the two workspaces and the engine's link, the packages a summary loads
+ * (the compiler, `glob`, and `tsx`, the launcher), and one it does not (`eslint`). Since 2026-11-20 the lens keys the
+ * lock only through the entries a summary loads, found from the workspaces' entries, so a lock that does not name them
+ * is no lock of this tool's and stops the run.
+ */
+function toolLock(versions: { typescript?: string; eslint?: string } = {}): string {
+  const entry = (name: string, version: string, extra: Record<string, unknown> = {}): Record<string, unknown> => ({
+    version,
+    resolved: `https://registry.npmjs.org/${name}/-/${name}-${version}.tgz`,
+    integrity: `sha512-${name}-${version}`,
+    ...extra
+  });
+  const lock = {
+    name: "live-documentation",
+    lockfileVersion: 3,
+    requires: true,
+    packages: {
+      "": { name: "live-documentation", workspaces: ["packages/engine", "packages/generator"], devDependencies: { eslint: "^10.0.0", tsx: "^4.0.0" } },
+      "packages/engine": { name: "@live-documentation/engine", version: "0.0.0", dependencies: { glob: "^14.0.0", typescript: "^5.0.0" } },
+      "packages/generator": { name: "@live-documentation/generator", version: "0.0.0", dependencies: { "@live-documentation/engine": "file:../engine" } },
+      "node_modules/@live-documentation/engine": { resolved: "packages/engine", link: true },
+      "node_modules/@live-documentation/generator": { resolved: "packages/generator", link: true },
+      "node_modules/glob": entry("glob", "14.0.6"),
+      "node_modules/typescript": entry("typescript", versions.typescript ?? "5.9.3"),
+      "node_modules/tsx": entry("tsx", "4.23.15", { dev: true }),
+      "node_modules/eslint": entry("eslint", versions.eslint ?? "10.15.0", { dev: true })
+    }
+  };
+  return `${JSON.stringify(lock, null, 2)}\n`;
+}
+
 function fixture(withLock: boolean): { root: string; modulePath: string } {
   const root = fs.mkdtempSync(path.join(scratch, "tool-"));
   const engine = path.join(root, "packages", "engine");
@@ -48,7 +80,7 @@ function fixture(withLock: boolean): { root: string; modulePath: string } {
   fs.writeFileSync(path.join(engine, "marker.ts"), "export const engine = 1;\n");
   fs.writeFileSync(path.join(generator, "src", "marker.ts"), "export const generator = 1;\n");
   fs.writeFileSync(path.join(generator, "package.json"), JSON.stringify({ name: "@live-documentation/generator", version: "0.0.0" }));
-  if (withLock) fs.writeFileSync(path.join(root, "package-lock.json"), '{"lockfileVersion":3,"packages":{"tool":"first"}}\n');
+  if (withLock) fs.writeFileSync(path.join(root, "package-lock.json"), toolLock());
   git(root, "init", "-q");
   git(root, "config", "core.autocrlf", "false");
   commit(root, "initial tool inputs");
@@ -74,10 +106,17 @@ function key(value: GeneratorIdentity): string {
 }
 
 describe("the tool lock in the history lens", () => {
-  it("invalidates for tracked dirty and committed lock changes, but not other checkout edits", () => {
+  it("invalidates for tracked dirty and committed changes of a keyed lock entry, but not of another entry or other checkout edits", () => {
     const { root, modulePath } = fixture(true);
     const initial = identity(modulePath, root);
-    fs.writeFileSync(path.join(root, "package-lock.json"), '{"lockfileVersion":3,"packages":{"tool":"second"}}\n');
+    // An entry no summary loads, edited and not committed: the lock's bytes change, its keyed entries do not.
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ eslint: "10.16.0" }));
+    const unkeyed = identity(modulePath, root);
+    expect(unkeyed.modified).toBeNull();
+    expect(key(unkeyed)).toBe(key(initial));
+
+    // The compiler, edited and not committed.
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4", eslint: "10.16.0" }));
     const dirty = identity(modulePath, root);
     expect(dirty.code).toBe(initial.code);
     expect(dirty.modified).not.toBeNull();
@@ -88,6 +127,14 @@ describe("the tool lock in the history lens", () => {
     expect(committed.modified).toBeNull();
     expect(committed.code).not.toBe(initial.code);
     expect(key(committed)).not.toBe(key(initial));
+
+    // A committed change of an entry no summary loads leaves the code as it was.
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4", eslint: "10.17.0" }));
+    commit(root, "bump only the linter");
+    const linterCommit = identity(modulePath, root);
+    expect(linterCommit.modified).toBeNull();
+    expect(linterCommit.code).toBe(committed.code);
+    expect(key(linterCommit)).toBe(key(committed));
 
     fs.writeFileSync(path.join(root, "README.md"), "a change outside tool inputs\n");
     expect(key(identity(modulePath, root))).toBe(key(committed));
@@ -103,15 +150,21 @@ describe("the tool lock in the history lens", () => {
     expect(absent.modified).toBeNull();
     expect(identity(modulePath, root).code).toBe(absent.code);
 
-    fs.writeFileSync(path.join(root, "package-lock.json"), "first dependency tree\n");
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock());
     const first = identity(modulePath, root);
     expect(first.code).toBe(absent.code);
     expect(first.modified).not.toBeNull();
     expect(key(first)).not.toBe(key(absent));
-    fs.writeFileSync(path.join(root, "package-lock.json"), "second dependency tree\n");
+    // The same untracked path, a keyed entry changed.
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4" }));
     const second = identity(modulePath, root);
     expect(second.modified).not.toBe(first.modified);
     expect(key(second)).not.toBe(key(first));
+    // And an entry no summary loads changed: the bytes move, the keyed entries do not.
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4", eslint: "10.16.0" }));
+    const third = identity(modulePath, root);
+    expect(third.modified).toBe(second.modified);
+    expect(key(third)).toBe(key(second));
 
     commit(root, "add the tool lock");
     const committed = identity(modulePath, root);
@@ -119,23 +172,35 @@ describe("the tool lock in the history lens", () => {
     expect(committed.code).not.toBe(absent.code);
   });
 
-  it("fingerprints an ignored tool lock and each later edit to its bytes", () => {
+  it("fingerprints an ignored tool lock and each later edit to its keyed entries, and no edit to the others", () => {
     const { root, modulePath } = fixture(false);
     fs.appendFileSync(path.join(root, ".gitignore"), "package-lock.json\n");
     commit(root, "ignore a local tool lock");
     const absent = identity(modulePath, root);
-    fs.writeFileSync(path.join(root, "package-lock.json"), "first ignored dependency tree\n");
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock());
     expect(git(root, "status", "--porcelain")).toBe("");
     const first = identity(modulePath, root);
     expect(first.code).toBe(absent.code);
     expect(first.modified).not.toBeNull();
     expect(key(first)).not.toBe(key(absent));
 
-    fs.writeFileSync(path.join(root, "package-lock.json"), "second ignored dependency tree\n");
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4" }));
     expect(git(root, "status", "--porcelain")).toBe("");
     const second = identity(modulePath, root);
     expect(second.modified).not.toBe(first.modified);
     expect(key(second)).not.toBe(key(first));
+
+    fs.writeFileSync(path.join(root, "package-lock.json"), toolLock({ typescript: "5.9.4", eslint: "10.16.0" }));
+    expect(git(root, "status", "--porcelain")).toBe("");
+    const third = identity(modulePath, root);
+    expect(third.modified).toBe(second.modified);
+    expect(key(third)).toBe(key(second));
+  });
+
+  it("stops at a lock that does not name the workspaces a summary is made from, saying so", () => {
+    const { root, modulePath } = fixture(true);
+    fs.writeFileSync(path.join(root, "package-lock.json"), '{"lockfileVersion":3,"packages":{"tool":"first"}}\n');
+    expect(() => execFileSync(process.execPath, ["-e", runIdentity, modulePath], { cwd: root, encoding: "utf8", stdio: "pipe" })).toThrow(/package-lock\.json holds no entry for packages\/engine/u);
   });
 
   it("keys on the code that makes a summary, and not on the tests or the modules that only read summaries", () => {
