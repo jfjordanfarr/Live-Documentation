@@ -12,7 +12,8 @@ import sys
 # usage: break-guards.py apply|revert|check [guard], a guard by its number (1 the blob, 2 the walk, 3 the stamp,
 #   4 the folders above, 5 the environment, 6 the mark, 7 the refusal, 8 the first change, 9 the fresh worker,
 #   10 the memory bound, 11 the walk's counts, 12 the identity, 13 the short names, 14 nothing remote, 15 one place,
-#   16 the repository's settings, 17 the reason written anew); with none, every guard at once. Since the second review of 2026-11-20 each guard is
+#   16 the repository's settings, 17 the reason written anew, 18 to 21 the stamp's size, modification time, change
+#   time and mode, 22 nothing of the product writes a kept file); with none, every guard at once. Since the second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
 # directory's guards are broken one at a time by hand, as the record's section on the review says. Since the fourth
@@ -73,15 +74,40 @@ edits = [
      "    return historyGit([\"-C\", this.root, ...args], { cwd: this.root });\n",
      "    return execFileAsync(\"git\", [\"-C\", this.root, ...args], { cwd: this.root, maxBuffer: LARGEST_OUTPUT }).then((result) => result.stdout);\n"),
     ("packages/engine/src/live-docs/history/git.ts",
-     "  GIT_CONFIG_COUNT: String(SET_ASIDE.length),\n",
-     "  GIT_CONFIG_COUNT: \"0\",\n"),
+     "    GIT_CONFIG_COUNT: String(settings.length),\n",
+     "    GIT_CONFIG_COUNT: \"0\",\n"),
     ("packages/generator/src/history/summarizeChange.ts",
      "...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), runtimeFaulted",
      "runtimeFaulted"),
+    # The second pass of that round: 18 to 21 each field of the stamp but the identity left out of its comparison
+    # (git.test.ts, sameStamp); 22 the generator rewriting each source file, same bytes, after writing its doc
+    # (history-tree-forward.test.ts, the samples case, which holds that nothing of the product writes a kept file).
+    ("packages/engine/src/live-docs/history/git.ts",
+     "  return a.size === b.size && a.mtimeMs",
+     "  return a.mtimeMs"),
+    ("packages/engine/src/live-docs/history/git.ts",
+     " && a.mtimeMs === b.mtimeMs && a.ctimeMs",
+     " && a.ctimeMs"),
+    ("packages/engine/src/live-docs/history/git.ts",
+     " && a.ctimeMs === b.ctimeMs && a.mode",
+     " && a.mode"),
+    ("packages/engine/src/live-docs/history/git.ts",
+     " && a.mode === b.mode && a.ino === b.ino;",
+     " && a.ino === b.ino;"),
+    ("packages/generator/src/generator.ts",
+     "      await fs.writeFile(docPaths.absolute, rendered, \"utf8\");\n",
+     "      await fs.writeFile(docPaths.absolute, rendered, \"utf8\");\n      await fs.writeFile(path.join(workspaceRoot, normalizedSourcePath), await fs.readFile(path.join(workspaceRoot, normalizedSourcePath)));\n"),
+    # 23 the tree not answering with the value of `core.ignorecase` the lens keyed; 24 the lens not keying it (git.test.ts).
+    ("packages/engine/src/live-docs/history/git.ts",
+     "      ...treeSettings(options?.ignoresCase),\n",
+     "      ...treeSettings(),\n"),
+    ("packages/engine/src/live-docs/history/lens.ts",
+     "  const made = repository.ignoresCase ? { repository: { ignoresCase: true } } : {};\n",
+     "  const made = {};\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:
