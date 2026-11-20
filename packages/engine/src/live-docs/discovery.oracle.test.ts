@@ -28,7 +28,9 @@
  * repository, judged by the workspace's own `.gitignore` alone; two repositories within it, at the top and below a
  * plain folder, each judged by its own status, each holding a tracked `x.cfg` that `.gitignore` names and a `z.only`
  * its own exclude names; and a folder whose git's configuration does not parse and one whose `.git` names no
- * repository, judged by `.gitignore` alone (2026-11-20).
+ * repository, judged by `.gitignore` alone (2026-11-20); and below four folders whose git does not answer (an unknown
+ * format, a configuration that does not parse, a `.git` file naming nothing, an empty `.git`), a working clone at one
+ * depth or two, judged by its own status, with a `dist/out.ts` its `.gitignore` names.
  *
  * What the main property cannot see: the folders git ignores whole are left unread, so a file below one never reaches
  * the judging, and with folders in the listing never judged it still passes all thirty seeds. The nested property
@@ -349,7 +351,28 @@ describe("discovery against git status, over random repositories", () => {
     mkdirSync(path.join(root, "b1"));
     for (const name of ["t.ts", "u.log", "x.cfg"]) writeFileSync(path.join(root, "b1", name), "x\n");
     writeFileSync(path.join(root, "b1", ".git"), "gitdir: nowhere\n");
-    // Git's own word: no repository at the workspace, nor in either of those two.
+    // Below a folder whose git does not answer (an unknown format, a configuration that does not parse, a `.git` file
+    // naming nothing, an empty `.git`), a working clone, at one depth or two, judged by its own status; the files beside
+    // it by `.gitignore` alone (the reviewer's eight shapes, 2026-11-20).
+    const parents = ["f1", "c1", "g1", "e1"];
+    for (const parent of parents) {
+      const clone = next() < 0.5 ? `${parent}/clone` : `${parent}/sub/clone`;
+      mkdirSync(path.join(root, clone), { recursive: true });
+      writeFileSync(path.join(root, parent, "beside.ts"), "x\n");
+      git(path.join(root, clone), "init", "-q");
+      fill(path.join(root, clone), next, false);
+      mkdirSync(path.join(root, clone, "dist"), { recursive: true });
+      writeFileSync(path.join(root, clone, "dist", "out.ts"), "x\n");
+      appendFileSync(path.join(root, clone, ".gitignore"), "\ndist/\n");
+      repositories.push(clone);
+      unanswered.push(parent);
+    }
+    for (const parent of ["f1", "c1"]) git(path.join(root, parent), "init", "-q");
+    git(path.join(root, "f1"), "config", "core.repositoryformatversion", "99");
+    appendFileSync(path.join(root, "c1", ".git", "config"), "[broken\n");
+    writeFileSync(path.join(root, "g1", ".git"), "gitdir: nowhere\n");
+    mkdirSync(path.join(root, "e1", ".git"));
+    // Git's own word: no repository at the workspace, nor in any of those.
     for (const folder of ["", ...unanswered]) expect(spawnSync("git", ["-C", path.join(root, folder), "rev-parse"], { stdio: "ignore" }).status, `seed ${seed}: ${folder}`).toBe(128);
     const inner = new Map(repositories.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
     const rootRules = ignore().add(readFileSync(path.join(root, ".gitignore"), "utf8"));

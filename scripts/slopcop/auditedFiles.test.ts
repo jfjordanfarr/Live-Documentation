@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 import { gitIgnores } from "@live-documentation/engine/tooling/gitIgnored";
 
 import { auditedFiles } from "./auditedFiles";
@@ -300,9 +301,45 @@ describe("auditedFiles", () => {
     }) as unknown as typeof fs.readdirSync);
     try {
       // Until this round glob read `docs` as empty, and `docs/a.md` went unaudited in silence.
-      expect(() => audited(root)).toThrow(/EMFILE/u);
+      expect(() => audited(root)).toThrow(`cannot read the folder ${path.join(root, "docs")}, whose files the audit would read (EMFILE: too many open files, scandir '${path.join(root, "docs")}'): make it readable, have git ignore it, or name it in the audit's ignore globs.`);
     } finally {
       spy.mockRestore();
+    }
+  });
+
+  it("passes over an unreadable folder that its own repository's git ignores, with or without a repository around, and stops at one it would read", () => {
+    const locked: string[] = [];
+    try {
+      for (const around of [true, false]) {
+        const root = workspace();
+        write(root, { "README.md": "", "proj/a.md": "", "proj/.gitignore": "pgdata/\n", "proj/pgdata/b.md": "" });
+        if (around) git(root, "init", "-q");
+        git(path.join(root, "proj"), "init", "-q");
+        fs.chmodSync(path.join(root, "proj", "pgdata"), 0);
+        locked.push(path.join(root, "proj", "pgdata"));
+        // The system's word, and git's: the folder cannot be read, and the clone's own rules ignore it unread.
+        expect(() => fs.readdirSync(path.join(root, "proj", "pgdata"))).toThrow(/EACCES/u);
+        expect(spawnSync("git", ["-C", path.join(root, "proj"), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8" })).toMatchObject({ stdout: "pgdata/\0", stderr: "" });
+        // Until this round the audit stopped there.
+        expect(audited(root), `around: ${around}`).toEqual(["README.md", "proj/a.md"]);
+      }
+      const root = workspace();
+      write(root, { "README.md": "", "docs/a.md": "" });
+      git(root, "init", "-q");
+      fs.chmodSync(path.join(root, "docs"), 0);
+      locked.push(path.join(root, "docs"));
+      let stopped: unknown;
+      try {
+        audited(root);
+      } catch (error) {
+        stopped = error;
+      }
+      expect(stopped).toMatchObject({ message: expect.stringMatching(/^cannot read the folder .*docs, whose files the audit would read \(EACCES: permission denied, scandir .*\): make it readable, have git ignore it, or name it in the audit's ignore globs\.$/u) });
+      expect(machineFailure(stopped)).toBe(true);
+      // The audit's own ignore globs leave it unread.
+      expect(audited(root, ["**/*.md"], ["docs/**"])).toEqual(["README.md"]);
+    } finally {
+      for (const folder of locked) fs.chmodSync(folder, 0o755);
     }
   });
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.test.ts`
-- Generated At: 2026-11-20T15:50:31.777Z
+- Generated At: 2026-11-20T16:44:33.420Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,7 @@ _No public symbols detected_
 - [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
 - [`discovery.inWorkspaceOrder`](./discovery.ts.mdmd.md#symbol-inworkspaceorder)
+- [`processMark.machineFailure`](./processMark.ts.mdmd.md#symbol-machinefailure)
 - [`gitIgnored.gitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

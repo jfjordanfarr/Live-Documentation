@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/slopcop/auditedFiles.test.ts`
-- Generated At: 2026-11-20T13:06:22.945Z
+- Generated At: 2026-11-20T16:44:36.151Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,7 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:os` - `os`
 - `node:path` - `path`
+- [`processMark.machineFailure`](../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 - [`gitIgnored.gitIgnores`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`auditedFiles`](./auditedFiles.ts.mdmd.md#symbol-auditedfiles)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`, `vi`

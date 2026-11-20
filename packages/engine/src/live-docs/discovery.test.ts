@@ -8,6 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
 import { gitIgnores } from "../tooling/gitIgnored";
 import { buildWorkspaceIndexes, discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
+import { machineFailure } from "./processMark";
 
 const foldersGitIgnoresWhole = (root: string): ReadonlySet<string> => gitIgnores(root)?.folders ?? new Set();
 
@@ -679,8 +680,10 @@ describe("the folders git ignores whole", () => {
     let restore = failing("EMFILE");
     try {
       // Until this round glob read `src` as empty: `src/b.ts` was missing, and its doc would have been pruned as stale.
-      await expect(discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false })).rejects.toMatchObject({ code: "EMFILE", path: path.join(root, "src") });
-      await expect(discoverDocuments({ workspaceRoot: root, config })).rejects.toMatchObject({ code: "EMFILE" });
+      const stopped = await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false }).catch((error: unknown) => error);
+      expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")}, whose files the scan would keep (EMFILE: failed, scandir '${path.join(root, "src")}'): make it readable, have git ignore it, or name it in the configuration's exclude.`, cause: { code: "EMFILE" } });
+      expect(machineFailure(stopped)).toBe(true);
+      await expect(discoverDocuments({ workspaceRoot: root, config })).rejects.toMatchObject({ cause: { code: "EMFILE" } });
     } finally {
       restore();
     }
@@ -703,6 +706,99 @@ describe("the folders git ignores whole", () => {
     await expect(fs.stat(path.join(root, "through.ts"))).rejects.toMatchObject({ code: "ENOTDIR" });
     // Until this round each stopped the whole walk, and a whole generate with it.
     expect(await found(root)).toEqual({ files: ["a.ts"], documents: [] });
+  });
+
+  it("stops at a link whose target cannot be read for a cause of the machine's", async () => {
+    const root = await repository({ "a.ts": "" });
+    const outside = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-locked-target-"));
+    folders.push(outside);
+    await fs.mkdir(path.join(outside, "locked"));
+    await fs.writeFile(path.join(outside, "locked", "x.ts"), "");
+    await fs.symlink(path.join(outside, "locked", "x.ts"), path.join(root, "w.ts"));
+    await fs.chmod(path.join(outside, "locked"), 0);
+    try {
+      // The system's word first: the link's target cannot be reached.
+      await expect(fs.stat(path.join(root, "w.ts"))).rejects.toMatchObject({ code: "EACCES" });
+      await expect(discoverTargetFiles({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}), include: new Set(), changedOnly: false })).rejects.toMatchObject({ code: "EACCES" });
+    } finally {
+      await fs.chmod(path.join(outside, "locked"), 0o755);
+    }
+  });
+});
+
+/**
+ * A folder that cannot be read stops the scan only where the scan would have kept what is in it (the root's ruling of
+ * 2026-11-20, corrected after the reviewer's second look): one its own repository's git ignores, or that `exclude`
+ * names whole, is passed over as its files would have been, a database's unreadable volume beside the code above all.
+ */
+describe("a folder that cannot be read", () => {
+  const folders: string[] = [];
+  const locked: string[] = [];
+  afterEach(async () => {
+    for (const folder of locked.splice(0)) await fs.chmod(folder, 0o755);
+    for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
+  });
+
+  /** A workspace holding `files` with their texts. */
+  async function workspace(files: Record<string, string>): Promise<string> {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-unreadable-"));
+    folders.push(root);
+    for (const [file, text] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(root, file)), { recursive: true });
+      await fs.writeFile(path.join(root, file), text);
+    }
+    return root;
+  }
+  /** Makes each folder unreadable (mode 000), and asserts the system's word on it. */
+  async function lock(root: string, ...names: string[]): Promise<void> {
+    for (const name of names) {
+      await fs.chmod(path.join(root, name), 0);
+      locked.push(path.join(root, name));
+      // The system's word first: the folder cannot be read.
+      await expect(fs.readdir(path.join(root, name))).rejects.toMatchObject({ code: "EACCES" });
+    }
+  }
+  const git = (cwd: string, ...args: string[]): string => execFileSync("git", ["-C", cwd, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  async function scanned(root: string, config: LiveDocumentationConfigInput = {}): Promise<{ files: string[]; documents: string[] }> {
+    const normalized = normalizeLiveDocumentationConfig(config);
+    const files = await discoverTargetFiles({ workspaceRoot: root, config: normalized, include: new Set(), changedOnly: false });
+    return { files: files.map((file) => path.relative(root, file).split(path.sep).join("/")), documents: await discoverDocuments({ workspaceRoot: root, config: normalized }) };
+  }
+
+  it("passes over a folder the configuration's exclude names whole", async () => {
+    const root = await workspace({ "a.ts": "", "locked/x.ts": "" });
+    git(root, "init", "-q");
+    await lock(root, "locked");
+    // Git does not ignore it: it is untracked, and git says it cannot read it.
+    expect(spawnSync("git", ["-C", root, "status", "--porcelain", "-uall"], { encoding: "utf8" }).stderr).toContain("could not open directory 'locked/'");
+    // Until this round the scan stopped: `exclude` is applied after the walk.
+    expect(await scanned(root, { exclude: ["locked/**"] })).toEqual({ files: ["a.ts"], documents: [] });
+    // A pattern that leaves some of it kept leaves it to stop the scan.
+    await expect(scanned(root, { exclude: ["locked/*.md"] })).rejects.toThrow(/^cannot read the folder .*locked, whose files the scan would keep/u);
+  });
+
+  it("passes over a folder a nested repository's own rules ignore, and one a clone's own rules ignore where no repository is around", async () => {
+    for (const around of [true, false]) {
+      const root = await workspace({ "a.ts": "", "proj/b.ts": "", "proj/.gitignore": "pgdata/\n", "proj/pgdata/base.ts": "" });
+      if (around) git(root, "init", "-q");
+      git(path.join(root, "proj"), "init", "-q");
+      await lock(root, "proj/pgdata");
+      // The clone's own git ignores its unreadable `pgdata/`, without reading it.
+      expect(spawnSync("git", ["-C", path.join(root, "proj"), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8" })).toMatchObject({ stdout: "pgdata/\0", stderr: "" });
+      // Until this round the scan stopped: a nested repository's ignored folders are walked.
+      expect(await scanned(root), `around: ${around}`).toEqual({ files: ["a.ts", "proj/.gitignore", "proj/b.ts"], documents: [] });
+    }
+  });
+
+  it("stops the scan at a folder whose files it would keep, saying the three ways past it", async () => {
+    const root = await workspace({ "a.ts": "", "src/b.ts": "", "src/README.md": "" });
+    git(root, "init", "-q");
+    await lock(root, "src");
+    const stopped = await scanned(root).catch((error: unknown) => error);
+    expect(stopped).toMatchObject({ message: `cannot read the folder ${path.join(root, "src")}, whose files the scan would keep (EACCES: permission denied, scandir '${path.join(root, "src")}'): make it readable, have git ignore it, or name it in the configuration's exclude.` });
+    // Still the machine's failure, so that a history worker publishes nothing made with it.
+    expect(machineFailure(stopped)).toBe(true);
+    await expect(discoverDocuments({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}) })).rejects.toThrow(/^cannot read the folder /u);
   });
 });
 
