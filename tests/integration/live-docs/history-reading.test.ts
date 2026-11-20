@@ -305,6 +305,59 @@ describe("the check at the head over a doc whose file the head's tree left out",
   }, 300_000);
 });
 
+/**
+ * A file the generator could not map at a commit is named in that commit's summary (`unmapped`, since 2026-11-20), and
+ * the sequence reads it as gone there. Until a review of the same day nothing read that name back: no command and no
+ * file said, after the run that made the summary, that the file was not mapped or why, and the check at the head
+ * reported its committed doc as a difference. It is carried now as an entry the tree did not hold is: a list beside the
+ * sequence, a line on every run, and the check at the head's passing over.
+ */
+describe("the history over a file the generator could not map", () => {
+  let here: string;
+  let deep: string;
+  const reason = "Maximum call stack size exceeded";
+  const command = (args: string[]): { status: number | null; stdout: string; stderr: string } =>
+    spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1", ...args], { encoding: "utf8", env: process.env });
+
+  beforeAll(async () => {
+    const made = await mirrored("unmapped", { "src/a.ts": "/** A. */\nexport const a = 1;\n", "src/table.ts": "/** A table. */\nexport const oldTable = [1];\n" });
+    here = made.here;
+    made.run(["add", "--all"]);
+    made.run(["commit", "--quiet", "-m", "A table and its doc"]);
+    // The table nested beyond what any process reads, its doc of the last commit standing, as a person's workspace keeps
+    // the doc of a file its generator could not map.
+    fs.writeFileSync(path.join(here, "src", "table.ts"), `export const newTable = ${"[".repeat(2000)}1${"]".repeat(2000)};\n`);
+    made.run(["add", "--all"]);
+    made.run(["commit", "--quiet", "-m", "A table nested too deep to read"]);
+    deep = made.run(["rev-parse", "HEAD"]);
+  }, 120_000);
+
+  it("passes the check at the head, naming the file it did not compare and why", () => {
+    const result = command(["--check-head"]);
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain(`not compared, since the generator could not map them at the head and so the history does not read them: src/table.ts (${reason})`);
+  }, 300_000);
+
+  it("lists it beside the sequence with its commit and why, and says so on every run, one with nothing to summarize among them", () => {
+    const first = command([]);
+    expect(first.status, first.stderr).toBe(0);
+    const again = command([]);
+    expect(again.status, again.stderr).toBe(0);
+    expect(again.stderr).toContain("0 to regenerate");
+    expect(again.stderr).toContain("went on from the sequence the last run wrote");
+    for (const run of [first, again]) {
+      expect(run.stderr).toContain("1 files at 1 commits could not be mapped by the generator, each for the reason the list gives; they read in the history as gone at those commits. The list is .mdmd/history/unmapped.txt");
+    }
+    expect(fs.readFileSync(path.join(here, ".mdmd", "history", "unmapped.txt"), "utf8")).toBe(
+      `# The files the generator could not map at each commit, and so did not read: commit, path, reason.\n${deep}\t"src/table.ts"\t${reason}\n`
+    );
+    // What the sequence shows of it today: the file gone at that commit.
+    const read = JSON.parse(fs.readFileSync(path.join(here, ".mdmd", "history", "history.json"), "utf8")) as HistorySequence;
+    expect(momentAt(read, 0).rows.has("src/table.ts")).toBe(true);
+    expect(momentAt(read, 1).rows.has("src/table.ts")).toBe(false);
+  }, 300_000);
+});
+
 /** A configuration saved as Windows tools save one: the history reads it as every other command does. */
 describe("the history over a repository whose configuration is saved as UTF-16 with a byte-order mark", () => {
   it("reads the configuration and finishes", () => {

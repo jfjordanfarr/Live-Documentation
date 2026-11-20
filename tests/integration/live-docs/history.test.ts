@@ -393,9 +393,9 @@ describe("the key and the record a run goes on from", () => {
     const before = written();
     // The same damage with the record's own hash made to match, as a fault of the writer would leave it.
     const { hash } = earlyText();
-    const body = JSON.parse(fs.readFileSync(recordFile(), "utf8")) as { format: string; key: string; sequence: string; texts: string[]; firstNamed: number[]; unwritten: string[][]; check: string };
+    const body = JSON.parse(fs.readFileSync(recordFile(), "utf8")) as { format: string; key: string; sequence: string; texts: string[]; firstNamed: number[]; unwritten: string[][]; unmapped: string[][]; check: string };
     body.texts[body.texts.indexOf(hash)] = createHash("sha256").update("a text no summary writes").digest("hex");
-    body.check = createHash("sha256").update(JSON.stringify([body.format, body.key, body.sequence, body.texts, body.firstNamed, body.unwritten])).digest("hex");
+    body.check = createHash("sha256").update(JSON.stringify([body.format, body.key, body.sequence, body.texts, body.firstNamed, body.unwritten, body.unmapped])).digest("hex");
     fs.writeFileSync(recordFile(), JSON.stringify(body));
     const fell = await run();
     // Said by what the damage was: the summary made again reads, and the record names a text it does not write.

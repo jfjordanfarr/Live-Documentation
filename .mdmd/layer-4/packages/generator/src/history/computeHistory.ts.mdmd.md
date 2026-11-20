@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-20T12:42:58.046Z
+- Generated At: 2026-11-20T15:42:27.229Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ The history command: the mainline read and sampled, every sampled commit the cac
 
 - Since 2026-11-20 ([the record of making a run fast](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) a run reads each summary it needs once and every text once: whether a cached summary reads, and whether the texts it names are sound, is found where the sequence reads it (`deriveSequence`), and such a commit is summarized again and the sequence read again, where before every summary was read twice and every text twice. A run goes on from the sequence the last run wrote, when the record beside it (`history-resume.json`) names its bytes under this run's key (the lens, `sequenceCodeIdentity` of the code that reads summaries into a sequence, and the whole configuration) and its every commit is the first of those sampled now as this run would write it; then only the last written commit's summary and the new ones are read, and the bytes written are those of a whole derivation (`--rederive`), which the integration test and the record hold to each other. The steps' git words are asked before any summary is read, eight at once, since starting a process from a large heap was most of their cost; the check at the head reads the committed docs from git's object store (`headCheck.ts`) instead of writing the head's whole tree. None of it moves the lens's key: this module, `headCheck.ts`, `sequence.ts` and `generatorIdentity.ts` are not keyed.
 - Mended the same day after [an independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-independent-review-and-its-mends): the code's identity, git's version now in it, is taken at the run's start beside the generator's, so that code changed during a long run never keys a record of what the old code wrote; the record is checked to be its shape and to hold its own hash before it is believed (format `live-docs-history-resume/2`); a run that goes on and meets damage summarizing again does not mend derives every step instead, once, and says so; the check at the head compares no file the head's summary lists as left out of its tree, and names each; a change both missing and summarized again counts once. The key is broad: any commit that touches the engine or the generator derives every step once at the next run, and a repository that only uses the tool goes on every time. For a change that shows only at early steps the key is the only guard, and the integration tests hold it, the code's half and the configuration's.
+- Later on 2026-11-20 ([the sixth round of the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-sixth-round-what-the-person-is-told-of-a-file-not-mapped-november-20-from-1530-utc)), on a review's finding that the files a summary names as not mapped (`unmapped`) were read back by nothing: both kinds of what the history did not read at a commit, the entries its tree did not hold and the files the generator could not map, take one path through this module (`NOT_READ`), each with its list beside the sequence (`unwritten.txt`, `unmapped.txt`), its line on every run, its place in the record a run goes on from (format `live-docs-history-resume/3`) and its clause in the check at the head's passing over. The run's line counts each file once and each commit once, where it had counted a file at every commit it stood unread through. The sequence still reads such a file as removed at that commit; a sign of its own is put to the owner.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -66,7 +67,7 @@ When the check at the head applies, in the words the command prints when it skip
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L201)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L230)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -75,7 +76,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L208)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L237)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -84,14 +85,14 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `poolMemory` {#symbol-poolmemory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L214)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L243)
 
 ##### `poolMemory` — Summary
 The memory the pool may hold, half the machine's, by which it is sized ({@link poolSize}) and each worker bounded (`workerBound`).
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L224)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L253)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -101,7 +102,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L230)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L259)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -109,7 +110,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L458)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L490)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -129,14 +130,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L579)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L611)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L607)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L639)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -149,7 +150,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1121)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1171)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
