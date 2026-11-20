@@ -29,6 +29,19 @@
  * reads names by, which a summary's anchors and order depend on through the
  * case of letters and the classes of characters.
  *
+ * Since 2026-11-20 this repository's dependency lock keys the lens only
+ * through the entries of the packages the summarizing process can load
+ * ({@link keyedLockEntries}): the two packages' dependencies as the lock
+ * resolves them, and the packages loaded that neither declares
+ * ({@link LOCK_ROOTS}). Until then the lock's whole bytes keyed it, so that a
+ * tool that never touches a summary, the browser tests' Playwright pinned to
+ * another version, began a new cache and a rebuild of the whole history. The
+ * integration case `history-lens-lock.test.ts` holds the list to what a
+ * worker really reads under `node_modules`. The key trusts the lock to say
+ * what is installed (a `node_modules` changed by hand is not seen), and holds
+ * neither the runtime's own version, so that an upgrade of Node is outside it
+ * (only its version of Unicode is held, for the reason above), nor git's.
+ *
  * @module
  */
 
@@ -48,6 +61,124 @@ const GENERATOR_FOLDERS = ["packages/engine", "packages/generator"];
 const GENERATOR_FILES = ["tsconfig.base.json"];
 // This repository's lock names the installed tool dependencies, including parser versions; a scanned project's lock is not ours.
 const TOOL_DEPENDENCY_LOCK = "package-lock.json";
+
+/**
+ * The packages the summarizing process loads that neither {@link GENERATOR_FOLDERS} package declares, each found as
+ * Node finds it from the folder it is loaded from, with why it is loaded: the lock's dependencies of the two packages
+ * cannot show them.
+ */
+export const LOCK_ROOTS: ReadonlyArray<{ from: string; name: string; reason: string }> = [
+  {
+    from: "packages/generator",
+    name: "tsx",
+    // `summarizingFlags` in `regenerate.ts`, `require.resolve("tsx")`: the TypeScript loader every worker started from
+    // the sources runs under; only the repository's own manifest declares it, as a tool of its development.
+    reason: "the launcher that runs the summarizing process's TypeScript sources"
+  },
+  {
+    from: "packages/generator",
+    name: "glob",
+    // `generator.ts` and `summarizeChange.ts` import it; the generator's manifest does not declare it, and it is found
+    // only because npm hoists the engine's own `glob` to the repository's `node_modules`.
+    reason: "imported by the generator's code without being declared by its manifest"
+  }
+];
+
+/**
+ * What of a lock's entry decides the bytes installed at its place, which is all of it the key holds: the version, where
+ * it was fetched from and its integrity hash, and, for an entry that is no download of its own, the folder it links to
+ * or that it came inside its parent's download. The rest is left out: the ranges of its dependencies (what each
+ * resolved to is keyed at its own place), its licence, funding, engines and deprecation, its commands, the platforms it
+ * installs on and whether it has an install script (each read from the package's own manifest, which its integrity
+ * covers), and whether it is a development or optional dependency of the repository, which changes with what else the
+ * repository declares and never changes the bytes.
+ */
+const KEYED_FIELDS = ["version", "resolved", "integrity", "link", "inBundle"] as const;
+
+/** An entry of a lock's `packages` map, of version 2 or 3, by the fields read here. */
+interface LockEntry {
+  version?: string;
+  resolved?: string;
+  integrity?: string;
+  link?: boolean;
+  inBundle?: boolean;
+  dependencies?: Record<string, string>;
+  optionalDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+}
+
+/**
+ * The entries of a lock's `packages` map that the code of `starts` can load, by their places in the map, each with
+ * {@link KEYED_FIELDS} as the lock has them: the entry of each start and of each of `roots`, and every entry reached
+ * from them by their `dependencies`, `optionalDependencies` and `peerDependencies`, each name found as Node finds it,
+ * at the nearest `node_modules` place upward from the entry that names it, and a link followed to the entry it links
+ * to. An optional dependency or a peer the lock does not hold is not installed, and is passed over; a dependency or a
+ * root it does not hold cannot be keyed, and throws.
+ *
+ * @param starts - The places of the workspaces whose code makes a summary.
+ * @param roots - The packages loaded that no dependency of the workspaces names ({@link LOCK_ROOTS}).
+ */
+export function keyedLockEntries(
+  packages: Readonly<Record<string, LockEntry>>,
+  starts: readonly string[] = GENERATOR_FOLDERS,
+  roots: ReadonlyArray<{ from: string; name: string }> = LOCK_ROOTS
+): Map<string, Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>> {
+  const reached = new Map<string, Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>>>();
+  const pending: string[] = [];
+  const resolve = (from: string, name: string, required: boolean): void => {
+    const place = nearestPlace(packages, from, name);
+    if (place !== undefined) pending.push(place);
+    else if (required) throw new Error(`${TOOL_DEPENDENCY_LOCK} holds no ${name} that ${from || "the repository"} can load`);
+  };
+  for (const start of starts) {
+    if (packages[start] === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} holds no entry for ${start}`);
+    pending.push(start);
+  }
+  for (const root of roots) resolve(root.from, root.name, true);
+  while (pending.length > 0) {
+    const place = pending.pop()!;
+    if (reached.has(place)) continue;
+    const entry = packages[place];
+    reached.set(place, Object.fromEntries(KEYED_FIELDS.filter((field) => entry[field] !== undefined).map((field) => [field, entry[field]])));
+    if (entry.link === true && entry.resolved !== undefined) {
+      if (packages[entry.resolved] === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} links ${place} to ${entry.resolved}, which it holds no entry for`);
+      pending.push(entry.resolved);
+      continue;
+    }
+    for (const name of Object.keys(entry.dependencies ?? {})) resolve(place, name, true);
+    for (const name of Object.keys(entry.optionalDependencies ?? {})) resolve(place, name, false);
+    for (const name of Object.keys(entry.peerDependencies ?? {})) resolve(place, name, false);
+  }
+  return reached;
+}
+
+/**
+ * The place in the lock where Node finds `name` from the code at `from`: `<folder>/node_modules/<name>` for the folder
+ * of `from` and each folder above it, nearest first, a folder that is itself named `node_modules` passed over, as
+ * Node's own search for a package passes it over.
+ */
+function nearestPlace(packages: Readonly<Record<string, LockEntry>>, from: string, name: string): string | undefined {
+  const segments = from === "" ? [] : from.split("/");
+  for (let length = segments.length; length >= 0; length -= 1) {
+    if (length > 0 && segments[length - 1] === "node_modules") continue;
+    const place = [...segments.slice(0, length), "node_modules", name].join("/");
+    if (packages[place] !== undefined) return place;
+  }
+  return undefined;
+}
+
+/**
+ * The half of the key a lock gives: a hash of {@link keyedLockEntries} in the order of their places, so that a change
+ * to the lock that touches none of them, a tool of the repository's development pinned to another version say, leaves
+ * it as it was. An absent lock has an identity of its own.
+ */
+export function lockIdentity(lock: string | null): string {
+  if (lock === null) return "absent";
+  const { packages } = JSON.parse(lock) as { packages?: Record<string, LockEntry> };
+  if (packages === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} has no packages map; only a lock of version 2 or 3 can be keyed`);
+  const entries = [...keyedLockEntries(packages)].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  return createHash("sha256").update(JSON.stringify(entries)).digest("hex").slice(0, 16);
+}
 
 /** The folders of the history's own modules, most of which read summaries and never make one. */
 export const HISTORY_FOLDERS = ["packages/engine/src/live-docs/history/", "packages/generator/src/history/"];
@@ -91,10 +222,11 @@ export function keysTheLens(file: string): boolean {
  * The generator's package version and, when it runs from a checkout of this
  * repository, a hash of the code that makes a summary and of the tool
  * dependency lock as committed (each keyed file's blob id at the commit, and
- * the lock's entry), the commit it runs from, and a hash of uncommitted
- * changes to those inputs. The lock's working bytes are compared to its
- * committed blob even when Git ignores it. An absent lock has its own stable
- * identity; a scanned project's lock is never read.
+ * the lock's {@link lockIdentity}), the commit it runs from, and a hash of
+ * uncommitted changes to those inputs. The working lock counts as changed
+ * only where its keyed entries differ from the committed lock's, and is read
+ * even when Git ignores it. An absent lock has its own stable identity; a
+ * scanned project's lock is never read.
  */
 export async function generatorIdentity(): Promise<GeneratorIdentity> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
@@ -115,7 +247,7 @@ export function readsSummaries(file: string): boolean {
 /**
  * The identity of the code that turns summaries into a sequence, as {@link generatorIdentity} is the identity of the
  * code that makes a summary: a hash of the generator's package version, of every file {@link readsSummaries} counts as
- * committed and of the tool dependency lock, of their uncommitted changes, and of the runtime's version of Unicode,
+ * committed and of the tool dependency lock's {@link lockIdentity}, of their uncommitted changes, and of the runtime's version of Unicode,
  * which the order of names depends on. The commit it runs from is left out, as the lens leaves it out. Where the
  * generator is installed rather than run from a checkout, its version stands for its code. Added on 2026-11-20 for
  * the history command, which goes on from the sequence it wrote last only under the same identity.
@@ -151,10 +283,13 @@ async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean)
   ]);
   // Each entry is `<mode> blob <id>\t<path>`.
   const files = tree.split("\0").filter((entry) => entry !== "" && keyed(entry.slice(entry.indexOf("\t") + 1)));
-  const code = createHash("sha256").update(files.join("\n")).update("tool-lock\0").update(lockEntry || "absent\n").digest("hex").slice(0, 16);
-  const committedLock = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
-  if (committedLock === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
-  const workingLock = await workingLockBlob(topLevel);
+  const committedBlob = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
+  if (committedBlob === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
+  const committedLock = committedBlob === null ? "absent" : lockIdentity(await git(topLevel, ["cat-file", "blob", committedBlob]));
+  const code = createHash("sha256").update(files.join("\n")).update("tool-lock\0").update(committedLock).digest("hex").slice(0, 16);
+  // The working lock counts only where its keyed entries differ from the committed lock's, not wherever its bytes do.
+  const workingBlob = await workingLockBlob(topLevel);
+  const workingLock = workingBlob === committedBlob ? committedLock : lockIdentity(workingBlob === null ? null : await fs.readFile(path.join(topLevel, TOOL_DEPENDENCY_LOCK), "utf8"));
   const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES])).filter(keyed);
   if (changed.length === 0 && workingLock === committedLock) {
     return { code, commit, modified: null };
@@ -171,7 +306,7 @@ async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean)
     }
     hash.update("\0");
   }
-  if (workingLock !== committedLock) hash.update("tool-lock\0").update(workingLock ?? "absent");
+  if (workingLock !== committedLock) hash.update("tool-lock\0").update(workingLock);
   return { code, commit, modified: hash.digest("hex").slice(0, 16) };
 }
 
