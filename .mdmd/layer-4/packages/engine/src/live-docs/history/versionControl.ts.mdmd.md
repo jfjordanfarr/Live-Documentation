@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/versionControl.ts`
-- Generated At: 2026-11-20T10:59:49.955Z
+- Generated At: 2026-11-20T11:08:55.794Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The seam between the history command and a version control: where the mainline e
 ### Public Symbols
 #### `MainlineChange` {#symbol-mainlinechange}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L23)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L25)
 - Extends: [`CommitInfo`](./format.ts.mdmd.md#symbol-commitinfo)
 
 ##### `MainlineChange` — Summary
@@ -29,35 +29,35 @@ One change on the mainline, with its author's name as the version control record
 
 #### `VersionChanges` {#symbol-versionchanges}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L28)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L30)
 
 ##### `VersionChanges` — Summary
 What the version control says happened between two changes, by workspace-relative path.
 
 #### `MainlineEnd` {#symbol-mainlineend}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L36)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L38)
 
 ##### `MainlineEnd` — Summary
 Where the mainline ends, and whether the copy holds all of it.
 
 #### `WorkingTree` {#symbol-workingtree}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L50)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L52)
 
 ##### `WorkingTree` — Summary
 A working tree at one change, in a directory of the caller's choosing, until it is removed.
 
 #### `WorkingTreeOptions` {#symbol-workingtreeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L78)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L80)
 
 ##### `WorkingTreeOptions` — Summary
 What the caller asks of a change's tree beyond the change's own entries.
 
 #### `VersionControl` {#symbol-versioncontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L93)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L95)
 
 ##### `VersionControl` — Summary
 What the history command needs of a version control.

@@ -7,12 +7,14 @@
  * change formats later").
  *
  * @remarks
- * Five things and nothing more: where the mainline ends and whether the copy
+ * Six things and nothing more: where the mainline ends and whether the copy
  * holds all of it; the mainline's changes, oldest first; the changes a tag
- * names; a working tree at a change, removed after; and what happened between
+ * names; a working tree at a change, removed after; what happened between
  * two changes, the renames the version control infers and the files whose
- * content changed in place. Every path is relative to the workspace. Nothing
- * here reaches a remote or asks for credentials.
+ * content changed in place; and where the repository is kept, which the
+ * processes that write trees are handed (since 2026-11-20). Every path is
+ * relative to the workspace. Nothing here reaches a remote or asks for
+ * credentials.
  *
  * @module
  */
