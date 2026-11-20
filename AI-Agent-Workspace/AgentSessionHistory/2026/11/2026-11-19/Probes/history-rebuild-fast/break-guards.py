@@ -12,7 +12,7 @@ import sys
 # usage: break-guards.py apply|revert|check [guard], a guard by its number (1 the blob, 2 the walk, 3 the stamp,
 #   4 the folders above, 5 the environment, 6 the mark, 7 the refusal, 8 the first change, 9 the fresh worker,
 #   10 the memory bound, 11 the depth, 12 the unmapped mark, 13 the old doc, 14 the machine's failure, 15 the
-#   TypeScript depth, 16 the tree's folder in a reason, 17 the environment removed, 18 the machine's stop); with none,
+#   TypeScript depth, 16 the tree's folder in a reason, 17 the environment removed, 18 the machine's stop, 19 the JSON depth); with none,
 #   every guard at once. Since the second review of 2026-11-20 each guard is
 #   broken by itself in a run of its own, so that one held by no test shows.
 # Updated 2026-11-20 for the review's mends (the worker's tree environment as it now reads); the caches' and the git
@@ -72,8 +72,8 @@ edits = [
     # A TypeScript tree beyond the reading depth left unmarked (history-workers, the four changes); a reason left
     # naming the tree's folder (history-workers, two workers in two folders).
     ("packages/engine/src/live-docs/processMark.ts",
-     "      markProcess(\"deep\");\n      return true;\n",
-     "      return true;\n"),
+     "      markProcess(\"deep\");\n      return true;\n    }\n    ts.forEachChild(",
+     "      return true;\n    }\n    ts.forEachChild("),
     ("packages/generator/src/history/summarizeChange.ts",
      "reason: withoutTree(failure.reason, tree),",
      "reason: failure.reason,"),
@@ -85,10 +85,14 @@ edits = [
     ("packages/generator/src/history/regenerate.ts",
      "            if (report.machineFailure) throw new Error(",
      "            if (report.machineFailure && false) throw new Error("),
+    # A JSON document beyond the reading depth left unmarked (json.test.ts).
+    ("packages/engine/src/live-docs/adapters/json.ts",
+     "    nestingBeyondDepth(parsed, jsonChildren);\n",
+     "    void parsed;\n"),
 ]
 mode = sys.argv[1]
 # Each edit by the guard it breaks: the environment's takes two edits.
-guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+guards = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 chosen = int(sys.argv[2]) if len(sys.argv) > 2 else None
 edits = [edit for edit, guard in zip(edits, guards) if chosen is None or guard == chosen]
 for file, good, bad in edits:

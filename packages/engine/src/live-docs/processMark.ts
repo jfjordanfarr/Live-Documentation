@@ -61,6 +61,35 @@ export function machineFailure(error: unknown): boolean {
 const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
 
 /**
+ * Whether a tree a reader built of a file's content is deeper than {@link READING_DEPTH}, by an explicit stack over
+ * `children`, so that the measure itself never runs short of stack: a parsed JSON value (`jsonChildren`), an XML
+ * document's elements. A tree deeper marks the process (`deep`).
+ */
+export function nestingBeyondDepth<T>(root: T, children: (node: T) => readonly T[]): boolean {
+  const nodes: T[] = [root];
+  const depths: number[] = [1];
+  while (nodes.length > 0) {
+    const node = nodes.pop()!;
+    const depth = depths.pop()!;
+    if (depth > READING_DEPTH) {
+      markProcess("deep");
+      return true;
+    }
+    for (const child of children(node)) {
+      nodes.push(child);
+      depths.push(depth + 1);
+    }
+  }
+  return false;
+}
+
+/** The values a parsed JSON value holds: an array's items, an object's values, nothing of a scalar. */
+export function jsonChildren(value: unknown): readonly unknown[] {
+  if (Array.isArray(value)) return value;
+  return typeof value === "object" && value !== null ? Object.values(value) : [];
+}
+
+/**
  * Whether a TypeScript tree is deeper than {@link READING_DEPTH}, by an explicit stack over `ts.forEachChild`, so that
  * the measure itself never runs short of stack. A tree deeper marks the process (`deep`).
  */
