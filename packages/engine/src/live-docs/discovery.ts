@@ -63,7 +63,9 @@ interface DiscoverOptions {
  * Creates an `ignore` instance seeded with the workspace's `.gitignore` patterns.
  *
  * @param workspaceRoot - Absolute path to the repository root.
- * @returns An `Ignore` instance if `.gitignore` exists, or `null` if not found.
+ * @returns An `Ignore` instance if `.gitignore` exists, or `null` if there is none.
+ * @throws A read of `.gitignore` that fails for a cause of the machine's (a permission refused, too many open files):
+ * read as no `.gitignore`, it would map what that file names (since 2026-11-20).
  */
 async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | null> {
   const gitignorePath = path.join(workspaceRoot, ".gitignore");
@@ -72,8 +74,9 @@ async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | nu
     const ig = ignore();
     ig.add(content);
     return ig;
-  } catch {
-    // .gitignore does not exist or is unreadable
+  } catch (error) {
+    throwIfMachineFailure(error);
+    // No `.gitignore`, or a name the disk cannot hold: nothing to ignore.
     return null;
   }
 }

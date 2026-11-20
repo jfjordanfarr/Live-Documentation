@@ -27,6 +27,7 @@ _No public symbols detected_
 - `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `nodeFs`
 - `node:fs/promises`
+- `node:module` - `syncBuiltinESMExports`
 - `node:os`
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)

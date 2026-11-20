@@ -573,8 +573,11 @@ async function directoryExists(candidate: string): Promise<boolean> {
 }
 
 /**
- * Removes empty folders left by a deleted doc, stopping before the docs root, or at a folder that is gone or holds
- * something; a failure of the machine's stops the run (since 2026-11-20; before, it left the folder silently).
+ * Removes empty folders left by a deleted doc, stopping before the docs root, or at a folder that is gone, holds
+ * something or cannot be read or removed. A failure of any kind, the machine's among them, leaves the folder: this is
+ * tidying, no doc and no fact is read from an empty folder, and a run stopped here would pass on a plain second try
+ * with nothing mended, since the stale doc is already gone and its folder never visited again; on Windows a folder
+ * another program holds (`EBUSY`, `EPERM`) is an ordinary thing to meet (the root's ruling, 2026-11-20).
  */
 async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<void> {
   const stop = path.resolve(stopDir);
@@ -588,8 +591,7 @@ async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<v
       }
       await fs.rmdir(current);
       current = path.dirname(current);
-    } catch (error) {
-      throwIfMachineFailure(error);
+    } catch {
       break;
     }
   }

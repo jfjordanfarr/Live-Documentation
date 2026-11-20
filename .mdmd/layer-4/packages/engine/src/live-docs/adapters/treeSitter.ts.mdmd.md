@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T15:53:16.475Z
+- Generated At: 2026-11-20T16:58:04.420Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,14 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 - The engine's own grammars arrived on 2026-10-16 with PowerShell's, built by `packages/engine/grammars/powershell/build.sh` from the upstream grammar at a pinned commit and a patch upstream has not yet taken ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#powershell-read-by-a-grammar-of-our-own-measured-against-powershells-own-parser-recorded-2026-10-16)). The choice is by file: deleting a grammar's folder, once upstream ships the fix, returns it to the bundle. The folder is found from this module's place, three folders below the package root in `src` and in `dist` alike, and the package's `files` carry it.
 - A `SyntaxTree` alias that nothing used was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md); the runtime's `Tree` was the return type of `parseSource` until 2026-11-20.
 - Since 2026-11-20 ([the record of the workers' review](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md), its fourth round) the adapters take, walk and release a tree only through `readTree`, and any throw there marks the process, whatever its class: the runtime's one WebAssembly module, which every grammar's parser shares, restores none of its state when a call into it throws, and whether a throw was a trap, an abort, an exit of the module, a stack overflow or the adapter's own cannot be told from the error. The history's worker, which lives across commits, then writes nothing of that commit unless it was its first, and the command gives the commit to a fresh worker. Before, `parseSource` handed the tree to the adapter, and only a `RuntimeError` thrown inside `parse` marked the process, after the commit's summary was written. What it cannot see: a module whose state went wrong without anything thrown, and a node an adapter keeps and reads after the release.
+- Since 2026-11-20 `grammarFile` probes the engine's own grammar with `statSync` and `throwIfNoEntry: false`, a failure of the machine's thrown by `throwIfMachineFailure` ([sourceText.ts](../../../tooling/sourceText.ts.mdmd.md)), so that the load fails and is dropped and the next ask loads the engine's own. Before, `existsSync` read such a failure as no build of the engine's: the bundled, unpatched grammar was loaded and kept for the process's life, and every later file of that language in that worker read by it. The structural case `sourceText.boundary.test.ts` found it; `treeSitter.test.ts` holds it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SyntaxNode` {#symbol-syntaxnode}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L17)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L18)
 - Returns: `Node`
 
 ##### `SyntaxNode` — Summary
@@ -29,7 +30,7 @@ A node of a parsed tree; the runtime's own name for it collides with the DOM typ
 
 #### `grammarParser` {#symbol-grammarparser}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L37)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L50)
 
 ##### `grammarParser` — Summary
 One parser per grammar, created on first use and kept for the life of the process; a load that fails, the
@@ -38,7 +39,7 @@ generations never fails a file for a failure of the past.
 
 #### `readTree` {#symbol-readtree}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L80)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L93)
 - Returns: `T`
 - Parameters: `root`: [`SyntaxNode`](#symbol-syntaxnode)
 
@@ -63,10 +64,11 @@ depth is measured since a later review of that day.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `existsSync`
+- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`processMark.TREE_DEPTH`](../processMark.ts.mdmd.md#symbol-tree_depth)
 - [`processMark.markProcess`](../processMark.ts.mdmd.md#symbol-markprocess)
+- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `web-tree-sitter` - `Language`, `Node`, `Parser`, `Tree`
 <!-- LIVE-DOC:END Dependencies -->
 

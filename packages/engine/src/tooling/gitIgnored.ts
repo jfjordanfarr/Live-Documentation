@@ -144,7 +144,7 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
       const at = path.join(workspaceRoot, folder);
       const link = fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() === true;
       kind = link ? "link" : "folder";
-      if (fs.existsSync(path.join(at, ".git"))) {
+      if (fs.statSync(path.join(at, ".git"), { throwIfNoEntry: false }) !== undefined) {
         // To the repository around, a link is a file, and it has no view of what lies beyond; where no repository is
         // around, there is none to ask. Such a folder is asked directly, and answers where git there finds it the top of
         // a work tree. Where git cannot say, the folder's paths are unjudged, as a repository's whose git cannot answer.

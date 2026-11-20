@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.test.ts`
-- Generated At: 2026-11-20T12:42:56.337Z
+- Generated At: 2026-11-20T16:58:04.415Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
+- `node:fs` - `nodeFs`, `promises`
+- `node:module` - `syncBuiltinESMExports`
 - `node:os` - `os`
 - `node:path` - `path`
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)

@@ -875,8 +875,8 @@ describe("a file whose reading throws in the index pass alone", () => {
 });
 
 describe("a probe of the run's own folders that fails for a cause of the machine's", () => {
-  // Until 2026-11-20 each of the three probes read any failure as "not there": the docs root as gone, so that no stale
-  // doc was pruned, a scan above as none, and a folder left by a pruned doc as one to leave. Each now stops the run.
+  // Until 2026-11-20 both probes read any failure as "not there": the docs root as gone, so that no stale doc was pruned,
+  // and a folder above as no scan. Each now stops the run.
   const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
   const quiet = (): undefined => undefined;
   const logger = { info: quiet, warn: quiet, error: quiet };
@@ -928,10 +928,14 @@ describe("a probe of the run's own folders that fails for a cause of the machine
     await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, stat");
   });
 
-  it("at the folder a pruned doc leaves is not a folder to leave unsaid: the run stops", async () => {
+  // The tidying after a pruned doc is the exception: no fact is read from an empty folder, and a run stopped there would
+  // pass on a second try with nothing mended, so a failure of any kind leaves the folder (the root's ruling, 2026-11-20).
+  it("at the folder a pruned doc leaves leaves the folder: the run completes, and the stale doc is removed", async () => {
     const left = path.dirname(staleDoc);
     failOnce("readdir", left, () => !nodeFs.existsSync(staleDoc));
-    await expect(generateLiveDocs({ workspaceRoot: root, config, logger })).rejects.toThrow("EMFILE: too many open files, readdir");
+    const result = await generateLiveDocs({ workspaceRoot: root, config, logger });
+    expect(result.deletedFiles).toEqual([".mdmd/layer-4/src/gone/b.ts.mdmd.md"]);
+    expect(nodeFs.existsSync(staleDoc)).toBe(false);
     expect(nodeFs.existsSync(left)).toBe(true);
   });
 });
