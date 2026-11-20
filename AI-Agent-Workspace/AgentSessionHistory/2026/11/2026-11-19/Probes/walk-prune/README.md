@@ -605,7 +605,7 @@ Red against `9f3b74ec5`'s `gitIgnored.ts`, `discovery.ts`, `auditedFiles.ts` and
 
 `discovery.oracle.test.ts` gains fifteen workspaces that lie in no repository: random files outside every repository and a root `.gitignore` of random patterns and `*.cfg`, judged by that `.gitignore` alone (the `ignore` package, as discovery reads it); repositories `p1` and `q/p2`, each filled at random and judged by its own status, each holding a tracked `x.cfg` the root `.gitignore` names and a `z.only` its own exclude names, so that every seed sees both directions; and `r1` (a configuration that does not parse) and `b1` (a `.git` naming no repository), judged by the root `.gitignore`. Git's `rev-parse` is asserted to fail at the workspace, `r1` and `b1`. All fifteen are red against the base; the 60 cases pass in about 20 s.
 
-### What must stay true, measured
+### What must stay true, measured, in the seventh round
 
 With frozen engine builds of the base and of this round under the worktree's ignored `AI-Agent-Workspace/tmp/sj/` (the base built from its sources put back for the purpose), and a bench in scratch that imports discovery from a build and writes both lists and every warning (it runs no git of its own), in two holds of the lane at a load of about 4: **the lists and warnings were byte for byte the same** over the main checkout read only (1,122 files, 65 documents), this worktree (1,130 and 65) and the 25 samples under `tests/integration/fixtures` and `tests/integration/programs`, with no warning in any. Both walks together took 0.97 s before and 0.84 s after in the main checkout. All of these lie in a repository; the shapes in no repository are held by the written cases and the oracle.
 
