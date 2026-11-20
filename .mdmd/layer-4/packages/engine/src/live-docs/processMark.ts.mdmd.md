@@ -12,7 +12,8 @@ Says whether what this process derived could depend on the process's own past, a
 
 ### Notes
 - Made on 2026-11-20, after an independent review of the workers showed a warm worker reading a TypeScript file nested 1,000 deep that a fresh process could not (the stack a process has to spare depends on what V8 has already compiled), and a file the generator failed on dropped from a summary in silence. Until then only the runtime's fault marked the process (`runtimeFaulted` in `treeSitter.ts`).
-- The depth is measured without recursion: by `ts.forEachChild` over an explicit stack for TypeScript, right after each parse (`sourceAnalysis.ts`, and the parse of a provider behind `export *` in `dependencies.ts`), and by a tree-sitter cursor in `readTree` before the adapter's walk.
+- The depth is measured without recursion: by `ts.forEachChild` over an explicit stack for TypeScript, right after each parse (`sourceAnalysis.ts`, and the parse of a provider behind `export *` in `dependencies.ts`), by a tree-sitter cursor in `readTree` before the adapter's walk, and by `nestingBeyondDepth` over a parsed JSON value (the JSON adapter's documents and a tsconfig it reads) and a POM's elements; the JSON adapter counts the levels of a script's quoted words as it reads them.
+- `machineFailure` lives here too, since the engine's readers that swallow a failure to read a file (`dependencies.ts`) must let a failure of the machine's through, and the history's worker must refuse to write a summary made with one (`summarizeChange.ts`); its list of a name's or a path's codes is a copy of the tree writer's in `history/git.ts`.
 - As of its first commit, `READING_DEPTH` rests on a partial probe (three TypeScript constructs: nested arrays, objects and parentheses), and no test holds its margin over a fresh process's limits.
 
 ## Generated
