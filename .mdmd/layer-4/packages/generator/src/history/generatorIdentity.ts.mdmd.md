@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/generatorIdentity.ts`
-- Generated At: 2026-11-20T08:22:37.395Z
+- Generated At: 2026-11-20T09:32:49.175Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ The generator's half of the history's lens: its package version and, when it run
 - Since [the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md) the key also holds `tsconfig.base.json`, whose paths decide that the summarizing process loads the packages' sources. The guard finds a process started by any import of `child_process`, a call of `execFile`, `spawn`, `fork` or `exec`, or the engine's `execFileAsync`, allowing this module alone unkeyed, and holds the members of `RegenerationContext` and `SummaryTask` to a reviewed list, each with why it cannot change a summary unkeyed.
 
 - Since 2026-11-20 ([the record of making a run fast](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) `sequenceCodeIdentity` names the code that reads summaries into a sequence as the lens names the code that makes one: every file of the two packages but the tests (`readsSummaries`), keyed or not, the lock and the runtime's Unicode, the commit left out. The history command goes on from the sequence it wrote last only under the same identity. `checkoutOf` takes the rule it hashes by, so that the lens's key is made exactly as before.
+- Since [the independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-independent-review-and-its-mends) of the same day it holds git's own version (`git --version`) too: the steps carry git's word on what each change renamed and touched, and another git, as in a container rebuilt, could give other words to steps derived anew than to those written. The lens does not hold it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -80,7 +81,7 @@ reads summaries with), so that a module whose part in the reading nobody has wei
 
 #### `sequenceCodeIdentity` {#symbol-sequencecodeidentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L123)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L127)
 
 ##### `sequenceCodeIdentity` — Summary
 The identity of the code that turns summaries into a sequence, as {@link generatorIdentity} is the identity of the
@@ -89,6 +90,10 @@ committed and of the tool dependency lock, of their uncommitted changes, and of 
 which the order of names depends on. The commit it runs from is left out, as the lens leaves it out. Where the
 generator is installed rather than run from a checkout, its version stands for its code. Added on 2026-11-20 for
 the history command, which goes on from the sequence it wrote last only under the same identity.
+
+Since the independent review of that day it holds git's own version too (`git --version`): the steps carry git's
+word on what each change renamed and touched, and another git, as in a container rebuilt, could give other words to
+steps derived anew than those written.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -145,6 +145,13 @@ function tablesOf(interners: Interners): RowTables {
 }
 
 /**
+ * The writer {@link SequenceBuilder.continuing} hands the builder it makes, taken by the constructor at once: kept in the
+ * module, so that no caller gives a builder a writer whose moment is not the one the builder was held to (the
+ * independent review of 2026-11-20).
+ */
+let continuingWriter: SequenceWriter | undefined;
+
+/**
  * Builds a sequence from the shapes of the sampled changes, oldest first, and what the version control says between
  * them, and from their rows when it is given them: given rows at its base, it must be given them at every step.
  */
@@ -154,8 +161,9 @@ export class SequenceBuilder {
   private readonly carriesRows: boolean;
 
   /** A sequence whose base is the first sampled change. */
-  constructor(head: SequenceHead, commit: CommitInfo, shape: Shape, rows?: Rows, writer?: SequenceWriter) {
-    this.writer = writer ?? SequenceWriter.beginning(head, commit, shape, rows);
+  constructor(head: SequenceHead, commit: CommitInfo, shape: Shape, rows?: Rows) {
+    this.writer = continuingWriter ?? SequenceWriter.beginning(head, commit, shape, rows);
+    continuingWriter = undefined;
     this.carriesRows = rows !== undefined;
     this.previous = { shape, rows: rows ?? new Map<string, FileRows>() };
     const disagreements = this.carriesRows ? rowsAgainstShape(this.previous.rows, shape) : [];
@@ -180,7 +188,8 @@ export class SequenceBuilder {
     if (differences.length > 0) {
       throw new Error(`replaying the written sequence to ${last.id} does not give its moment: ${differences.slice(0, 5).join("; ")}`);
     }
-    return new SequenceBuilder(head, last, shape, rows, writer);
+    continuingWriter = writer;
+    return new SequenceBuilder(head, last, shape, rows);
   }
 
   /**

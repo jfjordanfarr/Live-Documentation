@@ -14,10 +14,13 @@ import * as zlib from "node:zlib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import type { HistorySequence } from "../../../packages/engine/src/live-docs/history/format";
+import { writeStoredTree } from "../../../packages/engine/src/live-docs/history/git";
 import { momentAt, seek } from "../../../packages/engine/src/live-docs/history/sequence";
 import type { CommitSummary } from "../../../packages/engine/src/live-docs/history/summary";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { committedLiveDocGraph } from "../../../packages/generator/src/history/headCheck";
 import { FIXTURE_GIT_ENV } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
@@ -220,6 +223,81 @@ describe("the history over a citing document whose name holds # or a percent-esc
 
   it("holds docs/50%41off.md as it is named, the check at the head passing", async () => {
     expect(await checkedHistory("50%41off.md")).toBe(0);
+  }, 300_000);
+});
+
+/** A repository of its own, its mirror generated in a checkout and committed: its top level, its configuration and a quiet logger. */
+async function mirrored(name: string, files: Record<string, string>): Promise<{ here: string; config: ReturnType<typeof normalizeLiveDocumentationConfig>; run: (args: string[]) => string }> {
+  const here = fs.mkdtempSync(path.join(privateTemporary, `${name}-`));
+  const config = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" });
+  fs.writeFileSync(path.join(here, ".live-docs.config.json"), `${JSON.stringify({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" })}\n`);
+  for (const [file, text] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(here, file)), { recursive: true });
+    fs.writeFileSync(path.join(here, file), text);
+  }
+  await generateLiveDocs({ workspaceRoot: here, config, logger: { info: () => undefined, warn: () => undefined, error: () => undefined } });
+  const run = (args: string[]): string => execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV, encoding: "utf8" }).trim();
+  run(["init", "--quiet", "-b", "main"]);
+  return { here, config, run };
+}
+
+/**
+ * The check at the head reads the committed docs from git's object store, following a doc that is a symbolic link
+ * through the commit's own listing as the tree writer does (the independent review of 2026-11-20, finding 2): the first
+ * form of that reader knew the targets of the links among the docs alone, so that a doc reached through a link outside
+ * the base layer, or through a folder that is a link, read as a link to nothing and the check failed falsely.
+ */
+describe("the committed docs read from the object store, through symbolic links", () => {
+  it("reads a doc that is a link to a link outside the base layer, and one reached through a folder that is a link, as the tree writer writes them", async () => {
+    const { here, config, run } = await mirrored("linked-docs", { "src/a.ts": "/** A. */\nexport const a = 1;\n", "src/b.ts": "/** B. */\nexport const b = 2;\n" });
+    const docs = path.join(here, ".mdmd", "layer-4", "src");
+    // a's doc: a link to `shared/a.ts.mdmd.md`, itself a link to the file in `real/`.
+    fs.mkdirSync(path.join(here, "real"));
+    fs.renameSync(path.join(docs, "a.ts.mdmd.md"), path.join(here, "real", "a.ts.mdmd.md"));
+    fs.mkdirSync(path.join(here, "shared"));
+    fs.symlinkSync("../real/a.ts.mdmd.md", path.join(here, "shared", "a.ts.mdmd.md"));
+    fs.symlinkSync("../../../shared/a.ts.mdmd.md", path.join(docs, "a.ts.mdmd.md"));
+    // b's doc: a link through `store`, a folder that is a link to `store-real`.
+    fs.mkdirSync(path.join(here, "store-real", "docs"), { recursive: true });
+    fs.renameSync(path.join(docs, "b.ts.mdmd.md"), path.join(here, "store-real", "docs", "b.ts.mdmd.md"));
+    fs.symlinkSync("store-real", path.join(here, "store"));
+    fs.symlinkSync("../../../store/docs/b.ts.mdmd.md", path.join(docs, "b.ts.mdmd.md"));
+    run(["add", "--all"]);
+    run(["commit", "--quiet", "-m", "Docs that are links through links and through a folder that is a link"]);
+    const commit = run(["rev-parse", "HEAD"]);
+
+    const committed = await committedLiveDocGraph(here, commit, config);
+    // The oracle: the commit's tree as the history's tree writer writes it, read from the disk by the doc reader.
+    const tree = fs.mkdtempSync(path.join(privateTemporary, "linked-tree-"));
+    // The folder that is a link is not written as one, and what is read through it is written as a copy.
+    expect((await writeStoredTree(here, commit, tree)).map((entry) => entry.path)).toEqual(["store"]);
+    const onDisk = await readLiveDocGraph({ workspaceRoot: tree, config });
+    expect(Object.keys(committed.files)).toEqual(expect.arrayContaining(["src/a.ts", "src/b.ts"]));
+    expect(Object.keys(committed.files).sort()).toEqual(Object.keys(onDisk.files).sort());
+    for (const file of ["src/a.ts", "src/b.ts"]) expect(committed.files[file], file).toEqual(onDisk.files[file]);
+  }, 120_000);
+});
+
+/**
+ * A committed doc whose file the head's tree cannot hold under its own name (the independent review of 2026-11-20,
+ * finding 4): here a name that is not UTF-8, which the tree writer leaves out on every disk, standing for the names
+ * Windows reserves and the names a folding disk takes for one, which this disk holds. The check at the head reads the
+ * committed docs from git's object store, where the name stands, and must not compare what the history never read.
+ */
+describe("the check at the head over a doc whose file the head's tree left out", () => {
+  it("passes, naming the file it did not compare and why", async () => {
+    const { here, run } = await mirrored("left-out", { "src/a.ts": "/** A. */\nexport const a = 1;\n", "src/cafe.ts": "/** A cafe. */\nexport const cafe = 2;\n" });
+    // The file and its doc renamed to a name holding é as Latin-1 writes it, a byte that is not UTF-8.
+    const latin = (file: string): Buffer => Buffer.from(path.join(here, file).replace("cafe", "café"), "latin1");
+    fs.renameSync(path.join(here, "src", "cafe.ts"), latin("src/cafe.ts"));
+    fs.renameSync(path.join(here, ".mdmd", "layer-4", "src", "cafe.ts.mdmd.md"), latin(".mdmd/layer-4/src/cafe.ts.mdmd.md"));
+    run(["add", "--all"]);
+    run(["commit", "--quiet", "-m", "A file whose name is not UTF-8, and its doc"]);
+    const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1", "--check-head"], { encoding: "utf8", env: process.env });
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stderr).toContain("its name is not valid UTF-8");
+    expect(result.stdout).toContain("not compared, since the head's tree did not hold them and so the history does not read them:");
+    expect(result.stdout).toMatch(/not compared[^\n]*\(its name is not valid UTF-8, so it cannot be written under its own name\)/u);
   }, 300_000);
 });
 

@@ -36,15 +36,23 @@ import type { Shape } from "@live-documentation/engine/live-docs/history/shape";
 /**
  * The graph of the Live Docs committed at a commit, read from git's object store: every file of the commit's tree under
  * the docs root's base layer whose name ends in the docs' extension, a regular or an executable file, or a symbolic link
- * that leads through the commit's own listing to one ({@link followLink}, as the history's tree writer follows it), each
- * blob's bytes read as UTF-8 and parsed as `readLiveDocGraph` parses a doc on disk.
+ * that leads through the commit's own listing to one ({@link followLink}, given the target of every link of the listing,
+ * as the history's tree writer gives it), each blob's bytes read as UTF-8 and parsed as `readLiveDocGraph` parses a doc
+ * on disk.
  *
  * @remarks
  * Until 2026-11-20 the commit's whole tree was written to a scratch folder for this, as each commit's tree is written
  * for its summary, and the docs read back from the disk: 5 to 7 s of every run at this repository's head, almost all
  * of it the writing of files the check never reads. What the disk could change, the object store does not: a name the
- * disk takes for another's (two docs whose names differ by case alone, on a disk that folds case) or one it cannot
- * hold is read here under its own name, as the commit stores it. The generator writes no such names.
+ * tree writer leaves out of a tree (one Windows reserves, a name two entries share on a disk that folds case or
+ * normalization, one that is not UTF-8) is read here under its own name, as the commit stores it. The check compares
+ * no such file ({@link leftOutAtHead}). For the first form of this reader the independent review of 2026-11-20 found
+ * that only the targets of the links among the docs were read, so that a doc that is a link to a link outside the base
+ * layer, or reached through a folder that is a link, was taken for a link to nothing.
+ *
+ * The listing and the batch reader repeat two of `git.ts`'s readers, which this module does not import because that
+ * file keys the history's lens and an edit of it would derive every summary again; they are to be folded into it at the
+ * next change that moves the lens anyway.
  */
 export async function committedLiveDocGraph(repository: string, commit: string, location: DocLocation): Promise<LiveDocGraph> {
   const asStored = { GIT_NO_REPLACE_OBJECTS: "1" };
@@ -59,7 +67,8 @@ export async function committedLiveDocGraph(repository: string, commit: string, 
   }
   const folder = `${path.posix.join(location.root, location.baseLayer)}/`;
   const docs = [...byPath].filter(([file]) => file.startsWith(folder) && file.endsWith(location.extension));
-  const links = docs.filter(([, entry]) => entry.mode === "120000");
+  // Every link of the listing, wherever it stands: a link to a doc may lead through others, and through folders that are links.
+  const links = [...byPath].filter(([, entry]) => entry.mode === "120000");
   const linkTargets = await readBlobs(repository, [...new Set(links.map(([, entry]) => entry.id))]);
   const targets = new Map(links.map(([file, entry]) => [file, linkTargets.get(entry.id)?.toString("utf8") ?? ""]));
   const blobOf = new Map<string, string>();
@@ -120,13 +129,34 @@ export interface ReplayedMoment {
 }
 
 /**
+ * The committed files the check at the head does not compare, each with why: those whose source or whose doc the head's
+ * tree did not hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree
+ * writer leaves out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names
+ * one on a disk that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check
+ * where the history is right. The check that read the committed docs from git's object store compared them until the
+ * independent review of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names
+ * out of both sides.
+ *
+ * @param leftOut - Each entry the head's tree did not hold, by its path, with why.
+ */
+export function leftOutAtHead(committed: LiveDocGraph, leftOut: ReadonlyMap<string, string>): Map<string, string> {
+  const notCompared = new Map<string, string>();
+  for (const file of Object.values(committed.files).sort((a, b) => compare(a.codePath, b.codePath))) {
+    const reason = leftOut.get(file.codePath) ?? leftOut.get(file.docPath);
+    if (reason !== undefined) notCompared.set(file.codePath, reason);
+  }
+  return notCompared;
+}
+
+/**
  * Where a replayed moment differs from a graph derived from committed Live Docs, in words.
  *
  * @param textOf - The text the replayed rows name by an id.
+ * @param notCompared - The files left out of the comparison ({@link leftOutAtHead}), with every link to or from them.
  */
-export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGraph, textOf: (id: number) => string): string[] {
+export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGraph, textOf: (id: number) => string, notCompared: ReadonlySet<string> = new Set()): string[] {
   const differences: string[] = [];
-  const paths = new Set([...Object.keys(committed.files), ...replayed.rows.keys()]);
+  const paths = new Set([...Object.keys(committed.files), ...replayed.rows.keys()].filter((file) => !notCompared.has(file)));
   for (const path of [...paths].sort(compare)) {
     const file = committed.files[path];
     const rows = replayed.rows.get(path);
@@ -146,7 +176,8 @@ export function headDifferences(replayed: ReplayedMoment, committed: LiveDocGrap
       }
     }
   }
-  differences.push(...linkDifferences(linksOfGraph(committed), linksOf(replayed.rows)));
+  const compared = (link: RowLink): boolean => !notCompared.has(link.from) && !notCompared.has(link.to);
+  differences.push(...linkDifferences(linksOfGraph(committed).filter(compared), linksOf(replayed.rows).filter(compared)));
   return differences;
 }
 

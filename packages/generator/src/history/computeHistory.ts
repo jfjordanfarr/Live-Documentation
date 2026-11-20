@@ -47,8 +47,17 @@
  * process with a large heap pays for every process it starts; the check at
  * the head reads the committed docs from git's object store rather than
  * writing the head's tree (`headCheck.ts`). Measured in the record of
- * 2026-11-20 (`Probes/history-rebuild-fast`): a run with nothing to
- * regenerate took about 105 s before.
+ * 2026-11-20 (`Probes/history-rebuild-fast`) on this repository's 1,356
+ * commits, the cache whole: a run with nothing to regenerate took 96 s
+ * before; after, 61 s where it derived every step and 4.5 s where it went on.
+ *
+ * The key is broad: the code's identity covers every file of the engine and
+ * the generator but a test, so any commit that touches either package derives
+ * every step once at the next run, while a repository that only uses the tool
+ * goes on every time. An independent review of the same day found the key
+ * taken after the regeneration, the record believed in any shape, a record's
+ * damage failing every later run, and git's own version outside the key; each
+ * is mended, and the record now holds its own hash.
  *
  * @module
  */
@@ -82,7 +91,7 @@ import type { MainlineChange, VersionControl } from "@live-documentation/engine/
 import { WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
 
 import { generatorIdentity, sequenceCodeIdentity } from "./generatorIdentity";
-import { committedLiveDocGraph, headDifferences } from "./headCheck";
+import { committedLiveDocGraph, headDifferences, leftOutAtHead } from "./headCheck";
 import { indexPath, regenerate, Scratch, summaryPath } from "./regenerate";
 
 /** What to compute. */
@@ -215,7 +224,10 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   const workspaceRoot = path.resolve(options.workspace);
   const versionControl = await openGitRepository(workspaceRoot);
   const configuration = await lensConfiguration(workspaceRoot, options.configPath);
-  const lens = lensOf(await generatorIdentity(), configuration);
+  // Both identities are taken before any work, so that the record a run leaves is keyed with the code that did the run,
+  // even when the code on disk changes while it runs (the independent review of 2026-11-20, finding 1).
+  const [generator, code] = await Promise.all([generatorIdentity(), sequenceCodeIdentity()]);
+  const lens = lensOf(generator, configuration);
 
   const end = await versionControl.mainlineEnd();
   const mainline = await versionControl.mainline();
@@ -234,7 +246,7 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     const claim = await holdLock(historyFolder, options.progress);
     scratch.hold(claim);
     try {
-      return await run(options, { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder, scratch });
+      return await run(options, { workspaceRoot, versionControl, configuration, lens, code, end, mainline, sampled, historyFolder, cacheFolder, scratch });
     } finally {
       await scratch.release(claim);
     }
@@ -246,6 +258,8 @@ interface RunContext {
   versionControl: VersionControl;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
+  /** The identity of the code that reads summaries into a sequence, taken at the run's start (`sequenceCodeIdentity`). */
+  code: string;
   end: Awaited<ReturnType<VersionControl["mainlineEnd"]>>;
   mainline: MainlineChange[];
   sampled: MainlineChange[];
@@ -286,10 +300,13 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const timings: number[] = [];
   let peakMemory = 0;
   let regenerationMilliseconds = 0;
+  // The most changes summarized at once, whether they were missing or summarized again.
+  let jobsUsed = jobs;
   // Summarizes the changes, stopping the run where the deadline left some undone.
   const summarize = async (changes: readonly MainlineChange[]): Promise<void> => {
     if (changes.length === 0) return;
     const at = Math.max(1, Math.min(machineJobs, changes.length));
+    jobsUsed = Math.max(jobsUsed, at);
     const began = Date.now();
     const regeneration = await regenerate(changes, { versionControl, configuration, lens, cacheFolder, keepIndex: options.keepIndex, jobs: at, scratch: context.scratch, deadline, progress: options.progress });
     regenerationMilliseconds += Date.now() - began;
@@ -317,8 +334,8 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     historyFolder,
     authors: options.authors,
     bundleExclude: configuration.bundleExclude,
-    key: continuationKey(lens.key, await sequenceCodeIdentity(), configuration),
-    rederive: options.rederive === true,
+    key: continuationKey(lens.key, context.code, configuration),
+    ...(options.rederive === true ? { rederive: "asked with --rederive" } : {}),
     progress: options.progress,
     source: {
       system: versionControl.system,
@@ -337,6 +354,14 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const summarizedAgain = new Set<string>();
   while (!derived.whole) {
     const still = derived.damaged.filter((change) => summarizedAgain.has(change.id));
+    if (still.length > 0 && derived.wentOn) {
+      // What the record of the written sequence names, summarizing again did not mend: the record is not what those
+      // summaries make, so the run derives every step instead, once, rather than fail every run until --rederive.
+      options.progress(`the summaries of ${still.map((change) => change.id.slice(0, 8)).join(", ")} were summarized again and the record of the sequence the last run wrote still names texts they do not: every step is derived again`);
+      reading.rederive = "a run that went on from it met damage that summarizing again did not mend";
+      derived = await deriveSequence(sampled, reading);
+      continue;
+    }
     if (still.length > 0) {
       throw new Error(`the summaries of ${still.map((change) => change.id.slice(0, 8)).join(", ")} were summarized again by this run and still do not read or name texts the store holds`);
     }
@@ -354,6 +379,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     configuration,
     lens,
     textOf: (id) => read[id],
+    leftOut: unwritten.filter(([commit]) => commit === end.head).map(([, file, reason]): [string, string] => [file, reason]),
     asked: options.checkHead === true,
     ownConfiguration: options.configPath === undefined,
     head: end.head
@@ -378,15 +404,17 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
   }
 
+  // A change both missing and summarized again was regenerated once, as the person counts it.
+  const regenerated = new Set([...missing.map((change) => change.id), ...summarizedAgain]).size;
   return {
     sequence,
     file: relative(path.join(historyFolder, HISTORY_FILE)),
     cache: relative(cacheFolder),
     sampled: sampled.length,
-    regenerated: missing.length + summarizedAgain.size,
-    cached: sampled.length - missing.length - summarizedAgain.size,
+    regenerated,
+    cached: sampled.length - regenerated,
     millisecondsPerChange: timings.length > 0 ? timings.reduce((sum, time) => sum + time, 0) / timings.length : 0,
-    jobs,
+    jobs: jobsUsed,
     regenerationMilliseconds,
     peakMemory,
     cacheBytes: await folderBytes(cacheFolder),
@@ -619,8 +647,8 @@ interface ReadingContext {
   bundleExclude: readonly string[];
   /** The key a sequence written by an earlier run must carry for this run to go on from it ({@link continuationKey}). */
   key: string;
-  /** Derive every step from the summaries, whatever an earlier run wrote. */
-  rederive: boolean;
+  /** Why every step is derived from the summaries, whatever an earlier run wrote, when it is. */
+  rederive?: string;
   progress: (line: string) => void;
 }
 
@@ -645,6 +673,8 @@ type Derived =
       whole: false;
       /** The changes whose summaries do not read, or name a text the store lacks or holds changed, in the mainline's order. */
       damaged: MainlineChange[];
+      /** Whether the reading went on from the sequence the last run wrote, whose record named the texts. */
+      wentOn: boolean;
     };
 
 /** How many git processes the reading of the sequence runs at once. */
@@ -703,14 +733,14 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
   let builder: SequenceBuilder | undefined;
   let start = 1;
   let line: string | undefined;
-  const written = context.rederive ? { reason: "asked with --rederive" } : await writtenSequence(sampled, commitOf, context);
+  const written = context.rederive !== undefined ? { reason: context.rederive } : await writtenSequence(sampled, commitOf, context);
   if ("sequence" in written) {
     const last = written.sequence.steps.length;
     texts = new Interner(written.record.texts);
     firstNamed = [...written.record.firstNamed];
     unwritten = written.record.unwritten.map(([commit, file, reason]): [string, string, string] => [commit, file, reason]);
     const summary = await read(last);
-    if (summary === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)) };
+    if (summary === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), wentOn: true };
     try {
       builder = SequenceBuilder.continuing(head, written.sequence, shapeOfSummary(summary), rowsOfSummary(summary, textId(last)));
       start = last + 1;
@@ -759,7 +789,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
     if (text !== undefined) await fs.rm(file, { force: true });
     damaged.add(sampled[firstNamed[id]].id);
   });
-  if (damaged.size > 0 || builder === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)) };
+  if (damaged.size > 0 || builder === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), wentOn: line !== undefined };
   const why = "reason" in written && written.reason !== NOTHING_WRITTEN ? `; the sequence the last run wrote was not gone on from: ${written.reason}` : "";
   return {
     whole: true,
@@ -796,8 +826,11 @@ async function atOnce<T, R>(items: readonly T[], size: number, work: (item: T, i
  */
 const CONTINUATION_FILE = "history-resume.json";
 
-/** The version of {@link CONTINUATION_FILE}'s format. */
-const CONTINUATION_FORMAT = "live-docs-history-resume/1";
+/**
+ * The version of {@link CONTINUATION_FILE}'s format. Since the independent review of 2026-11-20 (its second), the record
+ * also holds its own hash (`check`), so that a record damaged after it was written is not believed.
+ */
+const CONTINUATION_FORMAT = "live-docs-history-resume/2";
 
 /** What {@link CONTINUATION_FILE} holds. */
 interface ContinuationRecord {
@@ -812,13 +845,52 @@ interface ContinuationRecord {
   firstNamed: number[];
   /** The entries each change's tree did not hold: the change, the path and why. */
   unwritten: Array<[commit: string, path: string, reason: string]>;
+  /**
+   * The SHA-256 of the record's other fields ({@link recordCheck}). A text's hash changed in the record names a text no
+   * summary writes, and two swapped give each id the other's words; neither shows at the last moment, which is all the
+   * replay looks at.
+   */
+  check: string;
+}
+
+/** The hash a record holds of its other fields, in the order the format lists them. */
+function recordCheck(record: Omit<ContinuationRecord, "check">): string {
+  return createHash("sha256").update(JSON.stringify([record.format, record.key, record.sequence, record.texts, record.firstNamed, record.unwritten])).digest("hex");
+}
+
+/**
+ * The record as it was written, or why it is not believed: it must be an object of the format's fields, each of its
+ * type, every text's hash named once, a place for each, and its own hash its fields' ({@link recordCheck}). Until the
+ * review of 2026-11-20 a record holding `null` stopped the run with a TypeError.
+ */
+function recordOf(value: unknown): ContinuationRecord | { reason: string } {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return { reason: "its record does not read" };
+  const record = value as Partial<ContinuationRecord>;
+  if (record.format !== CONTINUATION_FORMAT) return { reason: "its record is of another format" };
+  const hash = (field: unknown): boolean => typeof field === "string" && /^[0-9a-f]{64}$/u.test(field);
+  const sound =
+    typeof record.key === "string" &&
+    hash(record.sequence) &&
+    Array.isArray(record.texts) &&
+    record.texts.every(hash) &&
+    new Set(record.texts).size === record.texts.length &&
+    Array.isArray(record.firstNamed) &&
+    record.firstNamed.length === record.texts.length &&
+    record.firstNamed.every((place) => Number.isInteger(place) && place >= 0) &&
+    Array.isArray(record.unwritten) &&
+    record.unwritten.every((entry) => Array.isArray(entry) && entry.length === 3 && entry.every((part) => typeof part === "string")) &&
+    record.check === recordCheck(record as ContinuationRecord);
+  return sound ? (record as ContinuationRecord) : { reason: "its record does not read" };
 }
 
 /**
  * The key a written sequence is gone on from under: the lens's key, which names the summaries it was read from; the
- * identity of the code that reads summaries into a sequence (`sequenceCodeIdentity`); and the whole configuration,
- * of which the reading uses the bundle's exclusions and the docs root. The sampling, the authors and the line are
- * held apart, by the changes the written sequence names ({@link writtenSequence}).
+ * identity of the code that reads summaries into a sequence and of the git whose words the steps carry
+ * (`sequenceCodeIdentity`), taken at the run's start; and the whole configuration, of which the reading uses the
+ * bundle's exclusions and the docs root. The sampling, the authors and the line are held apart, by the changes the
+ * written sequence names ({@link writtenSequence}). For a change that alters only earlier steps (an edit of the bundle's
+ * exclusions that touches a file only early commits held, or of the code that reads an early step) the key is the only
+ * guard: the replay's guard looks at the last moment alone.
  */
 function continuationKey(lens: string, code: string, configuration: LiveDocumentationConfig): string {
   return createHash("sha256").update(canonicalJson({ format: CONTINUATION_FORMAT, lens, code, configuration })).digest("hex").slice(0, 16);
@@ -849,13 +921,14 @@ async function writtenSequence(
   } catch {
     return { reason: NOTHING_WRITTEN };
   }
-  let record: ContinuationRecord;
+  let read: unknown;
   try {
-    record = JSON.parse(await fs.readFile(path.join(context.historyFolder, CONTINUATION_FILE), "utf8")) as ContinuationRecord;
+    read = JSON.parse(await fs.readFile(path.join(context.historyFolder, CONTINUATION_FILE), "utf8"));
   } catch {
     return { reason: `no record of how it was made stands beside it (${CONTINUATION_FILE})` };
   }
-  if (record.format !== CONTINUATION_FORMAT) return { reason: "its record is of another format" };
+  const record = recordOf(read);
+  if ("reason" in record) return record;
   if (record.sequence !== createHash("sha256").update(bytes).digest("hex")) return { reason: "it is not the sequence its record describes" };
   if (record.key !== context.key) return { reason: "it was read from the summaries under another lens, by other code or under another configuration" };
   const sequence = JSON.parse(bytes.toString("utf8")) as HistorySequence;
@@ -863,21 +936,13 @@ async function writtenSequence(
   if (commits.length > sampled.length || commits.some((commit, index) => JSON.stringify(commit) !== JSON.stringify(commitOf(sampled[index])))) {
     return { reason: "its changes are not the first of the changes sampled now" };
   }
-  const sound =
-    Array.isArray(record.texts) &&
-    Array.isArray(record.firstNamed) &&
-    Array.isArray(record.unwritten) &&
-    record.texts.length === record.firstNamed.length &&
-    new Set(record.texts).size === record.texts.length &&
-    record.texts.every((hash) => typeof hash === "string" && /^[0-9a-f]{64}$/u.test(hash)) &&
-    record.firstNamed.every((place) => Number.isInteger(place) && place >= 0 && place < commits.length);
-  if (!sound) return { reason: "its record does not read" };
+  if (!record.firstNamed.every((place) => place < commits.length)) return { reason: "its record does not read" };
   return { sequence, record };
 }
 
 /** Writes the record of how the sequence beside it was made, after the sequence, so that it never names a sequence that is not whole. */
-async function writeContinuation(historyFolder: string, record: ContinuationRecord): Promise<void> {
-  await writeInPlace(path.join(historyFolder, CONTINUATION_FILE), JSON.stringify(record));
+async function writeContinuation(historyFolder: string, record: Omit<ContinuationRecord, "check">): Promise<void> {
+  await writeInPlace(path.join(historyFolder, CONTINUATION_FILE), JSON.stringify({ ...record, check: recordCheck(record) }));
 }
 
 /**
@@ -905,6 +970,8 @@ interface HeadCheckContext {
   lens: HistoryLens;
   /** Each text the sequence names, by its id, as the reading held it to its hash. */
   textOf: (id: number) => string;
+  /** The entries the head's summary says its tree did not hold, each with why: the history does not read them, so the check does not compare them. */
+  leftOut: ReadonlyArray<[path: string, reason: string]>;
   /** Whether the person asked for the check, asserting that the docs committed at the head were made by this generator under this configuration. */
   asked: boolean;
   /** Whether the lens's configuration is the workspace's own, the one its committed mirror was made under. */
@@ -945,17 +1012,23 @@ async function checkHead(sequence: HistorySequence, context: HeadCheckContext): 
     return { applied: false, line: `the check at the head was skipped: no Live Docs are committed at ${context.head.slice(0, 8)}` };
   }
   const moment = momentAt(sequence, sequence.steps.length);
-  const differences = headDifferences(moment, committed, context.textOf);
+  const notCompared = leftOutAtHead(committed, new Map(context.leftOut));
+  const differences = headDifferences(moment, committed, context.textOf, new Set(notCompared.keys()));
+  // What the head's tree did not hold is named, with why, so that nothing the check passes over is passed over silently.
+  const passedOver =
+    notCompared.size > 0
+      ? `; not compared, since the head's tree did not hold them and so the history does not read them: ${[...notCompared].map(([file, reason]) => `${file} (${reason})`).join("; ")}`
+      : "";
   if (differences.length > 0) {
     throw new Error(
-      `the history's last step is not the graph of the Live Docs committed at ${context.head.slice(0, 8)}: ${differences.slice(0, 5).join("; ")}. ` +
+      `the history's last step is not the graph of the Live Docs committed at ${context.head.slice(0, 8)}: ${differences.slice(0, 5).join("; ")}${passedOver}. ` +
         "When the mirror was not regenerated after the last change of the source, run `npm run live-docs:generate`, commit the docs and run again."
     );
   }
   const symbols = [...moment.rows.values()].reduce((sum, file) => sum + file.symbols.length, 0);
   return {
     applied: true,
-    line: `the last step's ${moment.rows.size} files, ${symbols} symbols with their words, and ${linksOf(moment.rows).length} links are those of the Live Docs committed at ${context.head.slice(0, 8)}, read afresh`
+    line: `the last step's ${moment.rows.size} files, ${symbols} symbols with their words, and ${linksOf(moment.rows).length} links are those of the Live Docs committed at ${context.head.slice(0, 8)}, read afresh${passedOver}`
   };
 }
 

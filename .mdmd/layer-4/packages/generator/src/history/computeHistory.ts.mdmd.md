@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-20T08:22:37.385Z
+- Generated At: 2026-11-20T09:32:49.164Z
 
 ## Authored
 ### Purpose
@@ -24,48 +24,49 @@ The history command: the mainline read and sampled, every sampled commit the cac
 - Since 2026-11-19 each summary is read through `bundledSummary` with the configuration's `bundleExclude`, the one place the bundle's exclusions are applied to the history. The run's line and `unwritten.txt` say an entry was not written into its tree, with the reason, no longer that the disk could not hold it.
 
 - Since 2026-11-20 ([the record of making a run fast](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) a run reads each summary it needs once and every text once: whether a cached summary reads, and whether the texts it names are sound, is found where the sequence reads it (`deriveSequence`), and such a commit is summarized again and the sequence read again, where before every summary was read twice and every text twice. A run goes on from the sequence the last run wrote, when the record beside it (`history-resume.json`) names its bytes under this run's key (the lens, `sequenceCodeIdentity` of the code that reads summaries into a sequence, and the whole configuration) and its every commit is the first of those sampled now as this run would write it; then only the last written commit's summary and the new ones are read, and the bytes written are those of a whole derivation (`--rederive`), which the integration test and the record hold to each other. The steps' git words are asked before any summary is read, eight at once, since starting a process from a large heap was most of their cost; the check at the head reads the committed docs from git's object store (`headCheck.ts`) instead of writing the head's whole tree. None of it moves the lens's key: this module, `headCheck.ts`, `sequence.ts` and `generatorIdentity.ts` are not keyed.
+- Mended the same day after [an independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-independent-review-and-its-mends): the code's identity, git's version now in it, is taken at the run's start beside the generator's, so that code changed during a long run never keys a record of what the old code wrote; the record is checked to be its shape and to hold its own hash before it is believed (format `live-docs-history-resume/2`); a run that goes on and meets damage summarizing again does not mend derives every step instead, once, and says so; the check at the head compares no file the head's summary lists as left out of its tree, and names each; a change both missing and summarized again counts once. The key is broad: any commit that touches the engine or the generator derives every step once at the next run, and a repository that only uses the tool goes on every time. For a change that shows only at early steps the key is the only guard, and the integration tests hold it, the code's half and the configuration's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L89)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L98)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
 #### `SupersededCache` {#symbol-supersededcache}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L117)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L126)
 
 ##### `SupersededCache` — Summary
 A cache folder under the history folder that belongs to another lens than the current one.
 
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L129)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L138)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
 #### `HistoryStopped` {#symbol-historystopped}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L156)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L165)
 
 ##### `HistoryStopped` — Summary
 A run that stopped, as asked, before the cache held every sampled change: no sequence was written.
 
 #### `HEAD_CHECK_RULE` {#symbol-head_check_rule}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L161)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L170)
 
 ##### `HEAD_CHECK_RULE` — Summary
 When the check at the head applies, in the words the command prints when it skips it.
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L190)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L199)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -74,7 +75,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L197)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L206)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -83,7 +84,7 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L208)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L217)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -93,7 +94,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L214)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L223)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -101,7 +102,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L413)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L441)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -121,14 +122,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L534)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L562)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L562)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L590)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -141,7 +142,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1026)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1099)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -191,6 +192,7 @@ A size in the units a person reads it in.
 - [`generatorIdentity.sequenceCodeIdentity`](./generatorIdentity.ts.mdmd.md#symbol-sequencecodeidentity)
 - [`headCheck.committedLiveDocGraph`](./headCheck.ts.mdmd.md#symbol-committedlivedocgraph)
 - [`headCheck.headDifferences`](./headCheck.ts.mdmd.md#symbol-headdifferences)
+- [`headCheck.leftOutAtHead`](./headCheck.ts.mdmd.md#symbol-leftoutathead)
 - [`regenerate.Scratch`](./regenerate.ts.mdmd.md#symbol-scratch)
 - [`regenerate.indexPath`](./regenerate.ts.mdmd.md#symbol-indexpath)
 - [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)

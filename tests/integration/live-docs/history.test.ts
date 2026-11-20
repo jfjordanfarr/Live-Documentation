@@ -13,7 +13,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import * as zlib from "node:zlib";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
@@ -28,7 +28,18 @@ import { textInPart, textsOfFile, wordsPartFile, type WordsPart } from "../../..
 import { buildStaticExplorer } from "../../../packages/explorer/src/shared/staticBuilder";
 import type { StaticExplorerData } from "../../../packages/explorer/src/shared/staticExplorerData";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { computeHistory } from "../../../packages/generator/src/history/computeHistory";
 import { buildRepository, CHECKED_CONFIG, CHECKED_SCRIPT, FIXTURE_GIT_ENV, git, MODEL, SCRIPT, SCRIPTED_CONFIG as CONFIG } from "./scripted-repository";
+
+/**
+ * The identity of the code that reads summaries into a sequence, as an in-process run of the command takes it: this
+ * repository's own unless a case stands another in, as the code on disk would be were it edited during a run.
+ */
+const codeIdentity = vi.hoisted(() => ({ value: undefined as string | undefined }));
+vi.mock("../../../packages/generator/src/history/generatorIdentity", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../../packages/generator/src/history/generatorIdentity")>();
+  return { ...actual, sequenceCodeIdentity: async () => codeIdentity.value ?? (await actual.sequenceCodeIdentity()) };
+});
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -264,6 +275,135 @@ describe("the history command over a scripted repository", () => {
     expect(worktrees).toHaveLength(1);
     expect(git(repository, ["status", "--porcelain", "--untracked-files=all"]).split("\n").filter(Boolean).filter((line) => line.includes(".mdmd/history"))).toEqual([]);
   });
+});
+
+/**
+ * The command run in this process over the scripted repository, its cache whole, so that a case can stand in the code's
+ * identity and read every line of progress: the key a run goes on under, which for a change that shows only at early
+ * steps is the only guard (the replay's guard looks at the last moment alone), and the record's damage (the
+ * independent review of 2026-11-20).
+ */
+describe("the key and the record a run goes on from", () => {
+  const history = (): string => path.join(repository, ".mdmd", "history");
+  const written = (): Buffer => fs.readFileSync(path.join(history(), "history.json"));
+  // A function, since the repository is made only once the cases run.
+  const recordFile = (): string => path.join(history(), "history-resume.json");
+
+  /** One run of the command in this process, under the code identity given (this repository's when none), and its progress. */
+  async function run(identity?: string, meanwhile?: string): Promise<string> {
+    const lines: string[] = [];
+    codeIdentity.value = identity;
+    // A summarizing process loads the packages' sources, as under the command's tsx, not what was last built.
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    try {
+      await computeHistory({
+        workspace: repository,
+        sampling: { rule: "every-commit" },
+        jobs: 2,
+        keepIndex: true,
+        authors: true,
+        progress: (line) => {
+          lines.push(line);
+          // The code on disk changed once the run is under way.
+          if (meanwhile !== undefined) codeIdentity.value = meanwhile;
+        }
+      });
+    } finally {
+      codeIdentity.value = undefined;
+    }
+    return lines.join("\n");
+  }
+
+  const summaryAt = (step: number): CommitSummary => JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(history(), sequence.lens.key, `${commits[step]}.json.gz`))).toString("utf8")) as CommitSummary;
+  const textsOf = (summary: CommitSummary): Set<string> => new Set(summary.files.flatMap((file) => [file.authored, ...file.symbols.map((symbol) => symbol.text)]).filter((hash): hash is string => hash !== undefined));
+  /** A text the base names and the head does not, named by the fewest commits: the view's description, named by the first two. */
+  function earlyText(): { hash: string; steps: number[] } {
+    const named = commits.map((_, step) => textsOf(summaryAt(step)));
+    const early = [...named[0]].filter((hash) => !named[commits.length - 1].has(hash)).map((hash) => ({ hash, steps: named.flatMap((texts, step) => (texts.has(hash) ? [step] : [])) }));
+    return early.sort((a, b) => a.steps.length - b.steps.length)[0];
+  }
+
+  it("keys its record with the code that began the run, so that code changed during a run is not gone on from", async () => {
+    await run();
+    await run("the code at the start", "the code changed meanwhile");
+    // The next run, under the code as it now stands, finds the record another code's and derives every step.
+    const next = await run("the code changed meanwhile");
+    expect(next).toContain("the sequence the last run wrote was not gone on from: it was read from the summaries under another lens, by other code or under another configuration");
+    expect(await run("the code changed meanwhile")).toContain("went on from the sequence the last run wrote");
+  }, 120_000);
+
+  it("derives every step again after an edit of the configuration that changes only early steps, and says why", async () => {
+    // The legacy helper's notes are linked only until the fifth commit: excluding them from the bundle changes the first
+    // four steps and leaves the last moment as it was, which the replay's guard alone would pass. First a record under
+    // this repository's own code, whatever the last case left, which the next run goes on from.
+    await run();
+    expect(await run()).toContain("went on from the sequence the last run wrote");
+    const configFile = path.join(repository, ".live-docs.config.json");
+    const saved = fs.readFileSync(configFile, "utf8");
+    const links = (step: number): string[] => [...seek(JSON.parse(written().toString("utf8")) as HistorySequence, step).docLinks].map((key) => key.replace("\u0000", " -> "));
+    const lastBefore = links(commits.length - 1);
+    expect(links(0)).toContain("lib/legacy.ts -> docs/old-notes.md");
+    fs.writeFileSync(configFile, `${JSON.stringify({ ...(JSON.parse(saved) as object), bundleExclude: ["docs/old-notes.md"] }, null, 2)}\n`, "utf8");
+    try {
+      const edited = await run();
+      expect(edited).toContain("0 to regenerate");
+      expect(edited).toContain("the sequence the last run wrote was not gone on from: it was read from the summaries under another lens, by other code or under another configuration");
+      expect(links(0)).not.toContain("lib/legacy.ts -> docs/old-notes.md");
+      expect(links(commits.length - 1)).toEqual(lastBefore);
+    } finally {
+      fs.writeFileSync(configFile, saved, "utf8");
+    }
+    expect(await run()).toContain("not gone on from: it was read from the summaries under another lens, by other code or under another configuration");
+  }, 120_000);
+
+  it("mends a damaged text by summarizing again the change that first named it, though the head does not name it", async () => {
+    // A record under this repository's own code, whatever the last case left.
+    await run();
+    const { hash, steps } = earlyText();
+    expect(steps[0]).toBe(0);
+    const file = path.join(history(), sequence.lens.key, TEXT_STORE_DIRECTORY, hash.slice(0, 2), hash);
+    const before = written();
+    fs.rmSync(file);
+    const mended = await run();
+    expect(mended).toContain(`1 changes are summarized again, since their summaries do not read or name texts the store lacks or holds changed: ${commits[0].slice(0, 8)}`);
+    expect(mended).toContain("went on from the sequence the last run wrote");
+    expect(fs.existsSync(file)).toBe(true);
+    expect(written().equals(before)).toBe(true);
+  }, 120_000);
+
+  it("does not believe a record that is not the shape it must be, nor one whose own hash is not its fields', and derives every step", async () => {
+    // A record under this repository's own code, whatever the last case left.
+    await run();
+    const before = written();
+    fs.writeFileSync(recordFile(), "null");
+    expect(await run()).toContain("the sequence the last run wrote was not gone on from: its record does not read");
+    expect(written().equals(before)).toBe(true);
+    // A text's hash changed in the record, as damage leaves it: it names a text no summary writes.
+    const { hash } = earlyText();
+    const body = JSON.parse(fs.readFileSync(recordFile(), "utf8")) as { texts: string[] };
+    body.texts[body.texts.indexOf(hash)] = createHash("sha256").update("a text no summary writes").digest("hex");
+    fs.writeFileSync(recordFile(), JSON.stringify(body));
+    expect(await run()).toContain("the sequence the last run wrote was not gone on from: its record does not read");
+    expect(written().equals(before)).toBe(true);
+  }, 120_000);
+
+  it("falls back once to deriving every step where a run that goes on meets damage summarizing again does not mend", async () => {
+    // A record under this repository's own code, whatever the last case left.
+    await run();
+    const before = written();
+    // The same damage with the record's own hash made to match, as a fault of the writer would leave it.
+    const { hash } = earlyText();
+    const body = JSON.parse(fs.readFileSync(recordFile(), "utf8")) as { format: string; key: string; sequence: string; texts: string[]; firstNamed: number[]; unwritten: string[][]; check: string };
+    body.texts[body.texts.indexOf(hash)] = createHash("sha256").update("a text no summary writes").digest("hex");
+    body.check = createHash("sha256").update(JSON.stringify([body.format, body.key, body.sequence, body.texts, body.firstNamed, body.unwritten])).digest("hex");
+    fs.writeFileSync(recordFile(), JSON.stringify(body));
+    const fell = await run();
+    expect(fell).toContain(`the summaries of ${commits[0].slice(0, 8)} were summarized again and the record of the sequence the last run wrote still names texts they do not: every step is derived again`);
+    expect(fell).toContain("the sequence the last run wrote was not gone on from: a run that went on from it met damage that summarizing again did not mend");
+    expect(written().equals(before)).toBe(true);
+    // The record the fallback wrote is sound: the next run goes on from it.
+    expect(await run()).toContain("went on from the sequence the last run wrote");
+  }, 120_000);
 });
 
 describe("the bundle's history", () => {

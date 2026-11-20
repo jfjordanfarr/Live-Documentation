@@ -227,7 +227,8 @@ function usage(): string {
     `                       under the workspace's own configuration, and is skipped elsewhere.\n` +
     `  --rederive           Derive every step of the sequence from the summaries again. Without it a run\n` +
     `                       goes on from the sequence the last run wrote when only new commits follow it\n` +
-    `                       and the lens, the code that reads summaries and the configuration are the same.\n` +
+    `                       and the lens, the code that reads summaries, git and the configuration are the\n` +
+    `                       same; any change to the engine or the generator derives every step once.\n` +
     `  --stop-after <min>   Start no commit after this many minutes of regeneration. A run stopped so\n` +
     `                       writes no history, keeps what it summarized for the next run, and exits 3.\n` +
     `  --json               Print the sequence's head and one line per step as JSON lines.\n` +

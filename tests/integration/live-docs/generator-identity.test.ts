@@ -63,10 +63,10 @@ function identity(modulePath: string, cwd: string): GeneratorIdentity {
   return JSON.parse(execFileSync(process.execPath, ["-e", runIdentity, modulePath], { cwd, encoding: "utf8" })) as GeneratorIdentity;
 }
 
-/** The identity of the code that reads summaries into a sequence, of the fixture's checkout. */
-function sequenceCode(modulePath: string, cwd: string): string {
+/** The identity of the code that reads summaries into a sequence, of the fixture's checkout, with the variables given. */
+function sequenceCode(modulePath: string, cwd: string, env: NodeJS.ProcessEnv = process.env): string {
   const run = "require(process.argv[1]).sequenceCodeIdentity().then(value => process.stdout.write(value), error => { console.error(error); process.exitCode = 1; });";
-  return execFileSync(process.execPath, ["-e", run, modulePath], { cwd, encoding: "utf8" });
+  return execFileSync(process.execPath, ["-e", run, modulePath], { cwd, encoding: "utf8", env });
 }
 
 function key(value: GeneratorIdentity): string {
@@ -206,6 +206,21 @@ describe("the tool lock in the history lens", () => {
     expect(sequenceCode(modulePath, root)).toBe(committed);
     commit(root, "a test and the readme");
     expect(sequenceCode(modulePath, root)).toBe(committed);
+  });
+
+  it("names the git the steps' words come from, so that another git's words are not gone on from as this one's", () => {
+    // A git that says it is another version and is otherwise the same, first on the path, as a container rebuilt with
+    // another git would be: the lens, which keys the summaries, does not move, and the reading's identity does.
+    const { root, modulePath } = fixture(true);
+    const real = execFileSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).trim();
+    const other = fs.mkdtempSync(path.join(scratch, "other-git-"));
+    fs.writeFileSync(path.join(other, "git"), `#!/bin/sh\nif [ "$1" = "-C" ] && [ "$3" = "--version" ]; then echo "git version 0.0.0.other"; exit 0; fi\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    const elsewhere = { ...process.env, PATH: `${other}${path.delimiter}${process.env.PATH ?? ""}` };
+    expect(execFileSync("git", ["-C", root, "--version"], { encoding: "utf8", env: elsewhere }).trim()).toBe("git version 0.0.0.other");
+    expect(sequenceCode(modulePath, root, elsewhere)).not.toBe(sequenceCode(modulePath, root));
+    expect(sequenceCode(modulePath, root, elsewhere)).toBe(sequenceCode(modulePath, root, elsewhere));
+    const lensElsewhere = JSON.parse(execFileSync(process.execPath, ["-e", runIdentity, modulePath], { cwd: root, encoding: "utf8", env: elsewhere })) as GeneratorIdentity;
+    expect(key(lensElsewhere)).toBe(key(identity(modulePath, root)));
   });
 
   it("does not mistake an installed generator's host lock for this tool's lock", () => {

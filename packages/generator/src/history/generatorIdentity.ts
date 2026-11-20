@@ -119,11 +119,15 @@ export function readsSummaries(file: string): boolean {
  * which the order of names depends on. The commit it runs from is left out, as the lens leaves it out. Where the
  * generator is installed rather than run from a checkout, its version stands for its code. Added on 2026-11-20 for
  * the history command, which goes on from the sequence it wrote last only under the same identity.
+ *
+ * Since the independent review of that day it holds git's own version too (`git --version`): the steps carry git's
+ * word on what each change renamed and touched, and another git, as in a container rebuilt, could give other words to
+ * steps derived anew than those written.
  */
 export async function sequenceCodeIdentity(): Promise<string> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
   const checkout = await checkoutOf(PACKAGE_ROOT, readsSummaries);
-  const identity = { version: manifest.version, code: checkout?.code ?? null, modified: checkout?.modified ?? null, unicode: process.versions.unicode ?? null };
+  const identity = { version: manifest.version, code: checkout?.code ?? null, modified: checkout?.modified ?? null, unicode: process.versions.unicode ?? null, git: (await git(PACKAGE_ROOT, ["--version"])).trim() };
   return createHash("sha256").update(JSON.stringify(identity)).digest("hex").slice(0, 16);
 }
 
