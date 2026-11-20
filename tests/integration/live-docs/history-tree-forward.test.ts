@@ -144,11 +144,29 @@ describe("a tree brought forward from one change to another, against the tree wr
     }
     // One configuration for the line, as the history applies the lens's to every change: the defaults, a picture excluded.
     const configuration = normalizeLiveDocumentationConfig({ exclude: ["**/*.png"] });
+    // What the stamps of a kept file rest on (`FileStamp` in `git.ts`): the generator touches no file outside the docs
+    // root. Held here over every sample, by each such file's stamp before and after it runs.
+    const outsideDocsRoot = (root: string): Map<string, string> => {
+      const docsRoot = path.join(root, configuration.root);
+      const found = new Map<string, string>();
+      for (const entry of fs.readdirSync(root, { recursive: true, withFileTypes: true })) {
+        const file = path.join(entry.parentPath, entry.name);
+        if (!entry.isFile() || file === docsRoot || file.startsWith(`${docsRoot}${path.sep}`)) continue;
+        const { size, mtimeMs, ctimeMs, mode, ino } = fs.lstatSync(file);
+        found.set(path.relative(root, file), JSON.stringify([size, mtimeMs, ctimeMs, mode, ino]));
+      }
+      return found;
+    };
+    let generated = 0;
     const { forward, clashes } = await holdAlong(repository, changes, configuration, async (tree) => {
+      const before = outsideDocsRoot(tree.root);
       await generateLiveDocs({ workspaceRoot: tree.root, config: configuration, keepAuthoredStaleDocs: false, logger: quiet, now });
+      expect(outsideDocsRoot(tree.root), `${tree.root}: the files outside the docs root, after the generator ran`).toEqual(before);
+      generated += 1;
     });
     // The rule is exercised, not passed by writing every tree anew.
     expect(forward).toBe(changes.length - 1 - clashes);
+    expect(generated).toBe(changes.length - 1);
   }, 600_000);
 
   it("equals the new tree through each kind of small change", async () => {
@@ -278,7 +296,8 @@ describe("a tree brought forward from one change to another, against the tree wr
     const third = commitAll(repository, "a file changed");
     const configuration = normalizeLiveDocumentationConfig({});
     // A file no writer of the tree made, in a folder the next change no longer holds, then in one it keeps: bringing
-    // forward gives up both times, the first when the folder will not go, the second when the names are counted.
+    // forward gives up both times, the first when the folder will not go, the second when the walk finds a name no
+    // writer made (the walk's counts see a written name gone, `git.test.ts`).
     let step = 0;
     const { forward } = await holdAlong(repository, [first, second, third], configuration, async (tree) => {
       step += 1;

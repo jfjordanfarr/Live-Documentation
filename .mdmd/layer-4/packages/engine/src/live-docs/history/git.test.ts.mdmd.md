@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/git.test.ts`
-- Generated At: 2026-11-20T09:35:01.526Z
+- Generated At: 2026-11-20T14:56:05.692Z
 
 ## Authored
 ### Purpose
@@ -23,11 +23,14 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `execFileSync`
+- `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`
+- `node:url` - `pathToFileURL`
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`git.DiskEntry`](./git.ts.mdmd.md#symbol-diskentry)
+- [`git.FileStamp`](./git.ts.mdmd.md#symbol-filestamp)
 - [`git.TreeDisk`](./git.ts.mdmd.md#symbol-treedisk)
 - [`git.bringTreeForward`](./git.ts.mdmd.md#symbol-bringtreeforward)
 - [`git.followLink`](./git.ts.mdmd.md#symbol-followlink)
@@ -37,7 +40,9 @@ _No public symbols detected_
 - [`git.parseTags`](./git.ts.mdmd.md#symbol-parsetags)
 - [`git.placeEntry`](./git.ts.mdmd.md#symbol-placeentry)
 - [`git.realDisk`](./git.ts.mdmd.md#symbol-realdisk)
+- [`git.sameStamp`](./git.ts.mdmd.md#symbol-samestamp)
 - [`git.writeStoredTree`](./git.ts.mdmd.md#symbol-writestoredtree)
 - [`git.writeTreeAnew`](./git.ts.mdmd.md#symbol-writetreeanew)
+- [`lens.lensOf`](./lens.ts.mdmd.md#symbol-lensof)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

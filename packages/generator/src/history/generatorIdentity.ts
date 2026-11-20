@@ -36,8 +36,8 @@ import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
 import type { GeneratorIdentity } from "@live-documentation/engine/live-docs/history/format";
+import { historyGit } from "@live-documentation/engine/live-docs/history/git";
 
 // This module lies in `src/history` of the generator package, or in `dist/history` once built: the package is two folders up.
 const PACKAGE_ROOT = path.resolve(__dirname, "..", "..");
@@ -204,5 +204,5 @@ async function workingLockBlob(topLevel: string): Promise<string | null> {
 }
 
 async function git(cwd: string, args: readonly string[]): Promise<string> {
-  return (await execFileAsync("git", ["-C", cwd, ...args], { cwd, maxBuffer: 1 << 30 })).stdout;
+  return historyGit(["-C", cwd, ...args], { cwd });
 }

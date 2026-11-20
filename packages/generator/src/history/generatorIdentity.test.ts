@@ -111,7 +111,7 @@ function historyModules(): string[] {
 function actsForASummary(text: string): boolean {
   return (
     /["'](?:node:)?(?:child_process|worker_threads)["']/u.test(text) ||
-    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync)\s*\(/u.test(text) ||
+    /(?<![.\w$])(?:execFileAsync|execFile|execFileSync|spawn|spawnSync|fork|exec|execSync|historyGit|spawnHistoryGit)\s*\(/u.test(text) ||
     /\bimplements\s+VersionControl\b/u.test(text)
   );
 }
@@ -165,7 +165,9 @@ const HANDED_TO_SUMMARY: Record<string, string> = {
   textStore: "where the texts go",
   indexPath: "where the full index goes, when kept",
   // A limit, written down in the decision: what a disk cannot hold depends on the disk, which the key does not hold.
-  unwritten: "the entries the keyed tree writer left out, as the disk it wrote to answered"
+  unwritten: "the entries the keyed tree writer left out, as the disk it wrote to answered",
+  // Since 2026-11-20: the repository's `core.ignorecase`, which the generator applies to `exclude`.
+  ignoresCase: "whether the repository matches names without regard to case, which the key holds (`lensOf`) and the trees answer with"
 };
 
 describe("the lens's key", () => {

@@ -82,6 +82,8 @@ export interface SummaryTask {
   indexPath?: string;
   /** The change's files its working tree does not hold, and why, which the summary records. */
   unwritten?: Array<{ path: string; reason: string }>;
+  /** Whether the repository matches names without regard to case, as the lens keyed it; the worker's trees answer with it. */
+  ignoresCase?: boolean;
 }
 
 /**
@@ -227,6 +229,8 @@ export interface WorkerReport {
   warned: string[];
   /** Whether the tree was brought forward from the worker's last change, rather than written anew. */
   broughtForward: boolean;
+  /** Why the tree was written anew, where it was (`WorkingTree.writtenAnew`): said on the change's line, and counted. */
+  writtenAnew?: string;
   /**
    * Whether anything has thrown in this process while a tree-sitter tree was taken, read or released (`runtimeFaulted`),
    * after which no parser of the process is known sound: the command ends the worker (`regenerate.ts`).
@@ -286,7 +290,7 @@ function work(store: string, folder: string): void {
   const summarize = async (task: WorkerTask): Promise<WorkerReport> => {
     const first = tree === undefined;
     // One name for the worker's life, six characters long, so that a fresh folder beside it is named as long (`git.ts`).
-    const options = treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00"));
+    const options = { ...treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00")), ...(task.ignoresCase !== undefined ? { ignoresCase: task.ignoresCase } : {}) };
     tree = tree === undefined ? await trees.workingTree(task.commit, path.join(folder, "tree00"), options) : await tree.bringTo(task.commit, options);
     const warned: string[] = [];
     let published: boolean;
@@ -303,7 +307,7 @@ function work(store: string, folder: string): void {
       for (const name of Object.keys(environment)) delete process.env[name];
     }
     // The peak as the operating system counts it, since the process began; `maxRSS` is in kibibytes.
-    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, runtimeFaulted: runtimeFaulted(), published, ...heldMemory() };
+    return { peakMemory: process.resourceUsage().maxRSS * 1024, unwritten: tree.unwritten, warned, broughtForward: tree.broughtForward, ...(tree.writtenAnew !== undefined ? { writtenAnew: tree.writtenAnew } : {}), runtimeFaulted: runtimeFaulted(), published, ...heldMemory() };
   };
   // One task at a time: the command sends the next only when this one has answered.
   process.on("message", (task: WorkerTask) => {

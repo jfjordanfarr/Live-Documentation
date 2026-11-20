@@ -220,6 +220,8 @@ export interface HistoryLens {
   generator: GeneratorIdentity;
   /** The normalized configuration the generator applied to every change. */
   configuration: LiveDocumentationConfig;
+  /** Present where the repository matches names without regard to case, which the key holds (`lensOf`). */
+  ignoresCase?: true;
 }
 
 /** Which changes of the mainline were regenerated. */

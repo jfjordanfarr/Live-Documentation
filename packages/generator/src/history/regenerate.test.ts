@@ -183,3 +183,44 @@ describe("a worker's summary", () => {
     }
   });
 });
+
+describe("a tree written anew", () => {
+  // Until 2026-11-20 a line said only ", its tree written anew", with no reason and no total, even where a cause of the
+  // repository's own (a name the disk takes for another's, one too long) wrote every tree anew (the independent review
+  // of that day). The worker's report carries the reason (`WorkingTree.writtenAnew`, made in `git.ts`).
+  it("says why on its change's line, and the run's last lines count the changes by reason", async () => {
+    const reasons = ["no earlier tree stood to bring forward", undefined, "the tree held a name its writer did not write", "the tree held a name its writer did not write"];
+    const lines: string[] = [];
+    const configuration = normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4" });
+    const startWorker = async (): Promise<Worker> => ({
+      summarize: async (task) => {
+        const reason = reasons[Number(task.id) - 1];
+        return { peakMemory: 1, unwritten: [], warned: [], broughtForward: reason === undefined, ...(reason !== undefined ? { writtenAnew: reason } : {}), runtimeFaulted: false, published: true, heldMemory: 1, heapShare: 0 };
+      },
+      end: async () => undefined
+    });
+    await regenerate(Array.from({ length: 4 }, (_, index) => change(index + 1)), {
+      store: "unused",
+      configuration,
+      lens: { key: "stand-in", configuration } as unknown as HistoryLens,
+      cacheFolder: "unused",
+      keepIndex: false,
+      jobs: 1,
+      memory: 1e12,
+      scratch: new Scratch(),
+      progress: (line) => lines.push(line),
+      startWorker
+    });
+    const regenerated = lines.filter((line) => /^\d+\/4 regenerated: /u.test(line));
+    expect(regenerated.map((line) => line.split(" in ")[1].replace(/^[\d.]+ s/u, "").split("; ")[0])).toEqual([
+      ", its tree written anew: no earlier tree stood to bring forward",
+      "",
+      ", its tree written anew: the tree held a name its writer did not write",
+      ", its tree written anew: the tree held a name its writer did not write"
+    ]);
+    expect(lines.slice(-2)).toEqual([
+      "trees written anew at 1 of the 4 changes regenerated: no earlier tree stood to bring forward",
+      "trees written anew at 2 of the 4 changes regenerated: the tree held a name its writer did not write"
+    ]);
+  });
+});
