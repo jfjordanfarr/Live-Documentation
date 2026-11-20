@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T13:47:31.647Z
+- Generated At: 2026-11-20T14:44:04.859Z
 
 ## Authored
 ### Purpose
@@ -121,14 +121,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L393)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L394)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L417)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L418)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass

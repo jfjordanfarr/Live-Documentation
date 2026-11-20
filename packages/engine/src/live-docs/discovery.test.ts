@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
@@ -429,7 +429,7 @@ describe("the folders git ignores whole", () => {
     await warned(["**/*"]);
     expect(warnings).toEqual([]);
     await warned(["*/**/*.ts"]);
-    expect(warnings).toEqual([expect.stringContaining("of 3 file(s), such as open/link/r.ts, reached through a link to a folder")]);
+    expect(warnings).toEqual([expect.stringContaining("of 3 file(s), such as open/link/r.ts, reached through a link to a folder that is not a repository's top")]);
   });
 
   it("judges a folder or a file whose path begins with a colon by its name", async () => {
@@ -523,6 +523,70 @@ describe("the folders git ignores whole", () => {
     await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
     expect(await discoverDocuments({ workspaceRoot: root, config, warn: (message) => warnings.push(message) })).toEqual(["nest/README.md"]);
     expect(warnings).toEqual([expect.stringContaining("of 1 file(s), such as nest/b.ts,"), expect.stringContaining("of 1 file(s), such as nest/README.md,")]);
+  });
+
+  it("is silent only where the workspace lies in no repository by its own structure, and otherwise warns with git's own line, in git's own language", async () => {
+    const warnings: string[] = [];
+    const told = async (root: string): Promise<string[]> => {
+      warnings.length = 0;
+      const files = await discoverTargetFiles({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}), include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
+      return files.map((file) => path.relative(root, file).split(path.sep).join("/"));
+    };
+    const said = (cwd: string): string => spawnSync("git", ["-C", cwd, "rev-parse", "--git-dir"], { encoding: "utf8" }).stderr.split("\n")[0];
+    const names = ["GIT_DIR", "GIT_CEILING_DIRECTORIES", "LANGUAGE", "LANG", "LC_ALL"];
+    const given = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    try {
+      // In git's German, which this container holds, the rule is the same: no word of git's is parsed.
+      Object.assign(process.env, { LANGUAGE: "de", LANG: "en_US.UTF-8" });
+      delete process.env.LC_ALL;
+      const plain = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-plain-"));
+      folders.push(plain);
+      await fs.writeFile(path.join(plain, "a.ts"), "");
+      expect(said(plain)).toMatch(/^Schwerwiegend: Kein Git-Repository/u);
+      expect(await told(plain)).toEqual(["a.ts"]);
+      expect(warnings).toEqual([]);
+      // A stale GIT_DIR: git names no repository there, though one was meant.
+      process.env.GIT_DIR = path.join(plain, "gone.git");
+      expect(said(plain)).toMatch(/^Schwerwiegend: Kein Git-Repository/u);
+      await told(plain);
+      expect(warnings).toEqual([expect.stringMatching(/ignores in \S+ \(Schwerwiegend: Kein Git-Repository/u)]);
+      delete process.env.GIT_DIR;
+      // GIT_CEILING_DIRECTORIES hiding the repository's top above the workspace.
+      const root = await repository({ ".gitignore": "*.log\n", "sub/a.ts": "", "sub/x.log": "" });
+      process.env.GIT_CEILING_DIRECTORIES = root;
+      expect(said(path.join(root, "sub"))).toMatch(/^Schwerwiegend: Kein Git-Repository/u);
+      expect(await told(path.join(root, "sub"))).toEqual(["a.ts", "x.log"]);
+      expect(warnings).toEqual([expect.stringContaining("(Schwerwiegend: Kein Git-Repository")]);
+      delete process.env.GIT_CEILING_DIRECTORIES;
+      // A workspace below a folder whose `.git` names no repository.
+      const stray = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-stray-"));
+      folders.push(stray);
+      await fs.writeFile(path.join(stray, ".git"), "gitdir: nowhere\n");
+      await fs.mkdir(path.join(stray, "ws"));
+      await fs.writeFile(path.join(stray, "ws", "a.ts"), "");
+      expect(said(path.join(stray, "ws"))).toMatch(/^Schwerwiegend: gitfile does not point/u);
+      await told(path.join(stray, "ws"));
+      expect(warnings).toEqual([expect.stringContaining("(Schwerwiegend: gitfile does not point")]);
+    } finally {
+      for (const [name, value] of Object.entries(given)) {
+        if (value === undefined) delete process.env[name];
+        else process.env[name] = value;
+      }
+    }
+  });
+
+  it("warns, and judges by the rule for no git, a workspace that is a repository whose work tree is elsewhere", async () => {
+    const root = await repository({ ".gitignore": "*.log\n", "a.ts": "", "x.log": "", "b.local.ts": "" });
+    await fs.appendFile(path.join(root, ".git", "info", "exclude"), "*.local.ts\n");
+    const elsewhere = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-elsewhere-"));
+    folders.push(elsewhere);
+    git(root, "config", "core.worktree", elsewhere);
+    expect(spawnSync("git", ["-C", root, "rev-parse", "--is-inside-work-tree"], { encoding: "utf8" }).stdout).toBe("false\n");
+    const warnings: string[] = [];
+    const files = await discoverTargetFiles({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}), include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
+    // Until this round the listing of the folder elsewhere judged the workspace, in silence: `x.log` was kept.
+    expect(files.map((file) => path.relative(root, file))).toEqual([".gitignore", "a.ts", "b.local.ts"]);
+    expect(warnings).toEqual([expect.stringContaining("lies outside the work tree of the repository git finds there")]);
   });
 
   it("judges by the rule for no git, and warns, a nested repository whose configuration git cannot read", async () => {

@@ -60,7 +60,7 @@ export function auditedFiles(
   const answer = judging?.answer([...discovered.values()]);
   if (answer && answer.unjudged.size > 0) {
     const [first] = answer.unjudged;
-    warn(`git cannot say what it ignores of ${answer.unjudged.size} file(s), such as ${first}, reached through a link to a folder that holds no repository or in a nested repository git could not be asked about: they are audited.`);
+    warn(`git cannot say what it ignores of ${answer.unjudged.size} file(s), such as ${first}, reached through a link to a folder that is not a repository's top, which git does not follow, or in a folder holding a .git that git could not be asked about: they are audited.`);
   }
   return [...discovered.keys()].filter((absolute) => !answer?.ignored.has(discovered.get(absolute) ?? "")).sort();
 }

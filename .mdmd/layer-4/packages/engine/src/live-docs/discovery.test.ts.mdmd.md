@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.test.ts`
-- Generated At: 2026-11-20T13:06:20.952Z
+- Generated At: 2026-11-20T14:44:04.845Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `execFileSync`
+- `node:child_process` - `execFileSync`, `spawnSync`
 - `node:fs` - `nodeFs`
 - `node:fs/promises`
 - `node:os`

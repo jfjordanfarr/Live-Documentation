@@ -43,9 +43,10 @@ export interface GitIgnoreAnswer {
   /** The paths git ignores: each, or a folder above it, is in the listing of the repository that holds it. */
   ignored: Set<string>;
   /**
-   * The paths git cannot judge: each passes through a link to a folder that holds no repository and that git does
-   * not ignore, and a path beyond a link is no path of the repository to git; or lies in a nested repository whose git
-   * could not be asked.
+   * The paths git cannot judge: each passes through a link that git does not ignore to a folder that is not a
+   * repository's top (a plain folder, or one in the middle of a repository), and a path beyond a link is no path of the
+   * repository around to git; or lies in a folder holding a `.git` whose git could not be asked, or of which git said
+   * nothing.
    */
   unjudged: Set<string>;
 }
@@ -109,7 +110,8 @@ interface Repository {
  * answer (an owner it does not trust, a configuration it cannot read) is
  * unjudged. A path beyond a link to a folder is ignored when the link or a
  * folder above it is, judged by the linked repository when the link leads to
- * one, and is otherwise unjudged. The cases, tried on git 2.56.1, are the
+ * a repository's top (asked there directly), and is otherwise unjudged, a link
+ * into the middle of a repository among them. The cases, tried on git 2.56.1, are the
  * tests beside this module and discovery's.
  */
 export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswered) => void): GitIgnores | null {
@@ -124,9 +126,12 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
     let kind = kinds.get(folder);
     if (kind === undefined) {
       const at = path.join(workspaceRoot, folder);
-      kind = fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() ? "link" : "folder";
+      const link = fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() === true;
+      kind = link ? "link" : "folder";
       if (fs.existsSync(path.join(at, ".git"))) {
-        const another = anotherRepository(path.join(workspaceRoot, around.root), around.root === "" ? folder : folder.slice(around.root.length + 1), around.root !== "");
+        // To the repository around, a link is a file, and it has no view of what lies beyond: a linked folder that holds
+        // a `.git` is asked directly, and answers where git there finds the folder inside its work tree.
+        const another = link || anotherRepository(path.join(workspaceRoot, around.root), around.root === "" ? folder : folder.slice(around.root.length + 1), around.root !== "");
         // Where git cannot say, the folder's paths are unjudged, as a repository's whose git cannot answer.
         if (another !== false) {
           const inner = another ? listing(at, true) : null;
@@ -141,17 +146,20 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
     if (own.entries.has("")) return "ignored";
     const parts = relative === "" || relative === "." ? [] : relative.split("/");
     let repository = outer;
+    // Past a folder git has no word on, the listing around still judges what it names below it: git named it, so git
+    // entered there; beyond a link or inside a repository it does not enter, it names nothing.
+    let unsure = false;
     for (let end = 1; end <= parts.length; end += 1) {
       const prefix = parts.slice(0, end).join("/");
       if (repository.entries?.has(repository.root === "" ? prefix : prefix.slice(repository.root.length + 1))) return "ignored";
-      if (end === parts.length) break;
+      if (end === parts.length || unsure) continue;
       const kind = kindOf(prefix, repository);
       if (typeof kind === "object") {
-        if (!kind.entries) return "unjudged";
-        repository = kind;
-      } else if (kind === "link") return "unjudged";
+        if (kind.entries) repository = kind;
+        else unsure = true;
+      } else if (kind === "link") unsure = true;
     }
-    return "kept";
+    return unsure ? "unjudged" : "kept";
   };
   return {
     folders: own.folders,
@@ -214,10 +222,9 @@ const KEPT_IN_A_SUBMODULE: ReadonlySet<string> = new Set(["GIT_CONFIG_PARAMETERS
 let localVariables: readonly string[] | undefined;
 
 /**
- * The environment of a git call: the process's own, with git's messages in English, so that its word that a folder
- * lies in no repository can be read; and for a nested repository less the variables that tie git to a repository but
- * {@link KEPT_IN_A_SUBMODULE}, so that git finds the nested repository by its own `.git` and still reads the person's
- * command-line configuration.
+ * The environment of a git call: the process's own, and for a nested repository less the variables that tie git to a
+ * repository but {@link KEPT_IN_A_SUBMODULE}, so that git finds the nested repository by its own `.git` and still
+ * reads the person's command-line configuration. Git's messages stay in the person's language: none is parsed.
  *
  * @remarks
  * Git's own `prepare_submodule_repo_env` keeps the same two and also sets `GIT_DIR=.git`, and a repository named by
@@ -228,7 +235,7 @@ let localVariables: readonly string[] | undefined;
  * and the caller warns (2026-11-20).
  */
 function gitEnvironment(nested: boolean): NodeJS.ProcessEnv {
-  const env: NodeJS.ProcessEnv = { ...process.env, LC_ALL: "C" };
+  const env: NodeJS.ProcessEnv = { ...process.env };
   if (nested) {
     localVariables ??= spawnSync("git", ["rev-parse", "--local-env-vars"], { encoding: "utf8" }).stdout?.split("\n").filter((name) => name.length > 0) ?? [];
     for (const name of localVariables) if (!KEPT_IN_A_SUBMODULE.has(name)) delete env[name];
@@ -255,13 +262,34 @@ function gitEnvironment(nested: boolean): NodeJS.ProcessEnv {
  * pathspecs share no leading folder: given `vendor/lib` alone, `ls-files` first drops every index entry outside
  * `vendor/`, exactly in case, and a tracked `Vendor/lib/a.ts` with the folder `vendor` on the disk is then no entry, and
  * git takes the folder for another repository where `git status` enters it as its own (tried on git 2.56.1).
+ *
+ * Where git prints nothing, it has not said which: a folder of its own with nothing in it to print (every file
+ * ignored) looks the same as a submodule whose folder's case differs from its gitlink where `core.ignorecase` is true
+ * (gitlink `lib`, folder `Lib`), which git does not enter while the pathspec, matched exactly, finds no gitlink. Both
+ * are `null`: the folder's paths are unjudged, but what the listing around names as ignored inside it (git entered
+ * it, then) is ignored all the same.
  */
 function anotherRepository(around: string, folder: string, nested: boolean): boolean | null {
   const result = spawnSync("git", ["--literal-pathspecs", "-C", around, "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", folder, ".git"], { encoding: "utf8", env: gitEnvironment(nested), maxBuffer: 1 << 16 });
   if (result.error && Reflect.get(result.error, "code") === "ENOBUFS") return false;
   if (result.error || result.status !== 0) return null;
-  const printed = result.stdout.split("\0");
+  const printed = result.stdout.split("\0").filter((entry) => entry.length > 0);
+  if (printed.length === 0) return null;
   return printed.includes(`${folder}/`) || printed.some((entry) => entry.startsWith("160000 ") && entry.endsWith(`\t${folder}`));
+}
+
+/**
+ * Whether `folder` lies in no repository by its own structure: no `.git` in it or in any folder above it, and none
+ * named to git by `GIT_DIR`. Only there is the rule for no git the rule, and a failed listing no fall-back from git's
+ * word; a stale `GIT_DIR`, a `GIT_CEILING_DIRECTORIES` that hides the top, a file system's boundary and a `.git` above
+ * that names no repository all make git say "not a git repository" too, where a repository is meant.
+ */
+function liesInNoRepository(folder: string): boolean {
+  if (process.env.GIT_DIR) return false;
+  for (let at = path.resolve(folder); ; at = path.dirname(at)) {
+    if (fs.lstatSync(path.join(at, ".git"), { throwIfNoEntry: false }) !== undefined) return false;
+    if (path.dirname(at) === at) return true;
+  }
 }
 
 /**
@@ -270,23 +298,21 @@ function anotherRepository(around: string, folder: string, nested: boolean): boo
  */
 function listing(folder: string, nested: boolean): { entries: Set<string>; folders: Set<string> } | GitUnanswered {
   const env = gitEnvironment(nested);
-  const unanswered = (result: ReturnType<typeof spawnSync>): GitUnanswered => {
-    const said = String(result.stderr ?? "").split("\n")[0].trim();
-    return result.error
-      ? { reason: `git could not be started (${result.error.message})`, noRepository: false }
-      : { reason: said || `git exited with ${result.status ?? result.signal}`, noRepository: said.startsWith("fatal: not a git repository") };
-  };
-  if (nested) {
-    // A repository whose work tree is elsewhere, or that has none, answers for no file of its folder.
-    const inside = spawnSync("git", ["-C", folder, "rev-parse", "--is-inside-work-tree"], { encoding: "utf8", env });
-    if (inside.error || inside.status !== 0) return unanswered(inside);
-    if (inside.stdout.trim() !== "true") return { reason: `${folder} lies outside the work tree of the repository in it`, noRepository: false };
-  }
+  const unanswered = (reason: string): GitUnanswered => ({ reason, noRepository: !nested && liesInNoRepository(folder) });
+  const failure = (result: ReturnType<typeof spawnSync>): GitUnanswered =>
+    unanswered(result.error ? `git could not be started (${result.error.message})` : String(result.stderr ?? "").split("\n")[0].trim() || `git exited with ${result.status ?? result.signal}`);
+  // Where git stands in `folder`: inside a work tree or not, the way up to its top, and the folder's place below it. A
+  // repository whose work tree is elsewhere, or that has none, answers for no file of the folder, the workspace's own
+  // among them (2026-11-20).
+  const where = spawnSync("git", ["-C", folder, "rev-parse", "--is-inside-work-tree", "--show-cdup", "--show-prefix"], { encoding: "utf8", env });
+  if (where.error || where.status !== 0) return failure(where);
+  const [inside, cdup = "", above = ""] = where.stdout.split("\n");
+  if (inside !== "true") return unanswered(`${folder} lies outside the work tree of the repository git finds there`);
   let failed: GitUnanswered | undefined;
-  const listed = (where: readonly string[]): string[] | null => {
-    const result = spawnSync("git", [...where, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8", env, maxBuffer: 1 << 28 });
+  const listed = (at: readonly string[]): string[] | null => {
+    const result = spawnSync("git", [...at, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8", env, maxBuffer: 1 << 28 });
     if (!result.error && result.status === 0) return result.stdout.split("\0").filter((entry) => entry.length > 0);
-    failed = unanswered(result);
+    failed = failure(result);
     return null;
   };
   // The paths git prints are relative to the folder it is asked from: `folder`, or the repository's top above it.
@@ -295,12 +321,9 @@ function listing(folder: string, nested: boolean): { entries: Set<string>; folde
   if (!printed) {
     // Asked from a folder inside one it ignores whole, git fails ("directory entry not superset of prefix"), as it does
     // when it cannot answer at all; asked from the repository's top, it names that folder.
-    const where = spawnSync("git", ["-C", folder, "rev-parse", "--show-cdup", "--show-prefix"], { encoding: "utf8", env });
-    if (where.error || where.status !== 0) return unanswered(where);
-    const newline = where.stdout.indexOf("\n");
-    prefix = where.stdout.slice(newline + 1).replace(/\n$/u, "");
-    printed = prefix === "" ? null : listed(["-C", folder, "-C", where.stdout.slice(0, newline) || "."]);
-    if (!printed) return failed ?? { reason: "git's listing failed", noRepository: false };
+    prefix = above;
+    printed = prefix === "" ? null : listed(["-C", folder, "-C", cdup || "."]);
+    if (!printed) return failed ?? unanswered("git's listing failed");
   }
   const entries = new Set<string>();
   const folders = new Set<string>();

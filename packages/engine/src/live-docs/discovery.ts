@@ -353,11 +353,12 @@ export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[
  * ({@link gitIgnores}): a nested `.gitignore`, `.git/info/exclude` and the
  * global excludes file count, a tracked file is never ignored, as git itself
  * has it (committing a file under an ignored folder is a decision), and a
- * nested repository's files, one reached through a link among them, are
- * judged by its own git. Without git, the workspace's `.gitignore` alone; and
- * so too for a path git cannot judge, one that passes through a link to a
- * folder that holds no repository and that git does not ignore, or lies in a
- * nested repository git cannot be asked about, which `warn` is told of, since
+ * nested repository's files, one reached through a link to its top among
+ * them, are judged by its own git. Without git, the workspace's `.gitignore`
+ * alone; and so too for a path git cannot judge, one that passes through a
+ * link git does not ignore to a folder that is not a repository's top, or lies
+ * in a folder holding a `.git` that git cannot be asked about or said nothing
+ * of, which `warn` is told of, since
  * what another `.gitignore`, `.git/info/exclude` or the global excludes hide
  * there gets docs.
  */
@@ -371,7 +372,7 @@ async function keptByGitAndConfiguration(
   const git = gitIgnoresHere?.answer(considered.map((entry) => entry.relative)) ?? null;
   if (git !== null && git.unjudged.size > 0) {
     const [first] = git.unjudged;
-    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder that holds no repository, which git does not follow, or in a nested repository git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
+    warn?.(`git cannot say what it ignores of ${git.unjudged.size} file(s), such as ${first}, reached through a link to a folder that is not a repository's top, which git does not follow, or in a folder holding a .git that git could not be asked about: for them only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide there gets docs; name it in the configuration's exclude.`);
   }
   const gitignoreFilter = git === null || git.unjudged.size > 0 ? await createGitignoreFilter(workspaceRoot) : null;
   // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on

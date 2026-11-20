@@ -283,6 +283,82 @@ describe("gitIgnoreAnswer", () => {
     expect(answer(root, ["stray/a.ts", "stray/x.log", "stray/sub/b.log"])).toEqual({ ignored: ["stray/sub/b.log", "stray/x.log"], unjudged: [] });
   });
 
+  it("asks a link to a repository's top of that repository directly, and leaves unjudged a link to a repository git refuses, to a plain folder and into the middle of a repository", () => {
+    const outside = workspace();
+    files(outside, ["repo/o.ts", "repo/o.local.ts", "bad/b.ts", "plain/p.ts", "mid/sub/m.ts", "mid/sub/m.local.ts", "mid/strayed/s.local.ts"]);
+    for (const folder of ["repo", "bad", "mid"]) git(path.join(outside, folder), "init", "-q");
+    // A folder in the middle of `mid` whose `.git` names no repository: git there finds `mid` above it.
+    writeFileSync(path.join(outside, "mid", "strayed", ".git"), "gitdir: nowhere\n");
+    appendFileSync(path.join(outside, "repo", ".git", "info", "exclude"), "*.local.ts\n");
+    appendFileSync(path.join(outside, "mid", ".git", "info", "exclude"), "*.local.ts\n");
+    appendFileSync(path.join(outside, "bad", ".git", "config"), "[broken\n");
+    const root = workspace();
+    git(root, "init", "-q");
+    mkdirSync(path.join(root, "links"));
+    for (const [link, target] of [["repo", "repo"], ["bad", "bad"], ["plain", "plain"], ["mid", "mid/sub"], ["strayed", "mid/strayed"]]) symlinkSync(path.join(outside, target), path.join(root, "links", link));
+    // To the repository around, a link is a file: asked about it, git prints the link and nothing beyond it. Asked from
+    // the linked folder, git answers as the linked repository there: at its top for `repo`, a subfolder for `mid`.
+    const run = (cwd: string, ...args: string[]): string => spawnSync("git", ["--literal-pathspecs", "-C", cwd, ...args], { encoding: "utf8" }).stdout;
+    expect(run(root, "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", "links/repo", ".git")).toBe("links/repo\0");
+    expect(run(path.join(root, "links", "repo"), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory")).toBe("o.local.ts\0");
+    expect(run(path.join(root, "links", "mid"), "rev-parse", "--show-prefix")).toBe("sub/\n");
+    // Git refuses where a `.git` names no repository; it does not climb to `mid`.
+    expect(spawnSync("git", ["-C", path.join(root, "links", "strayed"), "rev-parse", "--show-prefix"], { encoding: "utf8" }).status).toBe(128);
+    const paths = ["links/repo/o.ts", "links/repo/o.local.ts", "links/bad/b.ts", "links/plain/p.ts", "links/mid/m.ts", "links/mid/m.local.ts", "links/strayed/s.local.ts"];
+    // Until this round a link was never asked: both of `repo`'s files were unjudged, though the texts said otherwise.
+    expect(answer(root, paths)).toEqual({ ignored: ["links/repo/o.local.ts"], unjudged: ["links/bad/b.ts", "links/mid/m.local.ts", "links/mid/m.ts", "links/plain/p.ts", "links/strayed/s.local.ts"] });
+  });
+
+  it("leaves unjudged a submodule whose folder's case differs from its gitlink where git folds case, and judges as ignored what the listing around names in a folder git says nothing of", () => {
+    const root = workspace();
+    files(root, ["lib/a.ts", "stray/x.log", "stray/sub/y.log", "Vendor/lib/t.ts"]);
+    git(path.join(root, "lib"), "init", "-q");
+    git(path.join(root, "lib"), "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-q", "--allow-empty", "-m", "c");
+    git(root, "init", "-q");
+    git(root, "config", "core.ignorecase", "true");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
+    git(root, "add", "lib", "Vendor/lib/t.ts");
+    // As Windows allows: the submodule's folder renamed in case alone; its own exclude names `*.ts`. And a tracked
+    // folder renamed in case alone, holding a repository, with nothing untracked in it but an ignored file.
+    renameSync(path.join(root, "lib"), path.join(root, "Lib"));
+    appendFileSync(path.join(root, "Lib", ".git", "info", "exclude"), "*.ts\n");
+    files(root, ["Lib/x.log"]);
+    writeFileSync(path.join(root, "stray", ".git"), "gitdir: nowhere\n");
+    renameSync(path.join(root, "Vendor"), path.join(root, "vendor"));
+    git(path.join(root, "vendor", "lib"), "init", "-q");
+    files(root, ["vendor/lib/x.log"]);
+    const run = (...args: string[]): string => spawnSync("git", ["-C", root, ...args], { encoding: "utf8" }).stdout;
+    // Git prints nothing for either folder: matched exactly, `Lib` finds no gitlink, and every file of `stray` is
+    // ignored. An ignore-case pathspec would find the gitlink (`:(icase)Lib`, without --literal-pathspecs); not used,
+    // since it would re-make git's folding of case, and nothing printed is taken for git having said nothing.
+    expect(run("--literal-pathspecs", "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", "Lib", ".git")).toBe("");
+    expect(run("--literal-pathspecs", "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", "stray", ".git")).toBe("");
+    expect(run("--literal-pathspecs", "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", "vendor/lib", ".git")).toBe("");
+    expect(run("ls-files", "-z", "--stage", "--", ":(icase)Lib")).toMatch(/^160000 [0-9a-f]+ 0\tlib\0$/u);
+    // The listing around names `stray/` whole, and `vendor/lib/x.log` by itself, inside a folder git enters.
+    const listed = run("ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory").split("\0");
+    expect(listed).toContain("stray/");
+    expect(listed).toContain("vendor/lib/x.log");
+    // Until this round `Lib` was taken for the outer repository's own folder, which git does not enter: `Lib/a.ts`, which
+    // the submodule ignores, kept in silence. The tracked `vendor/lib/t.ts` is unjudged with them, warned of.
+    expect(answer(root, ["Lib/a.ts", "Lib/x.log", "stray/x.log", "stray/sub/y.log", "vendor/lib/t.ts", "vendor/lib/x.log"])).toEqual({
+      ignored: ["stray/sub/y.log", "stray/x.log", "vendor/lib/x.log"],
+      unjudged: ["Lib/a.ts", "Lib/x.log", "vendor/lib/t.ts"]
+    });
+  });
+
+  it("takes an answer longer than a repository's single entry for git entering the folder", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
+    const names = Array.from({ length: 1500 }, (_name, index) => `big/a-file-with-a-long-name-to-fill-the-answer-${String(index).padStart(4, "0")}.ts`);
+    files(root, [...names, "big/x.log"]);
+    writeFileSync(path.join(root, "big", ".git"), "gitdir: nowhere\n");
+    const printed = spawnSync("git", ["--literal-pathspecs", "-C", root, "ls-files", "-z", "--stage", "--others", "--exclude-standard", "--", "big", ".git"], { encoding: "utf8", maxBuffer: 1 << 24 }).stdout;
+    expect(printed.length).toBeGreaterThan(1 << 16);
+    expect(answer(root, [names[0], "big/x.log"])).toEqual({ ignored: ["big/x.log"], unjudged: [] });
+  });
+
   it("leaves unjudged a path in a real nested repository whose git cannot answer", () => {
     const root = workspace();
     git(root, "init", "-q");
