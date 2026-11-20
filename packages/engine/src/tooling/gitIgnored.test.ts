@@ -470,6 +470,30 @@ describe("gitIgnoreAnswer", () => {
     });
   });
 
+  it("judges a working clone below a broken repository by the clone's own rules, though the broken one's .gitignore names the clone", () => {
+    // This pins a recorded choice, the root's ruling of 2026-11-20 on the reviewer's shape: whether `bad`, were its git
+    // answering, would ignore `clone/` is not known, and is not guessed by reading `.git`'s insides. The person is warned
+    // of `bad` by its own files, and mending it mends what lies below.
+    const root = workspace();
+    files(root, ["bad/b.ts", "bad/clone/c.ts", "bad/clone/x.log"]);
+    writeFileSync(path.join(root, "bad", ".gitignore"), "clone/\n");
+    writeFileSync(path.join(root, "bad", "clone", ".gitignore"), "*.log\n");
+    git(path.join(root, "bad"), "init", "-q");
+    appendFileSync(path.join(root, "bad", ".git", "config"), "[broken\n");
+    git(path.join(root, "bad", "clone"), "init", "-q");
+    // Git's own word first: none at the workspace or at `bad`; the clone answers for itself.
+    expect(spawnSync("git", ["-C", root, "rev-parse"], { encoding: "utf8" }).status).toBe(128);
+    expect(spawnSync("git", ["-C", path.join(root, "bad"), "status"], { encoding: "utf8" }).status).toBe(128);
+    expect(spawnSync("git", ["-C", path.join(root, "bad", "clone"), "status", "--porcelain", "--ignored", "-uall"], { encoding: "utf8" }).stdout).toBe("?? .gitignore\n?? c.ts\n!! x.log\n");
+    const paths = ["bad/.gitignore", "bad/b.ts", "bad/clone/.gitignore", "bad/clone/c.ts", "bad/clone/x.log"];
+    // Kept: `bad/clone/.gitignore` and `bad/clone/c.ts`, in none of the three sets.
+    expect(gitIgnoreAnswer(root, paths)).toEqual({
+      ignored: new Set(["bad/clone/x.log"]),
+      unjudged: new Set(["bad/.gitignore", "bad/b.ts"]),
+      outside: new Set()
+    });
+  });
+
   it("asks a nested repository whose name git would read as a pattern or as magic by its name", () => {
     const root = workspace();
     git(root, "init", "-q");

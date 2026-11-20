@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T16:44:33.434Z
+- Generated At: 2026-11-20T17:18:44.112Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - Since 2026-11-20 the two walks do not read the folders git ignores whole (`walkedAndKept`): git is asked first (`gitIgnores` in the engine's tooling) and glob reads those folders as empty. In the main checkout, with 28 builders' worktrees under `.claude/worktrees/`, the files' walk had taken 63.6 s and the documents' 19.6 s, where a clean worktree took 1.4 s and 0.4 s. The first version also walked again in full where git refused a path, and the second asked `git check-ignore` about each path by its name; since the third form, the same day, the one listing that shortens the walk also judges what it found, so what is left unread is exactly what is judged ignored, a nested repository's files are judged by its own git, and where the listing fails the walk is whole and the root `.gitignore` alone judges. A file git cannot judge, reached through a link to a folder git does not ignore or in a nested repository git cannot be asked about, is judged by the root `.gitignore` alone, and the generator warns of it from both walks; and since the fourth form, the same day, a walk made whole because git could not be asked is never silent either, but where git says there is no repository ([the fourth form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#gits-own-view-of-a-folder-the-fourth-form)). Each case, and one that counts the folders read, is in `discovery.test.ts`; `discovery.oracle.test.ts` holds discovery to `git status` over random repositories ([the probe of 2026-11-20](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md), and [the third form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#reading-gits-own-listing-the-third-form)).
 - Since the seventh round, the same day ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#several-clones-in-one-scan-and-the-machines-failures-the-seventh-round)): a folder the first listing left unread that the second does not ignore whole (a file tracked in it during the walk) makes the walk run again by the second listing, so that no file is lost because its folder was left unwalked; a folder read that fails for a cause of the machine's stops the walk, naming the folder, where glob read it as empty and its files' docs would have been pruned as stale; a link that loops or passes through a file leads to nothing to document, where it stopped the walk; a workspace that lies in no repository, a folder of clones, is judged repository by repository, the files outside every one by the root `.gitignore` with no warning; and the warnings say both things the root `.gitignore` can do in git's place, document what the repository ignores and leave out what it tracks. The index pass hands each file that threw to the generator with its error (`unmapped`), which names it as a file it could not map, as it does a throw of its own per-file pass, so that a person's run names it and goes on and the history publishes no summary made with a failure of the machine's; until then every throw was swallowed, and a symbol whose file failed there was linked to the barrel that re-exports it, with no mark and no warning.
 - After the reviewer's second look, the same day ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#an-unreadable-folder-stops-the-scan-only-where-its-files-would-be-kept)): a folder the walk cannot read stops the scan only where its files would have been kept. The walk names each such folder, and the judging passes over one its own repository's git ignores or `exclude` names whole, a database's unreadable `pgdata/` beside a clone's code above all; any other stops the scan with an error that names the folder, the system's reason and the three ways past it, its cause the system's failure, so that a history worker still publishes nothing made with it. Until then such a folder stopped the scan even where nothing in it would have been documented.
+- After the reviewer's third look, 2026-11-20 ([its record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#the-unreadable-folders-stopping-words-after-the-reviewers-third-look)): the stopping message no longer says the folder's files would be kept, which the scan cannot know (git cannot read the folder, so a `.gitignore` of `cache/*` never names it), and names the remedies that work: a rule for the folder itself (`cache/`), or `cache/**` in `exclude`, where `cache`, `cache/`, `cache/*` and `**/cache/**` all leave the scan stopped. Which folders stop the scan did not change.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -123,14 +124,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L435)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L440)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L474)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L479)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass

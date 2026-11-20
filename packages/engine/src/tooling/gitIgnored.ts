@@ -168,7 +168,10 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
     // entered there; beyond a link or inside a repository it does not enter, it names nothing. Where no repository is
     // around, a link to a folder that is no repository's top leads to more of no repository, and past a folder whose
     // git does not answer the descent goes on, each deeper `.git` asked: a working clone below a broken one is judged
-    // by its own git, and only what lies outside every clone that answers stays unjudged (2026-11-20).
+    // by its own git, and only what lies outside every clone that answers stays unjudged (2026-11-20). Whether the broken
+    // one, answering, would have ignored that clone whole is not known, and is not guessed: the person is warned of the
+    // broken repository by its own files, mending it mends what lies below, and telling a broken repository from a
+    // folder that is none would mean reading `.git`'s insides to second-guess git (the root's ruling, 2026-11-20).
     let unsure = false;
     for (let end = 1; end <= parts.length; end += 1) {
       const prefix = parts.slice(0, end).join("/");
