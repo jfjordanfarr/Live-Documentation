@@ -441,10 +441,26 @@ describe("the folders git ignores whole", () => {
     expect([...foldersGitIgnoresWhole(root)].sort()).toEqual([":(bad)", "build", "excluded"]);
   });
 
-  it("walks whole by the rule for no git where the listing fails, before the walk or after it", async () => {
+  it("walks whole by the rule for no git where the listing fails, before the walk or after it, and says so but where git says there is no repository", async () => {
     const root = await repository({ ".gitignore": "build/\n", "build/a.ts": "", "excluded/e.ts": "", "b.local.ts": "", "c.ts": "" });
     await fs.appendFile(path.join(root, ".git", "info", "exclude"), "excluded/\n*.local.ts\n");
-    expect(await found(root)).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
+    const warnings: string[] = [];
+    const warn = (message: string): void => {
+      warnings.push(message);
+    };
+    const told = async (): Promise<{ files: string[]; documents: string[] }> => {
+      const config = normalizeLiveDocumentationConfig({});
+      const files = await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, warn });
+      return { files: files.map((file) => path.relative(root, file).split(path.sep).join("/")), documents: await discoverDocuments({ workspaceRoot: root, config, warn }) };
+    };
+    expect(await told()).toEqual({ files: [".gitignore", "c.ts"], documents: [] });
+    expect(warnings).toEqual([]);
+    // Outside any repository, by git's own word, the rule for no git is the rule: nothing to warn of.
+    const plain = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-plain-"));
+    folders.push(plain);
+    await fs.writeFile(path.join(plain, "a.ts"), "");
+    await discoverTargetFiles({ workspaceRoot: plain, config: normalizeLiveDocumentationConfig({}), include: new Set(), changedOnly: false, warn });
+    expect(warnings).toEqual([]);
     // A git whose listing fails, as one whose output passes the buffer would, from the `after`-th listing on: no folder
     // is left unread, and the root .gitignore alone judges, as with no git at all.
     const bin = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-git-"));
@@ -461,6 +477,14 @@ describe("the folders git ignores whole", () => {
         await fs.writeFile(count, "0");
         process.env.GIT_FAILS_AFTER = after;
         expect(await found(root), `failing after ${after}`).toEqual({ files: [".gitignore", "b.local.ts", "c.ts", "excluded/e.ts"], documents: [] });
+        // Never in silence: each walk says why git's word was not had (until 2026-11-20 neither did).
+        warnings.length = 0;
+        await fs.writeFile(count, "0");
+        await told();
+        expect(warnings, `failing after ${after}`).toEqual([
+          expect.stringMatching(after === "0" ? /^git could not be asked what it ignores in .* \(git exited with 128\)/u : /^git could not be asked what it ignores in .* after the walk \(git exited with 128\)/u),
+          expect.stringContaining("git could not be asked what it ignores")
+        ]);
       }
     } finally {
       process.env.PATH = searchPath;
@@ -499,6 +523,18 @@ describe("the folders git ignores whole", () => {
     await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
     expect(await discoverDocuments({ workspaceRoot: root, config, warn: (message) => warnings.push(message) })).toEqual(["nest/README.md"]);
     expect(warnings).toEqual([expect.stringContaining("of 1 file(s), such as nest/b.ts,"), expect.stringContaining("of 1 file(s), such as nest/README.md,")]);
+  });
+
+  it("judges by the rule for no git, and warns, a nested repository whose configuration git cannot read", async () => {
+    const root = await repository({ ".gitignore": "*.tmp\n", "a.ts": "", "nest/b.ts": "", "nest/x.log": "", "nest/y.tmp": "", "nest/.gitignore": "*.log\n" });
+    git(path.join(root, "nest"), "init", "-q");
+    await fs.appendFile(path.join(root, "nest", ".git", "config"), "[broken\n");
+    const warnings: string[] = [];
+    const files = await discoverTargetFiles({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({}), include: new Set(), changedOnly: false, warn: (message) => warnings.push(message) });
+    // Git does not enter the folder, and its own git refuses: the workspace's .gitignore alone judges its files. Until
+    // 2026-11-20 it was taken for a folder of the outer repository, and every file in it kept, `y.tmp` too, in silence.
+    expect(files.map((file) => path.relative(root, file).split(path.sep).join("/"))).toEqual([".gitignore", "a.ts", "nest/.gitignore", "nest/b.ts", "nest/x.log"]);
+    expect(warnings).toEqual([expect.stringContaining("of 4 file(s), such as nest/.gitignore,")]);
   });
 
   it("finds nothing in a workspace that lies inside a folder an outer repository ignores", async () => {

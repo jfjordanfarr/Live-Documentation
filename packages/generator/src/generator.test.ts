@@ -289,6 +289,17 @@ describe("generateLiveDocs and nested scans", () => {
     expect(await fs.readdir(path.join(workspaceRoot, "packages", "foo", DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer, "src"))).toEqual(["index.ts.md"]);
   });
 
+  it("hands its warning to the documents' walk as to the files', for a nested repository whose git refuses", async () => {
+    execFileSync("git", ["init", "-q"], { cwd: workspaceRoot });
+    await fs.mkdir(path.join(workspaceRoot, "nest"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "nest", "README.md"), "# Nest\n", "utf8");
+    execFileSync("git", ["init", "-q"], { cwd: path.join(workspaceRoot, "nest") });
+    // A configuration git cannot read: git takes the folder for another repository and cannot answer there.
+    await fs.appendFile(path.join(workspaceRoot, "nest", ".git", "config"), "[broken\n", "utf8");
+    await generateLiveDocs({ workspaceRoot, config: normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] }), logger });
+    expect(warnings).toEqual([expect.stringContaining("of 1 file(s), such as nest/README.md,")]);
+  });
+
   it("says nothing when no scan nests", async () => {
     const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] });
     await generateLiveDocs({ workspaceRoot, config, logger });

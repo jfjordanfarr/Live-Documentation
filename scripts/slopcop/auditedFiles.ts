@@ -10,7 +10,8 @@
  * ignores (`gitIgnores` in the engine, where discovery asks the same) before the walk, which reads the folders it
  * ignores whole as empty, and again after it, to judge the files found. A file git cannot judge, one reached through a
  * link to a folder git does not ignore or in a nested repository git cannot be asked about, is read; and where git cannot answer at
- * all, the walk is whole and every file found is read. This module was the helpers' first home, under `scripts/`, so
+ * all, the walk is whole and every file found is read. Either is told to `warn` (2026-11-20), but where git says the
+ * workspace lies in no repository. This module was the helpers' first home, under `scripts/`, so
  * that the audits' first change moved no key of the history's cache.
  *
  * The records of the measurements and the cases: the probe of 2026-11-20 under
@@ -21,14 +22,19 @@
 import { globSync, type FSOption } from "glob";
 import path from "node:path";
 
-import { gitIgnores } from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnores, type GitUnanswered } from "@live-documentation/engine/tooling/gitIgnored";
 
 /**
  * The files the patterns match under `workspaceRoot` and git does not ignore, as absolute paths, sorted; every file
  * they match when git cannot answer. Each pattern is matched by itself, with `ignoreGlobs` left out of the walk, as the
  * audits always matched them.
  */
-export function auditedFiles(workspaceRoot: string, patterns: readonly string[], ignoreGlobs: readonly string[]): string[] {
+export function auditedFiles(
+  workspaceRoot: string,
+  patterns: readonly string[],
+  ignoreGlobs: readonly string[],
+  warn: (message: string) => void = (message) => console.warn(message)
+): string[] {
   const walk = (unread: FSOption | undefined): Map<string, string> => {
     const discovered = new Map<string, string>();
     for (const pattern of patterns) {
@@ -39,11 +45,22 @@ export function auditedFiles(workspaceRoot: string, patterns: readonly string[],
     }
     return discovered;
   };
-  const pruning = gitIgnores(workspaceRoot);
+  let unanswered: GitUnanswered | undefined;
+  const told = (why: GitUnanswered): void => {
+    unanswered = why;
+  };
+  const pruning = gitIgnores(workspaceRoot, told);
   let discovered = walk(pruning?.unread);
   // Judged by a listing taken after the walk, as discovery judges; where it fails, the walk is made again whole.
-  const judging = pruning && gitIgnores(workspaceRoot);
+  const judging = pruning && gitIgnores(workspaceRoot, told);
   if (pruning && !judging) discovered = walk(undefined);
-  const ignored = judging?.answer([...discovered.values()]).ignored;
-  return [...discovered.keys()].filter((absolute) => !ignored?.has(discovered.get(absolute) ?? "")).sort();
+  if (!judging && unanswered && !unanswered.noRepository) {
+    warn(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): every file found is audited.`);
+  }
+  const answer = judging?.answer([...discovered.values()]);
+  if (answer && answer.unjudged.size > 0) {
+    const [first] = answer.unjudged;
+    warn(`git cannot say what it ignores of ${answer.unjudged.size} file(s), such as ${first}, reached through a link to a folder that holds no repository or in a nested repository git could not be asked about: they are audited.`);
+  }
+  return [...discovered.keys()].filter((absolute) => !answer?.ignored.has(discovered.get(absolute) ?? "")).sort();
 }

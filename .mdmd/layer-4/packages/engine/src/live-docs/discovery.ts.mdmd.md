@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T13:06:20.961Z
+- Generated At: 2026-11-20T13:47:31.647Z
 
 ## Authored
 ### Purpose
@@ -25,14 +25,14 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - Since 2026-10-22 the shipped glob is every file, and documents are never documented: markdown, reStructuredText and AsciiDoc by suffix, and by name the plain-text readme, licence and its kin (`LICENSE-MIT`, `COPYING`, `NOTICE`), changelog, authors and contributing files with no extension or `.txt`, a name with another extension (`license.ts`) being code. A document reaches the map as linked documentation when a doc's authored words link to it. The owner: "I don't think we want to make a doc for a doc. I think we should aim for the "Linked Documentation" bundle to handle that.", and of licences, "they are docs and should be treated as such"; the markdown rule is absolute for now and expected to change for "prompts as programs", an agent's `SKILL.md` among them ([Turns 7 and 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-7)). The walk no longer enters `.git`, `node_modules` or the docs root at all (`glob`'s `ignore`), so every-file discovery walks this repository in under half a second.
 - `discoverDocuments` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the workspace's documents for the generator's `Cited By` sections, found by the same walk as the files (now shared as `walk` and `keptByGitAndConfiguration`): every document anywhere, whatever the configured globs name, since a document anywhere may link to a file and a doc's words may link to a document anywhere; less what git ignores and what `exclude` names; never `.git`, `node_modules` or the generated docs' base layer, while the authored documents a repository keeps under its docs root beside that layer count. The configured globs still decide which files get docs.
 - Since 2026-11-19 discovery orders the files it finds by their workspace-relative paths with forward slashes, by code unit (`inWorkspaceOrder`), not by their absolute paths as the platform spells them: on Windows a backslash sorts after the digits and the capitals, so `Shop.Data2\` came before `Shop.Data\`, the reverse of Linux, and since the order is the one in which files register their symbols, a type two files declare alike could resolve to another file on each. The generator's `--include` list is ordered the same way. On Linux the order is the one it always was, so no doc moved. Found by imitating Windows that day.
-- Since 2026-11-20 the two walks do not read the folders git ignores whole (`walkedAndKept`): git is asked first (`gitIgnores` in the engine's tooling) and glob reads those folders as empty. In the main checkout, with 28 builders' worktrees under `.claude/worktrees/`, the files' walk had taken 63.6 s and the documents' 19.6 s, where a clean worktree took 1.4 s and 0.4 s. The first version also walked again in full where git refused a path, and the second asked `git check-ignore` about each path by its name; since the third form, the same day, the one listing that shortens the walk also judges what it found, so what is left unread is exactly what is judged ignored, a nested repository's files are judged by its own git, and where the listing fails the walk is whole and the root `.gitignore` alone judges. A file git cannot judge, reached through a link to a folder git does not ignore or in a nested repository git cannot be asked about, is judged by the root `.gitignore` alone, and the generator warns of it. Each case, and one that counts the folders read, is in `discovery.test.ts`; `discovery.oracle.test.ts` holds discovery to `git status` over random repositories ([the probe of 2026-11-20](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md), and [the third form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#reading-gits-own-listing-the-third-form)).
+- Since 2026-11-20 the two walks do not read the folders git ignores whole (`walkedAndKept`): git is asked first (`gitIgnores` in the engine's tooling) and glob reads those folders as empty. In the main checkout, with 28 builders' worktrees under `.claude/worktrees/`, the files' walk had taken 63.6 s and the documents' 19.6 s, where a clean worktree took 1.4 s and 0.4 s. The first version also walked again in full where git refused a path, and the second asked `git check-ignore` about each path by its name; since the third form, the same day, the one listing that shortens the walk also judges what it found, so what is left unread is exactly what is judged ignored, a nested repository's files are judged by its own git, and where the listing fails the walk is whole and the root `.gitignore` alone judges. A file git cannot judge, reached through a link to a folder git does not ignore or in a nested repository git cannot be asked about, is judged by the root `.gitignore` alone, and the generator warns of it from both walks; and since the fourth form, the same day, a walk made whole because git could not be asked is never silent either, but where git says there is no repository ([the fourth form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#gits-own-view-of-a-folder-the-fourth-form)). Each case, and one that counts the folders read, is in `discovery.test.ts`; `discovery.oracle.test.ts` holds discovery to `git status` over random repositories ([the probe of 2026-11-20](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md), and [the third form](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#reading-gits-own-listing-the-third-form)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `docsRootWithin` {#symbol-docsrootwithin}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L168)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L172)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `docsRootWithin` — Summary
@@ -43,7 +43,7 @@ itself, or somewhere outside it.
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L215)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L219)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -90,7 +90,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L242)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L246)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -109,7 +109,7 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `inWorkspaceOrder` {#symbol-inworkspaceorder}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L333)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L345)
 - Returns: `T`[]
 - Parameters: `files`: `T`[]
 
@@ -121,14 +121,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L381)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L393)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L405)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L417)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -177,6 +177,7 @@ parser; every other file is read by its language adapter.
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`gitIgnored.GitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-interface)
+- [`gitIgnored.GitUnanswered`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered)
 - [`gitIgnored.gitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)

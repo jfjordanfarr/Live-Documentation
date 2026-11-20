@@ -196,6 +196,53 @@ describe("auditedFiles", () => {
     expect([...foldersGitIgnoresWhole(root)]).toEqual([""]);
   });
 
+  it("judges by git's listing taken after the walk a folder a build makes while the walk runs", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "dist/\n", "README.md": "" });
+    git(root, "init", "-q");
+    // A stand-in for a build: the walk's first read of a folder makes `dist/` and a file in it, after the listing that
+    // shortens the walk and before the one that judges it.
+    const readdirSync = fs.readdirSync;
+    let built = false;
+    const spy = vi.spyOn(fs, "readdirSync").mockImplementation(((...args: unknown[]) => {
+      if (!built) {
+        built = true;
+        write(root, { "dist/out.md": "" });
+      }
+      return Reflect.apply(readdirSync, fs, args);
+    }) as unknown as typeof fs.readdirSync);
+    try {
+      expect(audited(root)).toEqual(["README.md"]);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("walks whole and reads every file where the listing fails, before the walk or after it, and says so", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "build/\n", "build/a.md": "", "excluded/e.md": "", "README.md": "" });
+    git(root, "init", "-q");
+    fs.appendFileSync(path.join(root, ".git", "info", "exclude"), "excluded/\n");
+    // A git whose listing fails, as one whose output passes the buffer would, from the `after`-th listing on.
+    const bin = workspace();
+    const real = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+    const count = path.join(bin, "count");
+    fs.writeFileSync(path.join(bin, "git"), `#!/bin/sh\nfor a in "$@"; do if [ "$a" = ls-files ]; then n=$(cat "${count}"); echo $((n + 1)) > "${count}"; [ "$n" -ge "$GIT_FAILS_AFTER" ] && exit 128; fi; done\nexec "${real}" "$@"\n`, { mode: 0o755 });
+    process.env.PATH = `${bin}${path.delimiter}${process.env.PATH ?? ""}`;
+    try {
+      for (const after of ["0", "1"]) {
+        fs.writeFileSync(count, "0");
+        process.env.GIT_FAILS_AFTER = after;
+        const warnings: string[] = [];
+        // The walk the first listing shortened, which left `excluded/` unread, is made again whole where the second fails.
+        expect(auditedFiles(root, ["**/*.md"], [], (message) => warnings.push(message)).map((file) => path.relative(root, file)), `failing after ${after}`).toEqual(["README.md", "build/a.md", "excluded/e.md"]);
+        expect(warnings, `failing after ${after}`).toEqual([expect.stringMatching(after === "0" ? /what it ignores in \S+ \(git exited with 128\): every file/u : /what it ignores in \S+ after the walk \(git exited with 128\)/u)]);
+      }
+    } finally {
+      delete process.env.GIT_FAILS_AFTER;
+    }
+  });
+
   it("walks everything where git cannot answer: outside a repository, and with no git on the path", () => {
     const root = workspace();
     write(root, { ".gitignore": "build/\n", "build/a.md": "", "README.md": "" });

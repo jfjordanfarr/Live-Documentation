@@ -16,7 +16,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { gitIgnores, gitIgnoresCase, type GitIgnores } from "../tooling/gitIgnored";
+import { gitIgnores, gitIgnoresCase, type GitIgnores, type GitUnanswered } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
@@ -45,7 +45,11 @@ interface DiscoverOptions {
   config: LiveDocumentationConfig;
   include: Set<string>;
   changedOnly: boolean;
-  /** Told when git cannot judge some of the files found, those reached through a link to a folder git does not ignore. */
+  /**
+   * Told when the rule for no git judges what git should have: every file, where git could not be asked in a
+   * repository, or some, reached through a link to a folder git does not ignore or in a nested repository git cannot be
+   * asked about.
+   */
   warn?: (message: string) => void;
 }
 
@@ -271,12 +275,20 @@ async function walkedAndKept(
   config: LiveDocumentationConfig,
   warn?: (message: string) => void
 ): Promise<WalkedFile[]> {
-  const pruning = gitIgnores(workspaceRoot);
+  let unanswered: GitUnanswered | undefined;
+  const told = (why: GitUnanswered): void => {
+    unanswered = why;
+  };
+  const pruning = gitIgnores(workspaceRoot, told);
   let found = await walk(workspaceRoot, patterns, neverWalked, pruning?.unread);
   // Judged by a listing taken after the walk, so that a folder a build made while the walk ran is judged as git judges
   // it now; where that listing fails, the walk is made again whole, for the rule for no git.
-  const judging = pruning && gitIgnores(workspaceRoot);
+  const judging = pruning && gitIgnores(workspaceRoot, told);
   if (pruning && !judging) found = await walk(workspaceRoot, patterns, neverWalked, undefined);
+  // Never in silence where git's word was wanted: outside any repository, by git's own word, the rule for no git is the rule.
+  if (!judging && unanswered && !unanswered.noRepository) {
+    warn?.(`git could not be asked what it ignores in ${workspaceRoot}${pruning ? " after the walk" : ""} (${unanswered.reason}): so only ${path.join(workspaceRoot, ".gitignore")} is read, and what another .gitignore, .git/info/exclude or the global excludes hide gets docs; mend git, or name it in the configuration's exclude.`);
+  }
   return keptByGitAndConfiguration(found.filter(considers), workspaceRoot, config, judging, warn);
 }
 

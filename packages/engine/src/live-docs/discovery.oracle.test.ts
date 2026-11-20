@@ -17,7 +17,13 @@
  * repositories have a property of their own: a submodule, a plain nested repository and one whose `.git` is a file,
  * each judged by its own status, the outer status deciding only whether its folder is ignored; and beside them two
  * folders that hold a `.git` and are the outer repository's own, as git has them, judged by the outer status: one
- * below which the outer index holds a tracked or an intent-to-add entry, and one whose `.git` names no repository.
+ * below which the outer index holds a tracked or an intent-to-add entry, one whose `.git` names no repository, and,
+ * where the disk tells case apart and `core.ignorecase` is true, a tracked folder renamed in case alone. Two nested
+ * repositories git takes for repositories of their own but whose git refuses to answer, one whose configuration does
+ * not parse and one whose owner git does not trust (git's `GIT_TEST_ASSUME_DIFFERENT_OWNER`, with `safe.directory`
+ * naming every other repository and no global or system configuration), have no word of git's: their files are
+ * expected judged by the workspace's own `.gitignore` alone, the rule for no git, read here with the same `ignore`
+ * package discovery reads it with; each holds an `x.refused` that `.gitignore` names, so that every seed sees them.
  *
  * What the main property cannot see: the folders git ignores whole are left unread, so a file below one never reaches
  * the judging, and with folders in the listing never judged it still passes all thirty seeds. The nested property
@@ -31,8 +37,9 @@
  * whose contents git never sees (held by their own cases in `discovery.test.ts` and `gitIgnored.test.ts`). The record
  * of 2026-11-20 under `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/` says why.
  */
+import ignore from "ignore";
 import { execFileSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -243,13 +250,56 @@ describe("discovery against git status, over random repositories", () => {
     git(path.join(root, "o1"), "init", "-q");
     appendFileSync(path.join(root, "o1", ".git", "info", "exclude"), "*.ts\n*.md\n");
     writeFileSync(path.join(root, "b1", ".git"), "gitdir: nowhere\n");
-    const outer = ignoredByStatus(root);
-    const inner = new Map(nested.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
-    const kept = onDisk(root).filter((file) => {
-      const folder = nested.find((candidate) => file.startsWith(`${candidate}/`));
-      if (folder === undefined) return !ignoredBy(outer, file);
-      return !ignoredBy(outer, `${folder}/`) && !ignoredBy(outer, folder) && !ignoredBy(inner.get(folder) ?? [], file.slice(folder.length + 1));
-    });
-    expect(await documented(root), `seed ${seed}`).toEqual(split(kept));
+    // A tracked folder renamed in case alone, holding a repository of its own, where `core.ignorecase` is true: git's
+    // index folds case, so git takes it for its own folder. Made only where the disk tells case apart, where the rename
+    // leaves the index naming a folder the disk does not hold.
+    if (diskTellsCaseApart && git(root, "config", "--get", "core.ignorecase").trim() === "true") {
+      rmSync(path.join(root, "O2"), { recursive: true, force: true });
+      rmSync(path.join(root, "o2"), { recursive: true, force: true });
+      mkdirSync(path.join(root, "O2"));
+      for (const name of ["t.ts", "u.log", "w.md"]) writeFileSync(path.join(root, "O2", name), "x\n");
+      git(root, "add", "-f", "--", "O2/t.ts");
+      renameSync(path.join(root, "O2"), path.join(root, "o2"));
+      git(path.join(root, "o2"), "init", "-q");
+      appendFileSync(path.join(root, "o2", ".git", "info", "exclude"), "*.ts\n*.md\n");
+    }
+    // Nested repositories whose git refuses to answer, though git takes each for another repository and does not enter
+    // it: one whose configuration does not parse, and one whose owner git does not trust (git's own switch for another
+    // owner, with `safe.directory` naming every other repository here and no global or system configuration). Git has no
+    // word on their files: discovery reads the workspace's own `.gitignore` alone for them, the rule for no git, and warns.
+    const refusing = ["r1", "r2"];
+    for (const folder of refusing) {
+      rmSync(path.join(root, folder), { recursive: true, force: true });
+      mkdirSync(path.join(root, folder));
+      git(path.join(root, folder), "init", "-q");
+      fill(path.join(root, folder), next, false);
+      // A file the workspace's `.gitignore` names, which the rule for no git leaves out, in each.
+      writeFileSync(path.join(root, folder, "x.refused"), "x\n");
+    }
+    appendFileSync(path.join(root, ".gitignore"), "*.refused\n");
+    appendFileSync(path.join(root, "r1", ".git", "config"), "[broken\n");
+    const emptyConfig = path.join(store, "gitconfig");
+    writeFileSync(emptyConfig, "");
+    const trusted = [root, ...nested.map((folder) => path.join(root, folder))].map((folder) => realpathSync(folder));
+    const environment = { GIT_TEST_ASSUME_DIFFERENT_OWNER: "1", GIT_CONFIG_GLOBAL: emptyConfig, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_COUNT: String(trusted.length), ...Object.fromEntries(trusted.flatMap((folder, index) => [[`GIT_CONFIG_KEY_${index}`, "safe.directory"], [`GIT_CONFIG_VALUE_${index}`, folder]])) };
+    const given = Object.fromEntries(Object.keys(environment).map((name) => [name, process.env[name]]));
+    Object.assign(process.env, environment);
+    try {
+      const outer = ignoredByStatus(root);
+      const inner = new Map(nested.map((folder) => [folder, ignoredByStatus(path.join(root, folder))]));
+      const rootRules = existsSync(path.join(root, ".gitignore")) ? ignore().add(readFileSync(path.join(root, ".gitignore"), "utf8")) : ignore();
+      const kept = onDisk(root).filter((file) => {
+        if (refusing.some((folder) => file.startsWith(`${folder}/`))) return !ignoredBy(outer, `${file.split("/")[0]}/`) && !rootRules.ignores(file);
+        const folder = nested.find((candidate) => file.startsWith(`${candidate}/`));
+        if (folder === undefined) return !ignoredBy(outer, file);
+        return !ignoredBy(outer, `${folder}/`) && !ignoredBy(outer, folder) && !ignoredBy(inner.get(folder) ?? [], file.slice(folder.length + 1));
+      });
+      expect(await documented(root), `seed ${seed}`).toEqual(split(kept));
+    } finally {
+      for (const [name, value] of Object.entries(given)) {
+        if (value === undefined) delete process.env[name];
+        else process.env[name] = value;
+      }
+    }
   });
 });

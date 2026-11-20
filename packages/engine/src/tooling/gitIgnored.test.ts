@@ -1,6 +1,6 @@
 import { globSync } from "glob";
 import { spawnSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -162,6 +162,127 @@ describe("gitIgnoreAnswer", () => {
     expect(answer(root, paths)).toEqual({ ignored: ["added/x.log", "broken/build/b.ts", "broken/x.log", "vendor/lib/x.log"], unjudged: [] });
   });
 
+  it("takes git's own view of each folder holding a .git, from the repository around it, and leaves unjudged what git refuses to answer for", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\nign/\n");
+    const own = ["named-nothing", "tracked", "intent", "deeper", "ign"];
+    const other = ["plain", "unborn", "linked", "sep", "worktree", "inner/deep"];
+    const refusing = ["bare", "elsewhere", "badconfig", "format", "module"];
+    for (const folder of [...own, ...other, ...refusing, "inner"]) files(root, [`${folder}/a.ts`, `${folder}/x.log`]);
+    files(root, ["tracked/t.ts", "deeper/sub/s.ts"]);
+    git(root, "add", "-f", "tracked/t.ts");
+    git(root, "add", "-N", "intent/a.ts");
+    writeFileSync(path.join(root, "named-nothing", ".git"), "gitdir: nowhere\n");
+    const commit = (where: string): void => git(where, "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-q", "--allow-empty", "-m", "c");
+    // A gitlink deeper down: a submodule of the outer index inside `deeper/`.
+    git(path.join(root, "deeper", "sub"), "init", "-q");
+    commit(path.join(root, "deeper", "sub"));
+    git(root, "add", "deeper/sub");
+    for (const folder of ["tracked", "intent", "deeper", "ign", "plain", "unborn", "badconfig", "format", "inner", "inner/deep"]) git(path.join(root, folder), "init", "-q");
+    for (const folder of ["plain", "inner", "inner/deep"]) commit(path.join(root, folder));
+    // A submodule at the folder itself, whose own git refuses (its format unknown).
+    git(path.join(root, "module"), "init", "-q");
+    commit(path.join(root, "module"));
+    git(root, "add", "module");
+    const stores = workspace();
+    git(root, "init", "-q", "--separate-git-dir", path.join(stores, "sep.git"), "sep");
+    git(stores, "init", "-q", "--bare", "linked.git");
+    symlinkSync(path.join(stores, "linked.git"), path.join(root, "linked", ".git"));
+    git(path.join(stores, "linked.git"), "config", "core.bare", "false");
+    git(path.join(stores, "linked.git"), "config", "core.worktree", path.join(root, "linked"));
+    git(path.join(root, "plain"), "worktree", "add", "-q", "--detach", path.join(root, "worktree", "wt"));
+    renameSync(path.join(root, "worktree", "a.ts"), path.join(root, "worktree", "wt", "a.ts"));
+    renameSync(path.join(root, "worktree", "x.log"), path.join(root, "worktree", "wt", "x.log"));
+    git(root, "init", "-q", "--bare", "bare/.git");
+    git(root, "init", "-q", "elsewhere");
+    git(path.join(root, "elsewhere"), "config", "core.worktree", stores);
+    appendFileSync(path.join(root, "badconfig", ".git", "config"), "[broken\n");
+    git(path.join(root, "format"), "config", "core.repositoryformatversion", "99");
+    git(path.join(root, "module"), "config", "core.repositoryformatversion", "99");
+    for (const store of ["plain/.git", "unborn/.git", "inner/.git", "inner/deep/.git", "tracked/.git", "intent/.git", "deeper/.git", "ign/.git", path.join(stores, "sep.git"), path.join(stores, "linked.git")]) {
+      appendFileSync(path.join(path.isAbsolute(store) ? store : path.join(root, store), "info", "exclude"), "a.ts\n");
+    }
+    // The form of the review of the third form, git's listing of what it does not ignore, limited to the folder: it
+    // prints the folder whole where git takes it for another repository, and enters it otherwise; but at a submodule's
+    // own folder it prints nothing, as for a folder of its own with nothing untracked in it, so the gitlink is read too.
+    const view = (around: string, folder: string): string[] => spawnSync("git", ["--literal-pathspecs", "-C", around, "ls-files", "-z", "--others", "--exclude-standard", "--", folder], { encoding: "utf8" }).stdout.split("\0").filter((entry) => entry.length > 0);
+    for (const folder of [...other.filter((folder) => folder !== "inner/deep" && folder !== "worktree"), "worktree/wt", "bare", "elsewhere", "badconfig", "format", "inner"]) expect(view(root, folder), folder).toEqual([`${folder}/`]);
+    expect(view(path.join(root, "inner"), "deep")).toEqual(["deep/"]);
+    expect(view(root, "module")).toEqual([]);
+    for (const folder of ["named-nothing", "tracked", "intent", "deeper"]) expect(view(root, folder), folder).toEqual(folder === "intent" ? [] : [`${folder}/a.ts`]);
+    expect(view(root, "ign")).toEqual([]);
+
+    const paths = [...own, ...other.filter((folder) => folder !== "worktree"), "worktree/wt", ...refusing].flatMap((folder) => [`${folder}/a.ts`, `${folder}/x.log`]);
+    // Git's own folders: the outer `*.log` judges, the inner exclude does not. Another repository: its own exclude
+    // judges, the outer `*.log` does not. One whose git refuses: unjudged. Until this form `badconfig/`, `format/` and a
+    // submodule refusing were taken for folders of the outer repository, which git does not enter, and their files kept.
+    expect(answer(root, paths)).toEqual({
+      ignored: ["deeper/x.log", "ign/a.ts", "ign/x.log", "inner/deep/a.ts", "intent/x.log", "linked/a.ts", "named-nothing/x.log", "plain/a.ts", "sep/a.ts", "tracked/x.log", "unborn/a.ts", "worktree/wt/a.ts"].sort(),
+      unjudged: ["badconfig/a.ts", "badconfig/x.log", "bare/a.ts", "bare/x.log", "elsewhere/a.ts", "elsewhere/x.log", "format/a.ts", "format/x.log", "module/a.ts", "module/x.log"]
+    });
+  });
+
+  it("leaves unjudged a path in a nested repository whose owner git does not trust, though it trusts the repository around it", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
+    files(root, ["a.ts", "nest/b.ts", "nest/x.log"]);
+    writeFileSync(path.join(root, "nest", ".gitignore"), "b.ts\n");
+    git(path.join(root, "nest"), "init", "-q");
+    const names = ["GIT_TEST_ASSUME_DIFFERENT_OWNER", "GIT_CONFIG_GLOBAL", "GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_COUNT", "GIT_CONFIG_KEY_0", "GIT_CONFIG_VALUE_0"];
+    const given = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    // Git's own switch for an owner other than the person, and `safe.directory` naming the outer folder alone; no global
+    // or system configuration, which may trust every folder (this container's names `*`).
+    const empty = path.join(workspace(), "gitconfig");
+    writeFileSync(empty, "");
+    Object.assign(process.env, { GIT_TEST_ASSUME_DIFFERENT_OWNER: "1", GIT_CONFIG_GLOBAL: empty, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_COUNT: "1", GIT_CONFIG_KEY_0: "safe.directory", GIT_CONFIG_VALUE_0: realpathSync(root) });
+    try {
+      // Until this form `nest/` was taken for a folder of the outer repository, which git does not enter: both kept, in silence.
+      expect(answer(root, ["a.ts", "nest/b.ts", "nest/x.log"])).toEqual({ ignored: [], unjudged: ["nest/b.ts", "nest/x.log"] });
+    } finally {
+      for (const [name, value] of Object.entries(given)) {
+        if (value === undefined) delete process.env[name];
+        else process.env[name] = value;
+      }
+    }
+  });
+
+  it("takes for the outer repository's own a tracked folder whose case differs on the disk and holds a repository, where core.ignorecase is true", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    git(root, "config", "core.ignorecase", "true");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
+    files(root, ["Vendor/lib/a.ts"]);
+    git(root, "add", "Vendor/lib/a.ts");
+    git(root, "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-qm", "c");
+    // As Windows allows a rename of case alone; git's index, which folds case, still holds `vendor/lib/a.ts`.
+    renameSync(path.join(root, "Vendor"), path.join(root, "vendor"));
+    files(root, ["vendor/lib/x.log"]);
+    git(path.join(root, "vendor", "lib"), "init", "-q");
+    appendFileSync(path.join(root, "vendor", "lib", ".git", "info", "exclude"), "a.ts\n");
+    files(root, ["vendor/lib/n.ts"]);
+    const run = (...args: string[]): string[] => spawnSync("git", ["--literal-pathspecs", "-C", root, ...args], { encoding: "utf8" }).stdout.split("\0").filter((entry) => entry.length > 0);
+    // Git's own view, as status has it, enters the folder (and calls the tracked file deleted, where the disk tells case
+    // apart); `ls-files` limited to the folder alone first drops the index entries outside `vendor/`, exactly in case,
+    // and takes the folder for another repository. With a second pathspec that matches nothing, nothing is dropped.
+    expect(run("status", "--porcelain", "-z", "-uall", "--", "vendor/lib")).toEqual(["?? vendor/lib/n.ts"]);
+    expect(run("ls-files", "-z", "--others", "--exclude-standard", "--", "vendor/lib")).toEqual(["vendor/lib/"]);
+    expect(run("ls-files", "-z", "--others", "--exclude-standard", "--", "vendor/lib", ".git")).toEqual(["vendor/lib/n.ts"]);
+    // Until this form the outer index was compared exactly: `vendor/lib` was taken for another repository, the tracked
+    // `a.ts` dropped by its exclude and `x.log` kept.
+    expect(answer(root, ["vendor/lib/a.ts", "vendor/lib/x.log", "vendor/lib/n.ts"])).toEqual({ ignored: ["vendor/lib/x.log"], unjudged: [] });
+  });
+
+  it("judges by the outer listing a folder whose .git file names no repository and below which nothing is tracked", () => {
+    const root = workspace();
+    git(root, "init", "-q");
+    writeFileSync(path.join(root, ".gitignore"), "*.log\n");
+    files(root, ["stray/a.ts", "stray/x.log", "stray/sub/b.log"]);
+    writeFileSync(path.join(root, "stray", ".git"), "gitdir: nowhere\n");
+    expect(answer(root, ["stray/a.ts", "stray/x.log", "stray/sub/b.log"])).toEqual({ ignored: ["stray/sub/b.log", "stray/x.log"], unjudged: [] });
+  });
+
   it("leaves unjudged a path in a real nested repository whose git cannot answer", () => {
     const root = workspace();
     git(root, "init", "-q");
@@ -179,9 +300,13 @@ describe("gitIgnoreAnswer", () => {
     git(path.join(root, "nest"), "init", "-q");
     const excludes = path.join(workspace(), "excludes");
     writeFileSync(excludes, "*.secret.ts\n");
-    const given = { GIT_CONFIG_COUNT: process.env.GIT_CONFIG_COUNT, GIT_CONFIG_KEY_0: process.env.GIT_CONFIG_KEY_0, GIT_CONFIG_VALUE_0: process.env.GIT_CONFIG_VALUE_0 };
-    Object.assign(process.env, { GIT_CONFIG_COUNT: "1", GIT_CONFIG_KEY_0: "core.excludesFile", GIT_CONFIG_VALUE_0: excludes });
+    const given = { GIT_CONFIG_COUNT: process.env.GIT_CONFIG_COUNT, GIT_CONFIG_KEY_0: process.env.GIT_CONFIG_KEY_0, GIT_CONFIG_VALUE_0: process.env.GIT_CONFIG_VALUE_0, GIT_CONFIG_PARAMETERS: process.env.GIT_CONFIG_PARAMETERS };
     try {
+      // Both forms git gives a command's own configuration to the commands it starts: numbered, and `git -c`'s.
+      Object.assign(process.env, { GIT_CONFIG_COUNT: "1", GIT_CONFIG_KEY_0: "core.excludesFile", GIT_CONFIG_VALUE_0: excludes });
+      expect(answer(root, ["a.secret.ts", "nest/b.secret.ts", "nest/c.ts"])).toEqual({ ignored: ["a.secret.ts", "nest/b.secret.ts"], unjudged: [] });
+      for (const name of ["GIT_CONFIG_COUNT", "GIT_CONFIG_KEY_0", "GIT_CONFIG_VALUE_0"]) delete process.env[name];
+      process.env.GIT_CONFIG_PARAMETERS = `'core.excludesfile'='${excludes}'`;
       expect(answer(root, ["a.secret.ts", "nest/b.secret.ts", "nest/c.ts"])).toEqual({ ignored: ["a.secret.ts", "nest/b.secret.ts"], unjudged: [] });
     } finally {
       for (const [name, value] of Object.entries(given)) {

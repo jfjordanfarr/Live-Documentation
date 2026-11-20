@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.oracle.test.ts`
-- Generated At: 2026-11-20T13:06:20.944Z
+- Generated At: 2026-11-20T13:51:41.473Z
 
 ## Authored
 ### Purpose
@@ -24,8 +24,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `ignore` - `ignore`
 - `node:child_process` - `execFileSync`
-- `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `readdirSync`, `renameSync`, `rmSync`, `statSync`, `unlinkSync`, `writeFileSync`
+- `node:fs` - `appendFileSync`, `existsSync`, `mkdirSync`, `mkdtempSync`, `readFileSync`, `readdirSync`, `realpathSync`, `renameSync`, `rmSync`, `statSync`, `unlinkSync`, `writeFileSync`
 - `node:os` - `os`
 - `node:path` - `path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
