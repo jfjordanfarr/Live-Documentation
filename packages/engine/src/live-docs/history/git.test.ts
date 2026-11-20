@@ -340,7 +340,8 @@ describe("a tree the writer must not follow out of its folder", () => {
         asked.push(relative);
         return real.entry(relative);
       },
-      makeFolder: (relative) => real.makeFolder(relative)
+      makeFolder: (relative) => real.makeFolder(relative),
+      remove: (relative, what) => real.remove(relative, what)
     };
     expect(await writeStoredTree(path.join(repository, ".git"), change, directory, { platform: "linux", disk })).toEqual([]);
     expect(asked.filter((relative) => relative === "docs" || relative === "docs/deep")).toEqual(["docs", "docs/deep"]);
@@ -379,6 +380,16 @@ describe("a tree the writer must not follow out of its folder", () => {
       async makeFolder(relative) {
         if ((await resolve(relative)) !== undefined) throw Object.assign(new Error(`EEXIST: ${relative}`), { code: "EEXIST" });
         await fs.mkdir(path.join(directory, ...relative.split("/")));
+      },
+      async remove(relative, what) {
+        const real = await resolve(relative);
+        if (real === undefined) {
+          if (what === "whole") return;
+          throw Object.assign(new Error(`ENOENT: ${relative}`), { code: "ENOENT" });
+        }
+        if (what === "file") await fs.unlink(real);
+        else if (what === "folder") await fs.rmdir(real);
+        else await fs.rm(real, { recursive: true, force: true });
       }
     };
   }
@@ -461,6 +472,55 @@ describe("a tree the writer must not follow out of its folder", () => {
     }
   });
 
+  it("does not bring a tree forward where a kept file was rewritten, re-moded or replaced in place since it was written", async () => {
+    // `keep.txt` is the same blob at both changes, so it is kept; between them something changes it on the disk, each
+    // time at the same length, so that only its time, its mode or its identity can tell. Until 2026-11-20 the walk
+    // read names alone, and the tree came forward holding what neither change holds.
+    const store = path.join(repository, ".git");
+    const before = commit(tree([["100644", "blob", blob("a\n"), "a.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
+    const after = commit(tree([["100644", "blob", blob("b\n"), "b.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
+    const touches: Array<[string, (file: string) => Promise<void>]> = [
+      ["rewritten", (file) => fs.writeFile(file, "KEPT\n")],
+      ["re-moded", (file) => fs.chmod(file, 0o755)],
+      ["replaced", async (file) => {
+        await fs.writeFile(`${file}.new`, "kept\n");
+        await fs.rename(`${file}.new`, file);
+      }]
+    ];
+    for (const [touched, touch] of touches) {
+      const directory = await folder();
+      const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
+      await touch(path.join(directory, "keep.txt"));
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }), touched).toBeUndefined();
+    }
+    // Untouched, it is brought forward.
+    const directory = await folder();
+    const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
+    expect((await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd" }))?.unwritten).toEqual([]);
+    expect((await fs.readdir(directory)).sort()).toEqual(["b.txt", "keep.txt"]);
+  });
+
+  it("gives up bringing a tree forward, by name, where the disk refuses a removal as Windows does", async () => {
+    // Windows refuses with EPERM or EBUSY while a scanner holds a file open, and EACCES where it may not be written.
+    const store = path.join(repository, ".git");
+    const before = commit(tree([["100644", "blob", blob("a\n"), "a.txt"], ["100644", "blob", blob("kept\n"), "keep.txt"]]));
+    const after = commit(tree([["100644", "blob", blob("kept\n"), "keep.txt"]]));
+    for (const code of ["EPERM", "EBUSY", "EACCES"]) {
+      const directory = await folder();
+      const first = await writeTreeAnew(store, before, directory, { platform: "linux", docsRoot: ".mdmd" });
+      const real = realDisk(directory);
+      const refusing: TreeDisk = {
+        ...real,
+        remove: async (relative, what) => {
+          if (what === "file") throw Object.assign(new Error(`${code}: ${relative}`), { code });
+          return real.remove(relative, what);
+        }
+      };
+      expect(await bringTreeForward(store, after, directory, first.written, { platform: "linux", docsRoot: ".mdmd", disk: refusing }), code).toBeUndefined();
+      expect(await fs.readFile(path.join(directory, "a.txt"), "utf8"), code).toBe("a\n");
+    }
+  });
+
   it("decides each entry's place by what the disk answers: a folder made a level at a time, a link or a file refused, a taken name refused", async () => {
     const answers = new Map<string, DiskEntry>([["vendor", "link"], ["docs", "folder"], ["docs/a.md", "other"], ["readme", "other"]]);
     const made: string[] = [];
@@ -469,14 +529,15 @@ describe("a tree the writer must not follow out of its folder", () => {
       makeFolder: async (relative) => {
         made.push(relative);
         answers.set(relative, "folder");
-      }
+      },
+      remove: async () => undefined
     };
     expect(await placeEntry(["vendor", "lib", "x.js"], disk)).toBe("it lies beneath vendor, which is a symbolic link on this disk, and nothing is written through it");
     expect(await placeEntry(["readme", "x"], disk)).toBe("it lies beneath readme, which is a file on this disk, and nothing is written through it");
     expect(await placeEntry(["docs", "a.md"], disk)).toBe("another entry already stands at its name on this disk, which takes the two names for one");
     expect(await placeEntry(["src", "deep", "x.ts"], disk)).toBeUndefined();
     expect(made).toEqual(["src", "src/deep"]);
-    const tooLong: TreeDisk = { entry: async () => { throw Object.assign(new Error("too long"), { code: "ENAMETOOLONG" }); }, makeFolder: async () => undefined };
+    const tooLong: TreeDisk = { entry: async () => { throw Object.assign(new Error("too long"), { code: "ENAMETOOLONG" }); }, makeFolder: async () => undefined, remove: async () => undefined };
     expect(await placeEntry(["x".repeat(300)], tooLong)).toBe("this disk cannot hold its name (ENAMETOOLONG)");
   });
 

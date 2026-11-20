@@ -246,13 +246,18 @@ export type DiskEntry = "absent" | "folder" | "link" | "other";
 
 /**
  * The disk a tree is written to, as the writer asks it, by paths relative to the tree's folder: the real disk
- * ({@link realDisk}), or in a test a stand-in that treats names as one as APFS or NTFS do.
+ * ({@link realDisk}), or in a test a stand-in that treats names as one as APFS or NTFS do, or refuses as Windows does.
  */
 export interface TreeDisk {
   /** What stands at the path, read with `lstat`, never through a link. */
   entry(relative: string): Promise<DiskEntry>;
   /** Makes one folder at the path, never through a link; fails where anything stands there, by the disk's own rule of names. */
   makeFolder(relative: string): Promise<void>;
+  /**
+   * Removes what a tree brought forward no longer holds: a file, an empty folder (failing where it is not empty), or a
+   * folder whole with everything in it, nothing failing where it is absent.
+   */
+  remove(relative: string, what: "file" | "folder" | "whole"): Promise<void>;
 }
 
 /** The real disk under a folder. */
@@ -270,6 +275,11 @@ export function realDisk(directory: string): TreeDisk {
     },
     async makeFolder(relative) {
       await fs.mkdir(full(relative));
+    },
+    async remove(relative, what) {
+      if (what === "file") await fs.unlink(full(relative));
+      else if (what === "folder") await fs.rmdir(full(relative));
+      else await fs.rm(full(relative), { recursive: true, force: true });
     }
   };
 }
@@ -328,6 +338,33 @@ interface TreeEntry {
   parts: string[];
   /** Written as an empty file: its name stands, and no reader reads its content (`WorkingTreeOptions.contentless`). */
   empty?: true;
+  /** What the disk said of the file just after the writer left the tree, by which a later walk tells it was not touched. */
+  stamp?: FileStamp;
+}
+
+/** A file as `lstat` describes it: its size, its modification time, its mode and its identity on the disk. */
+interface FileStamp {
+  size: number;
+  mtimeMs: number;
+  mode: number;
+  ino: number;
+}
+
+function stampOf(stat: { size: number; mtimeMs: number; mode: number; ino: number }): FileStamp {
+  return { size: stat.size, mtimeMs: stat.mtimeMs, mode: stat.mode, ino: stat.ino };
+}
+
+function sameStamp(a: FileStamp, b: FileStamp): boolean {
+  return a.size === b.size && a.mtimeMs === b.mtimeMs && a.mode === b.mode && a.ino === b.ino;
+}
+
+/** The written entries, each file stamped as the disk now describes it ({@link FileStamp}). */
+async function stamped(directory: string, written: ReadonlyMap<string, TreeEntry>): Promise<Map<string, TreeEntry>> {
+  const result = new Map<string, TreeEntry>();
+  for (const [file, entry] of written) {
+    result.set(file, entry.mode === SUBMODULE_MODE ? entry : { ...entry, stamp: stampOf(await fs.lstat(path.join(directory, ...entry.parts))) });
+  }
+  return result;
 }
 
 /** How many symbolic links one is followed through before it is taken for a cycle. */
@@ -483,7 +520,8 @@ export async function writeTreeAnew(
   directory: string,
   options?: WorkingTreeOptions & { platform?: NodeJS.Platform; disk?: TreeDisk }
 ): Promise<WrittenTree> {
-  return writePlan(store, change, directory, await planTree(store, change, options), options?.disk ?? realDisk(directory), new Set());
+  const { unwritten, written } = await writePlan(store, change, directory, await planTree(store, change, options), options?.disk ?? realDisk(directory), new Set());
+  return { unwritten, written: await stamped(directory, written) };
 }
 
 /** A change's tree as the writer means to write it: the entries it writes, in the tree's order, and those its listing refuses, with why. */
@@ -635,27 +673,24 @@ export async function bringTreeForward(
   for (const [file, entry] of previous) {
     if (within(file)) continue;
     const wanted = next.get(file);
-    if (wanted !== undefined && wanted.mode === entry.mode && wanted.id === entry.id && wanted.empty === entry.empty) kept.set(file, wanted);
+    // The old stamp goes with the kept entry, so that the walk after can tell the file was not touched meanwhile.
+    if (wanted !== undefined && wanted.mode === entry.mode && wanted.id === entry.id && wanted.empty === entry.empty) kept.set(file, { ...wanted, ...(entry.stamp ? { stamp: entry.stamp } : {}) });
     else gone.push(entry);
   }
+  const disk = options?.disk ?? realDisk(directory);
   try {
-    await fs.rm(path.join(directory, ...docsRoot.split("/")), { recursive: true, force: true });
-    for (const entry of gone) {
-      const at = path.join(directory, ...entry.parts);
-      if (entry.mode === SUBMODULE_MODE) await fs.rmdir(at);
-      else await fs.unlink(at);
-    }
+    await disk.remove(docsRoot, "whole");
+    for (const entry of gone) await disk.remove(entry.relative, entry.mode === SUBMODULE_MODE ? "folder" : "file");
     // Every folder the old tree made that no entry of the new one lies in goes, the deepest first; one not empty means
     // the tree holds what its writer did not write.
     const needed = foldersOf(next);
     const standing = [...foldersOf(previous)].filter((folder) => !needed.has(folder) && !within(folder));
-    for (const folder of standing.sort((a, b) => b.split("/").length - a.split("/").length)) {
-      await fs.rmdir(path.join(directory, ...folder.split("/")));
-    }
-    // The folders above the docs root the generator made, where the change holds none, the deepest first.
+    for (const folder of standing.sort((a, b) => b.split("/").length - a.split("/").length)) await disk.remove(folder, "folder");
+    // The folders above the docs root the generator made, where the change holds none, the deepest first; one the old
+    // tree made is gone already.
     const above = docsRoot.split("/").slice(0, -1).map((_part, depth, parts) => parts.slice(0, depth + 1).join("/"));
-    for (const folder of above.reverse().filter((folder) => !needed.has(folder) && !standing.includes(folder))) {
-      await fs.rmdir(path.join(directory, ...folder.split("/"))).catch((error: NodeJS.ErrnoException) => {
+    for (const folder of above.reverse().filter((folder) => !needed.has(folder))) {
+      await disk.remove(folder, "folder").catch((error: NodeJS.ErrnoException) => {
         if (error.code !== "ENOENT") throw error;
       });
     }
@@ -669,7 +704,7 @@ export async function bringTreeForward(
   const toWrite = plan.entries.filter((entry) => !kept.has(entry.relative));
   let tree: Awaited<ReturnType<typeof writePlan>>;
   try {
-    tree = await writePlan(store, change, directory, { entries: toWrite, refused: plan.refused, position: plan.position }, options?.disk ?? realDisk(directory), folders);
+    tree = await writePlan(store, change, directory, { entries: toWrite, refused: plan.refused, position: plan.position }, disk, folders);
   } catch (error) {
     // A folder taken as standing that is not (a disk that took the docs root and a kept folder for one name removed
     // both), or a file Windows will not yet let be made again: the tree is written anew.
@@ -681,39 +716,52 @@ export async function bringTreeForward(
   // An entry the disk refused: a tree written anew settles it by the tree's order.
   if (unwritten.length !== plan.refused.length) return undefined;
   for (const [file, entry] of kept) written.set(file, entry);
-  // A name no writer of the tree made, a leftover outside the docs root say, would enter the next summary unseen.
-  if (!(await holdsOnly(directory, written))) return undefined;
-  return { unwritten, written };
+  // A name no writer of the tree made, a leftover outside the docs root say, or a kept file rewritten, re-moded or
+  // replaced in place, would enter the next summary unseen.
+  const checked = await holdsOnly(directory, written);
+  if (checked === undefined) return undefined;
+  return { unwritten, written: checked };
 }
 
 /**
- * Whether the names under `directory` are exactly those a tree's writer made: a file for each entry written but a
- * submodule, a folder for each submodule and for each folder an entry lies in, and nothing else. Names only, read by
- * one walk of the folders, never a file's bytes.
+ * Whether the tree under `directory` is exactly what its writer left: by name, a file for each entry written but a
+ * submodule, a folder for each submodule and for each folder an entry lies in, and nothing else; and each file that
+ * carries a stamp ({@link FileStamp}) as the disk described it then, so that a file kept from an earlier change and
+ * rewritten, re-moded or replaced since is seen. One walk of the folders and an `lstat` of each file, never a file's
+ * bytes. Since the review of 2026-11-20; before, names only.
+ *
+ * @returns The entries, every file stamped as it stands, or undefined where the tree is not as written.
  */
-async function holdsOnly(directory: string, written: WrittenEntries): Promise<boolean> {
+async function holdsOnly(directory: string, written: WrittenEntries): Promise<Map<string, TreeEntry> | undefined> {
   const folders = new Set(foldersOf(written));
   let files = 0;
   for (const entry of written.values()) {
     if (entry.mode === SUBMODULE_MODE) folders.add(entry.relative);
     else files += 1;
   }
+  const checked = new Map<string, TreeEntry>();
   let foundFiles = 0;
   let foundFolders = 0;
   for (const found of await fs.readdir(directory, { recursive: true, withFileTypes: true })) {
     const relative = path.relative(directory, path.join(found.parentPath, found.name)).split(path.sep).join("/");
     if (found.isDirectory()) {
-      if (!folders.has(relative)) return false;
+      if (!folders.has(relative)) return undefined;
       foundFolders += 1;
+      const entry = written.get(relative);
+      if (entry !== undefined) checked.set(relative, entry);
     } else if (found.isFile()) {
       const entry = written.get(relative);
-      if (entry === undefined || entry.mode === SUBMODULE_MODE) return false;
+      if (entry === undefined || entry.mode === SUBMODULE_MODE) return undefined;
+      const stamp = stampOf(await fs.lstat(path.join(found.parentPath, found.name)));
+      if (entry.stamp !== undefined && !sameStamp(entry.stamp, stamp)) return undefined;
+      checked.set(relative, { ...entry, stamp });
       foundFiles += 1;
     } else {
-      return false;
+      return undefined;
     }
   }
-  return foundFiles === files && foundFolders === folders.size;
+  // Every name found is one written, so with the counts equal every one written was found, a submodule as its folder.
+  return foundFiles === files && foundFolders === folders.size ? checked : undefined;
 }
 
 /**
