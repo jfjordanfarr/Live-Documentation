@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T14:11:52.482Z
+- Generated At: 2026-11-20T14:56:07.630Z
 
 ## Authored
 ### Purpose
@@ -90,7 +90,7 @@ A summarizing process started once, which summarizes changes one at a time in a 
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L341)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L342)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -101,7 +101,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L372)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L373)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

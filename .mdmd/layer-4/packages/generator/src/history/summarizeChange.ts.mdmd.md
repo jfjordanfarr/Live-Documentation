@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/summarizeChange.ts`
-- Generated At: 2026-11-20T12:42:58.085Z
+- Generated At: 2026-11-20T14:56:07.644Z
 
 ## Authored
 ### Purpose
@@ -35,7 +35,7 @@ What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L96)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L98)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
@@ -52,7 +52,7 @@ Whether the summary was written.
 
 #### `treeOptions` {#symbol-treeoptions}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L142)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L144)
 - Returns: [`WorkingTreeOptions`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-workingtreeoptions)
 - Parameters: `configuration`: [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -74,7 +74,7 @@ lay in `regenerate.ts`, whose process wrote every tree.
 
 #### `standingFiles` {#symbol-standingfiles}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L183)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L185)
 - Parameters: `unwritten`: `ReadonlyArray`
 
 ##### `standingFiles` — Summary
@@ -91,14 +91,14 @@ the disk was asked here (`stat`, then `isFile`).
 
 #### `WorkerTask` {#symbol-workertask}
 - Type: type
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L218)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L220)
 
 ##### `WorkerTask` — Summary
 What the history command asks of a worker: one change summarized, its tree written or brought forward by the worker.
 
 #### `WorkerReport` {#symbol-workerreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L221)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L223)
 
 ##### `WorkerReport` — Summary
 What a worker answers for each task.

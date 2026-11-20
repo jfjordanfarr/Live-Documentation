@@ -306,6 +306,7 @@ async function startWorker(context: RegenerationContext): Promise<Worker> {
         const task: WorkerTask = {
           configuration: summarizedConfiguration(context.configuration),
           lens: context.lens.key,
+          ignoresCase: context.lens.ignoresCase === true,
           commit: change.id,
           summaryPath: summaryPath(context.cacheFolder, change.id),
           textStore: path.join(context.cacheFolder, TEXT_STORE_DIRECTORY),

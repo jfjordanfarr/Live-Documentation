@@ -234,7 +234,7 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   // Both identities are taken before any work, so that the record a run leaves is keyed with the code that did the run,
   // even when the code on disk changes while it runs (the independent review of 2026-11-20, finding 1).
   const [generator, code] = await Promise.all([generatorIdentity(), sequenceCodeIdentity()]);
-  const lens = lensOf(generator, configuration);
+  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase() });
 
   const end = await versionControl.mainlineEnd();
   const mainline = await versionControl.mainline();

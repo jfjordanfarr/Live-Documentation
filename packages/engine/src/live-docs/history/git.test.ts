@@ -5,7 +5,9 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { bringTreeForward, followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, writeStoredTree, writeTreeAnew, type DiskEntry, type TreeDisk } from "./git";
+import { normalizeLiveDocumentationConfig } from "../../config/liveDocumentationConfig";
+import { bringTreeForward, followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, sameStamp, writeStoredTree, writeTreeAnew, type DiskEntry, type FileStamp, type TreeDisk } from "./git";
+import { lensOf } from "./lens";
 
 const OUT = "it is a symbolic link out of the tree, which the history does not follow";
 const NOWHERE = "it is a symbolic link to nothing the commit holds";
@@ -40,6 +42,17 @@ describe("parseNameStatus", () => {
       modified: ["src/a.ts", "bin/tool", "doc\nwith newline.md"]
     });
     expect(parseNameStatus("")).toEqual({ renamed: [], modified: [] });
+  });
+});
+
+describe("sameStamp", () => {
+  // Each field held on its own: in the cases on the disk below the change time also tells most changes, so a field left
+  // out of the comparison could pass unseen there (the independent review of this round, 2026-11-20).
+  const stamp: FileStamp = { size: 5, mtimeMs: 1_700_000_000_000, ctimeMs: 1_700_000_000_500, mode: 0o100644, ino: 42 };
+  it("tells two stamps apart that differ in one field alone, for each field", () => {
+    expect(sameStamp(stamp, { ...stamp })).toBe(true);
+    const others: Array<[keyof FileStamp, number]> = [["size", 6], ["mtimeMs", stamp.mtimeMs + 1], ["ctimeMs", stamp.ctimeMs + 1], ["mode", 0o100755], ["ino", 43]];
+    for (const [field, value] of others) expect(sameStamp(stamp, { ...stamp, [field]: value }), field).toBe(false);
   });
 });
 
@@ -824,11 +837,9 @@ describe("every git call of the history command", () => {
     };
     expect(missing(), "the clone holds no blob to begin with").toBe(true);
     const repo = await openGitRepository(clone);
-    // Without the blobs, git cannot weigh the rename: the call fails or reads no rename, and fetches nothing.
-    await repo.changesBetween(from, to).then(
-      (changes) => expect(changes.renamed).toEqual([]),
-      (error: unknown) => expect(String(error)).toMatch(/git/u)
-    );
+    // Without the blobs, git cannot weigh the rename, and the call fails loudly: a git that passed over the unreadable
+    // pair would read the rename as a death and a birth, which the history must not take for git's word.
+    await expect(repo.changesBetween(from, to)).rejects.toThrow();
     expect(missing(), "the blob is still not in the clone").toBe(true);
   }, 60_000);
 });
@@ -866,8 +877,8 @@ describe("the repository's own settings and a tree's calls", () => {
   });
 
   /** The change's tree as a worker makes it, and what `run` gives in it with the tree's environment, as the generator runs git there. */
-  async function inTree<T>(run: (root: string, env: NodeJS.ProcessEnv) => Promise<T> | T): Promise<T> {
-    const tree = await (await openGitRepository(repository)).workingTree(change, path.join(await fs.mkdtemp(path.join(scratch, "tree-")), "tree00"), { docsRoot: ".mdmd" });
+  async function inTree<T>(run: (root: string, env: NodeJS.ProcessEnv) => Promise<T> | T, ignoresCase?: boolean): Promise<T> {
+    const tree = await (await openGitRepository(repository)).workingTree(change, path.join(await fs.mkdtemp(path.join(scratch, "tree-")), "tree00"), { docsRoot: ".mdmd", ...(ignoresCase !== undefined ? { ignoresCase } : {}) });
     try {
       return await run(tree.root, { ...isolated, ...tree.environment });
     } finally {
@@ -916,6 +927,36 @@ describe("the repository's own settings and a tree's calls", () => {
       git(["config", "--unset", "index.sparse"]);
       await fs.rm(path.join(repository, ".git", "info", "sparse-checkout"));
     }
+  });
+
+  it("keys the lens by whether the repository matches names without regard to case, and answers the tree's calls with the value keyed", async () => {
+    // The root's ruling of 2026-11-20: `core.ignorecase` reaches a summary through `exclude`'s matching, so it keys the
+    // lens, and the summary's discovery reads the value keyed, one source for both.
+    const repo = await openGitRepository(repository);
+    const generator = { version: "0", code: "c", modified: null, unicode: "16.0", git: "git" } as unknown as Parameters<typeof lensOf>[0];
+    const configuration = normalizeLiveDocumentationConfig({});
+    // As the generator's `gitIgnoresCase` asks in the tree.
+    const asked = (root: string, env: NodeJS.ProcessEnv): string => spawnSync("git", ["-C", root, "config", "--type=bool", "--get", "core.ignorecase"], { cwd: root, env, encoding: "utf8" }).stdout.trim();
+    const unset = (): void => {
+      // `--unset-all` fails where nothing is set, as a clone on a disk that tells case apart leaves it.
+      spawnSync("git", ["config", "--unset-all", "core.ignorecase"], { cwd: repository, env: isolated });
+    };
+    const keys: Record<string, string> = {};
+    for (const setting of ["absent", "true", "false"] as const) {
+      if (setting === "absent") unset();
+      else git(["config", "core.ignorecase", setting]);
+      const ignoresCase = await repo.ignoresCase();
+      expect(ignoresCase, setting).toBe(setting === "true");
+      keys[setting] = lensOf(generator, configuration, { ignoresCase }).key;
+      // The tree answers with the value keyed, whatever the repository's file says meanwhile.
+      git(["config", "core.ignorecase", String(!ignoresCase)]);
+      expect(await inTree((root, env) => asked(root, env), ignoresCase), setting).toBe(String(ignoresCase));
+    }
+    expect(keys.true).not.toBe(keys.false);
+    // Absent reads as false, and false keys as before the setting was keyed.
+    expect(keys.absent).toBe(keys.false);
+    expect(keys.false).toBe(lensOf(generator, configuration).key);
+    unset();
   });
 
   it("ignores none of the generator's writes by an excludes file the repository names", async () => {

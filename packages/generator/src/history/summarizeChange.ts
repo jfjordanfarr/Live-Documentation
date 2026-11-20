@@ -82,6 +82,8 @@ export interface SummaryTask {
   indexPath?: string;
   /** The change's files its working tree does not hold, and why, which the summary records. */
   unwritten?: Array<{ path: string; reason: string }>;
+  /** Whether the repository matches names without regard to case, as the lens keyed it; the worker's trees answer with it. */
+  ignoresCase?: boolean;
 }
 
 /**
@@ -288,7 +290,7 @@ function work(store: string, folder: string): void {
   const summarize = async (task: WorkerTask): Promise<WorkerReport> => {
     const first = tree === undefined;
     // One name for the worker's life, six characters long, so that a fresh folder beside it is named as long (`git.ts`).
-    const options = treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00"));
+    const options = { ...treeOptions(task.configuration, tree?.root ?? path.join(folder, "tree00")), ...(task.ignoresCase !== undefined ? { ignoresCase: task.ignoresCase } : {}) };
     tree = tree === undefined ? await trees.workingTree(task.commit, path.join(folder, "tree00"), options) : await tree.bringTo(task.commit, options);
     const warned: string[] = [];
     let published: boolean;

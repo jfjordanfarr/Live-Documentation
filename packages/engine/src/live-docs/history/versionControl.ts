@@ -91,6 +91,11 @@ export interface WorkingTreeOptions {
    * it is not written even as a copy, since a copy there would stand where a folder is needed.
    */
   docsRoot?: string;
+  /**
+   * Whether the version control matches names without regard to case, as the lens keyed it ({@link
+   * VersionControl.ignoresCase}): a process in the tree is answered with this value and no other.
+   */
+  ignoresCase?: boolean;
 }
 
 /** What the history command needs of a version control. */
@@ -112,4 +117,9 @@ export interface VersionControl {
   workingTree(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree>;
   /** What happened between two changes. */
   changesBetween(from: string, to: string): Promise<VersionChanges>;
+  /**
+   * Whether the repository matches names without regard to case (for git, its own `core.ignorecase`), which the
+   * generator applies to `exclude` and so reaches a summary: the lens keys it (since 2026-11-20).
+   */
+  ignoresCase(): Promise<boolean>;
 }

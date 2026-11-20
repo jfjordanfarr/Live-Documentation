@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/versionControl.ts`
-- Generated At: 2026-11-20T14:11:49.492Z
+- Generated At: 2026-11-20T14:56:05.805Z
 
 ## Authored
 ### Purpose
@@ -57,7 +57,7 @@ What the caller asks of a change's tree beyond the change's own entries.
 
 #### `VersionControl` {#symbol-versioncontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L97)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/versionControl.ts#L102)
 
 ##### `VersionControl` — Summary
 What the history command needs of a version control.

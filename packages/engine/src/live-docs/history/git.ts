@@ -109,6 +109,10 @@ class GitRepository implements VersionControl {
     return this.trees.workingTree(change, directory, options);
   }
 
+  ignoresCase(): Promise<boolean> {
+    return readIgnoresCase(this.trees.store);
+  }
+
   async mainlineEnd(): Promise<MainlineEnd> {
     const [branch, head, shallow] = await Promise.all([
       this.git(["rev-parse", "--abbrev-ref", "HEAD"]),
@@ -152,7 +156,7 @@ class GitTrees {
    */
   async workingTree(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree> {
     await fs.mkdir(directory);
-    return this.treeAt(change, directory, async () => ({ ...(await writeTreeAnew(this.store, change, directory, options)), writtenAnew: NO_EARLIER_TREE }));
+    return this.treeAt(change, directory, options, async () => ({ ...(await writeTreeAnew(this.store, change, directory, options)), writtenAnew: NO_EARLIER_TREE }));
   }
 
   /**
@@ -168,7 +172,7 @@ class GitTrees {
    * never met a path twice; those caches now live for one generation (the record of that day,
    * `Probes/history-rebuild-fast`), and a refused rename had made the fall-back remove the very folder Windows held.
    */
-  private async treeAt(change: string, directory: string, write: () => Promise<WrittenTree & { writtenAnew?: string }>): Promise<WorkingTree> {
+  private async treeAt(change: string, directory: string, options: WorkingTreeOptions | undefined, write: () => Promise<WrittenTree & { writtenAnew?: string }>): Promise<WorkingTree> {
     const index = `${directory}.index`;
     let removal: Promise<void> | undefined;
     // A signal and the worker's finally may both release the same tree. They share one operation and its result.
@@ -183,6 +187,7 @@ class GitTrees {
     }
     const environment = {
       ...storeEnvironment(this.store),
+      ...treeSettings(options?.ignoresCase),
       GIT_WORK_TREE: directory,
       GIT_INDEX_FILE: index,
       GIT_CONFIG_NOSYSTEM: "1",
@@ -198,9 +203,9 @@ class GitTrees {
       bringTo: async (next, options) => {
         await fs.rm(index, { force: true });
         const brought = await bringTreeForward(this.store, next, directory, tree.written, options);
-        if (!("writtenAnew" in brought)) return this.treeAt(next, directory, () => Promise.resolve(brought));
+        if (!("writtenAnew" in brought)) return this.treeAt(next, directory, options, () => Promise.resolve(brought));
         const fresh = await freshFolderBeside(directory);
-        const anew = await this.treeAt(next, fresh, async () => ({ ...(await writeTreeAnew(this.store, next, fresh, options)), writtenAnew: brought.writtenAnew }));
+        const anew = await this.treeAt(next, fresh, options, async () => ({ ...(await writeTreeAnew(this.store, next, fresh, options)), writtenAnew: brought.writtenAnew }));
         // The old tree goes at once where nothing holds it; one the disk will not let go waits for the removal of the folder
         // above it, and nothing reads it meanwhile.
         await fs.rm(directory, { recursive: true, force: true }).catch(() => undefined);
@@ -225,10 +230,10 @@ async function atStore(store: string, args: readonly string[], env?: Record<stri
 /**
  * What every call of the tree's writer sets, and every call of a process in the tree with it (the tree's environment is
  * made from it): the repository by its git directory, what every git call of the history sets, and the repository's
- * own settings that could change a tree's answers set aside ({@link TREE_SETTINGS}).
+ * own settings that could change a tree's answers set aside ({@link treeSettings}).
  */
 function storeEnvironment(store: string): Record<string, string> {
-  return { GIT_DIR: store, ...HISTORY_GIT_ENVIRONMENT, ...TREE_SETTINGS };
+  return { GIT_DIR: store, ...HISTORY_GIT_ENVIRONMENT, ...treeSettings() };
 }
 
 /**
@@ -239,25 +244,50 @@ function storeEnvironment(store: string): Record<string, string> {
  * generator makes in the tree as well, whose command lines are not this module's:
  * - `core.fsmonitor`: a program git runs (or, set to true, a daemon it starts watching the tree) whenever a call reads
  *   the tree's index, as `ls-files` does (`git.test.ts`, red with it let in);
- * - `core.excludesFile`: a file of patterns the repository names, by which `check-ignore` called the generator's own
- *   writes under the docs root ignored, the only files of the tree git does not track (`git.test.ts`, red likewise).
+ * - `core.excludesFile`: a file of patterns the repository names, by which `check-ignore` calls the generator's own
+ *   writes under the docs root ignored (`git.test.ts`, red with it let in). This is a defence, not a need: those writes
+ *   are the only files of a tree git does not track, and no call of the product asks git about them, since sources and
+ *   documents are discovered before the generator writes, the search for scans below the workspace skips the docs root,
+ *   and pruning asks no git (read in `generator.ts` and `discovery.ts`, 2026-11-20). It is set aside because it costs
+ *   nothing and keeps a setting of the person's own from reaching a call that a later change might add.
  * Not set aside, each for its reason: `core.ignorecase`, which the generator reads on purpose, so that `exclude`
- * matches as git matches names in that clone (discovery, 2026-11-19), and which so reaches a summary; `core.splitIndex`,
+ * matches as git matches names in that clone (discovery, 2026-11-19), and which so reaches a summary: it keys the lens
+ * (since 2026-11-20), and the tree's environment pins it to the value keyed ({@link treeSettings}); `core.splitIndex`,
  * `core.sparseCheckout` and `index.sparse`, which a test set in the repository and found to change nothing these calls
  * write or answer (`read-tree` without `-u` applies no sparse pattern, and writes no shared index into the repository's
  * git directory); `core.untrackedCache`, a cache of what is untracked that changes no answer; `core.hooksPath`, since
- * no call of the history is one that runs a hook; and the repository's `info/exclude`, which no setting turns off, and
- * which can name only what git does not track, the generator's writes under the docs root.
+ * no call of the history is one that runs a hook; and the repository's `info/exclude`, which no setting turns off: it
+ * too can call the generator's writes ignored (a review put `*.mdmd.md` there, and `check-ignore` in a tree said so),
+ * and it is harmless for the same reason, since nothing asks git about them.
  */
 const SET_ASIDE: ReadonlyArray<[name: string, value: string]> = [
   ["core.fsmonitor", "false"],
   ["core.excludesFile", os.devNull]
 ];
 
-const TREE_SETTINGS: Readonly<Record<string, string>> = {
-  GIT_CONFIG_COUNT: String(SET_ASIDE.length),
-  ...Object.fromEntries(SET_ASIDE.flatMap(([name, value], index) => [[`GIT_CONFIG_KEY_${index}`, name], [`GIT_CONFIG_VALUE_${index}`, value]]))
-};
+/**
+ * The settings of {@link SET_ASIDE} as git's environment gives `-c`, and, where the caller names it, `core.ignorecase`
+ * pinned to the value the lens keyed ({@link WorkingTreeOptions.ignoresCase}), so that the generator's reading of it in
+ * the tree (`gitIgnoresCase`) answers with that value and no other: one source for the key and for the summary.
+ */
+function treeSettings(ignoresCase?: boolean): Record<string, string> {
+  const settings = ignoresCase === undefined ? SET_ASIDE : [...SET_ASIDE, ["core.ignorecase", String(ignoresCase)] as [string, string]];
+  return {
+    GIT_CONFIG_COUNT: String(settings.length),
+    ...Object.fromEntries(settings.flatMap(([name, value], index) => [[`GIT_CONFIG_KEY_${index}`, name], [`GIT_CONFIG_VALUE_${index}`, value]]))
+  };
+}
+
+/**
+ * Whether the repository whose git directory is `store` has git match names without regard to case, by git's own word
+ * (`core.ignorecase` as a boolean, false where it is not set), read as the tree's calls read it, the person's global and
+ * system configuration set aside: the value a summary's discovery uses, which the lens keys ({@link
+ * VersionControl.ignoresCase}). Git sets it true on a clone made where the disk does not tell case apart.
+ */
+async function readIgnoresCase(store: string): Promise<boolean> {
+  const answer = await historyGit(["config", "--type=bool", "--default=false", "--get", "core.ignorecase"], { cwd: store, env: { GIT_DIR: store, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: os.devNull } });
+  return answer.trim() === "true";
+}
 
 /**
  * What every git call of the history command sets, in one place, the command's own (the mainline, the renames, the check
@@ -349,7 +379,7 @@ const WINDOWS_FORBIDDEN = /[\\:<>"|?*\u0000-\u001f]|[. ]$|^(?:con|prn|aux|nul|co
  * name it does not accept, a name that is already another's by its own rule of names, a path through something that
  * is not a folder. An entry that meets one is left out and named; any other failure fails the tree.
  */
-const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
+export const NAME_FAILURES: ReadonlySet<string> = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "ENOTDIR", "EISDIR", "ELOOP"]);
 
 /**
  * Prepares the place of one entry on the disk, asking the disk at each step: every folder above it, one level at a
@@ -411,7 +441,7 @@ interface TreeEntry {
  * root has another stamp after the generator ran). The stamps catch what something else does there, a person's
  * scanner say, where the disk's clock lets them.
  */
-interface FileStamp {
+export interface FileStamp {
   size: number;
   mtimeMs: number;
   /**
@@ -428,7 +458,8 @@ function stampOf(stat: { size: number; mtimeMs: number; ctimeMs: number; mode: n
   return { size: stat.size, mtimeMs: stat.mtimeMs, ctimeMs: stat.ctimeMs, mode: stat.mode, ino: stat.ino };
 }
 
-function sameStamp(a: FileStamp, b: FileStamp): boolean {
+/** Whether two stamps describe the same file as it stood: every field the same. */
+export function sameStamp(a: FileStamp, b: FileStamp): boolean {
   return a.size === b.size && a.mtimeMs === b.mtimeMs && a.ctimeMs === b.ctimeMs && a.mode === b.mode && a.ino === b.ino;
 }
 
@@ -735,7 +766,10 @@ async function writePlan(store: string, change: string, directory: string, plan:
  * short names gives `ABCDEF~1.TXT` to whichever long name of that stem it meets first, so which long name holds it, and
  * whether an entry literally named `ABCDEF~1.TXT` is refused as the same name, depends on the order the names were
  * made. A tree written anew makes them in the tree's order; a tree brought forward made its kept names for an earlier
- * change, so the disk could refuse there what it accepts anew, or the reverse, and the two trees differ.
+ * change, so the disk could refuse there what it accepts anew, or the reverse, and the two trees differ. Its limits,
+ * recorded and not mended: it keys on the platform of the process, not on the disk, so a process on Linux writing its
+ * tree onto an NTFS volume that makes short names is not covered; and a short name spelled inside a source file (an
+ * import of `ABCDEF~1.TS`, say) is outside it, since it looks only at the tree's names.
  *
  * @returns The new change's tree as written, or why it was not brought forward (`writtenAnew`), the folder then in no
  *   state to be read.
