@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/headCheck.ts`
-- Generated At: 2026-11-20T09:32:49.182Z
+- Generated At: 2026-11-20T10:22:07.563Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The check at the head: the history's last step, replayed through every step from
 
 - Since 2026-11-20 ([the record of making a run fast](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md)) the committed docs are read from git's object store (`committedLiveDocGraph`): the docs under the base layer, a doc that is a link followed through the commit's own listing as the tree writer follows it, each parsed as `readLiveDocGraph` parses a doc on disk. Before, the head's whole tree was written to read them, 5 to 7 s of every run at this repository's head. A name the disk would take for another's, or could not hold, is read here under its own name, as the commit stores it. The module starts git, so the lens's guard lists it among the unkeyed modules that do, with the reason that nothing it reads reaches a summary.
 - Mended the same day after [an independent review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md#the-independent-review-and-its-mends): the first form read the targets of the links among the docs alone, where following a link needs the target of every link it meets, so a doc that was a link to a link outside the base layer, or reached through a folder that is a link, read as a link to nothing and the check failed falsely; now every link of the listing is read, as the tree writer reads them. And since the summaries' side still comes from the tree writer, which leaves out names the committed docs can hold (a name Windows reserves such as `aux.ts`, on Windows; names a folding disk takes for one; a name that is not UTF-8), the check now compares no committed file the head's summary lists as left out (`leftOutAtHead`), nor a link to or from it, and its line names each with why. The generator mirrors source names, so such docs can stand. The listing and the batch reader repeat two of `git.ts`'s readers, which keys the lens: they are to be folded into it at the next change that moves the lens anyway.
+- The review's second pass found the passing-over too broad: a file whose doc alone was left out was passed over whole, though the history read its source, so a symbol the replay lost went unreported. Only a file whose source was left out is passed over now. The limit, said in `leftOutAtHead`'s comment: what is passed over comes from the history's own account of what its tree left out, so a fault of the tree's writer that drops an entry and reports it is passed over too, named with its reason; no weaker than the check before the whole change, which dropped such entries from both sides silently.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -56,24 +57,31 @@ A moment of the history, as replayed: its shape and its rows.
 
 #### `leftOutAtHead` {#symbol-leftoutathead}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L142)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L149)
 - Parameters: `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `leftOut`: `ReadonlyMap`
 
 ##### `leftOutAtHead` — Summary
-The committed files the check at the head does not compare, each with why: those whose source or whose doc the head's
-tree did not hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree
-writer leaves out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names
-one on a disk that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check
-where the history is right. The check that read the committed docs from git's object store compared them until the
-independent review of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names
-out of both sides.
+The committed files the check at the head does not compare, each with why: those whose source the head's tree did not
+hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree writer leaves
+out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names one on a disk
+that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check where the history
+is right. The check that read the committed docs from git's object store compared them until the independent review
+of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names out of both sides.
+
+A file whose doc alone was left out is compared as any other: the history read its source, so a difference in what
+the doc alone carries is reported. Until the review's second pass a doc's own path left out passed its whole file
+over, a symbol the replay had lost included; in the real cases the source and the doc are left out together.
+
+The limit: what is passed over comes from the history's own account of what its tree left out. A fault of the tree's
+writer that drops an entry and reports it is passed over too, though named with its reason in the check's line; that
+is no weaker than the check before the whole change, which dropped such entries from both sides and said nothing.
 
 ##### `leftOutAtHead` — Parameters
 - `leftOut`: Each entry the head's tree did not hold, by its path, with why.
 
 #### `headDifferences` {#symbol-headdifferences}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L157)
+- Source: [source](../../../../../../packages/generator/src/history/headCheck.ts#L164)
 - Parameters: `replayed`: [`ReplayedMoment`](#symbol-replayedmoment); `committed`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `notCompared`: `ReadonlySet`
 
 ##### `headDifferences` — Summary

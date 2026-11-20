@@ -398,7 +398,9 @@ describe("the key and the record a run goes on from", () => {
     body.check = createHash("sha256").update(JSON.stringify([body.format, body.key, body.sequence, body.texts, body.firstNamed, body.unwritten])).digest("hex");
     fs.writeFileSync(recordFile(), JSON.stringify(body));
     const fell = await run();
-    expect(fell).toContain(`the summaries of ${commits[0].slice(0, 8)} were summarized again and the record of the sequence the last run wrote still names texts they do not: every step is derived again`);
+    // Said by what the damage was: the summary made again reads, and the record names a text it does not write.
+    expect(fell).toContain(`changes summarized again did not mend what a run going on met: the record of the sequence the last run wrote still names texts that the summaries of ${commits[0].slice(0, 8)} do not write; every step is derived again`);
+    expect(fell).not.toContain("still do not read");
     expect(fell).toContain("the sequence the last run wrote was not gone on from: a run that went on from it met damage that summarizing again did not mend");
     expect(written().equals(before)).toBe(true);
     // The record the fallback wrote is sound: the next run goes on from it.

@@ -129,20 +129,27 @@ export interface ReplayedMoment {
 }
 
 /**
- * The committed files the check at the head does not compare, each with why: those whose source or whose doc the head's
- * tree did not hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree
- * writer leaves out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names
- * one on a disk that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check
- * where the history is right. The check that read the committed docs from git's object store compared them until the
- * independent review of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names
- * out of both sides.
+ * The committed files the check at the head does not compare, each with why: those whose source the head's tree did not
+ * hold, by the head summary's own list (`unwritten`). The history never read such a file, and the tree writer leaves
+ * out names the committed docs can hold (a name Windows reserves, such as `aux.ts`, on Windows; two names one on a disk
+ * that folds case or normalization; a name that is not UTF-8), so comparing them would fail the check where the history
+ * is right. The check that read the committed docs from git's object store compared them until the independent review
+ * of 2026-11-20; the one before it wrote the head's tree to the same disk, which left the same names out of both sides.
+ *
+ * A file whose doc alone was left out is compared as any other: the history read its source, so a difference in what
+ * the doc alone carries is reported. Until the review's second pass a doc's own path left out passed its whole file
+ * over, a symbol the replay had lost included; in the real cases the source and the doc are left out together.
+ *
+ * The limit: what is passed over comes from the history's own account of what its tree left out. A fault of the tree's
+ * writer that drops an entry and reports it is passed over too, though named with its reason in the check's line; that
+ * is no weaker than the check before the whole change, which dropped such entries from both sides and said nothing.
  *
  * @param leftOut - Each entry the head's tree did not hold, by its path, with why.
  */
 export function leftOutAtHead(committed: LiveDocGraph, leftOut: ReadonlyMap<string, string>): Map<string, string> {
   const notCompared = new Map<string, string>();
   for (const file of Object.values(committed.files).sort((a, b) => compare(a.codePath, b.codePath))) {
-    const reason = leftOut.get(file.codePath) ?? leftOut.get(file.docPath);
+    const reason = leftOut.get(file.codePath);
     if (reason !== undefined) notCompared.set(file.codePath, reason);
   }
   return notCompared;

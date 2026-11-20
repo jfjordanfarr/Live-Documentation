@@ -72,8 +72,14 @@ describe("the check at the head", () => {
     const compared = headDifferences(unread, committed, textOf);
     expect(compared).toContain("src/a.ts has a committed doc and is not in the history's last step");
     expect(compared).toContain("the link src/a.ts#make -returns-> src/b.ts#b x1 is missing");
-    // A doc whose own name the tree left out is passed over too, under its file's path; an entry no doc names, not at all.
-    expect([...leftOutAtHead(committed, new Map([[".mdmd/layer-4/src/a.ts.mdmd.md", reason]]))]).toEqual([["src/a.ts", reason]]);
+    // A file whose doc alone the tree left out is compared as any other, since the history read its source: a symbol
+    // the replay lost is found (the review's second pass). An entry no committed file is, is passed over not at all.
+    const docAlone = leftOutAtHead(committed, new Map([[".mdmd/layer-4/src/a.ts.mdmd.md", reason]]));
+    expect([...docAlone]).toEqual([]);
+    const a = replayed.rows.get("src/a.ts")!;
+    const lost = { ...replayed, rows: new Map(replayed.rows) };
+    lost.rows.set("src/a.ts", { ...a, symbols: [] });
+    expect(headDifferences(lost, committed, textOf, new Set(docAlone.keys())).some((line) => line.startsWith("the symbols of src/a.ts differ"))).toBe(true);
     expect([...leftOutAtHead(committed, new Map([["vendor/elsewhere.ts", reason]]))]).toEqual([]);
     // What is not left out is still compared: the other file's words lost are found.
     unread.rows.set("src/b.ts", { ...unread.rows.get("src/b.ts")!, authored: "unread" });

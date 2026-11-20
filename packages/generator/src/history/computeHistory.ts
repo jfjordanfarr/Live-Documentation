@@ -6,7 +6,9 @@
  * @remarks
  * The mainline is read from the version control and sampled. Every sampled
  * change the cache lacks under the lens is summarized in a scratch tree by a
- * process of its own (`regenerate.ts`); then the sequence is derived from
+ * pool of worker processes, each started once and given runs of consecutive
+ * changes, keeping its tree from one change to the next (`regenerate.ts`;
+ * until 2026-11-20 a process of its own for each change); then the sequence is derived from
  * consecutive summaries and what the version control says between them, each
  * step replayed as it is written, and written beside the cache. A second run
  * regenerates only what the cache lacks. Nothing here is committed, and
@@ -101,7 +103,7 @@ export interface HistoryOptions {
   /** A configuration file for the lens, relative to the working directory; the workspace's `.live-docs.config.json` when absent, or the defaults. */
   configPath?: string;
   sampling: Sampling;
-  /** How many changes are regenerated at once, each in a process of its own; when absent, {@link poolSize} for this machine. */
+  /** How many changes are regenerated at once, one by each worker process of the pool; when absent, {@link poolSize} for this machine. */
   jobs?: number;
   /** Keep each change's full graph index, gzipped, in the cache. */
   keepIndex: boolean;
@@ -355,9 +357,17 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   while (!derived.whole) {
     const still = derived.damaged.filter((change) => summarizedAgain.has(change.id));
     if (still.length > 0 && derived.wentOn) {
-      // What the record of the written sequence names, summarizing again did not mend: the record is not what those
-      // summaries make, so the run derives every step instead, once, rather than fail every run until --rederive.
-      options.progress(`the summaries of ${still.map((change) => change.id.slice(0, 8)).join(", ")} were summarized again and the record of the sequence the last run wrote still names texts they do not: every step is derived again`);
+      // Summarizing again did not mend what a run going on met, so the run derives every step instead, once, rather than
+      // fail every run until --rederive; it says what the damage was: a summary that still does not read, or a text the
+      // record of the written sequence names and the summaries made again do not write.
+      const short = (changes: readonly MainlineChange[]): string => changes.map((change) => change.id.slice(0, 8)).join(", ");
+      const unread = still.filter((change) => derived.unread.has(change.id));
+      const unwrittenTexts = still.filter((change) => !derived.unread.has(change.id));
+      const what = [
+        ...(unread.length > 0 ? [`the summaries of ${short(unread)} still do not read`] : []),
+        ...(unwrittenTexts.length > 0 ? [`the record of the sequence the last run wrote still names texts that the summaries of ${short(unwrittenTexts)} do not write`] : [])
+      ];
+      options.progress(`changes summarized again did not mend what a run going on met: ${what.join(", and ")}; every step is derived again`);
       reading.rederive = "a run that went on from it met damage that summarizing again did not mend";
       derived = await deriveSequence(sampled, reading);
       continue;
@@ -673,6 +683,8 @@ type Derived =
       whole: false;
       /** The changes whose summaries do not read, or name a text the store lacks or holds changed, in the mainline's order. */
       damaged: MainlineChange[];
+      /** Of the damaged, by id, those whose summary itself does not read; the others first named a text the store lacks or holds changed. */
+      unread: ReadonlySet<string>;
       /** Whether the reading went on from the sequence the last run wrote, whose record named the texts. */
       wentOn: boolean;
     };
@@ -704,6 +716,8 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
   });
   const head = { lens: context.lens, source: context.source };
   const damaged = new Set<string>();
+  // Of the damaged, those whose summary itself does not read; the others first named a text the store lacks or holds changed.
+  const unread = new Set<string>();
   // What the history reads of a summary is what the bundle shows: the documents `bundleExclude` names are left out here.
   const read = async (index: number): Promise<CommitSummary | undefined> => {
     const change = sampled[index];
@@ -711,6 +725,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
       return bundledSummary(await readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id), context.bundleExclude);
     } catch {
       damaged.add(change.id);
+      unread.add(change.id);
       return undefined;
     }
   };
@@ -740,7 +755,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
     firstNamed = [...written.record.firstNamed];
     unwritten = written.record.unwritten.map(([commit, file, reason]): [string, string, string] => [commit, file, reason]);
     const summary = await read(last);
-    if (summary === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), wentOn: true };
+    if (summary === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), unread, wentOn: true };
     try {
       builder = SequenceBuilder.continuing(head, written.sequence, shapeOfSummary(summary), rowsOfSummary(summary, textId(last)));
       start = last + 1;
@@ -789,7 +804,7 @@ async function deriveSequence(sampled: readonly MainlineChange[], context: Readi
     if (text !== undefined) await fs.rm(file, { force: true });
     damaged.add(sampled[firstNamed[id]].id);
   });
-  if (damaged.size > 0 || builder === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), wentOn: line !== undefined };
+  if (damaged.size > 0 || builder === undefined) return { whole: false, damaged: sampled.filter((change) => damaged.has(change.id)), unread, wentOn: line !== undefined };
   const why = "reason" in written && written.reason !== NOTHING_WRITTEN ? `; the sequence the last run wrote was not gone on from: ${written.reason}` : "";
   return {
     whole: true,

@@ -287,17 +287,21 @@ describe("the committed docs read from the object store, through symbolic links"
 describe("the check at the head over a doc whose file the head's tree left out", () => {
   it("passes, naming the file it did not compare and why", async () => {
     const { here, run } = await mirrored("left-out", { "src/a.ts": "/** A. */\nexport const a = 1;\n", "src/cafe.ts": "/** A cafe. */\nexport const cafe = 2;\n" });
-    // The file and its doc renamed to a name holding é as Latin-1 writes it, a byte that is not UTF-8.
+    // The file and its doc renamed to a name holding é as Latin-1 writes it, a byte that is not UTF-8. The doc carries
+    // the code path a generator writes for that name: the byte read as U+FFFD, as node gives such a name and as the
+    // history's tree writer names the entry it leaves out, so that the file is passed over by its code path.
+    const doc = path.join(here, ".mdmd", "layer-4", "src", "cafe.ts.mdmd.md");
+    fs.writeFileSync(doc, fs.readFileSync(doc, "utf8").replaceAll("cafe.ts", "caf�.ts"));
     const latin = (file: string): Buffer => Buffer.from(path.join(here, file).replace("cafe", "café"), "latin1");
     fs.renameSync(path.join(here, "src", "cafe.ts"), latin("src/cafe.ts"));
-    fs.renameSync(path.join(here, ".mdmd", "layer-4", "src", "cafe.ts.mdmd.md"), latin(".mdmd/layer-4/src/cafe.ts.mdmd.md"));
+    fs.renameSync(doc, latin(".mdmd/layer-4/src/cafe.ts.mdmd.md"));
     run(["add", "--all"]);
     run(["commit", "--quiet", "-m", "A file whose name is not UTF-8, and its doc"]);
     const result = spawnSync(process.execPath, [tsxCli, "--tsconfig", tsconfigPath, historyScript, "--workspace", here, "--jobs", "1", "--check-head"], { encoding: "utf8", env: process.env });
     expect(result.status, result.stderr).toBe(0);
     expect(result.stderr).toContain("its name is not valid UTF-8");
     expect(result.stdout).toContain("not compared, since the head's tree did not hold them and so the history does not read them:");
-    expect(result.stdout).toMatch(/not compared[^\n]*\(its name is not valid UTF-8, so it cannot be written under its own name\)/u);
+    expect(result.stdout).toContain("src/caf�.ts (its name is not valid UTF-8, so it cannot be written under its own name)");
   }, 300_000);
 });
 
