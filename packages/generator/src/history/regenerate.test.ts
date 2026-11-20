@@ -211,7 +211,7 @@ describe("a tree written anew", () => {
     const startWorker = async (): Promise<Worker> => ({
       summarize: async (task) => {
         const reason = reasons[Number(task.id) - 1];
-        return { peakMemory: 1, unwritten: [], warned: [], broughtForward: reason === undefined, ...(reason !== undefined ? { writtenAnew: reason } : {}), runtimeFaulted: false, published: true, heldMemory: 1, heapShare: 0 };
+        return { peakMemory: 1, unwritten: [], warned: [], broughtForward: reason === undefined, ...(reason !== undefined ? { writtenAnew: reason } : {}), marked: [], published: true, unmapped: [], heldMemory: 1, heapShare: 0 };
       },
       end: async () => undefined
     });
