@@ -1,6 +1,6 @@
 import sys
 
-# Breaks, or puts back, four guards at once, to see each test that holds one go red:
+# Breaks, or puts back, five guards at once, to see each test that holds one go red:
 #   git.ts: a kept entry's blob not compared (the property); the walk of names skipped (the stray case);
 #           the folders above a nested docs root left (the nested case);
 #   summarizeChange.ts: every task summarized with the first task's tree environment (history.test.ts).
@@ -13,8 +13,12 @@ edits = [
      "wanted.mode === entry.mode && wanted.id === entry.id && wanted.empty === entry.empty",
      "wanted.mode === entry.mode && wanted.empty === entry.empty"),
     ("packages/engine/src/live-docs/history/git.ts",
-     "  if (!(await holdsOnly(directory, written))) return undefined;\n",
-     "  if (written.size < 0 && !(await holdsOnly(directory, written))) return undefined;\n"),
+     "  if (checked === undefined) return undefined;\n",
+     "  if (checked === undefined) return { unwritten, written };\n"),
+    # Since the review's fourth finding: a kept file's stamp not compared (git.test.ts, the file changed in place).
+    ("packages/engine/src/live-docs/history/git.ts",
+     "      if (entry.stamp !== undefined && !sameStamp(entry.stamp, stamp)) return undefined;\n",
+     "      if (entry.stamp !== undefined && !sameStamp(entry.stamp, stamp) && written.size < 0) return undefined;\n"),
     ("packages/engine/src/live-docs/history/git.ts",
      "    for (const folder of above.reverse().filter(",
      "    for (const folder of [].filter("),
