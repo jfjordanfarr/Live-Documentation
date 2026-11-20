@@ -1,10 +1,10 @@
-# tests/integration/live-docs/inspect-cli.test.ts
+# `tests/integration/live-docs/inspect-cli.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/inspect-cli.test.ts
-- Generated At: 2026-11-02T16:51:00.818Z
+- Code Path: `tests/integration/live-docs/inspect-cli.test.ts`
+- Generated At: 2026-11-19T22:40:15.195Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Exercises the `npm run live-docs:inspect` CLI against representative workspaces 
 - Blazor coverage was added on 2025-11-18 to lock in the `.razor` → partial class → `appsettings.json` chain discussed during the LD-402 expansion.
 
 Since the evening of 2026-11-02 the groups test also runs the lint over the same generated workspace and holds its connectivity warning to the same files alone, since the lint reads `fileGroups` too ([Turn 12 of the November 2 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-02/2026-11-02.1.record.md#turn-12)).
+
+Since 2026-11-19 a history question about a file named in another case, over the history's scripted repository at its first commit: `--at` with `--from` in another case, or as the doc's path in another case, answers as the name as spelled does, and `--to` too, while a name no file answers to is still said not to have existed. The first case failed before [the mend](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -33,5 +35,7 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`scripted-repository.SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-script)
+- [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

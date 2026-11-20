@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/dependencies.ts
+# `packages/engine/src/live-docs/dependencies.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/dependencies.ts
-- Generated At: 2026-11-19T08:59:53.165Z
+- Code Path: `packages/engine/src/live-docs/dependencies.ts`
+- Generated At: 2026-11-19T22:40:10.367Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L49)
 
 ##### `collectDependencies` — Summary
 Enumerates import and export dependencies declared within a TypeScript source file.
@@ -49,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L181)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L182)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -65,7 +65,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L274)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L275)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -83,14 +83,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L415)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L416)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L439)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L440)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.
@@ -123,5 +123,6 @@ Object containing augmented symbols and re-export info
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

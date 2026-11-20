@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts
+# `tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts
-- Generated At: 2026-10-22T16:48:00.634Z
+- Code Path: `tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts`
+- Generated At: 2026-11-19T21:10:25.509Z
 
 ## Authored
 ### Purpose

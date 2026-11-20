@@ -1,10 +1,10 @@
-# tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go
+# `tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go
-- Generated At: 2026-10-16T16:21:49.967Z
+- Code Path: `tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go`
+- Generated At: 2026-11-19T21:10:25.153Z
 
 ## Authored
 ### Purpose

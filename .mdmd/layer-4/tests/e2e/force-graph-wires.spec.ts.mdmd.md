@@ -1,10 +1,10 @@
-# tests/e2e/force-graph-wires.spec.ts
+# `tests/e2e/force-graph-wires.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/force-graph-wires.spec.ts
-- Generated At: 2026-10-31T15:24:51.311Z
+- Code Path: `tests/e2e/force-graph-wires.spec.ts`
+- Generated At: 2026-11-19T21:10:21.496Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/basic/src/Diagnostics/App.cs
+# `tests/integration/programs/csharp/basic/src/Diagnostics/App.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/App.cs
-- Generated At: 2026-10-02T20:20:04.596Z
+- Code Path: `tests/integration/programs/csharp/basic/src/Diagnostics/App.cs`
+- Generated At: 2026-11-19T21:10:26.392Z
 
 ## Authored
 ### Purpose

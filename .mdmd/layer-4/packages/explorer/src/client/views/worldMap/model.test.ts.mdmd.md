@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/worldMap/model.test.ts
+# `packages/explorer/src/client/views/worldMap/model.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/worldMap/model.test.ts
-- Generated At: 2026-10-22T16:47:56.581Z
+- Code Path: `packages/explorer/src/client/views/worldMap/model.test.ts`
+- Generated At: 2026-11-19T21:10:17.651Z
 
 ## Authored
 ### Purpose

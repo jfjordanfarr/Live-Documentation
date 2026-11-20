@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/words.ts
+# `packages/engine/src/live-docs/history/words.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/words.ts
-- Generated At: 2026-11-19T06:20:28.673Z
+- Code Path: `packages/engine/src/live-docs/history/words.ts`
+- Generated At: 2026-11-19T21:10:12.460Z
 
 ## Authored
 ### Purpose

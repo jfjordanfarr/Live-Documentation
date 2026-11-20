@@ -1,10 +1,10 @@
-# tests/integration/live-docs/expected/repository-entries.json
+# `tests/integration/live-docs/expected/repository-entries.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-11-19T07:32:39.860Z
+- Code Path: `tests/integration/live-docs/expected/repository-entries.json`
+- Generated At: 2026-11-19T22:40:15.135Z
 
 ## Authored
 ### Purpose
@@ -38,15 +38,6 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:package.json` {#symbol-entriespackagejson}
-- Type: key
-
-#### `entries:packages/cli/package.json` {#symbol-entriespackagesclipackagejson}
-- Type: key
-
-#### `entries:packages/cli/src/index.ts` {#symbol-entriespackagesclisrcindexts}
-- Type: key
-
-#### `entries:packages/cli/tsconfig.json` {#symbol-entriespackagesclitsconfigjson}
 - Type: key
 
 #### `entries:packages/engine/package.json` {#symbol-entriespackagesenginepackagejson}

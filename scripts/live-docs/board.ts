@@ -27,7 +27,7 @@ import { deriveBoardGraph, type BoardGraph } from "@live-documentation/engine/li
 import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph } from "@live-documentation/engine/live-docs/graphFiles";
 
-import { optionValue, readConfiguration, runCommand, UsageError } from "./cli";
+import { optionValue, readConfiguration, runCommand, typedPath, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -72,7 +72,8 @@ function usage(): string {
     "things, doors and wires. Without <board.md>, the board the configuration names as \"board\".",
     "",
     "Options:",
-    "  --workspace <path>   Workspace root (default: the current directory).",
+    "  --workspace <path>   Workspace root (default: the nearest folder, from the current directory up, that",
+    "                       holds a .live-docs.config.json; else the current directory).",
     "  --config <file>      The configuration (default: the workspace's .live-docs.config.json",
     "                       when it has one, else the shipped defaults).",
     "  -h, --help           Print this help."
@@ -122,15 +123,15 @@ async function main(): Promise<void> {
     console.log(usage());
     return;
   }
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
   const config = normalizeLiveDocumentationConfig(await readConfiguration(workspaceRoot, args.configPath));
   const named = args.board ?? config.board;
   if (named === undefined) {
     throw new UsageError("Name the board file to read; the configuration names none as \"board\".");
   }
 
-  // A board named here is a path from the current directory, the configuration's one a path from the workspace root.
-  const boardAbsolute = path.resolve(args.board === undefined ? workspaceRoot : process.cwd(), named);
+  // A board named here is a path from the folder the command was run from, the configuration's one a path from the workspace root.
+  const boardAbsolute = args.board === undefined ? path.resolve(workspaceRoot, named) : typedPath(named);
   const boardPath = path.relative(workspaceRoot, boardAbsolute).split(path.sep).join("/");
   if (boardPath.startsWith("../")) {
     throw new Error(`${named} is outside the workspace ${workspaceRoot}`);

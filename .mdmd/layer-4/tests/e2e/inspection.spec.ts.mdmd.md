@@ -1,10 +1,10 @@
-# tests/e2e/inspection.spec.ts
+# `tests/e2e/inspection.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/inspection.spec.ts
-- Generated At: 2026-11-06T06:45:45.537Z
+- Code Path: `tests/e2e/inspection.spec.ts`
+- Generated At: 2026-11-19T21:10:21.941Z
 
 ## Authored
 ### Purpose

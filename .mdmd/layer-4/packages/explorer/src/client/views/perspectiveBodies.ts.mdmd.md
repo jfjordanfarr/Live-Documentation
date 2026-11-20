@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/perspectiveBodies.ts
+# `packages/explorer/src/client/views/perspectiveBodies.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/perspectiveBodies.ts
-- Generated At: 2026-11-11T06:51:22.010Z
+- Code Path: `packages/explorer/src/client/views/perspectiveBodies.ts`
+- Generated At: 2026-11-19T21:10:17.254Z
 
 ## Authored
 ### Purpose

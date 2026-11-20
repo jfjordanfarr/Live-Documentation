@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/tuning-reset.ts
+# `packages/explorer/src/client/panels/tuning-reset.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/panels/tuning-reset.ts
-- Generated At: 2026-11-19T04:53:49.592Z
+- Code Path: `packages/explorer/src/client/panels/tuning-reset.ts`
+- Generated At: 2026-11-19T21:10:14.020Z
 
 ## Authored
 ### Purpose

@@ -1,7 +1,8 @@
-import { promises as fs, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
+import { readSourceText } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -50,7 +51,7 @@ export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",
   extensions: [".rb"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
     const symbols = extractSymbols(content);
     const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
     return hasMainGuard(content) ? { symbols, dependencies, program: {} } : { symbols, dependencies };

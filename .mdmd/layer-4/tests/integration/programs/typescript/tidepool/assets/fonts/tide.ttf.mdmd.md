@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/fonts/tide.ttf
+# `tests/integration/programs/typescript/tidepool/assets/fonts/tide.ttf`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/fonts/tide.ttf
-- Generated At: 2026-11-16T20:15:24.825Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/fonts/tide.ttf`
+- Generated At: 2026-11-19T21:10:28.629Z
 
 ## Authored
 ### Purpose

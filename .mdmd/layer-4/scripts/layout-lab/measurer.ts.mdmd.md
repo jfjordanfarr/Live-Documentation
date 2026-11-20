@@ -1,10 +1,10 @@
-# scripts/layout-lab/measurer.ts
+# `scripts/layout-lab/measurer.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-11-16T03:53:09.652Z
+- Code Path: `scripts/layout-lab/measurer.ts`
+- Generated At: 2026-11-19T21:10:18.692Z
 
 ## Authored
 ### Purpose

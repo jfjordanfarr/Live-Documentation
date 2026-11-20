@@ -1,10 +1,10 @@
-# packages/engine/grammars/powershell/test/corpus/command_arguments.txt
+# `packages/engine/grammars/powershell/test/corpus/command_arguments.txt`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/grammars/powershell/test/corpus/command_arguments.txt
-- Generated At: 2026-10-22T00:39:37.195Z
+- Code Path: `packages/engine/grammars/powershell/test/corpus/command_arguments.txt`
+- Generated At: 2026-11-19T21:10:08.640Z
 
 ## Authored
 ### Purpose

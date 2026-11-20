@@ -14,9 +14,12 @@
  * let a tracked file a `.gitignore` names into a summary had changed what
  * summaries said without changing the key.
  *
- * The summarizing process is given the person's environment without git's
- * variables, and the tree's own: git's answer of what the tree tracks and
- * ignores is then the tree's, whatever the person's shell had set.
+ * The summarizing process is given only the variables of the person's
+ * environment it needs ({@link summarizingEnvironment}), the tree's own, and
+ * only the node flags it needs ({@link summarizingFlags}): git's answer of
+ * what the tree tracks and ignores is then the tree's, whatever the person's
+ * shell had set. Since 2026-11-19 a file no reader of the tree reads is
+ * written empty ({@link treeOptions}).
  *
  * @module
  */
@@ -26,11 +29,15 @@ import { rmSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
-import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
+import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import type { HistoryLens } from "@live-documentation/engine/live-docs/history/format";
+import { summarizedConfiguration } from "@live-documentation/engine/live-docs/history/lens";
 import { TEXT_STORE_DIRECTORY } from "@live-documentation/engine/live-docs/history/textStore";
-import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
+import type { MainlineChange, VersionControl, WorkingTreeOptions } from "@live-documentation/engine/live-docs/history/versionControl";
 
 import type { SummaryReport, SummaryTask } from "./summarizeChange";
 
@@ -132,11 +139,12 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
       const began = Date.now();
       const scratch = await context.scratch.folder("live-docs-history-");
       try {
-        const tree = await context.versionControl.workingTree(change.id, path.join(scratch, path.basename(scratch)));
+        const directory = path.join(scratch, path.basename(scratch));
+        const tree = await context.versionControl.workingTree(change.id, directory, treeOptions(context.configuration, directory));
         const { warned, report } = await runSummary(
           {
             tree: tree.root,
-            configuration: context.configuration,
+            configuration: summarizedConfiguration(context.configuration),
             lens: context.lens.key,
             commit: change.id,
             summaryPath: summaryPath(context.cacheFolder, change.id),
@@ -150,7 +158,7 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
         );
         peakMemory = Math.max(peakMemory, report?.peakMemory ?? 0);
         if (tree.unwritten.length > 0) {
-          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} files of its tree were not written on this disk, and its summary says they were not read:`);
+          context.progress(`${change.id.slice(0, 8)}: ${tree.unwritten.length} entries of its tree were not written, and its summary says they were not read:`);
           for (const entry of tree.unwritten) {
             context.progress(`  ${entry.path}: ${entry.reason}`);
           }
@@ -178,22 +186,78 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
 }
 
 /**
+ * What the history asks of a change's tree written at `tree`: every name stands, and every file holds its content but
+ * one kind. A file is written empty only when the configuration's `exclude` names it (by discovery's own rule,
+ * `matchesPathPattern`), it lies outside the docs root (discovery's `docsRootWithin`), which the generator reads and
+ * rewrites whatever `exclude` says, and it is an image, a font or a recording (`isMediaAsset`), whose bytes no reader
+ * reads whatever names it: an import of a picture or a resolver's probe finds the name, as over a checkout. Any other
+ * file is written whole, since a reader may open any text file another file names (the C reader opens whatever an
+ * include names, `.def` and `.inc` among them, though no reader handles those kinds on their own). A symbolic link at
+ * or above the docs root is not written even as a copy.
+ *
+ * Until a review of 2026-11-19 the excluded files were left out altogether, on the strength of one measurement over
+ * this repository that the summarizing process opened none; for a few hours after, every excluded file no reader
+ * handles was written empty, until the review's second pass found the C reader opening such files.
+ */
+export function treeOptions(configuration: LiveDocumentationConfig, tree: string): WorkingTreeOptions {
+  const docsRoot = docsRootWithin(tree, configuration);
+  const inDocsRoot = (file: string): boolean => docsRoot !== undefined && (file === docsRoot || file.startsWith(`${docsRoot}/`));
+  return {
+    contentless: (file) => !inDocsRoot(file) && isMediaAsset(file) && configuration.exclude.some((pattern) => matchesPathPattern(file, pattern)),
+    ...(docsRoot !== undefined ? { docsRoot } : {})
+  };
+}
+
+/**
  * The variables of the command's environment the summarizing process is given, by name, and no other, so that nothing
- * the person's shell set, `NODE_OPTIONS` among them, changes what it loads or how it reads: `PATH`, by which it finds
+ * the person's shell set changes what it loads or how it reads (of `NODE_OPTIONS`, only the heap limit is carried, by
+ * {@link summarizingEnvironment}): `PATH`, by which it finds
  * git; the temporary folders, where the platform keeps them; on Windows the system's folders, without which a process
  * there cannot start; and tsx's own `TSX_TSCONFIG_PATH`, when the command runs under tsx, which names the TypeScript
  * configuration the lens keys.
  */
 const SUMMARIZING_VARIABLES = ["PATH", "Path", "TMPDIR", "TMP", "TEMP", "SystemRoot", "SYSTEMROOT", "windir", "WINDIR", "TSX_TSCONFIG_PATH"];
 
-/** The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set. */
+/**
+ * The environment the summarizing process is given: {@link SUMMARIZING_VARIABLES} from the command's, where set, and of
+ * the command's `NODE_OPTIONS` only its heap limit, `--max-old-space-size`, the way a person raises it through `npm run`
+ * (`NODE_OPTIONS=--max-old-space-size=8192 npm run live-docs:history`), which decides whether a summary of a large
+ * repository is made at all, never what it says. Any other option in it stays out.
+ */
 export function summarizingEnvironment(environment: NodeJS.ProcessEnv): Record<string, string> {
   const kept: Record<string, string> = {};
   for (const name of SUMMARIZING_VARIABLES) {
     const value = environment[name];
     if (value !== undefined) kept[name] = value;
   }
+  const heap = heapLimit((environment.NODE_OPTIONS ?? "").split(/\s+/u).filter(Boolean));
+  if (heap.length > 0) kept.NODE_OPTIONS = heap.join(" ");
   return kept;
+}
+
+/** The last `--max-old-space-size` among node's flags, as one word, given as `--max-old-space-size=N` or as two words; none when it is not among them. */
+function heapLimit(flags: readonly string[]): string[] {
+  let heap: string[] = [];
+  flags.forEach((flag, index) => {
+    if (/^--max[-_]old[-_]space[-_]size=\d+$/u.test(flag)) heap = [flag];
+    else if (/^--max[-_]old[-_]space[-_]size$/u.test(flag) && /^\d+$/u.test(flags[index + 1] ?? "")) heap = [`${flag}=${flags[index + 1]}`];
+  });
+  return heap;
+}
+
+/**
+ * The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,
+ * tsx's loader; and the command's own `--max-old-space-size`, when it was given one, which decides whether a summary
+ * of a large repository is made at all, never what it says. Until 2026-11-19 `fork` passed on every flag of the
+ * command's (`process.execArgv`), so that a flag such as `--conditions` or `--stack-size` reached the process that
+ * makes a summary, where the lens could not see it; for a while after, none was passed, and a summary that outgrew
+ * node's default heap could not be made by any means.
+ *
+ * @param commandFlags - The command's own flags, `process.execArgv` unless a test gives others.
+ */
+export function summarizingFlags(worker: string, commandFlags: readonly string[] = process.execArgv): string[] {
+  const loader = path.extname(worker) === ".ts" ? ["--import", pathToFileURL(require.resolve("tsx")).href] : [];
+  return [...loader, ...heapLimit(commandFlags)];
 }
 
 /**
@@ -210,7 +274,7 @@ async function runSummary(task: SummaryTask, scratch: Scratch, folder: string, e
   const taskFile = path.join(folder, "task.json");
   await fs.writeFile(taskFile, JSON.stringify(task), "utf8");
   return new Promise((resolve, reject) => {
-    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment });
+    const child = fork(worker, [taskFile], { stdio: ["ignore", "ignore", "pipe", "ipc"], env: environment, execArgv: summarizingFlags(worker) });
     scratch.started(child);
     let errors = "";
     let report: SummaryReport | undefined;

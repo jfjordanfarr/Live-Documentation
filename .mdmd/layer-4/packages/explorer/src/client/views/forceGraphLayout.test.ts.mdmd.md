@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphLayout.test.ts
+# `packages/explorer/src/client/views/forceGraphLayout.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-11-19T12:05:52.495Z
+- Code Path: `packages/explorer/src/client/views/forceGraphLayout.test.ts`
+- Generated At: 2026-11-19T21:10:15.012Z
 
 ## Authored
 ### Purpose

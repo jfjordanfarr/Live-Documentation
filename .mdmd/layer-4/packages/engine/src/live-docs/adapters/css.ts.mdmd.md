@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/css.ts
+# `packages/engine/src/live-docs/adapters/css.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/css.ts
-- Generated At: 2026-11-19T08:59:52.765Z
+- Code Path: `packages/engine/src/live-docs/adapters/css.ts`
+- Generated At: 2026-11-19T22:40:09.913Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L297)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L298)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cssAdapter` — Summary
@@ -32,13 +32,14 @@ Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, c
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`, `statSync`
+- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

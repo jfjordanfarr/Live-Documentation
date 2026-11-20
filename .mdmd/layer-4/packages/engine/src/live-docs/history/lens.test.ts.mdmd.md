@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/lens.test.ts
+# `packages/engine/src/live-docs/history/lens.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/history/lens.test.ts
-- Generated At: 2026-10-18T00:39:18.892Z
+- Code Path: `packages/engine/src/live-docs/history/lens.test.ts`
+- Generated At: 2026-11-19T21:10:12.076Z
 
 ## Authored
 ### Purpose
@@ -27,5 +27,6 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`lens.canonicalJson`](./lens.ts.mdmd.md#symbol-canonicaljson)
 - [`lens.lensOf`](./lens.ts.mdmd.md#symbol-lensof)
+- [`lens.summarizedConfiguration`](./lens.ts.mdmd.md#symbol-summarizedconfiguration)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

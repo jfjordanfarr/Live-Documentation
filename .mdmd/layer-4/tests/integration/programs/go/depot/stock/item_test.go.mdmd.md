@@ -1,10 +1,10 @@
-# tests/integration/programs/go/depot/stock/item_test.go
+# `tests/integration/programs/go/depot/stock/item_test.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/go/depot/stock/item_test.go
-- Generated At: 2026-09-27T23:21:35.787Z
+- Code Path: `tests/integration/programs/go/depot/stock/item_test.go`
+- Generated At: 2026-11-19T21:10:27.159Z
 
 ## Authored
 ### Purpose

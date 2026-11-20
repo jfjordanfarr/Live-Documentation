@@ -30,9 +30,9 @@
  *
  * @module
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { readSourceText } from "../../tooling/sourceText";
 import type { DeclaredEntry, SourceAnalysisResult } from "../coreTypes";
 import type { LanguageAdapter } from "./index";
 import { ManifestDependencies, manifestContext, packageSymbols, publishedName, sortDeclared, workspaceFile, type ManifestContext } from "./manifest";
@@ -203,7 +203,7 @@ export const pomAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [POM_XML],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const project = childAt(readXmlElements(await fs.readFile(input.absolutePath, "utf8")), "project");
+    const project = childAt(readXmlElements(await readSourceText(input.absolutePath)), "project");
     if (!project) return { symbols: [], dependencies: [] };
     const context = manifestContext(input);
     const directory = path.dirname(input.absolutePath);

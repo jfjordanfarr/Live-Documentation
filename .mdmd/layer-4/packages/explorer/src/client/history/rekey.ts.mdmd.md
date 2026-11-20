@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/rekey.ts
+# `packages/explorer/src/client/history/rekey.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/rekey.ts
-- Generated At: 2026-10-22T16:47:54.100Z
+- Code Path: `packages/explorer/src/client/history/rekey.ts`
+- Generated At: 2026-11-19T21:10:13.247Z
 
 ## Authored
 ### Purpose

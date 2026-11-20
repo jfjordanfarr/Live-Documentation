@@ -1,11 +1,11 @@
-# tests/integration/fixtures/entry-points/workspace/package.json
+# `tests/integration/fixtures/entry-points/workspace/package.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/package.json
+- Code Path: `tests/integration/fixtures/entry-points/workspace/package.json`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:23.033Z
+- Generated At: 2026-11-19T21:10:24.920Z
 
 ## Authored
 ### Purpose

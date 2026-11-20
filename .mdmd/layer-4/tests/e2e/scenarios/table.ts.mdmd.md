@@ -1,10 +1,10 @@
-# tests/e2e/scenarios/table.ts
+# `tests/e2e/scenarios/table.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/scenarios/table.ts
-- Generated At: 2026-11-18T19:17:17.212Z
+- Code Path: `tests/e2e/scenarios/table.ts`
+- Generated At: 2026-11-19T21:10:23.960Z
 
 ## Authored
 ### Purpose

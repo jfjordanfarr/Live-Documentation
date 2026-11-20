@@ -1,10 +1,10 @@
-# tests/integration/programs/go/depot/internal/audit/audit.go
+# `tests/integration/programs/go/depot/internal/audit/audit.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/depot/internal/audit/audit.go
-- Generated At: 2026-10-02T20:20:05.791Z
+- Code Path: `tests/integration/programs/go/depot/internal/audit/audit.go`
+- Generated At: 2026-11-19T21:10:27.107Z
 
 ## Authored
 ### Purpose

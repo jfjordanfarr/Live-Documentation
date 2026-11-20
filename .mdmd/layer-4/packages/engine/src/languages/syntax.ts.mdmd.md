@@ -1,10 +1,10 @@
-# packages/engine/src/languages/syntax.ts
+# `packages/engine/src/languages/syntax.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/syntax.ts
-- Generated At: 2026-09-28T02:39:05.210Z
+- Code Path: `packages/engine/src/languages/syntax.ts`
+- Generated At: 2026-11-19T21:10:08.944Z
 
 ## Authored
 ### Purpose

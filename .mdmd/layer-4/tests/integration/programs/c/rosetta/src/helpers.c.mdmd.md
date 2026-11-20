@@ -1,10 +1,10 @@
-# tests/integration/programs/c/rosetta/src/helpers.c
+# `tests/integration/programs/c/rosetta/src/helpers.c`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/rosetta/src/helpers.c
-- Generated At: 2026-10-02T20:20:04.341Z
+- Code Path: `tests/integration/programs/c/rosetta/src/helpers.c`
+- Generated At: 2026-11-19T21:10:26.082Z
 
 ## Authored
 ### Purpose

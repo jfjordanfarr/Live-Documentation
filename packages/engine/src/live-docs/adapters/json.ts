@@ -24,12 +24,12 @@
  * @module
  */
 
-import { promises as fs } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
@@ -59,22 +59,12 @@ function analyzePackageManifest(parsed: unknown, context: ManifestContext): Sour
 // What a manifest starts
 // ============================================================================
 
-/** The separators between the commands of one script. */
-const COMMAND_SEPARATOR = /\s*(?:&&|\|\||;|\|)\s*/u;
-
 /**
- * The files a manifest declares as entries: the workspace file each script
- * runs, each binary, and the main module, in path order.
- *
- * @remarks
- * A script is read command by command; in each, the first token that names a
- * workspace file is what the command runs, flags passed over and a tooling
- * input passed over too, since a command names one as an input, never as what
- * it runs (`tsx --tsconfig ./tsconfig.base.json scripts/run.ts` runs the
- * script; `tsc -p tsconfig.json` runs nothing of the workspace). A built path
- * is mapped back to its source through the tsconfig beside the manifest: a
- * file under `outDir` is looked for under `rootDir` with the TypeScript
- * extension that compiles to it.
+ * The files a manifest declares as entries: the workspace files each script
+ * runs ({@link filesRunBy}), each binary, and the main module, in path order.
+ * A built path is mapped back to its source through the tsconfig beside the
+ * manifest: a file under `outDir` is looked for under `rootDir` with the
+ * TypeScript extension that compiles to it.
  */
 function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): DeclaredEntry[] {
   const directory = path.dirname(manifestAbsolute);
@@ -88,9 +78,8 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
   if (scripts && typeof scripts === "object" && !Array.isArray(scripts)) {
     for (const [name, command] of Object.entries(scripts as Record<string, unknown>)) {
       if (typeof command !== "string") continue;
-      for (const segment of command.split(COMMAND_SEPARATOR)) {
-        const file = runFileOf(segment, toSource);
-        if (file) declare({ reason: "command", file, name });
+      for (const file of filesRunBy(command, toSource)) {
+        declare({ reason: "command", file, name });
       }
     }
   }
@@ -112,16 +101,185 @@ function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: st
   return Array.from(declared.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
 }
 
-/** The workspace file one command runs: the first token naming one that is not a tooling input, flags passed over. */
-function runFileOf(command: string, toSource: (candidate: string) => string | undefined): string | undefined {
-  for (const token of command.trim().split(/\s+/u)) {
-    if (token.length === 0 || token.startsWith("-")) continue;
-    const candidate = token.replace(/^["']|["']$/gu, "");
-    if (!candidate.includes("/") && !/\.[A-Za-z0-9]+$/u.test(candidate)) continue;
-    const file = toSource(candidate);
-    if (file && !isToolingFile(file)) return file;
+/**
+ * The workspace files a script runs: in each of its commands
+ * ({@link shellCommands}), the first word that names a workspace file which
+ * is not a tooling input; and each command of a quoted command line the
+ * script holds, read the same way.
+ *
+ * @remarks
+ * Flags are passed over, and so is a tooling input, since a command names one
+ * as an input, never as what it runs: `tsx --tsconfig ./tsconfig.base.json
+ * scripts/run.ts` runs the script, and `tsc -p tsconfig.json` runs nothing of
+ * the workspace. What follows the file a command runs is that file's
+ * arguments. A quoted word that holds whitespace and names no file is a
+ * command line of its own, wherever it stands, so that what a wrapper is
+ * handed as a quoted command is found without a list of wrappers:
+ * `concurrently "node api.js" "tsx web.ts"`, `start-server-and-test 'node
+ * serve.mjs' http://localhost:3000 'node check.mjs'`, `nodemon --exec "tsx
+ * main.ts"`, `sh -c "NODE_ENV=prod node a.js"`. A quoted word after `-e` or
+ * `-c` is read like any other. That is right for a shell's `-c`. For inline
+ * JavaScript it is harmless on every script measured, but only by luck: the
+ * engine's own build until 2026-10-16, `node -e "require('node:fs')
+ * .copyFileSync('src/…/powershell.emit-ast.ps1', 'dist/…/powershell.emit-ast.ps1')"`,
+ * gives words such as `dist/…/powershell.emit-ast.ps1)` that name no file,
+ * because `(` and `)` stay inside words. Split there as a shell splits them,
+ * that `dist/` path would map back to the emitter's source and make the build
+ * its start.
+ *
+ * This is the rule measured on 2026-11-19 (the probe
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/script-entries/README.md`).
+ * Taking every word that names a file was measured there and refused: on 983
+ * real scripts it found no start this rule misses and made 13 false ones (a
+ * minifier's `-o min.js`, a `cp` target, a file a script rewrites). A list of
+ * launchers, refused before it by two reviews, missed whatever it lacked.
+ *
+ * Known wrong answers, each pinned by a test:
+ * - A wrapper's command after a bare `--` is not read: `dotenv -e
+ *   config/dev.env -- vite-node scripts/a.ts` gives `config/dev.env` and
+ *   misses `scripts/a.ts`. This repository's browser lane, `node
+ *   scripts/browser-lane.mjs --label gate -- node scripts/e2e-passes.mjs`,
+ *   gives the lane and misses the passes. A third rule was measured for this
+ *   case: read a `--` followed by a program name as the start of a new
+ *   command. It finds both of these, and it also reads `node gen.mjs -- go
+ *   x.js` as running `x.js`. On the real scripts it changed no answer: 11 had a
+ *   program name after `--`, and in 7 of those the name was a script's
+ *   argument (`node Makefile.js lint -- fix`). So it waits for a real case.
+ * - The first file of a command is taken for its program even when it is
+ *   something else:
+ *   - an environment file (`node --env-file .env server.js`);
+ *   - a tool's output (`babel -o legacy.js index.js`);
+ *   - a copy's source (`cp src/a.js dist/`);
+ *   - the file `tee` writes.
+ *   A program run after a preloaded module (`node -r ./setup.js main.js`) is
+ *   not seen.
+ * - A quoted word that only mentions a command is read as one: `echo "node
+ *   b.js must run first"` gives `b.js`.
+ * - A path is resolved from the manifest's folder, so `(cd x && node ../a.js)`
+ *   is not read. Nor are `%VAR%` and `$(…)`, which only a shell expands. A
+ *   Windows path, `node scripts\a.ts`, is read: the backslash stays in the
+ *   word, and the path's resolution turns it into `/`.
+ */
+function filesRunBy(script: string, toSource: (candidate: string) => string | undefined): string[] {
+  const files: string[] = [];
+  for (const words of shellCommands(script)) {
+    let runs = false;
+    for (const word of words) {
+      const file = word.text.startsWith("-") || !looksLikePath(word.text) ? undefined : toSource(word.text);
+      if (file) {
+        if (!runs && !isToolingFile(file)) {
+          files.push(file);
+          runs = true;
+        }
+      } else if (word.spaced) {
+        files.push(...filesRunBy(word.text, toSource));
+      }
+    }
   }
-  return undefined;
+  return files;
+}
+
+/** True for a word that may be a path: it holds a slash or a backslash, or ends in an extension. */
+function looksLikePath(word: string): boolean {
+  return word.includes("/") || word.includes("\\") || /\.[A-Za-z0-9]+$/u.test(word);
+}
+
+/** A word of a command line, and whether a quote held whitespace in it, as a quoted command line does. */
+interface ShellWord {
+  text: string;
+  spaced: boolean;
+}
+
+/**
+ * A command line split into commands, and each command into its words, as a
+ * shell splits them. That is enough to find what each command runs; nothing
+ * is expanded or run.
+ *
+ * @remarks
+ * - Commands are separated by `&&`, `||`, `;`, `|`, `&` and line breaks
+ *   outside quotes.
+ * - Words are separated by whitespace outside quotes.
+ * - A single quote keeps every character to the next one. A double quote keeps
+ *   every character to the next unescaped one, a backslash escaping only `"`,
+ *   `\`, `$` and a backtick.
+ * - Outside quotes, a backslash escapes only whitespace, a quote, a backslash,
+ *   `$`, a backtick and the characters that separate commands, redirect and
+ *   comment. So `scripts\a.ts` keeps its backslash, and Windows paths stay
+ *   paths.
+ * - A `#` that begins a word begins a comment, to the end of the line.
+ * - A redirection's file is not a word of the command. That covers `<`, `>`,
+ *   `>>`, `&>`, a here-string's `<<<`, a here-document's `<<` and a numbered
+ *   one's `2>`. `2>&1` names no file, and its `&` separates nothing.
+ * - `(` and `)` stay inside words: a subshell is not read, and neither is
+ *   inline code's call ({@link filesRunBy}).
+ */
+function shellCommands(line: string): ShellWord[][] {
+  const commands: ShellWord[][] = [];
+  let words: ShellWord[] = [];
+  let text = "";
+  let started = false;
+  let spaced = false;
+  let redirected = false;
+  const endWord = (): void => {
+    if (started && !redirected) words.push({ text, spaced });
+    if (started) redirected = false;
+    text = "";
+    started = false;
+    spaced = false;
+  };
+  const endCommand = (): void => {
+    endWord();
+    redirected = false;
+    if (words.length > 0) commands.push(words);
+    words = [];
+  };
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    if (character === "'") {
+      const end = line.indexOf("'", index + 1);
+      const quoted = end < 0 ? line.slice(index + 1) : line.slice(index + 1, end);
+      text += quoted;
+      spaced ||= /\s/u.test(quoted);
+      started = true;
+      index = end < 0 ? line.length : end;
+    } else if (character === '"') {
+      let quoted = "";
+      for (index += 1; index < line.length && line[index] !== '"'; index += 1) {
+        if (line[index] === "\\" && index + 1 < line.length && '"\\$`'.includes(line[index + 1])) index += 1;
+        quoted += line[index];
+      }
+      text += quoted;
+      spaced ||= /\s/u.test(quoted);
+      started = true;
+    } else if (character === "\\" && index + 1 < line.length && /[\s"'\\$`&|;<>#]/u.test(line[index + 1])) {
+      index += 1;
+      text += line[index];
+      started = true;
+    } else if (character === "#" && !started) {
+      const end = line.indexOf("\n", index);
+      index = end < 0 ? line.length : end - 1;
+    } else if (character === "<" || character === ">" || (character === "&" && line[index + 1] === ">")) {
+      // A descriptor's number before the redirection belongs to it, and so does a descriptor it duplicates (`2>&1`), which names no file.
+      if (started && /^\d+$/u.test(text)) started = false;
+      endWord();
+      while (index + 1 < line.length && /[<>&|]/u.test(line[index + 1])) index += 1;
+      if (line[index] === "&" && /\d/u.test(line[index + 1] ?? "")) {
+        while (/\d/u.test(line[index + 1] ?? "")) index += 1;
+      } else {
+        redirected = true;
+      }
+    } else if (character === "&" || character === "|" || character === ";" || character === "\n") {
+      if ((character === "&" || character === "|") && line[index + 1] === character) index += 1;
+      endCommand();
+    } else if (/\s/u.test(character)) {
+      endWord();
+    } else {
+      text += character;
+      started = true;
+    }
+  }
+  endCommand();
+  return commands;
 }
 
 /** Maps a path a manifest names, relative to the manifest, to the workspace source file it stands for, through the tsconfig beside the manifest. */
@@ -398,7 +556,7 @@ export const jsonAdapter: LanguageAdapter = {
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     let content: string;
     try {
-      content = await fs.readFile(absolutePath, "utf8");
+      content = await readSourceText(absolutePath);
     } catch {
       return null;
     }

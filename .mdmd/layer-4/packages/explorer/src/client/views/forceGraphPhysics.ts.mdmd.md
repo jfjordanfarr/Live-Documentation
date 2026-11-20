@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphPhysics.ts
+# `packages/explorer/src/client/views/forceGraphPhysics.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-19T12:46:59.106Z
+- Code Path: `packages/explorer/src/client/views/forceGraphPhysics.ts`
+- Generated At: 2026-11-19T21:10:15.198Z
 
 ## Authored
 ### Purpose

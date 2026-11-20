@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/go/app/main.go
+# `tests/integration/fixtures/manifests/workspace/go/app/main.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/go/app/main.go
+- Code Path: `tests/integration/fixtures/manifests/workspace/go/app/main.go`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-16T16:21:49.917Z
+- Generated At: 2026-11-19T21:10:25.135Z
 
 ## Authored
 ### Purpose

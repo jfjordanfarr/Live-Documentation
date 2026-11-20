@@ -1,11 +1,11 @@
-# scripts/slopcop/check-asset-paths.ts
+# `scripts/slopcop/check-asset-paths.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/slopcop/check-asset-paths.ts
+- Code Path: `scripts/slopcop/check-asset-paths.ts`
 - Entry: command `slopcop:assets` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.882Z
+- Generated At: 2026-11-19T21:10:19.574Z
 
 ## Authored
 ### Purpose

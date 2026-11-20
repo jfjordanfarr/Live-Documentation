@@ -26,17 +26,19 @@
  * directory, registering nothing with the repository, so that a process in
  * the tree can ask git what it tracks ({@link WorkingTree.environment}).
  *
- * Since a second review of 2026-11-19 nothing is written outside the tree's
- * folder whatever the commit holds: the disk itself is asked, without
- * following a link, before each entry is written, so that an entry beneath a
- * link or a file, one whose name the disk already holds by its own rule of
- * names (case, normalization, short names), or one whose name the disk or the
- * platform cannot hold is left out and named, and the summary says it was not
- * read. A third review found that a folding rule of this module's own, as the
- * second pass had, missed what APFS and NTFS take for one name. Blobs are
- * streamed to disk rather than held whole; every failure of the reader ends
- * in one rejection; and every call reads the commit as stored, the
- * repository's replacement objects set aside.
+ * Nothing is written outside the tree's folder whatever the commit holds.
+ * No symbolic link is ever written: a link to a file of the tree is written as
+ * a copy of that file, any other is left out and named (since 2026-11-19).
+ * The disk itself is asked, without following a link, once for each folder,
+ * so that an entry beneath a file, one whose name the disk already holds by
+ * its own rule of names (case, normalization, short names), or one whose name
+ * the disk or the platform cannot hold is left out and named, and the summary
+ * says it was not read; a third review found that a folding rule of this
+ * module's own missed what APFS and NTFS take for one name. Every name of the
+ * commit stands; a file the caller says no reader reads is written empty.
+ * Blobs are streamed to disk rather than held whole; every failure of the
+ * reader ends in one rejection; and every call reads the commit as stored,
+ * the repository's replacement objects set aside.
  *
  * @module
  */
@@ -47,7 +49,7 @@ import os from "node:os";
 import path from "node:path";
 
 import { execFileAsync } from "../gitUtils";
-import type { MainlineChange, MainlineEnd, VersionChanges, VersionControl, WorkingTree } from "./versionControl";
+import type { MainlineChange, MainlineEnd, VersionChanges, VersionControl, WorkingTree, WorkingTreeOptions } from "./versionControl";
 
 // A listing of a large repository's history or of a large change runs to many megabytes.
 const LARGEST_OUTPUT = 1 << 30;
@@ -109,7 +111,7 @@ class GitRepository implements VersionControl {
    * replacement objects, from that process, though git's answer could not depend on them: every file the tree holds
    * is tracked, and a tracked file is never ignored.
    */
-  async workingTree(change: string, directory: string): Promise<WorkingTree> {
+  async workingTree(change: string, directory: string, options?: WorkingTreeOptions): Promise<WorkingTree> {
     const index = `${directory}.index`;
     await fs.mkdir(directory);
     let removal: Promise<void> | undefined;
@@ -118,7 +120,7 @@ class GitRepository implements VersionControl {
     let unwritten: UnwrittenEntry[];
     try {
       await this.git(["read-tree", change], { GIT_INDEX_FILE: index });
-      unwritten = await writeStoredTree(this.root, change, directory);
+      unwritten = await writeStoredTree(this.root, change, directory, options);
     } catch (error) {
       await remove();
       throw error;
@@ -219,16 +221,19 @@ const NAME_FAILURES = new Set(["ENAMETOOLONG", "EILSEQ", "EINVAL", "EEXIST", "EN
  *
  * @returns Why the entry cannot be written, or undefined where it can.
  */
-export async function placeEntry(parts: readonly string[], disk: TreeDisk): Promise<string | undefined> {
+export async function placeEntry(parts: readonly string[], disk: TreeDisk, folders: Set<string> = new Set()): Promise<string | undefined> {
   try {
     for (let depth = 1; depth < parts.length; depth += 1) {
       const folder = parts.slice(0, depth).join("/");
+      // A folder this writer made or found is one still: it never replaces one, and nothing else writes in the tree meanwhile.
+      if (folders.has(folder)) continue;
       const standing = await disk.entry(folder);
       if (standing === "absent") {
         await disk.makeFolder(folder);
       } else if (standing !== "folder") {
         return `it lies beneath ${folder}, which is ${standing === "link" ? "a symbolic link" : "a file"} on this disk, and nothing is written through it`;
       }
+      folders.add(folder);
     }
     const standing = await disk.entry(parts.join("/"));
     if (standing !== "absent") {
@@ -248,57 +253,203 @@ interface TreeEntry {
   id: string;
   relative: string;
   parts: string[];
+  /** Written as an empty file: its name stands, and no reader reads its content (`WorkingTreeOptions.contentless`). */
+  empty?: true;
+}
+
+/** How many symbolic links one is followed through before it is taken for a cycle. */
+const LINK_HOPS = 8;
+
+/** Where a symbolic link of a commit's tree leads, read through the tree's own listing and never through the disk. */
+export type LinkEnd = { file: { mode: string; id: string } } | { reason: string };
+
+/**
+ * Follows a symbolic link of a commit's tree to what it names, through the commit's own listing and as the disk would:
+ * one part of the path at a time, a link met on the way followed before the next part, so that a `..` after a link
+ * climbs from where the link leads (`l -> a/b/../z.txt` with `a/b -> ../x/y` reads `x/z.txt`). Up to {@link LINK_HOPS}
+ * links are followed. A link that reaches a regular file of the tree gives that file's mode and blob; any other gives
+ * the reason it is not followed.
+ *
+ * @param link - The link's repository-relative path.
+ * @param listing - Every entry of the commit's tree by its path: its mode and object id.
+ * @param targets - Each link's target as its blob holds it, by the link's path.
+ */
+export function followLink(link: string, listing: ReadonlyMap<string, { mode: string; id: string }>, targets: ReadonlyMap<string, string>): LinkEnd {
+  const folders = foldersOf(listing);
+  // The parts resolved so far, from the tree's root, and the parts still to take.
+  const resolved: string[] = [];
+  let remaining = link.split("/");
+  let hops = 0;
+  while (remaining.length > 0) {
+    const part = remaining.shift()!;
+    if (part === "" || part === ".") continue;
+    if (part === "..") {
+      if (resolved.length === 0) return { reason: OUT_OF_TREE };
+      resolved.pop();
+      continue;
+    }
+    resolved.push(part);
+    const here = resolved.join("/");
+    const entry = listing.get(here);
+    if (entry?.mode === LINK_MODE) {
+      if (hops === LINK_HOPS) return { reason: `it is a symbolic link in a chain that does not end within ${LINK_HOPS} links, a cycle or longer` };
+      hops += 1;
+      const target = targets.get(here) ?? "";
+      if (target === "" || target.includes("\0")) return { reason: NOTHING };
+      if (target.startsWith("/") || /^[A-Za-z]:/u.test(target)) return { reason: OUT_OF_TREE };
+      // The link's own part gives way to its target, read from the folder the link stands in.
+      resolved.pop();
+      remaining = [...target.split("/"), ...remaining];
+      continue;
+    }
+    // A file or a submodule with more of the path after it: the path leads nowhere.
+    if (entry !== undefined && remaining.some((rest) => rest !== "" && rest !== ".")) return { reason: NOTHING };
+  }
+  const at = resolved.join("/");
+  const entry = listing.get(at);
+  if (entry !== undefined && (entry.mode === FILE_MODE || entry.mode === EXECUTABLE_MODE)) return { file: entry };
+  if (entry?.mode === SUBMODULE_MODE || folders.has(at) || at === "") return { reason: TO_FOLDER };
+  return { reason: NOTHING };
+}
+
+const OUT_OF_TREE = "it is a symbolic link out of the tree, which the history does not follow";
+const NOTHING = "it is a symbolic link to nothing the commit holds";
+const TO_FOLDER =
+  "it is a symbolic link to a folder, which the history does not follow: what is read through it reads as gone, an import through it is not resolved, and the check at the head of such a history fails";
+
+const folderCache = new WeakMap<ReadonlyMap<string, unknown>, Set<string>>();
+
+/** Every folder a listing's entries lie in, by its path, made once a listing. */
+function foldersOf(listing: ReadonlyMap<string, unknown>): Set<string> {
+  let folders = folderCache.get(listing);
+  if (folders === undefined) {
+    folders = new Set<string>();
+    for (const entry of listing.keys()) {
+      const parts = entry.split("/");
+      for (let depth = 1; depth < parts.length; depth += 1) folders.add(parts.slice(0, depth).join("/"));
+    }
+    folderCache.set(listing, folders);
+  }
+  return folders;
+}
+
+/** The blobs of the given ids, whole, by id: for the targets of symbolic links, which are short. */
+async function readSmallBlobs(root: string, ids: readonly string[]): Promise<Map<string, Buffer>> {
+  const found = new Map<string, Buffer>();
+  if (ids.length === 0) return found;
+  const reader = spawn("git", ["-C", root, "cat-file", "--batch"], { cwd: root, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env, ...READ_AS_STORED } });
+  const chunks: Buffer[] = [];
+  let errors = "";
+  reader.stdout.on("data", (chunk: Buffer) => chunks.push(chunk));
+  reader.stderr.setEncoding("utf8");
+  reader.stderr.on("data", (text: string) => {
+    errors += text;
+  });
+  reader.stdin.on("error", () => undefined);
+  const code = await new Promise<number | null>((resolve, reject) => {
+    reader.on("error", reject);
+    reader.on("close", resolve);
+    reader.stdin.end(ids.map((id) => `${id}\n`).join(""));
+  });
+  if (code !== 0) throw new Error(`git cat-file failed reading the targets of symbolic links (exit ${code}): ${errors.trim() || "no word"}`);
+  const all = Buffer.concat(chunks);
+  let at = 0;
+  for (const id of ids) {
+    const lineEnd = all.indexOf(0x0a, at);
+    const [answered, type, size] = all.subarray(at, lineEnd).toString("utf8").split(" ");
+    if (answered !== id || type !== "blob") throw new Error(`git cat-file answered ${answered} ${type} where the blob ${id} was asked for`);
+    found.set(id, all.subarray(lineEnd + 1, lineEnd + 1 + Number(size)));
+    at = lineEnd + 1 + Number(size) + 1;
+  }
+  return found;
 }
 
 /**
  * Writes every entry of a change's tree under `directory` as the repository stores it: a file's blob bytes, executable
- * where its mode says so, streamed to disk as git gives them; a symbolic link to the target its blob holds; an empty
- * folder where another repository's commit stands, as a checkout leaves a submodule it has not initialized.
+ * where its mode says so, streamed to disk as git gives them; an empty folder where another repository's commit
+ * stands, as a checkout leaves a submodule it has not initialized; an empty file where the caller asks for its name
+ * without its content (`contentless`); and, for a symbolic link that leads through the commit's own listing to a file
+ * of the tree ({@link followLink}), a copy of that file, so that no link is ever on the disk and a reader finds at the
+ * link's path what it finds in a checkout.
  *
  * Nothing is ever written outside `directory`, and no entry stops the tree. An entry is left out, and returned with the
- * reason, when its path would leave the directory or name a `.git`; when the platform cannot hold its name; when the
- * disk, asked at every step ({@link placeEntry}), has a link or a file where one of its folders goes, or already holds
- * something at its name, as a disk that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot
- * hold its name. Of two entries that clash, the first in the tree's order is written.
+ * reason, when it is a symbolic link out of the tree, to a folder or to nothing, in a chain that does not end, or at
+ * or above the docs root the caller names (until 2026-11-19 links were written as links, and a link at the
+ * docs root carried the generator's writes and pruning outside the scratch folder; for one day after, no link was
+ * written at all, and the files and documents links stood for dropped out of the history); when its path would leave
+ * the directory or name a `.git`; when the platform cannot hold its name; when the disk, asked once for each folder
+ * ({@link placeEntry}), has a file where one of its folders goes, or already holds something at its name, as a disk
+ * that takes `A` and `a`, or `s` and `ſ`, for one name may; or when the disk cannot hold its name. Of two entries that
+ * clash, the first in the tree's order is written.
  *
  * @param disk - The disk, asked; the real one under `directory` unless a test stands one in.
  * @returns The entries not written, in the tree's order.
  */
-export async function writeStoredTree(root: string, change: string, directory: string, options?: { platform?: NodeJS.Platform; disk?: TreeDisk }): Promise<UnwrittenEntry[]> {
+export async function writeStoredTree(
+  root: string,
+  change: string,
+  directory: string,
+  options?: WorkingTreeOptions & { platform?: NodeJS.Platform; disk?: TreeDisk }
+): Promise<UnwrittenEntry[]> {
   const platform = options?.platform ?? process.platform;
   const disk = options?.disk ?? realDisk(directory);
+  const contentless = options?.contentless ?? ((): boolean => false);
+  const docsRoot = options?.docsRoot;
+  const folders = new Set<string>();
   const listing = (await execFileAsync("git", ["-C", root, "ls-tree", "-r", "-z", "--full-tree", change], { cwd: root, maxBuffer: LARGEST_OUTPUT, env: READ_AS_STORED })).stdout;
   const unwritten: UnwrittenEntry[] = [];
   const entries: TreeEntry[] = [];
   const named = new Set<string>();
   const position = new Map<string, number>();
+  const listed: Array<{ mode: string; id: string; relative: string }> = [];
   for (const line of listing.split("\0")) {
     if (line === "") continue;
     // Each entry is `<mode> <type> <id>\t<path>`.
     const tab = line.indexOf("\t");
     const [mode, , id] = line.slice(0, tab).split(" ");
-    const relative = line.slice(tab + 1);
+    listed.push({ mode, id, relative: line.slice(tab + 1) });
+  }
+  // The commit's own listing, which a link is followed through, never the disk.
+  const byPath = new Map(listed.map(({ mode, id, relative }) => [relative, { mode, id }]));
+  const links = listed.filter((entry) => entry.mode === LINK_MODE);
+  const linkBlobs = await readSmallBlobs(root, [...new Set(links.map((entry) => entry.id))]);
+  const targets = new Map(links.map((entry) => [entry.relative, linkBlobs.get(entry.id)?.toString("utf8") ?? ""]));
+  // A copy at the docs root or above it would stand where the generator needs a folder; beneath it a copy is a plain file.
+  const atOrAboveDocsRoot = (relative: string): boolean => docsRoot !== undefined && (relative === docsRoot || docsRoot.startsWith(`${relative}/`));
+  for (const { mode, id, relative } of listed) {
     if (!position.has(relative)) position.set(relative, position.size);
     const parts = relative.split("/");
     if (parts.some((part) => part === "" || part === "." || part === ".." || part.toLowerCase() === ".git")) {
       unwritten.push({ path: relative, reason: "its path would leave the tree or name a .git, which git refuses to check out" });
     } else if (platform === "win32" && parts.some((part) => WINDOWS_FORBIDDEN.test(part))) {
       unwritten.push({ path: relative, reason: "its name cannot be written on Windows, where git refuses to check it out" });
-    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== LINK_MODE && mode !== SUBMODULE_MODE) {
+    } else if (mode !== FILE_MODE && mode !== EXECUTABLE_MODE && mode !== SUBMODULE_MODE && mode !== LINK_MODE) {
       unwritten.push({ path: relative, reason: `its mode ${mode} is one no checkout writes` });
     } else if (relative.includes("�")) {
       // Git's listing is read as UTF-8, so a name that is not would be written under another name than its own.
       unwritten.push({ path: relative, reason: "its name is not valid UTF-8, so it cannot be written under its own name" });
     } else if (named.has(relative)) {
       unwritten.push({ path: relative, reason: "the tree names it twice" });
+    } else if (mode === LINK_MODE && atOrAboveDocsRoot(relative)) {
+      unwritten.push({ path: relative, reason: "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow" });
+    } else if (mode === LINK_MODE) {
+      // A link to a file of the tree is written as a copy of that file, so that a reader finds there what it finds in
+      // a checkout and nothing is ever written or read through a link; any other is named.
+      const end = followLink(relative, byPath, targets);
+      if ("reason" in end) {
+        unwritten.push({ path: relative, reason: end.reason });
+      } else {
+        named.add(relative);
+        entries.push({ mode: end.file.mode, id: end.file.id, relative, parts, ...(contentless(relative) ? { empty: true as const } : {}) });
+      }
     } else {
       named.add(relative);
-      entries.push({ mode, id, relative, parts });
+      entries.push({ mode, id, relative, parts, ...(mode !== SUBMODULE_MODE && contentless(relative) ? { empty: true as const } : {}) });
     }
   }
   // An entry that becomes no folder or file of its own: one refused, or a submodule's empty folder.
   const place = async (entry: TreeEntry): Promise<boolean> => {
-    const reason = await placeEntry(entry.parts, disk);
+    const reason = await placeEntry(entry.parts, disk, folders);
     if (reason !== undefined) {
       unwritten.push({ path: entry.relative, reason });
       return false;
@@ -334,13 +485,27 @@ async function writeBlobs(
   place: (entry: TreeEntry) => Promise<boolean>,
   cannotHold: (entry: TreeEntry, code: string) => void
 ): Promise<void> {
-  const blobs = entries.filter((entry) => entry.mode !== SUBMODULE_MODE);
+  const blobs = entries.filter((entry) => entry.mode !== SUBMODULE_MODE && entry.empty !== true);
+  const open = async (entry: TreeEntry): Promise<fs.FileHandle | undefined> => {
+    try {
+      // `wx` makes the file or fails where anything stands, so nothing is written over another entry.
+      return await fs.open(path.join(directory, ...entry.parts), "wx", entry.mode === EXECUTABLE_MODE ? 0o777 : 0o666);
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === undefined || !NAME_FAILURES.has(code)) throw error;
+      cannotHold(entry, code);
+      return undefined;
+    }
+  };
   let placed = 0;
-  // Submodules stand between blobs in the tree's order; each is placed when the blobs before it are written.
+  // Submodules and empty files stand between blobs in the tree's order; each is placed when the blobs before it are
+  // written, and an empty file made there without its blob being asked for.
   const placeUpTo = async (entry: TreeEntry | undefined): Promise<void> => {
     const until = entry === undefined ? entries.length : entries.indexOf(entry, placed);
     for (; placed < until; placed += 1) {
-      if (entries[placed].mode === SUBMODULE_MODE) await place(entries[placed]);
+      const between = entries[placed];
+      if (between.mode === SUBMODULE_MODE) await place(between);
+      else if (between.empty === true && (await place(between))) await (await open(between))?.close();
     }
     if (entry !== undefined) placed = until + 1;
   };
@@ -374,36 +539,16 @@ async function writeBlobs(
   let next = 0;
   let header = Buffer.alloc(0);
   // The object being read: its entry, the bytes still to come, and where they go, if anywhere.
-  let body: { entry: TreeEntry; remaining: number; handle?: fs.FileHandle; link?: Buffer[] } | undefined;
+  let body: { entry: TreeEntry; remaining: number; handle?: fs.FileHandle } | undefined;
   // The line break that follows an object's bytes, still to be passed over.
   let separator = false;
   const finish = async (): Promise<void> => {
     if (body === undefined) return;
-    const { entry, handle, link } = body;
+    const { handle } = body;
     body = undefined;
     if (handle !== undefined) await handle.close();
-    if (link !== undefined) {
-      try {
-        await fs.symlink(Buffer.concat(link).toString("utf8"), path.join(directory, ...entry.parts));
-      } catch (error) {
-        const code = (error as NodeJS.ErrnoException).code;
-        if (code === undefined || !NAME_FAILURES.has(code)) throw error;
-        cannotHold(entry, code);
-      }
-    }
     next += 1;
     separator = true;
-  };
-  const open = async (entry: TreeEntry): Promise<fs.FileHandle | undefined> => {
-    try {
-      // `wx` makes the file or fails where anything stands, a link included, so nothing is written through one.
-      return await fs.open(path.join(directory, ...entry.parts), "wx", entry.mode === EXECUTABLE_MODE ? 0o777 : 0o666);
-    } catch (error) {
-      const code = (error as NodeJS.ErrnoException).code;
-      if (code === undefined || !NAME_FAILURES.has(code)) throw error;
-      cannotHold(entry, code);
-      return undefined;
-    }
   };
   try {
     for await (const chunk of reader.stdout as AsyncIterable<Buffer>) {
@@ -417,7 +562,6 @@ async function writeBlobs(
         if (body !== undefined) {
           const piece = chunk.subarray(at, at + body.remaining);
           if (body.handle !== undefined) await body.handle.write(piece);
-          else body.link?.push(Buffer.from(piece));
           body.remaining -= piece.length;
           at += piece.length;
           if (body.remaining === 0) await finish();
@@ -438,7 +582,7 @@ async function writeBlobs(
         }
         await placeUpTo(entry);
         const wanted = await place(entry);
-        body = { entry, remaining: Number(size), ...(wanted ? (entry.mode === LINK_MODE ? { link: [] } : { handle: await open(entry) }) : {}) };
+        body = { entry, remaining: Number(size), ...(wanted ? { handle: await open(entry) } : {}) };
         if (body.remaining === 0) await finish();
       }
     }

@@ -1,10 +1,10 @@
-# tests/e2e/pointer-frames.ts
+# `tests/e2e/pointer-frames.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/pointer-frames.ts
-- Generated At: 2026-11-19T01:58:19.503Z
+- Code Path: `tests/e2e/pointer-frames.ts`
+- Generated At: 2026-11-19T21:10:23.596Z
 
 ## Authored
 ### Purpose

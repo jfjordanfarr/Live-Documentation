@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/basic/CSharpBasic.csproj
+# `tests/integration/programs/csharp/basic/CSharpBasic.csproj`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/basic/CSharpBasic.csproj
+- Code Path: `tests/integration/programs/csharp/basic/CSharpBasic.csproj`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.273Z
+- Generated At: 2026-11-19T21:10:26.367Z
 
 ## Authored
 ### Purpose

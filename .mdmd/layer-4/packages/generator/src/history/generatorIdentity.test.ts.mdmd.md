@@ -1,10 +1,10 @@
-# packages/generator/src/history/generatorIdentity.test.ts
+# `packages/generator/src/history/generatorIdentity.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/history/generatorIdentity.test.ts
-- Generated At: 2026-11-19T12:44:39.318Z
+- Code Path: `packages/generator/src/history/generatorIdentity.test.ts`
+- Generated At: 2026-11-19T21:10:18.051Z
 
 ## Authored
 ### Purpose
@@ -23,11 +23,14 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs` - `readFileSync`, `readdirSync`
 - `node:path` - `path`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`generatorIdentity.HISTORY_FOLDERS`](./generatorIdentity.ts.mdmd.md#symbol-history_folders)
 - [`generatorIdentity.SUMMARY_ENTRIES`](./generatorIdentity.ts.mdmd.md#symbol-summary_entries)
 - [`generatorIdentity.SUMMARY_MODULES`](./generatorIdentity.ts.mdmd.md#symbol-summary_modules)
 - [`generatorIdentity.keysTheLens`](./generatorIdentity.ts.mdmd.md#symbol-keysthelens)
 - [`regenerate.summarizingEnvironment`](./regenerate.ts.mdmd.md#symbol-summarizingenvironment)
+- [`regenerate.summarizingFlags`](./regenerate.ts.mdmd.md#symbol-summarizingflags)
+- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 - `typescript` - `ts`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/rosetta/src/Models/Record.cs
+# `tests/integration/programs/csharp/rosetta/src/Models/Record.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/rosetta/src/Models/Record.cs
-- Generated At: 2026-10-02T20:20:05.494Z
+- Code Path: `tests/integration/programs/csharp/rosetta/src/Models/Record.cs`
+- Generated At: 2026-11-19T21:10:26.925Z
 
 ## Authored
 ### Purpose

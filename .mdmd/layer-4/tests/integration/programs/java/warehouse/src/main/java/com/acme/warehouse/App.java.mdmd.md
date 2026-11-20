@@ -1,11 +1,11 @@
-# tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java
+# `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java
+- Code Path: `tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java`
 - Entry: program [`main`](#symbol-main)
-- Generated At: 2026-10-15T15:49:46.043Z
+- Generated At: 2026-11-19T21:10:27.617Z
 
 ## Authored
 ### Purpose

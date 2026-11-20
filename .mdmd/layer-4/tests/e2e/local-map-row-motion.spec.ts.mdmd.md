@@ -1,10 +1,10 @@
-# tests/e2e/local-map-row-motion.spec.ts
+# `tests/e2e/local-map-row-motion.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-row-motion.spec.ts
-- Generated At: 2026-11-04T23:30:42.541Z
+- Code Path: `tests/e2e/local-map-row-motion.spec.ts`
+- Generated At: 2026-11-19T21:10:23.017Z
 
 ## Authored
 ### Purpose

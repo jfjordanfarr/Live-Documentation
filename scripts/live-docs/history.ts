@@ -13,7 +13,7 @@ import type { HistorySequence, Sampling } from "@live-documentation/engine/live-
 import { changeAt, headOf } from "@live-documentation/engine/live-docs/history/sequence";
 
 import { computeHistory, formatBytes, HistoryStopped } from "../../packages/generator/src/history/computeHistory";
-import { endQuietlyWhenThePipeCloses, optionValue, runCommand, UsageError } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, runCommand, typedPath, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -41,8 +41,8 @@ async function main(): Promise<void> {
   let run;
   try {
     run = await computeHistory({
-      workspace: args.workspace ?? ".",
-      configPath: args.configPath,
+      workspace: workspaceFolder(args.workspace),
+      configPath: args.configPath === undefined ? undefined : typedPath(args.configPath),
       sampling: samplingOf(args),
       jobs: args.jobs,
       keepIndex: args.keepIndex,
@@ -200,7 +200,8 @@ function usage(): string {
     `generator and one configuration, and writes the sequence to <docs root>/history/history.json, with\n` +
     `a cache beside it so that a second run regenerates only the commits the cache lacks. Never committed.\n\n` +
     `Options:\n` +
-    `  --workspace <path>   The repository's top level (default: the current directory).\n` +
+    `  --workspace <path>   The repository's top level (default: the nearest folder, from the current\n` +
+    `                       directory up, that holds a .live-docs.config.json; else the current directory).\n` +
     `  --config <file>      The configuration applied to every commit (default: the workspace's\n` +
     `                       .live-docs.config.json as it stands, or the shipped defaults).\n` +
     `  --step <unit>        commit (default), day, week or tag: which commits are regenerated.\n` +

@@ -1,10 +1,10 @@
-# tests/integration/live-docs/scripted-repository.ts
+# `tests/integration/live-docs/scripted-repository.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-11-19T08:59:57.781Z
+- Code Path: `tests/integration/live-docs/scripted-repository.ts`
+- Generated At: 2026-11-19T21:10:25.929Z
 
 ## Authored
 ### Purpose

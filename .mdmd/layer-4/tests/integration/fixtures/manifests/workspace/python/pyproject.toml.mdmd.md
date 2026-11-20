@@ -1,11 +1,11 @@
-# tests/integration/fixtures/manifests/workspace/python/pyproject.toml
+# `tests/integration/fixtures/manifests/workspace/python/pyproject.toml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/python/pyproject.toml
+- Code Path: `tests/integration/fixtures/manifests/workspace/python/pyproject.toml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:24.664Z
+- Generated At: 2026-11-19T21:10:25.200Z
 
 ## Authored
 ### Purpose

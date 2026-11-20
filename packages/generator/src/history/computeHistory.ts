@@ -38,11 +38,13 @@ import { gunzipSync } from "node:zlib";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
+  parseLiveDocumentationConfigBytes,
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { bundledSummary } from "@live-documentation/engine/live-docs/history/bundled";
 import { Interner } from "@live-documentation/engine/live-docs/history/codec";
 import { HISTORY_DIRECTORY, HISTORY_FILE, type CommitInfo, type HistoryLens, type HistorySequence, type Sampling } from "@live-documentation/engine/live-docs/history/format";
 import { openGitRepository } from "@live-documentation/engine/live-docs/history/git";
@@ -58,7 +60,7 @@ import { textsOfFile, WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-
 
 import { generatorIdentity } from "./generatorIdentity";
 import { headDifferences } from "./headCheck";
-import { indexPath, regenerate, Scratch, summaryPath } from "./regenerate";
+import { indexPath, regenerate, Scratch, summaryPath, treeOptions } from "./regenerate";
 
 /** What to compute. */
 export interface HistoryOptions {
@@ -149,7 +151,7 @@ const LOCK_NAME = /^run\.([0-9a-f]{12})\.(\d+)\.([0-9a-z]+)\.lock$/u;
 /** How many times a run that met another's claim tries again, a short random wait apart, before it refuses. */
 const LOCK_ATTEMPTS = 6;
 
-/** The list beside the sequence of the files the history did not read, since the disk could not hold them. */
+/** The list beside the sequence of the entries the history did not write into a commit's tree, and so did not read, each with why. */
 const UNWRITTEN_LIST = "unwritten.txt";
 
 /** The marker a lens's cache folder holds once a run wrote a whole history from it: when, and of which head. */
@@ -278,6 +280,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const unwritten: Array<[string, string, string]> = [];
   const builder = await buildSequence(sampled, {
     unwritten,
+    bundleExclude: configuration.bundleExclude,
     versionControl,
     lens,
     cacheFolder,
@@ -312,7 +315,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   const unwrittenList = await writeUnwritten(historyFolder, unwritten);
   if (unwrittenList !== undefined) {
     options.progress(
-      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not read, since the disk their trees were written to could not hold them; they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
+      `${unwritten.length} files at ${new Set(unwritten.map(([commit]) => commit)).size} commits were not written into their trees and so not read, each for the reason the list gives (a symbolic link that leads to no file of the tree, a name this disk cannot hold); they read in the history as gone at those commits. The list is ${relative(unwrittenList)}`
     );
   }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
@@ -580,7 +583,7 @@ async function lensConfiguration(workspaceRoot: string, configPath: string | und
   const file = configPath ? path.resolve(configPath) : path.join(workspaceRoot, ".live-docs.config.json");
   let input: LiveDocumentationConfigInput = {};
   try {
-    input = JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
+    input = parseLiveDocumentationConfigBytes(await fs.readFile(file));
   } catch (error) {
     if (configPath || (error as NodeJS.ErrnoException).code !== "ENOENT") {
       throw new Error(`cannot read the configuration at ${file}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
@@ -614,6 +617,8 @@ interface SequenceContext {
   texts: Interner;
   /** Filled with the files each summary says its tree did not hold. */
   unwritten: Array<[commit: string, path: string, reason: string]>;
+  /** The configuration's bundle exclusions, applied to each summary as it is read (`bundled.ts`). */
+  bundleExclude: readonly string[];
 }
 
 /**
@@ -629,7 +634,9 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
     subject: change.subject
   });
   const textId = (hash: string): number => context.texts.id(hash);
-  const read = (change: MainlineChange): Promise<CommitSummary> => readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id);
+  // What the history reads of a summary is what the bundle shows: the documents `bundleExclude` names are left out here.
+  const read = async (change: MainlineChange): Promise<CommitSummary> =>
+    bundledSummary(await readSummaryFile(summaryPath(context.cacheFolder, change.id), context.lens.key, change.id), context.bundleExclude);
   const notRead = (change: MainlineChange, summary: CommitSummary): void => {
     for (const [file, reason] of summary.unwritten ?? []) context.unwritten.push([change.id, file, reason]);
   };
@@ -645,8 +652,8 @@ async function buildSequence(sampled: readonly MainlineChange[], context: Sequen
 }
 
 /**
- * Writes beside the sequence every file the history did not read, at each commit, because the disk its tree was written
- * to could not hold it (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
+ * Writes beside the sequence every entry the history did not write into a commit's tree, and so did not read, with
+ * why (`<history folder>/unwritten.txt`, a line each: the commit, the path and the reason), or removes
  * that list where there is none. The sequence does not carry them: such a file reads in it as gone at that commit.
  *
  * @returns The list's path, when there is one.
@@ -658,7 +665,7 @@ async function writeUnwritten(historyFolder: string, unwritten: ReadonlyArray<[c
     return undefined;
   }
   const lines = unwritten.map(([commit, entry, reason]) => `${commit}\t${JSON.stringify(entry)}\t${reason}`);
-  await writeInPlace(file, `# The files the history did not read, at each commit, because this disk could not hold them: commit, path, reason.\n${lines.join("\n")}\n`);
+  await writeInPlace(file, `# The entries the history did not write into each commit's tree, and so did not read: commit, path, reason.\n${lines.join("\n")}\n`);
   return file;
 }
 
@@ -698,7 +705,8 @@ async function checkHead(sequence: HistorySequence, context: HeadCheckContext): 
   const scratch = await context.scratch.folder("live-docs-history-head-");
   let committed: LiveDocGraph;
   try {
-    const tree = await context.versionControl.workingTree(context.head, path.join(scratch, path.basename(scratch)));
+    const directory = path.join(scratch, path.basename(scratch));
+    const tree = await context.versionControl.workingTree(context.head, directory, treeOptions(context.configuration, directory));
     try {
       committed = await readLiveDocGraph({ workspaceRoot: tree.root, config: context.configuration });
     } catch (error) {

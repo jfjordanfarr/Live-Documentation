@@ -1,10 +1,10 @@
-# scripts/live-docs/inspect/emit.ts
+# `scripts/live-docs/inspect/emit.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/inspect/emit.ts
-- Generated At: 2026-11-02T16:50:56.118Z
+- Code Path: `scripts/live-docs/inspect/emit.ts`
+- Generated At: 2026-11-19T21:10:19.164Z
 
 ## Authored
 ### Purpose

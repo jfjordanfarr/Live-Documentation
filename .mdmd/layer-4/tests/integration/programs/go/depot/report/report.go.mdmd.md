@@ -1,10 +1,10 @@
-# tests/integration/programs/go/depot/report/report.go
+# `tests/integration/programs/go/depot/report/report.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/depot/report/report.go
-- Generated At: 2026-10-02T20:20:05.848Z
+- Code Path: `tests/integration/programs/go/depot/report/report.go`
+- Generated At: 2026-11-19T21:10:27.133Z
 
 ## Authored
 ### Purpose

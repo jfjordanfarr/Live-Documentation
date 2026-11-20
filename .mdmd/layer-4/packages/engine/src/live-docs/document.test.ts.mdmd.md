@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/document.test.ts
+# `packages/engine/src/live-docs/document.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/document.test.ts
-- Generated At: 2026-09-27T23:21:31.440Z
+- Code Path: `packages/engine/src/live-docs/document.test.ts`
+- Generated At: 2026-11-19T22:40:10.408Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Proves the grammar: a doc using every production renders and parses back to the 
 ### Notes
 - Replaced `generator.test.ts` and `markdown.test.ts` on 2026-09-27, which had checked the old renderer's markers and provenance comment.
 - The lenient `authoredBlockOf` is covered here too, including text with no sections at all.
+- Since 2026-11-19 it shows the two forms of a value line by line, a code span or a link as before and a JSON string where that cannot carry the value (a code path with a line break, an empty command, a lone surrogate, a link with a parenthesis), refuses a quoted value the plain form could carry, and shows a docstring's heading, marker and unclosed fence written behind a backslash. `document.fuzz.test.ts` holds the same to generated names.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -26,6 +27,7 @@ _No public symbols detected_
 - [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 - [`document.LiveDocSyntaxError`](./document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.authoredBlockOf`](./document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.encodeLinkPath`](./document.ts.mdmd.md#symbol-encodelinkpath)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - `vitest` - `describe`, `expect`, `it`

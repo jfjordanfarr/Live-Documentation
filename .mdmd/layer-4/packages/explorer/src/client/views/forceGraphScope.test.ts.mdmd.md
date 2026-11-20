@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphScope.test.ts
+# `packages/explorer/src/client/views/forceGraphScope.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/forceGraphScope.test.ts
-- Generated At: 2026-11-18T20:09:06.780Z
+- Code Path: `packages/explorer/src/client/views/forceGraphScope.test.ts`
+- Generated At: 2026-11-19T21:10:15.288Z
 
 ## Authored
 ### Purpose

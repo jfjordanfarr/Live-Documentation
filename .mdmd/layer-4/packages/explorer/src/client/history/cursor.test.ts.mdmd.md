@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/cursor.test.ts
+# `packages/explorer/src/client/history/cursor.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/history/cursor.test.ts
-- Generated At: 2026-10-18T05:36:01.136Z
+- Code Path: `packages/explorer/src/client/history/cursor.test.ts`
+- Generated At: 2026-11-19T21:10:12.979Z
 
 ## Authored
 ### Purpose

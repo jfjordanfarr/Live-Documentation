@@ -1,10 +1,10 @@
-# tests/integration/programs/rosetta-manifest.json
+# `tests/integration/programs/rosetta-manifest.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rosetta-manifest.json
-- Generated At: 2026-10-16T20:40:32.246Z
+- Code Path: `tests/integration/programs/rosetta-manifest.json`
+- Generated At: 2026-11-19T21:10:28.050Z
 
 ## Authored
 ### Purpose

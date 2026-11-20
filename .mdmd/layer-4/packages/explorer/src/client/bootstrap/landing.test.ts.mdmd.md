@@ -1,10 +1,10 @@
-# packages/explorer/src/client/bootstrap/landing.test.ts
+# `packages/explorer/src/client/bootstrap/landing.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/bootstrap/landing.test.ts
-- Generated At: 2026-10-15T16:17:52.288Z
+- Code Path: `packages/explorer/src/client/bootstrap/landing.test.ts`
+- Generated At: 2026-11-19T21:10:12.836Z
 
 ## Authored
 ### Purpose

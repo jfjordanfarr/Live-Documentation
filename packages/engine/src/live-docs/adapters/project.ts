@@ -16,6 +16,7 @@ import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -55,7 +56,7 @@ export const projectAdapter: LanguageAdapter = {
   id:         "dotnet-project",
   extensions: [".csproj", ".vbproj", ".fsproj"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await fs.readFile(absolutePath, "utf8");
+    const content  = await readSourceText(absolutePath);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [{ name: projectName(thisFile, content), kind: projectKind(content), location: { line: 1, character: 1 } }];
 

@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql
+# `tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql
+- Code Path: `tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql`
 - Entry: opening [`dbo.usp_PostPayment`](#symbol-dbousp_postpayment)
-- Generated At: 2026-10-16T20:40:28.634Z
+- Generated At: 2026-11-19T21:10:26.516Z
 
 ## Authored
 ### Purpose

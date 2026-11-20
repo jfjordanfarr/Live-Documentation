@@ -1,10 +1,10 @@
-# tests/integration/live-docs/repository-entries.test.ts
+# `tests/integration/live-docs/repository-entries.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/repository-entries.test.ts
-- Generated At: 2026-10-22T16:48:01.024Z
+- Code Path: `tests/integration/live-docs/repository-entries.test.ts`
+- Generated At: 2026-11-19T21:10:25.859Z
 
 ## Authored
 ### Purpose

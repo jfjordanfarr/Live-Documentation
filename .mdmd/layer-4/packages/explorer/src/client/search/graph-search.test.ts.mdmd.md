@@ -1,10 +1,10 @@
-# packages/explorer/src/client/search/graph-search.test.ts
+# `packages/explorer/src/client/search/graph-search.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/search/graph-search.test.ts
-- Generated At: 2026-10-30T14:49:26.024Z
+- Code Path: `packages/explorer/src/client/search/graph-search.test.ts`
+- Generated At: 2026-11-19T21:10:14.404Z
 
 ## Authored
 ### Purpose

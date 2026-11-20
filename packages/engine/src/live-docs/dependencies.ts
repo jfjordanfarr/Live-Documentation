@@ -14,6 +14,7 @@ import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
+import { readSourceText } from "../tooling/sourceText";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DependencyEntry,
@@ -536,7 +537,7 @@ async function gatherExportedSymbolsFromFile(params: {
 
   let content: string;
   try {
-    content = await fs.readFile(normalized, "utf8");
+    content = await readSourceText(normalized);
   } catch {
     params.stack.delete(normalized);
     params.cache.set(normalized, []);

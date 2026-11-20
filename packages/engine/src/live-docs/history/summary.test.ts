@@ -54,7 +54,7 @@ const twoFiles = graphOf(
 describe("summarizeGraph", () => {
   it("keeps each file's rows in the doc's order, each type reference and dependency line with what it resolved to", () => {
     const { summary } = summarizeGraph(twoFiles, "lens", "abc");
-    expect(summary.format).toBe("live-docs-history-summary/3");
+    expect(summary.format).toBe("live-docs-history-summary/4");
     expect(summary.files.map((file) => file.path)).toEqual(["src/a.ts", "src/b.ts"]);
     const [a, b] = summary.files;
     expect(a.entries).toEqual([{ reason: "declared" }, { reason: "command", command: "make-a", declarer: "package.json" }]);
@@ -129,6 +129,13 @@ describe("summarizeGraph", () => {
     const sections = [{ title: "Summary", body: ["One line.", "", "Two."] }, { title: "Remarks", body: ["More."] }];
     expect(sectionsOfDescription(descriptionText(sections))).toEqual(sections);
     expect(descriptionText(sections)).not.toContain("make");
+  });
+
+  it("keeps a citing document by its path, as the doc reader reads it, whatever its name holds", () => {
+    // The doc writes the path as its line's name and the link percent-encoded; the reader gives the path back.
+    const graph = graphOf(doc("src/a.ts", { citedBy: [{ label: "docs/C#.md", link: "../../../docs/C%23.md" }, { label: "docs/50%41off.md", link: "../../../docs/50%2541off.md" }, { label: "notes/a`b.md", link: "../../../notes/a%60b.md" }] }));
+    const { summary } = summarizeGraph(graph, "lens", "abc");
+    expect(summary.files[0].citedBy).toEqual(["docs/C#.md", "docs/50%41off.md", "notes/a`b.md"]);
   });
 
   it("refuses a doc without an archetype, which only a generator bug writes", () => {

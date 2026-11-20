@@ -1,11 +1,11 @@
-# tests/integration/programs/powershell/rollout/lib/Logging.ps1
+# `tests/integration/programs/powershell/rollout/lib/Logging.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/lib/Logging.ps1
+- Code Path: `tests/integration/programs/powershell/rollout/lib/Logging.ps1`
 - Entry: program
-- Generated At: 2026-10-16T16:49:47.908Z
+- Generated At: 2026-11-19T21:10:27.742Z
 
 ## Authored
 ### Purpose

@@ -10,7 +10,13 @@ const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 const serialUnitFiles = [
   "packages/explorer/src/client/views/forceGraphPhysics.test.ts",
   "packages/engine/src/live-docs/history/sequence.test.ts",
-  "scripts/layout-lab/approximation.test.ts"
+  "scripts/layout-lab/approximation.test.ts",
+  // The lens-key case reads the summarizing process's whole import closure with the TypeScript parser: 1.7 s alone,
+  // past five seconds at a load of 20 to 40 (the joining of 2026-11-19). Its time is its own work, not the product's.
+  "packages/generator/src/history/generatorIdentity.test.ts",
+  // 200 names held to the reference CommonMark parser: 3.3 s alone, past five seconds under the same load. The
+  // property is not trimmed and the bound not raised; the suite runs alone.
+  "packages/engine/src/live-docs/document.fuzz.test.ts"
 ];
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");

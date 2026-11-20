@@ -1,10 +1,10 @@
-# packages/explorer/src/shared/graph.test.ts
+# `packages/explorer/src/shared/graph.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/shared/graph.test.ts
-- Generated At: 2026-11-03T19:22:42.741Z
+- Code Path: `packages/explorer/src/shared/graph.test.ts`
+- Generated At: 2026-11-19T21:10:17.798Z
 
 ## Authored
 ### Purpose

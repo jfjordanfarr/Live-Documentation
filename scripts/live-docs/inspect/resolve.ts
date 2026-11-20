@@ -13,6 +13,8 @@ import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { symbolMatchesAnchor, type SymbolReference } from "@live-documentation/engine/live-docs/pathfind";
 import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 
+import { UsageError } from "../cli";
+
 /**
  * Resolves an artifact identifier (code path, doc path, or relative path) to a
  * canonical code path in the graph.
@@ -38,6 +40,18 @@ export function resolveArtifactIdentifier(
     const byDocPath = Object.values(graph.files).find((file) => file.docPath === candidate);
     if (byDocPath) {
       return byDocPath.codePath;
+    }
+  }
+  // On Windows a path's case is not the person's to get right: a name that one file answers to in another case is that
+  // file. Two files that differ only in case, as a repository made on Linux may hold, are named back to the person.
+  for (const candidate of candidates) {
+    const folded = candidate.toLowerCase();
+    const matches = Object.values(graph.files).filter((file) => file.codePath.toLowerCase() === folded || file.docPath.toLowerCase() === folded);
+    if (matches.length === 1) {
+      return matches[0].codePath;
+    }
+    if (matches.length > 1) {
+      throw new UsageError(`${input} names ${matches.length} files that differ only in case: ${matches.map((file) => file.codePath).sort().join(", ")}; give one as it is spelled.`);
     }
   }
   return undefined;

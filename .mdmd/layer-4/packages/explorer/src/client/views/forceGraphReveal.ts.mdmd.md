@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphReveal.ts
+# `packages/explorer/src/client/views/forceGraphReveal.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/forceGraphReveal.ts
-- Generated At: 2026-11-02T06:07:14.680Z
+- Code Path: `packages/explorer/src/client/views/forceGraphReveal.ts`
+- Generated At: 2026-11-19T21:10:15.263Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/slopcop/symbolsAudit.test.ts
+# `tests/integration/slopcop/symbolsAudit.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/slopcop/symbolsAudit.test.ts
-- Generated At: 2026-09-27T23:21:39.744Z
+- Code Path: `tests/integration/slopcop/symbolsAudit.test.ts`
+- Generated At: 2026-11-19T21:10:29.015Z
 
 ## Authored
 ### Purpose

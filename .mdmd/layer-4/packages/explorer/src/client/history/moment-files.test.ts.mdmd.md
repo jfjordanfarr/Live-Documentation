@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/moment-files.test.ts
+# `packages/explorer/src/client/history/moment-files.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/history/moment-files.test.ts
-- Generated At: 2026-11-19T04:31:53.212Z
+- Code Path: `packages/explorer/src/client/history/moment-files.test.ts`
+- Generated At: 2026-11-19T21:10:13.112Z
 
 ## Authored
 ### Purpose

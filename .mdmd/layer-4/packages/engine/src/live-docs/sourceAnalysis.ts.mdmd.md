@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/sourceAnalysis.ts
+# `packages/engine/src/live-docs/sourceAnalysis.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/sourceAnalysis.ts
-- Generated At: 2026-11-19T08:59:53.450Z
+- Code Path: `packages/engine/src/live-docs/sourceAnalysis.ts`
+- Generated At: 2026-11-19T22:40:10.777Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,6 @@ if (analysis.symbols.length === 0) {
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises`
 - `node:path` - `path`
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
@@ -72,5 +71,6 @@ if (analysis.symbols.length === 0) {
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/discovery.ts
+# `packages/engine/src/live-docs/discovery.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-11-09T00:01:53.955Z
+- Code Path: `packages/engine/src/live-docs/discovery.ts`
+- Generated At: 2026-11-19T22:40:10.387Z
 
 ## Authored
 ### Purpose
@@ -20,13 +20,26 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - `buildWorkspaceSymbolIndex()` became `buildWorkspaceIndexes()` on 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-15/2026-10-15.1.record.md#turn-4)): the same pass also collects what each manifest declares (`declares` on the analysis result: the files its scripts run, its binaries, its main module) into the entry index, keyed by the declared file, from which the second pass writes each file's `Entry` lines.
 - Discovery reads every file the shipped globs name, hidden folders included, in one `glob` call (since 2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16); the per-pattern loop took 72 s over this repository where one call takes 1.3 s). Five product rules then remove what no project wants documented, `.git`, `node_modules`, the configured docs root (derived from `config.root` in any spelling), lock files by name, and documents (since 2026-10-22); git's own word removes what it ignores (`gitIgnored` in the engine's tooling asks `git check-ignore` once for every candidate, so a nested `.gitignore`, `.git/info/exclude` and the global excludes file count, and a tracked file is never ignored: a `.vscode/settings.json` committed under an ignored folder is read), the root `.gitignore` alone standing in when git cannot answer; and the configuration's `exclude` removes what the person names, by path or glob. Each rule has a case in `discovery.test.ts`. The git rule replaced a reading of the root `.gitignore` with `git ls-files` on 2026-10-16, when a regeneration documented 2,727 files of two agent worktrees nested under `.claude/worktrees/`, which `.git/info/exclude` names and the root `.gitignore` did not ([Turn 3 of the October 16 record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3)).
 - Two latent faults found with the change: the first pass had read `.ts .tsx .js .jsx .mjs .cjs` by a hardcoded list, so `.mts` and `.cts` symbols were never indexed although the main pass read them (now `SUPPORTED_SCRIPT_EXTENSIONS`); and `inferScriptKind` was handed the path where it wanted the extension.
+- Since 2026-11-19 a re-export's anchor in the index is the one its doc writes, from `compose.ts`'s `anchorReExports`, so that two re-exports one anchor would name, `Foo` and `foo`, are told apart in both alike.
 - When TS/JS source has bare star re-export syntax, the first pass uses the same current-workspace re-export resolver that renders its `Re-Exported Symbol Anchors` section. It indexes only anchors that section will publish, marked as re-exports, so imports can link to real barrel anchors and declaration links still prefer origins. Namespace re-exports are ordinary exported symbols under their namespace name and do not trigger peer expansion here.
 - Since 2026-10-22 the shipped glob is every file, and documents are never documented: markdown, reStructuredText and AsciiDoc by suffix, and by name the plain-text readme, licence and its kin (`LICENSE-MIT`, `COPYING`, `NOTICE`), changelog, authors and contributing files with no extension or `.txt`, a name with another extension (`license.ts`) being code. A document reaches the map as linked documentation when a doc's authored words link to it. The owner: "I don't think we want to make a doc for a doc. I think we should aim for the "Linked Documentation" bundle to handle that.", and of licences, "they are docs and should be treated as such"; the markdown rule is absolute for now and expected to change for "prompts as programs", an agent's `SKILL.md` among them ([Turns 7 and 8 of the October 21 session](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-7)). The walk no longer enters `.git`, `node_modules` or the docs root at all (`glob`'s `ignore`), so every-file discovery walks this repository in under half a second.
 - `discoverDocuments` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the workspace's documents for the generator's `Cited By` sections, found by the same walk as the files (now shared as `walk` and `keptByGitAndConfiguration`): every document anywhere, whatever the configured globs name, since a document anywhere may link to a file and a doc's words may link to a document anywhere; less what git ignores and what `exclude` names; never `.git`, `node_modules` or the generated docs' base layer, while the authored documents a repository keeps under its docs root beside that layer count. The configured globs still decide which files get docs.
+- Since 2026-11-19 discovery orders the files it finds by their workspace-relative paths with forward slashes, by code unit (`inWorkspaceOrder`), not by their absolute paths as the platform spells them: on Windows a backslash sorts after the digits and the capitals, so `Shop.Data2\` came before `Shop.Data\`, the reverse of Linux, and since the order is the one in which files register their symbols, a type two files declare alike could resolve to another file on each. The generator's `--include` list is ordered the same way. On Linux the order is the one it always was, so no doc moved. Found by imitating Windows that day.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `docsRootWithin` {#symbol-docsrootwithin}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L166)
+- Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `docsRootWithin` — Summary
+The configured docs root as a workspace-relative path, however the
+configuration spells it (`.mdmd`, `./.mdmd/`, an absolute path), or
+`undefined` when it is not a folder within the workspace: the workspace
+itself, or somewhere outside it.
+
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L211)
@@ -91,16 +104,28 @@ reads their links for the `Cited By` sections.
 ##### `discoverDocuments` — Returns
 Workspace-relative paths with forward slashes, sorted.
 
+#### `inWorkspaceOrder` {#symbol-inworkspaceorder}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L298)
+- Returns: `T`[]
+- Parameters: `files`: `T`[]
+
+##### `inWorkspaceOrder` — Summary
+Files in the order of their workspace-relative paths with forward slashes, by UTF-16 code unit, whatever the platform
+spells their absolute paths with: on Windows a backslash sorts after the digits and the capitals, where a slash sorts
+before them, so an order of absolute paths put `Shop.Data2\` before `Shop.Data\`, the reverse of Linux. The order is
+the one in which files register their symbols, so it must not depend on the platform.
+
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L316)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L329)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L340)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L353)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -133,6 +158,7 @@ parser; every other file is read by its language adapter.
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`archetype.matchesPathPattern`](./archetype.ts.mdmd.md#symbol-matchespathpattern)
+- [`compose.anchorReExports`](./compose.ts.mdmd.md#symbol-anchorreexports)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - [`coreTypes.DeclaredEntry`](./coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
@@ -142,14 +168,15 @@ parser; every other file is read by its language adapter.
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
 - [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
-- [`coreUtils.createSymbolSlug`](./coreUtils.ts.mdmd.md#symbol-createsymbolslug)
 - [`dependencies.augmentWithReExportedSymbols`](./dependencies.ts.mdmd.md#symbol-augmentwithreexportedsymbols)
 - [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`gitIgnored`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
+- [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

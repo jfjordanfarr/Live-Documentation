@@ -1,10 +1,10 @@
-# tests/integration/programs/ruby/basic/lib/data_store.rb
+# `tests/integration/programs/ruby/basic/lib/data_store.rb`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/ruby/basic/lib/data_store.rb
-- Generated At: 2026-10-02T20:20:08.080Z
+- Code Path: `tests/integration/programs/ruby/basic/lib/data_store.rb`
+- Generated At: 2026-11-19T21:10:28.058Z
 
 ## Authored
 ### Purpose

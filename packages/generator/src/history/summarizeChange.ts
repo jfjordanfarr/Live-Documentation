@@ -48,6 +48,7 @@ import path from "node:path";
 import { gzipSync } from "node:zlib";
 
 import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
@@ -59,7 +60,7 @@ import { generateLiveDocs } from "../generator";
 export interface SummaryTask {
   /** The change's working tree: the workspace's root inside it. */
   tree: string;
-  /** The lens's configuration, applied verbatim. */
+  /** The configuration the summary is made under, `summarizedConfiguration` of the lens's, applied verbatim. */
   configuration: LiveDocumentationConfig;
   /** The lens's key, recorded in the summary. */
   lens: string;
@@ -77,6 +78,8 @@ export interface SummaryTask {
 
 /** Generates the change's docs in its working tree and writes its summary, and its index when asked. */
 export async function summarizeChange(task: SummaryTask): Promise<void> {
+  // The configuration the summary is made under (`summarizedConfiguration`), as the command hands it: with no bundle
+  // exclusion, so that every linked and citing document is kept and the exclusions are applied where summaries are read.
   const { tree, configuration } = task;
   const authored = await authoredReading(tree, configuration);
   const result = await generateLiveDocs({
@@ -95,7 +98,8 @@ export async function summarizeChange(task: SummaryTask): Promise<void> {
   const graph: LiveDocGraph = indexText
     ? (JSON.parse(indexText) as LiveDocGraph)
     : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: {} };
-  const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, await standingRelatedDocs(graph, tree, configuration), authored);
+  const standing = await standingFiles(tree, task.unwritten ?? []);
+  const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, standingRelatedDocs(graph, standing, configuration), authored);
   if (task.unwritten && task.unwritten.length > 0) {
     summary.unwritten = task.unwritten.map((entry): [string, string] => [entry.path, entry.reason]);
   }
@@ -126,21 +130,38 @@ async function authoredReading(tree: string, configuration: LiveDocumentationCon
 // The heading `authoredBlockOf` looks for, under which the generator carries a doc's authored words forward.
 const AUTHORED_HEADING = /^## Authored[ \t]*$/mu;
 
-/** Each file's related documents, as the bundle reads them, that stand as files in the change's tree. */
-async function standingRelatedDocs(graph: LiveDocGraph, tree: string, configuration: LiveDocumentationConfig): Promise<Map<string, string[]>> {
-  const standing = new Map<string, Promise<boolean>>();
-  const stands = (document: string): Promise<boolean> => {
-    let answer = standing.get(document);
-    if (!answer) {
-      answer = fs.stat(path.join(tree, document)).then((stat) => stat.isFile(), () => false);
-      standing.set(document, answer);
-    }
-    return answer;
-  };
+/**
+ * The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
+ * (its index, which the history command made from the change's tree and named in this process's environment): a
+ * regular file stands, and so does a symbolic link the tree writer wrote as a copy of the file it leads to, which is
+ * every link not named unwritten; a submodule does not, nor any entry the tree did not hold (`unwritten`).
+ *
+ * The listing, not the disk, so that whether a linked document stood depends on the commit alone. Every name of the
+ * tree is written, so on a disk that tells case apart the two agree; on one that folds case or Unicode form, as macOS's
+ * and Windows's do, the disk would find `Docs/Design.md` for a link to `docs/design.md`, and the listing does not.
+ * That holds of this question only: the generator's own resolution of an import still asks the disk. Until 2026-11-19
+ * the disk was asked here (`stat`, then `isFile`).
+ */
+export async function standingFiles(tree: string, unwritten: ReadonlyArray<{ path: string }>): Promise<Set<string>> {
+  const { stdout } = await execFileAsync("git", ["ls-files", "--stage", "-z"], { cwd: tree, maxBuffer: 1 << 30 });
+  const notWritten = new Set(unwritten.map((entry) => entry.path));
+  const standing = new Set<string>();
+  for (const entry of stdout.split("\0")) {
+    // Each entry is `<mode> <id> <stage>\t<path>`.
+    const tab = entry.indexOf("\t");
+    if (tab < 0) continue;
+    const mode = entry.slice(0, entry.indexOf(" "));
+    const file = entry.slice(tab + 1);
+    if ((mode === "100644" || mode === "100755" || mode === "120000") && !notWritten.has(file)) standing.add(file);
+  }
+  return standing;
+}
+
+/** Each file's related documents, every one the docs link to with no bundle exclusion, that stand as files in the change's tree. */
+function standingRelatedDocs(graph: LiveDocGraph, standing: ReadonlySet<string>, configuration: LiveDocumentationConfig): Map<string, string[]> {
   const related = new Map<string, string[]>();
   for (const file of Object.values(graph.files)) {
-    const documents = relatedDocsOf(file, graph, configuration.bundleExclude);
-    const present = (await Promise.all(documents.map(async (document) => ((await stands(document)) ? document : null)))).filter((document): document is string => document !== null);
+    const present = relatedDocsOf(file, graph, configuration.bundleExclude).filter((document) => standing.has(document));
     if (present.length > 0) {
       related.set(file.codePath, present);
     }

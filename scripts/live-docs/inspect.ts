@@ -14,7 +14,6 @@
  * 
  * @module inspect
  */
-import path from "node:path";
 import process from "node:process";
 
 import {
@@ -37,7 +36,7 @@ import {
 } from "@live-documentation/engine/live-docs/pathfind";
 import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
-import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
@@ -50,7 +49,7 @@ import {
   emitSymbolPathNotFound,
   emitSymbolPathResult
 } from "./inspect/emit";
-import { emitBetween, emitFileAt, emitLinksAt, emitReachableAt, emitWordsAt, historyFolder, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
+import { codePathOf, emitBetween, emitFileAt, emitLinksAt, emitReachableAt, emitWordsAt, historyFolder, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
 import { hasSymbolReference, parseSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
 
 interface ParsedArgs {
@@ -112,7 +111,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
 
   const configFileInput = await readConfiguration(workspaceRoot, args.configPath);
 
@@ -339,16 +338,6 @@ async function answerFromHistory(args: ParsedArgs, workspaceRoot: string, config
   emitReachableAt(sequence, step, config, args.maxDepth, args.json);
 }
 
-/** A file as the history names it: its workspace-relative path, also when given as its doc's path. */
-function codePathOf(given: string, config: LiveDocumentationConfig): string {
-  const normalized = given.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "");
-  const docsFolder = `${[config.root, config.baseLayer].map((segment) => segment.replace(/^(?:\.\/)+|\/+$/gu, "")).join("/")}/`;
-  if (normalized.startsWith(docsFolder) && normalized.endsWith(config.extension)) {
-    return normalized.slice(docsFolder.length, -config.extension.length);
-  }
-  return normalized;
-}
-
 function parseArgs(argv: string[]): ParsedArgs {
   const parsed: ParsedArgs = {
     help: false,
@@ -506,7 +495,8 @@ function usage(): string {
     `                           symbol's description, or why they cannot be read.\n` +
     `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files created,\n` +
     `                           deleted, renamed and resized, wires added and removed. From the shape alone.\n` +
-    `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
+    `  --workspace <path>       Workspace root (default: the nearest folder, from the current directory up,\n` +
+    `                           that holds a .live-docs.config.json; else the current directory).\n` +
     `  --root <path>            In place of the configuration's root.\n` +
     `  --base-layer <name>      In place of the configuration's baseLayer.\n` +
     `  --extension <suffix>     In place of the configuration's extension.\n` +

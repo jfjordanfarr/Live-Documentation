@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/pom.ts
+# `packages/engine/src/live-docs/adapters/pom.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/pom.ts
-- Generated At: 2026-10-22T16:47:52.036Z
+- Code Path: `packages/engine/src/live-docs/adapters/pom.ts`
+- Generated At: 2026-11-19T22:40:10.068Z
 
 ## Authored
 ### Purpose
@@ -77,7 +77,6 @@ Language adapter for `pom.xml`: the artifact as a symbol, its parent and depende
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`manifest.ManifestContext`](./manifest.ts.mdmd.md#symbol-manifestcontext-interface)
@@ -89,6 +88,7 @@ Language adapter for `pom.xml`: the artifact as a symbol, its parent and depende
 - [`manifest.workspaceFile`](./manifest.ts.mdmd.md#symbol-workspacefile)
 - [`coreTypes.DeclaredEntry`](../coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

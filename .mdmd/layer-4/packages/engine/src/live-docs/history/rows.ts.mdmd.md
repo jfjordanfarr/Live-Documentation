@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/rows.ts
+# `packages/engine/src/live-docs/history/rows.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/rows.ts
-- Generated At: 2026-11-19T08:04:43.527Z
+- Code Path: `packages/engine/src/live-docs/history/rows.ts`
+- Generated At: 2026-11-19T22:40:10.618Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The history's second rung: each file's symbol rows and lines at a commit, by pat
 - A step's change is named by path and anchor and applied after the shape's change, whose renames, deaths and births it follows: a renamed file keeps its rows and every reference, line and re-export that named it is renamed with it, so a rename costs nothing beyond its shape's line, as [the probe of 2026-11-18](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-cost/README.md) found decisive (41.5 KB to 8.5 KB for its largest step). Symbols born carry their place in their file's rows after the step; only when the symbols that stayed change places is the file's order written whole.
 - A symbol is believed renamed only on sound evidence: in one file at one step, one gone and one born of the same kind whose descriptions are one text, not none, each the other's only such match. The probe matched kind and source line, which moves with any edit above a symbol; a description unchanged across a rename is the doc's own word that the symbol is the same.
 - Rows are shared between moments and never changed in place: a step copies a file the first time it changes it, and a rename copies only the files that name a renamed one, so that replaying a long history costs what the step changes and not the whole snapshot each time; rows are compared field by field rather than as JSON. Over a test history of 260 steps that changed all of 34,000 symbols at each, the first version, which copied every row and compared by JSON at every step, took 97 s, and this one 9.6 s.
+- Since 2026-11-19 a file's citing documents come from the summary by path, and `citedByLabel` makes each line's label from it as the doc writes it, so the rows say what the doc says.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

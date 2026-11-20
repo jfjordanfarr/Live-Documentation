@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/heuristics/dom.ts
+# `packages/engine/src/live-docs/heuristics/dom.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/heuristics/dom.ts
-- Generated At: 2026-10-19T15:06:00.002Z
+- Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
+- Generated At: 2026-11-19T22:40:10.479Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Infers markup dependencies for scripts that query the DOM by element id, connect
 ### Public Symbols
 #### `inferDomDependencies` {#symbol-inferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L42)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L43)
 - Parameters: `params`: `DomDependencyParams`
 
 ##### `inferDomDependencies` — Summary
@@ -38,4 +38,5 @@ standalone analysis keeps the nearby-file search.
 - `node:path` - `path`
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->

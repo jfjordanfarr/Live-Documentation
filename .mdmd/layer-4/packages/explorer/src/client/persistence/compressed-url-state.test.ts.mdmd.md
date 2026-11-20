@@ -1,10 +1,10 @@
-# packages/explorer/src/client/persistence/compressed-url-state.test.ts
+# `packages/explorer/src/client/persistence/compressed-url-state.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/persistence/compressed-url-state.test.ts
-- Generated At: 2026-11-08T17:39:28.813Z
+- Code Path: `packages/explorer/src/client/persistence/compressed-url-state.test.ts`
+- Generated At: 2026-11-19T21:10:14.140Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/go/depot/store/memory/memory.go
+# `tests/integration/programs/go/depot/store/memory/memory.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/go/depot/store/memory/memory.go
-- Generated At: 2026-10-02T20:20:05.973Z
+- Code Path: `tests/integration/programs/go/depot/store/memory/memory.go`
+- Generated At: 2026-11-19T21:10:27.216Z
 
 ## Authored
 ### Purpose

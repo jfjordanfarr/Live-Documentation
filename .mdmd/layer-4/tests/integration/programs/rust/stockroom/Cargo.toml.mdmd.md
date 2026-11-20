@@ -1,11 +1,11 @@
-# tests/integration/programs/rust/stockroom/Cargo.toml
+# `tests/integration/programs/rust/stockroom/Cargo.toml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/rust/stockroom/Cargo.toml
+- Code Path: `tests/integration/programs/rust/stockroom/Cargo.toml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:32.893Z
+- Generated At: 2026-11-19T21:10:28.344Z
 
 ## Authored
 ### Purpose

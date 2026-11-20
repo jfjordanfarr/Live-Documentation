@@ -6,11 +6,13 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput,
+  noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { compareText } from "@live-documentation/engine/tooling/compareText";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
-import { optionValue, packageVersion, readConfiguration, runCommand, UsageError } from "./cli";
+import { gitIgnoresUnasked, invocationFolder, optionValue, packageVersion, readConfiguration, runCommand, stackOf, stackWanted, UsageError, workspaceFolder } from "./cli";
 
 interface ParsedArgs {
   help: boolean;
@@ -25,6 +27,8 @@ interface ParsedArgs {
   dryRun: boolean;
   check: boolean;
   changedOnly: boolean;
+  /** Whether `--verbose` asks for the subjects of what the readers left undrawn, after each reason's count. */
+  verbose: boolean;
 }
 
 type ChangeCounts = Record<"created" | "updated" | "unchanged" | "skipped", number>;
@@ -37,7 +41,8 @@ function parseArgs(argv: string[]): ParsedArgs {
     include: [],
     dryRun: false,
     check: false,
-    changedOnly: false
+    changedOnly: false,
+    verbose: false
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -101,6 +106,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--verbose": {
+        parsed.verbose = true;
+        break;
+      }
+
       case "--changed": {
         parsed.changedOnly = true;
         break;
@@ -127,7 +137,8 @@ function usage(): string {
   return `Usage: npm run live-docs:generate -- [options] [glob ...]\n\n` +
     `Writes a Live Doc for each file of the workspace, and the graph index beside them.\n\n` +
     `Options:\n` +
-    `  --workspace <path>        The folder to document (default: the current directory).\n` +
+    `  --workspace <path>        The folder to document (default: the nearest folder, from the current\n` +
+    `                            directory up, that holds a .live-docs.config.json; else the current directory).\n` +
     `  --config <file>           The configuration (default: the workspace's .live-docs.config.json\n` +
     `                            when it has one, else the shipped defaults).\n` +
     `  --root <path>             In place of the configuration's root.\n` +
@@ -139,12 +150,46 @@ function usage(): string {
     `  --dry-run                 Report what would change; write nothing.\n` +
     `  --check                   Exit 1 when docs would be created, changed or deleted; write nothing.\n` +
     `  --changed                 Only the files git reports as changed.\n` +
+    `  --verbose                 After each reason a reader gave for what it left undrawn, list the subjects.\n` +
     `  -v, --version             Print the generator's version.\n` +
     `  -h, --help                Print this help.\n` +
     `\nExamples:\n` +
     `  npm run live-docs:generate\n` +
     `  npm run live-docs:generate -- --dry-run --changed\n` +
     `  npm run live-docs:generate -- --include "scripts/live-docs/*.ts" --dry-run`;
+}
+
+/**
+ * The kinds of file among `sourcePaths` that no reader reads ({@link noReaderHandles}), with how many of each, most
+ * first: so that a person learns what the map does not cover, where each such doc says it only for itself. A kind is
+ * the extension, of any case, as first spelled (`.SqlDataProvider`), or the whole name of a file without one
+ * (`Dockerfile`, `.gitignore`). Pictures, fonts and recordings are not among them: they hold nothing a reader could find.
+ */
+function unreadKinds(sourcePaths: readonly string[]): Array<{ kind: string; count: number }> {
+  const kinds = new Map<string, { kind: string; count: number }>();
+  for (const sourcePath of sourcePaths) {
+    if (!noReaderHandles(sourcePath)) {
+      continue;
+    }
+    const name = sourcePath.slice(sourcePath.lastIndexOf("/") + 1);
+    const dot = name.lastIndexOf(".");
+    const kind = dot > 0 ? name.slice(dot) : name;
+    const tally = kinds.get(kind.toLowerCase()) ?? { kind, count: 0 };
+    tally.count += 1;
+    kinds.set(kind.toLowerCase(), tally);
+  }
+  return [...kinds.values()].sort((a, b) => b.count - a.count || compareText(a.kind, b.kind));
+}
+
+/** A count of files in words: "1 file", "12 files". */
+function files(count: number): string {
+  return `${count} file${count === 1 ? "" : "s"}`;
+}
+
+/** Up to ten paths, then how many more. */
+function listed(paths: readonly string[]): string {
+  const shown = paths.slice(0, 10).join(", ");
+  return paths.length > 10 ? `${shown}, +${paths.length - 10} more` : shown;
 }
 
 async function main(): Promise<void> {
@@ -160,7 +205,19 @@ async function main(): Promise<void> {
     return;
   }
 
-  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+  const workspaceRoot = workspaceFolder(args.workspace);
+  // Said when the workspace is not where the command was run, since the docs are written there.
+  if (args.workspace === undefined && workspaceRoot !== invocationFolder()) {
+    console.log(`[live-docs] Mapping ${workspaceRoot}, the nearest folder above ${invocationFolder()} that holds a .live-docs.config.json.`);
+  }
+  const ignores = gitIgnoresUnasked(workspaceRoot);
+  if (ignores !== undefined) {
+    if ("warning" in ignores) {
+      console.warn(`[live-docs] ${ignores.warning}`);
+    } else {
+      console.log(`[live-docs] ${ignores.note}`);
+    }
+  }
 
   // The file given, else the workspace's own configuration, as every command reads it; without either, the defaults.
   const configInput: LiveDocumentationConfigInput = await readConfiguration(workspaceRoot, args.configPath);
@@ -239,6 +296,39 @@ async function main(): Promise<void> {
     const suffix = remainder > 0 ? `, +${remainder} more` : "";
     const deleteVerb = args.dryRun || args.check ? "Would delete" : "Deleted";
     console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
+  }
+
+  const unread = unreadKinds(layer4Result.files.filter((record) => record.change !== "skipped").map((record) => record.sourcePath));
+  if (unread.length > 0) {
+    console.log(`[live-docs] Not read, so their docs hold no symbols or links: ${unread.map(({ kind, count }) => `${count} ${kind}`).join(", ")}.`);
+  }
+
+  // Which rule read the files' text, when not UTF-8, so that a person learns their files were read by a rule and not by luck.
+  const { readings } = layer4Result;
+  if (readings.utf16.length > 0) {
+    console.log(`[live-docs] ${files(readings.utf16.length)} read as UTF-16: ${listed(readings.utf16)}.`);
+  }
+  if (readings.windows1252.length > 0) {
+    console.log(`[live-docs] ${files(readings.windows1252.length)} read as Windows-1252, since ${readings.windows1252.length === 1 ? "it is" : "they are"} not UTF-8: ${listed(readings.windows1252)}.`);
+  }
+  if (readings.unread.length > 0) {
+    console.warn(`[live-docs] ${files(readings.unread.length)} not read, since ${readings.unread.length === 1 ? "its bytes are" : "their bytes are"} not text in UTF-8, UTF-16 or Windows-1252: ${readings.unread.map(({ sourcePath, reason }) => `${sourcePath} (${reason})`).join("; ")}.`);
+  }
+
+  // What the readers said they left undrawn, a line a reason with its count; its subjects with --verbose.
+  for (const { reason, subjects } of layer4Result.notices) {
+    console.log(`[live-docs] ${reason}: ${subjects.length}${args.verbose ? `: ${subjects.join("; ")}` : ""}.`);
+  }
+
+  // The files the run could not map, each by its source path and the reason; the rest of the map was written.
+  if (layer4Result.failed.length > 0) {
+    console.error(`[live-docs] Could not map ${files(layer4Result.failed.length)}; the rest of the map was written. The fault is Live Documentation's, not the file's; to leave a file out until it is mended, name it in the configuration's "exclude".`);
+    for (const { sourcePath, reason, error } of layer4Result.failed) {
+      console.error(`  ${sourcePath}: ${reason}`);
+      // Under --stack, where it failed: the stack of the error the run went on past, and of each that caused it.
+      if (stackWanted()) console.error(stackOf(error).replace(/^/gmu, "    "));
+    }
+    process.exitCode = 1;
   }
 
   if (args.check && (layer4Result.written > 0 || layer4Result.deleted > 0)) {

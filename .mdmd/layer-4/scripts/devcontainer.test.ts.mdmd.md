@@ -1,10 +1,10 @@
-# scripts/devcontainer.test.ts
+# `scripts/devcontainer.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/devcontainer.test.ts
-- Generated At: 2026-11-17T19:28:10.312Z
+- Code Path: `scripts/devcontainer.test.ts`
+- Generated At: 2026-11-19T21:10:18.220Z
 
 ## Authored
 ### Purpose

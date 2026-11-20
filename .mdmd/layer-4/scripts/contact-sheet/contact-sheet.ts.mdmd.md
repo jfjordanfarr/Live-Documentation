@@ -1,11 +1,11 @@
-# scripts/contact-sheet/contact-sheet.ts
+# `scripts/contact-sheet/contact-sheet.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/contact-sheet/contact-sheet.ts
+- Code Path: `scripts/contact-sheet/contact-sheet.ts`
 - Entry: command `contact:sheet` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T04:29:45.633Z
+- Generated At: 2026-11-19T21:10:18.211Z
 
 ## Authored
 ### Purpose

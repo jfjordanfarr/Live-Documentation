@@ -1,10 +1,10 @@
-# tests/integration/live-docs/generator-identity.test.ts
+# `tests/integration/live-docs/generator-identity.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/live-docs/generator-identity.test.ts
-- Generated At: 2026-10-19T19:14:41.534Z
+- Code Path: `tests/integration/live-docs/generator-identity.test.ts`
+- Generated At: 2026-11-19T21:10:25.677Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/images/crab.gif
+# `tests/integration/programs/typescript/tidepool/assets/images/crab.gif`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/images/crab.gif
-- Generated At: 2026-11-16T20:15:24.923Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/images/crab.gif`
+- Generated At: 2026-11-19T21:10:28.637Z
 
 ## Authored
 ### Purpose

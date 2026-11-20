@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/camera-intent.ts
+# `packages/explorer/src/client/views/localView/camera-intent.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/camera-intent.ts
-- Generated At: 2026-11-19T06:40:41.630Z
+- Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
+- Generated At: 2026-11-19T21:10:16.250Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs
+# `tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs
-- Generated At: 2026-10-22T16:47:59.271Z
+- Code Path: `tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs`
+- Generated At: 2026-11-19T21:10:24.872Z
 
 ## Authored
 ### Purpose

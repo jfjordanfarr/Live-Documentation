@@ -1,10 +1,10 @@
-# tests/integration/fixtures/razor-appsettings/workspace/wwwroot/js/telemetry.js
+# `tests/integration/fixtures/razor-appsettings/workspace/wwwroot/js/telemetry.js`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/razor-appsettings/workspace/wwwroot/js/telemetry.js
-- Generated At: 2026-09-30T16:22:06.535Z
+- Code Path: `tests/integration/fixtures/razor-appsettings/workspace/wwwroot/js/telemetry.js`
+- Generated At: 2026-11-19T21:10:25.404Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/csharp.dependencies.ts
+# `packages/engine/src/live-docs/adapters/csharp.dependencies.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/csharp.dependencies.ts
-- Generated At: 2026-11-19T08:59:52.694Z
+- Code Path: `packages/engine/src/live-docs/adapters/csharp.dependencies.ts`
+- Generated At: 2026-11-19T21:10:09.232Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/snapshot.test.ts
+# `packages/explorer/src/client/history/snapshot.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/history/snapshot.test.ts
-- Generated At: 2026-10-20T21:28:54.092Z
+- Code Path: `packages/explorer/src/client/history/snapshot.test.ts`
+- Generated At: 2026-11-19T21:10:13.294Z
 
 ## Authored
 ### Purpose

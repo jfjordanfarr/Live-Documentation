@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/directory-flow.ts
+# `packages/explorer/src/client/views/localView/directory-flow.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/directory-flow.ts
-- Generated At: 2026-11-19T05:22:12.736Z
+- Code Path: `packages/explorer/src/client/views/localView/directory-flow.ts`
+- Generated At: 2026-11-19T21:10:16.698Z
 
 ## Authored
 ### Purpose

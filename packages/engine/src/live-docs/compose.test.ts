@@ -1,9 +1,13 @@
+import { promises as fs } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
 import type { TypeReference, WorkspaceSymbolIndex } from "./coreTypes";
-import { renderLiveDoc, parseLiveDoc } from "./document";
+import { buildWorkspaceIndexes } from "./discovery";
+import { renderLiveDoc, parseLiveDoc, symbolName } from "./document";
+import { analyzeSourceFile } from "./sourceAnalysis";
 
 const workspaceRoot = path.resolve("/workspace-root");
 const liveDocsRootAbsolute = path.join(workspaceRoot, ".live-documentation", "source");
@@ -167,6 +171,35 @@ describe("import-bound signature composition", () => {
   });
 });
 
+describe("a type two files declare alike", () => {
+  it("resolves to one of them whatever order the files were discovered in, as Windows and Linux order them differently", () => {
+    // Equally near, equally deep, neither a barrel: once the order of discovery decided, and Windows discovers
+    // `Shop.Data2\` before `Shop.Data\`, the reverse of Linux.
+    const locations = ["Shop.Data/Customer.cs", "Shop.Data2/Customer.cs"].map((sourcePath) => ({
+      liveDocPath: `.live-documentation/source/${sourcePath}.md`,
+      sourcePath,
+      anchor: "symbol-customer",
+      kind: "class"
+    }));
+    const programPath = "App/Program.cs";
+    const resolveIn = (order: typeof locations): string | undefined => {
+      const headings = computePublicSymbolHeadingInfo([{ name: "Run", kind: "method", typeReferences: [{ name: "Customer", role: "parameter", parameterName: "customer" }] }]);
+      const [block] = composeSymbolBlocks({
+        headings,
+        docDir: path.dirname(path.join(liveDocsRootAbsolute, `${programPath}.md`)),
+        sourceAbsolute: path.join(workspaceRoot, programPath),
+        sourceRelativePath: programPath,
+        symbolIndex: new Map([["Customer", order]]),
+        liveDocsRootAbsolute
+      });
+      const parameters = block.references.find((reference) => reference.role === "Parameters");
+      return parameters?.role === "Parameters" ? parameters.parameters[0].types[0].link : undefined;
+    };
+    expect(resolveIn([...locations])).toBe("../Shop.Data/Customer.cs.md#symbol-customer");
+    expect(resolveIn([...locations].reverse())).toBe("../Shop.Data/Customer.cs.md#symbol-customer");
+  });
+});
+
 describe("composeDependencies", () => {
   it("uses only target anchors present in the workspace index, retaining missing names as file links", () => {
     const types = "packages/engine/src/types.ts";
@@ -269,7 +302,7 @@ describe("composeReExports", () => {
       { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-interface", kind: "interface" },
       { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-const", kind: "const" }
     ]]]);
-    const args = { reExports, docDir, liveDocsRootAbsolute, docExtension: ".md" };
+    const args = { reExports, headings: [], docDir, liveDocsRootAbsolute, docExtension: ".md" };
     expect(composeReExports({ ...args, symbolIndex: index })).toEqual([{ name: "Widget", slug: "symbol-widget", flags: [], from: { label: "types", link: "../types.ts.md#symbol-widget-interface" } }]);
     expect(composeReExports({ ...args, symbolIndex: new Map() })[0].from?.link).toBe("../types.ts.md");
     expect(composeReExports(args)[0].from?.link).toBe("../types.ts.md#symbol-widget");
@@ -421,24 +454,71 @@ describe("the anchor of every symbol's heading", () => {
   it("writes every name a file can hold into a heading that reads back as that name, backticks, spaces and emptiness included", () => {
     const names = ["a`b", "``x", "`", " a", "a ", "   ", "plain", ""];
     const headings = computePublicSymbolHeadingInfo(names.map((name) => ({ name, kind: "key" })));
-    // Names that differ only by surrounding spaces are told apart as the generator tells any two of one name apart.
-    expect(computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: "a", kind: "key" }]).map((heading) => [heading.displayName, heading.slug])).toEqual([
-      ['""', "symbol-~"],
+    // An empty name is its own; the doc writes it quoted, `` `""` ``, and a key spelled with two quotes, which begins with one, quoted too.
+    const empty = computePublicSymbolHeadingInfo([{ name: "", kind: "key" }, { name: '""', kind: "key" }, { name: "a", kind: "key" }]);
+    expect(empty.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["", "symbol-~"],
+      ['""', "symbol-~22~22"],
       ["a", "symbol-a"]
     ]);
-    const doc = parseLiveDoc(
-      renderLiveDoc({
-        codePath: "config.json",
-        layer: 4,
-        archetype: "implementation",
-        entries: [{ reason: "program", symbol: { name: "a`b" } }],
-        generatedAt: "2026-11-19T00:00:00.000Z",
-        authored: "### Purpose\nHolds keys.",
-        symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [{ title: "Summary", body: ["A key."] }], references: [] })),
-        dependencies: []
-      })
-    );
+    const emptyText = renderLiveDoc({ codePath: "keys.json", layer: 4, entries: [], authored: "### Purpose\nHolds keys.", symbols: empty.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [], references: [] })), dependencies: [] });
+    expect(emptyText).toContain('\n#### `""` {#symbol-~}\n- Type: key\n\n#### `"\\"\\""` {#symbol-~22~22}\n');
+    expect(parseLiveDoc(emptyText).symbols.map((symbol) => symbol.name)).toEqual(["", '""', "a"]);
+    const text = renderLiveDoc({
+      codePath: "config.json",
+      layer: 4,
+      archetype: "implementation",
+      entries: [{ reason: "program", symbol: { name: "a`b" } }],
+      generatedAt: "2026-11-19T00:00:00.000Z",
+      authored: "### Purpose\nHolds keys.",
+      symbols: headings.map((heading) => ({ name: heading.displayName, slug: heading.slug, kind: "key", flags: [], sections: [{ title: "Summary", body: ["A key."] }], references: [] })),
+      dependencies: []
+    });
+    const doc = parseLiveDoc(text);
     expect(doc.symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual(headings.map((heading) => [heading.displayName, heading.slug]));
     expect(doc.entries[0].symbol).toEqual({ name: "a`b" });
+  });
+
+  it("gives a name that ends in a parenthesised word its kind, so that the heading's name is the whole name", () => {
+    const headings = computePublicSymbolHeadingInfo([{ name: "build (prod)", kind: "key" }, { name: "x (key)", kind: "key" }, { name: "x", kind: "key" }]);
+    expect(headings.map((heading) => [heading.displayName, heading.slug])).toEqual([
+      ["build (prod) (key)", "symbol-build-prod"],
+      ["x (key) (key)", "symbol-x-key"],
+      ["x", "symbol-x"]
+    ]);
+    expect(headings.map((heading) => symbolName({ name: heading.displayName }))).toEqual(["build (prod)", "x (key)", "x"]);
+  });
+
+  it("anchors two re-exports one anchor would name apart, by the rule of two symbols, in the doc and in the workspace index alike", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "re-export-anchors-"));
+    try {
+      await fs.mkdir(path.join(root, "src"));
+      await fs.writeFile(path.join(root, "src", "a.ts"), "export const Foo = 1;\n");
+      await fs.writeFile(path.join(root, "src", "b.ts"), "export const foo = 2;\n");
+      // The barrel also declares `FOO`, whose anchor its re-exports must keep apart from, too: one doc, one namespace.
+      await fs.writeFile(path.join(root, "src", "index.ts"), "export * from \"./a\";\nexport * from \"./b\";\nexport const FOO = 3;\n");
+      const barrel = path.join(root, "src", "index.ts");
+      const { symbols: index } = await buildWorkspaceIndexes({
+        targetFiles: ["a.ts", "b.ts", "index.ts"].map((name) => path.join(root, "src", name)),
+        workspaceRoot: root,
+        liveDocsRoot: "docs/layer-4",
+        docExtension: ".md"
+      });
+      const analysis = await analyzeSourceFile(barrel, root, undefined, index);
+      const reExports = composeReExports({
+        reExports: analysis.reExportedSymbols ?? [],
+        headings: computePublicSymbolHeadingInfo(analysis.symbols),
+        docDir: path.join(root, "docs", "layer-4", "src"),
+        liveDocsRootAbsolute: path.join(root, "docs", "layer-4"),
+        docExtension: ".md",
+        symbolIndex: index
+      });
+      // `Foo` and `foo` once shared `symbol-foo`, so a link to `foo` through the barrel landed on `Foo`.
+      expect(computePublicSymbolHeadingInfo(analysis.symbols).map((heading) => heading.slug)).toEqual(["symbol-foo"]);
+      expect(reExports.map((entry) => [entry.name, entry.slug])).toEqual([["Foo", "symbol-foo-1"], ["foo", "symbol-foo-2"]]);
+      expect(["FOO", "Foo", "foo"].map((name) => index.get(name)?.find((location) => location.sourcePath === "src/index.ts")?.anchor)).toEqual(["symbol-foo", "symbol-foo-1", "symbol-foo-2"]);
+    } finally {
+      await fs.rm(root, { recursive: true, force: true });
+    }
   });
 });

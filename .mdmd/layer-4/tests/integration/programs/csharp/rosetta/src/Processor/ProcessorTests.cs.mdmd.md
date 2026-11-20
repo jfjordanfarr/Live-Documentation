@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/rosetta/src/Processor/ProcessorTests.cs
+# `tests/integration/programs/csharp/rosetta/src/Processor/ProcessorTests.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/csharp/rosetta/src/Processor/ProcessorTests.cs
-- Generated At: 2026-09-27T23:21:35.414Z
+- Code Path: `tests/integration/programs/csharp/rosetta/src/Processor/ProcessorTests.cs`
+- Generated At: 2026-11-19T21:10:26.979Z
 
 ## Authored
 ### Purpose

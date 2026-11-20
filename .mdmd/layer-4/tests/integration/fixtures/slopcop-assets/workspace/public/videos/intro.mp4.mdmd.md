@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/videos/intro.mp4
+# `tests/integration/fixtures/slopcop-assets/workspace/public/videos/intro.mp4`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/videos/intro.mp4
-- Generated At: 2026-10-16T20:40:26.239Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/videos/intro.mp4`
+- Generated At: 2026-11-19T21:10:25.481Z
 
 ## Authored
 ### Purpose

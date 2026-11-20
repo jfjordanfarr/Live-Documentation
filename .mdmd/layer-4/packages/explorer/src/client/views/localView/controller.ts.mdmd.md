@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/controller.ts
+# `packages/explorer/src/client/views/localView/controller.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-19T07:17:27.348Z
+- Code Path: `packages/explorer/src/client/views/localView/controller.ts`
+- Generated At: 2026-11-19T21:10:16.552Z
 
 ## Authored
 ### Purpose

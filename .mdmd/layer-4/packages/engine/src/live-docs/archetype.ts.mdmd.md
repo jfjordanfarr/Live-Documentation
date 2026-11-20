@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/archetype.ts
+# `packages/engine/src/live-docs/archetype.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-10-22T16:47:52.529Z
+- Code Path: `packages/engine/src/live-docs/archetype.ts`
+- Generated At: 2026-11-19T22:40:10.268Z
 
 ## Authored
 ### Purpose
@@ -22,27 +22,28 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 ### Public Symbols
 #### `BINARY_SNIFF_BYTES` {#symbol-binary_sniff_bytes}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L22)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L23)
 
 ##### `BINARY_SNIFF_BYTES` — Summary
 How much of a file's head {@link isBinaryContent} reads: git's own window for the same question.
 
 #### `isBinaryContent` {#symbol-isbinarycontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L33)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L35)
 
 ##### `isBinaryContent` — Summary
 True when a file's content is binary: a NUL byte within its first
 {@link BINARY_SNIFF_BYTES} bytes, as git decides it, except that a text file
 in UTF-16 or UTF-32 announced by its byte order mark is text, since a
-Windows PowerShell script is often written that way. The dividing line is the
+Windows PowerShell script is often written that way, and a head the one reading step reads as UTF-16 without a
+mark (`unmarkedUtf16`) is text too (the joining of 2026-11-19). The dividing line is the
 owner's (2026-10-16): "plaintext/near-plain-text versus binary. It should be
 that simple." An archive that holds text would be text by that rule and
 is not read today, since discovery admits no archive.
 
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L72)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L77)
 - Returns: [`LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -78,7 +79,7 @@ const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L145)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L150)
 
 ##### `hasMeaningfulAuthoredContent` — Summary
 Checks whether an authored markdown block carries information beyond the default placeholders and the note a doc of a file no reader handles starts with.
@@ -91,13 +92,14 @@ Checks whether an authored markdown block carries information beyond the default
 
 #### `matchesPathPattern` {#symbol-matchespathpattern}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L174)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L180)
 
 ##### `matchesPathPattern` — Summary
 True when a workspace-relative path matches a configuration pattern: a path
 exactly, or a glob in which `*` stands for anything within one segment and
 `**` for anything across segments. The archetype overrides and the declared
-entry points are read by this rule.
+entry points are read by this rule; `exclude` without regard to case where
+git ignores case in the repository (`ignoreCase`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -106,6 +108,7 @@ entry points are read by this rule.
 - [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`document.UNREAD_NOTE`](./document.ts.mdmd.md#symbol-unread_note)
+- [`sourceText.unmarkedUtf16`](../tooling/sourceText.ts.mdmd.md#symbol-unmarkedutf16)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

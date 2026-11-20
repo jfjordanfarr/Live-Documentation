@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/ruby.ts
+# `packages/engine/src/live-docs/adapters/ruby.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/ruby.ts
-- Generated At: 2026-11-19T08:59:53.022Z
+- Code Path: `packages/engine/src/live-docs/adapters/ruby.ts`
+- Generated At: 2026-11-19T22:40:10.194Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L49)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/ruby.ts#L50)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rubyAdapter` — Summary
@@ -28,7 +28,7 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`, `statSync`
+- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
@@ -42,6 +42,7 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
-import { discoverDocuments, discoverTargetFiles } from "./discovery";
+import { discoverDocuments, discoverTargetFiles, inWorkspaceOrder } from "./discovery";
 
 /**
  * A workspace with a file for every rule: hidden files and folders, files no
@@ -73,6 +73,18 @@ const DOCUMENTED = [
   "tools/self/x.ts",
   "vendor/lib.ts"
 ];
+
+describe("inWorkspaceOrder", () => {
+  it("orders files by their workspace paths, the same whether the platform spells them with slashes or backslashes", () => {
+    const relative = ["Data/Order.cs", "DataAccess/Order.cs", "Shop.Data/Customer.cs", "Shop.Data2/Customer.cs", "src/a.cs", "src0/a.cs"];
+    const linux = relative.map((file) => ({ absolute: `/repo/${file}`, relative: file }));
+    const windows = relative.map((file) => ({ absolute: `C:\\repo\\${file.split("/").join("\\")}`, relative: file }));
+    // An order of the absolute paths, as discovery once sorted, puts Windows's `DataAccess\\` before `Data\\`.
+    expect([...windows].sort((a, b) => (a.absolute < b.absolute ? -1 : 1)).map((file) => file.relative)).not.toEqual(relative);
+    expect(inWorkspaceOrder([...linux].reverse()).map((file) => file.relative)).toEqual(relative);
+    expect(inWorkspaceOrder([...windows].reverse()).map((file) => file.relative)).toEqual(relative);
+  });
+});
 
 describe("discoverTargetFiles", () => {
   let workspace: string;
@@ -197,5 +209,42 @@ describe("discoverTargetFiles", () => {
 
     expect(found).toContain(".vscode/settings.json");
     expect(found).not.toContain(".vscode/tasks.json");
+  });
+});
+
+/**
+ * A pattern in `exclude` follows what git does for the repository: where git's `core.ignorecase` is true, as git sets
+ * it on a clone on Windows or macOS, the pattern matches a path in any case; otherwise exactly (the root's ruling of
+ * 2026-11-19, after the Windows and command-line probe found `vendor/**` missing `Vendor/`). Each case imitates one.
+ */
+describe("exclude and the case of a path", () => {
+  const folders: string[] = [];
+  afterEach(async () => {
+    for (const folder of folders.splice(0)) await fs.rm(folder, { recursive: true, force: true });
+  });
+
+  async function repository(ignoreCase: boolean | undefined): Promise<string> {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "discovery-case-"));
+    folders.push(root);
+    execFileSync("git", ["init", "-q"], { cwd: root });
+    if (ignoreCase !== undefined) execFileSync("git", ["config", "core.ignorecase", String(ignoreCase)], { cwd: root });
+    await fs.mkdir(path.join(root, "Vendor"));
+    await fs.writeFile(path.join(root, "Vendor", "Lib.cs"), "class Lib { }\n");
+    await fs.writeFile(path.join(root, "App.cs"), "class App { }\n");
+    return root;
+  }
+
+  async function found(root: string): Promise<string[]> {
+    const config = normalizeLiveDocumentationConfig({ exclude: ["vendor/**"] });
+    return (await discoverTargetFiles({ workspaceRoot: root, config, include: new Set(), changedOnly: false })).map((file) => path.relative(root, file).split(path.sep).join("/"));
+  }
+
+  it("matches in any case where git ignores case", async () => {
+    expect(await found(await repository(true))).toEqual(["App.cs"]);
+  });
+
+  it("matches exactly where git does not, and where git says nothing", async () => {
+    expect(await found(await repository(false))).toEqual(["App.cs", "Vendor/Lib.cs"]);
+    expect(await found(await repository(undefined))).toEqual(["App.cs", "Vendor/Lib.cs"]);
   });
 });

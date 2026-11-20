@@ -1,11 +1,11 @@
-# packages/generator/src/generator.ts
+# `packages/generator/src/generator.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/generator.ts
+- Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-12T17:12:19.988Z
+- Generated At: 2026-11-19T22:40:12.780Z
 
 ## Authored
 ### Purpose
@@ -24,13 +24,16 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-10-22 ([the decision](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) a run reads every markdown document discovery finds (`readMarkdownDocuments`), whatever subset it renders, and `citingDocuments` turns their links into the `Cited By` index that `composeGenerated` writes on each cited file's doc, when the configuration's `citedBy` is on; on this repository the reading adds under a second to a run. A document's change therefore moves the docs of the files it cites or stops citing, which a full run or `--check` sees and a `--changed` run, which renders changed sources alone, does not.
 - Since 2026-11-12 the nested-scan warning says that the run writes the docs all the same and what the rule will mean, that a board naming both scans reads only the outer one. Its words were "Point at one of them", which read as a refusal while the run carried on, as [the first-visit evaluation](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md) found; the rule and the behaviour are unchanged.
 - Since 2026-11-12 a folder git ignores is no scan: `scansWithin` asks git, through `gitIgnored`, of the docs roots and configuration files it finds, and `scansAbove` does not count an outer scan whose git ignores this folder, after an agent's worktree under the ignored `.claude/worktrees/`, which carries a copy of the configuration, made every run in the checkout warn of a nested scan. It is the owner's rule of 2026-10-19 that what git ignores never becomes part of the map; without git, every one still counts.
+- Since 2026-11-19 what makes a folder a scan of its own is named once (`scanMarkers`: a docs root or this tool's configuration file) and read by the search above the workspace and the search below it; a matcher of the same marks for the history's tree writer was built that day and removed when the tree began to write every name. still written and still warned of.
+
+- Since 2026-11-19 ([the probe's third leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#third-leg-november-19)) a file the run cannot map, because it cannot be read or because the doc written for it is one the grammar's own reader refuses, is skipped and named in `failed` by its source path with the reason, and the run goes on to write every other doc and the index; each doc is read back by `parseLiveDoc` before it is written. Until then one refused doc stopped the run after every doc was written and before the index, naming the doc and not the source, and the next run called the docs of the failed run unchanged. A failed file's old doc is removed only when the reader refuses it and it holds no authored words. The run also classifies each file a reader reads by the one reading step (`decodeSourceText`) and returns in `readings` the files read as UTF-16, as Windows-1252, and not read as text.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L58)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L61)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -38,9 +41,16 @@ Summary returned by {@link generateLiveDocs} after processing all target files.
 The caller uses `written` and `deleted` counts for progress reporting, while
 the `files` array gives per-file detail for dry-run previews and CI checks.
 
+#### `SourceReadings` {#symbol-sourcereadings}
+- Type: interface
+- Source: [source](../../../../../packages/generator/src/generator.ts#L82)
+
+##### `SourceReadings` — Summary
+The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
+
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L104)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L123)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -72,6 +82,7 @@ behind the `Entry` lines (2026-10-15).
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.hasReader`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-hasreader)
 - [`liveDocumentationConfig.noReaderHandles`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.BINARY_SNIFF_BYTES`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-binary_sniff_bytes)
@@ -92,6 +103,7 @@ behind the `Entry` lines (2026-10-15).
 - [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
 - [`core.isBinaryContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-isbinarycontent)
 - [`core.resolveArchetype`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
+- [`discovery.inWorkspaceOrder`](../../engine/src/live-docs/discovery.ts.mdmd.md#symbol-inworkspaceorder)
 - [`document.DEFAULT_AUTHORED_BLOCK`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-default_authored_block)
 - [`document.LiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
 - [`document.LiveDocSyntaxError`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
@@ -109,6 +121,8 @@ behind the `Entry` lines (2026-10-15).
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
+- [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading)
+- [`sourceText.decodeSourceText`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

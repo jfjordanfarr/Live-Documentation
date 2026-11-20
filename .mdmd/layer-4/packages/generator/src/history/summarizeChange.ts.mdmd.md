@@ -1,10 +1,10 @@
-# packages/generator/src/history/summarizeChange.ts
+# `packages/generator/src/history/summarizeChange.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-11-19T12:44:39.347Z
+- Code Path: `packages/generator/src/history/summarizeChange.ts`
+- Generated At: 2026-11-19T21:10:18.113Z
 
 ## Authored
 ### Purpose
@@ -18,28 +18,47 @@ One commit's summary, made in a process of its own: the generator run over the c
 - Before the generator runs, each doc of the mirror committed at that commit, where the lens's configuration reads docs, is read for an `## Authored` heading, the one the generator carries a doc's words forward under whether or not the rest meets today's grammar. A doc without one is `unread`: the generator writes its placeholder, and the summary says so rather than pass the placeholder off as that day's words. Over this repository that is the hand-written mirror of October 2025; from December 2025 every doc sampled has an authored block bounded by `## Generated`, though today's strict parser reads the mirror only from 2026-09-27.
 - When it ends the process sends the history command its peak resident memory (`process.resourceUsage().maxRSS`), which sizes the pool.
 - Since [the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md) the process takes the path of a file holding its task, not the task itself, which could outgrow the command line.
+- Since 2026-11-19 the summary keeps every linked and citing document: it is made under the configuration the command hands it, `summarizedConfiguration`, which has no bundle exclusion, and the exclusions are applied where the summaries are read (`bundled.ts`), so that they are not in the lens's key ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#every-name-of-a-commits-tree-stands-and-the-bundles-exclusions-apply-where-summaries-are-read-recorded-2026-11-19)). Whether a linked document stood is asked of the commit's own listing (`git ls-files` against the tree's index), not the disk, since the tree leaves out the files the configuration excludes; `standingFiles` says where the two answers can differ and which is right.
+- Whether a linked document stood is asked of the commit's own listing, in which a symbolic link the tree wrote as a copy stands as the file it leads to; on a disk that tells case apart the listing and the disk now answer alike, since every name is written, and the listing keeps the answer the same on disks that fold case and Unicode form.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SummaryTask` {#symbol-summarytask}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L59)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L60)
 
 ##### `SummaryTask` — Summary
 What one process is asked to do.
 
 #### `summarizeChange` {#symbol-summarizechange}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L79)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L80)
 - Parameters: `task`: [`SummaryTask`](#symbol-summarytask)
 
 ##### `summarizeChange` — Summary
 Generates the change's docs in its working tree and writes its summary, and its index when asked.
 
+#### `standingFiles` {#symbol-standingfiles}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L145)
+- Parameters: `unwritten`: `ReadonlyArray`
+
+##### `standingFiles` — Summary
+The files that stand in the change's tree, by their repository-relative paths, read from the tree's own listing
+(its index, which the history command made from the change's tree and named in this process's environment): a
+regular file stands, and so does a symbolic link the tree writer wrote as a copy of the file it leads to, which is
+every link not named unwritten; a submodule does not, nor any entry the tree did not hold (`unwritten`).
+
+The listing, not the disk, so that whether a linked document stood depends on the commit alone. Every name of the
+tree is written, so on a disk that tells case apart the two agree; on one that folds case or Unicode form, as macOS's
+and Windows's do, the disk would find `Docs/Design.md` for a link to `docs/design.md`, and the listing does not.
+That holds of this question only: the generator's own resolution of an import still asks the disk. Until 2026-11-19
+the disk was asked here (`stat`, then `isFile`).
+
 #### `SummaryReport` {#symbol-summaryreport}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L159)
+- Source: [source](../../../../../../packages/generator/src/history/summarizeChange.ts#L180)
 
 ##### `SummaryReport` — Summary
 What the process tells the history command when it has written the summary.
@@ -52,6 +71,7 @@ What the process tells the history command when it has written the summary.
 - `node:path` - `path`
 - `node:zlib` - `gzipSync`
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`summary.AuthoredReading`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-authoredreading)
 - [`summary.summarizeGraph`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-summarizegraph)

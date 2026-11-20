@@ -32,7 +32,8 @@ import type { DocSection } from "../document";
 import { linkTarget, type EdgeBasis, type GraphEdge, type LiveDocGraph } from "../graph";
 
 /** The version of the format of one change's summary in the cache. */
-export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/3";
+// 4 since 2026-11-19: a file's `citedBy` holds the citing documents' paths, where 3 held the doc's labels.
+export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/4";
 
 /** How a type reference stands in its symbol's signature, by the graph's name for the edge it makes. */
 export type ReferenceRole = "returns" | "parameter" | "extends" | "implements" | "constraint";
@@ -114,7 +115,12 @@ export interface SummaryFile {
   dependencies: DependencyRow[];
   /** Its `Re-Exported Symbol Anchors`, when it re-exports. */
   reExports?: ReExportRow[];
-  /** The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths, when any did. */
+  /**
+   * The documents outside the Live Docs whose markdown linked to it, its `Cited By`, by their workspace paths, as the
+   * doc reader reads each line's name back, when any did. Format 3 kept the lines' labels when a label wrote a
+   * backtick as an apostrophe; the first form of format 4 read the path from the line's link and misread a name
+   * holding `#` or a percent-escape, until the doc writer and reader were made to give every name back (2026-11-19).
+   */
   citedBy?: string[];
   /**
    * The hash of its authored block in the text store, when a doc stood at the change where the lens reads it and its
@@ -255,6 +261,8 @@ export function summarizeGraph(
         ...(entry.flags.length > 0 ? { flags: [...entry.flags] } : {})
       };
     });
+    // The citing document's path, as the doc reader reads the line's name back, whatever the name holds; the reader of
+    // the summary holds it to the bundle's exclusions.
     const citedBy = (file.citedBy ?? []).map((entry) => entry.label);
     const reading = authored === undefined ? "read" : authored.get(file.docPath);
     files.push({

@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/src/render/palette.test.ts
+# `tests/integration/programs/typescript/tidepool/src/render/palette.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/typescript/tidepool/src/render/palette.test.ts
-- Generated At: 2026-11-16T20:15:26.722Z
+- Code Path: `tests/integration/programs/typescript/tidepool/src/render/palette.test.ts`
+- Generated At: 2026-11-19T21:10:28.827Z
 
 ## Authored
 ### Purpose

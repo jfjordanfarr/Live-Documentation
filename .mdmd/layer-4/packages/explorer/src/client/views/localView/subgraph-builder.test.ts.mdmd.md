@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/subgraph-builder.test.ts
+# `packages/explorer/src/client/views/localView/subgraph-builder.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/subgraph-builder.test.ts
-- Generated At: 2026-10-12T18:02:21.994Z
+- Code Path: `packages/explorer/src/client/views/localView/subgraph-builder.test.ts`
+- Generated At: 2026-11-19T21:10:17.086Z
 
 ## Authored
 ### Purpose

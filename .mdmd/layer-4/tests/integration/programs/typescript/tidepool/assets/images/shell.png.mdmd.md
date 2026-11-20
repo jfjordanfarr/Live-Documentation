@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/images/shell.png
+# `tests/integration/programs/typescript/tidepool/assets/images/shell.png`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/images/shell.png
-- Generated At: 2026-11-16T20:15:25.035Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/images/shell.png`
+- Generated At: 2026-11-19T21:10:28.649Z
 
 ## Authored
 ### Purpose

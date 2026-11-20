@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/file-identity.ts
+# `packages/explorer/src/client/history/file-identity.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/history/file-identity.ts
-- Generated At: 2026-11-01T21:06:14.368Z
+- Code Path: `packages/explorer/src/client/history/file-identity.ts`
+- Generated At: 2026-11-19T21:10:13.051Z
 
 ## Authored
 ### Purpose

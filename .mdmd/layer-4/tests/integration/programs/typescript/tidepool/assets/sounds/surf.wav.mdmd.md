@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/assets/sounds/surf.wav
+# `tests/integration/programs/typescript/tidepool/assets/sounds/surf.wav`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/assets/sounds/surf.wav
-- Generated At: 2026-11-16T20:15:25.150Z
+- Code Path: `tests/integration/programs/typescript/tidepool/assets/sounds/surf.wav`
+- Generated At: 2026-11-19T21:10:28.663Z
 
 ## Authored
 ### Purpose

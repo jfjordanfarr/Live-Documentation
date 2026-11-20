@@ -1,10 +1,10 @@
-# packages/generator/src/history/computeHistory.test.ts
+# `packages/generator/src/history/computeHistory.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/generator/src/history/computeHistory.test.ts
-- Generated At: 2026-11-19T12:01:27.281Z
+- Code Path: `packages/generator/src/history/computeHistory.test.ts`
+- Generated At: 2026-11-19T21:10:17.992Z
 
 ## Authored
 ### Purpose

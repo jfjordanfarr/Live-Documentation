@@ -1,10 +1,10 @@
-# tests/integration/fixtures/powershell-compendium/config/settings.psd1
+# `tests/integration/fixtures/powershell-compendium/config/settings.psd1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/powershell-compendium/config/settings.psd1
-- Generated At: 2026-09-27T23:21:32.821Z
+- Code Path: `tests/integration/fixtures/powershell-compendium/config/settings.psd1`
+- Generated At: 2026-11-19T21:10:25.277Z
 
 ## Authored
 ### Purpose

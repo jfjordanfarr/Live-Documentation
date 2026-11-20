@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/PaymentService/Data/PostPaymentRow.cs
+# `tests/integration/programs/csharp/estate/PaymentService/Data/PostPaymentRow.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/PostPaymentRow.cs
-- Generated At: 2026-10-02T20:20:05.088Z
+- Code Path: `tests/integration/programs/csharp/estate/PaymentService/Data/PostPaymentRow.cs`
+- Generated At: 2026-11-19T21:10:26.674Z
 
 ## Authored
 ### Purpose

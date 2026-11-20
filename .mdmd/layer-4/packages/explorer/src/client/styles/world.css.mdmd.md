@@ -1,10 +1,10 @@
-# packages/explorer/src/client/styles/world.css
+# `packages/explorer/src/client/styles/world.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/styles/world.css
-- Generated At: 2026-09-28T23:04:09.085Z
+- Code Path: `packages/explorer/src/client/styles/world.css`
+- Generated At: 2026-11-19T21:10:14.544Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/force-graph-identity.spec.ts
+# `tests/e2e/force-graph-identity.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/force-graph-identity.spec.ts
-- Generated At: 2026-11-10T16:40:47.195Z
+- Code Path: `tests/e2e/force-graph-identity.spec.ts`
+- Generated At: 2026-11-19T21:10:21.118Z
 
 ## Authored
 ### Purpose

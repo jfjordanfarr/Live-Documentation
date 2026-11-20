@@ -38,6 +38,17 @@ export function gitIgnored(workspaceRoot: string, relativePaths: readonly string
 }
 
 /**
+ * Whether git matches names without regard to case in the repository that
+ * holds `workspaceRoot`: its `core.ignorecase`, which git sets true on a clone
+ * made where the file system does not tell case apart, as on Windows. False
+ * when the setting is false or absent, or git cannot answer.
+ */
+export function gitIgnoresCase(workspaceRoot: string): boolean {
+  const result = spawnSync("git", ["-C", workspaceRoot, "config", "--type=bool", "--get", "core.ignorecase"], { encoding: "utf8" });
+  return !result.error && result.status === 0 && result.stdout.trim() === "true";
+}
+
+/**
  * The files among `files` (absolute or workspace-relative) that git does not
  * ignore; all of `files` when git cannot answer.
  */

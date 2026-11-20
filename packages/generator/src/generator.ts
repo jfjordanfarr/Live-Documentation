@@ -3,11 +3,13 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import {
+  hasReader,
   type LiveDocumentationConfig,
   noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { inWorkspaceOrder } from "@live-documentation/engine/live-docs/discovery";
 import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
@@ -26,6 +28,7 @@ import {
   toWorkspaceFileUri,
   toWorkspaceRelativePath
 } from "@live-documentation/engine/tooling/pathUtils";
+import { decodeSourceText, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -64,6 +67,22 @@ export interface LiveDocGeneratorResult {
   deletedFiles: string[];
   /** Workspace-relative path of the graph index written after the run; absent on a dry run. */
   index?: string;
+  /**
+   * The files the run could not map, by source path, with the reason and the error itself, whose stack the command
+   * prints under `--stack`: skipped, while the run went on (2026-11-19).
+   */
+  failed: Array<{ sourcePath: string; reason: string; error: unknown }>;
+  /** Which files a rule other than UTF-8 read, and which were not read as text at all, by the one reading step. */
+  readings: SourceReadings;
+  /** What the readers said they left undrawn, a reason at a time in the order first met, each subject as `<source path>: <subject>`. */
+  notices: Array<{ reason: string; subjects: string[] }>;
+}
+
+/** The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path. */
+export interface SourceReadings {
+  utf16: string[];
+  windows1252: string[];
+  unread: Array<{ sourcePath: string; reason: string }>;
 }
 
 type LiveDocWriteKind = "created" | "updated" | "unchanged" | "skipped";
@@ -134,7 +153,7 @@ export async function generateLiveDocs(
   // still part of the workspace context for this run, but only included files
   // are rendered.
   const allTargetFiles = includeSet.size > 0
-    ? [...new Set([...workspaceFiles, ...includedFiles])].sort()
+    ? inWorkspaceOrder([...new Set([...workspaceFiles, ...includedFiles])].map((file) => ({ file, relative: normalizeWorkspacePath(path.relative(workspaceRoot, file)) }))).map(({ file }) => file)
     : workspaceFiles;
   const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 
@@ -173,6 +192,9 @@ export async function generateLiveDocs(
     : includedFiles;
 
   const results: LiveDocWriteRecord[] = [];
+  const failed: Array<{ sourcePath: string; reason: string; error: unknown }> = [];
+  const readings: SourceReadings = { utf16: [], windows1252: [], unread: [] };
+  const notices = new Map<string, string[]>();
   let written = 0;
   let skipped = 0;
   const generatedDocPaths = new Set(allTargetFiles.map((absolute) =>
@@ -204,73 +226,98 @@ export async function generateLiveDocs(
     }
 
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
-    const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
+    // A file that cannot be mapped, because it cannot be read or because the doc written for it is one the grammar's
+    // own reader refuses, is skipped and named by its source path, and the run goes on (2026-11-19).
+    try {
+      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
 
-    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
+      // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
+      if (hasReader(normalizedSourcePath)) {
+        noteReading(readings, normalizedSourcePath, decodeSourceText(await fs.readFile(absoluteSourcePath)));
+      }
 
-    const docPaths = resolveLiveDocPaths(
-      workspaceRoot,
-      normalizedConfig,
-      normalizedSourcePath,
-      docExtension
-    );
-    const existingContent = await readFileIfExists(docPaths.absolute);
-    const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
-    const timestampNow = now().toISOString();
-    const initialGeneratedAt = existing.generatedAt ?? timestampNow;
+      const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
+      // What the reader says it left undrawn, counted a reason across files for the run's last lines; never written into the doc.
+      for (const notice of analysis.notices ?? []) {
+        const subjects = notices.get(notice.reason);
+        if (subjects === undefined) notices.set(notice.reason, [`${normalizedSourcePath}: ${notice.subject}`]);
+        else subjects.push(`${normalizedSourcePath}: ${notice.subject}`);
+      }
 
-    const generated = composeGenerated({
-      analysis,
-      docAbsolutePath: docPaths.absolute,
-      workspaceRoot,
-      sourceRelativePath: normalizedSourcePath,
-      liveDocsRootAbsolute,
-      docExtension,
-      symbolIndex,
-      entryIndex,
-      citedBy: citedByIndex.get(normalizedSourcePath) ?? [],
-      config: normalizedConfig
-    });
+      const docPaths = resolveLiveDocPaths(
+        workspaceRoot,
+        normalizedConfig,
+        normalizedSourcePath,
+        docExtension
+      );
+      const existingContent = await readFileIfExists(docPaths.absolute);
+      const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
+      const timestampNow = now().toISOString();
+      const initialGeneratedAt = existing.generatedAt ?? timestampNow;
 
-    const renderDocument = (generatedAt: string): string =>
-      renderLiveDoc({
-        codePath: normalizedSourcePath,
-        layer: 4,
-        archetype,
-        generatedAt,
-        authored: existing.authored,
-        ...generated
+      const generated = composeGenerated({
+        analysis,
+        docAbsolutePath: docPaths.absolute,
+        workspaceRoot,
+        sourceRelativePath: normalizedSourcePath,
+        liveDocsRootAbsolute,
+        docExtension,
+        symbolIndex,
+        entryIndex,
+        citedBy: citedByIndex.get(normalizedSourcePath) ?? [],
+        config: normalizedConfig
       });
 
-    let rendered = renderDocument(initialGeneratedAt);
-    let change = classifyChange(existingContent, rendered);
+      const renderDocument = (generatedAt: string): string =>
+        renderLiveDoc({
+          codePath: normalizedSourcePath,
+          layer: 4,
+          archetype,
+          generatedAt,
+          authored: existing.authored,
+          ...generated
+        });
 
-    if (change !== "unchanged" && existing.generatedAt) {
-      if (timestampNow !== initialGeneratedAt) {
-        rendered = renderDocument(timestampNow);
-        change = classifyChange(existingContent, rendered);
+      let rendered = renderDocument(initialGeneratedAt);
+      let change = classifyChange(existingContent, rendered);
+
+      if (change !== "unchanged" && existing.generatedAt) {
+        if (timestampNow !== initialGeneratedAt) {
+          rendered = renderDocument(timestampNow);
+          change = classifyChange(existingContent, rendered);
+        }
       }
-    }
 
-    results.push({
-      sourcePath: normalizedSourcePath,
-      docPath: docPaths.relative,
-      change
-    });
+      // Read back by the grammar's own reader before it is written: a doc the reader refuses would stop every later read.
+      try {
+        parseLiveDoc(rendered);
+      } catch (error) {
+        throw error instanceof LiveDocSyntaxError ? new Error(`Live Documentation wrote a doc for it that its own reader refuses: ${error.message}`, { cause: error }) : error;
+      }
 
-    if (change === "unchanged") {
-      skipped += 1;
-      continue;
-    }
+      results.push({
+        sourcePath: normalizedSourcePath,
+        docPath: docPaths.relative,
+        change
+      });
 
-    if (options.dryRun) {
+      if (change === "unchanged") {
+        skipped += 1;
+        continue;
+      }
+
+      if (options.dryRun) {
+        written += 1;
+        continue;
+      }
+
+      await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
+      await fs.writeFile(docPaths.absolute, rendered, "utf8");
       written += 1;
-      continue;
+    } catch (error) {
+      failed.push({ sourcePath: normalizedSourcePath, reason: error instanceof Error ? error.message : String(error), error });
+      await removeRefusedDoc(resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizedSourcePath, docExtension).absolute, options.dryRun ?? false);
     }
-
-    await fs.mkdir(path.dirname(docPaths.absolute), { recursive: true });
-    await fs.writeFile(docPaths.absolute, rendered, "utf8");
-    written += 1;
   }
 
   let deletedFiles: string[] = [];
@@ -300,8 +347,41 @@ export async function generateLiveDocs(
     files: results,
     deleted: deletedFiles.length,
     deletedFiles,
-    index
+    index,
+    failed,
+    readings,
+    notices: [...notices].map(([reason, subjects]) => ({ reason, subjects }))
   };
+}
+
+/** Counts which rule read a file's text: the files read as UTF-16 or as Windows-1252, and those not read as text at all. */
+function noteReading(readings: SourceReadings, sourcePath: string, reading: SourceTextReading): void {
+  if (reading.encoding === "unread") {
+    readings.unread.push({ sourcePath, reason: reading.reason });
+  } else if (reading.encoding === "windows-1252") {
+    readings.windows1252.push(sourcePath);
+  } else if (reading.encoding.startsWith("utf-16")) {
+    readings.utf16.push(sourcePath);
+  }
+}
+
+/**
+ * Removes the doc of a file this run could not map when the grammar's reader refuses it and it holds no words of a
+ * person's: the leftover of an earlier run that stopped on that file, which would otherwise stop the index's read.
+ * A doc the reader reads, or one that holds authored words, is left as it is.
+ */
+async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promise<void> {
+  const text = await readFileIfExists(docAbsolutePath);
+  if (text === undefined || dryRun) {
+    return;
+  }
+  try {
+    parseLiveDoc(text);
+  } catch (error) {
+    if (error instanceof LiveDocSyntaxError && !hasMeaningfulAuthoredContent(authoredBlockOf(text))) {
+      await fs.rm(docAbsolutePath, { force: true });
+    }
+  }
 }
 
 /** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */
@@ -325,10 +405,22 @@ async function scansAbove(workspaceRoot: string, config: LiveDocumentationConfig
   return found;
 }
 
+/** This tool's configuration file, whose presence makes a folder a scan of its own. */
+const CONFIGURATION_FILE = ".live-docs.config.json";
+
+/**
+ * What makes a folder a scan of its own, by names alone: a docs root (`<root>/<baseLayer>`) or a configuration file of
+ * this tool in it, named once for the search above the workspace ({@link isScan}) and the search below it
+ * ({@link scansWithin}).
+ */
+function scanMarkers(config: LiveDocumentationConfig): { docsRoot: string; configurationFile: string } {
+  return { docsRoot: normalizeWorkspacePath(path.join(config.root, config.baseLayer)), configurationFile: CONFIGURATION_FILE };
+}
+
 /** The folders below the workspace that are scans of their own, as workspace-relative paths. */
 async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
-  const docsRoot = normalizeWorkspacePath(path.join(config.root, config.baseLayer));
-  const patterns = [`**/${docsRoot}`, "**/.live-docs.config.json"];
+  const { docsRoot, configurationFile } = scanMarkers(config);
+  const patterns = [`**/${docsRoot}`, `**/${configurationFile}`];
   const matches = (await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true }))
     .map((match) => normalizeWorkspacePath(match));
   // What git ignores is never part of the map (the owner, 2026-10-19), so a docs root or a configuration there, as in
@@ -348,7 +440,8 @@ async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfi
 }
 
 async function isScan(folder: string, config: LiveDocumentationConfig): Promise<boolean> {
-  for (const candidate of [path.join(folder, config.root, config.baseLayer), path.join(folder, ".live-docs.config.json")]) {
+  const { docsRoot, configurationFile } = scanMarkers(config);
+  for (const candidate of [path.join(folder, docsRoot), path.join(folder, configurationFile)]) {
     try {
       await fs.stat(candidate);
       return true;
@@ -538,6 +631,7 @@ function composeGenerated(params: {
 
   const reExports = composeReExports({
     reExports: params.analysis.reExportedSymbols ?? [],
+    headings,
     docDir,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension,
@@ -585,5 +679,9 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
     return "created";
   }
 
-  return existingContent === rendered ? "unchanged" : "updated";
+  // A doc checked out with CRLF line endings, as Git for Windows does by default, saved with CR alone, or given a
+  // byte-order mark, as Windows PowerShell 5.1 gives any file that passes through it, is the doc written with LF and no
+  // mark: the reader reads them alike, so neither a check nor a run calls it changed or rewrites it for those alone. A
+  // doc the generator writes is written with LF and no mark.
+  return existingContent.replace(/^\ufeff/u, "").replace(/\r\n?/gu, "\n") === rendered ? "unchanged" : "updated";
 }

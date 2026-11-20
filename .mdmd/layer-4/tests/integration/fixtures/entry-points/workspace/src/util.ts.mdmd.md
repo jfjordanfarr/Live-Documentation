@@ -1,10 +1,10 @@
-# tests/integration/fixtures/entry-points/workspace/src/util.ts
+# `tests/integration/fixtures/entry-points/workspace/src/util.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/entry-points/workspace/src/util.ts
-- Generated At: 2026-10-15T15:49:43.616Z
+- Code Path: `tests/integration/fixtures/entry-points/workspace/src/util.ts`
+- Generated At: 2026-11-19T21:10:24.992Z
 
 ## Authored
 ### Purpose

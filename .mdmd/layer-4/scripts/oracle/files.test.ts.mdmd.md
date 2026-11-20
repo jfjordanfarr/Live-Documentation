@@ -1,10 +1,10 @@
-# scripts/oracle/files.test.ts
+# `scripts/oracle/files.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/oracle/files.test.ts
-- Generated At: 2026-10-02T20:20:02.617Z
+- Code Path: `scripts/oracle/files.test.ts`
+- Generated At: 2026-11-19T21:10:19.333Z
 
 ## Authored
 ### Purpose

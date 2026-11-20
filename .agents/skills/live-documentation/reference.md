@@ -5,12 +5,12 @@ Read with [SKILL.md](SKILL.md). Everything here is derived from the engine's gra
 ## A Live Doc, section by section
 
 ````markdown
-# path/to/file.ts
+# `path/to/file.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation          (or test, sample, asset, ...)
-- Code Path: path/to/file.ts
+- Code Path: `path/to/file.ts`
 - Entry: command `build` of [`package.json`](../package.json.md)   (zero or more Entry lines)
 - Generated At: 2026-10-15T15:49:39.824Z
 

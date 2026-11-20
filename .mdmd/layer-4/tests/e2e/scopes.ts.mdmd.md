@@ -1,10 +1,10 @@
-# tests/e2e/scopes.ts
+# `tests/e2e/scopes.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/scopes.ts
-- Generated At: 2026-10-06T20:39:26.980Z
+- Code Path: `tests/e2e/scopes.ts`
+- Generated At: 2026-11-19T21:10:24.003Z
 
 ## Authored
 ### Purpose

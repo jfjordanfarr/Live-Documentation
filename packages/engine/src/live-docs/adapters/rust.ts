@@ -29,6 +29,7 @@ import path from "node:path";
 import { rustSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -542,7 +543,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await fs.readFile(absolutePath, "utf8");
+  const content = await readSourceText(absolutePath);
   const tree    = await parseSource("rust", content);
   try {
     const facts = new FileExtractor().extract(tree.rootNode);
@@ -636,7 +637,7 @@ async function crateRoots(workspaceRoot: string, rustFiles: string[]): Promise<C
     }
     let name = names.get(packageDir);
     if (!name) {
-      const manifest = await fs.readFile(path.join(packageDir, "Cargo.toml"), "utf8");
+      const manifest = await readSourceText(path.join(packageDir, "Cargo.toml"));
       name = (/^\[package\][^[]*?^\s*name\s*=\s*"([^"]+)"/msu.exec(manifest)?.[1] ?? path.basename(packageDir)).replace(/-/g, "_");
       names.set(packageDir, name);
     }

@@ -16,11 +16,12 @@ import path from "node:path";
 import ts from "typescript";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { gitIgnored } from "../tooling/gitIgnored";
+import { gitIgnored, gitIgnoresCase } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
+import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { matchesPathPattern } from "./archetype";
-import { computePublicSymbolHeadingInfo } from "./compose";
+import { anchorReExports, computePublicSymbolHeadingInfo } from "./compose";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
@@ -31,7 +32,6 @@ import type {
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { createSymbolSlug } from "./coreUtils";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
@@ -163,7 +163,7 @@ function isNeverDocumented(relativePath: string, docsRoot: string | undefined): 
  * `undefined` when it is not a folder within the workspace: the workspace
  * itself, or somewhere outside it.
  */
-function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig): string | undefined {
+export function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig): string | undefined {
   const relative = normalizeWorkspacePath(path.relative(workspaceRoot, path.resolve(workspaceRoot, config.root)));
   if (relative === "" || relative === ".." || relative.startsWith("../") || path.isAbsolute(relative)) {
     return undefined;
@@ -286,7 +286,17 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
     }
     files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
   }
-  return files.sort((a, b) => a.absolute < b.absolute ? -1 : a.absolute > b.absolute ? 1 : 0);
+  return inWorkspaceOrder(files);
+}
+
+/**
+ * Files in the order of their workspace-relative paths with forward slashes, by UTF-16 code unit, whatever the platform
+ * spells their absolute paths with: on Windows a backslash sorts after the digits and the capitals, where a slash sorts
+ * before them, so an order of absolute paths put `Shop.Data2\` before `Shop.Data\`, the reverse of Linux. The order is
+ * the one in which files register their symbols, so it must not depend on the platform.
+ */
+export function inWorkspaceOrder<T extends { relative: string }>(files: T[]): T[] {
+  return files.sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0));
 }
 
 /**
@@ -300,11 +310,14 @@ async function walk(workspaceRoot: string, patterns: readonly string[], neverWal
 async function keptByGitAndConfiguration(considered: readonly WalkedFile[], workspaceRoot: string, config: LiveDocumentationConfig): Promise<WalkedFile[]> {
   const ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative));
   const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(workspaceRoot);
+  // `exclude` matches as git matches names in this repository: in any case where its `core.ignorecase` is true, as on
+  // a clone made on Windows, else exactly (2026-11-19).
+  const ignoreCase = config.exclude.length > 0 && gitIgnoresCase(workspaceRoot);
   return considered.filter(({ relative }) => {
     if (ignoredByGit ? ignoredByGit.has(relative) : gitignoreFilter?.ignores(relative)) {
       return false;
     }
-    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern));
+    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern, ignoreCase));
   });
 }
 
@@ -373,7 +386,7 @@ export async function buildWorkspaceIndexes(options: {
 
       // Process JavaScript/TypeScript files with the built-in TypeScript parser
       if (SUPPORTED_SCRIPT_EXTENSIONS.has(ext)) {
-        const content = await fs.readFile(absolutePath, "utf8");
+        const content = await readSourceText(absolutePath);
         const scriptKind = inferScriptKind(ext);
         const sourceFile = ts.createSourceFile(
           absolutePath,
@@ -447,8 +460,9 @@ export async function buildWorkspaceIndexes(options: {
         register(symbol.qualifiedName, location);
       }
     }
-    for (const entry of reExports) {
-      register(entry.name, { liveDocPath, sourcePath, anchor: createSymbolSlug(entry.name), kind: entry.kind, isReExport: true,
+    // Anchored as the doc's `Re-Exported Symbol Anchors` section anchors them, two that one anchor would name told apart.
+    for (const { entry, slug } of anchorReExports(reExports, headings)) {
+      register(entry.name, { liveDocPath, sourcePath, anchor: slug, kind: entry.kind, isReExport: true,
         ...(entry.sourceModulePath ? { reExport: { sourcePath: entry.sourceModulePath, exportedName: entry.name } } : {}) });
     }
   }

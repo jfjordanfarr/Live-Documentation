@@ -1,11 +1,11 @@
-# scripts/e2e-passes.mjs
+# `scripts/e2e-passes.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/e2e-passes.mjs
+- Code Path: `scripts/e2e-passes.mjs`
 - Entry: command `test:e2e` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T07:32:35.201Z
+- Generated At: 2026-11-19T21:10:18.314Z
 
 ## Authored
 ### Purpose

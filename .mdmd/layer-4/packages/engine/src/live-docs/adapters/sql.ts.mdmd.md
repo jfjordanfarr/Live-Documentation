@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/sql.ts
+# `packages/engine/src/live-docs/adapters/sql.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/sql.ts
-- Generated At: 2026-11-19T08:59:53.074Z
+- Code Path: `packages/engine/src/live-docs/adapters/sql.ts`
+- Generated At: 2026-11-19T22:40:10.250Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,6 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
@@ -43,6 +42,7 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

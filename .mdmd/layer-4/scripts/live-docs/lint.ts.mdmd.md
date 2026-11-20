@@ -1,11 +1,11 @@
-# scripts/live-docs/lint.ts
+# `scripts/live-docs/lint.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/live-docs/lint.ts
+- Code Path: `scripts/live-docs/lint.ts`
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-12T16:06:56.672Z
+- Generated At: 2026-11-19T19:18:27.988Z
 
 ## Authored
 ### Purpose
@@ -41,11 +41,13 @@ _No public symbols detected_
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`pathfind.fileGroups`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
+- [`absoluteLinks`](./absoluteLinks.ts.mdmd.md#symbol-absolutelinks)
 - [`cli.UsageError`](./cli.ts.mdmd.md#symbol-usageerror)
 - [`cli.optionValue`](./cli.ts.mdmd.md#symbol-optionvalue)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 - [`cli.readConfiguration`](./cli.ts.mdmd.md#symbol-readconfiguration)
 - [`cli.runCommand`](./cli.ts.mdmd.md#symbol-runcommand)
+- [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

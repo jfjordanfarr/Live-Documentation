@@ -12,9 +12,9 @@
 {
   "name": "Live Documentation Dev",
 
-  // Base image: Node.js 22 (matches our .nvmrc)
+  // Base image: Node.js 26 (matches our .nvmrc)
   // Using the official Microsoft devcontainers image for best Codespaces compatibility
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:26",
 
   // Language toolchains installed via official devcontainer features
   // These are the same features GitHub Codespaces uses internally

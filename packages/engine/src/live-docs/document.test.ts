@@ -4,6 +4,7 @@ import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
   authoredBlockOf,
+  encodeLinkPath,
   parseLiveDoc,
   renderLiveDoc,
   type LiveDoc
@@ -132,12 +133,12 @@ describe("the Live Doc grammar", () => {
 
   it("writes exactly the shape the generator has always written", () => {
     expect(renderLiveDoc(EMPTY)).toBe([
-      "# assets/logo.png",
+      "# `assets/logo.png`",
       "",
       "## Metadata",
       "- Layer: 4",
       "- Archetype: asset",
-      "- Code Path: assets/logo.png",
+      "- Code Path: `assets/logo.png`",
       "",
       "## Authored",
       "### Purpose",
@@ -162,7 +163,7 @@ describe("the Live Doc grammar", () => {
 
   it("writes the Entry lines between the Code Path and the Generated At, one per reason with its evidence", () => {
     const lines = renderLiveDoc(FULL).split("\n");
-    const codePath = lines.indexOf("- Code Path: src/widgets/widget.ts");
+    const codePath = lines.indexOf("- Code Path: `src/widgets/widget.ts`");
     expect(lines.slice(codePath + 1, codePath + 8)).toEqual([
       "- Entry: program [`main`](#symbol-main)",
       "- Entry: command `build` of [`package.json`](../../package.json.md)",
@@ -186,7 +187,7 @@ describe("the Live Doc grammar", () => {
 
   it("refuses an Entry line whose evidence does not fit its reason", () => {
     const text = renderLiveDoc(EMPTY);
-    const withLine = (line: string): string => text.replace("- Code Path: assets/logo.png\n", `- Code Path: assets/logo.png\n${line}\n`);
+    const withLine = (line: string): string => text.replace("- Code Path: `assets/logo.png`\n", `- Code Path: \`assets/logo.png\`\n${line}\n`);
     expect(() => parseLiveDoc(withLine("- Entry: opening `GET api/widgets`"))).toThrow(/line 7: unexpected evidence on the opening entry/u);
     expect(() => parseLiveDoc(withLine("- Entry: command `build`"))).toThrow(/unexpected evidence on the command entry/u);
     expect(() => parseLiveDoc(withLine("- Entry: module [`package.json`](../package.json.md)"))).toThrow(/unexpected evidence on the module entry/u);
@@ -222,6 +223,162 @@ describe("the Live Doc grammar", () => {
     expect(() => parseLiveDoc(`${renderLiveDoc(EMPTY)}stray\n`)).toThrow(/text after the last generated section/u);
     expect(() => parseLiveDoc(renderLiveDoc(EMPTY).trimEnd())).toThrow(/must end with a newline/u);
   });
+
+  it("writes a value its plain form cannot carry as a JSON string, every other as before, and reads each back as itself", () => {
+    const doc: LiveDoc = {
+      ...EMPTY,
+      codePath: "we\nird.ts",
+      entries: [
+        { reason: "command", command: "a`b", declarer: { label: "d`x/package.json", link: "./d`x/package.json.md" } },
+        { reason: "command", command: "", declarer: { label: "package.json", link: "./package.json.md" } },
+        { reason: "command", command: "a\nb", declarer: { label: "app/(auth)/package.json", link: "./app/(auth)/package.json.md" } }
+      ],
+      symbols: ["a\nb", "", '""', "\ud800", "plain"].map((name, index) => ({ name, slug: `symbol-${index}`, kind: "key", flags: [], references: [], sections: [] })),
+      dependencies: [
+        { label: "b", link: "./app/(auth)/b.ts.md#symbol-b", qualifiers: ["type-only"] },
+        { label: "a`b", symbols: ["x, y", "z"], qualifiers: [] }
+      ]
+    };
+    const text = renderLiveDoc(doc);
+    const lines = text.split("\n");
+    for (const line of [
+      '# `"we\\nird.ts"`',
+      '- Code Path: `"we\\nird.ts"`',
+      "- Entry: command ``a`b`` of [``d`x/package.json``](./d`x/package.json.md)",
+      '- Entry: command `""` of [`package.json`](./package.json.md)',
+      '- Entry: command `"a\\nb"` of [`app/(auth)/package.json`]("./app/(auth)/package.json.md")',
+      '#### `"a\\nb"` {#symbol-0}',
+      '#### `""` {#symbol-1}',
+      '#### `"\\"\\""` {#symbol-2}',
+      '#### `"\\ud800"` {#symbol-3}',
+      "#### `plain` {#symbol-4}",
+      '- [`b`]("./app/(auth)/b.ts.md#symbol-b") (type-only)',
+      "- ``a`b`` - `x, y`, `z`"
+    ]) {
+      expect(lines).toContain(line);
+    }
+    expect(parseLiveDoc(Buffer.from(text, "utf8").toString("utf8"))).toEqual(doc);
+  });
+
+  it("quotes a path whose plain form would begin with a double quote, which the reader would take for a quoted value", () => {
+    // A file at the root named `"q".ts`: its plain title would begin with `"`, the quoted form's first character.
+    const doc: LiveDoc = { ...EMPTY, codePath: '"q".ts' };
+    const text = renderLiveDoc(doc);
+    expect(text.split("\n")[0]).toBe('# `"\\"q\\".ts"`');
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("percent-encodes an ampersand in a link's path, since CommonMark reads `&amp;` in a target as `&`", () => {
+    expect(encodeLinkPath("notes/Q&amp;A.md")).toBe("notes/Q%26amp;A.md");
+    expect(encodeLinkPath("R&D/plan (draft) #2?.md")).toBe("R%26D/plan%20%28draft%29%20%232%3F.md");
+    // A browser, or the markdown links module, reads it back as the path.
+    expect(decodeURIComponent(encodeLinkPath("R&D/plan (draft) #2?.md"))).toBe("R&D/plan (draft) #2?.md");
+  });
+
+  it("writes a link whose path holds a lone surrogate, which no URL can hold, as a JSON string, and reads it back", () => {
+    // Deliberate: the one rule of every slot, plain where that reads back and quoted elsewhere; the doc still carries the fact.
+    const link = `./d${String.fromCharCode(0xd800)}/a.ts.md`;
+    const doc: LiveDoc = { ...EMPTY, citedBy: [{ label: "README.md", link }] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain('- [`README.md`]("./d\\ud800/a.ts.md")');
+    expect(parseLiveDoc(Buffer.from(text, "utf8").toString("utf8"))).toEqual(doc);
+  });
+
+  it("refuses a quoted value its plain form could carry, so that each value has one form", () => {
+    const text = renderLiveDoc(FULL);
+    expect(() => parseLiveDoc(text.replace("#### `Widget` {#symbol-widget}", '#### "Widget" {#symbol-widget}'))).toThrow(/expected a symbol heading/u);
+    expect(() => parseLiveDoc(text.replace("- `node:path`", '- "node:path"'))).toThrow(/unexpected dependency line/u);
+  });
+
+  it("writes a docstring's line the reader would take for structure with a backslash in front, and gives it back", () => {
+    const body = [
+      "#### `z`",
+      "",
+      "##### `Widget` — Summary",
+      "<!-- LIVE-DOC:END Public Symbols -->",
+      "\\#### `z`",
+      "\\plain",
+      "```md",
+      "#### `inside a fence`",
+      "```",
+      "```stray"
+    ];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Remarks", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain([
+      "##### `Widget` — Remarks",
+      "\\#### `z`",
+      "",
+      "\\##### `Widget` — Summary",
+      "\\<!-- LIVE-DOC:END Public Symbols -->",
+      "\\\\#### `z`",
+      "\\plain",
+      "```md",
+      "#### `inside a fence`",
+      "```",
+      "\\```stray",
+      "",
+      "#### `SIZE` {#symbol-size}"
+    ].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("reads a doc with CRLF line endings, as Git for Windows checks one out, as the doc written with LF", () => {
+    const text = renderLiveDoc(FULL);
+    const crlf = text.split("\n").join("\r\n");
+    expect(parseLiveDoc(crlf)).toEqual(FULL);
+    expect(authoredBlockOf(crlf)).toBe(FULL.authored);
+    // And saved by an editor that ends lines with CR alone.
+    const cr = text.split("\n").join("\r");
+    expect(parseLiveDoc(cr)).toEqual(FULL);
+    expect(authoredBlockOf(cr)).toBe(FULL.authored);
+  });
+
+  it("reads the authored block by LF and CRLF lines only, so that a name holding a line separator and a heading is no heading", () => {
+    const separator = String.fromCharCode(0x2028);
+    const command = `x${separator}## Authored${separator}`;
+    const text = renderLiveDoc({ ...FULL, entries: [{ reason: "command", command, declarer: { label: "package.json", link: "../../package.json.md" } }] });
+    expect(authoredBlockOf(text)).toBe(FULL.authored);
+    expect(parseLiveDoc(text).entries[0].command).toBe(command);
+  });
+
+  it("writes a docstring's fence or HTML block that nothing in it closes behind a backslash, so it cannot run on over the doc", () => {
+    // CommonMark runs a fence, of backticks or tildes, and a comment, a `<script>`, `<pre>`, `<style>`, `<textarea>`, a
+    // processing instruction, a declaration or a CDATA section on to their closers, not to a blank line.
+    // `</pre>` would close a `<script>` opened before it, as CommonMark closes any of the four by any of their end tags.
+    const body = ["Opens:", "<!-- one line -->", "<!-- never closed", "~~~", "````", "```", "<pre>", "kept", "</pre>", "<script>"];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Remarks", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain(["Opens:", "<!-- one line -->", "\\<!-- never closed", "\\~~~", "\\````", "\\```", "<pre>", "kept", "</pre>", "\\<script>"].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("lets no docstring line that stands in a list open a fence or an HTML block, closed or not, since CommonMark ends one with its item", () => {
+    // A fence opened in the first item ends with that item; the fence line after the second would open one that runs on.
+    const body = ["- [a](b)", "   ```", "- `next` — a `<!--` below", "<!--", "```", "-->"];
+    const doc: LiveDoc = { ...FULL, symbols: [{ ...FULL.symbols[0], sections: [{ title: "Links", body }] }, FULL.symbols[2]] };
+    const text = renderLiveDoc(doc);
+    expect(text).toContain(["- [a](b)", "\\   ```", "- `next` — a `<!--` below", "\\<!--", "\\```", "-->"].join("\n"));
+    expect(parseLiveDoc(text)).toEqual(doc);
+  });
+
+  it("writes and reads a doc of hundreds of thousands of lines in one section, bounded by memory and not by a call's arguments", () => {
+    // A generation of Dnn.Platform died in renderLiveDoc with "Maximum call stack size exceeded": a section's lines were
+    // spread into one push, which the engine refuses past some hundred thousand arguments.
+    // 200,000: past the engine's limit on a call's arguments, about 130,000 here; the test bounds size, not speed.
+    const count = 200_000;
+    const doc: LiveDoc = {
+      ...EMPTY,
+      authored: Array.from({ length: count }, (_, index) => `Line ${index} of the words.`).join("\n"),
+      symbols: [{ name: "Big", slug: "symbol-big", kind: "const", flags: [], references: [], sections: [{ title: "Remarks", body: Array.from({ length: count }, (_, index) => `Remark ${index}.`) }] }],
+      dependencies: Array.from({ length: count }, (_, index) => ({ label: `module${index}`, qualifiers: [] }))
+    };
+    const text = renderLiveDoc(doc);
+    const read = parseLiveDoc(text);
+    expect(read.dependencies).toHaveLength(count);
+    expect(read.symbols[0].sections[0].body).toHaveLength(count);
+    expect(read.authored).toBe(doc.authored);
+  }, 60_000);
 
   it("reads the authored block of any text that has one", () => {
     expect(authoredBlockOf(renderLiveDoc(FULL))).toBe(FULL.authored);

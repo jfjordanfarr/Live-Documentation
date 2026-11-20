@@ -1,10 +1,10 @@
-# tests/e2e/card-slots.spec.ts
+# `tests/e2e/card-slots.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/card-slots.spec.ts
-- Generated At: 2026-11-09T03:50:01.907Z
+- Code Path: `tests/e2e/card-slots.spec.ts`
+- Generated At: 2026-11-19T21:10:20.270Z
 
 ## Authored
 ### Purpose

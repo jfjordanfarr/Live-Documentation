@@ -1,11 +1,11 @@
-# tests/e2e/playwright.config.ts
+# `tests/e2e/playwright.config.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/playwright.config.ts
+- Code Path: `tests/e2e/playwright.config.ts`
 - Entry: tooling
-- Generated At: 2026-11-19T07:03:55.997Z
+- Generated At: 2026-11-19T21:10:23.552Z
 
 ## Authored
 ### Purpose

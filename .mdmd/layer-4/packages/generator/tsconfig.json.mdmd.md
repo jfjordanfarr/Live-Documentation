@@ -1,11 +1,11 @@
-# packages/generator/tsconfig.json
+# `packages/generator/tsconfig.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/tsconfig.json
+- Code Path: `packages/generator/tsconfig.json`
 - Entry: tooling
-- Generated At: 2026-11-18T14:58:00.644Z
+- Generated At: 2026-11-19T21:10:18.121Z
 
 ## Authored
 ### Purpose

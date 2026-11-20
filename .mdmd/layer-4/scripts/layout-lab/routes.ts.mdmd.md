@@ -1,10 +1,10 @@
-# scripts/layout-lab/routes.ts
+# `scripts/layout-lab/routes.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/routes.ts
-- Generated At: 2026-11-04T16:32:46.992Z
+- Code Path: `scripts/layout-lab/routes.ts`
+- Generated At: 2026-11-19T21:10:18.860Z
 
 ## Authored
 ### Purpose

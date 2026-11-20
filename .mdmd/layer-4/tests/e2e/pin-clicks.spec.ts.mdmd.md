@@ -1,10 +1,10 @@
-# tests/e2e/pin-clicks.spec.ts
+# `tests/e2e/pin-clicks.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/pin-clicks.spec.ts
-- Generated At: 2026-11-06T06:45:46.370Z
+- Code Path: `tests/e2e/pin-clicks.spec.ts`
+- Generated At: 2026-11-19T21:10:23.507Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/styles/local.css
+# `packages/explorer/src/client/styles/local.css`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/styles/local.css
-- Generated At: 2026-09-27T23:21:27.560Z
+- Code Path: `packages/explorer/src/client/styles/local.css`
+- Generated At: 2026-11-19T21:10:14.497Z
 
 ## Authored
 ### Purpose

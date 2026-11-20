@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/history/summary.ts
+# `packages/engine/src/live-docs/history/summary.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-11-19T11:54:02.328Z
+- Code Path: `packages/engine/src/live-docs/history/summary.ts`
+- Generated At: 2026-11-19T22:40:10.667Z
 
 ## Authored
 ### Purpose
@@ -19,76 +19,77 @@ One commit's summary as the history command's cache keeps it, read from the grap
 - A description's text is its `#####` sections as JSON, without the symbol's name, so that a symbol renamed with its words unchanged keeps its text, the evidence `rows.ts` believes a rename on.
 - What can be read of a doc's authored block is the caller's to say, from the docs as they stood before the generator rewrote them: `read`, `unread` (a doc stood with no `## Authored` heading, so the block the generator wrote is its placeholder and not that day's words), or nothing, when no doc stood. The data never passes the placeholder off as the words of a day it could not read.
 - Each `Source:` line is left out, since its number moves with nearly every edit above it while the doc's order says the same, as the probe of 2026-11-18 recommended.
+- Format 4 (2026-11-19, after the independent review of the engine round): a file's `citedBy` holds each citing document's path, read from its `Cited By` line's link, where format 3 held the line's label, which writes a backtick as an apostrophe; the bundle's exclusions are held to the path where the summaries are read, and the rows make the label from it (`citedByLabel`).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HISTORY_SUMMARY_FORMAT` {#symbol-history_summary_format}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L35)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L36)
 
 ##### `HISTORY_SUMMARY_FORMAT` — Summary
 The version of the format of one change's summary in the cache.
 
 #### `ReferenceRole` {#symbol-referencerole}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L38)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L39)
 
 ##### `ReferenceRole` — Summary
 How a type reference stands in its symbol's signature, by the graph's name for the edge it makes.
 
 #### `RowReference` {#symbol-rowreference}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L41)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L42)
 
 ##### `RowReference` — Summary
 One type a symbol's signature names: a `Returns`, `Parameters`, `Extends`, `Implements` or `Constraints` entry.
 
 #### `SymbolRow` {#symbol-symbolrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L56)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L57)
 
 ##### `SymbolRow` — Summary
 One public symbol of a file, a row of its card, as its doc listed it at the change.
 
 #### `DependencyRow` {#symbol-dependencyrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L71)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L72)
 
 ##### `DependencyRow` — Summary
 One `Dependencies` line of a file's doc.
 
 #### `EntryRow` {#symbol-entryrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L86)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L87)
 
 ##### `EntryRow` — Summary
 One `Entry` line of a file's doc: why something outside the code starts it.
 
 #### `ReExportRow` {#symbol-reexportrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L97)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L98)
 
 ##### `ReExportRow` — Summary
 One entry of a file's `Re-Exported Symbol Anchors`.
 
 #### `SummaryFile` {#symbol-summaryfile}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L108)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L109)
 
 ##### `SummaryFile` — Summary
 What a file's doc said at a change, everything but its prose, which is named by hash, and its `Source:` lines.
 
 #### `CommitSummary` {#symbol-commitsummary}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L129)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L135)
 
 ##### `CommitSummary` — Summary
 One change's summary as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json.gz`.
 
 #### `AuthoredReading` {#symbol-authoredreading}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L152)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L158)
 - Returns: `ReadonlyMap`
 
 ##### `AuthoredReading` — Summary
@@ -99,14 +100,14 @@ writes is its placeholder and not that day's words. A doc absent from the map di
 
 #### `SummarizedChange` {#symbol-summarizedchange}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L155)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L161)
 
 ##### `SummarizedChange` — Summary
 A summary and the texts it names by hash, for the caller to put in the text store.
 
 #### `summarizeGraph` {#symbol-summarizegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L172)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L178)
 - Returns: [`SummarizedChange`](#symbol-summarizedchange)
 - Parameters: `graph`: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph); `relatedDocs`: `ReadonlyMap`; `authored`: [`AuthoredReading`](#symbol-authoredreading)
 
@@ -124,7 +125,7 @@ the caller reads them with `relatedDocsOf` and the change's tree, which the grap
 
 #### `descriptionText` {#symbol-descriptiontext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L287)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L295)
 
 ##### `descriptionText` — Summary
 A symbol's description as one text: its `#####` sections as JSON, `[{ title, body }]`, without the symbol's name, so
@@ -132,7 +133,7 @@ that a symbol renamed with its description unchanged keeps its text; {@link sect
 
 #### `sectionsOfDescription` {#symbol-sectionsofdescription}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L292)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L300)
 - Returns: [`DocSection`](../document.ts.mdmd.md#symbol-docsection)[]
 
 ##### `sectionsOfDescription` — Summary
@@ -140,7 +141,7 @@ The sections a description's text holds.
 
 #### `textHash` {#symbol-texthash}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L297)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/summary.ts#L305)
 
 ##### `textHash` — Summary
 The name of a text in the store: the SHA-256 of its UTF-8 bytes, in hexadecimal.

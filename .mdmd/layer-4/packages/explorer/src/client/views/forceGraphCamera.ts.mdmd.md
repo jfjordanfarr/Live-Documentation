@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphCamera.ts
+# `packages/explorer/src/client/views/forceGraphCamera.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/forceGraphCamera.ts
-- Generated At: 2026-11-11T09:13:25.891Z
+- Code Path: `packages/explorer/src/client/views/forceGraphCamera.ts`
+- Generated At: 2026-11-19T21:10:14.846Z
 
 ## Authored
 ### Purpose

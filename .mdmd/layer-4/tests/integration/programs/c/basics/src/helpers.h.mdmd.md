@@ -1,10 +1,10 @@
-# tests/integration/programs/c/basics/src/helpers.h
+# `tests/integration/programs/c/basics/src/helpers.h`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/c/basics/src/helpers.h
-- Generated At: 2026-10-02T20:20:04.126Z
+- Code Path: `tests/integration/programs/c/basics/src/helpers.h`
+- Generated At: 2026-11-19T21:10:25.964Z
 
 ## Authored
 ### Purpose

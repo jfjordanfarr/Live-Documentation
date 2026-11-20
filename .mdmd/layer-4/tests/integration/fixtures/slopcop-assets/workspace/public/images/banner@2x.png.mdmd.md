@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/images/banner@2x.png
+# `tests/integration/fixtures/slopcop-assets/workspace/public/images/banner@2x.png`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/banner@2x.png
-- Generated At: 2026-10-16T20:40:26.000Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/images/banner@2x.png`
+- Generated At: 2026-11-19T21:10:25.452Z
 
 ## Authored
 ### Purpose

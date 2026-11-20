@@ -1,10 +1,10 @@
-# scripts/oracle/files.ts
+# `scripts/oracle/files.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/oracle/files.ts
-- Generated At: 2026-10-16T16:49:41.447Z
+- Code Path: `scripts/oracle/files.ts`
+- Generated At: 2026-11-19T21:10:19.346Z
 
 ## Authored
 ### Purpose

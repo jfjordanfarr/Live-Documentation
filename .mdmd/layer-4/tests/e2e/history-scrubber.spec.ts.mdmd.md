@@ -1,10 +1,10 @@
-# tests/e2e/history-scrubber.spec.ts
+# `tests/e2e/history-scrubber.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/history-scrubber.spec.ts
-- Generated At: 2026-11-09T00:01:56.721Z
+- Code Path: `tests/e2e/history-scrubber.spec.ts`
+- Generated At: 2026-11-19T21:10:21.867Z
 
 ## Authored
 ### Purpose

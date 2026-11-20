@@ -1,11 +1,11 @@
-# tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1
+# `tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1
+- Code Path: `tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1`
 - Entry: program
-- Generated At: 2026-10-16T16:49:43.772Z
+- Generated At: 2026-11-19T21:10:25.312Z
 
 ## Authored
 ### Purpose

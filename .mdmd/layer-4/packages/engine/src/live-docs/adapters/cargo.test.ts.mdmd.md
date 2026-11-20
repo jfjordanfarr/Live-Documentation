@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/cargo.test.ts
+# `packages/engine/src/live-docs/adapters/cargo.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/adapters/cargo.test.ts
-- Generated At: 2026-10-16T16:21:40.092Z
+- Code Path: `packages/engine/src/live-docs/adapters/cargo.test.ts`
+- Generated At: 2026-11-19T21:10:09.168Z
 
 ## Authored
 ### Purpose

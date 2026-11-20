@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/python.ts
+# `packages/engine/src/live-docs/adapters/python.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/python.ts
-- Generated At: 2026-11-19T08:59:52.999Z
+- Code Path: `packages/engine/src/live-docs/adapters/python.ts`
+- Generated At: 2026-11-19T22:40:10.174Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L661)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L662)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -30,7 +30,7 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`, `readdirSync`, `statSync`
+- `node:fs` - `readdirSync`, `statSync`
 - `node:path` - `path`
 - [`index.pythonSyntax`](../../languages/index.ts.mdmd.md#symbol-pythonsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -44,6 +44,7 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

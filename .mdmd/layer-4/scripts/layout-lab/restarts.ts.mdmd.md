@@ -1,10 +1,10 @@
-# scripts/layout-lab/restarts.ts
+# `scripts/layout-lab/restarts.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/restarts.ts
-- Generated At: 2026-10-13T16:52:35.861Z
+- Code Path: `scripts/layout-lab/restarts.ts`
+- Generated At: 2026-11-19T21:10:18.830Z
 
 ## Authored
 ### Purpose

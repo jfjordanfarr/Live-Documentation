@@ -1,10 +1,10 @@
-# tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml.cs
+# `tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml.cs
-- Generated At: 2026-09-27T23:21:32.495Z
+- Code Path: `tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml.cs`
+- Generated At: 2026-11-19T21:10:24.788Z
 
 ## Authored
 ### Purpose

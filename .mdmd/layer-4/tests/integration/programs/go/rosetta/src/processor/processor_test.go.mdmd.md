@@ -1,10 +1,10 @@
-# tests/integration/programs/go/rosetta/src/processor/processor_test.go
+# `tests/integration/programs/go/rosetta/src/processor/processor_test.go`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/go/rosetta/src/processor/processor_test.go
-- Generated At: 2026-09-27T23:21:36.068Z
+- Code Path: `tests/integration/programs/go/rosetta/src/processor/processor_test.go`
+- Generated At: 2026-11-19T21:10:27.317Z
 
 ## Authored
 ### Purpose

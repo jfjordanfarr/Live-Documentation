@@ -4,7 +4,12 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, writeStoredTree, type DiskEntry, type TreeDisk } from "./git";
+import { followLink, openGitRepository, parseMainline, parseNameStatus, parseTags, placeEntry, realDisk, writeStoredTree, type DiskEntry, type TreeDisk } from "./git";
+
+const OUT = "it is a symbolic link out of the tree, which the history does not follow";
+const NOWHERE = "it is a symbolic link to nothing the commit holds";
+const FOLDER = "it is a symbolic link to a folder, which the history does not follow: what is read through it reads as gone, an import through it is not resolved, and the check at the head of such a history fails";
+const DOCS_ROOT = "it is a symbolic link at or above the docs root, where the generator needs a folder, which the history does not follow";
 
 describe("parseMainline", () => {
   it("reads each record after rev-list's commit line, a subject with spaces and an author with a comma included", () => {
@@ -105,13 +110,15 @@ describe("a commit's tree for the history", () => {
       const tree = await repo.workingTree(commit, path.join(scratch, `tree-${commit.slice(0, 8)}`));
       try {
         const written = await contents(tree.root);
-        // Every file is its blob's bytes, as git stores it, and a link is a link to the target its blob holds.
+        // Every file is its blob's bytes, as git stores it; a link to a file of the tree is a copy of that file's bytes.
         const listed = git(repository, ["ls-tree", "-r", "--name-only", commit]).split("\n").filter(Boolean);
         expect([...written.keys()].sort()).toEqual(listed.sort());
+        expect(tree.unwritten).toEqual([]);
         for (const file of listed) {
-          const stored = execFileSync("git", ["cat-file", "blob", `${commit}:${file}`], { cwd: repository, env: isolated }).toString("latin1");
-          expect(written.get(file), `${file} at ${commit.slice(0, 8)}`).toBe(file === "link.ts" ? `-> ${stored}` : stored);
+          const stored = execFileSync("git", ["cat-file", "blob", `${commit}:${file === "link.ts" ? "src/a.ts" : file}`], { cwd: repository, env: isolated }).toString("latin1");
+          expect(written.get(file), `${file} at ${commit.slice(0, 8)}`).toBe(stored);
         }
+        expect((await fs.lstat(path.join(tree.root, "link.ts"))).isSymbolicLink()).toBe(false);
         expect((await fs.stat(path.join(tree.root, "run.sh"))).mode & 0o100).toBe(0o100);
         if (commit === first) {
           // The commit's own checkout, which applies no attribute since the commit declares none, gives the same files.
@@ -120,6 +127,8 @@ describe("a commit's tree for the history", () => {
           try {
             const expected = await contents(checkout);
             expected.delete(".git");
+            // A checkout writes the link itself; the history, a copy of the file it leads to.
+            expected.set("link.ts", expected.get("src/a.ts")!);
             expect(written).toEqual(expected);
           } finally {
             git(repository, ["worktree", "remove", "--force", checkout]);
@@ -200,16 +209,142 @@ describe("a tree the writer must not follow out of its folder", () => {
     return directory;
   }
 
-  it("never writes through a link the tree itself made, and says which entry it left out", async () => {
-    // A link `a` to a folder outside, and a tree `a/` holding a file: written in turn, the file would land outside.
+  it("writes no link itself, so that nothing is written through one, and names a link out of the tree", async () => {
+    // A link `a` to a folder outside, and a tree `a/` holding a file: were the link written, the file would land outside.
     const sub = tree([["100644", "blob", blob("evil\n"), "evil.txt"]]);
     const change = commit(tree([["120000", "blob", blob(outside), "a"], ["040000", "tree", sub, "a"], ["100644", "blob", blob("kept\n"), "b.txt"]]));
     const directory = await folder();
     const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux" });
     expect(await fs.readdir(outside)).toEqual([]);
-    expect(unwritten).toEqual([{ path: "a/evil.txt", reason: "it lies beneath a, which is a symbolic link on this disk, and nothing is written through it" }]);
-    expect(await fs.readlink(path.join(directory, "a"))).toBe(outside);
+    expect(unwritten).toEqual([{ path: "a", reason: OUT }]);
+    expect(await fs.readFile(path.join(directory, "a", "evil.txt"), "utf8")).toBe("evil\n");
     expect(await fs.readFile(path.join(directory, "b.txt"), "utf8")).toBe("kept\n");
+  });
+
+  it("writes a link to a file of the tree as a copy of that file, through chains and links in the middle of a path, and names every other link", async () => {
+    // The independent review of 2026-11-19: `CLAUDE.md -> AGENTS.md`, `lib/b.ts -> ../src/b.ts`, `docs/alias.md -> guide.md`.
+    const agents = blob("# Agents\n");
+    const b = blob("export const b = 1;\n");
+    const guide = blob("# Guide\n");
+    const src = tree([["100644", "blob", b, "b.ts"]]);
+    const lib = tree([["120000", "blob", blob("../src/b.ts"), "b.ts"], ["120000", "blob", blob("../shared/c.ts"), "c.ts"]]);
+    const docs = tree([["120000", "blob", blob("guide.md"), "alias.md"], ["120000", "blob", blob("alias.md"), "chain.md"], ["100644", "blob", guide, "guide.md"], ["120000", "blob", blob("loop-b.md"), "loop-a.md"], ["120000", "blob", blob("loop-a.md"), "loop-b.md"]]);
+    const entries: Array<[string, string, string, string]> = [
+      ["100644", "blob", agents, "AGENTS.md"],
+      ["120000", "blob", blob("AGENTS.md"), "CLAUDE.md"],
+      ["040000", "tree", docs, "docs"],
+      ["120000", "blob", blob("src"), "shared"],
+      ["040000", "tree", lib, "lib"],
+      ["120000", "blob", blob("src"), "folder-link"],
+      ["120000", "blob", blob("missing.md"), "nowhere.md"],
+      ["120000", "blob", blob("../../x"), "climb"],
+      ["120000", "blob", blob(""), "empty"],
+      ["120000", "blob", blob("a\0b"), "nul"],
+      ["040000", "tree", src, "src"]
+    ];
+    const change = commit(tree(entries.sort((x, y) => (x[3] < y[3] ? -1 : 1))));
+    const directory = await folder();
+    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux" });
+    const read = (file: string): Promise<string> => fs.readFile(path.join(directory, file), "utf8");
+    expect(await read("CLAUDE.md")).toBe("# Agents\n");
+    expect(await read("lib/b.ts")).toBe("export const b = 1;\n");
+    // Through `shared -> src`, a link in the middle of the path.
+    await expect(read("lib/c.ts")).rejects.toThrow();
+    expect(await read("docs/alias.md")).toBe("# Guide\n");
+    expect(await read("docs/chain.md")).toBe("# Guide\n");
+    expect(unwritten).toEqual([
+      { path: "climb", reason: OUT },
+      { path: "docs/loop-a.md", reason: "it is a symbolic link in a chain that does not end within 8 links, a cycle or longer" },
+      { path: "docs/loop-b.md", reason: "it is a symbolic link in a chain that does not end within 8 links, a cycle or longer" },
+      { path: "empty", reason: NOWHERE },
+      { path: "folder-link", reason: FOLDER },
+      { path: "lib/c.ts", reason: NOWHERE },
+      { path: "nowhere.md", reason: NOWHERE },
+      { path: "nul", reason: NOWHERE },
+      { path: "shared", reason: FOLDER }
+    ]);
+    for (const file of ["CLAUDE.md", "lib/b.ts", "docs/alias.md", "docs/chain.md"]) {
+      expect((await fs.lstat(path.join(directory, file))).isSymbolicLink(), file).toBe(false);
+    }
+  });
+
+  it("resolves a link's target one part at a time, as the disk does: a link in the target is followed before the `..` after it", () => {
+    // The review's second pass: `a/b -> ../x/y`, `l -> a/b/../z.txt`; the disk reads `l` as `x/z.txt`, not `a/z.txt`.
+    const listing = new Map([
+      ["a/b", { mode: "120000", id: "ab" }],
+      ["a/z.txt", { mode: "100644", id: "az" }],
+      ["x/y/k.txt", { mode: "100644", id: "k" }],
+      ["x/z.txt", { mode: "100644", id: "xz" }],
+      ["l", { mode: "120000", id: "l" }]
+    ]);
+    const targets = new Map([["a/b", "../x/y"], ["l", "a/b/../z.txt"]]);
+    expect(followLink("l", listing, targets)).toEqual({ file: { mode: "100644", id: "xz" } });
+    // A `..` above the tree's root, reached through a link, is out of the tree.
+    expect(followLink("m", new Map([...listing, ["m", { mode: "120000", id: "m" }]]), new Map([...targets, ["m", "a/b/../../../../z.txt"]]))).toEqual({ reason: OUT });
+  });
+
+  it("follows a link in the middle of a path to the file it reaches", () => {
+    const listing = new Map([
+      ["shared", { mode: "120000", id: "l1" }],
+      ["src/c.ts", { mode: "100644", id: "c" }],
+      ["lib/c.ts", { mode: "120000", id: "l2" }]
+    ]);
+    const targets = new Map([["shared", "src"], ["lib/c.ts", "../shared/c.ts"]]);
+    expect(followLink("lib/c.ts", listing, targets)).toEqual({ file: { mode: "100644", id: "c" } });
+    expect(followLink("shared", listing, targets)).toEqual({ reason: FOLDER });
+  });
+
+  it("writes no link at or above the docs root, even to a file of the tree, copies one beneath it, and fails no commit for one", async () => {
+    // The fourth review of 2026-11-19: a link at the docs root carried the generator's writes and its pruning outside.
+    // Beneath the root a copy is a plain file the generator can only rewrite or remove (the review's second pass).
+    const kept = blob("kept\n");
+    const mirror = tree([["120000", "blob", blob("../../kept.txt"), "a.ts.md"]]);
+    const entries: Array<[string, string, string, string]> = [["120000", "blob", blob("kept.txt"), ".mdmd"], ["100644", "blob", kept, "kept.txt"]];
+    const at = commit(tree(entries));
+    const beneath = commit(tree([["040000", "tree", tree([["040000", "tree", mirror, "layer-4"]]), "docs"], ["100644", "blob", kept, "kept.txt"]]));
+    const directory = await folder();
+    expect(await writeStoredTree(repository, at, directory, { platform: "linux", docsRoot: ".mdmd/layer-4" })).toEqual([{ path: ".mdmd", reason: DOCS_ROOT }]);
+    const other = await folder();
+    expect(await writeStoredTree(repository, beneath, other, { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([]);
+    expect(await fs.readFile(path.join(other, "docs", "layer-4", "a.ts.md"), "utf8")).toBe("kept\n");
+    // Above the root: a copy at `docs` would stand where the generator needs a folder.
+    const above = commit(tree([["120000", "blob", blob("kept.txt"), "docs"], ["100644", "blob", kept, "kept.txt"]]));
+    expect(await writeStoredTree(repository, above, await folder(), { platform: "linux", docsRoot: "docs/layer-4" })).toEqual([{ path: "docs", reason: DOCS_ROOT }]);
+    // Without a docs root asked for, the same link is a copy of the file it leads to.
+    const third = await folder();
+    expect(await writeStoredTree(repository, at, third, { platform: "linux" })).toEqual([]);
+    expect(await fs.readFile(path.join(third, ".mdmd"), "utf8")).toBe("kept\n");
+  });
+
+  it("writes empty the files its caller asks for so, every name standing, and still names an entry it refuses there", async () => {
+    const archive = tree([["100644", "blob", blob("big\n"), "picture.png"], ["100755", "blob", blob("#!/bin/sh\n"), "run.sh"], ["120000", "blob", blob(outside), "zlink"]]);
+    const change = commit(tree([["040000", "tree", archive, "archive"], ["100644", "blob", blob("kept\n"), "kept.txt"]]));
+    const directory = await folder();
+    const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux", contentless: (file) => file.startsWith("archive/") });
+    expect(unwritten).toEqual([{ path: "archive/zlink", reason: OUT }]);
+    expect((await fs.readdir(directory)).sort()).toEqual(["archive", "kept.txt"]);
+    expect(await fs.readFile(path.join(directory, "archive", "picture.png"), "utf8")).toBe("");
+    expect(await fs.readFile(path.join(directory, "archive", "run.sh"), "utf8")).toBe("");
+    expect((await fs.stat(path.join(directory, "archive", "run.sh"))).mode & 0o100).toBe(0o100);
+    expect(await fs.readFile(path.join(directory, "kept.txt"), "utf8")).toBe("kept\n");
+  });
+
+  it("asks the disk once for each folder it made or found, however many entries lie beneath it", async () => {
+    const files = Array.from({ length: 5 }, (_, index): [string, string, string, string] => ["100644", "blob", blob(`${index}\n`), `f${index}.txt`]);
+    const change = commit(tree([["040000", "tree", tree([["040000", "tree", tree(files), "deep"]]), "docs"]]));
+    const directory = await folder();
+    const real = realDisk(directory);
+    const asked: string[] = [];
+    const disk: TreeDisk = {
+      entry: (relative) => {
+        asked.push(relative);
+        return real.entry(relative);
+      },
+      makeFolder: (relative) => real.makeFolder(relative)
+    };
+    expect(await writeStoredTree(repository, change, directory, { platform: "linux", disk })).toEqual([]);
+    expect(asked.filter((relative) => relative === "docs" || relative === "docs/deep")).toEqual(["docs", "docs/deep"]);
+    expect(await fs.readdir(path.join(directory, "docs", "deep"))).toHaveLength(5);
   });
 
   /**
@@ -264,16 +399,11 @@ describe("a tree the writer must not follow out of its folder", () => {
       const directory = await folder();
       const unwritten = await writeStoredTree(repository, change, directory, { platform: "linux", disk: foldingDisk(directory) });
       expect(await fs.readdir(outside), `${link} and ${other}`).toEqual([]);
-      // Of the two, the first in the tree's order is written: the folder beneath the link is refused, or the link itself.
-      const linkFirst = Buffer.compare(Buffer.from(link), Buffer.from(other)) < 0;
-      expect(unwritten, `${link} and ${other}`).toEqual([
-        linkFirst
-          ? { path: `${other}/evil.txt`, reason: `it lies beneath ${other}, which is a symbolic link on this disk, and nothing is written through it` }
-          : { path: link, reason: "another entry already stands at its name on this disk, which takes the two names for one" }
-      ]);
-      // This machine's disk tells the two names apart, and writes both.
+      // The link is never written, whatever the order: the file beneath the other spelling lands in the tree.
+      expect(unwritten, `${link} and ${other}`).toEqual([{ path: link, reason: OUT }]);
+      // This machine's disk tells the two names apart, and writes the file the same.
       const real = await folder();
-      expect(await writeStoredTree(repository, change, real, { platform: "linux" })).toEqual([]);
+      expect(await writeStoredTree(repository, change, real, { platform: "linux" })).toEqual([{ path: link, reason: OUT }]);
       expect(await fs.readFile(path.join(real, other, "evil.txt"), "utf8")).toBe("evil\n");
       expect(await fs.readdir(outside)).toEqual([]);
     }

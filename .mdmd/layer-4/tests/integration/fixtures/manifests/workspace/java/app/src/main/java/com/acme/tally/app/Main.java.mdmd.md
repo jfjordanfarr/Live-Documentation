@@ -1,12 +1,12 @@
-# tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java
+# `tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java
+- Code Path: `tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java`
 - Entry: program [`main`](#symbol-main-method)
 - Entry: command `tally-app` of [`tests/integration/fixtures/manifests/workspace/java/app/pom.xml`](../../../../../../../pom.xml.mdmd.md)
-- Generated At: 2026-10-16T16:21:50.021Z
+- Generated At: 2026-11-19T21:10:25.166Z
 
 ## Authored
 ### Purpose

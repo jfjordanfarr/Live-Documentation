@@ -1,10 +1,10 @@
-# scripts/steps.mjs
+# `scripts/steps.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/steps.mjs
-- Generated At: 2026-10-19T00:50:07.155Z
+- Code Path: `scripts/steps.mjs`
+- Generated At: 2026-11-19T21:10:19.730Z
 
 ## Authored
 ### Purpose

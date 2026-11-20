@@ -503,3 +503,121 @@ describe("JSON Adapter on package.json", () => {
     expect(without).not.toHaveProperty("declares");
   });
 });
+
+/**
+ * The cases of the measurement of November 19, 2026
+ * (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/script-entries/README.md`):
+ * the two reviews' cases, the forms each wrapper documents, probes, and the real scripts whose
+ * entries the tokenizer changed. Each is one script in a workspace holding the files it names.
+ */
+describe("JSON Adapter on package.json scripts, read as a shell reads them", () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "json-adapter-scripts-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  /** The files one script declares, the script standing alone in a root manifest of a workspace holding `files`. */
+  async function startedBy(script: string, files: string[]): Promise<string[]> {
+    const manifestPath = path.join(tempDir, "package.json");
+    fs.writeFileSync(manifestPath, JSON.stringify({ name: "root", scripts: { run: script } }));
+    const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex: new Set(files) });
+    return (result?.declares ?? []).map((entry) => entry.file);
+  }
+
+  // [what the case shows, the script, the workspace's files, the files the script declares]
+  const right: Array<[string, string, string[], string[]]> = [
+    // A quoted command line is a command of its own.
+    ["each quoted command concurrently runs, through pnpm and yarn", 'concurrently "pnpm exec tsx scripts/a.ts" "yarn tsx scripts/b.ts"', ["scripts/a.ts", "scripts/b.ts"], ["scripts/a.ts", "scripts/b.ts"]],
+    ["each quoted command concurrently runs, behind cross-env", 'concurrently "cross-env NODE_ENV=dev node a.js" "node b.js"', ["a.js", "b.js"], ["a.js", "b.js"]],
+    ["a bundler's input and the next quoted command", 'concurrently "esbuild src/main.ts --watch" "node b.js"', ["src/main.ts", "b.js"], ["b.js", "src/main.ts"]],
+    ["concurrently's README form, names before the commands", 'concurrently -n api,web "node scripts/api.mjs" "tsx scripts/web.ts --watch"', ["scripts/api.mjs", "scripts/web.ts"], ["scripts/api.mjs", "scripts/web.ts"]],
+    ["start-server-and-test's server and test commands, an address between", "start-server-and-test 'node scripts/serve.mjs' http://localhost:3000 'node scripts/check.mjs'", ["scripts/serve.mjs", "scripts/check.mjs"], ["scripts/check.mjs", "scripts/serve.mjs"]],
+    ["npm exec's command inside a quoted command", 'concurrently "npm exec -- tsx scripts/a.ts"', ["scripts/a.ts"], ["scripts/a.ts"]],
+    ["a shell's command line, behind a variable", 'sh -c "NODE_ENV=prod node a.js"', ["a.js"], ["a.js"]],
+    ["a shell's command line, with its own separators", "sh -c 'node scripts/api.mjs && node scripts/check.mjs'", ["scripts/api.mjs", "scripts/check.mjs"], ["scripts/api.mjs", "scripts/check.mjs"]],
+    ["nodemon's command after --exec", 'nodemon --exec "vite-node src/main.ts"', ["src/main.ts"], ["src/main.ts"]],
+    ["nodemon's command after --exec, a watched folder before it", 'nodemon --watch src --exec "tsx scripts/web.ts"', ["scripts/web.ts"], ["scripts/web.ts"]],
+    ["cross-env's command, its variables before it", "cross-env NODE_ENV=production node scripts/serve.mjs", ["scripts/serve.mjs"], ["scripts/serve.mjs"]],
+    ["npm-run-all names scripts, not files", "npm-run-all clean lint build:*", [], []],
+    // A quoted path is one word, not a command line.
+    ["a quoted path with a space is one path, not two words", 'node "scripts/my script.js"', ["scripts/my script.js", "script.js"], ["scripts/my script.js"]],
+    ["a quoted data path with a space adds no stray half", 'node scripts/gen.mjs "./data/my input.json"', ["scripts/gen.mjs", "data/my input.json", "input.json"], ["scripts/gen.mjs"]],
+    // What a command hands its program stays its arguments.
+    ["data handed to a script after --", "node scripts/gen.mjs -- data/input.json", ["scripts/gen.mjs", "data/input.json"], ["scripts/gen.mjs"]],
+    ["data handed to a script after -- with ./", "node scripts/gen.mjs -- ./data/input.json", ["scripts/gen.mjs", "data/input.json"], ["scripts/gen.mjs"]],
+    ["an output path handed to a script after --", "tsx scripts/a.ts -- --out docs/x.md", ["scripts/a.ts", "docs/x.md"], ["scripts/a.ts"]],
+    ["a word after -- that looks like a program is still an argument", "node scripts/gen.mjs -- go x.js", ["scripts/gen.mjs", "x.js"], ["scripts/gen.mjs"]],
+    ["a file after -- and a flag is an argument", "tsx scripts/a.ts -- --watch x.js", ["scripts/a.ts", "x.js"], ["scripts/a.ts"]],
+    ["the test a runner is handed after --", "vitest run -- tests/a.test.ts", ["tests/a.test.ts"], ["tests/a.test.ts"]],
+    ["a data file passed with a flag", "python scripts/train.py --data data/train.csv --out models/", ["scripts/train.py", "data/train.csv"], ["scripts/train.py"]],
+    // Comments, redirections and here-strings are not words of the command.
+    ["what follows # is a comment", "node scripts/a.mjs # node scripts/b.mjs", ["scripts/a.mjs", "scripts/b.mjs"], ["scripts/a.mjs"]],
+    ["a comment after a separator", "node a.js; # node b.js", ["a.js", "b.js"], ["a.js"]],
+    ["a quoted # is not a comment, and names no command", "node a.js '# node b.js'", ["a.js", "b.js"], ["a.js"]],
+    ["&> redirects one command and does not separate two", "node scripts/a.mjs &> scripts/b.mjs", ["scripts/a.mjs", "scripts/b.mjs"], ["scripts/a.mjs"]],
+    ["the file a redirection writes", "node scripts/gen.mjs > src/generated.ts", ["scripts/gen.mjs", "src/generated.ts"], ["scripts/gen.mjs"]],
+    ["the bundle a redirection writes (assertion-error's build)", "deno bundle mod.ts > index.js", ["index.js"], []],
+    ["the bundle a piped redirection writes (immediate's build-js)", "browserify -s immediate ./lib/browser.js | derequire > dist/immediate.js", ["lib/browser.js", "dist/immediate.js"], ["lib/browser.js"]],
+    ["a transform's input on stdin and its output (immediate's build-node)", "browserify-transform-cli inline-process-browser unreachable-branch-transform < ./lib/index.js > ./lib/browser.js", ["lib/index.js", "lib/browser.js"], []],
+    ["text a here-string feeds", 'cat <<< "node b.js"', ["b.js"], []],
+    // Paths as written on Windows, and files that need no reader.
+    ["a backslash path", "node scripts\\a.ts", ["scripts/a.ts"], ["scripts/a.ts"]],
+    ["shell scripts, run by bash and by themselves", "bash scripts/build.sh && ./scripts/deploy.sh", ["scripts/build.sh", "scripts/deploy.sh"], ["scripts/build.sh", "scripts/deploy.sh"]],
+    ["an extensionless program node runs (http-server's start)", "node ./bin/http-server", ["bin/http-server"], ["bin/http-server"]],
+    ["inline JavaScript names no file: its parentheses stay in its words", "node -e \"require('fs').copyFileSync('src/emit.ps1', 'dist/emit.ps1')\"", ["src/emit.ps1"], []],
+    // Kept as today: arguable, and the same answer before and after.
+    ["arguable, kept: a linter's input", "eslint src/a.ts", ["src/a.ts"], ["src/a.ts"]],
+    ["arguable, kept: the first of two tests a runner is given, a test being an entry by its archetype", "mocha test/a.spec.js test/b.spec.js", ["test/a.spec.js", "test/b.spec.js"], ["test/a.spec.js"]]
+  ];
+
+  it.each(right)("declares %s", async (_case, script, files, expected) => {
+    expect(await startedBy(script, files)).toEqual(expected);
+  });
+
+  // [what is wrong, the script, the workspace's files, the files declared today, the files a right answer declares]
+  const knownWrong: Array<[string, string, string[], string[], string[]]> = [
+    ["a wrapper's command after a bare -- is not read (dotenv)", "dotenv -e config/dev.env -- vite-node scripts/a.ts", ["config/dev.env", "scripts/a.ts"], ["config/dev.env"], ["scripts/a.ts"]],
+    ["a wrapper's command after a bare -- is not read (dotenv's README form)", "dotenv -e .env.local -- node scripts/serve.mjs --port 3000", [".env.local", "scripts/serve.mjs"], [".env.local"], ["scripts/serve.mjs"]],
+    ["a wrapper's command after a bare -- is not read (this repository's browser lane)", "node ./scripts/e2e-bundles.mjs && node ./scripts/browser-lane.mjs --label gate -- node ./scripts/e2e-passes.mjs", ["scripts/e2e-bundles.mjs", "scripts/browser-lane.mjs", "scripts/e2e-passes.mjs"], ["scripts/browser-lane.mjs", "scripts/e2e-bundles.mjs"], ["scripts/browser-lane.mjs", "scripts/e2e-bundles.mjs", "scripts/e2e-passes.mjs"]],
+    ["an environment file standing first is taken for the program", "node --env-file .env src/server.js", [".env", "src/server.js"], [".env"], ["src/server.js"]],
+    ["only the preloaded module is read, not the program after it", "node -r ./scripts/setup.js src/main.js", ["scripts/setup.js", "src/main.js"], ["scripts/setup.js"], ["scripts/setup.js", "src/main.js"]],
+    ["a path after cd is resolved from the manifest's folder", "(cd x && node ../a.js)", ["a.js", "x/keep.txt"], [], ["a.js"]],
+    ["a Windows variable is not expanded", "node %SCRIPTS%\\a.js", ["scripts/a.js"], [], ["scripts/a.js"]],
+    ["a command substitution is not run", "node $(git rev-parse --show-toplevel)/scripts/a.js", ["scripts/a.js"], [], ["scripts/a.js"]],
+    ["a tool's output standing before its input is taken for the program", "babel -o legacy.js index.js", ["legacy.js", "index.js"], ["legacy.js"], []],
+    ["a copy's source is taken for the program", "cp src/a.js dist/ && node scripts/build.mjs", ["src/a.js", "scripts/build.mjs"], ["scripts/build.mjs", "src/a.js"], ["scripts/build.mjs"]],
+    ["a quoted word that only mentions a command is read as one", 'echo "node b.js must run first" && node a.js', ["a.js", "b.js"], ["a.js", "b.js"], ["a.js"]],
+    ["the file tee writes is taken for its program", "node scripts/check.mjs 2>&1 | tee check.log", ["scripts/check.mjs", "check.log"], ["check.log", "scripts/check.mjs"], ["scripts/check.mjs"]]
+  ];
+
+  it.each(knownWrong)("known wrong answer, pinned as it is: %s", async (_case, script, files, today, right) => {
+    const declared = await startedBy(script, files);
+    expect(declared).toEqual(today);
+    expect(declared).not.toEqual(right);
+  });
+
+  it("reads a quoted word after -e as a command line, and finds no file in the engine's old copying build, whose dist path maps to a source", async () => {
+    const packageDir = path.join(tempDir, "packages", "engine");
+    fs.mkdirSync(packageDir, { recursive: true });
+    fs.writeFileSync(path.join(packageDir, "tsconfig.json"), JSON.stringify({ compilerOptions: { rootDir: "src", outDir: "dist" } }));
+    fs.writeFileSync(path.join(packageDir, "package.json"), JSON.stringify({
+      name: "engine",
+      scripts: {
+        // The engine's build from late September to October 16, 2026: split at `(` and `)` as a shell splits them, its dist path would map back to the emitter's source.
+        build: "tsc -p tsconfig.json && node -e \"require('node:fs').copyFileSync('src/live-docs/adapters/powershell.emit-ast.ps1', 'dist/live-docs/adapters/powershell.emit-ast.ps1')\"",
+        // The same command line, read as a shell reads it, runs what it names.
+        shell: "sh -c \"tsc -p tsconfig.json && node dist/live-docs/run.js\""
+      }
+    }));
+    const fileIndex = new Set(["packages/engine/tsconfig.json", "packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1", "packages/engine/src/live-docs/run.ts"]);
+
+    const result = await jsonAdapter.analyze({ absolutePath: path.join(packageDir, "package.json"), workspaceRoot: tempDir, fileIndex });
+
+    expect(result?.declares).toEqual([{ reason: "command", file: "packages/engine/src/live-docs/run.ts", name: "shell" }]);
+  });
+});

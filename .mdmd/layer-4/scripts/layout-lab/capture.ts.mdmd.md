@@ -1,10 +1,10 @@
-# scripts/layout-lab/capture.ts
+# `scripts/layout-lab/capture.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-19T04:41:44.214Z
+- Code Path: `scripts/layout-lab/capture.ts`
+- Generated At: 2026-11-19T21:10:18.472Z
 
 ## Authored
 ### Purpose

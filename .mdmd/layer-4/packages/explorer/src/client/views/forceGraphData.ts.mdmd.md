@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/forceGraphData.ts
+# `packages/explorer/src/client/views/forceGraphData.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/forceGraphData.ts
-- Generated At: 2026-11-06T18:06:28.671Z
+- Code Path: `packages/explorer/src/client/views/forceGraphData.ts`
+- Generated At: 2026-11-19T21:10:14.892Z
 
 ## Authored
 ### Purpose

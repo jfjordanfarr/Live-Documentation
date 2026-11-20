@@ -1,10 +1,10 @@
-# scripts/e2e-bundles.test.ts
+# `scripts/e2e-bundles.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/e2e-bundles.test.ts
-- Generated At: 2026-11-19T07:03:51.230Z
+- Code Path: `scripts/e2e-bundles.test.ts`
+- Generated At: 2026-11-19T21:10:18.308Z
 
 ## Authored
 ### Purpose

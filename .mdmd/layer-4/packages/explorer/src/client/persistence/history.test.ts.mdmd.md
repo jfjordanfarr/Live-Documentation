@@ -1,10 +1,10 @@
-# packages/explorer/src/client/persistence/history.test.ts
+# `packages/explorer/src/client/persistence/history.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/persistence/history.test.ts
-- Generated At: 2026-09-30T01:36:12.234Z
+- Code Path: `packages/explorer/src/client/persistence/history.test.ts`
+- Generated At: 2026-11-19T21:10:14.177Z
 
 ## Authored
 ### Purpose

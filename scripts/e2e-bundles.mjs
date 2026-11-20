@@ -24,6 +24,7 @@ export const SITE = path.join(repoRoot, "dist", "explorer");
 export const SUITE_BUNDLES = [
   { script: "live-docs:visualize", folders: ["."] },
   { script: "live-docs:visualize:estate", folders: ["samples/estate"] },
+  { script: "live-docs:visualize:link-targets", folders: ["samples/link-targets"] },
   {
     script: "live-docs:visualize:history-sample",
     folders: ["samples/history", "samples/history-window", "samples/history-collision", "samples/history-growth", "samples/history-veil"]

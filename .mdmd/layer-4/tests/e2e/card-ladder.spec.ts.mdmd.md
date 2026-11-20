@@ -1,10 +1,10 @@
-# tests/e2e/card-ladder.spec.ts
+# `tests/e2e/card-ladder.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/card-ladder.spec.ts
-- Generated At: 2026-11-06T10:54:12.883Z
+- Code Path: `tests/e2e/card-ladder.spec.ts`
+- Generated At: 2026-11-19T21:10:20.094Z
 
 ## Authored
 ### Purpose

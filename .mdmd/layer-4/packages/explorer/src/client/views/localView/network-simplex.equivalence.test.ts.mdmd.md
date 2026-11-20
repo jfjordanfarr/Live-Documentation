@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/network-simplex.equivalence.test.ts
+# `packages/explorer/src/client/views/localView/network-simplex.equivalence.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/network-simplex.equivalence.test.ts
-- Generated At: 2026-11-19T18:38:55.415Z
+- Code Path: `packages/explorer/src/client/views/localView/network-simplex.equivalence.test.ts`
+- Generated At: 2026-11-19T22:40:12.363Z
 
 ## Authored
 ### Purpose

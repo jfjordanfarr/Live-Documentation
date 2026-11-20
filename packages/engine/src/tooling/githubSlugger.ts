@@ -7,6 +7,7 @@
  */
 
 import { GITHUB_SLUG_REMOVE_PATTERN } from "./githubSluggerRegex";
+import { inlineTokens, isLink } from "./markdownLinks";
 
 /**
  * Extended slug result that includes the de-duplicated slug string,
@@ -112,12 +113,28 @@ export function createSlugger(): GitHubSlugger {
  * @returns The text to pass to {@link slug}.
  */
 export function slugText(markdown: string): string {
-  return markdown
-    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+  return linkTexts(markdown)
     .replace(/\[([^\]]*)\]\[[^\]]*\]/g, "$1")
     .replace(/`+/g, "")
     .replace(/(^|[^\p{L}\p{N}])_+(?=\S)/gu, "$1")
     .replace(/(?<=\S)_+(?=$|[^\p{L}\p{N}])/gu, "");
+}
+
+/**
+ * A heading's inline links and images replaced by their text, an image inside a link by its own, read by the
+ * markdown link rule, so that a target holding parentheses or a link's shape inside a code span reads as GitHub
+ * renders it. A reference link, whose definition a heading cannot see, is left to the pattern after it.
+ */
+function linkTexts(markdown: string, tokens = inlineTokens(markdown), from = 0, to = markdown.length): string {
+  let out = "";
+  let at = from;
+  for (const token of tokens) {
+    if (token.start < at || token.start >= to || token.end > to) continue;
+    if (!isLink(token) || token.kind === "autolink") continue;
+    out += markdown.slice(at, token.start) + linkTexts(markdown, tokens, token.textStart, token.textEnd);
+    at = token.end;
+  }
+  return out + markdown.slice(at, to);
 }
 
 function createOccurrences(): Record<string, number> {

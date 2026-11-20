@@ -1,10 +1,10 @@
-# tests/integration/fixtures/slopcop-assets/workspace/public/images/missing.png
+# `tests/integration/fixtures/slopcop-assets/workspace/public/images/missing.png`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/missing.png
-- Generated At: 2026-10-16T20:40:26.122Z
+- Code Path: `tests/integration/fixtures/slopcop-assets/workspace/public/images/missing.png`
+- Generated At: 2026-11-19T21:10:25.466Z
 
 ## Authored
 ### Purpose

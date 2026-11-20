@@ -136,6 +136,40 @@ describe("markdown link audit", () => {
     expect(issues.map(issue => [issue.target, issue.line])).toEqual([["missing.md", 14]]);
   });
 
+  it("reads a target as CommonMark does: parentheses that pair, escapes, a title, and an encoded `#` or `?` in a name", () => {
+    const workspace = createWorkspace();
+    for (const name of ["plan (draft).md", "a#b.md", "c?d.md", "e(1).md", "Lib - Copy (2).ps1"]) {
+      writeFileSync(path.join(workspace, name), "x");
+    }
+    mkdirSync(path.join(workspace, "(auth)"));
+    writeFileSync(path.join(workspace, "(auth)", "page.md"), "x");
+    const docPath = path.join(workspace, "notes.md");
+    writeFileSync(
+      docPath,
+      [
+        "[bare](plan%20(draft).md), [encoded](plan%20%28draft%29.md#scope), [angle](<plan (draft).md> \"the plan\")",
+        "[hash](a%23b.md#top), [question](c%3Fd.md), [escaped](e\\(1\\).md), [titled](e(1).md (a title))",
+        "[group](%28auth%29/page.md), [nested](./(auth)/page.md 'and a title'), [script](Lib%20-%20Copy%20(2).ps1)",
+        "[gone](plan%20(final).md)"
+      ].join("\n")
+    );
+
+    const issues = findBrokenMarkdownLinks(docPath, { workspaceRoot: workspace });
+
+    expect(issues.map(issue => [issue.target, issue.line, issue.column])).toEqual([["plan%20(final).md", 4, 1]]);
+  });
+
+  it("says where a broken link stands whatever the file's line endings, and decodes an encoded ampersand", () => {
+    const workspace = createWorkspace();
+    writeFileSync(path.join(workspace, "R&D.md"), "x");
+    for (const [name, ending] of [["lf.md", "\n"], ["crlf.md", "\r\n"], ["cr.md", "\r"]]) {
+      const docPath = path.join(workspace, name);
+      writeFileSync(docPath, ["One [fine](R%26D.md)", "", "two [gone](missing.md)"].join(ending));
+      const issues = findBrokenMarkdownLinks(docPath, { workspaceRoot: workspace });
+      expect(issues.map(issue => [issue.target, issue.line, issue.column, issue.raw]), name).toEqual([["missing.md", 3, 5, "[gone](missing.md)"]]);
+    }
+  });
+
   it("applies ignore target patterns", () => {
     const workspace = createWorkspace();
     const docPath = path.join(workspace, "docs.md");

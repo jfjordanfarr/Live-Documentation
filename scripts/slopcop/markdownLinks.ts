@@ -1,13 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import {
-  computeLineStarts,
-  extractReferenceDefinitions,
-  maskCode,
-  parseLinkTarget,
-  toLineAndColumn
-} from "./markdownShared";
+import { linkPath, readMarkdownLinks } from "@live-documentation/engine/tooling/markdownLinks";
+
+import { computeLineStarts, toLineAndColumn } from "./markdownShared";
 
 /** A broken link detected in a markdown file. */
 export interface MarkdownLinkIssue {
@@ -24,91 +20,48 @@ export interface MarkdownLinkAuditOptions {
   ignoreTargetPatterns?: RegExp[];
 }
 
-const INLINE_LINK = /(!?)\[[^\]]*\]\(([^)]+)\)/g;
-const REFERENCE_LINK = /(!?)\[[^\]]*\]\[([^\]]*)\]/g;
-
 const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 
 /**
- * Scans a markdown file for inline and reference-style links whose local
- * targets cannot be resolved on disk.
+ * Scans a markdown file for links and images, inline or by reference, whose
+ * local targets cannot be resolved on disk, and for references whose label
+ * no definition names. Links are read by CommonMark's rule, as the engine and
+ * the Explorer read them, so anything inside a fenced code block or an inline
+ * code span is an example rather than a link.
  *
- * External URLs, fragment-only links, and targets matching any
- * `ignoreTargetPatterns` are skipped, and so is anything inside a fenced
- * code block or an inline code span, which is an example rather than a link.
+ * External URLs, autolinks, fragment-only links, and targets matching any
+ * `ignoreTargetPatterns` are skipped.
  */
 export function findBrokenMarkdownLinks(
   filePath: string,
   options: MarkdownLinkAuditOptions
 ): MarkdownLinkIssue[] {
-  const content = maskCode(fs.readFileSync(filePath, "utf8"));
-  const definitions = extractReferenceDefinitions(content);
+  const content = fs.readFileSync(filePath, "utf8");
+  const reading = readMarkdownLinks(content);
   const lineStarts = computeLineStarts(content);
   const ignorePatterns = options.ignoreTargetPatterns ?? [];
-
   const issues: MarkdownLinkIssue[] = [];
 
-  // Inline links and images
-  for (const match of content.matchAll(INLINE_LINK)) {
-    const raw = match[0];
-    const target = parseLinkTarget(match[2]);
-    if (!target) {
-      continue;
-    }
-
-    if (isLocalPath(target)) {
-      if (shouldIgnoreTarget(target, ignorePatterns)) {
-        continue;
-      }
-
-      const resolved = resolveTarget(target, filePath, options.workspaceRoot);
-      if (!resolved) {
-        continue;
-      }
-
-      if (!fs.existsSync(resolved)) {
-        issues.push(makeIssue(filePath, match.index ?? 0, raw, target, lineStarts));
-      }
-    }
-  }
-
-  // Reference style links and images
-  for (const match of content.matchAll(REFERENCE_LINK)) {
-    const referenceId = (match[2] || match[0].slice(1, match[0].indexOf("]"))).trim();
-    if (referenceId.length === 0) {
-      continue;
-    }
-
-    const def = definitions.get(referenceId.toLowerCase());
-    if (!def) {
-      if (shouldIgnoreTarget(referenceId, ignorePatterns)) {
-        continue;
-      }
-      // Missing definition is effectively broken
-      issues.push(makeIssue(filePath, match.index ?? 0, match[0], referenceId, lineStarts));
-      continue;
-    }
-
-    const target = parseLinkTarget(def.url);
-    if (!target || !isLocalPath(target)) {
-      continue;
-    }
-
-    if (shouldIgnoreTarget(target, ignorePatterns)) {
+  for (const link of reading.links) {
+    const target = link.destination;
+    if (link.kind === "autolink" || !isLocalPath(target) || shouldIgnoreTarget(target, ignorePatterns)) {
       continue;
     }
 
     const resolved = resolveTarget(target, filePath, options.workspaceRoot);
-    if (!resolved) {
-      continue;
-    }
-
-    if (!fs.existsSync(resolved)) {
-      issues.push(makeIssue(filePath, def.index, match[0], target, lineStarts));
+    if (resolved && !fs.existsSync(resolved)) {
+      issues.push(makeIssue(filePath, link.start, content.slice(link.start, link.end), target, lineStarts));
     }
   }
 
-  return issues;
+  // A reference whose label no definition names is text to a markdown viewer, a link its author meant.
+  for (const reference of reading.unresolved) {
+    if (!shouldIgnoreTarget(reference.label, ignorePatterns)) {
+      issues.push(makeIssue(filePath, reference.start, content.slice(reference.start, reference.end), reference.label, lineStarts));
+    }
+  }
+
+  return issues.sort((a, b) => a.line - b.line || a.column - b.column);
 }
 
 function makeIssue(
@@ -129,54 +82,26 @@ function makeIssue(
 }
 
 function isLocalPath(target: string): boolean {
-  if (EXTERNAL_SCHEME.test(target)) {
-    return false;
-  }
-
-  if (target.startsWith("#")) {
-    return false;
-  }
-
-  return true;
+  return target !== "" && !EXTERNAL_SCHEME.test(target) && !target.startsWith("#");
 }
 
 function shouldIgnoreTarget(target: string, patterns: RegExp[]): boolean {
   return patterns.some((pattern) => pattern.test(target));
 }
 
+/**
+ * The file a local link names on disk: its path read as a browser reads it, before its query and fragment and
+ * percent-decoded, from the workspace root when it begins with `/` and from the file's folder otherwise.
+ */
 function resolveTarget(target: string, filePath: string, workspaceRoot: string): string | undefined {
-  const sanitized = stripFragmentAndQuery(target);
-  if (!sanitized) {
+  const decoded = linkPath(target).path;
+  if (!decoded) {
     return undefined;
-  }
-
-  let decoded: string;
-  try {
-    decoded = decodeURI(sanitized);
-  } catch {
-    decoded = sanitized;
   }
 
   if (decoded.startsWith("/")) {
     return path.resolve(workspaceRoot, "." + decoded);
   }
 
-  const directory = path.dirname(filePath);
-  return path.resolve(directory, decoded);
-}
-
-function stripFragmentAndQuery(target: string): string {
-  let value = target;
-
-  const hashIndex = value.indexOf("#");
-  if (hashIndex !== -1) {
-    value = value.slice(0, hashIndex);
-  }
-
-  const queryIndex = value.indexOf("?");
-  if (queryIndex !== -1) {
-    value = value.slice(0, queryIndex);
-  }
-
-  return value;
+  return path.resolve(path.dirname(filePath), decoded);
 }

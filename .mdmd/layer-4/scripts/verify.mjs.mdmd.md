@@ -1,11 +1,11 @@
-# scripts/verify.mjs
+# `scripts/verify.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/verify.mjs
+- Code Path: `scripts/verify.mjs`
 - Entry: command `verify` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-18T23:23:06.814Z
+- Generated At: 2026-11-19T21:10:19.754Z
 
 ## Authored
 ### Purpose

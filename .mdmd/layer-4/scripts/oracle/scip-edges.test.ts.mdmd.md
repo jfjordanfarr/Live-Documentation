@@ -1,10 +1,10 @@
-# scripts/oracle/scip-edges.test.ts
+# `scripts/oracle/scip-edges.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/oracle/scip-edges.test.ts
-- Generated At: 2026-09-27T23:21:31.977Z
+- Code Path: `scripts/oracle/scip-edges.test.ts`
+- Generated At: 2026-11-19T21:10:19.489Z
 
 ## Authored
 ### Purpose

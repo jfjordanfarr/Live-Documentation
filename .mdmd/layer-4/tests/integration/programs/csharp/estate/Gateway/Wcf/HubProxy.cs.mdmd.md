@@ -1,10 +1,10 @@
-# tests/integration/programs/csharp/estate/Gateway/Wcf/HubProxy.cs
+# `tests/integration/programs/csharp/estate/Gateway/Wcf/HubProxy.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Gateway/Wcf/HubProxy.cs
-- Generated At: 2026-10-02T20:20:04.922Z
+- Code Path: `tests/integration/programs/csharp/estate/Gateway/Wcf/HubProxy.cs`
+- Generated At: 2026-11-19T21:10:26.592Z
 
 ## Authored
 ### Purpose

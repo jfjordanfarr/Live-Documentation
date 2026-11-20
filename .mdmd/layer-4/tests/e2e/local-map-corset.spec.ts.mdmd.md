@@ -1,10 +1,10 @@
-# tests/e2e/local-map-corset.spec.ts
+# `tests/e2e/local-map-corset.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/local-map-corset.spec.ts
-- Generated At: 2026-10-07T01:30:18.678Z
+- Code Path: `tests/e2e/local-map-corset.spec.ts`
+- Generated At: 2026-11-19T21:10:22.333Z
 
 ## Authored
 ### Purpose

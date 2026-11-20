@@ -1,10 +1,10 @@
-# packages/explorer/src/client/markdown.ts
+# `packages/explorer/src/client/markdown.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-11-04T16:15:09.979Z
+- Code Path: `packages/explorer/src/client/markdown.ts`
+- Generated At: 2026-11-19T22:40:11.151Z
 
 ## Authored
 ### Purpose
@@ -21,12 +21,14 @@ Renders authored Live Doc content and bundled Markdown in the Explorer's reader.
 
 November 4 joins soft source line wraps into one paragraph while keeping blank paragraphs, lists, headings and fenced code distinct. The native long-symbol reading test exposed the former per-line paragraphs; the correction applies consistently to both reading surfaces and preserves the raw-HTML-as-text policy. See the [integration record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-04/2026-11-04.1.record.md#turn-2).
 
+November 19 reads inline text by CommonMark's rule, the one the engine counts a doc's links by ([markdownLinks.ts](../../../engine/src/tooling/markdownLinks.ts.mdmd.md); [the probe, with matched pictures](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/markdown-link-targets/README.md)). The renderer's pattern ended a link's target at its first `)`, so a link the engine counted, `plan%20(draft).md` or `app/(auth)/notes.md`, was dead text followed by debris such as `.md)`. Every link, autolink, code span, backslash escape, character reference and piece of raw HTML is now a token of the rule, held aside as before: an escaped character is shown as itself, so a docstring line the Live Doc writes behind a backslash (``\#### `notes` ``) no longer shows the backslash, and `&copy;` shows `©`. Raw HTML stays text, an autolink to any scheme but the web and mail stays text as written, and a bare relative path in prose is still linked. The browser case is [link-targets.spec.ts](../../../../tests/e2e/link-targets.spec.ts.mdmd.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderMarkdown` {#symbol-rendermarkdown}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L34)
 - Parameters: `options`: [`RenderMarkdownOptions`](#symbol-rendermarkdownoptions)
 
 ##### `renderMarkdown` — Summary
@@ -41,14 +43,14 @@ HTML string
 
 #### `RenderMarkdownOptions` {#symbol-rendermarkdownoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L162)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L172)
 
 ##### `RenderMarkdownOptions` — Summary
 Options for the lightweight markdown-to-HTML renderer.
 
 #### `fenceClosing` {#symbol-fenceclosing}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L186)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L202)
 
 ##### `fenceClosing` — Summary
 The line that closes the fence a line opens, or null when the line opens none. A backtick fence whose info string
@@ -56,16 +58,28 @@ holds a backtick is not one. Any reader that splits a document must agree with t
 
 #### `headingOf` {#symbol-headingof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L193)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L209)
 
 ##### `headingOf` — Summary
 A heading line's level and its text without closing hashes, or null when the line is not a heading.
+
+#### `renderingSteps` {#symbol-renderingsteps}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L241)
+
+##### `renderingSteps` — Summary
+How many tokens the renderer has walked since it was loaded, for the test that holds its work linear in the text.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`githubSlugger.slugText`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
+- [`markdownLinks.InlineToken`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetoken)
+- [`markdownLinks.LinkDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-linkdefinitions)
+- [`markdownLinks.inlineTokens`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-inlinetokens)
+- [`markdownLinks.leadingDefinitions`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-leadingdefinitions)
+- [`markdownLinks.readMarkdownLinks`](../../../engine/src/tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 <!-- LIVE-DOC:END Dependencies -->
 

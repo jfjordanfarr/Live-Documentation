@@ -78,12 +78,12 @@ describe("generateLiveDocs pruning", () => {
     await fs.mkdir(path.dirname(orphanDocPath), { recursive: true });
 
     const orphanDoc = [
-      "# packages/foo/src/orphan.ts",
+      "# `packages/foo/src/orphan.ts`",
       "",
       "## Metadata",
       "- Layer: 4",
       "- Archetype: implementation",
-      "- Code Path: packages/foo/src/orphan.ts",
+      "- Code Path: `packages/foo/src/orphan.ts`",
       "",
       "## Authored",
       "### Purpose",
@@ -106,12 +106,12 @@ describe("generateLiveDocs pruning", () => {
     ].join("\n");
 
     const authoredDoc = [
-      "# packages/foo/src/preserve.ts",
+      "# `packages/foo/src/preserve.ts`",
       "",
       "## Metadata",
       "- Layer: 4",
       "- Archetype: implementation",
-      "- Code Path: packages/foo/src/preserve.ts",
+      "- Code Path: `packages/foo/src/preserve.ts`",
       "",
       "## Authored",
       "### Purpose",
@@ -787,7 +787,8 @@ describe("generateLiveDocs and names of punctuation only", () => {
       const graph = await readLiveDocGraph({ workspaceRoot, config });
       expect(graph.files["config/odd.json"].symbols.map((symbol) => [symbol.name, symbol.slug])).toEqual([
         ["a`b", "symbol-ab"],
-        ['""', "symbol-~"],
+        // The empty key reads back empty: its heading is `#### ""`, apart from a key spelled with two quotes.
+        ["", "symbol-~"],
         // The key beneath the empty one, apart from the key `c`, which the generator tells apart as two of one name.
         [":c (key overload 1)", "symbol-c-key-overload-1"],
         ["``", "symbol-~60~60"],

@@ -1,11 +1,11 @@
-# tests/integration/programs/java/rosetta/pom.xml
+# `tests/integration/programs/java/rosetta/pom.xml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/java/rosetta/pom.xml
+- Code Path: `tests/integration/programs/java/rosetta/pom.xml`
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:30.032Z
+- Generated At: 2026-11-19T21:10:27.436Z
 
 ## Authored
 ### Purpose

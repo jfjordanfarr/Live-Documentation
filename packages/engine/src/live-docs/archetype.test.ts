@@ -83,6 +83,10 @@ describe("binary files are assets, wherever they lie", () => {
     expect(isBinaryContent(new Uint8Array([0xfe, 0xff, 0x00, 0x66, 0x00, 0x75]))).toBe(false);
     expect(isBinaryContent(new Uint8Array([0x00, 0x00, 0xfe, 0xff, 0x00, 0x00, 0x00, 0x66]))).toBe(false);
     expect(isBinaryContent(new Uint8Array(0))).toBe(false);
+    // UTF-16 without a mark, as the one reading step reads it: text in either order, however long.
+    expect(isBinaryContent(Buffer.from("export const a = 1;\n", "utf16le"))).toBe(false);
+    expect(isBinaryContent(Buffer.from(Buffer.from("export const a = 1;\n", "utf16le")).swap16())).toBe(false);
+    expect(isBinaryContent(Buffer.from("x".repeat(9000), "utf16le"))).toBe(false);
     const late = new Uint8Array(9000).fill(0x61);
     late[8500] = 0;
     expect(isBinaryContent(late)).toBe(false);

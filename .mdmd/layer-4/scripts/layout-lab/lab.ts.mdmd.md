@@ -1,11 +1,11 @@
-# scripts/layout-lab/lab.ts
+# `scripts/layout-lab/lab.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/lab.ts
+- Code Path: `scripts/layout-lab/lab.ts`
 - Entry: command `layout:lab` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-18T16:26:20.004Z
+- Generated At: 2026-11-19T21:10:18.671Z
 
 ## Authored
 ### Purpose

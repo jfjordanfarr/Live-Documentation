@@ -58,7 +58,7 @@ describe("the Entry lines", () => {
   it("are written in the Metadata block with the manifest linked, where the parser reads them back", () => {
     const text = fs.readFileSync(path.join(workspace, graph.files["src/cli.ts"].docPath), "utf8");
     expect(text).toContain([
-      "- Code Path: src/cli.ts",
+      "- Code Path: `src/cli.ts`",
       "- Entry: command `demo` of [`package.json`](../package.json.md)",
       "- Entry: command `start` of [`package.json`](../package.json.md)",
       "- Generated At: "

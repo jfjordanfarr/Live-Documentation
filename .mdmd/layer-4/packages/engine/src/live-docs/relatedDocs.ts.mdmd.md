@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/relatedDocs.ts
+# `packages/engine/src/live-docs/relatedDocs.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/relatedDocs.ts
-- Generated At: 2026-10-22T16:47:53.629Z
+- Code Path: `packages/engine/src/live-docs/relatedDocs.ts`
+- Generated At: 2026-11-19T22:40:10.765Z
 
 ## Authored
 ### Purpose
@@ -15,28 +15,34 @@ The rules for a file's related documents, both ways: the markdown files, other t
 - Only authored words link to a document: over this repository the same day, all 876 links from a Live Doc to another markdown file were authored, since the generator's sections link to Live Docs alone. The graph carries each authored block verbatim, so the rule reads the graph and never the disk; whether a document stands is the caller's question, which the bundle answers by reading it and the history by looking in the commit's tree.
 - Kept apart from `graph.ts`, which the browser loads, because the exclusions need `minimatch`; a link is resolved by `graph.ts`'s `resolveDocLink`, which `linkTarget` uses too. The pattern is the one the bundle always read, `[text](path.md)` with an optional fragment; on this repository the rule gives exactly the 328 file-to-document pairs the old scan did.
 - The other direction, `citingDocuments` (2026-10-22, [Turn 2](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-22/2026-10-22.1.record.md#turn-2); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): for every documented file that a markdown document's links name, by the file's own path or its doc's, the citing documents, each once, sorted. The documents are the workspace's as `discoverDocuments` finds them, read and handed over as text by the generator, so that the rule stays free of the file system like its twin; a document the bundle exclusions name neither cites nor is cited, and a document that cites nothing is in no entry, as the owner asked ("I personally wouldn't"). Both rules read links through `markdownLinkTargets`, which skips fenced and inline code and reads angle-bracket targets and titles; the forward rule still admits only `.md` targets, and on this repository it gives the same 63 documents as before. Measured that day: 323 citations of 207 files from 19 documents.
+- Since 2026-11-19 `excluded` is exported, so that the history applies the bundle's exclusions to a past commit's links by the same rule the bundle applies them to today's (`history/bundled.ts`).
+- Since 2026-11-19 a bare link target may hold parentheses that pair, as CommonMark reads one (`notes/plan%20(draft).md`), and a link is handed to `resolveDocLink` as written, which decodes its path after the first `#` is set apart; until then the whole link was decoded first, so a path whose `#` was encoded as `%23` was cut there. A citing document is named by its own path whatever it holds; the generator writes that path as the `Cited By` line's label, as it is, and its link encoded so that a markdown viewer opens it (`document.ts`). A document named `notes/plan (draft).md` had stopped generation, found by an independent review of the history that day.
+- Later on 2026-11-19 `markdownLinkTargets` became CommonMark's rule itself, shared with the Explorer's renderer and the link audit ([markdownLinks.ts](../tooling/markdownLinks.ts.mdmd.md); [the probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/markdown-link-targets/README.md)), in place of a pattern of its own: a title in parentheses, nested parentheses, backslash escapes, references to characters and a link across a paragraph's lines are now read, and a code span or raw HTML that claims a link's characters first is respected. A target is handed on with its escapes and references resolved and its percent-encoding kept. Over this repository it reads the same 3,657 targets as before, so every file's related documents and every document's citations stand as they were. The same day the root ruled that a document citing a file by a reference-style link cites it, so reference links are counted too, and the reader opens them wherever the block's definition stands.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `markdownLinkTargets` {#symbol-markdownlinktargets}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L45)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L41)
 
 ##### `markdownLinkTargets` — Summary
-The targets of every markdown link in a text, as written, in order, with
-their fragments; a link inside fenced or inline code is not one.
+The destinations of every link and image in a markdown text, inline (`[text](destination)`) or by reference
+(`[text][label]` with `[label]: destination` elsewhere in the text), in order, as CommonMark reads them: their
+backslash escapes and character references resolved, their percent-encoding and fragments kept. A document that
+cites a file by a reference cites it (the root's ruling, 2026-11-19). An autolink is an absolute URL, which names no
+file of the workspace.
 
 #### `isMarkdownDocument` {#symbol-ismarkdowndocument}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L68)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L46)
 
 ##### `isMarkdownDocument` — Summary
 True for a markdown document by its suffix, whatever its case.
 
 #### `relatedDocsOf` {#symbol-relateddocsof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L81)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L59)
 - Parameters: `location`: [`DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
 
 ##### `relatedDocsOf` — Summary
@@ -50,14 +56,14 @@ to, each once, sorted: what the file cites.
 
 #### `DocumentText` {#symbol-documenttext}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L101)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L79)
 
 ##### `DocumentText` — Summary
 A document as the generator hands it over: its workspace-relative path, with forward slashes, and its text.
 
 #### `citingDocuments` {#symbol-citingdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L119)
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L97)
 - Parameters: `documents`: `Iterable`; `files`: `ReadonlySet`; `location`: [`DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
 
 ##### `citingDocuments` — Summary
@@ -73,6 +79,13 @@ other, or not at all.
 - `exclude`: Workspace-relative glob patterns of documents that are neither bundled nor linked (`bundleExclude`).
 - `files`: The workspace-relative paths of the documented files, the generator's file index.
 - `location`: Where the Live Docs are, so that a link to a doc names its file.
+
+#### `excluded` {#symbol-excluded}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/relatedDocs.ts#L127)
+
+##### `excluded` — Summary
+Whether the configuration's bundle exclusions (`bundleExclude`) name a document, by its workspace-relative path.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -81,6 +94,7 @@ other, or not at all.
 - [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
 - [`graph.linkTarget`](./graph.ts.mdmd.md#symbol-linktarget-function)
 - [`graph.resolveDocLink`](./graph.ts.mdmd.md#symbol-resolvedoclink)
+- [`markdownLinks.readMarkdownLinks`](../tooling/markdownLinks.ts.mdmd.md#symbol-readmarkdownlinks)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

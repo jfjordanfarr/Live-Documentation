@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/branch-shape.test.ts
+# `packages/explorer/src/client/views/localView/branch-shape.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/views/localView/branch-shape.test.ts
-- Generated At: 2026-10-13T17:03:34.040Z
+- Code Path: `packages/explorer/src/client/views/localView/branch-shape.test.ts`
+- Generated At: 2026-11-19T21:10:16.103Z
 
 ## Authored
 ### Purpose

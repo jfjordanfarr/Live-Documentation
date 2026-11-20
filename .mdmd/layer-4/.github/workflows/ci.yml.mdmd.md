@@ -1,10 +1,10 @@
-# .github/workflows/ci.yml
+# `.github/workflows/ci.yml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .github/workflows/ci.yml
-- Generated At: 2026-10-22T00:39:32.690Z
+- Code Path: `.github/workflows/ci.yml`
+- Generated At: 2026-11-19T21:10:08.335Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/search/search-bar.ts
+# `packages/explorer/src/client/search/search-bar.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/search/search-bar.ts
-- Generated At: 2026-11-01T20:26:50.713Z
+- Code Path: `packages/explorer/src/client/search/search-bar.ts`
+- Generated At: 2026-11-19T21:10:14.447Z
 
 ## Authored
 ### Purpose

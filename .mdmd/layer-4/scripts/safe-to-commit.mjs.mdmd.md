@@ -1,12 +1,12 @@
-# scripts/safe-to-commit.mjs
+# `scripts/safe-to-commit.mjs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/safe-to-commit.mjs
+- Code Path: `scripts/safe-to-commit.mjs`
 - Entry: command `ci-check` of [`package.json`](../package.json.mdmd.md)
 - Entry: command `safe:commit` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.841Z
+- Generated At: 2026-11-19T21:10:19.518Z
 
 ## Authored
 ### Purpose

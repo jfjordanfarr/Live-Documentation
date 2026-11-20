@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/pathfind.test.ts
+# `packages/engine/src/live-docs/pathfind.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/pathfind.test.ts
-- Generated At: 2026-11-02T16:50:51.905Z
+- Code Path: `packages/engine/src/live-docs/pathfind.test.ts`
+- Generated At: 2026-11-19T21:10:12.578Z
 
 ## Authored
 ### Purpose

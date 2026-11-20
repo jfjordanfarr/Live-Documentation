@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/core.docstring.test.ts
+# `packages/engine/src/live-docs/core.docstring.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/core.docstring.test.ts
-- Generated At: 2026-09-27T23:21:31.271Z
+- Code Path: `packages/engine/src/live-docs/core.docstring.test.ts`
+- Generated At: 2026-11-19T21:10:11.202Z
 
 ## Authored
 ### Purpose

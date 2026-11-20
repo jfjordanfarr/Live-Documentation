@@ -1,10 +1,10 @@
-# .github/workflows/npm-audit.yml
+# `.github/workflows/npm-audit.yml`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: .github/workflows/npm-audit.yml
-- Generated At: 2026-10-22T00:39:32.705Z
+- Code Path: `.github/workflows/npm-audit.yml`
+- Generated At: 2026-11-19T21:10:08.344Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/perspectiveTransition.ts
+# `packages/explorer/src/client/views/perspectiveTransition.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-11-16T20:45:34.629Z
+- Code Path: `packages/explorer/src/client/views/perspectiveTransition.ts`
+- Generated At: 2026-11-19T21:10:17.312Z
 
 ## Authored
 ### Purpose

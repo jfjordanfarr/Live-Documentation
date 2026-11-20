@@ -1,10 +1,10 @@
-# tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx.cs
+# `tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx.cs`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx.cs
-- Generated At: 2026-09-27T23:21:33.797Z
+- Code Path: `tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx.cs`
+- Generated At: 2026-11-19T21:10:25.560Z
 
 ## Authored
 ### Purpose

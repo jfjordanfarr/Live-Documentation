@@ -10,11 +10,11 @@
  * kept as written, a contract by name, so that a map can show a door to
  * something outside the scan and a map of several scans can match it.
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import { matchSqlObject, sqlDeclarations, sqlNameMatches, sqlObjectName, sqlReferences } from "../openings";
 import type { LanguageAdapter } from "./index";
@@ -24,7 +24,7 @@ export const sqlAdapter: LanguageAdapter = {
   id:         "sql",
   extensions: [".sql"],
   async analyze({ absolutePath, workspaceRoot, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await fs.readFile(absolutePath, "utf8");
+    const content  = await readSourceText(absolutePath);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
 
     const symbols: PublicSymbolEntry[] = sqlDeclarations(content).map((declaration) => ({

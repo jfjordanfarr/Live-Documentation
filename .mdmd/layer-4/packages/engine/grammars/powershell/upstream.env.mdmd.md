@@ -1,10 +1,10 @@
-# packages/engine/grammars/powershell/upstream.env
+# `packages/engine/grammars/powershell/upstream.env`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/grammars/powershell/upstream.env
-- Generated At: 2026-10-22T00:39:37.248Z
+- Code Path: `packages/engine/grammars/powershell/upstream.env`
+- Generated At: 2026-11-19T21:10:08.663Z
 
 ## Authored
 ### Purpose

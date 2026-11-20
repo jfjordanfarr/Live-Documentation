@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/card-reading.ts
+# `packages/explorer/src/client/views/localView/card-reading.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-16T08:03:37.782Z
+- Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
+- Generated At: 2026-11-19T21:10:16.362Z
 
 ## Authored
 ### Purpose

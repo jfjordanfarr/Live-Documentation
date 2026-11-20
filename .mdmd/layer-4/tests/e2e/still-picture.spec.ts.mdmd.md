@@ -1,10 +1,10 @@
-# tests/e2e/still-picture.spec.ts
+# `tests/e2e/still-picture.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/still-picture.spec.ts
-- Generated At: 2026-10-22T16:47:58.920Z
+- Code Path: `tests/e2e/still-picture.spec.ts`
+- Generated At: 2026-11-19T21:10:24.361Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/shell-accessibility.spec.ts
+# `tests/e2e/shell-accessibility.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/shell-accessibility.spec.ts
-- Generated At: 2026-11-19T00:33:10.078Z
+- Code Path: `tests/e2e/shell-accessibility.spec.ts`
+- Generated At: 2026-11-19T21:10:24.215Z
 
 ## Authored
 ### Purpose

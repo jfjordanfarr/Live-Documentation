@@ -1,10 +1,10 @@
-# tests/integration/programs/python/basics/src/main.py
+# `tests/integration/programs/python/basics/src/main.py`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/python/basics/src/main.py
-- Generated At: 2026-10-02T20:20:06.908Z
+- Code Path: `tests/integration/programs/python/basics/src/main.py`
+- Generated At: 2026-11-19T21:10:27.820Z
 
 ## Authored
 ### Purpose

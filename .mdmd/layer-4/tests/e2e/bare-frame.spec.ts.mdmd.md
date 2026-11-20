@@ -1,10 +1,10 @@
-# tests/e2e/bare-frame.spec.ts
+# `tests/e2e/bare-frame.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/bare-frame.spec.ts
-- Generated At: 2026-11-19T06:00:11.718Z
+- Code Path: `tests/e2e/bare-frame.spec.ts`
+- Generated At: 2026-11-19T21:10:19.845Z
 
 ## Authored
 ### Purpose

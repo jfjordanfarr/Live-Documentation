@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/stockroom/tests/report.rs
+# `tests/integration/programs/rust/stockroom/tests/report.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/rust/stockroom/tests/report.rs
-- Generated At: 2026-10-02T22:17:34.460Z
+- Code Path: `tests/integration/programs/rust/stockroom/tests/report.rs`
+- Generated At: 2026-11-19T21:10:28.416Z
 
 ## Authored
 ### Purpose

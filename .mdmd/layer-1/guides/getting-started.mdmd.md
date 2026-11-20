@@ -1,6 +1,6 @@
 # Getting Started with Live Documentation
 
-_Current as of 2026-11-12._
+_Current as of 2026-11-19._
 
 ## Metadata
 
@@ -13,7 +13,7 @@ Live Documentation turns a folder of source files into a map you can look at. Th
 
 ## Prerequisites
 
-- **Node.js 22** (see `.nvmrc`)
+- **Node.js 26** (see `.nvmrc`)
 - **Git**
 
 ---
@@ -92,6 +92,8 @@ npx http-server dist/explorer -a 127.0.0.1 -p 8766 -c-1
 ```
 
 The first command writes the folder's Live Docs inside it, under the folder's own `.live-docs.config.json` when it has one and under `.live-documentation/source/` when it has none. The second builds its Explorer into `dist/explorer/` here, with the World Map of the board the folder's configuration names, if it names one. The inspect and lint commands take the same `--workspace <folder>`.
+
+A relative `<folder>`, like every path you type, is taken from the folder you run the command in. With no `--workspace`, a command works on the nearest folder, from there up, that holds a `.live-docs.config.json`, and on the folder itself when none does: from `scripts/` in this checkout, `npm run live-docs:generate` maps the whole checkout, and standing in the folder to map, `npm --prefix <path to this checkout> run live-docs:generate` maps it. The Explorer is still built into this checkout's `dist/explorer/`.
 
 A folder inside another that has Live Docs of its own, such as a sample inside this checkout, is documented with a warning: a scan never lies inside another, so a board that names both reads only the outer one.
 

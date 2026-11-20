@@ -1,10 +1,10 @@
-# scripts/layout-lab/spatial.test.ts
+# `scripts/layout-lab/spatial.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/layout-lab/spatial.test.ts
-- Generated At: 2026-11-02T06:07:20.306Z
+- Code Path: `scripts/layout-lab/spatial.test.ts`
+- Generated At: 2026-11-19T21:10:18.939Z
 
 ## Authored
 ### Purpose

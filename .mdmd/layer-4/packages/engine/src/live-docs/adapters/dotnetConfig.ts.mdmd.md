@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/adapters/dotnetConfig.ts
+# `packages/engine/src/live-docs/adapters/dotnetConfig.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/live-docs/adapters/dotnetConfig.ts
-- Generated At: 2026-11-19T08:59:52.779Z
+- Code Path: `packages/engine/src/live-docs/adapters/dotnetConfig.ts`
+- Generated At: 2026-11-19T22:40:09.927Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,6 @@ Language adapter for `.config` files: configuration names and service addresses 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
 - `node:path` - `path`
 - [`csharp.resolveWorkspaceTypes`](./csharp.ts.mdmd.md#symbol-resolveworkspacetypes)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
@@ -41,6 +40,7 @@ Language adapter for `.config` files: configuration names and service addresses 
 - [`openings.ADDRESS_KIND`](../openings.ts.mdmd.md#symbol-address_kind)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

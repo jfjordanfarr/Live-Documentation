@@ -33,7 +33,8 @@ export async function readLiveDocGraph(args: { workspaceRoot: string; config: Do
       try {
         return { docPath, doc: parseLiveDoc(text) };
       } catch (error) {
-        throw error instanceof LiveDocSyntaxError ? new Error(`${docPath}: ${error.message}`) : error;
+        // One form for each value: a doc written before this version of the generator can hold one it no longer writes.
+        throw error instanceof LiveDocSyntaxError ? new Error(`${docPath}: ${error.message}. The grammar reads one form of each value; if the doc was written by an earlier version of the generator, \`live-docs:generate\` rewrites it.`) : error;
       }
     })
   );

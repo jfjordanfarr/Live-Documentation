@@ -1,10 +1,10 @@
-# packages/explorer/src/client/history/navigation.test.ts
+# `packages/explorer/src/client/history/navigation.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/history/navigation.test.ts
-- Generated At: 2026-11-01T21:06:14.496Z
+- Code Path: `packages/explorer/src/client/history/navigation.test.ts`
+- Generated At: 2026-11-19T21:10:13.199Z
 
 ## Authored
 ### Purpose

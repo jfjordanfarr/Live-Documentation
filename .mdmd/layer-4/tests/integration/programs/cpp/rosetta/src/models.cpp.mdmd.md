@@ -1,10 +1,10 @@
-# tests/integration/programs/cpp/rosetta/src/models.cpp
+# `tests/integration/programs/cpp/rosetta/src/models.cpp`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/cpp/rosetta/src/models.cpp
-- Generated At: 2026-10-16T00:58:49.366Z
+- Code Path: `tests/integration/programs/cpp/rosetta/src/models.cpp`
+- Generated At: 2026-11-19T21:10:26.264Z
 
 ## Authored
 ### Purpose

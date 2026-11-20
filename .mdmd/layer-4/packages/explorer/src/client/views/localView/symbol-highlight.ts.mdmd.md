@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/localView/symbol-highlight.ts
+# `packages/explorer/src/client/views/localView/symbol-highlight.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/localView/symbol-highlight.ts
-- Generated At: 2026-11-19T04:41:43.833Z
+- Code Path: `packages/explorer/src/client/views/localView/symbol-highlight.ts`
+- Generated At: 2026-11-19T21:10:17.131Z
 
 ## Authored
 ### Purpose

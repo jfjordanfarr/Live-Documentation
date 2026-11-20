@@ -1,10 +1,10 @@
-# scripts/layout-lab/signals.ts
+# `scripts/layout-lab/signals.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: scripts/layout-lab/signals.ts
-- Generated At: 2026-10-13T16:52:35.948Z
+- Code Path: `scripts/layout-lab/signals.ts`
+- Generated At: 2026-11-19T21:10:18.923Z
 
 ## Authored
 ### Purpose

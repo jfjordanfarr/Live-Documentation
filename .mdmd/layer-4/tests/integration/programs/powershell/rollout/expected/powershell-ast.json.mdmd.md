@@ -1,10 +1,10 @@
-# tests/integration/programs/powershell/rollout/expected/powershell-ast.json
+# `tests/integration/programs/powershell/rollout/expected/powershell-ast.json`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/powershell/rollout/expected/powershell-ast.json
-- Generated At: 2026-10-16T22:20:46.099Z
+- Code Path: `tests/integration/programs/powershell/rollout/expected/powershell-ast.json`
+- Generated At: 2026-11-19T21:10:27.730Z
 
 ## Authored
 ### Purpose

@@ -1,10 +1,10 @@
-# tests/e2e/force-graph-exploration.spec.ts
+# `tests/e2e/force-graph-exploration.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/force-graph-exploration.spec.ts
-- Generated At: 2026-11-08T17:57:48.551Z
+- Code Path: `tests/e2e/force-graph-exploration.spec.ts`
+- Generated At: 2026-11-19T21:10:21.006Z
 
 ## Authored
 ### Purpose

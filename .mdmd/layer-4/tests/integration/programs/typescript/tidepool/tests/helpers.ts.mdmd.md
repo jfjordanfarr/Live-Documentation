@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/tests/helpers.ts
+# `tests/integration/programs/typescript/tidepool/tests/helpers.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/typescript/tidepool/tests/helpers.ts
-- Generated At: 2026-11-16T20:15:28.276Z
+- Code Path: `tests/integration/programs/typescript/tidepool/tests/helpers.ts`
+- Generated At: 2026-11-19T21:10:28.947Z
 
 ## Authored
 ### Purpose

@@ -1,11 +1,11 @@
-# tests/integration/programs/csharp/estate/Database/SqlServer/dbo.Payment.sql
+# `tests/integration/programs/csharp/estate/Database/SqlServer/dbo.Payment.sql`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/Database/SqlServer/dbo.Payment.sql
+- Code Path: `tests/integration/programs/csharp/estate/Database/SqlServer/dbo.Payment.sql`
 - Entry: opening [`dbo.Payment`](#symbol-dbopayment)
-- Generated At: 2026-10-16T20:40:28.604Z
+- Generated At: 2026-11-19T21:10:26.500Z
 
 ## Authored
 ### Purpose

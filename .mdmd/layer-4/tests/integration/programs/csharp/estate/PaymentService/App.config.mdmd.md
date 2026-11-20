@@ -1,12 +1,12 @@
-# tests/integration/programs/csharp/estate/PaymentService/App.config
+# `tests/integration/programs/csharp/estate/PaymentService/App.config`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: tests/integration/programs/csharp/estate/PaymentService/App.config
+- Code Path: `tests/integration/programs/csharp/estate/PaymentService/App.config`
 - Entry: opening [`net.tcp://payments.onprem.example:8732/PaymentService`](#symbol-nettcppaymentsonpremexample8732paymentservice)
 - Entry: tooling
-- Generated At: 2026-10-16T20:40:28.868Z
+- Generated At: 2026-11-19T21:10:26.645Z
 
 ## Authored
 ### Purpose

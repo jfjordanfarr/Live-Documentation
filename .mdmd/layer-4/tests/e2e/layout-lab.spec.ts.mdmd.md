@@ -1,10 +1,10 @@
-# tests/e2e/layout-lab.spec.ts
+# `tests/e2e/layout-lab.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/layout-lab.spec.ts
-- Generated At: 2026-11-16T08:48:08.615Z
+- Code Path: `tests/e2e/layout-lab.spec.ts`
+- Generated At: 2026-11-19T21:10:22.195Z
 
 ## Authored
 ### Purpose

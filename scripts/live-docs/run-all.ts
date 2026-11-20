@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
-import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+
+import { invocationFolder } from "./cli";
+
+/** This checkout, whose tsx and TypeScript configuration run each stage. */
+const CHECKOUT = path.resolve(__dirname, "..", "..");
 
 interface OrchestratorOptions {
   generatorArgs: string[];
@@ -80,49 +84,6 @@ function splitFlagAndValue(arg: string): [string, string | undefined] {
   return [flag, value];
 }
 
-function hasConfigArg(args: string[]): boolean {
-  for (const arg of args) {
-    const [flagCandidate] = splitFlagAndValue(arg);
-    if (flagCandidate === "--config") {
-      return true;
-    }
-  }
-  return false;
-}
-
-function resolveWorkspaceRoot(args: string[]): string {
-  for (let index = 0; index < args.length; index += 1) {
-    const [flagCandidate, inlineValue] = splitFlagAndValue(args[index] ?? "");
-    if (flagCandidate !== "--workspace") {
-      continue;
-    }
-
-    if (inlineValue) {
-      return path.resolve(inlineValue);
-    }
-
-    const nextValue = args[index + 1];
-    if (nextValue && !nextValue.startsWith("-")) {
-      return path.resolve(nextValue);
-    }
-  }
-
-  return path.resolve(process.cwd());
-}
-
-function appendDefaultConfigIfPresent(args: string[], workspaceRoot: string): string[] {
-  if (hasConfigArg(args)) {
-    return args;
-  }
-
-  const defaultConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
-  if (!fs.existsSync(defaultConfigPath)) {
-    return args;
-  }
-
-  return [...args, "--config", defaultConfigPath];
-}
-
 function filterArgsForLint(args: string[]): string[] {
   const filtered: string[] = [];
 
@@ -174,11 +135,12 @@ function runStage(stage: Stage): void {
     return;
   }
 
-  const absolutePath = path.resolve(process.cwd(), stage.script);
-  const tsx = path.resolve(process.cwd(), "node_modules", "tsx", "dist", "cli.mjs");
-  const tsconfig = path.resolve(process.cwd(), "tsconfig.base.json");
+  const absolutePath = path.join(__dirname, stage.script);
+  const tsx = path.join(CHECKOUT, "node_modules", "tsx", "dist", "cli.mjs");
+  const tsconfig = path.join(CHECKOUT, "tsconfig.base.json");
   console.log(`[live-docs] Running ${stage.label}...`);
-  const result = spawnSync(process.execPath, [tsx, "--tsconfig", tsconfig, absolutePath, ...stage.args], { stdio: "inherit" });
+  // From the folder the pipeline was run from, so that each stage takes the paths typed, and its default workspace, from there.
+  const result = spawnSync(process.execPath, [tsx, "--tsconfig", tsconfig, absolutePath, ...stage.args], { stdio: "inherit", cwd: invocationFolder() });
   if (result.error) {
     throw result.error;
   }
@@ -190,9 +152,7 @@ function runStage(stage: Stage): void {
 
 function main(): void {
   const options = parseArgs(process.argv.slice(2));
-
-  const workspaceRoot = resolveWorkspaceRoot(options.generatorArgs);
-  options.generatorArgs = appendDefaultConfigIfPresent(options.generatorArgs, workspaceRoot);
+  // Each stage reads the workspace's own configuration when none is named, so the arguments go as they were typed.
   const lintArgs = filterArgsForLint(options.generatorArgs);
 
   if (options.showHelp) {
@@ -203,13 +163,13 @@ function main(): void {
   const stages: Stage[] = [
     {
       label: "live-docs:generate",
-      script: "scripts/live-docs/generate.ts",
+      script: "generate.ts",
       args: options.generatorArgs,
       enabled: !options.skipGenerate
     },
     {
       label: "live-docs:lint",
-      script: "scripts/live-docs/lint.ts",
+      script: "lint.ts",
       args: lintArgs,
       enabled: !options.skipLint
     }

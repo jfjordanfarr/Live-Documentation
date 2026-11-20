@@ -1,10 +1,10 @@
-# tests/integration/programs/typescript/tidepool/src/audio/splash.wav
+# `tests/integration/programs/typescript/tidepool/src/audio/splash.wav`
 
 ## Metadata
 - Layer: 4
 - Archetype: asset
-- Code Path: tests/integration/programs/typescript/tidepool/src/audio/splash.wav
-- Generated At: 2026-11-16T20:15:25.750Z
+- Code Path: `tests/integration/programs/typescript/tidepool/src/audio/splash.wav`
+- Generated At: 2026-11-19T21:10:28.730Z
 
 ## Authored
 ### Purpose

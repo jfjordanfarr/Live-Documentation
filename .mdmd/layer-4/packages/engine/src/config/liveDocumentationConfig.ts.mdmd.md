@@ -1,10 +1,10 @@
-# packages/engine/src/config/liveDocumentationConfig.ts
+# `packages/engine/src/config/liveDocumentationConfig.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-11-12T17:12:02.641Z
+- Code Path: `packages/engine/src/config/liveDocumentationConfig.ts`
+- Generated At: 2026-11-19T22:40:09.712Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect—so th
 - `exclude` (2026-10-16): workspace-relative paths or globs discovery skips, a folder that documents itself or a vendored tree the `.gitignore` does not cover, normalized as `entryPoints` is; this repository excludes `AI-Agent-Workspace/**`, its development record.
 - `citedBy` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): whether each doc carries a `Cited By` section naming the documents whose links name its file, true by default as the owner's rule of 2026-01-06 ran both ways; false keeps the related documents to what the docs' own words cite, the switch the owner asked for "so that they do not accidentally get markdown docs coming along for the ride which they did not intend" ([Turn 2](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-22/2026-10-22.1.record.md#turn-2)). It is read where the docs are generated, so that the Explorer and the CLI read one answer from the docs rather than deciding it apart.
 - `board` (2026-11-12): the board a workspace's Explorer draws its World Map from, a path from the workspace root, absent unless named; a command's `--board` or the board command's argument takes its place. Where a board lives had been left on 2026-09-28 to the host that opens it, until `live-docs:visualize -- --workspace <folder>` had to find one it was not handed and this repository's npm script was passing its own on every build. It is normalized as `entryPoints` is, and left out of the normalized configuration when blank, so a configuration without one is unchanged, and keys the history's lens only where it is named.
+- `parseLiveDocumentationConfigBytes` (2026-11-19): the one parser of a `.live-docs.config.json`, which decodes the file by its byte-order mark, UTF-8 with or without one or UTF-16 in either order, as Windows PowerShell 5.1 saves it, then parses it; [the cold run](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#every-crash) found every command stopping on a file with a mark. The commands read the file through it (`readConfiguration` in `scripts/live-docs/cli.ts`), and the history's lens is to, in place of its own copy. It takes the bytes rather than the path because the Explorer's page bundles this module, through the path walk's `noReaderHandles`, and a page cannot import Node's file system ([the probe's second leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -204,6 +205,25 @@ or CLI flags. When `undefined`, returns the default config unchanged.
 
 ##### `normalizeLiveDocumentationConfig` — Returns
 A complete, immutable configuration ready for pipeline consumption.
+
+#### `parseLiveDocumentationConfigBytes` {#symbol-parselivedocumentationconfigbytes}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L316)
+- Returns: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
+
+##### `parseLiveDocumentationConfigBytes` — Summary
+The settings a `.live-docs.config.json` holds, from the file's bytes as it
+was saved: decoded by its byte-order mark, UTF-8 with or without one, or
+UTF-16 little- or big-endian after one, then parsed as JSON. Windows
+PowerShell 5.1 writes the mark with `Set-Content -Encoding UTF8`, and UTF-16
+with `Out-File` and `>`; until 2026-11-19 every command stopped on such a
+file. Every reader of the configuration, the commands and the history's
+lens, parses it here. It reads no file itself, so that this module stays one
+the Explorer's page can carry: the caller reads the bytes, and says which
+file it could not read.
+
+##### `parseLiveDocumentationConfigBytes` — Exceptions
+- _Unknown_: SyntaxError when the text is not JSON.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

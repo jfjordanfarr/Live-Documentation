@@ -2,6 +2,7 @@ import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter } from "./index";
@@ -15,7 +16,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
   extensions: [".aspx", ".ascx", ".cshtml", ".razor"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
+    const content = await readSourceText(absolutePath);
     const dependencies: DependencyEntry[] = [];
 
     const scriptDependencies = resolveScriptDependencies({

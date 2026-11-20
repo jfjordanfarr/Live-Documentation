@@ -1,10 +1,10 @@
-# packages/explorer/src/client/views/worldMap/index.ts
+# `packages/explorer/src/client/views/worldMap/index.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/worldMap/index.ts
-- Generated At: 2026-10-22T16:47:56.510Z
+- Code Path: `packages/explorer/src/client/views/worldMap/index.ts`
+- Generated At: 2026-11-19T21:10:17.578Z
 
 ## Authored
 ### Purpose

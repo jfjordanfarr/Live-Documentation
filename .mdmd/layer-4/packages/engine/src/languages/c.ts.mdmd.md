@@ -1,10 +1,10 @@
-# packages/engine/src/languages/c.ts
+# `packages/engine/src/languages/c.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/engine/src/languages/c.ts
-- Generated At: 2026-10-16T00:58:41.798Z
+- Code Path: `packages/engine/src/languages/c.ts`
+- Generated At: 2026-11-19T21:10:08.755Z
 
 ## Authored
 ### Purpose

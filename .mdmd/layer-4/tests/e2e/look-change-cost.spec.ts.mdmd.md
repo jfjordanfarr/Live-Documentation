@@ -1,10 +1,10 @@
-# tests/e2e/look-change-cost.spec.ts
+# `tests/e2e/look-change-cost.spec.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/e2e/look-change-cost.spec.ts
-- Generated At: 2026-11-19T05:58:26.944Z
+- Code Path: `tests/e2e/look-change-cost.spec.ts`
+- Generated At: 2026-11-19T21:10:23.192Z
 
 ## Authored
 ### Purpose

@@ -8,12 +8,12 @@
  * @module
  */
 
-import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
+import { readSourceText } from "../tooling/sourceText";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type { SourceAnalysisResult, PublicSymbolEntry, WorkspaceSymbolIndex } from "./coreTypes";
@@ -86,7 +86,7 @@ export async function analyzeSourceFile(
     return EMPTY_ANALYSIS_RESULT;
   }
 
-  const content = await fs.readFile(absolutePath, "utf8");
+  const content = await readSourceText(absolutePath);
   const scriptKind = inferScriptKind(extension);
   const sourceFile = ts.createSourceFile(
     absolutePath,

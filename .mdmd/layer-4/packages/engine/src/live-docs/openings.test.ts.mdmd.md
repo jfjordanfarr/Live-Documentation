@@ -1,10 +1,10 @@
-# packages/engine/src/live-docs/openings.test.ts
+# `packages/engine/src/live-docs/openings.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/engine/src/live-docs/openings.test.ts
-- Generated At: 2026-10-22T16:47:53.537Z
+- Code Path: `packages/engine/src/live-docs/openings.test.ts`
+- Generated At: 2026-11-19T21:10:12.522Z
 
 ## Authored
 ### Purpose

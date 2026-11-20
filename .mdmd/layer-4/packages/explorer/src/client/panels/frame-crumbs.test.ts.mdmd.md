@@ -1,10 +1,10 @@
-# packages/explorer/src/client/panels/frame-crumbs.test.ts
+# `packages/explorer/src/client/panels/frame-crumbs.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/explorer/src/client/panels/frame-crumbs.test.ts
-- Generated At: 2026-11-19T04:34:52.687Z
+- Code Path: `packages/explorer/src/client/panels/frame-crumbs.test.ts`
+- Generated At: 2026-11-19T21:10:13.706Z
 
 ## Authored
 ### Purpose

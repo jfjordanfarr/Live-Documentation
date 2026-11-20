@@ -1,10 +1,10 @@
-# scripts/doc-tools/documentationLinks.test.ts
+# `scripts/doc-tools/documentationLinks.test.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: scripts/doc-tools/documentationLinks.test.ts
-- Generated At: 2026-09-28T01:00:43.427Z
+- Code Path: `scripts/doc-tools/documentationLinks.test.ts`
+- Generated At: 2026-11-19T21:10:18.238Z
 
 ## Authored
 ### Purpose

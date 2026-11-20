@@ -1,10 +1,10 @@
-# tests/integration/programs/rust/rosetta/src/processor_test.rs
+# `tests/integration/programs/rust/rosetta/src/processor_test.rs`
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/programs/rust/rosetta/src/processor_test.rs
-- Generated At: 2026-09-27T23:21:39.050Z
+- Code Path: `tests/integration/programs/rust/rosetta/src/processor_test.rs`
+- Generated At: 2026-11-19T21:10:28.332Z
 
 ## Authored
 ### Purpose

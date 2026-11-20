@@ -62,7 +62,9 @@ export const SUMMARY_MODULES = [
   "packages/engine/src/live-docs/history/textStore.ts",
   "packages/generator/src/history/summarizeChange.ts",
   "packages/engine/src/live-docs/history/git.ts",
-  "packages/generator/src/history/regenerate.ts"
+  "packages/generator/src/history/regenerate.ts",
+  // Since 2026-11-19 it gives the configuration a summary is made under (`summarizedConfiguration`), as well as the key.
+  "packages/engine/src/live-docs/history/lens.ts"
 ];
 
 /** The modules from which the guard reads what decides a summary: the summarizing process, and the command's side of it. */

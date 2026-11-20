@@ -1,10 +1,10 @@
-# packages/generator/src/history/computeHistory.ts
+# `packages/generator/src/history/computeHistory.ts`
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-11-19T12:44:39.309Z
+- Code Path: `packages/generator/src/history/computeHistory.ts`
+- Generated At: 2026-11-19T22:40:12.820Z
 
 ## Authored
 ### Purpose
@@ -21,48 +21,49 @@ The history command: the mainline read and sampled, every sampled commit the cac
 - A run stopped by a signal removes its scratch trees, the check at the head's included, before it exits (`Scratch` in `regenerate.ts`).
 - Since [the second review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/second-review.md) the lock is a claim per run (`holdLock`): an empty file named `run.<host>.<pid>.<nonce>.lock`, made in one step, after which the run lists the claims and holds the folder only when no other live one stands, else withdraws, waits a random moment and tries again. Two runs meeting a dead lock had both been able to proceed under the old single file. A signal removes the claim (`Scratch.hold`). With `--remove-superseded`, the run keeps beside the current lens only the newest whole one, marked by the `whole.json` a run writes once it wrote a history from a lens.
 - Since [the third review](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/history-data-review/third-review.md) the run lists beside the sequence, in `unwritten.txt`, every file a summary says its tree did not hold, the commit, the path and the reason a line, and says where (the list's header speaks of what this disk could not hold, though some reasons, a link in the commit or a name that is not UTF-8, hold on every disk); the sequence does not carry them, so such a file reads in it as gone at that commit.
+- Since 2026-11-19 each summary is read through `bundledSummary` with the configuration's `bundleExclude`, the one place the bundle's exclusions are applied to the history; the head check's tree is written as the summarizing process's is (`treeOptions`). The run's line and `unwritten.txt` say an entry was not written into its tree, with the reason, no longer that the disk could not hold it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L64)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L66)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
 #### `SupersededCache` {#symbol-supersededcache}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L90)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L92)
 
 ##### `SupersededCache` — Summary
 A cache folder under the history folder that belongs to another lens than the current one.
 
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L102)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L104)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
 #### `HistoryStopped` {#symbol-historystopped}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L129)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L131)
 
 ##### `HistoryStopped` — Summary
 A run that stopped, as asked, before the cache held every sampled change: no sequence was written.
 
 #### `HEAD_CHECK_RULE` {#symbol-head_check_rule}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L134)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L136)
 
 ##### `HEAD_CHECK_RULE` — Summary
 When the check at the head applies, in the words the command prints when it skips it.
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L163)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L165)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -71,7 +72,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L170)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L172)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -80,7 +81,7 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L181)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L183)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -90,7 +91,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L187)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L189)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -98,7 +99,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L361)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L364)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -118,14 +119,14 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L532)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L535)
 
 ##### `PoolRecord` — Summary
 What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L560)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L563)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
@@ -138,7 +139,7 @@ never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L809)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L817)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -155,8 +156,10 @@ A size in the units a person reads it in.
 - [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graphFiles.readLiveDocGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`bundled.bundledSummary`](../../../engine/src/live-docs/history/bundled.ts.mdmd.md#symbol-bundledsummary)
 - [`codec.Interner`](../../../engine/src/live-docs/history/codec.ts.mdmd.md#symbol-interner)
 - [`format.CommitInfo`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo)
 - [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
@@ -189,6 +192,7 @@ A size in the units a person reads it in.
 - [`regenerate.indexPath`](./regenerate.ts.mdmd.md#symbol-indexpath)
 - [`regenerate`](./regenerate.ts.mdmd.md#symbol-regenerate)
 - [`regenerate.summaryPath`](./regenerate.ts.mdmd.md#symbol-summarypath)
+- [`regenerate.treeOptions`](./regenerate.ts.mdmd.md#symbol-treeoptions)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->
