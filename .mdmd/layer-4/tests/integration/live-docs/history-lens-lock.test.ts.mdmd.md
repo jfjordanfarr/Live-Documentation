@@ -12,7 +12,7 @@ The independent oracle of the lock's half of the lens's key: a real worker of th
 
 ### Notes
 - Written 2026-11-20, when the lock stopped keying the lens whole after a pin of Playwright moved the key and owed the whole history a rebuild ([the decision](../../../../layer-3/architectural-decisions.mdmd.md#the-dependency-lock-keys-the-lens-only-through-the-packages-a-summary-loads-recorded-2026-11-20)).
-- The permission model neither restricts nor reports a thread's reads, so the case fails if the run starts a thread, and runs esbuild with `ESBUILD_WORKER_THREADS=0` so that tsx's compiler stays in the main thread. What a child process reads (git, esbuild's binary) is not seen.
+- The permission model neither restricts nor reports a thread's reads, so the case fails if the run starts a thread through the public `Worker`, and runs esbuild with `ESBUILD_WORKER_THREADS=0` so that tsx's compiler stays in the main thread; a thread node starts for itself is not seen. What a child process reads (git, esbuild's binary) is not seen either.
 - The case shows itself red from the same run: with the tree-sitter runtime taken out of the keyed set, and with the launcher taken out of the roots, the files read are named.
 
 ## Generated

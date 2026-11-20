@@ -9,8 +9,10 @@
  * (since 2026-11-20).
  *
  * What the recording cannot see: the reads of a thread, which the permission model does not report, so that a thread
- * started fails the case by its script's name (esbuild's own is kept in the main thread by its variable `ESBUILD_WORKER_THREADS`);
- * and what a child process reads, git or esbuild's binary, which are no Node processes.
+ * started through the public `Worker` fails the case by its script's name (esbuild's own is kept in the main thread by
+ * its variable `ESBUILD_WORKER_THREADS`), while a thread node starts itself, which no wrapper of `Worker` meets, is
+ * not seen at all; what a child process reads, git or esbuild's binary, which are no Node processes; and a package
+ * loaded only on a path this small repository does not take.
  */
 import { fork } from "node:child_process";
 import * as fs from "node:fs";
@@ -77,9 +79,10 @@ const FILES: Record<string, string> = {
 
 /**
  * Preloaded into the worker: every path the permission model reports read, once each, appended to `reads.txt` as it is
- * met, and the script of every thread started, to `threads.txt`. The permission model neither restricts nor reports a
- * thread's reads (Node 26: a read in a `Worker` passes unreported even where the main thread's is refused), so a
- * thread is a part of the run the recording cannot see, and is named.
+ * met, and the script of every thread started through the public `Worker`, to `threads.txt`. The permission model
+ * neither restricts nor reports a thread's reads (Node 26: a read in a `Worker` passes unreported even where the main
+ * thread's is refused), so such a thread is a part of the run the recording cannot see, and is named; a thread node
+ * starts for itself does not pass through `Worker`, and is not.
  */
 function recorder(folder: string): string {
   return [
@@ -188,7 +191,7 @@ describe("the lock's half of the lens's key", () => {
   it("covers every package a worker reads under node_modules, grammars among them, and finds one taken out", async () => {
     const { reads, threads, report, summary } = await readsOfASummary();
     expect(report.published).toBe(true);
-    // No thread was started whose reads the recording could not see.
+    // No thread was started through `Worker`, whose reads the recording could not see.
     expect(threads).toEqual([]);
     expect(fs.existsSync(summary)).toBe(true);
     const relative = [...reads].map((read) => path.relative(repoRoot, read).split(path.sep).join("/"));
