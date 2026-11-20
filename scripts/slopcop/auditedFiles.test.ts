@@ -174,6 +174,12 @@ describe("auditedFiles", () => {
     // `build/link`, and `open/link/r.md`, whose link git does not ignore, is read as every file is that git cannot judge.
     expect(audited(root, ["*/**/*.md"])).toEqual(["build/kept.md", "open/link/r.md", "src/real/r.md"]);
     expect(audited(root)).toEqual(["README.md", "build/kept.md", "src/real/r.md"]);
+    // The run is told of the file git cannot judge, and only of it.
+    const warnings: string[] = [];
+    auditedFiles(root, ["**/*.md"], [], (message) => warnings.push(message));
+    expect(warnings).toEqual([]);
+    auditedFiles(root, ["*/**/*.md"], [], (message) => warnings.push(message));
+    expect(warnings).toEqual([expect.stringMatching(/^git cannot say what it ignores of 1 file\(s\), such as open\/link\/r\.md, .*: they are audited\.$/u)]);
   });
 
   it("judges a folder or a file whose path begins with a colon by its name", () => {
@@ -240,6 +246,63 @@ describe("auditedFiles", () => {
       }
     } finally {
       delete process.env.GIT_FAILS_AFTER;
+    }
+  });
+
+  it("judges each repository's files by its own git in a workspace that lies in no repository, reads the rest, and warns of nothing", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "*.cfg.md\n", "README.md": "", "loose.cfg.md": "", "proj/.gitignore": "dist/\n", "proj/a.md": "", "proj/settings.cfg.md": "", "proj/dist/b.md": "" });
+    git(path.join(root, "proj"), "init", "-q");
+    git(path.join(root, "proj"), "add", ".gitignore", "a.md", "settings.cfg.md");
+    // Git's own word first: no repository at the workspace; `proj` ignores `dist/`.
+    expect(spawnSync("git", ["-C", root, "rev-parse"], { encoding: "utf8" }).status).toBe(128);
+    expect(spawnSync("git", ["-C", path.join(root, "proj"), "status", "--porcelain", "--ignored", "-uall"], { encoding: "utf8" }).stdout).toBe("A  .gitignore\nA  a.md\nA  settings.cfg.md\n!! dist/b.md\n");
+    const warnings: string[] = [];
+    // Until this round every file found was read: `proj/dist/b.md`, which `proj` ignores, among them.
+    expect(auditedFiles(root, ["**/*.md"], [], (message) => warnings.push(message)).map((file) => path.relative(root, file))).toEqual(["README.md", "loose.cfg.md", "proj/a.md", "proj/settings.cfg.md"]);
+    expect(warnings).toEqual([]);
+  });
+
+  it("finds a file tracked during the walk in a folder the first listing left unread, by walking again", () => {
+    const root = workspace();
+    write(root, { ".gitignore": "gen/\n", "README.md": "", "gen/out.md": "" });
+    git(root, "init", "-q");
+    const listing = (): string => spawnSync("git", ["-C", root, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8" }).stdout;
+    expect(listing()).toBe("gen/\0");
+    const readdirSync = fs.readdirSync;
+    let added = false;
+    const spy = vi.spyOn(fs, "readdirSync").mockImplementation(((...args: unknown[]) => {
+      if (!added) {
+        added = true;
+        git(root, "add", "-f", "gen/out.md");
+      }
+      return Reflect.apply(readdirSync, fs, args);
+    }) as unknown as typeof fs.readdirSync);
+    let files: string[];
+    try {
+      files = audited(root);
+    } finally {
+      spy.mockRestore();
+    }
+    expect(listing()).toBe("");
+    expect(files).toEqual(["README.md", "gen/out.md"]);
+  });
+
+  it("stops the walk where a folder cannot be read for a cause of the machine's", () => {
+    const root = workspace();
+    write(root, { "README.md": "", "docs/a.md": "" });
+    git(root, "init", "-q");
+    const readdirSync = fs.readdirSync;
+    const spy = vi.spyOn(fs, "readdirSync").mockImplementation(((...args: unknown[]) => {
+      const folder = String(args[0]);
+      if (path.relative(root, folder) === "docs") throw Object.assign(new Error(`EMFILE: too many open files, scandir '${folder}'`), { code: "EMFILE", syscall: "scandir", path: folder });
+      return Reflect.apply(readdirSync, fs, args);
+    }) as unknown as typeof fs.readdirSync);
+    try {
+      // Until this round glob read `docs` as empty, and `docs/a.md` went unaudited in silence.
+      expect(() => audited(root)).toThrow(/EMFILE/u);
+    } finally {
+      spy.mockRestore();
     }
   });
 

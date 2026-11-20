@@ -1,8 +1,9 @@
 import { execFileSync } from "node:child_process";
+import nodeFs from "node:fs";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
@@ -13,6 +14,7 @@ import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { summarizeGraph } from "@live-documentation/engine/live-docs/history/summary";
+import { machineFailure } from "@live-documentation/engine/live-docs/processMark";
 
 import { generateLiveDocs } from "./generator";
 
@@ -829,6 +831,44 @@ describe("generateLiveDocs and names of punctuation only", () => {
       expect(summarizeGraph(graph, "lens", "commit").summary.files[0].symbols).toHaveLength(5);
     } finally {
       await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("a file whose reading throws in the index pass alone", () => {
+  // Until 2026-11-20 the index pass swallowed every throw: a file whose first read failed there was mapped by the
+  // second, its symbols missing from the index, a re-exported one's home the barrel, with no mark and no name.
+  it("is named as a file that could not be mapped, with the error it threw there, which the history reads as the machine's", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "generate-index-pass-"));
+    const readFile = nodeFs.promises.readFile;
+    let failure: Error | undefined;
+    const spy = vi.spyOn(nodeFs.promises, "readFile").mockImplementation(((...args: unknown[]) => {
+      if (failure && String(args[0]) === path.join(root, "src", "a.ts")) {
+        const thrown = failure;
+        failure = undefined;
+        return Promise.reject(thrown);
+      }
+      return Reflect.apply(readFile, nodeFs.promises, args);
+    }) as unknown as typeof nodeFs.promises.readFile);
+    try {
+      await fs.mkdir(path.join(root, "src"), { recursive: true });
+      await fs.writeFile(path.join(root, "src", "a.ts"), "export const a = 1;\n");
+      await fs.writeFile(path.join(root, "src", "index.ts"), "export * from \"./a\";\n");
+      const quiet = (): undefined => undefined;
+      const generate = async (): Promise<Awaited<ReturnType<typeof generateLiveDocs>>> =>
+        generateLiveDocs({ workspaceRoot: root, config: normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }), dryRun: true, logger: { info: quiet, warn: quiet, error: quiet } });
+      failure = new RangeError("Maximum call stack size exceeded");
+      const result = await generate();
+      expect(result.failed.map(({ sourcePath, reason }) => [sourcePath, reason])).toEqual([["src/a.ts", "Maximum call stack size exceeded"]]);
+      // As a failure of the per-file pass, the machine's failure is carried with its error, by which the history's
+      // summary (`summarizeChange.ts`) publishes nothing and summarizes the change again in a fresh worker.
+      failure = Object.assign(new Error("EMFILE: too many open files, open"), { code: "EMFILE", syscall: "open" });
+      const machine = await generate();
+      expect(machine.failed.map(({ sourcePath }) => sourcePath)).toEqual(["src/a.ts"]);
+      expect(machineFailure(machine.failed[0].error)).toBe(true);
+    } finally {
+      spy.mockRestore();
+      await fs.rm(root, { recursive: true, force: true });
     }
   });
 });

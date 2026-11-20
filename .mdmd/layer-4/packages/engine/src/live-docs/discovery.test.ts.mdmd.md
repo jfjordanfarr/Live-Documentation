@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/discovery.test.ts`
-- Generated At: 2026-11-20T14:44:04.845Z
+- Generated At: 2026-11-20T15:50:31.777Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes)
 - [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles)
 - [`discovery.inWorkspaceOrder`](./discovery.ts.mdmd.md#symbol-inworkspaceorder)

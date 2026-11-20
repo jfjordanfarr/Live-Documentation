@@ -171,7 +171,7 @@ export async function generateLiveDocs(
   const liveDocsRoot = normalizeWorkspacePath(
     path.join(normalizedConfig.root, normalizedConfig.baseLayer)
   );
-  const { symbols: symbolIndex, entries: entryIndex } = await buildWorkspaceIndexes({
+  const { symbols: symbolIndex, entries: entryIndex, unmapped: unindexed } = await buildWorkspaceIndexes({
     targetFiles: allTargetFiles,
     workspaceRoot,
     liveDocsRoot,
@@ -231,6 +231,8 @@ export async function generateLiveDocs(
     // A file that cannot be mapped, because it cannot be read or because the doc written for it is one the grammar's
     // own reader refuses, is skipped and named by its source path, and the run goes on (2026-11-19).
     try {
+      // A file whose reading threw in the index pass is one this run could not map, though it reads here.
+      if (unindexed.has(absoluteSourcePath)) throw unindexed.get(absoluteSourcePath);
       const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
 
       // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.

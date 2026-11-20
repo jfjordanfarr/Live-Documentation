@@ -9,9 +9,13 @@
  * works in, a probe's log, a tool's cache. Git already knows which of these
  * are the repository's: a tracked file always is, whatever ignores it, and an
  * untracked file is not when `.gitignore` at any level, `.git/info/exclude`
- * or the global excludes file names it. Without git, or outside a repository,
- * it cannot answer, and the caller keeps every file or reads `.gitignore`
- * itself, as discovery did alone before 2026-10-16.
+ * or the global excludes file names it. Where git cannot answer in the
+ * repository that holds the workspace, the caller keeps every file or reads
+ * `.gitignore` itself, as discovery did alone before 2026-10-16. A workspace
+ * that lies in no repository has no listing of its own, but each repository
+ * within it, a folder of several clones among them, is asked of its own files
+ * (2026-11-20); what lies outside every repository is the caller's rule for no
+ * git, with nothing to warn of.
  *
  * Since 2026-11-20 (the third form of that day) git is asked one question,
  * `git ls-files --others --ignored --exclude-standard --directory`, and its
@@ -38,7 +42,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-/** What git says of a list of paths: which it ignores, and which it cannot judge. */
+/** What git says of a list of paths: which it ignores, which it cannot judge, and which lie in no repository. */
 export interface GitIgnoreAnswer {
   /** The paths git ignores: each, or a folder above it, is in the listing of the repository that holds it. */
   ignored: Set<string>;
@@ -49,39 +53,44 @@ export interface GitIgnoreAnswer {
    * nothing.
    */
   unjudged: Set<string>;
+  /**
+   * The paths that lie in no repository, in a workspace that lies in none: git has no word on them, and none was
+   * wanted, so the caller's rule for no git judges them with nothing to warn of.
+   */
+  outside: Set<string>;
 }
 
 /** Git's word on what it ignores in a workspace, from one listing. */
 export interface GitIgnores {
   /** The folders git ignores whole, workspace-relative with forward slashes; `""` when it ignores the workspace itself. */
   readonly folders: ReadonlySet<string>;
-  /** A file system for glob (its `fs` option) on which {@link GitIgnores.folders} read as empty. */
-  readonly unread: FSOption;
   /** What git says of each of the paths (workspace-relative, forward slashes; `.` or `""` for the workspace itself). */
   answer(relativePaths: readonly string[]): GitIgnoreAnswer;
 }
 
-/** Why git gave no listing of what it ignores. */
+/** Why git gave no listing of what it ignores in a folder that lies in a repository. */
 export interface GitUnanswered {
-  /** Git's own first line of complaint, or that git could not be started. */
+  /** Git's own first line of complaint, or that git could not be started, or its answer passed the buffer. */
   readonly reason: string;
-  /** Git says the folder lies in no repository: the rule for no git is then the rule, and no fall-back from git's word. */
-  readonly noRepository: boolean;
 }
 
-/** A repository the judging has met: the folder at its top, workspace-relative, and its listing, `null` when git failed there. */
+/** A repository the judging has met: the folder at its top, workspace-relative, and its listing. */
 interface Repository {
   readonly root: string;
-  readonly entries: Set<string> | null;
+  readonly entries: Set<string>;
 }
 
 /**
  * Git's word on what it ignores in the workspace at `workspaceRoot`, or `null`
- * when git cannot answer: it is not installed, `workspaceRoot` lies in no
- * repository, git does not trust its owner, or its listing fails in any other
- * way, which `unanswered` is told of. A caller that gets `null` walks the whole
- * workspace and uses its rule for no git, so that a failed answer is never
- * applied to a shortened walk.
+ * when git cannot answer in the repository that holds it: it is not installed,
+ * does not trust the owner, or its listing fails in any other way, which
+ * `unanswered` is told of. A caller that gets `null` walks the whole workspace
+ * and uses its rule for no git, so that a failed answer is never applied to a
+ * shortened walk. Where the workspace lies in no repository
+ * ({@link liesInNoRepository}) there is no listing of its own and no folder is
+ * left unread, but each folder in it that holds a `.git` is asked directly, as
+ * a link to a repository's top is, and the paths outside every repository are
+ * {@link GitIgnoreAnswer.outside}.
  *
  * @remarks
  * The listing names each untracked path git ignores: a folder it ignores whole
@@ -109,63 +118,70 @@ interface Repository {
  * whether that folder is ignored, and a path in a repository whose git cannot
  * answer (an owner it does not trust, a configuration it cannot read) is
  * unjudged. A path beyond a link to a folder is ignored when the link or a
- * folder above it is, judged by the linked repository when the link leads to
- * a repository's top (asked there directly), and is otherwise unjudged, a link
- * into the middle of a repository among them. The cases, tried on git 2.56.1, are the
- * tests beside this module and discovery's.
+ * folder above it is, judged by the linked repository when git, asked in the
+ * linked folder, says it is that repository's top, and is otherwise unjudged,
+ * a link into the middle of a repository among them, whether its folder holds
+ * no `.git` or one git climbs past (2026-11-20). The cases, tried on git
+ * 2.56.1, are the tests beside this module and discovery's.
  */
 export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswered) => void): GitIgnores | null {
-  const own = listing(workspaceRoot, false);
-  if ("reason" in own) {
-    unanswered?.(own);
-    return null;
+  // `null` where the workspace lies in no repository: no repository is around its paths until one is met below it.
+  let outer: Repository | null = null;
+  let folders = new Set<string>();
+  if (!liesInNoRepository(workspaceRoot)) {
+    const own = listing(workspaceRoot, false, false);
+    if ("reason" in own) {
+      unanswered?.(own);
+      return null;
+    }
+    outer = { root: "", entries: own.entries };
+    folders = own.folders;
   }
-  const outer: Repository = { root: "", entries: own.entries };
-  const kinds = new Map<string, Repository | "link" | "folder">();
-  const kindOf = (folder: string, around: Repository): Repository | "link" | "folder" => {
+  const kinds = new Map<string, Repository | "link" | "folder" | "unanswered">();
+  const kindOf = (folder: string, around: Repository | null): Repository | "link" | "folder" | "unanswered" => {
     let kind = kinds.get(folder);
     if (kind === undefined) {
       const at = path.join(workspaceRoot, folder);
       const link = fs.lstatSync(at, { throwIfNoEntry: false })?.isSymbolicLink() === true;
       kind = link ? "link" : "folder";
       if (fs.existsSync(path.join(at, ".git"))) {
-        // To the repository around, a link is a file, and it has no view of what lies beyond: a linked folder that holds
-        // a `.git` is asked directly, and answers where git there finds the folder inside its work tree.
-        const another = link || anotherRepository(path.join(workspaceRoot, around.root), around.root === "" ? folder : folder.slice(around.root.length + 1), around.root !== "");
-        // Where git cannot say, the folder's paths are unjudged, as a repository's whose git cannot answer.
-        if (another !== false) {
-          const inner = another ? listing(at, true) : null;
-          kind = { root: folder, entries: inner && "entries" in inner ? inner.entries : null };
+        // To the repository around, a link is a file, and it has no view of what lies beyond; where no repository is
+        // around, there is none to ask. Such a folder is asked directly, and answers where git there finds it the top of
+        // a work tree. Where git cannot say, the folder's paths are unjudged, as a repository's whose git cannot answer.
+        const direct = link || around === null;
+        const another = direct || anotherRepository(path.join(workspaceRoot, around.root), around.root === "" ? folder : folder.slice(around.root.length + 1), around.root !== "");
+        if (another === null) kind = "unanswered";
+        else if (another) {
+          const inner = listing(at, true, direct);
+          kind = "entries" in inner ? { root: folder, entries: inner.entries } : "unanswered";
         }
       }
       kinds.set(folder, kind);
     }
     return kind;
   };
-  const judged = (relative: string): "ignored" | "kept" | "unjudged" => {
-    if (own.entries.has("")) return "ignored";
+  const judged = (relative: string): "ignored" | "kept" | "unjudged" | "outside" => {
+    if (outer?.entries.has("")) return "ignored";
     const parts = relative === "" || relative === "." ? [] : relative.split("/");
     let repository = outer;
     // Past a folder git has no word on, the listing around still judges what it names below it: git named it, so git
-    // entered there; beyond a link or inside a repository it does not enter, it names nothing.
+    // entered there; beyond a link or inside a repository it does not enter, it names nothing. Where no repository is
+    // around, a link to a folder that is no repository's top leads to more of no repository.
     let unsure = false;
     for (let end = 1; end <= parts.length; end += 1) {
       const prefix = parts.slice(0, end).join("/");
-      if (repository.entries?.has(repository.root === "" ? prefix : prefix.slice(repository.root.length + 1))) return "ignored";
+      if (repository?.entries.has(repository.root === "" ? prefix : prefix.slice(repository.root.length + 1))) return "ignored";
       if (end === parts.length || unsure) continue;
       const kind = kindOf(prefix, repository);
-      if (typeof kind === "object") {
-        if (kind.entries) repository = kind;
-        else unsure = true;
-      } else if (kind === "link") unsure = true;
+      if (typeof kind === "object") repository = kind;
+      else if (kind === "unanswered" || (kind === "link" && repository !== null)) unsure = true;
     }
-    return unsure ? "unjudged" : "kept";
+    return unsure ? "unjudged" : repository === null ? "outside" : "kept";
   };
   return {
-    folders: own.folders,
-    unread: foldersReadAsEmpty(workspaceRoot, own.folders),
+    folders,
     answer: (relativePaths) => {
-      const answer: GitIgnoreAnswer = { ignored: new Set(), unjudged: new Set() };
+      const answer: GitIgnoreAnswer = { ignored: new Set(), unjudged: new Set(), outside: new Set() };
       for (const relative of relativePaths) {
         const verdict = judged(relative);
         if (verdict !== "kept") answer[verdict].add(relative);
@@ -178,7 +194,8 @@ export function gitIgnores(workspaceRoot: string, unanswered?: (why: GitUnanswer
 /**
  * The paths among `relativePaths` (relative to `workspaceRoot`, forward
  * slashes) that git ignores ({@link gitIgnores}); `null` when git cannot
- * answer. A path git cannot judge is not among them.
+ * answer in the repository that holds the workspace. A path git cannot judge,
+ * or one that lies in no repository, is not among them.
  */
 export function gitIgnored(workspaceRoot: string, relativePaths: readonly string[]): Set<string> | null {
   return gitIgnores(workspaceRoot)?.answer(relativePaths).ignored ?? null;
@@ -203,12 +220,35 @@ export function gitIgnoresCase(workspaceRoot: string): boolean {
  * those patterns as they are. Glob 14 walks with `readdir` and `readdirSync`
  * alone; a glob that stopped calling these would walk the folders again, and
  * lose no file.
+ *
+ * Glob reads a folder whose read fails as empty, whatever the failure, so each
+ * failed read of another folder is also told to `failed`, for the walk to judge
+ * once glob is done: a folder that could not be read for a cause of the
+ * machine's (too many open files) must stop the walk, not lose its files in
+ * silence (2026-11-20).
  */
-export function foldersReadAsEmpty(workspaceRoot: string, folders: ReadonlySet<string>): FSOption {
+export function foldersReadAsEmpty(workspaceRoot: string, folders: ReadonlySet<string>, failed?: (error: NodeJS.ErrnoException) => void): FSOption {
   const empty = (folder: string): boolean => folders.has(toWorkspacePath(workspaceRoot, folder));
   return {
-    readdir: (folder, options, callback) => (empty(folder) ? process.nextTick(callback, null, []) : fs.readdir(folder, options, callback)),
-    readdirSync: (folder, options) => (empty(folder) ? [] : fs.readdirSync(folder, options))
+    readdir: (folder, options, callback) => {
+      if (empty(folder)) {
+        process.nextTick(callback, null, []);
+        return;
+      }
+      fs.readdir(folder, options, (error, entries) => {
+        if (error) failed?.(error);
+        callback(error, entries);
+      });
+    },
+    readdirSync: (folder, options) => {
+      if (empty(folder)) return [];
+      try {
+        return fs.readdirSync(folder, options);
+      } catch (error) {
+        failed?.(error as NodeJS.ErrnoException);
+        throw error;
+      }
+    }
   };
 }
 
@@ -280,11 +320,14 @@ function anotherRepository(around: string, folder: string, nested: boolean): boo
 
 /**
  * Whether `folder` lies in no repository by its own structure: no `.git` in it or in any folder above it, and none
- * named to git by `GIT_DIR`. Only there is the rule for no git the rule, and a failed listing no fall-back from git's
- * word; a stale `GIT_DIR`, a `GIT_CEILING_DIRECTORIES` that hides the top, a file system's boundary and a `.git` above
- * that names no repository all make git say "not a git repository" too, where a repository is meant.
+ * named to git by `GIT_DIR`. Only there is the rule for no git the rule, and no fall-back from git's word; a stale
+ * `GIT_DIR`, a `GIT_CEILING_DIRECTORIES` that hides the top, a file system's boundary and a `.git` above that names no
+ * repository all make git say "not a git repository" too, where a repository is meant. The one answer to the question
+ * for discovery, the audits and the command line's note (2026-11-20; until then the command line kept a copy of its
+ * own that followed links and read no `GIT_DIR`, and with a stale one said both that the folder lay in no repository
+ * and that git could not be asked).
  */
-function liesInNoRepository(folder: string): boolean {
+export function liesInNoRepository(folder: string): boolean {
   if (process.env.GIT_DIR) return false;
   for (let at = path.resolve(folder); ; at = path.dirname(at)) {
     if (fs.lstatSync(path.join(at, ".git"), { throwIfNoEntry: false }) !== undefined) return false;
@@ -294,20 +337,26 @@ function liesInNoRepository(folder: string): boolean {
 
 /**
  * Git's listing of what it ignores under `folder` ({@link gitIgnores}), as paths relative to `folder` with no trailing
- * slash (`""` for `folder` itself), and the folders among them; or why git gave none.
+ * slash (`""` for `folder` itself), and the folders among them; or why git gave none. With `top`, as for a folder
+ * asked directly, the listing counts only where git says `folder` is its repository's top: a link into the middle of a
+ * repository, or to a folder whose `.git` git climbs past (an empty `.git/`), is not judged by the repository around
+ * the place it leads to (2026-11-20).
  */
-function listing(folder: string, nested: boolean): { entries: Set<string>; folders: Set<string> } | GitUnanswered {
+function listing(folder: string, nested: boolean, top: boolean): { entries: Set<string>; folders: Set<string> } | GitUnanswered {
   const env = gitEnvironment(nested);
-  const unanswered = (reason: string): GitUnanswered => ({ reason, noRepository: !nested && liesInNoRepository(folder) });
-  const failure = (result: ReturnType<typeof spawnSync>): GitUnanswered =>
-    unanswered(result.error ? `git could not be started (${result.error.message})` : String(result.stderr ?? "").split("\n")[0].trim() || `git exited with ${result.status ?? result.signal}`);
+  const failure = (result: ReturnType<typeof spawnSync>): GitUnanswered => ({
+    reason: !result.error
+      ? String(result.stderr ?? "").split("\n")[0].trim() || `git exited with ${result.status ?? result.signal}`
+      : Reflect.get(result.error, "code") === "ENOBUFS" ? `git's answer was longer than the buffer that reads it (${result.error.message})` : `git could not be started (${result.error.message})`
+  });
   // Where git stands in `folder`: inside a work tree or not, the way up to its top, and the folder's place below it. A
   // repository whose work tree is elsewhere, or that has none, answers for no file of the folder, the workspace's own
   // among them (2026-11-20).
   const where = spawnSync("git", ["-C", folder, "rev-parse", "--is-inside-work-tree", "--show-cdup", "--show-prefix"], { encoding: "utf8", env });
   if (where.error || where.status !== 0) return failure(where);
   const [inside, cdup = "", above = ""] = where.stdout.split("\n");
-  if (inside !== "true") return unanswered(`${folder} lies outside the work tree of the repository git finds there`);
+  if (inside !== "true") return { reason: `${folder} lies outside the work tree of the repository git finds there` };
+  if (top && above !== "") return { reason: `${folder} is not the top of the repository git finds there, but its folder ${above}` };
   let failed: GitUnanswered | undefined;
   const listed = (at: readonly string[]): string[] | null => {
     const result = spawnSync("git", [...at, "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory"], { encoding: "utf8", env, maxBuffer: 1 << 28 });
@@ -323,7 +372,7 @@ function listing(folder: string, nested: boolean): { entries: Set<string>; folde
     // when it cannot answer at all; asked from the repository's top, it names that folder.
     prefix = above;
     printed = prefix === "" ? null : listed(["-C", folder, "-C", cdup || "."]);
-    if (!printed) return failed ?? unanswered("git's listing failed");
+    if (!printed) return failed ?? { reason: "git's listing failed" };
   }
   const entries = new Set<string>();
   const folders = new Set<string>();

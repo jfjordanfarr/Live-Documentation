@@ -13,7 +13,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { type LiveDocumentationConfigInput, parseLiveDocumentationConfigBytes } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+import { gitIgnores, type GitUnanswered, liesInNoRepository } from "@live-documentation/engine/tooling/gitIgnored";
 
 /**
  * The folder the person ran the command from: the workspace when they name
@@ -93,24 +93,24 @@ export function workspaceFolder(given: string | undefined): string {
  * folder, when it is not by git's own word: discovery then reads the folder's
  * own `.gitignore` alone (`keptByGitAndConfiguration` in the engine's
  * discovery), and what a nested `.gitignore`, `.git/info/exclude` or the global
- * excludes file hides, a .NET project's `bin/` and `obj/` above all, gets docs.
- * A warning when the folder lies in a repository git cannot be asked about, as
- * when git is not on the path or does not trust the folder's owner; a note when
- * no repository holds it; nothing when git answers.
+ * excludes file hides, a .NET project's `bin/` and `obj/` above all, gets docs,
+ * and a file the repository tracks may be left out. A warning when the folder
+ * lies in a repository git cannot be asked about, as when git is not on the
+ * path or does not trust the folder's owner; a note when no repository holds
+ * it, where each repository within it is still asked of its own files; nothing
+ * when git answers. Whether a repository holds the folder is the engine's one
+ * answer ({@link liesInNoRepository}), discovery's own (2026-11-20).
  */
 export function gitIgnoresUnasked(workspaceRoot: string): { warning: string } | { note: string } | undefined {
-  if (gitIgnored(workspaceRoot, ["."]) !== null) {
+  const own = path.join(workspaceRoot, ".gitignore");
+  if (liesInNoRepository(workspaceRoot)) {
+    return { note: `Not in a git repository, so of what to leave out only ${own} and the configuration's exclude are read. A repository within it judges its own files by its own git.` };
+  }
+  let unanswered: GitUnanswered | undefined;
+  if (gitIgnores(workspaceRoot, (why) => { unanswered = why; }) !== null) {
     return undefined;
   }
-  const own = path.join(workspaceRoot, ".gitignore");
-  for (let folder = workspaceRoot; ; folder = path.dirname(folder)) {
-    if (statSync(path.join(folder, ".git"), { throwIfNoEntry: false }) !== undefined) {
-      return { warning: `git could not be asked what it ignores in ${workspaceRoot}, though it lies in the repository at ${folder}: git may not be on the path, or may not trust the folder's owner, which "git status" there will say. So only ${own} is read, and what another .gitignore, .git/info/exclude or the global excludes hide, such as bin/ and obj/, gets docs; name it in the configuration's exclude, or mend git.` };
-    }
-    if (path.dirname(folder) === folder) {
-      return { note: `Not in a git repository, so of what to leave out only ${own} and the configuration's exclude are read.` };
-    }
-  }
+  return { warning: `git could not be asked what it ignores in ${workspaceRoot}, though it lies in a repository (${unanswered?.reason ?? "git gave no reason"}): git may not be on the path, or may not trust the folder's owner, which "git status" there will say. So only ${own} is read, by which a file the repository tracks may be left out, and what another .gitignore, .git/info/exclude or the global excludes hide, such as bin/ and obj/, gets docs; name it in the configuration's exclude, or mend git.` };
 }
 
 /** The version of one of this repository's packages, from its manifest: a command prints its package's version, never a constant of its own. */

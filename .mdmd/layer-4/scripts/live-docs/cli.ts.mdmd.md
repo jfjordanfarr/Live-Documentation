@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/cli.ts`
-- Generated At: 2026-11-19T22:40:13.226Z
+- Generated At: 2026-11-20T15:50:34.169Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ What the Live Docs commands share at their edge: the version each prints, read f
 - Later the same day, at the root's ruling, the workspace when none is named became the nearest folder, from where the command was run up to the file system's root, that holds a `.live-docs.config.json` (`nearestConfiguredFolder`), as git finds a repository, and the folder itself when none does. Until then a command run from `scripts/` of this checkout, or from any folder of a mapped repository, made a new map of that folder; the root's own shell had drifted into a subfolder twice that day ([the probe's second leg](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#second-leg-november-19)). Relative paths are still taken from where the command was run.
 - `--stack` (2026-11-19): every command takes it, through `runCommand`, which lifts it off the command line before the command reads its own options, and prints a failure's stack and each cause's with it. Without it a failure ends with a line saying how to see where it failed. [The cold run](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#the-strangers-steps-and-stumbles) had to call the generator from a script of its own to learn which code a crash came from. Which source file a crash concerns is the generator's to say ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md)).
 - `gitIgnoresUnasked` (2026-11-19): discovery reads what git ignores by git's own word, and when git cannot answer, the folder's own `.gitignore` alone, which the code said and the person was never told; the [cold run's review](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md#windows) suspected it, and [the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md) found a repository's `bin/`, which a nested `.gitignore` hid, documented once git was off the path. `generate` now warns when the folder lies in a repository, found by a `.git` at it or above it, that git cannot be asked about, and notes when it lies in none. Git's own reason is not kept by `gitIgnored`, so the warning names the two usual ones and the command that tells which.
+- Since 2026-11-20 whether the folder lies in no repository is the engine's one answer, `liesInNoRepository`, which discovery asks too: the copy kept here followed links and read no `GIT_DIR`, so with a stale one a run said both that the folder lay in no repository and, from discovery, that git could not be asked. The warning now carries git's own reason, from `gitIgnores`, and says that a file the repository tracks may be left out by the `.gitignore` read in git's place; the note says that a repository within the folder judges its own files ([the seventh round](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md#several-clones-in-one-scan-and-the-machines-failures-the-seventh-round)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -76,17 +77,20 @@ nothing and say so as success, and `generate` would make the folder.
 
 #### `gitIgnoresUnasked` {#symbol-gitignoresunasked}
 - Type: function
-- Source: [source](../../../../scripts/live-docs/cli.ts#L101)
+- Source: [source](../../../../scripts/live-docs/cli.ts#L104)
 
 ##### `gitIgnoresUnasked` — Summary
 What a person must be told of how the files git ignores are found in a
 folder, when it is not by git's own word: discovery then reads the folder's
 own `.gitignore` alone (`keptByGitAndConfiguration` in the engine's
 discovery), and what a nested `.gitignore`, `.git/info/exclude` or the global
-excludes file hides, a .NET project's `bin/` and `obj/` above all, gets docs.
-A warning when the folder lies in a repository git cannot be asked about, as
-when git is not on the path or does not trust the folder's owner; a note when
-no repository holds it; nothing when git answers.
+excludes file hides, a .NET project's `bin/` and `obj/` above all, gets docs,
+and a file the repository tracks may be left out. A warning when the folder
+lies in a repository git cannot be asked about, as when git is not on the
+path or does not trust the folder's owner; a note when no repository holds
+it, where each repository within it is still asked of its own files; nothing
+when git answers. Whether a repository holds the folder is the engine's one
+answer ({@link liesInNoRepository}), discovery's own (2026-11-20).
 
 #### `packageVersion` {#symbol-packageversion}
 - Type: function
@@ -163,5 +167,7 @@ read all the same, by the engine's one parser of the file
 - `node:process` - `process`
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
-- [`gitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
+- [`gitIgnored.GitUnanswered`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered)
+- [`gitIgnored.gitIgnores`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
+- [`gitIgnored.liesInNoRepository`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-liesinnorepository)
 <!-- LIVE-DOC:END Dependencies -->
