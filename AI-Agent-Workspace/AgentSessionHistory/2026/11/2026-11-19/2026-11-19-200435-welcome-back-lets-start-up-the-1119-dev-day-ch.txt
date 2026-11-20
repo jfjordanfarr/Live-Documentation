@@ -16013,3 +16013,541 @@
   needed regenerating, so CI's docs check still holds.
 
   Still ready when you are: push, rebuild the devcontainer, open a new chat.
+
+  ---
+  ---
+
+  
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19-200435-welco
+  me-back-lets-start-up-the-1119-dev-day-ch.txt in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+
+❯ Okay you're good to go for night work of November 19th! Container rebuild is
+  done. Let me know if you need anything. :)
+
+● I'll start with the new-chat read: the four Memory documents, the handoff
+  routine, and the five most recent session summaries.
+
+  Searched for 1 pattern, read 4 files, ran 5 shell commands · 1 failed (ctrl+o to expand)
+
+● The dependency install and build are running in the background under Node 26
+  while I finish reading the Memory documents: owner.md is done at 397 lines,
+  and I'm moving on to direction, ideas, and the narrative, then the five latest
+  summaries. · summary
+
+  Read 1 file · 1 failed (ctrl+o to expand)
+
+● Background command "Install dependencies and build under Node 26" completed
+  (exit code 0)
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The build passes under Node 26 and the gate without the browser is running in
+  the background. I'm about three quarters through direction.md and will read
+  the remaining ideas, narrative and summaries next. · summary
+
+  Read 9 files · 1 failed (ctrl+o to expand)
+
+● I've read the memory and five summaries in full and am about three quarters
+  through yesterday evening's record (line 890 of 1,227), so I can pick up its
+  open threads. The background gate process is still running. · summary
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● Reading is finished and CI is green on your push; I'm recording this chat now
+  while the gate runs without the browser, and then the night's builders go out.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19.1.
+        record.md)
+  ⎿  Added 49 lines
+      1225  - **Landed:** `2c569bfb` cherry-picked as `89f6d813`; no Live
+             Doc left to regenerate (1,120 unchanged), so CI's check of t
+            he docs holds. The focus case stays red on `main`, now always
+             at the same step, with the long 3D settle the only other red
+             of the last whole run.
+      1226  - **Root's reading is written at the end of [the builder's re
+            cord](Probes/landing-reds/README.md),** with one thing to cha
+            nge in the focus case's helper: ask the page's own picker and
+             do not write its geometry a second time in the spec.
+      1227  - **Told to the owner at 02:49 as not on `main`; it now is.**
+             To be said in the next message if the session lasts, and it
+            is in the Resumption either way.
+      1228 +                                                             
+      1229 +## Root's messages of 02:59 and 03:00 UTC on November 20, as 
+           +delivered                                                    
+      1230 +                                                             
+      1231 +The first chat's last two messages, copied at 03:48 UTC on No
+           +vember 20 by the second root from that chat's log with [visib
+           +le-messages.mjs](../../../../scripts/visible-messages.mjs). T
+           +he log holds no owner message after Turn 14; the one entry be
+           +tween the reply of 02:49 and these is the harness's notice th
+           +at root's fallback timer had ended (02:57:46).               
+      1232 +                                                             
+      1233 +**Root, 02:59:47 UTC:**                                      
+      1234 +                                                             
+      1235 +``````text                                                   
+      1236 +While the session is still up I reviewed the red-case builder
+           +'s work (all three diffs, three of its five pictures) and bro
+           +ught it to `main`; recording that so the notes stay true.    
+      1237 +``````                                                       
+      1238 +                                                             
+      1239 +**Root, 03:00:45 UTC:**                                      
+      1240 +                                                             
+      1241 +``````text                                                   
+      1242 +One update to what I told you a few minutes ago: the red-case
+           + work is now on `main`, not only on its builder's branch. Whi
+           +le the container was still up I reviewed it and landed it as 
+           +`89f6d813`.                                                  
+      1243 +                                                             
+      1244 +- **Reviewed:** the full changes to all three test files, and
+           + three of the builder's five pictures. I did not rerun the ca
+           +ses myself.                                                  
+      1245 +- **The two 2D cases** are accepted. Each now uses a fixed sa
+           +mple program, and the builder showed each can still fail.    
+      1246 +- **The 3D focus case** is still red on `main`, now always at
+           + the same step: after "Centre on", the file rests off centre.
+           + That is the next thing to run down, and it may be the produc
+           +t's fault.                                                   
+      1247 +                                                             
+      1248 +`main` is 10 commits ahead of GitHub and the working tree is 
+           +clean. No Live Doc needed regenerating, so CI's docs check st
+           +ill holds.                                                   
+      1249 +                                                             
+      1250 +Still ready when you are: push, rebuild the devcontainer, ope
+           +n a new chat.                                                
+      1251 +``````                                                       
+      1252 +                                                             
+      1253 +### The first chat's end, noted by the second root           
+      1254 +                                                             
+      1255 +Written at 03:49 UTC on November 20.                         
+      1256 +                                                             
+      1257 +- **What followed that message.** The owner pushed (`origin/m
+           +ain` at `69af42cd9`, which is `main`), rebuilt the dev contai
+           +ner for Node 26 and opened a new chat at 03:42 UTC. They call
+           + it "night work of November 19th": the same dev day, so the s
+           +ame record under the next turn number, kept by a second root,
+           + as on November 17 and 18. This chat's log stands on the same
+           + volume as `452088fb-c0c8-41e4-873b-94af195b79e5.jsonl`.     
+      1258 +- **The owner's export, saved again** at 03:30:38 UTC by the 
+           +file's time, under the same name: 831,966 bytes, SHA-256 `793
+           +17d06a1357d8c28c6940509bfe487761cb9ebf044c7050c16ca8898fd6269
+           +`, 16,014 lines. The save committed before it (821,028 bytes,
+           + SHA-256 `65ba3e2cda9289ee7ddaa2b79b2c8549f288ef309cec18086fc
+           +d85aa68e99f16`) is its exact prefix by `cmp`. It now runs thr
+           +ough root's message of 03:00:45 UTC, so it holds the first ch
+           +at to its end. Its lines at the owner's prompt mark after the
+           + first two compactions are Turns 2 to 14, the editor's notes 
+           +of an opened file and two more `/compact` commands. Read by t
+           +he second root: those prompt lines and its last 1,500 bytes, 
+           +not the whole. Filed as received; [the month's inventory](../
+           +README.md) has it.                                           
+      1259 +                                                             
+      1260 +## Turn 15                                                   
+      1261 +                                                             
+      1262 +**Owner, 03:42:40 UTC on November 20,** the first message of 
+           +a new chat in the rebuilt container; verbatim from this chat'
+           +s log. The editor's note of an opened file that came with it 
+           +(their export of the first chat) is left out.                
+      1263 +                                                             
+      1264 +``````text                                                   
+      1265 +Okay you're good to go for night work of November 19th! Conta
+           +iner rebuild is done. Let me know if you need anything. :)   
+      1266 +``````                                                       
+      1267 +                                                             
+      1268 +### Work notes, Turn 15                                      
+      1269 +                                                             
+      1270 +Written at 03:50 UTC on November 20 by the second root, from 
+           +what it ran itself.                                          
+      1271 +                                                             
+      1272 +- **The startup read,** as [the Coverage](#coverage) says: th
+           +e guide, the four Memory documents, the five latest summaries
+           +, this record to its last line, the vision and the red cases'
+           + record, each whole.                                         
+      1273 +- **The machine as found.** Node 26.13.1 and npm 11.21.1, 20 
+           +threads, 62 GB, a load of about 5 in the container's first mi
+           +nutes. `main` at `69af42cd9`, level with `origin/main`; its o
+           +ne change the owner's export saved again. Twenty-five builder
+           +s' worktrees stand under `.claude/worktrees/` with their bran
+           +ches, four of them locked by the harness, as the Resumption l
+           +ists them. Both chats' logs are on the volume.               
+      1274 +- **The public CI run after the owner's push, read from GitHu
+           +b's public record without a token:** at `69af42cd9` CI passed
+           + (run 351, 03:30 to 03:33 UTC), the Pages run passed in three
+           + and a half minutes (run 279; the push changed no code the hi
+           +story is keyed on) and CodeQL passed. The two red CI runs bef
+           +ore it (349, 350) are the landing's, mended by `0dd9e61d`. So
+           + Node 26 holds on GitHub.                                    
+      1275 +- **First things, in the Resumption's order.** `npm ci` (exit
+           + 0; npm names the same three packages whose install scripts i
+           +t did not run) and `npm run build` (exit 0) under Node 26. Th
+           +e gate without the browser was started at 03:44 UTC; its resu
+           +lt is in the notes that follow.                              
+      1276 +- **Lines not shown.** This chat's log shows root's first lin
+           +e as a message (03:42:43). Four later lines root wrote betwee
+           +n tool calls, each a sentence on where the startup read stood
+           +, are not in the log as messages and are counted as not told;
+           + the reply that ends the turn carries what they said.        
+
+● Update(AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026-11-19.1.
+        record.md)
+  ⎿  Added 2 lines
+       8 
+       9  **Startup coverage, complete before the reply to Turn 1.** Read
+           in full, each to its last line: `AGENTS.md`, as the harness su
+          pplies it; [the archive's README](../../../README.md) (106 line
+          s) and [the workspace's README](../../../../README.md) (20 line
+          s); `Memory/owner.md` (395 lines, in three ranges); `Memory/ide
+          as.md` (173 lines, in two ranges); `Memory/direction.md` (374 l
+          ines, in seven ranges); `Memory/narrative.md` (420 lines, in fi
+          ve ranges); the five latest summaries, oldest to newest (Novemb
+          er 13, 15, 16 and 17, each in one read; November 18, 482 lines,
+           in two ranges); and [the vision](../../../../../.mdmd/layer-1/
+          vision.mdmd.md) (127 lines). The file tool gave each large file
+           in ranges, and each read went on until its file ended. Of the
+          November 18 record, read: its Coverage and Resumption (lines 1
+          to 40) and everything from Turn 40 to its end (lines 5,931 to 6
+          ,074). Also read for the day's briefs: the fifteen forks in [th
+          e design system's findings](../2026-11-18/Probes/design-system/
+          README.md#the-owners-forks), and the first eighty lines of [the
+           playtest instrument's README](../../../../scripts/playtest/REA
+          DME.md). **Not read:** the rest of the November 18 record (5,89
+          0 lines), which the summary stands for; the owner's export of t
+          hat chat beyond its last sixty lines; the design system's three
+           documents; the Explorer design and the decisions log.
+      10 
+      11 +**A second root, from Turn 15.** The owner rebuilt the dev cont
+         +ainer for Node 26 and opened a new chat at 03:42 UTC on Novembe
+         +r 20 for "night work of November 19th": the same dev day and th
+         +e same record, as on November 17 and 18. The second root is Cla
+         +ude Code in the VS Code extension, model Fable 5.2 (`claude-fab
+         +le-5-2`) as stated by the harness; its log stands on the same v
+         +olume as `452088fb-c0c8-41e4-873b-94af195b79e5.jsonl`. **Its st
+         +artup coverage, complete before its first reply.** Read in full
+         +, each to its last line: `AGENTS.md`, as the harness supplies i
+         +t; the archive's README (106 lines) and the workspace's README 
+         +(20 lines); `Memory/owner.md` (397 lines, in two ranges); `Memo
+         +ry/direction.md` (386 lines, in six ranges); `Memory/ideas.md` 
+         +(177 lines, in two ranges); `Memory/narrative.md` (420 lines, i
+         +n five ranges); the five latest summaries, oldest to newest (No
+         +vember 13, 15, 16 and 17, each in one read; November 18, 483 li
+         +nes, in two ranges); this record from its first line to its las
+         +t as the first root left it (1,227 lines, in seven ranges); [th
+         +e vision](../../../../../.mdmd/layer-1/vision.mdmd.md) (127 lin
+         +es); and [the red cases' record](Probes/landing-reds/README.md)
+         + (75 lines). **Not read:** the owner's export beyond its prompt
+         + lines and its last 1,500 bytes; the day's eighteen other probe
+         + records, each to be read when its branch is briefed; the desig
+         +n system's documents, the Explorer design and the decisions log
+         +.                                                              
+      12 +                                                               
+      13  ## Resumption
+      14 
+      15  Written at 17:23 UTC on November 19 by root, and kept level sin
+          ce. After a compaction, read this section first, then the turns
+           it links.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Record written for this chat; the gate is in its integration stage. While it
+  finishes I'm reading the history rebuild's probe so the first builder's brief
+  states what was already measured.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Still waiting on the gate (unit stage now). Meanwhile I'm collecting which
+  files the parked branches hold, so tonight's builders' briefs don't collide
+  with them.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Run the gate without the browser stage" completed (exit
+  code 0)
+
+● The gate without the browser passes on Node 26, and I'm now bringing the
+  history up to main's head (11 commits), which will also give the first rebuild
+  timing under Node 26. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 3 background agents launched (↓ to manage)
+   ├ Focus case's centring fault
+   ├ History rebuild speed measured
+   └ Browser suite and page load timing
+
+● Three builders are out (the focus case's fault, the history rebuild's speed,
+  and where the browser suite's time goes). Recording that and setting the
+  fallback timer, then your first full reply.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● You don't need to do anything tonight. The container is healthy on Node 26,
+  and three builders are working on iteration speed and the last red browser
+  case.
+
+  Where things stand
+
+  - Read at startup, each in full: the guide, the four Memory documents, the
+    five latest summaries (November 13 to 18), last night's record to its last
+    line, and the vision.
+  - Node 26 holds here and on GitHub. The gate without the browser is green
+    (2,680 unit, 231 integration, audits clean). CI and the Pages run both
+    passed on your push.
+  - The history is at main's head and checked against the committed docs.
+  - This chat continues yesterday's record from Turn 15, as on November 17
+    and 18. The session summary gets written at its close.
+  - Your preview server went with the rebuild. To restart it: npx http-server
+    dist/explorer -p 8999 -c-1. That folder still holds the build from before
+    the engine round; I'll rebuild it before I send you new links.
+
+  Running now
+
+  Builder: Focus case
+  What it is doing: Finding why "Centre on" leaves graph.ts 14 to 46 px off
+    centre in 3D on today's map, and fixing the cause, whether that is the
+    page or the test.
+  ────────────────────────────────────────
+  Builder: History rebuild speed
+  What it is doing: Measuring only, for now. Twelve commits regenerated
+    together took 66 s each tonight under Node 26; one alone took about 20 s
+    on Node 22. So Node 26 did not fix the slowdown when many run at once. The
+    command also spends about 100 s per run on work that is not regeneration.
+  ────────────────────────────────────────
+  Builder: Browser suite time
+  What it is doing: Measuring only: where the 41 minutes go, what a page load
+    costs, and which time limits are your alarms versus plain waits.
+
+  Next in order: build the cheapest rebuild speed-up behind an independent
+  review, run the whole browser stage once on a quiet machine, then land the
+  SQL, PowerShell and .NET readers.
+
+  Waiting on you, whenever you're back
+
+  For your eye:
+  - The packet (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screen
+    shots/owner-packet/README.md): twelve questions with pictures and links, and
+    alternatives built for five. Settle Hold (3D, question 1) decides the other
+    red case.
+  - Whether the 2D map may rearrange a card you are reading: the pictures
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/search-stop/README.md) and the trial
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/search-stop-alternatives/README.md).
+
+  A word from you:
+  1. Undo. Back walks through every act; or a second history for acts beside
+     Back (my recommendation, pins first); or only destructive acts become Back
+     steps. The survey (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-1
+     9/Probes/reversibility/README.md).
+  2. A click on a pinned 3D sphere unpins it and replaces the picture. Five of
+     six blind testers did that first. Should it? 3D packet, question 2
+     (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owne
+     r-packet/3d/README.md).
+  3. SQL system catalog names (sys, INFORMATION_SCHEMA) no longer drawn as
+     connections. This revises your word of October 9; I recommend it. The SQL
+     record (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sq
+     l-reader/README.md).
+  4. The linked server. Which board piece carries the line saying what its name
+     stands for: the SQL Server piece or the Oracle piece? The several-folders
+     run (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/many-
+     scans/README.md).
+  5. Documents as nodes. Three things are open: whether a document with no links
+     in or out is drawn, how a document looks in 2D, and what one switch keeps
+     out. As put (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026
+     -11-19.1.record.md#roots-message-of-0034-utc-on-november-20-as-delivered-do
+     cuments-as-nodes).
+  6. The old history cache (251 MB, its comparison done): remove it?
+  7. Every picture file gets a doc (a fifth of one test codebase's docs). Your
+     rule of October 15 says yes; confirm or narrow.
+  8. December. What may leave the work machine; roughly how much code, and git
+     or TFS; which shapes it has most of (scripts calling each other's
+     functions, scripts running SQL, user controls, procedures named from C#).
+     Public repositories that resemble it are welcome.
+
+  Stands unless you object: a real history failure on Pages deploys the site and
+  then ends the run red; "uses a definition" links in C maps ranked low; the
+  two archive filing calls; the design system's fifteen forks
+  (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-syste
+  m/README.md#the-owners-forks), each with my recommendation.
+
+● You don't need to do anything tonight. The container is healthy on Node 26,
+  and three builders are working on iteration speed and the last red browser
+  case.
+
+  Where things stand
+
+  - Read at startup, each in full: the guide, the four Memory documents, the
+    five latest summaries (November 13 to 18), last night's record to its last
+    line, and the vision.
+  - Node 26 holds here and on GitHub. The gate without the browser is green
+    (2,680 unit, 231 integration, audits clean). CI and the Pages run both
+    passed on your push.
+  - The history is at main's head and checked against the committed docs.
+  - This chat continues yesterday's record from Turn 15, as on November 17
+    and 18. The session summary gets written at its close.
+  - Your preview server went with the rebuild. To restart it: npx http-server
+    dist/explorer -p 8999 -c-1. That folder still holds the build from before
+    the engine round; I'll rebuild it before I send you new links.
+
+  Running now
+
+  Builder: Focus case
+  What it is doing: Finding why "Centre on" leaves graph.ts 14 to 46 px off
+    centre in 3D on today's map, and fixing the cause, whether that is the
+    page or the test.
+  ────────────────────────────────────────
+  Builder: History rebuild speed
+  What it is doing: Measuring only, for now. Twelve commits regenerated
+    together took 66 s each tonight under Node 26; one alone took about 20 s
+    on Node 22. So Node 26 did not fix the slowdown when many run at once. The
+    command also spends about 100 s per run on work that is not regeneration.
+  ────────────────────────────────────────
+  Builder: Browser suite time
+  What it is doing: Measuring only: where the 41 minutes go, what a page load
+    costs, and which time limits are your alarms versus plain waits.
+
+  Next in order: build the cheapest rebuild speed-up behind an independent
+  review, run the whole browser stage once on a quiet machine, then land the
+  SQL, PowerShell and .NET readers.
+
+  Waiting on you, whenever you're back
+
+  For your eye:
+  - The packet (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screen
+    shots/owner-packet/README.md): twelve questions with pictures and links, and
+    alternatives built for five. Settle Hold (3D, question 1) decides the other
+    red case.
+  - Whether the 2D map may rearrange a card you are reading: the pictures
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/search-stop/README.md) and the trial
+    (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner
+    -packet/search-stop-alternatives/README.md).
+
+  A word from you:
+  1. Undo. Back walks through every act; or a second history for acts beside
+     Back (my recommendation, pins first); or only destructive acts become Back
+     steps. The survey (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-1
+     9/Probes/reversibility/README.md).
+  2. A click on a pinned 3D sphere unpins it and replaces the picture. Five of
+     six blind testers did that first. Should it? 3D packet, question 2
+     (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Screenshots/owne
+     r-packet/3d/README.md).
+  3. SQL system catalog names (sys, INFORMATION_SCHEMA) no longer drawn as
+     connections. This revises your word of October 9; I recommend it. The SQL
+     record (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sq
+     l-reader/README.md).
+  4. The linked server. Which board piece carries the line saying what its name
+     stands for: the SQL Server piece or the Oracle piece? The several-folders
+     run (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/many-
+     scans/README.md).
+  5. Documents as nodes. Three things are open: whether a document with no links
+     in or out is drawn, how a document looks in 2D, and what one switch keeps
+     out. As put (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2026
+     -11-19.1.record.md#roots-message-of-0034-utc-on-november-20-as-delivered-do
+     cuments-as-nodes).
+  6. The old history cache (251 MB, its comparison done): remove it?
+  7. Every picture file gets a doc (a fifth of one test codebase's docs). Your
+     rule of October 15 says yes; confirm or narrow.
+  8. December. What may leave the work machine; roughly how much code, and git
+     or TFS; which shapes it has most of (scripts calling each other's
+     functions, scripts running SQL, user controls, procedures named from C#).
+     Public repositories that resemble it are welcome.
+
+  Stands unless you object: a real history failure on Pages deploys the site and
+  then ends the run red; "uses a definition" links in C maps ranked low; the
+  two archive filing calls; the design system's fifteen forks
+  (AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Probes/design-syste
+  m/README.md#the-owners-forks), each with my recommendation.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/2
+     026-11-19.1.record.md
+  ⎿  Read AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/landi
+     ng-reds/README.md (75 lines)
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md  ⎿  Referenced file AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/P
+     robes/history-rebuild-cost/README.md
+
+● Task "History rebuild speed measured" still running in background
+
+● Task "Browser suite and page load timing" still running in background
+
+● Task "Focus case's centring fault" still running in background
+
+● Task "Fifty-minute fallback timer while the night's builders run" still
+  running in background
+
+❯ >Undo. Back walks through every act; or a second history for acts beside Back
+  (my recommendation, pins first); or only destructive acts become Back steps.
+
+  - Pros: you don't have to click back a ton to go back to the website you were
+  previously at (I just experienced this going from github to the hosted
+  github pages explorer)
+  - Cons: your current URL is no longer the basic shareable unit. Link
+  generation becomes more independent of present URL. Bookmarking does not
+  return a user to the state they bookmarked.
+
+  >A click on a pinned 3D sphere unpins it and replaces the picture. Five of
+  six blind testers did that first. Should it?
+
+  Probably not. We probably need to go back to the UX drawing board and be
+  holistic with respect to "Open/Close" and "Pin" states. We talked about this
+  fairly extensively on the 11/18 dev day chat.
+
+  >SQL system catalog names (sys, INFORMATION_SCHEMA) no longer drawn as
+  connections. This revises your word of October 9; I recommend it.
+
+  That's fine if you wish to no longer draw them as connections. Balance the
+  potentially-competing concerns of:
+  - Simplicity of the resultant codebase/architecture
+  - Aesthetics of the typical view
+  - Strong correctness guarantees (no false positives or false negatives in a
+  scan)
+
+  >The linked server. Which board piece carries the line saying what its name
+  stands for: the SQL Server piece or the Oracle piece?
+
+  That is a great question. I would generally suspect the SQL Server piece?
+
+  >Documents as nodes. Three things are open: whether a document with no links
+  in or out is drawn, how a document looks in 2D, and what one switch keeps
+  out.
+
+  This and "Assets" should haunt you a bit. (Indeed, perhaps a Document is an
+  "Asset"-archetyped node which is capable of carrying symbols (markdown
+  headers). Because we're going to run into situations where these objects --
+  "Assets" -- vastly outnumber non-asset files. And what we'll want to be
+  thinking about what we want to do when we encounter those and similar
+  situations. (And whether the emergent render is just fine without worrying
+  too much about it).
+
+  Should documents which have no references be nodes?
+
+  Should other source control-tracked scanned files be ignored in general? I
+  guess we ignore packages folders in scans but isn't that also a function of
+  the gitignore? I guess what I mean to say is: why should the scan ignore them
+  if git won't? Should it be optional/configurable? Yes! Folks should be able
+  to configure what file formats and paths they scan and... well, we indeed
+  have such configuration, no?
+
+  >The old history cache (251 MB, its comparison done): remove it?
+
+  Clean up as needed. Remove it.
+
+  >Every picture file gets a doc (a fifth of one test codebase's docs). Your
+  rule of October 15 says yes; confirm or narrow.
+
+  (Or gets an entry of some sort in whatever datastore exists to represent
+  things which have been scanned)
+
+  >December. What may leave the work machine; roughly how much code, and git or
+  TFS; which shapes it has most of (scripts calling each other's functions,
+  scripts running SQL, user controls, procedures named from C#). Public
+  repositories that resemble it are welcome.
+
+  I will look into that and see if I can find some public repos which resemble
+  what we have. That's a good idea.
