@@ -60,12 +60,12 @@ async function holdAlong(repository: string, changes: readonly string[], configu
   const versionControl = await openGitRepository(repository);
   const folder = fs.mkdtempSync(path.join(privateTemporary, "along-"));
   let forward = 0;
-  let directory = path.join(folder, "t0");
+  const directory = path.join(folder, "tree00");
   let tree = await versionControl.workingTree(changes[0], directory, treeOptions(configuration, directory));
   try {
     for (let index = 1; index < changes.length; index += 1) {
       await between(tree);
-      directory = path.join(folder, `t${index}`);
+      const before = tree.root;
       tree = await tree.bringTo(changes[index], treeOptions(configuration, tree.root));
       if (tree.broughtForward) forward += 1;
       const oracle = await writtenAnew(repository, changes[index], configuration);
@@ -75,8 +75,16 @@ async function holdAlong(repository: string, changes: readonly string[], configu
       expect([...oracle.entries.keys()].filter((entry) => !brought.has(entry)), `${label}: entries the new tree holds and the brought one does not`).toEqual([]);
       for (const [entry, value] of oracle.entries) expect(brought.get(entry), `${label}: ${entry}`).toBe(value);
       expect(tree.unwritten, `${label}: the entries left out`).toEqual(oracle.unwritten);
-      // Nothing of an earlier tree is left beside the one in use: its folder and its index went with it.
-      expect(fs.readdirSync(folder).sort(), `${label}: the folder holding the trees`).toEqual([`t${index}`, `t${index}.index`]);
+      // A tree brought forward stays in its folder, and nothing else stands beside it but its index; one written anew
+      // stands in a fresh folder of a name as long, the one that could not be put right left beside it for the worker's end.
+      const name = path.basename(tree.root);
+      if (tree.broughtForward) {
+        expect(tree.root, `${label}: the tree's folder`).toBe(before);
+        expect(fs.readdirSync(folder).sort(), `${label}: the folder holding the trees`).toEqual([name, `${name}.index`]);
+      } else {
+        expect(name, `${label}: the fresh folder's name`).toHaveLength(path.basename(before).length);
+        expect(fs.readdirSync(folder), `${label}: the folder holding the trees`).toEqual(expect.arrayContaining([name, `${name}.index`, path.basename(before)]));
+      }
     }
   } finally {
     await tree.remove();
