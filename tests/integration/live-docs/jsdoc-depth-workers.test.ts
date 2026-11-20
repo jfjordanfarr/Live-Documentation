@@ -66,8 +66,11 @@ describe("a JSDoc comment nested between a fresh process's limit and a warm one'
     const apart = fs.mkdtempSync(path.join(privateTemporary, "apart-"));
     const commits = buildRepository(together, script);
     expect(buildRepository(apart, script)).toEqual(commits);
-    history(together, 1);
+    const one = history(together, 1);
     history(apart, commits.length);
+    // The warm worker read the file and was marked for its depth, so that the change went to a fresh worker: without
+    // this the case would stay green on a Node that warms less, where both workers leave the file out.
+    expect(one).toContain(`${commits[1].slice(0, 8)}: its worker, which had summarized earlier changes, was marked: a file nested beyond the reading depth; summarized again in a fresh worker`);
     const a = summaries(together);
     const b = summaries(apart);
     const last = `${commits[1]}.json.gz`;

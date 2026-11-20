@@ -53,6 +53,9 @@ const indented = (line: string, n: number, last: string): string =>
  */
 type Construct = [name: string, file: string, text: (n: number) => string, chain?: "chain"];
 
+/** What the comparisons of the constructs below compare and call. */
+const COMPARED = "declare function f(...a: unknown[]): void;\ndeclare const a: any;\n";
+
 /** A JSDoc comment holding `tag`, on a declaration. */
 const jsDoc = (tag: string, declaration = "export const x = 1;"): string => `/** ${tag} */\n${declaration}\n`;
 
@@ -103,9 +106,23 @@ const CONSTRUCTS: Construct[] = [
   ["TypeScript: a + (b + (…))", "m.ts", (n) => `declare const a: number;\nexport const x = ${r("a + (", n)}a${r(")", n)};\n`],
   ["TypeScript: a[a[…]]", "m.ts", (n) => `declare const a: any;\nexport const x = ${r("a[", n)}0${r("]", n)};\n`],
   ["TypeScript: !!a", "m.ts", (n) => `declare const a: unknown;\nexport const x = ${r("!", n)}a;\n`],
-  // `<` is nesting: the parser tries each operand as an expression with type arguments, through every later `<`.
+  // At each `<` the parser first tries type arguments, through every later `<` its list of types reaches, and throws
+  // the attempt away: the measure counts a statement's comparisons (`Region` in `processMark.ts`).
   ["TypeScript: a < b < …", "m.ts", (n) => `declare const a: number;\nexport const x = a${r(" < a", n)};\n`],
   ["TypeScript: a < (b < (…))", "m.ts", (n) => `declare const a: any;\nexport const x = ${r("a < (", n)}a${r(")", n)};\n`],
+  ...(["m.ts", "m.tsx"] as const).flatMap((file): Construct[] => [
+    [`comparisons side by side in ${file}: f(a < a, a < a, …)`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a < a").join(", ")});\n`],
+    [`comparisons side by side in ${file}: [a < a, a < a, …]`, file, (n) => `${COMPARED}export const x = [${Array.from({ length: n }, () => "a < a").join(", ")}];\n`],
+    [`comparisons joined by | in ${file}`, file, (n) => `${COMPARED}export const x = ${Array.from({ length: n }, () => "a < a").join(" | ")};\n`],
+    [`comparisons joined by & in ${file}`, file, (n) => `${COMPARED}export const x = ${Array.from({ length: n }, () => "a < a").join(" & ")};\n`],
+    [`comparisons with an arrow's expression body between, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a < a, () => a < a").join(", ")});\n`],
+    [`comparisons with an arrow's block body between, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a < a, () => { a < a; }").join(", ")});\n`],
+    [`comparisons of !a side by side, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "!a < a").join(", ")});\n`],
+    [`comparisons of typeof a side by side, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "typeof a < a").join(", ")});\n`],
+    [`comparisons of a.b side by side, in ${file}`, file, (n) => `${COMPARED}f(${Array.from({ length: n }, () => "a.b < a.b").join(", ")});\n`],
+    [`comparisons in nested parentheses, in ${file}`, file, (n) => `${COMPARED}f(${r("a < a, (", n)}a${r(")", n)});\n`],
+    [`comparisons in a tuple's place, in ${file}`, file, (n) => `${COMPARED}f(${r("a < a, [", n)}a${r("]", n)});\n`]
+  ]),
   // The steps the parser's loops take that the measure counted as nesting until 2026-11-20: chains.
   ["TypeScript: a!!…", "m.ts", (n) => `declare const a: any;\nexport const x = a${r("!", n)};\n`, "chain"],
   ["TypeScript: a as … as …", "m.ts", (n) => `declare const a: any;\nexport const x = a${r(" as any", n)};\n`, "chain"],
@@ -122,6 +139,11 @@ const CONSTRUCTS: Construct[] = [
     [`JSDoc in ${file}: a template's default`, file, (n) => jsDoc(`@template [T=${r("[", n)}number${r("]", n)}]`, "export function f() {}")],
     [`JSDoc in ${file}: an augmented class's type arguments`, file, (n) => jsDoc(`@augments {A<${r("Array<", n)}number${r(">", n)}>}`, "export class C extends Object {}")],
     [`JSDoc in ${file}: a typedef's namespaces`, file, (n) => jsDoc(`@typedef {number} ${r("a.", n)}b`)],
+    [
+      `JSDoc in ${file}: nested parameters, then a deep tag tried as their child and thrown away`,
+      file,
+      (n) => `/**\n${Array.from({ length: n }, (_, i) => ` * @param {Object} ${Array.from({ length: i + 1 }, () => "a").join(".")}\n`).join("")} * @param {${r("[", n)}number${r("]", n)}} b\n */\nexport function f(a, b) {}\n`
+    ],
     [
       `JSDoc in ${file}: nested parameters`,
       file,

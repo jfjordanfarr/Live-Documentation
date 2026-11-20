@@ -12,6 +12,7 @@ Holds that a JSDoc comment nested between a fresh process's limit and a warm wor
 
 ### Notes
 - Written on 2026-11-20 from an independent reviewer's run with real workers: `ts.forEachChild` never reaches a node's JSDoc, so the reading depth's measure counted the tuple 5, and the warm worker published the file unmarked. Seen red with the measure's JSDoc walk taken out: the warm summary held `src/doc.ts`, the fresh one named it unmapped. The record is the third round of [the probe's record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-speed/depth-probe.md).
+- On the reviewer's second look the case also asserts the one-worker run's line that its worker was marked for a file nested beyond the reading depth. Without it the case would stay green with the JSDoc walk removed on a Node that warms less, where both workers leave the file out. Seen red on that line with the walk taken out.
 - Takes about 8 s.
 
 ## Generated
