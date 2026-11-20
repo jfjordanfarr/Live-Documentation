@@ -1,15 +1,13 @@
 #!/usr/bin/env node
-import { globSync } from "glob";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-
-import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
 
 import {
   findBrokenAssetReferences,
   type AssetReferenceIssue
 } from "./assetPaths";
+import { auditedFiles } from "./auditedFiles";
 import {
   compileIgnorePatterns,
   loadSlopcopConfig,
@@ -72,7 +70,7 @@ const DEFAULT_PATTERNS = ["**/*.html", "**/*.htm", "**/*.css", "**/*.scss", "**/
       path.isAbsolute(entry) ? entry : path.resolve(workspaceRoot, entry)
     );
 
-    const files = withoutGitIgnored(workspaceRoot, collectAssetFiles(workspaceRoot, includeGlobs, ignoreGlobs));
+    const files = auditedFiles(workspaceRoot, includeGlobs, ignoreGlobs);
     const issues = files.flatMap((file) =>
       findBrokenAssetReferences(file, {
         workspaceRoot,
@@ -146,29 +144,6 @@ function parseArgs(argv: string[]): ParsedArgs {
   }
 
   return parsed;
-}
-
-function collectAssetFiles(
-  workspaceRoot: string,
-  patterns: string[],
-  ignoreGlobs: string[]
-): string[] {
-  const discovered = new Set<string>();
-
-  for (const pattern of patterns) {
-    const matches = globSync(pattern, {
-      cwd: workspaceRoot,
-      ignore: ignoreGlobs,
-      nodir: true,
-      dot: true
-    });
-
-    for (const match of matches) {
-      discovered.add(path.resolve(workspaceRoot, match));
-    }
-  }
-
-  return Array.from(discovered).sort();
 }
 
 function toRelative(filePath: string, workspaceRoot: string): string {

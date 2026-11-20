@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/slopcop/check-symbols.ts`
 - Entry: command `slopcop:symbols` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.614Z
+- Generated At: 2026-11-20T06:46:52.296Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Validates markdown symbol anchors across the workspace, flagging duplicate headi
 - Uses `slopcop.config.json` to drive include/ignore globs and severity overrides, returning exit code 3 when anomalies exist so CI surfaces failures without aborting the process outright.
 - The `--json` flag mirrors what the integration tests expect, allowing fixture runs to assert on specific issues while the human-readable formatter groups results by top-level folder for triage.
 - Since 2026-11-18 the built-in ignore list leaves out the session archive's records, captures, summaries and inventories by their depth under `AgentSessionHistory/`, and reads each day's `Probes/`, `Research/` and `Screenshots/`: the same files as before the archive moved into one directory per dev day ([where things are](../../../../AI-Agent-Workspace/AgentSessionHistory/README.md#where-things-are)).
+- Since 2026-11-20 its files come from [`auditedFiles`](./auditedFiles.ts.mdmd.md), which does not read the folders git ignores whole: in the main checkout the same 1,692 files and findings in 1.9 s instead of 19.0 s ([the probe](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/walk-prune/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -25,11 +26,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `globSync`
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`gitIgnored.withoutGitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-withoutgitignored)
+- [`auditedFiles`](./auditedFiles.ts.mdmd.md#symbol-auditedfiles)
 - [`config.SlopcopSymbolConfig`](./config.ts.mdmd.md#symbol-slopcopsymbolconfig)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)

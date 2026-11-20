@@ -1,11 +1,9 @@
 #!/usr/bin/env node
-import { globSync } from "glob";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
-
+import { auditedFiles } from "./auditedFiles";
 import {
   compileIgnorePatterns,
   loadSlopcopConfig,
@@ -68,7 +66,7 @@ const DEFAULT_PATTERNS = ["**/*.md", "**/*.mdmd", "**/README", "**/README.md"];
     const patterns = resolveIncludeGlobs(config, "markdown", DEFAULT_PATTERNS);
     const ignoreTargetPatterns = compileIgnorePatterns(config, "markdown");
 
-    const files = withoutGitIgnored(workspaceRoot, collectMarkdownFiles(workspaceRoot, patterns, ignoreGlobs));
+    const files = auditedFiles(workspaceRoot, patterns, ignoreGlobs);
     const issues = files.flatMap(file =>
       findBrokenMarkdownLinks(file, {
         workspaceRoot,
@@ -141,30 +139,6 @@ function parseArgs(argv: string[]): ParsedArgs {
   }
 
   return parsed;
-}
-
-function collectMarkdownFiles(
-  workspaceRoot: string,
-  patterns: string[],
-  ignoreGlobs: string[]
-): string[] {
-  const discovered = new Set<string>();
-
-  for (const pattern of patterns) {
-    const matches = globSync(pattern, {
-      cwd: workspaceRoot,
-      ignore: ignoreGlobs,
-      nodir: true,
-      dot: true
-    });
-
-    for (const match of matches) {
-      const absolute = path.resolve(workspaceRoot, match);
-      discovered.add(absolute);
-    }
-  }
-
-  return Array.from(discovered).sort();
 }
 
 function toRelative(filePath: string, workspaceRoot: string): string {
