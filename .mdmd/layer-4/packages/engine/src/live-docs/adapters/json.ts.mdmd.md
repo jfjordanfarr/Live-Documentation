@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-20T14:44:17.881Z
+- Generated At: 2026-11-20T15:12:45.856Z
 
 ## Authored
 ### Purpose
@@ -77,6 +77,7 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
+- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

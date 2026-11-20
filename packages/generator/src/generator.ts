@@ -379,7 +379,12 @@ function noteReading(readings: SourceReadings, sourcePath: string, reading: Sour
  * A doc the reader reads, or one that holds authored words, is left as it is.
  */
 async function removeRefusedDoc(docAbsolutePath: string, dryRun: boolean): Promise<void> {
-  const text = await readFileIfExists(docAbsolutePath);
+  // A doc path longer than the disk holds holds no doc: the file is named as one that could not be mapped, and the run
+  // goes on (until 2026-11-20 this read's failure stopped the whole run).
+  const text = await readFileIfExists(docAbsolutePath).catch((error: unknown) => {
+    if ((error as NodeJS.ErrnoException).code === "ENAMETOOLONG") return undefined;
+    throw error;
+  });
   if (text === undefined || dryRun) {
     return;
   }

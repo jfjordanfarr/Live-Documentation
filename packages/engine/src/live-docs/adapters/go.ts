@@ -28,7 +28,7 @@ import path from "node:path";
 import { goSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -469,7 +469,8 @@ async function buildPackageTable(workspaceRoot: string, fileIndex: WorkspaceFile
     let facts: FileFacts;
     try {
       facts = await fileFacts(path.join(workspaceRoot, file));
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       continue;
     }
     const directory = normalizeWorkspacePath(path.dirname(file)) || ".";
@@ -504,7 +505,8 @@ async function moduleOf(absolutePath: string, workspaceRoot: string): Promise<Go
       const content = await readSourceText(path.join(directory, "go.mod"));
       const match   = /^module\s+(\S+)/mu.exec(content);
       if (match) return { path: match[1], root: normalizeWorkspacePath(path.relative(workspaceRoot, directory)) || "." };
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       // no go.mod here; look one level up
     }
     const parent = path.dirname(directory);

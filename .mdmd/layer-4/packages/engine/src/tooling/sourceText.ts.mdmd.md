@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/sourceText.ts`
-- Generated At: 2026-11-19T22:40:10.873Z
+- Generated At: 2026-11-20T15:12:46.680Z
 
 ## Authored
 ### Purpose
@@ -20,14 +20,14 @@ The one reading step for a source file's text: a byte-order mark decides (UTF-8,
 ### Public Symbols
 #### `SourceTextReading` {#symbol-sourcetextreading}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L38)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L40)
 
 ##### `SourceTextReading` — Summary
 How a file's bytes became text, or why they did not.
 
 #### `decodeSourceText` {#symbol-decodesourcetext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L46)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L48)
 - Returns: [`SourceTextReading`](#symbol-sourcetextreading)
 
 ##### `decodeSourceText` — Summary
@@ -35,7 +35,7 @@ A file's bytes read by the rule of this module.
 
 #### `unmarkedUtf16` {#symbol-unmarkedutf16}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L80)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L82)
 
 ##### `unmarkedUtf16` — Summary
 The byte order of UTF-16 without a mark, where it is certain: an even, non-zero number of bytes in which every
@@ -44,14 +44,26 @@ pair is one zero byte and one byte that is not zero, the zero always on the same
 
 #### `readSourceText` {#symbol-readsourcetext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L99)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L101)
 
 ##### `readSourceText` — Summary
 A source file's text, for a language reader: read by {@link decodeSourceText}, and empty when the bytes are not
 text this step knows, so that such a file is read as holding nothing and the run goes on; the generator names it.
+
+#### `throwIfMachineFailure` {#symbol-throwifmachinefailure}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L113)
+
+##### `throwIfMachineFailure` — Summary
+For a catch around a read or a probe of a file that reads a failure as "not read" or "not there": throws on a failure
+of the machine's (`machineFailure`: too many open files, a full disk, a file another process holds), so that it
+reaches the generator's catch, which names it, and the history writes no summary made with it; returns for any
+other, absence (`ENOENT`) among them, which is the file's answer. Since 2026-11-20; before, every such catch
+swallowed the machine's failures too, and a file read in one went into a summary as empty.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `promises`
+- [`processMark.machineFailure`](../live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
 <!-- LIVE-DOC:END Dependencies -->

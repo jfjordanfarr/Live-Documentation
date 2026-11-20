@@ -29,7 +29,7 @@ import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
@@ -562,7 +562,8 @@ export const jsonAdapter: LanguageAdapter = {
     let content: string;
     try {
       content = await readSourceText(absolutePath);
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       return null;
     }
 

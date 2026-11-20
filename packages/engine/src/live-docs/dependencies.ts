@@ -14,7 +14,7 @@ import ts from "typescript";
 
 import { compareText } from "../tooling/compareText";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
-import { readSourceText } from "../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../tooling/sourceText";
 import { MODULE_RESOLUTION_EXTENSIONS, SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DependencyEntry,
@@ -22,7 +22,7 @@ import type {
   ReExportedSymbolInfo
 } from "./coreTypes";
 import { displayDependencyKey, getNodeLocation } from "./coreUtils";
-import { machineFailure, typeScriptBeyondDepth } from "./processMark";
+import { typeScriptBeyondDepth } from "./processMark";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 
 // ============================================================================
@@ -402,7 +402,8 @@ async function fileExists(candidate: string): Promise<boolean> {
   try {
     const stats = await fs.stat(candidate);
     return stats.isFile();
-  } catch {
+  } catch (error) {
+    throwIfMachineFailure(error);
     return false;
   }
 }
@@ -542,7 +543,7 @@ async function gatherExportedSymbolsFromFile(params: {
   } catch (error) {
     // A file that cannot be read is read as exporting nothing, but a failure of the machine's (too many open files, a
     // file Windows holds) is no property of the file and is thrown, so that no summary is made with it (`processMark.ts`).
-    if (machineFailure(error)) throw error;
+    throwIfMachineFailure(error);
     params.stack.delete(normalized);
     params.cache.set(normalized, []);
     return [];

@@ -25,7 +25,7 @@ import path from "node:path";
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -561,7 +561,8 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
     let facts: FileFacts;
     try {
       facts = await fileFacts(path.join(workspaceRoot, file));
-    } catch {
+    } catch (error) {
+      throwIfMachineFailure(error);
       continue;
     }
     for (const type of facts.types) tableType(table, facts.package, file, type);
