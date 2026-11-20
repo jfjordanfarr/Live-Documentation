@@ -106,7 +106,8 @@ async function main() {
   const wall = (performance.now() - began) / 1000;
   clearInterval(sampler);
   const after = { stat: procStat(), load: loadavg() };
-  const done = lines.filter(([, line]) => / regenerated: /u.test(line));
+  // A change's own line, not the warnings' summary lines, which also say "changes regenerated: ".
+  const done = lines.filter(([, line]) => /^\d+\/\d+ regenerated: /u.test(line));
   const anew = done.filter(([, line]) => line.includes("its tree written anew")).length;
   const perWorker = [...workers.values()].map((worker) => ({
     samples: worker.samples.length,
