@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { HISTORY_FOLDERS, keyedLockEntries, keysTheLens, LOCK_ROOTS, lockIdentity, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
+import { HISTORY_FOLDERS, installationDifference, keyedLockEntries, keysTheLens, LOCK_ROOTS, lockIdentity, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
 import { summarizingEnvironment, summarizingFlags } from "./regenerate";
 import { treeOptions } from "./summarizeChange";
 
@@ -430,7 +430,7 @@ describe("the lock's half of the lens's key", () => {
     expect([...keyedLockEntries(packages, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/a", "node_modules/a/node_modules/b", "node_modules/b", "node_modules/c", "packages/w"]);
     const onlyA = { ...packages, "packages/w": { dependencies: { a: "^1" } } };
     expect([...keyedLockEntries(onlyA, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/a", "node_modules/a/node_modules/b", "packages/w"]);
-    // A scoped package's nested entry, and the scope's folder passed over on the way up.
+    // A scoped package's nested entry wins over the hoisted one for the package that holds it.
     const scoped = { "packages/w": { dependencies: { "@s/a": "^1" } }, "node_modules/@s/a": { dependencies: { b: "^2" } }, "node_modules/@s/a/node_modules/b": { version: "2.0.0" }, "node_modules/b": { version: "3.0.0" } };
     expect([...keyedLockEntries(scoped, ["packages/w"], []).keys()].sort()).toEqual(["node_modules/@s/a", "node_modules/@s/a/node_modules/b", "packages/w"]);
     // A root is found from the folder it names, nearest first.
@@ -446,9 +446,33 @@ describe("the lock's half of the lens's key", () => {
       "packages/y/node_modules/d": { version: "1.0.0" },
       "node_modules/d": { version: "2.0.0" }
     };
-    const keyed = keyedLockEntries(packages, ["packages/x"], []);
+    const keyed = keyedLockEntries(packages, ["packages/x", "packages/y"], []);
     expect([...keyed.keys()].sort()).toEqual(["node_modules/@s/y", "packages/x", "packages/y", "packages/y/node_modules/d"]);
     expect(keyed.get("node_modules/@s/y")).toEqual({ resolved: "packages/y", link: true });
+  });
+
+  it("refuses a link to a folder whose files the code half does not key", () => {
+    // A `file:` folder dependency: npm writes a link and a folder entry with a version, and the folder's files would be
+    // keyed by that version alone (the review of 2026-11-20).
+    const packages = {
+      "packages/x": { dependencies: { z: "file:../../lib/z" } },
+      "node_modules/z": { resolved: "lib/z", link: true },
+      "lib/z": { version: "1.0.0" }
+    };
+    expect(() => keyedLockEntries(packages, ["packages/x"], [])).toThrow(/links node_modules\/z to lib\/z, a folder whose files the lens does not key/u);
+  });
+
+  it("keys the launcher the command runs under as well as the one its workers run under, where the lock holds two", () => {
+    // The command starts under the repository's own tsx (`npm run` puts the top's `node_modules/.bin` on the path) and
+    // compiles the command's side of a summary with it; a worker starts under the tsx found from the generator.
+    const packages = {
+      "packages/engine": {},
+      "packages/generator": {},
+      "node_modules/glob": { version: "14.0.0" },
+      "node_modules/tsx": { version: "4.0.0" },
+      "packages/generator/node_modules/tsx": { version: "5.0.0" }
+    };
+    expect([...keyedLockEntries(packages).keys()].sort()).toEqual(["node_modules/glob", "node_modules/tsx", "packages/engine", "packages/generator", "packages/generator/node_modules/tsx"]);
   });
 
   it("passes over an optional dependency or a peer the lock does not hold, refuses a missing dependency, and ends at a cycle", () => {
@@ -461,6 +485,28 @@ describe("the lock's half of the lens's key", () => {
     const missing = { ...packages, "node_modules/b": { version: "1.0.0", dependencies: { gone: "^1" } } };
     expect(() => keyedLockEntries(missing, ["packages/w"], [])).toThrow(/holds no gone that node_modules\/b can load/u);
     expect(() => keyedLockEntries(packages, ["packages/w"], [{ from: "packages/w", name: "tsx" }])).toThrow(/holds no tsx/u);
+  });
+
+  it("finds an installation that is not the lock's where npm recorded what it installed, and only there", () => {
+    const lock = readFileSync(path.join(repository, "package-lock.json"), "utf8");
+    // npm's record of what it installed, `node_modules/.package-lock.json`: the lock's entries but the top's, as installed.
+    const installed = (change: (packages: LockPackages) => void): string => {
+      const record = JSON.parse(lock) as { packages: LockPackages };
+      delete record.packages[""];
+      change(record.packages);
+      return JSON.stringify(record);
+    };
+    expect(installationDifference(lock, installed(() => undefined))).toBeNull();
+    // A checkout or a pull without `npm ci`: the compiler installed is behind the lock's.
+    expect(installationDifference(lock, installed((packages) => void (packages["node_modules/typescript"].version = "5.8.3")))).toContain("node_modules/typescript");
+    expect(installationDifference(lock, installed((packages) => void delete packages["node_modules/web-tree-sitter"]))).toContain("node_modules/web-tree-sitter");
+    // Another platform's binary, optional, is not installed here, and a package no summary loads is not asked about.
+    expect(installationDifference(lock, installed((packages) => void delete packages["node_modules/@esbuild/win32-x64"]))).toBeNull();
+    expect(installationDifference(lock, installed((packages) => void (packages["node_modules/playwright-core"].version = "1.0.0")))).toBeNull();
+    // Where npm left no record, nothing is checked.
+    expect(installationDifference(lock, null)).toBeNull();
+    // This repository as it stands.
+    expect(installationDifference(lock, readFileSync(path.join(repository, "node_modules", ".package-lock.json"), "utf8"))).toBeNull();
   });
 
   it("names as roots every package the two packages load without declaring it", () => {

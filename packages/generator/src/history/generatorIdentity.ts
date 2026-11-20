@@ -37,10 +37,17 @@
  * tool that never touches a summary, the browser tests' Playwright pinned to
  * another version, began a new cache and a rebuild of the whole history. The
  * integration case `history-lens-lock.test.ts` holds the list to what a
- * worker really reads under `node_modules`. The key trusts the lock to say
- * what is installed (a `node_modules` changed by hand is not seen), and holds
- * neither the runtime's own version, so that an upgrade of Node is outside it
- * (only its version of Unicode is held, for the reason above), nor git's.
+ * worker really reads under `node_modules`. A link in the lock to any folder
+ * but the two packages' is refused, since the key would hold such a folder's
+ * files by its version alone. The key is the committed lock's, the same on
+ * every platform; the installation is held to it where npm recorded what it
+ * installed (`node_modules/.package-lock.json`), a keyed entry installed
+ * otherwise than the working lock says, or a required one not installed,
+ * joining the modified half ({@link installationDifference}). Where npm left
+ * no record, nothing is checked, and a `node_modules` installed by other
+ * means or changed by hand is trusted. The key holds neither the runtime's
+ * own version, so that an upgrade of Node is outside it (only its version of
+ * Unicode is held, for the reason above), nor git's.
  *
  * @module
  */
@@ -61,6 +68,8 @@ const GENERATOR_FOLDERS = ["packages/engine", "packages/generator"];
 const GENERATOR_FILES = ["tsconfig.base.json"];
 // This repository's lock names the installed tool dependencies, including parser versions; a scanned project's lock is not ours.
 const TOOL_DEPENDENCY_LOCK = "package-lock.json";
+// npm's record of what it installed, written by `npm ci` and `npm install` beside the packages.
+const INSTALLATION_RECORD = "node_modules/.package-lock.json";
 
 /**
  * The packages the summarizing process loads that neither {@link GENERATOR_FOLDERS} package declares, each found as
@@ -74,6 +83,15 @@ export const LOCK_ROOTS: ReadonlyArray<{ from: string; name: string; reason: str
     // `summarizingFlags` in `regenerate.ts`, `require.resolve("tsx")`: the TypeScript loader every worker started from
     // the sources runs under; only the repository's own manifest declares it, as a tool of its development.
     reason: "the launcher that runs the summarizing process's TypeScript sources"
+  },
+  {
+    from: "",
+    name: "tsx",
+    // `npm run live-docs:history` puts the top's `node_modules/.bin` on the path, so the command itself starts under the
+    // tsx found from the repository's top, which compiles the command's side of a summary (`regenerate.ts`, `git.ts`,
+    // `lens.ts`). Today it is the workers' entry too; a nested tsx under the generator would part them (the review of
+    // 2026-11-20).
+    reason: "the launcher the history command itself runs under"
   },
   {
     from: "packages/generator",
@@ -91,7 +109,9 @@ export const LOCK_ROOTS: ReadonlyArray<{ from: string; name: string; reason: str
  * resolved to is keyed at its own place), its licence, funding, engines and deprecation, its commands, the platforms it
  * installs on and whether it has an install script (each read from the package's own manifest, which its integrity
  * covers), and whether it is a development or optional dependency of the repository, which changes with what else the
- * repository declares and never changes the bytes.
+ * repository declares. Those two flags decide whether an install that omits development or optional packages installs
+ * the package at all, never what it installs; where npm recorded the installation, a keyed package the lock does not
+ * mark optional and that is not installed moves the key's modified half ({@link installationDifference}).
  */
 const KEYED_FIELDS = ["version", "resolved", "integrity", "link", "inBundle"] as const;
 
@@ -102,6 +122,7 @@ interface LockEntry {
   integrity?: string;
   link?: boolean;
   inBundle?: boolean;
+  optional?: boolean;
   dependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
@@ -111,9 +132,10 @@ interface LockEntry {
  * The entries of a lock's `packages` map that the code of `starts` can load, by their places in the map, each with
  * {@link KEYED_FIELDS} as the lock has them: the entry of each start and of each of `roots`, and every entry reached
  * from them by their `dependencies`, `optionalDependencies` and `peerDependencies`, each name found as Node finds it,
- * at the nearest `node_modules` place upward from the entry that names it, and a link followed to the entry it links
+ * at the nearest `node_modules` place upward from the entry that names it, and a link followed into the start it links
  * to. An optional dependency or a peer the lock does not hold is not installed, and is passed over; a dependency or a
- * root it does not hold cannot be keyed, and throws.
+ * root it does not hold cannot be keyed, and throws, as does a link to any folder but a start, whose files the code
+ * half of the key does not hold.
  *
  * @param starts - The places of the workspaces whose code makes a summary.
  * @param roots - The packages loaded that no dependency of the workspaces names ({@link LOCK_ROOTS}).
@@ -139,9 +161,11 @@ export function keyedLockEntries(
     const place = pending.pop()!;
     if (reached.has(place)) continue;
     const entry = packages[place];
-    reached.set(place, Object.fromEntries(KEYED_FIELDS.filter((field) => entry[field] !== undefined).map((field) => [field, entry[field]])));
+    reached.set(place, keyedFieldsOf(entry));
     if (entry.link === true && entry.resolved !== undefined) {
-      if (packages[entry.resolved] === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} links ${place} to ${entry.resolved}, which it holds no entry for`);
+      // A linked folder's files are keyed only where the code half keys them; any other folder the lock would key by
+      // its version alone, so it is refused rather than trusted (the review of 2026-11-20).
+      if (!starts.includes(entry.resolved)) throw new Error(`${TOOL_DEPENDENCY_LOCK} links ${place} to ${entry.resolved}, a folder whose files the lens does not key; only ${starts.join(" and ")} may be linked`);
       pending.push(entry.resolved);
       continue;
     }
@@ -168,15 +192,53 @@ function nearestPlace(packages: Readonly<Record<string, LockEntry>>, from: strin
 }
 
 /**
+ * Where the installation differs from the lock in the entries the lens keys, as text for the key's modified half, or
+ * `null` where it does not: each keyed entry npm records as installed that does not hold what the lock holds of it, and
+ * each keyed entry not installed that the lock does not mark optional (another platform's binary is optional, and is
+ * not installed here). The installation is read from npm's own record of it, `node_modules/.package-lock.json`, which
+ * `npm ci` and `npm install` write; where there is no record, nothing is checked and `null` is returned, so that a
+ * `node_modules` installed by other means, or changed by hand, is trusted to be the lock's.
+ *
+ * @param lock - The working lock, which the key's modified half already holds where it differs from the committed one.
+ * @param installed - npm's record of what it installed, or `null` where there is none.
+ */
+export function installationDifference(lock: string | null, installed: string | null): string | null {
+  if (lock === null || installed === null) return null;
+  const packages = packagesOf(lock);
+  const present = packagesOf(installed);
+  const differing: Array<[string, unknown]> = [];
+  for (const [place, fields] of [...keyedLockEntries(packages)].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) {
+    const entry = present[place];
+    if (entry === undefined) {
+      if (packages[place].optional !== true) differing.push([place, "not installed"]);
+      continue;
+    }
+    const held = keyedFieldsOf(entry);
+    if (JSON.stringify(held) !== JSON.stringify(fields)) differing.push([place, held]);
+  }
+  return differing.length === 0 ? null : JSON.stringify(differing);
+}
+
+/** The `packages` map of a lock, or of npm's record of an installation, of version 2 or 3. */
+function packagesOf(lock: string): Record<string, LockEntry> {
+  const { packages } = JSON.parse(lock) as { packages?: Record<string, LockEntry> };
+  if (packages === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} has no packages map; only a lock of version 2 or 3 can be keyed`);
+  return packages;
+}
+
+/** {@link KEYED_FIELDS} of an entry, in their order, those it holds. */
+function keyedFieldsOf(entry: LockEntry): Partial<Pick<LockEntry, (typeof KEYED_FIELDS)[number]>> {
+  return Object.fromEntries(KEYED_FIELDS.filter((field) => entry[field] !== undefined).map((field) => [field, entry[field]]));
+}
+
+/**
  * The half of the key a lock gives: a hash of {@link keyedLockEntries} in the order of their places, so that a change
  * to the lock that touches none of them, a tool of the repository's development pinned to another version say, leaves
  * it as it was. An absent lock has an identity of its own.
  */
 export function lockIdentity(lock: string | null): string {
   if (lock === null) return "absent";
-  const { packages } = JSON.parse(lock) as { packages?: Record<string, LockEntry> };
-  if (packages === undefined) throw new Error(`${TOOL_DEPENDENCY_LOCK} has no packages map; only a lock of version 2 or 3 can be keyed`);
-  const entries = [...keyedLockEntries(packages)].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  const entries = [...keyedLockEntries(packagesOf(lock))].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
   return createHash("sha256").update(JSON.stringify(entries)).digest("hex").slice(0, 16);
 }
 
@@ -285,13 +347,17 @@ async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean)
   const files = tree.split("\0").filter((entry) => entry !== "" && keyed(entry.slice(entry.indexOf("\t") + 1)));
   const committedBlob = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
   if (committedBlob === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
-  const committedLock = committedBlob === null ? "absent" : lockIdentity(await git(topLevel, ["cat-file", "blob", committedBlob]));
+  const committedText = committedBlob === null ? null : await git(topLevel, ["cat-file", "blob", committedBlob]);
+  const committedLock = lockIdentity(committedText);
   const code = createHash("sha256").update(files.join("\n")).update("tool-lock\0").update(committedLock).digest("hex").slice(0, 16);
   // The working lock counts only where its keyed entries differ from the committed lock's, not wherever its bytes do.
   const workingBlob = await workingLockBlob(topLevel);
-  const workingLock = workingBlob === committedBlob ? committedLock : lockIdentity(workingBlob === null ? null : await fs.readFile(path.join(topLevel, TOOL_DEPENDENCY_LOCK), "utf8"));
+  const workingText = workingBlob === committedBlob ? committedText : workingBlob === null ? null : await fs.readFile(path.join(topLevel, TOOL_DEPENDENCY_LOCK), "utf8");
+  const workingLock = workingBlob === committedBlob ? committedLock : lockIdentity(workingText);
+  // The installation counts where npm's record of it differs from the working lock in a keyed entry (a pull without `npm ci`).
+  const installed = installationDifference(workingText, await readIfPresent(path.join(topLevel, INSTALLATION_RECORD)));
   const changed = changedPaths(await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS, ...GENERATOR_FILES])).filter(keyed);
-  if (changed.length === 0 && workingLock === committedLock) {
+  if (changed.length === 0 && workingLock === committedLock && installed === null) {
     return { code, commit, modified: null };
   }
   // What the keyed files hold in the working tree where they differ from the commit: their bytes, or their absence.
@@ -307,7 +373,18 @@ async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean)
     hash.update("\0");
   }
   if (workingLock !== committedLock) hash.update("tool-lock\0").update(workingLock);
+  if (installed !== null) hash.update("installed\0").update(installed);
   return { code, commit, modified: hash.digest("hex").slice(0, 16) };
+}
+
+/** A file's text, or `null` where it does not exist. */
+async function readIfPresent(file: string): Promise<string | null> {
+  try {
+    return await fs.readFile(file, "utf8");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 /** Every path `git status --porcelain=v1 -z` names, a rename's both, sorted and each once. */
