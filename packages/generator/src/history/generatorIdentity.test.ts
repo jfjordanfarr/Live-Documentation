@@ -1,13 +1,14 @@
 import { execFileSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { isBuiltin } from "node:module";
+import { devNull, tmpdir } from "node:os";
 import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 
-import { HISTORY_FOLDERS, installationDifference, keyedLockEntries, keysTheLens, LOCK_ROOTS, lockIdentity, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
+import { checkoutOf, HISTORY_FOLDERS, installationDifference, keyedLockEntries, keysTheLens, LOCK_ROOTS, lockIdentity, SUMMARY_ENTRIES, SUMMARY_MODULES } from "./generatorIdentity";
 import { summarizingEnvironment, summarizingFlags } from "./regenerate";
 import { treeOptions } from "./summarizeChange";
 
@@ -507,6 +508,74 @@ describe("the lock's half of the lens's key", () => {
     expect(installationDifference(lock, null)).toBeNull();
     // This repository as it stands.
     expect(installationDifference(lock, readFileSync(path.join(repository, "node_modules", ".package-lock.json"), "utf8"))).toBeNull();
+  });
+
+  it("carries the installation and the working lock into the key's modified half, only where they differ in keyed entries", async () => {
+    // A repository of the test's own making, laid out as this one: the two packages, a committed lock with a few keyed
+    // entries and one no summary loads, and npm's record of the installation beside it.
+    const top = mkdtempSync(path.join(tmpdir(), "lens-checkout-"));
+    try {
+      const environment = { ...process.env, GIT_CONFIG_GLOBAL: devNull, GIT_CONFIG_NOSYSTEM: "1", GIT_AUTHOR_NAME: "Ada", GIT_AUTHOR_EMAIL: "ada@example.invalid", GIT_COMMITTER_NAME: "Ada", GIT_COMMITTER_EMAIL: "ada@example.invalid" };
+      const run = (...args: string[]): void => void execFileSync("git", args, { cwd: top, env: environment, stdio: "ignore" });
+      const lock = {
+        name: "fixture",
+        lockfileVersion: 3,
+        packages: {
+          "": { name: "fixture", workspaces: ["packages/engine", "packages/generator"], devDependencies: { eslint: "^10.0.0", tsx: "^4.0.0" } },
+          "packages/engine": { name: "@fixture/engine", version: "0.0.0", dependencies: { glob: "^14.0.0", typescript: "^5.0.0" } },
+          "packages/generator": { name: "@fixture/generator", version: "0.0.0" },
+          "node_modules/glob": { version: "14.0.6", resolved: "https://registry.example/glob-14.0.6.tgz", integrity: "sha512-glob" },
+          "node_modules/typescript": { version: "5.9.3", resolved: "https://registry.example/typescript-5.9.3.tgz", integrity: "sha512-typescript" },
+          "node_modules/tsx": { version: "4.23.15", resolved: "https://registry.example/tsx-4.23.15.tgz", integrity: "sha512-tsx", dev: true },
+          "node_modules/eslint": { version: "10.15.0", resolved: "https://registry.example/eslint-10.15.0.tgz", integrity: "sha512-eslint", dev: true }
+        }
+      };
+      const write = (file: string, text: string): void => {
+        mkdirSync(path.dirname(path.join(top, file)), { recursive: true });
+        writeFileSync(path.join(top, file), text);
+      };
+      const record = (change: (packages: LockPackages) => void = () => undefined): void => {
+        const installed = JSON.parse(JSON.stringify(lock)) as { packages: LockPackages };
+        delete installed.packages[""];
+        change(installed.packages);
+        write("node_modules/.package-lock.json", JSON.stringify(installed, null, 2));
+      };
+      const workingLock = (change: (packages: LockPackages) => void): void => {
+        const changed = JSON.parse(JSON.stringify(lock)) as { packages: LockPackages };
+        change(changed.packages);
+        write("package-lock.json", JSON.stringify(changed, null, 2));
+      };
+      write("packages/engine/src/index.ts", "export const engine = 1;\n");
+      write("packages/generator/src/index.ts", "export const generator = 1;\n");
+      write("tsconfig.base.json", "{}\n");
+      write("package-lock.json", JSON.stringify(lock, null, 2));
+      write(".gitignore", "node_modules/\n");
+      run("init", "--quiet", "-b", "main");
+      run("add", "--all");
+      run("commit", "--quiet", "-m", "A checkout");
+      const modified = async (): Promise<string | null> => (await checkoutOf(path.join(top, "packages", "generator"), keysTheLens))!.modified;
+
+      record();
+      expect(await modified()).toBeNull();
+      // An installation a pull left behind: the compiler installed at another version than the lock's.
+      record((packages) => void (packages["node_modules/typescript"].version = "5.8.3"));
+      const behind = await modified();
+      expect(behind).not.toBeNull();
+      // A package no summary loads installed at another version is not asked about.
+      record((packages) => void (packages["node_modules/eslint"].version = "9.0.0"));
+      expect(await modified()).toBeNull();
+      // Where npm left no record, nothing is checked.
+      rmSync(path.join(top, "node_modules"), { recursive: true });
+      expect(await modified()).toBeNull();
+
+      // The working lock against the committed one: a change inside the keyed set counts, one outside it does not.
+      workingLock((packages) => void (packages["node_modules/eslint"].version = "10.16.0"));
+      expect(await modified()).toBeNull();
+      workingLock((packages) => void (packages["node_modules/typescript"].version = "5.9.4"));
+      expect(await modified()).not.toBeNull();
+    } finally {
+      rmSync(top, { recursive: true, force: true });
+    }
   });
 
   it("names as roots every package the two packages load without declaring it", () => {

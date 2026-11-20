@@ -325,7 +325,12 @@ export async function sequenceCodeIdentity(): Promise<string> {
   return createHash("sha256").update(JSON.stringify(identity)).digest("hex").slice(0, 16);
 }
 
-async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean): Promise<{ code: string; commit: string; modified: string | null } | undefined> {
+/**
+ * The keyed inputs of a checkout of this repository whose generator package stands at `packageRoot`, by the rule
+ * `keyed`, or `undefined` where `packageRoot` is no such checkout's. Exported so that a test can compute it for a
+ * repository of its own making.
+ */
+export async function checkoutOf(packageRoot: string, keyed: (file: string) => boolean): Promise<{ code: string; commit: string; modified: string | null } | undefined> {
   let topLevel: string;
   try {
     topLevel = (await git(packageRoot, ["rev-parse", "--show-toplevel"])).trim();

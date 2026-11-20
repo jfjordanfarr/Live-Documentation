@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/generatorIdentity.ts`
-- Generated At: 2026-11-20T14:52:51.940Z
+- Generated At: 2026-11-20T14:59:49.320Z
 
 ## Authored
 ### Purpose
@@ -149,6 +149,15 @@ the history command, which goes on from the sequence it wrote last only under th
 Since the independent review of that day it holds git's own version too (`git --version`): the steps carry git's
 word on what each change renamed and touched, and another git, as in a container rebuilt, could give other words to
 steps derived anew than those written.
+
+#### `checkoutOf` {#symbol-checkoutof}
+- Type: function
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L333)
+
+##### `checkoutOf` — Summary
+The keyed inputs of a checkout of this repository whose generator package stands at `packageRoot`, by the rule
+`keyed`, or `undefined` where `packageRoot` is no such checkout's. Exported so that a test can compute it for a
+repository of its own making.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
