@@ -289,7 +289,7 @@ Each mutation was applied to the source, the four test files run, and the source
 | The workspace itself (`./`) never read as empty | 3, each only through an assertion of the listing (`foldersGitIgnoresWhole(…)` equal to `[""]`): reading the workspace as empty changes no answer, since git ignores every file in it, and only spares the walk |
 | Files git cannot judge given git's word in discovery | 1: discovery's link case |
 
-Each mutation turned at least one case red; with the mended code, all 74 cases of the four files pass.
+Each mutation turned at least one case red; with the mended code, all 74 cases of the four files pass. The first two rows were run with the oracle as it stands; the others before its wildcard twins were added, when the oracle was red under only two of the mutations (the tracked files not taken out, and the case of folders), so the oracle's share of them is a floor.
 
 ### A negligible difference, recorded and not mended
 
@@ -304,4 +304,34 @@ With `core.ignorecase` true on a disk that tells case apart, git takes a folder 
 
 ### Measurements
 
-Waiting for the lane, which a whole rebuild of the history holds until about 11:20 UTC: discovery's lists and times before and after in the main checkout, this worktree and the samples, the audits' JSON, a tree of one past commit, and the gate. They are added below when taken.
+In one hold of the lane, 11:08:46 to 11:13:24, load 3.8 at the start, 11 during the gate and 6.6 at the end; "before" is `725e2e252`, whose walk was already shortened, and "after" is `e4f75e58c`, each frozen in a copy under `/tmp/claude-1000/dm/` (removed) and run once:
+
+| Main checkout, read only | Before | After |
+| --- | ---: | ---: |
+| Discovery, files (1,122 kept, identical) | 1.39 s | 0.46 s |
+| Discovery, documents (65 kept, identical) | 0.42 s | 0.30 s |
+| Git asked about the 1,122 files (`check-ignore`; after, `ls-files` and `check-ignore --no-index`) | 0.241 s | 0.049 s |
+| Git's listing of the folders it ignores whole (37) | 0.041 s | 0.040 s |
+
+- **The lists:** discovery's files and documents were identical before and after in all 28 workspaces compared: the main checkout, this worktree, the 15 samples under `tests/integration/fixtures`, the 10 under `tests/integration/programs`, and the tree of a past commit.
+- **The audits:** each one's `--json` output in the main checkout was byte for byte the same before and after (markdown, symbols, assets). Their times were not taken one by one (the timer's `bc` is not installed here); the six runs, with the two runs in the tree, took 13 s together, and a second hold to time them was given up behind another builder's thirty-minute hold.
+- **A tree of one past commit** (`b17155172`, written out with `git archive` and its tree read into an index beside it, and the bench given `GIT_DIR`, `GIT_WORK_TREE` and `GIT_INDEX_FILE`, as the history gives its trees): 1,124 files and 65 documents, identical, nothing ignored; the files' walk 1.30 s before and 0.40 s after, the documents' 0.37 s and 0.28 s; git asked about the files, 0.232 s before and 0.052 s after. So the mended question is cheaper than the old one there too: `check-ignore --no-index` reads no index, and the one `ls-files` costs less than what `check-ignore` spent matching every path against the index.
+- **The history's key** (`generatorIdentity`'s `code`) moves from `fb953f1499335eb7` at `725e2e252` to `0c399a809264e26e` at `e4f75e58c`: `gitIgnored.ts`, `discovery.ts` and `generator.ts` are keyed.
+- **The gate without the browser** (`npm run safe:commit`), over `e4f75e58c` and `819399cb0`: green in 227 s. Unit tests 215 files, 2,744 cases; integration 26 files, 249 cases; `live-docs:lint` 1,125 files; the markdown audit 1,705 files, assets 21, symbols 1,702, nothing found. `npx tsc -p tests/tsconfig.json --noEmit` was clean in the same hold; eslint over the changed files was clean before the commit. The gate's regeneration also rewrote the line numbers of `computeHistory.ts`'s Live Doc, a file of the history's builder changed on this branch before this round; that doc was left as it was.
+- **The reproductions through the command lines**, in the same hold: `npm run live-docs:generate -- --workspace <folder> --dry-run` gave the lists of the table above, and in the link's case printed `git cannot say what it ignores of 1 file(s) reached through a link to a folder, such as app/linked/shared.ts …`; the markdown audit no longer reports the broken link in `app/notes.md` in any of the three.
+
+### What a second reading found, left for the root
+
+A reviewer of the builder's own tier, given the three files and the contract and no conclusions, tried its suspicions with git 2.56.1 in throwaway repositories (removed). Not mended in this round, which had ended its time:
+
+- **A `.gitignore` that sparse checkout leaves off the disk is not read** (new with `--no-index`, which reads no index; rare). Git reads a skip-worktree `.gitignore` from the index; `check-ignore --no-index` reads none, while `ls-files --directory` still does. With `sub/.gitignore` (`build/`, `gen.ts`) committed and then left out by `git sparse-checkout set --no-cone '/*' '!/sub/.gitignore'`, git ignores `sub/build/out.ts` and `sub/gen.ts`; the mended question keeps both, and the short walk, reading `sub/build/` as empty, keeps only `sub/gen.ts`, so it also differs from a full walk. Plain `check-ignore` answered both rightly.
+- **A tracked file whose folder differs in case on the disk, with `core.ignorecase` true, is judged ignored** (as before this change). `out/keep.ts` tracked and force-added under an ignored `out/`, the folder renamed `Out` on the disk: git takes `Out/keep.ts` for the tracked file (`ls-files --cached --others --exclude-standard` lists `out/keep.ts` alone, `--directory` names nothing), and the tracked paths are compared exactly. On Windows, where `core.ignorecase` is true and a rename of case alone is ordinary, comparing the tracked paths without regard to case when git does would mend it.
+- **A file that replaced a tracked folder** (`t/x.ts` tracked, the folder `t` replaced by a file `t`, `t` ignored) is kept, though git ignores it, since `t` is a folder of a tracked path in the index: the folder rule, which mimics plain `check-ignore`, matters only there and where a link replaces a tracked folder; the walks ask about files and links alone.
+- **A file a submodule tracks may be judged ignored** (`sub/dist/b.js` force-added in the submodule, which ignores `dist/`), as the table above says: whether "a tracked file is never ignored" should cover what a submodule tracks is the owner's question with the rest of the submodule's.
+- **A workspace deeper inside a folder an outer repository ignores** (not its direct child) makes `ls-files --directory` fail ("internal error - directory entry not superset of prefix", exit 128): no folder is named, and the walk is whole, which is right and slower. The remark that git names such a workspace `./` holds for a direct child alone.
+
+Found sound by the same reading: the parsing of git's `./` echo, from a subfolder too; names with a newline; the CLI's `./.`; links to a file and dangling links, which can never lie on the way to a path the walk finds; glob 14.0.6 walking with `readdir` and `readdirSync` alone; the generator's and the command line's folder questions.
+
+### Temporary files
+
+Removed at the end of the round: the experiment repositories and reproductions under this worktree's `AI-Agent-Workspace/tmp/dm/`, the frozen copies, lists and tree under `/tmp/claude-1000/dm/`, and the scripts and outputs in the builder's scratchpad.
