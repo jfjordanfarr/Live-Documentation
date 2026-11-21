@@ -197,7 +197,7 @@ Every cause was confirmed by reading its reader and the files its edges join. Tw
 
 ## Verification of the second round
 
-`npm run safe:commit`, without the browser, at the last commit of the round; figures in the handback.
+`npm run safe:commit`, without the browser, at the ledger's commit, passed whole: Live Docs generated and validated (1,229 files), lint and build, unit tests 3,001 in 222 files, integration tests 482 in 36 files, the documentation link enforcement and the three SlopCop audits. The one-minute load ran from 5.5 to 37 on 20 threads, sampled every 30 seconds; no test timed out.
 
 ## Open
 
