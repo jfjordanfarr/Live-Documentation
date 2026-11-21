@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-21T05:32:57.213Z
+- Generated At: 2026-11-21T06:36:57.094Z
 
 ## Authored
 ### Purpose
@@ -100,6 +100,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`camera-intent.FILES_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-files_floor_ratio)
 - [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
 - [`camera-intent.PinsFraming`](./camera-intent.ts.mdmd.md#symbol-pinsframing)
+- [`camera-intent.STEP_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-step_floor_ratio)
 - [`camera-intent.STEP_MARK_MS`](./camera-intent.ts.mdmd.md#symbol-step_mark_ms)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)

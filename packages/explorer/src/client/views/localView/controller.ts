@@ -12,7 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -990,16 +990,14 @@ export class LocalViewController implements LocalViewApi {
     // the focus had stayed on it and been dropped with it (found 2026-11-15, on the keyboard's way to close what it opened).
     const focusSelector = [`${label} .local-directory-handle`, `.local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-handle`];
     const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
-    // A directory opened whose label was not drawn (a skin pressed among a handle's cells, a closed box) is a newcomer.
-    const drawn = !!this.container.querySelector(label);
     return { ...frame, afterRender: () => {
       frame.afterRender();
       // Opened while following, the directory is framed with the pins as their newest (the trial's choice, 2026-11-19).
       this.followDirectory = this.container.querySelector(label) ? directory : null;
-      // Under Tuning's Step trial (2026-11-21) every opening is a step whose newcomer is the opened directory, its handle's
-      // label drawn before or not; under Least Pan, the default, only a label not drawn before is, as since 2026-11-19.
-      const step = this.options.state.tuning.localMap.step !== "least";
-      if ((!drawn || step) && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
+      // Every opening is a step whose newcomer is the opened directory, its handle's label drawn before or not: a
+      // directory opened by the handle on its drawn label is a directory opened (the root's ruling, 2026-11-21; until
+      // then only a label not drawn before was, and live-docs/history opened by its handle stood cut at the view's edge).
+      if (this.container.querySelector(label)) this.stepNewcomer ??= { directory };
       this.directoryArrivalPending = this.isShown();
       if (!this.stage?.move) this.settleArrival();
     } };
@@ -1988,12 +1986,15 @@ export class LocalViewController implements LocalViewApi {
       // Tuning's Step, a trial (2026-11-21): the whole newcomer, eased out only as far as it needs; or the newcomer with
       // the cards its lines reach, as Fit would frame them; never past the connections look's farthest press. The ease is
       // the following camera's, so that any input of the person's ends it where it stands and reduced motion makes it a cut.
-      const floor = this.readingReferenceScale * ARRIVAL_FLOOR_RATIO;
-      const end = lever === "whole" ? stepWholeFrame(whole.bounds, newcomer.bounds, next, frame, floor)
-        : stepLinesFrame(unionOf([whole.bounds, ...this.reachedBy(whole.ids)])!, whole.bounds, newcomer.bounds, frame, this.readingReferenceScale, floor);
-      this.markNewcomer(newcomer.mark);
-      this.easeFollowing(end, frame);
-      return;
+      const floor = this.readingReferenceScale * STEP_FLOOR_RATIO;
+      const end = lever === "whole" ? stepWholeFrame(whole.bounds, next, frame, floor)
+        : stepLinesFrame(unionOf([whole.bounds, ...this.reachedBy(whole.ids)])!, whole.bounds, next, frame, this.readingReferenceScale, floor);
+      // Where no scale at or above the floor holds it whole, the step does what Least Pan does, below.
+      if (end) {
+        this.markNewcomer(newcomer.mark);
+        this.easeFollowing(end, frame);
+        return;
+      }
     }
     if (newcomer) {
       const pan = revealPan(newcomer.bounds, next, frame);
