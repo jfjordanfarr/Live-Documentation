@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml`
-- Generated At: 2026-11-19T21:10:25.376Z
+- Generated At: 2026-11-21T06:12:24.861Z
 
 ## Authored
 ### Purpose
@@ -24,4 +24,5 @@ Renders the Razor telemetry page that exposes the instrumentation key for client
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`Index.cshtml`](./Index.cshtml.cs.mdmd.md)
+- `~/js/telemetry.js`
 <!-- LIVE-DOC:END Dependencies -->

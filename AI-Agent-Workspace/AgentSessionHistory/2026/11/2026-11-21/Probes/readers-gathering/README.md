@@ -101,6 +101,20 @@ After the review, the record's compiler program became the committed grader `npm
 
 The one edge the base-type lookup draws on DNN is `DNN Platform/Library/Services/GeneratedImage/ImageQuantization/GrayscaleQuantizer.cs` to `Quantizer.cs`, which the compiler binds; nothing is lost on either corpus. The namesakes left are of other causes: on DNN `CryptographyProvider.cs` to `ICryptographyProvider.cs` and `SiteSettingsController.cs` to `BrowserTypes.cs`; on mojoPortal three pages to `Web/Controls/SkinSetting.ascx.designer.cs`. mojoPortal's 15 conditional references carry no edge of ours that the compiler lacks. The cases themselves, and two more the compiler settled for the tests (a class does not inherit an interface's nested types; an interface does inherit its base interfaces'), are in the `names` sample and `csharp.test.ts`. One the alias work met and left open: a type nested in a generic type has the same qualified name in the reader as one nested in its non-generic namesake (`Lib.Helper.Part`), so `H.Part` through `using H = Lib.Helper;` is taken for an ambiguity and links nothing, where the compiler binds `Helper.cs`.
 
+**A `<script src>`, by the directives' rule.** An independent review found the ASP.NET reader taking a script's `~/` from the workspace's root and `/` as the same, where the directives take `~/` from the web application that holds the file and leave a site-root path unlinked. Before reading a server expression's constant argument, the shapes a `src` takes in the corpora's markup (`.aspx`, `.ascx`, `.master`, `.ashx`, `.asmx`, `.asax`, `.svc`, `.cshtml`, `.razor`) were counted by a reader that steps over `<% … %>` blocks:
+
+| Shape | DNN | mojoPortal |
+| --- | --- | --- |
+| Relative | 9 | 0 |
+| Relative, with a computed query (`?ver=<%= … %>`) | 5 | 0 |
+| `~/` | 0 | 10 |
+| From the site's root | 0 | 6 |
+| Remote (`https://`, `//host`) | 0 | 8 |
+| A server or Razor expression with one constant argument (`ResolveUrl`, `Url.Content`, …) | 0 | 0 |
+| Computed otherwise (`@(siteRoot + siteFolderName)…`) | 0 | 1 |
+
+Four more single-quoted values on mojoPortal are text inside JavaScript strings that write script tags (`\'/Content/…\'`, `'{0}'`), not tags; the reader reads double-quoted values only and never sees them. With no constant-argument expression in either corpus, none is read, as ruled. After the change, read file by file with the adapter: DNN gains 5 lines, `UpgradeWizard.aspx`'s five scripts once their query is taken off, and no notice; mojoPortal gains 9 lines, the `~/` scripts of `Web/Views` reaching `Web/Content` and `Web/Scripts`, and keeps 7 unlinked with a notice: 6 site-root paths of `Web/App_MasterPages/layout.Master` ("paths from the site's root, left unlinked"), whose files are under `Web/Content/failsafeskin/js/`, served at `/Content/` only when the site is deployed at its root, and `~/Scripts/jquery-1.10.2.min.js` ("paths no file in the workspace holds"), which no file of the repository holds. No line is lost on either. The notices the run says on mojoPortal go from 153 to 160.
+
 **Where scip-dotnet and the compiler program differ on the C# samples.** Each sample now keeps both records (`expected/compiler-edges.json`, scip-dotnet 0.2.14 or 0.2.16; `expected/csharp-compiler.json`, Roslyn 4.12), and `csharp-oracle.test.ts` holds the reader to the second. Over C# file pairs, scip's edges resting only on an ambiguous symbol set apart:
 
 | Sample | scip-dotnet: settled + ambiguous | The compiler | Both | Where they differ |

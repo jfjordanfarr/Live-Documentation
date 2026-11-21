@@ -68,12 +68,14 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     const content = await readSourceText(absolutePath);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const extension = path.extname(absolutePath).toLowerCase();
-    // `directives.notices` says why each path left unlinked has no link, for the run to count at its end.
+    // Each `notices` says why each path left unlinked has no link, for the run to count at its end.
+    const scripts = await resolveScriptDependencies(content, thisFile, workspaceRoot, fileIndex);
     const directives = await resolveDirectiveDependencies(content, thisFile, extension, workspaceRoot, fileIndex);
     const dependencies: DependencyEntry[] = [
-      ...resolveScriptDependencies(content, thisFile, fileIndex),
+      ...scripts.dependencies,
       ...directives.dependencies
     ];
+    const notices = [...scripts.notices, ...directives.notices];
 
     if (extension === ".cshtml" || extension === ".razor") {
       const codeBehind = workspaceFile(`${thisFile}.cs`, fileIndex);
@@ -84,7 +86,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
       symbols: extractElementIds(content).map((id) => ({ name: id, kind: "variable", exportType: "named" })),
       dependencies: dedupeDependencies(dependencies)
     };
-    if (directives.notices.length > 0) result.notices = directives.notices;
+    if (notices.length > 0) result.notices = notices;
     return result;
   }
 };
@@ -93,33 +95,45 @@ function fileDependency(file: string): DependencyEntry {
   return { specifier: file, resolvedPath: file, symbols: [], kind: "import" };
 }
 
-function resolveScriptDependencies(content: string, thisFile: string, fileIndex: WorkspaceFileIndex | undefined): DependencyEntry[] {
-  const matches: DependencyEntry[] = [];
-  let match: RegExpExecArray | null;
+/** An address with a scheme or a host of its own (`https://…`, `//cdn…`): served from elsewhere, never a file here. */
+const REMOTE_ADDRESS = /^(?:[a-z][a-z\d+.-]*:)?\/\//iu;
 
-  while ((match = SCRIPT_SRC_PATTERN.exec(content)) !== null) {
-    const rawSrc = match[1]?.trim();
-    if (!rawSrc || rawSrc.startsWith("http://") || rawSrc.startsWith("https://")) {
-      continue;
-    }
-
-    const normalised = rawSrc.replace(/\\/g, "/");
-    const candidate = normalised.startsWith("~/")
-      ? joinWorkspacePath("", normalised.slice(2))
-      : normalised.startsWith("/")
-        ? joinWorkspacePath("", normalised.slice(1))
-        : joinWorkspacePath(folderOf(thisFile), normalised);
-    if (candidate === undefined) continue;
+/**
+ * The files a markup file's `<script src>` names, by the directives' rule
+ * (`resolveDirectivePath`): relative to the markup's folder, `~/` from the web
+ * application that holds the file, and no link from the site's root, each path
+ * without a link said with its reason. A query or fragment names no file, so
+ * `dnn.js?ver=<%= … %>` is `dnn.js`. A remote address is not read, nor a path
+ * the page computes as it runs (a server expression or Razor's), which the
+ * markup does not write; no constant one, `<%= ResolveUrl("~/…") %>`, was found
+ * in DNN's or mojoPortal's markup on 2026-11-21.
+ */
+async function resolveScriptDependencies(
+  content: string,
+  thisFile: string,
+  workspaceRoot: string,
+  fileIndex: WorkspaceFileIndex | undefined
+): Promise<{ dependencies: DependencyEntry[]; notices: SourceNotice[] }> {
+  const dependencies: DependencyEntry[] = [];
+  const notices: SourceNotice[] = [];
+  for (const match of content.matchAll(SCRIPT_SRC_PATTERN)) {
+    const written = match[1]?.trim();
+    if (!written || REMOTE_ADDRESS.test(written)) continue;
+    const bare = written.replace(/[?#].*$/su, "");
+    if (!bare || bare.includes("<%") || bare.startsWith("@")) continue;
 
     // A script named without an extension is its `.js` file when there is one.
-    const resolved = (path.extname(candidate) ? undefined : workspaceFile(`${candidate}.js`, fileIndex))
-      ?? workspaceFile(candidate, fileIndex);
-    if (resolved) matches.push(fileDependency(resolved));
+    const asScript = path.posix.extname(bare) ? undefined : await resolveDirectivePath(`${bare}.js`, thisFile, workspaceRoot, fileIndex);
+    const resolved = asScript && "file" in asScript ? asScript : await resolveDirectivePath(bare, thisFile, workspaceRoot, fileIndex);
+    if ("file" in resolved) {
+      dependencies.push(fileDependency(resolved.file));
+    } else {
+      dependencies.push({ specifier: written, symbols: [], kind: "import" });
+      // The generator names the file before each subject, so the subject is the path as written.
+      notices.push({ reason: resolved.reason, subject: written });
+    }
   }
-
-  SCRIPT_SRC_PATTERN.lastIndex = 0;
-
-  return matches;
+  return { dependencies, notices };
 }
 
 /** One `<%@ … %>` directive: its name, lowercased, and its attributes by lowercased name. */

@@ -47,11 +47,13 @@ describe("aspNetMarkupAdapter", () => {
     );
 
     await fs.writeFile(scriptPath, "console.log('noop');", "utf8");
+    // `~/` is read from the markup's project (`resolveDirectivePath`), so the host has one, as a Blazor app does.
+    await fs.writeFile(path.join(workspaceRoot, "BlazorTelemetry.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>", "utf8");
 
     const analysis = await aspNetMarkupAdapter.analyze({
       absolutePath: markupPath,
       workspaceRoot,
-      fileIndex: new Set(["Pages/_Host.razor", "Pages/_Host.razor.cs", "wwwroot/js/blazor-telemetry.js"])
+      fileIndex: new Set(["BlazorTelemetry.csproj", "Pages/_Host.razor", "Pages/_Host.razor.cs", "wwwroot/js/blazor-telemetry.js"])
     });
 
     expect(analysis).not.toBeNull();
@@ -228,6 +230,40 @@ describe("aspNetMarkupAdapter", () => {
       { reason: "paths several projects hold, left unlinked", subject: "~/App_MasterPages/layout.Master" },
       { reason: "paths no file in the workspace holds, left unlinked", subject: "Gone.ascx" }
     ]);
+  });
+
+  // The shapes are mojoPortal's `_Layout.cshtml` and `layout.Master` and DNN's `UpgradeWizard.aspx`, measured on 2026-11-21.
+  it("reads a script's path by the directives' rule, its query taken off, says why one has no link, and reads no remote address or computed path", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Web/Views/Shared/_Layout.cshtml": [
+        "<script src=\"~/Scripts/bootstrap.min.js\"></script>",
+        "<script src=\"~/Scripts/modernizr\"></script>",
+        "<script src=\"~/Scripts/jquery-1.10.2.min.js\"></script>",
+        "<script src=\"/Content/js/main.min.js\"></script>",
+        "<script src=\"//cdn.example.org/a.js\"></script>",
+        "<script src=\"https://cdn.example.org/b.js\"></script>",
+        "<script src=\"@(siteRoot + folderName)gallery/c.js\"></script>"
+      ].join("\n"),
+      "Web/Install/Wizard.aspx": [
+        "<%@ Page CodeBehind=\"Wizard.aspx.cs\" %>",
+        "<script src=\"../Scripts/dnn.js?ver=<%=Globals.FormatVersion(ApplicationVersion)%>\"></script>",
+        "<script src=\"<%= ResolveUrl(\"~/Scripts/app.js\") %>\"></script>"
+      ].join("\n")
+    }, ["Web/Scripts/bootstrap.min.js", "Web/Scripts/modernizr.js", "Web/Scripts/dnn.js", "Web/Scripts/app.js", "Web/Install/Wizard.aspx.cs", "Content/js/main.min.js"]);
+
+    expect(await linksOf("Web/Views/Shared/_Layout.cshtml", fileIndex)).toEqual([
+      "Web/Scripts/bootstrap.min.js",
+      "Web/Scripts/modernizr.js",
+      "unresolved ~/Scripts/jquery-1.10.2.min.js",
+      "unresolved /Content/js/main.min.js"
+    ]);
+    const layout = await aspNetMarkupAdapter.analyze({ absolutePath: path.join(workspaceRoot, "Web/Views/Shared/_Layout.cshtml"), workspaceRoot, fileIndex });
+    expect(layout?.notices).toEqual([
+      { reason: "paths no file in the workspace holds, left unlinked", subject: "~/Scripts/jquery-1.10.2.min.js" },
+      { reason: "paths from the site's root, left unlinked", subject: "/Content/js/main.min.js" }
+    ]);
+    expect(await linksOf("Web/Install/Wizard.aspx", fileIndex)).toEqual(["Web/Scripts/dnn.js", "Web/Install/Wizard.aspx.cs"]);
   });
 
   // Too many open files, a file Windows holds: no property of the project file, so never read as a project that builds nothing.
