@@ -1,0 +1,45 @@
+nested: 10,946 files will be read · 8 files left out · 207 folders left out, not looked inside
+
+Left out:
+  Build output beside a project  (162 folders)
+    Also ignored by .gitignore: 28 of 162 (bin/  obj/  [Bb]in  [Oo]bj)
+      DNN Platform/                               134
+      Dnn.AdminExperience/                         18
+      DotNetNuke.BulkInstall/                       6
+      Build/                                        2
+      DotNetNuke.Internal.SourceGenerators/         2
+  NuGet packages  (45 folders)
+    Also ignored by .tfignore: 15 of 45 (packages)
+      DNN Platform/                                43
+      Build/packages/
+        Also Build/.tfignore, line 6: packages
+      packages/
+  Ignored by .gitignore: /*/css/*.css  (6 files)
+      Dnn.AdminExperience/                          6
+  Ignored by .gitignore: /*/scripts/bundles/*.svg  (2 files)
+      Dnn.AdminExperience/                          2
+
+Will be read, by kind:
+  .cs                 3,973
+  .js                 1,330
+  .png                1,325
+  .gif                  671
+  .jsx                  482
+  .less                 305
+  .sqldataprovider      299
+  .svg                  281
+  .txt                  212
+  .resx                 203
+
+Will be read, by folder:
+  DNN Platform                                7,850
+  Dnn.AdminExperience                         2,901
+  Build                                          96
+  DotNetNuke.BulkInstall                         45
+  At the top                                     29
+  .github                                        21
+  DotNetNuke.Internal.SourceGenerators            3
+  expected                                        1
+
+To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
+Listed 2,299 folders in 1739 ms (listing 499 ms, deciding 684 ms).

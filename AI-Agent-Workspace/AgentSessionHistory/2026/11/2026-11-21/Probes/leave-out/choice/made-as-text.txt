@@ -12,6 +12,7 @@ Left out:
       DNN Platform/                                43
       At the top                                    2
       Build/packages/
+        Also Build/.tfignore, line 6: packages
 
 Will be read, by kind:
   .cs                 3,973
@@ -35,5 +36,5 @@ Will be read, by folder:
   DotNetNuke.Internal.SourceGenerators            3
   expected                                        1
 
-To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave something out: --pattern 'docs/'.
-Listed 2,300 folders in 868 ms (listing 349 ms, deciding 217 ms).
+To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
+Listed 2,300 folders in 1873 ms (listing 815 ms, deciding 445 ms).

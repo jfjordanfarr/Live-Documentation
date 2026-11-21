@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 // Pictures of the trial page at 1,280 by 800, for judging by eye, with what was counted beside them: a folder given
-// through the folder input (automation cannot press the picker or make a drop that reaches the page); by reason, a
-// reason opened to its top folders and one of those opened, a folder kept that both an ignore file and the evidence
-// rules leave out, three patterns of one's own scrolled to the footer; and the folder tree under each of its two kinds
-// of box, with the files at a level as a row of their own, one of those left out and the keyboard's focus. A step the
-// page cannot take (an older build) is recorded as absent and skipped. Only through the browser lane, the page built
+// through the folder input (automation cannot press the picker or make a drop that reaches the page); the screen, By
+// reason, as `byReason` below says; and the folder tree, kept behind its link parameter, under each of its two kinds of
+// box. A step the page cannot take is recorded as absent and skipped. Only through the browser lane, the page built
 // first. A large folder takes the browser a minute to hand over each time, so the three pages can be taken in three
 // holds of the lane (`reason`, `mixed`, `choice`):
 //   node look.mjs <folder> <label> <out folder> [page.html, by default the built choice.html beside this] [part]
@@ -45,77 +43,105 @@ const step = async (page, selector, name) => {
 };
 const reasonRows = (page) => page.$$eval("#reasons > li", (rows) => rows.map((row) => row.innerText.replace(/\s+/gu, " ").trim()));
 
-// By reason.
+// The screen, By reason: the first look; a folder under "Will be read" opened and one of its folders left out by its
+// own control; a kind left out; a reason opened down to a folder an ignore file also names, with its file and line;
+// the files at the top left out as one choice, three choices in all, and the page scrolled to them.
 if (part === "all" || part === "reason") await byReason();
 async function byReason() {
-  const page = await open("?layout=reason");
+  const page = await open("");
+  const scrollTop = async () => page.evaluate(() => {
+    document.querySelector("main").scrollTop = 0;
+  });
+  const readRows = () => page.$$eval("#read .counts-list > li", (rows) => rows.slice(0, 14).map((row) => row.innerText.replace(/\s+/gu, " ").trim()));
   record.totals = await page.textContent("#totals");
-  record.timings = await page.textContent("#timings");
   record.switchShown = await page.isVisible(".segmented");
-  await shot(page, "1-by-reason");
+  record.evidenceSwitch = await page.locator("#evidence").count();
+  record.reasons = await reasonRows(page);
+  record.read = await readRows();
+  record.timings = await page.textContent("#timings");
+  await shot(page, "1-first");
 
-  // The largest reason opened: its folders under their top folders, and the largest of those opened.
-  await page.locator("#reasons .twisty").first().click();
-  await shot(page, "2-reason-opened");
-  const top = await step(page, "#reasons .members .twisty", "a top folder to open");
-  if (top) {
-    record.topOpened = await top.getAttribute("aria-label");
-    await top.click();
-    // A folder's own quiet Keep given the keyboard's focus, to see the control and its name.
-    const quiet = await step(page, "#reasons .members .members .quiet-keep", "a folder's quiet Keep");
-    if (quiet) {
-      record.quietKeepName = await quiet.getAttribute("aria-label");
-      // Reached from the keyboard, so that the browser draws its focus as a person tabbing would see it.
-      await quiet.focus();
-      await page.keyboard.press("Shift+Tab");
-      await page.keyboard.press("Tab");
-    }
-    record.notShown = await page.locator("#reasons .text-button").first().textContent().catch(() => null);
-    await shot(page, "3-top-opened");
-    await page.locator("#reasons .twisty").first().click();
-  }
-
-  // A folder kept that an ignore file and the evidence rules both leave out: shown once, under what it is.
-  record.reasonsBeforeKeep = await reasonRows(page);
-  const merged = "DNN Platform/Connectors/GoogleAnalytics/packages/";
-  const nuget = page.locator("#reasons > li", { hasText: "NuGet packages" }).locator(".twisty").first();
-  if (await nuget.count()) {
-    await nuget.click();
-    const inPlatform = page.locator("#reasons > li", { hasText: "NuGet packages" }).locator(".members .twisty").first();
-    if (await inPlatform.count()) await inPlatform.click();
-    const keep = page.locator(`#reasons [aria-label="Keep ${merged}"]`);
-    if (await keep.count()) {
-      await keep.click();
+  // The largest folder under "Will be read", opened; then one of its folders left out by its quiet control.
+  const largest = await step(page, "#read .counts-list .twisty", "a folder to open under Will be read");
+  if (largest) {
+    record.readOpened = await largest.getAttribute("aria-label");
+    await largest.click();
+    const leave = page.locator('#read [aria-label="Leave out DNN Platform/Tests/"]');
+    if (await leave.count()) await leave.focus();
+    await shot(page, "2-read-folder-opened");
+    if (await leave.count()) {
+      await leave.click();
       await settled(page);
-      record.keptMerged = merged;
-      record.totalsAfterKeep = await page.textContent("#totals");
-      record.reasonsAfterKeep = await reasonRows(page);
-      record.patternsAfterKeep = await page.$$eval("#patterns code", (codes) => codes.map((code) => code.textContent));
-      await page.locator("#reasons > li", { hasText: "NuGet packages" }).first().evaluate((row) => row.scrollIntoView({ block: "start" }));
-      await shot(page, "4-merged-kept");
-    } else record.absent.push("the quiet Keep of a merged folder");
-  } else record.absent.push("a NuGet packages reason");
-
-  // Three patterns of one's own, a note among what they make, and the page scrolled to its end above the footer.
-  for (const pattern of ["Build/", "!/Build/Tools/", "*.md"]) {
-    await page.fill("#pattern", pattern);
-    await page.click("#pattern-form button[type=submit]");
-    await settled(page);
+      record.totalsAfterFolder = await page.textContent("#totals");
+      record.reasonsAfterFolder = await reasonRows(page);
+      await scrollTop();
+      await shot(page, "3-folder-left-out");
+    } else record.absent.push("the Leave out of DNN Platform/Tests/");
   }
-  record.totalsAfterPatterns = await page.textContent("#totals");
-  record.notes = await page.$$eval("#notes li", (items) => items.map((item) => item.textContent));
+
+  // A kind left out.
+  const png = page.locator('#read [aria-label="Leave out every .png file"]');
+  if (await png.count()) {
+    await png.click();
+    await settled(page);
+    record.totalsAfterKind = await page.textContent("#totals");
+    record.reasonsAfterKind = await reasonRows(page);
+    record.readAfterKind = await readRows();
+    await scrollTop();
+    await shot(page, "4-kind-left-out");
+  } else record.absent.push("the Leave out of .png");
+
+  // A reason opened down to a folder that an ignore file also names: its file and line on its own row.
+  const named = page.locator("#reasons > li", { has: page.locator(".also") }).first();
+  if (await named.count()) {
+    await named.locator(".twisty").first().click();
+    const top = named.locator(".members .twisty").first();
+    if (await top.count()) {
+      record.ignoreLineOpened = await top.getAttribute("aria-label");
+      await top.click();
+    }
+    const line = named.locator(".also-line").first();
+    if (await line.count()) {
+      record.ignoreLine = await line.textContent();
+      record.ignoreLineRow = await line.evaluate((node) => node.closest(".row").innerText.replace(/\s+/gu, " ").trim());
+      await line.evaluate((node) => node.closest(".row").scrollIntoView({ block: "center" }));
+    } else record.absent.push("a folder's ignore line");
+    await shot(page, "5-ignore-line");
+    await named.locator(".twisty").first().click();
+    await scrollTop();
+  } else record.absent.push("a reason an ignore file also names");
+
+  // The files at the top left out as one choice: three choices in all, listed one row each.
+  const top = page.locator('#read [aria-label^="Leave out the "][aria-label$="in the top folder"]');
+  if (await top.count()) {
+    record.topFilesControl = await top.getAttribute("aria-label");
+    await top.click();
+    await settled(page);
+    record.totalsAfterTopFiles = await page.textContent("#totals");
+  } else record.absent.push("the Leave out of the files at the top");
+  record.patterns = await page.$$eval("#patterns li", (items) => items.map((item) => item.innerText.replace(/\s+/gu, " ").trim()));
+  record.reasonsAfterAll = await reasonRows(page);
   await page.evaluate(() => {
-    const scroller = document.querySelector("main").scrollHeight > document.querySelector("main").clientHeight ? document.querySelector("main") : document.scrollingElement;
-    scroller.scrollTop = scroller.scrollHeight;
+    document.querySelector("main").scrollTop = document.querySelector("main").scrollHeight;
   });
   record.lastPatternClearsFooter = await page.evaluate(() => {
     const last = [...document.querySelectorAll("#patterns li")].at(-1)?.getBoundingClientRect();
     const footer = document.querySelector("footer").getBoundingClientRect();
     return last ? { lastBottom: Math.round(last.bottom), footerTop: Math.round(footer.top), clear: last.bottom <= footer.top } : null;
   });
-  await shot(page, "5-three-patterns");
+  await shot(page, "6-three-choices");
+
+  // A choice of the person's own taken back by the Keep on its reason.
+  const yours = page.locator("#reasons > li", { hasText: "Your pattern: *.png" }).locator(".keep");
+  if (await yours.count()) {
+    await yours.click();
+    await settled(page);
+    record.totalsAfterPngKept = await page.textContent("#totals");
+    record.patternsAfterPngKept = await page.$$eval("#patterns li", (items) => items.length);
+  }
   await page.close();
 }
+
 
 // The folder tree under each kind of box: the same folders opened, the files at a level a row of their own.
 for (const boxes of ["mixed", "choice"].filter((each) => part === "all" || part === each)) {
