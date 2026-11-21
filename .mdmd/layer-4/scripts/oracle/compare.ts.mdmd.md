@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/compare.ts`
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T05:11:37.047Z
+- Generated At: 2026-11-21T05:37:49.865Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 
 ### Notes
 - Prints a list, never a score, and exits 0 either way. The integration suite `oracle.test.ts` asserts that every expected edge is accounted for and, since 2026-11-21, that every hand-verified edge the readers miss is listed in the program's ledger, `expected/hand-verified-misses.json`, with its cause, and no listed edge is drawn again: `heldToLedger` says which of either there are, and the report prints each missed edge's cause ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
-- The project bucket builds every compiler project's file as `<directory>/<name>.csproj`, which is right for .NET only: on `rust/stockroom` it reports two missing references between `.csproj` files that do not exist, made of rust-analyzer's Cargo targets. Seen on 2026-11-21 and not mended, since the projects' shape is `scip-edges.ts`'s.
+- A project reference is graded between the manifests standing in the two projects' folders: the project file named for the project, or else the folder's one manifest (Cargo's, npm's, Maven's, Gradle's, Go's, Python's). A reference between projects with no manifest of their own in the fixture is listed apart, by the projects' names, and graded neither found nor missing: Cargo's targets are such, a binary's and a test's folder being their crate root's. Until 2026-11-21 every project was named `<directory>/<name>.csproj`, right for .NET alone, and `rust/stockroom` reported two missing references between `.csproj` files that do not exist ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 - Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 - A fixture is generated under the product's default configuration as it stands. `fixtureGlobs()`, which rebuilt the default globs from their suffixes and so always equalled them, went on 2026-10-22 with the every-file default ([Turn 8 of the October 21 session](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)).
@@ -54,7 +54,7 @@ What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L221)
+- Source: [source](../../../../scripts/oracle/compare.ts#L250)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.

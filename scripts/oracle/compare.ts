@@ -75,10 +75,15 @@ export interface Report {
     /** The missing edges the program's ledger does not list, and its entries no longer missed. */
     ledger:  { unlisted: HandVerifiedEdge[]; gone: HandVerifiedMiss[]; listed: HandVerifiedMiss[] };
   };
-  /** Project references the compiler lists, as edges between project files, against what the project adapter found. */
+  /**
+   * Project references the compiler lists, as edges between the manifests standing in the projects' folders, against
+   * what the project adapter found; a reference between projects with no manifest of their own in the fixture (Cargo's
+   * targets, whose folder is the crate root's) has no file to be drawn between and is listed apart, by the projects' names.
+   */
   projects?: {
-    found:   AdapterEdge[];
-    missing: AdapterEdge[];
+    found:    AdapterEdge[];
+    missing:  AdapterEdge[];
+    unplaced: AdapterEdge[];
   };
   beyondCompiler: AdapterEdge[];
   unresolved:     Array<{ from: string; raw: string }>;
@@ -113,6 +118,22 @@ async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[];
   }
 }
 
+/** The file names of a project's manifest, by language: a .NET project file, Cargo's, npm's, Maven's, Gradle's, Go's, Python's. */
+const MANIFEST = /^(?:.+\.(?:csproj|vbproj|fsproj)|Cargo\.toml|package\.json|pom\.xml|build\.gradle(?:\.kts)?|go\.mod|pyproject\.toml)$/u;
+
+/**
+ * The manifest standing in a compiler project's folder, fixture-relative: the project file named for it, or else the
+ * folder's one manifest. None when the folder holds none, as for a Cargo target, whose folder is its crate root's.
+ */
+function manifestOf(fixtureDir: string, project: { name: string; directory: string }): string | undefined {
+  const folder = path.join(fixtureDir, project.directory);
+  if (!fs.existsSync(folder)) return undefined;
+  const manifests = fs.readdirSync(folder).filter((name) => MANIFEST.test(name));
+  const named     = manifests.find((name) => name.slice(0, name.lastIndexOf(".")) === project.name && /proj$/u.test(name));
+  const found     = named ?? (manifests.length === 1 ? manifests[0] : undefined);
+  return found === undefined ? undefined : path.posix.join(project.directory.replace(/\\/gu, "/"), found);
+}
+
 function dedupe(edges: AdapterEdge[]): AdapterEdge[] {
   const seen = new Map<string, AdapterEdge>();
   for (const edge of edges) seen.set(`${edge.from}|${edge.to}`, edge);
@@ -145,19 +166,24 @@ function buildReport(fixtureDir: string, compiler: OracleEdges, handVerified: Ha
     };
   }
 
-  const projectFile = (project: { name: string; directory: string }) => path.posix.join(project.directory, `${project.name}.csproj`);
-  const byName      = new Map(compiler.projects.map((project) => [project.name, project]));
+  const byName     = new Map(compiler.projects.map((project) => [project.name, project]));
   const references: AdapterEdge[] = [];
+  const unplaced: AdapterEdge[]   = [];
   for (const project of compiler.projects) {
     for (const reference of project.references) {
       const target = byName.get(reference);
-      if (target) references.push({ from: projectFile(project), to: projectFile(target) });
+      if (!target) continue;
+      const from = manifestOf(fixtureDir, project);
+      const to   = manifestOf(fixtureDir, target);
+      if (from && to && from !== to) references.push({ from, to });
+      else unplaced.push({ from: project.name, to: target.name });
     }
   }
-  if (references.length > 0) {
+  if (references.length + unplaced.length > 0) {
     report.projects = {
       found:   references.filter((edge) => adapterKeys.has(`${edge.from}|${edge.to}`)),
-      missing: references.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`))
+      missing: references.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`)),
+      unplaced
     };
   }
 
@@ -192,9 +218,12 @@ function printReport(report: Report): void {
 
   if (report.projects) {
     lines.push("");
-    lines.push(`Project references: ${report.projects.found.length} found, ${report.projects.missing.length} missing`);
+    lines.push(`Project references: ${report.projects.found.length} found, ${report.projects.missing.length} missing, ${report.projects.unplaced.length} between projects with no manifest of their own`);
     for (const edge of report.projects.missing) {
       lines.push(`  missing  ${edge.from} -> ${edge.to}`);
+    }
+    for (const edge of report.projects.unplaced) {
+      lines.push(`  no file  ${edge.from} -> ${edge.to}`);
     }
   }
 

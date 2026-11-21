@@ -63,7 +63,7 @@ describe("oracle:compare", () => {
         .reduce((count, project) => count + project.references.length, 0);
       if (expectedReferences > 0) {
         expect(report.projects).toBeDefined();
-        expect(report.projects!.found.length + report.projects!.missing.length).toBe(expectedReferences);
+        expect(report.projects!.found.length + report.projects!.missing.length + report.projects!.unplaced.length).toBe(expectedReferences);
       }
     });
   }
