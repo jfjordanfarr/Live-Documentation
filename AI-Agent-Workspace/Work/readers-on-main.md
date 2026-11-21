@@ -49,16 +49,20 @@ Found since, by the join's builder:
 11. The committed C# oracle reads a project's references by the same kind of pattern the reader does, so on the third finding it agrees with the fault. Ruled: MSBuild's evaluation is its source.
 12. scip-dotnet's symbols do not carry a generic type's arity, so it cannot grade the second finding. Ruled: the compiler's own binding, through the November 19 probe's program, is committed as the C# grader with a command of its own; where scip-dotnet cannot tell two types apart its expectation says ambiguous and counts neither way.
 
+Mended since the split on the SQL builder's branch (`worktree-agent-abde3d56d5d8a22dd`, tip `01af6b3a1`), reviewed by root: the eighth finding. A one-part name binds to its module's schema, then `dbo`, and to nothing where neither holds it; `database..name` reads as `database.dbo.name` does; a schema-less trigger takes its table's schema; a one-part name in DDL inside a module binds as a loose script's does. Microsoft's documentation, quoted with its pages in the grader's head, corrected root's ruling twice: inside a module the caller's default schema is never searched, and `database..name` never takes the module's schema. The grader now states T-SQL's order itself and can fail on it; on tSQLt, DNN's scripts, the provider scripts and dbatools no line changed. Asked for next: whether a written `dbo.X` binds to an object created as plain `X`, measured before it is built.
+
 Mended since the split, on `readers-gathering` at `3625bbfb6`, reviewed by root: the third finding (one shared step writes every XML comment over in spaces before any pattern runs, in project files, the XML form of a solution and the .NET configuration files; on DNN and mojoPortal no edge gained or lost, and 20 settings no longer read out of comments), and the C# oracle taking a project's references from MSBuild (no committed fixture's expectation moved). Root asked that no test start `dotnet`: a kept record stands in for the tool, as it does for `pwsh`.
 
 A stored procedure named from C#; a library's configuration reads against its host's file; a declaration in any branch of `#if`; which Pester a test file is written for. Since 2026-11-21, a project reference under a condition: three of mojoPortal's projects reference their data projects once per database (`Condition="'$(Configuration)'=='Debug - MySql'"` and its like, eight in `mojoPortal.Business.csproj`); MSBuild's default configuration takes one, and the reader, as on `main`, takes all, which reaches every provider's namesakes. Candidates: the default configuration, every condition with the condition kept as a fact, a configuration the person names. Until it is measured the reader is unchanged and both C# graders count such references as a class of their own. the PowerShell reader no longer needs `node:crypto`; a run with `--remove-superseded` keeps the same code's cache under the other way of running workers. Ruled twice: the record of a summarizing process's memory is one per way of running workers, carried across changes of the code by the rule it had, since a first run after every upgrade sized by the default is what an 8 GB machine cannot afford.
 
 ### The comparison against the oracles, as a test that can fail
 - state: active
-- holds: with the SQL findings' builder since 2026-11-21, after its SQL mend
+- holds: with the SQL findings' builder; the ledger for hand-verified edges is built on its branch (`1889de85f`), the ledger by cause for the compiler's edges is being built
 - evidence:
 
 [`oracle.test.ts`](../../tests/integration/live-docs/oracle.test.ts) says of itself that it "asserts the bookkeeping, not the adapter's score": it checks that found plus missing equals what was expected, so no reader's regression on a sample program can fail the gate. Root found by hand on 2026-11-21 that three of the estate's twenty hand-verified edges are missing on the day branch (`Hub/PaymentHub.cs` to `Hub/App.config`; `Default.aspx.designer.cs` to `Default.aspx`; `PostPaymentRow.cs` to `dbo.usp_PostPayment.sql`) with nothing saying so. Asked for: a table of every sample program's found, missing and extra; then, for hand-verified edges, a committed ledger of the known misses, each with its cause, failing on a miss it does not list and on a listed one that is found, as [the page check's ledger](../../tests/page-scan/differences.json) does. For the compiler's edges the form waits on the table's sizes.
+
+The table came back on 2026-11-21: across 26 measured sample programs, 50 compiler edges missing (39 of them in C and C++), 4 extra, 3 hand-verified missing (the three above, each now in the estate's ledger with a cause found by reading why), 2 project references "missing" that are the comparison's own fault (it names a Rust crate's project file as a `.csproj`). The builder's form for the compiler's edges, ruled yes: a ledger by cause, one sentence for each cause with the edges it explains, failing on an edge no cause lists and on a listed one that is found; about seven causes for 54 edges, each to be confirmed by reading its reader.
 
 ### The generator reads each file once and hands its text to its reader
 - state: open
@@ -87,6 +91,8 @@ Stale comments and run lines of the default mode; `--remove-superseded` removing
 - evidence:
 
 The owner's own wire (`OPENQUERY`). The declaration of what a linked server's name stands for goes on the SQL Server piece, by their word of 2026-11-20. Two small changes in the board's join are known to be needed ([the several-folders run](../AgentSessionHistory/2026/11/2026-11-19/Probes/many-scans/README.md)).
+
+Beside it since 2026-11-21: a three-part name that points at another database (`SisterDb.dbo.Orders`) is drawn as a same-database edge to this folder's `dbo.Orders`, the database's name ignored. Whether that line is true depends on which database a script belongs to, which nothing the readers know says yet (a `USE` statement, a project's name, a declaration). The same knowledge the linked server's declaration needs.
 
 ### Measured before anything is built
 - state: open
