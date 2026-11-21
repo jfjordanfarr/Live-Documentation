@@ -2,6 +2,112 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Second leg, later on 2026-11-21: the root's five rulings, built and measured
+
+### What changed in the function
+
+1. **A folder left out is left out whole, under either syntax.**
+   - It is not entered. A `!` line keeps something only where its folder is kept: git's rule, and TFVC's in `tf add /recursive`.
+   - Where a `!` line at or above could have named something inside, the folder's answer carries a note naming the line. For example: ".tfignore line 2, `!packages\keep\x.targets`, may name files inside folders left out whole; they are not looked for".
+   - `folder()` reports every folder left out as prunable.
+   - In the TFVC oracle test, the scanner's verdicts stay recorded. The re-recording also holds `tf add`'s verdict for each file. Of 468 files, 3 differ between the two readings, all in one tree. For those 3:
+     - the test holds the function to `tf add`, and marks them as following it;
+     - where the scanner kept a file by a `!` line at or above the folder, the note must name that line;
+     - where the `!` line lies in a `.tfignore` inside the folder, which `tf add` never reads, the note must not name it.
+2. **Case in `.gitignore` is the repository's, handed in** (`gitIgnoreCase`).
+   - The git oracle test now asks git both ways, `core.ignorecase` false and true, for all 16 cases and the random trees: 33 tests, all agreeing.
+   - A new case holds git's folding quirks, which the port keeps: an escaped letter and a class's single members are compared as written, while ranges and `[:upper:]` fold.
+   - Asking both ways found one fault in the prefilter added for speed: a `**/` pattern's slash was taken as required. Mended.
+   - The person's patterns and a starting list of patterns are always read without regard to case. `.tfignore` is unchanged.
+   - **Can a page read `core.ignorecase` from the listing?** For an ordinary clone, yes: `.git/config` is a file in the folder a person picks, and git writes `ignorecase = true` there when it makes a repository on Windows. It does not hold when that setting comes from a global or system file, when `.git` is a file pointing elsewhere (a worktree, a submodule), or for `GIT_DIR`. Today's scanning page leaves `.git` out of what it holds, so it would have to read that one file first.
+3. **The tool's own output is never scanned,** with a rule kind of its own (`own output`), whatever the ignore files and the person's patterns say.
+   - The first leg's DNN figures counted 10,776 files of our own docs, written into the shared corpus by the readers' builder. Those figures are superseded by the clean copy below.
+4. **The decide step keeps each folder's state,** derived once from its parent's and the ignore files in it. Measured on the made folder (103,329 files, 64,504 folders: 167,833 paths), every folder and every file asked, with the fixed starting list:
+   - Node: 0.50 to 0.72 s;
+   - a page at full speed on two cores: 0.16 to 0.27 s;
+   - a page slowed four times on two cores: 0.65 to 1.17 s (three runs each, load about 11).
+   - The first leg's figure was about 2 to 10 s for 25,000 paths.
+5. **The evidence rules,** a starting list that looks before it leaves out: `bin` and `obj` beside a project file; `packages` holding NuGet's `<Id>.<Version>` folders or a `repositories.config`; `node_modules` holding a `package.json` in one of its first three folders.
+   - They need the names one level into `packages`, two into `node_modules`, and no file's bytes.
+   - On the made folder they cost 99 extra folder listings, against the 13,763 entries the walk listed.
+
+### The made folder
+
+`make-folder.mjs` made it from DNN, read only:
+
+- DNN's files without `.git`, its `.gitignore` files and our docs: 10,941 files;
+- built output beside each of its 82 project files: 1,722 files under `bin/Debug`, `bin/Release` and `obj`;
+- NuGet-shaped `packages` folders: one at the top holding 600 packages, and one in each of the first 45 project folders holding 80. Each holds a `repositories.config` and `<Id>.<Version>` folders with a `.nupkg`, `lib/<framework>/` assemblies, resources, `content`, `tools` and `build` files;
+- NuGet's own recommended `.tfignore` in 15 of those 45 project folders (every third), and no ignore file anywhere else.
+
+That is 103,329 files in all, 92,399 of them made. Every file is empty, since only names matter before a scan. The manifest of what was made lets a listing count the made output it wrongly keeps.
+
+### The five starting lists, names compared without regard to case
+
+**The made folder** (`listings/made-*.txt`):
+
+| Starting list | Kept | Left out | Made output wrongly kept (of 92,399) | Source wrongly left out | Entries the lazy walk listed | Walk and decide |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| nothing | 76,899 | 26,430 | 65,969 | 0 | 123,418 | 5.6 s |
+| fixed (`bin/`, `obj/`, `packages/`, `node_modules/`, `.vs/`, `TestResults/`) | 11,228 | 92,101 | 313 | 12 | 13,749 | 0.44 s |
+| GitHub's `VisualStudio.gitignore` | 11,170 | 92,159 | 313 | 63 | 16,789 | 1.4 s |
+| TFVC's own 56 defaults | 40,374 | 62,955 | 29,543 | 29 | 121,805 | 6.6 s |
+| by evidence | 11,242 | 92,087 | 313 | 1 | 13,763, and 99 extra listings | 0.36 s |
+
+**Clean DNN** (10,941 files), as a TFS folder with no ignore file (`listings/dnn-clean-no-ignore-files-*.txt`):
+
+| Starting list | Left out | Source wrongly left out |
+| --- | ---: | ---: |
+| nothing | 0 | 0 |
+| fixed | 15 | 12 (`Services/Installer/Packages/*.cs`, once names fold) |
+| VisualStudio | 73 | 63 (`Services/Installer/Log/*.cs` and `Packages/*.cs`) |
+| TFVC defaults | 99 | 29 (`Website/js/Debug/*`) |
+| evidence | 1 | 1, `Packages/repositories.config`, which is NuGet's own file and arguably right |
+
+With its own `.gitignore` files (`listings/dnn-clean-*.txt`), every list gives the same 26 left out, by DNN's rules. A starting list never applies under a `.gitignore` at the top.
+
+**What the numbers say.**
+
+- *Source wrongly left out.* Every list that names a folder by name leaves out real source in a folder named `Packages`, `Log` or `Debug`. Only the evidence rules do not.
+- *Packages wrongly kept.* TFVC's defaults keep the packages themselves: 29,543 made files, everything that is not a `.dll`, `.pdb`, `.exe` and the like. They also list nearly everything, since they prune almost nothing.
+- *Build output kept under a `.tfignore`.* Every list keeps the same 313 made files: the build output in the 15 project folders that hold NuGet's `.tfignore`. That file names `packages` but not `bin` or `obj`, and the starting list stands off wherever an ignore file stands. Under TFVC itself the server's global list would leave them out.
+  - This is a fork for the design: the starting list's build folders could apply under a `.tfignore` that does not mention them.
+
+### Listing in a page
+
+- **`<input webkitdirectory>`:** handed the made folder's 103,329 files in 73.4 s, on two cores at full speed, at a load of about 9 (`listing-in-page.mjs`). Making the list of names from them took 0.5 s.
+  - That time includes Playwright's own handing over of the files, which cannot be told apart here.
+  - Such an input always lists everything, packages included, before the page sees anything.
+- **A lazy walk** through a directory handle cannot be driven by an automated browser, since the picker's prompt cannot be pressed (the probe of November 19). It was not timed. What can be said is in Node's walk above: with the evidence rules it listed 13,763 entries where the input listed 103,329 files.
+
+### Forks 2 and 3, as far as this leg goes
+
+**Where a person's own patterns are kept.** [The work item](../../../../../../Work/scan-leaves-no-trace.md) has not decided where a scan's output goes. Its candidates are a folder inside the mapped one that ignores itself, or a folder outside it. It asks that the patterns be kept "where the next scan finds them", and that a scan leave no trace unless asked.
+
+The function needs the patterns before the walk, with the ignore files. So they belong with the scan's settings:
+
+- **Command line, inside the scan's own output folder.** That folder is never scanned, so the patterns leave no trace in version control, and the next scan of the same folder finds them.
+- **Command line, outside the folder** (beside the user's profile, keyed by the folder's path). This leaves no trace at all, but the patterns are lost when the folder moves.
+- **A page.** It keeps them inside the HTML file it saves, with the facts. A blank copy carries none, and a filled copy carries its folder's.
+- **In the folder as a file of its own** (a `.live-docs-ignore`). This leaves a trace, so it would only be written when asked. The work item's own rule makes it opt-in.
+
+**One syntax or two.** Today the person's patterns are read by git's rules without regard to case.
+
+- *Cost to a TFS user:*
+  - `\` must be written `/`;
+  - a pattern without a slash reaches every depth, as in TFVC, but one with a middle slash is anchored, where TFVC anchors only by a leading `\`;
+  - `!` under a folder left out now behaves the same in both syntaxes (ruling 1), which removes the largest difference.
+- *Cost to a git user of TFVC's syntax:* it has no `**`, no classes, and no anchoring by a middle slash.
+- *What the measurements bear on:* git's syntax with case folded, `\` accepted as `/`, and no other change would read every pattern in NuGet's `.tfignore` and TFVC's default list the same way. Not measured further.
+
+### Still owed
+
+- **The swap measurement** (the function against today's discovery, on this repository and every fixture). Not done in this leg either.
+
+### The first leg's DNN figures
+
+The first leg's DNN listing and its starting-list figures below counted our own docs, and the tables above replace them.
+
 The ask, in the owner's words of [Turn 3](../../2026-11-21.1.record.md#turn-3):
 
 - "I do have some project specific .tfignore files specifically because of how sick I was of churn in the packages folders (which should never ever have made it into TFS in the first place - bah!), but not all"
@@ -143,7 +249,7 @@ It has no `!packages/*.targets` line; the root's memory of one is not on the pag
 
 ## What a person would be shown before a scan: DNN
 
-`shown-before-a-scan.ts` prints, by folder, the files, how many are kept, and how many are left out by which rule. The four listings are in `listings/`. The time to list is Node's walk; the time to decide is the function, not yet tuned.
+`shown-before-a-scan.ts` prints, by folder, the files, how many are kept, and how many are left out by which rule. Its four listings were replaced by the second leg's, made from a clean copy. The time to list is Node's walk; the time to decide is the function, not yet tuned.
 
 | DNN, 21,717 files | Kept | Left out | Listed | Decided | Source files the starting list leaves out |
 | --- | ---: | ---: | ---: | ---: | ---: |

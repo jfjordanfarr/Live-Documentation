@@ -1,5 +1,5 @@
 {
- "oracle": "Team Explorer Everywhere 21e0e598, LocalItemExclusionEvaluator, scanner's verdict, no global list",
+ "oracle": "Team Explorer Everywhere 21e0e598, LocalItemExclusionEvaluator: the change scanner's verdict and tf add's, no global list",
  "trees": [
   {
    "name": "a-nesting",
@@ -26,67 +26,78 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "a.tmp",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/b.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "sub/c.tmp",
      "excluded": true,
      "source": "sub/.tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "sub/d.cs",
      "excluded": false,
      "source": "sub/.tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     },
     {
      "path": "sub/deeper/e.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "sub2/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub2/keep.log",
      "excluded": false,
      "source": "sub2/.tfignore",
-     "line": 1
+     "line": 1,
+     "add": "added"
     },
     {
      "path": "sub2/x.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     }
    ]
   },
@@ -110,49 +121,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "A.LoG",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "BIN/q.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 3
+     "line": 3,
+     "add": "unreached:BIN"
     },
     {
      "path": "Bin/r.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 3
+     "line": 3,
+     "add": "unreached:Bin"
     },
     {
      "path": "Docs/Z.MD",
      "excluded": true,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     },
     {
      "path": "Docs/x.md",
      "excluded": true,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     },
     {
      "path": "a.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "docs/y.md",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -171,19 +190,22 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "keep.txt",
      "excluded": false,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     },
     {
      "path": "other.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     }
    ]
   },
@@ -202,19 +224,22 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "keep.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     },
     {
      "path": "other.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     }
    ]
   },
@@ -238,43 +263,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "gen/.tfignore",
      "excluded": true,
      "source": ".tfignore",
-     "line": 3
+     "line": 3,
+     "add": "unreached:gen"
     },
     {
      "path": "gen/keep.cs",
      "excluded": false,
      "source": "gen/.tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:gen"
     },
     {
      "path": "gen/x.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 3
+     "line": 3,
+     "add": "unreached:gen"
     },
     {
      "path": "out/a.dll",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:out"
     },
     {
      "path": "out/inner/keep.dll",
      "excluded": false,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "unreached:out"
     },
     {
      "path": "out/keep.dll",
      "excluded": false,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "unreached:out"
     }
    ]
   },
@@ -294,25 +326,29 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "bin/x.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "bin/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "obj/z.cs",
      "excluded": false,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     }
    ]
   },
@@ -348,121 +384,141 @@
      "path": ".git/HEAD",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": ".vs/settings.json",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "Debug/z.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "Release/z.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "TestResults/t.xml",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.class",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.exe",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.log",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.nupkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.user",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "bin/x.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "node_modules/m/index.js",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "obj/y.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "packages/p/lib.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "packages/p/readme.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "src/bin/q.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "x.cs~",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "x.tfOrig1",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -483,31 +539,36 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "Help.exe",
      "excluded": false,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     },
     {
      "path": "a.dll",
      "excluded": false,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "added"
     },
     {
      "path": "sub/Help.exe",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/b.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -567,265 +628,309 @@
      "path": "!",
      "excluded": true,
      "source": ".tfignore",
-     "line": 23
+     "line": 23,
+     "add": "excluded"
     },
     {
      "path": "!bang.txt",
      "excluded": false,
      "source": ".tfignore",
-     "line": 21
+     "line": 21,
+     "add": "added"
     },
     {
      "path": "#hash.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 20
+     "line": 20,
+     "add": "excluded"
     },
     {
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "Contoso/c.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 25
+     "line": 25,
+     "add": "unreached:Contoso"
     },
     {
      "path": "a/b/c.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 22
+     "line": 22,
+     "add": "excluded"
     },
     {
      "path": "a/b/d/e.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 22
+     "line": 22,
+     "add": "excluded"
     },
     {
      "path": "a/x/b/c.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 15
+     "line": 15,
+     "add": "unreached:a/x"
     },
     {
      "path": "abbc.dat",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "abc.dat",
      "excluded": true,
      "source": ".tfignore",
-     "line": 11
+     "line": 11,
+     "add": "excluded"
     },
     {
      "path": "ac.dat",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "deep/back.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 8
+     "line": 8,
+     "add": "excluded"
     },
     {
      "path": "deep/more/slash.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 7
+     "line": 7,
+     "add": "excluded"
     },
     {
      "path": "deep/slash.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 7
+     "line": 7,
+     "add": "excluded"
     },
     {
      "path": "dup/dup.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 24
+     "line": 24,
+     "add": "excluded"
     },
     {
      "path": "folderonly/f.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 9
+     "line": 9,
+     "add": "unreached:folderonly"
     },
     {
      "path": "has.ext",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "main.cpp",
      "excluded": true,
      "source": ".tfignore",
-     "line": 16
+     "line": 16,
+     "add": "excluded"
     },
     {
      "path": "my file.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 18
+     "line": 18,
+     "add": "excluded"
     },
     {
      "path": "name",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "name.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "noext",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "other/deep/slash.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "q.xy",
      "excluded": true,
      "source": ".tfignore",
-     "line": 12
+     "line": 12,
+     "add": "excluded"
     },
     {
      "path": "q.xyz",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "q.xzzy",
      "excluded": true,
      "source": ".tfignore",
-     "line": 12
+     "line": 12,
+     "add": "excluded"
     },
     {
      "path": "root-only.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 6
+     "line": 6,
+     "add": "excluded"
     },
     {
      "path": "src*/a.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 17
+     "line": 17,
+     "add": "excluded"
     },
     {
      "path": "src.cpp/inner.h",
      "excluded": true,
      "source": ".tfignore",
-     "line": 16
+     "line": 16,
+     "add": "unreached:src.cpp"
     },
     {
      "path": "src1/a.cs",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/#hash.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/Contoso",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/folderonly/g.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 9
+     "line": 9,
+     "add": "unreached:sub/folderonly"
     },
     {
      "path": "sub/root-only.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/top/t.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/y.bak",
      "excluded": true,
      "source": ".tfignore",
-     "line": 5
+     "line": 5,
+     "add": "excluded"
     },
     {
      "path": "sub2/folderonly",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "top/t.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 10
+     "line": 10,
+     "add": "unreached:top"
     },
     {
      "path": "trail.",
      "excluded": true,
      "source": ".tfignore",
-     "line": 14
+     "line": 14,
+     "add": "excluded"
     },
     {
      "path": "ws.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 27
+     "line": 27,
+     "add": "excluded"
     },
     {
      "path": "x.bak",
      "excluded": true,
      "source": ".tfignore",
-     "line": 5
+     "line": 5,
+     "add": "excluded"
     },
     {
      "path": "xhas.ext",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "xnoext",
      "excluded": true,
      "source": ".tfignore",
-     "line": 15
+     "line": 15,
+     "add": "excluded"
     },
     {
      "path": "z.log",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -849,49 +954,57 @@
      "path": "!lit.dat",
      "excluded": true,
      "source": ".tfignore",
-     "line": 4
+     "line": 4,
+     "add": "excluded"
     },
     {
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "other.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "sub/!lit.dat",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/top.dat",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "sub/ws.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "top.dat",
      "excluded": true,
      "source": ".tfignore",
-     "line": 3
+     "line": 3,
+     "add": "excluded"
     },
     {
      "path": "ws.txt",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     }
    ]
   },
@@ -910,19 +1023,22 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "bin/b.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:bin"
     },
     {
      "path": "bin/sub/a.cs",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:bin"
     }
    ]
   },
@@ -941,19 +1057,22 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a.log",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "b.tmp2",
      "excluded": true,
      "source": ".tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     }
    ]
   },
@@ -977,43 +1096,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1037,43 +1163,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1099,55 +1232,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1173,55 +1315,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1248,61 +1399,71 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1327,49 +1488,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1392,37 +1561,43 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/pkg",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:y.dll/a"
     }
    ]
   },
@@ -1449,61 +1624,71 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": true,
      "source": "y.dll/.tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1525,31 +1710,36 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1575,55 +1765,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1650,61 +1849,71 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1730,55 +1939,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1804,55 +2022,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/a",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1881,73 +2108,85 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -1974,61 +2213,71 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2053,49 +2302,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2120,49 +2377,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2188,55 +2453,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2260,43 +2534,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2321,49 +2602,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": "a/.tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2388,49 +2677,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2460,79 +2757,92 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/k.txt",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2560,67 +2870,78 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2644,43 +2965,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2704,43 +3032,50 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2765,49 +3100,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2833,55 +3176,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -2907,55 +3259,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "excluded"
     }
    ]
   },
@@ -2982,61 +3343,71 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": "y.dll/.tfignore",
-     "line": 1
+     "line": 1,
+     "add": "added"
     }
    ]
   },
@@ -3061,49 +3432,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3128,49 +3507,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3196,55 +3583,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3270,55 +3666,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3347,73 +3752,85 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3438,49 +3855,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3505,49 +3930,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3573,55 +4006,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3646,49 +4088,57 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3714,55 +4164,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/a/pkg",
      "excluded": false,
      "source": "a/.tfignore",
-     "line": 2
+     "line": 2,
+     "add": "added"
     },
     {
      "path": "a/pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": true,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "unreached:y.dll/a"
     },
     {
      "path": "y.dll/pkg/y.dll",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   },
@@ -3788,55 +4247,64 @@
      "path": ".tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "a/y.dll",
      "excluded": false,
      "source": ".tfignore",
-     "line": 1
+     "line": 1,
+     "add": "added"
     },
     {
      "path": "pkg/.tfignore",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/a/a",
      "excluded": true,
      "source": "pkg/.tfignore",
-     "line": 2
+     "line": 2,
+     "add": "excluded"
     },
     {
      "path": "pkg/a/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/pkg/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "pkg/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/a/a",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     },
     {
      "path": "y.dll/y.dll/pkg",
      "excluded": false,
      "source": null,
-     "line": null
+     "line": null,
+     "add": "added"
     }
    ]
   }

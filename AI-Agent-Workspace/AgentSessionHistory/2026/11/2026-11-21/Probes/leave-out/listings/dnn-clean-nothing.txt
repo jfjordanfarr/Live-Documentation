@@ -1,12 +1,14 @@
-/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/readers-builder-2/corpora/dnn: 21717 files, 21717 kept, 0 left out; listed in 179 ms, decided in 2030 ms; 0 ignore files; starting list fixed-list.txt (6 patterns)
+dnn-clean: 10941 files; starting list nothing, .gitignore without regard to case
+kept 10915, left out 26; the lazy walk listed 13180 entries in 2252 folders, left 2 folders unlisted, and the evidence rules listed 0 folders more; walk and decide 1623 ms
+source files of the kinds the readers read left out: 8, such as Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.ConfigConsole/css/ConfigConsole.css, Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Connectors/css/Connectors.css, Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.CssEditor/css/CssEditor.css, Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Recyclebin/css/RecycleBin.css, Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.SqlConsole/css/SqlConsole.css, Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Styles/css/Styles.css
+notes on folders left out whole: 0
 folder | files | kept | left out, by rule
-.live-documentation/source | 10776 | 10776 | -
 DNN Platform/Website | 2860 | 2860 | -
 Dnn.AdminExperience/ClientSide | 1904 | 1904 | -
 DNN Platform/Library | 1413 | 1413 | -
-DNN Platform/Providers | 885 | 885 | -
+DNN Platform/Providers | 885 | 882 | 3 by .gitignore:124 *.de-DE.resx
 DNN Platform/Modules | 845 | 845 | -
-Dnn.AdminExperience/Dnn.PersonaBar.Extensions | 628 | 628 | -
+Dnn.AdminExperience/Dnn.PersonaBar.Extensions | 628 | 620 | 6 by Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/.gitignore:4 /*/css/*.css; 2 by Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/.gitignore:2 /*/scripts/bundles/*.svg
 DNN Platform/Tests | 543 | 543 | -
 DNN Platform/DotNetNuke.Web | 245 | 245 | -
 DNN Platform/DotNetNuke.Log4net | 231 | 231 | -
@@ -23,7 +25,7 @@ DNN Platform/JavaScript Libraries | 52 | 52 | -
 DNN Platform/Dnn.ClientSide | 46 | 46 | -
 DNN Platform/DotNetNuke.WebUtility | 38 | 38 | -
 DNN Platform/HttpModules | 35 | 35 | -
-(top) | 30 | 30 | -
+(top) | 30 | 29 | 1 by .gitignore:70 stylecop.*
 DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.DeployClient | 30 | 30 | -
 DNN Platform/DotNetNuke.Web.Client | 28 | 28 | -
 Dnn.AdminExperience/Tests | 28 | 28 | -
@@ -33,7 +35,7 @@ DNN Platform/Syndication | 22 | 22 | -
 DNN Platform/Admin Modules | 21 | 21 | -
 DNN Platform/DotNetNuke.ContentSecurityPolicy | 19 | 19 | -
 DNN Platform/DotNetNuke.Instrumentation | 15 | 15 | -
-Build/Tools | 13 | 13 | -
+Build/Tools | 13 | 0 | 13 by .gitignore:151 /Build/Tools/ (folder left out whole)
 DNN Platform/DotNetNuke.Web.Client.ResourceManager | 13 | 13 | -
 DNN Platform/DotNetNuke.Web.Razor | 13 | 13 | -
 DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.DeployClient.Tests | 12 | 12 | -
@@ -50,8 +52,7 @@ Build/Symbols | 3 | 3 | -
 DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.Encryption | 3 | 3 | -
 DotNetNuke.Internal.SourceGenerators | 2 | 2 | -
 .github/images | 1 | 1 | -
-.live-documentation | 1 | 1 | -
 Build/Properties | 1 | 1 | -
 DotNetNuke.Internal.SourceGenerators/Properties | 1 | 1 | -
-Packages | 1 | 1 | -
-source files the starting list leaves out: 0
+Packages | 1 | 0 | 1 by .gitignore:56 /[Pp]ackages/ (folder left out whole)
+expected | 1 | 1 | -

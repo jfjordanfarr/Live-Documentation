@@ -1,13 +1,15 @@
-/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/readers-builder-2/corpora/dnn: 21717 files, 21574 kept, 143 left out; listed in 177 ms, decided in 9509 ms; 0 ignore files; starting list VisualStudio-ignore.txt (234 patterns)
+dnn-clean: 10941 files; starting list fixed, .gitignore without regard to case, ignore files not read
+kept 10926, left out 15; the lazy walk listed 13180 entries in 2252 folders, left 3 folders unlisted, and the evidence rules listed 0 folders more; walk and decide 199 ms
+source files of the kinds the readers read left out: 12, such as DNN Platform/Library/Services/Installer/Packages/IPackageController.cs, DNN Platform/Library/Services/Installer/Packages/IPackageEditor.cs, DNN Platform/Library/Services/Installer/Packages/PackageController.cs, DNN Platform/Library/Services/Installer/Packages/PackageCreatedEventArgs.cs, DNN Platform/Library/Services/Installer/Packages/PackageCreatedEventHandler.cs, DNN Platform/Library/Services/Installer/Packages/PackageDependencyInfo.cs
+notes on folders left out whole: 0
 folder | files | kept | left out, by rule
-.live-documentation/source | 10776 | 10706 | 29 by starting list [Dd]ebug/; 22 by starting list [Ll]og/; 15 by starting list **/[Pp]ackages/*; 4 by starting list [Ll]ogs/
-DNN Platform/Website | 2860 | 2826 | 29 by starting list [Dd]ebug/; 4 by starting list [Ll]ogs/; 1 by starting list *.mdf
+DNN Platform/Website | 2860 | 2860 | -
 Dnn.AdminExperience/ClientSide | 1904 | 1904 | -
-DNN Platform/Library | 1413 | 1382 | 20 by starting list [Ll]og/; 11 by starting list **/[Pp]ackages/*
+DNN Platform/Library | 1413 | 1402 | 11 by starting list packages/ (folder left out whole)
 DNN Platform/Providers | 885 | 885 | -
 DNN Platform/Modules | 845 | 845 | -
-Dnn.AdminExperience/Dnn.PersonaBar.Extensions | 628 | 626 | 2 by starting list [Ll]og/
-DNN Platform/Tests | 543 | 539 | 3 by starting list **/[Pp]ackages/*; 1 by starting list *.mdf
+Dnn.AdminExperience/Dnn.PersonaBar.Extensions | 628 | 628 | -
+DNN Platform/Tests | 543 | 540 | 3 by starting list packages/ (folder left out whole)
 DNN Platform/DotNetNuke.Web | 245 | 245 | -
 DNN Platform/DotNetNuke.Log4net | 231 | 231 | -
 Dnn.AdminExperience/Library | 205 | 205 | -
@@ -27,7 +29,7 @@ DNN Platform/HttpModules | 35 | 35 | -
 DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.DeployClient | 30 | 30 | -
 DNN Platform/DotNetNuke.Web.Client | 28 | 28 | -
 Dnn.AdminExperience/Tests | 28 | 28 | -
-DNN Platform/Components | 26 | 25 | 1 by starting list *.pdb
+DNN Platform/Components | 26 | 26 | -
 DNN Platform/Dnn.AuthServices.Jwt | 22 | 22 | -
 DNN Platform/Syndication | 22 | 22 | -
 DNN Platform/Admin Modules | 21 | 21 | -
@@ -50,8 +52,7 @@ Build/Symbols | 3 | 3 | -
 DotNetNuke.BulkInstall/DotNetNuke.BulkInstall.Encryption | 3 | 3 | -
 DotNetNuke.Internal.SourceGenerators | 2 | 2 | -
 .github/images | 1 | 1 | -
-.live-documentation | 1 | 1 | -
 Build/Properties | 1 | 1 | -
 DotNetNuke.Internal.SourceGenerators/Properties | 1 | 1 | -
-Packages | 1 | 0 | 1 by starting list **/[Pp]ackages/*
-source files the starting list leaves out: 60, such as DNN Platform/Library/Services/Installer/Log/LogEntry.cs, DNN Platform/Library/Services/Installer/Log/LogType.cs, DNN Platform/Library/Services/Installer/Log/Logger.cs, DNN Platform/Library/Services/Installer/Packages/IPackageController.cs, DNN Platform/Library/Services/Installer/Packages/IPackageEditor.cs, DNN Platform/Library/Services/Installer/Packages/PackageController.cs, DNN Platform/Library/Services/Installer/Packages/PackageCreatedEventArgs.cs, DNN Platform/Library/Services/Installer/Packages/PackageCreatedEventHandler.cs
+Packages | 1 | 0 | 1 by starting list packages/ (folder left out whole)
+expected | 1 | 1 | -
