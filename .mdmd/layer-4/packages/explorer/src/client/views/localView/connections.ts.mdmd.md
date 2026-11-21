@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/connections.ts`
-- Generated At: 2026-11-19T21:10:16.456Z
+- Generated At: 2026-11-21T09:00:46.116Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Since 2026-11-19 ([Turn 23 of the November 18 record](../../../../../../../../AI
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L18)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L21)
 
 ##### `ConnectionsContext` — Summary
 Ambient context required by {@link drawConnections} to measure DOM
@@ -52,7 +52,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L84)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
@@ -71,7 +71,7 @@ counted, and the cycles' returns, the ordinary case, never lit it).
 
 #### `drawsReference` {#symbol-drawsreference}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L105)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L108)
 - Parameters: `_unnamed_`: [`ConnectionsContext`](#symbol-connectionscontext); `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `drawsReference` — Summary
@@ -81,7 +81,7 @@ and with files only (2026-11-15). The card's foot asks it before the picture is 
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L146)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L149)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -91,6 +91,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
+- [`types.DirectionMarks`](../../types.ts.mdmd.md#symbol-directionmarks) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.LocalMapTuning`](../../types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](../connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
@@ -121,6 +122,8 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`wire-answers.WireAnswer`](./wire-answers.ts.mdmd.md#symbol-wireanswer)
+- [`wire-answers.setAnswer`](./wire-answers.ts.mdmd.md#symbol-setanswer)
 - [`wire-gathering.NODE_HUB`](./wire-gathering.ts.mdmd.md#symbol-node_hub)
 - [`wire-gathering.gatherWires`](./wire-gathering.ts.mdmd.md#symbol-gatherwires)
 - [`wire-gathering.gatheredCount`](./wire-gathering.ts.mdmd.md#symbol-gatheredcount)
@@ -128,6 +131,9 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`wire-gathering.gatheredWidth`](./wire-gathering.ts.mdmd.md#symbol-gatheredwidth)
 - [`wire-gathering.ownWires`](./wire-gathering.ts.mdmd.md#symbol-ownwires)
 - [`wire-gathering.wireDescription`](./wire-gathering.ts.mdmd.md#symbol-wiredescription)
+- [`wire-marks.markStrokes`](./wire-marks.ts.mdmd.md#symbol-markstrokes)
+- [`wire-words.runWords`](./wire-words.ts.mdmd.md#symbol-runwords)
+- [`wire-words.wireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-function)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
 

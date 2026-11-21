@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-21T07:10:12.247Z
+- Generated At: 2026-11-21T09:00:40.927Z
 
 ## Authored
 ### Purpose
@@ -116,7 +116,7 @@ Follows Pins, its absence reading as By Hand.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L113)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L116)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -125,7 +125,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L128)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L131)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -150,6 +150,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.CLOSED_DIRECTORY_SHAPES`](./types.ts.mdmd.md#symbol-closed_directory_shapes)
 - [`types.CUT_COUNTED`](./types.ts.mdmd.md#symbol-cut_counted)
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](./types.ts.mdmd.md#symbol-descriptions_zoomed_out)
+- [`types.DIRECTION_MARKS`](./types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.FRAMINGS`](./types.ts.mdmd.md#symbol-framings)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
@@ -159,6 +160,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.OVERVIEW_FILES`](./types.ts.mdmd.md#symbol-overview_files)
 - [`types.STEPS`](./types.ts.mdmd.md#symbol-steps)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
+- [`types.WIRE_ANSWERS`](./types.ts.mdmd.md#symbol-wire_answers)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T07:10:12.702Z
+- Generated At: 2026-11-21T09:00:41.726Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L544)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L563)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -117,6 +117,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.CLOSED_DIRECTORY_SHAPES`](../types.ts.mdmd.md#symbol-closed_directory_shapes)
 - [`types.CUT_COUNTED`](../types.ts.mdmd.md#symbol-cut_counted)
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](../types.ts.mdmd.md#symbol-descriptions_zoomed_out)
+- [`types.DIRECTION_MARKS`](../types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.FRAME_CHOICES`](../types.ts.mdmd.md#symbol-frame_choices)
@@ -127,6 +128,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
+- [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
@@ -138,6 +140,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
 - [`template.tuning-cut-counted`](../../shared/template.html.mdmd.md#symbol-tuning-cut-counted)
 - [`template.tuning-descriptions-zoomed-out`](../../shared/template.html.mdmd.md#symbol-tuning-descriptions-zoomed-out)
+- [`template.tuning-direction-marks`](../../shared/template.html.mdmd.md#symbol-tuning-direction-marks)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
@@ -178,6 +181,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-symbol-order`](../../shared/template.html.mdmd.md#symbol-tuning-symbol-order)
 - [`template.tuning-text-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-text-resistance)
 - [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
+- [`template.tuning-wire-answers`](../../shared/template.html.mdmd.md#symbol-tuning-wire-answers)
 - [`template.tuning-zoom-looks`](../../shared/template.html.mdmd.md#symbol-tuning-zoom-looks)
 <!-- LIVE-DOC:END Dependencies -->
 

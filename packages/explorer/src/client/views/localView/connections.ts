@@ -1,4 +1,4 @@
-import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
+import type { BezierTuning, DirectionMarks, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, type Passage, type RoutePiece } from "./branch-routing";
@@ -9,7 +9,10 @@ import { returningConnections, returnRoute, type LaidBox, type ReturningConnecti
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import { attendConnections, releaseConnections } from "./symbol-highlight";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
+import { setAnswer, type WireAnswer } from "./wire-answers";
 import { gatheredCount, gatheredDescription, gatheredWidth, gatherWires, NODE_HUB, ownWires, wireDescription } from "./wire-gathering";
+import { markStrokes } from "./wire-marks";
+import { runWords, wireWords } from "./wire-words";
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
@@ -282,6 +285,44 @@ function drawWire(
 }
 
 /**
+ * What a drawn wire takes beside its stroke under the two wire trials of 2026-11-21: with Wire Answers on, its band, an
+ * undrawn stroke along the same route that takes the pointer and the keyboard's focus (never a stop of Tab) and carries
+ * its answer and its spoken name (wire-answers.ts); and under Direction Marks, its chevrons, written into its own path
+ * after the band has its route, so that they take its colour at their point, its opacity and its fading.
+ */
+function attendWire(layer: WireLayer, seen: Set<string>, wireKey: string, ends: { providerId: string; consumerId?: string; from: Point; to: Point },
+  answer: WireAnswer | null, marks: DirectionMarks, svgNamespace: string, bandClass?: string): void {
+  const wire = layer.elements.get(wireKey) as SVGPathElement | undefined;
+  if (!wire) return;
+  if (answer) {
+    const band = elementFor(layer, seen, JSON.stringify([wireKey, "band"]), () => {
+      const made = document.createElementNS(svgNamespace, "path") as SVGPathElement;
+      made.classList.add("wire-band");
+      if (bandClass) made.classList.add(bandClass);
+      made.setAttribute("tabindex", "-1");
+      made.setAttribute("role", "img");
+      return made;
+    });
+    const d = wire.getAttribute("d") ?? "";
+    if (band.getAttribute("d") !== d) band.setAttribute("d", d);
+    band.style.setProperty("--wire-width", wire.style.strokeWidth || "2.2px");
+    band.dataset.targetId = ends.providerId;
+    if (ends.consumerId) band.dataset.sourceId = ends.consumerId;
+    band.dataset.fromY = String(Math.round(ends.from.y));
+    band.dataset.toY = String(Math.round(ends.to.y));
+    setAnswer(band, answer);
+  }
+  if (marks !== "none") markWire(wire, marks);
+}
+
+/** Writes a wire's chevrons into its path, where `markStations` stands them, pointing along it or against it. */
+function markWire(path: SVGPathElement, marks: Exclude<DirectionMarks, "none">): void {
+  const d = path.getAttribute("d") ?? "";
+  const strokes = markStrokes(d, parseFloat(path.style.strokeWidth) || 2.2, marks === "against");
+  if (strokes) path.setAttribute("d", `${d} ${strokes}`);
+}
+
+/**
  * A wire's gradient, from the offering side's blue at `source` to the using side's green at `target`, in the overlay's
  * own coordinates: the first and last tenth pure, the transition between. The colours are the palette's two roles, which
  * the legend's sample reads too. Kept with the wire by its key; each drawing moves it to the wire's ends.
@@ -491,18 +532,21 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   // A forward wire's route: through its lanes, or the one curve across the gutter; leaving and entering its columns straight either way.
   const routeFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } =>
     threadFor(key, a, b, from, to) ?? { ...threadedRoute(from, to, [], state.tuning.bezier, clearance(a, b)), slots: [] };
-  const nameOf = (nodeId: string): string => branches.subgraph.nodes.find(node => node.id === nodeId)?.name ?? nodeId;
+  const names = new Map(branches.subgraph.nodes.map(node => [node.id, node.name] as const));
+  const nameOf = (nodeId: string): string => names.get(nodeId) ?? nodeId;
+  const answering = state.tuning.localMap.wireAnswers === "on", marks = state.tuning.localMap.directionMarks ?? "none";
   // The pairs' lines stand for the length of the move back in from files only (2026-11-13), as at the overview.
   if (runtime.container.dataset.lod === "overview" || runtime.container.hasAttribute(OVERVIEW_LINES_ATTRIBUTE)) {
-    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape, nameOf, boxes);
+    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape, nameOf, boxes, answering, marks);
     markHubs(runtime.container, hubsEnding);
     return overview;
   }
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
-  const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
-  // A pair line's dress: its laces or its path marked gathered, as wide as its count, described by its two files.
+  const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number; edges: readonly string[] }>();
+  // A pair line's dress: its laces or its path marked gathered, as wide as its count, described by its two files; with
+  // Wire Answers on, a forward line's band carries its name instead.
   const dressLine = (edge: LocalEdge, role: string): void => {
-    dressGathered(layer.elements.get(JSON.stringify([edgeKey(edge), role])), linksOf(edge), wireDescription(edge, nameOf));
+    dressGathered(layer.elements.get(JSON.stringify([edgeKey(edge), role])), linksOf(edge), wireDescription(edge, nameOf), !(answering && role === "gathered"));
   };
   branches.subgraph.links.forEach(edge => {
     const measured = wireEnds(edge.targetId, edge.targetSymbol, edge.sourceId, edge.sourceSymbol);
@@ -534,22 +578,30 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     const doubles = presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier);
     if (doubles) doubling += linksOf(edge);
     const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, line ? "gathered" : undefined, presence, doubles);
-    if (line) {
-      dressLine(edge, "gathered");
-      return;
-    }
+    if (line) dressLine(edge, "gathered");
+    attendWire(layer, seen, JSON.stringify([key, line ? "gathered" : "wire"]), { providerId: edge.targetId, consumerId: edge.sourceId, from, to },
+      answering ? { words: wireWords([edge], nameOf), carries: [edge] } : null, marks, context.svgNamespace);
+    if (line) return;
     // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
     routed.slots.forEach((slot, i) => {
       const existing = runs.get(slot);
       if (existing) { existing.presence = Math.max(existing.presence, presence); return; }
       const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
-      const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
-      runs.set(slot, { curve: routed.pieces[2 * i], lane: routed.pieces[2 * i + 1], gradient: gradientId, members, presence });
+      const edges = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges ?? [key];
+      runs.set(slot, { curve: routed.pieces[2 * i], lane: routed.pieces[2 * i + 1], gradient: gradientId, members: edges.length, presence, edges });
     });
   });
+  // With Wire Answers on, a bundle's shared run answers for all its wires, the offering and who uses it, since along it
+  // they lie on one another and no pointer can tell them apart; its band stands above theirs.
+  const byKey = answering && runs.size ? new Map(branches.subgraph.links.map(edge => [edgeKey(edge), edge] as const)) : null;
   for (const [key, run] of runs) {
     if (run.members < 2) continue;
     drawBundleRun(layer, seen, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
+    const members = byKey ? run.edges.flatMap(member => byKey.get(member) ?? []) : [];
+    if (members.length) {
+      attendWire(layer, seen, JSON.stringify([key, "bundle"]), { providerId: members[0].targetId, from: run.curve.from, to: run.lane.to },
+        { words: runWords(members, nameOf), carries: members }, "none", context.svgNamespace, "run-band");
+    }
   }
   markHubs(runtime.container, hubsEnding);
   return { drawn, doubling };
@@ -579,7 +631,9 @@ function drawOverviewWires(
   laceRanks: Map<string, number>,
   shape: SelfLoopParams,
   nameOf: (nodeId: string) => string,
-  boxes: readonly LaidBox[]
+  boxes: readonly LaidBox[],
+  answering: boolean,
+  marks: DirectionMarks
 ): { drawn: number; doubling: number } {
   const { branches, state, svgNamespace, runtime } = context;
   if (!branches) return { drawn: 0, doubling: 0 };
@@ -632,7 +686,11 @@ function drawOverviewWires(
       drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence, doubles);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
     }
-    dressGathered(path, gatheredCount(wire), description);
+    dressGathered(path, gatheredCount(wire), description, wire.back || !answering);
+    if (!wire.back) {
+      attendWire(layer, seen, JSON.stringify([edgeKey(gathered), "gathered"]), { providerId: wire.providerId, consumerId: wire.consumerId, from, to },
+        answering ? { words: wireWords(wire.members, nameOf), carries: wire.members } : null, marks, svgNamespace);
+    }
   }
   // A pinned symbol's own wires, drawn after the gathered ones and so above them: with files only too (2026-11-15),
   // where a row pinned by name is the one row a card draws, since a pin is the person's own question. None while the
@@ -657,21 +715,29 @@ function drawOverviewWires(
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, routeFor(edgeKey(edge), a, b, from, to).d, "own", presence);
+    attendWire(layer, seen, JSON.stringify([edgeKey(edge), "own"]), { providerId: edge.targetId, consumerId: edge.sourceId, from, to },
+      answering ? { words: wireWords([edge], nameOf), carries: [edge] } : null, marks, svgNamespace);
   }
   return { drawn, doubling };
 }
 
 /**
  * A gathered wire's dress, the overview band's and a pair line's alike: marked gathered, as wide as the references it
- * carries, which it also says in its data and, with its two files, in its accessible name.
+ * carries, which it also says in its data and, with its two files, in its accessible name; unnamed where its band, under
+ * Wire Answers, carries the name, so that it is not said twice.
  */
-function dressGathered(path: SVGElement | undefined, count: number, description: string): void {
+function dressGathered(path: SVGElement | undefined, count: number, description: string, named = true): void {
   if (!path) return;
   path.classList.add("gathered");
   path.style.strokeWidth = `${gatheredWidth(count).toFixed(2)}px`;
   path.dataset.references = String(count);
-  path.setAttribute("role", "img");
-  path.setAttribute("aria-label", description);
+  if (named) {
+    path.setAttribute("role", "img");
+    path.setAttribute("aria-label", description);
+  } else {
+    path.removeAttribute("role");
+    path.removeAttribute("aria-label");
+  }
 }
 
 /**

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-21T07:10:14.648Z
+- Generated At: 2026-11-21T09:00:46.296Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L88)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -185,6 +185,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 - [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
+- [`wire-answers.WireAnswers`](./wire-answers.ts.mdmd.md#symbol-wireanswers)
 - [`zoom-limits.CLOSEST_SCALE`](./zoom-limits.ts.mdmd.md#symbol-closest_scale)
 - [`zoom-limits.atScale`](./zoom-limits.ts.mdmd.md#symbol-atscale)
 - [`zoom-limits.farthestScale`](./zoom-limits.ts.mdmd.md#symbol-farthestscale)

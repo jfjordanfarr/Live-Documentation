@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVALS, CUT_COUNTED, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -86,6 +86,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
   const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
   const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
+  const wireAnswersSelect = document.getElementById("tuning-wire-answers") as HTMLSelectElement | null;
+  const directionMarksSelect = document.getElementById("tuning-direction-marks") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -212,6 +214,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
     if (stepSelect) stepSelect.value = state.tuning.localMap.step;
     if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
+    if (wireAnswersSelect) wireAnswersSelect.value = state.tuning.localMap.wireAnswers;
+    if (directionMarksSelect) directionMarksSelect.value = state.tuning.localMap.directionMarks;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -355,6 +359,21 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     cutCountedSelect.addEventListener("change", () => {
       state.tuning.localMap.cutCounted = CUT_COUNTED.find(choice => choice === cutCountedSelect.value) ?? CUT_COUNTED[0];
       onTuningChange();
+    });
+  }
+  // Both wire trials change how the wires are drawn, not where anything stands: the wires are drawn again.
+  if (wireAnswersSelect) {
+    wireAnswersSelect.addEventListener("change", () => {
+      state.tuning.localMap.wireAnswers = WIRE_ANSWERS.find(choice => choice === wireAnswersSelect.value) ?? WIRE_ANSWERS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") drawLocalConnections();
+    });
+  }
+  if (directionMarksSelect) {
+    directionMarksSelect.addEventListener("change", () => {
+      state.tuning.localMap.directionMarks = DIRECTION_MARKS.find(choice => choice === directionMarksSelect.value) ?? DIRECTION_MARKS[0];
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") drawLocalConnections();
     });
   }
   if (closedShapeSelect) {
