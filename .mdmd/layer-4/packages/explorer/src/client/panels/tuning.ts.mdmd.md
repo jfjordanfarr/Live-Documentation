@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T04:32:48.932Z
+- Generated At: 2026-11-21T05:32:49.471Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L526)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L535)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -125,6 +125,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
+- [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
@@ -168,6 +169,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-search-starts`](../../shared/template.html.mdmd.md#symbol-tuning-search-starts)
 - [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)
 - [`template.tuning-slot-lines`](../../shared/template.html.mdmd.md#symbol-tuning-slot-lines)
+- [`template.tuning-step`](../../shared/template.html.mdmd.md#symbol-tuning-step)
 - [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuning-stub-factor)
 - [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuning-stub-max-offset)
 - [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)

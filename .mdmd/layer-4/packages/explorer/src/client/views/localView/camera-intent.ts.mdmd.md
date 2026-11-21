@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
-- Generated At: 2026-11-19T21:10:16.250Z
+- Generated At: 2026-11-21T06:09:16.936Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Written on 2026-11-19 for the camera-intent round, from two requests of the owne
 The floor of the neighbours' frame is the connections look's last press (`farthestRatioOf` in `ladder-steps.ts`), the farthest zoom at which every card's names still read; the timings are the three named constants here. A card larger than the view is entered at its top rather than shown by its name row at the view's far edge, a choice made in the building after the first pictures. The evidence is in [the camera-intent pictures](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/camera-intent/README.md).
 
 Since the night of 2026-11-19 it also holds the frame and the ease of a trial behind Tuning's Framing, Follows Pins: `pinsFrame` (the targets oldest first, the frame they fit at between reading scale and the same floor, the oldest left out until the rest fit, one target framed as an arrival frames it) and `framingEaseMs`, from the owner's [Turn 37 of the November 18 record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-37): "follow the sucker for a bit if the user hasn't provided input to navigate", "try to frame every pinned thing as best you can with bias towards most recent items". The floor is this module's, chosen because past it the overview silences a symbol's row. On this repository the floor is what stops the hoped-for pull back after a cell's press ([the follows-pins pictures](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/camera-follows-pins/README.md)).
+
+Since 2026-11-21 it holds the frames of a third trial, Tuning's Step, what the camera frames after a step, which the root briefed after blind testers that day answered from a cut-off view: `stepWholeFrame` (the whole newcomer, the scale kept where it fits, else eased out just far enough, never past the same floor and never in) and `stepLinesFrame` (the frame Fit would give the newcomer and the cards its lines reach). `cutByEdge` and `cutPan` are the arithmetic of the fourth value, a count of the newcomer's cards at each edge that cuts it and the pan a press on that count makes; that value's interface is not built yet, so they are used by their tests alone until it is. [The step-framing pictures](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Screenshots/step-framing/README.md) are the evidence.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -226,9 +228,73 @@ page is entered at its top left: a card taller than the view is entered at its n
 the view holds, and an opened directory at its label. A newcomer already inside does not move the camera. The
 newcomer is in the picture's own units.
 
+#### `stepWholeFrame` {#symbol-stepwholeframe}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L303)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `start`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+
+##### `stepWholeFrame` — Summary
+Tuning → 2D Layout → Step "Whole" (a trial, root's brief of 2026-11-21): after a step, the whole newcomer (the opened
+directory's box, or the new card) inside the frame's padding. Where it fits at the camera's scale, the scale is kept and
+the least pan brings it in (*object constancy*: what was pressed keeps its size); where it does not, the camera eases out
+just far enough to hold it, never past `floor` (the connections look's farthest press, where every card's names still
+read) and never in; where even the floor cannot hold it, its `start` (what the least pan brings in: a directory's label
+with the first row it holds, a card) is brought in there by the least pan, as Least Pan does at its own scale; the start
+is named apart because an opened directory's membrane is not a rectangle, and its box's top left can lie far from its
+label. Scaled about the frame's middle, then the least pan, as the following camera's re-frame is. In the picture's units.
+
+#### `stepLinesFrame` {#symbol-steplinesframe}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L319)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `reach`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `start`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+
+##### `stepLinesFrame` — Summary
+Tuning → 2D Layout → Step "With Its Lines" (a trial, 2026-11-21): after a step, the frame Fit would give the newcomer
+and the cards its lines reach (`reach`, which holds the newcomer): centred, at the largest scale that holds it, never
+closer than `ceiling` (reading scale) and never farther than `floor`. Where even the floor cannot hold them, the
+newcomer alone is framed so, centred where it fits; where it does not fit even at the floor, its `start` stands at the
+room's top left there.
+
+#### `ViewEdge` {#symbol-viewedge}
+- Type: type
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L329)
+
+##### `ViewEdge` — Summary
+An edge of the view.
+
+#### `VIEW_EDGES` {#symbol-view_edges}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L332)
+
+##### `VIEW_EDGES` — Summary
+Every edge, in the order the signs are drawn and read: left, right, top, bottom.
+
+#### `cutByEdge` {#symbol-cutbyedge}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L339)
+- Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+
+##### `cutByEdge` — Summary
+Tuning → 2D Layout → Step "Least Pan, Cut Counted" (a trial, 2026-11-21): of the newcomer's cards (in the picture's
+units), those that go on past each edge of the view at the camera given, by edge; a card cut at a corner counts at both
+of its edges. An edge past which nothing goes is absent.
+
+#### `cutPan` {#symbol-cutpan}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L358)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `edge`: [`ViewEdge`](#symbol-viewedge); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+
+##### `cutPan` — Summary
+Where a sign at an edge takes the camera when pressed: along that edge's axis alone, the least pan that brings the cards
+cut there inside the frame's padding, entered at their start where together they are larger than the room; the scale
+and the other axis are kept.
+
 #### `unionOf` {#symbol-unionof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L294)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L366)
 - Returns: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 
 ##### `unionOf` — Summary

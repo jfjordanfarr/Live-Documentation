@@ -50,6 +50,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-closed-cells":              "What colours a closed directory's cells: each file's kind, as the 3D map colours it, or one grey.",
   "tuning-hidden-files":              "What a directory drawn around pins shows of the files it leaves out: a count, or cells that a press pins.",
   "tuning-arrival":                   "How a new subject is framed: its card at reading size, the same then easing back to its neighbours, or the neighbours.",
+  "tuning-step":                      "What a step inside the map frames: the start of what it opened, all of it, or all of it with what its lines reach.",
   "tuning-framing":                   "Who frames the camera: you, or the camera following the pins, newest first, until you pan or zoom; Fit resumes it.",
   "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",
   "tuning-descriptions-zoomed-out":   "With fixed slots, what a described symbol keeps of its description three presses out, and how its name is cut.",

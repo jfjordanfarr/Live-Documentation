@@ -290,6 +290,78 @@ export function revealPan(newcomer: Bounds, camera: MapTransform, frame: Frame):
   };
 }
 
+/**
+ * Tuning → 2D Layout → Step "Whole" (a trial, root's brief of 2026-11-21): after a step, the whole newcomer (the opened
+ * directory's box, or the new card) inside the frame's padding. Where it fits at the camera's scale, the scale is kept and
+ * the least pan brings it in (*object constancy*: what was pressed keeps its size); where it does not, the camera eases out
+ * just far enough to hold it, never past `floor` (the connections look's farthest press, where every card's names still
+ * read) and never in; where even the floor cannot hold it, its `start` (what the least pan brings in: a directory's label
+ * with the first row it holds, a card) is brought in there by the least pan, as Least Pan does at its own scale; the start
+ * is named apart because an opened directory's membrane is not a rectangle, and its box's top left can lie far from its
+ * label. Scaled about the frame's middle, then the least pan, as the following camera's re-frame is. In the picture's units.
+ */
+export function stepWholeFrame(newcomer: Bounds, start: Bounds, camera: MapTransform, frame: Frame, floor: number): MapTransform {
+  const fit = fitIn(newcomer, roomOf(frame));
+  const k = Math.min(camera.k, Math.max(fit, floor));
+  const middle = { x: frame.width / 2, y: frame.height / 2 };
+  const scaled = { x: middle.x - (middle.x - camera.x) * k / camera.k, y: middle.y - (middle.y - camera.y) * k / camera.k, k };
+  const pan = revealPan(fit >= k * (1 - 1e-9) ? newcomer : start, scaled, frame);
+  return { x: scaled.x + pan.x, y: scaled.y + pan.y, k };
+}
+
+/**
+ * Tuning → 2D Layout → Step "With Its Lines" (a trial, 2026-11-21): after a step, the frame Fit would give the newcomer
+ * and the cards its lines reach (`reach`, which holds the newcomer): centred, at the largest scale that holds it, never
+ * closer than `ceiling` (reading scale) and never farther than `floor`. Where even the floor cannot hold them, the
+ * newcomer alone is framed so, centred where it fits; where it does not fit even at the floor, its `start` stands at the
+ * room's top left there.
+ */
+export function stepLinesFrame(reach: Bounds, newcomer: Bounds, start: Bounds, frame: Frame, ceiling: number, floor: number): MapTransform {
+  const room = roomOf(frame);
+  const whole = fitIn(reach, room);
+  if (whole >= floor * (1 - 1e-9)) return place(reach, Math.min(whole, ceiling), frame);
+  const alone = fitIn(newcomer, room);
+  if (alone >= floor * (1 - 1e-9)) return place(newcomer, Math.min(alone, ceiling), frame);
+  return { x: room.horizontal - start.left * floor, y: room.vertical - start.top * floor, k: floor };
+}
+
+/** An edge of the view. */
+export type ViewEdge = "left" | "right" | "top" | "bottom";
+
+/** Every edge, in the order the signs are drawn and read: left, right, top, bottom. */
+export const VIEW_EDGES: readonly ViewEdge[] = ["left", "right", "top", "bottom"];
+
+/**
+ * Tuning → 2D Layout → Step "Least Pan, Cut Counted" (a trial, 2026-11-21): of the newcomer's cards (in the picture's
+ * units), those that go on past each edge of the view at the camera given, by edge; a card cut at a corner counts at both
+ * of its edges. An edge past which nothing goes is absent.
+ */
+export function cutByEdge<K>(cards: readonly { key: K; bounds: Bounds }[], camera: MapTransform, frame: Frame): Partial<Record<ViewEdge, K[]>> {
+  const cut: Partial<Record<ViewEdge, K[]>> = {};
+  const add = (edge: ViewEdge, key: K): void => { (cut[edge] ??= []).push(key); };
+  for (const { key, bounds } of cards) {
+    const left = camera.x + bounds.left * camera.k, right = camera.x + bounds.right * camera.k;
+    const top = camera.y + bounds.top * camera.k, bottom = camera.y + bounds.bottom * camera.k;
+    if (left < -0.5) add("left", key);
+    if (right > frame.width + 0.5) add("right", key);
+    if (top < -0.5) add("top", key);
+    if (bottom > frame.height + 0.5) add("bottom", key);
+  }
+  return cut;
+}
+
+/**
+ * Where a sign at an edge takes the camera when pressed: along that edge's axis alone, the least pan that brings the cards
+ * cut there inside the frame's padding, entered at their start where together they are larger than the room; the scale
+ * and the other axis are kept.
+ */
+export function cutPan(cards: readonly Bounds[], edge: ViewEdge, camera: MapTransform, frame: Frame): MapTransform {
+  const box = unionOf(cards);
+  if (!box) return camera;
+  const pan = revealPan(box, camera, frame);
+  return edge === "left" || edge === "right" ? { ...camera, x: camera.x + pan.x } : { ...camera, y: camera.y + pan.y };
+}
+
 /** Every box given as one, in the same units; null for none. */
 export function unionOf(boxes: readonly Bounds[]): Bounds | null {
   if (!boxes.length) return null;
