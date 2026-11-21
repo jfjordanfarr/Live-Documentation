@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-XS2cFijzXG8gyIDynqHUVS7uLFn6SFv8ZDYGxBeEafs='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-YGvTb90PhZCaSH9xd5ZWbmoZety+l5Sr3vr3LoW2Fl0='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What a scan reads</title>
 <style>
@@ -17,71 +17,55 @@
   body { margin: 0; height: 100vh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: var(--ground-page); color: var(--text-normal); font: 13px/1.5 system-ui, "Segoe UI", sans-serif; }
   header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 20px; background: var(--ground-raised); border-bottom: 1px solid var(--line-border); }
   h1 { margin: 0 12px 0 0; font-size: 15px; color: var(--text-strong); font-weight: 600; }
-  h2 { font-size: 13px; color: var(--text-strong); margin: 18px 0 8px; font-weight: 600; }
+  h2 { font-size: 13px; color: var(--text-strong); margin: 14px 0 8px; font-weight: 600; }
   h3 { font-size: 12px; color: var(--text-secondary); margin: 12px 0 4px; font-weight: 600; }
-  /* Whatever is scrolled to, or given the focus, comes to rest below the totals that stay in view. */
   main { overflow: auto; padding: 0 20px 24px; scroll-padding-top: 112px; }
-  main > section { max-width: 1100px; }
-  /* The totals and Scan stay in view while what is below them scrolls: a change made deep in a list shows its sum. */
-  .summary { position: sticky; top: 0; z-index: 1; padding-top: 12px; background: var(--ground-page); border-bottom: 1px solid var(--line-border); margin-bottom: 8px; }
+  main > section { max-width: 1240px; }
+  /* The totals and Scan stay in view while what is below them scrolls. */
+  .summary { position: sticky; top: 0; z-index: 2; padding: 12px 0 10px; background: var(--ground-page); border-bottom: 1px solid var(--line-border); margin-bottom: 8px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  #totals { font-size: 14px; color: var(--text-strong); margin: 0; }
   button, .choose { font: inherit; color: var(--text-normal); background: var(--ground-control); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 10px; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
   button:hover, .choose:hover { border-color: var(--line-hover); }
-  button:focus-visible, .choose:focus-within, input:focus-visible, [role="treeitem"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  button:focus-visible, .choose:focus-within, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
   .offered { color: var(--offers); border-color: var(--offers); }
   .icon { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  .choose input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .choose input, .hidden-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
   #drop { border: 1px dashed var(--offers); border-radius: 6px; padding: 4px 12px; color: var(--offers); display: inline-flex; gap: 6px; align-items: center; }
-  #drop.over { border-color: var(--offers); color: var(--offers); }
-  .segmented { display: inline-flex; border: 1px solid var(--line-interactive); border-radius: 4px; overflow: hidden; }
-  .segmented button { border: 0; border-radius: 0; background: transparent; }
-  .segmented button[aria-pressed="true"] { background: rgba(0, 145, 255, 0.16); color: var(--text-strong); }
   #folder-name { color: var(--text-strong); font-weight: 600; }
-  #totals { font-size: 14px; color: var(--text-strong); margin: 4px 0 0; }
   .quiet, .counts { color: var(--text-muted); }
   .counts { white-space: nowrap; }
   ul { list-style: none; margin: 0; padding: 0; }
-  .reason { border-bottom: 1px solid var(--line-border); }
-  .row { display: flex; gap: 10px; align-items: center; min-height: 32px; padding: 2px 4px; }
-  .row .why, .row .path { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-  .members { padding: 0 0 8px 30px; }
-  .members .row { min-height: 28px; }
-  .path, code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; }
+  code, .path, textarea { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; }
+  /* The notice of ignore files found: one line, three choices for all of them, the files behind a disclosure. */
+  #found { border: 1px solid var(--line-interactive); border-radius: 6px; background: var(--ground-card); padding: 8px 12px; margin: 4px 0 10px; }
+  #found .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  #found .what { flex: 1; min-width: 0; color: var(--text-strong); }
+  #found-files { margin: 6px 0 0 26px; }
+  #found-files li { display: flex; gap: 10px; align-items: center; min-height: 26px; }
+  #found-said { color: var(--text-secondary); margin: 6px 0 0 26px; }
+  .columns { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  /* The list, the truth: text to edit, its tools above it. */
+  .list-tools { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+  #list { width: 100%; min-height: 420px; height: calc(100vh - 330px); resize: vertical; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 8px; line-height: 1.55; white-space: pre; }
+  .case { display: inline-flex; gap: 6px; align-items: center; color: var(--text-secondary); margin-top: 6px; }
   .twisty, .icon-button { padding: 2px; background: transparent; border-color: transparent; }
-  .twisty-space { width: 22px; flex: none; }
-  .keep { color: var(--offers); border-color: var(--line-interactive); background: transparent; }
-  /* A row's own Keep or Leave out is an icon alone, quiet until the row is pointed at or the button has the focus. */
+  .twisty-space, .icon-space { width: 22px; flex: none; }
+  .text-button { background: transparent; border: 0; color: var(--offers); padding: 4px 0; }
+  .row { display: flex; gap: 8px; align-items: center; min-height: 28px; padding: 1px 2px; }
+  .row .grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .number { color: var(--text-muted); font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; min-width: 24px; text-align: right; }
+  .kinds { display: block; color: var(--text-muted); font-family: system-ui, "Segoe UI", sans-serif; }
+  .line-row { border-bottom: 1px solid var(--line-border); }
+  .members { padding: 0 0 6px 30px; }
+  /* A row's own act is an icon alone, quiet until the row is pointed at or the button has the focus. */
   .quiet-act { color: var(--text-muted); }
   .row:hover .quiet-act, .quiet-act:focus-visible { color: var(--offers); }
-  .icon-space { width: 22px; flex: none; }
-  /* The ignore file's line that also names a folder, on the folder's own row, under its name. */
-  .path .also-line { display: block; font-family: system-ui, "Segoe UI", sans-serif; color: var(--text-muted); }
-  .counts-list .row { min-height: 28px; padding: 0; }
-  .counts-list .row .path { font-family: inherit; font-size: inherit; }
-  .also { color: var(--text-muted); padding: 0 4px 6px 36px; }
-  .start { color: var(--text-muted); white-space: nowrap; }
-  .text-button { background: transparent; border: 0; color: var(--offers); padding: 4px 0; }
-  .columns { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 28px; }
-  /* What is left out stays in view below the totals while a long "Will be read" scrolls the page, so that a folder or
-     a kind left out on the right is seen to arrive on the left; when the left is itself longer than the window, it
-     scrolls on its own. */
-  #by-reason > div:first-child { position: sticky; top: 100px; align-self: start; max-height: calc(100vh - 210px); overflow: auto; padding-right: 4px; }
-  #tree { border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-surface); padding: 4px 0; }
-  [role="treeitem"] { display: flex; gap: 8px; align-items: center; min-height: 28px; padding: 0 10px; cursor: default; }
-  [role="treeitem"]:hover { background: var(--ground-hover); }
-  [role="treeitem"].left-out .name { color: var(--text-muted); }
-  .twisty-mark { width: 16px; display: inline-flex; }
-  .box { width: 16px; height: 16px; border: 1px solid var(--line-hover); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-  .box.true, .box.mixed { background: var(--focus); border-color: var(--focus); color: #fff; }
-  .box .icon { width: 12px; height: 12px; stroke-width: 3; }
-  [role="treeitem"] .name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-  [role="treeitem"] .why { color: var(--text-secondary); }
-  form { display: flex; gap: 8px; margin: 6px 0; }
-  input[type="text"] { font: inherit; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 8px; width: 320px; }
-  #patterns li { display: flex; gap: 10px; align-items: center; }
   #notes { margin-top: 10px; }
   #notes li { color: var(--text-secondary); padding: 2px 0; }
-  .bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
   #scan { border-color: var(--offers); color: var(--offers); }
+  .menu { position: relative; display: inline-block; }
+  .menu ul { position: absolute; z-index: 3; top: 100%; left: 0; min-width: 220px; background: var(--ground-card); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px; }
+  .menu li button { width: 100%; background: transparent; border-color: transparent; }
   footer { padding: 4px 20px; font-size: 11px; color: var(--text-muted); background: var(--ground-raised); border-top: 1px solid var(--line-border); }
 </style>
 </head>
@@ -97,32 +81,484 @@
 <main>
   <section id="choice" hidden>
     <div class="summary">
-    <p id="totals"></p>
-    <div class="bar">
-      <span class="segmented" role="group" aria-label="Layout">
-        <button type="button" data-layout="reason" aria-pressed="true">By reason</button>
-        <button type="button" data-layout="tree" aria-pressed="false">Folders</button>
-      </span>
+      <p id="totals"></p>
       <button id="scan" type="button" data-icon="scan" aria-label="Scan what is kept">Scan</button>
       <span id="scan-result" role="status"></span>
     </div>
+    <div id="found" hidden>
+      <div class="row">
+        <button id="found-open" type="button" class="twisty" aria-expanded="false" aria-label="Show the files found"></button>
+        <span class="what" id="found-what"></span>
+        <button type="button" data-take="use" title="Replace your list with their lines">Use</button>
+        <button type="button" data-take="add" title="Add their lines to your list">Add</button>
+        <button type="button" data-take="ignore" title="Leave your list as it is">Ignore</button>
+      </div>
+      <ul id="found-files" hidden></ul>
+      <p id="found-said" hidden></p>
     </div>
-    <div id="by-reason" class="columns">
-      <div><h2>Left out</h2><ul id="reasons"></ul></div>
+    <div class="columns">
+      <div>
+        <h2>Your list</h2>
+        <div class="list-tools">
+          <span class="menu"><button id="prefill" type="button" class="icon-button" aria-haspopup="true" aria-expanded="false" aria-label="Fill from a starting list" title="Fill from a starting list" data-icon="prefill"></button>
+            <ul id="prefill-menu" hidden>
+              <li><button type="button" data-prefill="visual-studio">Visual Studio</button></li>
+              <li><button type="button" data-prefill="what-it-holds">From what the folders hold</button></li>
+            </ul>
+          </span>
+          <button id="copy" type="button" class="icon-button" aria-label="Copy the list" title="Copy the list" data-icon="copy"></button>
+          <button id="save" type="button" class="icon-button" aria-label="Save the list as a file" title="Save the list as a file" data-icon="save"></button>
+          <label class="icon-button choose" aria-label="Load a list from a file" title="Load a list from a file" data-icon="load"><input id="load" type="file" accept=".txt,.gitignore,.tfignore,text/plain"></label>
+          <button id="clear" type="button" class="icon-button" aria-label="Empty the list" title="Empty the list" data-icon="remove"></button>
+          <span id="list-said" class="quiet" role="status"></span>
+        </div>
+        <textarea id="list" spellcheck="false" aria-label="Your list: one pattern a line, as in a .gitignore"></textarea>
+        <label class="case"><input id="ignore-case" type="checkbox"> Names match without case</label>
+        <ul id="notes" hidden></ul>
+      </div>
+      <div><h2>Left out</h2><ul id="by-line"></ul></div>
       <div><h2>Will be read</h2><div id="read"></div></div>
     </div>
-    <div id="by-tree" hidden><ul id="tree" role="tree" aria-label="Folders"></ul></div>
-    <h2>Your patterns</h2>
-    <form id="pattern-form"><input id="pattern" type="text" aria-label="A pattern: a name to leave out, or ! and a name to keep" placeholder="bin/  or  !packages/keep/"><button type="submit" class="offered">Add</button></form>
-    <ul id="patterns"></ul>
-    <ul id="notes" hidden></ul>
   </section>
 </main>
 <footer id="timings"></footer>
-<script>"use strict";(()=>{var Re={alnum:e=>/[A-Za-z0-9]/u.test(e),alpha:e=>/[A-Za-z]/u.test(e),blank:e=>e===" "||e==="	",cntrl:e=>e.charCodeAt(0)<32||e.charCodeAt(0)===127,digit:e=>/[0-9]/u.test(e),graph:e=>e.charCodeAt(0)>32&&e.charCodeAt(0)<127,lower:e=>/[a-z]/u.test(e),print:e=>e.charCodeAt(0)>=32&&e.charCodeAt(0)<127,punct:e=>/[!-/:-@[-`{-~]/u.test(e),space:e=>/[ \t\n\r\f\v]/u.test(e),upper:e=>/[A-Z]/u.test(e),xdigit:e=>/[0-9A-Fa-f]/u.test(e)},We=e=>e==="*"||e==="?"||e==="["||e==="\\",G=e=>e!==void 0&&e>="A"&&e<="Z",ce=e=>e!==void 0&&e>="a"&&e<="z";function Y(e,t,n,s,r,o){let i=t;for(;t<e.length;s++,t++){let l=e[t],a=n[s];if(a===void 0&&l!=="*")return-1;switch(o&&G(a)&&(a=a.toLowerCase()),o&&G(l)&&(l=l.toLowerCase()),l){case"\\":if(t++,l=e[t],a!==l)return 1;continue;case"?":if(r&&a==="/")return 1;continue;case"*":{let c;if(e[++t]==="*"){let d=t-2;for(;e[++t]==="*";);if((d<i||e[d]==="/")&&(t>=e.length||e[t]==="/"||e[t]==="\\"&&e[t+1]==="/")){if(e[t]==="/"&&Y(e,t+1,n,s,r,o)===0)return 0;c=!0}else c=!r}else c=!r;if(t>=e.length)return!c&&n.indexOf("/",s)!==-1?1:0;if(!c&&e[t]==="/"){let d=n.indexOf("/",s);if(d===-1)return 1;s=d;break}for(;a!==void 0;){if(!We(e[t])){let h=o&&G(e[t])?e[t].toLowerCase():e[t];for(;(a=n[s])!==void 0&&(c||a!=="/")&&(o&&G(a)&&(a=a.toLowerCase()),a!==h);)s++;if(a!==h){if(c)return-1;break}}let d=Y(e,t,n,s,r,o);if(d!==1){if(!c||d!==-2)return d}else if(!c&&a==="/")return-2;a=n[++s],o&&G(a)&&(a=a.toLowerCase())}return-1}case"[":{l=e[++t],l==="^"&&(l="!");let c=l==="!";c&&(l=e[++t]);let d,h=!1;do{if(l===void 0)return-1;if(l==="\\"){if(l=e[++t],l===void 0)return-1;a===l&&(h=!0)}else if(l==="-"&&d!==void 0&&e[t+1]!==void 0&&e[t+1]!=="]"){if(l=e[++t],l==="\\"&&(l=e[++t],l===void 0))return-1;if(a!==void 0&&a<=l&&a>=d)h=!0;else if(o&&ce(a)){let f=a.toUpperCase();f<=l&&f>=d&&(h=!0)}l=void 0}else if(l==="["&&e[t+1]===":"){let f=t+2,p=f;for(;e[p]!==void 0&&e[p]!=="]";)p++;if(e[p]===void 0)return-1;if(p-f-1<0||e[p-1]!==":")a==="["&&(h=!0);else{let w=e.slice(f,p-1),$=Re[w];if(!$)return-1;(a!==void 0&&$(a)||w==="upper"&&o&&ce(a))&&(h=!0),t=p,l=void 0}}else a===l&&(h=!0);d=l,l=e[++t]}while(l!=="]");if(h===c||r&&a==="/")return 1;continue}default:if(a!==l)return 1;continue}}return s<n.length?1:0}var J=(e,t,n,s)=>Y(e,0,t,0,n,s)===0;function Ke(e){let t="",n="",s=()=>{n.length>t.length&&(t=n),n=""};for(let r=0;r<e.length;r++){let o=e[r];if(o==="*"||o==="?"||o==="/")s();else if(o==="\\")s(),r++;else if(o==="["){s();let i=r+1;for((e[i]==="!"||e[i]==="^")&&i++,e[i]==="]"&&i++;i<e.length&&e[i]!=="]";){let l=e[i]==="["&&e[i+1]===":"?e.indexOf(":]",i+2):-1;i=l!==-1?l+2:e[i]==="\\"?i+2:i+1}r=i}else n+=o}return s(),t.toLowerCase()}function je(e){let t=-1;for(let n=0;n<e.length;n++){let s=e[n];if(s===" ")t===-1&&(t=n);else if(s==="\\"){if(n++,n>=e.length)return e;t=-1}else t=-1}return t===-1?e:e.slice(0,t)}function fe(e,t){let n=[],s=(e.startsWith("\uFEFF")?e.slice(1):e).split(`
-`);return s.forEach((r,o)=>{if(o===s.length-1&&r==="")return;let i=r.endsWith("\r")?r.slice(0,-1):r;if(i===""||i.startsWith("#"))return;i=je(i);let l=i,a=!1;i.startsWith("!")&&(a=!0,i=i.slice(1));let c=!1;i.endsWith("/")&&(c=!0,i=i.slice(0,-1));let d=!i.includes("/");n.push({base:t,pattern:i,negative:a,mustBeDir:c,noDir:d,line:o+1,original:l,literal:Ke(i.replace(/^\//u,""))})}),n}function Ne(e,t,n,s){if(e.mustBeDir&&!n)return!1;if(e.base!==""){let i=t.slice(0,e.base.length+1);if(s?i.toLowerCase()!==`${e.base}/`.toLowerCase():i!==`${e.base}/`)return!1}let r=e.base===""?t:t.slice(e.base.length+1),o=e.noDir?r.slice(r.lastIndexOf("/")+1):r;return e.literal!==""&&!o.toLowerCase().includes(e.literal)?!1:e.noDir?J(e.pattern,o,!1,s):J(e.pattern.startsWith("/")?e.pattern.slice(1):e.pattern,r,!0,s)}var K=e=>{let t=e.lastIndexOf("/");return t===-1?"":e.slice(0,t)},U=e=>e.includes("*")||e.includes("?");function de(e){return e.split("/").filter(t=>t!=="").join("/")}function ue(e){let t=0,n=e.length;for(;t<n&&e.charCodeAt(t)<=32;)t++;for(;n>t&&e.charCodeAt(n-1)<=32;)n--;return e.slice(t,n)}function _e(e,t){let n=[];return e.split(/\r\n|\n|\r/u).forEach((s,r)=>{let o=s.replace(/^[\uFEFF\uFFFE]/u,"");if(o=ue(o),o===""||o.startsWith("#"))return;let i=o;o=o.replace(/\\/gu,"/");let l=!0;o.startsWith("!")&&o.length>1&&(l=!1,o=o.slice(1));let a=!0;o.startsWith("/")&&(a=!1,o=o.slice(1));let c=!1;o.endsWith("/")&&(c=!0,o=o.slice(0,-1)),o=ue(o);let d=de(t===""?o:`${t}/${o}`);if(d===de(t))return;let h=d.slice(d.lastIndexOf("/")+1),f="exact",p=h;U(h)&&(h.length>=2&&h[0]==="*"&&!U(h.slice(1))?(f="endsWith",p=h.slice(1)):h.length>=2&&h[h.length-1]==="*"&&!U(h.slice(0,-1))?(f="startsWith",p=h.slice(0,-1)):f="complex"),n.push({folder:K(d),name:p,shape:f,excluded:l,recursive:a,folderOnly:c,line:r+1,original:i})}),n}var j=e=>e.toLowerCase();function Q(e,t,n,s){for(;s<n.length;){if(n[s]==="*"){do++s;while(s<n.length&&n[s]==="*");for(;;){if(Q(e,t,n,s))return!0;if(t===e.length||e[t]==="."&&e.lastIndexOf(".",e.length-1)===t&&n.length===s+1&&n[s]===".")return!1;++t}}if(t===e.length)return n[s]==="."&&n.lastIndexOf(".",n.length-1)===s&&Q(e,t,n,s+1);if(j(e[t])!==j(n[s])&&n[s]!=="?")return!1;++t,++s}return t===e.length||e[t]==="."&&t+1===e.length}function ze(e,t){let n=j(t),s=j(e.name);return e.shape==="endsWith"?s.length<=n.length&&n.endsWith(s):e.shape==="startsWith"?s.length<=n.length&&n.startsWith(s):e.shape==="complex"?Q(t,0,e.name,0):n===s}function Ge(e,t,n,s=0){let r=t.split("/"),o;for(let i of e){let l=i.folder===""?[]:i.folder.split("/");if(!(l.length>=r.length)&&!l.some((a,c)=>j(a)!==j(r[c])))for(let a=Math.max(l.length,s);a<r.length&&!(!i.recursive&&a>l.length);a++){let c=a===r.length-1;if(i.folderOnly&&!n&&c)break;ze(i,r[a])&&(i.excluded||c)&&(o=i)}}return o}var He=/^(?:\.git|\.hg|\.svn|\$tf(?:[1-9]|1[0-5])?|\.tf(?:[1-9]|1[0-5])?)$/iu,pe=/\.(?:cs|vb|fs|vcx|sql|wix|nj)proj$/iu,Pe=/^[A-Za-z0-9_][A-Za-z0-9_.-]*?\.\d+(?:\.\d+){1,3}(?:-[0-9A-Za-z.-]+)?\/$/u,H=[{name:"bin",pattern:"bin/ beside a project file",holds:(e,t)=>t(K(e)).some(n=>pe.test(n))},{name:"obj",pattern:"obj/ beside a project file",holds:(e,t)=>t(K(e)).some(n=>pe.test(n))},{name:"packages",pattern:"packages/ holding NuGet's <Id>.<Version> folders or a repositories.config",holds:(e,t)=>t(e).some(n=>n.toLowerCase()==="repositories.config"||Pe.test(n))},{name:"node_modules",pattern:"node_modules/ holding packages with a package.json",holds:(e,t)=>t(e).filter(n=>n.endsWith("/")).slice(0,3).some(n=>t(`${e}/${n.slice(0,-1)}`).includes("package.json"))}],Z=e=>e.slice(e.lastIndexOf("/")+1);function ge(e,t,n,s){for(let r=e.length-1;r>=0;r--)if(Ne(e[r],t,n,s))return e[r]}function he(e,t,n){if(e.noDir)return!0;let s=l=>n?l.toLowerCase():l,r=t.split("/"),o=e.base===""?[]:e.base.split("/"),i=(e.pattern.startsWith("/")?e.pattern.slice(1):e.pattern).split("/");for(let l=0;l<r.length;l++){if(l<o.length){if(s(o[l])!==s(r[l]))return!1;continue}let a=i[l-o.length];if(a===void 0)return!1;if(a.includes("**"))return!0;if(!J(a,r[l],!0,n))return!1}return o.length+i.length>r.length}function me(e){let t=e.gitIgnoreCase===!0,n=new Map;if(Array.isArray(e.ignoreFiles))for(let f of e.ignoreFiles){let p=K(f.path);n.set(p,[...n.get(p)??[],f])}let s=typeof e.ignoreFiles=="function"?e.ignoreFiles:f=>n.get(f)??[],r=fe((e.person??[]).join(`
-`),""),o=e.evidence,i=new Set((e.ownOutput??[]).map(f=>f.toLowerCase())),l=new Map,a=(f,p,w)=>{if(He.test(Z(f)))return{kept:!1,rule:{kind:"version control",folder:f}};if(p&&i.has(f.toLowerCase()))return{kept:!1,rule:{kind:"own output",folder:f}};let $=ge(r,f,p,!0);if($)return{kept:$.negative,rule:{kind:"person",index:$.line-1,pattern:$.original}};let b;for(let C=w.files().git.length-1;C>=0&&!b;C--){let S=ge(w.files().git[C].patterns,f,p,t);S&&(b={excluded:!S.negative,rule:{kind:"gitignore",file:w.files().git[C].file,line:S.line,pattern:S.original}})}let O;for(let C=w.files().tf.length-1;C>=0&&!O;C--){let S=Ge(w.files().tf[C].entries,f,p,w.keptFrom);S&&(O={excluded:S.excluded,rule:{kind:"tfignore",file:w.files().tf[C].file,line:S.line,pattern:S.original}})}if(b?.excluded)return{kept:!1,rule:b.rule};if(O?.excluded)return{kept:!1,rule:O.rule};let k;if(o&&p){let C=H.findIndex(S=>S.name===Z(f).toLowerCase()&&S.holds(f,o.names));C!==-1&&(k={kind:"evidence",index:C,pattern:H[C].pattern})}if(k&&o?.apply)return{kept:!1,rule:k};let T=b||O?{kept:!0,rule:(b??O).rule}:{kept:!0};return k?{...T,evidence:k}:T},c=(f,p)=>{let w=[],$=(b,O)=>w.push(`${b}, \`${O}\`, may name files inside folders left out whole; they are not looked for`);for(let b of r)b.negative&&he(b,f,!0)&&$(`the person's pattern ${b.line}`,b.original);for(let{file:b,patterns:O}of p.files().git)for(let k of O)k.negative&&he(k,f,t)&&$(`${b} line ${k.line}`,k.original);for(let{file:b,entries:O}of p.files().tf)for(let k of O){if(k.excluded)continue;let T=k.folder===""?"":`${k.folder.toLowerCase()}/`,C=`${f.toLowerCase()}/`;(T.startsWith(C)||k.recursive&&C.startsWith(T))&&$(`${b} line ${k.line}`,k.original)}return w},d=(f,p,w,$)=>{let b;return{verdict:w,files:()=>{if(b)return b;let k=p(),T=[...k.git],C=[...k.tf];for(let S of s(f)){let B=Z(S.path);B===".gitignore"?T.push({file:S.path,patterns:fe(S.text,f)}):B.toLowerCase()===".tfignore"&&C.push({file:S.path,entries:_e(S.text,f)})}return b={git:T,tf:C},b},keptFrom:$}},h=f=>{let p=l.get(f);if(p)return p;let w;if(f==="")w=d("",()=>({git:[],tf:[]}),{kept:!0},0);else{let $=h(K(f));if($.whole)w={...$,verdict:$.whole};else{let b=a(f,!0,$);if(b.kept)w=d(f,$.files,b,b.rule?.kind==="person"?f.split("/").length:$.keptFrom);else{let O=c(f,$),k=O.length>0?{...b,notes:O}:b;w={...$,verdict:k,whole:k}}}}return l.set(f,w),w};return{file:f=>{let p=h(K(f));return p.whole??a(f,!1,p)},folder:f=>{let p=h(f);return p.whole?{...p.verdict,prunable:!0,why:"a folder left out is left out whole: it is not entered, and nothing beneath it is looked for"}:{...p.verdict,prunable:!1,why:"the folder is kept"}}}}var qe=".live-documentation";function De(e){switch(e.kind){case"evidence":return["Build output beside a project","Build output beside a project","NuGet packages","Node packages"][e.index]??e.pattern;case"gitignore":return`Ignored by .gitignore: ${e.pattern}`;case"tfignore":return`Ignored by .tfignore: ${e.pattern}`;case"own output":return"The tool's own output";case"version control":return"Version control's own folder";case"person":return`Your pattern: ${e.pattern}`;default:return"Left out"}}var Ve=e=>e.kind==="gitignore"||e.kind==="tfignore"?`${e.kind} ${e.pattern}`:e.kind==="evidence"?`evidence ${e.index===1?0:e.index}`:e.kind==="person"?`person ${e.index}`:e.kind;function N(e){return`/${e.replace(/[\\*?[\]!#]/gu,t=>`\\${t}`)}/`}var Ue=()=>new Promise(e=>setTimeout(e,0));async function be(e,{evidenceApplied:t=!0,person:n=[]},s=()=>{}){let r=n.map(m=>typeof m=="string"?{patterns:[m]}:m),o=r.flatMap((m,y)=>m.patterns.map(()=>y));e.listed??=new Map,e.texts??=new Map;let i=0,l=0,a=0,c=async m=>{if(e.listed.has(m))return e.listed.get(m);let y=performance.now(),x=await e.list(m);for(let L of x)if(L.kind==="file"&&(L.name===".gitignore"||L.name.toLowerCase()===".tfignore")){let E=m?`${m}/${L.name}`:L.name;e.texts.set(E,await e.text(E))}return i+=performance.now()-y,a+=1,e.listed.set(m,x),x},d=m=>(e.listed.get(m)??[]).map(y=>y.kind==="folder"?`${y.name}/`:y.name),h=m=>d(m).filter(y=>y===".gitignore"||y.toLowerCase()===".tfignore").map(y=>({path:m?`${m}/${y}`:y,text:e.texts.get(m?`${m}/${y}`:y)??""})),f=await c(""),p=!1;if(f.some(m=>m.name===".git"&&m.kind==="folder")){let m=await e.text(".git/config");p=/^\s*ignorecase\s*=\s*true\s*$/imu.test(m??"")}let w=me({ignoreFiles:h,gitIgnoreCase:p,ownOutput:[qe],person:r.flatMap(m=>m.patterns),evidence:{names:d,apply:t}}),$=m=>({folders:[],filesKept:0,filesLeftOut:0,looseKept:0,looseLeftOut:0,foldersLeftOut:0,byStart:0,foldersByStart:0,byChoice:0,foldersByChoice:0,...m}),b=$({path:"",name:"",kept:!0,unlisted:!1}),O=new Map,k=[],T=new Map,C=m=>{let y=m.kind==="person"?o[m.index]:void 0,x=y===void 0?Ve(m):`person ${y}`,L=y===void 0?De(m):r[y].label?`Left out by you: ${r[y].label}`:`Your pattern: ${r[y].patterns.join("  ")}`;return O.get(x)??O.set(x,{reason:L,rule:m,entry:y,folders:[],files:[],also:new Map}).get(x)},S=(m,y)=>{let x=y.rule,L;if(t&&(x.kind==="gitignore"||x.kind==="tfignore")){let I=m.slice(m.lastIndexOf("/")+1).toLowerCase(),F=H.findIndex(A=>A.name===I&&A.holds(m,d));F!==-1&&(L={file:`.${x.kind}`,path:x.file,line:x.line,pattern:x.pattern},x={kind:"evidence",index:F,pattern:H[F].pattern})}let E=C(x);if(E.folders.push({path:m,files:e.lazy?null:we(e,m),also:L}),L){let I=E.also.get(L.file)??E.also.set(L.file,{folders:0,patterns:new Set}).get(L.file);I.folders+=1,I.patterns.add(L.pattern)}for(let I of y.notes??[]){let F=/^(.*?), `(.*)`, may name files/u.exec(I);if(!F)continue;let A=`${F[1]}\0${F[2]}`;(T.get(A)??T.set(A,{source:F[1],pattern:F[2],folders:[]}).get(A)).folders.push(m)}return x},B=0,ae=async m=>{let y=await c(m.path);B+=1,B%20===0&&(s(B),await Ue());for(let x of y){let L=m.path?`${m.path}/${x.name}`:x.name;if(x.kind==="folder"){let E={packages:1,node_modules:2}[x.name.toLowerCase()];if(E){let z=await c(L);if(E===2)for(let Ie of z.filter(Be=>Be.kind==="folder").slice(0,3))await c(`${L}/${Ie.name}`)}let I=performance.now(),F=w.folder(L);l+=performance.now()-I;let A=$({path:L,name:x.name,kept:!F.prunable,rule:F.rule,evidence:F.evidence,unlisted:F.prunable&&e.lazy});m.folders.push(A),F.prunable?(A.shownAs=S(L,F),A.filesLeftOut=e.lazy?0:we(e,L),A.foldersLeftOut=1,A.shownAs.kind==="evidence"?(A.byStart=A.filesLeftOut,A.foldersByStart=1):(A.shownAs.kind==="person"||A.shownAs.kind==="gitignore"||A.shownAs.kind==="tfignore")&&(A.byChoice=A.filesLeftOut,A.foldersByChoice=1)):await ae(A);for(let z of["filesKept","filesLeftOut","foldersLeftOut","byStart","foldersByStart","byChoice","foldersByChoice"])m[z]+=A[z]}else{let E=performance.now(),I=w.file(L);l+=performance.now()-E,I.kept?(k.push(L),m.filesKept+=1,m.looseKept+=1):(C(I.rule).files.push(L),m.filesLeftOut+=1,m.looseLeftOut+=1,m.byChoice+=1)}}m.folders.sort((x,L)=>x.name.toLowerCase()<L.name.toLowerCase()?-1:1)},Ee=performance.now();return await ae(b),s(B),{root:b,kept:k,groups:[...O.values()].sort((m,y)=>y.folders.length*1e3+y.files.length-(m.folders.length*1e3+m.files.length)),notes:[...T.values()].map(({source:m,pattern:y,folders:x})=>({pattern:y,folders:x,text:`${m.startsWith("the person")?`Your pattern ${y}`:`${y} (${m.replace(/^(.*) line (\d+)$/u,"line $2 of $1")})`} cannot keep anything in ${x[0]}/${x.length>1?` or ${x.length-1} more folders`:""}, which ${x.length>1?"are":"is"} left out whole.`})),gitIgnoreCase:p,timings:{totalMs:performance.now()-Ee,listMs:i,decideMs:l,listings:a,folders:B}}}function we(e,t){if(!e.beneath){e.beneath=new Map;for(let n of e.allFiles??[])for(let s=n.lastIndexOf("/");s>0;s=n.lastIndexOf("/",s-1)){let r=n.slice(0,s);e.beneath.set(r,(e.beneath.get(r)??0)+1)}}return e.beneath.get(t)??0}function ye(e){let t=new Map,n=new Map;for(let r of e){let o=r.slice(r.lastIndexOf("/")+1),i=o.lastIndexOf("."),l=i>0?o.slice(i).toLowerCase():"(no extension)";t.set(l,(t.get(l)??0)+1);let a=r.includes("/")?r.slice(0,r.indexOf("/")):"At the top";n.set(a,(n.get(a)??0)+1)}let s=r=>[...r].sort((o,i)=>i[1]-o[1]);return{byKind:s(t),byTop:s(n)}}function ke(e){let t=e.groups.reduce((r,o)=>r+o.files.length+o.folders.reduce((i,l)=>i+(l.files??0),0),0),n=e.groups.reduce((r,o)=>r+o.folders.filter(i=>i.files===null).length,0),s=e.groups.reduce((r,o)=>r+o.folders.length,0);return{read:e.kept.length,leftOutFiles:t,foldersLeftOut:s,notLookedInside:n}}var v=e=>document.querySelector(e),g=(e,t={},...n)=>{let s=document.createElement(e);for(let[r,o]of Object.entries(t))r==="text"?s.textContent=o:o!==void 0&&o!==!1&&s.setAttribute(r,o===!0?"":o);for(let r of n)r!=null&&s.append(r);return s},M=(e,t,n=`${t}s`)=>`${e.toLocaleString("en")} ${e===1?t:n}`,ee=new URLSearchParams(location.search),u={source:null,result:null,layout:ee.get("layout")==="folders"?"tree":"reason",boxes:ee.get("boxes")==="choice"?"choice":"mixed",person:[],opened:new Set([""]),openedGroups:new Set,shown:new Map,focused:""};document.querySelector(".segmented").hidden=ee.get("switch")!=="on";function Le(e){let t=new Map([["",e]]),n=s=>s.includes("/")?s.slice(0,s.lastIndexOf("/")):"";return{lazy:!0,label:e.name,async list(s){let r=t.get(s),o=[];for await(let[i,l]of r.entries())l.kind==="directory"&&t.set(s?`${s}/${i}`:i,l),o.push({name:i,kind:l.kind==="directory"?"folder":"file"});return o},async text(s){try{let r=s.split("/"),o=t.get(n(s));if(!o){o=e;for(let i of r.slice(0,-1))o=await o.getDirectoryHandle(i)}return await(await(await o.getFileHandle(r.at(-1))).getFile()).text()}catch{return}}}}function Ze(e){let t=new Map([["",new Map]]),n=new Map,s="";for(let r of e){let o=r.webkitRelativePath.split("/");s=o[0];let i=o.slice(1).join("/");n.set(i,r);let l="";for(let[a,c]of o.slice(1).entries()){let d=a===o.length-2,h=l?`${l}/${c}`:c;t.has(l)||t.set(l,new Map),t.get(l).set(c,d?"file":"folder"),!d&&!t.has(h)&&t.set(h,new Map),l=h}}return{lazy:!1,label:s,allFiles:[...n.keys()],async list(r){return[...t.get(r)??new Map].map(([o,i])=>({name:o,kind:i}))},async text(r){return n.get(r)?.text()}}}async function W(){if(!u.source)return;let e=v("#progress");e.textContent="Listing\u2026",u.result=await be(u.source,{evidenceApplied:!0,person:u.person},t=>{e.textContent=`${M(t,"folder")} listed`}),e.textContent="",ve()}function ve(){let e=u.result;if(v("#choice").hidden=!e,!e)return;let t=ke(e);v("#totals").textContent=[`${M(t.read,"file")} will be read`,t.leftOutFiles?`${M(t.leftOutFiles,"file")} left out`:"",u.source.lazy&&t.notLookedInside?`${M(t.notLookedInside,"folder")} left out, not looked inside`:""].filter(Boolean).join(" \xB7 "),v("#scan-result").textContent="",st(),ot(e),v("#by-reason").hidden=u.layout!=="reason",v("#by-tree").hidden=u.layout!=="tree",document.querySelectorAll("[data-layout]").forEach(s=>s.setAttribute("aria-pressed",String(s.dataset.layout===u.layout))),u.layout==="reason"?Ae(e):re(e);let n=e.timings;v("#timings").textContent=`${u.source.lazy?"walked lazily":"listed by the browser first"} \xB7 ${M(n.listings,"folder listing")} \xB7 listing ${Math.round(n.listMs)} ms \xB7 deciding ${Math.round(n.decideMs)} ms \xB7 in all ${Math.round(n.totalMs)} ms`}var te=e=>`!${e.folder?N(e.path):N(e.path).slice(0,-1)}`,P=e=>N(e).slice(0,-1);function Oe(e,t){u.person.push({patterns:e,label:t}),W()}function Ye(e,t){let n=g("button",{type:"button",class:"keep","aria-label":`Keep everything left out as ${e.reason}`},R("keep"),g("span",{text:"Keep"}));return n.addEventListener("click",()=>{e.rule.kind==="person"?(u.person.splice(e.entry,1),W()):Oe(t,t.length>1?`${e.reason}, ${M(t.length,"folder")}`:void 0)}),n}function q(e,t,n,s){let r=`${e==="keep"?"Keep":"Leave out"} ${t}`,o=g("button",{type:"button",class:"icon-button quiet-act","aria-label":r,title:r},R(e));return o.addEventListener("click",()=>Oe(n,s)),o}function ie(e,t,n,s){let r=g("button",{type:"button",class:"twisty","aria-expanded":String(n),"aria-label":`${n?"Close":"Open"} ${t}`},R(n?"open":"closed"));return r.addEventListener("click",()=>{n?u.openedGroups.delete(e):u.openedGroups.add(e),s()}),r}var X=50;function D(e,t,n,s,r=X){let o=u.shown.get(t)??r;if(e.append(...n.slice(0,o)),n.length>o){let i=g("button",{type:"button",class:"text-button",text:`${(n.length-o).toLocaleString("en")} more not shown: show ${Math.min(X,n.length-o)}`});i.addEventListener("click",()=>{u.shown.set(t,o+X),s()}),e.append(g("li",{},i))}}function Je(e,t){let n=new Map;for(let s of e.filter(Boolean))n.set(s.path,new Map([...n.get(s.path)??[],[s.line,s.pattern]]));return[...n].map(([s,r])=>{let o=s.slice(s.lastIndexOf("/")+1),i=t.includes("/")?t.slice(0,t.lastIndexOf("/")):"";return`Also ${s===`${t}/${o}`?`this folder's ${o}`:s===(i?`${i}/${o}`:o)?`the ${o} beside it`:s}, ${[...r].sort((a,c)=>a[0]-c[0]).map(([a,c])=>`line ${a}: ${c}`).join(" \xB7 ")}`}).join(" \xB7 ")}function Ae(e){let t=v("#reasons");t.replaceChildren();let n=()=>Ae(e);e.groups.length===0&&t.append(g("li",{class:"quiet",text:"Nothing is left out."}));for(let s of e.groups){let r=s.reason,o=u.openedGroups.has(r),i=s.folders.filter(f=>f.files===null).length,l=s.files.length+s.folders.reduce((f,p)=>f+(p.files??0),0),a=[s.folders.length?M(s.folders.length,"folder"):"",i?"not looked inside":"",l?M(l,"file"):""].filter(Boolean).join(" \xB7 "),c=s.rule.kind==="own output"||s.rule.kind==="version control",d=[...s.folders.map(f=>({path:f.path,folder:!0,files:f.files,also:f.also})),...s.files.map(f=>({path:f,folder:!1}))],h=g("li",{class:"reason"},g("div",{class:"row"},ie(r,s.reason,o,n),g("span",{class:"why",text:s.reason}),g("span",{class:"counts",text:a}),c?g("span",{class:"quiet",text:"always"}):Ye(s,d.map(te))));for(let[f,{folders:p}]of s.also??[]){let w=p===s.folders.length?`all ${p.toLocaleString("en")}`:`${p.toLocaleString("en")} of ${s.folders.length.toLocaleString("en")}`;h.append(g("div",{class:"also",text:`Also ignored by ${f}: ${w}`}))}o&&h.append(Qe(r,d,c,n)),t.append(h)}Ce(e)}function Qe(e,t,n,s){let r=new Map;for(let c of t){let d=c.folder&&c.path.includes("/")?c.path.slice(0,c.path.lastIndexOf("/")):`\0${c.path}`;r.set(d,[...r.get(d)??[],c])}let o=[...r].map(([c,d])=>d.length===1?{path:d[0].path,label:d[0].folder?`${d[0].path}/`:d[0].path,members:d}:{path:c,label:`${c}/ ${d.map(h=>`${h.path.slice(c.length+1)}/`).sort().join(" ")}`,members:d}),i=new Map;for(let c of o){let d=c.path.includes("/")?c.path.slice(0,c.path.indexOf("/")):"(top)";i.set(d,[...i.get(d)??[],c])}let l=(c,d)=>{let h=c.members.reduce((p,w)=>w.files===null||p===null?null:p+(w.files??0),0),f=Je(c.members.map(p=>p.also),c.path);return g("li",{class:"row"},g("span",{class:"twisty-space"}),g("span",{class:"path"},g("span",{text:d??c.label,title:c.label}),f?g("span",{class:"also-line",text:f}):null),g("span",{class:"counts",text:c.members[0].folder?h===null?"not looked inside":M(h,"file"):""}),n?null:q("keep",c.label,c.members.map(te),c.members.length>1?c.label:void 0))},a=g("ul",{class:"members"});for(let[c,d]of[...i].sort((h,f)=>f[1].length-h[1].length)){if(d.length===1&&i.size>1){a.append(l(d[0]));continue}let h=`${e}/${c}`,f=u.openedGroups.has(h)||i.size===1,p=d.flatMap(k=>k.members),w=p.filter(k=>k.folder).length,$=[w?M(w,"folder"):"",p.length-w?M(p.length-w,"file"):""].filter(Boolean).join(" \xB7 "),b=c==="(top)"?"the top folder":`${c}/`,O=g("li",{},g("div",{class:"row"},i.size===1?g("span",{class:"twisty-space"}):ie(h,c,f,s),g("span",{class:"path",text:c==="(top)"?"At the top":`${c}/`}),g("span",{class:"counts",text:$}),n||i.size===1?null:q("keep",`these ${$} in ${b}`,p.map(te),`${$} in ${b}`)));if(f){let k=g("ul",{class:"members"});D(k,h,d.map(T=>l(T,c==="(top)"?T.label:T.label.slice(c.length+1))),s),O.append(k)}a.append(O)}return a}function Ce(e){let t=()=>Ce(e),n=ye(e.kept),s=g("ul",{class:"counts-list"});D(s,"kinds",n.byKind.map(([l,a])=>g("li",{class:"row"},g("span",{class:"path",text:l}),g("span",{class:"counts",text:a.toLocaleString("en")}),l.startsWith(".")?q("leave",`every ${l} file`,[`*${l.replace(/[\\*?[\]!#]/gu,c=>`\\${c}`)}`]):g("span",{class:"icon-space"}))),t,12);let r=new Set(e.kept),o=(l,a)=>{let c=l.folders.filter(d=>d.kept&&d.filesKept>0).sort((d,h)=>h.filesKept-d.filesKept).map(d=>{let h=`read/${d.path}`,f=u.openedGroups.has(h),p=g("li",{},g("div",{class:"row"},ie(h,d.path,f,t),g("span",{class:"path",text:a===0?d.name:`${d.name}/`}),g("span",{class:"counts",text:d.filesKept.toLocaleString("en")}),q("leave",`${d.path}/`,[N(d.path)])));if(f){let w=g("ul",{class:"members"});D(w,h,o(d,a+1),t),p.append(w)}return p});if(l.looseKept>0){let d=(u.source.listed.get(l.path)??[]).filter(f=>f.kind==="file").map(f=>l.path?`${l.path}/${f.name}`:f.name).filter(f=>r.has(f)),h=l.path?`${l.path}/`:"the top folder";c.push(g("li",{class:"row"},g("span",{class:"twisty-space"}),g("span",{class:"path",text:l.path?`${M(d.length,"file")} here`:"At the top"}),g("span",{class:"counts",text:d.length.toLocaleString("en")}),q("leave",`the ${M(d.length,"file")} in ${h}`,d.map(P),`the ${M(d.length,"file")} in ${h}`)))}return c},i=g("ul",{class:"counts-list"});D(i,"read",o(e.root,0),t),v("#read").replaceChildren(g("h3",{text:"By folder"}),i,g("h3",{text:"By kind"}),s)}var ne="\0files",Me=e=>`${e}${ne}`;function Se(e,t,n){for(let s of e.folders)n.push({node:s,depth:t}),u.opened.has(s.path)&&s.kept&&Se(s,t+1,n);return e.looseKept+e.looseLeftOut>0&&n.push({loose:e,depth:t}),n}function Xe(e){return e.kept?e.filesLeftOut>0||e.foldersLeftOut>0?"mixed":"true":"false"}function et(e){return e.kept?e.byChoice>0||e.foldersByChoice>0?"mixed":"true":"false"}var $e=e=>u.boxes==="choice"?et(e):Xe(e);function tt(e){if(!e.kept)return[e.unlisted?"not looked inside":`${M(e.filesLeftOut,"file")} left out`,""];let t=`${e.filesKept.toLocaleString("en")} kept`;if(u.boxes!=="choice")return[`${t}${e.filesLeftOut?` \xB7 ${e.filesLeftOut.toLocaleString("en")} left out`:""}`,""];let n=e.byChoice?` \xB7 ${e.byChoice.toLocaleString("en")} left out`:e.foldersByChoice?` \xB7 ${M(e.foldersByChoice,"folder")} left out`:"";return[`${t}${n}`,e.foldersByStart?`${M(e.foldersByStart,"build or package folder")} left out`:""]}function xe(e){return g("span",{class:`box ${e}`,"aria-hidden":"true"},e==="true"?R("tick"):e==="mixed"?R("dash"):null)}var se=e=>e.kept&&(e.folders.length>0||e.looseKept+e.looseLeftOut>0);function re(e){let t=v("#tree"),n=Se(e.root,1,[]),s=o=>o.loose?Me(o.loose.path):o.node.path;n.some(o=>s(o)===u.focused)||(u.focused=n[0]?s(n[0]):"");let r=o=>g("span",{class:"indent",style:`width:${(o-1)*18}px`});t.replaceChildren(...n.map(o=>{let i=s(o),l=i===u.focused?"0":"-1";if(o.loose){let p=o.loose,w=p.looseLeftOut===0?"true":p.looseKept===0?"false":"mixed",$=p.looseKept+p.looseLeftOut,b=g("li",{role:"treeitem","aria-level":String(o.depth),"aria-checked":w,tabindex:l,"data-path":i,class:`loose${w==="false"?" left-out":""}`},r(o.depth),g("span",{class:"twisty-mark","aria-hidden":"true"}),xe(w),g("span",{class:"name",text:`${M($,"file")} here`}),g("span",{class:"counts",text:w==="mixed"?`${p.looseKept.toLocaleString("en")} kept \xB7 ${p.looseLeftOut.toLocaleString("en")} left out`:w==="false"?"left out":""}));return b.addEventListener("click",()=>{u.focused=i,Fe(p)}),b}let{node:a,depth:c}=o,[d,h]=tt(a),f=g("li",{role:"treeitem","aria-level":String(c),"aria-checked":$e(a),"aria-expanded":se(a)?String(u.opened.has(a.path)):void 0,tabindex:l,"data-path":i,class:a.kept?"":"left-out"},r(c),g("span",{class:"twisty-mark","aria-hidden":"true"},se(a)?R(u.opened.has(a.path)?"open":"closed"):null),xe($e(a)),g("span",{class:"name",text:a.name}),g("span",{class:"counts",text:d}),h?g("span",{class:"start",text:h}):null,!a.kept&&a.rule?g("span",{class:"why",text:nt(a)}):null);return f.addEventListener("click",p=>{u.focused=i,p.target.closest(".box")?Te(a):V(a)}),f})),t.querySelector('[tabindex="0"]')?.focus({preventScroll:!0})}function nt(e){let t=u.result.groups.find(n=>n.folders.some(s=>s.path===e.path));return t?t.reason:""}function V(e){e.kept&&(u.opened.has(e.path)?u.opened.delete(e.path):u.opened.add(e.path),re(u.result))}function Te(e){let t=N(e.path);u.person=u.person.filter(n=>n.patterns.length!==1||n.patterns[0]!==t&&n.patterns[0]!==`!${t}`),u.person.push({patterns:[e.kept?t:`!${t}`]}),u.focused=e.path,W()}function Fe(e){let t=(u.source.listed.get(e.path)??[]).filter(i=>i.kind==="file").map(i=>e.path?`${e.path}/${i.name}`:i.name),n=new Set(t.flatMap(i=>[P(i),`!${P(i)}`]));u.person=u.person.map(i=>({...i,patterns:i.patterns.filter(l=>!n.has(l))})).filter(i=>i.patterns.length>0);let s=new Set(u.result.groups.flatMap(i=>i.files)),r=e.path?`${e.path}/`:"the top folder",o=e.looseLeftOut===0?t.map(P):t.filter(i=>s.has(i)).map(i=>`!${P(i)}`);u.person.push({patterns:o,label:`the ${M(o.length,"file")} in ${r}`}),u.focused=Me(e.path),W()}v("#tree").addEventListener("keydown",e=>{let t=[...v("#tree").querySelectorAll('[role="treeitem"]')],n=t.findIndex(i=>i.dataset.path===u.focused),s=i=>{i<0||i>=t.length||(u.focused=t[i].dataset.path,t[n]?.setAttribute("tabindex","-1"),t[i].setAttribute("tabindex","0"),t[i].focus())},r=u.focused.endsWith(ne)?oe(u.result.root,u.focused.slice(0,-ne.length)):void 0,o=r?void 0:oe(u.result.root,u.focused);if(e.key==="ArrowDown")s(n+1);else if(e.key==="ArrowUp")s(n-1);else if(e.key==="Home")s(0);else if(e.key==="End")s(t.length-1);else if(e.key==="ArrowRight")o&&se(o)&&!u.opened.has(o.path)?V(o):s(n+1);else if(e.key==="ArrowLeft")if(o&&u.opened.has(o.path))V(o);else{let i=r?r.path:o?.path??"",l=r?i:i.includes("/")?i.slice(0,i.lastIndexOf("/")):"";l&&(u.focused=l,re(u.result))}else if(e.key===" ")r?Fe(r):o&&Te(o);else if(e.key==="Enter"&&o)V(o);else return;e.preventDefault()});function oe(e,t){if(e.path===t)return e;for(let n of e.folders)if(t===n.path||t.startsWith(`${n.path}/`))return oe(n,t)}function st(){v("#patterns").replaceChildren(...u.person.map((t,n)=>{let s=t.label??t.patterns.join("  "),r=g("button",{type:"button",class:"icon-button","aria-label":`Remove ${s}`,title:"Remove"},R("remove"));r.addEventListener("click",()=>{u.person.splice(n,1),W()});let o=t.patterns.every(i=>i.startsWith("!"));return g("li",{},t.label?g("span",{text:t.label,title:t.patterns.join(`
-`)}):g("code",{text:s}),g("span",{class:"quiet",text:t.label?o?"kept":"left out":o?"keeps":"leaves out"}),r)}))}function ot(e){let t=e.notes.slice(0,5);v("#notes").replaceChildren(...t.map(({text:n})=>g("li",{text:n})),e.notes.length>t.length?g("li",{class:"quiet",text:`and ${M(e.notes.length-t.length,"more like these")}`}):""),v("#notes").hidden=e.notes.length===0}var it={pick:"M3 6h6l2 2h10v10H3z",drop:"M12 3v12M7 10l5 5 5-5M4 19h16",input:"M4 5h16v14H4zM8 9h8M8 13h8",keep:"M12 5v14M5 12h14",leave:"M5 12h14",remove:"M6 6l12 12M18 6L6 18",open:"M6 9l6 6 6-6",closed:"M9 6l6 6-6 6",tick:"M5 12l4 4 10-10",dash:"M6 12h12",scan:"M8 5l11 7-11 7z"};function R(e){let t=document.createElementNS("http://www.w3.org/2000/svg","svg");t.setAttribute("viewBox","0 0 24 24"),t.setAttribute("aria-hidden","true"),t.classList.add("icon");let n=document.createElementNS("http://www.w3.org/2000/svg","path");return n.setAttribute("d",it[e]),t.append(n),t}document.querySelectorAll("[data-icon]").forEach(e=>e.prepend(R(e.dataset.icon)));async function le(e){u.source=e,u.result=null,u.person=[],u.opened=new Set([""]),u.openedGroups=new Set,u.shown=new Map,v("#folder-name").textContent=e.label,await W()}v("#pick").addEventListener("click",async()=>{if(!window.showDirectoryPicker){v("#progress").textContent="This browser cannot pick a folder; use Choose.";return}try{await le(Le(await window.showDirectoryPicker({mode:"read"})))}catch(e){e.name!=="AbortError"&&(v("#progress").textContent=String(e))}});v("#folder-input").addEventListener("change",e=>{e.target.files.length&&le(Ze(e.target.files))});var _=v("#drop");_.addEventListener("dragover",e=>{e.preventDefault(),_.classList.add("over")});_.addEventListener("dragleave",()=>_.classList.remove("over"));_.addEventListener("drop",async e=>{e.preventDefault(),_.classList.remove("over");let t=e.dataTransfer.items[0],n=t?.getAsFileSystemHandle?await t.getAsFileSystemHandle():null;n?.kind==="directory"?await le(Le(n)):v("#progress").textContent="Drop a folder; this browser gave no folder."});document.querySelectorAll("[data-layout]").forEach(e=>e.addEventListener("click",()=>{u.layout=e.dataset.layout,ve()}));v("#pattern-form").addEventListener("submit",e=>{e.preventDefault();let t=v("#pattern"),n=t.value.trim();n&&(u.person.push({patterns:[n]}),t.value="",W())});v("#scan").addEventListener("click",()=>{u.result&&(v("#scan-result").textContent=`A scan would read ${M(u.result.kept.length,"file")}. This trial reads none.`)});window.choicePage={state:u,ready:!0};})();
+<script>"use strict";(()=>{var Oe={alnum:e=>/[A-Za-z0-9]/u.test(e),alpha:e=>/[A-Za-z]/u.test(e),blank:e=>e===" "||e==="	",cntrl:e=>e.charCodeAt(0)<32||e.charCodeAt(0)===127,digit:e=>/[0-9]/u.test(e),graph:e=>e.charCodeAt(0)>32&&e.charCodeAt(0)<127,lower:e=>/[a-z]/u.test(e),print:e=>e.charCodeAt(0)>=32&&e.charCodeAt(0)<127,punct:e=>/[!-/:-@[-`{-~]/u.test(e),space:e=>/[ \t\n\r\f\v]/u.test(e),upper:e=>/[A-Z]/u.test(e),xdigit:e=>/[0-9A-Fa-f]/u.test(e)},je=e=>e==="*"||e==="?"||e==="["||e==="\\",R=e=>e!==void 0&&e>="A"&&e<="Z",se=e=>e!==void 0&&e>="a"&&e<="z";function U(e,t,n,l,a,i){let s=t;for(;t<e.length;l++,t++){let o=e[t],r=n[l];if(r===void 0&&o!=="*")return-1;switch(i&&R(r)&&(r=r.toLowerCase()),i&&R(o)&&(o=o.toLowerCase()),o){case"\\":if(t++,o=e[t],r!==o)return 1;continue;case"?":if(a&&r==="/")return 1;continue;case"*":{let c;if(e[++t]==="*"){let p=t-2;for(;e[++t]==="*";);if((p<s||e[p]==="/")&&(t>=e.length||e[t]==="/"||e[t]==="\\"&&e[t+1]==="/")){if(e[t]==="/"&&U(e,t+1,n,l,a,i)===0)return 0;c=!0}else c=!a}else c=!a;if(t>=e.length)return!c&&n.indexOf("/",l)!==-1?1:0;if(!c&&e[t]==="/"){let p=n.indexOf("/",l);if(p===-1)return 1;l=p;break}for(;r!==void 0;){if(!je(e[t])){let u=i&&R(e[t])?e[t].toLowerCase():e[t];for(;(r=n[l])!==void 0&&(c||r!=="/")&&(i&&R(r)&&(r=r.toLowerCase()),r!==u);)l++;if(r!==u){if(c)return-1;break}}let p=U(e,t,n,l,a,i);if(p!==1){if(!c||p!==-2)return p}else if(!c&&r==="/")return-2;r=n[++l],i&&R(r)&&(r=r.toLowerCase())}return-1}case"[":{o=e[++t],o==="^"&&(o="!");let c=o==="!";c&&(o=e[++t]);let p,u=!1;do{if(o===void 0)return-1;if(o==="\\"){if(o=e[++t],o===void 0)return-1;r===o&&(u=!0)}else if(o==="-"&&p!==void 0&&e[t+1]!==void 0&&e[t+1]!=="]"){if(o=e[++t],o==="\\"&&(o=e[++t],o===void 0))return-1;if(r!==void 0&&r<=o&&r>=p)u=!0;else if(i&&se(r)){let m=r.toUpperCase();m<=o&&m>=p&&(u=!0)}o=void 0}else if(o==="["&&e[t+1]===":"){let m=t+2,b=m;for(;e[b]!==void 0&&e[b]!=="]";)b++;if(e[b]===void 0)return-1;if(b-m-1<0||e[b-1]!==":")r==="["&&(u=!0);else{let C=e.slice(m,b-1),y=Oe[C];if(!y)return-1;(r!==void 0&&y(r)||C==="upper"&&i&&se(r))&&(u=!0),t=b,o=void 0}}else r===o&&(u=!0);p=o,o=e[++t]}while(o!=="]");if(u===c||a&&r==="/")return 1;continue}default:if(r!==o)return 1;continue}}return l<n.length?1:0}var K=(e,t,n,l)=>U(e,0,t,0,n,l)===0;function Be(e){let t="",n="",l=()=>{n.length>t.length&&(t=n),n=""};for(let a=0;a<e.length;a++){let i=e[a];if(i==="*"||i==="?"||i==="/")l();else if(i==="\\")l(),a++;else if(i==="["){l();let s=a+1;for((e[s]==="!"||e[s]==="^")&&s++,e[s]==="]"&&s++;s<e.length&&e[s]!=="]";){let o=e[s]==="["&&e[s+1]===":"?e.indexOf(":]",s+2):-1;s=o!==-1?o+2:e[s]==="\\"?s+2:s+1}a=s}else n+=i}return l(),t.toLowerCase()}function Ee(e){let t=-1;for(let n=0;n<e.length;n++){let l=e[n];if(l===" ")t===-1&&(t=n);else if(l==="\\"){if(n++,n>=e.length)return e;t=-1}else t=-1}return t===-1?e:e.slice(0,t)}function ae(e,t){let n=[],l=(e.startsWith("\uFEFF")?e.slice(1):e).split(`
+`);return l.forEach((a,i)=>{if(i===l.length-1&&a==="")return;let s=a.endsWith("\r")?a.slice(0,-1):a;if(s===""||s.startsWith("#"))return;s=Ee(s);let o=s,r=!1;s.startsWith("!")&&(r=!0,s=s.slice(1));let c=!1;s.endsWith("/")&&(c=!0,s=s.slice(0,-1));let p=!s.includes("/");n.push({base:t,pattern:s,negative:r,mustBeDir:c,noDir:p,line:i+1,original:o,literal:Be(s.replace(/^\//u,""))})}),n}function Pe(e,t,n,l){if(e.mustBeDir&&!n)return!1;if(e.base!==""){let s=t.slice(0,e.base.length+1);if(l?s.toLowerCase()!==`${e.base}/`.toLowerCase():s!==`${e.base}/`)return!1}let a=e.base===""?t:t.slice(e.base.length+1),i=e.noDir?a.slice(a.lastIndexOf("/")+1):a;return e.literal!==""&&!i.toLowerCase().includes(e.literal)?!1:e.noDir?K(e.pattern,i,!1,l):K(e.pattern.startsWith("/")?e.pattern.slice(1):e.pattern,a,!0,l)}var $=e=>{let t=e.lastIndexOf("/");return t===-1?"":e.slice(0,t)},G=e=>e.includes("*")||e.includes("?");function ie(e){return e.split("/").filter(t=>t!=="").join("/")}function oe(e){let t=0,n=e.length;for(;t<n&&e.charCodeAt(t)<=32;)t++;for(;n>t&&e.charCodeAt(n-1)<=32;)n--;return e.slice(t,n)}function Re(e,t){let n=[];return e.split(/\r\n|\n|\r/u).forEach((l,a)=>{let i=l.replace(/^[\uFEFF\uFFFE]/u,"");if(i=oe(i),i===""||i.startsWith("#"))return;let s=i;i=i.replace(/\\/gu,"/");let o=!0;i.startsWith("!")&&i.length>1&&(o=!1,i=i.slice(1));let r=!0;i.startsWith("/")&&(r=!1,i=i.slice(1));let c=!1;i.endsWith("/")&&(c=!0,i=i.slice(0,-1)),i=oe(i);let p=ie(t===""?i:`${t}/${i}`);if(p===ie(t))return;let u=p.slice(p.lastIndexOf("/")+1),m="exact",b=u;G(u)&&(u.length>=2&&u[0]==="*"&&!G(u.slice(1))?(m="endsWith",b=u.slice(1)):u.length>=2&&u[u.length-1]==="*"&&!G(u.slice(0,-1))?(m="startsWith",b=u.slice(0,-1)):m="complex"),n.push({folder:$(p),name:b,shape:m,excluded:o,recursive:r,folderOnly:c,line:a+1,original:s})}),n}var _e=/^(?:\.git|\.hg|\.svn|\$tf(?:[1-9]|1[0-5])?|\.tf(?:[1-9]|1[0-5])?)$/iu,re=/\.(?:cs|vb|fs|vcx|sql|wix|nj)proj$/iu,Ve=/^[A-Za-z0-9_][A-Za-z0-9_.-]*?\.\d+(?:\.\d+){1,3}(?:-[0-9A-Za-z.-]+)?\/$/u,Ie=[{name:"bin",pattern:"bin/ beside a project file",holds:(e,t)=>t($(e)).some(n=>re.test(n))},{name:"obj",pattern:"obj/ beside a project file",holds:(e,t)=>t($(e)).some(n=>re.test(n))},{name:"packages",pattern:"packages/ holding NuGet's <Id>.<Version> folders or a repositories.config",holds:(e,t)=>t(e).some(n=>n.toLowerCase()==="repositories.config"||Ve.test(n))},{name:"node_modules",pattern:"node_modules/ holding packages with a package.json",holds:(e,t)=>t(e).filter(n=>n.endsWith("/")).slice(0,3).some(n=>t(`${e}/${n.slice(0,-1)}`).includes("package.json"))}],q=e=>e.slice(e.lastIndexOf("/")+1);function Fe(e,t,n,l){for(let a=e.length-1;a>=0;a--)if(Pe(e[a],t,n,l))return e[a]}function De(e,t,n){if(e.noDir)return!0;let l=t.split("/"),a=(e.pattern.startsWith("/")?e.pattern.slice(1):e.pattern).split("/");for(let i=0;i<l.length;i++){let s=a[i];if(s===void 0)return!1;if(s.includes("**"))return!0;if(!K(s,l[i],!0,n))return!1}return a.length>l.length}function ce(e){let t=ae(e.list,""),n=e.ignoreCase,l=new Set((e.ownOutput??[]).map(o=>o.toLowerCase())),a=new Map,i=(o,r)=>{if(_e.test(q(o)))return{kept:!1,fixed:"version control"};if(r&&l.has(o.toLowerCase()))return{kept:!1,fixed:"own output"};let c=Fe(t,o,r,n);return c?{kept:c.negative,line:{number:c.line,text:c.original}}:{kept:!0}},s=o=>{let r=a.get(o);if(r)return r;let c;if(o==="")c={verdict:{kept:!0},whole:!1};else{let p=s($(o));if(p.whole)c=p;else{let u=i(o,!0);if(u.kept)c={verdict:u,whole:!1};else{let m=u.fixed?[]:t.filter(b=>b.negative&&De(b,o,n)).map(b=>`line ${b.line}, \`${b.original}\`, may name files inside folders left out whole; they are not looked for`);c={verdict:m.length>0?{...u,notes:m}:u,whole:!0}}}}return a.set(o,c),c};return{file:o=>{let r=s($(o));return r.whole?r.verdict:i(o,!1)},folder:o=>{let r=s(o);return{...r.verdict,prunable:r.whole}}}}var S=e=>e.replace(/[\\*?[]/gu,t=>`\\${t}`),de=e=>e.startsWith("#")||e.startsWith("!")?`\\${e}`:e,le=e=>e.split("/").length,ue=(e,t)=>le(e.path)-le(t.path)||(e.path<t.path?-1:e.path>t.path?1:0);function fe(e,t){let n=[],l=[],a=[];for(let i of[...e].sort(ue)){let s=$(i.path),o=ae(i.text,s);if(o.length===0)continue;let r=s!==""&&t?.ignoreCase?t.folders.filter(c=>c!==s&&c.toLowerCase()===s.toLowerCase()):[];r.length>0&&a.push(`${i.path} speaks in place for ${s}/ alone; in the list, whose names match without regard to case, its lines reach ${r.map(c=>`${c}/`).join(", ")} as well.`),n.push(`# ${i.path}`),l.push(void 0);for(let c of o){if(l.push({file:i.path,line:c.line}),s===""){n.push(c.original);continue}let p=c.noDir?`${S(s)}/**/${c.pattern}`:`${S(s)}/${c.pattern.replace(/^\//u,"")}`;n.push(`${c.negative?`!${p}`:de(p)}${c.mustBeDir?"/":""}`)}}return{lines:n,differences:a,from:l,needsIgnoreCase:!1}}function pe(e){let t=[],n=[],l=[],a=[...e].sort(ue).map(s=>({file:s,entries:Re(s.text,$(s.path))})),i=a.some(({entries:s})=>s.some(o=>!o.excluded));for(let{file:s,entries:o}of a)if(o.length!==0){t.push(`# ${s.path}`),n.push(void 0);for(let r of o){let c=C=>C.replace(/[\\[]/gu,y=>`\\${y}`),p=r.shape==="endsWith"?`*${S(r.name)}`:r.shape==="startsWith"?`${S(r.name)}*`:r.shape==="complex"?c(r.name):S(r.name);r.shape==="complex"&&r.name.endsWith(".")&&l.push(`${s.path} line ${r.line}, \`${r.original}\`: TFVC lets a final "." match a name with no extension; the list's line does not.`);let u=r.folder===""?"":`${S(r.folder)}/`,m=r.recursive?u===""?p:`${u}**/${p}`:`/${u}${p}`,b=`${r.excluded?de(m):`!${m}`}${r.folderOnly?"/":""}`;t.push(b),n.push({file:s.path,line:r.line}),r.excluded&&i&&(t.push(`${r.folderOnly?b.slice(0,-1):b}/**`),n.push({file:s.path,line:r.line}))}}return{lines:t,differences:l,from:n,needsIgnoreCase:!0}}function ge(e,t,n){let l=Ie.map(o=>({rule:o,named:e.filter(r=>q(r).toLowerCase()===o.name),recognised:[]}));for(let o of l)o.recognised=o.named.filter(r=>o.rule.holds(r,t));let a=l.flatMap(o=>o.recognised),i=o=>a.some(r=>r!==o&&o.toLowerCase().startsWith(`${r.toLowerCase()}/`)),s=[];for(let{rule:o,named:r,recognised:c}of l){let p=c.filter(b=>!i(b));if(p.length===0)continue;let u=new Set(p.map(q));if(r.filter(b=>!c.includes(b)&&!i(b)).length===0&&(n||u.size===1))s.push({line:`${[...u][0]}/`,rule:o.pattern,folders:p});else for(let b of p)s.push({line:`/${S(b)}/`,rule:o.pattern,folders:[b]})}return s}var he=`## Ignore Visual Studio temporary files, build results, and\r
+## files generated by popular Visual Studio add-ons.\r
+##\r
+## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore\r
+\r
+# User-specific files\r
+*.rsuser\r
+*.suo\r
+*.user\r
+*.userosscache\r
+*.sln.docstates\r
+*.env\r
+\r
+# User-specific files (MonoDevelop/Xamarin Studio)\r
+*.userprefs\r
+\r
+# Mono auto generated files\r
+mono_crash.*\r
+\r
+# Build results\r
+[Dd]ebug/\r
+[Dd]ebugPublic/\r
+[Rr]elease/\r
+[Rr]eleases/\r
+\r
+[Dd]ebug/x64/\r
+[Dd]ebugPublic/x64/\r
+[Rr]elease/x64/\r
+[Rr]eleases/x64/\r
+bin/x64/\r
+obj/x64/\r
+\r
+[Dd]ebug/x86/\r
+[Dd]ebugPublic/x86/\r
+[Rr]elease/x86/\r
+[Rr]eleases/x86/\r
+bin/x86/\r
+obj/x86/\r
+\r
+[Ww][Ii][Nn]32/\r
+[Aa][Rr][Mm]/\r
+[Aa][Rr][Mm]64/\r
+[Aa][Rr][Mm]64[Ee][Cc]/\r
+bld/\r
+[Oo]bj/\r
+[Oo]ut/\r
+[Ll]og/\r
+[Ll]ogs/\r
+\r
+# Build results on 'Bin' directories\r
+**/[Bb]in/*\r
+# Uncomment if you have tasks that rely on *.refresh files to move binaries\r
+# (https://github.com/github/gitignore/pull/3736)\r
+#!**/[Bb]in/*.refresh\r
+\r
+# Cache/options directory generated by Visual Studio since 2015\r
+.vs/\r
+# Uncomment if you have tasks that create the project's static files in wwwroot\r
+#wwwroot/\r
+\r
+# Visual Studio 2017 auto generated files\r
+Generated\\ Files/\r
+\r
+# MSTest test Results\r
+[Tt]est[Rr]esult*/\r
+[Bb]uild[Ll]og.*\r
+*.trx\r
+\r
+# NUnit\r
+*.VisualState.xml\r
+TestResult.xml\r
+nunit-*.xml\r
+\r
+# Approval Tests result files\r
+*.received.*\r
+\r
+# Build Results of an ATL Project\r
+[Dd]ebugPS/\r
+[Rr]eleasePS/\r
+dlldata.c\r
+\r
+# Benchmark Results\r
+BenchmarkDotNet.Artifacts/\r
+\r
+# .NET Core\r
+project.lock.json\r
+project.fragment.lock.json\r
+artifacts/\r
+.artifacts/\r
+\r
+# ASP.NET Scaffolding\r
+ScaffoldingReadMe.txt\r
+\r
+# StyleCop\r
+StyleCopReport.xml\r
+\r
+# Files built by Visual Studio\r
+*_i.c\r
+*_p.c\r
+*_h.h\r
+*_i.h\r
+*.ilk\r
+*.meta\r
+*.obj\r
+*.idb\r
+*.iobj\r
+*.pch\r
+*.pdb\r
+*.ipdb\r
+*.pgc\r
+*.pgd\r
+*.rsp\r
+# but not Directory.Build.rsp, as it configures directory-level build defaults\r
+!Directory.Build.rsp\r
+*.sbr\r
+*.tlb\r
+*.tli\r
+*.tlh\r
+*.tmp\r
+*.tmp_proj\r
+*_wpftmp.csproj\r
+*.log\r
+*.tlog\r
+*.vspscc\r
+*.vssscc\r
+.builds\r
+*.pidb\r
+*.svclog\r
+*.scc\r
+\r
+# Chutzpah Test files\r
+_Chutzpah*\r
+\r
+# Visual C++ cache files\r
+ipch/\r
+*.aps\r
+*.ncb\r
+*.opendb\r
+*.opensdf\r
+*.sdf\r
+*.cachefile\r
+*.VC.db\r
+*.VC.VC.opendb\r
+\r
+# Visual Studio profiler\r
+*.psess\r
+*.vsp\r
+*.vspx\r
+*.sap\r
+\r
+# Visual Studio Trace Files\r
+*.e2e\r
+\r
+# TFS 2012 Local Workspace\r
+$tf/\r
+\r
+# Guidance Automation Toolkit\r
+*.gpState\r
+\r
+# ReSharper is a .NET coding add-in\r
+_ReSharper*/\r
+*.[Rr]e[Ss]harper\r
+*.DotSettings.user\r
+\r
+# TeamCity is a build add-in\r
+_TeamCity*\r
+\r
+# DotCover is a Code Coverage Tool\r
+*.dotCover\r
+\r
+# AxoCover is a Code Coverage Tool\r
+.axoCover/*\r
+!.axoCover/settings.json\r
+\r
+# Coverlet is a free, cross platform Code Coverage Tool\r
+coverage*.json\r
+coverage*.xml\r
+coverage*.info\r
+\r
+# Visual Studio code coverage results\r
+*.coverage\r
+*.coveragexml\r
+\r
+# NCrunch\r
+_NCrunch_*\r
+.NCrunch_*\r
+.*crunch*.local.xml\r
+nCrunchTemp_*\r
+\r
+# MightyMoose\r
+*.mm.*\r
+AutoTest.Net/\r
+\r
+# Web workbench (sass)\r
+.sass-cache/\r
+\r
+# Installshield output folder\r
+[Ee]xpress/\r
+\r
+# DocProject is a documentation generator add-in\r
+DocProject/buildhelp/\r
+DocProject/Help/*.HxT\r
+DocProject/Help/*.HxC\r
+DocProject/Help/*.hhc\r
+DocProject/Help/*.hhk\r
+DocProject/Help/*.hhp\r
+DocProject/Help/Html2\r
+DocProject/Help/html\r
+\r
+# Click-Once directory\r
+publish/\r
+\r
+# Publish Web Output\r
+*.[Pp]ublish.xml\r
+*.azurePubxml\r
+# Note: Comment the next line if you want to checkin your web deploy settings,\r
+# but database connection strings (with potential passwords) will be unencrypted\r
+*.pubxml\r
+*.publishproj\r
+\r
+# Microsoft Azure Web App publish settings. Comment the next line if you want to\r
+# checkin your Azure Web App publish settings, but sensitive information contained\r
+# in these scripts will be unencrypted\r
+PublishScripts/\r
+\r
+# NuGet Packages\r
+*.nupkg\r
+# NuGet Symbol Packages\r
+*.snupkg\r
+# The packages folder can be ignored because of Package Restore\r
+**/[Pp]ackages/*\r
+# except build/, which is used as an MSBuild target.\r
+!**/[Pp]ackages/build/\r
+# Uncomment if necessary however generally it will be regenerated when needed\r
+#!**/[Pp]ackages/repositories.config\r
+# NuGet v3's project.json files produces more ignorable files\r
+*.nuget.props\r
+*.nuget.targets\r
+\r
+# Microsoft Azure Build Output\r
+csx/\r
+*.build.csdef\r
+\r
+# Microsoft Azure Emulator\r
+ecf/\r
+rcf/\r
+\r
+# Windows Store app package directories and files\r
+AppPackages/\r
+BundleArtifacts/\r
+Package.StoreAssociation.xml\r
+_pkginfo.txt\r
+*.appx\r
+*.appxbundle\r
+*.appxupload\r
+\r
+# Visual Studio cache files\r
+# files ending in .cache can be ignored\r
+*.[Cc]ache\r
+# but keep track of directories ending in .cache\r
+!?*.[Cc]ache/\r
+\r
+# Others\r
+ClientBin/\r
+~$*\r
+*~\r
+*.dbmdl\r
+*.dbproj.schemaview\r
+*.jfm\r
+*.pfx\r
+*.publishsettings\r
+orleans.codegen.cs\r
+\r
+# Since there are multiple workflows, uncomment next line to ignore bower_components\r
+# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)\r
+#bower_components/\r
+\r
+# RIA/Silverlight projects\r
+Generated_Code/\r
+\r
+# Backup & report files from converting an old project file\r
+# to a newer Visual Studio version. Backup files are not needed,\r
+# because we have git ;-)\r
+_UpgradeReport_Files/\r
+Backup*/\r
+UpgradeLog*.XML\r
+UpgradeLog*.htm\r
+ServiceFabricBackup/\r
+*.rptproj.bak\r
+\r
+# SQL Server files\r
+*.mdf\r
+*.ldf\r
+*.ndf\r
+\r
+# Business Intelligence projects\r
+*.rdl.data\r
+*.bim.layout\r
+*.bim_*.settings\r
+*.rptproj.rsuser\r
+*- [Bb]ackup.rdl\r
+*- [Bb]ackup ([0-9]).rdl\r
+*- [Bb]ackup ([0-9][0-9]).rdl\r
+\r
+# Microsoft Fakes\r
+FakesAssemblies/\r
+\r
+# GhostDoc plugin setting file\r
+*.GhostDoc.xml\r
+\r
+# Node.js Tools for Visual Studio\r
+.ntvs_analysis.dat\r
+node_modules/\r
+\r
+# Visual Studio 6 build log\r
+*.plg\r
+\r
+# Visual Studio 6 workspace options file\r
+*.opt\r
+\r
+# Visual Studio 6 auto-generated workspace file (contains which files were open etc.)\r
+*.vbw\r
+\r
+# Visual Studio 6 workspace and project file (working project files containing files to include in project)\r
+*.dsw\r
+*.dsp\r
+\r
+# Visual Studio LightSwitch build output\r
+**/*.HTMLClient/GeneratedArtifacts\r
+**/*.DesktopClient/GeneratedArtifacts\r
+**/*.DesktopClient/ModelManifest.xml\r
+**/*.Server/GeneratedArtifacts\r
+**/*.Server/ModelManifest.xml\r
+_Pvt_Extensions\r
+\r
+# Paket dependency manager\r
+**/.paket/paket.exe\r
+paket-files/\r
+\r
+# FAKE - F# Make\r
+**/.fake/\r
+\r
+# CodeRush personal settings\r
+**/.cr/personal\r
+\r
+# Python Tools for Visual Studio (PTVS)\r
+**/__pycache__/\r
+*.pyc\r
+\r
+# Cake - Uncomment if you are using it\r
+#tools/**\r
+#!tools/packages.config\r
+\r
+# Tabs Studio\r
+*.tss\r
+\r
+# Telerik's JustMock configuration file\r
+*.jmconfig\r
+\r
+# BizTalk build output\r
+*.btp.cs\r
+*.btm.cs\r
+*.odx.cs\r
+*.xsd.cs\r
+\r
+# OpenCover UI analysis results\r
+OpenCover/\r
+\r
+# Azure Stream Analytics local run output\r
+ASALocalRun/\r
+\r
+# MSBuild Binary and Structured Log\r
+*.binlog\r
+MSBuild_Logs/\r
+\r
+# AWS SAM Build and Temporary Artifacts folder\r
+.aws-sam\r
+\r
+# NVidia Nsight GPU debugger configuration file\r
+*.nvuser\r
+\r
+# MFractors (Xamarin productivity tool) working folder\r
+**/.mfractor/\r
+\r
+# Local History for Visual Studio\r
+**/.localhistory/\r
+\r
+# Visual Studio History (VSHistory) files\r
+.vshistory/\r
+\r
+# BeatPulse healthcheck temp database\r
+healthchecksdb\r
+\r
+# Backup folder for Package Reference Convert tool in Visual Studio 2017\r
+MigrationBackup/\r
+\r
+# Ionide (cross platform F# VS Code tools) working folder\r
+**/.ionide/\r
+\r
+# Fody - auto-generated XML schema\r
+FodyWeavers.xsd\r
+\r
+# VS Code files for those working on multiple tools\r
+.vscode/*\r
+!.vscode/settings.json\r
+!.vscode/tasks.json\r
+!.vscode/launch.json\r
+!.vscode/extensions.json\r
+!.vscode/*.code-snippets\r
+\r
+# Local History for Visual Studio Code\r
+.history/\r
+\r
+# Built Visual Studio Code Extensions\r
+*.vsix\r
+\r
+# Windows Installer files from build outputs\r
+*.cab\r
+*.msi\r
+*.msix\r
+*.msixbundle\r
+*.msm\r
+*.msp\r
+\r
+# Official VS Code C# Dev Kit Extension exclusion\r
+#*.lscache\r
+`;var He=".live-documentation";function I(e){return`/${e.replace(/[\\*?[\]!#]/gu,t=>`\\${t}`)}/`}var Z=e=>I(e).slice(0,-1),We=()=>new Promise(e=>setTimeout(e,0)),ze=e=>e===".gitignore"||e.toLowerCase()===".tfignore";function j(e){let t=e.slice(e.lastIndexOf("/")+1),n=t.lastIndexOf(".");return n>0?t.slice(n).toLowerCase():"(no extension)"}async function me(e,{list:t,ignoreCase:n},l=()=>{}){e.listed??=new Map,e.texts??=new Map;let a=0,i=0,s=0,o=async f=>{if(e.listed.has(f))return e.listed.get(f);let k=performance.now(),v=await e.list(f);for(let x of v)if(x.kind==="file"&&ze(x.name)){let M=f?`${f}/${x.name}`:x.name;e.texts.set(M,await e.text(M))}return a+=performance.now()-k,s+=1,e.listed.set(f,v),v},r=await o(""),c;if(r.some(f=>f.name===".git"&&f.kind==="folder")){let f=await e.text(".git/config");c=/^\s*ignorecase\s*=\s*true\s*$/imu.test(f??"")}let p=ce({list:t,ignoreCase:n,ownOutput:[He]}),u=f=>({folders:[],filesKept:0,looseKept:0,...f}),m=u({path:"",name:"",kept:!0}),b=[],C=new Map,y=new Map,H=new Map,ee=f=>{if(f.fixed)return y.get(f.fixed)??y.set(f.fixed,{fixed:f.fixed,folders:[],files:[],kinds:new Map}).get(f.fixed);let k=f.line.number;return C.get(k)??C.set(k,{line:f.line,folders:[],files:[],kinds:new Map}).get(k)},Le=f=>e.lazy?null:Ge(e,f),P=0,te=async f=>{let k=await o(f.path);P+=1,P%20===0&&(l(P),await We());for(let v of k){let x=f.path?`${f.path}/${v.name}`:v.name;if(v.kind==="folder"){let M=performance.now(),T=p.folder(x);if(i+=performance.now()-M,T.prunable){let W=ee(T),z=Le(x);W.folders.push({path:x,files:z===null?null:z.length});for(let V of z??[])W.kinds.set(j(V),(W.kinds.get(j(V))??0)+1);for(let V of T.notes??[]){let O=/^line (\d+), `(.*)`, may name files/u.exec(V);if(!O)continue;(H.get(O[1])??H.set(O[1],{number:Number(O[1]),text:O[2],folders:[]}).get(O[1])).folders.push(x)}continue}let A=u({path:x,name:v.name,kept:!0});f.folders.push(A),await te(A),f.filesKept+=A.filesKept}else{let M=performance.now(),T=p.file(x);if(i+=performance.now()-M,T.kept)b.push(x),f.filesKept+=1,f.looseKept+=1;else{let A=ee(T);A.files.push(x),A.kinds.set(j(x),(A.kinds.get(j(x))??0)+1)}}}f.folders.sort((v,x)=>x.filesKept-v.filesKept)},Me=performance.now();await te(m),l(P);let Te=[...e.texts].filter(([f])=>e.listed.has(f.includes("/")?f.slice(0,f.lastIndexOf("/")):"")).map(([f,k])=>({path:f,kind:f.endsWith(".gitignore")?".gitignore":".tfignore",text:k??""})).sort((f,k)=>f.path.split("/").length-k.path.split("/").length||(f.path<k.path?-1:1)),ne=f=>f.files.length+f.folders.reduce((k,v)=>k+(v.files??0),0);return{root:m,kept:b,lines:[...C.values()].map(f=>({...f,leftOut:ne(f)})).sort((f,k)=>f.line.number-k.line.number),fixed:[...y.values()].map(f=>({...f,leftOut:ne(f)})),notes:[...H.values()],found:Te,gitIgnoreCase:c,timings:{totalMs:performance.now()-Me,listMs:a,decideMs:i,listings:s,folders:P}}}function Ge(e,t){if(!e.beneath){e.beneath=new Map;for(let n of e.allFiles??[])for(let l=n.lastIndexOf("/");l>0;l=n.lastIndexOf("/",l-1)){let a=n.slice(0,l);e.beneath.has(a)||e.beneath.set(a,[]),e.beneath.get(a).push(n)}}return e.beneath.get(t)??[]}function X(e){return{folders:[...e.listed.keys()].filter(l=>l!==""),names:l=>(e.listed.get(l)??[]).map(a=>a.kind==="folder"?`${a.name}/`:a.name)}}function be(e){let t=new Map;for(let n of e)t.set(j(n),(t.get(j(n))??0)+1);return[...t].sort((n,l)=>l[1]-n[1])}function we(e){let t=[...e.lines,...e.fixed];return{read:e.kept.length,leftOutFiles:t.reduce((n,l)=>n+l.leftOut,0),notLookedInside:t.reduce((n,l)=>n+l.folders.filter(a=>a.files===null).length,0)}}var g=e=>document.querySelector(e),h=(e,t={},...n)=>{let l=document.createElement(e);for(let[a,i]of Object.entries(t))a==="text"?l.textContent=i:i!==void 0&&i!==!1&&l.setAttribute(a,i===!0?"":i);for(let a of n)a!=null&&l.append(a);return l},w=(e,t,n=`${t}s`)=>`${e.toLocaleString("en")} ${e===1?t:n}`,F=(()=>{try{return{list:localStorage.getItem("leave-out-list")??"",ignoreCase:localStorage.getItem("leave-out-ignore-case")??void 0}}catch{return{list:"",ignoreCase:void 0}}})(),d={source:null,result:null,list:F.list,ignoreCase:F.ignoreCase===void 0?!0:F.ignoreCase==="true",rememberedCase:F.ignoreCase,opened:new Set,shown:new Map,foundAnswered:void 0,foundSaid:void 0,leftAside:new Set};function ke(e){let t=new Map([["",e]]),n=l=>l.includes("/")?l.slice(0,l.lastIndexOf("/")):"";return{lazy:!0,label:e.name,async list(l){let a=t.get(l),i=[];for await(let[s,o]of a.entries())o.kind==="directory"&&t.set(l?`${l}/${s}`:s,o),i.push({name:s,kind:o.kind==="directory"?"folder":"file"});return i},async text(l){try{let a=l.split("/"),i=t.get(n(l));if(!i){i=e;for(let s of a.slice(0,-1))i=await i.getDirectoryHandle(s)}return await(await(await i.getFileHandle(a.at(-1))).getFile()).text()}catch{return}}}}function Ue(e){let t=new Map([["",new Map]]),n=new Map,l="";for(let i of e){let s=i.webkitRelativePath.split("/");l=s[0];let o=s.slice(1).join("/");n.set(o,i);let r="";for(let[c,p]of s.slice(1).entries()){let u=c===s.length-2,m=r?`${r}/${p}`:p;t.has(r)||t.set(r,new Map),t.get(r).set(p,u?"file":"folder"),!u&&!t.has(m)&&t.set(m,new Map),r=m}}let a=i=>[...t.get(i)??new Map].map(([s,o])=>o==="folder"?`${s}/`:s);return{lazy:!1,label:l,allFiles:[...n.keys()],folders:[...t.keys()].filter(i=>i!==""),names:a,async list(i){return[...t.get(i)??new Map].map(([s,o])=>({name:s,kind:o}))},async text(i){return n.get(i)?.text()}}}async function Q(){if(!d.source)return;let e=g("#progress");e.textContent="Listing\u2026",d.result=await me(d.source,{list:d.list,ignoreCase:d.ignoreCase},t=>{e.textContent=`${w(t,"folder")} listed`}),e.textContent="",ve()}function ve(){let e=d.result;if(g("#choice").hidden=!e,!e)return;let t=we(e);g("#totals").textContent=[`${w(t.read,"file")} will be read`,t.leftOutFiles?`${w(t.leftOutFiles,"file")} left out`:"",d.source.lazy&&t.notLookedInside?`${w(t.notLookedInside,"folder")} left out, not looked inside`:""].filter(Boolean).join(" \xB7 "),g("#scan-result").textContent="",g("#list").value!==d.list&&(g("#list").value=d.list),g("#ignore-case").checked=d.ignoreCase,ye(e),qe(e),Se(e),$e(e);let n=e.timings;g("#timings").textContent=`${d.source.lazy?"walked lazily":"listed by the browser first"} \xB7 ${w(n.listings,"folder listing")} \xB7 listing ${Math.round(n.listMs)} ms \xB7 deciding ${Math.round(n.decideMs)} ms \xB7 in all ${Math.round(n.totalMs)} ms`}function Ce(){try{localStorage.setItem("leave-out-list",d.list),localStorage.setItem("leave-out-ignore-case",String(d.ignoreCase))}catch{}}function E(e){d.list=e,Ce(),Q()}function L(e,t){let n=d.list.replace(/\s+$/u,"");E(`${n}${n?`
+`:""}${t?`# ${t}
+`:""}${e.join(`
+`)}
+`)}function Ke(e){let t=d.list.split(`
+`);t.splice(e-1,1),E(t.join(`
+`))}var xe;g("#list").addEventListener("input",e=>{clearTimeout(xe),xe=setTimeout(()=>E(e.target.value),400)});g("#ignore-case").addEventListener("change",e=>{d.ignoreCase=e.target.checked,Ce(),Q()});g("#clear").addEventListener("click",()=>E(""));g("#copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(d.list),g("#list-said").textContent="Copied"}catch{g("#list").select(),g("#list-said").textContent="Selected: copy with Ctrl+C"}});g("#save").addEventListener("click",()=>{h("a",{href:URL.createObjectURL(new Blob([d.list],{type:"text/plain"})),download:"leave-out.gitignore"}).click()});g("#load").addEventListener("change",async e=>{let t=e.target.files[0];t&&E(await t.text()),e.target.value=""});g("#prefill").addEventListener("click",()=>{let e=g("#prefill-menu");e.hidden=!e.hidden,g("#prefill").setAttribute("aria-expanded",String(!e.hidden))});document.querySelectorAll("[data-prefill]").forEach(e=>e.addEventListener("click",()=>{if(g("#prefill-menu").hidden=!0,g("#prefill").setAttribute("aria-expanded","false"),e.dataset.prefill==="visual-studio")L(he.replace(/\s+$/u,"").split(/\r?\n/u),"GitHub's VisualStudio.gitignore (CC0)");else{let t=d.source.lazy?X(d.source):{folders:d.source.folders,names:d.source.names},n=ge(t.folders,t.names,d.ignoreCase),l=[];for(let a of[...new Set(n.map(i=>i.rule))])l.push(`# ${a}`,...n.filter(i=>i.rule===a).map(i=>i.line));L(l,`From what the folders hold: ${w(n.length,"line")}`)}}));function ye(e){let t=g("#found");if(e.found.length===0||d.foundAnswered==="ignore"){t.hidden=!0;return}t.hidden=!1;let n=[".gitignore",".tfignore"].map(i=>[i,e.found.filter(s=>s.kind===i).length]).filter(([,i])=>i>0),l=new Set(e.found.map(i=>i.path.includes("/")?i.path.slice(0,i.path.indexOf("/")):"the top")).size;g("#found-what").textContent=d.foundAnswered?`Taken into your list: ${n.map(([i,s])=>w(s,`${i} file`)).join(" and ")}`:`Found ${n.map(([i,s])=>w(s,`${i} file`)).join(" and ")}, in ${w(l,"top folder")}`,document.querySelectorAll("[data-take]").forEach(i=>i.hidden=!!d.foundAnswered);let a=g("#found-open").getAttribute("aria-expanded")==="true";g("#found-open").replaceChildren(N(a?"open":"closed")),g("#found-files").hidden=!a,g("#found-files").replaceChildren(...e.found.map(i=>{let s=h("input",{type:"checkbox","aria-label":`Take ${i.path}`});s.checked=!d.leftAside.has(i.path),s.disabled=!!d.foundAnswered,s.addEventListener("change",()=>{s.checked?d.leftAside.delete(i.path):d.leftAside.add(i.path)});let o=i.text.split(/\r?\n/u).filter(r=>r.trim()&&!r.trim().startsWith("#")).length;return h("li",{},s,h("code",{text:i.path}),h("span",{class:"quiet",text:w(o,"line")}))})),g("#found-said").hidden=!d.foundSaid,g("#found-said").textContent=d.foundSaid??""}g("#found-open").addEventListener("click",()=>{let e=g("#found-open").getAttribute("aria-expanded")==="true";g("#found-open").setAttribute("aria-expanded",String(!e)),g("#found-open").setAttribute("aria-label",e?"Show the files found":"Hide the files found"),ye(d.result)});document.querySelectorAll("[data-take]").forEach(e=>e.addEventListener("click",()=>{let t=e.dataset.take;if(d.foundAnswered=t,g("#found-open").setAttribute("aria-expanded","false"),g("#found-open").setAttribute("aria-label","Show the files found"),t==="ignore"){ve();return}let n=d.result.found.filter(r=>!d.leftAside.has(r.path)),l=d.source.lazy?X(d.source):{folders:d.source.folders,names:d.source.names},a=fe(n.filter(r=>r.kind===".gitignore"),{folders:l.folders,ignoreCase:d.ignoreCase}),i=pe(n.filter(r=>r.kind===".tfignore")),s=[...a.differences,...i.differences];i.lines.length>0&&!d.ignoreCase&&(d.ignoreCase=!0,s.unshift("A .tfignore matches names without case, so your list now does too.")),d.foundSaid=s.length?s.join(" "):void 0;let o=[...a.lines,...i.lines];t==="use"?E(`${o.join(`
+`)}
+`):L(o)}));function qe(e){let t=e.notes.slice(0,4);g("#notes").replaceChildren(...t.map(n=>h("li",{text:`Line ${n.number}, ${n.text}, cannot keep anything in ${n.folders[0]}/${n.folders.length>1?` or ${w(n.folders.length-1,"more folder")}`:""}, left out whole.`})),e.notes.length>t.length?h("li",{class:"quiet",text:`and ${w(e.notes.length-t.length,"more like these")}`}):""),g("#notes").hidden=e.notes.length===0}var J=50;function _(e,t,n){let l=`${e==="keep"?"Keep":"Leave out"} ${t}`,a=h("button",{type:"button",class:"icon-button quiet-act","aria-label":l,title:l},N(e));return a.addEventListener("click",n),a}function Ae(e,t,n,l){let a=h("button",{type:"button",class:"twisty","aria-expanded":String(n),"aria-label":`${n?"Close":"Open"} ${t}`},N(n?"open":"closed"));return a.addEventListener("click",()=>{n?d.opened.delete(e):d.opened.add(e),l()}),a}function D(e,t,n,l,a=J){let i=d.shown.get(t)??a;if(e.append(...n.slice(0,i)),n.length>i){let s=h("button",{type:"button",class:"text-button",text:`${(n.length-i).toLocaleString("en")} more not shown: show ${Math.min(J,n.length-i)}`});s.addEventListener("click",()=>{d.shown.set(t,i+J),l()}),e.append(h("li",{},s))}}var Ze=e=>[...e].sort((t,n)=>n[1]-t[1]).slice(0,3).map(([t,n])=>`${t} ${n.toLocaleString("en")}`).join(" \xB7 ");function Se(e){let t=()=>Se(e),n=g("#by-line");n.replaceChildren();let l=s=>[s.folders.length?w(s.folders.length,"folder"):"",s.leftOut?w(s.leftOut,"file"):"",s.folders.some(o=>o.files===null)?"not looked inside":""].filter(Boolean).join(" \xB7 ");for(let s of e.fixed)n.append(h("li",{class:"line-row"},h("div",{class:"row"},h("span",{class:"twisty-space"}),h("span",{class:"grow",text:s.fixed==="version control"?"Version control's own folder":"The tool's own output"}),h("span",{class:"counts",text:l(s)}),h("span",{class:"quiet",text:"always"}))));for(let s of e.lines){let o=`line ${s.line.number}`,r=d.opened.has(o),c=h("li",{class:"line-row"},h("div",{class:"row"},Ae(o,`line ${s.line.number}`,r,t),h("span",{class:"number",text:String(s.line.number)}),h("span",{class:"grow"},h("code",{text:s.line.text}),s.kinds.size?h("span",{class:"kinds",text:Ze(s.kinds)}):null),h("span",{class:"counts",text:l(s)}),_("keep",`everything line ${s.line.number} leaves out: take the line out of your list`,()=>Ke(s.line.number))));if(r){let p=[...s.folders.map(m=>({path:m.path,folder:!0,files:m.files})),...s.files.map(m=>({path:m,folder:!1}))],u=h("ul",{class:"members"});D(u,o,p.map(m=>h("li",{class:"row"},h("span",{class:"grow path",text:m.folder?`${m.path}/`:m.path}),h("span",{class:"counts",text:m.folder?m.files===null?"not looked inside":w(m.files,"file"):""}),_("keep",m.folder?`${m.path}/`:m.path,()=>L([`!${m.folder?I(m.path):Z(m.path)}`])))),t),c.append(u)}n.append(c)}let a=d.list.split(`
+`).filter(s=>s.trim()!==""&&!s.trim().startsWith("#")).length,i=e.lines.length;a>i&&n.append(h("li",{class:"quiet",text:`${w(a-i,"other line")} of your list ${a-i===1?"leaves":"leave"} out nothing here`})),a===0&&e.fixed.length===0&&n.append(h("li",{class:"quiet",text:"Nothing is left out."}))}function $e(e){let t=()=>$e(e),n=new Set(e.kept),l=(s,o)=>{let r=s.folders.filter(c=>c.filesKept>0).map(c=>{let p=`read/${c.path}`,u=d.opened.has(p),m=h("li",{},h("div",{class:"row"},Ae(p,c.path,u,t),h("span",{class:"grow",text:o===0?c.name:`${c.name}/`}),h("span",{class:"counts",text:c.filesKept.toLocaleString("en")}),_("leave",`${c.path}/`,()=>L([I(c.path)]))));if(u){let b=h("ul",{class:"members"});D(b,p,l(c,o+1),t),m.append(b)}return m});if(s.looseKept>0){let c=(d.source.listed.get(s.path)??[]).filter(u=>u.kind==="file").map(u=>s.path?`${s.path}/${u.name}`:u.name).filter(u=>n.has(u)),p=s.path?`${s.path}/`:"the top folder";r.push(h("li",{class:"row"},h("span",{class:"twisty-space"}),h("span",{class:"grow",text:s.path?`${w(c.length,"file")} here`:"At the top"}),h("span",{class:"counts",text:c.length.toLocaleString("en")}),_("leave",`the ${w(c.length,"file")} in ${p}`,()=>L(c.map(Z),`the ${w(c.length,"file")} in ${p}`))))}return r},a=h("ul",{});D(a,"read",l(e.root,0),t);let i=h("ul",{});D(i,"kinds",be(e.kept).map(([s,o])=>h("li",{class:"row"},h("span",{class:"grow path",text:s}),h("span",{class:"counts",text:o.toLocaleString("en")}),s.startsWith(".")?_("leave",`every ${s} file`,()=>L([`*${s.replace(/[\\*?[\]]/gu,r=>`\\${r}`)}`])):h("span",{class:"icon-space"}))),t,12),g("#read").replaceChildren(h("h3",{text:"By folder"}),a,h("h3",{text:"By kind"}),i)}var Xe={pick:"M3 6h6l2 2h10v10H3z",drop:"M12 3v12M7 10l5 5 5-5M4 19h16",input:"M4 5h16v14H4zM8 9h8M8 13h8",keep:"M12 5v14M5 12h14",leave:"M5 12h14",remove:"M6 6l12 12M18 6L6 18",open:"M6 9l6 6 6-6",closed:"M9 6l6 6-6 6",scan:"M8 5l11 7-11 7z",copy:"M8 8h11v11H8zM5 16V5h11",save:"M12 4v11M7 10l5 5 5-5M5 20h14",load:"M12 20V9M7 14l5-5 5 5M5 4h14",prefill:"M4 6h16M4 12h10M4 18h7M17 15v6M14 18h6"};function N(e){let t=document.createElementNS("http://www.w3.org/2000/svg","svg");t.setAttribute("viewBox","0 0 24 24"),t.setAttribute("aria-hidden","true"),t.classList.add("icon");let n=document.createElementNS("http://www.w3.org/2000/svg","path");return n.setAttribute("d",Xe[e]),t.append(n),t}document.querySelectorAll("[data-icon]").forEach(e=>e.prepend(N(e.dataset.icon)));async function Y(e){if(d.source=e,d.result=null,d.opened=new Set,d.shown=new Map,d.foundAnswered=void 0,d.foundSaid=void 0,d.leftAside=new Set,g("#folder-name").textContent=e.label,d.rememberedCase===void 0){let t=e.lazy?void 0:await e.text(".git/config");d.ignoreCase=t===void 0?!0:/^\s*ignorecase\s*=\s*true\s*$/imu.test(t)}await Q()}g("#pick").addEventListener("click",async()=>{if(!window.showDirectoryPicker){g("#progress").textContent="This browser cannot pick a folder; use Choose.";return}try{await Y(ke(await window.showDirectoryPicker({mode:"read"})))}catch(e){e.name!=="AbortError"&&(g("#progress").textContent=String(e))}});g("#folder-input").addEventListener("change",e=>{e.target.files.length&&Y(Ue(e.target.files))});var B=g("#drop");B.addEventListener("dragover",e=>{e.preventDefault(),B.classList.add("over")});B.addEventListener("dragleave",()=>B.classList.remove("over"));B.addEventListener("drop",async e=>{e.preventDefault(),B.classList.remove("over");let t=e.dataTransfer.items[0],n=t?.getAsFileSystemHandle?await t.getAsFileSystemHandle():null;n?.kind==="directory"?await Y(ke(n)):g("#progress").textContent="Drop a folder; this browser gave no folder."});g("#scan").addEventListener("click",()=>{d.result&&(g("#scan-result").textContent=`A scan would read ${w(d.result.kept.length,"file")}. This trial reads none.`)});window.choicePage={state:d,ready:!0};})();
 </script>
 </body>
 </html>

@@ -1,45 +1,71 @@
-nested: 10,946 files will be read · 8 files left out · 207 folders left out, not looked inside
+Found 25 .gitignore files and 15 .tfignore files; taken into the list.
+nested: 15,594 files will be read · 22 files left out · 43 folders left out, not looked inside
+The list: 311 lines, names matched without regard to case.
 
-Left out:
-  Build output beside a project  (162 folders)
-    Also ignored by .gitignore: 28 of 162 (bin/  obj/  [Bb]in  [Oo]bj)
-      DNN Platform/                               134
-      Dnn.AdminExperience/                         18
-      DotNetNuke.BulkInstall/                       6
-      Build/                                        2
-      DotNetNuke.Internal.SourceGenerators/         2
-  NuGet packages  (45 folders)
-    Also ignored by .tfignore: 15 of 45 (packages)
-      DNN Platform/                                43
-      Build/packages/
-        Also the .tfignore beside it, line 6: packages
-      packages/
-  Ignored by .gitignore: /*/css/*.css  (6 files)
-      Dnn.AdminExperience/                          6
-  Ignored by .gitignore: /*/scripts/bundles/*.svg  (2 files)
-      Dnn.AdminExperience/                          2
+Left out, by line:
+    33  Dnn.AdminExperience/**/[Bb]in  (9 folders)
+    34  Dnn.AdminExperience/**/[Oo]bj  (9 folders)
+   196  DNN Platform/Modules/Samples/Dnn.ContactList.Api/**/bin/  (1 folder)
+   197  DNN Platform/Modules/Samples/Dnn.ContactList.Api/**/obj/  (1 folder)
+   200  DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/**/bin/  (1 folder)
+   201  DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/**/obj/  (1 folder)
+   204  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/bin/  (1 folder)
+   205  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/obj/  (1 folder)
+   217  DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/**/bin/  (1 folder)
+   218  DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/**/obj/  (1 folder)
+   247  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/**/obj/  (1 folder)
+   248  DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/**/bin/  (1 folder)
+   254  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg  (2 files; .svg 2)
+   256  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css  (6 files; .css 6)
+   264  Build/**/packages  (1 folder)
+   266  Build/**/project.assets.json  (1 file; .json 1)
+   270  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/packages  (1 folder)
+   272  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1)
+   276  DNN Platform/DotNetNuke.Log4net/**/packages  (1 folder)
+   278  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1)
+   282  DNN Platform/DotNetNuke.ModulePipeline/**/packages  (1 folder)
+   284  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1)
+   288  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/packages  (1 folder)
+   290  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1)
+   294  DNN Platform/HttpModules/**/packages  (1 folder)
+   296  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1)
+   300  DNN Platform/Connectors/GoogleAnalytics/**/packages  (1 folder)
+   302  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1)
+   306  DNN Platform/Controls/CountryListBox/**/packages  (1 folder)
+   308  DNN Platform/Controls/CountryListBox/**/project.assets.json  (1 file; .json 1)
+   312  DNN Platform/Modules/DDRMenu/**/packages  (1 folder)
+   314  DNN Platform/Modules/DDRMenu/**/project.assets.json  (1 file; .json 1)
+   318  DNN Platform/Modules/Groups/**/packages  (1 folder)
+   320  DNN Platform/Modules/Groups/**/project.assets.json  (1 file; .json 1)
+   324  DNN Platform/Modules/Journal/**/packages  (1 folder)
+   326  DNN Platform/Modules/Journal/**/project.assets.json  (1 file; .json 1)
+   330  DNN Platform/Modules/ResourceManager/**/packages  (1 folder)
+   332  DNN Platform/Modules/ResourceManager/**/project.assets.json  (1 file; .json 1)
+   336  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/packages  (1 folder)
+   342  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/**/packages  (1 folder)
+  and 3 more lines
 
 Will be read, by kind:
-  .cs                 3,973
+  .cs                 4,108
+  .dll                1,921
   .js                 1,330
   .png                1,325
   .gif                  671
+  .xml                  666
+  .pdb                  643
   .jsx                  482
+  .txt                  426
   .less                 305
-  .sqldataprovider      299
-  .svg                  281
-  .txt                  212
-  .resx                 203
 
-Will be read, by folder:
-  DNN Platform                                7,850
+Will be read, by top folder:
+  DNN Platform                               11,733
   Dnn.AdminExperience                         2,901
-  Build                                          96
-  DotNetNuke.BulkInstall                         45
-  At the top                                     29
+  packages                                      661
+  Build                                         116
+  DotNetNuke.BulkInstall                        108
+  DotNetNuke.Internal.SourceGenerators           24
   .github                                        21
-  DotNetNuke.Internal.SourceGenerators            3
   expected                                        1
 
-To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
-Listed 2,299 folders in 1135 ms (listing 371 ms, deciding 467 ms).
+To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
+Listed 0 folders in 2221 ms (listing 0 ms, deciding 1895 ms).

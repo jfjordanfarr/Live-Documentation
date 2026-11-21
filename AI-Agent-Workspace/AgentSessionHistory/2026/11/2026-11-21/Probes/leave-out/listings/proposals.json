@@ -1,0 +1,94 @@
+{
+ "folder": "made",
+ "files": 103329,
+ "folders": 64504,
+ "ignoreCase": true,
+ "lines": 48,
+ "byRule": {
+  "bin/ beside a project file": {
+   "general": 1,
+   "exact": 0,
+   "folders": 81
+  },
+  "obj/ beside a project file": {
+   "general": 1,
+   "exact": 0,
+   "folders": 81
+  },
+  "packages/ holding NuGet's <Id>.<Version> folders or a repositories.config": {
+   "general": 0,
+   "exact": 46,
+   "folders": 46
+  }
+ },
+ "filesLeftOut": 92400,
+ "filesRead": 10929,
+ "generalLines": [
+  "bin/",
+  "obj/"
+ ],
+ "firstExactLines": [
+  "/Build/packages/",
+  "/DNN Platform/Admin Modules/Dnn.Modules.Console/packages/",
+  "/DNN Platform/Connectors/Azure/packages/",
+  "/DNN Platform/Connectors/GoogleAnalytics/packages/",
+  "/DNN Platform/Connectors/GoogleAnalytics4/packages/"
+ ]
+}
+{
+ "folder": "dnn",
+ "files": 21719,
+ "folders": 4508,
+ "ignoreCase": true,
+ "lines": 1,
+ "byRule": {
+  "packages/ holding NuGet's <Id>.<Version> folders or a repositories.config": {
+   "general": 0,
+   "exact": 1,
+   "folders": 1
+  }
+ },
+ "filesLeftOut": 1,
+ "filesRead": 21718,
+ "generalLines": [],
+ "firstExactLines": [
+  "/Packages/"
+ ]
+}
+{
+ "folder": "nested",
+ "files": 17245,
+ "folders": 5793,
+ "ignoreCase": true,
+ "lines": 47,
+ "byRule": {
+  "bin/ beside a project file": {
+   "general": 1,
+   "exact": 0,
+   "folders": 81
+  },
+  "obj/ beside a project file": {
+   "general": 1,
+   "exact": 0,
+   "folders": 81
+  },
+  "packages/ holding NuGet's <Id>.<Version> folders or a repositories.config": {
+   "general": 0,
+   "exact": 45,
+   "folders": 45
+  }
+ },
+ "filesLeftOut": 6291,
+ "filesRead": 10954,
+ "generalLines": [
+  "bin/",
+  "obj/"
+ ],
+ "firstExactLines": [
+  "/Build/packages/",
+  "/DNN Platform/Admin Modules/Dnn.Modules.Console/packages/",
+  "/DNN Platform/Connectors/Azure/packages/",
+  "/DNN Platform/Connectors/GoogleAnalytics/packages/",
+  "/DNN Platform/Connectors/GoogleAnalytics4/packages/"
+ ]
+}

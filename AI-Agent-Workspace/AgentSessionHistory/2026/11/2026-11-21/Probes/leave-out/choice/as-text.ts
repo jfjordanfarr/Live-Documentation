@@ -1,70 +1,59 @@
 /**
- * The trial page's choice as a terminal would show it before a scan: the totals, then what is left out by reason,
- * largest first, each with its folders, then what will be read, by kind and by top folder. The same model as the page,
- * walked lazily over the disk. A trial: no command is added to the product.
+ * The trial page's choice as a terminal would show it before a scan: the ignore files found, the totals, what each line
+ * of the list leaves out (with the kinds of file it leaves out), and what will be read, by kind and by top folder. The
+ * same model as the page, walked lazily over the disk, the same list text the page saves. A trial: no command is added
+ * to the product.
  *
- *   tsx --tsconfig tsconfig.base.json <this file> <folder> [--pattern <p>]...
+ *   tsx --tsconfig tsconfig.base.json <this file> <folder> [--list <file>] [--use-found] [--case]
  *
- * As on the page, build output and packages are always left out; a `!` pattern keeps them back.
+ * `--list` reads the list from a file (as the page saves it); `--use-found` takes the folder's ignore files into the
+ * list, as the page's Use does; `--case` matches names with regard to case (without, by default, as on Windows).
  */
 import fs from "node:fs";
 import path from "node:path";
 
-import { readSummary, totals, walk } from "./model.mjs";
+import { fromGitignores, fromTfignores } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
+import { byKind, totals, walk } from "./model.mjs";
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const root = path.resolve(args[0]);
-  const person = args.flatMap((arg, index) => (arg === "--pattern" ? [args[index + 1]] : []));
+  const listFile = args.includes("--list") ? args[args.indexOf("--list") + 1] : undefined;
+  let list = listFile ? fs.readFileSync(listFile, "utf8") : "";
+  let ignoreCase = !args.includes("--case");
   const source = {
     lazy: true,
     list: async (folder: string) => fs.readdirSync(path.join(root, folder), { withFileTypes: true }).map((entry) => ({ name: entry.name, kind: entry.isDirectory() ? "folder" : "file" })),
     text: async (file: string) => (fs.existsSync(path.join(root, file)) ? fs.readFileSync(path.join(root, file), "utf8") : undefined)
   };
-  const result = await walk(source, { person });
-  const t = totals(result);
-  const lines: string[] = [];
+  let result = await walk(source, { list, ignoreCase });
   const plural = (n: number, one: string): string => `${n.toLocaleString("en")} ${n === 1 ? one : `${one}s`}`;
-  // The page's words: folders left out whole are not looked inside on a lazy walk, and that is said only when there are some.
-  lines.push(`${path.basename(root)}: ${[`${plural(t.read, "file")} will be read`, t.leftOutFiles ? `${plural(t.leftOutFiles, "file")} left out` : "", t.notLookedInside ? `${plural(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ")}`);
-  lines.push("", "Left out:");
-  if (result.groups.length === 0) lines.push("  Nothing.");
-  for (const group of result.groups) {
-    const parts = [group.folders.length ? plural(group.folders.length, "folder") : "", group.files.length ? plural(group.files.length, "file") : ""].filter(Boolean).join(" · ");
-    lines.push(`  ${group.reason}  (${parts})`);
-    for (const [file, { folders, patterns }] of group.also) lines.push(`    Also ignored by ${file}: ${folders === group.folders.length ? `all ${folders}` : `${folders} of ${group.folders.length}`} (${[...patterns].join("  ")})`);
-    // Under their top folders, as the page draws them, so that a reason of many folders is not a wall; a folder alone
-    // under its top folder says the ignore file's line that also names it, as its row on the page does.
-    type Member = { label: string; also?: { path: string; line: number; pattern: string } };
-    const byTop = new Map<string, Member[]>();
-    const members: Member[] = [...group.folders.map((folder: { path: string; also?: Member["also"] }) => ({ label: `${folder.path}/`, also: folder.also })), ...group.files.map((file: string) => ({ label: file }))];
-    for (const member of members) {
-      const top = member.label.indexOf("/") < member.label.length - 1 && member.label.includes("/") ? `${member.label.slice(0, member.label.indexOf("/"))}/` : "At the top";
-      byTop.set(top, [...(byTop.get(top) ?? []), member]);
-    }
-    const tops = [...byTop].sort((a, b) => b[1].length - a[1].length);
-    for (const [top, inTop] of tops.slice(0, 5)) {
-      if (inTop.length > 1) lines.push(`      ${top.padEnd(40)} ${String(inTop.length).padStart(6)}`);
-      else {
-        lines.push(`      ${inTop[0].label}`);
-        // As the page says it: an ignore file in the folder that holds this one is "the … beside it".
-        const also = inTop[0].also;
-        if (also) {
-          const folder = inTop[0].label.slice(0, -1);
-          const name = also.path.slice(also.path.lastIndexOf("/") + 1);
-          const parent = folder.includes("/") ? `${folder.slice(0, folder.lastIndexOf("/"))}/` : "";
-          lines.push(`        Also ${also.path === `${parent}${name}` ? `the ${name} beside it` : also.path}, line ${also.line}: ${also.pattern}`);
-        }
-      }
-    }
-    if (tops.length > 5) lines.push(`      and ${tops.slice(5).reduce((sum, [, inTop]) => sum + inTop.length, 0).toLocaleString("en")} more under ${plural(tops.length - 5, "other top folder")}`);
+  const lines: string[] = [];
+  const found = result.found as Array<{ path: string; kind: string; text: string }>;
+  if (found.length) lines.push(`Found ${[".gitignore", ".tfignore"].map((kind) => [kind, found.filter((file) => file.kind === kind).length] as const).filter(([, n]) => n > 0).map(([kind, n]) => plural(n, `${kind} file`)).join(" and ")}${args.includes("--use-found") ? "; taken into the list" : "; --use-found takes them into the list"}.`);
+  if (args.includes("--use-found") && found.length) {
+    const git = fromGitignores(found.filter((file) => file.kind === ".gitignore"));
+    const tf = fromTfignores(found.filter((file) => file.kind === ".tfignore"));
+    if (tf.lines.length) ignoreCase = true;
+    for (const difference of [...git.differences, ...tf.differences]) lines.push(`  Not carried exactly: ${difference}`);
+    list = [...git.lines, ...tf.lines].join("\n");
+    result = await walk(source, { list, ignoreCase });
   }
-  for (const note of result.notes) lines.push(`  Note: ${note.text}`);
-
-  const summary = readSummary(result.kept);
-  lines.push("", "Will be read, by kind:", ...summary.byKind.slice(0, 10).map(([kind, n]) => `  ${kind.padEnd(16)} ${n.toLocaleString("en").padStart(8)}`));
-  lines.push("", "Will be read, by folder:", ...summary.byTop.slice(0, 10).map(([top, n]) => `  ${top.padEnd(40)} ${n.toLocaleString("en").padStart(8)}`));
-  lines.push("", "To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.");
+  const t = totals(result);
+  lines.push(`${path.basename(root)}: ${[`${plural(t.read, "file")} will be read`, t.leftOutFiles ? `${plural(t.leftOutFiles, "file")} left out` : "", t.notLookedInside ? `${plural(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ")}`);
+  lines.push(`The list: ${plural(list.split("\n").filter((line) => line.trim() && !line.trim().startsWith("#")).length, "line")}, names matched ${ignoreCase ? "without" : "with"} regard to case.`);
+  lines.push("", "Left out, by line:");
+  for (const group of result.fixed) lines.push(`  ${group.fixed === "version control" ? "Version control's own folder" : "The tool's own output"}  (${plural(group.folders.length, "folder")}, always)`);
+  if (result.lines.length === 0 && result.fixed.length === 0) lines.push("  Nothing.");
+  for (const group of result.lines.slice(0, 40)) {
+    const kinds = [...group.kinds].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([kind, n]) => `${kind} ${n}`).join(", ");
+    const said = [group.folders.length ? plural(group.folders.length, "folder") : "", group.leftOut ? plural(group.leftOut, "file") : ""].filter(Boolean).join(" · ");
+    lines.push(`  ${String(group.line.number).padStart(4)}  ${group.line.text}  (${said}${kinds ? `; ${kinds}` : ""})`);
+  }
+  if (result.lines.length > 40) lines.push(`  and ${plural(result.lines.length - 40, "more line")}`);
+  lines.push("", "Will be read, by kind:", ...byKind(result.kept).slice(0, 10).map(([kind, n]) => `  ${kind.padEnd(16)} ${n.toLocaleString("en").padStart(8)}`));
+  lines.push("", "Will be read, by top folder:", ...result.root.folders.slice(0, 10).map((folder: { name: string; filesKept: number }) => `  ${folder.name.padEnd(40)} ${folder.filesKept.toLocaleString("en").padStart(8)}`));
+  lines.push("", "To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.");
   lines.push(`Listed ${result.timings.listings.toLocaleString("en")} folders in ${Math.round(result.timings.totalMs)} ms (listing ${Math.round(result.timings.listMs)} ms, deciding ${Math.round(result.timings.decideMs)} ms).`);
   console.log(lines.join("\n"));
 }
