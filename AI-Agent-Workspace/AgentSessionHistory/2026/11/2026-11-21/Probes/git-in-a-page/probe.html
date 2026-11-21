@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+O1C98tFbde4KJ+4ig+Za4pPI3zgZRS0XFCzyQLGx7M='; style-src 'unsafe-inline'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-FvIy+J6BiXIoW17p3ExVkmwHalOYOy3otk6xVvjdjFs='; style-src 'unsafe-inline'">
 <title>Git in a page</title>
 <style>
   :root { color-scheme: light dark; --ink: #1d1d1f; --paper: #fbfbfd; --line: #c7c7cc; }
@@ -594,6 +594,51 @@ class Repository {
     return object;
   }
 
+  /**
+   * An object's size without its bytes, as git's `check_size_only` reads it: from a packed object's header, or for a
+   * delta from the size its delta names, inflating only the delta; a loose object is read whole.
+   */
+  async size(id) {
+    const bytes = fromHex(id);
+    for (let p = 0; p < this.packs.length; p += 1) {
+      const offset = this.packs[p].find(bytes);
+      if (offset < 0) continue;
+      const cached = this.cache.get(p * 2 ** 40 + offset);
+      if (cached !== undefined) return cached.data.length;
+      const pack = this.packs[p];
+      const end = pack.endOf(offset);
+      let raw = await pack.bytes(offset, Math.min(end, offset + 32));
+      let c = raw[0];
+      const type = (c >> 4) & 7;
+      let size = c & 15;
+      let i = 1;
+      for (let shift = 4; c & 0x80; shift += 7) {
+        c = raw[i++];
+        size += (c & 0x7f) * 2 ** shift;
+      }
+      if (type !== 6 && type !== 7) return size;
+      if (type === 6) while (raw[i++] & 0x80);
+      else i += 20;
+      raw = await pack.bytes(offset, end);
+      const delta = await this.inflate(raw.subarray(i), size);
+      let at = 0;
+      const varint = () => {
+        let value = 0;
+        let shift = 0;
+        let d;
+        do {
+          d = delta[at++];
+          value += (d & 0x7f) * 2 ** shift;
+          shift += 7;
+        } while (d & 0x80);
+        return value;
+      };
+      varint();
+      return varint();
+    }
+    return (await this.object(id)).data.length;
+  }
+
   async commit(id) {
     const { type, data } = await this.object(id);
     if (type !== "commit") throw new Error(`${id} is a ${type}, not a commit`);
@@ -792,11 +837,222 @@ function subjectOf(message) {
   return lines.join(" ");
 }
 
+// Probe of November 21, 2026 (not product code): git's rename detection as `git diff -M<score> -l0` makes it between
+// two trees, ported from git v2.56.1 (tag object 766ce5124ba6), `diffcore-rename.c` (diffcore_rename_extended with no
+// copies, no breaks, no directory-rename hints) and `diffcore-delta.c` (the similarity estimate). Plain JavaScript,
+// the same file under Node and in a page, beside the reader.
+//
+// In git's order: (1) exact renames, each destination taking the first unused source with its blob id, one whose name
+// ends the same preferred; (2) a destination and a source whose file names are each unique among those left, paired
+// if at least as alike as halfway between the minimum and identical; (3) every destination left against every source
+// left, the best four kept per destination, sorted (stably) by score and then by a same file name, taken in turn.
+// Binary means a NUL in the first 8,000 bytes: neither repository measured sets a `diff` attribute, which git would
+// read from the checkout and this port does not. Empty files are renamed like any other (git's `rename_empty`).
+
+const MAX_SCORE = 60000;
+const HASHBASE = 107927;
+const isRegular = (mode) => mode === "100644" || mode === "100755" || mode === "100664";
+
+const basenameOf = (path) => path.slice(path.lastIndexOf("/") + 1);
+
+/** Whether two paths end in the same file name (git's `basename_same`). */
+function basenameSame(a, b) {
+  let i = a.length;
+  let j = b.length;
+  while (i && j) {
+    const x = a[--i];
+    if (x !== b[--j]) return false;
+    if (x === "/") return true;
+  }
+  return (!i || a[i - 1] === "/") && (!j || b[j - 1] === "/");
+}
+
+/** git's `hash_chars`: the content cut at each LF or 64 bytes, each piece hashed, as sorted [hash, bytes] pairs. */
+function spans(data) {
+  let isText = true;
+  for (let i = 0, end = Math.min(data.length, 8000); i < end; i += 1) {
+    if (data[i] === 0) {
+      isText = false;
+      break;
+    }
+  }
+  const counts = new Map();
+  let accum1 = 0;
+  let accum2 = 0;
+  let n = 0;
+  const add = () => {
+    const hash = ((accum1 + Math.imul(accum2, 0x61)) >>> 0) % HASHBASE;
+    counts.set(hash, (counts.get(hash) ?? 0) + n);
+    n = 0;
+    accum1 = 0;
+    accum2 = 0;
+  };
+  for (let k = 0; k < data.length; k += 1) {
+    const c = data[k];
+    if (isText && c === 13 && k + 1 < data.length && data[k + 1] === 10) continue;
+    const old1 = accum1;
+    accum1 = (((accum1 << 7) ^ (accum2 >>> 25)) + c) >>> 0;
+    accum2 = ((accum2 << 7) ^ (old1 >>> 25)) >>> 0;
+    n += 1;
+    if (n < 64 && c !== 10) continue;
+    add();
+  }
+  if (n > 0) add();
+  const hashes = Uint32Array.from(counts.keys()).sort();
+  const sizes = new Float64Array(hashes.length);
+  hashes.forEach((hash, i) => (sizes[i] = counts.get(hash)));
+  return { hashes, sizes };
+}
+
+/** git's `diffcore_count_changes`: the bytes of the source that the destination keeps. */
+function copied(src, dst) {
+  let copiedBytes = 0;
+  let d = 0;
+  for (let s = 0; s < src.hashes.length; s += 1) {
+    while (d < dst.hashes.length && dst.hashes[d] < src.hashes[s]) d += 1;
+    let dstCount = 0;
+    if (d < dst.hashes.length && dst.hashes[d] === src.hashes[s]) dstCount = dst.sizes[d++];
+    copiedBytes += Math.min(src.sizes[s], dstCount);
+  }
+  return copiedBytes;
+}
+
+/** git's `score_compare`: below zero where `a` sorts before `b`; an empty slot sinks. */
+function scoreCompare(a, b) {
+  if (a.dst < 0) return b.dst >= 0 ? 1 : 0;
+  if (b.dst < 0) return -1;
+  if (a.score === b.score) return b.name - a.name;
+  return b.score - a.score;
+}
+
+/**
+ * The renames among one step's changes, as `git diff --name-status -M<minimum> -l0` writes them.
+ *
+ * @param changes - The step's changes in the tree's order, `[status, path, id, mode]`, as the reader's `changes` gives them.
+ * @param blob - The bytes of a blob by id.
+ * @param options - `minimumScore` in git's units (60000 is identical; `-M50%` is 30000); `size`, a blob's size by id
+ *   without its bytes; `pause`, awaited every few hundred estimates, where a page hands the thread back.
+ * @returns The records in git's order: `[status, path]`, or `["R" + score, from, to]`.
+ */
+async function withRenames(changes, blob, options = {}) {
+  const minimumScore = options.minimumScore ?? 30000;
+  const pause = options.pause ?? (() => undefined);
+  const dst = [];
+  const src = [];
+  for (const [status, path, id, mode] of changes) {
+    if (status === "A") dst.push({ path, id, mode, from: undefined, score: 0, index: dst.length });
+    else if (status === "D") src.push({ path, id, mode, used: false });
+  }
+  const record = (d, s, score) => {
+    s.used = true;
+    d.from = s;
+    d.score = score;
+  };
+  if (dst.length > 0 && src.length > 0) {
+    // (1) Exact renames: sources in their order, at most 100 unused candidates weighed for a destination.
+    const byId = new Map();
+    for (const s of src) byId.has(s.id) ? byId.get(s.id).push(s) : byId.set(s.id, [s]);
+    for (const d of dst) {
+      let best;
+      let bestScore = -1;
+      let left = 100;
+      for (const s of byId.get(d.id) ?? []) {
+        if ((!isRegular(s.mode) || !isRegular(d.mode)) && s.mode !== d.mode) continue;
+        if (s.used) continue;
+        const score = 1 + (basenameSame(s.path, d.path) ? 1 : 0);
+        if (score > bestScore) {
+          best = s;
+          bestScore = score;
+          if (score === 2) break;
+        }
+        if (!--left) break;
+      }
+      if (best !== undefined) record(d, best, MAX_SCORE);
+    }
+    if (minimumScore < MAX_SCORE) {
+      // A file's size first, by `options.size` where the caller can give it without the bytes (git's `check_size_only`),
+      // and its pieces only once a pair passes the size test, each made once (git keeps `cnt_data` the same way); the
+      // bytes are not kept.
+      const sizeOf = async (spec) => (spec.size ??= options.size ? await options.size(spec.id) : (await piecesOf(spec)).size);
+      const piecesOf = async (spec) => {
+        if (spec.spans === undefined) {
+          const bytes = await blob(spec.id);
+          spec.size = bytes.length;
+          spec.spans = spans(bytes);
+        }
+        return spec;
+      };
+      let estimates = 0;
+      const estimate = async (s, d, minimum) => {
+        if ((estimates += 1) % 256 === 0) await pause();
+        if (!isRegular(s.mode) || !isRegular(d.mode)) return 0;
+        const [a, b] = [await sizeOf(s), await sizeOf(d)];
+        const max = Math.max(a, b);
+        if (max * (MAX_SCORE - minimum) < (max - Math.min(a, b)) * MAX_SCORE) return 0;
+        const kept = copied((await piecesOf(s)).spans, (await piecesOf(d)).spans);
+        return b === 0 ? 0 : Math.trunc((kept * MAX_SCORE) / max);
+      };
+      // (2) Unique file names on both sides, at the higher bar.
+      let left = src.filter((s) => !s.used);
+      const minimumByName = minimumScore + Math.trunc(0.5 * (MAX_SCORE - minimumScore));
+      const sources = new Map();
+      for (const s of left) sources.set(basenameOf(s.path), sources.has(basenameOf(s.path)) ? -1 : s);
+      const dests = new Map();
+      for (const d of dst) if (d.from === undefined) dests.set(basenameOf(d.path), dests.has(basenameOf(d.path)) ? -1 : d);
+      for (const s of left) {
+        const name = basenameOf(s.path);
+        if (!dests.has(name)) continue;
+        const d = dests.get(name);
+        if (sources.get(name) === -1 || d === -1 || d.from !== undefined) continue;
+        const score = await estimate(s, d, minimumByName);
+        if (score >= minimumByName) record(d, s, score);
+      }
+      // (3) Every destination left against every source left, four kept for each.
+      left = left.filter((s) => !s.used);
+      const open = dst.filter((d) => d.from === undefined);
+      if (open.length > 0 && left.length > 0) {
+        const matrix = [];
+        for (const d of open) {
+          const slots = [{ dst: -1 }, { dst: -1 }, { dst: -1 }, { dst: -1 }];
+          for (let j = 0; j < left.length; j += 1) {
+            const candidate = { src: j, dst: d.index, score: await estimate(left[j], d, minimumScore), name: basenameSame(left[j].path, d.path) ? 1 : 0 };
+            let worst = 0;
+            for (let k = 1; k < 4; k += 1) if (scoreCompare(slots[k], slots[worst]) > 0) worst = k;
+            if (scoreCompare(slots[worst], candidate) > 0) slots[worst] = candidate;
+          }
+          matrix.push(...slots);
+        }
+        matrix.sort(scoreCompare);
+        for (const m of matrix) {
+          if (m.dst < 0 || m.score < minimumScore) break;
+          const d = dst[m.dst];
+          if (d.from !== undefined || left[m.src].used) continue;
+          record(d, left[m.src], m.score);
+        }
+      }
+    }
+  }
+  const out = [];
+  let a = 0;
+  let r = 0;
+  for (const [status, path] of changes) {
+    if (status === "A") {
+      const d = dst[a++];
+      if (d.from === undefined) out.push(["A", path]);
+      else out.push([`R${String(Math.trunc((d.score * 100) / MAX_SCORE)).padStart(3, "0")}`, d.from.path, path]);
+    } else if (status === "D") {
+      if (!src[r++].used) out.push(["D", path]);
+    } else out.push([status, path]);
+  }
+  return out;
+}
+
 // Probe of November 21, 2026 (not product code): what is measured, the same code under Node and in the page. Newest
 // first, as a person would be shown it: the head's first parents walked back, each commit's changed paths against its
 // first parent, then the bytes of every file the walk saw added or changed, each checked by its id; optionally every
 // file of the head's tree as well. Hands the thread back every `yieldEvery` commits and every 200 blobs, so that a page
 // can draw, and says how far it has come.
+
 
 
 async function measure(host, options = {}) {
@@ -812,7 +1068,7 @@ async function measure(host, options = {}) {
     lastBreath = now();
   };
   let s = now();
-  const repository = await openRepository(host, gitDir, { reach: options.reach });
+  const repository = await openRepository(host, gitDir, { reach: options.reach, inflate: options.inflate });
   t.openMs = Math.round(now() - s);
   const head = await repository.resolve("HEAD");
   s = now();
@@ -820,12 +1076,24 @@ async function measure(host, options = {}) {
   let paths = 0;
   const changed = new Map();
   const lines = [];
+  const renamed = [];
+  let renameMs = 0;
+  let slowestRename = { ms: 0 };
   for (let id = head.id; id !== undefined && commits < limit; ) {
     const commit = await repository.commit(id);
     const parentId = repository.shallow.has(id) ? undefined : commit.parents[0];
     const parent = parentId === undefined ? null : await repository.commit(parentId);
     const list = await repository.changes(parent?.tree ?? null, commit.tree);
     paths += list.length;
+    if (options.renames) {
+      // Git's renames against the first parent, as the history asks (`-M50% -l0`), handing the thread back as it goes.
+      const started = now();
+      const records = await withRenames(list, (blob) => repository.blob(blob), { size: (blob) => repository.size(blob), pause: rest });
+      const ms = now() - started;
+      renameMs += ms;
+      if (ms > slowestRename.ms) slowestRename = { ms: Math.round(ms), commit: id, added: list.filter(([x]) => x === "A").length, deleted: list.filter(([x]) => x === "D").length };
+      renamed.push(id, ...records.map((r) => r.join(" ")));
+    }
     lines.push(id, ...list.map(([status, file]) => `${status} ${file}`).sort());
     for (const [status, , blob, mode] of list) if (status !== "D" && mode !== "160000") changed.set(blob, mode);
     commits += 1;
@@ -839,6 +1107,12 @@ async function measure(host, options = {}) {
   t.commitsMs = Math.round(now() - s);
   // One fingerprint of every commit id and its sorted changes, newest first, to hold one host's answer to another's.
   t.changesDigest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(lines.join("\n")))), (b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+  if (options.renames) {
+    t.renameMs = Math.round(renameMs);
+    t.slowestRename = slowestRename;
+    // Every commit id and its records in git's order, renames with their scores, newest first: held to git's by one value.
+    t.renamesDigest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(renamed.join("\n")))), (b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+  }
   t.commits = commits;
   t.changedPaths = paths;
   t.changedBlobs = changed.size;

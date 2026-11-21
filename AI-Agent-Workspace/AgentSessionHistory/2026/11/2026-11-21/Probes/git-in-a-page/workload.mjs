@@ -4,6 +4,7 @@
 // file of the head's tree as well. Hands the thread back every `yieldEvery` commits and every 200 blobs, so that a page
 // can draw, and says how far it has come.
 import { objectId, openRepository } from "./git-reader.mjs";
+import { withRenames } from "./renames.mjs";
 
 export async function measure(host, options = {}) {
   const { gitDir = ".git", limit = Infinity, blobs = true, verify = true, headTree = false, yieldEvery = 25, progress = () => undefined, memory = () => null } = options;
@@ -18,7 +19,7 @@ export async function measure(host, options = {}) {
     lastBreath = now();
   };
   let s = now();
-  const repository = await openRepository(host, gitDir, { reach: options.reach });
+  const repository = await openRepository(host, gitDir, { reach: options.reach, inflate: options.inflate });
   t.openMs = Math.round(now() - s);
   const head = await repository.resolve("HEAD");
   s = now();
@@ -26,12 +27,24 @@ export async function measure(host, options = {}) {
   let paths = 0;
   const changed = new Map();
   const lines = [];
+  const renamed = [];
+  let renameMs = 0;
+  let slowestRename = { ms: 0 };
   for (let id = head.id; id !== undefined && commits < limit; ) {
     const commit = await repository.commit(id);
     const parentId = repository.shallow.has(id) ? undefined : commit.parents[0];
     const parent = parentId === undefined ? null : await repository.commit(parentId);
     const list = await repository.changes(parent?.tree ?? null, commit.tree);
     paths += list.length;
+    if (options.renames) {
+      // Git's renames against the first parent, as the history asks (`-M50% -l0`), handing the thread back as it goes.
+      const started = now();
+      const records = await withRenames(list, (blob) => repository.blob(blob), { size: (blob) => repository.size(blob), pause: rest });
+      const ms = now() - started;
+      renameMs += ms;
+      if (ms > slowestRename.ms) slowestRename = { ms: Math.round(ms), commit: id, added: list.filter(([x]) => x === "A").length, deleted: list.filter(([x]) => x === "D").length };
+      renamed.push(id, ...records.map((r) => r.join(" ")));
+    }
     lines.push(id, ...list.map(([status, file]) => `${status} ${file}`).sort());
     for (const [status, , blob, mode] of list) if (status !== "D" && mode !== "160000") changed.set(blob, mode);
     commits += 1;
@@ -45,6 +58,12 @@ export async function measure(host, options = {}) {
   t.commitsMs = Math.round(now() - s);
   // One fingerprint of every commit id and its sorted changes, newest first, to hold one host's answer to another's.
   t.changesDigest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(lines.join("\n")))), (b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+  if (options.renames) {
+    t.renameMs = Math.round(renameMs);
+    t.slowestRename = slowestRename;
+    // Every commit id and its records in git's order, renames with their scores, newest first: held to git's by one value.
+    t.renamesDigest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(renamed.join("\n")))), (b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+  }
   t.commits = commits;
   t.changedPaths = paths;
   t.changedBlobs = changed.size;

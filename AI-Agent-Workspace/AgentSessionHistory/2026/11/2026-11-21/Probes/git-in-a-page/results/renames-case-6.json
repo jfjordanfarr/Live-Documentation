@@ -1,0 +1,78 @@
+{
+  "name": "case-6",
+  "head": "973f5dce131ccfb1d56c80538b672b3f160f2bec",
+  "steps": 200,
+  "renames": 7638,
+  "bySimilarity": 282,
+  "stepsAskedAsTheHistoryAsks": 199,
+  "differenceCount": 0,
+  "differences": [],
+  "gitLogMs": 139,
+  "readerChangesMs": 125,
+  "portMs": 203,
+  "slowestSteps": [
+    {
+      "commit": "e7be844563570ca36f47353c0e992e2df6f98345",
+      "added": 10,
+      "deleted": 8,
+      "renameMs": 8.2
+    },
+    {
+      "commit": "c8d8dd172365d53f481bbb4b0cb9b0f7fbcd9d50",
+      "added": 59,
+      "deleted": 54,
+      "renameMs": 5.3
+    },
+    {
+      "commit": "666d9d286507b431bad82a860580332dad9c452d",
+      "added": 21,
+      "deleted": 23,
+      "renameMs": 4
+    },
+    {
+      "commit": "86c7a69d9423625d21f6bc2a0fc60f1bc5748448",
+      "added": 16,
+      "deleted": 15,
+      "renameMs": 3.7
+    },
+    {
+      "commit": "39be3a4f7ec1ef2d7ac9501decf7263bab03fed7",
+      "added": 19,
+      "deleted": 16,
+      "renameMs": 3.7
+    }
+  ],
+  "largestMatrices": [
+    {
+      "commit": "c3d88f8978c0b2171a3872f802f08be81e4a4855",
+      "added": 71,
+      "deleted": 71,
+      "renameMs": 0.3
+    },
+    {
+      "commit": "66c9a99c997b7c15e2a53e7cba2986d5b5cc988f",
+      "added": 73,
+      "deleted": 69,
+      "renameMs": 0.4
+    },
+    {
+      "commit": "8dc651369b8c8f76f674a465cdf708fc7c3e2e95",
+      "added": 71,
+      "deleted": 70,
+      "renameMs": 0.3
+    },
+    {
+      "commit": "cadc1129201357a50ce74a098ab6c06e83cc7939",
+      "added": 68,
+      "deleted": 70,
+      "renameMs": 0.3
+    },
+    {
+      "commit": "8b8de666a14e090d4066870b8a28cdb37a4ed87b",
+      "added": 70,
+      "deleted": 68,
+      "renameMs": 0.4
+    }
+  ],
+  "gitRenamesDigest": "5985eaa54b6c806a"
+}

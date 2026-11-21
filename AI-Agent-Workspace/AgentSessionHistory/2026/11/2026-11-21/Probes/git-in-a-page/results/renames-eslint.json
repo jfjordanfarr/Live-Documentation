@@ -1,0 +1,78 @@
+{
+  "name": "eslint",
+  "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+  "steps": 8799,
+  "renames": 777,
+  "bySimilarity": 193,
+  "stepsAskedAsTheHistoryAsks": 72,
+  "differenceCount": 0,
+  "differences": [],
+  "gitLogMs": 2117,
+  "readerChangesMs": 7813,
+  "portMs": 700,
+  "slowestSteps": [
+    {
+      "commit": "219aecb78bc646d44bad27dc775a9b3d3dc58232",
+      "added": 131,
+      "deleted": 125,
+      "renameMs": 148.9
+    },
+    {
+      "commit": "b8995a40087f3a1e4e87c239951f91ddaac73571",
+      "added": 231,
+      "deleted": 6,
+      "renameMs": 69
+    },
+    {
+      "commit": "17b65ad10d653bb05077f21d8b1f79bee96e38d8",
+      "added": 55,
+      "deleted": 55,
+      "renameMs": 60.9
+    },
+    {
+      "commit": "cadfbcd468737fc9447243edd1d15058efb6d3d8",
+      "added": 2,
+      "deleted": 2,
+      "renameMs": 35.8
+    },
+    {
+      "commit": "6ae21a4bfe5a1566f787fbad798182a524b96d28",
+      "added": 17,
+      "deleted": 14,
+      "renameMs": 30
+    }
+  ],
+  "largestMatrices": [
+    {
+      "commit": "bb4c0d530a231a8a14ed70ad61c06e284bbaaef0",
+      "added": 381,
+      "deleted": 381,
+      "renameMs": 1.3
+    },
+    {
+      "commit": "219aecb78bc646d44bad27dc775a9b3d3dc58232",
+      "added": 131,
+      "deleted": 125,
+      "renameMs": 148.9
+    },
+    {
+      "commit": "17b65ad10d653bb05077f21d8b1f79bee96e38d8",
+      "added": 55,
+      "deleted": 55,
+      "renameMs": 60.9
+    },
+    {
+      "commit": "b8995a40087f3a1e4e87c239951f91ddaac73571",
+      "added": 231,
+      "deleted": 6,
+      "renameMs": 69
+    },
+    {
+      "commit": "b9150186bcc0f2732a69ab0ebd83a9b2fb2e6552",
+      "added": 13,
+      "deleted": 59,
+      "renameMs": 5.8
+    }
+  ],
+  "gitRenamesDigest": "5794704a996621d8"
+}
