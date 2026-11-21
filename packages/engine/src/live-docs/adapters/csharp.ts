@@ -155,7 +155,8 @@ interface FileFacts {
   usingsIn:       Map<string, string[]>;
   /** The `global using` directives of the other files of this file's project, set for resolution only. */
   projectUsings?: string[];
-  aliases:        Map<string, string>;
+  /** Each `using` alias's target: its identifiers and the type arguments each writes (`Lib.Helper` 0 and 0, `Lib.Helper<int>` 0 and 1). */
+  aliases:        Map<string, { chain: string[]; arities?: number[] }>;
   namespaces:     Set<string>;
   types:          DeclaredType[];
   nameUses:       NameUse[];
@@ -574,8 +575,9 @@ class FileExtractor {
     const alias   = node.childForFieldName("name");
     const targets = node.namedChildren.filter((child) => ["qualified_name", "identifier", "alias_qualified_name", "generic_name"].includes(child.type));
     if (alias) {
-      const target = targets.find((candidate) => !candidate.equals(alias));
-      if (target) this.facts.aliases.set(alias.text, target.text.replace(/\s+/g, "").replace(/^global::/u, ""));
+      const target = targets.find((candidate) => !candidate.equals(alias)) ?? null;
+      const chain  = identifierChain(target);
+      if (chain) this.facts.aliases.set(alias.text, { chain, arities: arityChain(target) ?? undefined });
       return;
     }
     if (node.children.some((child) => child.type === "static")) {
@@ -1136,8 +1138,9 @@ const WHOLE_WORKSPACE: Narrow = (records) => records;
  * True when the declarations are not an ambiguity: a single type, the halves of
  * one partial type in one project, or types of one name told apart by their
  * number of type parameters (`Helper` and `Helper<T>`), each declared once or
- * in halves in one project. The reader does not yet match a use's type
- * arguments to an arity, so such a name links every arity, as it did before.
+ * in halves in one project. A use whose type arguments the reader counts is
+ * narrowed to its arity before this (`resolveSegments`); where it cannot count
+ * them, such a name links every arity.
  */
 function oneType(records: TypeRecord[], reach: ProjectReach): boolean {
   if (records.length <= 1) return true;
@@ -1295,9 +1298,11 @@ function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, tab
 /** Resolves the longest prefix of a name chain that names a type the file can see. */
 function resolveChain(chain: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arities?: number[], outcome?: SearchOutcome): TypeRecord[] {
   const alias    = facts.aliases.get(chain[0]);
-  const expanded = alias ? [...alias.split("."), ...chain.slice(1)] : chain;
-  // An alias's target is read as text, so the arity of the segments it stands for is not known.
-  const counts   = arities && alias ? [...alias.split(".").map(() => undefined), ...arities.slice(1)] : arities;
+  const expanded = alias ? [...alias.chain, ...chain.slice(1)] : chain;
+  // An alias stands for its target as written, type arguments and all: `using H = Lib.Helper;` names the type with none.
+  const counts: Array<number | undefined> | undefined = alias
+    ? [...(alias.arities ?? alias.chain.map(() => undefined)), ...(arities?.slice(1) ?? chain.slice(1).map(() => undefined))]
+    : arities;
   for (let length = expanded.length; length >= 1; length -= 1) {
     const records = resolveSegments(expanded.slice(0, length), scope, facts, table, narrow, counts?.[length - 1], outcome);
     if (records) return records;

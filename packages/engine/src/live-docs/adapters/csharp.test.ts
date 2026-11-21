@@ -415,6 +415,17 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    // The C# compiler's answer (Roslyn 4.12, by `npm run oracle:csharp`), on these files as written.
+    it("resolves an alias to the declaration with as many type parameters as its target writes type arguments", async () => {
+      await write("Lib/Helper.cs", ["namespace Lib { public class Helper { } }"]);
+      await write("Lib/HelperOfT.cs", ["namespace Lib { public class Helper<T> { } }"]);
+      await write("App/UsePlain.cs", ["using H = Lib.Helper;", "namespace App { public class UsePlain { public H Item { get; set; } } }"]);
+      await write("App/UseGeneric.cs", ["using HT = Lib.Helper<int>;", "namespace App { public class UseGeneric { public HT Item { get; set; } } }"]);
+
+      expect((await analyze("App/UsePlain.cs")).dependencies.map((entry) => entry.resolvedPath)).toEqual(["Lib/Helper.cs"]);
+      expect((await analyze("App/UseGeneric.cs")).dependencies.map((entry) => entry.resolvedPath)).toEqual(["Lib/HelperOfT.cs"]);
+    });
+
     it("links a partial class to the peer file that declares the members it uses", async () => {
       await write("Pages/Default.aspx.cs", [
         "namespace Portal.Pages",

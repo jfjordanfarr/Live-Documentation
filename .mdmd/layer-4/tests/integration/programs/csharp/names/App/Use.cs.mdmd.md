@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/App/Use.cs`
-- Generated At: 2026-11-21T05:35:21.914Z
+- Generated At: 2026-11-21T05:57:41.477Z
 
 ## Authored
 ### Purpose
 The alias case: `using H = Lib.Helper;` names the non-generic type, since the alias's text gives no type arguments, so the compiler binds `H` to `Helper.cs` alone.
 
 ### Notes
-- The C# adapter draws the edge to `HelperOfT.cs` as well, the measured miss `csharp-oracle.test.ts` registers until the reader reads the alias's arity. Written on 2026-11-21 in the joining of the readers, from an independent review of the C# reader ([the work item](../../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)); what the program exercises is in [Sample Programs](../../../../../../../layer-3/sample-programs.mdmd.md#the-names-program).
+- The C# adapter drew the edge to `HelperOfT.cs` as well until, the same day, it read the alias's arity from its syntax. Written on 2026-11-21 in the joining of the readers, from an independent review of the C# reader ([the work item](../../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)); what the program exercises is in [Sample Programs](../../../../../../../layer-3/sample-programs.mdmd.md#the-names-program).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,5 +28,4 @@ The alias case: `using H = Lib.Helper;` names the non-generic type, since the al
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`Helper`](./Helper.cs.mdmd.md#symbol-helper)
-- [`HelperOfT.Helper`](./HelperOfT.cs.mdmd.md#symbol-helper)
 <!-- LIVE-DOC:END Dependencies -->

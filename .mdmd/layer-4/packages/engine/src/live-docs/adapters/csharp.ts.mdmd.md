@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-21T05:53:08.807Z
+- Generated At: 2026-11-21T05:57:31.725Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,21 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Since 2026-11-19 ([the .NET probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/dotnet-gaps/README.md#fourth-leg-type-names-within-the-projects-reach)) a type name resolves within what the file's project can see (`dotnetProjects.ts`), in C#'s own lookup order, by the number of type arguments a use writes, with a project's `global using` directives applied to all its files, and a partial type's halves link through `this.member` as through a bare name; measured against the compiler's own edges on DNN and mojoPortal.
 - Since the joining of 2026-11-21 ([the work item](../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)) why a type name has no link is handed to the run as a notice ("type names several projects in reach declare, left unlinked", "type names declared only outside the project's reach, left unlinked"), its subject the name as written, since the run names the file; until then the reader worked the reasons out and kept them.
 - Since the same day a simple name inside a type is looked up in that type's members and then in the types it inherits members from, up the chain as far as the project's reach shows it, before any namespace or `using`, as C# does: an independent review found `Options` inside `class Derived : Base` linked to a `using`'s namesake instead of `Base.Options` (the `names` sample, `tests/integration/programs/csharp/names`). A base is the name the base list writes, resolved where the declaration stands; a class inherits from its base class and not from the interfaces it implements, an interface from its base interfaces, as the compiler showed on the test's cases. Measured by `oracle:csharp`: on DNN one edge the compiler binds and the reader lacked is drawn (`GrayscaleQuantizer.cs` to `Quantizer.cs`) and none is lost; on mojoPortal nothing moves.
+- Since the same day a `using` alias is read from its syntax, its target's identifiers with the type arguments each writes, so `using H = Lib.Helper;` names the type with no type parameters and `using HT = Lib.Helper<int>;` the one with one, as the compiler binds them; the alias had been read as text, its arity unknown, so `H` linked `Helper.cs` and `HelperOfT.cs` both (the review's case, in the `names` sample). No edge moves on DNN or mojoPortal. Still open: a type nested in a generic type has the same qualified name as one nested in its non-generic namesake (`Lib.Helper.Part`), so `H.Part` is taken for an ambiguity and links nothing where the compiler binds `Helper.cs`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1121)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1123)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1561)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1566)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -38,7 +39,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1572)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1577)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
