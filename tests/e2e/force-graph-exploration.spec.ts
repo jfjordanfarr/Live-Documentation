@@ -37,42 +37,51 @@ test("the visible hops control narrows a neighborhood without losing pins and su
   expect((await shownFiles()).sort()).toEqual(one.sort());
 });
 
+/**
+ * A file that stands alone, of no group: the C# Rosetta program's project file, which references no project and which
+ * no solution names. The estate held one, Estate.sln, until its readers read a solution (2026-11-21): it now depends on
+ * the five projects it names, so none of the estate's files stands alone.
+ */
+const LONE_SAMPLE = "/samples/rosetta/csharp/";
+const LONE = "Rosetta.csproj";
+const LONE_DIRECTORY = "src/Models";
+
 test("whole overview finds isolated files and returns to the independent directory and pins", async ({ page }) => {
   test.setTimeout(90_000);
   await observeGraph(page);
-  await page.goto("/samples/estate/?view=local&mode=3d&dir=Portal&layout=connections");
+  await page.goto(`${LONE_SAMPLE}?view=local&mode=3d&dir=${LONE_DIRECTORY}&layout=connections`);
   await settled(page);
   const before = await renderedNodes(page);
   const local = before.map(node => node.id).sort();
   // The lone file stands in the local picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
-  expect(before.find(node => node.id === "Estate.sln")?.opacity).toBeLessThan(0.5);
+  expect(before.find(node => node.id === LONE)?.opacity).toBeLessThan(0.5);
   const whole = page.getByRole("button", { name: "Whole", exact: true });
   await expect(whole).toHaveAttribute("aria-pressed", "false");
   await whole.click();
   await expect(whole).toHaveAttribute("aria-pressed", "true");
   await settled(page);
   const everything = await renderedNodes(page);
-  expect(everything.find(node => node.id === "Estate.sln")?.opacity, "the whole picture shows the lone file in full").toBeGreaterThan(0.6);
-  expect(currentSnapshot(page).openDirectories).toEqual(new Set(["Portal", ""]));
+  expect(everything.find(node => node.id === LONE)?.opacity, "the whole picture shows the lone file in full").toBeGreaterThan(0.6);
+  expect(currentSnapshot(page).openDirectories).toEqual(new Set([LONE_DIRECTORY, ""]));
   // A lone file is named at rest only when its sphere draws large enough (2026-11-02); hovering it names it at once.
-  const sphere = everything.find(node => node.id === "Estate.sln")!;
+  const sphere = everything.find(node => node.id === LONE)!;
   await page.mouse.move(sphere.x, sphere.y);
-  const orphan = page.locator('.force-graph-label[data-node-id="Estate.sln"]');
+  const orphan = page.locator(`.force-graph-label[data-node-id="${LONE}"]`);
   await expect(orphan).toBeVisible();
   await orphan.click();
   await expect(orphan).toHaveAttribute("aria-pressed", "true");
   await whole.click();
   await expect(whole).toHaveAttribute("aria-pressed", "false");
   await settled(page);
-  expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: null, openDirectories: new Set(["Portal"]), pinSet: { entries: [{ nodeId: "Estate.sln", symbol: "*" }] } });
+  expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: null, openDirectories: new Set([LONE_DIRECTORY]), pinSet: { entries: [{ nodeId: LONE, symbol: "*" }] } });
   // Back in the local picture the pinned lone file stands in full; the picture's members are the same, since its seed was already there.
   const returned = await renderedNodes(page);
   expect(returned.map(node => node.id).sort()).toEqual(local);
-  expect(returned.find(node => node.id === "Estate.sln")?.opacity).toBeGreaterThan(0.6);
+  expect(returned.find(node => node.id === LONE)?.opacity).toBeGreaterThan(0.6);
   // A portable pin set retains its independent directory and the newly discovered orphan after reload.
   await page.reload();
   await settled(page);
-  expect(currentSnapshot(page).openDirectories).toEqual(new Set(["Portal"]));
+  expect(currentSnapshot(page).openDirectories).toEqual(new Set([LONE_DIRECTORY]));
   // The pinned file is named at rest; its name releases it as its sphere would.
   await expect(orphan).toBeVisible();
   await orphan.click();
@@ -93,15 +102,18 @@ test("directory discovery survives a layout switch without opening or pinning it
     await page.mouse.move(hub.x, hub.y);
     await page.locator(`.force-graph-label[data-node-id="${id}"]`).waitFor({ state: "visible" });
   };
-  await hoverHub("directory:Portal");
-  await page.locator('.force-graph-label[data-node-id="directory:Portal"]').click();
+  // The estate's databases: none of their files reaches the group of Estate.sln and the five projects it names (read
+  // since 2026-11-21), whose seed it is as its most connected file. Portal no longer serves, since Portal.csproj is of
+  // that group.
+  await hoverHub("directory:Database");
+  await page.locator('.force-graph-label[data-node-id="directory:Database"]').click();
   await settled(page);
   await page.getByRole("button", { name: "Connections", exact: true }).click();
   await settled(page);
-  expect(currentSnapshot(page)).toMatchObject({ discovery: { kind: "directory", directory: "Portal" }, openDirectories: new Set(), pinSet: { entries: [] }, selectedNodeId: null });
+  expect(currentSnapshot(page)).toMatchObject({ discovery: { kind: "directory", directory: "Database" }, openDirectories: new Set(), pinSet: { entries: [] }, selectedNodeId: null });
   const nodes = await renderedNodes(page);
-  expect(nodes.map(node => node.id)).toContain("Portal/Services/GatewayClient.cs");
-  // The lone file is not discovered with the directory; it stands dimmed as its own group's seed (2026-11-02).
+  expect(nodes.map(node => node.id)).toContain("Database/SqlServer/dbo.usp_PostPayment.sql");
+  // A group the directory does not reach is not discovered with it; its seed stands dimmed (2026-11-02).
   expect(nodes.find(node => node.id === "Estate.sln")?.opacity).toBeLessThan(0.5);
   const reader = (await page.locator("#detail-panel").boundingBox())!;
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
@@ -115,8 +127,8 @@ test("directory discovery survives a layout switch without opening or pinning it
   }
   await page.getByRole("button", { name: "Structure", exact: true }).click();
   await settled(page);
-  await hoverHub("directory:Portal");
-  await page.locator('.force-graph-label[data-node-id="directory:Portal"]').click();
+  await hoverHub("directory:Database");
+  await page.locator('.force-graph-label[data-node-id="directory:Database"]').click();
   expect(currentSnapshot(page).discovery).toBeUndefined();
   expect(currentSnapshot(page).openDirectories.size).toBe(0);
   await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/);
@@ -125,21 +137,22 @@ test("directory discovery survives a layout switch without opening or pinning it
 test("a lone file settles, small body jitter pins it, and a moving name releases the pressed identity", async ({ page }) => {
   test.setTimeout(60_000);
   await observeGraph(page);
-  await page.goto("/samples/estate/?view=local&mode=3d&node=Estate.sln");
+  await page.goto(`${LONE_SAMPLE}?view=local&mode=3d&node=${LONE}`);
   await settled(page);
   // The lone file in full, and the other groups' seeds dimmed beside it, since 2026-11-02 no group is out of reach.
   const nodes = await renderedNodes(page);
-  const only = nodes.find(node => node.id === "Estate.sln")!;
+  const only = nodes.find(node => node.id === LONE)!;
   expect(only.opacity).toBeGreaterThan(0.6);
-  const seeds = nodes.filter(node => node.id !== "Estate.sln");
-  expect(seeds.length, "one seed for each of the estate's other groups").toBe(3);
+  const seeds = nodes.filter(node => node.id !== LONE);
+  // The program's other files are one group (twelve C# files), so one seed stands beside the lone file.
+  expect(seeds.length, "one seed for each of the program's other groups").toBe(1);
   for (const seed of seeds) expect(seed.opacity, `${seed.id} stands dimmed`).toBeLessThan(0.5);
   await page.mouse.move(only.x, only.y);
   await page.mouse.down();
   await page.mouse.move(only.x + 3, only.y + 1, { steps: 3 });
   await page.mouse.up();
-  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: "Estate.sln", symbol: "*" }]);
-  const name = page.locator('.force-graph-focus[data-node-id="Estate.sln"], .force-graph-label[data-node-id="Estate.sln"]');
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: LONE, symbol: "*" }]);
+  const name = page.locator(`.force-graph-focus[data-node-id="${LONE}"], .force-graph-label[data-node-id="${LONE}"]`);
   const box = (await name.boundingBox())!;
   const pressed = await name.elementHandle();
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);

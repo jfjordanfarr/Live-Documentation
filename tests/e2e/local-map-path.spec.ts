@@ -387,8 +387,9 @@ test.describe("Local Map path mode", () => {
     await page.keyboard.type("Contracts");
     await expect(results.locator('.search-row--directory:has(.search-row-name:text-is("Contracts")) .search-row-badge')).toHaveText("3 files, the other way");
 
-    // The project file matches "Payment" by name but connects to nothing, as do files matched by a symbol alone,
-    // the pin's own file among them: folded under a count, and under the fold once opened, each marked
+    // The project file matches "Payment" by name but no path joins it to the pin (it is of the group Estate.sln and the
+    // projects it names make, read since 2026-11-21), as with files matched by a symbol alone, the pin's own file among
+    // them: folded under a count, and under the fold once opened, each marked
     const payment = await offered("Payment");
     expect(payment.rows.length).toBeGreaterThan(2);
     for (const [, words] of payment.rows) expect(words).toMatch(/^\d+ files(, the other way)?$/u);
@@ -410,10 +411,14 @@ test.describe("Local Map path mode", () => {
     await page.waitForSelector("#pathfind-status.error");
     await expect(page.locator("#pathfind-status")).toContainText("No path either way");
 
-    // A pin nothing connects to says so, and every match is under the fold
-    await choose(page, "subject", "Portal.csproj", { file: "Portal/Portal.csproj" });
-    await expect(field).toHaveAttribute("placeholder", "Nothing connects to Portal.csproj");
-    const alone = await offered("Gateway");
+    // A pin nothing connects to says so, and every match is under the fold. None of the estate's files stands alone
+    // since its solution is read (Portal.csproj, which did, is named by Estate.sln), so the pin is the C# Rosetta
+    // program's project file, which references no project and which no solution names.
+    await page.goto("/samples/rosetta/csharp/?view=local&node=src%2FApp%2FMain.cs");
+    await page.waitForSelector('#map-container .node-card[data-id="src/App/Main.cs"]');
+    await choose(page, "subject", "Rosetta.csproj", { file: "Rosetta.csproj" });
+    await expect(field).toHaveAttribute("placeholder", "Nothing connects to Rosetta.csproj");
+    const alone = await offered("Processor");
     expect(alone.rows).toEqual([]);
     expect(alone.fold).toMatch(/^\d+ files match, but no path connects them$/u);
   });
