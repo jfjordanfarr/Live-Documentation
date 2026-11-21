@@ -39,6 +39,19 @@ _Historical evidence, taken on November 21, 2026 by the builder of the mend, on 
 - **The tooltip was seen on Linux under Xvfb, not on Windows.** The owner's machine will draw it in its own system style.
 - **The words were changed once.** The first pictures read "…which this browser has turned off", the brief's words; the root changed them the same day, since a browser may simply have no WebGL to give. The hovered pictures here were taken again with the words as they now stand.
 
+## What the question costs a 2D visit
+
+The first build asked the browser at every page's start. Asking alone, in a fresh page of `about:blank`, cost the first page of a browser on the graphics card 731 ms, and then 49 to 54 ms a page; in software, 28 to 34 ms. The root ruled that a 2D arrival should pay nothing: since then the browser is asked at the start only when 3D is asked for then, at a press of 3D, or once the page is idle after its first picture (within three seconds), and the 3D control and Tuning's group become unavailable then.
+
+**How it was measured.** The estate sample's `PaymentService/PaymentService.cs` in 2D, each run in a fresh browser at 1280 by 800, so that each was a browser's first page. A run's time is from the start of navigation to the moment the 2D map's placed picture (`#map-container .local-placed`) was put into the page. "Before" is the build that asked at the start: this branch with one line added to ask at the start, built for the purpose. "After" is the build with the late question. The two builds were served side by side and taken in turn, nine runs each, so that the machine's load fell on both alike. Load average over the run: 11.75 before it, 8.45 after it, on twenty threads shared with other agents.
+
+| Drawing | Before, median (runs) | After, median (runs) |
+| --- | ---: | ---: |
+| The graphics card | 1,023 ms (860 to 1,278) | 935 ms (860 to 1,446) |
+| Software | 907 ms (789 to 1,143) | 922 ms (787 to 1,207) |
+
+On the card the late question brings the first picture about 90 ms sooner. In software no difference stands above the noise. The 731 ms of the bare page did not show in full: by the time the Explorer asks, its page has already started the graphics process for itself. An earlier pair of runs, taken one build after the other rather than in turn under different loads (6.6 and 16.5), gave 1,112 ms before and 1,447 ms after on the card; that is the load, which is why the measurement above takes the two in turn.
+
 ## Not mended: a WebGL context lost and never restored
 
 Found while reading the renderer for this mend, and left for a task of its own. A weak machine drawing WebGL in software is where a browser is most likely to take a context back (a lost graphics process, a reset after a long frame, memory pressure).

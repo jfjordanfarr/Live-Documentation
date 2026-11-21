@@ -25,7 +25,7 @@ import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { watchLocalKinds } from "./panels/spatial-legend";
 import { statsLineOf } from "./panels/stats-line";
-import { initTuningPanel } from "./panels/tuning";
+import { initTuningPanel, withholdThreeDLayout } from "./panels/tuning";
 import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
 import {
   parseInitialState,
@@ -53,7 +53,7 @@ import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, othersReleasedWords, releaseOthers, type OthersReleased, type OthersStrength, type RetainedItem, type RetainedState } from "./views/retained-state";
-import { perspectiveRemembered, perspectiveShown, WEBGL_REFUSED, webglOffered } from "./views/webgl-support";
+import { perspectiveRemembered, perspectiveShown, WEBGL_REFUSED, webglKnown, webglOffered, whenIdle } from "./views/webgl-support";
 import { createWorldMapView } from "./views/worldMap";
 
 attachGlobalErrorHandler();
@@ -172,9 +172,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   const savedNav = readPersistedNav();
   const persistedNav = initialState.hasUrlState ? null : savedNav;
-  // Whether this browser draws the 3D map, asked before any view asks for WebGL: where it does not, every request for 3D
-  // shows its subject in 2D and the 3D control says why (2026-11-21, views/webgl-support.ts).
-  const threeDOffered = webglOffered();
+  // Whether this browser draws the 3D map (2026-11-21, views/webgl-support.ts): where it does not, every request for 3D
+  // shows its subject in 2D, and the 3D control and Tuning's 3D layout say why. The browser is asked only when 3D is
+  // asked for, at the start or at a press, or once the page is idle after its first picture, since asking at the start
+  // delayed a 2D arrival's first picture by about 90 ms on a graphics card; a 2D arrival pays nothing before its picture.
+  let threeDControlsBuilt = false;
+  let threeDAnswered = (offered: boolean): void => { void offered; };
+  const threeDOffered = (): boolean => {
+    const before = webglKnown();
+    const offered = webglOffered();
+    if (before === undefined && threeDControlsBuilt) threeDAnswered(offered);
+    return offered;
+  };
+  /** Whether 3D is to be offered as things stand: yes until the browser has been asked and said no. */
+  const threeDNotRefused = (): boolean => webglKnown() !== false;
 
   const resolveInitialView = (): ViewName => {
     if (initialState.hasUrlState) {
@@ -229,7 +240,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
     // A browser that cannot draw 3D leaves the choice remembered before for the browser that can.
-    perspective: perspectiveRemembered(state.perspective, savedNav?.perspective, threeDOffered),
+    perspective: perspectiveRemembered(state.perspective, savedNav?.perspective, webglKnown()),
     spatialLayout: state.spatialLayout,
     openDirectories: state.openDirectories ?? new Set(),
     selectedNodeId: state.selectedNode?.id ?? null,
@@ -575,7 +586,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // Where the browser cannot draw 3D (2026-11-21) the control stays where a person looks for it and is not offered:
   // `aria-disabled` rather than `disabled`, which would take its focus stop and with it the explanation a keyboard reaches.
   // Its press asks for 3D, which shows the 2D map already shown, and so does nothing.
-  if (!threeDOffered) graphButton.setAttribute("aria-disabled", "true");
+  if (!threeDNotRefused()) graphButton.setAttribute("aria-disabled", "true");
   graphButton.addEventListener("animationend", () => graphButton.classList.remove("backward-rising"));
   // The 3D layout: the emergent network of the analyzed references, or the emergent tree of the declared directories
   // (the owner's distinction, 2026-10-14). A choice inside 3D, shown only there.
@@ -1140,7 +1151,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     // cycles' returns since 2026-11-15): amber, in two strengths by their number, with one slow pulse as it lights or
     // rises a strength. Its name stays "3D"; the count is its description, by the tooltip. Never a switch of its own.
     // Not where 3D is not offered: the cue would call to a control that cannot answer.
-    const strength = state.perspective === "2d" && threeDOffered ? backwardStrength(backwardConnections) : "none";
+    const strength = state.perspective === "2d" && threeDNotRefused() ? backwardStrength(backwardConnections) : "none";
     const rises = BACKWARD_STRENGTHS.indexOf(strength) > BACKWARD_STRENGTHS.indexOf(shownStrength);
     shownStrength = strength;
     graphButton.classList.toggle("has-backward-wires", strength !== "none");
@@ -1151,7 +1162,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       void graphButton.offsetWidth; // the pulse begins again when the cue rises while the last is still running
       graphButton.classList.add("backward-rising");
     }
-    graphButton.title = !threeDOffered ? WEBGL_REFUSED
+    graphButton.title = !threeDNotRefused() ? WEBGL_REFUSED
       : strength !== "none" ? `${backwardConnections} ${backwardConnections === 1 ? "connection runs" : "connections run"} backward in 2D. Explore this scope in 3D.` : "Local Map in 3D";
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     historyControl.sync({
@@ -1527,7 +1538,6 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state,
     onTuningChange: () => { schedulePersistUi(); persistExploration(); syncPerspectiveControls(); },
     onFrame: choice => frame?.apply(choice),
-    ...(threeDOffered ? {} : { threeDRefused: WEBGL_REFUSED }),
     onRender: () => {
       // The spatial renderer owns both file and directory camera anchors.
       if (state.perspective === "3d") {
@@ -1545,6 +1555,20 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     },
     drawLocalConnections: () => localView.drawConnections(),
   });
+
+  // The browser's answer on WebGL, when it comes after the controls are built: a no makes the 3D control and Tuning's 3D
+  // layout unavailable, with their reason, and lets the remembered choice be written as it now stands.
+  threeDAnswered = offered => {
+    if (offered) { schedulePersistNav(); return; }
+    graphButton.setAttribute("aria-disabled", "true");
+    withholdThreeDLayout(WEBGL_REFUSED);
+    syncPerspectiveControls();
+    schedulePersistNav();
+  };
+  if (webglKnown() === false) withholdThreeDLayout(WEBGL_REFUSED);
+  threeDControlsBuilt = true;
+  // A page that arrived in 2D asks once it is idle after its first picture, or within three seconds whatever happens.
+  if (webglKnown() === undefined) whenIdle(() => { threeDOffered(); }, 3_000);
 
   // Record the actual initial subject and reader before arming history, including plain and remembered entry links.
   persistExploration();
@@ -1606,6 +1630,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const place = parseInitialState();
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
     const perspective = perspectiveShown(place.perspective ?? state.perspective, threeDOffered);
+    // An entry that names 3D where 3D cannot be drawn is rewritten to say the 2D it shows, as a first address is, on both
+    // ways out below; the history turns the write into a rewrite of the entry.
+    const rewriteRefused = (): void => { if (view === "map" && place.perspective !== null && perspective !== place.perspective) writeUrlState(explorationSnapshot()); };
     const exploration = scrubSnapshot({ ...requested, openDirectories: place.openDirectories }, nodesById, bundledMarkdown, directory => historyControl.hasDirectory(directory));
     const nextTuning = applyLayoutSettings(state.tuning, exploration.layout);
     const nextFilters = new URLSearchParams(window.location.search).has("s")
@@ -1625,6 +1652,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (compressSnapshot(nextMap) === compressSnapshot({ ...explorationSnapshot(), inspection: null })) {
       state.inspection = exploration.inspection ?? null;
       renderInspection();
+      rewriteRefused();
       schedulePersistNav();
       return;
     }
@@ -1659,10 +1687,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       try { runPath(); } finally { restoringPath = false; }
     }
     renderCurrentView();
-    // An entry that named 3D where 3D cannot be drawn is rewritten to say the 2D it shows, as a first address is; the
-    // history turns this write into a rewrite of the entry. Not in the evidence-only return above: an entry that differs
-    // from the place shown only by naming 3D keeps its address there (a known gap, held by a case of webgl-refused.spec.ts).
-    if (view === "map" && place.perspective !== null && perspective !== place.perspective) writeUrlState(explorationSnapshot());
+    rewriteRefused();
     // The moment the address names, or today; the history turns the write this makes into a rewrite of the entry.
     if (view === "map") await historyControl.showCommit(exploration.commit);
     else historyControl.leave();

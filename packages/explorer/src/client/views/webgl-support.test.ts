@@ -34,15 +34,29 @@ describe("drawsWebgl", () => {
   });
 });
 
+/** A stand-in for the browser's answer that counts how often it is asked. */
+function answering(offered: boolean): { ask: () => boolean; asked: () => number } {
+  let count = 0;
+  return { ask: () => { count++; return offered; }, asked: () => count };
+}
+
 describe("perspectiveShown", () => {
   it("shows what was asked where both can be drawn", () => {
-    expect(perspectiveShown("3d", true)).toBe("3d");
-    expect(perspectiveShown("2d", true)).toBe("2d");
+    expect(perspectiveShown("3d", answering(true).ask)).toBe("3d");
+    expect(perspectiveShown("2d", answering(true).ask)).toBe("2d");
   });
 
   it("shows 2D for a request of 3D where 3D cannot be drawn", () => {
-    expect(perspectiveShown("3d", false)).toBe("2d");
-    expect(perspectiveShown("2d", false)).toBe("2d");
+    expect(perspectiveShown("3d", answering(false).ask)).toBe("2d");
+    expect(perspectiveShown("2d", answering(false).ask)).toBe("2d");
+  });
+
+  it("asks the browser only for a request of 3D, so that a 2D request costs nothing", () => {
+    const browser = answering(true);
+    perspectiveShown("2d", browser.ask);
+    expect(browser.asked()).toBe(0);
+    perspectiveShown("3d", browser.ask);
+    expect(browser.asked()).toBe(1);
   });
 });
 
@@ -58,5 +72,10 @@ describe("perspectiveRemembered", () => {
 
   it("remembers what is shown where nothing was remembered before", () => {
     expect(perspectiveRemembered("2d", undefined, false)).toBe("2d");
+    expect(perspectiveRemembered("2d", undefined, undefined)).toBe("2d");
+  });
+
+  it("leaves a remembered 3D alone until the browser has been asked", () => {
+    expect(perspectiveRemembered("2d", "3d", undefined)).toBe("3d");
   });
 });

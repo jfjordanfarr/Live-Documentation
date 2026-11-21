@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T03:33:17.637Z
+- Generated At: 2026-11-21T04:32:48.932Z
 
 ## Authored
 ### Purpose
@@ -80,11 +80,23 @@ Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L36)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L34)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
 Initialize the tuning panel with all slider and checkbox controls.
+
+#### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L526)
+
+##### `withholdThreeDLayout` — Summary
+Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
+levers would change a picture this browser never shows. The group stays where it stands, closed, its heading a focus
+stop marked `aria-disabled` whose tooltip and description say why, and a press on it opens nothing. Its stored values
+are left as they are, for the browser that draws 3D. The History group, also kept for 3D before 2026-11-19, drives the
+scrubber both maps share and stays offered. The group is found by the lever it holds, the 3D map's Hops Shown. Called
+once, when the browser is known to refuse WebGL, which may be after the page's first picture (`index.ts`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

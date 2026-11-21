@@ -100,6 +100,18 @@ for (const subject of SUBJECTS) {
   });
 }
 
+test("on a 2D arrival the 3D control becomes unavailable without a press, shortly after the picture is up", async ({ page }) => {
+  const subject = SUBJECTS[0];
+  const faults = watchFaults(page);
+  await page.goto(`${subject.base}?view=local&node=${encodeURIComponent(subject.file)}`);
+  await expectTwoDOf(page, subject.file, faults);
+  // The browser is asked once the page is idle after its first picture, or within three seconds whatever happens.
+  await expect(threeD(page)).toBeDisabled({ timeout: 5_000 });
+  await expectThreeDRefused(page);
+  await expect(page.locator("details[data-tuning-perspective='3d']:has(#tuning-force-hops) > summary")).toHaveAttribute("aria-disabled", "true");
+  expect(faults).toEqual([]);
+});
+
 test("Tuning's 3D layout is not offered and says why, and its stored settings are left alone", async ({ page }) => {
   const subject = SUBJECTS[0];
   const faults = watchFaults(page);
@@ -157,10 +169,9 @@ test("Back or Forward to an entry whose address names 3D shows that place in 2D"
   await expectThreeDRefused(page);
 });
 
-// The known gap (2026-11-21): an entry that differs from the place shown only by naming 3D is restored by the
-// evidence-only return of `restoreFromUrl`, which leaves its address as it was. The map shows 2D and nothing breaks, but
-// the address goes on saying 3D. Marked as failing, so that the day it is mended this case says so.
-test.fail("Back or Forward to an entry that differs from the place shown only by naming 3D rewrites its address to 2D", async ({ page }) => {
+// An entry that differs from the place shown only by naming 3D is restored by the evidence-only return of
+// `restoreFromUrl`, which keeps the camera and the picture as they are; its address is rewritten there too.
+test("Back or Forward to an entry that differs from the place shown only by naming 3D rewrites its address to 2D", async ({ page }) => {
   const subject = SUBJECTS[0];
   const faults = watchFaults(page);
   await page.goto(`${subject.base}?view=local&node=${encodeURIComponent(subject.file)}`);

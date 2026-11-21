@@ -26,8 +26,6 @@ export interface TuningPanelConfig {
   drawLocalConnections: () => void;
   /** Puts a frame in force: the sidebar, or the Bare trial's breadcrumb, key and sheet (frame.ts). */
   onFrame: (frame: FrameChoice) => void;
-  /** Why the 3D map is not offered, where the browser cannot draw it; absent where it can (2026-11-21). */
-  threeDRefused?: string;
 }
 
 /**
@@ -36,7 +34,6 @@ export interface TuningPanelConfig {
 export function initTuningPanel(config: TuningPanelConfig): () => void {
   const { state, onTuningChange: persistChange, onRender, drawLocalConnections, onFrame } = config;
   describeTuningControls();
-  if (config.threeDRefused) withholdThreeDLayout(config.threeDRefused);
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
     persistChange();
@@ -523,9 +520,10 @@ function describeTuningControls(): void {
  * levers would change a picture this browser never shows. The group stays where it stands, closed, its heading a focus
  * stop marked `aria-disabled` whose tooltip and description say why, and a press on it opens nothing. Its stored values
  * are left as they are, for the browser that draws 3D. The History group, also kept for 3D before 2026-11-19, drives the
- * scrubber both maps share and stays offered. The group is found by the lever it holds, the 3D map's Hops Shown.
+ * scrubber both maps share and stays offered. The group is found by the lever it holds, the 3D map's Hops Shown. Called
+ * once, when the browser is known to refuse WebGL, which may be after the page's first picture (`index.ts`).
  */
-function withholdThreeDLayout(why: string): void {
+export function withholdThreeDLayout(why: string): void {
   const group = document.getElementById("tuning-force-hops")?.closest<HTMLDetailsElement>('details[data-tuning-perspective="3d"]');
   const heading = group?.querySelector<HTMLElement>(":scope > summary");
   if (!group || !heading) return;
