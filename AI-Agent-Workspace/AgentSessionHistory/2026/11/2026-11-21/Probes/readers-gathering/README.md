@@ -115,6 +115,28 @@ The one edge the base-type lookup draws on DNN is `DNN Platform/Library/Services
 
 Four more single-quoted values on mojoPortal are text inside JavaScript strings that write script tags (`\'/Content/…\'`, `'{0}'`), not tags; the reader reads double-quoted values only and never sees them. With no constant-argument expression in either corpus, none is read, as ruled. After the change, read file by file with the adapter: DNN gains 5 lines, `UpgradeWizard.aspx`'s five scripts once their query is taken off, and no notice; mojoPortal gains 9 lines, the `~/` scripts of `Web/Views` reaching `Web/Content` and `Web/Scripts`, and keeps 7 unlinked with a notice: 6 site-root paths of `Web/App_MasterPages/layout.Master` ("paths from the site's root, left unlinked"), whose files are under `Web/Content/failsafeskin/js/`, served at `/Content/` only when the site is deployed at its root, and `~/Scripts/jquery-1.10.2.min.js` ("paths no file in the workspace holds"), which no file of the repository holds. No line is lost on either. The notices the run says on mojoPortal go from 153 to 160.
 
+**ASP.NET Core: `~/` is the web root.** The review's second pass showed `~/js/site.js` in an ASP.NET Core view left unlinked, its file under `wwwroot`. Microsoft's "Static files in ASP.NET Core" makes `wwwroot` an app's default web root and `~/` its name; the directives' rule, `~/` as the project's folder, is Web Forms' and MVC 5's. Before building, every script source of the `.cshtml` views of three ASP.NET Core repositories was counted (anonymous shallow clones of `dotnet-architecture/eShopOnWeb`, `nopSolutions/nopCommerce` and `OrchardCMS/OrchardCore`, comments set aside, by `core_scripts.py` in the scratch folder), by attribute and spelling and by where a file is found:
+
+| Repository | Attribute and spelling | Where its file is | Count |
+| --- | --- | --- | --- |
+| eShopOnWeb (one app, `Microsoft.NET.Sdk.Web`, `wwwroot` beside) | `src`, `~/` | the project's `wwwroot` | 2 |
+| | `src`, `~/` | nowhere: `wwwroot/lib`, restored by LibMan (`libman.json`), ignored by git (`**/wwwroot/lib/`) | 6 |
+| | `asp-fallback-src`, `~/` | nowhere, the same | 6 |
+| | `src`, relative | nowhere: `_content/…` and `_framework/…`, served by the framework from packages | 3 |
+| | `src`, remote | not a path | 6 |
+| nopCommerce (app `Nop.Web`, `Microsoft.NET.Sdk.Web`, `wwwroot` beside; plugins `Microsoft.NET.Sdk`, built into `Nop.Web/Plugins/{plugin}` by their `OutputPath`) | `src`, `~/` | the app's `wwwroot` | 81 |
+| | `src`, `~/Plugins/{plugin}/…` | the plugin project whose `OutputPath` its first segments name | 4 |
+| | `src`, `~/` | nowhere (`lib_npm/fine-uploader`, which the app no longer ships) | 1 |
+| | `src`, a Razor expression | not a path | 14 |
+| | `src`, remote | not a path | 1 |
+| Orchard Core (modules `Microsoft.NET.Sdk.Razor`, each with `wwwroot`; 365 scripts named only by `asp-name`) | `asp-src`, `~/{module}/…` | the `wwwroot` of the module its first segment names | 249 |
+| | `src`, `~/{module}/…` | the same | 3 |
+| | `asp-src`, `~/` | nowhere (2) | 2 |
+| | `asp-src`, relative | nowhere: the demo module's sample names | 8 |
+| | remote | not a path | 4 |
+
+No source in the three is spelled from the site's root (`/js/site.js`). What the reader now takes for an ASP.NET Core application is the files' own evidence: a web project whose project file names the SDK `Microsoft.NET.Sdk.Web` with a `wwwroot` beside it. Its views read `~/` and `/` from that `wwwroot` alone; a module's or plugin's view reads `~/` from the web roots of the applications it may be deployed into. Read file by file before and after: eShopOnWeb gains 2 links and loses 2 notices (11 to 9), nopCommerce gains 81 and its notices go from 87 to 5 (one more was a Razor expression, `summernote-@(language).min.js`, now not read as a path), Orchard Core, DNN and mojoPortal move not at all. What it gets wrong on them: Orchard Core's 252 module scripts and nopCommerce's 4 plugin scripts stay unlinked, each with a notice, though their files are in the repository, because each product maps those paths by a convention of its own (Orchard's module static files, nopCommerce's build output), not by ASP.NET's; the reader reads `asp-src`, Orchard's tag helper, as it reads `src`, since its pattern matches either; and a project that moves its web root elsewhere in code, or a Blazor WebAssembly project (`Microsoft.NET.Sdk.BlazorWebAssembly`), is not read as one, none of which the three hold.
+
 **Where scip-dotnet and the compiler program differ on the C# samples.** Each sample now keeps both records (`expected/compiler-edges.json`, scip-dotnet 0.2.14 or 0.2.16; `expected/csharp-compiler.json`, Roslyn 4.12), and `csharp-oracle.test.ts` holds the reader to the second. Over C# file pairs, scip's edges resting only on an ambiguous symbol set apart:
 
 | Sample | scip-dotnet: settled + ambiguous | The compiler | Both | Where they differ |

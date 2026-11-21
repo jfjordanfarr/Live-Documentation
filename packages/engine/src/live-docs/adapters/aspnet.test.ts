@@ -32,7 +32,7 @@ describe("aspNetMarkupAdapter", () => {
       markupPath,
       [
         "@page \"/\"",
-        "<script src=\"~/wwwroot/js/blazor-telemetry.js\"></script>"
+        "<script src=\"~/js/blazor-telemetry.js\"></script>"
       ].join("\n"),
       "utf8"
     );
@@ -47,7 +47,7 @@ describe("aspNetMarkupAdapter", () => {
     );
 
     await fs.writeFile(scriptPath, "console.log('noop');", "utf8");
-    // `~/` is read from the markup's project (`resolveDirectivePath`), so the host has one, as a Blazor app does.
+    // `~/` is the web root of the markup's project (`resolveDirectivePath`), an ASP.NET Core one with a `wwwroot`, as a Blazor app is.
     await fs.writeFile(path.join(workspaceRoot, "BlazorTelemetry.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>", "utf8");
 
     const analysis = await aspNetMarkupAdapter.analyze({
@@ -264,6 +264,41 @@ describe("aspNetMarkupAdapter", () => {
       { reason: "paths from the site's root, left unlinked", subject: "/Content/js/main.min.js" }
     ]);
     expect(await linksOf("Web/Install/Wizard.aspx", fileIndex)).toEqual(["Web/Scripts/dnn.js", "Web/Install/Wizard.aspx.cs"]);
+  });
+
+  // Microsoft's "Static files in ASP.NET Core": an app serves its web root, `wwwroot` by default, and `~/` in a Razor
+  // view names it. The shapes are eShopOnWeb's `_Layout.cshtml` and a nopCommerce plugin's view, measured on 2026-11-21.
+  const coreProject = "<Project Sdk=\"Microsoft.NET.Sdk.Web\"><PropertyGroup><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>";
+  it("reads an ASP.NET Core view's `~/` and `/` from its project's web root, and a module's `~/` from the web root of the app that hosts it", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": coreProject,
+      "Web/Views/Shared/_Layout.cshtml": [
+        "<script src=\"~/js/site.js\"></script>",
+        "<script src=\"~/lib/jquery/dist/jquery.min.js\"></script>",
+        "<script src=\"/js/site.js\"></script>",
+        "<script src=\"~/js/missing.js\"></script>",
+        "<script src=\"~/lib/summernote/lang/summernote-@(language).min.js\"></script>"
+      ].join("\n"),
+      "Api/Api.csproj": coreProject,
+      "Plugins/Forums/Forums.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>",
+      "Plugins/Forums/Views/Editor.cshtml": "<script src=\"~/lib/jquery/dist/jquery.min.js\"></script>"
+    }, ["Web/wwwroot/js/site.js", "Web/wwwroot/lib/jquery/dist/jquery.min.js", "Api/wwwroot/js/site.js", "Web/js/site.js"]);
+
+    expect(await linksOf("Web/Views/Shared/_Layout.cshtml", fileIndex)).toEqual([
+      "Web/wwwroot/js/site.js",
+      "Web/wwwroot/lib/jquery/dist/jquery.min.js",
+      "unresolved ~/js/missing.js"
+    ]);
+    expect(await linksOf("Plugins/Forums/Views/Editor.cshtml", fileIndex)).toEqual(["Web/wwwroot/lib/jquery/dist/jquery.min.js"]);
+  });
+
+  it("reads `~/` from an ASP.NET Core project's own folder when no `wwwroot` stands beside its project file, and a Web Forms project's as before", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": coreProject,
+      "Web/Views/Home/Index.cshtml": "<script src=\"~/js/site.js\"></script>\n<script src=\"/js/site.js\"></script>"
+    }, ["Web/js/site.js"]);
+
+    expect(await linksOf("Web/Views/Home/Index.cshtml", fileIndex)).toEqual(["Web/js/site.js", "unresolved /js/site.js"]);
   });
 
   // ASP.NET removes `<%-- --%>` and Razor `@* *@` before anything is sent; no browser runs a script inside `<!-- -->`, and

@@ -38,10 +38,15 @@ function attribute(fragment: string, name: string): string | undefined {
   return new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, "iu").exec(fragment)?.[1];
 }
 
+/** The SDK a project file's `Project` element names, or `""` for a project of the classic format, which names none. */
+export function projectSdk(text: string): string {
+  return SDK.exec(withoutXmlComments(text))?.[1] ?? "";
+}
+
 /** What the project builds, read from a project file's text, what its comments hold set aside. */
 export function projectKind(text: string): string {
   const content = withoutXmlComments(text);
-  const sdk = SDK.exec(content)?.[1] ?? "";
+  const sdk = projectSdk(content);
   if (/\.Web$/iu.test(sdk) || (PROJECT_TYPE_GUIDS.exec(content)?.[1] ?? "").toLowerCase().includes(WEB_APPLICATION_GUID)) {
     return "web";
   }

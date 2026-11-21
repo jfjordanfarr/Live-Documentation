@@ -7,7 +7,7 @@ import type { SourceNotice } from "../coreTypes";
 import { folderOf, isProjectFile, joinWorkspacePath, lookUpWorkspaceFile, nearestProjectFolder, workspaceFile } from "./dotnetPaths";
 import { extractElementIds } from "./html";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { projectKind } from "./project";
+import { projectKind, projectSdk } from "./project";
 
 const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const SERVER_COMMENT = /<%--[\s\S]*?--%>/gu;
@@ -70,7 +70,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     const extension = path.extname(absolutePath).toLowerCase();
     // Each `notices` says why each path left unlinked has no link, for the run to count at its end.
     const razor = extension === ".cshtml" || extension === ".razor";
-    const scripts = await resolveScriptDependencies(withoutMarkupComments(content, razor), thisFile, workspaceRoot, fileIndex);
+    const scripts = await resolveScriptDependencies(withoutMarkupComments(content, razor), razor, thisFile, workspaceRoot, fileIndex);
     const directives = await resolveDirectiveDependencies(content, thisFile, extension, workspaceRoot, fileIndex);
     const dependencies: DependencyEntry[] = [
       ...scripts.dependencies,
@@ -129,6 +129,9 @@ function fileDependency(file: string): DependencyEntry {
   return { specifier: file, resolvedPath: file, symbols: [], kind: "import" };
 }
 
+/** Razor code in an attribute's value: `@` followed by a name, a parenthesis or a brace. */
+const RAZOR_CODE = /@[\p{L}_({]/u;
+
 /** An address with a scheme or a host of its own (`https://…`, `//cdn…`): served from elsewhere, never a file here. */
 const REMOTE_ADDRESS = /^(?:[a-z][a-z\d+.-]*:)?\/\//iu;
 
@@ -144,6 +147,7 @@ const REMOTE_ADDRESS = /^(?:[a-z][a-z\d+.-]*:)?\/\//iu;
  */
 async function resolveScriptDependencies(
   content: string,
+  razor: boolean,
   thisFile: string,
   workspaceRoot: string,
   fileIndex: WorkspaceFileIndex | undefined
@@ -154,7 +158,8 @@ async function resolveScriptDependencies(
     const written = match[1]?.trim();
     if (!written || REMOTE_ADDRESS.test(written)) continue;
     const bare = written.replace(/\\/gu, "/").replace(/[?#].*$/su, "");
-    if (!bare || bare.includes("<%") || bare.startsWith("@")) continue;
+    // Razor's code starts at `@` followed by a name or a parenthesis, anywhere in the value: `summernote-@(language).js`.
+    if (!bare || bare.includes("<%") || (razor ? RAZOR_CODE.test(bare) : bare.startsWith("@"))) continue;
 
     // A script named without an extension is its `.js` file when there is one.
     const asScript = path.extname(bare) ? undefined : await resolveDirectivePath(`${bare}.js`, thisFile, workspaceRoot, fileIndex);
@@ -244,6 +249,14 @@ export type DirectivePath = { file: string } | { reason: string };
  * November 19, 2026). Where none holds it there is no link either. A path from
  * the site's root (`/…`) names a deployed location no repository folder stands
  * for, and has no link.
+ *
+ * An ASP.NET Core application serves its web root instead, `wwwroot` by
+ * default (Microsoft's "Static files in ASP.NET Core"), and `~/` names it: so
+ * the root of a web project whose project file names the SDK
+ * `Microsoft.NET.Sdk.Web` and that has a `wwwroot` beside it is that folder.
+ * A view of such a project reads `~/` and `/` from its own web root alone,
+ * since it is the application; a module or plugin project's view reads `~/`
+ * from the web roots of the applications it may be deployed into, as above.
  */
 export async function resolveDirectivePath(
   written: string,
@@ -252,6 +265,13 @@ export async function resolveDirectivePath(
   fileIndex: WorkspaceFileIndex | undefined
 ): Promise<DirectivePath> {
   const slashed = written.replace(/\\/gu, "/");
+  const ownProject = fileIndex ? nearestProjectFolder(thisFile, fileIndex) : undefined;
+  const applications = fileIndex ? await webApplications(workspaceRoot, fileIndex) : new Map<string, WebApplication>();
+  const own = ownProject === undefined ? undefined : applications.get(ownProject);
+  if (own?.core && (slashed.startsWith("/") || slashed.startsWith("~/"))) {
+    const lookup = lookUpWorkspaceFile(joinWorkspacePath(own.root, slashed.replace(/^~?\//u, "")), fileIndex);
+    return "file" in lookup ? lookup : { reason: "ambiguous" in lookup ? DIRECTIVE_REASONS.caseTwins : DIRECTIVE_REASONS.none };
+  }
   if (slashed.startsWith("/")) return { reason: DIRECTIVE_REASONS.siteRoot };
   if (!slashed.startsWith("~/")) {
     const lookup = lookUpWorkspaceFile(joinWorkspacePath(folderOf(thisFile), slashed), fileIndex);
@@ -259,9 +279,8 @@ export async function resolveDirectivePath(
   }
   if (!fileIndex) return { reason: DIRECTIVE_REASONS.none };
   const fromRoot = slashed.slice(2);
-  const ownProject = nearestProjectFolder(thisFile, fileIndex);
-  const roots = new Set(await webProjectFolders(workspaceRoot, fileIndex));
-  if (ownProject !== undefined) roots.add(ownProject);
+  const roots = new Set(Array.from(applications.values(), (application) => application.root));
+  if (ownProject !== undefined) roots.add(own?.root ?? ownProject);
   const holders: string[] = [];
   for (const root of roots) {
     const lookup = lookUpWorkspaceFile(joinWorkspacePath(root, fromRoot), fileIndex);
@@ -271,26 +290,42 @@ export async function resolveDirectivePath(
   return { reason: holders.length > 1 ? DIRECTIVE_REASONS.several : DIRECTIVE_REASONS.none };
 }
 
-const webProjectFoldersCache = new WeakMap<WorkspaceFileIndex, Promise<string[]>>();
+/** A web application project: whether it is an ASP.NET Core one, and the folder it serves `~/` from. */
+interface WebApplication {
+  core: boolean;
+  root: string;
+}
 
-/** The folders of the workspace's web application projects. */
-function webProjectFolders(workspaceRoot: string, fileIndex: WorkspaceFileIndex): Promise<string[]> {
-  let pending = webProjectFoldersCache.get(fileIndex);
+const webApplicationsCache = new WeakMap<WorkspaceFileIndex, Promise<Map<string, WebApplication>>>();
+
+/** The workspace's web application projects, by folder. */
+function webApplications(workspaceRoot: string, fileIndex: WorkspaceFileIndex): Promise<Map<string, WebApplication>> {
+  let pending = webApplicationsCache.get(fileIndex);
   if (!pending) {
     pending = (async () => {
-      const folders = new Set<string>();
+      // The folders that hold a `wwwroot`, read once from the index: what is beside a project file is a fact of the files.
+      const webRoots = new Set<string>();
+      for (const file of fileIndex) {
+        const at = `/${file}`.toLowerCase().lastIndexOf("/wwwroot/");
+        if (at !== -1) webRoots.add(file.slice(0, Math.max(at - 1, 0)));
+      }
+      const applications = new Map<string, WebApplication>();
       for (const file of Array.from(fileIndex).filter(isProjectFile).sort()) {
         try {
-          if (projectKind(await readSourceText(path.join(workspaceRoot, file))) === "web") folders.add(folderOf(file));
+          const text = await readSourceText(path.join(workspaceRoot, file));
+          if (projectKind(text) !== "web") continue;
+          const folder = folderOf(file);
+          const core = projectSdk(text).toLowerCase() === "microsoft.net.sdk.web" && webRoots.has(folder);
+          applications.set(folder, { core, root: core ? joinWorkspacePath(folder, "wwwroot") ?? folder : folder });
         } catch (error) {
           // A failure of the machine's is thrown on, to the generator's catch, which names it; a project file that
           // cannot be read for a cause of its own says nothing about what it builds.
           throwIfMachineFailure(error);
         }
       }
-      return Array.from(folders).sort();
+      return applications;
     })();
-    webProjectFoldersCache.set(fileIndex, pending);
+    webApplicationsCache.set(fileIndex, pending);
   }
   return pending;
 }
