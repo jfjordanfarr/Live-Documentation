@@ -100,6 +100,12 @@ The oracle measures the shipped generator against a compiler, which shares no me
 
 The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside it.
 
+**What a scan leaves out** (`packages/engine/src/tooling/leaveOut.ts`, since 2026-11-21) has two oracles of its own, both in the `unit` project.
+- `leaveOut.oracle.test.ts` asks git itself, `git check-ignore -v -n --no-index`, of trees it makes in fresh repositories.
+- `leaveOut.tfvc.test.ts` reads `__fixtures__/tfignore-oracle.json`: the verdicts of Microsoft's own TFVC matcher (Team Explorer Everywhere's, compiled unchanged), recorded by the probe's `record-tfvc-oracle.mjs`. Recording needs Java and Microsoft's sources. Reading needs neither, so the recording is redone only when the trees change, as `oracle:index` is for a compiler's edges.
+
+[The probe](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md) says how the TFVC oracle is built and what the function agreed on.
+
 ---
 
 ## SlopCop audits
