@@ -57,6 +57,26 @@ describe("findBrokenAssetReferences", () => {
     });
   });
 
+  it("reads CSS's url() and not a script's call whose name ends in URL", () => {
+    withWorkspace((workspace) => {
+      // A page's own script that frees a download's address is no reference to a file named `e.href`.
+      writeFile(
+        workspace,
+        "docs/page.html",
+        [
+          "<style>.a{background:url(missing.png)}</style>",
+          "<script>const u=URL.createObjectURL(blob);e.href=u;URL.revokeObjectURL(e.href);</script>"
+        ].join("\n")
+      );
+
+      const issues = findBrokenAssetReferences(path.join(workspace, "docs/page.html"), {
+        workspaceRoot: workspace
+      });
+
+      expect(issues.map(issue => issue.target)).toEqual(["missing.png"]);
+    });
+  });
+
   it("ignores external and data URIs", () => {
     withWorkspace((workspace) => {
       writeFile(

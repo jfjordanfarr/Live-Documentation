@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/slopcop/assetPaths.ts`
-- Generated At: 2026-11-19T21:10:19.544Z
+- Generated At: 2026-11-21T18:50:12.300Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ Configuration for scanning HTML/CSS files for broken asset references.
 
 #### `findBrokenAssetReferences` {#symbol-findbrokenassetreferences}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/assetPaths.ts#L36)
+- Source: [source](../../../../scripts/slopcop/assetPaths.ts#L38)
 - Returns: [`AssetReferenceIssue`](#symbol-assetreferenceissue)[]
 - Parameters: `options`: [`AssetAuditOptions`](#symbol-assetauditoptions)
 
