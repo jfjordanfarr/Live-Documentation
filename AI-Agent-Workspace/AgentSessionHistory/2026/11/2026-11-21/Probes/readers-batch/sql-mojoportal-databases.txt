@@ -1,0 +1,13 @@
+C# before the SQL change:
+('code', 'another database') 247
+('code', 'outside a data layer') 14
+('code', 'same database') 50
+SQL scripts before:
+('sql', 'another database') 52
+('sql', 'same database') 34
+both after:
+('code', 'another database') 415
+('code', 'outside a data layer') 29
+('code', 'same database') 133
+('sql', 'another database') 127
+('sql', 'same database') 45
