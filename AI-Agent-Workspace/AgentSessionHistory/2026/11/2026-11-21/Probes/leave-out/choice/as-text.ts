@@ -47,7 +47,13 @@ async function main(): Promise<void> {
   lines.push(`The list: ${plural(list.split("\n").filter((line) => line.trim() && !line.trim().startsWith("#")).length, "line")}, names matched ${ignoreCase ? "without" : "with"} regard to case.`);
   // As the page shows it: a row a block of the list (from a `###` heading to the next), largest first, then its lines
   // that act, largest first; a kind a reader reads is marked `[read]`.
-  const kindsOf = (kinds: Map<string, number>): string => [...kinds].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([kind, n]) => `${kind} ${n}${kind.startsWith(".") && hasReader(`file${kind}`) ? " [read]" : ""}`).join(", ");
+  // As the page says them: the kinds a reader reads first, whatever their size, then the largest others, four in all.
+  const read = (kind: string): boolean => kind.startsWith(".") && hasReader(`file${kind}`);
+  const kindsOf = (kinds: Map<string, number>): string => {
+    const sorted = [...kinds].sort((a, b) => b[1] - a[1]);
+    const code = sorted.filter(([kind]) => read(kind));
+    return [...code, ...sorted.filter(([kind]) => !read(kind)).slice(0, Math.max(1, 4 - code.length))].map(([kind, n]) => `${kind} ${n}${read(kind) ? " [read]" : ""}`).join(", ");
+  };
   // How many files of kinds a reader reads: the lines that leave such files out come first in their block.
   const codeIn = (kinds: Map<string, number>): number => [...kinds].reduce((sum, [kind, n]) => sum + (kind.startsWith(".") && hasReader(`file${kind}`) ? n : 0), 0);
   const said = (group: { folders: unknown[]; leftOut: number }): string => [group.folders.length ? plural(group.folders.length, "folder") : "", group.leftOut ? plural(group.leftOut, "file") : ""].filter(Boolean).join(" · ");

@@ -208,6 +208,100 @@
       },
       "words": "We don't want the tests in this scan. Make it leave out `DNN Platform/Tests`, then tell me how many files the scan will read.",
       "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers rewritten 2026-11-21 for the mended page (e1a1dd502) before any of its runs, from the folder as made and from the page's own model run over it (`Probes/blind-playtests/leave-out-answers.mts`); the construction checks the totals: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the boxes as before (boxes=mixed: half-ticked where anything beneath is left out), the switch hidden. `DNN Platform/Tests` holds 900 files, 543 of them read until now. Left out (in the folder tree, or by the pattern `/DNN Platform/Tests/` or `DNN Platform/Tests/`), the scan reads 10,402 files (6,842 left out). Right: the folder left out and 10,402 said. Partly: left out with the number wrong or not said, or more than that folder left out. Wrong: not left out, or a number given without a change made."
+    },
+    {
+      "id": "one-list-cold",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "I've just pointed this at my folder and haven't touched anything yet. If I scanned right now, how many files would it read? And what is it suggesting I could do first?",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (the leave-out record's eighth leg; `choice.html` as built at 4f5703485 on its builder's branch, served from that worktree until it is merged, when `page` becomes `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html`). The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files), handed to the page's folder input before the tester begins; the list starts empty. Counts are git's, not the page's: `git ls-files -o --exclude-from=<list>` with core.ignorecase=true over the made folder (the blind-playtests README, 'One list tried on strangers'). Nothing is left out: 17,244 files would be read. It found 25 .gitignore files and 15 .tfignore files (in 3 top folders: DNN Platform, Dnn.AdminExperience, Build) and offers to use them (replace the list), add them, or ignore them. In the empty list it offers two starting lists: what these folders hold (47 lines, 6,291 files left out: every bin and obj beside a project, 1,714 files by the making, and the 45 NuGet packages folders, 4,577 files) and GitHub's Visual Studio list (234 lines, 6,363 files left out); or lines written as in a .gitignore. Right: 17,244 and both kinds of offer (the ignore files found with their choices, and at least one starting list). Partly: 17,244 with only one kind of offer, or the offers right and the number missing. Wrong: another number, or the list changed before answering."
+    },
+    {
+      "id": "one-list-own-files",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Go by the ignore files this folder already has, nothing more. How many files will the scan read then, and how many will it leave out?",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files, the list empty at the start; counts by git. Taking in the 25 .gitignore and 15 .tfignore files (Use, or Add on the empty list, which is the same): 15,593 read, 1,651 left out. Git got this two ways that agree: its own reading of the nested .gitignore files and of the .tfignore files as nested files (their lines are names and `*.ext` only), a file read when both keep it; and the page's translated lines applied as one top-level file. Right: 15,593 and 1,651, by the found files alone. Partly: one of the two numbers right, or the right numbers with a few of the files left aside. Wrong: a starting list taken as well (10,945 with what the folders hold), or no change made."
+    },
+    {
+      "id": "one-list-dev",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Get this down to what a developer would actually want scanned: no build output and no downloaded packages. How many files will be read? Tell me what you did.",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files, the list empty at the start; counts by git. Any honest route counts; the judge records which. Every bin and obj beside a project (1,714 files) and every NuGet packages folder (4,577 files) must be left out. By route: what these folders hold, alone, 10,953 (6,291 left out; its 47 lines are bin/, obj/ and one line per packages folder, the same lines git was given from the making); the Visual Studio list alone, 10,881 (it also leaves out 22 .cs files under folders named Log, 29 files of DNN Platform/Website/js/Debug and, by `**/[Pp]ackages/*`, the 11 .cs files of DNN Platform/Library/Services/Installer/Packages; that last was found after the runs, see `one-list-vs-code`); both, 10,881; the folder's own ignore files and what the folders hold, 10,945; the folder's files and the Visual Studio list, 10,873; all three, 10,873; typed `bin/`, `obj/`, `packages/`, 10,939 (it also leaves out DNN's own Services/Installer/Packages and Tests/Packages, 14 files). Right: a route that leaves out both kinds, with its own number said and the route described. Partly: the route right and the number wrong or missing, or one kind left in. Wrong: the folder's own ignore files alone (15,593: the top packages folder of 661 files and most project packages folders are read), or no change made."
+    },
+    {
+      "id": "one-list-vs-code",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Start from the standard Visual Studio ignore list. Does any line in it leave out real source code, code someone here wrote? Which line, and how many files?",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files, the list empty at the start. GitHub's VisualStudio.gitignore (the copy in the leave-out record's `starting-lists/`) applied alone leaves out 6,363 files, 10,881 read. Each left-out file was traced to its deciding line by `git check-ignore -v` over the made folder, and its folder looked at: `[Ll]og/` leaves out 22 .cs files of DNN's own code (17 in DNN Platform/Library/Services/Log/EventLog, 3 in Services/Installer/Log, 2 in Dnn.AdminExperience's Servers/Log), 3 folders; `[Dd]ebug/` leaves out DNN Platform/Website/js/Debug, 29 files of which 27 are .js. Not the team's code: `[Oo]bj/` (163 .cs files, all generated: TemporaryGeneratedFile_*.cs and *.AssemblyInfo.cs in the made obj folders). Corrected after the runs, the same evening: `**/[Pp]ackages/*` (line 232 of the page's list) also leaves out real source, the 11 .cs files of DNN Platform/Library/Services/Installer/Packages (IPackageController.cs, PackageInfo.cs and the like), among its 206 folders of downloaded packages; before the runs I had read a truncated listing and written that its .cs files lay inside downloaded packages. `one-list-answers.sh` beside the record prints all three lines' code files. The runs were judged by the criteria as first written, and the record says that every tester missed this third line. Alone the list's own lines stand from line 2 (`[Ll]og/` is line 48 and `[Dd]ebug/` line 22 of the page's list with its heading). Right: `[Ll]og/` with 22 files (or its folders named), with or without `[Dd]ebug/` and its 27 .js (29 files). Partly: `[Dd]ebug/` alone, or `[Ll]og/` with the count wrong, or the code-marked lines named without telling generated or downloaded code from the team's (`[Oo]bj/` 163 given as real source). Wrong: no, or a line that leaves out no code."
+    },
+    {
+      "id": "one-list-png-tests",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Leave out every PNG image and the folder `DNN Platform/Tests`. Then tell me how many files will be read, and show me the lines that did it.",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files, the list empty at the start; counts by git. 1,325 .png files; DNN Platform/Tests holds 900 files, one of them a .png. On the empty list, `*.png` and `/DNN Platform/Tests/` (what the page's minus on .png and on that folder write, under a heading `### Yours`; typed `DNN Platform/Tests/` or `*.PNG` do the same) leave 15,020 read, 2,224 left out (`*.png` alone 15,919; the folder alone 16,344). Right: 15,020 and the two lines shown. Partly: the lines right and the number wrong or missing, or the number right and the lines not shown. Wrong: another folder or kind left out as well, or no change made."
+    },
+    {
+      "id": "one-list-keep-folder",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "press": [
+        "#offers [data-offer=\"what-it-holds\"]"
+      ],
+      "words": "The folder `DNN Platform/Library/packages` is code our team wrote, not something downloaded, but right now it's being left out. Make the scan read it, then tell me what changed in the list and how many files will be read.",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files. In the setup the offer of what these folders hold is pressed: 47 lines, 10,953 read, 6,291 left out, `/DNN Platform/Library/packages/` one of its lines (89 files). Counts by git. Kept, by the line taken out of the list (the plus on that line, or the text edited) or by `!/DNN Platform/Library/packages/` added (the plus on the folder inside that line, written under `### Yours`): 11,042 read, 6,202 left out, either way. Right: the folder kept, the change in the list said (a line removed or a `!` line added), and 11,042. Partly: kept with the number wrong or missing, or the list's change not said. Wrong: the whole block taken out (17,244), the folder's own ignore files used in place of the list (15,593), another folder kept, or no change made."
+    },
+    {
+      "id": "one-list-integrate",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "press": [
+        "#offers [data-offer=\"what-it-holds\"]"
+      ],
+      "words": "Someone already set this up to skip build output and downloaded packages. Keep that, and also go by the ignore files that came with the folder. How many files will be read?",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files. In the setup the offer of what these folders hold is pressed (47 lines, 10,953 read). Counts by git. The found files added to the list (Add): 10,945 read, 6,299 left out. Used in its place (Use, which replaces the list): 15,593. Right: the found files added, the earlier lines kept, 10,945. Partly: added with the number wrong or missing. Wrong: the list replaced (15,593), or the found files ignored, or no change made."
+    },
+    {
+      "id": "one-list-reuse",
+      "map": "one-list choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "I'll be scanning more folders like this one. Set it up to skip build output and downloaded packages, then get me that setup in a form I can use again next time.",
+      "rightAnswer": "Written 2026-11-21 before any run, for the one-list trial page (as in `one-list-cold`); the made folder of 17,244 files, the list empty at the start; counts by git. The setup is the list's text: after what these folders hold, 51 lines (47 that act: `bin/`, `obj/` and 45 anchored packages folders), 10,953 read; other routes as in `one-list-dev`. The tester's reply and its clipboard reach the person (the copy tool puts the whole list on the clipboard); the save tool's download is refused by the harness, so a saved file cannot reach the person in this instrument, though it would for a person. Right: the whole list reaches the person (clipboard or reply), or lines that do the same work (for example `bin/`, `obj/`, `packages/`), with how to use it again. Partly: the save tool pressed and named as the way, nothing on the clipboard or in the reply; or part of the list. Wrong: nothing reusable given, or a list that leaves build output or packages in."
     }
   ]
 }

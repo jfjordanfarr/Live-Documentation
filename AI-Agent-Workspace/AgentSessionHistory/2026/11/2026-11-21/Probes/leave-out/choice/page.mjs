@@ -30,7 +30,10 @@ const remembered = (() => {
 })();
 const state = {
   source: null, result: null, list: remembered.list, ignoreCase: remembered.ignoreCase === undefined ? true : remembered.ignoreCase === "true",
-  rememberedCase: remembered.ignoreCase, opened: new Set(), shown: new Map(), foundAnswered: undefined, foundSaid: undefined, leftAside: new Set()
+  rememberedCase: remembered.ignoreCase, opened: new Set(), shown: new Map(), foundAnswered: undefined, foundSaid: undefined, leftAside: new Set(),
+  // The list's earlier texts and those undone, for undo and redo; the list as it stood before a choice on the notice;
+  // which offer was taken while the offers are held in place.
+  history: [], future: [], beforeFound: undefined, offerTaken: undefined
 };
 
 // ---------------------------------------------------------------------------
@@ -126,8 +129,13 @@ function draw() {
   $("#choice").hidden = !result;
   if (!result) return;
   const t = totals(result);
-  $("#totals").textContent = [`${count(t.read, "file")} will be read`, t.leftOutFiles ? `${count(t.leftOutFiles, "file")} left out` : "",
-    state.source.lazy && t.notLookedInside ? `${count(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ");
+  // Beside the totals, how many of the files left out a reader would have read: where the eye already is, so that an
+  // edit that raises it is seen (strangers typed `packages/` and missed the code it took).
+  const code = result.lines.reduce((sum, group) => sum + codeIn(group.kinds), 0);
+  $("#totals").replaceChildren([`${count(t.read, "file")} will be read`, t.leftOutFiles ? `${count(t.leftOutFiles, "file")} left out` : "",
+    state.source.lazy && t.notLookedInside ? `${count(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · "),
+  code ? element("span", { class: "totals-code" }, " · ", codeSign(code), element("span", { text: ` of them ${code === 1 ? "is" : "are"} code a reader would read` })) : "");
+  $("#undo").disabled = state.history.length === 0;
   $("#scan-result").textContent = "";
   if ($("#list").value !== state.list) $("#list").value = state.list;
   // Each part's drawing timed, so that a slow one can be named (`state.drawTimes`).
@@ -169,8 +177,40 @@ function remember() {
   }
 }
 
+/**
+ * Every change to the list, the page's own (a choice on the notice, a starting list, a plus, a minus, Empty) and the
+ * person's typing alike, keeps what it replaced, so that it can be taken back: Control+Z in the list, or the undo tool.
+ * Designers call this forgiveness: an action with a way back needs no warning. Typing is kept as one change per pause.
+ */
 function setList(text) {
+  if (text !== state.list) {
+    state.history.push(state.list);
+    state.future = [];
+  }
   state.list = text;
+  remember();
+  void decideAgain();
+}
+
+/** Typing not yet taken into the list (the 400 ms pause has not passed) is taken in first, so that undo begins there. */
+function takeTyping() {
+  clearTimeout(typing);
+  if ($("#list").value !== state.list) setList($("#list").value);
+}
+
+function undo() {
+  takeTyping();
+  if (state.history.length === 0) return;
+  state.future.push(state.list);
+  state.list = state.history.pop();
+  remember();
+  void decideAgain();
+}
+
+function redo() {
+  if (state.future.length === 0) return;
+  state.history.push(state.list);
+  state.list = state.future.pop();
   remember();
   void decideAgain();
 }
@@ -225,6 +265,16 @@ $("#list").addEventListener("input", (event) => {
 $("#list").addEventListener("scroll", () => {
   $("#gutter").scrollTop = $("#list").scrollTop;
 });
+// Control+Z and Control+Y (or Control+Shift+Z) in the list take a change back and forward, the page's changes included.
+$("#list").addEventListener("keydown", (event) => {
+  if (!(event.ctrlKey || event.metaKey)) return;
+  const key = event.key.toLowerCase();
+  if (key === "z" && !event.shiftKey) undo();
+  else if (key === "y" || (key === "z" && event.shiftKey)) redo();
+  else return;
+  event.preventDefault();
+});
+$("#undo").addEventListener("click", undo);
 $("#ignore-case").addEventListener("change", (event) => {
   state.ignoreCase = event.target.checked;
   remember();
@@ -297,11 +347,24 @@ function offer(kind) {
 }
 document.querySelectorAll("[data-prefill]").forEach((button) => button.addEventListener("click", () => offer(button.dataset.prefill)));
 
+/**
+ * Nothing a person may be about to press moves or goes as a side effect of their last press: once an offer is taken,
+ * the offers stay where they are, the taken one marked, until the person acts anywhere outside them (a press or a key
+ * elsewhere on the page). Only then do they leave, as the list now holds lines.
+ */
+function letOffersGo(event) {
+  if (state.offerTaken === undefined || event.target.closest?.("#offers")) return;
+  state.offerTaken = undefined;
+  drawOffers();
+}
+document.addEventListener("pointerdown", letOffersGo, true);
+document.addEventListener("keydown", letOffersGo, true);
+
 /** In the list's empty place, the starting lists as offers, each saying what it would do here; gone once the list acts. */
 function drawOffers() {
   const empty = acting(state.list) === 0;
-  $("#offers").hidden = !empty;
-  if (!empty) return;
+  $("#offers").hidden = !empty && state.offerTaken === undefined;
+  if ($("#offers").hidden) return;
   if (!state.offers) {
     $("#offers").replaceChildren(element("p", { class: "quiet", text: "Counting what each starting list would leave out here…" }));
     // Counted after the page has drawn, the thread handed back first.
@@ -316,12 +379,17 @@ function drawOffers() {
     return;
   }
   const card = (kind, title, said) => {
-    const button = element("button", { type: "button", class: "offer", "data-offer": kind }, icon("prefill"), element("span", {}, element("strong", { text: title }), element("span", { class: "quiet", text: said })));
-    button.addEventListener("click", () => offer(kind));
+    const taken = state.offerTaken === kind;
+    const button = element("button", { type: "button", class: `offer${taken ? " taken" : ""}`, "data-offer": kind, disabled: taken },
+      icon(taken ? "tick" : "prefill"), element("span", {}, element("strong", { text: title }), element("span", { class: "quiet", text: taken ? "In your list" : said })));
+    button.addEventListener("click", () => {
+      state.offerTaken = kind;
+      offer(kind);
+    });
     return button;
   };
   $("#offers").replaceChildren(
-    element("p", { class: "quiet", text: "Your list is empty: nothing is left out. Start from" }),
+    element("p", { class: "quiet", text: state.offerTaken ? "Taken into your list. Also start from" : "Your list is empty: nothing is left out. Start from" }),
     card("what-it-holds", "What these folders hold", `${count(state.offers.proposed.lines, "line")} · ${count(state.offers.proposed.files, "file")} left out`),
     card("visual-studio", "GitHub's Visual Studio list", `${count(state.offers.visualStudio.lines, "line")} · ${count(state.offers.visualStudio.files, "file")} left out`),
     element("p", { class: "quiet", text: "or write lines below, as in a .gitignore." }));
@@ -331,19 +399,46 @@ function drawOffers() {
 // Ignore files found: one notice, three choices for all, a choice per file for whoever opens it
 // ---------------------------------------------------------------------------
 
+/**
+ * The choices on the notice, said as what each does to the list, in the owner's verbs (use: replace; integrate: add;
+ * ignore: no change). While the list is empty, replacing and adding are one act, so there are two choices. After a
+ * choice the others stay, worked from the list as it stood before it: a person who took the wrong one takes the other.
+ */
+function choicesNow() {
+  const before = state.foundAnswered === undefined ? state.list : state.beforeFound;
+  const held = acting(before);
+  if (held === 0) {
+    return state.foundAnswered === undefined
+      ? [["use", "Take them in", "Your list is empty: their lines become your list"], ["ignore", "Ignore them", "Leave your list as it is"]]
+      : [["ignore", "Take them out again", "Your list goes back to empty"]];
+  }
+  const all = [
+    ["use", `Replace your list (removes ${count(held, "line")})`, `Their lines in place of your ${count(held, "line")}`],
+    ["add", "Add them to your list", `Their lines after your ${count(held, "line")}`],
+    ["ignore", state.foundAnswered === undefined ? "Leave your list alone" : "Put your list back", "Your list as it was"]
+  ];
+  return all.filter(([take]) => take !== state.foundAnswered);
+}
+
 function drawFound(result) {
   const box = $("#found");
-  if (result.found.length === 0 || state.foundAnswered === "ignore") {
+  if (result.found.length === 0) {
     box.hidden = true;
     return;
   }
   box.hidden = false;
+  // A choice taken back (by undo, or by hand) leaves the notice as it was before it: it says what the list now is.
+  if (state.foundAnswered !== undefined && state.list === state.beforeFound) state.foundAnswered = undefined;
   const kinds = [".gitignore", ".tfignore"].map((kind) => [kind, result.found.filter((file) => file.kind === kind).length]).filter(([, n]) => n > 0);
   const where = new Set(result.found.map((file) => (file.path.includes("/") ? file.path.slice(0, file.path.indexOf("/")) : "the top"))).size;
-  $("#found-what").textContent = state.foundAnswered
-    ? `Taken into your list: ${kinds.map(([kind, n]) => count(n, `${kind} file`)).join(" and ")}`
-    : `Found ${kinds.map(([kind, n]) => count(n, `${kind} file`)).join(" and ")}, in ${count(where, "top folder")}`;
-  document.querySelectorAll("[data-take]").forEach((button) => (button.hidden = Boolean(state.foundAnswered)));
+  const files = kinds.map(([kind, n]) => count(n, `${kind} file`)).join(" and ");
+  const done = { use: `Your list is now their lines: ${files}`, add: `Added to your list: ${files}`, ignore: `Not taken in: ${files}` }[state.foundAnswered];
+  $("#found-what").textContent = done ?? `Found ${files}, in ${count(where, "top folder")}`;
+  $("#found-choices").replaceChildren(...choicesNow().map(([take, label, tip]) => {
+    const button = element("button", { type: "button", class: "tip", "data-take": take, "data-tip": tip }, label);
+    button.addEventListener("click", () => take === "ignore" ? leaveFound() : takeFound(take));
+    return button;
+  }));
   const open = $("#found-open").getAttribute("aria-expanded") === "true";
   $("#found-open").replaceChildren(icon(open ? "open" : "closed"));
   $("#found-files").hidden = !open;
@@ -368,16 +463,24 @@ $("#found-open").addEventListener("click", () => {
   $("#found-open").setAttribute("aria-label", open ? "Show the files found" : "Hide the files found");
   drawFound(state.result);
 });
-document.querySelectorAll("[data-take]").forEach((button) => button.addEventListener("click", () => {
-  const take = button.dataset.take;
+/** The notice folded back to its one line, the choice remembered and the list as it stood before kept. */
+function answerFound(take) {
+  if (state.foundAnswered === undefined) state.beforeFound = state.list;
   state.foundAnswered = take;
-  // Answered: the notice folds back to its one line.
   $("#found-open").setAttribute("aria-expanded", "false");
   $("#found-open").setAttribute("aria-label", "Show the files found");
-  if (take === "ignore") {
-    draw();
-    return;
-  }
+}
+
+/** Ignore: the list as it stood before any choice; before one, nothing changes. */
+function leaveFound() {
+  const before = state.foundAnswered === undefined ? undefined : state.beforeFound;
+  answerFound("ignore");
+  if (before !== undefined && before !== state.list) setList(before);
+  else draw();
+}
+
+function takeFound(take) {
+  answerFound(take);
   const chosen = state.result.found.filter((file) => !state.leftAside.has(file.path));
   const git = fromGitignores(chosen.filter((file) => file.kind === ".gitignore"), { folders: listingNow().folders, ignoreCase: state.ignoreCase });
   const tf = fromTfignores(chosen.filter((file) => file.kind === ".tfignore"));
@@ -389,9 +492,11 @@ document.querySelectorAll("[data-take]").forEach((button) => button.addEventList
   state.foundSaid = said.length ? said.join(" ") : undefined;
   const heading = "The folder's own ignore files";
   const lines = [...git.lines, ...tf.lines];
+  // Each choice is worked from the list as it stood before the first, so that one choice can be traded for another.
+  const before = state.beforeFound.replace(/\s+$/u, "");
   if (take === "use") setList(`### ${heading}\n${lines.join("\n")}\n`);
-  else addBlock(heading, lines);
-}));
+  else setList(`${before}${before ? "\n\n" : ""}### ${heading}\n${lines.join("\n")}\n`);
+}
 
 /** One line saying how many `!` lines cannot keep what they name, opened on demand to the lines themselves. */
 function drawNotes(result) {
@@ -447,7 +552,11 @@ const isCode = (kind) => kind.startsWith(".") && hasReader(`file${kind}`);
 
 /** The three largest kinds left out, those a reader reads set in weight, with their meaning in words for a screen reader. */
 function kindsOf(kinds) {
-  const top = [...kinds].sort((a, b) => b[1] - a[1]).slice(0, 3);
+  // The kinds a reader reads first, whatever their size (eleven `.cs` files among four thousand downloaded ones went
+  // unseen behind `.dll · .xml · .pdb`), then the largest others: four in all, more where code needs them.
+  const sorted = [...kinds].sort((a, b) => b[1] - a[1]);
+  const codeKinds = sorted.filter(([kind]) => isCode(kind));
+  const top = [...codeKinds, ...sorted.filter(([kind]) => !isCode(kind)).slice(0, Math.max(1, 4 - codeKinds.length))];
   const said = top.map(([kind, n]) => `${kind} ${n.toLocaleString("en")}${isCode(kind) ? ", read by a reader" : ""}`).join("; ");
   const span = element("span", { class: "kinds", "aria-label": said });
   top.forEach(([kind, n], index) => {
@@ -607,6 +716,9 @@ const ICONS = {
   save: "M12 4v11M7 10l5 5 5-5M5 20h14",
   load: "M12 20V9M7 14l5-5 5 5M5 4h14",
   prefill: "M4 6h16M4 12h10M4 18h7M17 15v6M14 18h6",
+  tick: "M5 12l4 4 10-10",
+  // A curved arrow back: the last change taken back.
+  undo: "M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3",
   // Angle brackets, for what a reader reads.
   code: "M8 7l-5 5 5 5M16 7l5 5-5 5"
 };
@@ -633,6 +745,8 @@ async function start(source) {
   state.shown = new Map();
   state.foundAnswered = undefined;
   state.foundSaid = undefined;
+  state.beforeFound = undefined;
+  state.offerTaken = undefined;
   state.leftAside = new Set();
   state.offers = undefined;
   $("#folder-name").textContent = source.label;
