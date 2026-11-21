@@ -47,7 +47,7 @@ export const STAND_INS = {
 export const GRAMMARS = [
   "node_modules/web-tree-sitter/web-tree-sitter.wasm",
   "packages/engine/grammars/powershell/tree-sitter-powershell.wasm",
-  ...["c-sharp", "cpp", "go", "java", "python", "rust"].map((grammar) => `node_modules/@vscode/tree-sitter-wasm/wasm/tree-sitter-${grammar}.wasm`)
+  ...["c-sharp", "cpp", "go", "java", "python", "ruby", "rust"].map((grammar) => `node_modules/@vscode/tree-sitter-wasm/wasm/tree-sitter-${grammar}.wasm`)
 ];
 
 const standIn = (name) => path.join(here, "stand-ins", name);
