@@ -17,6 +17,14 @@ opened: 2026-11-20
 
 ## Tasks
 
+
+### The 3D start veils the repository's largest group
+- state: open
+- holds: a question for the owner's eye, with a picture; nothing built
+- evidence: [the picture and its cause](../AgentSessionHistory/2026/11/2026-11-21/Screenshots/archipelago-veiled/README.md)
+
+A picture draws at most 1,024 files within its skins (2026-11-07), veiling past that the bodies farthest from what was asked, the largest first. With nothing asked every group is equally far, so the largest is veiled first. On 2026-11-21 this repository's groups passed the budget (1,137 files beside their seeds, where 1,016 stood two days before) and its main body, 696 of 1,279 files, opens as one veiled bubble while every small group shows its files. Alternatives, none built: as now; with nothing asked, veil the smallest groups first so the main body stays drawn; a larger budget, measured on the weakest machine the tool is to serve. Root's lean is the second, as a trial lever with matched pictures.
+
 ### A press costs the same whatever the picture's size
 - state: review
 - holds: the branch `press-landing`, its checkout `.claude/worktrees/landing`: the mend's last commit is `5594f9f1b`, and `main` was merged into it on 2026-11-21; not on `main`
