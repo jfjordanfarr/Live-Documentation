@@ -470,6 +470,87 @@ describe("database objects", () => {
   });
 });
 
+/*
+ * A reviewer's cases of 2026-11-21, each red when committed: spellings of PostgreSQL and MySQL beside the family the
+ * batch of that day taught the reader (`IF NOT EXISTS`, backticks, `TEMP`), each with the dialect's own rule. No engine
+ * of either is on the machine, so each expectation is the manual's, quoted. Several are rules of one dialect that
+ * another reads otherwise on the same text (MySQL's `#` and T-SQL's `#name`, MySQL's `\'` and T-SQL's `'C:\Backup\'`):
+ * the reader knows no dialect, so a mend there is a fork, which the cases make visible rather than decide.
+ */
+describe("database objects in PostgreSQL's and MySQL's spellings", () => {
+  const declared = (script: string): string[] => sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`);
+
+  // PostgreSQL's default schema is `public` ("The Public Schema": "By default such tables (and other objects) are
+  // automatically put into a schema named "public""), a word PostgreSQL does not reserve, and `pg_dump` writes it before
+  // every name; T-SQL reserves PUBLIC, and the reader takes T-SQL's reserved words for no name. mojoPortal's
+  // PostgreSQL install scripts (13, read as `.sql`) are declared as nothing: 0 declarations, 517 when written `"public"`.
+  it("reads a name in PostgreSQL's schema `public`", () => {
+    expect(declared("CREATE TABLE public.mp_pages (pageid integer);\nCREATE VIEW public.v AS SELECT * FROM public.mp_pages;\n")).toEqual(["table public.mp_pages", "view public.v"]);
+    expect(sqlReferences("SELECT * FROM public.mp_pages;").map((reference) => `${reference.verb} ${reference.name.parts.join(".")}`)).toEqual(["FROM public.mp_pages"]);
+  });
+
+  // "Dollar-Quoted String Constants": "inside the dollar-quoted string, single quotes can be used without needing to be
+  // escaped. Indeed, no characters inside a dollar-quoted string are ever escaped".
+  it("reads past a dollar-quoted string that holds an apostrophe", () => {
+    expect(declared("COMMENT ON TABLE t IS $$It's the table$$;\nCREATE TABLE after_it (id int);\nCREATE TABLE after_two (id int);\n")).toEqual(["table after_it", "table after_two"]);
+  });
+
+  // A PostgreSQL function's body is the dollar-quoted string after `AS`; the statement ends at its `;`, where T-SQL's
+  // runs to the batch's end. Read as T-SQL's, every table after the function is taken for one its body makes.
+  it("ends a PostgreSQL function at the end of its statement, not of the script", () => {
+    expect(declared([
+      "CREATE OR REPLACE FUNCTION touch() RETURNS trigger AS $$",
+      "BEGIN",
+      "  NEW.updated := now();",
+      "  RETURN NEW;",
+      "END;",
+      "$$ LANGUAGE plpgsql;",
+      "CREATE TABLE after_it (id int);"
+    ].join("\n"))).toEqual(["sql-function touch", "table after_it"]);
+  });
+
+  // "CREATE MATERIALIZED VIEW": PostgreSQL's (and Oracle's) lasting view whose rows are kept.
+  it("reads a materialized view as a view", () => {
+    expect(declared("CREATE MATERIALIZED VIEW IF NOT EXISTS mv AS SELECT 1;\n")).toEqual(["view mv"]);
+  });
+
+  // MySQL's "Comments": "From a # character to the end of the line." (`#` followed by a space is never T-SQL's `#name`.)
+  it("reads nothing after MySQL's `#` comment", () => {
+    expect(declared("# CREATE TABLE gone (id int);\nCREATE TABLE kept (id int);\n")).toEqual(["table kept"]);
+  });
+
+  // MySQL's "Comments": "/*! MySQL-specific code */ In this case, MySQL Server parses and executes the code within the
+  // comment as it would any other SQL statement"; `mysqldump` writes every view so.
+  it("reads what MySQL's executable comment holds, as mysqldump writes a view", () => {
+    expect(declared([
+      "/*!50001 CREATE ALGORITHM=UNDEFINED */",
+      "/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */",
+      "/*!50001 VIEW `v_kept` AS select `t`.`id` AS `id` from `t` */;"
+    ].join("\n"))).toEqual(["view v_kept"]);
+  });
+
+  // MySQL's "CREATE PROCEDURE": `CREATE [DEFINER = user] PROCEDURE sp_name (…) routine_body`; the body is one
+  // statement, here `BEGIN … END`, which the client's `DELIMITER` lets hold `;`.
+  it("reads MySQL's `CREATE DEFINER=… PROCEDURE`, and ends a procedure at its body's `END`", () => {
+    expect(declared([
+      "DELIMITER $$",
+      "CREATE DEFINER=`root`@`localhost` PROCEDURE `p_kept`()",
+      "BEGIN",
+      "  SELECT * FROM t;",
+      "END$$",
+      "DELIMITER ;",
+      "CREATE TABLE after_it (id int);"
+    ].join("\n"))).toEqual(["procedure p_kept", "table after_it"]);
+    expect(declared("DELIMITER //\nCREATE PROCEDURE p_kept()\nBEGIN\n  SELECT * FROM t;\nEND //\nDELIMITER ;\nCREATE TABLE after_it (id int);\n")).toEqual(["procedure p_kept", "table after_it"]);
+  });
+
+  // MySQL's "String Literals": `\'` is "A single quote (') character" unless NO_BACKSLASH_ESCAPES; mysqldump writes
+  // `\'` in every value that holds an apostrophe. T-SQL reads `'C:\Backup\'` as a whole string: the same text, two rules.
+  it("reads past MySQL's backslash-escaped quote", () => {
+    expect(declared("INSERT INTO t VALUES ('it\\'s');\nCREATE TABLE after_it (id int);\n")).toEqual(["table after_it"]);
+  });
+});
+
 describe("isToolingFile", () => {
   it("knows a compiler's, a runner's and a .NET configuration by its name, anywhere", () => {
     for (const file of ["tsconfig.json", "packages/app/tsconfig.base.json", "vitest.config.ts", "tests/e2e/playwright.config.ts", "eslint.config.js", "src/Web.config", "packages.config", ".live-docs.config.json"]) {
