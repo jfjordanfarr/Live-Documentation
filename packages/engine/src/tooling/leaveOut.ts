@@ -67,7 +67,8 @@
  * **Which rule wins:** a version control's own folder (`.git`, `.hg`, `.svn`,
  * TFVC's `$tf` and `.tf`) and the tool's own output first, which are never
  * scanned whatever any rule says; then a person's own patterns, whose `!` keeps
- * what any rule below would leave out; then an ignore file that leaves a path
+ * what any rule below would leave out (on a folder, what it holds too, from a
+ * `.tfignore` entry that matched it by that folder's name); then an ignore file that leaves a path
  * out (either kind); then the evidence rules; then an ignore file's `!`. The
  * person's patterns are read by git's rules without regard to case, since the
  * folders they will meet are Windows's.
@@ -534,7 +535,7 @@ function tfNameMatches(entry: TfEntry, part: string): boolean {
 }
 
 /** `IgnoreFile.isExcluded`: one file's opinion of a path, the last matching entry winning. */
-function tfFileOpinion(entries: readonly TfEntry[], path: string, isFolder: boolean): TfEntry | undefined {
+function tfFileOpinion(entries: readonly TfEntry[], path: string, isFolder: boolean, keptFrom = 0): TfEntry | undefined {
   const parts = path.split("/");
   let decided: TfEntry | undefined;
   for (const entry of entries) {
@@ -542,7 +543,8 @@ function tfFileOpinion(entries: readonly TfEntry[], path: string, isFolder: bool
     // `LocalPath.isChild`, without regard to case as on Windows: the entry applies only under its folder.
     if (folderParts.length >= parts.length) continue;
     if (folderParts.some((part, index) => lower(part) !== lower(parts[index]))) continue;
-    for (let i = folderParts.length; i < parts.length; i++) {
+    // The first `keptFrom` folders of the path are a person's own keep and those above it: an entry no longer names them.
+    for (let i = Math.max(folderParts.length, keptFrom); i < parts.length; i++) {
       if (!entry.recursive && i > folderParts.length) break;
       const last = i === parts.length - 1;
       if (entry.folderOnly && !isFolder && last) break;
@@ -605,6 +607,12 @@ interface FolderState {
   /** The verdict that leaves this folder, or one above it, out whole. */
   whole?: LeaveOutVerdict;
   files: () => FolderFiles;
+  /**
+   * How many folders of the path, from the top, end at the deepest that a person's own `!` kept, this one or one above
+   * (0 for none). A `.tfignore` entry matches any folder of a path, as TFVC's does; a person who keeps a folder keeps
+   * what it holds, so an entry no longer leaves a thing out by the name of that folder or one above it.
+   */
+  keptFrom: number;
 }
 
 /** The last matching pattern of one list, as git's `last_matching_pattern_from_list`. */
@@ -616,12 +624,23 @@ function lastMatching(patterns: readonly GitPattern[], path: string, isDir: bool
 /** Whether a negation could name something inside `folder`, by what its pattern fixes of a path. */
 function couldNameInside(pattern: GitPattern, folder: string, ignoreCase: boolean): boolean {
   if (pattern.noDir) return true;
-  const full = (pattern.base === "" ? "" : `${pattern.base}/`) + (pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern);
-  const special = full.search(/[*?[\\]/u);
-  const literal = special === -1 ? full : full.slice(0, special);
   const fold = (text: string): string => (ignoreCase ? text.toLowerCase() : text);
-  const inside = `${fold(folder)}/`;
-  return fold(literal).startsWith(inside) || (special !== -1 && inside.startsWith(fold(literal)));
+  const inside = folder.split("/");
+  const base = pattern.base === "" ? [] : pattern.base.split("/");
+  const named = (pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern).split("/");
+  // A path inside the folder has more parts than the folder. The pattern must agree with each of the folder's parts,
+  // its file's folder as written and its own parts as globs, and then name more parts, or any number with `**`.
+  for (let i = 0; i < inside.length; i++) {
+    if (i < base.length) {
+      if (fold(base[i]) !== fold(inside[i])) return false;
+      continue;
+    }
+    const part = named[i - base.length];
+    if (part === undefined) return false;
+    if (part.includes("**")) return true;
+    if (!wildmatch(part, inside[i], true, ignoreCase)) return false;
+  }
+  return base.length + named.length > inside.length;
 }
 
 /** The decider for one listing's ignore files, evidence rules, person's patterns and the tool's own output. */
@@ -654,7 +673,7 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     }
     let byTf: Opinion;
     for (let i = parent.files().tf.length - 1; i >= 0 && !byTf; i--) {
-      const entry = tfFileOpinion(parent.files().tf[i].entries, path, isDir);
+      const entry = tfFileOpinion(parent.files().tf[i].entries, path, isDir, parent.keptFrom);
       if (entry) byTf = { excluded: entry.excluded, rule: { kind: "tfignore", file: parent.files().tf[i].file, line: entry.line, pattern: entry.original } };
     }
     if (byGit?.excluded) return { kept: false, rule: byGit.rule };
@@ -687,7 +706,7 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
   };
 
   /** A folder's own ignore files added to what it inherits. */
-  const withOwnFiles = (folder: string, inherited: () => FolderFiles, verdict: LeaveOutVerdict): FolderState => {
+  const withOwnFiles = (folder: string, inherited: () => FolderFiles, verdict: LeaveOutVerdict, keptFrom: number): FolderState => {
     let known: FolderFiles | undefined;
     const files = (): FolderFiles => {
       if (known) return known;
@@ -702,7 +721,7 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
       known = { git, tf };
       return known;
     };
-    return { verdict, files };
+    return { verdict, files, keptFrom };
   };
 
   const stateOf = (folder: string): FolderState => {
@@ -710,14 +729,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     if (known) return known;
     let state: FolderState;
     if (folder === "") {
-      state = withOwnFiles("", () => ({ git: [], tf: [] }), { kept: true });
+      state = withOwnFiles("", () => ({ git: [], tf: [] }), { kept: true }, 0);
     } else {
       const parent = stateOf(folderOf(folder));
       if (parent.whole) {
         state = { ...parent, verdict: parent.whole };
       } else {
         const verdict = judge(folder, true, parent);
-        if (verdict.kept) state = withOwnFiles(folder, parent.files, verdict);
+        if (verdict.kept) state = withOwnFiles(folder, parent.files, verdict, verdict.rule?.kind === "person" ? folder.split("/").length : parent.keptFrom);
         else {
           const notes = notesFor(folder, parent);
           const whole = notes.length > 0 ? { ...verdict, notes } : verdict;

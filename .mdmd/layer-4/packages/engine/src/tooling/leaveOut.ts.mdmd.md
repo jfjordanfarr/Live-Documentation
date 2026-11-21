@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/leaveOut.ts`
-- Generated At: 2026-11-21T07:00:41.652Z
+- Generated At: 2026-11-21T08:03:31.978Z
 
 ## Authored
 ### Purpose
@@ -23,21 +23,21 @@ Decides what a scan leaves out from a folder's listing alone, before anything is
 ### Public Symbols
 #### `IgnoreFileText` {#symbol-ignorefiletext}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L87)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L88)
 
 ##### `IgnoreFileText` — Summary
 An ignore file the listing names, at its path relative to the scanned folder, with its text.
 
 #### `LeaveOutRule` {#symbol-leaveoutrule}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L93)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L94)
 
 ##### `LeaveOutRule` — Summary
 The rule that decided a path.
 
 #### `LeaveOutVerdict` {#symbol-leaveoutverdict}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L104)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L105)
 
 ##### `LeaveOutVerdict` — Summary
 The answer for one path: kept or left out, and the rule that decided, if any did (a kept path's rule is one that
@@ -46,7 +46,7 @@ rules are only reported, the rule that would have left a kept folder out.
 
 #### `FolderVerdict` {#symbol-folderverdict}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L112)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L113)
 - Extends: [`LeaveOutVerdict`](#symbol-leaveoutverdict)
 
 ##### `FolderVerdict` — Summary
@@ -54,7 +54,7 @@ The answer for a folder, and whether nothing beneath it can be kept, so that a w
 
 #### `EvidenceSetting` {#symbol-evidencesetting}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L122)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L123)
 
 ##### `EvidenceSetting` — Summary
 The evidence rules' setting: the names a folder holds (a folder's with a trailing `/`), which a lazy walk answers by
@@ -62,21 +62,21 @@ listing one level further; and whether a folder they find is left out (`apply`) 
 
 #### `LeaveOutInput` {#symbol-leaveoutinput}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L128)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L129)
 
 ##### `LeaveOutInput` — Summary
 What decides a scan's leaving out.
 
 #### `LeaveOut (interface)` {#symbol-leaveout-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L140)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L141)
 
 ##### `LeaveOut (interface)` — Summary
 The decider of one listing: a file's verdict and a folder's, the folder's with whether a walk may leave it unlisted.
 
 #### `EVIDENCE` {#symbol-evidence}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L573)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L575)
 - Returns: `ReadonlyArray`
 
 ##### `EVIDENCE` — Summary
@@ -87,7 +87,7 @@ holding NuGet's `<Id>.<Version>` folders or a `repositories.config`; `node_modul
 
 #### `leaveOut (function)` {#symbol-leaveout-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L628)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L647)
 - Returns: [`LeaveOut`](#symbol-leaveout-interface)
 - Parameters: `input`: [`LeaveOutInput`](#symbol-leaveoutinput)
 

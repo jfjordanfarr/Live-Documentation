@@ -1,0 +1,36 @@
+{
+ "label": "made-after",
+ "page": "choice.html",
+ "absent": [],
+ "handedAndDecidedMs": 61401,
+ "totals": "10,929 files will be read · 92,400 files left out",
+ "timings": "listed by the browser first · 2,300 folder listings · listing 347 ms · deciding 43 ms · in all 3003 ms",
+ "switchShown": true,
+ "topOpened": "Open DNN Platform",
+ "quietKeepName": "Keep DNN Platform/Dnn.AuthServices.Jwt/obj/",
+ "notShown": "84 more not shown: show 50",
+ "reasonsBeforeKeep": [
+  "Build output beside a project 162 folders · 1,714 files Keep",
+  "NuGet packages 46 folders · 90,686 files Keep Also ignored by .tfignore: 15 of 46"
+ ],
+ "keptMerged": "DNN Platform/Connectors/GoogleAnalytics/packages/",
+ "totalsAfterKeep": "12,610 files will be read · 90,719 files left out",
+ "reasonsAfterKeep": [
+  "Build output beside a project 162 folders · 1,714 files Keep",
+  "NuGet packages 45 folders · 88,925 files Keep Also ignored by .tfignore: 14 of 45 DNN Platform/ 42 folders Dnn.AuthServices.Jwt/packages/ 1,761 files Controls/CountryListBox/packages/ 1,761 files Modules/Journal/packages/ 1,761 files Modules/DDRMenu/packages/ 1,761 files Modules/ResourceManager/packages/ 1,761 files Modules/CoreMessaging/packages/ 1,761 files Modules/HTML/packages/ 1,761 files Modules/HtmlEditorManager/packages/ 1,761 files Modules/TelerikRemoval/packages/ 1,761 files Modules/MemberDirectory/packages/ 1,761 files Modules/DnnExportImport/packages/ 1,761 files Modules/RazorHost/packages/ 1,761 files Modules/Groups/packages/ 1,761 files Modules/Samples/Dnn.ContactList.SpaReact/packages/ 1,761 files Modules/Samples/Dnn.ContactList.Spa/packages/ 1,761 files Modules/Samples/Dnn.ContactList.Mvc/packages/ 1,761 files Modules/Samples/Dnn.ContactList.Api/packages/ 1,761 files Modules/DnnExportImportLibrary/packages/ 1,761 files HttpModules/packages/ 1,761 files DotNetNuke.Web.Client/packages/ 1,761 files Admin Modules/Dnn.Modules.Console/packages/ 1,761 files DotNetNuke.Web.Client.ResourceManager/packages/ 1,761 files Connectors/GoogleTagManager/packages/ 1,761 files Connectors/GoogleAnalytics4/packages/ 1,761 files Connectors/Azure/packages/ 1,761 files DotNetNuke.Abstractions/packages/ 1,761 files DotNetNuke.Web.Razor/packages/ 1,761 files DotNetNuke.ContentSecurityPolicy/packages/ 1,761 files DotNetNuke.Instrumentation/packages/ 1,761 files DotNetNuke.Log4net/packages/ 1,761 files Library/packages/ 1,761 files Providers/ClientCapabilityProviders/Provider.AspNetCCP/packages/ 1,761 files Providers/CachingProviders/DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider/packages/ 1,761 files Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/packages/ 1,761 files Providers/AuthenticationProviders/DotNetNuke.Authentication.LiveConnect/packages/ 1,761 files Providers/AuthenticationProviders/DotNetNuke.Authentication.Twitter/packages/ 1,761 files Providers/AuthenticationProviders/DotNetNuke.Authentication.Google/packages/ 1,761 files DotNetNuke.ModulePipeline/packages/ 1,761 files DotNetNuke.Web/packages/ 1,761 files DotNetNuke.DependencyInjection/packages/ 1,761 files DotNetNuke.Web.Mvc/packages/ 1,761 files DotNetNuke.Maintenance/packages/ 1,761 files At the top 2 folders Build/packages/ 1,761 files",
+  "Ignored by .tfignore: *.nupkg 80 files Keep"
+ ],
+ "patternsAfterKeep": [
+  "!/DNN Platform/Connectors/GoogleAnalytics/packages/"
+ ],
+ "totalsAfterPatterns": "12,250 files will be read · 91,079 files left out",
+ "notes": [
+  "Your pattern !/Build/Tools/ cannot keep anything in Build/, which is left out whole."
+ ],
+ "lastPatternClearsFooter": {
+  "lastBottom": 750,
+  "footerTop": 775,
+  "clear": true
+ },
+ "errors": []
+}

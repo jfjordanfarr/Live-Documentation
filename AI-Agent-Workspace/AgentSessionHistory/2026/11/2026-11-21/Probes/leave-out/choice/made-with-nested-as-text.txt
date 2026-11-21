@@ -1,0 +1,51 @@
+made-with-nested: 10,930 files will be read · 12 files left out · 209 folders left out, not looked inside
+
+Left out:
+  Build output beside a project  (162 folders)
+    Also ignored by .gitignore: 117 of 162 (/Build/bin/  [Oo]bj  DNN [Pp]latform/*/[Bb]in  bin/  obj/  [Bb]in  /DotNetNuke.BulkInstall/*/bin/  /DotNetNuke.Internal.SourceGenerators/bin/)
+      DNN Platform/                               134
+      Dnn.AdminExperience/                         18
+      DotNetNuke.BulkInstall/                       6
+      Build/                                        2
+      DotNetNuke.Internal.SourceGenerators/         2
+  NuGet packages  (46 folders)
+    Also ignored by .tfignore: 15 of 46 (packages)
+    Also ignored by .gitignore: 2 of 46 (/[Pp]ackages/)
+      DNN Platform/                                43
+      At the top                                    2
+      Build/packages/
+  Ignored by .gitignore: /Build/Tools/  (1 folder)
+      Build/Tools/
+  Ignored by .gitignore: /*/css/*.css  (6 files)
+      Dnn.AdminExperience/                          6
+  Ignored by .gitignore: *.de-DE.resx  (3 files)
+      DNN Platform/                                 3
+  Ignored by .gitignore: /*/scripts/bundles/*.svg  (2 files)
+      Dnn.AdminExperience/                          2
+  Ignored by .gitignore: stylecop.*  (1 file)
+      stylecop.json
+
+Will be read, by kind:
+  .cs                 3,973
+  .js                 1,330
+  .png                1,324
+  .gif                  671
+  .jsx                  482
+  .less                 305
+  .sqldataprovider      299
+  .svg                  281
+  .txt                  212
+  .resx                 200
+
+Will be read, by folder:
+  DNN Platform                                7,847
+  Dnn.AdminExperience                         2,901
+  Build                                          83
+  DotNetNuke.BulkInstall                         45
+  At the top                                     29
+  .github                                        21
+  DotNetNuke.Internal.SourceGenerators            3
+  expected                                        1
+
+To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave something out: --pattern 'docs/'.
+Listed 2,298 folders in 2122 ms (listing 441 ms, deciding 1306 ms).
