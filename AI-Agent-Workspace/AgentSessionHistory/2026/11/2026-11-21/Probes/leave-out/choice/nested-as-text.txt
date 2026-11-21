@@ -12,7 +12,7 @@ Left out:
     Also ignored by .tfignore: 15 of 45 (packages)
       DNN Platform/                                43
       Build/packages/
-        Also Build/.tfignore, line 6: packages
+        Also the .tfignore beside it, line 6: packages
       packages/
   Ignored by .gitignore: /*/css/*.css  (6 files)
       Dnn.AdminExperience/                          6
@@ -42,4 +42,4 @@ Will be read, by folder:
   expected                                        1
 
 To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
-Listed 2,299 folders in 1739 ms (listing 499 ms, deciding 684 ms).
+Listed 2,299 folders in 1135 ms (listing 371 ms, deciding 467 ms).

@@ -28,7 +28,8 @@ async function open(query) {
   });
   await page.goto(`${pathToFileURL(pagePath).href}${query}`);
   const given = Date.now();
-  await page.setInputFiles("#folder-input", folder, { timeout: 200_000 });
+  // The made folder's 103,329 files take the browser over a minute to hand over, and longer on a loaded machine.
+  await page.setInputFiles("#folder-input", folder, { timeout: 360_000 });
   await settled(page);
   record.handedAndDecidedMs ??= Date.now() - given;
   return page;
@@ -69,11 +70,28 @@ async function byReason() {
     const leave = page.locator('#read [aria-label="Leave out DNN Platform/Tests/"]');
     if (await leave.count()) await leave.focus();
     await shot(page, "2-read-folder-opened");
+    // How long an opened folder makes the page: the scrolling part's height against what the window shows, and where
+    // each column ends.
+    record.lengthAfterOpen = await page.evaluate(() => {
+      const main = document.querySelector("main");
+      return { scrollHeight: main.scrollHeight, shown: main.clientHeight, leftEnds: Math.round(document.getElementById("reasons").getBoundingClientRect().bottom), rightEnds: Math.round(document.getElementById("read").getBoundingClientRect().bottom) };
+    });
     if (await leave.count()) {
       await leave.click();
       await settled(page);
       record.totalsAfterFolder = await page.textContent("#totals");
       record.reasonsAfterFolder = await reasonRows(page);
+      // Scrolled down the opened folder on the right, as a person leaving out a folder deep in it would be: is the new
+      // reason on the left still in view?
+      await page.evaluate(() => {
+        document.querySelector("main").scrollTop = 700;
+      });
+      record.leftInViewScrolled = await page.evaluate(() => {
+        const row = [...document.querySelectorAll("#reasons > li")].find((each) => each.textContent.includes("Your pattern"));
+        const box = row?.getBoundingClientRect();
+        return box ? box.top >= document.querySelector(".summary").getBoundingClientRect().bottom && box.bottom <= document.querySelector("footer").getBoundingClientRect().top : null;
+      });
+      await shot(page, "3b-scrolled-down-the-right");
       await scrollTop();
       await shot(page, "3-folder-left-out");
     } else record.absent.push("the Leave out of DNN Platform/Tests/");
@@ -183,5 +201,7 @@ for (const boxes of ["mixed", "choice"].filter((each) => part === "all" || part 
 }
 
 record.errors = errors;
+// The record beside the pictures, under the run's own label and part, so that no later run writes over it.
+fs.writeFileSync(path.join(out, `${label}-${part}-record.json`), `${JSON.stringify(record, null, 1)}\n`);
 console.log(JSON.stringify(record, null, 1));
 await browser.close();

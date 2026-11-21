@@ -47,7 +47,14 @@ async function main(): Promise<void> {
       if (inTop.length > 1) lines.push(`      ${top.padEnd(40)} ${String(inTop.length).padStart(6)}`);
       else {
         lines.push(`      ${inTop[0].label}`);
-        if (inTop[0].also) lines.push(`        Also ${inTop[0].also.path}, line ${inTop[0].also.line}: ${inTop[0].also.pattern}`);
+        // As the page says it: an ignore file in the folder that holds this one is "the … beside it".
+        const also = inTop[0].also;
+        if (also) {
+          const folder = inTop[0].label.slice(0, -1);
+          const name = also.path.slice(also.path.lastIndexOf("/") + 1);
+          const parent = folder.includes("/") ? `${folder.slice(0, folder.lastIndexOf("/"))}/` : "";
+          lines.push(`        Also ${also.path === `${parent}${name}` ? `the ${name} beside it` : also.path}, line ${also.line}: ${also.pattern}`);
+        }
       }
     }
     if (tops.length > 5) lines.push(`      and ${tops.slice(5).reduce((sum, [, inTop]) => sum + inTop.length, 0).toLocaleString("en")} more under ${plural(tops.length - 5, "other top folder")}`);

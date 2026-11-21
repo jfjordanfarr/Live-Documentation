@@ -82,6 +82,29 @@ These are in `choice/screenshots/`, at 1,280 by 800, taken through the folder in
   - The minus appears on every row, a column of identical glyphs: quiet, but it repeats down the whole list.
   - The tree behind `?layout=folders` was not looked at in this leg.
 
+### The final build pictured, and two mends the pictures asked for
+
+These were taken after the leg was merged, at 1,280 by 800, through the lane:
+- on `nested` and on the made folder, both made again from the same recipes;
+- each run's record is kept under its own name in `choice/screenshots/records/` (`nested-7-reason-record.json`, `nested-8-…`, `made-7-…`, `made-8-…`);
+- handing the made folder over took 197 s at a load near 40.
+
+**On the sixth leg's final build** (`nested-7-*`, `made-7-*`):
+- **The ignore line is short where the file is in the row's own folder.** For example, "Also this folder's .gitignore, line 1: bin/ · line 2: obj/" stands on one line under "Modules/Samples/Dnn.ContactList.Spa/ bin/ obj/" (`nested-7-5-ignore-line.png`).
+- **By folder comes first.** Its eight top rows and the first kinds fit the first screen (`nested-7-1-first.png`, `made-7-1-first.png`).
+- **Nothing is cut or colliding at 1,280 by 800.** The longest folder name on the right, "DotNetNuke.Web.Client.ResourceManager/", wraps inside its row, and the last pattern ends at 750 px above the footer's 775 px. The counts match the sixth leg's: `nested` 10,946, then 10,403, 9,079, 9,051, and 10,375 after the Keep on `*.png`. The made folder goes 10,929, then 10,386, 9,062, 9,034, and 10,358.
+
+**Two faults the pictures showed, each mended on the page:**
+
+1. **An opened folder on the right took the left column out of view.**
+   - With `DNN Platform` open, the page is 1,701 px tall in a 720 px window, and the left column ends at 389 px. Scrolled down the right to leave something out, a person no longer sees it arrive on the left. Only the totals, which stay in view, change (`made-7-6-three-choices.png`, `nested-7-6-three-choices.png`: the left column is gone).
+   - The left column now stays in view below the totals while the page scrolls. When the left is itself longer than the window (an opened reason), it scrolls on its own.
+   - After: scrolled 700 px down the right, "Your pattern: /DNN Platform/Tests/" is in view on the left (`nested-8-3b-scrolled-down-the-right.png`, `made-8-3b-scrolled-down-the-right.png`; `leftInViewScrolled: true` in both records). Scrolled to the end with three choices, the left column stands above "Your patterns" (`nested-8-6-three-choices.png`, `made-8-6-three-choices.png`).
+   - What I see: the left keeps its place and the right moves under the totals. With an opened reason, the left shows its own scrolled part (`nested-8-5-ignore-line.png`), and the window's edge cuts a row in half, as any scrolling list does.
+2. **The ignore line was short only for `bin` and `obj`.**
+   - On a `packages` row, the `.tfignore` sits in the project folder that holds it. It was named by its full path, which repeated the row's: "Also DNN Platform/Controls/CountryListBox/.tfignore, line 6: packages" under "Controls/CountryListBox/packages/" (`made-7-5-ignore-line.png`).
+   - It now reads "Also the .tfignore beside it, line 6: packages" (`made-8-5-ignore-line.png`).
+   - The terminal twin says the same.
 
 ## Fifth leg, later on 2026-11-21: the trial page's drawing mended before strangers see it
 
@@ -98,7 +121,7 @@ The root's brief listed eight faults in the fourth leg's page; two more came fro
 
 For example, `choice.html?layout=folders&switch=off&boxes=choice`. The folder input, `#folder-input`, stays in the page under every parameter, so automation can hand it a folder.
 
-### What changed
+### What the fifth leg changed
 
 1. **An opened reason is no longer a wall.**
    - The reason's own row keeps the one Keep with a word.
@@ -132,7 +155,7 @@ For example, `choice.html?layout=folders&switch=off&boxes=choice`. The folder in
    - It prints each reason's folders under their top folders, and the ignore files that also name them, with their patterns, since a terminal has no tooltip.
    - Its output is in `choice/made-as-text.txt` and `choice/made-with-nested-as-text.txt`.
 
-### The pictures
+### The fifth leg's pictures
 
 `choice/look.mjs` takes them, and can take its three pages in three holds of the browser lane, since the browser takes about 65 s to hand over each made folder. What it counted beside each picture is in `choice/screenshots/records/`. The made folder holds 103,329 files; the copy with DNN's nested `.gitignore` files is made by putting those 26 files back into a copy of it.
 
