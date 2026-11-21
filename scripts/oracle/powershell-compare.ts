@@ -36,8 +36,13 @@
  * every disagreement with `--detail`, and exits 0: the list is the
  * measurement. `pwsh` must be on the path.
  *
+ * With `--verdicts` and `--corpus`, the hand reading of 2026-11-19 is set beside both readings as well: each sampled
+ * wire of that corpus, judged true or false in the source, against whether the rule and the adapter draw it
+ * (`powershell-verdicts.ts`), which is what grades the rule itself. The table names the corpora `dbatools`, `al-go`,
+ * `azurestack-tools` and `tsqlt`; the shop's rows are named as never scorable.
+ *
  * Usage:
- *   npm run oracle:powershell -- <folder> [--detail] [--json]
+ *   npm run oracle:powershell -- <folder> [--detail] [--json] [--verdicts <samples.md> --corpus <name>]
  */
 import * as fs from "node:fs";
 import path from "node:path";
@@ -47,6 +52,7 @@ import { powershellAdapter } from "@live-documentation/engine/live-docs/adapters
 import type { SourceAnalysisResult } from "@live-documentation/engine/live-docs/core";
 
 import { isDataFileFacts, parsePowerShellFixture, type PowerShellAst } from "./powershell-edges";
+import { readVerdicts, scoreVerdicts, type HandVerdict, type VerdictScore } from "./powershell-verdicts";
 import { askShippedNames, isLibraryByParser, parserLoads, ParserWorkspace, recordedShippedNames, type ShippedNames } from "./powershell-wires";
 
 /** Folders a corpus's reading leaves out: the version control's, and the docs the default configuration writes. */
@@ -147,13 +153,22 @@ export interface PowerShellReport {
   calls:       Measure;
   /** Scripts and modules on which the two agree whether the file is the program's entry, and those they differ on. */
   programs:    { agree: number; differ: string[] };
+  /** With `--verdicts`: the hand reading's rows of this corpus set beside the rule's calls and the adapter's. */
+  verdicts?:   VerdictScore;
+}
+
+/** The hand reading to hold the readings to: its rows, and the name the table gives the folder's corpus. */
+export interface VerdictsOption {
+  rows:   HandVerdict[];
+  corpus: string;
 }
 
 /**
  * Reads the folder both ways and sets the readings side by side. The names pwsh answers by itself are asked of the pwsh
  * that parses the folder; a record given in its place, which runs no pwsh, is read with the names kept beside the rules.
+ * Given the hand reading, its rows of the folder's corpus are scored against both readings' calls.
  */
-export async function comparePowerShell(root: string, ast?: PowerShellAst, names?: ShippedNames): Promise<PowerShellReport> {
+export async function comparePowerShell(root: string, ast?: PowerShellAst, names?: ShippedNames, verdicts?: VerdictsOption): Promise<PowerShellReport> {
   const files   = folderFiles(root);
   const record  = ast ?? parseFolder(root, files);
   const shipped = names ?? (ast ? recordedShippedNames() : askShippedNames());
@@ -167,7 +182,7 @@ export async function comparePowerShell(root: string, ast?: PowerShellAst, names
   const adapter = adapterReading(analyses);
   const scripts = Object.entries(record.files).filter(([, facts]) => !isDataFileFacts(facts)).map(([file]) => file);
   const differ  = scripts.filter((file) => parser.programs.has(file) !== adapter.programs.has(file)).sort();
-  return {
+  const report: PowerShellReport = {
     folder:   root,
     tool:     record.tool,
     shipped:  `pwsh ${shipped.version} on ${shipped.os}`,
@@ -180,6 +195,33 @@ export async function comparePowerShell(root: string, ast?: PowerShellAst, names
     calls:    measure(parser.calls, adapter.calls),
     programs: { agree: scripts.length - differ.length, differ }
   };
+  if (verdicts) report.verdicts = scoreVerdicts(verdicts.rows, verdicts.corpus, index, parser.calls, adapter.calls);
+  return report;
+}
+
+function printVerdicts(score: VerdictScore): void {
+  const row = (label: string, rule: number, adapter: number): void => {
+    console.log(`  ${label.padEnd(24)}${String(rule).padStart(9)}${String(adapter).padStart(12)}`);
+  };
+  console.log("");
+  console.log(`The hand reading of 2026-11-19, its ${score.rows} rows of ${score.corpus}, ${score.rows - score.unheld.length} of them scored:`);
+  console.log(`  ${"".padEnd(24)}${"the rule".padStart(9)}${"the adapter".padStart(12)}`);
+  row("true, drawn", score.rule.trueDrawn, score.adapter.trueDrawn);
+  row("true, not drawn", score.rule.trueMissed, score.adapter.trueMissed);
+  row("false, not drawn", score.rule.falseSpared, score.adapter.falseSpared);
+  row("false, drawn", score.rule.falseDrawn, score.adapter.falseDrawn);
+  row("arguable, drawn", score.rule.arguableDrawn, score.adapter.arguableDrawn);
+  row("arguable, not drawn", score.rule.arguableSpared, score.adapter.arguableSpared);
+  const rows = (label: string, list: HandVerdict[]): void => {
+    if (list.length === 0) return;
+    console.log("");
+    console.log(`${label} (${list.length}):`);
+    for (const item of list) console.log(`  #${item.row} ${item.verdict}: ${item.caller}:${item.line} ${item.name} → ${item.definer}`);
+  };
+  rows("Rows where the rule and the hand differ", score.rule.differ);
+  rows("Rows where the adapter and the hand differ", score.adapter.differ);
+  rows("Rows not scored: the folder holds no file the call or the definition names", score.unheld);
+  rows("Rows not scored: their corpus, the cold run's shop, was never committed", score.uncommitted);
 }
 
 function printReport(report: PowerShellReport, detail: boolean): void {
@@ -208,18 +250,29 @@ function printReport(report: PowerShellReport, detail: boolean): void {
   list("Scripts the two call a program and a library apart", report.programs.differ);
 }
 
+const USAGE = "Usage: npm run oracle:powershell -- <folder> [--detail] [--json] [--verdicts <samples.md> --corpus <the table's name for it>]";
+
 async function main(): Promise<void> {
-  const args   = process.argv.slice(2);
-  const folder = args.find((arg) => !arg.startsWith("--"));
-  if (!folder || args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: npm run oracle:powershell -- <folder> [--detail] [--json]");
+  const args = process.argv.slice(2);
+  const valueOf = (flag: string): string | undefined => {
+    const at = args.indexOf(flag);
+    return at === -1 ? undefined : args[at + 1];
+  };
+  const values = new Set(["--verdicts", "--corpus"].map((flag) => args.indexOf(flag) + 1).filter((at) => at > 0));
+  const folder = args.find((arg, at) => !arg.startsWith("--") && !values.has(at));
+  const table  = valueOf("--verdicts");
+  const corpus = valueOf("--corpus");
+  if (!folder || args.includes("--help") || args.includes("-h") || (table === undefined) !== (corpus === undefined)) {
+    console.log(USAGE);
     process.exit(folder ? 0 : 1);
   }
-  const report = await comparePowerShell(path.resolve(folder));
+  const verdicts = table && corpus ? { rows: readVerdicts(fs.readFileSync(table, "utf8")), corpus } : undefined;
+  const report = await comparePowerShell(path.resolve(folder), undefined, undefined, verdicts);
   if (args.includes("--json")) {
     console.log(JSON.stringify(report, null, 2));
   } else {
     printReport(report, args.includes("--detail"));
+    if (report.verdicts) printVerdicts(report.verdicts);
   }
 }
 
