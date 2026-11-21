@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-21T04:36:35.135Z
+- Generated At: 2026-11-21T04:43:24.991Z
 
 ## Authored
 ### Purpose
@@ -134,28 +134,24 @@ The claim's path, which the caller removes when the run ends.
 - Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L643)
 
 ##### `PoolRecord` — Summary
-What runs under one lens measured of a summarizing process's peak memory on this repository.
+What runs measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L713)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L685)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
 ##### `nextPoolRecord` — Summary
-The lens's record after a run measured `peakMemory` over `changes` changes under it: the largest peak of every run,
-since a run that regenerates only the newest change sees one change's peak and not the history's, and the changes
-counted together.
-
-##### `nextPoolRecord` — Remarks
-Until 2026-11-21 one record served every lens, and a run under a new lens took the record over: its peak replaced
-the record's only when measured over at least as many changes, so that a small sampled run never shrank the estimate
-a whole history was measured to need. Each lens now keeps a record of its own, and a lens that has none, the first
-run after a change of the code among them, is sized by {@link UNMEASURED_PEAK_MEMORY} until it has measured itself.
+The record after a run measured `peakMemory` over `changes` changes under `lens`. Under the same lens the record
+keeps the largest peak of every run, since a run that regenerates only the newest change sees one change's peak and
+not the history's. Under a new lens the generator has changed, and the run's peak replaces the record's only when it
+was measured over at least as many changes; until then the larger of the two stands, so that a small sampled run
+never shrinks the estimate a whole history was measured to need.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1245)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1220)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
