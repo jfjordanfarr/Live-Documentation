@@ -45,15 +45,32 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  * 2026-11-19: it reads `./scripts/Clean.ps1`, a script run by its path, as the
  * dot-source `. /scripts/Clean.ps1`, so the adapter keeps a rooted path no
  * workspace holds where PowerShell runs the script beside it.
+ *
+ * One is a difference of platform, since 2026-11-21: a relative path without
+ * its extension, `. ./build` beside both `build` and `build.ps1`, is
+ * `build.ps1` on Windows and `build` on Unix, as PowerShell's own source has
+ * it and as the owner's run on their Windows machine showed
+ * (`expected/windows-runs.json`); the record was written by pwsh on Linux,
+ * and the engine follows Windows, PowerShell's home. A rooted path,
+ * `"$PSScriptRoot/build"`, is `build` on both, and agrees.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
   "programs/powershell/rollout": [],
   "fixtures/powershell-compendium": [],
   "fixtures/powershell-wires": [
+    "Build/Use-Build.ps1: PowerShell depends on Build/build (resolved), the adapter does not",
+    "Build/Use-Build.ps1: the adapter depends on Build/build.ps1 (resolved), PowerShell does not",
     "Deploy.ps1: PowerShell depends on scripts/Clean.ps1 (resolved), the adapter does not",
     "Deploy.ps1: the adapter depends on /scripts/Clean.ps1, PowerShell does not"
   ]
 };
+
+/** A run of PowerShell on Windows, kept where pwsh here answers otherwise: what a folder held beside the caller, the path written, and the file PowerShell ran. */
+interface WindowsRun {
+  beside: string[];
+  path: string;
+  runs: string;
+}
 
 /** Discover parser records independently of the register of measured misses. */
 function measuredFixtures(root = INTEGRATION_ROOT): string[] {
@@ -230,6 +247,21 @@ describe("the PowerShell adapter against PowerShell's parser", () => {
       expect(measuredFixtures(root)).toEqual(["fixtures/.hidden-case", "fixtures/new-case"]);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  // The owner's run on their own Windows machine, 2026-11-21, kept beside the parser's record: `Build/` holds what that
+  // folder held, and `Build/Use-Build.ps1` writes the path the run asked for.
+  it("follows PowerShell on Windows where pwsh here answers as Unix does, by the owner's own run", async () => {
+    const fixtureDir = path.join(INTEGRATION_ROOT, "fixtures", "powershell-wires");
+    const { runs } = JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "windows-runs.json"), "utf8")) as { runs: WindowsRun[] };
+    const files = fileIndex(fixtureDir);
+    expect(runs.length).toBeGreaterThan(0);
+    for (const run of runs) {
+      expect(run.beside.map((name) => `Build/${name}`).filter((file) => !files.has(file))).toEqual([]);
+      expect(fs.readFileSync(path.join(fixtureDir, "Build", "Use-Build.ps1"), "utf8")).toContain(`. ${run.path}\n`);
+      const analysis = (await powershellAdapter.analyze({ absolutePath: path.join(fixtureDir, "Build", "Use-Build.ps1"), workspaceRoot: fixtureDir, fileIndex: files }))!;
+      expect(analysis.dependencies.map((dependency) => dependency.resolvedPath)).toEqual([`Build/${run.runs}`]);
     }
   });
 
