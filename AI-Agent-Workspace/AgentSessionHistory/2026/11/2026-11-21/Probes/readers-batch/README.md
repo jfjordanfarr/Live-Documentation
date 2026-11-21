@@ -202,3 +202,42 @@ The first seven need the SQL reader to know a script's dialect; the eighth and n
 **A stale figure corrected.** The gathering's record gave DNN's provider scripts 6,961 of 6,962 dependency lines; the graders here and the reviewer's both measure 7,064 of 7,065, the 103 lines the mend reading `dbo.X` and a plain `X` as one object added after that table was written. Corrected where it stands, with this note.
 
 **Verified on `9bc2471d0`:** lint and the build clean; the Live Docs regenerated and committed, no sample program's or fixture's doc changed; `npm run safe:commit`, the gate without the browser, unit 3,602, integration 500, every audit clean (it first found the ledger's JSON reached by no import, now a module); the page check's 50 browser cases through the lane after `npm run e2e:bundles`, 50 of 50; every grader of the batch run again, with the figures above.
+
+## The history rebuilt on the gathered state
+
+The one rebuild of the evening, on `gathering` at `869250949` (this worktree fast-forwarded to it; the sources of `packages/`, `scripts/`, `tsconfig.base.json` and the lock equal `gathering`'s), built, and set summary by summary beside the cache the main checkout held.
+
+**What changed in the history's keyed code since that cache was made** (`a11f7d007`'s engine and generator, lens `eec130c1f768a807`), and what each was meant to move:
+
+1. The test rules, by language, with the three reader facts (.NET test projects, Rust's `#[cfg(test)]` modules, tSQLt's test classes): a file's archetype. Among them, a folder named `fixtures` is a sample's only where `sampleRoots` names it.
+2. The comment guard and its second round: a link, a name or a program mark that only a comment, a string's undecoded escape, a `#if false` section, a Ruby heredoc or data section, or the text of a `<script>`, `<style>`, `<textarea>` or `<title>` drew, gone, in C#, Ruby, CSS, HTML, ASP.NET markup and the DOM heuristic; a Rust crate's name read by the TOML parser.
+3. A relative PowerShell path without an extension read as Windows runs it.
+4. The SQL family: `IF NOT EXISTS`, backticks, `TEMP` and virtual tables declared; the trigger's body no longer searched for.
+5. Positions after a character outside the Basic Multilingual Plane, which no summary holds.
+6. `tooling/leaveOut.ts`, `knownDifferences.ts` and `spaces.ts`: called by no reader's path to a fact (the ledger only by tests), so nothing.
+
+**The old cache.** `/workspaces/Live-Documentation/.mdmd/history/eec130c1f768a807` (1,586 summaries, 388 MB on disk), copied with `cp -r` into this worktree's `.mdmd/history/` with the memory record beside it (`pool.json`) and only read; the main checkout's was not touched.
+
+**The rebuild**, by the product's own command: `TMPDIR=/tmp/claude-1000/rh npm run -s live-docs:history`.
+
+| | |
+| --- | --- |
+| Started, ended | 21:48:35 and 23:12:06 UTC, 83.5 min of wall clock; "1565 regenerated in 82.0 min at 19 at a time" |
+| The pool | 19 at a time, "by 62.73 GB of memory and 20 processors this process may use, at 687.0 MB a process, as measured here"; one change a worker, the default |
+| The largest process | 696.6 MB at its peak (`pool.json`: 730,406,912 bytes) |
+| Load | 3.6 at the start, about 38 at its highest, other builders at work |
+| The check at the head | passed: "the last step's 1294 files, 5678 symbols with their words, and 7825 links are those of the Live Docs committed at 86925094, read afresh" |
+| What it wrote | `.mdmd/history/984831ece895c963`, 1,565 summaries, 350.2 MB as the run counts it (382 MB on disk); `history.json`, 1,565 changes from `f7a75fa7` to `86925094`; the words beside it |
+
+**The comparison**, by this morning's [`history-summary-causes.cjs`](../readers-gathering/history-summary-causes.cjs), and every differing entry classed by [`history-classify-tonight.cjs`](history-classify-tonight.cjs), kept beside this record with its output, [`history-classes-tonight.txt`](history-classes-tonight.txt), and a table of every differing path, its class, its count of commits and its first and last ([`history-paths-tonight.tsv`](history-paths-tonight.tsv)). Of the 1,543 commits both caches hold, **1,191 are identical and 352 differ**. 41 are in the old cache alone: commits of the readers' gathering branch's own line, which tonight's line, `gathering`'s first parents, reaches only through a merge's second parent (`021652e03` is one: an ancestor of the head, not on its first-parent line). 22 are in the new alone, tonight's. No list of links between docs differs, no summary's format, no other field. Every differing file entry falls under two of the changes above, and none under a class no change was meant to make:
+
+| Cause | Entries, commits, paths | Read at its commits |
+| --- | --- | --- |
+| The test rules: a file under a `fixtures` folder that `sampleRoots` does not name is no sample's | 33,404 entries, 323 commits, 298 paths, every one from `implementation` to `test` | 295 paths under `tests/integration/benchmarks/fixtures/` (232 commits), whose configuration named no sample root (`fe377b0db`'s `.live-docs.config.json` holds three keys, `root`, `baseLayer` and `extension`); the code before read any path holding a `fixtures` or `__fixtures__` folder, or the word itself (`/\bfixtures\b/`, `archetype.ts` at `a11f7d007`, line 127), as a sample's, and kept it implementation. Now the shared `tests` folder decides, as the test-rules record says. With them two JSON files under `tests/integration/…/__fixtures__/` and `tests/page-scan/fixtures.ts` (75 commits), the one file of this repository that record said would move |
+| The SQL family: `CREATE TABLE IF NOT EXISTS` | 198 entries, 198 commits, 1 path | `data/migrations/001_init.sql`: its six tables, `artifacts`, `links`, `change_events`, `diagnostics`, `acknowledgements`, `snapshots`, now declared, each an opening; and the two names its foreign keys kept as written, `artifacts` and `diagnostics`, gone, since `REFERENCES artifacts (id)` now binds to the file's own table |
+
+No C#, Ruby, CSS, HTML, ASP.NET, script, PowerShell or Rust fact differs on this repository's line: none of its files at any commit holds a construct only a comment, a `#if false` section, a heredoc or a text element's text writes, nor a PowerShell path without its extension beside two files, nor a crate whose name a bracket before it hid; positions are in no summary; and the modules of tonight that no reader calls moved nothing. **No finding**: no difference none of tonight's changes was meant to make.
+
+**The two promises of the history's own change, checked again.** A short run with workers kept, `TMPDIR=/tmp/claude-1000/rh npm run -s live-docs:history -- --keep-workers --since 2026-11-21T20:30:00Z` (4 changes, 39.6 s), made the same code's cache under the other way of running workers, lens `ce3509f002d893d2`. Its 4 summaries are the default lens's byte for byte but for the key. Its run listed the default cache as "kept .mdmd/history/984831ece895c963, the same code's cache under the other way of running workers: 350.2 MB". The default command then run with `--remove-superseded` "removed .mdmd/history/eec130c1f768a807, the cache of a lens that is not the current one: 356.3 MB" (this worktree's copy; the main checkout's stands) and "kept .mdmd/history/ce3509f002d893d2, the same code's cache under the other way of running workers: 4.2 MB", rewriting `history.json` for the whole line with nothing regenerated and its check at the head passing. The memory record then held one record for each way: `{"one change a worker":{"lens":"984831ece895c963","peakMemory":730406912,"changes":1565},"workers kept":{"lens":"ce3509f002d893d2","peakMemory":723066880,"changes":4}}`. The twin's cache, made for this check only, was removed by hand after.
+
+**What is handed over.** The new cache is this worktree's `.mdmd/history/984831ece895c963`, not committed, with `history.json`, its words and `pool.json` beside it, for the root to copy into the main checkout.
