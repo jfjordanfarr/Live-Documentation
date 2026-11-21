@@ -1,6 +1,6 @@
 ---
 kind: issue
-state: open
+state: active
 milestone: december-showing
 order: 10
 opened: 2026-11-20
@@ -11,7 +11,9 @@ opened: 2026-11-20
 
 **Done when.** `main` holds the three readers; each language's grader runs by one command and agrees as its record says; the history is rebuilt once and every difference from the old summaries is one a reader was meant to make.
 
-**Waiting on the owner.** Nothing. (Whether your Oracle side uses packages stays unknown; they are not built on a guess.)
+**Rests on.** Three public codebases resembling yours. Asked twice and not yet answered, and it would rank what is mended next: which shapes your code has most of (scripts calling each other's functions, scripts running SQL, user controls, procedures named from C#).
+
+**Waiting on the owner.** Nothing blocks it. (Whether your Oracle side uses packages stays unknown; they are not built on a guess.)
 
 ## Tasks
 

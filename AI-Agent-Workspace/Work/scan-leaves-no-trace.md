@@ -11,7 +11,9 @@ opened: 2026-11-20
 
 **Done when.** After a scan of each test repository, its version control reports nothing new, and the scan's last line says where its output went and how to remove it.
 
-**Waiting on the owner.** Is your work's code under git, or under TFS's own version control? Without git the scan cannot ask what is ignored, and a .NET repository's `bin`, `obj` and `packages` folders would be scanned unless a configuration leaves them out.
+**Rests on.** The scan writing its docs into the folder it maps. A page that scans keeps a scan's facts in the page and writes nothing beside the code, so if the page comes first this issue shrinks to its second task.
+
+**Waiting on the owner.** Nothing. Answered 2026-11-21 ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-1)): both, two git repositories and the rest under TFS, "basically anything that talks to anything on-prem". Read in the code the same day: without git, discovery leaves out only `.git`, `node_modules`, the docs root, lock files and documents; it reads no `.tfignore`; a .NET solution's `bin`, `obj` and `packages` would be mapped, every assembly as an asset.
 
 ## Tasks
 
@@ -27,4 +29,4 @@ Two candidates, to be chosen by trying both on three public repositories: a fold
 - holds: not begun
 - evidence:
 
-Offered and never imposed, by the owner's word that what a scan takes is theirs to configure: the build and package folders of .NET and the usual editor folders left out, said in the scan's closing line with their counts so that nothing is left out in silence.
+Offered and never imposed, by the owner's word that what a scan takes is theirs to configure: the build and package folders of .NET and the usual editor folders left out, said in the scan's closing line with their counts so that nothing is left out in silence. To be measured before it is designed, on a public .NET Framework solution with its build outputs and restored packages in place: what today's scan makes of it, what a `.tfignore` would say where one exists, and what TFS leaves in a mapped folder (its `$tf` folder).

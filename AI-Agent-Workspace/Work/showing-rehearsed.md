@@ -7,11 +7,13 @@ opened: 2026-11-20
 ---
 # The showing rehearsed, at home and then at work
 
-**For the owner.** No public repository is your work's code, and none of that code can come here. So the last days before the showing are spent finding what only your code has, by a loop that moves no source: you scan, you paste back a report that holds no source text, and what it shows is mended here. That loop needs days, which is why the first scan at work is set for December 2 or 3 and not the weekend before.
+**For the owner.** No public repository is your work's code, and none of that code can come here. The first board planned a loop for that: you scan, you paste back a report that holds no source text, and what it shows is mended here. **Your answer of 2026-11-21 ends that plan** ([your words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-1)): "Nothing leaves the machine and I would just share my screen", and the showing is "NOT heavily formal". What is left is what you can tell in your own words after a scan, so the tool has to say plainly, on that screen, what it could not read and why.
 
 **Done when.** You have walked the showing's journey on your own code on your work machine, and what you will show is chosen from what is true by then.
 
-**Waiting on the owner.** What may leave the work machine: nothing at all, the report without source, pictures? And where you will present from: that machine's own screen, or somewhere a built map would have to be carried to?
+**Rests on.** Your bar of 2026-11-19 being met first ("I wouldn't dare run anything on that machine until I'm really confident our software has been battle-tested against many others"), and on whichever way the tool arrives.
+
+**Waiting on the owner.** Nothing. Answered 2026-11-21: nothing leaves; a shared screen of your remote workstation.
 
 ## Tasks
 
@@ -34,4 +36,4 @@ The same archive and command you will use at work, on your own Windows machine, 
 - holds: needs the issues before this one
 - evidence:
 
-One repository first, the smallest that is typical. The report pasted back ([its task](proven-on-real-repositories.md)); what it shows mended here and proven on a constructed case of the same shape; then the next repository.
+One solution first, the smallest that is typical. What the tool's own report says ([its task](proven-on-real-repositories.md)), told in your words; what it shows mended here and proven on a constructed case of the same shape; then the next solution.

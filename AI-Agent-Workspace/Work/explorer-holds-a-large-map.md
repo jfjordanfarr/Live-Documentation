@@ -5,13 +5,15 @@ milestone: december-showing
 order: 60
 opened: 2026-11-20
 ---
-# The Explorer holds a large map on a modest machine
+# The Explorer holds up on a weak machine
 
-**For the owner.** Your work's code is larger than our samples and your work machine is smaller than this one: little memory, and probably no graphics card like the one the tests draw on. On this repository's own map a press already takes longer than the half second you set as "at once", and one of the 3D map's limits was set for a machine with no card and never measured on one.
+**For the owner.** Your work machine is far smaller than this one: "Absolute crap VM", 8 GB of memory, graphics unknown, and it must "run on absolute garbage, even if some amount of precomputation time with reasonable progress indicators is required to do so" (2026-11-21). Your scans are not large: a solution each, none near a million lines. On this repository's own map a press already takes longer than the half second you set as "at once", and one of the 3D map's limits was set for a machine with no card and never measured on one.
 
-**Done when.** On a map of about ten thousand files, drawn without a graphics card, a first picture, a search, a pin and a change between 2D and 3D each stay inside the bounds the suite holds today, and the tab's memory fits a machine of 8 GB.
+**Done when.** On a map the size of one of your solutions, in a browser with no graphics card and a slow processor, a first picture, a search, a pin and a change between 2D and 3D are each comfortable to use, a link to the 3D map never ends in a dead page, and where the page must work before it can show, it says so and how far it has got.
 
-**Waiting on the owner.** Your eye on Settle Hold, the first question of [the packet](../AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner-packet/README.md): it decides how long a 3D picture goes on moving and is the suite's one standing red case. And roughly how much code the largest repository you would show holds.
+**Rests on.** [One look on 2026-11-21](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md), this machine imitating a weak one: the estate sample (36 files) holds up in software drawing, this repository's map (1,134 files) gives two to five frames a second, and a browser that refuses WebGL shows "The Explorer stopped" on any 3D link. The first board's "about ten thousand files" was a guess and is withdrawn. Not known: your solutions' real sizes, and what that VM's browser can draw.
+
+**Waiting on the owner.** Your eye on Settle Hold, the first question of [the packet](../AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner-packet/README.md): it decides how long a 3D picture goes on moving and is the suite's one standing red case.
 
 ## Tasks
 
@@ -31,12 +33,19 @@ opened: 2026-11-20
 
 With the press's mend a 2D map held during the change to 3D is made inert only when it is released, so for one to three seconds a Tab can move focus into it and lose it at the release; the destination map has had the same exposure since 2026-11-08. A guard on the held surface, with a browser case. What also still grows with the picture, found by the same builder and left: a second placement of the subject on the way to 2D, with the same anchor as the first, which draws the connections again (46 ms on the larger picture).
 
-### A map of ten thousand files, measured before anything is mended
+### A 3D link in a browser that gives no WebGL
+- state: active
+- holds: with a builder since 2026-11-21
+- evidence: [the probe that found it](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md)
+
+Today the page stops with a stack trace. It should show the same subject in the 2D map and say, on the 3D control, why 3D is not offered.
+
+### Maps of a solution's size on a weak machine, measured before anything is mended
 - state: open
-- holds: not begun
+- holds: begun by root's probe of 2026-11-21; the walk through pins, presses and searches not done
 - evidence:
 
-The largest test codebase's map: load, first picture, search, pin, the change of view, the tab's memory; once on the card and once in software drawing, which stands for the work machine at its worst. The 3D map draws at most 1,024 files inside closed groups, a limit that cost nothing on the card and gave three frames a second without one when lifted.
+Public .NET solutions of the sizes the owner describes: load, first picture, search, pin, the change of view, the tab's memory, in software drawing on two cores with the processor slowed. What the probe ranks first: the 2D map's continuing search, which holds the page to a few frames a second while it runs, and the 3D picture's cost a frame. The owner's leave for "precomputation time with reasonable progress indicators" is a design none of the trials took: work done once and kept, in place of work done at every opening. The 3D map draws at most 1,024 files inside closed groups, a limit that cost nothing on the card and gave three frames a second without one when lifted.
 
 ### The first 2D picture measures before it writes
 - state: open

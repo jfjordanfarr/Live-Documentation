@@ -11,7 +11,9 @@ opened: 2026-11-20
 
 **Done when.** On a Windows machine that has Node and has never seen this repository, one archive and one command produce a folder's map and open it, and a Windows job in CI does the same on every landing.
 
-**Waiting on the owner.** Can the work machine reach the npm registry, or must the tool arrive as one archive you carry in? Which browser will you use there?
+**Rests on.** A package installed with Node and one command. The owner's answer of 2026-11-21 ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-1)) is that the registry can be reached "but if I don't have to, that's much better. Like downloading an HTML file off of the Live Documentation hosted github pages site would be way cooler. Each copy of Live Documentation Explorer should be capable of writing a new fresh blank copy of Live Documentation Explorer, eagerly ready to take in its first scan!" [Measured on 2026-11-19](../AgentSessionHistory/2026/11/2026-11-19/Probes/execution-surface/README.md): the unchanged generator ran in a page and wrote what Node writes. If the page comes first, this issue becomes that page, and the package serves what a page cannot do: a git repository's history, and automation.
+
+**Waiting on the owner.** Whether the page comes first and the package second, which reverses their order of 2026-10-10. The machine is a VM of 8 GB with a few GB of disk; which browser it has, and what that browser allows, is not known.
 
 ## Tasks
 

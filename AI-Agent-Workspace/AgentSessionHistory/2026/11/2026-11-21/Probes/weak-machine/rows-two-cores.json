@@ -1,0 +1,187 @@
+[
+ {
+  "condition": "software-4x",
+  "subject": "estate-2d",
+  "navError": null,
+  "at3s": {
+   "frames": 34,
+   "fpsLast2s": 14.5,
+   "longTaskMs": 2496,
+   "heapMB": 10,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 57,
+   "text": 2069
+  },
+  "at12s": {
+   "frames": 540,
+   "fpsLast2s": 60,
+   "longTaskMs": 2496,
+   "heapMB": 10,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 57,
+   "text": 2069
+  },
+  "errors": []
+ },
+ {
+  "condition": "software-4x",
+  "subject": "estate-3d",
+  "navError": null,
+  "at3s": {
+   "frames": 28,
+   "fpsLast2s": 11.5,
+   "longTaskMs": 3371,
+   "heapMB": 11,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": true,
+   "building": false,
+   "canvases": 1,
+   "cards": 18,
+   "text": 624
+  },
+  "at12s": {
+   "frames": 219,
+   "fpsLast2s": 22.5,
+   "longTaskMs": 5358,
+   "heapMB": 11,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": true,
+   "building": false,
+   "canvases": 1,
+   "cards": 18,
+   "text": 522
+  },
+  "errors": []
+ },
+ {
+  "condition": "software-4x",
+  "subject": "repo-2d",
+  "navError": null,
+  "at3s": {
+   "frames": 18,
+   "fpsLast2s": 2,
+   "longTaskMs": 10887,
+   "heapMB": 43,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 495,
+   "text": 37775
+  },
+  "at12s": {
+   "frames": 27,
+   "fpsLast2s": 5,
+   "longTaskMs": 12304,
+   "heapMB": 43,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 495,
+   "text": 37775
+  },
+  "errors": []
+ },
+ {
+  "condition": "software-4x",
+  "subject": "repo-3d",
+  "navError": null,
+  "at3s": {
+   "frames": 29,
+   "fpsLast2s": 1.5,
+   "longTaskMs": 5116,
+   "heapMB": 51,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": true,
+   "building": true,
+   "canvases": 1,
+   "cards": 15,
+   "text": 573
+  },
+  "at12s": {
+   "frames": 44,
+   "fpsLast2s": 1.5,
+   "longTaskMs": 12958,
+   "heapMB": 51,
+   "gl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+   "busy": true,
+   "building": true,
+   "canvases": 1,
+   "cards": 15,
+   "text": 572
+  },
+  "errors": []
+ },
+ {
+  "condition": "no-webgl",
+  "subject": "estate-2d",
+  "navError": null,
+  "at3s": {
+   "frames": 149,
+   "fpsLast2s": 59.5,
+   "longTaskMs": 448,
+   "heapMB": 10,
+   "gl": "none",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 57,
+   "text": 2069
+  },
+  "at12s": {
+   "frames": 691,
+   "fpsLast2s": 60,
+   "longTaskMs": 448,
+   "heapMB": 10,
+   "gl": "none",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 57,
+   "text": 2069
+  },
+  "errors": []
+ },
+ {
+  "condition": "no-webgl",
+  "subject": "estate-3d",
+  "navError": null,
+  "at3s": {
+   "frames": 169,
+   "fpsLast2s": 60,
+   "longTaskMs": 231,
+   "heapMB": 10,
+   "gl": "none",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 0,
+   "text": 1085
+  },
+  "at12s": {
+   "frames": 709,
+   "fpsLast2s": 60,
+   "longTaskMs": 231,
+   "heapMB": 10,
+   "gl": "none",
+   "busy": false,
+   "building": false,
+   "canvases": 0,
+   "cards": 0,
+   "text": 1085
+  },
+  "errors": [
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: A WebGL context could not be created. Reason:  disabled by enterprise policy or commandline switch",
+   "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+   "Live Docs Explorer fatal error Error: THREE.WebGLRenderer: Error creating WebGL context.\n    at new Sm (http://127.0.0.1:8771/samples/estate/static/index.js:451"
+  ]
+ }
+]
