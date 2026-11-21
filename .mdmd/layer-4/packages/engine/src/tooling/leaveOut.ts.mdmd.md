@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/leaveOut.ts`
-- Generated At: 2026-11-21T06:03:04.670Z
+- Generated At: 2026-11-21T06:17:53.514Z
 
 ## Authored
 ### Purpose
@@ -96,3 +96,8 @@ The decider for one listing's ignore files, starting list, person's patterns and
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/engine-and-hosts.mdmd.md`](../../../../../layer-3/engine-and-hosts.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->
