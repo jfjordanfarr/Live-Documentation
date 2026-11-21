@@ -5,7 +5,7 @@
 // (AI-Agent-Workspace/scripts/playtest/README.md). It needs no browser, so it never takes the browser lock.
 //
 // Usage:
-//   node AI-Agent-Workspace/scripts/playtest/grade-narrative.mjs <run folder> [--model claude-opus-5-5] [--effort high]
+//   node AI-Agent-Workspace/scripts/playtest/grade-narrative.mjs <run folder> [--model claude-opus-5-5] [--effort high] [--claude <program>]
 //
 // The grader is not told the tester's model or condition. It starts in an empty folder outside the repository with
 // no setting sources, no MCP server, no skills and none of the calling session's variables, like a tester.
@@ -15,12 +15,14 @@ import path from 'node:path';
 import { spawnSync, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
+import { claudeProgram } from './claude-program.mjs';
+
 const here = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const option = (name, fallback = null) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : fallback; };
 const run = args[0] && path.resolve(args[0]);
 if (!run || !fs.existsSync(path.join(run, 'answer.md'))) { console.error('usage: grade-narrative.mjs <run folder with answer.md> [--model id] [--effort level]'); process.exit(2); }
-const claude = option('--claude', '/home/node/.vscode-server/extensions/anthropic.claude-code-2.1.327-linux-x64/resources/native-binary/claude');
+const claude = claudeProgram(args);
 const model = option('--model', 'claude-opus-5-5');
 const effort = option('--effort', 'high');
 

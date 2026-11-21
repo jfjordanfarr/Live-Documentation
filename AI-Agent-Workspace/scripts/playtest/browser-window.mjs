@@ -52,6 +52,11 @@ const pending = []; // what happened outside the tester's action that a person w
 const blocked = [];
 
 async function open() {
+  // A run has one setup. Claude Code starts a window again after one exits; if this run's setup already failed, the new
+  // window ends at once, before it can set the page up and overwrite the record of the failure.
+  try {
+    if (JSON.parse(fs.readFileSync(path.join(recordDir, 'setup.json'), 'utf8')).ok === false) process.exit(1);
+  } catch { /* no setup yet */ }
   browser = await chromium.launch({ headless: true });
   context = await browser.newContext({ viewport, deviceScaleFactor: 1, acceptDownloads: false });
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });

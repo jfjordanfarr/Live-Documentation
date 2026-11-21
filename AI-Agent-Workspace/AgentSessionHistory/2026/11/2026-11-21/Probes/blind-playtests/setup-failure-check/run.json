@@ -1,0 +1,105 @@
+{
+  "task": "narrative-picture",
+  "start": "http://127.0.0.1:8792/samples/estate/",
+  "words": "This page is a map of a software project, and it can show the project's history: I have opened the history control for you. In this test the words describing each step are switched off, so work from the picture, the dates and the names on the map. Tell me how this software came to be what it is: the periods it went through; what appeared, grew, moved, was renamed or was removed; where the work gathered, and when. For every statement, say what on the screen showed it to you and at what date. The history has hundreds of steps and you have about 150 actions with the window, so choose how you travel through it.",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "maxActions": 150,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-21T01:00:25.373Z",
+    "explorer-data.json": "2026-11-21T01:00:24.754Z",
+    "samples/estate/explorer-data.json": "2026-11-21T00:46:34.634Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "This page is a map of a software project, and it can show the project's history: I have opened the history control for you. In this test the words describing each step are switched off, so work from the picture, the dates and the names on the map. Tell me how this software came to be what it is: the periods it went through; what appeared, grew, moved, was renamed or was removed; where the work gathered, and when. For every statement, say what on the screen showed it to you and at what date. The history has hundreds of steps and you have about 150 actions with the window, so choose how you travel through it.\n\nhttp://127.0.0.1:8792/samples/estate/",
+  "startedAt": "2026-11-21T03:11:05.900Z",
+  "finishedAt": "2026-11-21T03:12:40.173Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-21T01:00:25.373Z",
+    "explorer-data.json": "2026-11-21T01:00:24.754Z",
+    "samples/estate/explorer-data.json": "2026-11-21T00:46:34.634Z"
+  },
+  "setup": {
+    "openedHistory": false,
+    "scrubberVisible": false,
+    "stepPanelVisible": null,
+    "hideStepWords": true,
+    "error": "locator.click: Timeout 15000ms exceeded.",
+    "ok": false
+  },
+  "siteChanged": false,
+  "exitCode": 143,
+  "outcome": "setup failed",
+  "wallMs": 31221,
+  "lockWaitMs": 63051,
+  "assistantMessages": 3,
+  "toolCalls": 2,
+  "actions": 0,
+  "actionsByTool": {
+    "look": 0,
+    "point": 0,
+    "click": 0,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "clipboard": [],
+  "finalAddress": null,
+  "init": {
+    "cwd": "/tmp/session-BzT0YD",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}
