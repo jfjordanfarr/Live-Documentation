@@ -1,0 +1,8 @@
+{
+  "openedHistory": false,
+  "scrubberVisible": false,
+  "stepPanelVisible": null,
+  "hideStepWords": true,
+  "error": "locator.click: Timeout 15000ms exceeded.",
+  "ok": false
+}

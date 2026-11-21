@@ -1,0 +1,142 @@
+[
+  {
+    "name": "estate-trace-opus-medium-look-only",
+    "task": "estate-trace",
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-trace-opus-medium-look-only-2",
+    "task": "estate-trace",
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-trace-sonnet-medium-look-only",
+    "task": "estate-trace",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-trace-sonnet-medium-look-only-2",
+    "task": "estate-trace",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-trace-haiku-default-look-only",
+    "task": "estate-trace",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-trace-haiku-default-look-only-2",
+    "task": "estate-trace",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "narrative-panel-opus-high",
+    "task": "narrative-panel",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "variant": "look-only"
+  },
+  {
+    "name": "narrative-picture-opus-high",
+    "task": "narrative-picture",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-uses-sonnet-medium-look-only",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-uses-sonnet-medium-look-only-2",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-uses-haiku-default-look-only",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-uses-haiku-default-look-only-2",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-directory-sonnet-medium-look-only",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-directory-sonnet-medium-look-only-2",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-directory-haiku-default-look-only",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-directory-haiku-default-look-only-2",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-link-sonnet-medium-look-only",
+    "task": "estate-link",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-link-sonnet-medium-look-only-2",
+    "task": "estate-link",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-link-haiku-default-look-only",
+    "task": "estate-link",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "estate-link-haiku-default-look-only-2",
+    "task": "estate-link",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  }
+]

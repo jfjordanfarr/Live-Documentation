@@ -1,0 +1,8 @@
+The `packages/explorer/src/client/search` folder has four files in the map: `graph-search.ts`, `search-bar.ts`, `search-field.ts`, and the test `graph-search.test.ts`. The map doesn't show a folder view directly, so I built this picture from the search results and the file panels for `graph-search.ts` and `search-bar.ts`. I did not open `search-field.ts` or the test file.
+
+- **`graph-search.ts`** is the core logic. Its description says it is "the one search of the Explorer, pure: a few typed words find directories by their last segment." It exposes functions and types such as `reachWords`, `destinationScope`, `SearchHit`, `SearchScope`, `SearchIndex`, `searchIndexOf`, `searchGraph`, and `SearchRow`. Its links run out to the `history` folder's `moment-paths.test.ts` and `file-identity.ts`, and to many other parts of the map.
+- **`search-bar.ts`** is the search bar at the top of the Explorer. Its description says the first field shows the newest pin and destination. It has `SearchWords`, `createSearchBar`, `StatusTone`, `SearchBarOptions`, and `SearchBar`, plus an `Internals` group. It is the UI layer over the search logic in `graph-search.ts`.
+- **`search-field.ts`** is described as "one search field with its results," used twice by the bar, once for the words typed and once for the destination.
+- **`graph-search.test.ts`** is the test file for `graph-search.ts`, and it is marked as test-backed on the map.
+
+So the flow is: `search-field.ts` provides the input and results widget, `search-bar.ts` composes two of those fields into the top bar, and `graph-search.ts` does the actual matching and returns results. The test file checks `graph-search.ts`. The `search` folder itself is reached through the `Internals` nodes in both files.

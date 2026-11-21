@@ -1,6 +1,6 @@
 # Internal Tooling Reference
 
-_Current as of 2026-11-19._
+_Current as of 2026-11-21._
 
 ## Metadata
 
@@ -73,6 +73,18 @@ node scripts/browser-lane.mjs --status    # who holds, who waits, for how long
 - **`npm run e2e:bundles`** ([`scripts/e2e-bundles.mjs`](../layer-4/scripts/e2e-bundles.mjs.mdmd.md)) builds the Explorer and every sample the suite serves, and `npm run test:e2e` runs it first. *Stale sample bundles*: a check after a landing rebuilt the Explorer and the estate sample but not the history or Rosetta samples, and the history's cases then ran on a page hours old and failed for that alone. At its start the suite now refuses bundles that were not built together from the client as it stands, naming each and this command: every bundle carries its own copy of the client's script, so a sample whose copy differs from the Explorer's was built at another time.
 - **The suite's own server** ([`tests/e2e/served-build.ts`](../layer-4/tests/e2e/served-build.ts.mdmd.md)). *Playwright reused whatever answered on its port*, so a builder given a port another builder's server still held would have tested the other's build without a word. The suite now starts its server on a port it finds free; a port named by `LIVE_DOCS_E2E_PORT` that already answers is refused in a plain sentence, unless `LIVE_DOCS_E2E_REUSE=1` asks to use it; and its first global setup proves the server serves this checkout's `dist/explorer` by fetching a file just written there. A builder needs no port of its own for the suite any more; a port is still needed for a page served by hand.
 - *Shared scratch names*: two agents wrote a `hold.sh` in one scratch folder and one overwrote the other's. The lane needs no script of one's own to hold the browser; scratch files go in a folder named for their builder.
+
+
+### The engine in a page
+
+A standing check, since 2026-11-21 ([the record, Turn 2](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)), that the engine and generator as they stand, bundled for a browser with stand-ins for Node's modules (`tests/page-scan/stand-ins/`), map a folder inside a real Chromium page to the same Live Docs and index that Node writes, over every sample program and fixture, and that says how far the engine is from needing no stand-ins. Until then nothing said when the engine stopped running in a page: the probe of 2026-11-19 had stopped building two days later. What it found on its first runs is [its evidence](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/page-check/README.md).
+
+| Command | What it does |
+| --- | --- |
+| `npm run test:integration` (`tests/page-scan/*.test.ts`) | Without a browser: the scanning bundle builds; what of Node the scan's path needs is the committed `tests/page-scan/node-needs.json`; each stand-in answers for exactly that; every reader the engine registers reads some fixture's files |
+| `node tests/page-scan/node-needs.mjs [--write]` | Prints what of Node the scan's path needs, read from esbuild's account of the bundle and each module's syntax tree; `--write` writes the committed list, for review |
+| `node tests/page-scan/build-page.mjs --out dist/page-scan` | Builds the scanning page; `npm run e2e:bundles` runs it |
+| `node scripts/browser-lane.mjs --label <who> -- npx playwright test --config tests/e2e/playwright.config.ts tests/e2e/page-scan.spec.ts` | In Chromium, each fixture scanned in the page opened from disk and under Node, every file compared whole and held to the ledger `tests/page-scan/differences.json`, which fails on a difference it does not list and on a listed one that no longer occurs. Each case's `page-scan.json` keeps the calls made of the stand-ins, the files read and how often, and both times. About 150 s for the 45 cases, and 250 s on a loaded machine, so one hold; `--grep "fixtures/"` and `--grep-invert "fixtures/"` halve it |
 
 
 ---

@@ -1,0 +1,488 @@
+{
+  "engine": {
+    "packages/engine/src/live-docs/adapters/aspnet.ts": {
+      "node:path": [
+        "extname",
+        "join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/c.ts": {
+      "node:fs": [
+        "promises.stat",
+        "readdirSync",
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "extname",
+        "join",
+        "posix.dirname",
+        "posix.extname",
+        "posix.isAbsolute",
+        "posix.join",
+        "posix.normalize",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/cargo.ts": {
+      "node:path": [
+        "dirname",
+        "isAbsolute",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/csharp.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs": [
+        "promises.stat"
+      ],
+      "node:path": [
+        "join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/css.ts": {
+      "node:fs": [
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/dotnetConfig.ts": {
+      "node:path": [
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/dotnetPaths.ts": {
+      "node:path": [
+        "posix.dirname",
+        "posix.join",
+        "posix.normalize"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/dotnetProjects.ts": {
+      "node:path": [
+        "join"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/go.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs": [
+        "promises.stat"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "posix.join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/gomod.ts": {
+      "node:path": [
+        "dirname"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/html.ts": {
+      "node:fs": [
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/index.ts": {
+      "node:path": [
+        "basename",
+        "extname"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/java.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs": [
+        "promises.stat"
+      ],
+      "node:path": [
+        "join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/json.ts": {
+      "node:fs": [
+        "readFileSync",
+        "statSync"
+      ],
+      "node:path": [
+        "basename",
+        "dirname",
+        "extname",
+        "isAbsolute",
+        "join",
+        "relative",
+        "resolve"
+      ],
+      "typescript": [
+        "sys.useCaseSensitiveFileNames"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/manifest.ts": {
+      "node:path": [
+        "isAbsolute",
+        "join",
+        "posix.basename",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/pom.ts": {
+      "node:path": [
+        "dirname",
+        "extname",
+        "join",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/powershell.ts": {
+      "node:path": [
+        "extname",
+        "join",
+        "posix.basename",
+        "posix.dirname",
+        "posix.extname",
+        "posix.join",
+        "posix.normalize",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/project.ts": {
+      "node:path": [
+        "basename",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/pyproject.ts": {
+      "node:path": [
+        "dirname",
+        "join"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/python.ts": {
+      "node:fs": [
+        "readdirSync",
+        "statSync"
+      ],
+      "node:path": [
+        "basename",
+        "dirname",
+        "join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/ruby.ts": {
+      "node:fs": [
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/rust.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs": [
+        "promises.access",
+        "promises.stat"
+      ],
+      "node:path": [
+        "basename",
+        "dirname",
+        "join",
+        "posix.join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/solution.ts": {
+      "node:path": [
+        "extname",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/sql.ts": {
+      "node:path": [
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/treeSitter.ts": {
+      "(global)": [
+        "__dirname",
+        "require.resolve"
+      ],
+      "node:fs": [
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/archetype.ts": {
+      "node:path": [
+        "basename",
+        "posix.dirname"
+      ]
+    },
+    "packages/engine/src/live-docs/compose.ts": {
+      "node:path": [
+        "extname",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/coreUtils.ts": {
+      "node:path": [
+        "basename",
+        "dirname",
+        "relative",
+        "sep"
+      ]
+    },
+    "packages/engine/src/live-docs/dependencies.ts": {
+      "node:fs/promises": [
+        "stat"
+      ],
+      "node:path": [
+        "dirname",
+        "extname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/discovery.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs/promises": [
+        "readFile",
+        "stat"
+      ],
+      "node:path": [
+        "extname",
+        "isAbsolute",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/gitUtils.ts": {
+      "(global)": [
+        "process.env"
+      ],
+      "node:child_process": [
+        "execFile"
+      ]
+    },
+    "packages/engine/src/live-docs/graphFiles.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs": [
+        "promises.mkdir",
+        "promises.readFile",
+        "promises.stat",
+        "promises.writeFile"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "posix.join",
+        "relative",
+        "resolve",
+        "sep"
+      ]
+    },
+    "packages/engine/src/live-docs/heuristics/dom.ts": {
+      "node:fs/promises": [
+        "readdir"
+      ],
+      "node:path": [
+        "dirname",
+        "extname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    "packages/engine/src/live-docs/sourceAnalysis.ts": {
+      "node:path": [
+        "extname",
+        "relative"
+      ]
+    },
+    "packages/engine/src/tooling/gitIgnored.ts": {
+      "node:child_process": [
+        "spawnSync"
+      ],
+      "node:fs": [
+        "lstatSync",
+        "readdir",
+        "readdirSync",
+        "statSync"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "relative",
+        "resolve",
+        "sep"
+      ],
+      "node:process": [
+        "env",
+        "nextTick"
+      ]
+    },
+    "packages/engine/src/tooling/pathUtils.ts": {
+      "node:path": [
+        "isAbsolute",
+        "relative",
+        "resolve",
+        "sep"
+      ],
+      "node:url": [
+        "fileURLToPath",
+        "pathToFileURL"
+      ]
+    },
+    "packages/engine/src/tooling/sourceText.ts": {
+      "node:fs": [
+        "promises.readFile"
+      ]
+    },
+    "packages/generator/src/generator.ts": {
+      "glob": [
+        "glob"
+      ],
+      "node:fs/promises": [
+        "mkdir",
+        "open",
+        "readFile",
+        "readdir",
+        "rm",
+        "rmdir",
+        "stat",
+        "writeFile"
+      ],
+      "node:path": [
+        "dirname",
+        "join",
+        "posix.dirname",
+        "relative",
+        "resolve"
+      ]
+    }
+  },
+  "standIns": {
+    "(global)": [
+      "__dirname",
+      "process.env",
+      "require.resolve"
+    ],
+    "glob": [
+      "glob"
+    ],
+    "node:child_process": [
+      "execFile",
+      "spawnSync"
+    ],
+    "node:fs": [
+      "lstatSync",
+      "promises.access",
+      "promises.mkdir",
+      "promises.readFile",
+      "promises.stat",
+      "promises.writeFile",
+      "readFileSync",
+      "readdir",
+      "readdirSync",
+      "statSync"
+    ],
+    "node:fs/promises": [
+      "mkdir",
+      "open",
+      "readFile",
+      "readdir",
+      "rm",
+      "rmdir",
+      "stat",
+      "writeFile"
+    ],
+    "node:path": [
+      "basename",
+      "dirname",
+      "extname",
+      "isAbsolute",
+      "join",
+      "posix.basename",
+      "posix.dirname",
+      "posix.extname",
+      "posix.isAbsolute",
+      "posix.join",
+      "posix.normalize",
+      "relative",
+      "resolve",
+      "sep"
+    ],
+    "node:process": [
+      "env",
+      "nextTick"
+    ],
+    "node:url": [
+      "fileURLToPath",
+      "pathToFileURL"
+    ]
+  },
+  "hostedByNode": {
+    "typescript": [
+      "sys.useCaseSensitiveFileNames"
+    ]
+  },
+  "globals": {
+    "__dirname": "a constant the build defines for adapters/treeSitter.ts",
+    "process": "nothing: a page has no global process, and a call throws",
+    "require": "require.resolve only, by the stand-in require-resolve.mjs"
+  },
+  "packages": {
+    "typescript": {
+      "crypto": "unresolved: a call throws in the page",
+      "fs": "the stand-in fs.mjs",
+      "inspector": "unresolved: a call throws in the page",
+      "os": "unresolved: a call throws in the page",
+      "path": "the stand-in path.mjs",
+      "perf_hooks": "unresolved: a call throws in the page"
+    },
+    "web-tree-sitter": {
+      "fs/promises": "the stand-in fs-promises.mjs",
+      "module": "unresolved: a call throws in the page"
+    }
+  },
+  "history": []
+}

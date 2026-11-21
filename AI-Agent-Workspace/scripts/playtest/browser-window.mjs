@@ -5,7 +5,7 @@
 //
 // Usage (started by playtest.mjs, never by hand, and always under the shared browser lock):
 //   flock -s /tmp/live-docs-browser.lock node browser-window.mjs --start <url> --record <dir> [--after-each] [--max-actions 60]
-//        [--open-history] [--hide-step-words]
+//        [--open-history] [--hide-step-words] [--setting <group>.<name>=<value> ...]
 //
 // For the narrative playtest (2026-11-19), --open-history has the harness press the map's History button before the
 // tester begins, and --hide-step-words keeps the history's words about each commit off the screen (see setUp below).
@@ -32,6 +32,15 @@ const afterEach = args.includes('--after-each');
 const maxActions = Number(option('--max-actions', '60'));
 const openHistory = args.includes('--open-history');
 const hideStepWords = args.includes('--hide-step-words');
+// A viewer's Tuning choice made before the page first loads (2026-11-21): `--setting <group>.<name>=<value>`, repeatable,
+// as `localMap.framing=follows`. It is written where the page keeps a viewer's choices, its saved interface state, and
+// the setup checks that Tuning's own control for it (`#tuning-<name>`) shows the value.
+const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] : [])).map((text) => {
+  const match = /^(\w+)\.(\w+)=(.+)$/.exec(text ?? '');
+  if (!match) { console.error(`--setting takes <group>.<name>=<value>, not ${text}`); process.exit(2); }
+  return { group: match[1], name: match[2], value: match[3] };
+});
+const SAVED_INTERFACE_KEY = 'live-docs-explorer:ui:v2'; // PERSISTED_UI_KEY in packages/explorer/src/client/persistence/local-storage.ts
 const viewport = { width: 1280, height: 800 }; // under the size at which the API scales a picture, so x, y stay page pixels
 if (!startUrl || !recordDir) {
   console.error('usage: browser-window.mjs --start <url> --record <dir> [--after-each] [--max-actions N]');
@@ -52,6 +61,11 @@ const pending = []; // what happened outside the tester's action that a person w
 const blocked = [];
 
 async function open() {
+  // A run has one setup. Claude Code starts a window again after one exits; if this run's setup already failed, the new
+  // window ends at once, before it can set the page up and overwrite the record of the failure.
+  try {
+    if (JSON.parse(fs.readFileSync(path.join(recordDir, 'setup.json'), 'utf8')).ok === false) process.exit(1);
+  } catch { /* no setup yet */ }
   browser = await chromium.launch({ headless: true });
   context = await browser.newContext({ viewport, deviceScaleFactor: 1, acceptDownloads: false });
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
@@ -71,35 +85,57 @@ async function open() {
       if (document.head) add(); else document.addEventListener('DOMContentLoaded', add);
     }, HIDDEN_WORDS_CSS);
   }
+  if (settings.length) {
+    // Once a tab, before the page's own code first runs: a later load keeps whatever the page has saved since.
+    await context.addInitScript(({ key, settings: chosen }) => {
+      if (sessionStorage.getItem('playtest-settings-written')) return;
+      const tuning = {};
+      for (const { group, name, value } of chosen) (tuning[group] ??= {})[name] = value;
+      localStorage.setItem(key, JSON.stringify({ version: 2, tuning }));
+      sessionStorage.setItem('playtest-settings-written', '1');
+    }, { key: SAVED_INTERFACE_KEY, settings });
+  }
   page = await context.newPage();
   watch(page);
   context.on('page', (opened) => { watch(opened); page = opened; pending.push('A new tab opened and is now in front.'); });
   await page.goto(startUrl, { waitUntil: 'load', timeout: 60000 });
   await rest(15000);
-  if (openHistory) await setUp();
+  if (openHistory || settings.length) await setUp();
 }
 
 const HIDDEN_WORDS_CSS = '.history-step-panel, .history-step-dialog, .history-details, .history-step-more,'
   + ' .history-commit-result > span:not(.history-commit-meta) { display: none !important; }';
 
 /**
- * Before the tester's first action, the harness opens the history with the map's own History button, as a setup the
- * tester is told of, and checks that the condition holds: the scrubber is open, and under --hide-step-words no step
- * panel is drawn. The check goes to setup.json; a setup that fails ends the window, so no tester works on the wrong page.
+ * Before the tester's first action, the harness checks that each --setting shows in Tuning's control for it, and under
+ * --open-history opens the history with the map's own History button, as a setup the tester is told of, and checks that
+ * the condition holds: the scrubber is open, and under --hide-step-words no step panel is drawn. The check goes to
+ * setup.json; a setup that fails ends the window, so no tester works on the wrong page.
  */
 async function setUp() {
-  const check = { openedHistory: false, scrubberVisible: false, stepPanelVisible: null, hideStepWords };
-  try {
-    await page.getByRole('button', { name: 'History', exact: true }).first().click({ timeout: 15000 });
-    check.openedHistory = true;
-    await page.locator('.history-scrubber').first().waitFor({ state: 'visible', timeout: 30000 });
-    check.scrubberVisible = true;
-    await rest(8000);
-    check.stepPanelVisible = await page.locator('.history-step-panel').first().isVisible().catch(() => false);
-  } catch (error) {
-    check.error = String(error?.message ?? error).split('\n')[0];
+  const check = {};
+  if (settings.length) {
+    check.settings = [];
+    for (const { group, name, value } of settings) {
+      const shown = await page.locator(`#tuning-${name}`).first().inputValue({ timeout: 5000 }).catch(() => null);
+      check.settings.push({ setting: `${group}.${name}`, wanted: value, shown });
+    }
   }
-  check.ok = check.scrubberVisible && (hideStepWords ? check.stepPanelVisible === false : check.stepPanelVisible === true);
+  if (openHistory) {
+    Object.assign(check, { openedHistory: false, scrubberVisible: false, stepPanelVisible: null, hideStepWords });
+    try {
+      await page.getByRole('button', { name: 'History', exact: true }).first().click({ timeout: 15000 });
+      check.openedHistory = true;
+      await page.locator('.history-scrubber').first().waitFor({ state: 'visible', timeout: 30000 });
+      check.scrubberVisible = true;
+      await rest(8000);
+      check.stepPanelVisible = await page.locator('.history-step-panel').first().isVisible().catch(() => false);
+    } catch (error) {
+      check.error = String(error?.message ?? error).split('\n')[0];
+    }
+  }
+  check.ok = (check.settings ?? []).every((s) => s.shown === s.wanted)
+    && (!openHistory || (check.scrubberVisible && (hideStepWords ? check.stepPanelVisible === false : check.stepPanelVisible === true)));
   fs.writeFileSync(path.join(recordDir, 'setup.json'), JSON.stringify(check, null, 2) + '\n');
   if (!check.ok) { console.error('setup failed:', JSON.stringify(check)); await browser.close(); process.exit(1); }
 }

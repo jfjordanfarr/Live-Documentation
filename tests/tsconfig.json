@@ -20,7 +20,8 @@
     "e2e/**/*.spec.ts",
     "e2e/**/*.d.ts",
     "integration/live-docs/**/*.test.ts",
-    "integration/slopcop/**/*.test.ts"
+    "integration/slopcop/**/*.test.ts",
+    "page-scan/**/*.ts"
   ],
   "exclude": [
     "integration/fixtures/**/*",

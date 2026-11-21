@@ -11,7 +11,7 @@ opened: 2026-11-20
 
 **Done when.** On a map the size of one of your solutions, in a browser with no graphics card and a slow processor, a first picture, a search, a pin and a change between 2D and 3D are each comfortable to use, a link to the 3D map never ends in a dead page, and where the page must work before it can show, it says so and how far it has got.
 
-**Rests on.** [One look on 2026-11-21](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md), this machine imitating a weak one: the estate sample (36 files) holds up in software drawing, this repository's map (1,134 files) gives two to five frames a second, and a browser that refuses WebGL shows "The Explorer stopped" on any 3D link. The first board's "about ten thousand files" was a guess and is withdrawn. Not known: your solutions' real sizes, and what that VM's browser can draw.
+**Rests on.** [One look on 2026-11-21](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md), this machine imitating a weak one: the estate sample (36 files) holds up in software drawing, this repository's map (1,134 files) gives two to five frames a second, and a browser that refuses WebGL shows "The Explorer stopped" on any 3D link. The first board's "about ten thousand files" was a guess and is withdrawn. Not known: your solutions' real sizes, and what that VM's browser can draw. The owner's scale, 2026-11-21 ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-3)): "over 100k files in just the portion of TFS I have cloned", most of them committed `packages` folders, and "tens of thousands of code files" in all; each scan is one solution of it, so the number that matters for a map is a solution's files after what is left out, which nobody has counted.
 
 **Waiting on the owner.** Your eye on Settle Hold, the first question of [the packet](../AgentSessionHistory/2026/11/2026-11-19/Screenshots/owner-packet/README.md): it decides how long a 3D picture goes on moving and is the suite's one standing red case.
 
@@ -35,10 +35,17 @@ With the press's mend a 2D map held during the change to 3D is made inert only w
 
 ### A 3D link in a browser that gives no WebGL
 - state: active
-- holds: with a builder since 2026-11-21
+- holds: with a builder since 2026-11-21, uncommitted in its worktree (branch `worktree-agent-a2e1671885ba40563`); an interim handback at about 03:26 UTC: where WebGL is refused a 3D link, a remembered 3D and Back to a 3D entry all show the subject in 2D, the 3D control stays in the focus order marked unavailable with its reason, and a new browser regression passes 6 of 6 where 5 failed before the mend; sent on to change the reason's words, make Tuning's 3D group unavailable the same way, clear four failures seen under load, and commit
 - evidence: [the probe that found it](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md)
 
 Today the page stops with a stack trace. It should show the same subject in the 2D map and say, on the 3D control, why 3D is not offered.
+
+### A WebGL context lost and never given back
+- state: open
+- holds: not begun; found by the builder of the task above on 2026-11-21 and written into its pictures' README
+- evidence:
+
+Different from a browser that refuses WebGL at the start: here the 3D map is drawing and the browser takes its context away (a graphics process that dies, memory pressure, a machine drawing in software, which is where it is likeliest). Today the drawing stops, draws again if the context is restored, and if it is not the map stays blank with its controls standing and nothing said. To be reproduced before it is designed.
 
 ### Maps of a solution's size on a weak machine, measured before anything is mended
 - state: open

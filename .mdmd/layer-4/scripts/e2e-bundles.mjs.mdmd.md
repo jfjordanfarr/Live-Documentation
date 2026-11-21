@@ -6,7 +6,7 @@
 - Code Path: `scripts/e2e-bundles.mjs`
 - Entry: command `e2e:bundles` of [`package.json`](../package.json.mdmd.md)
 - Entry: command `test:e2e` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:14:17.247Z
+- Generated At: 2026-11-21T03:40:51.063Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ One name for every bundle the browser suite serves. Run as `npm run e2e:bundles`
 - The check rests on a fact of the build: every bundle carries its own copy of the client's script, built from the same sources by the same step, and esbuild's output for the same sources is the same bytes. So a sample whose `static/index.js` differs from the Explorer's was built at another time, and the check names it with both times. It also refuses an Explorer whose script is older than the newest file of the client's sources (`packages/explorer/src/client`, tests aside, and the builder's `buildAssets.ts` and `template.html`). It does not see a change to the engine or generator that changes a bundle's data and not its script; that is left to whoever changed them.
 - The link-targets sample joined the list on 2026-11-19, for the browser case that the reader opens every form of a link whose target holds parentheses ([its spec](../tests/e2e/link-targets.spec.ts.mdmd.md)).
 - The check runs as its own Node process from the suite's global setup because Playwright's loader compiles what a configuration imports to CommonJS, which this ES module cannot be.
+- Since 2026-11-21 it also builds the scanning page of the check that the engine runs in a browser page ([`build-page.mjs`](../tests/page-scan/build-page.mjs.mdmd.md), into `dist/page-scan/`), after the Explorer's bundles and apart from their list: the page is opened from disk, not served, and carries no copy of the client's script, so `--check` does not judge it. [Its spec](../tests/e2e/page-scan.spec.ts.mdmd.md) refuses a page built from other sources than those on disk. Origin: [the November 21 record, Turn 2](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -52,6 +53,15 @@ own script must be newer than every source of the client, and every sample's cop
 
 ##### `refusal` — Summary
 The refusal for a list of faults, naming each and the command that rebuilds the bundles; undefined for none.
+
+#### `SCANNING_PAGE` {#symbol-scanning_page}
+- Type: const
+- Source: [source](../../../scripts/e2e-bundles.mjs#L133)
+
+##### `SCANNING_PAGE` — Summary
+The scanning page of the check that the engine runs in a browser page (`tests/e2e/page-scan.spec.ts`), built apart
+from the Explorer's bundles and outside the site, since it is opened from disk; its spec refuses a page built from
+other sources.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -60,6 +70,7 @@ The refusal for a list of faults, naming each and the command that rebuilds the 
 - `node:path` - `path`
 - `node:url` - `fileURLToPath`, `pathToFileURL`
 - [`steps.runNpmScript`](./steps.mjs.mdmd.md#symbol-runnpmscript)
+- [`steps.runStep`](./steps.mjs.mdmd.md#symbol-runstep)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

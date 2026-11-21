@@ -9,7 +9,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { runNpmScript } from "./steps.mjs";
+import { runNpmScript, runStep } from "./steps.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -125,10 +125,18 @@ function check() {
   }
 }
 
-/** Builds every bundle of the suite, one npm script after another; stops at the first that fails. */
+/**
+ * The scanning page of the check that the engine runs in a browser page (`tests/e2e/page-scan.spec.ts`), built apart
+ * from the Explorer's bundles and outside the site, since it is opened from disk; its spec refuses a page built from
+ * other sources.
+ */
+export const SCANNING_PAGE = path.join(repoRoot, "dist", "page-scan");
+
+/** Builds every bundle of the suite, one npm script after another, then the scanning page; stops at the first that fails. */
 function buildAll() {
   try {
     for (const bundle of SUITE_BUNDLES) runNpmScript(`Bundle: ${bundle.script}`, ["run", bundle.script]);
+    runStep("Bundle: the scanning page", process.execPath, [path.join(repoRoot, "tests", "page-scan", "build-page.mjs"), "--out", SCANNING_PAGE]);
   } catch (error) {
     console.error(`\nThe suite's bundles could not be built: ${error instanceof Error ? error.message : String(error)}`);
     process.exit(1);
