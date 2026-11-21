@@ -69,7 +69,8 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const extension = path.extname(absolutePath).toLowerCase();
     // Each `notices` says why each path left unlinked has no link, for the run to count at its end.
-    const scripts = await resolveScriptDependencies(content, thisFile, workspaceRoot, fileIndex);
+    const razor = extension === ".cshtml" || extension === ".razor";
+    const scripts = await resolveScriptDependencies(withoutMarkupComments(content, razor), thisFile, workspaceRoot, fileIndex);
     const directives = await resolveDirectiveDependencies(content, thisFile, extension, workspaceRoot, fileIndex);
     const dependencies: DependencyEntry[] = [
       ...scripts.dependencies,
@@ -77,7 +78,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     ];
     const notices = [...scripts.notices, ...directives.notices];
 
-    if (extension === ".cshtml" || extension === ".razor") {
+    if (razor) {
       const codeBehind = workspaceFile(`${thisFile}.cs`, fileIndex);
       if (codeBehind) dependencies.push(fileDependency(codeBehind));
     }
@@ -90,6 +91,39 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     return result;
   }
 };
+
+/**
+ * The markup with every comment written over in spaces, its line breaks kept, so that positions keep: an HTML comment
+ * (`<!-- … -->`, which no browser runs a script inside, a conditional comment's content among them since Internet
+ * Explorer 10), and the comment the server removes before anything is sent, Web Forms' `<%-- … --%>` or Razor's
+ * `@* … *@`. An HTML comment ends at the first `-->`, or at once when it is `<!-->` or `<!--->`, as HTML parses it, so
+ * the content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
+ * comment is kept.
+ */
+export function withoutMarkupComments(text: string, razor: boolean): string {
+  const server = razor ? { open: "@*", close: "*@" } : { open: "<%--", close: "--%>" };
+  let result = "";
+  let at = 0;
+  for (;;) {
+    const html = text.indexOf("<!--", at);
+    const own  = text.indexOf(server.open, at);
+    if (html === -1 && own === -1) return result + text.slice(at);
+    const isHtml = own === -1 || (html !== -1 && html < own);
+    const start  = isHtml ? html : own;
+    let until: number;
+    if (isHtml) {
+      const rest = text.slice(start + 4, start + 6);
+      const abrupt = rest.startsWith(">") ? start + 5 : rest === "->" ? start + 6 : undefined;
+      const close = text.indexOf("-->", start + 4);
+      until = abrupt ?? (close === -1 ? text.length : close + 3);
+    } else {
+      const close = text.indexOf(server.close, start + server.open.length);
+      until = close === -1 ? text.length : close + server.close.length;
+    }
+    result += text.slice(at, start) + text.slice(start, until).replace(/[^\r\n]/gu, " ");
+    at = until;
+  }
+}
 
 function fileDependency(file: string): DependencyEntry {
   return { specifier: file, resolvedPath: file, symbols: [], kind: "import" };

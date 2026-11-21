@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/aspnet.ts`
-- Generated At: 2026-11-21T06:12:04.054Z
+- Generated At: 2026-11-21T07:18:21.478Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 - Since 2026-11-19 ([the .NET probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/dotnet-gaps/README.md)) the whole directive family is read by Microsoft's documented syntax, and master pages, handlers, web services, the application file and WCF service files with it: every attribute that names a file, a relative path from the markup's folder, and `~/` from the one of the markup's own project and the workspace's web projects that holds the path, else no link. Graded on DNN and mojoPortal against a parse of the documented syntax, every link the oracle finds is drawn.
 - Since the joining of 2026-11-21 ([the work item](../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)): the markup and the project files read for which projects are web applications are read through the engine's one reading step, and a failure of the machine's in reading a project file is thrown on to the generator, never read as a project that builds nothing; and why a directive's path has no link is handed to the run as a notice ("paths several projects hold, left unlinked" and its kin), its subject the path as written, since the run names the file.
 - Since the same day a `<script src>` is read by the directives' rule, as an independent review asked: `~/` from the web application that holds the file, not the workspace's root, and a path from the site's root (`/…`) left unlinked, each path without a link kept as a line by its text and said as a notice. A query or fragment is taken off (`dnn.js?ver=<%= … %>` is `dnn.js`), a remote address (`https://`, `//host/…`) is not read, and neither is a path the page computes as it runs (a server expression or Razor's), which is no path the markup writes. Before building a reading of `<%= ResolveUrl("~/…") %>`, its constant argument, the shapes were counted: DNN's markup holds 9 relative paths and 5 with a computed query, mojoPortal's 10 `~/`, 6 from the site's root, 8 remote and one computed, and neither holds a server expression with a constant argument, so none is read. Measured on DNN: 5 lines gained, `UpgradeWizard.aspx`'s scripts, no notice added. On mojoPortal: 9 lines gained, the `~/` scripts of `Web/Views`, and 7 kept unlinked with a notice, 6 from the site's root in `layout.Master` (the files are under `Web/Content/`, which the site serves at `/Content/` when deployed at its root, a deployment the rule does not read) and one, `~/Scripts/jquery-1.10.2.min.js`, that no file of the repository holds. Nothing lost on either ([the account](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md)).
+- Since the same day no script tag a comment holds is read (`withoutMarkupComments`): the comments are written over in spaces first, positions kept, as `withoutXmlComments` does for project files. An HTML comment, which no browser runs a script inside, conditional comments among them since Internet Explorer 10, and the comment the server removes, Web Forms' `<%-- --%>` or Razor's `@* *@`. An HTML comment ends as HTML parses it, at the first `-->` or at once for `<!-->`, so what a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every comment is read. An independent review showed the three kinds drawn; read file by file both ways, DNN's and mojoPortal's markup hold none, and nothing moves.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -35,16 +36,28 @@ name (code-behind, master page, registered user controls, referenced pages),
 a Razor file's code-behind, and its `<script src>` references; its public
 symbols are element ids, server controls and plain HTML alike.
 
+#### `withoutMarkupComments` {#symbol-withoutmarkupcomments}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L103)
+
+##### `withoutMarkupComments` — Summary
+The markup with every comment written over in spaces, its line breaks kept, so that positions keep: an HTML comment
+(`<!-- … -->`, which no browser runs a script inside, a conditional comment's content among them since Internet
+Explorer 10), and the comment the server removes before anything is sent, Web Forms' `<%-- … --%>` or Razor's
+`@* … *@`. An HTML comment ends at the first `-->`, or at once when it is `<!-->` or `<!--->`, as HTML parses it, so
+the content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
+comment is kept.
+
 #### `Directive` {#symbol-directive}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L140)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L174)
 
 ##### `Directive` — Summary
 One `<%@ … %>` directive: its name, lowercased, and its attributes by lowercased name.
 
 #### `readDirectives` {#symbol-readdirectives}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L146)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L180)
 - Returns: [`Directive`](#symbol-directive)[]
 
 ##### `readDirectives` — Summary
@@ -52,21 +65,21 @@ The directives of a markup file, by Microsoft's documented syntax; a directive w
 
 #### `DIRECTIVE_REASONS` {#symbol-directive_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L189)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L223)
 
 ##### `DIRECTIVE_REASONS` — Summary
 Why a directive's path has no link.
 
 #### `DirectivePath` {#symbol-directivepath}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L197)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L231)
 
 ##### `DirectivePath` — Summary
 A directive's path, resolved to a workspace file or left unlinked for a reason.
 
 #### `resolveDirectivePath` {#symbol-resolvedirectivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L214)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L248)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveDirectivePath` — Summary

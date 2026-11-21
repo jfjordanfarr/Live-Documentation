@@ -3,7 +3,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { aspNetMarkupAdapter, resolveDirectivePath } from "./aspnet";
+import { aspNetMarkupAdapter, resolveDirectivePath, withoutMarkupComments } from "./aspnet";
 
 describe("aspNetMarkupAdapter", () => {
   let workspaceRoot: string;
@@ -264,6 +264,40 @@ describe("aspNetMarkupAdapter", () => {
       { reason: "paths from the site's root, left unlinked", subject: "/Content/js/main.min.js" }
     ]);
     expect(await linksOf("Web/Install/Wizard.aspx", fileIndex)).toEqual(["Web/Scripts/dnn.js", "Web/Install/Wizard.aspx.cs"]);
+  });
+
+  // ASP.NET removes `<%-- --%>` and Razor `@* *@` before anything is sent; no browser runs a script inside `<!-- -->`, and
+  // since Internet Explorer 10 none reads a conditional comment's content. The downlevel-revealed form leaves its content
+  // outside every comment, so a browser runs it.
+  it("reads no script tag a server, Razor or HTML comment holds, and the one a downlevel-revealed conditional comment leaves outside", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Web/Default.aspx": [
+        "<%@ Page CodeBehind=\"Default.aspx.cs\" %>",
+        "<%-- <script src=\"Scripts/server-commented.js\"></script> --%>",
+        "<!-- <script src=\"Scripts/legacy.js\"></script> -->",
+        "<!--[if lt IE 9]><script src=\"Scripts/html5shiv.js\"></script><![endif]-->",
+        "<!--[if !IE]><!--><script src=\"Scripts/modern.js\"></script><!--<![endif]-->",
+        "<script src=\"Scripts/live.js\"></script>"
+      ].join("\n"),
+      "Web/Views/Home/Index.cshtml": [
+        "<!-- <script src=\"~/js/old.js\"></script> -->",
+        "@* <script src=\"~/js/razor-commented.js\"></script> *@",
+        "<script src=\"~/js/site.js\"></script>"
+      ].join("\n")
+    }, ["Web/Default.aspx.cs", "Web/Scripts/server-commented.js", "Web/Scripts/legacy.js", "Web/Scripts/html5shiv.js", "Web/Scripts/modern.js", "Web/Scripts/live.js",
+      "Web/js/old.js", "Web/js/razor-commented.js", "Web/js/site.js"]);
+
+    expect(await linksOf("Web/Default.aspx", fileIndex)).toEqual(["Web/Scripts/modern.js", "Web/Scripts/live.js", "Web/Default.aspx.cs"]);
+    expect(await linksOf("Web/Views/Home/Index.cshtml", fileIndex)).toEqual(["Web/js/site.js"]);
+  });
+
+  it("writes comments over in spaces with their line breaks kept, and ends `<!-->` and `<!--->` at once, as HTML parses them", () => {
+    const text = "a<!-- x\ny -->b<%-- z --%>c<!-->d<!--->e@* r *@f";
+    const forms = withoutMarkupComments(text, false);
+    expect(forms).toHaveLength(text.length);
+    expect(forms).toBe(`a      \n     b${" ".repeat("<%-- z --%>".length)}c     d      e@* r *@f`);
+    expect(withoutMarkupComments("@* r\n *@<%-- s --%>", true)).toBe("    \n   <%-- s --%>");
   });
 
   // Too many open files, a file Windows holds: no property of the project file, so never read as a project that builds nothing.
