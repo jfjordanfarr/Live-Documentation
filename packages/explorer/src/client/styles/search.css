@@ -213,6 +213,47 @@
     padding-bottom: 4px;
 }
 
+/* A fold: what the limits left out, said where it would stand as the map's cut signs say it, an arrow and the count
+   (and the kind's glyph at the list's end); its words are its accessible name and tooltip. A press lists it. */
+.search-row--fold {
+    padding-top: 4px;
+    padding-bottom: 6px;
+}
+
+.search-fold {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 22px;
+    padding: 2px 8px;
+    border: 1px solid var(--line-border);
+    border-radius: 11px;
+    background: var(--ground-deep);
+    color: var(--text-normal);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.search-row--fold:hover .search-fold,
+.search-row--fold.selected .search-fold {
+    border-color: var(--state-selected);
+    color: var(--state-selected);
+}
+
+/* The folds at the list's end count what stands in no group above, so they stand apart from the last group */
+.search-row--elsewhere,
+.search-row--more-directories {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-border);
+}
+
+.search-row--elsewhere + .search-row--more-directories {
+    margin-top: 0;
+    border-top: none;
+}
+
 .search-row-name {
     flex: 0 1 auto;
     min-width: 0;
@@ -223,12 +264,6 @@
 
 .search-row--symbol .search-row-name {
     font-size: 12px;
-}
-
-.search-row--more .search-row-name {
-    font-size: 11px;
-    font-style: italic;
-    color: var(--text-panel-subtle);
 }
 
 /* A row's path tells apart files of one name: at least 4.5:1 against the row, selected or not, and still quieter than the white name */

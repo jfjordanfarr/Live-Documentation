@@ -14,6 +14,9 @@ export const CLOSE_ICON = '<path d="m6 6 12 12M18 6 6 18"/>';
 /** A directory has containment, rather than the exposed-symbol marker of a file. */
 export const DIRECTORY_ICON = '<path d="M3 7V5h6l2 2h10v13H3Z"/>';
 
+/** A file: a page with its corner turned. */
+export const FILE_ICON = '<path d="M6 3h8l4 4v14H6ZM14 3v5h4"/>';
+
 /** Retain the file or symbol's connections. */
 export const PIN_ICON = '<path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/>';
 

@@ -1,6 +1,6 @@
 import type { ExplorerNodePayload } from "../../shared/types";
 import { describeRetained, retainedItems, retainedKey, type RetainedItem, type RetainedState } from "../views/retained-state";
-import { CLOSE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON } from "./icon-button";
+import { CLOSE_ICON, DIRECTORY_ICON, FILE_ICON, iconButton, MORE_ICON } from "./icon-button";
 import type { ItemCommand } from "./item-menu";
 
 /** Actions operate on the shared selection; opening the tray or focusing a row does not retain anything. */
@@ -102,8 +102,7 @@ export function createPinTray(options: PinTrayOptions): {
     const directory = item.kind === "directory";
     const { name, context, description, symbol, path } = describeRetained(item, id => options.nodes.get(id)?.name, id => options.nodes.get(id)?.codeRelativePath ?? id);
 
-    const focus = iconButton(`Show ${description}`, directory ? DIRECTORY_ICON
-      : '<path d="M6 3h8l4 4v14H6ZM14 3v5h4"/>');
+    const focus = iconButton(`Show ${description}`, directory ? DIRECTORY_ICON : FILE_ICON);
     focus.className = "pin-tray-subject";
     const words = document.createElement("span");
     words.className = "pin-tray-words";
