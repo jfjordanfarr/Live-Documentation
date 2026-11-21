@@ -438,5 +438,18 @@
       "references": [],
       "dynamic": []
     }
+  },
+  "sources": {
+    "../archive.CountOrders.sql": "bdc41e7ecd0903cc0214c38c5ef3bd6fe29bff27bddc00e2fcc64bfc6c6573ac",
+    "../archive.ListOrders.sql": "3ad3fc477faa4883648f68746079ced09fe1476ae7e8900f2be80577080a4dd2",
+    "../archive.OrdersKept.sql": "964e71fff18ec4da9e18bb6cd2a7a3386cef92d454bc2a192e488bcdda8ea5ab",
+    "../archive.PurgeOrders.sql": "51f34228d104ac394d1aba7232446ce90b65e74f3fc94ea13c427f6266f0244f",
+    "../archive.sql": "35cd4d74aab77d3c0625a652347d3be4640d850b4bc0afefc3a785d3c6fecbd5",
+    "../legacy.sql": "a4acf69ef90ee82fcab283f8a950dcc8fcc690546a3284e7a62d6b46a610c191",
+    "../linked.sql": "e2c209958b341cee624f3a4a36bdb9d5157d7d6c4669064c9175d75b485fe820",
+    "../notes.sql": "71b2ebc73a8f82cd14778634b34f0f83fe7f90410fcc1fd2499be58e5f50f46b",
+    "../procs.sql": "4cbb45f02e3b035c3664fcba3b3bc368530266f91c67ceb47523f43b0ddcb7fe",
+    "../report.sql": "ffb7bf3d208955d58a02ab8fb2d969765998f9c6739d785e572f1eac1a8d9850",
+    "../tables.sql": "f9be6fdfbabb6f376896be764ffd1b95af804c63792760acc3767e47c23b9cd9"
   }
 }

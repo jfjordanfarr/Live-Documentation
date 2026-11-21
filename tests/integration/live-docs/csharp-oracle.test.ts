@@ -5,7 +5,10 @@
  * simple name, each project's references as MSBuild evaluates them), the
  * adapter reads each C# file as the generator has it read, the fixture's files
  * its index, and the C# file pairs it draws are set beside the compiler's by
- * `compareCSharp`. Nothing here runs `dotnet`.
+ * `compareCSharp`. Nothing here runs `dotnet`. The record names every file it
+ * was compiled from with a digest, and a fixture whose C# or project files are
+ * new, gone or changed since fails until the record is written again, so that
+ * no file of a fixture goes ungraded.
  *
  * Where they disagree the disagreement is listed, in words, and the list must
  * equal the register below exactly: a miss fixed, or a new one, fails the
@@ -17,7 +20,9 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { compareCSharp, type CompilerRecord, type CSharpReport } from "../../../scripts/oracle/csharp-compare";
+import { compareCSharp, compiledSources, type CompilerRecord, type CSharpReport } from "../../../scripts/oracle/csharp-compare";
+import { folderFiles } from "../../../scripts/oracle/powershell-compare";
+import { sourceDigests, sourcesDiffer } from "../../../scripts/oracle/sources";
 
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 
@@ -75,9 +80,11 @@ describe("the C# adapter against the C# compiler's binding", () => {
   });
 
   for (const fixture of measuredFixtures()) {
-    it(`agrees with the compiler on ${fixture}, but for its measured misses`, async () => {
+    it(`agrees with the compiler on ${fixture}, but for its measured misses, its record compiled from its sources as they stand`, async () => {
       const fixtureDir = path.join(INTEGRATION_ROOT, fixture);
       const kept       = JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "csharp-compiler.json"), "utf8")) as CompilerRecord;
+      const present    = sourceDigests(fixtureDir, compiledSources(folderFiles(fixtureDir)));
+      expect(sourcesDiffer(present, kept.sources), `write the record again: npm run oracle:csharp -- tests/integration/${fixture} --write`).toEqual([]);
       const report     = await compareCSharp(fixtureDir, kept);
       expect(report.edges.compiler).toBeGreaterThan(0);
       expect(disagreements(report)).toEqual(MEASURED_MISSES[fixture]);

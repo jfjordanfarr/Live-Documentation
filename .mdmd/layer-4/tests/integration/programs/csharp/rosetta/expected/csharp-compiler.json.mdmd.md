@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/rosetta/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T06:00:55.942Z
+- Generated At: 2026-11-21T07:25:48.528Z
 
 ## Authored
 ### Purpose
@@ -71,6 +71,48 @@ The C# compiler's binding of the `rosetta` C# sample, written by `npm run oracle
 - Type: key
 
 #### `declared:src/Types/Status.cs` {#symbol-declaredsrctypesstatuscs}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:Rosetta.csproj` {#symbol-sourcesrosettacsproj}
+- Type: key
+
+#### `sources:src/App/Main.cs` {#symbol-sourcessrcappmaincs}
+- Type: key
+
+#### `sources:src/App/PipelineTests.cs` {#symbol-sourcessrcapppipelinetestscs}
+- Type: key
+
+#### `sources:src/Helpers/Helpers.cs` {#symbol-sourcessrchelpershelperscs}
+- Type: key
+
+#### `sources:src/Helpers/HelpersTests.cs` {#symbol-sourcessrchelpershelperstestscs}
+- Type: key
+
+#### `sources:src/Models/ModelFactory.cs` {#symbol-sourcessrcmodelsmodelfactorycs}
+- Type: key
+
+#### `sources:src/Models/Record.cs` {#symbol-sourcessrcmodelsrecordcs}
+- Type: key
+
+#### `sources:src/Models/Report.cs` {#symbol-sourcessrcmodelsreportcs}
+- Type: key
+
+#### `sources:src/Processor/Processor.cs` {#symbol-sourcessrcprocessorprocessorcs}
+- Type: key
+
+#### `sources:src/Processor/ProcessorTests.cs` {#symbol-sourcessrcprocessorprocessortestscs}
+- Type: key
+
+#### `sources:src/Types/Entry.cs` {#symbol-sourcessrctypesentrycs}
+- Type: key
+
+#### `sources:src/Types/ProcessorConfig.cs` {#symbol-sourcessrctypesprocessorconfigcs}
+- Type: key
+
+#### `sources:src/Types/Status.cs` {#symbol-sourcessrctypesstatuscs}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

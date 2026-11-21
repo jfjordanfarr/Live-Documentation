@@ -746,5 +746,14 @@
       ],
       "dynamic": []
     }
+  },
+  "sources": {
+    "../Procedures/Billing.usp_Archive.sql": "b81246a9ccfff9039c7ea018ba35d7e898bc878129e458689782c25cfdf0c1ef",
+    "../Procedures/Billing.usp_Settle.sql": "1f4b4ee05bb34ac39e11f6cb5131e74a2cb84eac91a14b633ca943b50e9e06f9",
+    "../Procedures/Billing.usp_Statement.sql": "515122e55fe9e78f3f3d1596468bc2dbb8c1be880083d6e24e48679d26102309",
+    "../Schema/Billing.Customer.sql": "a3d7e0f3290d4bece35c03ab027cb6eeac72ec209e1be72c9ea6a336da9710e6",
+    "../Schema/Billing.Invoice.sql": "d204cbb85b8c02458b961b297b1b11b48f34e2a81a0737a4e40042199c89150c",
+    "../Schema/Billing.fn_Balance.sql": "1402b77a82196e05c4ebc290241c20b540edce1b3cbf0e3d1942d79778471250",
+    "../Tests/BillingTests.class.sql": "78bfb005e18ba0ac5e3b1a137bc3f95148cde37630da9f9ea72a23714f873fbe"
   }
 }

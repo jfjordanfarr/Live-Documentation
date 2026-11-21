@@ -38,6 +38,7 @@ import { csharpAdapter } from "@live-documentation/engine/live-docs/adapters/csh
 
 import { folderFiles } from "./powershell-compare";
 import { msbuildProjectReferences } from "./scip-edges";
+import { sourceDigests, sourcesDiffer } from "./sources";
 
 const COMPILER = path.join(__dirname, "csharp-compiler.cs");
 /** Folders whose files are no project's: the build's outputs and a fixture's own records. */
@@ -52,6 +53,13 @@ export interface CompilerRecord {
   bound:    number;
   edges:    Array<{ from: string; to: string; type: string[]; member: string[] }>;
   declared: Record<string, string[]>;
+  /** The files the compilation was made from, its C# files and its project files, each with its digest (`sources.ts`). */
+  sources?: Record<string, string>;
+}
+
+/** The files a compilation of the folder is made from: its C# files, and its project files, from which its references are read. */
+export function compiledSources(files: readonly string[]): string[] {
+  return files.filter((file) => /\.(?:cs|csproj)$/iu.test(file) && !NOT_SOURCE.test(file)).sort();
 }
 
 /** Each project's references as MSBuild evaluates them, folder-relative, or null where MSBuild cannot evaluate it. */
@@ -78,7 +86,7 @@ export function compileFolder(root: string, files: readonly string[]): CompilerR
   });
   if (run.error) throw new Error(`dotnet could not be run: ${run.error.message}`);
   if (run.status !== 0) throw new Error(`dotnet exited with ${run.status}:\n${run.stdout}\n${run.stderr}`);
-  return JSON.parse(run.stdout) as CompilerRecord;
+  return { ...(JSON.parse(run.stdout) as CompilerRecord), sources: sourceDigests(root, compiledSources(files)) };
 }
 
 /** One measure set side by side, as `oracle:powershell` reports it. */
@@ -211,6 +219,13 @@ async function main(): Promise<void> {
   const root = path.resolve(folder);
   const keptFile = path.join(root, "expected", "csharp-compiler.json");
   const kept = !args.includes("--write") && fs.existsSync(keptFile) ? (JSON.parse(fs.readFileSync(keptFile, "utf8")) as CompilerRecord) : undefined;
+  if (kept) {
+    const differ = sourcesDiffer(sourceDigests(root, compiledSources(folderFiles(root))), kept.sources);
+    if (differ.length > 0) {
+      console.error(`${path.relative(process.cwd(), keptFile)} was not compiled from the folder as it stands: ${differ.join("; ")}. Write it again with --write.`);
+      process.exit(1);
+    }
+  }
   const record = kept ?? compileFolder(root, folderFiles(root));
   if (args.includes("--write")) {
     fs.mkdirSync(path.dirname(keptFile), { recursive: true });

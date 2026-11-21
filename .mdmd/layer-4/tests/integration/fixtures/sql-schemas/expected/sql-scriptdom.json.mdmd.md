@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/expected/sql-scriptdom.json`
-- Generated At: 2026-11-21T07:20:23.005Z
+- Generated At: 2026-11-21T07:25:47.631Z
 
 ## Authored
 ### Purpose
@@ -185,6 +185,42 @@ What Microsoft's T-SQL parser says about the schemas fixture's scripts, written 
 - Type: key
 
 #### `files:../tables.sql:dynamic` {#symbol-filestablessqldynamic}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../archive.CountOrders.sql` {#symbol-sourcesarchivecountorderssql}
+- Type: key
+
+#### `sources:../archive.ListOrders.sql` {#symbol-sourcesarchivelistorderssql}
+- Type: key
+
+#### `sources:../archive.OrdersKept.sql` {#symbol-sourcesarchiveorderskeptsql}
+- Type: key
+
+#### `sources:../archive.PurgeOrders.sql` {#symbol-sourcesarchivepurgeorderssql}
+- Type: key
+
+#### `sources:../archive.sql` {#symbol-sourcesarchivesql}
+- Type: key
+
+#### `sources:../legacy.sql` {#symbol-sourceslegacysql}
+- Type: key
+
+#### `sources:../linked.sql` {#symbol-sourceslinkedsql}
+- Type: key
+
+#### `sources:../notes.sql` {#symbol-sourcesnotessql}
+- Type: key
+
+#### `sources:../procs.sql` {#symbol-sourcesprocssql}
+- Type: key
+
+#### `sources:../report.sql` {#symbol-sourcesreportsql}
+- Type: key
+
+#### `sources:../tables.sql` {#symbol-sourcestablessql}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

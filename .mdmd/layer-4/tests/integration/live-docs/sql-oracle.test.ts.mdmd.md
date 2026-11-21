@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/sql-oracle.test.ts`
-- Generated At: 2026-11-21T02:15:35.423Z
+- Generated At: 2026-11-21T07:25:48.061Z
 
 ## Authored
 ### Purpose
@@ -25,8 +25,11 @@ _No public symbols detected_
 ### Dependencies
 - `glob` - `globSync`
 - `node:path` - `path`
+- [`sources.sourceDigests`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcedigests)
+- [`sources.sourcesDiffer`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcesdiffer)
 - [`sql-compare.SqlReport`](../../../scripts/oracle/sql-compare.ts.mdmd.md#symbol-sqlreport)
 - [`sql-compare.compareSql`](../../../scripts/oracle/sql-compare.ts.mdmd.md#symbol-comparesql)
+- [`sql-compare.sqlSources`](../../../scripts/oracle/sql-compare.ts.mdmd.md#symbol-sqlsources)
 - [`sql-scriptdom.readScriptDomRecord`](../../../scripts/oracle/sql-scriptdom.ts.mdmd.md#symbol-readscriptdomrecord)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

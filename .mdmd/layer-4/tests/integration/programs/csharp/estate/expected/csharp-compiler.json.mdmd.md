@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T06:00:55.875Z
+- Generated At: 2026-11-21T07:25:48.456Z
 
 ## Authored
 ### Purpose
@@ -98,6 +98,87 @@ The C# compiler's binding of the `estate` C# sample, written by `npm run oracle:
 - Type: key
 
 #### `declared:Portal/Services/GatewayClient.cs` {#symbol-declaredportalservicesgatewayclientcs}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:Contracts/Contracts.csproj` {#symbol-sourcescontractscontractscsproj}
+- Type: key
+
+#### `sources:Contracts/IPaymentHub.cs` {#symbol-sourcescontractsipaymenthubcs}
+- Type: key
+
+#### `sources:Contracts/IPaymentService.cs` {#symbol-sourcescontractsipaymentservicecs}
+- Type: key
+
+#### `sources:Contracts/PaymentQuery.cs` {#symbol-sourcescontractspaymentquerycs}
+- Type: key
+
+#### `sources:Contracts/PaymentRequest.cs` {#symbol-sourcescontractspaymentrequestcs}
+- Type: key
+
+#### `sources:Contracts/PaymentResult.cs` {#symbol-sourcescontractspaymentresultcs}
+- Type: key
+
+#### `sources:Gateway/Controllers/PaymentsController.cs` {#symbol-sourcesgatewaycontrollerspaymentscontrollercs}
+- Type: key
+
+#### `sources:Gateway/Gateway.csproj` {#symbol-sourcesgatewaygatewaycsproj}
+- Type: key
+
+#### `sources:Gateway/GatewaySettings.cs` {#symbol-sourcesgatewaygatewaysettingscs}
+- Type: key
+
+#### `sources:Gateway/Wcf/HubProxy.cs` {#symbol-sourcesgatewaywcfhubproxycs}
+- Type: key
+
+#### `sources:Hub/Hub.csproj` {#symbol-sourceshubhubcsproj}
+- Type: key
+
+#### `sources:Hub/PaymentHub.cs` {#symbol-sourceshubpaymenthubcs}
+- Type: key
+
+#### `sources:Hub/ServiceRouting.cs` {#symbol-sourceshubserviceroutingcs}
+- Type: key
+
+#### `sources:PaymentService/Data/Payment.cs` {#symbol-sourcespaymentservicedatapaymentcs}
+- Type: key
+
+#### `sources:PaymentService/Data/PaymentsContext.cs` {#symbol-sourcespaymentservicedatapaymentscontextcs}
+- Type: key
+
+#### `sources:PaymentService/Data/PostPaymentRow.cs` {#symbol-sourcespaymentservicedatapostpaymentrowcs}
+- Type: key
+
+#### `sources:PaymentService/PaymentService.cs` {#symbol-sourcespaymentservicepaymentservicecs}
+- Type: key
+
+#### `sources:PaymentService/PaymentService.csproj` {#symbol-sourcespaymentservicepaymentservicecsproj}
+- Type: key
+
+#### `sources:Portal/App_Code/Globals.cs` {#symbol-sourcesportalapp_codeglobalscs}
+- Type: key
+
+#### `sources:Portal/Controllers/PaymentsController.cs` {#symbol-sourcesportalcontrollerspaymentscontrollercs}
+- Type: key
+
+#### `sources:Portal/Models/PaymentRequestModel.cs` {#symbol-sourcesportalmodelspaymentrequestmodelcs}
+- Type: key
+
+#### `sources:Portal/Models/PaymentResultModel.cs` {#symbol-sourcesportalmodelspaymentresultmodelcs}
+- Type: key
+
+#### `sources:Portal/Pages/Default.aspx.cs` {#symbol-sourcesportalpagesdefaultaspxcs}
+- Type: key
+
+#### `sources:Portal/Pages/Default.aspx.designer.cs` {#symbol-sourcesportalpagesdefaultaspxdesignercs}
+- Type: key
+
+#### `sources:Portal/Portal.csproj` {#symbol-sourcesportalportalcsproj}
+- Type: key
+
+#### `sources:Portal/Services/GatewayClient.cs` {#symbol-sourcesportalservicesgatewayclientcs}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

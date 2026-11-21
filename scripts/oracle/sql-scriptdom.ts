@@ -105,6 +105,8 @@ export interface ScriptDomFileFacts {
 export interface ScriptDomRecord {
   tool:  string;
   files: Record<string, ScriptDomFileFacts>;
+  /** The files the parser read, each with its digest (`sources.ts`), so that a kept record is tied to the files it was made from. */
+  sources?: Record<string, string>;
 }
 
 const EMITTER = path.join(__dirname, "sql-scriptdom.cs");
@@ -130,7 +132,8 @@ export function parseSqlFiles(root: string, files: string[]): ScriptDomRecord {
 function rebase(record: ScriptDomRecord, fromDirectory: string, toDirectory: string): ScriptDomRecord {
   const files: Record<string, ScriptDomFileFacts> = {};
   for (const [file, facts] of Object.entries(record.files)) files[rebasePath(file, fromDirectory, toDirectory)] = facts;
-  return { ...record, files };
+  const sources = record.sources && Object.fromEntries(Object.entries(record.sources).map(([file, digest]) => [rebasePath(file, fromDirectory, toDirectory), digest]));
+  return sources ? { ...record, files, sources } : { ...record, files };
 }
 
 /** Writes the record beside a fixture's other expectations, each file named relative to the record, as the other oracles' records are. */

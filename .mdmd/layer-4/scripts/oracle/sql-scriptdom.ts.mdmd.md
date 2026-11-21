@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/sql-scriptdom.ts`
-- Generated At: 2026-11-21T04:55:42.522Z
+- Generated At: 2026-11-21T07:25:44.873Z
 
 ## Authored
 ### Purpose
@@ -92,7 +92,7 @@ The parser's record of a folder, file by file, in folder-relative coordinates.
 
 #### `parseSqlFiles` {#symbol-parsesqlfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L113)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L115)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `parseSqlFiles` — Summary
@@ -100,7 +100,7 @@ Runs the parser over the named files of a folder; `dotnet` must be on the path.
 
 #### `writeScriptDomRecord` {#symbol-writescriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L137)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L140)
 - Parameters: `record`: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `writeScriptDomRecord` — Summary
@@ -108,7 +108,7 @@ Writes the record beside a fixture's other expectations, each file named relativ
 
 #### `readScriptDomRecord` {#symbol-readscriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L143)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L146)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `readScriptDomRecord` — Summary

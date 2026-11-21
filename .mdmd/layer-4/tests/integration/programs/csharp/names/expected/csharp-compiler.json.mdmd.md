@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T05:35:21.955Z
+- Generated At: 2026-11-21T07:25:48.516Z
 
 ## Authored
 ### Purpose
@@ -59,6 +59,42 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 - Type: key
 
 #### `declared:B/Thing.cs` {#symbol-declaredbthingcs}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:A/A.csproj` {#symbol-sourcesaacsproj}
+- Type: key
+
+#### `sources:A/UseIt.cs` {#symbol-sourcesauseitcs}
+- Type: key
+
+#### `sources:App/App.csproj` {#symbol-sourcesappappcsproj}
+- Type: key
+
+#### `sources:App/Base.cs` {#symbol-sourcesappbasecs}
+- Type: key
+
+#### `sources:App/Derived.cs` {#symbol-sourcesappderivedcs}
+- Type: key
+
+#### `sources:App/Helper.cs` {#symbol-sourcesapphelpercs}
+- Type: key
+
+#### `sources:App/HelperOfT.cs` {#symbol-sourcesapphelperoftcs}
+- Type: key
+
+#### `sources:App/Other.cs` {#symbol-sourcesappothercs}
+- Type: key
+
+#### `sources:App/Use.cs` {#symbol-sourcesappusecs}
+- Type: key
+
+#### `sources:B/B.csproj` {#symbol-sourcesbbcsproj}
+- Type: key
+
+#### `sources:B/Thing.cs` {#symbol-sourcesbthingcs}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

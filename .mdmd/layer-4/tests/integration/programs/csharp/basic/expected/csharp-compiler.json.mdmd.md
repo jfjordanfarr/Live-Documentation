@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/basic/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T06:00:55.717Z
+- Generated At: 2026-11-21T07:25:48.277Z
 
 ## Authored
 ### Purpose
@@ -53,6 +53,30 @@ The C# compiler's binding of the `basic` C# sample, written by `npm run oracle:c
 - Type: key
 
 #### `declared:src/Diagnostics/Services/ReportService.cs` {#symbol-declaredsrcdiagnosticsservicesreportservicecs}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:CSharpBasic.csproj` {#symbol-sourcescsharpbasiccsproj}
+- Type: key
+
+#### `sources:src/Diagnostics/App.cs` {#symbol-sourcessrcdiagnosticsappcs}
+- Type: key
+
+#### `sources:src/Diagnostics/Data/Repository.cs` {#symbol-sourcessrcdiagnosticsdatarepositorycs}
+- Type: key
+
+#### `sources:src/Diagnostics/Models/FormattedReport.cs` {#symbol-sourcessrcdiagnosticsmodelsformattedreportcs}
+- Type: key
+
+#### `sources:src/Diagnostics/Models/Formatter.cs` {#symbol-sourcessrcdiagnosticsmodelsformattercs}
+- Type: key
+
+#### `sources:src/Diagnostics/Models/Record.cs` {#symbol-sourcessrcdiagnosticsmodelsrecordcs}
+- Type: key
+
+#### `sources:src/Diagnostics/Services/ReportService.cs` {#symbol-sourcessrcdiagnosticsservicesreportservicecs}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

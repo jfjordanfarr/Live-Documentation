@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-server/expected/sql-scriptdom.json`
-- Generated At: 2026-11-21T02:15:35.152Z
+- Generated At: 2026-11-21T07:25:47.675Z
 
 ## Authored
 ### Purpose
@@ -125,6 +125,30 @@ What Microsoft's T-SQL parser says about the SQL Server fixture's scripts, writt
 - Type: key
 
 #### `files:../Tests/BillingTests.class.sql:dynamic` {#symbol-filestestsbillingtestsclasssqldynamic}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../Procedures/Billing.usp_Archive.sql` {#symbol-sourcesproceduresbillingusp_archivesql}
+- Type: key
+
+#### `sources:../Procedures/Billing.usp_Settle.sql` {#symbol-sourcesproceduresbillingusp_settlesql}
+- Type: key
+
+#### `sources:../Procedures/Billing.usp_Statement.sql` {#symbol-sourcesproceduresbillingusp_statementsql}
+- Type: key
+
+#### `sources:../Schema/Billing.Customer.sql` {#symbol-sourcesschemabillingcustomersql}
+- Type: key
+
+#### `sources:../Schema/Billing.Invoice.sql` {#symbol-sourcesschemabillinginvoicesql}
+- Type: key
+
+#### `sources:../Schema/Billing.fn_Balance.sql` {#symbol-sourcesschemabillingfn_balancesql}
+- Type: key
+
+#### `sources:../Tests/BillingTests.class.sql` {#symbol-sourcestestsbillingtestsclasssql}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

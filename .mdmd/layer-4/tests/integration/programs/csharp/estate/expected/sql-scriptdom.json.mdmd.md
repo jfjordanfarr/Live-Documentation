@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/expected/sql-scriptdom.json`
-- Generated At: 2026-11-21T04:55:46.529Z
+- Generated At: 2026-11-21T07:25:48.469Z
 
 ## Authored
 ### Purpose
@@ -65,6 +65,18 @@ What Microsoft's T-SQL parser says about the estate's SQL Server scripts, writte
 - Type: key
 
 #### `files:../Database/SqlServer/dbo.usp_PostPayment.sql:dynamic` {#symbol-filesdatabasesqlserverdbousp_postpaymentsqldynamic}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../Database/Oracle/CENTRAL.ACCOUNT.sql` {#symbol-sourcesdatabaseoraclecentralaccountsql}
+- Type: key
+
+#### `sources:../Database/SqlServer/dbo.Payment.sql` {#symbol-sourcesdatabasesqlserverdbopaymentsql}
+- Type: key
+
+#### `sources:../Database/SqlServer/dbo.usp_PostPayment.sql` {#symbol-sourcesdatabasesqlserverdbousp_postpaymentsql}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

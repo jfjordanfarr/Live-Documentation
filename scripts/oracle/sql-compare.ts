@@ -122,6 +122,7 @@ import type { DependencyEntry, PublicSymbolEntry } from "@live-documentation/eng
 import type { WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/coreTypes";
 
 import { listFixtureFiles } from "./fixture";
+import { sourceDigests, sourcesDiffer } from "./sources";
 import {
   parseSqlFiles,
   readScriptDomRecord,
@@ -652,6 +653,11 @@ function option(args: string[], name: string): string | undefined {
   return index === -1 ? undefined : args[index + 1];
 }
 
+/** The files of a folder ScriptDom reads: every `.sql` file, but a fixture's build outputs and its own records. */
+export function sqlSources(root: string): string[] {
+  return listFixtureFiles(root).filter((file) => file.toLowerCase().endsWith(".sql"));
+}
+
 async function main(): Promise<void> {
   const args   = process.argv.slice(2);
   const folder = args.find((arg, index) => !arg.startsWith("--") && !["--only", "--sample", "--seed"].includes(args[index - 1] ?? ""));
@@ -662,8 +668,16 @@ async function main(): Promise<void> {
   const root    = path.resolve(folder);
   const only    = option(args, "--only");
   const kept    = path.join(root, "expected", "sql-scriptdom.json");
-  const files   = listFixtureFiles(root).filter((file) => file.toLowerCase().endsWith(".sql") && (!only || file.startsWith(only)));
-  const record  = args.includes("--write") || !fs.existsSync(kept) ? parseSqlFiles(root, files) : readScriptDomRecord(kept, root)!;
+  const files   = sqlSources(root).filter((file) => !only || file.startsWith(only));
+  const fresh   = args.includes("--write") || !fs.existsSync(kept);
+  const record  = fresh ? { ...parseSqlFiles(root, files), sources: sourceDigests(root, files) } : readScriptDomRecord(kept, root)!;
+  if (!fresh) {
+    const differ = sourcesDiffer(sourceDigests(root, sqlSources(root)), record.sources);
+    if (differ.length > 0) {
+      console.error(`${path.relative(process.cwd(), kept)} was not parsed from the folder as it stands: ${differ.join("; ")}. Write it again with --write.`);
+      process.exit(1);
+    }
+  }
   if (args.includes("--write")) {
     writeScriptDomRecord(kept, root, record);
     console.log(`wrote ${path.relative(process.cwd(), kept)} (${Object.keys(record.files).length} files)`);

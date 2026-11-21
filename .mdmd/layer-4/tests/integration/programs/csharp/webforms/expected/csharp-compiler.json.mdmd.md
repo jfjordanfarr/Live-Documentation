@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/webforms/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T06:00:55.995Z
+- Generated At: 2026-11-21T07:25:48.587Z
 
 ## Authored
 ### Purpose
@@ -44,6 +44,21 @@ The C# compiler's binding of the `webforms` C# sample, written by `npm run oracl
 - Type: key
 
 #### `declared:src/Pages/Default.aspx.designer.cs` {#symbol-declaredsrcpagesdefaultaspxdesignercs}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:WebForms.csproj` {#symbol-sourceswebformscsproj}
+- Type: key
+
+#### `sources:src/App_Code/Globals.cs` {#symbol-sourcessrcapp_codeglobalscs}
+- Type: key
+
+#### `sources:src/Pages/Default.aspx.cs` {#symbol-sourcessrcpagesdefaultaspxcs}
+- Type: key
+
+#### `sources:src/Pages/Default.aspx.designer.cs` {#symbol-sourcessrcpagesdefaultaspxdesignercs}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

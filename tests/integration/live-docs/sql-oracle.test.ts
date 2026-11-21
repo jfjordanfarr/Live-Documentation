@@ -7,6 +7,10 @@
  * at their lines, and the dependency lines each file's doc should carry.
  * Nothing here runs .NET.
  *
+ * The record names every `.sql` file it was parsed from with a digest, and a
+ * fixture whose SQL files are new, gone or changed since fails until the
+ * record is written again, so that no file of a fixture goes ungraded.
+ *
  * Where they disagree the disagreement is listed, in words, and the list must
  * equal the register below exactly: a miss mended, or a new one, fails the
  * test until the register says so.
@@ -15,7 +19,8 @@ import { globSync } from "glob";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { compareSql, type SqlReport } from "../../../scripts/oracle/sql-compare";
+import { sourceDigests, sourcesDiffer } from "../../../scripts/oracle/sources";
+import { compareSql, sqlSources, type SqlReport } from "../../../scripts/oracle/sql-compare";
 import { readScriptDomRecord } from "../../../scripts/oracle/sql-scriptdom";
 
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
@@ -67,9 +72,10 @@ describe("the SQL reader against ScriptDom", () => {
   });
 
   for (const fixture of measuredFixtures()) {
-    it(`agrees with the parser on ${fixture}, but for its measured misses`, async () => {
+    it(`agrees with the parser on ${fixture}, but for its measured misses, its record parsed from its SQL files as they stand`, async () => {
       const fixtureDir = path.join(INTEGRATION_ROOT, fixture);
       const record     = readScriptDomRecord(path.join(fixtureDir, "expected", "sql-scriptdom.json"), fixtureDir)!;
+      expect(sourcesDiffer(sourceDigests(fixtureDir, sqlSources(fixtureDir)), record.sources), `write the record again: npm run oracle:sql -- tests/integration/${fixture} --write`).toEqual([]);
       const report     = await compareSql(fixtureDir, record);
       expect(disagreements(report)).toEqual(MEASURED_MISSES[fixture]);
     });
