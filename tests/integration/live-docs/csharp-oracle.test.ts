@@ -25,12 +25,11 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  * The measured misses, fixture by fixture. `names` holds the cases an
  * independent review of the reader found on 2026-11-21: a nested type named
  * inside a class that inherits it, which C# finds in the base class before any
- * `using`, and an alias to the non-generic one of two types that differ only
- * by arity.
+ * `using` (mended the same day), and an alias to the non-generic one of two
+ * types that differ only by arity.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
   "programs/csharp/names": [
-    "the adapter draws App/Derived.cs → App/Other.cs on a namesake",
     "the adapter draws App/Use.cs → App/HelperOfT.cs on a namesake"
   ]
 };

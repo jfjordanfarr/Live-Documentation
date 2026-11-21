@@ -10,13 +10,15 @@
  * parameter or a method's or property's return, is not a dependency: of 40
  * links the compiler binds and this reader lacks, drawn on DNN Platform in
  * November 2026, 31 were of that kind, and they are a choice, not a fault.
- * A name is resolved the way the compiler resolves it: the enclosing types
- * first; then each namespace declaration from the innermost out, its members
- * and then the `using` directives written inside it; last the global
- * namespace with the compilation unit's `using` directives and the project's
- * `global using` directives; and among the declarations of a name, the one
- * with as many type parameters as the use writes type arguments. Only what
- * the file's project can see is linked (`dotnetProjects`). Members of a
+ * A name is searched for in the compiler's order: the enclosing types from the
+ * innermost out, each followed by the types it inherits members from (a
+ * class's base classes up the chain, an interface's base interfaces); then
+ * each namespace declaration from the innermost out, its members and then the
+ * `using` directives written inside it; last the global namespace with the
+ * compilation unit's `using` directives and the project's `global using`
+ * directives; and among the declarations of a name, the one with as many type
+ * parameters as the use writes type arguments. Only what the file's project
+ * can see is linked (`dotnetProjects`). Members of a
  * partial class that live in a peer file count as well. Configuration keys,
  * reflection targets and Hangfire jobs are handled by `csharp.dependencies`.
  *
@@ -32,7 +34,8 @@
  * top-level statements.
  *
  * Nothing here grades itself: `npm run oracle:compare` measures this adapter
- * against the compiler on the C# fixtures.
+ * against scip-dotnet on the C# fixtures, and `npm run oracle:csharp` against
+ * the C# compiler's own binding on any folder.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -107,6 +110,8 @@ interface DeclaredType {
   documentation?:  SymbolDocumentation;
   typeReferences:  TypeReference[];
   members:         DeclaredMember[];
+  /** The type names of its base list, each with the scope the declaration stands in, which is where C# resolves them. */
+  bases:           NameUse[];
   /** `const string` members, by name, for configuration keys held in constants. */
   constants:       Map<string, string>;
   /** True for a controller: named so, or derived from one, or given a route prefix. */
@@ -604,6 +609,7 @@ class FileExtractor {
       documentation:  leadingDocumentation(node),
       typeReferences: [],
       members:        [],
+      bases:          [],
       constants:      new Map(),
       isController:   /Controller$/u.test(nameNode.text),
       routes:         []
@@ -630,6 +636,11 @@ class FileExtractor {
         case "base_list":
           declared.typeReferences.push(...baseListReferences(child, kind));
           if (declared.typeReferences.some((reference) => CONTROLLER_BASES.has(reference.name))) declared.isController = true;
+          for (const entry of child.namedChildren) {
+            const typeNode = entry.type === "primary_constructor_base_type" ? (entry.childForFieldName("type") ?? entry.namedChildren[0] ?? null) : entry;
+            const chain    = identifierChain(typeNode);
+            if (chain) declared.bases.push({ chain, scope, arities: arityChain(typeNode) ?? undefined });
+          }
           this.visitExpression(child, inner);
           break;
         case "type_parameter_constraints_clause":
@@ -1020,6 +1031,10 @@ interface TypeTable {
   lastSegments:    Set<string>;
   /** The namespaces each file's `global using` directives open, by file. */
   globalUsings:    Map<string, string[]>;
+  /** Each file's facts, so that a name a declaration writes, as a base class, is resolved where it is written. */
+  facts:           Map<string, FileFacts>;
+  /** What each file's project lets it see. */
+  reach:           ProjectReach;
 }
 
 const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
@@ -1038,7 +1053,15 @@ async function listCSharpFiles(workspaceRoot: string, fileIndex: WorkspaceFileIn
 }
 
 async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {
-  const table: TypeTable = { byQualifiedName: new Map(), namespaces: new Set(), namespacePrefixes: new Set(), lastSegments: new Set(), globalUsings: new Map() };
+  const table: TypeTable = {
+    byQualifiedName:   new Map(),
+    namespaces:        new Set(),
+    namespacePrefixes: new Set(),
+    lastSegments:      new Set(),
+    globalUsings:      new Map(),
+    facts:             new Map(),
+    reach:             await projectReach(workspaceRoot, fileIndex)
+  };
   for (const file of await listCSharpFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
@@ -1047,6 +1070,7 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
       throwIfMachineFailure(error);
       continue;
     }
+    table.facts.set(file, facts);
     if (facts.globalUsings.length > 0) table.globalUsings.set(file, facts.globalUsings);
     for (const namespace of facts.namespaces) {
       table.namespaces.add(namespace);
@@ -1148,25 +1172,80 @@ function narrowFor(file: string, reach: ProjectReach): Narrow {
   };
 }
 
+/** The kinds of type a class or record inherits members from: its base class, never an interface it implements. */
+const CLASS_KINDS = new Set(["class", "record"]);
+
+/**
+ * The types a declaration inherits members from directly, as C# looks a name
+ * up in them: a class's or record's base class, an interface's base
+ * interfaces. Each is the name its base list writes, resolved from the scope
+ * the declaration stands in, in its own file, with what its project sees; a
+ * base the workspace does not declare, or the project cannot see, adds none.
+ */
+const directBasesCache = new WeakMap<DeclaredType, TypeRecord[]>();
+function directBases(record: TypeRecord, table: TypeTable): TypeRecord[] {
+  const cached = directBasesCache.get(record.type);
+  if (cached) return cached;
+  // A base list that leads back to its own type, as namesakes can make it, ends there.
+  directBasesCache.set(record.type, []);
+  const facts = table.facts.get(record.file);
+  const bases: TypeRecord[] = [];
+  if (facts && record.type.bases.length > 0) {
+    const seen   = withProjectUsings(facts, record.file, table, table.reach);
+    const narrow = narrowFor(record.file, table.reach);
+    for (const use of record.type.bases) {
+      for (const base of resolveChain(use.chain, use.scope, seen, table, narrow, use.arities)) {
+        if (record.type.kind === "interface" ? base.type.kind === "interface" : CLASS_KINDS.has(record.type.kind) && CLASS_KINDS.has(base.type.kind)) bases.push(base);
+      }
+    }
+  }
+  directBasesCache.set(record.type, bases);
+  return bases;
+}
+
+/** The qualified names of the types the declarations inherit from, nearest first, up every chain. */
+function inheritedTypes(records: TypeRecord[], table: TypeTable): string[] {
+  const names: string[] = [];
+  const visited = new Set<DeclaredType>();
+  for (let level = records; level.length > 0; ) {
+    const next: TypeRecord[] = [];
+    for (const record of level) {
+      if (visited.has(record.type)) continue;
+      visited.add(record.type);
+      next.push(...directBases(record, table));
+    }
+    for (const base of next) if (!names.includes(base.type.qualifiedName)) names.push(base.type.qualifiedName);
+    level = next;
+  }
+  return names;
+}
+
 /**
  * The containers the compiler searches for a name used in a scope, nearest
- * first, in C#'s order: the enclosing types from the innermost out; then each
- * namespace declaration from the innermost out, its own members and then the
- * `using` directives written inside that declaration (a file-scoped namespace
- * holds the directives after it); last the global namespace with the
- * compilation unit's own `using` directives and the `global using`
- * directives of the file's project.
+ * first, in C#'s order: the enclosing types from the innermost out, each
+ * followed by the types it inherits members from, up the chain as far as the
+ * project's reach shows it; then each namespace declaration from the
+ * innermost out, its own members and then the `using` directives written
+ * inside that declaration (a file-scoped namespace holds the directives after
+ * it); last the global namespace with the compilation unit's own `using`
+ * directives and the `global using` directives of the file's project.
  */
-const containersCache = new WeakMap<Scope, { projectUsings: string[] | undefined; containers: string[] }>();
-function containersOf(scope: Scope, facts: FileFacts): string[] {
+const containersCache = new WeakMap<Scope, { projectUsings: string[] | undefined; table: TypeTable; containers: string[] }>();
+function containersOf(scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow): string[] {
   let cached = containersCache.get(scope);
-  if (!cached || cached.projectUsings !== facts.projectUsings) {
-    const containers: string[] = [...scope.enclosingTypes];
+  if (!cached || cached.projectUsings !== facts.projectUsings || cached.table !== table) {
+    const containers: string[] = [];
+    for (const type of scope.enclosingTypes) {
+      containers.push(type);
+      for (const inherited of inheritedTypes(narrow(table.byQualifiedName.get(type) ?? []) ?? [], table)) {
+        if (!containers.includes(inherited)) containers.push(inherited);
+      }
+    }
     for (const namespace of namespaceChain(scope.namespace).filter(Boolean)) {
       containers.push(namespace, ...(facts.usingsIn.get(namespace) ?? []));
     }
     containers.push("", ...(facts.usingsIn.get("") ?? []), ...(facts.projectUsings ?? []));
-    cached = { projectUsings: facts.projectUsings, containers };
+    cached = { projectUsings: facts.projectUsings, table, containers };
     containersCache.set(scope, cached);
   }
   return cached.containers;
@@ -1200,7 +1279,7 @@ function withProjectUsings(facts: FileFacts, thisFile: string, table: TypeTable,
 function resolveSegments(segments: string[], scope: Scope, facts: FileFacts, table: TypeTable, narrow: Narrow, arity: number | undefined, outcome?: SearchOutcome): TypeRecord[] | undefined {
   if (!table.lastSegments.has(segments[segments.length - 1])) return undefined;
   const dotted = segments.join(".");
-  for (const container of containersOf(scope, facts)) {
+  for (const container of containersOf(scope, facts, table, narrow)) {
     const records  = table.byQualifiedName.get(joinNames(container, dotted));
     const matching = records && arity !== undefined ? records.filter((record) => record.type.arity === arity) : records;
     const seen     = matching && matching.length > 0 ? narrow(matching) : undefined;

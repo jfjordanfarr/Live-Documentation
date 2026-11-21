@@ -289,6 +289,31 @@ describe("csharpAdapter", () => {
         expect(await links("Mvc/Framework/Open.cs")).toEqual(["Mvc/Helpers/DnnHelper{TModel}.cs", "Mvc/Helpers/Pair{TKey,TValue}.cs"]);
       });
 
+      // Each answer is the C# compiler's (Roslyn 4.12, by `npm run oracle:csharp`), on these files as written.
+      it("looks a name up in each enclosing type's base classes, up the chain and across a project reference, before any namespace or using, as C# does", async () => {
+        await write("Core/Core.csproj", sdk());
+        await write("Core/Root.cs", ["namespace Shop.Core { public class Root { public class Settings { } } }"]);
+        await write("Core/OtherSettings.cs", ["namespace Shop.Other { public class Settings { } public class Options { } }"]);
+        await write("Web/Web.csproj", sdk(["../Core/Core.csproj"]));
+        await write("Web/Middle.cs", ["using Shop.Core;", "namespace Shop.Web { public class Middle : Root { } }"]);
+        await write("Web/Leaf.cs", ["using Shop.Other;", "namespace Shop.Web { public class Leaf : Middle { public Settings Kept { get; set; } } }"]);
+        await write("Web/Outer.cs", ["using Shop.Other;", "namespace Shop.Web { public class Outer : Shop.Core.Root { public class Inner { public Settings Kept { get; set; } } } }"]);
+
+        expect(await links("Web/Leaf.cs")).toEqual(["Core/Root.cs", "Web/Middle.cs"]);
+        expect(await links("Web/Outer.cs")).toEqual(["Core/Root.cs"]);
+      });
+
+      it("takes an interface's nested types into the interfaces that extend it and not into a class that implements it, as C# does", async () => {
+        await write("Core/Core.csproj", sdk());
+        await write("Core/IShape.cs", ["namespace Shop.Core { public interface IShape { public class Options { } } }"]);
+        await write("Core/IShaped.cs", ["using Shop.Other;", "namespace Shop.Core { public interface IShaped : IShape { Options Get(); } }"]);
+        await write("Core/OtherSettings.cs", ["namespace Shop.Other { public class Options { } }"]);
+        await write("Core/Circle.cs", ["using Shop.Other;", "namespace Shop.Core { public class Circle : IShape { public Options Kept { get; set; } } }"]);
+
+        expect(await links("Core/IShaped.cs")).toEqual(["Core/IShape.cs"]);
+        expect(await links("Core/Circle.cs")).toEqual(["Core/IShape.cs", "Core/OtherSettings.cs"]);
+      });
+
       it("searches a namespace's own using directives before the namespaces around it, as C# does (DNN writes every using inside the namespace)", async () => {
         await write("Abstractions/Abstractions.csproj", sdk());
         await write("Abstractions/ClientResources/FileOrder.cs", ["namespace DotNetNuke.Abstractions.ClientResources { public enum FileOrder { } }"]);
