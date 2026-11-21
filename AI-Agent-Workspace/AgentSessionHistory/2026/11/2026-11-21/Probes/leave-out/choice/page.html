@@ -19,10 +19,12 @@
   h1 { margin: 0 12px 0 0; font-size: 15px; color: var(--text-strong); font-weight: 600; }
   h2 { font-size: 13px; color: var(--text-strong); margin: 14px 0 8px; font-weight: 600; }
   h3 { font-size: 12px; color: var(--text-secondary); margin: 12px 0 4px; font-weight: 600; }
-  main { overflow: auto; padding: 0 20px 24px; scroll-padding-top: 112px; }
-  main > section { max-width: 1240px; }
-  /* The totals and Scan stay in view while what is below them scrolls. */
-  .summary { position: sticky; top: 0; z-index: 2; padding: 12px 0 10px; background: var(--ground-page); border-bottom: 1px solid var(--line-border); margin-bottom: 8px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  /* The totals, the notice and the three columns' headings never leave the view: the page does not scroll, each
+     column's body scrolls on its own beneath its heading. */
+  main { overflow: hidden; padding: 0 20px 12px; display: flex; flex-direction: column; min-height: 0; }
+  main > section { max-width: 1240px; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .summary { padding: 12px 0 10px; background: var(--ground-page); border-bottom: 1px solid var(--line-border); margin-bottom: 8px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .totals-code { font-weight: 400; }
   #totals { font-size: 14px; color: var(--text-strong); margin: 0; }
   button, .choose { font: inherit; color: var(--text-normal); background: var(--ground-control); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 10px; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
   button:hover, .choose:hover { border-color: var(--line-hover); }
@@ -40,22 +42,30 @@
   #found { border: 1px solid var(--line-interactive); border-radius: 6px; background: var(--ground-card); padding: 8px 12px; margin: 4px 0 10px; }
   #found .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
   #found .what { flex: 1; min-width: 0; color: var(--text-strong); }
-  #found-files { margin: 6px 0 0 26px; }
+  #found-files { margin: 6px 0 0 26px; max-height: 30vh; overflow: auto; }
   #found-files li { display: flex; gap: 10px; align-items: center; min-height: 26px; }
   #found-said { color: var(--text-secondary); margin: 6px 0 0 26px; }
   /* "Left out" holds the most words, so it has the most width. */
-  .columns { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr) minmax(0, 0.85fr); gap: 24px; align-items: start; }
+  .columns { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr) minmax(0, 0.85fr); grid-template-rows: minmax(0, 1fr); gap: 24px; }
+  .column { display: flex; flex-direction: column; min-height: 0; }
+  .column > h2 { flex: none; }
+  .column-body { flex: 1; min-height: 0; overflow: auto; padding-right: 4px; }
+  .list-column { display: flex; flex-direction: column; overflow: hidden; }
   /* The list, the truth: text to edit, its tools above it. */
   .list-tools { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
   /* The list and its line numbers, scrolled together, so that a row's number can be found in the text. */
-  .list-box { display: flex; border: 1px solid var(--line-interactive); border-radius: 4px; background: var(--ground-deep); }
-  #gutter { margin: 0; padding: 8px 6px 8px 8px; min-width: 36px; text-align: right; color: var(--text-muted); border-right: 1px solid var(--line-border); overflow: hidden; height: calc(100vh - 380px); min-height: 360px; line-height: 1.55; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; user-select: none; }
-  #list { flex: 1; min-width: 0; height: calc(100vh - 380px); min-height: 360px; resize: none; color: var(--text-normal); background: transparent; border: 0; padding: 8px; line-height: 1.55; white-space: pre; overflow: auto; }
+  .list-box { display: flex; flex: 1; min-height: 160px; border: 1px solid var(--line-interactive); border-radius: 4px; background: var(--ground-deep); }
+  #gutter { margin: 0; padding: 8px 6px 8px 8px; min-width: 36px; text-align: right; color: var(--text-muted); border-right: 1px solid var(--line-border); overflow: hidden; line-height: 1.55; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; user-select: none; }
+  #list { flex: 1; min-width: 0; resize: none; color: var(--text-normal); background: transparent; border: 0; padding: 8px; line-height: 1.55; white-space: pre; overflow: auto; }
   /* The offers in the list's empty place: each starting list, with what it would do here. */
   #offers { display: grid; gap: 8px; margin: 0 0 10px; }
   #offers p { margin: 0; }
   .offer { justify-content: flex-start; text-align: left; padding: 8px 10px; border-color: var(--offers); color: var(--text-normal); }
   .offer .icon { color: var(--offers); }
+  .offer.taken { border-color: var(--line-interactive); cursor: default; }
+  .offer.taken .icon { color: var(--text-muted); }
+  button:disabled { cursor: default; opacity: 0.5; }
+  #found-choices { display: inline-flex; gap: 8px; flex-wrap: wrap; }
   .offer > span { display: grid; }
   /* A name on hover and on focus, for an icon alone. */
   .tip { position: relative; }
@@ -109,17 +119,17 @@
       <div class="row">
         <button id="found-open" type="button" class="twisty" aria-expanded="false" aria-label="Show the files found"></button>
         <span class="what" id="found-what"></span>
-        <button type="button" data-take="use" title="Replace your list with their lines">Use</button>
-        <button type="button" data-take="add" title="Add their lines to your list">Add</button>
-        <button type="button" data-take="ignore" title="Leave your list as it is">Ignore</button>
+        <span id="found-choices"></span>
       </div>
       <ul id="found-files" hidden></ul>
       <p id="found-said" hidden></p>
     </div>
     <div class="columns">
-      <div>
+      <div class="column">
         <h2>Your list</h2>
+        <div class="column-body list-column">
         <div class="list-tools">
+          <button id="undo" type="button" class="icon-button tip" aria-label="Undo the last change to the list (Ctrl+Z)" data-tip="Undo the last change (Ctrl+Z)" data-icon="undo" disabled></button>
           <span class="menu"><button id="prefill" type="button" class="icon-button tip" aria-haspopup="true" aria-expanded="false" aria-label="Add a starting list" data-tip="Add a starting list" data-icon="prefill"></button>
             <ul id="prefill-menu" hidden>
               <li><button type="button" data-prefill="what-it-holds">What these folders hold</button></li>
@@ -139,9 +149,10 @@
           <textarea id="list" spellcheck="false" wrap="off" aria-label="Your list: one pattern a line, as in a .gitignore"></textarea>
         </div>
         <label class="case"><input id="ignore-case" type="checkbox"> Names match without case</label>
+        </div>
       </div>
-      <div><h2>Left out</h2><ul id="by-line"></ul></div>
-      <div><h2>Will be read</h2><div id="read"></div></div>
+      <div class="column"><h2>Left out</h2><div class="column-body"><ul id="by-line"></ul></div></div>
+      <div class="column"><h2>Will be read</h2><div class="column-body"><div id="read"></div></div></div>
     </div>
   </section>
 </main>

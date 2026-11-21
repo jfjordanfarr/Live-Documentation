@@ -2,6 +2,43 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Ninth leg, evening of 2026-11-21: what strangers stumbled on, mended
+
+Strangers tried the eighth leg's page: 33 runs, with tasks and answers written by a builder who did not build it ([the strangers' record](../blind-playtests/README.md#one-list-tried-on-strangers)). 28 were right and 4 wrong, and all four wrong runs are one stumble. This leg changes the page only; nothing under `packages/` moved. The pictures are on `nested`, at the states the strangers met (`choice/screenshots/nested-ninth-*.png`, with counts in `records/nested-ninth-record.json`, taken by `choice/look-strangers.mjs`). No picture holds a timing line.
+
+### What the ninth leg changed
+
+1. **Use was read as "add these too", and nothing led back.** On a list that already held 47 lines, all four testers pressed Use first, expecting it to add. It replaced the list, the notice then offered nothing else, and Control+Z did nothing. The owner's three choices stay, and the mend is in how they are said and taken back. The principle is the designers' *forgiveness*: an action with a way back needs no warning.
+   - **While the list is empty,** replacing and adding are one act, so the notice offers two choices: "Take them in" and "Ignore them" (`nested-ninth-1-first.png`).
+   - **Once the list holds lines,** each choice says what it does to them, in the owner's verbs: "Replace your list (removes 47 lines)", "Add them to your list", "Leave your list alone" (`nested-ninth-3-choices-on-a-list.png`).
+   - **After a choice,** the notice says what the list now is and keeps the other choices, worked from the list as it stood before the first. After Replace it reads "Your list is now their lines" with "Add them to your list" and "Put your list back" (`nested-ninth-4-replaced.png`, 15,594 read). After Add it offers Replace and "Put your list back" (`nested-ninth-6-added.png`, 10,946 read, as the strangers' answer has it).
+   - **Every change to the list can be taken back,** the page's own and the person's typing alike. Control+Z in the list undoes, and Control+Y or Control+Shift+Z redoes. An undo tool now stands first among the list's tools, named on hover and focus "Undo the last change (Ctrl+Z)".
+     - Typing is kept as one change per 400 ms pause.
+     - A choice taken back by undo leaves the notice as it was before the choice: in `nested-ninth-5-taken-back.png`, the 47 lines and 10,954 are back with the three choices.
+     - The person's own undo in the text field is replaced by the page's, which works per change rather than per character.
+2. **A line that leaves out the team's own code went unremarked.**
+   - **In every row,** the kinds a reader reads come first, whatever their size, then the largest others, four kinds in all and more where code needs them. `**/[Pp]ackages/*` now reads "**.cs 11** · .xml 2 · .zip 1" (`nested-ninth-8-code-first.png`).
+   - **The top line carries the count** of left-out files a reader would read, beside the totals: "10,954 files will be read · 6,291 files left out · ‹› 865 of them are code a reader would read".
+   - Typing `packages/`, as three strangers did, raises that count from 871 to 882 where the eye already is (`nested-ninth-7-packages-typed.png`). Control+Z takes it back.
+3. **The totals and the columns' headings stay in view.** The page no longer scrolls as a whole. The totals, the notice and the three headings hold their place, and each column's body scrolls on its own beneath its heading. With the folders' block opened and its column scrolled to its end, the totals and all three headings are inside the window (`nested-ninth-9-scrolled-to-the-end.png`; `totalsAndHeadingsInViewWhenScrolled: true`). The sixth leg's rule had slipped when the eighth leg rebuilt the layout.
+4. **The second offer stays under the pointer.**
+   - When one starting list is taken, the offers stay where they were. The taken one reads "In your list" with a tick and can no longer be pressed; the other stays pressable (`nested-ninth-2-offer-held.png`).
+   - **How "moved on" is decided:** the offers leave at the person's next press or key anywhere outside them, now that the list holds lines. A press on the other offer keeps them both.
+   - In the record, a press on a column's heading took them away (`offersAfterAPressElsewhere: false`).
+
+**The terminal twin** lists the kinds a reader reads first, marked `[read]`. Its output is written again for both folders.
+
+### What my eye sees
+
+- **The notice now speaks in what happens to the list.** The replacing choice says how much it removes, and after a choice the way back stands beside it.
+- **The count of code left out** sits in the top line, in the same weight and sign as in the rows. Typing a bare `packages/` visibly moves it.
+- **The columns read as three panes,** each with its own scroll. The headings and the totals never leave.
+
+**Still wrong:**
+- A row's kinds now often run to two lines, since code kinds come first and more of them show.
+- The notes line wraps to two lines in the list's column.
+- With four code kinds shown first, a row of a downloaded package (".ps1 292 · .config 166 …") still reads as code-heavy. Only the count beside the totals and the sign's number tell the team's code from a package's.
+
 ## Eighth leg, evening of 2026-11-21: one list, the person's, is the truth
 
 The owner, 18:15 UTC: "The list the user sees for ignore patterns is the source of truth for our software, and we can take that in from other ignore patterns as needed." An ignore file found in the folder is offered to "use (replace current ignore pattern in browser window), integrate (add to current ignore pattern in browser window), or ignore". On a committed packages folder: "The user will likely need to make that decision themselves. Might be helpful as they're concocting the ignore pattern for the scan to know what would be ignored so they can tune it on the spot." The layered rules of the earlier legs and the evidence rules applied by default are gone. This section is the first milestone: the function's new shape held to both oracles, and the page's first pictures.

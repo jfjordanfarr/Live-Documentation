@@ -38,4 +38,4 @@ Will be read, by top folder:
   expected                                        1
 
 To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
-Listed 0 folders in 790 ms (listing 0 ms, deciding 659 ms).
+Listed 0 folders in 314 ms (listing 0 ms, deciding 272 ms).
