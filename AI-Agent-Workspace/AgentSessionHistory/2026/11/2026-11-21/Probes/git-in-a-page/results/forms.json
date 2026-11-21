@@ -1,0 +1,65 @@
+[
+  {
+    "name": "shallow",
+    "as": "page",
+    "read": true,
+    "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+    "mainline": 200,
+    "shallowMarks": 1,
+    "changedPaths": 2790,
+    "megabytes": 40.6,
+    "notes": []
+  },
+  {
+    "name": "shallow",
+    "as": "command line",
+    "read": true,
+    "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+    "mainline": 200,
+    "shallowMarks": 1,
+    "changedPaths": 2790,
+    "megabytes": 40.6,
+    "notes": []
+  },
+  {
+    "name": "alternates",
+    "as": "page",
+    "read": false,
+    "why": "this repository cannot be read: objects/info/alternates names /tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/git-probe-builder/clones/eslint/.git/objects, which this host cannot reach"
+  },
+  {
+    "name": "alternates",
+    "as": "command line",
+    "read": true,
+    "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+    "mainline": 8799,
+    "shallowMarks": 0,
+    "changedPaths": 43558,
+    "megabytes": 818.3,
+    "notes": []
+  },
+  {
+    "name": "reftable",
+    "as": "page",
+    "read": false,
+    "why": "this repository cannot be read: refs are kept as reftable, which this reader does not read"
+  },
+  {
+    "name": "reftable",
+    "as": "command line",
+    "read": false,
+    "why": "this repository cannot be read: refs are kept as reftable, which this reader does not read"
+  },
+  {
+    "name": "sha256",
+    "as": "page",
+    "read": false,
+    "why": "this repository cannot be read: objects are named by sha256, which this reader does not read"
+  },
+  {
+    "name": "sha256",
+    "as": "command line",
+    "read": false,
+    "why": "this repository cannot be read: objects are named by sha256, which this reader does not read"
+  }
+]

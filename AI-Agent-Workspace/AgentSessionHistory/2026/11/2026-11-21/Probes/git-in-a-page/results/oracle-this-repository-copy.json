@@ -1,0 +1,46 @@
+{
+  "name": "this-repository-copy",
+  "head": "e27faddde994898857b5a2f3368e0e01a20c3180",
+  "gitChangesDigest": "2989bc5597e8f478",
+  "mainline": 1549,
+  "reachable": 2076,
+  "tags": 0,
+  "changedPaths": 46206,
+  "changedBlobs": 33149,
+  "changedBlobMegabytes": 1820.4,
+  "headFiles": 9793,
+  "blobsHeldToGit": 2000,
+  "blobsDifferingFromGit": 0,
+  "blobsFailingTheirId": 0,
+  "packs": 4,
+  "looseObjects": 5429,
+  "notes": [],
+  "refusals": [],
+  "differenceCount": 0,
+  "differencesByKind": {},
+  "differences": [],
+  "gitMs": {
+    "resolve": 6,
+    "mainline": 80,
+    "reachable": 15,
+    "changes": 314,
+    "tags": 5,
+    "headTree": 52
+  },
+  "readerMs": {
+    "open": 89,
+    "mainline": 270,
+    "reachable": 162,
+    "changes": 1872,
+    "tags": 0,
+    "headTree": 13,
+    "everyChangedBlobVerified": 37468
+  },
+  "hostCalls": {
+    "list": 2,
+    "read": 3710,
+    "size": 4,
+    "slice": 6755,
+    "bytes": 1300975830
+  }
+}
