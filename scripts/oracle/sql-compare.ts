@@ -69,7 +69,9 @@
  *         foreign key: "Data Definition Language (DDL) statements", Microsoft
  *         Learn, "Transact-SQL statements"), or a string the module executes
  *         names, binds by the user's default schema. A DML trigger takes the
- *         schema of its table when its own name writes none. A one-part name
+ *         schema of its table when its own name writes none: "DML triggers are
+ *         scoped to the schema of the table or view on which they're created"
+ *         (Microsoft Learn, "CREATE TRIGGER", schema_name). A one-part name
  *         that neither schema holds binds to nothing, however many other
  *         schemas hold one;
  *       * `database..name` omits only the schema, whose default is a user's in
