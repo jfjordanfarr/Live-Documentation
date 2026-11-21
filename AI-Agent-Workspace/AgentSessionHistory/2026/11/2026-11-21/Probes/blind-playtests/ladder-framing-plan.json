@@ -1,0 +1,162 @@
+[
+  {
+    "name": "estate-uses-sonnet-medium-follows-pins",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-follows-pins-2",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-follows-pins",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-follows-pins-2",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-follows-pins",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-follows-pins-2",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-follows-pins",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-follows-pins-2",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-follows-files",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-follows-files-2",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-follows-files",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-follows-files-2",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-follows-files",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-follows-files-2",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-follows-files",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-follows-files-2",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.framing=follows-files"
+    ]
+  }
+]

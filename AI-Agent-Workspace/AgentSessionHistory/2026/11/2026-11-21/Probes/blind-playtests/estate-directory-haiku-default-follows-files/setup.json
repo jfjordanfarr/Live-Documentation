@@ -1,0 +1,10 @@
+{
+  "settings": [
+    {
+      "setting": "localMap.framing",
+      "wanted": "follows-files",
+      "shown": "follows-files"
+    }
+  ],
+  "ok": true
+}

@@ -1,0 +1,10 @@
+{
+  "settings": [
+    {
+      "setting": "localMap.arrival",
+      "wanted": "then-neighbours",
+      "shown": "then-neighbours"
+    }
+  ],
+  "ok": true
+}

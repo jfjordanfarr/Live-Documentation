@@ -18,11 +18,30 @@ opened: 2026-11-20
 ## Tasks
 
 ### Join the three branches onto today's engine
-- state: active
-- holds: with a builder since 2026-11-21, on a branch `readers-gathering` cut from the day branch at `a5d29b90f`; first leg handed back at 02:43 UTC with SQL and PowerShell joined (`5c2b41bdd`, `c47de8e36`), the gate green without the browser and the SQL graders equal to their record, and the builder sent on to the .NET merge, a committed command that scores a PowerShell corpus (the scripts that scored five on 2026-11-19 were lost with the old container) and a committed account of every grading; the three sources are SQL on `worktree-agent-a3f00007018f5adbe` at `779a15fc`; PowerShell on `worktree-agent-a29a6d3f4a47f410b` at `29b3bb24`; .NET on `worktree-agent-ac7ef8df4222b2e4b` at `32d03c79`
-- evidence:
+- state: review
+- holds: the branch `readers-gathering` in its builder's worktree, tip `a0da03f59` when reviewed: SQL, PowerShell and .NET joined by ordinary merges (`5c2b41bdd`, `c47de8e36`, `16004f4ef`), a committed command that scores a PowerShell corpus (`e1ae5641a`), and the history's owed corrections with `glob` declared (`a0da03f59`); the builder is mending the review's findings there, each as a failing test first
+- evidence: the gate without the browser green on the tip (2,989 unit and 465 integration tests); the account of every grading, on the branch at `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md`, with each corpus's commit and folders named; an independent review handed back at about 03:46 UTC on 2026-11-21 that found the merges sound and the engine's promises kept, and nine faults in how names are resolved and in two graders' claims, set down below
 
 Each merges with conflicts only in generated docs, its own record, the decisions log and three readers (`powershell.ts`, `csharp.ts`, `aspnet.ts`). Since they were parked the engine has changed under them: every read goes through the one reading step and the rule that a machine's failure is thrown on (the structural test names any catch that swallows one); a syntax tree is taken only through the tree-sitter helper; a reader's notices go to the generator's channel (PowerShell drops two loads its text does not fix, at its lines 1363 and 1375 on that branch); PowerShell's `archetypeOf` reads the file index. Records: [SQL](../AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md), [PowerShell](../AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md), [.NET](../AgentSessionHistory/2026/11/2026-11-19/Probes/dotnet-gaps/README.md).
+
+### What the independent review found, to be mended before the landing
+- state: active
+- holds: with the join's builder since 2026-11-21, on `readers-gathering`
+- evidence:
+
+Each shown by running the generator on a few lines, unless marked read. Four were on `main` before the branch (the first, the third in part, the eighth in part, the ninth).
+
+1. C#: a nested type inherited from a base class binds to a namesake reached by `using`; the compiler binds it to the base's.
+2. C#: an alias to a non-generic type links the generic of the same name as well.
+3. A project reference inside an XML comment is read as real, and widens what C# names can reach.
+4. PowerShell: the functions PowerShell ships without a module (`Pause`, `help`, `prompt`) and its aliases are not in the list of shipped names, so a call to one wires to a workspace function of that name.
+5. The PowerShell grader takes its list of shipped names from the reader's own module and repeats the reader's rule, so it can fail on how a file was parsed and never on the rule.
+6. PowerShell: `Import-Module $m`, with `$m` assigned once to a module's name, gets a notice and loses the name.
+7. What makes a file a test changed for every language where only PowerShell's evidence called for it: `test-utils.tsx` and its like stopped being tests.
+8. SQL: a one-part name links to a table of that name in every schema, where T-SQL binds one; and `Db..Name` is classed differently from `Db.dbo.Name`. The SQL grader borrows the product's matching for the first, so it cannot fail on it.
+9. ASP.NET, read: a `<script src>` resolves `~/` from the workspace's root where the directives resolve it from the project, and one that resolves nowhere is dropped unsaid.
+
+Root's rulings went to the builder with each case: the reviewer's input committed first as a failing test with its answer from the language's own tool, then the mend, then the real corpora's numbers before and after; a second pass by the same reviewer; then one rebuild of the history.
 
 ### The generator reads each file once and hands its text to its reader
 - state: open

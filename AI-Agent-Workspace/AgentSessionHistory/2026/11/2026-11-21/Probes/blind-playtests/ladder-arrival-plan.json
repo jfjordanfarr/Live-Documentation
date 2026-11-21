@@ -1,0 +1,202 @@
+[
+  {
+    "name": "estate-uses-sonnet-medium-arrival-then-neighbours",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-arrival-then-neighbours-2",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-arrival-then-neighbours",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-arrival-then-neighbours-2",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-arrival-then-neighbours",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-arrival-then-neighbours-2",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-arrival-then-neighbours",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-arrival-then-neighbours-2",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "repo-uses-sonnet-medium-arrival-then-neighbours",
+    "task": "repo-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "repo-uses-haiku-default-arrival-then-neighbours",
+    "task": "repo-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=then-neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-arrival-neighbours",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-sonnet-medium-arrival-neighbours-2",
+    "task": "estate-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-arrival-neighbours",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-uses-haiku-default-arrival-neighbours-2",
+    "task": "estate-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-arrival-neighbours",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-sonnet-medium-arrival-neighbours-2",
+    "task": "estate-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-arrival-neighbours",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "estate-directory-haiku-default-arrival-neighbours-2",
+    "task": "estate-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "repo-uses-sonnet-medium-arrival-neighbours",
+    "task": "repo-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  },
+  {
+    "name": "repo-uses-haiku-default-arrival-neighbours",
+    "task": "repo-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.arrival=neighbours"
+    ]
+  }
+]

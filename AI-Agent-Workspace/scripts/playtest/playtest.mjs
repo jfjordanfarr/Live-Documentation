@@ -6,6 +6,7 @@
 // Usage:
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task <id from tasks.json> --model <id> --effort <level>
 //        [--variant look-only|after-each] [--out <run folder>] [--max-actions 60] [--site <built explorer dir>] [--claude <program>]
+//        [--setting <group>.<name>=<value> ...]
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --start <url> --words <the visitor's message> ...
 //
 // The tester is launched from an empty directory outside the repository, with no built-in tools, this window as its
@@ -80,6 +81,9 @@ if (variant === 'after-each') windowArgs.push('--after-each');
 // A task may ask the window to prepare the page before the tester begins (the narrative playtest's history and its
 // condition); the window records what it did in setup.json.
 for (const flag of task?.window ?? []) if (['--open-history', '--hide-step-words'].includes(flag)) windowArgs.push(flag);
+// A viewer's Tuning choices made before the page first loads, as `--setting localMap.framing=follows` (repeatable).
+const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] : []));
+for (const setting of settings) windowArgs.push('--setting', setting);
 const mcp = { mcpServers: { window: { type: 'stdio', command: process.execPath, args: windowArgs } } };
 const claudeArgs = [
   '-p', prompt,
@@ -104,7 +108,7 @@ const siteStamp = () => Object.fromEntries(['index.html', 'explorer-data.json', 
   try { return [file, fs.statSync(path.join(site, file)).mtime.toISOString()]; } catch { return [file, null]; }
 }));
 const siteAtStart = siteStamp();
-fs.writeFileSync(path.join(out, 'run.json'), JSON.stringify({ task: taskId, start, words, model, effort, variant, maxActions: Number(maxActions),
+fs.writeFileSync(path.join(out, 'run.json'), JSON.stringify({ task: taskId, start, words, model, effort, variant, settings, maxActions: Number(maxActions),
   site, siteAtStart, systemPrompt: system, prompt, startedAt: new Date().toISOString() }, null, 2) + '\n');
 
 const began = Date.now();

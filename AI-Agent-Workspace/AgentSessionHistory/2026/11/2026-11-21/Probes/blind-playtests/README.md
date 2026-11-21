@@ -6,7 +6,7 @@ The owner's caution on reading testers (2026-11-19): "Models live on text. It's 
 
 ## What was run
 
-Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $7.13 as the program reports it, $5.76 of it the two narrative runs and their grades.
+Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 and the Framing and Arrival trials ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $8.26 as the program reports it, $5.76 of it the two narrative runs and their grades.
 
 | Run | Task | Model, effort | Turns | Actions (looks) | Tokens in, out | Wall | Cost |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -30,9 +30,9 @@ Every visitor run is look-only (the instrument's default), at most 60 actions (1
 | [estate-link-sonnet-medium-look-only-2](estate-link-sonnet-medium-look-only-2/) | estate-link | Sonnet, medium | 7 | 6 (3) | 33k, 1.2k | 41 s | $0.041 |
 | [estate-link-haiku-default-look-only](estate-link-haiku-default-look-only/) | estate-link | Haiku, default | 7 | 6 (3) | 22k, 1.3k | 36 s | $0.002 |
 | [estate-link-haiku-default-look-only-2](estate-link-haiku-default-look-only-2/) | estate-link | Haiku, default | 7 | 6 (3) | 22k, 1.3k | 37 s | $0.002 |
+| [repo-uses-haiku-default-look-only](repo-uses-haiku-default-look-only/) | repo-uses | Haiku, default | 15 | 14 (7) | 83k, 1.9k | 24 s | $0.005 |
 | [repo-uses-sonnet-medium-look-only](repo-uses-sonnet-medium-look-only/) | repo-uses | Sonnet, medium | 6 | 5 (3) | 33k, 1.0k | 22 s | $0.041 |
 | [repo-uses-sonnet-medium-look-only-2](repo-uses-sonnet-medium-look-only-2/) | repo-uses | Sonnet, medium | 8 | 7 (4) | 53k, 0.9k | 21 s | $0.050 |
-| [repo-uses-haiku-default-look-only](repo-uses-haiku-default-look-only/) | repo-uses | Haiku, default | 15 | 14 (7) | 83k, 1.9k | 24 s | $0.005 |
 | [repo-uses-haiku-default-look-only-2](repo-uses-haiku-default-look-only-2/) | repo-uses | Haiku, default | 6 | 5 (3) | 23k, 1.0k | 14 s | $0.002 |
 | [repo-directory-sonnet-medium-look-only](repo-directory-sonnet-medium-look-only/) | repo-directory | Sonnet, medium | 11 | 10 (5) | 77k, 1.3k | 53 s | $0.067 |
 | [repo-directory-sonnet-medium-look-only-2](repo-directory-sonnet-medium-look-only-2/) | repo-directory | Sonnet, medium | 26 | 24 (11) | 328k, 2.3k | 80 s | $0.158 |
@@ -42,6 +42,42 @@ Every visitor run is look-only (the instrument's default), at most 60 actions (1
 | [repo-link-sonnet-medium-look-only-2](repo-link-sonnet-medium-look-only-2/) | repo-link | Sonnet, medium | 8 | 7 (4) | 44k, 1.3k | 48 s | $0.052 |
 | [repo-link-haiku-default-look-only](repo-link-haiku-default-look-only/) | repo-link | Haiku, default | 7 | 6 (3) | 34k, 2.2k | 47 s | $0.003 |
 | [repo-link-haiku-default-look-only-2](repo-link-haiku-default-look-only-2/) | repo-link | Haiku, default | 7 | 6 (3) | 34k, 1.3k | 44 s | $0.002 |
+| [estate-uses-sonnet-medium-follows-pins](estate-uses-sonnet-medium-follows-pins/) | estate-uses with localMap.framing=follows | Sonnet, medium | 20 | 19 (10) | 151k, 1.9k | 41 s | $0.123 |
+| [estate-uses-sonnet-medium-follows-pins-2](estate-uses-sonnet-medium-follows-pins-2/) | estate-uses with localMap.framing=follows | Sonnet, medium | 17 | 16 (8) | 131k, 1.9k | 41 s | $0.103 |
+| [estate-uses-haiku-default-follows-pins](estate-uses-haiku-default-follows-pins/) | estate-uses with localMap.framing=follows | Haiku, default | 11 | 10 (5) | 56k, 2.9k | 28 s | $0.004 |
+| [estate-uses-haiku-default-follows-pins-2](estate-uses-haiku-default-follows-pins-2/) | estate-uses with localMap.framing=follows | Haiku, default | 6 | 5 (3) | 23k, 0.9k | 12 s | $0.002 |
+| [estate-directory-sonnet-medium-follows-pins](estate-directory-sonnet-medium-follows-pins/) | estate-directory with localMap.framing=follows | Sonnet, medium | 11 | 10 (5) | 66k, 1.4k | 51 s | $0.065 |
+| [estate-directory-sonnet-medium-follows-pins-2](estate-directory-sonnet-medium-follows-pins-2/) | estate-directory with localMap.framing=follows | Sonnet, medium | 10 | 8 (4) | 54k, 1.3k | 39 s | $0.055 |
+| [estate-directory-haiku-default-follows-pins](estate-directory-haiku-default-follows-pins/) | estate-directory with localMap.framing=follows | Haiku, default | 10 | 9 (5) | 47k, 1.7k | 44 s | $0.004 |
+| [estate-directory-haiku-default-follows-pins-2](estate-directory-haiku-default-follows-pins-2/) | estate-directory with localMap.framing=follows | Haiku, default | 9 | 8 (4) | 34k, 1.6k | 43 s | $0.003 |
+| [estate-uses-sonnet-medium-follows-files](estate-uses-sonnet-medium-follows-files/) | estate-uses with localMap.framing=follows-files | Sonnet, medium | 18 | 17 (8) | 112k, 1.9k | 36 s | $0.102 |
+| [estate-uses-sonnet-medium-follows-files-2](estate-uses-sonnet-medium-follows-files-2/) | estate-uses with localMap.framing=follows-files | Sonnet, medium | 13 | 12 (6) | 105k, 1.0k | 26 s | $0.073 |
+| [estate-uses-haiku-default-follows-files](estate-uses-haiku-default-follows-files/) | estate-uses with localMap.framing=follows-files | Haiku, default | 15 | 14 (7) | 85k, 2.6k | 29 s | $0.005 |
+| [estate-uses-haiku-default-follows-files-2](estate-uses-haiku-default-follows-files-2/) | estate-uses with localMap.framing=follows-files | Haiku, default | 14 | 13 (7) | 87k, 3.0k | 34 s | $0.006 |
+| [estate-directory-sonnet-medium-follows-files](estate-directory-sonnet-medium-follows-files/) | estate-directory with localMap.framing=follows-files | Sonnet, medium | 10 | 9 (5) | 66k, 1.3k | 41 s | $0.064 |
+| [estate-directory-sonnet-medium-follows-files-2](estate-directory-sonnet-medium-follows-files-2/) | estate-directory with localMap.framing=follows-files | Sonnet, medium | 10 | 8 (4) | 54k, 1.3k | 40 s | $0.055 |
+| [estate-directory-haiku-default-follows-files](estate-directory-haiku-default-follows-files/) | estate-directory with localMap.framing=follows-files | Haiku, default | 9 | 8 (4) | 34k, 1.7k | 45 s | $0.003 |
+| [estate-directory-haiku-default-follows-files-2](estate-directory-haiku-default-follows-files-2/) | estate-directory with localMap.framing=follows-files | Haiku, default | 9 | 8 (4) | 34k, 2.0k | 47 s | $0.003 |
+| [estate-uses-sonnet-medium-arrival-then-neighbours](estate-uses-sonnet-medium-arrival-then-neighbours/) | estate-uses with localMap.arrival=then-neighbours | Sonnet, medium | 8 | 7 (4) | 52k, 0.8k | 18 s | $0.048 |
+| [estate-uses-sonnet-medium-arrival-then-neighbours-2](estate-uses-sonnet-medium-arrival-then-neighbours-2/) | estate-uses with localMap.arrival=then-neighbours | Sonnet, medium | 8 | 7 (4) | 52k, 0.7k | 19 s | $0.047 |
+| [estate-uses-haiku-default-arrival-then-neighbours](estate-uses-haiku-default-arrival-then-neighbours/) | estate-uses with localMap.arrival=then-neighbours | Haiku, default | 6 | 5 (3) | 23k, 0.9k | 13 s | $0.002 |
+| [estate-uses-haiku-default-arrival-then-neighbours-2](estate-uses-haiku-default-arrival-then-neighbours-2/) | estate-uses with localMap.arrival=then-neighbours | Haiku, default | 6 | 5 (3) | 23k, 1.0k | 13 s | $0.002 |
+| [estate-directory-sonnet-medium-arrival-then-neighbours](estate-directory-sonnet-medium-arrival-then-neighbours/) | estate-directory with localMap.arrival=then-neighbours | Sonnet, medium | 9 | 8 (4) | 53k, 1.2k | 48 s | $0.053 |
+| [estate-directory-sonnet-medium-arrival-then-neighbours-2](estate-directory-sonnet-medium-arrival-then-neighbours-2/) | estate-directory with localMap.arrival=then-neighbours | Sonnet, medium | 7 | 5 (3) | 33k, 0.9k | 33 s | $0.039 |
+| [estate-directory-haiku-default-arrival-then-neighbours](estate-directory-haiku-default-arrival-then-neighbours/) | estate-directory with localMap.arrival=then-neighbours | Haiku, default | 9 | 8 (4) | 54k, 1.9k | 46 s | $0.003 |
+| [estate-directory-haiku-default-arrival-then-neighbours-2](estate-directory-haiku-default-arrival-then-neighbours-2/) | estate-directory with localMap.arrival=then-neighbours | Haiku, default | 8 | 7 (4) | 33k, 2.0k | 40 s | $0.003 |
+| [repo-uses-sonnet-medium-arrival-then-neighbours](repo-uses-sonnet-medium-arrival-then-neighbours/) | repo-uses with localMap.arrival=then-neighbours | Sonnet, medium | 6 | 5 (3) | 33k, 0.8k | 18 s | $0.038 |
+| [repo-uses-haiku-default-arrival-then-neighbours](repo-uses-haiku-default-arrival-then-neighbours/) | repo-uses with localMap.arrival=then-neighbours | Haiku, default | 6 | 5 (3) | 22k, 0.8k | 14 s | $0.002 |
+| [estate-uses-sonnet-medium-arrival-neighbours](estate-uses-sonnet-medium-arrival-neighbours/) | estate-uses with localMap.arrival=neighbours | Sonnet, medium | 6 | 5 (3) | 33k, 0.6k | 14 s | $0.036 |
+| [estate-uses-sonnet-medium-arrival-neighbours-2](estate-uses-sonnet-medium-arrival-neighbours-2/) | estate-uses with localMap.arrival=neighbours | Sonnet, medium | 6 | 5 (3) | 33k, 0.6k | 14 s | $0.036 |
+| [estate-uses-haiku-default-arrival-neighbours](estate-uses-haiku-default-arrival-neighbours/) | estate-uses with localMap.arrival=neighbours | Haiku, default | 6 | 5 (3) | 23k, 0.8k | 12 s | $0.002 |
+| [estate-uses-haiku-default-arrival-neighbours-2](estate-uses-haiku-default-arrival-neighbours-2/) | estate-uses with localMap.arrival=neighbours | Haiku, default | 6 | 5 (3) | 24k, 1.3k | 14 s | $0.002 |
+| [estate-directory-sonnet-medium-arrival-neighbours](estate-directory-sonnet-medium-arrival-neighbours/) | estate-directory with localMap.arrival=neighbours | Sonnet, medium | 9 | 7 (4) | 54k, 1.2k | 39 s | $0.053 |
+| [estate-directory-sonnet-medium-arrival-neighbours-2](estate-directory-sonnet-medium-arrival-neighbours-2/) | estate-directory with localMap.arrival=neighbours | Sonnet, medium | 9 | 8 (4) | 53k, 1.2k | 46 s | $0.053 |
+| [estate-directory-haiku-default-arrival-neighbours](estate-directory-haiku-default-arrival-neighbours/) | estate-directory with localMap.arrival=neighbours | Haiku, default | 9 | 8 (4) | 34k, 1.8k | 44 s | $0.003 |
+| [estate-directory-haiku-default-arrival-neighbours-2](estate-directory-haiku-default-arrival-neighbours-2/) | estate-directory with localMap.arrival=neighbours | Haiku, default | 9 | 8 (4) | 34k, 1.9k | 45 s | $0.003 |
+| [repo-uses-sonnet-medium-arrival-neighbours](repo-uses-sonnet-medium-arrival-neighbours/) | repo-uses with localMap.arrival=neighbours | Sonnet, medium | 6 | 5 (3) | 33k, 0.8k | 17 s | $0.038 |
+| [repo-uses-haiku-default-arrival-neighbours](repo-uses-haiku-default-arrival-neighbours/) | repo-uses with localMap.arrival=neighbours | Haiku, default | 6 | 5 (3) | 23k, 1.0k | 14 s | $0.002 |
 | [setup-failure-check](setup-failure-check/) | narrative-picture | Haiku, default | - | 0 (0) | - | 31 s | -, outcome "setup failed" |
 
 Costs and times are as the program reports them; "Actions" counts every tool call, with the number of `look`s in brackets.
@@ -238,21 +274,171 @@ November 18's ladder left the repository's three tasks unrun on every rung, and 
 - **repo-directory.** Sonnet 2 had it whole, after walking down from the World Map ("Explorer is likely the web package. Try double-clicking it.", then "Expand src."). Sonnet 1 missed `search-field.ts` → `graph-search.ts`, and Haiku 1 `search-bar.ts` → `search-field.ts`. Haiku 2 typed the folder's path into the search; the results list the folder's four files under a heading that is the path, with no row for the folder itself ([#6](repo-directory-haiku-default-look-only-2/shots/006-look.png)). It opened two files' readers one by one and said: "The map doesn't show a folder view directly, so I built this picture from the search results and the file panels for `graph-search.ts` and `search-bar.ts`. I did not open `search-field.ts` or the test file."
 - **repo-link.** All four searched, clicked the result, and copied the address into the reply; decoded, every link pins `scripts/live-docs/inspect.ts` as the subject. Nothing was copied to the clipboard.
 
+## "Scan root" reproduced: what the History button does
+
+Asked by the root after the first two milestones. Opened on the November 21 build through the browser lane at 1,280 by 800, by a short script outside the instrument (no tester):
+
+- **Before History** ([picture](scan-root/1-before-history.png)): `http://127.0.0.1:8792/?view=local&mode=3d` shows the repository's 3D Local Map with its groups packed as clusters, the search field empty ("Search files, symbols and directories"), no second field, and "0 pins".
+- **After pressing History** ([picture](scan-root/2-after-history.png)): the search field holds "Scan root", "Nothing connects to Scan root" stands in a second field beside it, the pin counter reads "1 pin", the clusters have opened into the whole graph of files, and the step card and scrubber are drawn.
+
+So "Scan root" is what pressing History puts there. The code is the History button's handler in `packages/explorer/src/client/index.ts`, lines 602 to 607:
+
+```ts
+historyButton.addEventListener("click", () => {
+  // Opening the history with nothing asked about shows the whole picture, since a repository's history is the whole
+  // repository's (the owner, 2026-11-02); with a question, the mode that is on stands, and the toggle changes it.
+  if (!historyControl.isOpen() && nothingAsked() && !state.openDirectories?.has("")) openRetainedDirectory("");
+  historyControl.toggle();
+});
+```
+
+Opening the root directory (the empty path) retains it as a pin, and the search bar's first field shows the newest pin, whose name for the empty path is "Scan root" (`search/search-field.ts`, line 103); the second field is the path search from that pin, which finds nothing connected to the whole. The narrative testers met this because their window pressed History before the first picture. It is recorded as seen, not judged.
+
+**Why the second field says "Nothing connects to Scan root"** (read on November 21, nothing changed). The words come from a general rule applied to the root as an ordinary directory pin:
+
+- The second field is drawn whenever there is a newest pin, and its placeholder is chosen in `packages/explorer/src/client/search/search-bar.ts`, lines 121 and 126 to 127:
+
+  ```ts
+  destinationGroup.hidden = !newest;
+  …
+  const connects = !reach || reach.forward.size + reach.reverse.size > 0;
+  destinationInput.placeholder = connects || !newest ? askWords : `Nothing connects to ${newest.name}`;
+  ```
+
+  `askWords` is the field's own placeholder, "Path to…" (line 78, from `shared/template.html`); the other words appear when the newest pin reaches no file either way.
+- `reach` is computed for the newest pin in `index.ts`, lines 1170 to 1175: `reach = newest ? reachOf(endFiles(newest, ground), ground.nodesById, ground.links) : null`.
+- `endFiles` (`history/moment-paths.ts`, lines 61 to 68) stands a directory pin for every file under it, `[...ground.nodesById.keys()].filter(id => under(id, directory))`, and `under` (`views/localView/directory-state.ts`, lines 28 to 30) says that "the scan root, "", holds everything". So the root pin stands for every file in the map.
+- `reachOf` (`pathfind.ts`, lines 124 to 134) walks forward along dependents and back along dependencies with the engine's `reachFrom` (`packages/engine/src/live-docs/pathfind.ts`, lines 108 to 116), which removes the starts: "the starts themselves are not listed". With every file a start, nothing is left, both maps are empty, and the rule says nothing connects.
+
+So no rule names the root: it is treated as any directory pin, and for the root the general rule's answer is always "nothing", because there is no file outside it.
+
+## Framing tried on strangers
+
+The view that does not frame what the visitor came for has stood since November 19 (task 3 above). Tuning → 2D Layout → **Framing** has three values (`hand`, `follows`, `follows-files` in `packages/explorer/src/client/types.ts`; the control `#tuning-framing`): *By Hand*, the default, *Follows Pins*, and *Follows Pins, Out To Files*. What each does is in [the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md) ("The camera that follows the pins, a trial beside it"). A viewer's choice is kept in the page's saved interface state (`live-docs-explorer:ui:v2` in the browser's storage, read by `readPersistedUi` and `readLayoutSettings`) and carried in a shared link's layout settings. No product code was changed to try it: the instrument gained `--setting <group>.<name>=<value>`, which writes the choice into that saved state before the page first loads, names it in `run.json`, and checks in `setup.json` that Tuning's own control shows it (every run below: `"wanted": "follows"` or `"follows-files"`, `"shown"` the same, `"ok": true`; the Tuning heading in the sidebar shows a "1" beside it, the page's own sign of a changed setting).
+
+The runs: [ladder-framing-plan.json](ladder-framing-plan.json), 16 runs through `ladder.mjs`, four at a time, estate-uses and estate-directory, Sonnet at medium and Haiku at default, two each, under Follows Pins (`…-follows-pins`) and under Out To Files (`…-follows-files`). They are set beside the eight By Hand runs of the same tasks and rungs in task 3 above (`…-look-only`). The rest of task 3's tasks were not run under Framing.
+
+### estate-uses: arriving on a pinned file
+
+"Whole at arrival" asks whether the first picture shows `IPaymentService.cs` with its neighbours whole; "Fit / zoom" is what the tester pressed to move the camera; "Cut-off view" whether the answer was read from a picture that still cut off what it named.
+
+| Framing | Run | Whole at arrival | Fit / zoom | Cut-off view | Result | Actions |
+| --- | --- | --- | --- | --- | --- | --- |
+| By Hand | [Sonnet 1](estate-uses-sonnet-medium-look-only/answer.md) | no | Fit: the whole neighbourhood at once | no (reader) | done | 9 |
+| By Hand | [Sonnet 2](estate-uses-sonnet-medium-look-only-2/answer.md) | no | `-` six times | yes | partly | 10 |
+| By Hand | [Haiku 1](estate-uses-haiku-default-look-only/answer.md) | no | none | no (reader) | done | 12 |
+| By Hand | [Haiku 2](estate-uses-haiku-default-look-only-2/answer.md) | no | none | no (reader) | done | 5 |
+| Follows Pins | [Sonnet 1](estate-uses-sonnet-medium-follows-pins/answer.md) | no | Fit twice (no visible change), wheel, two drags ("Dragged too far. Drag back partly."), wheel twice | no: the wheel reached the whole ([#18](estate-uses-sonnet-medium-follows-pins/shots/018-scroll.png)) | done, from the lines | 19 |
+| Follows Pins | [Sonnet 2](estate-uses-sonnet-medium-follows-pins-2/answer.md) | no | `-`, Fit, `-`, wheel, four drags | read piece by piece while panning | done, from the lines | 16 |
+| Follows Pins | [Haiku 1](estate-uses-haiku-default-follows-pins/answer.md) | no | Fit ("The view didn't change, so I'll zoom out with the minus button"), `-` four times | yes ([#9](estate-uses-haiku-default-follows-pins/shots/009-click.png)) | partly | 10 |
+| Follows Pins | [Haiku 2](estate-uses-haiku-default-follows-pins-2/answer.md) | no | none | no (reader) | done | 5 |
+| Out To Files | [Sonnet 1](estate-uses-sonnet-medium-follows-files/answer.md) | no | `-` three times, closed the sidebar, Fit (no visible change, [#8](estate-uses-sonnet-medium-follows-files/shots/008-click.png)), drag, wheel twice | no: the wheel reached the whole ([#16](estate-uses-sonnet-medium-follows-files/shots/016-scroll.png)) | done, from the lines | 17 |
+| Out To Files | [Sonnet 2](estate-uses-sonnet-medium-follows-files-2/answer.md) | no | Fit (no visible change), `-` twice | no (reader) | done | 12 |
+| Out To Files | [Haiku 1](estate-uses-haiku-default-follows-files/answer.md) | no | Fit ("The view didn't change"), `-` twice | no (reader, through the card's menu) | done | 14 |
+| Out To Files | [Haiku 2](estate-uses-haiku-default-follows-files-2/answer.md) | no | `-` once; a stray click pinned PaymentService.cs | yes | partly ("I couldn't get a complete answer from this map") | 13 |
+
+**What the pictures show.** Under all three values the arrival is the same picture: `IPaymentService.cs` at reading size, the cards on its left and right cut by the window's edges ([By Hand](estate-uses-sonnet-medium-look-only/shots/001-look.png), [Follows Pins](estate-uses-haiku-default-follows-pins/shots/001-look.png)). With nothing pinned, following frames the subject's card, which is what By Hand's arrival frames too. The one visible difference is the Fit button at the toolbar's left, drawn pressed under both following values.
+
+**The stumble Framing brings: Fit stops showing the whole.** Under By Hand, Fit framed the whole neighbourhood in one press ([Sonnet 1, #4](estate-uses-sonnet-medium-look-only/shots/004-click.png)). Under both following values the same button is "Follow pins", and with only the subject to follow it frames the subject's card again, so the picture barely moves: the card shifts some 16 px ([Follows Pins, Sonnet 1, #4](estate-uses-sonnet-medium-follows-pins/shots/004-click.png)). Six of the eight following runs pressed Fit, most as their first move; in every case the picture barely moved ("The view didn't change", Haiku twice), and they turned to `-`, the wheel and dragging. The three Sonnet runs that answered from the drawing took 16 to 19 actions, where By Hand's two Sonnet runs took 9 and 10. Results are the same count under each value: three done and one partly of four. Two of the eight following runs answered from a cut-off view and were partly right; under By Hand one of four did. Three of the eight following runs answered from the reader (two Haiku, one Sonnet); under By Hand three of four did.
+
+### estate-directory: opening a folder
+
+Every tester reached `PaymentService/` (by the search, or by the World Map's "payments" box and "open payments") and opened `Data/`. "Whole after Data opened" is the first picture after that press.
+
+| Framing | Run | Whole after Data opened | Fit / zoom | Cut-off view | Result |
+| --- | --- | --- | --- | --- | --- |
+| By Hand | Sonnet 1 | no ([#7](estate-directory-sonnet-medium-look-only/shots/007-click.png)) | none | yes | partly |
+| By Hand | Sonnet 2 | no | Fit: whole, text a few pixels high | no | partly |
+| By Hand | Haiku 1 | no ([#8](estate-directory-haiku-default-look-only/shots/008-click.png)) | none | yes | partly |
+| By Hand | Haiku 2 | no | none | yes | partly |
+| Follows Pins | [Sonnet 1](estate-directory-sonnet-medium-follows-pins/answer.md) | no ([#7](estate-directory-sonnet-medium-follows-pins/shots/007-click.png)) | Fit: the camera went to `Data/`, App.config cut at the top, PaymentService.cs off the right ([#9](estate-directory-sonnet-medium-follows-pins/shots/009-click.png)) | yes | partly |
+| Follows Pins | [Sonnet 2](estate-directory-sonnet-medium-follows-pins-2/answer.md) | no | `-` twice: all six cards, PaymentService.cs's right edge clipped, text small ([#7](estate-directory-sonnet-medium-follows-pins-2/shots/007-click.png)) | no | partly |
+| Follows Pins | [Haiku 1](estate-directory-haiku-default-follows-pins/answer.md) | no: the camera had followed to `Data/` ([#8](estate-directory-haiku-default-follows-pins/shots/008-click.png)) | none | yes | partly |
+| Follows Pins | [Haiku 2](estate-directory-haiku-default-follows-pins-2/answer.md) | no ([#7](estate-directory-haiku-default-follows-pins-2/shots/007-click.png)) | none | yes | partly |
+| Out To Files | [Sonnet 1](estate-directory-sonnet-medium-follows-files/answer.md) | no: followed to `Data/` ([#4](estate-directory-sonnet-medium-follows-files/shots/004-click.png)) | `-`, then Fit, which went back to `Data/` ([#8](estate-directory-sonnet-medium-follows-files/shots/008-click.png)) | yes | partly |
+| Out To Files | [Sonnet 2](estate-directory-sonnet-medium-follows-files-2/answer.md) | no | `-` twice: nearly whole, as above ([#7](estate-directory-sonnet-medium-follows-files-2/shots/007-click.png)) | no | partly |
+| Out To Files | [Haiku 1](estate-directory-haiku-default-follows-files/answer.md) | no ([#7](estate-directory-haiku-default-follows-files/shots/007-click.png)) | none | yes | partly |
+| Out To Files | [Haiku 2](estate-directory-haiku-default-follows-files-2/answer.md) | no | none | yes | partly |
+
+**What the pictures show.** The picture after `Data/` opened depends on the route, not on the Framing value. Opened after the search, it is the PaymentService group from App.config at the left to PaymentService.cs cut by the right edge, `Payment.cs` cut by the bottom, the same picture under all three values (By Hand Sonnet 1 #7, Follows Pins Sonnet 1 #7, Out To Files Haiku 1 #7). Opened after the World Map's box, the camera has moved to bring `Data/` in, App.config cut at the top and PaymentService.cs at the right, again under all three values (By Hand Haiku 1 #8, Follows Pins Haiku 1 #8, Out To Files Sonnet 1 #4): under By Hand that move is the step's own pan to the newly opened folder. In every one, PaymentService.cs, the file the answer turns on, is the one cut off. No result changed: all twelve are partly, for the cycle and the directions, as in task 3.
+
+**Fit again.** Under following, Fit framed `Data/`, the newest pin, not the folder the tester had asked for, and cut PaymentService.cs further ([#9](estate-directory-sonnet-medium-follows-pins/shots/009-click.png)); under By Hand it framed everything. The testers who got the whole folder into view under following did it with `-`, twice.
+
+### What the trial shows
+
+- Neither following value changes the first picture a stranger meets on these two tasks: the arrival on a pinned file is the subject at reading size with its neighbours cut, and an opened folder is framed from its top-left or at the newest opening, with the hub file at the right edge cut.
+- Both take away the one press that recovered the whole: Fit becomes "Follow pins", and pressed on a single subject it changes nothing visible, or on an opened folder frames the folder last opened. Six of eight following estate-uses testers pressed it and found the picture unchanged; the Sonnet runs then took about twice the actions to reach the whole by wheel and drag.
+- The results are the same under all three values: three done of four on estate-uses, none whole on estate-directory.
+- No tester remarked on the camera moving when it had not asked: with look-only, a tester sees only the picture after its press has come to rest.
+- Tuning → 2D Layout → **Arrival**, the lever aimed at this stumble, was tried next: [Arrival tried on strangers](#arrival-tried-on-strangers).
+
+## Arrival tried on strangers
+
+Asked by the root after the Framing trial. Tuning → 2D Layout → **Arrival** decides how an *arrival* is framed: a fresh subject from a link, a search choice or the first open (`localMap.arrival`, values `reading`, `then-neighbours`, `neighbours` in `packages/explorer/src/client/types.ts`; the control `#tuning-arrival`). `main` stands at the first, **Reading Size**: the subject's card at the scale its words are written for, neighbours allowed beyond the window. **Reading, Then Neighbours** arrives the same way and, once the picture has settled, holds 900 ms and eases over 700 ms out to the neighbours' frame, the frame Fit frames; **Neighbours** arrives on that frame at once ([the Explorer design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md), "The camera follows the intent a gesture declares"). The owner's direction of 2026-11-04 is that a shared 2D link "can begin with one deliberately framed card, composed to teach its subject in a single view as far as feasible, with neighbors allowed beyond the viewport", and on 2026-11-19 they proposed the pull back for the eye to judge: "The user simply will not know that the deepest level of detail exists unless we show it to them."
+
+The runs: [ladder-arrival-plan.json](ladder-arrival-plan.json), 20 runs through `ladder.mjs`, Framing left at By Hand: estate-uses and estate-directory, Sonnet at medium and Haiku at default, two each, and repo-uses, Sonnet and Haiku, one each, under each of the two values (`…-arrival-then-neighbours`, `…-arrival-neighbours`). Every setup passed (`"wanted"` and `"shown"` the same). They are set beside the By Hand runs at Reading Size of task 3 (estate) and task 4 (repo-uses). One thing the instrument hides: the window waits for the page to come to rest before the tester's first picture (up to 15 s), so under Reading, Then Neighbours the testers never saw the reading-size moment; their first picture is the neighbours' frame, as under Neighbours. A person would see the card for about a second and then the pull back.
+
+### What each arrival looks like
+
+By my eye on the 1,280 by 800 pictures; text sizes are the rough height of a line of text, in the picture's pixels.
+
+- **estate-uses, Reading Size** ([By Hand, #1](estate-uses-sonnet-medium-look-only/shots/001-look.png)): `IPaymentService.cs` large in the middle, its name about 18 px, its symbols about 16 px, and under `IPaymentService` its description at about 16 px, "The payment service's contract, one deployment per workload…"; the cards on both sides cut by the window's edges.
+- **estate-uses, the neighbours' frame** ([Neighbours, #1](estate-uses-sonnet-medium-arrival-neighbours/shots/001-look.png); Reading, Then Neighbours [#1](estate-uses-sonnet-medium-arrival-then-neighbours/shots/001-look.png) is the same picture): the Contracts, PaymentService and Hub folders whole with every wire, file names about 16 px, symbol names about 13 px, all readable. What is lost: the symbols' descriptions are not drawn, and "Internals" still wraps as "Intern / als". It is the picture By Hand's Fit gave Sonnet 1 at its second action.
+- **repo-uses, Reading Size** ([By Hand, #1](repo-uses-haiku-default-look-only/shots/001-look.png)): `pathfind.ts` large in the middle with its description and a description under every symbol, names and words about 11 to 13 px, readable, `live-docs/pathfind.ts` cut on the left, `graph-search.ts` and `pathfind.test.ts` cut on the right; the files that use it are mostly off the screen.
+- **repo-uses, the neighbours' frame** ([Neighbours, #1](repo-uses-haiku-default-arrival-neighbours/shots/001-look.png)): a different picture. Seven files in five nested folders (`packages`, `live-docs`, `…rer/src/shared`, `client`, `packages/explorer/src/client/search`, `history`) and `index.ts` at the far right, with the bundle of wires from `pathfind.ts` running to it. File names about 12 px, symbol names about 10 px, still legible: the map keeps its names at a readable size as it draws out, and pays in content instead; no descriptions at all; `graph-search.ts` shows two of its symbols and "+16 symbols", `live-docs/pathfind.ts` "+24 symbols", `index.ts`'s one row "Inter…". It is a map of where the file sits, not of what it says.
+- **estate-directory**: Arrival changes nothing a tester saw. A folder chosen in the search is an arrival, and `PaymentService/` fits at reading size, so the picture is the same under all three values ([By Hand, #5](estate-directory-sonnet-medium-look-only/shots/005-click.png) and [Neighbours, #5](estate-directory-sonnet-medium-arrival-neighbours-2/shots/005-click.png) are the same picture): the four items of the folder whole at the bottom of the window, the top half empty. Opening `Data/` inside it is a step, not an arrival, and gives the same cut picture as before ([Reading, Then Neighbours, #7](estate-directory-sonnet-medium-arrival-then-neighbours/shots/007-click.png)).
+
+### What the testers did
+
+estate-uses and repo-uses: "Moved the camera" is any press of Fit, `-`, `+`, the wheel or a drag.
+
+| Arrival | Task, run | Whole at arrival | Moved the camera | Answered from | Result | Actions |
+| --- | --- | --- | --- | --- | --- | --- |
+| Reading Size (By Hand) | estate-uses, Sonnet 1 | no | Fit | the reader | done | 9 |
+| Reading Size (By Hand) | estate-uses, Sonnet 2 | no | `-` six times | a cut-off drawing | partly | 10 |
+| Reading Size (By Hand) | estate-uses, Haiku 1 | no | no | the reader | done | 12 |
+| Reading Size (By Hand) | estate-uses, Haiku 2 | no | no | the reader | done | 5 |
+| Reading, Then Neighbours | [estate-uses, Sonnet 1](estate-uses-sonnet-medium-arrival-then-neighbours/answer.md) | yes, readable | no | the reader, through the card's ⋯ menu ([#2](estate-uses-sonnet-medium-arrival-then-neighbours/shots/002-click.png)) | done | 7 |
+| Reading, Then Neighbours | [estate-uses, Sonnet 2](estate-uses-sonnet-medium-arrival-then-neighbours-2/answer.md) | yes, readable | no | the reader, the same way | done | 7 |
+| Reading, Then Neighbours | [estate-uses, Haiku 1](estate-uses-haiku-default-arrival-then-neighbours/answer.md) | yes, readable | no | the reader (clicked the card's name) | done | 5 |
+| Reading, Then Neighbours | [estate-uses, Haiku 2](estate-uses-haiku-default-arrival-then-neighbours-2/answer.md) | yes, readable | no | the reader, the same way | done | 5 |
+| Neighbours | [estate-uses, Sonnet 1](estate-uses-sonnet-medium-arrival-neighbours/answer.md) | yes, readable | no | the reader (the card's name) | done | 5 |
+| Neighbours | [estate-uses, Sonnet 2](estate-uses-sonnet-medium-arrival-neighbours-2/answer.md) | yes, readable | no | the reader, the same way | done | 5 |
+| Neighbours | [estate-uses, Haiku 1](estate-uses-haiku-default-arrival-neighbours/answer.md) | yes, readable | no | the reader, the same way | done | 5 |
+| Neighbours | [estate-uses, Haiku 2](estate-uses-haiku-default-arrival-neighbours-2/answer.md) | yes, readable | no | the reader, the same way | done | 5 |
+| Reading Size (By Hand) | repo-uses, Sonnet 1 | no | no | the drawing ("links run from the right side of `pathfind.ts`") | done | 5 |
+| Reading Size (By Hand) | repo-uses, Sonnet 2 | no | no | the reader | done | 7 |
+| Reading Size (By Hand) | repo-uses, Haiku 1 | no | no (it scrolled the reader) | the reader | done | 14 |
+| Reading Size (By Hand) | repo-uses, Haiku 2 | no | no | the reader | done | 5 |
+| Reading, Then Neighbours | [repo-uses, Sonnet](repo-uses-sonnet-medium-arrival-then-neighbours/answer.md) | yes, names readable, no descriptions ([#1](repo-uses-sonnet-medium-arrival-then-neighbours/shots/001-look.png)) | no | the reader (clicked `pathfind.ts`'s name) | done | 5 |
+| Reading, Then Neighbours | [repo-uses, Haiku](repo-uses-haiku-default-arrival-then-neighbours/answer.md) | yes, names readable, no descriptions | no | the reader, the same way | done | 5 |
+| Neighbours | [repo-uses, Sonnet](repo-uses-sonnet-medium-arrival-neighbours/answer.md) | yes, names readable, no descriptions | no | the reader, the same way | done | 5 |
+| Neighbours | [repo-uses, Haiku](repo-uses-haiku-default-arrival-neighbours/answer.md) | yes, names readable, no descriptions | no | the reader, the same way ([#2](repo-uses-haiku-default-arrival-neighbours/shots/002-click.png)) | done | 5 |
+
+estate-directory: all eight Arrival runs are partly, as all eight By Hand runs were, for the cycle and the directions ("one of its connections returns to itself", "so the two reference each other"). Seven of eight answered from the cut picture after `Data/` opened without moving the camera; Sonnet 1 under Neighbours pressed Fit and got the whole folder with file names about 9 px and paths about 7 px, hard to read ([#6](estate-directory-sonnet-medium-arrival-neighbours/shots/006-click.png)), and answered from that.
+
+### What each value mends and what it costs
+
+- **Reading Size** (`main`). Mends nothing here; it is the default the stumble was found on. What it gives: the subject's own words at the size they are written for, the "one deliberately framed card" of the owner's direction, with its symbols' descriptions. What it costs a stranger: the answer to "what uses this file" is off the edges, and a stranger must know to look. On today's build half of them did: two of four estate-uses testers moved the camera (one by Fit, at once and well; one by `-` six times, and fell short), two went to the reader without moving it; on repo-uses none of four moved it. On November 19 all eight estate-uses testers moved the view first. Those who moved it knew there was more: the cut cards at both edges said so.
+- **Neighbours** and **Reading, Then Neighbours**, as these testers met them. Mends: on the estate, the whole neighbourhood is there at once and still readable (names about 16 px), and no tester moved the camera; every one of the twelve "what uses" runs, on both maps, clicked the subject's name or its ⋯ menu as its first or second act, opened the reader, and answered rightly from its Dependents in 5 to 7 actions. No By Hand run was that uniform (5 to 14 actions, one partly). Costs: the card's own words go. On the estate the symbols' descriptions are not drawn. On this repository the picture is a different thing: seven files in five folders, names about 12 px and symbols about 10 px, every description gone and most symbols folded into "+N symbols"; a stranger sees where `pathfind.ts` sits and what it touches, and cannot read what it is without opening it. Whether strangers read the drawing at all under these values, the runs cannot say: none tried to; each went to the reader at once, which is also where they get the subject's words back.
+- **For the owner's direction.** The trial does not show a stranger failing to find what lies beyond a reading-size card: those who wanted it found it, by Fit or by the reader. It does show that a stranger given the whole goes straight to a list in words and never reads the drawing, and that on a file of this repository with many neighbours the whole keeps its names readable by giving up every description. The difference between the two "neighbours" values, the second of reading size a person sees before the pull back, is invisible to a look-only tester and was not measured.
+- **estate-directory** is untouched by Arrival: the folder's arrival already fits, and the cut picture comes from opening `Data/`, a step, which Arrival does not frame.
+
 ## What a designer would look at next
 
 What strangers did and said across the 30 visitor runs of this probe (tasks 1, 3 and 4) and the two narrative runs, most common first. Each is a stumble named, with its picture; none is a proposal.
 
 1. **Lines are read by guesswork: what a connection carries, and which way it goes.** Every estate-directory tester hedged the directions it took from lines and colours ("I read the directions from the line colours, so a few details may be off", Sonnet), and one had two of them backwards. All six estate-trace testers had to guess what sqlserver → oracle does; three took it for a write ([the cards](estate-trace-sonnet-medium-look-only/shots/009-look.png)). Two of the three repo-directory answers that fell short each missed one connection between the folder's files. Where a tester took a list in words instead, the reader's Dependents, it was right: all six "what uses" runs that opened it; of the two that read the drawing, one fell short. Every rung.
-2. **The view does not frame what was asked for.** Arriving on a pinned file cuts off its neighbours ([#1](estate-uses-sonnet-medium-look-only/shots/001-look.png)); opening a folder pushes its files off the right and bottom ([#7](estate-directory-sonnet-medium-look-only/shots/007-click.png)); `-` stops short of the whole ([#9](estate-uses-sonnet-medium-look-only-2/shots/009-click.png)). Four runs answered from a cut-off view, and fell short; one of four estate-directory testers pressed fit, where nine of ten did on November 19. Sonnet and Haiku.
+2. **The view does not frame what was asked for.** Arriving on a pinned file cuts off its neighbours ([#1](estate-uses-sonnet-medium-look-only/shots/001-look.png)); opening a folder pushes its files off the right and bottom ([#7](estate-directory-sonnet-medium-look-only/shots/007-click.png)); `-` stops short of the whole ([#9](estate-uses-sonnet-medium-look-only-2/shots/009-click.png)). Four runs answered from a cut-off view, and fell short; one of four estate-directory testers pressed fit, where nine of ten did on November 19. Sonnet and Haiku. Under either following Framing value the first pictures are the same, and Fit, which recovered the whole under By Hand, then changes nothing visible on an arrival ([#4](estate-uses-sonnet-medium-follows-pins/shots/004-click.png); [Framing tried on strangers](#framing-tried-on-strangers)). Under Arrival's two neighbours values the file arrives whole, names readable and descriptions gone, and every tester went straight to the reader ([Arrival tried on strangers](#arrival-tried-on-strangers)).
 3. **The journey stops at the World Map.** No estate-trace tester went below the seven things, on any rung; the one that tried the Local Map found the estate's top folders drawn with no wire between them, said "The Local Map is a code-level view and doesn't show the request path", and turned back ([#5](estate-trace-haiku-default-look-only/shots/005-click.png)).
 4. **A folder is hard to reach by its own name.** The World Map box that opens `PaymentService/` says "payments", and three of four estate-directory testers went to the search instead ([the card that names it](estate-directory-haiku-default-look-only/shots/003-look.png)). Searching a folder by its path lists its files under a heading, with no row for the folder ([#6](repo-directory-haiku-default-look-only-2/shots/006-look.png)). Sonnet and Haiku.
 5. **A cycle's returning connection reads as a file linked to itself, or to its neighbour both ways.** The stub loops and "1 connection returns in a cycle" on App.config and PaymentService.cs ([#7](estate-directory-sonnet-medium-look-only/shots/007-click.png)); no estate-directory tester named the cycle through `PaymentsContext.cs`. Sonnet and Haiku, as on November 19.
 6. **The scrubber's |◀ is taken for "to the start".** Both narrative testers pressed it first; it is "Previous marked commit" and went back one ([#5](narrative-panel-opus-high/shots/005-look.png), [#6](narrative-picture-opus-high/shots/006-look.png)): "The 'jump to start' button seems to go back only one step at a time".
 7. **A ghost endpoint reads as a fault in the path.** Both Opus estate-trace testers read the hub's staging address, "nothing on the board serves it; a ghost until something does", as payments possibly going astray ([#11](estate-trace-opus-medium-look-only/shots/011-look.png)). Opus only.
-8. **Once each:** a click on a thing's name on the World Map changes nothing visible ([#3](estate-trace-haiku-default-look-only-2/shots/003-look.png)); the → chip on a symbol's row was taken for "who uses this" and opened another file's reader ([#3](estate-uses-haiku-default-look-only/shots/003-point.png)); opening a folder added pins the visitor had not asked for ("the counter now says "2 pins""); a history step's lit file names were read as files born at that step (narrative without words, the grader's one contradiction); the repository's map opens with "Scan root" and "Nothing connects to Scan root" written at the top ([#1](narrative-picture-opus-high/shots/001-look.png)).
+8. **Once each:** a click on a thing's name on the World Map changes nothing visible ([#3](estate-trace-haiku-default-look-only-2/shots/003-look.png)); the → chip on a symbol's row was taken for "who uses this" and opened another file's reader ([#3](estate-uses-haiku-default-look-only/shots/003-point.png)); opening a folder added pins the visitor had not asked for ("the counter now says "2 pins""); a history step's lit file names were read as files born at that step (narrative without words, the grader's one contradiction); pressing History on the repository's 3D map pins the root, and "Scan root" and "Nothing connects to Scan root" are then written at the top ([#1](narrative-picture-opus-high/shots/001-look.png); [reproduced](#scan-root-reproduced-what-the-history-button-does)).
 
 By the owner's caution, testers' remarks that "the map doesn't say" what a line carries are partly the text-loving bias; the stumbles above are counted from what they did and got wrong, not from what they wished for.
 
 ## Pictures kept
 
-On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to: 76 pictures, 10.9 MB. It moved the other 362 (48.9 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning.
+On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to. Run again after the Framing and Arrival trials, it keeps 156 of the runs' pictures (21.1 MB); over its passes it moved 462 others (about 61 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning. The two pictures in [scan-root](scan-root/) were taken by a script outside the instrument and are kept whole.
