@@ -37,8 +37,8 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 - evidence:
 
 ### A scan's facts in one stored form, written by either host
-- state: open
-- holds: not begun; it is [the store's trial](../Memory/direction.md#engine-and-docs), given leave on 2026-11-19 and ordered after the readers' landing
+- state: active
+- holds: its research leg with a builder since 2026-11-21, on a branch `stored-form-research` (designs that differ in kind, each measured on real facts; no product code); the build itself is [the store's trial](../Memory/direction.md#engine-and-docs), given leave on 2026-11-19 and ordered after the readers' landing
 - evidence:
 
 The owner's bar for the form (2026-11-19): "Don't just settle for JSON by default. Do a lot of research to choose a format that is going to be right for what we need at scale and prove it by the efficiency gains that are reaped." The values that research trades, as listed then: read by the Explorer's page with no network and nothing installed; read and written by Node on Windows with nothing compiled; the same bytes for the same facts; a question answered without reading the whole. Since 2026-11-21 there is one more: written by a page, and carried inside the one HTML file that page saves. The command line keeps the facts in a folder that ignores itself, the page keeps them in itself, and Markdown is exported from either, one way, when a person asks.
