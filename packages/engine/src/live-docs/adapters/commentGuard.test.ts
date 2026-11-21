@@ -453,6 +453,7 @@ function factsOf(result: SourceAnalysisResult): Set<string> {
   }
   for (const symbol of result.symbols) facts.add(`sym:${symbol.name}`);
   for (const entry of result.declares ?? []) facts.add(`declares:${entry.reason}:${entry.file}`);
+  if (result.program) facts.add("program");
   return facts;
 }
 
@@ -480,7 +481,46 @@ afterAll(async () => {
   await fs.rm(scratch, { recursive: true, force: true });
 });
 
+/**
+ * A construct a file holds at most once, so that no live one can stand beside the commented one: the file with it
+ * live yields the fact, and each file with it commented yields none.
+ */
+interface AloneCase {
+  reader: string;
+  construct: string;
+  file: string;
+  live: string;
+  fact: string;
+  commented: Record<string, string>;
+}
+
+const ALONE: AloneCase[] = [
+  {
+    reader: "Ruby", construct: "the guard that runs the file as the program", file: "main.rb", fact: "program",
+    live: "def main; end\nif __FILE__ == $0\n  main\nend\n",
+    commented: {
+      "a line comment, `#`": "def main; end\n# if __FILE__ == $0\n",
+      "a comment after a statement": "def main; end\nmain # if __FILE__ == $0\n",
+      "an embedded document, `=begin … =end`": "def main; end\n=begin\nif __FILE__ == $0\n  main\nend\n=end\n",
+      "the data after `__END__`": "def main; end\n__END__\nif __FILE__ == $0\n  main\nend\n"
+    }
+  }
+];
+
 describe("no reader reads what a comment holds", () => {
+  for (const alone of ALONE) {
+    describe(`${alone.reader}: ${alone.construct}`, () => {
+      it("is read where it is written live", async () => {
+        expect(Array.from(await read({ [alone.file]: alone.live }, alone.file))).toContain(alone.fact);
+      });
+      for (const [form, text] of Object.entries(alone.commented)) {
+        it(`is not read inside ${form}`, async () => {
+          expect(Array.from(await read({ [alone.file]: text }, alone.file))).not.toContain(alone.fact);
+        });
+      }
+    });
+  }
+
   for (const guardCase of CASES) {
     describe(`${guardCase.reader}: ${guardCase.construct}`, () => {
       for (const form of guardCase.forms) {

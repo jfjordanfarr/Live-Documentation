@@ -16,6 +16,7 @@ import type {
   TypeReference
 } from "../core";
 import type { LanguageAdapter } from "./index";
+import { COMMENT_NODES, rangesOf, readTree, writtenOver } from "./treeSitter";
 
 interface PendingDocBlock {
   lines: string[];
@@ -42,19 +43,34 @@ const DIRECTIVE_PATTERN = /^#\s*(?:frozen_string_literal|rubocop)/i;
  * The guard that runs a file only as the program, at the top level (column 0): `if __FILE__ == $0`
  * on its own line or as a statement modifier, with `$PROGRAM_NAME` for `$0` and the operands in
  * either order, optionally in parentheses, followed by nothing but `then`, a comment or the line's end.
- * Comment lines are skipped before this is tried.
+ * It is tried on the code with its comments written over.
  */
 const MAIN_GUARD_PATTERN = /^(?:\S.*\s)?if\s+\(?\s*(?:__FILE__\s*==\s*\$(?:0|PROGRAM_NAME)|\$(?:0|PROGRAM_NAME)\s*==\s*__FILE__)\s*\)?(?:\s+then\b.*|\s*#.*)?\s*$/;
 
-/** Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts classes, modules, methods, and `require`/`require_relative` dependencies, and reports a file guarded by `__FILE__ == $0` as the program's entry. */
+/** The data after `__END__`, which Ruby never runs, as the Ruby grammar names it. */
+const DATA_NODES: ReadonlySet<string> = new Set(["uninterpreted"]);
+
+/** What Ruby never runs: a comment, `#` or `=begin` … `=end`, and the data after `__END__`. */
+const UNRUN_NODES: ReadonlySet<string> = new Set([...COMMENT_NODES, ...DATA_NODES]);
+
+/**
+ * Language adapter for Ruby (`.rb`). Extracts classes, modules, methods, and `require`/`require_relative`
+ * dependencies, and reports a file guarded by `__FILE__ == $0` as the program's entry. Its patterns run over lines;
+ * the Ruby grammar first finds what Ruby never runs, telling a comment from a string and a heredoc as Ruby does, and
+ * that is written over in spaces: the comments and the data after `__END__` for the dependencies and the guard, the
+ * data alone for the symbols, whose documentation is read from the comments before them (the comment guard of
+ * 2026-11-21, `commentGuard.test.ts`).
+ */
 export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",
   extensions: [".rb"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await readSourceText(absolutePath);
-    const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
-    return hasMainGuard(content) ? { symbols, dependencies, program: {} } : { symbols, dependencies };
+    const { unrun, data } = await readTree("ruby", content, (root) => ({ unrun: rangesOf(root, UNRUN_NODES), data: rangesOf(root, DATA_NODES) }));
+    const code = writtenOver(content, unrun);
+    const symbols = extractSymbols(writtenOver(content, data));
+    const dependencies = extractDependencies(code, absolutePath, workspaceRoot);
+    return hasMainGuard(code) ? { symbols, dependencies, program: {} } : { symbols, dependencies };
   }
 };
 
@@ -280,23 +296,9 @@ function extractDependencies(content: string, absolutePath: string, workspaceRoo
   return Array.from(dependencies.values()).sort((left, right) => compareText(left.specifier, right.specifier));
 }
 
-/** Whether a top-level line outside comments is the guard that runs the file only as the program. */
-function hasMainGuard(content: string): boolean {
-  const lines = content.split(/\r?\n/);
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index];
-    if (BLOCK_COMMENT_BEGIN.test(line)) {
-      index = consumeBlockComment(lines, index).nextIndex;
-      continue;
-    }
-    if (LINE_COMMENT_PATTERN.test(line)) {
-      continue;
-    }
-    if (MAIN_GUARD_PATTERN.test(line)) {
-      return true;
-    }
-  }
-  return false;
+/** Whether a top-level line of the code, its comments written over, is the guard that runs the file only as the program. */
+function hasMainGuard(code: string): boolean {
+  return code.split(/\r?\n/).some((line) => MAIN_GUARD_PATTERN.test(line));
 }
 
 function consumeBlockComment(lines: string[], startIndex: number): { lines: string[]; nextIndex: number } {

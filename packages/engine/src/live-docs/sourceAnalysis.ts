@@ -110,7 +110,7 @@ export async function analyzeSourceFile(
     const domDependencies = await inferDomDependencies({
       absolutePath,
       workspaceRoot,
-      content,
+      sourceFile,
       fileIndex
     });
     if (domDependencies.length > 0) {

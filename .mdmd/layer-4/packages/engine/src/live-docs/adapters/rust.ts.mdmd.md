@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
-- Generated At: 2026-11-20T15:12:46.039Z
+- Generated At: 2026-11-21T18:54:37.340Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,14 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 - Crate roots are found from the nearest `Cargo.toml` on disk, not from the file index, which carries only the files the configuration globs. `#[path]` attributes on `mod` declarations are not read.
 - Inside a macro invocation the source is a token tree; `a::b::c` is read back from the tokens, so paths in `println!` and `assert_eq!` count.
 - The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a top-level `fn main` in a binary crate root, public or not, with its line: `src/main.rs`, `src/bin/<name>.rs`, `src/bin/<name>/main.rs` and, since 2026-10-16, `examples/<name>.rs` and `examples/<name>/main.rs` relative to the nearest `Cargo.toml` (an example is an executable by Cargo's default), or any `main.rs` outside a package, as `crateRoots` reads roots; `src/lib.rs`, module files, `tests/` and `benches/` never, a test's `main` being its harness's and a bench not a program a person runs. Cargo's `[[example]]` tables and `autoexamples = false` are not read, as the bins' tables are not.
+- Since 2026-11-21 ([the comment guard](./commentGuard.test.ts.mdmd.md)) a package's name is read from its `Cargo.toml` by the TOML parser (`readToml` in `manifest.ts`): the pattern before it stopped at the first `[` after `[package]`, so a comment or a value holding one before `name` gave the crate its folder's name.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L902)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L904)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rustAdapter` — Summary
@@ -36,6 +37,9 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`index.rustSyntax`](../../languages/index.ts.mdmd.md#symbol-rustsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`manifest.readToml`](./manifest.ts.mdmd.md#symbol-readtoml)
+- [`manifest.stringOf`](./manifest.ts.mdmd.md#symbol-stringof)
+- [`manifest.tableOf`](./manifest.ts.mdmd.md#symbol-tableof)
 - [`rust.rustdoc.parseRustDocumentation`](./rust.rustdoc.ts.mdmd.md#symbol-parserustdocumentation)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)

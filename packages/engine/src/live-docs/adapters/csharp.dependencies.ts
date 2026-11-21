@@ -4,7 +4,10 @@
  * The C# adapter resolves type names through the syntax tree. This module covers
  * the patterns that reach outside the language: configuration keys read through
  * `ConfigurationManager` and `IConfiguration`, WCF client endpoint names, types
- * named in string literals for reflection, and Hangfire job targets.
+ * named in string literals for reflection, and Hangfire job targets. Its
+ * patterns run over the file's text with every comment the syntax tree finds
+ * written over in spaces, so that a commented-out key, type or job is not
+ * read (the comment guard of 2026-11-21, `commentGuard.test.ts`).
  *
  * @module csharp.dependencies
  */
@@ -40,6 +43,7 @@ export type TypeResolver = (typeName: string) => ResolvedTypeTarget[];
 
 /** Extracts the configuration, reflection and Hangfire dependencies of one C# file. */
 export function extractDynamicDependencies(params: {
+  /** The file's text, its comments written over. */
   content:          string;
   /** The C# file's workspace-relative path. */
   thisFile:         string;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/html.ts`
-- Generated At: 2026-11-20T15:12:45.782Z
+- Generated At: 2026-11-21T18:54:36.922Z
 
 ## Authored
 ### Purpose
@@ -18,13 +18,27 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Strips query strings and fragments from URLs before resolution
 - Unresolved URL paths keep their leading slash, so `/` remains a root reference and `/missing` remains distinct from `missing`; query-only references retain their written identity. T3's static-site examples exposed the former empty-specifier failure ([the investigation](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-27/2026-10-27.1.record.md#turn-3)).
 - Element IDs are public symbols so a consumer's `getElementById` link can land on the declared element.
+- Since 2026-11-21 ([the comment guard](./commentGuard.test.ts.mdmd.md)) no resource or element id inside an HTML comment is read (`withoutHtmlComments`, which the ASP.NET reader and the DOM heuristic share): a comment opens only where a tag may start, never in a quoted attribute value or in the text of `<script>`, `<style>`, `<textarea>` or `<title>`, and ends as HTML ends one.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `withoutHtmlComments` {#symbol-withouthtmlcomments}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L57)
+
+##### `withoutHtmlComments` — Summary
+The markup with every HTML comment written over in spaces, its line breaks kept, so that positions keep, as HTML
+parses a comment: from `<!--` to the first `-->` after it, or at once when it is `<!-->` or `<!--->`, so that the
+content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
+comment is kept; a comment left open runs to the end. `<!--` opens a comment only where a tag may start: never
+inside a tag's quoted attribute value, nor in the text of a `<script>`, `<style>`, `<textarea>` or `<title>`, which
+runs to that element's end tag. No browser runs a script, loads a style sheet or makes an element that a comment
+holds, so the readers of markup read none (the comment guard of 2026-11-21, `commentGuard.test.ts`).
+
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L321)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L396)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -33,11 +47,11 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L342)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L417)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
-Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols.
+Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. Neither is read inside an HTML comment ({@link withoutHtmlComments}).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

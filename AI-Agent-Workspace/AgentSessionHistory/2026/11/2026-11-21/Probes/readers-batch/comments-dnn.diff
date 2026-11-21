@@ -1,0 +1,182 @@
+- DNN Platform/Controls/CountryListBox/SeekCountryException.cs	to	DNN Platform/Controls/CountryListBox/CountryLookup.cs
+- DNN Platform/Controls/CountryListBox/SeekCountryException.cs	use	DNN Platform/Controls/CountryListBox/CountryLookup.cs#CountryLookup
+- DNN Platform/DotNetNuke.Abstractions/Pages/PageTag.cs	to	DNN Platform/DotNetNuke.Abstractions/Pages/PagePriority.cs
+- DNN Platform/DotNetNuke.Abstractions/Pages/PageTag.cs	use	DNN Platform/DotNetNuke.Abstractions/Pages/PagePriority.cs#PagePriority
+- DNN Platform/DotNetNuke.Log4net/log4net/Core/IFixingRequired.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Core/IFixingRequired.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs#LoggingEvent
+- DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs#Level
+- DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs#IFilter
+- DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs#Level
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs#PatternConverter
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FileLocationPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FileLocationPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FullLocationPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FullLocationPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs#Level
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LineLocationPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LineLocationPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MethodLocationPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MethodLocationPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/NamedPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/NamedPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs#PatternConverter
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTraceDetailPatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTraceDetailPatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/TypeNamePatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/TypeNamePatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs#LocationInfo
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs#GlobalContext
+- DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs#ThreadContext
+- DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs#Level
+- DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs#ILoggerRepository
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs#Level
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs#GlobalContext
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs#ThreadContext
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/NewLinePatternConverter.cs	to	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+- DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/NewLinePatternConverter.cs	use	DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs#PatternConverter
+- DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RequiredAttribute.cs	to	DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/IStep.cs
+- DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RequiredAttribute.cs	use	DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/IStep.cs#IStep
+- DNN Platform/DotNetNuke.Web.Client/Controls/DnnCssInclude.cs	to	DNN Platform/DotNetNuke.Abstractions/ClientResources/ILinkResource.cs
+- DNN Platform/DotNetNuke.Web.Client/Controls/DnnCssInclude.cs	use	DNN Platform/DotNetNuke.Abstractions/ClientResources/ILinkResource.cs#ILinkResource
+- DNN Platform/DotNetNuke.Web.Client/Controls/DnnJsInclude.cs	to	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs
+- DNN Platform/DotNetNuke.Web.Client/Controls/DnnJsInclude.cs	use	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs#IScriptResource
+- DNN Platform/DotNetNuke.Web.Mvc/MvcHostControl.cs	to	DNN Platform/Library/UI/Modules/ISettingsControl.cs
+- DNN Platform/DotNetNuke.Web.Mvc/MvcHostControl.cs	use	DNN Platform/Library/UI/Modules/ISettingsControl.cs#ISettingsControl
+- DNN Platform/DotNetNuke.Web/Api/ITabAndModuleInfoProvider.cs	to	DNN Platform/Library/Common/Utilities/Null.cs
+- DNN Platform/DotNetNuke.Web/Api/ITabAndModuleInfoProvider.cs	use	DNN Platform/Library/Common/Utilities/Null.cs#Null
+- DNN Platform/DotNetNuke.Web/Api/Internal/Auth/DigestAuthentication.cs	to	DNN Platform/DotNetNuke.Web/Api/Auth/AuthMessageHandlerBase.cs
+- DNN Platform/DotNetNuke.Web/Api/Internal/Auth/DigestAuthentication.cs	use	DNN Platform/DotNetNuke.Web/Api/Auth/AuthMessageHandlerBase.cs#AuthMessageHandlerBase
+- DNN Platform/DotNetNuke.Web/InternalServices/CountryRegionController.cs	use	DNN Platform/Library/Common/Lists/CachedCountryList.cs#Country
+- DNN Platform/DotNetNuke.Web/UI/WebControls/ItemListServicesOptions.cs	to	DNN Platform/Library/Common/Utilities/Null.cs
+- DNN Platform/DotNetNuke.Web/UI/WebControls/ItemListServicesOptions.cs	use	DNN Platform/Library/Common/Utilities/Null.cs#Null
+- DNN Platform/Library/Application/DotNetNukeContext.cs	to	DNN Platform/Library/UI/Containers/Container.cs
+- DNN Platform/Library/Application/DotNetNukeContext.cs	to	DNN Platform/Library/UI/Skins/Skin.cs
+- DNN Platform/Library/Application/DotNetNukeContext.cs	use	DNN Platform/Library/UI/Containers/Container.cs#Container
+- DNN Platform/Library/Application/DotNetNukeContext.cs	use	DNN Platform/Library/UI/Skins/Skin.cs#Skin
+- DNN Platform/Library/Common/Utilities/CacheItemArgs.cs	to	DNN Platform/Library/Entities/Host/Host.cs
+- DNN Platform/Library/Common/Utilities/CacheItemArgs.cs	use	DNN Platform/Library/Entities/Host/Host.cs#Host
+- DNN Platform/Library/ComponentModel/DataAnnotations/CacheableAttribute.cs	to	DNN Platform/DotNetNuke.Abstractions/Application/IHostSettings.cs
+- DNN Platform/Library/ComponentModel/DataAnnotations/CacheableAttribute.cs	use	DNN Platform/DotNetNuke.Abstractions/Application/IHostSettings.cs#IHostSettings
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowConcurrencyException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowSecurityException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowConcurrencyException.cs#WorkflowConcurrencyException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs#WorkflowInvalidOperationException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowSecurityException.cs#WorkflowSecurityException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowNameAlreadyExistsException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs#WorkflowInvalidOperationException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowNameAlreadyExistsException.cs#WorkflowNameAlreadyExistsException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowDoesNotExistException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	to	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowStateNameAlreadyExistsException.cs
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowDoesNotExistException.cs#WorkflowDoesNotExistException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs#WorkflowInvalidOperationException
+- DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs	use	DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowStateNameAlreadyExistsException.cs#WorkflowStateNameAlreadyExistsException
+- DNN Platform/Library/Entities/Modules/IModuleController.cs	to	DNN Platform/Library/Entities/Modules/Definitions/ModuleDefinitionInfo.cs
+- DNN Platform/Library/Entities/Modules/IModuleController.cs	use	DNN Platform/Library/Entities/Modules/Definitions/ModuleDefinitionInfo.cs#ModuleDefinitionInfo
+- DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs	to	DNN Platform/DotNetNuke.Abstractions/Portals/Templates/PortalTemplateModuleAction.cs
+- DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs	use	DNN Platform/DotNetNuke.Abstractions/Portals/Templates/PortalTemplateModuleAction.cs#PortalTemplateModuleAction
+- DNN Platform/Library/Entities/Urls/BrowserTypes.cs	to	DNN Platform/DotNetNuke.Abstractions/Urls/BrowserTypes.cs
+- DNN Platform/Library/Entities/Urls/BrowserTypes.cs	use	DNN Platform/DotNetNuke.Abstractions/Urls/BrowserTypes.cs#BrowserTypes
+- DNN Platform/Library/Entities/Users/IUserController.cs	to	DNN Platform/DotNetNuke.Abstractions/Users/IUserInfo.cs
+- DNN Platform/Library/Entities/Users/IUserController.cs	to	DNN Platform/Library/Common/Globals.cs
+- DNN Platform/Library/Entities/Users/IUserController.cs	to	DNN Platform/Library/Common/Utilities/Null.cs
+- DNN Platform/Library/Entities/Users/IUserController.cs	use	DNN Platform/DotNetNuke.Abstractions/Users/IUserInfo.cs#IUserInfo
+- DNN Platform/Library/Entities/Users/IUserController.cs	use	DNN Platform/Library/Common/Globals.cs#Globals
+- DNN Platform/Library/Entities/Users/IUserController.cs	use	DNN Platform/Library/Common/Utilities/Null.cs#Null
+- DNN Platform/Library/Framework/JavaScriptLibraries/CommonJS.cs	to	DNN Platform/Library/Framework/JavaScriptLibraries/JavaScriptLibrary.cs
+- DNN Platform/Library/Framework/JavaScriptLibraries/CommonJS.cs	use	DNN Platform/Library/Framework/JavaScriptLibraries/JavaScriptLibrary.cs#JavaScriptLibrary
+- DNN Platform/Library/Obsolete/EventLogController.cs	to	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs
+- DNN Platform/Library/Obsolete/EventLogController.cs	to	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogService.cs
+- DNN Platform/Library/Obsolete/EventLogController.cs	to	DNN Platform/Library/Services/Log/EventLog/ILogController.cs
+- DNN Platform/Library/Obsolete/EventLogController.cs	use	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs#IEventLogConfigService
+- DNN Platform/Library/Obsolete/EventLogController.cs	use	DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogService.cs#IEventLogService
+- DNN Platform/Library/Obsolete/EventLogController.cs	use	DNN Platform/Library/Services/Log/EventLog/ILogController.cs#ILogController
+- DNN Platform/Library/Security/Membership/MembershipProvider.cs	to	DNN Platform/Library/Entities/Users/IUserController.cs
+- DNN Platform/Library/Security/Membership/MembershipProvider.cs	use	DNN Platform/Library/Entities/Users/IUserController.cs#IUserController
+- DNN Platform/Library/Services/Cryptography/CryptographyProvider.cs	to	DNN Platform/DotNetNuke.Abstractions/Security/ICryptographyProvider.cs
+- DNN Platform/Library/Services/Cryptography/CryptographyProvider.cs	use	DNN Platform/DotNetNuke.Abstractions/Security/ICryptographyProvider.cs#ICryptographyProvider
+- DNN Platform/Library/Services/FileSystem/Internal/Wrappers/IIconController.cs	to	DNN Platform/Library/Entities/Icons/IconController.cs
+- DNN Platform/Library/Services/FileSystem/Internal/Wrappers/IIconController.cs	use	DNN Platform/Library/Entities/Icons/IconController.cs#IconController
+- DNN Platform/Library/Services/Mail/OAuth/ISmtpOAuthProvider.cs	to	DNN Platform/Library/Common/Utilities/Null.cs
+- DNN Platform/Library/Services/Mail/OAuth/ISmtpOAuthProvider.cs	use	DNN Platform/Library/Common/Utilities/Null.cs#Null
+- DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs	to	DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs
+- DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs	use	DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs#SchedulerMode
+- DNN Platform/Library/UI/Modules/ModuleControlFactory.cs	to	DNN Platform/Library/UI/Modules/IModuleControlPipeline.cs
+- DNN Platform/Library/UI/Modules/ModuleControlFactory.cs	use	DNN Platform/Library/UI/Modules/IModuleControlPipeline.cs#IModuleControlPipeline
+- DNN Platform/Library/UI/WebControls/PropertyEditor/GroupByMode.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/GroupByMode.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs#PropertyEditorControl
+- DNN Platform/Library/UI/WebControls/PropertyEditor/LabelMode.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/LabelMode.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs#PropertyEditorControl
+- DNN Platform/Library/UI/WebControls/PropertyEditor/ListBoundField.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/ListBoundField.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs#PropertyEditorControl
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorMode.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorMode.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs#PropertyEditorControl
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyAttributes/SortOrderAttribute.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	to	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyAttributes/SortOrderAttribute.cs#SortOrderAttribute
+- DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs	use	DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs#PropertyEditorControl
+- DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	to	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageBoxView.cs
+- DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	to	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageThreadsView.cs
+- DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	use	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageBoxView.cs#MessageBoxView
+- DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs	use	DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageThreadsView.cs#MessageThreadsView
+- DNN Platform/Modules/Journal/Components/FeatureController.cs	to	DNN Platform/Library/Entities/Modules/IPortable.cs
+- DNN Platform/Modules/Journal/Components/FeatureController.cs	to	DNN Platform/Library/Entities/Modules/IUpgradeable.cs
+- DNN Platform/Modules/Journal/Components/FeatureController.cs	use	DNN Platform/Library/Entities/Modules/IPortable.cs#IPortable
+- DNN Platform/Modules/Journal/Components/FeatureController.cs	use	DNN Platform/Library/Entities/Modules/IUpgradeable.cs#IUpgradeable
+- DNN Platform/Modules/ResourceManager/Components/SettingsManager.cs	use	DNN Platform/Modules/ResourceManager/Components/Constants.cs#ModuleModes
+- DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapability.cs	to	DNN Platform/Library/Services/ClientCapability/IClientCapability.cs
+- DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapability.cs	use	DNN Platform/Library/Services/ClientCapability/IClientCapability.cs#IClientCapability
+- DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapabilityProvider.cs	to	DNN Platform/Library/Services/ClientCapability/IClientCapabilityProvider.cs
+- DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapabilityProvider.cs	use	DNN Platform/Library/Services/ClientCapability/IClientCapabilityProvider.cs#IClientCapabilityProvider
+- DNN Platform/Syndication/RSS/GenericRssChannel.cs	to	DNN Platform/Syndication/RSS/RssElementBase.cs
+- DNN Platform/Syndication/RSS/GenericRssChannel.cs	use	DNN Platform/Syndication/RSS/RssElementBase.cs#RssElementBase
+- DNN Platform/Website/DesktopModules/Admin/Security/DataConsent.ascx.cs	use	DNN Platform/Website/DesktopModules/Admin/Security/DataConsent.ascx.designer.cs#DataConsent
+- DNN Platform/Website/DesktopModules/Admin/Security/Password.ascx.cs	use	DNN Platform/Website/DesktopModules/Admin/Security/Password.ascx.designer.cs#Password
+- DNN Platform/Website/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css	to	DNN Platform/Website/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox/rcbSprite.png
+- DNN Platform/Website/Portals/_default/Skins/_default/WebControlSkin/Default/Grid.Default.css	to	WebResource.axd
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/vbscript/vbscript.js	to	DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/vbscript/index.html
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/vbscript/vbscript.js	use	DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/vbscript/index.html#code
+- DNN Platform/Website/Resources/Shared/stylesheets/dnndefault/8.0.0/default.css	to	01/correct4dnn7.css
+- DNN Platform/Website/admin/Skins/DnnJsInclude.ascx.cs	to	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs
+- DNN Platform/Website/admin/Skins/DnnJsInclude.ascx.cs	use	DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs#IScriptResource
+- DNN Platform/Website/admin/Skins/Meta.ascx.cs	to	DNN Platform/Website/admin/Skins/Meta.ascx.designer.cs
+- DNN Platform/Website/admin/Skins/Meta.ascx.cs	use	DNN Platform/Website/admin/Skins/Meta.ascx.designer.cs#Meta
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/IModulesController.cs	to	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/IModulesController.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/IModulesController.cs	use	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/IModulesController.cs#IModulesController
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/Command.cs	to	DNN Platform/Library/Prompt/Command.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/Command.cs	use	DNN Platform/Library/Prompt/Command.cs#Command
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandHelp.cs	to	DNN Platform/Library/Prompt/Output/CommandHelp.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandHelp.cs	use	DNN Platform/Library/Prompt/Output/CommandHelp.cs#CommandHelp
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandOption.cs	to	DNN Platform/Library/Prompt/Output/CommandOption.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandOption.cs	use	DNN Platform/Library/Prompt/Output/CommandOption.cs#CommandOption
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/ModulesController.cs	to	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/ModulesController.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/ModulesController.cs	use	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/ModulesController.cs#ModulesController
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/CommandRepository.cs	to	DNN Platform/Library/Prompt/CommandRepository.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/CommandRepository.cs	use	DNN Platform/Library/Prompt/CommandRepository.cs#CommandRepository
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/ICommandRepository.cs	to	DNN Platform/DotNetNuke.Abstractions/Prompt/ICommandRepository.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/ICommandRepository.cs	use	DNN Platform/DotNetNuke.Abstractions/Prompt/ICommandRepository.cs#ICommandRepository
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/SiteSettings/AllowedExtensionsHelper.cs	to	DNN Platform/Library/Common/Globals.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/SiteSettings/AllowedExtensionsHelper.cs	use	DNN Platform/Library/Common/Globals.cs#Globals
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs	to	DNN Platform/Library/UI/Skins/SkinFileProcessor.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs	use	DNN Platform/Library/UI/Skins/SkinFileProcessor.cs#SkinParser
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/Prompt/Utilities.cs	to	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/IUserValidator.cs
+- Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/Prompt/Utilities.cs	use	Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/IUserValidator.cs#IUserValidator
+- Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/PortalHelper.cs	to	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/IContentVerifier.cs
+- Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/PortalHelper.cs	use	Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/IContentVerifier.cs#IContentVerifier
+- Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/Services/TabsController.cs	to	DNN Platform/Library/Entities/Tabs/TabInfo.cs
+- Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/Services/TabsController.cs	use	DNN Platform/Library/Entities/Tabs/TabInfo.cs#TabInfo
+totals: {('lost', 'to'): 90, ('lost', 'use'): 91} files: 6545 6545

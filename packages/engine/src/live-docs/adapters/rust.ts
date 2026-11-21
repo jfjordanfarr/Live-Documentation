@@ -33,6 +33,7 @@ import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText"
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { readToml, stringOf, tableOf } from "./manifest";
 import { parseRustDocumentation } from "./rust.rustdoc";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
@@ -643,8 +644,9 @@ async function crateRoots(workspaceRoot: string, rustFiles: string[]): Promise<C
     }
     let name = names.get(packageDir);
     if (!name) {
-      const manifest = await readSourceText(path.join(packageDir, "Cargo.toml"));
-      name = (/^\[package\][^[]*?^\s*name\s*=\s*"([^"]+)"/msu.exec(manifest)?.[1] ?? path.basename(packageDir)).replace(/-/g, "_");
+      // Read by the TOML parser, so that a comment, or any `[` before the name, neither hides it nor is read as it (until 2026-11-21 a pattern over the text).
+      const manifest = await readToml(path.join(packageDir, "Cargo.toml"));
+      name = (stringOf(tableOf(manifest?.package)?.name) ?? path.basename(packageDir)).replace(/-/g, "_");
       names.set(packageDir, name);
     }
     const relative = normalizeWorkspacePath(path.relative(packageDir, path.join(workspaceRoot, file)));
