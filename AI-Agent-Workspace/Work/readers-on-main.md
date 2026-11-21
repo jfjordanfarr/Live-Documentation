@@ -18,8 +18,8 @@ opened: 2026-11-20
 ## Tasks
 
 ### Join the three branches onto today's engine
-- state: open
-- holds: SQL on `worktree-agent-a3f00007018f5adbe` at `779a15fc`; PowerShell on `worktree-agent-a29a6d3f4a47f410b` at `29b3bb24`; .NET on `worktree-agent-ac7ef8df4222b2e4b` at `32d03c79`
+- state: active
+- holds: with a builder since 2026-11-21, on a branch `readers-gathering` cut from the day branch at `a5d29b90f`; the three sources are SQL on `worktree-agent-a3f00007018f5adbe` at `779a15fc`; PowerShell on `worktree-agent-a29a6d3f4a47f410b` at `29b3bb24`; .NET on `worktree-agent-ac7ef8df4222b2e4b` at `32d03c79`
 - evidence:
 
 Each merges with conflicts only in generated docs, its own record, the decisions log and three readers (`powershell.ts`, `csharp.ts`, `aspnet.ts`). Since they were parked the engine has changed under them: every read goes through the one reading step and the rule that a machine's failure is thrown on (the structural test names any catch that swallows one); a syntax tree is taken only through the tree-sitter helper; a reader's notices go to the generator's channel (PowerShell drops two loads its text does not fix, at its lines 1363 and 1375 on that branch); PowerShell's `archetypeOf` reads the file index. Records: [SQL](../AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md), [PowerShell](../AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md), [.NET](../AgentSessionHistory/2026/11/2026-11-19/Probes/dotnet-gaps/README.md).
