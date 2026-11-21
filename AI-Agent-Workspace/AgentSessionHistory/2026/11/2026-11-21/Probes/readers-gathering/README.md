@@ -84,3 +84,19 @@ python3 -I <copy>/drawn.py <corpus> <out>/directives.jsonl <out>/roslyn.jsonl <o
 | Notices the run said | "paths no file in the workspace holds, left unlinked: 7"; "type names declared only outside the project's reach, left unlinked: 1" | "paths several projects hold, left unlinked: 149"; "paths no file in the workspace holds, left unlinked: 4"; "type names several projects in reach declare, left unlinked: 874"; "… declared only outside the project's reach …: 19" |
 
 **mojoPortal, one line more, and the compiler binds it.** `mojoPortal.Web.Framework/CultureHelpers/PersianDateHelper.cs` is saved as UTF-16 with a byte-order mark. The .NET branch read it as UTF-8, found no type, and so drew nothing to it; on the joined branch the engine's one reading step reads it, and `DateTimeHelper.cs`'s line to it is drawn, the one compiler edge to that file. The 149 paths several projects hold are the record's 145 `MasterPageFile` and four master pages' `CodeBehind`, all `~/App_MasterPages/layout.Master`; the 7 on DNN are the record's skins naming `~/DesktopModules/DDRMenu/Menu.ascx`.
+
+### The C# grader, `oracle:csharp`, and the reviewer's name cases
+
+After the review, the record's compiler program became the committed grader `npm run oracle:csharp -- <folder>` (`scripts/oracle/csharp-compiler.cs`, the same Roslyn 4.12 package): each project's references are MSBuild's evaluation (`dotnet msbuild -getItem:ProjectReference`), and a project MSBuild cannot evaluate on Linux has its references read from its XML's elements by System.Xml and is named in the report. Its column is therefore not the record's: it counts edges a name makes by a type or only a member, and takes no reference from a comment. Run once with `--write` into each checkout, so that the runs after it read the kept record and change only the reader:
+
+| | DNN Platform | mojoPortal |
+| --- | --- | --- |
+| Projects; references by MSBuild / by XML elements | 82; 48 / 34 | 25; 21 / 4 |
+| References under a condition the default configuration does not meet | 0 | 15 |
+| Before the two mends: ours / the compiler's / both | 20,970 / 24,837 / 20,391 | 7,061 / 8,299 / 7,023 |
+| Ours only: a namesake / resting on such a reference / other | 2 / 0 / 577 | 3 / 0 / 35 |
+| The compiler's only | 4,446 | 1,276 |
+| After the base-type lookup (`8d62f8171`) | 20,971 / 24,837 / 20,392; 2 / 0 / 577; 4,445 | unchanged |
+| After the alias's arity (`842ff72aa`) | unchanged | unchanged |
+
+The one edge the base-type lookup draws on DNN is `DNN Platform/Library/Services/GeneratedImage/ImageQuantization/GrayscaleQuantizer.cs` to `Quantizer.cs`, which the compiler binds; nothing is lost on either corpus. The namesakes left are of other causes: on DNN `CryptographyProvider.cs` to `ICryptographyProvider.cs` and `SiteSettingsController.cs` to `BrowserTypes.cs`; on mojoPortal three pages to `Web/Controls/SkinSetting.ascx.designer.cs`. mojoPortal's 15 conditional references carry no edge of ours that the compiler lacks. The cases themselves, and two more the compiler settled for the tests (a class does not inherit an interface's nested types; an interface does inherit its base interfaces'), are in the `names` sample and `csharp.test.ts`. One the alias work met and left open: a type nested in a generic type has the same qualified name in the reader as one nested in its non-generic namesake (`Lib.Helper.Part`), so `H.Part` through `using H = Lib.Helper;` is taken for an ambiguity and links nothing, where the compiler binds `Helper.cs`.
