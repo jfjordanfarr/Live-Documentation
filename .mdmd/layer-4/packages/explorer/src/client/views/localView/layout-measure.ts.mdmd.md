@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/layout-measure.ts`
-- Generated At: 2026-11-19T21:10:16.900Z
+- Generated At: 2026-11-21T12:03:24.049Z
 
 ## Authored
 ### Purpose
@@ -128,16 +128,20 @@ is always closer than the farthest zoom, which is at most four fifths of the who
 
 #### `focusTransform` {#symbol-focustransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L279)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L285)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `target`: [`Bounds`](#symbol-bounds); `current`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
 ##### `focusTransform` — Summary
-Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas.
+Frame an explicitly requested row, file or opened directory at reading size, including its actions, inside the usable
+canvas: centred along each axis it fits, and along an axis it does not, entered at `entry`, the place a person reads it
+from, which is its own top or left unless given (an opened directory's label and first row, 2026-11-21: entered at its
+box's corner, live-docs/history chosen in the search stood with its label 2,000 px below the window, its box reaching up
+beside the columns of the folder that holds it).
 
 #### `cardReadingTransform` {#symbol-cardreadingtransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L294)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L300)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `card`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -146,7 +150,7 @@ A card's own reading reference: use available room, keep text at least its autho
 
 #### `hiddenEdges` {#symbol-hiddenedges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L306)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L312)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `transform`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
 ##### `hiddenEdges` — Summary
@@ -154,7 +158,7 @@ Which edges of the frame the picture continues past, by more than `tolerance` px
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L336)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L342)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -166,7 +170,7 @@ lies to the right, one pan away, and never the start.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L350)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L356)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

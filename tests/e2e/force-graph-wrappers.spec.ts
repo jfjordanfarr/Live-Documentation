@@ -6,6 +6,7 @@ import type { GroupWrappers } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { DRAWN_FILES } from "../../packages/explorer/src/client/views/forceGraphShells";
 import { wrappedSeeds } from "../../packages/explorer/src/client/views/forceGraphWrappers";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { loadGraph } from "./still-picture";
@@ -145,9 +146,36 @@ test("the skin shows within each wrapped group every file it holds about its see
     });
     return found;
   });
+  // The picture draws at most DRAWN_FILES files within its skins, as one body does (2026-11-07): past it the bodies
+  // farthest from what was asked are veiled, the largest first, each shown as one veiled bubble while its name keeps its
+  // count. With nothing asked every seed stands at the same hop. This repository's archipelago came within 8 files of the
+  // budget on 2026-11-19 (1,016 files beside their seeds) and passed it on 2026-11-21, when the readers of SQL,
+  // PowerShell and .NET brought 1,137, and its largest group, 696 files, is veiled.
+  // The rule written out here rather than asked of the page's own function: the largest bodies veiled, one by one, while
+  // the files the skins would draw pass the budget.
+  const veiled = new Set<string>();
+  let drawing = wrapped.reduce((sum, seed) => sum + sizes.get(seed)! - 1, 0);
+  for (const seed of [...wrapped].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1))) {
+    if (drawing <= DRAWN_FILES) break;
+    veiled.add(seed);
+    drawing -= sizes.get(seed)! - 1;
+  }
+  const balloons = await page.evaluate(() => {
+    const found: Array<{ seed: string; veiled?: boolean }> = [];
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      if (object.name === "Spatial shell balloons") found.push(...object.userData.spatialUnits as typeof found);
+    });
+    return found;
+  });
   for (const seed of wrapped) {
-    // Its files and its seed, drawn as a sphere of its own at the centre: as many as the group holds.
     const files = units.filter(unit => unit.seed === seed);
+    if (veiled.has(seed)) {
+      // A veiled body draws no file and one veiled bubble filling its skin.
+      expect(files, `${seed}, veiled by the picture's budget, draws no file`).toEqual([]);
+      expect(balloons.filter(unit => unit.seed === seed).map(unit => !!unit.veiled), `${seed}: one veiled bubble`).toEqual([true]);
+      continue;
+    }
+    // Its files and its seed, drawn as a sphere of its own at the centre: as many as the group holds.
     expect(files.length + 1, seed).toBe(sizes.get(seed));
     const skin = ranges.find(range => range.seed === seed)!;
     for (const unit of files) expect(Math.hypot(unit.x - skin.x, unit.y - skin.y, unit.z - skin.z) + unit.radius, unit.seed).toBeLessThanOrEqual(skin.radius + 1e-3);

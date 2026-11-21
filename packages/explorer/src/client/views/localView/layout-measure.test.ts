@@ -68,6 +68,20 @@ describe("layout-measure", () => {
       expect(focused.x + target.right * focused.k).toBeCloseTo(frame.width - framePadding(frame).horizontal);
       expect(focusTransform(box(100, 200, 1000, 30), focused, frame).k).toBe(1);
     });
+
+    it("enters a box no frame holds at the place given, its label's, not at the box's own corner", () => {
+      // live-docs/history in Flow beside pathfind.ts (2026-11-21): its box 4,537 by 3,279 px, its label 2,050 px below its top.
+      const frame = { width: 1019, height: 681 };
+      const folder = box(1500, 0, 4537, 3279), entry = { left: 1513, top: 2050 };
+      const { horizontal, vertical } = framePadding(frame);
+      const focused = focusTransform(folder, { x: 0, y: 0, k: 1 }, frame, entry);
+      expect(focused.k).toBe(1);
+      expect(focused.x + entry.left).toBeCloseTo(horizontal);
+      expect(focused.y + entry.top).toBeCloseTo(vertical);
+      // A box that fits is centred whatever the entry.
+      const fits = box(100, 100, 400, 300);
+      expect(focusTransform(fits, { x: 0, y: 0, k: 1 }, frame, { left: 120, top: 250 })).toEqual(focusTransform(fits, { x: 0, y: 0, k: 1 }, frame));
+    });
   });
 
   describe("computeFitTransform without a focus", () => {

@@ -1412,6 +1412,7 @@ export class LocalViewController implements LocalViewApi {
     this.readingFrameTarget = nodeId ? { nodeId, ...(symbol ? { symbol } : {}) } : null;
     this.cancelInertia();
     const frame = this.frameRect();
+    let entry: { left: number; top: number } | undefined;
     const target = withTransformReset(this.container, origin => {
       const card = element.closest<HTMLElement>(".node-card");
       // An opened directory is framed by its whole box, centred where it fits and entered at its label where it does not;
@@ -1424,10 +1425,12 @@ export class LocalViewController implements LocalViewApi {
       const vertical = !this.reading && element === card && whole.height > frame.height
         ? card.querySelector<HTMLElement>(".node-title")!.getBoundingClientRect() : whole;
       const left = across.left - origin.left, top = vertical.top - origin.top;
+      // A directory no frame holds is entered as a step enters it: at its label and its first row.
+      if (band) entry = this.directoryHead(element, band, origin);
       return { left, top, right: left + across.width, bottom: top + vertical.height, width: across.width, height: vertical.height };
     });
     let next = this.reading && element.classList.contains("node-card")
-      ? cardReadingTransform(target, frame) : focusTransform(target, this.mapTransform, frame);
+      ? cardReadingTransform(target, frame) : focusTransform(target, this.mapTransform, frame, entry);
     if (this.reading && nodeId) this.readingReferenceScale = next.k;
     if (this.arrivalFocus && nodeId && element.classList.contains("node-card")) {
       // The subject's arrival, owed since the move began: Tuning's Arrival frames it.
@@ -2098,18 +2101,28 @@ export class LocalViewController implements LocalViewApi {
       const label = this.container.querySelector<HTMLElement>(`.local-directory-label[data-directory="${key}"]`);
       const band = label?.closest<HTMLElement>(".local-directory-band");
       if (!label || !band) return null;
-      // What the directory holds directly, its cards, closed boxes and inner membranes, and of those the first row.
-      // The first row under the label: an opened directory's membrane need not be a rectangle, and what it holds can stand
-      // above its label beside the columns of the directory that encloses it (found 2026-11-21 on live-docs/history, where
-      // the first row read from the whole held set lay above the label and the pan entered there, the label below the view).
-      const head = local(label);
-      const held = [...band.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed, .local-directory-band")]
-        .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(local).filter(box => box.top >= head.top);
-      const top = Math.min(...held.map(box => box.top));
-      const firstRow = held.filter(box => box.top <= top + 8);
       const shape = this.container.querySelector(`.local-membrane-shape[data-directory="${key}"]`) ?? label;
-      return { bounds: unionOf([local(label), ...firstRow])!, mark: shape };
+      return { bounds: this.directoryHead(label, band, origin), mark: shape };
     });
+  }
+
+  /**
+   * Where an opened directory is read from, in the picture's own units from `origin`: its label and the first row of what
+   * it holds directly (its cards, closed boxes and inner membranes) under the label. The first row is read under the
+   * label: an opened directory's membrane need not be a rectangle, and what it holds can stand above its label beside the
+   * columns of the directory that encloses it (found 2026-11-21 on live-docs/history, where the first row read from the
+   * whole held set lay above the label and the pan entered there, the label below the view).
+   */
+  private directoryHead(label: HTMLElement, band: HTMLElement, origin: { left: number; top: number }): Bounds {
+    const local = (element: Element): Bounds => {
+      const rect = element.getBoundingClientRect();
+      return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
+    };
+    const head = local(label);
+    const held = [...band.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed, .local-directory-band")]
+      .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(local).filter(box => box.top >= head.top);
+    const top = Math.min(...held.map(box => box.top));
+    return unionOf([head, ...held.filter(box => box.top <= top + 8)])!;
   }
 
   /**

@@ -97,7 +97,11 @@ test("with nothing asked about, the connections layout starts at the archipelago
   for (const node of seeds) expect(node.ring, `${node.id}: a ring only where the picture leaves connections out`).toBe((scope.beyond.get(node.id) ?? 0) > 0);
   expect(seeds.filter(node => node.ring).length, "the groups' seeds wear rings, the lone files none").toBe(groups);
   await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^More connected$/ })).toBeVisible();
-  await expect(page.locator(".force-graph-label[data-node-id]")).toHaveCount(0);
+  // No name is shown. A sphere drawn large enough to be named is given a name element, which stays in the page, hidden,
+  // whenever the names' placing does not place it (2026-11-21: `tests/page-scan/node-needs.json`, a lone file of 132 symbols new
+  // that day, has one made 1.1 s into the page and never shown; until then no sphere was large enough, and the case
+  // counted the elements made where it means the names shown).
+  await expect(page.locator(".force-graph-label[data-node-id]:not([hidden])")).toHaveCount(0);
   const largest = [...scope.groups.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
   const seed = seeds.find(node => node.id === largest[0])!;
   await page.mouse.move(seed.x, seed.y);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/force-graph-wrappers.spec.ts`
-- Generated At: 2026-11-19T21:10:21.543Z
+- Generated At: 2026-11-21T12:03:26.403Z
 
 ## Authored
 ### Purpose
@@ -41,6 +41,7 @@ _No public symbols detected_
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startHops`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`forceGraphShells.DRAWN_FILES`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-drawn_files)
 - [`forceGraphWrappers.wrappedSeeds`](../../packages/explorer/src/client/views/forceGraphWrappers.ts.mdmd.md#symbol-wrappedseeds)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
