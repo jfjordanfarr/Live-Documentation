@@ -13,6 +13,7 @@ Type-check every executable TypeScript test without emitting files, so a transpi
 
 ### Notes
 - Extends the repository's base TypeScript settings and includes package, script, integration, and browser tests, and, since 2026-10-22, the ambient contract for `d3-force-3d`, which the 3D layout's tests need and no longer receive through an import. Fixture and sample program sources are inputs to tests and are excluded from this project.
+- Since 2026-11-21 it also checks `tests/page-scan/`, the check that the engine runs in a browser page ([its browser spec](./e2e/page-scan.spec.ts.mdmd.md)); its plain JavaScript modules, reached through the tests' imports, are read for their types but, as `allowJs` without `checkJs` has it, not checked.
 - The integration-only checker began as the VS Code Electron harness project and became a `noEmit` gate when that harness was retired on 2026-09-27. This file supersedes it with one test-wide gate; `scripts/verify.mjs` runs the checker.
 
 ## Generated
