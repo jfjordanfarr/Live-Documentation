@@ -1,0 +1,60 @@
+{
+  "tool": "Microsoft.SqlServer.TransactSql.ScriptDom 17.0.191.0+0a5e0d21.0a5e0d21aa9136c8cbe90e484b76fdd0fcc1eac9 (TSql170Parser, quoted identifiers on)",
+  "files": {
+    "../Database/SqlServer/dbo.Payment.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "table",
+          "name": {
+            "schema": "dbo",
+            "name": "Payment"
+          },
+          "line": 1,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [],
+      "dynamic": []
+    },
+    "../Database/SqlServer/dbo.usp_PostPayment.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "dbo",
+            "name": "usp_PostPayment"
+          },
+          "line": 3,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "insert",
+          "name": {
+            "schema": "dbo",
+            "name": "Payment"
+          },
+          "line": 12,
+          "column": 17
+        },
+        {
+          "how": "select",
+          "name": {
+            "server": "ORACLE_CENTRAL",
+            "database": "",
+            "schema": "CENTRAL",
+            "name": "ACCOUNT"
+          },
+          "line": 18,
+          "column": 12
+        }
+      ],
+      "dynamic": []
+    }
+  }
+}

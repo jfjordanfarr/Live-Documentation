@@ -124,7 +124,19 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries:scripts/oracle/index-fixture.ts` {#symbol-entriesscriptsoracleindex-fixturets}
 - Type: key
 
+#### `entries:scripts/oracle/PlSqlEmitter.java` {#symbol-entriesscriptsoracleplsqlemitterjava}
+- Type: key
+
+#### `entries:scripts/oracle/plsql-compare.ts` {#symbol-entriesscriptsoracleplsql-comparets}
+- Type: key
+
 #### `entries:scripts/oracle/powershell-ast.ps1` {#symbol-entriesscriptsoraclepowershell-astps1}
+- Type: key
+
+#### `entries:scripts/oracle/sql-compare.ts` {#symbol-entriesscriptsoraclesql-comparets}
+- Type: key
+
+#### `entries:scripts/oracle/sql-scriptdom.cs` {#symbol-entriesscriptsoraclesql-scriptdomcs}
 - Type: key
 
 #### `entries:scripts/safe-to-commit.mjs` {#symbol-entriesscriptssafe-to-commitmjs}

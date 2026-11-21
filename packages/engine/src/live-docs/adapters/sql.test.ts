@@ -71,6 +71,24 @@ describe("sqlAdapter", () => {
     ]);
   });
 
+  it("publishes what the script creates, not a table a procedure's body creates when it runs, and keeps the name of neither", async () => {
+    const scriptPath = path.join(workspaceRoot, "Tests", "TotalsTests.class.sql");
+    await fs.mkdir(path.dirname(scriptPath), { recursive: true });
+    await fs.writeFile(scriptPath, [
+      "CREATE PROCEDURE TotalsTests.[test it totals] AS",
+      "BEGIN",
+      "    CREATE TABLE TotalsTests.Expected (Total INT);",
+      "    INSERT INTO TotalsTests.Expected VALUES (1);",
+      "    EXEC tSQLt.AssertEqualsTable 'TotalsTests.Expected', 'TotalsTests.Actual';",
+      "END;"
+    ].join("\n"), "utf8");
+
+    const result = await sqlAdapter.analyze({ absolutePath: scriptPath, workspaceRoot, symbolIndex: new Map() });
+
+    expect(result?.symbols).toEqual([{ name: "TotalsTests.test it totals", kind: "procedure", location: { line: 1, character: 1 } }]);
+    expect(result?.dependencies).toEqual([{ specifier: "tSQLt.AssertEqualsTable", symbols: [], kind: "import", basis: "contract" }]);
+  });
+
   it("publishes tables, views and functions, with brackets off", async () => {
     const scriptPath = path.join(workspaceRoot, "schema.sql");
     await fs.writeFile(scriptPath, [
