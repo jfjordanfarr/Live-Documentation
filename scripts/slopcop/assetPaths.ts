@@ -20,7 +20,9 @@ export interface AssetAuditOptions {
 
 const HTML_ATTRIBUTE =
   /\b(?<attr>srcset|src|href|data-src|data-href|poster|data-asset|asset-path)\s*=\s*(?:"(?<valueDouble>[^"]+)"|'(?<valueSingle>[^']+)')/gi;
-const CSS_URL = /url\(\s*(?:"(?<dq>[^"()]+)"|'(?<sq>[^'()]+)'|(?<bare>[^"')\s][^\s)]*))\s*\)/gi;
+// CSS's `url(` is a token of its own, never the tail of a longer name: a script's `URL.revokeObjectURL(e.href)` or
+// `createObjectURL(blob)` is a call, and what stands in its brackets is no path (found 2026-11-21 in a one-file page).
+const CSS_URL = /(?<![\w$.-])url\(\s*(?:"(?<dq>[^"()]+)"|'(?<sq>[^'()]+)'|(?<bare>[^"')\s][^\s)]*))\s*\)/gi;
 
 const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 const DATA_URI = /^data:/i;
