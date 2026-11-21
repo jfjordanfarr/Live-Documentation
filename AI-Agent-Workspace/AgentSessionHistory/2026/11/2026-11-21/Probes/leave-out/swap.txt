@@ -1,0 +1,100 @@
+## this repository, evidence applied: discovery 1231, the function 7640, 6413 differences
+- 6408: kept by the function, left out by discovery: the configuration's exclude; such as AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-16/2025-10-16.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-17/2025-10-17.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-19/2025-10-19.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-20/2025-10-20.md
+- 3: kept by the function, left out by discovery: a lock file, by its name; such as .devcontainer/devcontainer-lock.json, .devcontainer/wsl2-graphics-card/devcontainer-lock.json, package-lock.json
+- 1: kept by discovery, left out by the function: .gitignore:18 /.vscode/, though git tracks the file, which a listing cannot know; such as .vscode/settings.json
+- 1: kept by discovery, left out by the function: .gitignore:35 packages/**/src/**/*.d.ts, though git tracks the file, which a listing cannot know; such as packages/explorer/src/shared/d3-force-3d.d.ts
+## this repository, evidence reported: discovery 1231, the function 7640, 6413 differences
+- 6408: kept by the function, left out by discovery: the configuration's exclude; such as AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-16/2025-10-16.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-17/2025-10-17.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-19/2025-10-19.md, AI-Agent-Workspace/AgentSessionHistory/2025/10/2025-10-20/2025-10-20.md
+- 3: kept by the function, left out by discovery: a lock file, by its name; such as .devcontainer/devcontainer-lock.json, .devcontainer/wsl2-graphics-card/devcontainer-lock.json, package-lock.json
+- 1: kept by discovery, left out by the function: .gitignore:18 /.vscode/, though git tracks the file, which a listing cannot know; such as .vscode/settings.json
+- 1: kept by discovery, left out by the function: .gitignore:35 packages/**/src/**/*.d.ts, though git tracks the file, which a listing cannot know; such as packages/explorer/src/shared/d3-force-3d.d.ts
+## fixtures/blazor-telemetry, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/blazor-telemetry, evidence reported: discovery 4, the function 4, 0 differences
+## fixtures/c-include-excluded, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/c-include-excluded, evidence reported: discovery 4, the function 4, 0 differences
+## fixtures/csharp-advanced-symbols, evidence applied: discovery 13, the function 13, 0 differences
+## fixtures/csharp-advanced-symbols, evidence reported: discovery 13, the function 13, 0 differences
+## fixtures/csharp-reflection, evidence applied: discovery 2, the function 2, 0 differences
+## fixtures/csharp-reflection, evidence reported: discovery 2, the function 2, 0 differences
+## fixtures/entry-points, evidence applied: discovery 11, the function 11, 0 differences
+## fixtures/entry-points, evidence reported: discovery 11, the function 11, 0 differences
+## fixtures/include-dirs, evidence applied: discovery 13, the function 13, 0 differences
+## fixtures/include-dirs, evidence reported: discovery 13, the function 13, 0 differences
+## fixtures/link-targets, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/link-targets, evidence reported: discovery 4, the function 4, 0 differences
+## fixtures/manifests, evidence applied: discovery 17, the function 17, 0 differences
+## fixtures/manifests, evidence reported: discovery 17, the function 17, 0 differences
+## fixtures/powershell-compendium, evidence applied: discovery 7, the function 7, 0 differences
+## fixtures/powershell-compendium, evidence reported: discovery 7, the function 7, 0 differences
+## fixtures/queue-worker, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/queue-worker, evidence reported: discovery 4, the function 4, 0 differences
+## fixtures/razor-appsettings, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/razor-appsettings, evidence reported: discovery 4, the function 4, 0 differences
+## fixtures/slopcop-assets, evidence applied: discovery 15, the function 15, 0 differences
+## fixtures/slopcop-assets, evidence reported: discovery 15, the function 15, 0 differences
+## fixtures/slopcop-symbols, evidence applied: discovery 5, the function 5, 0 differences
+## fixtures/slopcop-symbols, evidence reported: discovery 5, the function 5, 0 differences
+## fixtures/spa-runtime-config, evidence applied: discovery 3, the function 3, 0 differences
+## fixtures/spa-runtime-config, evidence reported: discovery 3, the function 3, 0 differences
+## fixtures/webforms-appsettings, evidence applied: discovery 4, the function 4, 0 differences
+## fixtures/webforms-appsettings, evidence reported: discovery 4, the function 4, 0 differences
+## c/basics, evidence applied: discovery 5, the function 5, 0 differences
+## c/basics, evidence reported: discovery 5, the function 5, 0 differences
+## c/modular, evidence applied: discovery 8, the function 8, 0 differences
+## c/modular, evidence reported: discovery 8, the function 8, 0 differences
+## c/rosetta, evidence applied: discovery 12, the function 12, 0 differences
+## c/rosetta, evidence reported: discovery 12, the function 12, 0 differences
+## cpp/rosetta, evidence applied: discovery 12, the function 12, 0 differences
+## cpp/rosetta, evidence reported: discovery 12, the function 12, 0 differences
+## csharp/basic, evidence applied: discovery 7, the function 7, 0 differences
+## csharp/basic, evidence reported: discovery 7, the function 7, 0 differences
+## csharp/estate, evidence applied: discovery 38, the function 38, 0 differences
+## csharp/estate, evidence reported: discovery 38, the function 38, 0 differences
+## csharp/rosetta, evidence applied: discovery 13, the function 13, 0 differences
+## csharp/rosetta, evidence reported: discovery 13, the function 13, 0 differences
+## csharp/webforms, evidence applied: discovery 7, the function 7, 0 differences
+## csharp/webforms, evidence reported: discovery 7, the function 7, 0 differences
+## go/depot, evidence applied: discovery 15, the function 15, 0 differences
+## go/depot, evidence reported: discovery 15, the function 15, 0 differences
+## go/rosetta, evidence applied: discovery 9, the function 9, 0 differences
+## go/rosetta, evidence reported: discovery 9, the function 9, 0 differences
+## java/basic, evidence applied: discovery 6, the function 6, 0 differences
+## java/basic, evidence reported: discovery 6, the function 6, 0 differences
+## java/rosetta, evidence applied: discovery 13, the function 13, 0 differences
+## java/rosetta, evidence reported: discovery 13, the function 13, 0 differences
+## java/service, evidence applied: discovery 9, the function 9, 0 differences
+## java/service, evidence reported: discovery 9, the function 9, 0 differences
+## java/warehouse, evidence applied: discovery 13, the function 13, 0 differences
+## java/warehouse, evidence reported: discovery 13, the function 13, 0 differences
+## powershell/rollout, evidence applied: discovery 10, the function 10, 0 differences
+## powershell/rollout, evidence reported: discovery 10, the function 10, 0 differences
+## python/basics, evidence applied: discovery 3, the function 3, 0 differences
+## python/basics, evidence reported: discovery 3, the function 3, 0 differences
+## python/ledger, evidence applied: discovery 15, the function 15, 0 differences
+## python/ledger, evidence reported: discovery 15, the function 15, 0 differences
+## python/pipeline, evidence applied: discovery 6, the function 6, 0 differences
+## python/pipeline, evidence reported: discovery 6, the function 6, 0 differences
+## python/rosetta, evidence applied: discovery 8, the function 8, 0 differences
+## python/rosetta, evidence reported: discovery 8, the function 8, 0 differences
+## ruby/basic, evidence applied: discovery 5, the function 5, 0 differences
+## ruby/basic, evidence reported: discovery 5, the function 5, 0 differences
+## ruby/cli, evidence applied: discovery 6, the function 6, 0 differences
+## ruby/cli, evidence reported: discovery 6, the function 6, 0 differences
+## ruby/rosetta, evidence applied: discovery 8, the function 8, 0 differences
+## ruby/rosetta, evidence reported: discovery 8, the function 8, 0 differences
+## rust/analytics, evidence applied: discovery 6, the function 6, 0 differences
+## rust/analytics, evidence reported: discovery 6, the function 6, 0 differences
+## rust/basics, evidence applied: discovery 4, the function 4, 0 differences
+## rust/basics, evidence reported: discovery 4, the function 4, 0 differences
+## rust/rosetta, evidence applied: discovery 9, the function 9, 0 differences
+## rust/rosetta, evidence reported: discovery 9, the function 9, 0 differences
+## rust/stockroom, evidence applied: discovery 11, the function 11, 0 differences
+## rust/stockroom, evidence reported: discovery 11, the function 11, 0 differences
+## typescript/basic, evidence applied: discovery 6, the function 6, 0 differences
+## typescript/basic, evidence reported: discovery 6, the function 6, 0 differences
+## typescript/layered, evidence applied: discovery 7, the function 7, 0 differences
+## typescript/layered, evidence reported: discovery 7, the function 7, 0 differences
+## typescript/rosetta, evidence applied: discovery 9, the function 9, 0 differences
+## typescript/rosetta, evidence reported: discovery 9, the function 9, 0 differences
+## typescript/tidepool, evidence applied: discovery 48, the function 48, 0 differences
+## typescript/tidepool, evidence reported: discovery 48, the function 48, 0 differences
