@@ -260,9 +260,9 @@ describe("the history command over a scripted repository", () => {
     expect(removed.exitCode, removed.stderr).toBe(0);
     expect(removed.stderr).toContain("removed .mdmd/history/0123456789abcdef");
     expect(fs.existsSync(stale)).toBe(false);
-    // The current lens's cache and the record of the pool stay.
+    // The current lens's cache and its record of the pool stay.
     expect(fs.existsSync(path.join(history, sequence.lens.key))).toBe(true);
-    expect(JSON.parse(fs.readFileSync(path.join(history, "pool.json"), "utf8"))).toMatchObject({ lens: sequence.lens.key, peakMemory: expect.any(Number) });
+    expect(JSON.parse(fs.readFileSync(path.join(history, sequence.lens.key, "pool.json"), "utf8"))).toMatchObject({ lens: sequence.lens.key, peakMemory: expect.any(Number) });
   });
 
   it("checks a commit out as the repository stores it, whatever the person's git would convert", async () => {
@@ -895,6 +895,64 @@ describe("the history with workers kept and without", () => {
       expect([fs.existsSync(apart), fs.existsSync(kept)], `keepWorkers ${keepWorkers}`).toEqual([true, true]);
       expect(result.superseded.map((cache) => cache.lens)).toEqual(["0123456789abcdef"]);
     }
+  }, 300_000);
+
+  // Each way's processes take their own memory, and until 2026-11-21 one record beside the caches, taken by whichever
+  // lens ran last, sized the next run's pool and restarted the other way's count.
+  it("sizes each way's pool by its own record, and alternating the ways resets neither", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "pools-"));
+    fs.mkdirSync(path.join(here, "src"));
+    let commits = 0;
+    const commit = (): void => {
+      commits += 1;
+      fs.writeFileSync(path.join(here, "src", `f${commits}.ts`), `/** F${commits}. */\nexport const f${commits} = ${commits};\n`);
+      const steps = commits === 1 ? [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One"]] : [["add", "--all"], ["commit", "--quiet", "-m", `Change ${commits}`]];
+      for (const args of steps) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    };
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    // No `--jobs`, so that the pool is sized by the record and the run says by which peak.
+    const run = async (keepWorkers: boolean): Promise<{ cache: string; lines: string[] }> => {
+      const lines: string[] = [];
+      const result = await computeHistory({ workspace: here, sampling: { rule: "every-commit" }, keepIndex: false, authors: true, keepWorkers, progress: (line) => lines.push(line) });
+      return { cache: path.join(here, result.cache), lines };
+    };
+    const MEBIBYTE = 1024 ** 2;
+    const record = (cache: string) => JSON.parse(fs.readFileSync(path.join(cache, "pool.json"), "utf8")) as { lens: string; peakMemory: number; changes: number };
+    const write = (cache: string, peakMemory: number, changes: number): void => fs.writeFileSync(path.join(cache, "pool.json"), JSON.stringify({ lens: path.basename(cache), peakMemory, changes }));
+    const sizedAt = (lines: string[]): string | undefined => lines.map((line) => / at ([^ ]+ [KMG]?B) a process, as measured here/u.exec(line)?.[1]).find((size) => size !== undefined);
+
+    commit();
+    const apart = (await run(false)).cache;
+    const kept = (await run(true)).cache;
+    expect([record(apart).lens, record(kept).lens]).toEqual([path.basename(apart), path.basename(kept)]);
+    write(apart, 111 * MEBIBYTE, 5);
+    write(kept, 3 * 1024 * MEBIBYTE, 7);
+    commit();
+    const first = await run(false);
+    expect(sizedAt(first.lines)).toBe("111.0 MB");
+    expect(record(apart).changes).toBe(6);
+    expect(record(kept)).toEqual({ lens: path.basename(kept), peakMemory: 3 * 1024 * MEBIBYTE, changes: 7 });
+    const second = await run(true);
+    expect(sizedAt(second.lines)).toBe("3.00 GB");
+    expect(record(kept).changes).toBe(8);
+    expect(record(apart).changes).toBe(6);
+
+    // A record of before, one beside the caches: read once as the record of the lens it names, then removed.
+    const history = path.dirname(apart);
+    fs.rmSync(path.join(apart, "pool.json"));
+    fs.writeFileSync(path.join(history, "pool.json"), JSON.stringify({ lens: path.basename(apart), peakMemory: 222 * MEBIBYTE, changes: 9 }));
+    commit();
+    const adopted = await run(false);
+    expect(sizedAt(adopted.lines)).toBe("222.0 MB");
+    expect(fs.existsSync(path.join(history, "pool.json"))).toBe(false);
+    expect(record(apart).changes).toBe(10);
+    // One naming a lens with no cache here is applied to none, and removed.
+    fs.writeFileSync(path.join(history, "pool.json"), JSON.stringify({ lens: "0123456789abcdef", peakMemory: 333 * MEBIBYTE, changes: 9 }));
+    commit();
+    const ignored = await run(true);
+    expect(sizedAt(ignored.lines)).toBe("3.00 GB");
+    expect(fs.existsSync(path.join(history, "pool.json"))).toBe(false);
+    expect(fs.existsSync(path.join(history, "0123456789abcdef"))).toBe(false);
   }, 300_000);
 });
 

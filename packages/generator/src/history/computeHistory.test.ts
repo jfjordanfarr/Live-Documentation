@@ -131,13 +131,11 @@ describe("the record of a summarizing process's peak", () => {
     expect(nextPoolRecord(whole, "a", 300 * MEGABYTE, 1)).toEqual({ lens: "a", peakMemory: 540 * MEGABYTE, changes: 1174 });
   });
 
-  it("lets a small run under a new lens raise the estimate but never lower it, until the new lens has measured as many changes", () => {
+  // Since 2026-11-21 each lens keeps a record of its own; until then a new lens took the one record over, its estimate
+  // never lowered by a small run, and runs with and without kept workers sized each other's pools.
+  it("never carries another lens's measure into a lens's record", () => {
     const whole = nextPoolRecord(undefined, "a", 540 * MEGABYTE, 1173);
-    const sampled = nextPoolRecord(whole, "b", 200 * MEGABYTE, 48);
-    expect(sampled).toEqual({ lens: "b", peakMemory: 540 * MEGABYTE, changes: 48 });
-    expect(nextPoolRecord(whole, "b", 700 * MEGABYTE, 48).peakMemory).toBe(700 * MEGABYTE);
-    // A whole history under the new lens is its own measure.
-    expect(nextPoolRecord(whole, "b", 450 * MEGABYTE, 1173)).toEqual({ lens: "b", peakMemory: 450 * MEGABYTE, changes: 1173 });
+    expect(nextPoolRecord(whole, "b", 200 * MEGABYTE, 48)).toEqual({ lens: "b", peakMemory: 200 * MEGABYTE, changes: 48 });
   });
 });
 

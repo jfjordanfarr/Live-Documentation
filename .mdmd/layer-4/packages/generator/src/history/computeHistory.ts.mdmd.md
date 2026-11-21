@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-21T03:45:35.028Z
+- Generated At: 2026-11-21T03:53:23.032Z
 
 ## Authored
 ### Purpose
@@ -33,42 +33,42 @@ The history command: the mainline read and sampled, every sampled commit the cac
 ### Public Symbols
 #### `HistoryOptions` {#symbol-historyoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L101)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L102)
 
 ##### `HistoryOptions` — Summary
 What to compute.
 
 #### `SupersededCache` {#symbol-supersededcache}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L138)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L139)
 
 ##### `SupersededCache` — Summary
 A cache folder under the history folder that belongs to another lens than the current one and its twin.
 
 #### `HistoryRun` {#symbol-historyrun}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L150)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L151)
 
 ##### `HistoryRun` — Summary
 What a run did.
 
 #### `HistoryStopped` {#symbol-historystopped}
 - Type: class
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L177)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L178)
 
 ##### `HistoryStopped` — Summary
 A run that stopped, as asked, before the cache held every sampled change: no sequence was written.
 
 #### `HEAD_CHECK_RULE` {#symbol-head_check_rule}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L182)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L183)
 
 ##### `HEAD_CHECK_RULE` — Summary
 When the check at the head applies, in the words the command prints when it skips it.
 
 #### `UNMEASURED_PEAK_MEMORY` {#symbol-unmeasured_peak_memory}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L240)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L245)
 
 ##### `UNMEASURED_PEAK_MEMORY` — Summary
 What one summarizing process is expected to take before any has been measured on a repository: the largest peak
@@ -77,7 +77,7 @@ rounded up to 768 MiB. A larger repository takes more, which its first run measu
 
 #### `poolSize` {#symbol-poolsize}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L247)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L252)
 
 ##### `poolSize` — Summary
 How many summarizing processes a machine runs at once: as many as half its memory holds at the measured peak of
@@ -86,14 +86,14 @@ keeps one busy and the command and git need one; never fewer than one.
 
 #### `poolMemory` {#symbol-poolmemory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L253)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L258)
 
 ##### `poolMemory` — Summary
 The memory the pool may hold, half the machine's, by which it is sized ({@link poolSize}) and each worker bounded (`workerBound`).
 
 #### `usableMachine` {#symbol-usablemachine}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L263)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L268)
 
 ##### `usableMachine` — Summary
 The memory and the processors this process may use: the machine's, or less where the operating system says so. In
@@ -103,7 +103,7 @@ processors are those the process may be scheduled on, `os.availableParallelism`,
 
 #### `computeHistory` {#symbol-computehistory}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L269)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L274)
 - Parameters: `options`: [`HistoryOptions`](#symbol-historyoptions)
 
 ##### `computeHistory` — Summary
@@ -111,7 +111,7 @@ Computes the history and writes the sequence.
 
 #### `holdLock` {#symbol-holdlock}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L506)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L512)
 
 ##### `holdLock` — Summary
 Claims the history folder for this run, or refuses while another run on this machine holds a claim.
@@ -131,27 +131,31 @@ The claim's path, which the caller removes when the run ends.
 
 #### `PoolRecord` {#symbol-poolrecord}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L629)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L635)
 
 ##### `PoolRecord` — Summary
-What runs measured of a summarizing process's peak memory on this repository.
+What runs under one lens measured of a summarizing process's peak memory on this repository.
 
 #### `nextPoolRecord` {#symbol-nextpoolrecord}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L657)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L705)
 - Returns: [`PoolRecord`](#symbol-poolrecord)
 - Parameters: `previous`: [`PoolRecord`](#symbol-poolrecord)
 
 ##### `nextPoolRecord` — Summary
-The record after a run measured `peakMemory` over `changes` changes under `lens`. Under the same lens the record
-keeps the largest peak of every run, since a run that regenerates only the newest change sees one change's peak and
-not the history's. Under a new lens the generator has changed, and the run's peak replaces the record's only when it
-was measured over at least as many changes; until then the larger of the two stands, so that a small sampled run
-never shrinks the estimate a whole history was measured to need.
+The lens's record after a run measured `peakMemory` over `changes` changes under it: the largest peak of every run,
+since a run that regenerates only the newest change sees one change's peak and not the history's, and the changes
+counted together.
+
+##### `nextPoolRecord` — Remarks
+Until 2026-11-21 one record served every lens, and a run under a new lens took the record over: its peak replaced
+the record's only when measured over at least as many changes, so that a small sampled run never shrank the estimate
+a whole history was measured to need. Each lens now keeps a record of its own, and a lens that has none, the first
+run after a change of the code among them, is sized by {@link UNMEASURED_PEAK_MEMORY} until it has measured itself.
 
 #### `formatBytes` {#symbol-formatbytes}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1189)
+- Source: [source](../../../../../../packages/generator/src/history/computeHistory.ts#L1237)
 
 ##### `formatBytes` — Summary
 A size in the units a person reads it in.
@@ -197,6 +201,7 @@ A size in the units a person reads it in.
 - [`words.WORDS_DIRECTORY`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-words_directory)
 - [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead)
 - [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
+- [`sourceText.throwIfMachineFailure`](../../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)
 - [`generatorIdentity.sequenceCodeIdentity`](./generatorIdentity.ts.mdmd.md#symbol-sequencecodeidentity)
 - [`headCheck.committedLiveDocGraph`](./headCheck.ts.mdmd.md#symbol-committedlivedocgraph)

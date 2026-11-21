@@ -92,6 +92,7 @@ import { HISTORY_SUMMARY_FORMAT, textHash, type CommitSummary } from "@live-docu
 import { TEXT_STORE_DIRECTORY, textPath } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
 import { WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
+import { throwIfMachineFailure } from "@live-documentation/engine/tooling/sourceText";
 
 import { generatorIdentity, sequenceCodeIdentity } from "./generatorIdentity";
 import { committedLiveDocGraph, headDifferences, leftOutAtHead } from "./headCheck";
@@ -183,8 +184,12 @@ export const HEAD_CHECK_RULE =
   "it applies when asked with --check-head, or when this generator runs unmodified from the commit the history ends at, under the workspace's own configuration, as over this tool's own repository";
 
 /**
- * The record a run leaves beside the caches of how much memory one summarizing process took on this repository, so
- * that the next run sizes its pool by it: `<docsRoot>/history/pool.json`.
+ * The record a run leaves of how much memory one summarizing process took on this repository under its lens, so that
+ * the next run under that lens sizes its pool by it: `<docsRoot>/history/<lens>/pool.json`, in the lens's own cache
+ * folder, so that it is never read as another lens's. Until 2026-11-21 one record stood beside the caches, taken by
+ * whichever lens ran last, so that runs with and without `--keep-workers`, whose processes take different memory, sized
+ * each other's pools and restarted each other's count; such a record is read once as the lens's it names
+ * ({@link adoptSharedPoolRecord}).
  */
 const POOL_RECORD = "pool.json";
 
@@ -335,7 +340,8 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   }
   const textStore = path.join(cacheFolder, TEXT_STORE_DIRECTORY);
   const missing = await absentFromCache(sampled, cacheFolder, options.keepIndex);
-  const record = await recordedPool(historyFolder);
+  await adoptSharedPoolRecord(historyFolder);
+  const record = await recordedPool(cacheFolder, lens.key);
   const machine = usableMachine({ totalMemory: os.totalmem(), constrainedMemory: process.constrainedMemory(), processors: os.availableParallelism() });
   const peak = record?.peakMemory ?? UNMEASURED_PEAK_MEMORY;
   const machineJobs = options.jobs ?? poolSize({ ...machine, peakMemory: peak });
@@ -365,7 +371,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     timings.push(...regeneration.timings);
     peakMemory = Math.max(peakMemory, regeneration.peakMemory);
     if (regeneration.peakMemory > 0) {
-      await recordPeakMemory(historyFolder, lens.key, regeneration.peakMemory, regeneration.timings.length);
+      await recordPeakMemory(cacheFolder, lens.key, regeneration.peakMemory, regeneration.timings.length);
       options.progress(`the largest summarizing process took ${formatBytes(regeneration.peakMemory)} at its peak; the next run sizes its pool by the largest measured here`);
     }
     if (regeneration.timings.length < changes.length) {
@@ -625,9 +631,9 @@ async function folderBytes(folder: string): Promise<number> {
   return bytes;
 }
 
-/** What runs measured of a summarizing process's peak memory on this repository. */
+/** What runs under one lens measured of a summarizing process's peak memory on this repository. */
 export interface PoolRecord {
-  /** The lens the latest run measured under. */
+  /** The lens the runs measured under, whose cache folder holds the record. */
   lens: string;
   /** The largest peak resident memory the record holds, in bytes. */
   peakMemory: number;
@@ -635,34 +641,76 @@ export interface PoolRecord {
   changes: number;
 }
 
-/** What a run last recorded of a summarizing process's peak memory on this repository, when one has. */
-async function recordedPool(historyFolder: string): Promise<PoolRecord | undefined> {
+/** A record of the pool as it was written, when it is one: a lens, a peak above nothing, and a count. */
+function poolRecordOf(text: string): PoolRecord | undefined {
+  const record = JSON.parse(text) as Partial<PoolRecord>;
+  return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string"
+    ? { lens: record.lens, peakMemory: record.peakMemory, changes: typeof record.changes === "number" ? record.changes : 0 }
+    : undefined;
+}
+
+/** What runs under a lens recorded of a summarizing process's peak memory, from the lens's cache folder, when one has. */
+async function recordedPool(cacheFolder: string, lens: string): Promise<PoolRecord | undefined> {
   try {
-    const record = JSON.parse(await fs.readFile(path.join(historyFolder, POOL_RECORD), "utf8")) as Partial<PoolRecord>;
-    return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string"
-      ? { lens: record.lens, peakMemory: record.peakMemory, changes: typeof record.changes === "number" ? record.changes : 0 }
-      : undefined;
+    const record = poolRecordOf(await fs.readFile(path.join(cacheFolder, POOL_RECORD), "utf8"));
+    return record?.lens === lens ? record : undefined;
   } catch {
     return undefined;
   }
 }
 
 /**
- * The record after a run measured `peakMemory` over `changes` changes under `lens`. Under the same lens the record
- * keeps the largest peak of every run, since a run that regenerates only the newest change sees one change's peak and
- * not the history's. Under a new lens the generator has changed, and the run's peak replaces the record's only when it
- * was measured over at least as many changes; until then the larger of the two stands, so that a small sampled run
- * never shrinks the estimate a whole history was measured to need.
+ * Reads, once, the one record of the pool that stood beside the caches until 2026-11-21, as the record of the lens it
+ * names: it moves into that lens's cache folder where the folder stands and holds no record of its own, and is
+ * otherwise set aside; either way it is removed, so that it is never applied to a lens it was not measured under.
  */
-export function nextPoolRecord(previous: PoolRecord | undefined, lens: string, peakMemory: number, changes: number): PoolRecord {
-  if (previous === undefined) return { lens, peakMemory, changes };
-  if (previous.lens === lens) return { lens, peakMemory: Math.max(previous.peakMemory, peakMemory), changes: previous.changes + changes };
-  return { lens, peakMemory: changes >= previous.changes ? peakMemory : Math.max(previous.peakMemory, peakMemory), changes };
+async function adoptSharedPoolRecord(historyFolder: string): Promise<void> {
+  const shared = path.join(historyFolder, POOL_RECORD);
+  let text: string;
+  try {
+    text = await fs.readFile(shared, "utf8");
+  } catch (error) {
+    throwIfMachineFailure(error);
+    return;
+  }
+  let record: PoolRecord | undefined;
+  try {
+    record = poolRecordOf(text);
+  } catch {
+    // A record that does not parse names no lens, and is set aside.
+  }
+  // A lens key is sixteen hexadecimal digits (`lensOf`), which also keeps a name that is no folder of this one out.
+  if (record !== undefined && /^[0-9a-f]{16}$/u.test(record.lens)) {
+    const folder = path.join(historyFolder, record.lens);
+    const standing = await fs.stat(folder).then((stats) => stats.isDirectory(), (error: unknown) => {
+      throwIfMachineFailure(error);
+      return false;
+    });
+    if (standing && (await recordedPool(folder, record.lens)) === undefined) await writeInPlace(path.join(folder, POOL_RECORD), `${JSON.stringify(record)}\n`);
+  }
+  await fs.rm(shared, { force: true });
 }
 
-async function recordPeakMemory(historyFolder: string, lens: string, peakMemory: number, changes: number): Promise<void> {
-  const record = nextPoolRecord(await recordedPool(historyFolder), lens, peakMemory, changes);
-  await writeInPlace(path.join(historyFolder, POOL_RECORD), `${JSON.stringify(record)}\n`);
+/**
+ * The lens's record after a run measured `peakMemory` over `changes` changes under it: the largest peak of every run,
+ * since a run that regenerates only the newest change sees one change's peak and not the history's, and the changes
+ * counted together.
+ *
+ * @remarks
+ * Until 2026-11-21 one record served every lens, and a run under a new lens took the record over: its peak replaced
+ * the record's only when measured over at least as many changes, so that a small sampled run never shrank the estimate
+ * a whole history was measured to need. Each lens now keeps a record of its own, and a lens that has none, the first
+ * run after a change of the code among them, is sized by {@link UNMEASURED_PEAK_MEMORY} until it has measured itself.
+ */
+export function nextPoolRecord(previous: PoolRecord | undefined, lens: string, peakMemory: number, changes: number): PoolRecord {
+  return previous === undefined || previous.lens !== lens
+    ? { lens, peakMemory, changes }
+    : { lens, peakMemory: Math.max(previous.peakMemory, peakMemory), changes: previous.changes + changes };
+}
+
+async function recordPeakMemory(cacheFolder: string, lens: string, peakMemory: number, changes: number): Promise<void> {
+  const record = nextPoolRecord(await recordedPool(cacheFolder, lens), lens, peakMemory, changes);
+  await writeInPlace(path.join(cacheFolder, POOL_RECORD), `${JSON.stringify(record)}\n`);
 }
 
 /**
