@@ -1,0 +1,17 @@
+{
+  "handedFolder": {
+    "folder": "Source",
+    "input": "#folder-input",
+    "ready": "#totals",
+    "readyText": "10,945 files will be read · 6,299 files left out · 0 folders not looked inside",
+    "ms": 10382,
+    "ok": true
+  },
+  "pressed": [
+    {
+      "selector": "[data-layout=\"tree\"]",
+      "done": true
+    }
+  ],
+  "ok": true
+}

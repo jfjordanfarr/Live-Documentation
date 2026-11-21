@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
-- Generated At: 2026-11-21T07:10:14.376Z
+- Generated At: 2026-11-21T07:40:33.298Z
 
 ## Authored
 ### Purpose
@@ -281,17 +281,18 @@ Every edge, in the order the signs are drawn and read: left, right, top, bottom.
 
 #### `cutByEdge` {#symbol-cutbyedge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L343)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L344)
 - Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `cutByEdge` — Summary
-Tuning → 2D Layout → Step "Least Pan, Cut Counted" (a trial, 2026-11-21): of the newcomer's cards (in the picture's
-units), those that go on past each edge of the view at the camera given, by edge; a card cut at a corner counts at both
-of its edges. An edge past which nothing goes is absent.
+Tuning → 2D Layout → Cut Counted (a trial, 2026-11-21): of the newcomer's cards (in the picture's units), those not
+wholly in view at the camera given, each at the one edge it reaches farthest past on screen, so that the counts sum to
+the cards that are cut (the root's ruling: counted at every edge it went past, a folder up and to the right of the view
+said 31, 27 and 4 for 32 cards, and a person adds the numbers). An edge past which nothing goes is absent.
 
 #### `cutPan` {#symbol-cutpan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L365)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L368)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `edge`: [`ViewEdge`](#symbol-viewedge); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -305,7 +306,7 @@ the view, landed on other cards with none of them whole.
 
 #### `unionOf` {#symbol-unionof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L383)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L386)
 - Returns: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 
 ##### `unionOf` — Summary

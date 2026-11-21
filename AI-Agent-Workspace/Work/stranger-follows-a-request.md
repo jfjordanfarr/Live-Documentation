@@ -18,11 +18,25 @@ opened: 2026-11-21
 ## Tasks
 
 ### Which way a line runs, and what it carries
-- state: open
-- holds: not begun
-- evidence:
+- state: active
+- holds: the record searched and its key claims checked on 2026-11-21; alternatives set down by root below, none built; the trial lever goes to a builder once the counted cut's round is merged
+- evidence: [what the record holds on a line's direction](../AgentSessionHistory/2026/11/2026-11-21/Probes/line-direction/README.md), with what root checked against the sources
 
 Every tester asked how a folder's files connect hedged the directions it read from lines and colours, and one had two backwards; all six who traced the payment guessed what the line from SQL Server to Oracle does, three of them wrongly ([the cards](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-trace-sonnet-medium-look-only/shots/009-look.png)). Where a tester read a list in words instead, the reader's Dependents, it was right every time. Recurs from November 19 ("wires say nothing under the pointer").
+
+**What the record says, 2026-11-21** ([the note](../AgentSessionHistory/2026/11/2026-11-21/Probes/line-direction/README.md)). Direction on the 2D map is told by position and hue alone, by the owner's rule of December 2025 ("Input = left, Output = right"; "always always always draw **from** blue … **to** green"), and nothing a person can point at answers "which of these two uses the other": an ordinary 2D wire takes no pointer and has no name. The rule that would answer it already stands and is broken in 2D: words wait for a pointer that rests (the owner, 2026-11-19), expansion is on tap or click (2026-11-05); the World Map's wires already answer so. "Wires revealed on hover" was an agent's rejection of 2026-03-30 for the Membrane Map's browse layout and does not speak of a wire already drawn. Arrowheads have never been before the owner's eye in 2D. Motion on the Local Map is the owner's own unbuilt wish of 2026-09-28. One relation is said six ways on screen ("offers", "uses", "used by", "Dependencies", "Dependents", "calls").
+
+**Alternatives set down by root on 2026-11-21, none built.** Two principles pull here. A *signifier* must be read at a glance, and hue with side is a code a stranger has to learn. A *convention* is already in a developer's head, and it runs against ours: in an import or UML diagram an arrow from A to B says "A uses B", while our wire runs from what is offered to what uses it, as a node editor's does. So a stronger arrow along our direction may make a stranger more surely wrong, and only words are free of the doubt. To be built as one lever on the 2D map and tried on strangers on the estate's two tasks, counted by directions given wrongly and by hedges:
+
+1. *As now*: gradient and sides.
+2. *A wire answers*: every wire takes a rested pointer, a press and the keyboard; it then stands out by the others fading and says one line at the wire, the user as its subject, "`PaymentService.cs` uses `PaymentsContext.cs`", with what is used and how many references, in the form of the World Map's panel; a press pins it. This is the standing rule built, and one sentence in place of six vocabularies.
+3. *Chevrons along the wire*, pointing the way the gradient runs, from what is offered to what uses it.
+4. *Chevrons the other way*, from the user to the used, as a dependency arrow points: against the owner's rule and in the trial only to learn which convention a stranger brings.
+5. *Flow on what is pointed at*: dashes moving from offered to user along the wires of the card or wire under a rested pointer, still under reduced motion. For the owner's eye, since a tester sees stills.
+
+**The World Map's dashes run against the request** (checked in the record and the code, [the note](../AgentSessionHistory/2026/11/2026-11-21/Probes/line-direction/README.md#where-the-record-contradicts-itself)). On 2026-09-28 they ran "the way the request goes" and the owner wrote "I absolutely adore the motion from outputs to inputs"; on 2026-09-29, with the colours swapped to blue offers and green uses, an agent turned the wires round and reported it without asking. Today the panel of the estate's wire says "sqlserver calls oracle" and its dashes run from oracle to sqlserver; for the owner's own showing, a payment's dashes run from the databases back to the portal. To be put to the owner as a lever on the World Map: the dashes with the offering, as now, or with the request, the colours unchanged. Root's recommendation: with the request, since that board is where a person follows one.
+
+**What a line carries.** The estate's card says "calls oracle" of a query that only reads a balance, and three of six testers took it for a write. Whether a SQL reference reads, writes or executes is known to the reader from the statement and is not in the facts; the format would have to carry it. A task for the readers after their landing, not begun.
 
 ### The view frames what was asked for
 - state: active

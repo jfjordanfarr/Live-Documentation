@@ -81,6 +81,102 @@
       "maxActions": 150,
       "words": "This page is a map of a software project, and it can show the project's history: I have opened the history control for you. In this test the words describing each step are switched off, so work from the picture, the dates and the names on the map. Tell me how this software came to be what it is: the periods it went through; what appeared, grew, moved, was renamed or was removed; where the work gathered, and when. For every statement, say what on the screen showed it to you and at what date. The history has hundreds of steps and you have about 150 actions with the window, so choose how you travel through it.",
       "rightAnswer": "Graded by another hand against narrative-claims.md (beside this file) with narrative-grader.md. Condition: the step panel, its toggle, its dialog and the commit subjects in the finder's results are not drawn (setup.json records the check); the tester has the picture, the ticks, the dates and the names on the map."
+    },
+    {
+      "id": "leave-out-read-reason",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=reason&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "A scan of this folder is about to start. Without changing anything: how many files will it read, what is it leaving out, and why? Name the largest things left out and the reason for each.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: By reason, the switch between layouts hidden. 10,945 files will be read and 6,299 left out. The largest left out, with the page's reasons: NuGet packages, 3,242 files in 30 `packages` folders, the largest the top `packages/` (661 files): downloaded packages, not the team's code; build output beside a project, 1,420 files in 134 `bin` and `obj` folders: what a build makes from the source; `.tfignore: packages`, 1,335 files in 15 project `packages` folders that a `.tfignore` beside them names; then DNN's own nested `.gitignore` files leave out further `bin` and `obj` folders (`[Bb]in` 126 files, `[Oo]bj` 63, `bin/` 70, `obj/` 35) and 8 single files (6 css, 2 svg). Right: both totals and at least the three largest groups with their reasons. Partly: the totals with reasons missing or wrong, or the reasons with a total wrong. Wrong: totals wrong and reasons missing, or anything said to be read that is left out."
+    },
+    {
+      "id": "leave-out-read-folders",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=folders&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "A scan of this folder is about to start. Without changing anything: how many files will it read, what is it leaving out, and why? Name the largest things left out and the reason for each.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the switch between layouts hidden. 10,945 files will be read and 6,299 left out. The largest left out, with the page's reasons: NuGet packages, 3,242 files in 30 `packages` folders, the largest the top `packages/` (661 files): downloaded packages, not the team's code; build output beside a project, 1,420 files in 134 `bin` and `obj` folders: what a build makes from the source; `.tfignore: packages`, 1,335 files in 15 project `packages` folders that a `.tfignore` beside them names; then DNN's own nested `.gitignore` files leave out further `bin` and `obj` folders (`[Bb]in` 126 files, `[Oo]bj` 63, `bin/` 70, `obj/` 35) and 8 single files (6 css, 2 svg). Right: both totals and at least the three largest groups with their reasons. Partly: the totals with reasons missing or wrong, or the reasons with a total wrong. Wrong: totals wrong and reasons missing, or anything said to be read that is left out."
+    },
+    {
+      "id": "leave-out-keep-reason",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=reason&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Our team wrote what is in `DNN Platform/Library/packages` ourselves; it isn't downloaded. Make the scan read that folder, then tell me how many files the scan will read.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: By reason, the switch between layouts hidden. The folder is left out as NuGet packages (89 files). Kept (by its own Keep, by ticking it among the folders, or by the pattern `!/DNN Platform/Library/packages/`), the scan reads 11,034 files (6,210 left out). Right: the folder kept and 11,034 said. Partly: the folder kept and the number wrong or not said, or another folder kept as well. Wrong: the folder not kept, or a whole group kept (all NuGet packages: 14,187 would then be read, or similar), or a number given without a change made."
+    },
+    {
+      "id": "leave-out-keep-folders",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=folders&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Our team wrote what is in `DNN Platform/Library/packages` ourselves; it isn't downloaded. Make the scan read that folder, then tell me how many files the scan will read.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the switch between layouts hidden. The folder is left out as NuGet packages (89 files). Kept (by its own Keep, by ticking it among the folders, or by the pattern `!/DNN Platform/Library/packages/`), the scan reads 11,034 files (6,210 left out). Right: the folder kept and 11,034 said. Partly: the folder kept and the number wrong or not said, or another folder kept as well. Wrong: the folder not kept, or a whole group kept (all NuGet packages: 14,187 would then be read, or similar), or a number given without a change made."
+    },
+    {
+      "id": "leave-out-drop-reason",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=reason&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "We don't want the tests in this scan. Make it leave out `DNN Platform/Tests`, then tell me how many files the scan will read.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: By reason, the switch between layouts hidden. `DNN Platform/Tests` holds 900 files, 543 of them read until now. Left out (by unticking it among the folders, or by the pattern `/DNN Platform/Tests/` or `DNN Platform/Tests/`), the scan reads 10,402 files (6,842 left out). Right: the folder left out and 10,402 said. Partly: left out with the number wrong or not said, or more than that folder left out. Wrong: not left out, or a number given without a change made."
+    },
+    {
+      "id": "leave-out-drop-folders",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=folders&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "We don't want the tests in this scan. Make it leave out `DNN Platform/Tests`, then tell me how many files the scan will read.",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the switch between layouts hidden. `DNN Platform/Tests` holds 900 files, 543 of them read until now. Left out (by unticking it among the folders, or by the pattern `/DNN Platform/Tests/` or `DNN Platform/Tests/`), the scan reads 10,402 files (6,842 left out). Right: the folder left out and 10,402 said. Partly: left out with the number wrong or not said, or more than that folder left out. Wrong: not left out, or a number given without a change made."
+    },
+    {
+      "id": "leave-out-why-reason",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=reason&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: By reason, the switch between layouts hidden. No. It is left out by the line `[Bb]in` (line 53) of `Dnn.AdminExperience/.gitignore`; the page groups it as `.gitignore: [Bb]in` (9 folders, 126 files) and shows that reason on its row among the folders. It holds 14 files (`Debug` and `Release` builds of `Dnn.EditBar.UI.dll` and three dependencies), and as the build output beside `Dnn.EditBar.UI.csproj` it would be left out without the line too. Right: no, with the `.gitignore` as the reason (naming build output as well is a plus). Partly: no, with build output alone or a reason the page does not give. Wrong: yes, or no reason."
+    },
+    {
+      "id": "leave-out-why-folders",
+      "map": "leave-out choice page",
+      "page": "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+      "query": "?layout=folders&switch=off",
+      "handFolder": {
+        "input": "#folder-input",
+        "ready": "#totals"
+      },
+      "words": "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?",
+      "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the switch between layouts hidden. No. It is left out by the line `[Bb]in` (line 53) of `Dnn.AdminExperience/.gitignore`; the page groups it as `.gitignore: [Bb]in` (9 folders, 126 files) and shows that reason on its row among the folders. It holds 14 files (`Debug` and `Release` builds of `Dnn.EditBar.UI.dll` and three dependencies), and as the build output beside `Dnn.EditBar.UI.csproj` it would be left out without the line too. Right: no, with the `.gitignore` as the reason (naming build output as well is a plus). Partly: no, with build output alone or a reason the page does not give. Wrong: yes, or no reason."
     }
   ]
 }

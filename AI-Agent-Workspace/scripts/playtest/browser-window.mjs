@@ -6,6 +6,7 @@
 // Usage (started by playtest.mjs, never by hand, and always under the shared browser lock):
 //   flock -s /tmp/live-docs-browser.lock node browser-window.mjs --start <url> --record <dir> [--after-each] [--max-actions 60]
 //        [--open-history] [--hide-step-words] [--setting <group>.<name>=<value> ...]
+//        [--hand-folder <dir> --hand-input <selector> [--ready <selector>]] [--press <selector> ...]
 //
 // For the narrative playtest (2026-11-19), --open-history has the harness press the map's History button before the
 // tester begins, and --hide-step-words keeps the history's words about each commit off the screen (see setUp below).
@@ -40,6 +41,13 @@ const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] :
   if (!match) { console.error(`--setting takes <group>.<name>=<value>, not ${text}`); process.exit(2); }
   return { group: match[1], name: match[2], value: match[3] };
 });
+// A folder handed to the page's file input before the tester begins (2026-11-21), as a person who chose one would have:
+// `--hand-folder <dir> --hand-input <selector> [--ready <selector>]`, the ready element's words awaited, then rest.
+// `--press <selector>` (repeatable) presses a control of the page in the same setup.
+const handFolder = option('--hand-folder');
+const handInput = option('--hand-input', 'input[type=file]');
+const readySelector = option('--ready');
+const presses = args.flatMap((arg, i) => (arg === '--press' ? [args[i + 1]] : []));
 const SAVED_INTERFACE_KEY = 'live-docs-explorer:ui:v2'; // PERSISTED_UI_KEY in packages/explorer/src/client/persistence/local-storage.ts
 const viewport = { width: 1280, height: 800 }; // under the size at which the API scales a picture, so x, y stay page pixels
 if (!startUrl || !recordDir) {
@@ -100,7 +108,7 @@ async function open() {
   context.on('page', (opened) => { watch(opened); page = opened; pending.push('A new tab opened and is now in front.'); });
   await page.goto(startUrl, { waitUntil: 'load', timeout: 60000 });
   await rest(15000);
-  if (openHistory || settings.length) await setUp();
+  if (openHistory || settings.length || handFolder || presses.length) await setUp();
 }
 
 const HIDDEN_WORDS_CSS = '.history-step-panel, .history-step-dialog, .history-details, .history-step-more,'
@@ -114,6 +122,34 @@ const HIDDEN_WORDS_CSS = '.history-step-panel, .history-step-dialog, .history-de
  */
 async function setUp() {
   const check = {};
+  if (handFolder) {
+    check.handedFolder = { folder: path.basename(handFolder), input: handInput, ready: readySelector ?? null };
+    try {
+      const given = Date.now();
+      await page.setInputFiles(handInput, handFolder, { timeout: 200000 });
+      if (readySelector) {
+        await page.waitForFunction((selector) => {
+          const element = document.querySelector(selector);
+          return Boolean(element && element.offsetParent !== null && element.textContent.trim());
+        }, readySelector, { timeout: 200000 });
+        check.handedFolder.readyText = (await page.textContent(readySelector)).trim();
+      }
+      check.handedFolder.ms = Date.now() - given;
+      await rest(15000);
+      check.handedFolder.ok = true;
+    } catch (error) {
+      check.handedFolder.ok = false;
+      check.error = String(error?.message ?? error).split('\n')[0];
+    }
+  }
+  if (presses.length && !check.error) {
+    check.pressed = [];
+    for (const selector of presses) {
+      const done = await page.locator(selector).first().click({ timeout: 15000 }).then(() => true, () => false);
+      check.pressed.push({ selector, done });
+      await rest(8000);
+    }
+  }
   if (settings.length) {
     check.settings = [];
     for (const { group, name, value } of settings) {
@@ -134,7 +170,8 @@ async function setUp() {
       check.error = String(error?.message ?? error).split('\n')[0];
     }
   }
-  check.ok = (check.settings ?? []).every((s) => s.shown === s.wanted)
+  check.ok = (!handFolder || check.handedFolder.ok) && (check.pressed ?? []).every((p) => p.done)
+    && (check.settings ?? []).every((s) => s.shown === s.wanted)
     && (!openHistory || (check.scrubberVisible && (hideStepWords ? check.stepPanelVisible === false : check.stepPanelVisible === true)));
   fs.writeFileSync(path.join(recordDir, 'setup.json'), JSON.stringify(check, null, 2) + '\n');
   if (!check.ok) { console.error('setup failed:', JSON.stringify(check)); await browser.close(); process.exit(1); }
