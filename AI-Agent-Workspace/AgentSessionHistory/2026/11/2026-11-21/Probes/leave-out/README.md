@@ -2,6 +2,55 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Tenth leg, night of 2026-11-21: typing kept whole, and the team's own code told apart
+
+A second round of strangers ran over the ninth leg's page and met one defect and four smaller stumbles. This leg changes the page's files only; nothing under `packages/` moved, and the page needed nothing the engine's functions do not give. The page's own check of editing is `choice/check-edits.mjs`, run through the browser lane on `nested`. The pictures are `choice/screenshots/nested-tenth-*.png`, with counts in `choice/screenshots/records/nested-tenth-record.json`, taken by `choice/look-tenth.mjs`. No picture holds a timing line.
+
+### What the tenth leg changed
+
+1. **Typed text was written back over the keys being typed.** The page wrote the list into the field at every drawing. When a decision finished while the person was still typing, it put back the text as it stood when the decision began, and moved the caret.
+   - **The check first.** With the processor slowed eight times, lines are typed at 25 ms a key, a pause of 500 ms lets the page begin deciding, and more lines are typed while it decides. Before the mend 5 of its checks failed. The field ended as `# ot andloaded pes/`, the keys typed during the decision lost.
+   - **The rule now.** While a person types, the field is the truth for the text: the page never writes into it or moves its caret. Each decision is numbered, an answer for text that has since changed is dropped, and only the newest is drawn. The page writes the field only when it changed the list itself: an offer, a choice on the notice, a plus or minus, undo or redo. Every one of those first takes in what was typed and not yet taken.
+2. **A line that leaves out the team's own code.** Strangers typed `packages/` and did not see that it takes the 11 `.cs` files of `DNN Platform/Library/Services/Installer/Packages`, among 457 downloaded `.cs` files that are rightly left out. The hypothesis was to split what each line leaves out into what the evidence rules also call build output or packages, and the rest. It was measured before building (`evidence-split.ts`, its output in `listings/evidence-split-nested.json` and `listings/evidence-split-made.json`), on both folders, for every line of GitHub's Visual Studio list that leaves something out and for a typed `packages/` and `build/`. "Evidence" here is every folder `proposeLines` names: 207 folders on `nested`, 208 on `made`.
+
+   | Line | In evidence folders: files (of them code) | The rest: files (of them code) | Where the rest's code lies |
+   | --- | --- | --- | --- |
+   | `**/[Pp]ackages/*` | 4,577 (457) on `nested`; 90,686 (8,286) on `made` | 14 (11) | `DNN Platform/Library/Services/Installer/Packages` |
+   | `**/[Bb]in/*` | 1,142 (164) | 0 | |
+   | `[Oo]bj/` | 572 (244) | 0 | |
+   | `[Dd]ebug/` | 0 | 29 (29) | `DNN Platform/Website/js/Debug` |
+   | `[Ll]og/` | 0 | 22 (22) | `Services/Log/EventLog` 17, `Installer/Log` 3, the Persona Bar's `Components/Servers/Log` 2 |
+   | `[Ll]ogs/` | 0 | 4 (0) | |
+   | `*.mdf` | 0 | 2 (0) | |
+   | `*.pdb` | 0 | 1 (0) | |
+   | `packages/`, typed alone | as `**/[Pp]ackages/*` | 14 (11) | `Installer/Packages` |
+   | `build/`, typed alone | 514 (14) on `nested`; 9,862 (166) on `made` | 96 (66) | the top `Build` folder: `Build/Tasks` 51, `Build` 8, `Build/Tasks/sql` 3, `Build/BuildScripts` 2, `Build/Deploy` 1, `Build/Properties` 1 |
+
+   The rest is short and it is the team's own code, the same on both folders, so it was built.
+   - **The sign on each row now counts the rest's code:** files a reader would read that lie outside every folder the evidence calls build output or downloaded packages. `**/[Pp]ackages/*` shows 11, and `[Dd]ebug/` 29 and `[Ll]og/` 22. `[Bb]in/` and `[Oo]bj/` show none, though their kinds still list the code they hold. A block's sign is the sum of its lines' signs, and in a block the lines with the most of it come first.
+   - **When a line is opened,** the folders and files holding the rest's code come first, each with its own sign; `Installer/Packages` heads `packages/`.
+   - **The sign is named** for whoever cannot see it: "Leaves out 11 files a reader would read, outside build output and downloaded packages".
+   - The model counts it (`choice/model.mjs`, from `proposeLines`, kept once per folder and case setting). Where the page walks lazily it counts from the folders listed so far, and a folder left out whole is not looked inside, so its code is not counted.
+3. **The top line's count was read as a part of the wrong number.** It now stands inside the files left out and counts what the rows' signs count, their sum: "6,401 files left out, ‹› 77 of which look like your own code" after the offer, `build/` and `packages/`. The folders' offer alone leaves out only evidence folders, so the top line carries no count; with GitHub's Visual Studio list it is 62 (29, 22 and 11). The ninth leg's words, "of which a reader would read", would now be untrue, since the 457 downloaded `.cs` files are files a reader would read; "look like your own code" says what the evidence can only suggest.
+4. **Undo was out of step with the notice.** After the folders' offer, Replace and then Add, one undo showed the replaced list while the notice still read "Added to your list". Each step in the history now keeps the list and the notice's state together, and undo and redo restore both. The check presses the three and undoes twice: once, the replaced list with Replace's notice; twice, the offer's list with the notice's first three choices.
+5. **The offers were taken away by a press elsewhere.** The rule now is that nothing a person may be about to press moves or goes away as a side effect of a press on something else. Once shown for a folder, the starting lists' offers stay where they are, whatever the list then holds. A taken one reads "In your list" with a tick until its block is gone again, by undo or by hand, and the other stays pressable. They go only by their own button, "Put the starting lists away", or when another folder is given. The check presses "Open DNN Platform" under Will be read and finds both offers where they were.
+   - **The pictures found one more way they moved.** Taking GitHub's Visual Studio list brings a note, "3 ! lines cannot keep what they name: a folder above is left out whole", and the notes stood above the offers, so the note pushed the other offer down by its own height. The notes now stand below the offers, and a check takes the second offer and finds both where they were, with the note showing.
+
+`choice/check-edits.mjs` holds thirteen checks, and all pass after the mends. Under the machine's load at the time (a load average above 40), a run took about six minutes.
+
+**The terminal twin** sorts and counts as the page does. Its top line and each row say "N of which look like your own code" where there is any. `choice/nested-as-text.txt` is written again, its timing line taken under a heavily loaded machine; on `made` nothing it leaves out looks like the team's own code, so `choice/made-as-text.txt` would differ only in its timing and was left as it was. It walks lazily, so it counts only files it met. On `nested` with the found ignore files taken in, it names 6 `.css` files under the Persona Bar's `css/` folders, which the team's own `.gitignore` leaves out. That line was written by the team knowing what it takes, and the sign says only that the files look like their own.
+
+### The tenth leg's pictures, as my eye reads them
+
+- **The offers hold still** (`nested-tenth-1-offer-kept.png`, `nested-tenth-2-after-a-press-elsewhere.png`). Under "Starting lists", with its own put-away button at the right, the taken offer is greyed with a tick and "In your list"; the other keeps its blue border and its count, "234 lines · 6,363 files left out". After "DNN Platform" is opened in the right-hand column, nothing in the left-hand column has moved.
+- **Undo and the notice agree** (`nested-tenth-3-undo-after-replace-and-add.png`). After Replace, Add and one undo, the notice reads "Your list is now their lines: 25 .gitignore files and 15 .tfignore files" with "Add them to your list" and "Put your list back", and the list is the found files' lines. Both offers are pressable again, since neither block is in the list. The top line reads "15,594 files will be read · 1,651 files left out, ‹› 6 of which look like your own code": the six `.css` files under the Persona Bar's `css/` folders that its own `.gitignore` names.
+- **The count sits inside the files left out** (`nested-tenth-4-packages-typed.png`). "6,305 files left out, ‹› 11 of which look like your own code": the comma and "of which" bind it to the files left out, and the sign repeats on the `packages/` row. Opened, the row's first member is `DNN Platform/Library/Services/Installer/Packages/` with ‹› 11, then the downloaded `packages/` folders with no sign.
+- **GitHub's Visual Studio list** (`nested-tenth-5-visual-studio-packages.png`). The top line reads "62 of which look like your own code". `**/[Pp]ackages/*` opened shows its 11 `.cs` files first, each with ‹› 1, then the test pack `.zip` files with none. Behind the folders' offer it leaves out only these 14 files, since the offer's lines take the downloaded folders whole first. Both offers now read "In your list" and stand exactly where they stood in the first picture; the list's note, "3 ! lines cannot keep what they name", sits below them, above the field.
+
+**Still wrong:**
+- A row's kinds still list all the code it holds (`.cs 163` on the folders' block), and only the sign tells how much of it looks like the team's. Two numbers about code on one row may still confuse.
+- "Look like your own code" is a guess from the evidence. Files built from others in folders the rules do not recognise carry the sign too; the Persona Bar's ignored `.css`, beside 305 `.less` files that are read, are likely such files.
+
 ## Ninth leg, evening of 2026-11-21: what strangers stumbled on, mended
 
 Strangers tried the eighth leg's page: 33 runs, with tasks and answers written by a builder who did not build it ([the strangers' record](../blind-playtests/README.md#one-list-tried-on-strangers)). 28 were right and 4 wrong, and all four wrong runs are one stumble. This leg changes the page only; nothing under `packages/` moved. The pictures are on `nested`, at the states the strangers met (`choice/screenshots/nested-ninth-*.png`, with counts in `records/nested-ninth-record.json`, taken by `choice/look-strangers.mjs`). No picture holds a timing line.

@@ -1,0 +1,91 @@
+{
+ "label": "nested-tenth",
+ "1-offer-kept": {
+  "totals": "10,954 files will be read · 6,291 files left out",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders hold In your list",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ]
+ },
+ "2-after-a-press-elsewhere": {
+  "totals": "10,954 files will be read · 6,291 files left out",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders hold In your list",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ]
+ },
+ "3-undo-after-replace-and-add": {
+  "totals": "15,594 files will be read · 1,651 files left out, 6 of which look like your own code",
+  "notice": "Your list is now their lines: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Add them to your list",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders hold 47 lines · 6,291 files left out",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ]
+ },
+ "packagesTypedOpened": {
+  "line": "53 packages/ .ps1 412 · .config 45 · .cs 11 · .dll 1,854 11 47 folders · 4,591 files",
+  "first": [
+   "DNN Platform/Library/Services/Installer/Packages/ 11 11 files",
+   "DNN Platform/Dnn.AuthServices.Jwt/packages/ 89 files",
+   "DNN Platform/Controls/CountryListBox/packages/ 89 files",
+   "DNN Platform/Modules/Journal/packages/ 89 files"
+  ]
+ },
+ "4-packages-typed": {
+  "totals": "10,940 files will be read · 6,305 files left out, 11 of which look like your own code",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 48 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders hold In your list",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ]
+ },
+ "listEndsAfterUndo": "/packages/",
+ "blocks": [
+  "What the folders hold .ps1 412 · .config 209 · .dll 2,504 · .pdb 782 126 folders · 5,719 files",
+  "Visual Studio's list (GitHub, CC0) .cs 196 · .json 81 · .js 27 · .config 1 · .htm 1 · .pdb 83 62 86 folders · 644 files"
+ ],
+ "visualStudioPackagesOpened": {
+  "line": "284 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 11 14 files",
+  "first": [
+   "DNN Platform/Library/Services/Installer/Packages/PackageCreatedEventHandler.cs 1",
+   "DNN Platform/Library/Services/Installer/Packages/PackageTypeMemberNameFixer.cs 1",
+   "DNN Platform/Library/Services/Installer/Packages/PackageEditorBase.cs 1",
+   "DNN Platform/Library/Services/Installer/Packages/PackageController.cs 1"
+  ]
+ },
+ "5-visual-studio-packages": {
+  "totals": "10,882 files will be read · 6,363 files left out, 62 of which look like your own code",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 281 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders hold In your list",
+   "GitHub's Visual Studio list In your list"
+  ]
+ },
+ "errors": []
+}

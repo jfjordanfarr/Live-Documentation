@@ -1,0 +1,100 @@
+{
+ "folder": "made",
+ "files": 103329,
+ "evidenceFolders": 208,
+ "measured": {
+  "GitHub's Visual Studio list": {
+   "231 **/[Pp]ackages/*": {
+    "evidence": 90686,
+    "evidenceCode": 8286,
+    "rest": 14,
+    "restCode": 11,
+    "restCodeFolders": {
+     "DNN Platform/Library/Services/Installer/Packages": 11
+    }
+   },
+   "51 **/[Bb]in/*": {
+    "evidence": 1142,
+    "evidenceCode": 164,
+    "rest": 0,
+    "restCode": 0,
+    "restCodeFolders": {}
+   },
+   "45 [Oo]bj/": {
+    "evidence": 572,
+    "evidenceCode": 244,
+    "rest": 0,
+    "restCode": 0,
+    "restCodeFolders": {}
+   },
+   "21 [Dd]ebug/": {
+    "evidence": 0,
+    "evidenceCode": 0,
+    "rest": 29,
+    "restCode": 29,
+    "restCodeFolders": {
+     "DNN Platform/Website/js/Debug": 29
+    }
+   },
+   "47 [Ll]og/": {
+    "evidence": 0,
+    "evidenceCode": 0,
+    "rest": 22,
+    "restCode": 22,
+    "restCodeFolders": {
+     "DNN Platform/Library/Services/Log/EventLog": 17,
+     "DNN Platform/Library/Services/Installer/Log": 3,
+     "Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Servers/Log": 2
+    }
+   },
+   "48 [Ll]ogs/": {
+    "evidence": 0,
+    "evidenceCode": 0,
+    "rest": 4,
+    "restCode": 0,
+    "restCodeFolders": {}
+   },
+   "292 *.mdf": {
+    "evidence": 0,
+    "evidenceCode": 0,
+    "rest": 2,
+    "restCode": 0,
+    "restCodeFolders": {}
+   },
+   "108 *.pdb": {
+    "evidence": 0,
+    "evidenceCode": 0,
+    "rest": 1,
+    "restCode": 0,
+    "restCodeFolders": {}
+   }
+  },
+  "packages/ typed alone": {
+   "1 packages/": {
+    "evidence": 90686,
+    "evidenceCode": 8286,
+    "rest": 14,
+    "restCode": 11,
+    "restCodeFolders": {
+     "DNN Platform/Library/Services/Installer/Packages": 11
+    }
+   }
+  },
+  "build/ typed alone": {
+   "1 build/": {
+    "evidence": 9862,
+    "evidenceCode": 166,
+    "rest": 96,
+    "restCode": 66,
+    "restCodeFolders": {
+     "Build/Tasks": 51,
+     "Build": 8,
+     "Build/Tasks/sql": 3,
+     "Build/BuildScripts": 2,
+     "Build/Deploy": 1,
+     "Build/Properties": 1
+    }
+   }
+  }
+ }
+}
