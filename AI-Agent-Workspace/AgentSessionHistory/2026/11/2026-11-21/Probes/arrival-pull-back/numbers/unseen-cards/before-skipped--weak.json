@@ -1,0 +1,4989 @@
+[
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-before",
+  "extra": {
+   "unseenCards": "skipped"
+  },
+  "elements": {
+   "map": 5912,
+   "cards": 16,
+   "bands": 12,
+   "wires": 151
+  },
+  "restBeforeEase": 5750,
+  "ease": {
+   "ms": 850,
+   "frames": 11,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 49.9,
+   "p90": 150.1,
+   "worst": 233.3,
+   "whole": {
+    "script": 200.7,
+    "style": 155.1,
+    "layout": 5.9,
+    "paint": 188.5,
+    "other": 82.5,
+    "styles": [
+     {
+      "ms": 12.8,
+      "elements": 375,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 25.2,
+      "elements": 665,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1,
+      "elements": 3,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "releaseLook:5177:88027",
+       "s:5177:87598"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 119,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 233,
+   "ms": 233.3,
+   "k": 1,
+   "state": "connections|far||false|moving",
+   "script": 33.2,
+   "style": 113.5,
+   "layout": 2.5,
+   "paint": 53.9,
+   "other": 24.3,
+   "styles": [
+    {
+     "ms": 12.8,
+     "elements": 375,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "frameRect:5177:81615",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 0.8,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:81452",
+      "frameRect:5177:81760",
+      "s:5177:86470"
+     ]
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 233,
+    "ms": 233.3,
+    "k": 1,
+    "state": "connections|far||false|moving",
+    "script": 33.2,
+    "style": 113.5,
+    "layout": 2.5,
+    "paint": 53.9,
+    "other": 24.3,
+    "styles": [
+     {
+      "ms": 12.8,
+      "elements": 375,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 383,
+    "ms": 150,
+    "k": 0.819,
+    "state": "connections|far||false|moving",
+    "script": 15.9,
+    "style": 27,
+    "layout": 0,
+    "paint": 21.1,
+    "other": 14.4,
+    "styles": [
+     {
+      "ms": 25.2,
+      "elements": 665,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 450,
+    "ms": 66.6,
+    "k": 0.473,
+    "state": "connections|far||false|moving",
+    "script": 18.1,
+    "style": 2.7,
+    "layout": 0,
+    "paint": 9.5,
+    "other": 10.3,
+    "styles": [
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 850,
+    "ms": 150.1,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 48.2,
+    "style": 2.5,
+    "layout": 3.3,
+    "paint": 13.9,
+    "other": 3.9,
+    "styles": [
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "releaseLook:5177:88027",
+       "s:5177:87598"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 119,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 233,
+    "ms": 233.3,
+    "k": 1,
+    "look": "connections",
+    "style": 113.5,
+    "paint": 53.9,
+    "restyled": 376
+   },
+   {
+    "at": 383,
+    "ms": 150,
+    "k": 0.819,
+    "look": "connections",
+    "style": 27,
+    "paint": 21.1,
+    "restyled": 670
+   },
+   {
+    "at": 450,
+    "ms": 66.6,
+    "k": 0.473,
+    "look": "connections",
+    "style": 2.7,
+    "paint": 9.5,
+    "restyled": 6
+   },
+   {
+    "at": 500,
+    "ms": 50,
+    "k": 0.394,
+    "look": "connections",
+    "style": 0.3,
+    "paint": 23.3,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 33.4,
+    "k": 0.362,
+    "look": "connections",
+    "style": 3.9,
+    "paint": 2.1,
+    "restyled": 2
+   },
+   {
+    "at": 567,
+    "ms": 33.3,
+    "k": 0.35,
+    "look": "connections",
+    "style": 0.3,
+    "paint": 13.1,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.7,
+    "k": 0.342,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 11.2,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 33.3,
+    "k": 0.339,
+    "look": "connections",
+    "style": 0.3,
+    "paint": 13,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 33.4,
+    "k": 0.336,
+    "look": "connections",
+    "style": 2,
+    "paint": 16.6,
+    "restyled": 4
+   },
+   {
+    "at": 700,
+    "ms": 49.9,
+    "k": 0.335,
+    "look": "connections",
+    "style": 2,
+    "paint": 10.8,
+    "restyled": 7
+   },
+   {
+    "at": 850,
+    "ms": 150.1,
+    "k": 0.335,
+    "look": "connections",
+    "style": 2.5,
+    "paint": 13.9,
+    "restyled": 123
+   }
+  ],
+  "changes": [
+   {
+    "at": -5750,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": -217,
+    "k": 1,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 0,
+    "k": 1,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 850,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -5750,
+    "ms": 616.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1850,
+    "ms": 3899.8,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -217,
+    "ms": 666.6,
+    "k": 1,
+    "look": "connections",
+    "script": 40,
+    "style": 440.6,
+    "layout": 29.6,
+    "paint": 98.3,
+    "other": 57.1,
+    "styles": [
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "s:5177:86863"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87209"
+      ]
+     },
+     {
+      "ms": 393.5,
+      "elements": 2596,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 45.3,
+      "elements": 650,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 0,
+    "ms": 216.7,
+    "k": 1,
+    "look": "connections",
+    "script": 73.5,
+    "style": 88.7,
+    "layout": 2.4,
+    "paint": 41.3,
+    "other": 20,
+    "styles": [
+     {
+      "ms": 3.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "VG:5176:33204",
+       "YG:5176:37599",
+       "kk:5176:31523",
+       "drawConnections:5177:57036",
+       ":5177:78771"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "YG:5176:37671",
+       "kk:5176:31523"
+      ]
+     },
+     {
+      "ms": 12.5,
+      "elements": 178,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 170.9,
+      "elements": 1044,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": -217,
+   "ms": 666.6,
+   "k": 1,
+   "state": "connections|far||true|moving",
+   "script": 40,
+   "style": 440.6,
+   "layout": 29.6,
+   "paint": 98.3,
+   "other": 57.1,
+   "styles": [
+    {
+     "ms": 0.6,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "s:5177:86863"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "framePlace:5177:80947",
+      "updateMapTransform:5177:76541",
+      "s:5177:87209"
+     ]
+    },
+    {
+     "ms": 393.5,
+     "elements": 2596,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 45.3,
+     "elements": 650,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 26,
+   "gaps": [
+    105,
+    46,
+    34,
+    30,
+    24,
+    32,
+    239,
+    75,
+    68,
+    23,
+    38,
+    35,
+    21,
+    25,
+    21,
+    18,
+    30,
+    19,
+    21,
+    26,
+    27,
+    22,
+    21,
+    16,
+    20
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-before",
+  "extra": {
+   "unseenCards": "skipped"
+  },
+  "elements": {
+   "map": 11859,
+   "cards": 80,
+   "bands": 20,
+   "wires": 220
+  },
+  "restBeforeEase": 10383,
+  "ease": {
+   "ms": 917,
+   "frames": 3,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 216.6,
+   "p90": 500,
+   "worst": 500,
+   "whole": {
+    "script": 253.7,
+    "style": 315.5,
+    "layout": 35.4,
+    "paint": 105.4,
+    "other": 71.3,
+    "styles": [
+     {
+      "ms": 103,
+      "elements": 1155,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 9.6,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 23,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 6.4,
+      "elements": 37,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.8,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.9,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.1,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.3,
+      "elements": 45,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 31.3,
+      "elements": 759,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 3.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 11.1,
+      "elements": 237,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 500,
+   "ms": 500,
+   "k": 1,
+   "state": "connections|far||false|moving",
+   "script": 97,
+   "style": 298.9,
+   "layout": 28.5,
+   "paint": 45.4,
+   "other": 34.9,
+   "styles": [
+    {
+     "ms": 103,
+     "elements": 1155,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "$r:5177:24868",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449",
+      "measureLayoutExtents:5177:57192",
+      "YG:5176:37481"
+     ]
+    },
+    {
+     "ms": 9.6,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.6,
+     "elements": 25,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.4,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.5,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.4,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.3,
+     "elements": 23,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3,
+     "elements": 25,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 6.4,
+     "elements": 37,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.8,
+     "elements": 25,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.9,
+     "elements": 25,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.1,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.1,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.9,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.4,
+     "elements": 25,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8.3,
+     "elements": 45,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.1,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.8,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.4,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.4,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.5,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.1,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.6,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 20,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.2,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.2,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.9,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 3.2,
+     "elements": 22,
+     "script": "FunctionCall @index.js:5177:79458",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 31.3,
+     "elements": 759,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "frameRect:5177:81615",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:81452",
+      "frameRect:5177:81760",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 0.9,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "framePlace:5177:80947",
+      "updateMapTransform:5177:76541",
+      "s:5177:87535"
+     ]
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 500,
+    "ms": 500,
+    "k": 1,
+    "state": "connections|far||false|moving",
+    "script": 97,
+    "style": 298.9,
+    "layout": 28.5,
+    "paint": 45.4,
+    "other": 34.9,
+    "styles": [
+     {
+      "ms": 103,
+      "elements": 1155,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 9.6,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 23,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 6.4,
+      "elements": 37,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.8,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.9,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.1,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 25,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.3,
+      "elements": 45,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 20,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 22,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 31.3,
+      "elements": 759,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 700,
+    "ms": 200,
+    "k": 0.362,
+    "state": "connections|far||false|moving",
+    "script": 33.7,
+    "style": 3.3,
+    "layout": 0,
+    "paint": 18.5,
+    "other": 15.3,
+    "styles": [
+     {
+      "ms": 3.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 917,
+    "ms": 216.6,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 122.9,
+    "style": 13.2,
+    "layout": 6.9,
+    "paint": 41.5,
+    "other": 21.2,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 11.1,
+      "elements": 237,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 500,
+    "ms": 500,
+    "k": 1,
+    "look": "connections",
+    "style": 298.9,
+    "paint": 45.4,
+    "restyled": 3267
+   },
+   {
+    "at": 700,
+    "ms": 200,
+    "k": 0.362,
+    "look": "connections",
+    "style": 3.3,
+    "paint": 18.5,
+    "restyled": 1
+   },
+   {
+    "at": 917,
+    "ms": 216.6,
+    "k": 0.335,
+    "look": "connections",
+    "style": 13.2,
+    "paint": 41.5,
+    "restyled": 238
+   }
+  ],
+  "changes": [
+   {
+    "at": -10383,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": -917,
+    "k": 1,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 0,
+    "k": 1,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 917,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -10383,
+    "ms": 533.4,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -2850,
+    "ms": 7533,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -917,
+    "ms": 883.2,
+    "k": 1,
+    "look": "connections",
+    "script": 91.8,
+    "style": 539.1,
+    "layout": 52.4,
+    "paint": 129.2,
+    "other": 69.3,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 9,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 15,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 12,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 10,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 12,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 16,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 30,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87209"
+      ]
+     },
+     {
+      "ms": 441.9,
+      "elements": 2912,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 66.6,
+      "elements": 829,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 0,
+    "ms": 916.7,
+    "k": 1,
+    "look": "connections",
+    "script": 160.5,
+    "style": 589.3,
+    "layout": 82.3,
+    "paint": 51.7,
+    "other": 36.2,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 31.8,
+      "elements": 147,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 13.4,
+      "elements": 75,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.9,
+      "elements": 55,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 5,
+      "elements": 55,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9,
+      "elements": 53,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 51,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.1,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 12.2,
+      "elements": 53,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 5.7,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 6.1,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 12.1,
+      "elements": 68,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 28.2,
+      "elements": 107,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 12.4,
+      "elements": 76,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 13.1,
+      "elements": 77,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.8,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 17,
+      "elements": 55,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 54,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.8,
+      "elements": 53,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 5.5,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 6.3,
+      "elements": 55,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 13.8,
+      "elements": 93,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 25,
+      "elements": 123,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.1,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.8,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.3,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.5,
+      "elements": 54,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.8,
+      "elements": 53,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.9,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.2,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.1,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.9,
+      "elements": 54,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.9,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.5,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.5,
+      "elements": 63,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 4.9,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.8,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.3,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.1,
+      "elements": 56,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.3,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.7,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 61,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.2,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.5,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 57,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 6.9,
+      "elements": 55,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.5,
+      "elements": 60,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.1,
+      "elements": 60,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.8,
+      "elements": 58,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 62,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 10.3,
+      "elements": 62,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 8.5,
+      "elements": 65,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 9.2,
+      "elements": 59,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "VG:5176:33204",
+       "YG:5176:37599",
+       "kk:5176:31523",
+       "drawConnections:5177:57036",
+       ":5177:78771"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "YG:5176:37671",
+       "kk:5176:31523"
+      ]
+     },
+     {
+      "ms": 14.4,
+      "elements": 259,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 0,
+   "ms": 916.7,
+   "k": 1,
+   "state": "connections|far||false|moving",
+   "script": 160.5,
+   "style": 589.3,
+   "layout": 82.3,
+   "paint": 51.7,
+   "other": 36.2,
+   "styles": [
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "$r:5177:24868",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449",
+      "measureLayoutExtents:5177:57192",
+      "YG:5176:37481"
+     ]
+    },
+    {
+     "ms": 31.8,
+     "elements": 147,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 13.4,
+     "elements": 75,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.9,
+     "elements": 55,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 5,
+     "elements": 55,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9,
+     "elements": 53,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 2.4,
+     "elements": 51,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.1,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 12.2,
+     "elements": 53,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 5.7,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 6.1,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 12.1,
+     "elements": 68,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 28.2,
+     "elements": 107,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 12.4,
+     "elements": 76,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 13.1,
+     "elements": 77,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8.9,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.8,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 17,
+     "elements": 55,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8.9,
+     "elements": 54,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.8,
+     "elements": 53,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 5.5,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 6.3,
+     "elements": 55,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 13.8,
+     "elements": 93,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 25,
+     "elements": 123,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.1,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.8,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8.9,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.3,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.5,
+     "elements": 54,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.8,
+     "elements": 53,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.9,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.2,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.1,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.9,
+     "elements": 54,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.9,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.5,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.5,
+     "elements": 63,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 4.9,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.8,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.3,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.1,
+     "elements": 56,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.3,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.7,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 61,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.2,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.5,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 57,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 6.9,
+     "elements": 55,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.5,
+     "elements": 60,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.1,
+     "elements": 60,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.8,
+     "elements": 58,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 62,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 10.3,
+     "elements": 62,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 8.5,
+     "elements": 65,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 9.2,
+     "elements": 59,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "oP:5177:24415",
+      ":5177:25134",
+      "$r:5177:24899",
+      "aP:5177:24964",
+      "measureLayoutExtents:5177:74449"
+     ]
+    },
+    {
+     "ms": 1.1,
+     "elements": 1,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      "VG:5176:33204",
+      "YG:5176:37599",
+      "kk:5176:31523",
+      "drawConnections:5177:57036",
+      ":5177:78771"
+     ]
+    },
+    {
+     "ms": 0.6,
+     "elements": 1,
+     "script": "FunctionCall @index.js:5177:78713",
+     "stack": [
+      ":5176:33309",
+      ":5176:37778",
+      ":5176:37760",
+      "YG:5176:37671",
+      "kk:5176:31523"
+     ]
+    },
+    {
+     "ms": 14.4,
+     "elements": 259,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "frameRect:5177:81615",
+      "s:5177:86470"
+     ]
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 12,
+   "gaps": [
+    31,
+    22,
+    18,
+    40,
+    22,
+    24,
+    21,
+    650,
+    561,
+    135,
+    256
+   ]
+  }
+ }
+]
