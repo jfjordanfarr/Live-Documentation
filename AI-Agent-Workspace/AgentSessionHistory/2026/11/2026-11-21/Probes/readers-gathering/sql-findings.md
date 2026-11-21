@@ -185,6 +185,8 @@ A project reference is now graded between the manifests standing in the two proj
 
 Every cause was confirmed by reading its reader and the files its edges join. Two of the first round's apparent causes were wrong: Go's seven are no names used across a package's files, which the Go reader resolves, but the indexer's package symbol; and Python's extra is the package's `__init__.py`, which the reader links because the import runs it.
 
+As proposed; the root's rulings, after the verification below, changed the first row to a gap and took the last out of the ledger.
+
 | Cause | Kind proposed | Edges | Why that kind |
 | --- | --- | ---: | --- |
 | C and C++: a call, and a header's prototype, to the `.c` that defines the function. The reader draws the `#include` the file writes, with the names it uses; scip-clang records every use as a reference to the definition the build compiled. | grain, keep | 33 missing | which file defines a declared function is the build's choice of what it compiles and links, not any file's text; the header is what the source names. Drawing header to implementation by name is possible, and the root's to decide |
@@ -199,8 +201,17 @@ Every cause was confirmed by reading its reader and the files its edges join. Tw
 
 `npm run safe:commit`, without the browser, at the ledger's commit, passed whole: Live Docs generated and validated (1,229 files), lint and build, unit tests 3,001 in 222 files, integration tests 482 in 36 files, the documentation link enforcement and the three SlopCop audits. The one-minute load ran from 5.5 to 37 on 20 threads, sampled every 30 seconds; no test timed out.
 
+## The root's two rulings on the ledger
+
+The root accepted the second round and ruled on the two kinds left open; the table above is as proposed, and the ledger now holds the rulings.
+
+- **C's call to the file that defines a function is a gap, not grain.** The root's reason: "main.c includes store.h and calls a function store.c defines; the reader draws main.c → store.h and store.c → store.h. Asked 'what is reachable from main.c', the map answers with headers only, and asked 'is store.c dead code', it finds nothing that reaches it." The cause's sentence now says what is lost: a caller does not reach the file that implements what it calls. It is not mended in this landing; a rule (a prototype's one defining file in the workspace, say) is to be measured against scip-clang on real C repositories first, and the root ranks it with the work on breadth. The nested header and the inferred type stay gaps; Go's package symbol, Python's `__init__.py` and Rust's crate root stay grain.
+- **An edge a person asserted is no extra.** The comparison leaves out of the compiler's extras every edge the program's hand-verified list asserts, that list being what is true and the compiler cannot see. The estate's HTTP call left the ledger, and the third kind with it. The estate now reads 37 found, 0 missing, 0 extra.
+
+Not now, by the root's word: the field of `scip-edges.ts` that would grade Cargo's references as file edges, noted on the work item for after the branches merge.
+
 ## Open
 
 - **A three-part name to another database**: on the work item, beside the linked server's task.
 - **The C# adapter's SQL strings**: `bindSqlName` goes to the .NET builder at the merge. `sqlNameMatches`, which C# shares, already takes a schema-less object for `dbo`'s.
-- **The ledger's kinds** are proposals: the C header against its implementation above all, and whether the estate's HTTP extra should leave the comparison's extras.
+- **C's caller to the defining file**: a gap, waiting on a rule measured against scip-clang on real C repositories.
