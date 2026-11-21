@@ -37090,3 +37090,170 @@
   Ran 6 shell commands (ctrl+o to expand)
 ● Re-proof of the narrowed test is running (gate, then the focus spec's sixteen
   cases three times over); I continue when it reports.
+
+● Background command "Run the gate without the browser and the focus spec three
+  times on the narrowed case" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The re-proof came back with a second finding, so nothing has landed yet.
+
+  - Gate: green.
+  - Focus spec, three times over: 47 passed, 1 failed. This time the failure was
+    the original graph.ts case, on the same first-frame check: 482 ms once,
+    against a 400 ms bound (the other two runs read 365 and 276).
+
+  So the press itself is fixed (about 105–180 ms where main reads 590–670), but
+  the transition's first frame is now sometimes late on the standing case as
+  well. I can't narrow that check away; it is an existing threshold.
+
+  What I don't know yet is whether the fix made the first frame later, or
+  whether main has the same spread and it was hidden because the case always
+  failed earlier on the press time. I'm measuring that now: the same case twelve
+  times on main and twelve on the fix, under the same load, about six minutes.
+
+  - If main shows the same spread: the fix makes nothing worse and lands, with
+    the first frame as its own task.
+  - If the fix made it later: it stays on its branch as work in review, and I
+    close the session without it.
+
+● Background command "Measure the first frame on main and on the mend under the
+  same load, twelve runs each" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The first-frame fix makes the frame later (median 284 ms on main, 346 ms with
+  the fix, and 4 of 12 runs over the 400 ms bound), so it won't land tonight.
+  I'm filing the evidence on main, marking the task in review on its branch, and
+  closing. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Writing the outcome into the record, the work item and the summary now; then
+  the worktree clean-up and the closing commit.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Clean-up done: 36 worktrees removed, 82 GB down to 36 GB. Now finishing the
+  summary's close section and the old history caches.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Summary's close section is written; checking its times against git, then the
+  audits and the commit.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Evidence and the close are committed on main (76f2d8dbd). Now bringing the
+  history level with it, removing the two old caches, and rebuilding the
+  Explorer.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● History is level with main and the two old caches are gone; Explorer rebuilt.
+  Last steps: start a preview of the held-back fix for you, file my messages and
+  your export, final commit.
+
+  Ran 6 shell commands · 1 failed (ctrl+o to expand)
+
+● Final bookkeeping: correcting two details in the notes, then filing my
+  messages, the audits and the last commit.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The session is closed, and the press fix did not land: main has no product
+  change since the 22:09 UTC landing. The fix does what it was sent for, but it
+  makes the transition's first frame later, so it waits on a branch for one more
+  pass.
+
+  What was measured
+
+  The standing press test, twelve runs on main and twelve on the fix, under the
+  same load (medians):
+
+  ┌────────────────────────────────────────────────┬─────────┬─────────┐
+  │                                                │  main   │ The fix │
+  ├────────────────────────────────────────────────┼─────────┼─────────┤
+  │ Press of 2D, its own time                      │ 496 ms  │ 248 ms  │
+  ├────────────────────────────────────────────────┼─────────┼─────────┤
+  │ Press of 3D                                    │ 748 ms  │ 132 ms  │
+  ├────────────────────────────────────────────────┼─────────┼─────────┤
+  │ First frame after the transition starts, to 2D │ 284 ms  │ 346 ms  │
+  ├────────────────────────────────────────────────┼─────────┼─────────┤
+  │ First frame after the transition starts, to 3D │ 335 ms  │ 346 ms  │
+  ├────────────────────────────────────────────────┼─────────┼─────────┤
+  │ Runs with a first frame over its 400 ms bound  │ 0 of 12 │ 4 of 12 │
+  └────────────────────────────────────────────────┴─────────┴─────────┘
+
+  - Why it is held: landed as it is, the test that is always red on main (press
+    over 500 ms) would become red in some runs on the first-frame bound. A test
+    that fails only sometimes is worse to live with than one that always fails.
+  - Whole suite on the fix: 596 passed, 2 failed. The old red press case passed;
+    the two reds were the known settle case and the builder's new
+    larger-picture case, on that same first-frame bound.
+  - What the next pass does: find what now happens between the transition's
+    start and its first frame, mend it so the first frame is no later than on
+    main, then prove it again.
+
+  Corrections to what I told you
+
+  - At 23:37 UTC I said I accepted the fix. The builder's own record showed the
+    first frame within 18 ms of its bound on the larger picture, and I did not
+    weigh it.
+  - Your window may have shown a line saying the first-frame check "was never
+    inside its 400 ms bound, before or after the fix". That was true only of the
+    larger two-file picture, and I narrowed the new test on that assumption
+    before measuring. On the standing graph.ts case, main is inside the bound
+    and the fix sometimes is not.
+
+  To see it yourself
+
+  Open each link and press 2D, then 3D:
+
+  - main, on your server: http://localhost:8999/?view=local&mode=3d&node=package
+    s%2Fengine%2Fsrc%2Flive-docs%2Fgraph.ts
+  - The fix, on a server I started that ends with this session:
+    http://localhost:8767/?view=local&mode=3d&node=packages%2Fengine%2Fsrc%2Fliv
+    e-docs%2Fgraph.ts
+  - To serve the fix yourself: npx http-server
+    .claude/worktrees/landing/dist/explorer -p 8998 -c-1
+
+  The press should feel much quicker on the fix. On main the first frame already
+  comes about 0.3 s after the transition starts, the time in which the
+  directory outlines peel away, so that part of the motion is hardly visible
+  today either.
+
+  What the close did
+
+  - Summary: the day's summary (AI-Agent-Workspace/AgentSessionHistory/2026/11/S
+    ummarized/2026-11-19.1.SUMMARIZED.md) is complete, with a section on the
+    close.
+  - Work item: the press task is marked "review" in
+    explorer-holds-a-large-map.md
+    (AI-Agent-Workspace/Work/explorer-holds-a-large-map.md), with the branch
+    (press-landing), the numbers and what the next pass does.
+  - Worktrees: 36 of 62 removed, none by force, taking them from 82 GB to 36 GB.
+    The record lists the 26 kept and why; twelve are locked by this session and
+    fall to the next one.
+  - History: level with main; the two old caches are removed, as you said in
+    Turn 16.
+  - Record: your export is committed as you last saved it (00:36 UTC), and my
+    messages are filed from the log.
+  - Commits: 76f2d8dbd and 370d1a51b on main. Nothing is pushed and nothing is
+    running.
+
+  Still waiting on you
+
+  None of this blocks the next session's first work, which is the readers for
+  your kinds of code.
+
+  - The five facts for the road to December 7–8
+    (AI-Agent-Workspace/Work/README.md):
+    - Is your work code under git or TFS version control?
+    - Can the work machine reach the npm registry?
+    - What may leave that machine, and where will you present from?
+    - Roughly how much code is in the largest repository?
+    - Which browser, and does it have a graphics card?
+  - Git: a branch per dev day, merged into main only at verified landings — yes
+    or no? The guide's Git rule is unchanged until you answer.
+  - Work items: does the form serve?
