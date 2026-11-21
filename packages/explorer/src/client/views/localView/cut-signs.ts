@@ -2,7 +2,7 @@
  * The cut said at the edges (Tuning → 2D Layout → Cut Counted, a trial of 2026-11-21, the root's brief after blind
  * testers answered from a view that cut what a step had opened): at each edge of the frame past which what the last
  * step opened goes on, a small control with an arrow and the count of its cards that lie there. It is a focus stop, its
- * accessible name and tooltip say what it counts, and a press pans to those cards along that edge's axis. No sentence
+ * accessible name and tooltip say what it counts, and a press brings the nearest of those cards wholly into view. No sentence
  * of ours stands on the map: an icon and a number. Gone where nothing of it is cut. The arithmetic is camera-intent.ts's
  * `cutByEdge` and `cutPan`; this module draws the controls over the frame, as edge-signs.ts draws its fades.
  *
@@ -35,7 +35,7 @@ const ARROWS: Record<ViewEdge, string> = {
 /** The words a control carries for a screen reader and a resting pointer: what it counts, and where it takes the view. */
 export function cutSignName(count: number, edge: ViewEdge): string {
   const where = edge === "top" ? "above the view" : edge === "bottom" ? "below the view" : `past the view's ${edge} edge`;
-  return `${count} ${count === 1 ? "card" : "cards"} of what you opened ${where}: show ${count === 1 ? "it" : "them"}`;
+  return `${count} ${count === 1 ? "card" : "cards"} of what you opened ${where}: show ${count === 1 ? "it" : "the nearest"}`;
 }
 
 /** Makes the controls inside the view, after its layers so that they paint above the map; a press calls `onPress`. */

@@ -497,7 +497,7 @@ export class LocalViewController implements LocalViewApi {
     this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
     this.edgeSigns = createEdgeSigns(this.viewport);
-    // A sign's press pans along its edge's axis to the cards cut there, in the following camera's ease, which any input ends.
+    // A sign's press brings the nearest card cut at its edge wholly into view, in the following camera's ease, which any input ends.
     this.cutSigns = createCutSigns(this.viewport, (edge, cards) => {
       const frame = this.frameRect();
       this.easeFollowing(cutPan(cards, edge, this.mapTransform, frame), frame);
