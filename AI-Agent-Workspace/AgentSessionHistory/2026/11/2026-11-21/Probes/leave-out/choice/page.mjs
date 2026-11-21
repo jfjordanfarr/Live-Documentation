@@ -262,7 +262,8 @@ $("#prefill").addEventListener("click", () => {
 // Starting lists: offers, each with what it would do on this folder before it is pressed
 // ---------------------------------------------------------------------------
 
-const VISUAL_STUDIO_HEADING = "GitHub's VisualStudio.gitignore (CC0)";
+// The headings the page writes into the list: short, since each is a row's title in "Left out".
+const VISUAL_STUDIO_HEADING = "Visual Studio's list (GitHub, CC0)";
 const listingNow = () => (state.source.lazy ? listingOf(state.source) : { folders: state.source.folders, names: state.source.names });
 
 function proposedBlock() {
@@ -291,8 +292,7 @@ function offer(kind) {
   $("#prefill").setAttribute("aria-expanded", "false");
   if (kind === "visual-studio") addBlock(VISUAL_STUDIO_HEADING, visualStudioLines());
   else {
-    const proposed = proposedBlock();
-    addBlock(`From what the folders hold: ${count(proposed.count, "line")}`, proposed.lines);
+    addBlock("What the folders hold", proposedBlock().lines);
   }
 }
 document.querySelectorAll("[data-prefill]").forEach((button) => button.addEventListener("click", () => offer(button.dataset.prefill)));
@@ -387,19 +387,22 @@ document.querySelectorAll("[data-take]").forEach((button) => button.addEventList
     said.unshift("A .tfignore matches names without case, so your list now does too.");
   }
   state.foundSaid = said.length ? said.join(" ") : undefined;
-  const files = [[".gitignore", chosen.filter((file) => file.kind === ".gitignore").length], [".tfignore", chosen.filter((file) => file.kind === ".tfignore").length]].filter(([, n]) => n > 0);
-  const heading = `Taken in from the folder: ${files.map(([kind, n]) => count(n, `${kind} file`)).join(" and ")}`;
+  const heading = "The folder's own ignore files";
   const lines = [...git.lines, ...tf.lines];
   if (take === "use") setList(`### ${heading}\n${lines.join("\n")}\n`);
   else addBlock(heading, lines);
 }));
 
+/** One line saying how many `!` lines cannot keep what they name, opened on demand to the lines themselves. */
 function drawNotes(result) {
-  // One note at most, and the rest counted, so that the notes never push the list out of view.
-  const shown = result.notes.slice(0, 1);
-  $("#notes").replaceChildren(...shown.map((note) => element("li", { text: `Line ${note.number}, ${note.text}, cannot keep anything in ${note.folders[0]}/${note.folders.length > 1 ? ` or ${count(note.folders.length - 1, "more folder")}` : ""}, left out whole.` })),
-    result.notes.length > shown.length ? element("li", { class: "quiet", text: `and ${(result.notes.length - shown.length).toLocaleString("en")} more like it` }) : "");
-  $("#notes").hidden = result.notes.length === 0;
+  const notes = $("#notes");
+  notes.hidden = result.notes.length === 0;
+  if (notes.hidden) return;
+  const open = state.opened.has("notes");
+  const head = element("li", { class: "row" }, opener("notes", "the lines that cannot keep what they name", open, () => drawNotes(result)),
+    element("span", { class: "grow", text: `${count(result.notes.length, "! line")} cannot keep what ${result.notes.length === 1 ? "it names" : "they name"}: a folder above is left out whole` }));
+  notes.replaceChildren(head, ...(open ? result.notes.map((note) => element("li", { class: "note" }, element("span", { class: "number", text: String(note.number) }), " ", pathText(note.text),
+    element("span", { class: "quiet", text: ` · ${note.folders[0]}/${note.folders.length > 1 ? ` and ${count(note.folders.length - 1, "more folder")}` : ""}` }))) : []));
 }
 
 // ---------------------------------------------------------------------------
@@ -457,22 +460,23 @@ function kindsOf(kinds) {
 /** How many files of the kinds a reader reads these kinds hold. */
 const codeIn = (kinds) => [...kinds].reduce((sum, [kind, n]) => sum + (isCode(kind) ? n : 0), 0);
 
-/** The small sign beside a row that leaves out files a reader would read, named for whoever cannot see it. */
+/** The small sign beside a row that leaves out files a reader would read, with how many, named for whoever cannot see it. */
 function codeSign(n) {
   if (n === 0) return null;
   const words = `Leaves out ${count(n, "file")} a reader would read`;
-  return element("span", { class: "code-sign", role: "img", "aria-label": words, title: words }, icon("code"));
+  return element("span", { class: "code-sign", role: "img", "aria-label": words, title: words }, icon("code"), element("span", { text: n.toLocaleString("en") }));
 }
 
-/** A line's text with places to break after each `/`, so that a long path breaks between names, never inside one. */
-function pathText(text) {
-  const span = element("code", { class: "line-text" });
-  text.split("/").forEach((part, index, parts) => {
-    span.append(part + (index < parts.length - 1 ? "/" : ""));
-    if (index < parts.length - 1) span.append(document.createElement("wbr"));
-  });
-  return span;
+/** Text with places to break after each `/` and each `.` before a letter, so that a long path or name breaks between its parts, never inside one. */
+function breakable(tag, attributes, text) {
+  const node = element(tag, attributes);
+  for (const part of text.split(/(?<=\/|\.(?=[A-Za-z]))/u)) {
+    if (node.childNodes.length > 0) node.append(document.createElement("wbr"));
+    node.append(part);
+  }
+  return node;
 }
+const pathText = (text) => breakable("code", { class: "line-text" }, text);
 
 const filesAndFolders = (group) => [group.folders.length ? count(group.folders.length, "folder") : "", group.leftOut ? count(group.leftOut, "file") : "", group.folders.some((folder) => folder.files === null) ? "not looked inside" : ""].filter(Boolean).join(" · ");
 
@@ -488,7 +492,9 @@ function drawByBlock(result) {
       element("span", { class: "quiet", text: "always" }))));
   }
   const blocks = blocksOf(state.list).map((block) => {
-    const lines = result.lines.filter((group) => group.line.number >= block.first && group.line.number <= block.last).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+    // The lines that leave out files a reader would read first, most such files first; then the rest, largest first.
+    const lines = result.lines.filter((group) => group.line.number >= block.first && group.line.number <= block.last)
+      .sort((a, b) => codeIn(b.kinds) - codeIn(a.kinds) || b.leftOut - a.leftOut || b.folders.length - a.folders.length);
     const kinds = new Map();
     for (const group of lines) for (const [kind, n] of group.kinds) kinds.set(kind, (kinds.get(kind) ?? 0) + n);
     return { ...block, lines, kinds, leftOut: lines.reduce((sum, group) => sum + group.leftOut, 0), folders: lines.flatMap((group) => group.folders) };
@@ -551,7 +557,7 @@ function drawRead(result) {
       const open = state.opened.has(key);
       const item = element("li", {}, element("div", { class: "row" },
         opener(key, child.path, open, redraw),
-        element("span", { class: "grow", text: depth === 0 ? child.name : `${child.name}/` }),
+        breakable("span", { class: "grow" }, depth === 0 ? child.name : `${child.name}/`),
         element("span", { class: "counts", text: child.filesKept.toLocaleString("en") }),
         quietButton("leave", `${child.path}/`, () => addYours([folderPattern(child.path)]))));
       if (open) {

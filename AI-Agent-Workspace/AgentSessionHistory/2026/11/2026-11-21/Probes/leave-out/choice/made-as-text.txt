@@ -1,9 +1,10 @@
 Found 15 .tfignore files; taken into the list.
+Taken in: 15 .tfignore files.
 made: 76,899 files will be read · 15 files left out · 15 folders left out, not looked inside
 The list: 75 lines, names matched without regard to case.
 
 Left out, by block of the list:
-  Taken in from the folder: 15 .tfignore files  (15 folders · 15 files; .json 15 [read])
+  The folder's own ignore files  (15 folders · 15 files; .json 15 [read])
        6  Build/**/project.assets.json  (1 file; .json 1 [read])
       12  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
       18  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
@@ -38,4 +39,4 @@ Will be read, by top folder:
   expected                                        1
 
 To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
-Listed 0 folders in 3698 ms (listing 0 ms, deciding 936 ms).
+Listed 0 folders in 4561 ms (listing 0 ms, deciding 3553 ms).

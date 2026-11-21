@@ -3,16 +3,47 @@
 // `<label>-record.json`, so that no later run writes over it): a folder given through the folder input (automation
 // cannot press the picker or make a drop that reaches the page) with an empty list and its offers; the offer of what
 // the folders hold taken; the ignore files found added; GitHub's Visual Studio list added and its block opened; a kind
-// and a folder left out by their minus; a list tool's name shown on focus; and how long an edit takes to show, at full
-// speed and with the processor slowed four times on two cores. Only through the browser lane, the page built first:
-//   node look.mjs <folder> <label> <out folder>
+// and a folder left out by their minus; a list tool's name shown on focus. With `timing`, a run of its own whose pictures
+// are not kept: how long an edit takes to show, at full speed and with the processor slowed four times on two cores,
+// the slowed edit traced. Only through the browser lane, the page built first:
+//   node look.mjs <folder> <label> <out folder> [pictures|timing]
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const [folder, label, out] = process.argv.slice(2);
+const [folder, label, out, mode = "pictures"] = process.argv.slice(2);
+
+/**
+ * A trace's main-thread time in the page, summed by kind of work: each task's own length, and how long the thread
+ * stood idle between them over the traced window, so that time spent waiting on timers can be told from time worked.
+ */
+function summarize(events) {
+  const named = events.filter((event) => event.ph === "M" && event.name === "thread_name" && event.args?.name === "CrRendererMain");
+  const main = new Set(named.map((event) => `${event.pid}:${event.tid}`));
+  const onMain = events.filter((event) => main.has(`${event.pid}:${event.tid}`) && event.ph === "X" && typeof event.dur === "number");
+  const tasks = onMain.filter((event) => event.name === "RunTask" || event.name === "ThreadControllerImpl::RunTask");
+  const start = Math.min(...tasks.map((event) => event.ts));
+  const end = Math.max(...tasks.map((event) => event.ts + event.dur));
+  const worked = tasks.reduce((sum, event) => sum + event.dur, 0);
+  const byName = new Map();
+  for (const event of onMain) byName.set(event.name, (byName.get(event.name) ?? 0) + event.dur);
+  const ms = (us) => Math.round(us / 1000);
+  // A task's wall time (`dur`) against the time the thread was given the processor (`tdur`): the browser's throttling
+  // emulation, like a machine too busy to run the page, stretches the first and not the second.
+  const longest = tasks.reduce((most, event) => (event.dur > most.dur ? event : most), tasks[0]);
+  return {
+    windowMs: ms(end - start),
+    tasks: tasks.length,
+    tasksMs: ms(worked),
+    tasksOnTheProcessorMs: ms(tasks.reduce((sum, event) => sum + (event.tdur ?? 0), 0)),
+    longestTaskOnTheProcessorMs: ms(longest?.tdur ?? 0),
+    idleBetweenTasksMs: ms(end - start - worked),
+    longestTaskMs: ms(Math.max(...tasks.map((event) => event.dur))),
+    byNameMs: Object.fromEntries([...byName].sort((a, b) => b[1] - a[1]).slice(0, 16).map(([name, us]) => [name, ms(us)]))
+  };
+}
 fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch();
 const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
@@ -64,7 +95,7 @@ if (await page.isVisible("#found")) {
 await page.click("#prefill");
 await page.click('[data-prefill="visual-studio"]');
 await settled();
-const visualStudio = page.locator("#by-line > li.block", { hasText: "VisualStudio.gitignore" });
+const visualStudio = page.locator("#by-line > li.block", { hasText: "Visual Studio's list" });
 record.codeSigns = await page.$$eval("#by-line .code-sign", (signs) => signs.map((sign) => sign.getAttribute("aria-label")));
 if (await visualStudio.count()) {
   await visualStudio.locator(".twisty").first().click();
@@ -92,12 +123,25 @@ const edit = async (line) => {
     drawMs: await page.evaluate(() => window.choicePage.state.drawTimes)
   };
 };
-record.editFullSpeed = await edit("/nothing-here-at-full-speed/");
-const cdp = await context.newCDPSession(page);
-await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
-await cdp.send("Emulation.setHardwareConcurrencyOverride", { hardwareConcurrency: 2 });
-record.editSlowedFourTimesOnTwoCores = await edit("/nothing-here-slowed/");
-await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
+// How long an edit takes to show, on a run of its own (`timing`), so that no picture holds the lines it types: a line
+// added at the end of the list, at full speed, then with the processor slowed four times on two cores, that edit traced
+// by Chromium's own tracing and its main thread's time summed by kind of work.
+if (mode === "timing") {
+  record.editFullSpeed = await edit("/timing-line-at-full-speed/");
+  const cdp = await context.newCDPSession(page);
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+  await cdp.send("Emulation.setHardwareConcurrencyOverride", { hardwareConcurrency: 2 });
+  await browser.startTracing(page, { categories: ["devtools.timeline", "disabled-by-default-devtools.timeline", "v8", "blink"] });
+  record.editSlowedFourTimesOnTwoCores = await edit("/timing-line-slowed/");
+  const trace = JSON.parse((await browser.stopTracing()).toString("utf8"));
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
+  record.trace = summarize(trace.traceEvents ?? trace);
+  record.errors = errors;
+  fs.writeFileSync(path.join(out, `${label}-timing-record.json`), `${JSON.stringify(record, null, 1)}\n`);
+  console.log(JSON.stringify({ label, editFullSpeed: record.editFullSpeed, editSlowed: record.editSlowedFourTimesOnTwoCores, trace: record.trace }, null, 1));
+  await browser.close();
+  process.exit(0);
+}
 
 // A kind and a folder left out by their minus: each a line in the block "Yours" at the end of the list.
 const png = page.locator('#read [aria-label="Leave out every .png file"]');

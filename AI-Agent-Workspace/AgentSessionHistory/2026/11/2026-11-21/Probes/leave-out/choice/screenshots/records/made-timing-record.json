@@ -1,0 +1,119 @@
+{
+ "label": "made-timing",
+ "absent": [],
+ "handedAndDecidedMs": 60818,
+ "offers": [
+  "What these folders hold 48 lines · 92,400 files left out",
+  "GitHub's Visual Studio list 234 lines · 92,472 files left out"
+ ],
+ "found": "Found 15 .tfignore files, in 2 top folders",
+ "1-first": {
+  "totals": "103,329 files will be read",
+  "listLines": 0,
+  "blocks": [
+   "Nothing is left out."
+  ],
+  "footer": "listed by the browser first · 64,505 folder listings · listing 847 ms · deciding 955 ms · in all 4257 ms"
+ },
+ "2-proposed": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 48,
+  "blocks": [
+   "What the folders hold .dll 37,812 · .pdb 12,606 · .xml 12,524 8,694 208 folders · 92,400 files",
+   "1 other line of your list leaves out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 96 ms · in all 299 ms"
+ },
+ "foundSaid": "",
+ "3-added": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 123,
+  "blocks": [
+   "What the folders hold .dll 27,012 · .pdb 9,006 · .xml 8,924 6,279 193 folders · 65,985 files",
+   "The folder's own ignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 2,415 15 folders · 26,415 files",
+   "76 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 62 ms · in all 103 ms"
+ },
+ "codeSigns": [
+  "Leaves out 6,035 files a reader would read",
+  "Leaves out 2,415 files a reader would read",
+  "Leaves out 306 files a reader would read"
+ ],
+ "visualStudioLines": [
+  "191 [Oo]bj/ .cs 163 · .props 82 · .txt 82 244 81 folders · 572 files",
+  "167 [Dd]ebug/ .js 27 · .config 1 · .htm 1 29 1 folder · 29 files",
+  "193 [Ll]og/ .cs 22 22 3 folders · 22 files",
+  "377 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 11 14 files",
+  "194 [Ll]ogs/ .resources 3 · .xsd 1 1 folder · 4 files",
+  "438 *.mdf .mdf 2 2 files",
+  "254 *.pdb .pdb 1 1 file"
+ ],
+ "4-visual-studio-opened": {
+  "totals": "10,857 files will be read · 92,472 files left out",
+  "listLines": 357,
+  "blocks": [
+   "What the folders hold .dll 26,930 · .pdb 8,924 · .xml 8,924 6,035 112 folders · 65,413 files",
+   "The folder's own ignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 2,415 15 folders · 26,415 files",
+   "Visual Studio's list (GitHub, CC0) .cs 196 · .pdb 83 · .props 82 306 86 folders · 644 files 191 [Oo]bj/ .cs 163 · .props 82 · .txt 82 244 81 folders · 572 files 167 [Dd]ebug/ .js 27 · .config 1 · .htm 1 29 1 folder · 29 files 193 [Ll]og/ .cs 22 22 3 folders · 22 files 377 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 11 14 files 194 [Ll]ogs/ .resources 3 · .xsd 1 1 folder · 4 files 438 *.mdf .mdf 2 2 files 254 *.pdb .pdb 1 1 file",
+   "304 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 169 ms · in all 232 ms"
+ },
+ "editFullSpeed": {
+  "untilShownMs": 1902,
+  "decidedMs": 154,
+  "walkedMs": 210,
+  "countedMs": 31,
+  "drawMs": {
+   "gutter": 3,
+   "found": 1,
+   "offers": 0,
+   "notes": 0,
+   "leftOut": 5,
+   "read": 17
+  }
+ },
+ "editSlowedFourTimesOnTwoCores": {
+  "untilShownMs": 8335,
+  "decidedMs": 843,
+  "walkedMs": 7841,
+  "countedMs": 124,
+  "drawMs": {
+   "gutter": 12,
+   "found": 3,
+   "offers": 1,
+   "notes": 1,
+   "leftOut": 17,
+   "read": 58
+  }
+ },
+ "trace": {
+  "windowMs": 22015,
+  "tasks": 515,
+  "tasksMs": 16354,
+  "tasksOnTheProcessorMs": 16345,
+  "longestTaskOnTheProcessorMs": 8224,
+  "idleBetweenTasksMs": 5661,
+  "longestTaskMs": 8225,
+  "byNameMs": {
+   "RunTask": 16354,
+   "AsyncTask Run": 1210,
+   "v8.callFunction": 1207,
+   "TimerBase::run": 1181,
+   "TimerFire": 1180,
+   "WebFrameWidgetImpl::BeginMainFrame": 106,
+   "LocalFrameView::UpdateStyleAndLayout": 62,
+   "EventHandler::handleMouseMoveEvent": 61,
+   "WebFrameWidgetImpl::UpdateLifecycle": 60,
+   "LayoutView::HitTest": 60,
+   "MinorGC": 57,
+   "MajorGC": 55,
+   "LocalFrameView::RunStyleAndLayoutLifecyclePhases": 54,
+   "V8.GCFinalizeMC": 54,
+   "V8.GC_MARK_COMPACTOR": 54,
+   "V8.GCScavenger": 54
+  }
+ },
+ "errors": []
+}

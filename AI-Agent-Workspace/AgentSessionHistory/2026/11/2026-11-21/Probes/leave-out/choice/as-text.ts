@@ -38,7 +38,8 @@ async function main(): Promise<void> {
     if (tf.lines.length) ignoreCase = true;
     for (const difference of [...git.differences, ...tf.differences]) lines.push(`  Not carried exactly: ${difference}`);
     const kinds = [[".gitignore", found.filter((file) => file.kind === ".gitignore").length], [".tfignore", found.filter((file) => file.kind === ".tfignore").length]].filter(([, n]) => Number(n) > 0);
-    list = [`### Taken in from the folder: ${kinds.map(([kind, n]) => plural(Number(n), `${kind} file`)).join(" and ")}`, ...git.lines, ...tf.lines].join("\n");
+    lines.push(`Taken in: ${kinds.map(([kind, n]) => plural(Number(n), `${kind} file`)).join(" and ")}.`);
+    list = ["### The folder's own ignore files", ...git.lines, ...tf.lines].join("\n");
     result = await walk(source, { list, ignoreCase });
   }
   const t = totals(result);
@@ -47,6 +48,8 @@ async function main(): Promise<void> {
   // As the page shows it: a row a block of the list (from a `###` heading to the next), largest first, then its lines
   // that act, largest first; a kind a reader reads is marked `[read]`.
   const kindsOf = (kinds: Map<string, number>): string => [...kinds].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([kind, n]) => `${kind} ${n}${kind.startsWith(".") && hasReader(`file${kind}`) ? " [read]" : ""}`).join(", ");
+  // How many files of kinds a reader reads: the lines that leave such files out come first in their block.
+  const codeIn = (kinds: Map<string, number>): number => [...kinds].reduce((sum, [kind, n]) => sum + (kind.startsWith(".") && hasReader(`file${kind}`) ? n : 0), 0);
   const said = (group: { folders: unknown[]; leftOut: number }): string => [group.folders.length ? plural(group.folders.length, "folder") : "", group.leftOut ? plural(group.leftOut, "file") : ""].filter(Boolean).join(" · ");
   lines.push("", "Left out, by block of the list:");
   for (const group of result.fixed) lines.push(`  ${group.fixed === "version control" ? "Version control's own folder" : "The tool's own output"}  (${plural(group.folders.length, "folder")}, always)`);
@@ -59,7 +62,8 @@ async function main(): Promise<void> {
   });
   type Group = { line: { number: number; text: string }; folders: unknown[]; leftOut: number; kinds: Map<string, number> };
   const rows = blocks.map((block) => {
-    const acting = (result.lines as Group[]).filter((group) => group.line.number >= block.first && group.line.number <= block.last).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+    const acting = (result.lines as Group[]).filter((group) => group.line.number >= block.first && group.line.number <= block.last)
+      .sort((a, b) => codeIn(b.kinds) - codeIn(a.kinds) || b.leftOut - a.leftOut || b.folders.length - a.folders.length);
     const kinds = new Map<string, number>();
     for (const group of acting) for (const [kind, n] of group.kinds) kinds.set(kind, (kinds.get(kind) ?? 0) + n);
     return { ...block, acting, kinds, leftOut: acting.reduce((sum, group) => sum + group.leftOut, 0), folders: acting.flatMap((group) => group.folders) };

@@ -196,7 +196,7 @@ These were taken at 1,280 by 800 through the folder input (`choice/screenshots/`
 **Look at these first:**
 1. `made-blocks-1-first.png`: the empty list's offers on the made folder, "What these folders hold: 48 lines · 92,400 files left out" and "GitHub's Visual Studio list: 234 lines · 92,472 files left out", with the notice of 15 `.tfignore` files above.
 2. `nested-blocks-4-visual-studio-opened.png`: the blocks, largest first, and the Visual Studio block opened. Its lines that leave out code are marked: `[Oo]bj/` with **.cs 163**, `[Dd]ebug/` with **.js 27**, `[Ll]og/` with **.cs 22**, `**/[Pp]ackages/*` with **.cs 11**, each with the angle-bracket sign.
-3. `nested-blocks-5-minus.png`: the list's end in the gutter's numbers, `### Yours`, `*.png`, `/DNN Platform/Tests/`, and the block "Yours" in "Left out" with **.cs 369**.
+3. `nested-final-5-minus.png`, from the closing pictures: the list's end in the gutter's numbers, `### Yours`, `*.png`, `/DNN Platform/Tests/`, and the block "Yours" in "Left out" with **.cs 369**. The second milestone's own pictures of that step and the next held the two lines the timing typed into the list, so they were removed and taken again on the closing run.
 
 | Step | nested: read | made: read |
 | --- | ---: | ---: |
@@ -216,6 +216,37 @@ These were taken at 1,280 by 800 through the folder input (`choice/screenshots/`
 - Three kinds with their counts sometimes wrap.
 - The one note left above the list still takes three lines.
 - The slowed made folder is slow for a reason not yet found (above).
+
+### Closing the leg: five small things from the second milestone's pictures
+
+1. **No picture holds the measuring script's lines.** The timing now runs on its own (`look.mjs … timing`), and its pictures are not kept. The final pictures (`nested-final-*`, `made-final-*`) show only what a person did.
+2. **The code sign carries its number.** It reads "‹› 6,001" on what the folders hold, "‹› 255" on the Visual Studio list, and so on. Inside an opened block, the lines that leave out files a reader would read come first, most such files first, then the rest, largest first. The bold kinds stay.
+3. **The headings the page writes are short:** "What the folders hold", "The folder's own ignore files", "Visual Studio's list (GitHub, CC0)" and "Yours". "Left out" has the most width now (the columns go 0.95 : 1.55 : 0.85); nothing was made smaller. Each block's title now takes one line at 1,280 by 800.
+4. **The notes are one line,** for example "3 ! lines cannot keep what they name: a folder above is left out whole". It opens on demand to each line, its number and the folder it cannot reach into. In the left column that line wraps to two at 1,280 by 800.
+5. **The slowed made folder, traced.** A run of its own traced the slowed edit with Chromium's own tracing (`records/made-timing-record.json`), at a load near 3 once the other builders' work had passed. Two earlier tries were spoiled by load: one ran at a load near 31, the other timed out.
+
+   | Edit on the made folder | Shown after | Walk | of it, deciding | counting | drawing |
+   | --- | ---: | ---: | ---: | ---: | ---: |
+   | full speed | 1,902 ms | 210 ms | 154 ms | 31 ms | 26 ms |
+   | slowed four times, two cores | 8,335 ms | 7,841 ms | 843 ms | 124 ms | 92 ms |
+
+   - **What the trace shows.** The slowed edit's window holds 515 tasks over 22 s. One of them lasts 8.2 s, and the processor was given to the page's thread for all of it (8,224 of 8,225 ms), so these seconds are not idle time waiting on throttled timers.
+   - **What the page's own timing shows.** Of the walk's 7.8 s, the work the page times (deciding and counting) is under 1 s. That work slowed by its throttle's factor: deciding 5.5-fold, counting 4-fold. The walk as a whole slowed 37-fold. The excess, about 6.9 s, sits inside that one task, in the walk's own bookkeeping, which takes about 25 ms at full speed.
+   - **My reading.** The emulation stretches something there far beyond its factor; the page's own work does not grow to fill it. I did not attribute the 6.9 s to a function: that needs a JavaScript profile of the same run, which this trace's categories do not carry.
+   - **Not mended:** I found no real work of the page to remove. At full speed an edit on the made folder shows within 2 s, the 400 ms pause included.
+
+**The final pictures** (`choice/screenshots/`, counts in `records/nested-final-record.json` and `records/made-final-record.json`):
+- `nested-final-1-first` … `nested-final-6-tool-named`;
+- `made-final-1-first` … `made-final-6-tool-named`.
+
+On the made run, the step that opens the Visual Studio block missed its block because I had renamed the heading, so `made-final-4` shows the block closed. The nested run, taken after the mend, shows it opened.
+
+**The engine files that moved since `a11f7d007`:**
+- `packages/engine/src/tooling/leaveOut.ts`;
+- `leaveOut.test.ts`, `leaveOut.oracle.test.ts` and `leaveOut.tfvc.test.ts`;
+- their four Live Docs under `.mdmd/layer-4/packages/engine/src/tooling/`.
+
+They moved in `9d7bfdaf9` (the one list) and `ccdd6f9be` (its readying for speed). Nothing else under `packages/` changed.
 
 #### The command line's list: where it lives (a fork for the owner)
 

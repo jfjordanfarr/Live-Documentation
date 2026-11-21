@@ -1,17 +1,18 @@
 Found 25 .gitignore files and 15 .tfignore files; taken into the list.
+Taken in: 25 .gitignore files and 15 .tfignore files.
 nested: 15,594 files will be read · 22 files left out · 43 folders left out, not looked inside
 The list: 311 lines, names matched without regard to case.
 
 Left out, by block of the list:
-  Taken in from the folder: 25 .gitignore files and 15 .tfignore files  (43 folders · 22 files; .json 14 [read], .css 6 [read], .svg 2)
+  The folder's own ignore files  (43 folders · 22 files; .json 14 [read], .css 6 [read], .svg 2)
      257  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css  (6 files; .css 6 [read])
-     255  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg  (2 files; .svg 2)
      267  Build/**/project.assets.json  (1 file; .json 1 [read])
      273  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
      279  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
      285  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1 [read])
      291  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1 [read])
      297  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1 [read])
+     303  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1 [read])
           and 35 more lines that leave something out
 
 Will be read, by kind:
@@ -37,4 +38,4 @@ Will be read, by top folder:
   expected                                        1
 
 To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
-Listed 0 folders in 499 ms (listing 0 ms, deciding 200 ms).
+Listed 0 folders in 790 ms (listing 0 ms, deciding 659 ms).
