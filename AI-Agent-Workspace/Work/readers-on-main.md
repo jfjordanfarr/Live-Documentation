@@ -49,6 +49,8 @@ Found since, by the join's builder:
 11. The committed C# oracle reads a project's references by the same kind of pattern the reader does, so on the third finding it agrees with the fault. Ruled: MSBuild's evaluation is its source.
 12. scip-dotnet's symbols do not carry a generic type's arity, so it cannot grade the second finding. Ruled: the compiler's own binding, through the November 19 probe's program, is committed as the C# grader with a command of its own; where scip-dotnet cannot tell two types apart its expectation says ambiguous and counts neither way.
 
+Mended since the split on the PowerShell builder's branch (`worktree-agent-ae657f091b28fdf6d`, tip `eddb8116b`), reviewed by root: findings four to seven and the tenth, each with pwsh's own answer kept as its test's truth. The functions PowerShell defines without a module and its aliases are shipped names, the union of pwsh 7 (from a committed script) and Windows PowerShell 5.1 (from Microsoft's documentation, each name with its page and line); pwsh corrected root's ruling on aliases: an alias call is a call to the command the alias names, so `select` never reaches a function named `select` and `gci` reaches a loaded `Get-ChildItem`. The grader takes the shipped names from the pwsh it runs and says what it cannot measure (the rule itself, which files are tests, names only 5.1 has). `Import-Module $m` with `$m` fixed keeps its name. A command qualified by a shipped module is PowerShell's own, and otherwise a script's path only where the workspace holds one. What makes a file a test is as on `main` for every file but PowerShell's. The four corpora score figure for figure as before, and dbatools' two false notices are gone. Sent on: a run path written without its extension, a loop over written-out module names, the hand reading of 222 wires as a mode of the grader, and the entries file's line for the new script.
+
 Mended since the split on the SQL builder's branch (`worktree-agent-abde3d56d5d8a22dd`, tip `01af6b3a1`), reviewed by root: the eighth finding. A one-part name binds to its module's schema, then `dbo`, and to nothing where neither holds it; `database..name` reads as `database.dbo.name` does; a schema-less trigger takes its table's schema; a one-part name in DDL inside a module binds as a loose script's does. Microsoft's documentation, quoted with its pages in the grader's head, corrected root's ruling twice: inside a module the caller's default schema is never searched, and `database..name` never takes the module's schema. The grader now states T-SQL's order itself and can fail on it; on tSQLt, DNN's scripts, the provider scripts and dbatools no line changed. Asked for next: whether a written `dbo.X` binds to an object created as plain `X`, measured before it is built.
 
 Mended since the split, on `readers-gathering` at `3625bbfb6`, reviewed by root: the third finding (one shared step writes every XML comment over in spaces before any pattern runs, in project files, the XML form of a solution and the .NET configuration files; on DNN and mojoPortal no edge gained or lost, and 20 settings no longer read out of comments), and the C# oracle taking a project's references from MSBuild (no committed fixture's expectation moved). Root asked that no test start `dotnet`: a kept record stands in for the tool, as it does for `pwsh`.
@@ -84,6 +86,13 @@ The reviewer is given the code and the graders (ScriptDom for T-SQL, PowerShell'
 - evidence:
 
 Stale comments and run lines of the default mode; `--remove-superseded` removing the other mode's cache; the pool's record taking the last mode's lens; `glob` declared in the generator's manifest.
+
+### What makes a file a test, in each language
+- state: open
+- holds: not begun
+- evidence:
+
+One pattern serves every language but PowerShell: a path that holds the word `test` or `tests`, or a file's name in one of a few shapes. Nobody has measured it. Known wrong on real code: tSQLt's `Source/tSQLt.Tests.view.sql`, the framework's own view, is read as a test; whether `src/test-utils.tsx` is a test is a guess either way. PowerShell's rule was measured (Pester's own name, folders alone) and is confined to PowerShell's files since 2026-11-21. The oracle each language already has: its test runner's own rule for finding tests (Jest's and Vitest's patterns, pytest's, Go's `_test.go`, Pester's `.Tests.ps1`, an attribute in .NET). To be measured against those on real repositories before any rule changes.
 
 ### A query through a linked server reaches the Oracle piece
 - state: open

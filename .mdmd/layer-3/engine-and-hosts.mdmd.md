@@ -106,11 +106,21 @@ From those, the engine itself builds, once per run, the one object every reader 
 The scan becomes two steps. First the host lists the folder, and nothing is read but the ignore files the listing names. Then one function, pure (it reads nothing and depends only on what it is given) and shared by both hosts, decides what is left out, from what the listing holds:
 
 - the folder's `.gitignore` files, at every level;
-- its `.tfignore` files, by TFS's rules (a pattern reaches every subfolder unless it begins with `\`; `!` keeps what a pattern would leave out);
+- its `.tfignore` files, by TFS's rules (a pattern reaches every subfolder unless it begins with `\`; `!` keeps what a pattern would leave out; within a file the last matching line decides, and a subfolder's file adds to its parent's);
 - a starting list of build and package folders, offered for a folder with no ignore file (a .NET solution's `bin`, `obj` and `packages`);
 - a person's own patterns.
 
 Its answer is a list of what is kept and, for each thing left out, which rule left it out. So the choice can be shown to a person before the scan, by folder with counts (for instance a `packages/` folder, how many files it holds, and that the starting list left it out), and changed, on the command line or in the page alike. Only then is anything read. With a hundred thousand files, most of them in committed `packages` folders, reading first and choosing afterwards would read the packages whole. Today's scanning page does exactly that: it reads every file the person picked before the scan starts.
+
+**The function exists since 2026-11-21, and building it corrected this section in five ways** ([`leaveOut.ts`](../layer-4/packages/engine/src/tooling/leaveOut.ts.mdmd.md), nothing calling it yet; [its record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)). Its `.gitignore` half is held to git's own answer, rule for rule, on made trees and on three real folders (49,000 paths, none disagreeing); its `.tfignore` half to verdicts recorded from Microsoft's open-source TFVC client, compiled and run.
+
+- **The listing and the choice go together, folder by folder.** A walk asks of each folder, before going in, whether everything beneath it is left out, and does not list it if so. A hundred thousand package files are then never listed, which a listing made whole and judged afterwards would not spare a page.
+- **A left-out folder is left out whole, under either syntax** (root's ruling). Git never looks inside an ignored folder. TFVC has two readings: its change scanner looks inside and lets a `!` line keep a file there, and `tf add /recursive` does not look. The scan takes the second, and where a `!` line could have named something inside such a folder, the answer says so, for the person to see.
+- **Case is not one rule here.** A `.tfignore` matches names without regard to case, as TFVC does. A `.gitignore` matches as its repository is set (`core.ignorecase`, true for every repository made on Windows), which the host hands in. The starting list and a person's patterns match without regard to case.
+- **The starting list applies only where no ignore file stands at or above a folder.** It is offered for a folder that has none, and never overrules one.
+- **The folder the tool writes to is never scanned,** by a rule of its own, whatever the ignore files say.
+
+What a listing cannot tell is now counted: a file git tracks beneath a rule that would leave it out (11 in this repository, 26 in DNN), which the Node host can still ask git about and a page cannot; and the two excludes files git keeps outside the folder, which decided nothing on the folders measured.
 
 ### Each file is read once
 
