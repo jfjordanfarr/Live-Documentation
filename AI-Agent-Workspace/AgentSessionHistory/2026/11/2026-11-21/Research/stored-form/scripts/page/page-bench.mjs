@@ -1,10 +1,12 @@
 // Research of November 21, 2026 (not product code). What runs inside a measuring page: one design, its stored bytes
 // carried in the page as base64 in a block the browser does not run, and three things the driver asks of it.
 import { canonical, comparePaths, docPathOf, sha256Hex } from "../designs/common.mjs";
+import { keepApi } from "./page-keep.mjs";
 
 const hex = (bytes) => sha256Hex(bytes);
 
 export function bench(design) {
+  if (design.resumeFrom) window.__keep = keepApi(design);
   const scriptStartedMs = performance.now();
   let lastGraph;
   let lastBytes;

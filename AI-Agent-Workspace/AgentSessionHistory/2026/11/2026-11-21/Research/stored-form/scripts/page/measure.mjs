@@ -32,12 +32,26 @@ function rendererPeakMB() {
   return peak;
 }
 
+// Runs that keep a scan as it goes need a browser profile that outlives the browser, so that a second browser opened on
+// the same profile finds what the first set down:
+//   keep:<page>:<ndjson>:<profile folder>:<stop at, 0 to 1>   the scan kept in IndexedDB; the browser closed when the
+//                                                             page has handed over that share of the files
+//   resume:<page>:<ndjson>:<profile folder>                    a new browser on the profile: what is there, and on
+//   storage:<page>:<profile folder>:<megabytes>:<put|get>      the origin's quota, its private file system, a block put
+//                                                             in one browser and read back in the next
+//   savecopy:<page>:<ndjson>:<profile folder>:<out.html>       the scan kept, then the page's copy of itself downloaded
+const PROFILED = new Set(["keep", "resume", "storage", "savecopy"]);
 for (const run of runs) {
-  const [kind, pagePath, input, mode] = run.split(":");
+  const parts = run.split(":");
+  const [kind, pagePath, input, mode] = parts;
   const record = { kind, page: pagePath.split("/").pop(), mode, rate, cores: os.availableParallelism(), loadBefore: +os.loadavg()[0].toFixed(1) };
-  const browser = await chromium.launch({ args: ["--enable-precise-memory-info"] });
+  const profiled = PROFILED.has(kind);
+  if (profiled) delete record.mode; // its place holds the profile's folder, recorded by name below
+  const profile = kind === "storage" ? parts[2] : parts[3];
+  const persistent = profiled ? await chromium.launchPersistentContext(profile, { args: ["--enable-precise-memory-info"], acceptDownloads: true }) : null;
+  const browser = persistent ? { close: () => persistent.close().catch(() => {}) } : await chromium.launch({ args: ["--enable-precise-memory-info"] });
   try {
-    const context = await browser.newContext();
+    const context = persistent ?? (await browser.newContext());
     const page = await context.newPage();
     const errors = [];
     page.on("pageerror", (error) => errors.push(String(error).slice(0, 300)));
@@ -47,6 +61,7 @@ for (const run of runs) {
     const t0 = Date.now();
     await page.goto(`file://${pagePath}`, { timeout: 300000 });
     await page.waitForFunction(() => window.__bench !== undefined, null, { timeout: 300000 });
+    if (profiled) record.profile = profile.split("/").pop();
     record.pageReadyMs = Date.now() - t0;
     record.scriptStartedMs = Math.round(await page.evaluate(() => window.__bench.scriptStartedMs));
     if (kind === "read") {
@@ -60,6 +75,38 @@ for (const run of runs) {
       if (rate === 1) record.contentHash = await page.evaluate(() => window.__bench.contentHash());
     } else if (kind === "platform") {
       Object.assign(record, await page.evaluate(() => window.__bench.platform()));
+    } else if (kind === "storage") {
+      Object.assign(record, await page.evaluate(([mb, phase]) => window.__keep.storage(mb, phase), [Number(parts[3]), parts[4]]));
+    } else if (kind === "keep" || kind === "resume" || kind === "savecopy") {
+      await page.evaluate(() => { const i = document.createElement("input"); i.type = "file"; i.id = "facts"; document.body.append(i); });
+      await page.setInputFiles("#facts", input);
+      if (kind === "keep") {
+        const stopAt = Number(parts[4]);
+        const running = page.evaluate(() => window.__keep.keep()).then((r) => ({ finished: r }), (e) => ({ ended: String(e).slice(0, 120) }));
+        if (stopAt >= 1) Object.assign(record, (await running).finished ?? {});
+        else {
+          for (;;) {
+            const p = await page.evaluate(() => window.__keep.progress);
+            if (p >= stopAt) { record.closedAtShare = +p.toFixed(3); break; }
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          record.rendererPeakMbAtClose = rendererPeakMB();
+          await persistent.close(); // the tab, and the browser, closed mid-scan
+          record.closed = true;
+          void running;
+        }
+      } else if (kind === "resume") {
+        Object.assign(record, await page.evaluate(() => window.__keep.resume()));
+      } else {
+        Object.assign(record, await page.evaluate(() => window.__keep.keep()));
+        record.rendererPeakMbAtWrite = rendererPeakMB();
+        const downloading = page.waitForEvent("download", { timeout: 300000 });
+        Object.assign(record, await page.evaluate(() => window.__keep.saveCopy()));
+        const download = await downloading;
+        await download.saveAs(parts[4]);
+        record.savedBytes = fs.statSync(parts[4]).size;
+      }
+      if (!record.closed) record.rendererPeakMbAtWrite ??= rendererPeakMB();
     }
     for (const k of Object.keys(record)) if (typeof record[k] === "number" && !Number.isInteger(record[k])) record[k] = +record[k].toFixed(1);
     record.errors = errors.slice(0, 5);

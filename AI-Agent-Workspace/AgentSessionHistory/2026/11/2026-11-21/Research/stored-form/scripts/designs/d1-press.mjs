@@ -198,11 +198,24 @@ export function reader(bytes, header, { pathsSection, adjacencySection, blocks, 
     const it = u32Array(b, p, inCount);
     return (adjacency = { oo, ot, io, it });
   };
+  // Blocks of a fixed size (press/1 and /2), or of their own sizes, each naming its first id (press/3).
+  const sized = blocks.length > 0 && blocks[0].first !== undefined;
+  const blockOf = (id) => {
+    if (!sized) return Math.floor(id / header.block);
+    let lo = 0;
+    let hi = blocks.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (blocks[mid].first <= id) lo = mid;
+      else hi = mid - 1;
+    }
+    return lo;
+  };
   const loadBlock = async (k) => {
-    if (!blockCache.has(k)) blockCache.set(k, readStringList(await raw(blocks[k]), Math.min(header.block, header.strings - k * header.block)));
+    if (!blockCache.has(k)) blockCache.set(k, readStringList(await raw(blocks[k]), sized ? blocks[k].count : Math.min(header.block, header.strings - k * header.block)));
     return blockCache.get(k);
   };
-  const str = (id) => blockCache.get(Math.floor(id / header.block))[id % header.block];
+  const str = (id) => { const k = blockOf(id); return blockCache.get(k)[sized ? id - blocks[k].first : id % header.block]; };
   const loadChunk = async (k) => {
     if (!chunkCache.has(k)) {
       const b = await raw(chunks[k]);
@@ -219,7 +232,7 @@ export function reader(bytes, header, { pathsSection, adjacencySection, blocks, 
     }
     const needed = new Set();
     for (const { chunk, j } of located) scan(new Cursor(chunk.body, chunk.offsets[j]), needed);
-    const wanted = new Set([...needed].map((id) => Math.floor(id / header.block)));
+    const wanted = new Set([...needed].map(blockOf));
     for (const k of wanted) await loadBlock(k);
     return located.map(({ chunk, j }) => take(new Cursor(chunk.body, chunk.offsets[j]), str));
   };
