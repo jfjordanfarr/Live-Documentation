@@ -1,0 +1,128 @@
+{
+  "dnn/d6-ledger-indexed": {
+    "corpus": "dnn",
+    "write": {
+      "mode": "write",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "encodeMs": 1410.4,
+      "peakMbBeforeEncode": 195,
+      "peakMb": 311,
+      "bytes": 2978919,
+      "gzipBytes": 2974397,
+      "base64OfGzipBytes": 3965864,
+      "base64Bytes": 3971892,
+      "sha256": "e7437006d10c318a89c13a3342f02212f65513c72089c991e8d8dbc0ca522707"
+    },
+    "sameBytesTwice": true,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "readFileMs": 5.3,
+      "openMs": 1.2,
+      "inboundOfHub": 632,
+      "inboundMs": 99.4,
+      "reachable": 1208,
+      "reachableMs": 639.5,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 15.7,
+      "hubNeighbourhood": 661,
+      "hubNeighbourhoodMs": 1991.1,
+      "firstAnswerMs": 106.10000000000036,
+      "peakMbAfterQuestions": 472,
+      "allMs": 1123.5,
+      "files": 10776,
+      "peakMb": 544
+    },
+    "firstAnswerMsRange": [
+      94.1000000000003,
+      110.29999999999995
+    ]
+  },
+  "dnn5/d6-ledger-indexed": {
+    "corpus": "dnn5",
+    "write": {
+      "mode": "write",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "encodeMs": 7772.8,
+      "peakMbBeforeEncode": 794,
+      "peakMb": 1178,
+      "bytes": 15000121,
+      "gzipBytes": 14976075,
+      "base64OfGzipBytes": 19968100,
+      "base64Bytes": 20000164,
+      "sha256": "b7dc564c2b62264ca40b6c36daed508fdefc4e35bf143d6c08a68d4bb2c4a4d5"
+    },
+    "sameBytesTwice": true,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "readFileMs": 33.4,
+      "openMs": 2.2,
+      "inboundOfHub": 632,
+      "inboundMs": 127.9,
+      "reachable": 1283,
+      "reachableMs": 879.6,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 41,
+      "hubNeighbourhood": 661,
+      "hubNeighbourhoodMs": 11275.7,
+      "firstAnswerMs": 163.69999999999925,
+      "peakMbAfterQuestions": 1178,
+      "allMs": 9669.7,
+      "files": 53880,
+      "peakMb": 1548
+    },
+    "firstAnswerMsRange": [
+      148.70000000000107,
+      208.20000000000107
+    ]
+  },
+  "self/d6-ledger-indexed": {
+    "corpus": "self",
+    "write": {
+      "mode": "write",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "encodeMs": 626.8,
+      "peakMbBeforeEncode": 79,
+      "peakMb": 142,
+      "bytes": 1192608,
+      "gzipBytes": 1192976,
+      "base64OfGzipBytes": 1590636,
+      "base64Bytes": 1590144,
+      "sha256": "125387ad8db4ec3316d26a0449efd90451742acf5c1348e9eb170ff728d4366d"
+    },
+    "sameBytesTwice": true,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "indexed ledger",
+      "node": "v26.13.1",
+      "readFileMs": 2.6,
+      "openMs": 0.9,
+      "inboundOfHub": 72,
+      "inboundMs": 92.1,
+      "reachable": 171,
+      "reachableMs": 161.3,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 2.7,
+      "hubNeighbourhood": 73,
+      "hubNeighbourhoodMs": 439,
+      "firstAnswerMs": 95.69999999999999,
+      "peakMbAfterQuestions": 220,
+      "allMs": 246.1,
+      "files": 1134,
+      "peakMb": 254
+    },
+    "firstAnswerMsRange": [
+      79.1,
+      100.80000000000007
+    ]
+  }
+}

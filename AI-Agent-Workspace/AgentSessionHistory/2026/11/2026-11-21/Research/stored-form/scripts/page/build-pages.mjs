@@ -25,7 +25,8 @@ const designs = {
   "sqlite": ["d2-sqlite-page", "d2-sqlite-node"],
   "ledger": ["d3-ledger", "d3-ledger"],
   "parts": ["d4-parts", "d4-parts"],
-  "hdf5": ["d5-hdf5-page", "d5-hdf5-node"]
+  "hdf5": ["d5-hdf5-page", "d5-hdf5-node"],
+  "ledger-indexed": ["d6-ledger-indexed", "d6-ledger-indexed"]
 };
 // h5wasm's browser build, looked for beside sql.js in the same node_modules.
 const h5wasmEsm = path.resolve(sqlInline, "../../../h5wasm/dist/esm/hdf5_hl.js");

@@ -41,6 +41,31 @@ if (mode === "sqlite") {
   const files = db.prepare("SELECT count(*) AS n, max(path) AS last FROM files").get();
   const edges = db.prepare("SELECT count(*) AS n FROM edges").get();
   console.log(JSON.stringify({ bytesOnDisk: fs.statSync(a).size, journalLeft: fs.existsSync(`${a}-journal`), filesHeld: files.n, lastPath: files.last, edgesHeld: edges.n, resume: "go on after the last path held; the open batch of up to 512 files was rolled back" }));
+} else if (mode === "ledger-indexed") {
+  // The indexed ledger written as facts arrive, stopped after 60 % of the files: every piece set down is whole.
+  const { writer, piecesOf } = await import("./designs/d6-ledger-indexed.mjs");
+  const input = createInterface({ input: fs.createReadStream(a), crlfDelay: Infinity });
+  let w;
+  let total;
+  let n = 0;
+  for await (const line of input) {
+    if (!line) continue;
+    if (!w) {
+      const head = JSON.parse(line);
+      total = head.files;
+      w = writer({ root: head.root, baseLayer: head.baseLayer, extension: head.extension });
+      continue;
+    }
+    const [path, record, out] = JSON.parse(line);
+    await w.add(path, record, out);
+    n += 1;
+    if (n === Math.floor(total * 0.6)) break;
+  }
+  const cut = w.emitted();
+  const pieces = piecesOf(cut).filter((p) => p.kind === "lines");
+  const whole = pieces.reduce((s, p) => s + p.count, 0);
+  const text = zlib.gunzipSync(cut).toString("utf8");
+  console.log(JSON.stringify({ design: "indexed ledger", stoppedAfter: n, of: total, bytesKept: cut.length, piecesWhole: pieces.length, filesWhole: whole, resumeAfter: whole, gunzipReadsIt: text.length > 0 }));
 } else if (mode === "ledger") {
   // The ledger written as facts arrive, stopped after 60 % of the files: what its stream had let out by then.
   const { writer } = await import("./designs/d3-ledger.mjs");

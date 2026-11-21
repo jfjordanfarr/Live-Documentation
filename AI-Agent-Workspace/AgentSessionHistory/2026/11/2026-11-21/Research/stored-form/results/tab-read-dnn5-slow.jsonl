@@ -10,3 +10,4 @@ browser-lane: stored-form holds the lane (waited 124.2 s, cap 300 s)
 {"kind":"read","page":"read-ledger-dnn5.html","rate":4,"cores":2,"loadBefore":8.5,"pageReadyMs":2684,"scriptStartedMs":2522,"base64Ms":181.3,"carriedBytes":14079732,"openMs":11541.7,"inboundOfHub":632,"inboundMs":523,"firstAnswerMs":12246,"reachable":1283,"reachableMs":1093.2,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":600.5,"hubNeighbourhood":661,"hubNeighbourhoodMs":1572.2,"allMs":11131.9,"files":53880,"totalMs":26706,"heapMb":725,"errors":[],"rendererPeakMb":1298,"loadAfter":7.7}
 browser-lane: released after 31.0 s, exit 0
 browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 368.3 s, cap 300 s)

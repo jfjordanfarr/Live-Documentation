@@ -2,7 +2,12 @@
 
 Historical research of 2026-11-21, by a builder for the root, on branch `stored-form-research` from `70a3b9481`. It changed no product code and decides nothing.
 
-**Status: second milestone, in progress.** The Node and tab measurements are done at DNN's size, and Node's at five times it. Still running when this was written are the tab's at five times DNN; their rows say "pending".
+**Status: second milestone, in progress.** Done:
+- the Node measurements of all seven forms, at DNN's size and at five times it;
+- the tab's at DNN's size for six of them;
+- the tab's reads at five times DNN for most of them.
+
+Still waiting for the browser lane when this was written: the indexed ledger in a tab, and HDF5's and the parts' rows at five times. Those rows say "pending".
 
 ## The question, in the owner's words
 
@@ -12,7 +17,7 @@ On 2026-11-20, of the values a format must serve: "Reality will likely push back
 
 On 2026-11-21, of the machine: "Absolute crap VM ... 8GB of RAM and a handful of GB of remaining storage". "We want this to be able to run on absolute garbage, even if some amount of precomputation time with reasonable progress indicators is required to do so." Of scale: "over 100k files in just the portion of TFS I have cloned ... tens of thousands of code files sounds reasonable". Of the tool: "Each copy of Live Documentation Explorer should be capable of writing a new fresh blank copy of Live Documentation Explorer, eagerly ready to take in its first scan!" And: "Nothing leaves the machine".
 
-## 1. The answer first: six forms, what each costs and buys
+## 1. The answer first: seven forms, what each costs and buys
 
 Each form below holds the same facts: every field of every file of a scan, as today's graph holds them. Each was read back and held to the facts field by field, and every one read back identical. The numbers are for DNN Platform (10,776 files), read in a Chromium tab slowed four times on two processor cores, the nearer of the two conditions to the owner's machine. Five times DNN is in section 6.
 
@@ -23,7 +28,8 @@ Each form below holds the same facts: every field of every file of a scan, as to
 | **The database** (SQLite) | tables of files, symbols, dependencies and edges | 1.6 s, then 5.0 s | 6.19 MB, of which 0.99 MB is the SQLite engine | 17.2 s, 317 MB (in a tab the database is in memory, whole) | **yes, with any SQLite tool**; in Node it is read in place on disk | on disk (the command line): everything up to the last 512 files. In a tab: nothing |
 | **The ledger** | one fact per line, sorted by path, gzipped | 1.8 s, then 2.4 s | 3.74 MB | 15.4 s, 227 MB | **yes, with `grep`, `diff`, any editor** after unzipping | on disk: all but the last few dozen files |
 | **The store of parts** | the ledger cut by directory, each part named by its fingerprint | 0.17 s, but the whole map 27 s | 6.50 MB | 47.3 s, 196 MB | yes, part by part, with our small reader | each finished directory, if parts are kept as files |
-| **HDF5** (the owner's) | the press's sections held as HDF5 datasets | pending slowed; at full speed 0.11 s, then 0.37 s | 8.82 MB, of which 5.6 MB is its library | cannot, as built. All at once, at full speed: 2.5 s, 505 MB | **yes, with HDF5 tools** (h5py, HDFView) | not measured |
+| **The indexed ledger** (built last) | the ledger in gzip pieces of 256 files, each piece's header saying where it lies, then each file's dependents as lines | pending in the tab; in Node 0.11 s to the first answer (the plain ledger's is 0.82 s), then 1.1 s | 3.98 MB | pending in the tab; in Node 2.4 s, 245 MB | **yes, with `zcat`, `grep`, `diff`**, as the ledger | **every finished piece is whole and readable**, in a page or in Node |
+| **HDF5** (the owner's) | the press's sections held as HDF5 datasets | 0.82 s, then 2.6 s | 8.82 MB, of which 5.6 MB is its library | cannot, as built. All at once: 20.0 s, 384 MB | **yes, with HDF5 tools** (h5py, HDFView) | not measured |
 
 What the columns mean:
 - **Opens on a weak machine** is the time from the page's data to the answer of "what depends on `Globals.cs`" (632 files), and then to every fact of every file, as the Explorer loads a map today.
@@ -33,8 +39,9 @@ What the columns mean:
 What the table says, in plain words:
 - **JSON loses on every count but one.** It is slowest to open, cannot be written as facts arrive, and leaves nothing behind when a scan stops. What it keeps is that a person can read it.
 - **The press opens twenty times faster than JSON and carries the smallest page.** Written as facts arrive, it takes about as little memory in a tab as any form: 243 MB, against the ledger's 227 and the parts' 196. What it gives up is that a person can read it without our tool.
-- **The ledger keeps what the Markdown was best at:** `grep` and `diff` work on it. It is about JSON's size and opens about twice as fast.
+- **The ledger keeps what the Markdown was best at:** `grep` and `diff` work on it. At DNN's size it is about JSON's size and opens about twice as fast. At five times DNN its reader, as built, needs 1.3 GB in a tab, as JSON does.
 - **The database opens about twice as fast as JSON and answers questions in SQL with tools a person may have.** In a page it costs a megabyte of engine, and memory the size of the database.
+- **The indexed ledger, built last, keeps `grep` and answers as fast as the press.** Every finished piece survives a stopped scan. Loading its whole map costs what the plain ledger's does. Its tab numbers are pending.
 - **The store of parts is the form for many moments and many scans.** It is not the form for loading one map whole in a page.
 - **HDF5 writes different bytes each time** for the same facts, because it stamps times into the file and h5wasm offers no way to turn that off.
 
@@ -42,17 +49,17 @@ What the table says, in plain words:
 
 The owner's values, as the brief listed them (the eighth was the Markdown's strength), and one the root added for a stopped scan. "Bent" means the form gives up some of the value to buy another.
 
-| Value | JSON | Press | Database | Ledger | Parts | HDF5 |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1. Read by the page with nothing installed | holds | holds, 11 KB of reader | bent: 0.99 MB of WebAssembly engine | holds, 10 KB | holds, 13 KB | bent: 5.6 MB of WebAssembly library |
-| 2. Node on Windows, nothing compiled | holds | holds | holds: `node:sqlite` is built in (release candidate in Node 26) | holds | holds | holds: WebAssembly |
-| 3. Same bytes for the same facts | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | bent: the same within one engine; 6 header bytes differ between Node's and the page's engine | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | **bent**: two writes differ |
-| 4. A question without reading the whole | **bent**: everything is inflated and parsed | holds | holds; in Node truly, pages read from disk; in a page the whole is in memory | bent: the whole is inflated, but not parsed | holds | holds |
-| 5. Written by a page and carried in one HTML file | holds, all at once | holds, as facts arrive | holds, in memory | holds, as facts arrive | holds, as facts arrive | holds, all at once |
-| 6. The weak machine (bytes, memory, time to open) | worst | best | largest on disk (10 times the press), middling to open | middling | largest page | small file, heavy page (5.6 MB of library) |
-| 7. Many scans, many moments | one file each, nothing shared | one file each | one file each, or several attached in one SQL session | one file each; history as line deltas, the best measured | one pool, unchanged parts once | groups in one file |
-| 8. Usable without our tool | yes | **bent**: no | yes, with any SQLite tool | yes, best | partly | yes, with HDF5 tools |
-| (root's) A stopped scan can go on | no | not as built | yes, on disk | yes, on disk | yes, if parts are files | not measured |
+| Value | JSON | Press | Database | Ledger | Indexed ledger | Parts | HDF5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1. Read by the page with nothing installed | holds | holds, 11 KB of reader | bent: 0.99 MB of WebAssembly engine | holds, 10 KB | holds, 12 KB | holds, 13 KB | bent: 5.6 MB of WebAssembly library |
+| 2. Node on Windows, nothing compiled | holds | holds | holds: `node:sqlite` is built in (release candidate in Node 26) | holds | holds | holds | holds: WebAssembly |
+| 3. Same bytes for the same facts | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | bent: the same within one engine; 6 header bytes differ between Node's and the page's engine | holds, and the same in Node and Chromium | holds in Node; the tab pending | holds, and the same in Node and Chromium | **bent**: two writes differ |
+| 4. A question without reading the whole | **bent**: everything is inflated and parsed | holds | holds; in Node truly, pages read from disk; in a page the whole is in memory | bent: the whole is inflated, but not parsed | holds | holds | holds |
+| 5. Written by a page and carried in one HTML file | holds, all at once | holds, as facts arrive | holds, in memory | holds, as facts arrive | holds, as facts arrive | holds, as facts arrive | holds, all at once |
+| 6. The weak machine (bytes, memory, time to open) | worst | best | largest on disk (10 times the press), middling to open | middling at DNN, 1.3 GB to read at five times | about the ledger's size; pending in the tab | largest page | small file, heavy page (5.6 MB of library) |
+| 7. Many scans, many moments | one file each, nothing shared | one file each | one file each, or several attached in one SQL session | one file each; history as line deltas, the best measured | as the ledger | one pool, unchanged parts once | groups in one file |
+| 8. Usable without our tool | yes | **bent**: no | yes, with any SQLite tool | yes, best | yes, as the ledger | partly | yes, with HDF5 tools |
+| (root's) A stopped scan can go on | no | not as built | yes, on disk | yes, on disk, read by Node | **yes, every finished piece**, in a page or in Node | yes, if parts are files | not measured |
 
 ## 3. The data's shape
 
@@ -155,6 +162,11 @@ Each form is one module under [`scripts/designs/`](scripts/designs/), and each r
   - The `diff` of two ledgers is the change in the facts.
   - It stores no adjacency: the wires are read from the edge lines.
 - **The store of parts** ([`d4-parts.mjs`](scripts/designs/d4-parts.mjs)): the ledger cut by directory, each part named by the SHA-256 of its lines. One file holds many moments or many scans, with every unchanged part once.
+- **The indexed ledger** ([`d6-ledger-indexed.mjs`](scripts/designs/d6-ledger-indexed.mjs)), built late in this leg when the measurements pointed at it. It is the ledger's lines written as a run of gzip pieces, one per 256 files.
+  - Each piece carries in its gzip header (the optional "extra" field, which `gunzip` ignores) its compressed length, the first path it holds, and how many files.
+  - After the files' pieces come pieces of lines such as `["DNN Platform/Library/Common/Globals.cs","I",[…the 632 files that depend on it…]]`.
+  - To `zcat`, `gzip -d` and `grep` the file is one text; `gzip -t` passes it.
+  - A page hops from header to header without inflating anything, then inflates only the pieces a question needs.
 - **HDF5** ([`hdf5-core.mjs`](scripts/designs/hdf5-core.mjs), with [`d5-hdf5-node.mjs`](scripts/designs/d5-hdf5-node.mjs) and [`d5-hdf5-page.mjs`](scripts/designs/d5-hdf5-page.mjs)): the press's own sections held as named HDF5 datasets, each chunked and deflated by HDF5's filter.
   - HDF5, not our layout, provides the container, its table of contents and the partial reads.
   - The wires are four arrays of numbers that any HDF5 tool shows as they are.
@@ -175,7 +187,8 @@ Each table is printed from the raw results by `node scripts/tables.mjs results`.
 | Database (sql.js) | 6.19 MB | 989 KB | 335 ms | 1.6 s | 1.7 s | 5.0 s | 349 MB |
 | Ledger | 3.74 MB | 10 KB | 396 ms | 1.8 s | 0.8 s | 2.4 s | 381 MB |
 | Parts | 6.50 MB | 13 KB | 31 ms | 166 ms | 9.8 s | 27 s | 443 MB |
-| HDF5 | 8.82 MB | 5.6 MB | 109 ms | pending | pending | pending | 249 MB at full speed |
+| HDF5 | 8.82 MB | 5.6 MB | 109 ms | 815 ms | 2.7 s | 2.6 s | 231 MB |
+| Indexed ledger | 3.98 MB | 12 KB | pending | pending | pending | pending | pending |
 
 The parts' whole map is slow in a page because the browser's own decompressor is started once per part (2,087 parts here), and each start costs time a slowed tab feels. The press starts it about 50 times.
 
@@ -200,10 +213,21 @@ This is the root's test of growth: a form fine at ten thousand files that needs 
 | JSON gzipped | 18.3 MB | **25.8 s** | 6 ms | (in the first) | **1,309 MB** | cannot | pending |
 | Press | 9.20 MB | 1.1 s | 3.4 s | 17.8 s | 347 MB | (as below) | pending |
 | Press, written as facts arrive | 9.10 MB | 1.0 s | 1.8 s | 13.0 s | 351 MB | 45.9 s, 305 MB | (not this way) |
-| Database (sql.js) | 27.1 MB | 7.2 s | 2.4 s | 26.0 s | 819 MB | pending | pending |
-| Ledger | 18.8 MB | pending | pending | pending | pending | pending | pending |
-| Parts | 33.2 MB | pending | pending | pending | pending | pending | pending |
-| HDF5 | 15.5 MB | pending | pending | pending | pending | (cannot, as built) | pending |
+| Database (sql.js) | 27.1 MB | 7.2 s | 2.4 s | 26.0 s | 819 MB | **132 s, 854 MB** | pending |
+| Ledger | 18.8 MB | **12.2 s** | 1.6 s | 11.1 s | **1,298 MB** | 59.5 s, 314 MB | pending |
+| Parts | 33.2 MB | pending | pending | pending | pending | more than 160 s: cut by the lane's five-minute hold before it finished | pending |
+| HDF5 | 15.5 MB | 1.5 s | 1.9 s | 13.0 s | 395 MB | (cannot, as built) | pending |
+| Indexed ledger | 20.0 MB | pending | pending | pending | pending | pending | (not this way) |
+
+**What grows out of proportion, read in a tab at five times DNN:**
+- **JSON:** 26 s to the first answer and 1.3 GB, because it must inflate and parse everything first.
+- **The ledger, as its reader is built:** 12 s and 1.3 GB. The reader holds the whole text as one string and indexes its lines.
+  - A ledger compressed in ranges of lines, as the press compresses its chunks, would not need that.
+  - But then it is no longer one gzip that a person unzips and greps.
+- **The press:** 1 s to the first answer and about 350 MB, from a page of 9.1 MB. HDF5, which holds the press's own sections, grows the same way (1.5 s, 395 MB), from a page of 15.5 MB.
+- **The database:** 7 s and 819 MB, the database whole in the tab's memory.
+- **Writing as facts arrive grows gently for the press and the ledger:** about 310 MB at five times DNN, against about 235 MB at DNN.
+- **The database written in a tab does not grow gently:** 317 MB at DNN, 854 MB and more than two minutes at five times. In a page the whole database lives in the WebAssembly memory and is copied out whole at the end. In Node, on disk, the same writing takes 92 MB.
 
 ### Node, DNN and five times DNN
 
@@ -218,9 +242,12 @@ Each read is cold, in a fresh process, the median of three. "Write peak" here is
 | Database, in place on disk | 29.6 MB | **20 ms** | 0.58 s | 149 MB | **162 ms** | 4.0 s | 636 MB |
 | Ledger | 2.80 MB | 820 ms | 0.57 s | 14.08 MB | 4.1 s | 3.0 s | 1,230 MB |
 | Parts | 4.87 MB | 83 ms | 1.6 s | 24.91 MB | 340 ms | 13.1 s | 896 MB |
+| Indexed ledger | 2.98 MB | 106 ms | 1.1 s | 15.00 MB | **164 ms** | 9.7 s | **1,548 MB** |
 | HDF5 | 2.41 MB | 214 ms | 0.55 s | 7.46 MB | 379 ms | 2.9 s | 404 MB |
 
 HDF5 wrote different bytes on its two writes, on every corpus; every other form wrote the same bytes twice.
+
+The indexed ledger answers a question as fast as the press: "what depends on" is one line in one piece. Loading its whole map costs what the plain ledger costs, since every line is JSON to parse: 1.5 GB at five times DNN as its reader is built, against the press's 388 MB. Its reader is the simplest that works. It finds a file's lines by searching a piece's text, which also makes the hub's Local Map slow (2.0 s at DNN against the press's 0.3 s); a reader that indexed each piece once would do better, and was not built.
 
 ### Writing in Node as facts arrive, against all at once
 
@@ -233,6 +260,7 @@ From a file of one line per file ([`scripts/run-stream.mjs`](scripts/run-stream.
 | Database, on disk | 2.3 s, 288 MB | 2.8 s, **76 MB** | 8.5 s, 1,033 MB | 27.7 s, **92 MB** |
 | Ledger | 2.4 s, 461 MB | 2.6 s, 146 MB | 22.2 s, 1,623 MB | 25.6 s, 185 MB |
 | Parts | 3.2 s, 344 MB | 3.9 s, 252 MB | 25.6 s, 910 MB | 15.8 s, 418 MB |
+| Indexed ledger | (not this way) | 2.4 s, 245 MB | (not this way) | 11.5 s, 460 MB |
 
 Every output was read back identical to the facts. The ledger and the parts wrote the same bytes both ways; the press and the database differ between the two ways by design (section 5).
 
@@ -255,6 +283,7 @@ The proposal for the engine and its hosts (`.mdmd/layer-3/engine-and-hosts.mdmd.
 | Database | **yes** | nothing on disk; in a page, the whole database in memory | none: a file's number is given when its path is first met, even as an edge's target |
 | Ledger | **yes**, and its bytes are the same as written all at once (checked by hash, in Node and in the tab) | nothing but the compressor's window | **path order, strictly**. Otherwise its lines must be sorted at the end: all held, or sorted runs merged |
 | Parts | **yes**, the same bytes as all at once | each directory still open, and the wires | path order, or files grouped by directory |
+| Indexed ledger | **yes**; its dependents' pieces are written at the end | the current 256 files' lines, the paths, the wires | path order, as the ledger |
 | HDF5 | **no**, as built: h5wasm writes one dataset at a time from a whole array. HDF5 can extend chunked datasets, which was not tried | everything | none |
 
 **Where this research meets the proposal's sink.** It does not contradict it, with two conditions the proposal does not yet state:
@@ -267,6 +296,7 @@ The proposal for the engine and its hosts (`.mdmd/layer-3/engine-and-hosts.mdmd.
 
 - **The database on disk** (the command line) keeps every batch committed before the stop: 6,144 of the 6,465 files handed over, with batches of 512. The open batch is rolled back when the file is next opened. The scan can go on after the last path held.
 - **The ledger on disk**, appended to as it is made, holds a prefix of the gzip stream. Node's zlib reads it back up to the cut: 6,376 of the 6,465 files whole, the rest still in the compressor's window when it stopped. The scan can go on after the last whole file. A page's `DecompressionStream` refuses a cut stream; the reading back is Node's.
+- **The indexed ledger**, appended to as it is made, holds every finished piece whole: 6,400 of the 6,465 files handed over, in 25 pieces. It is a valid gzip file as it stands: `gunzip` reads it, and so does our reader, which hops its headers. The scan can go on after the last piece, in a page as in Node, since no cut stream need be inflated.
 - **The press**, appended to as it is made, holds its compressed sections but not the footer that says where they are. As built, it cannot be read. A label of a few bytes before each section (its kind and length) would make it readable and resumable. Not built.
 - **The parts** hold each finished directory, whole and named, if each part is written as a file of its own. In one file they are as the press.
 - **JSON** holds nothing until the end.
@@ -327,7 +357,7 @@ Directory parts share three quarters of themselves, yet save only a quarter of t
 
 SQLite was this product's graph store and was removed in three commits: on 2026-01-12 (`0d89e857`), its schema on 01-13 (`cb35a274`), and its last script on 01-15 (`59665f98`). The decisions log records "replaced by the mirror itself; 'Live Docs ARE the database.'" The session of 01-12 gives the reasons:
 
-1. **It duplicated the docs.** The agent's words, agreed by the owner: "Two systems: generation pipeline + SQLite graph. Duplicated edge knowledge." It also held a second, hard-coded idea of what a code file is: the owner asked, "one would supposedly need _two separate configurations_ to determine what is and what is not a code file, no?" **Expired for a form that is the one store with Markdown only exported.** It would hold again if Markdown stayed a store beside it.
+1. **It duplicated the docs.** In the agent's words that day, on the path the owner took: "Two systems: generation pipeline + SQLite graph. Duplicated edge knowledge." It also held a second, hard-coded idea of what a code file is: the owner asked, "one would supposedly need _two separate configurations_ to determine what is and what is not a code file, no?" **Expired for a form that is the one store with Markdown only exported.** It would hold again if Markdown stayed a store beside it.
 2. **Its consumer went away.** The ripple analyzer and the persisted acknowledgements ended when the owner asked: "could detection of link breakages -- broken links between files (let's say that the user changes the name on a CSS file depended on by an HTML file) be **stateless**? If so, the entire question about persistence becomes moot." **Does not apply.** The stored facts are derived, not a person's state. Every form here is a cache that must prove itself fresh, which the trial already gives up: the 2026-09-28 reason that the index "is not a cache".
 3. **The native module.** In October 2025 `better-sqlite3` was built for the wrong runtime, and it crashed Windows tests under parallel workers ("No concurrency in the unit tests, no more problems", 2025-10-25). **Expired for Node.** `node:sqlite` is part of Node, with nothing compiled. In a page, sql.js is 0.99 MB of script.
 
@@ -351,19 +381,40 @@ What counts for it:
 - **HDF5 written as facts arrive** (chunked datasets extended one file at a time), and HDF5 in a tab at five times DNN. The latter is pending.
 - **A Chromium page writing progressively into IndexedDB** or a picked folder, and reading it back after a closed tab. Only that IndexedDB opens was measured.
 - **The press made resumable** by labelling its sections. This is an argument, not built.
+- **The indexed ledger in a tab**, slowed, at DNN and at five times. It was built last and was still waiting for the browser lane at this writing.
+- **Parts and the forms written all at once, in a tab at five times DNN.** Their runs were cut by the lane's five-minute hold, or given up to make room for the indexed ledger's. Node's figures at that size stand in.
 - **Windows itself.** Every run was Linux. Nothing here depends on the file system's case or on native code, except `node:sqlite`, which ships inside Node.
 
 ## 13. Recommendation (the builder's, apart from the findings)
 
-Pending the five-times tab rows. The leaning so far, which the root has not adopted:
-- **The press as the stored form**, written as facts arrive, in the page and beside the scan. It opens fastest from memory, carries the smallest page, needs no library, writes as facts arrive in little memory, and its bytes are the same in Node and Chromium.
-- **A label before each section**, so that a stopped scan's prefix can be read and continued.
-- **The ledger as the one-way export.** It is the form a person can `grep` and `diff`, and the history's natural delta form.
+A few rows of the tab measurements were still pending when this was written. None of them can change the press's numbers, which are in. The root has not adopted this.
 
-**What would overturn it:**
-- **Usable without our tool ranking above size and the page's weight.** Then the ledger becomes the stored form: about 30 % larger than the press, and ten times slower to the first answer in a slowed tab, though still under two seconds. On the command line alone, the database becomes the stored form.
-- **A five-times tab row showing the press's memory or time growing out of proportion.**
-- **The engine unable to hand facts over in path order**, which costs the press a sort at the end, and costs the ledger everything.
+**What I would choose:**
+- **The press, written as facts arrive, as the stored form in both hosts.** It is the one form whose numbers stay in proportion at five times DNN in a slowed tab:
+  - 1 s to the first answer;
+  - about 350 MB to read;
+  - about 300 MB to write;
+  - a page of 9.1 MB for 53,880 files.
+
+  It needs no library. Its bytes are the same in Node and Chromium. What it bends is the eighth value: a person cannot read it without our tool.
+- **Two small additions to it, neither built:**
+  - a label of a few bytes before each section, so that a stopped scan's prefix can be read and continued;
+  - the hash of its uncompressed sections in its footer, so that it names its content and two scans compare without inflating them.
+- **The indexed ledger as the one-way export**, the form a person can `zcat`, `grep` and `diff`. A person who wants the facts as text gets them in one file. "What depends on X" is one line of it, and a stopped export leaves every finished piece readable. The ledger is also the history's natural delta form: 1.92 MB for five moments against 5.16 MB.
+- **One stored form, not two.** Keeping the press and a ledger both as stores, each fresh, would be the duplication SQLite was removed for in January.
+
+**The near rival: the indexed ledger as the stored form itself.** Built last in this leg, it did what I hoped in Node:
+- the first answer as fast as the press (106 ms at DNN, 164 ms at five times);
+- a stopped scan resumable from every finished piece, in a page as in Node;
+- `grep` intact.
+
+What it did not do is load a whole map cheaply. Every line is JSON to parse: 1.1 s and 544 MB at DNN, 9.7 s and 1.5 GB at five times in Node, against the press's 0.4 s and 2.4 s. The Explorer loads a whole map today, so the press stays my choice. Its numbers in a slowed tab are pending, and a better reader could narrow the gap.
+
+**What would overturn the choice:**
+- **The owner ranking "usable without our tool" above the time and memory of loading a whole map.** Then the indexed ledger is the stored form: about 40 % larger than the press at DNN, as quick to a first answer, resumable, and readable, at the cost of the whole map's load.
+- **The Explorer ceasing to load whole maps**, reading one neighbourhood at a time instead. Then the indexed ledger's weak point no longer matters, and it should be the stored form.
+- **Only the command line mattering.** Then the database is the stored form: the fastest first answer read in place, the least memory to write, resumable, and queryable in SQL.
+- **The engine unable to hand facts over in path order.** That costs the press a sort of its path table at the end, and costs the ledger a sort of everything.
 
 ## 14. Files, and how to run everything again
 
@@ -383,4 +434,4 @@ From the repository root after `npm ci` and `npm run build`, with the scratch fo
 | A tab | `node scripts/browser-lane.mjs --label stored-form -- [taskset -c 0,1] node <this folder>/scripts/page/measure.mjs <rate> read:<page>:<shape.json> write:<page>:<ndjson>:<stream\|gather> platform:<page>` |
 | The tables | `node scripts/tables.mjs results` |
 
-The raw results are in [`results/`](results/): `node.json`, `node-hdf5.json`, `stream-node.json`, `history.json`, `sqlite-hosts-dnn.json`, `stopped.jsonl`, and `tab-*.jsonl`, one line per tab run. The tab's files hold every run made, including the lane's own lines.
+The raw results are in [`results/`](results/): `node.json`, `node-hdf5.json`, `node-indexed.json`, `stream-node.json` (the indexed ledger's two writes as facts arrive are in `stream-indexed.jsonl`), `history.json`, `sqlite-hosts-dnn.json`, `stopped.jsonl`, and `tab-*.jsonl`, one line per tab run. The tab's files hold every run made, including the lane's own lines.

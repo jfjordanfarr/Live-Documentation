@@ -10,7 +10,7 @@ const mb = (b) => (b === undefined ? "" : `${(b / 1e6).toFixed(2)} MB`);
 const s = (ms) => (ms === undefined ? "" : ms >= 1000 ? `${(ms / 1000).toFixed(1)} s` : `${Math.round(ms)} ms`);
 const row = (cells) => `| ${cells.join(" | ")} |`;
 
-const node = { ...read("node.json"), ...read("node-hdf5.json") };
+const node = { ...read("node.json"), ...read("node-hdf5.json"), ...read("node-indexed.json") };
 console.log("\n## Node, cold reads (median of three) and writes\n");
 console.log(row(["Corpus / design", "On disk", "Gzipped", "Write", "Write peak", "Same bytes twice", "Read back identical", "First answer", "Reachable", "Hub's Local Map", "Whole graph", "Read peak"]));
 console.log(row(Array(12).fill("---")));
