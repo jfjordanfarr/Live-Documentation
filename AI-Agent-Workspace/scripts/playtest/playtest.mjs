@@ -41,11 +41,10 @@ if (taskId && !task) { console.error(`no task ${taskId} in tasks.json`); process
 // The main checkout's built Explorer, also when this script runs from a worktree.
 const mainCheckout = path.dirname(execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'], { cwd: here, encoding: 'utf8' }).trim());
 // A page that is not the Explorer (2026-11-21): `--page <file>[?query]`, or a task's `page` (relative to the repository)
-// and `query`, serves that one file read-only at http://127.0.0.1:8793/, so that the address the tester sees names no
-// folder of this repository. A task's `handFolder` ({ input, ready }) and `--folder <dir>` hand a folder to the page's
+// and `query`, serves that one file read-only at http://127.0.0.1:<a free port>/, so that the address the tester sees
+// names no folder of this repository, and testers run side by side by a ladder each have their own. A task's `handFolder` ({ input, ready }) and `--folder <dir>` hand a folder to the page's
 // file input before the tester's first look; `--press <selector>` (repeatable, or a task's `press`) presses a control in
 // the same setup.
-const pagePort = 8793;
 const pageOption = option('--page', task?.page ? path.join(mainCheckout, task.page) + (task.query ?? '') : null);
 const pageFile = pageOption ? path.resolve(pageOption.replace(/\?.*$/s, '')) : null;
 const pageQuery = pageOption?.includes('?') ? pageOption.slice(pageOption.indexOf('?')) : '';
@@ -54,7 +53,16 @@ const folder = option('--folder') && path.resolve(option('--folder'));
 const handFolder = task?.handFolder ?? (folder ? { input: option('--input', 'input[type=file]'), ready: option('--ready') } : null);
 if (handFolder && !folder) { console.error('this task hands the page a folder: name it with --folder <dir>'); process.exit(2); }
 const presses = [...(task?.press ?? []), ...args.flatMap((arg, i) => (arg === '--press' ? [args[i + 1]] : []))];
-const start = pageFile ? `http://127.0.0.1:${pagePort}/${pageQuery}` : option('--start', task?.start);
+let pageServer = null;
+if (pageFile) {
+  pageServer = http.createServer((request, response) => {
+    if (new URL(request.url, 'http://127.0.0.1').pathname !== '/') { response.writeHead(404); response.end(); return; }
+    response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+    fs.createReadStream(pageFile).pipe(response);
+  });
+  await new Promise((resolve, reject) => pageServer.once('error', reject).listen(0, '127.0.0.1', resolve));
+}
+const start = pageFile ? `http://127.0.0.1:${pageServer.address().port}/${pageQuery}` : option('--start', task?.start);
 const words = option('--words', task?.words);
 const model = option('--model');
 const effort = option('--effort');
@@ -83,15 +91,7 @@ async function serving() {
 }
 
 let server = null;
-let pageServer = null;
-if (pageFile) {
-  pageServer = http.createServer((request, response) => {
-    if (new URL(request.url, 'http://127.0.0.1').pathname !== '/') { response.writeHead(404); response.end(); return; }
-    response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
-    fs.createReadStream(pageFile).pipe(response);
-  });
-  await new Promise((resolve, reject) => pageServer.once('error', reject).listen(pagePort, '127.0.0.1', resolve));
-} else if (!await serving()) {
+if (!pageFile && !await serving()) {
   if (!fs.existsSync(path.join(site, 'index.html'))) { console.error(`no built Explorer at ${site}`); process.exit(2); }
   const httpServer = createRequire(import.meta.url).resolve('http-server/bin/http-server');
   server = spawn(process.execPath, [httpServer, site, '-a', '127.0.0.1', '-p', String(port), '-c-1', '--silent'], { stdio: 'ignore' });

@@ -6,7 +6,7 @@ The owner's caution on reading testers (2026-11-19): "Models live on text. It's 
 
 ## What was run
 
-Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 and the Framing, Arrival, Step and Cut Counted trials ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $10.33 as the program reports it, $5.76 of it the two narrative runs and their grades.
+Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 and the Framing, Arrival, Step and Cut Counted trials ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $11.07 as the program reports it, $5.76 of it the two narrative runs and their grades.
 
 | Run | Task | Model, effort | Turns | Actions (looks) | Tokens in, out | Wall | Cost |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -108,6 +108,46 @@ Every visitor run is look-only (the instrument's default), at most 60 actions (1
 | [repo-open-history-haiku-default-cut-counted](repo-open-history-haiku-default-cut-counted/) | repo-open-history with localMap.step=least, localMap.cutCounted=on | Haiku, default | 13 | 12 (5) | 54k, 2.6k | 31 s | $0.004 |
 | [repo-open-history-haiku-default-cut-counted-2](repo-open-history-haiku-default-cut-counted-2/) | repo-open-history with localMap.step=least, localMap.cutCounted=on | Haiku, default | 44 | 43 (18) | 484k, 8.4k | 109 s | $0.018 |
 | [repo-open-history-haiku-default-cut-off](repo-open-history-haiku-default-cut-off/) | repo-open-history with localMap.step=least, localMap.cutCounted=off | Haiku, default | 18 | 17 (6) | 85k, 2.4k | 40 s | $0.005 |
+| [leave-out-read-reason-sonnet-medium](leave-out-read-reason-sonnet-medium/) | leave-out-read-reason | Sonnet, medium | 5 | 4 (2) | 11k, 0.7k | 27 s | $0.023 |
+| [leave-out-read-reason-sonnet-medium-2](leave-out-read-reason-sonnet-medium-2/) | leave-out-read-reason | Sonnet, medium | 4 | 3 (2) | 15k, 0.7k | 28 s | $0.023 |
+| [leave-out-read-reason-haiku-default](leave-out-read-reason-haiku-default/) | leave-out-read-reason | Haiku, default | 2 | 1 (1) | 6k, 0.6k | 16 s | $0.001 |
+| [leave-out-read-reason-haiku-default-2](leave-out-read-reason-haiku-default-2/) | leave-out-read-reason | Haiku, default | 2 | 1 (1) | 6k, 0.7k | 24 s | $0.001 |
+| [leave-out-keep-reason-sonnet-medium](leave-out-keep-reason-sonnet-medium/) | leave-out-keep-reason | Sonnet, medium | 11 | 10 (5) | 61k, 0.9k | 37 s | $0.048 |
+| [leave-out-keep-reason-sonnet-medium-2](leave-out-keep-reason-sonnet-medium-2/) | leave-out-keep-reason | Sonnet, medium | 12 | 11 (6) | 65k, 1.0k | 36 s | $0.056 |
+| [leave-out-keep-reason-haiku-default](leave-out-keep-reason-haiku-default/) | leave-out-keep-reason | Haiku, default | 15 | 14 (7) | 70k, 1.7k | 33 s | $0.004 |
+| [leave-out-keep-reason-haiku-default-2](leave-out-keep-reason-haiku-default-2/) | leave-out-keep-reason | Haiku, default | 12 | 11 (6) | 50k, 1.5k | 33 s | $0.003 |
+| [leave-out-drop-reason-sonnet-medium](leave-out-drop-reason-sonnet-medium/) | leave-out-drop-reason | Sonnet, medium | 6 | 5 (2) | 11k, 0.4k | 28 s | $0.021 |
+| [leave-out-drop-reason-sonnet-medium-2](leave-out-drop-reason-sonnet-medium-2/) | leave-out-drop-reason | Sonnet, medium | 6 | 5 (2) | 12k, 0.4k | 28 s | $0.020 |
+| [leave-out-drop-reason-haiku-default](leave-out-drop-reason-haiku-default/) | leave-out-drop-reason | Haiku, default | 6 | 5 (2) | 12k, 0.9k | 27 s | $0.001 |
+| [leave-out-drop-reason-haiku-default-2](leave-out-drop-reason-haiku-default-2/) | leave-out-drop-reason | Haiku, default | 6 | 5 (2) | 12k, 0.6k | 25 s | $0.001 |
+| [leave-out-why-reason-sonnet-medium](leave-out-why-reason-sonnet-medium/) | leave-out-why-reason | Sonnet, medium | 6 | 5 (3) | 27k, 0.5k | 25 s | $0.028 |
+| [leave-out-why-reason-sonnet-medium-2](leave-out-why-reason-sonnet-medium-2/) | leave-out-why-reason | Sonnet, medium | 6 | 5 (3) | 27k, 0.4k | 24 s | $0.027 |
+| [leave-out-why-reason-haiku-default](leave-out-why-reason-haiku-default/) | leave-out-why-reason | Haiku, default | 6 | 5 (3) | 19k, 0.9k | 59 s | $0.002 |
+| [leave-out-why-reason-haiku-default-2](leave-out-why-reason-haiku-default-2/) | leave-out-why-reason | Haiku, default | 6 | 5 (3) | 19k, 1.1k | 64 s | $0.002 |
+| [leave-out-read-folders-sonnet-medium](leave-out-read-folders-sonnet-medium/) | leave-out-read-folders | Sonnet, medium | 4 | 3 (2) | 15k, 0.8k | 62 s | $0.024 |
+| [leave-out-read-folders-sonnet-medium-2](leave-out-read-folders-sonnet-medium-2/) | leave-out-read-folders | Sonnet, medium | 4 | 3 (2) | 15k, 0.7k | 63 s | $0.023 |
+| [leave-out-read-folders-haiku-default](leave-out-read-folders-haiku-default/) | leave-out-read-folders | Haiku, default | 5 | 4 (2) | 16k, 1.8k | 66 s | $0.002 |
+| [leave-out-read-folders-haiku-default-2](leave-out-read-folders-haiku-default-2/) | leave-out-read-folders | Haiku, default | 5 | 4 (2) | 16k, 1.4k | 70 s | $0.002 |
+| [leave-out-keep-folders-sonnet-medium](leave-out-keep-folders-sonnet-medium/) | leave-out-keep-folders | Sonnet, medium | 10 | 9 (5) | 46k, 0.7k | 77 s | $0.044 |
+| [leave-out-keep-folders-sonnet-medium-2](leave-out-keep-folders-sonnet-medium-2/) | leave-out-keep-folders | Sonnet, medium | 11 | 10 (5) | 54k, 0.9k | 79 s | $0.047 |
+| [leave-out-keep-folders-haiku-default](leave-out-keep-folders-haiku-default/) | leave-out-keep-folders | Haiku, default | 12 | 11 (6) | 51k, 1.4k | 78 s | $0.003 |
+| [leave-out-keep-folders-haiku-default-2](leave-out-keep-folders-haiku-default-2/) | leave-out-keep-folders | Haiku, default | 10 | 9 (5) | 38k, 1.2k | 75 s | $0.003 |
+| [leave-out-drop-folders-sonnet-medium](leave-out-drop-folders-sonnet-medium/) | leave-out-drop-folders | Sonnet, medium | 8 | 7 (4) | 36k, 0.5k | 72 s | $0.035 |
+| [leave-out-drop-folders-sonnet-medium-2](leave-out-drop-folders-sonnet-medium-2/) | leave-out-drop-folders | Sonnet, medium | 9 | 8 (4) | 43k, 0.6k | 75 s | $0.037 |
+| [leave-out-drop-folders-haiku-default](leave-out-drop-folders-haiku-default/) | leave-out-drop-folders | Haiku, default | 8 | 7 (4) | 27k, 0.7k | 65 s | $0.002 |
+| [leave-out-drop-folders-haiku-default-2](leave-out-drop-folders-haiku-default-2/) | leave-out-drop-folders | Haiku, default | 8 | 7 (4) | 27k, 0.7k | 68 s | $0.002 |
+| [leave-out-why-folders-sonnet-medium](leave-out-why-folders-sonnet-medium/) | leave-out-why-folders | Sonnet, medium | 8 | 7 (4) | 43k, 0.5k | 69 s | $0.036 |
+| [leave-out-why-folders-sonnet-medium-2](leave-out-why-folders-sonnet-medium-2/) | leave-out-why-folders | Sonnet, medium | 8 | 7 (4) | 43k, 0.6k | 68 s | $0.036 |
+| [leave-out-why-folders-haiku-default](leave-out-why-folders-haiku-default/) | leave-out-why-folders | Haiku, default | 8 | 7 (4) | 28k, 0.9k | 65 s | $0.002 |
+| [leave-out-why-folders-haiku-default-2](leave-out-why-folders-haiku-default-2/) | leave-out-why-folders | Haiku, default | 8 | 7 (4) | 28k, 0.8k | 62 s | $0.002 |
+| [leave-out-keep-folders-mixed-sonnet-medium](leave-out-keep-folders-mixed-sonnet-medium/) | leave-out-keep-folders-mixed | Sonnet, medium | 10 | 9 (5) | 46k, 0.8k | 72 s | $0.045 |
+| [leave-out-keep-folders-mixed-sonnet-medium-2](leave-out-keep-folders-mixed-sonnet-medium-2/) | leave-out-keep-folders-mixed | Sonnet, medium | 10 | 9 (5) | 46k, 0.8k | 67 s | $0.045 |
+| [leave-out-keep-folders-mixed-haiku-default](leave-out-keep-folders-mixed-haiku-default/) | leave-out-keep-folders-mixed | Haiku, default | 11 | 10 (5) | 49k, 1.4k | 69 s | $0.003 |
+| [leave-out-keep-folders-mixed-haiku-default-2](leave-out-keep-folders-mixed-haiku-default-2/) | leave-out-keep-folders-mixed | Haiku, default | 10 | 9 (5) | 42k, 1.0k | 69 s | $0.003 |
+| [leave-out-drop-folders-mixed-sonnet-medium](leave-out-drop-folders-mixed-sonnet-medium/) | leave-out-drop-folders-mixed | Sonnet, medium | 11 | 9 (5) | 52k, 0.7k | 69 s | $0.045 |
+| [leave-out-drop-folders-mixed-sonnet-medium-2](leave-out-drop-folders-mixed-sonnet-medium-2/) | leave-out-drop-folders-mixed | Sonnet, medium | 8 | 7 (4) | 36k, 0.5k | 63 s | $0.035 |
+| [leave-out-drop-folders-mixed-haiku-default](leave-out-drop-folders-mixed-haiku-default/) | leave-out-drop-folders-mixed | Haiku, default | 8 | 7 (4) | 27k, 0.6k | 56 s | $0.002 |
+| [leave-out-drop-folders-mixed-haiku-default-2](leave-out-drop-folders-mixed-haiku-default-2/) | leave-out-drop-folders-mixed | Haiku, default | 8 | 7 (4) | 27k, 0.7k | 56 s | $0.002 |
 | [setup-failure-check](setup-failure-check/) | narrative-picture | Haiku, default | - | 0 (0) | - | 31 s | -, outcome "setup failed" |
 | [setup-check-cut-counted-before-mend](setup-check-cut-counted-before-mend/) | repo-directory with localMap.step=least, localMap.cutCounted=on | Haiku, default | - | 0 (0) | - | 21 s | -, outcome "setup failed" |
 | [instrument-check-estate-uses-haiku](instrument-check-estate-uses-haiku/) | estate-uses | Haiku, default | 11 | 10 (5) | 50k, 2.5k | 24 s | $0.004 |
@@ -571,7 +611,7 @@ The page did not yet read `?layout` or `&switch`, so the query was ignored, the 
 
 ### Not yet done
 
-- The 32 runs, on the root's word once the mended page with its link parameters is merged. The plan is the eight `leave-out-*` tasks on Sonnet at medium and Haiku at default, two each, with `"folder"` the made `Source`; the folder and the DNN clone stay in the builder's scratch folder until then.
+- The 32 runs (40 in the end), on the root's word once the mended page with its link parameters was merged: done, in the next section. The plan is the eight `leave-out-*` tasks on Sonnet at medium and Haiku at default, two each, with `"folder"` the made `Source`; the folder and the DNN clone stay in the builder's scratch folder until then.
 - The four runs of Cut Counted (`localMap.cutCounted=on`), on the root's word once its counts are changed.
 
 ## Cut Counted tried on strangers
@@ -613,6 +653,53 @@ Asked by the root after the first Cut Counted runs: the prepared task `repo-open
 
 **What this says of the counters.** Nothing yet: in the eight runs with Cut Counted on, over the two tasks, counters stood on the screen in two (both after a step into `client`) and no tester pressed one. **What it says of the map:** asked what a folder holds, every stranger reached for the search, and the search answers with a capped list and no way to the folder; the only tester to see the folder whole got there by an arrival it had not meant.
 
+## The choice before a scan, tried on strangers
+
+The 40 runs the section above waited for, on the mended trial page (`e1a1dd502`, `Probes/leave-out/choice/choice.html`; its record's "Fifth leg" says what changed), with the folder made above (17,244 files). [ladder-leave-out-plan.json](ladder-leave-out-plan.json): the four tasks under `?layout=reason&switch=off` and `?layout=folders&switch=off&boxes=choice`, Sonnet at medium and Haiku at default, two each (32), then `keep` and `drop` under `?layout=folders&switch=off&boxes=mixed` (8). Every setup handed the folder and saw the totals before the first look; the page file did not change under any run. They cost $0.74; the machine's load rose to 45 during the last batches.
+
+**The instrument, mended on the way.** The first two batches of four each failed three runs at once with `node:net` errors: every page run served on port 8793, and testers side by side collided. Each run now serves the page on a free port of its own (`playtest.mjs`; the instrument's README says so). The two runs that had held 8793 alone (`leave-out-read-reason-haiku-default`, `leave-out-keep-reason-haiku-default`) are kept as they were; the six that failed left no record and were run again.
+
+**The answers, rewritten for the mended page before any run.** By `leave-out-answers.mts` over the mended model on the same folder, and by looking at the page once in each layout. What moved:
+- **read:** the totals stayed (10,945 read, 6,299 left out), but By reason now shows four rows, not nine: NuGet packages, 45 folders, 4,577 files, with "Also ignored by .tfignore: 15 of 45"; Build output beside a project, 162 folders, 1,714 files, with "Also ignored by .gitignore: 28 of 162"; and the two single-file `.gitignore` rows (6 css, 2 svg). The answer now asks for the two large groups with their reasons.
+- **keep:** 11,034, unchanged (no `.tfignore` names `DNN Platform/Library/packages`). Keeping the whole group by its worded Keep would now give 15,462.
+- **drop:** 10,402, unchanged.
+- **why:** the page's words for `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin` are now "Build output beside a project" on its row, with the `.gitignore` only in the group's "Also ignored" line; the answer counts build output as the reason, the `.gitignore` as a plus.
+- Two tasks were added, `leave-out-keep-folders-mixed` and `leave-out-drop-folders-mixed`, and the `-folders` tasks now carry `&boxes=choice`.
+
+The page as each tester first saw it: [By reason](leave-out-read-reason-haiku-default/shots/001-look.png), [Folders with the choice boxes](leave-out-read-folders-sonnet-medium/shots/001-look.png), [Folders with the mixed boxes](leave-out-keep-folders-mixed-sonnet-medium/shots/001-look.png).
+
+### Results
+
+Each cell: Sonnet's two runs, then Haiku's two; R right, P partly, W wrong; actions in brackets.
+
+| Task | By reason | Folders, choice boxes | Folders, mixed boxes |
+| --- | --- | --- | --- |
+| read | R R (4, 3) · R R (1, 1) | P P (3, 3) · P P (4, 4) | — |
+| keep | R R (10, 11) · R R (14, 11) | R R (9, 10) · R R (11, 9) | R R (9, 9) · W R (10, 9) |
+| drop | R R (5, 5) · R R (5, 5) | R R (7, 8) · R R (7, 7) | R R (9, 7) · R R (7, 7) |
+| why | R R (5, 5) · R R (5, 5) | R R (7, 7) · R R (7, 7) | — |
+
+35 right, 4 partly, 1 wrong.
+
+**What each tester pressed first, and how it acted:**
+- **read, By reason:** both Haiku runs answered from the first picture without a press, in one action ("I didn't click anything; this is from the page as it stands"); both Sonnet runs opened a reason's row to give its top folders. All four gave the totals, both large groups with their counts and reasons ("downloaded third-party packages, not the project's own code"; "compiled output such as `bin` and `obj` folders next to a project") and the "Also ignored" lines.
+- **read, Folders:** all four opened `DNN Platform` and stopped there. Each named the top `packages/` (661 files, the one left-out folder at the top) and then gave the rest as folder counts: "DNN Platform: 177 build or package folders. … The page doesn't say how many files are in them"; "The page doesn't give per-folder file counts for these, so I can't name the biggest one". None told packages from build output, or gave 4,577 and 1,714. That is the partly. What I see ([#2](leave-out-read-folders-sonnet-medium/shots/002-click.png)): under the choice boxes every row reads "N kept  3 build or package folders left out", a count of folders and never of files, and both kinds are one phrase.
+- **keep, By reason:** all four opened "NuGet packages", then its `DNN Platform/` top folder, scrolled to `Library/packages/` and pressed the quiet plus on that row ([the opened list, #6](leave-out-keep-reason-sonnet-medium/shots/006-scroll.png)): "I'll click its "+" to keep it in the scan". **The quiet plus was found in four of four.** No tester pressed the reason's worded Keep, which would have kept all 45.
+- **keep, Folders:** all eight but one opened `DNN Platform`, then `Library`, and ticked `packages` (89 files left out, "NuGet packages", [mixed boxes, #6](leave-out-keep-folders-mixed-sonnet-medium/shots/006-click.png)). The one wrong run, Haiku on the mixed boxes, pressed first the switch "Leave out build output and packages", before it had looked at anything after the first picture, and answered 15,593 ([#2](leave-out-keep-folders-mixed-haiku-default/shots/002-click.png)): "I unchecked "Leave out build output and packages." That option was excluding `packages` folders everywhere, not just this one." It offered to narrow it afterwards. One Sonnet run said "Try the pattern approach: add a negation pattern" and then ticked the box instead.
+- **drop, By reason:** all four typed a pattern, since this layout has no tree: `DNN Platform/Tests/` in all four (one pressed Enter, three pressed Add) ([after, #4](leave-out-drop-reason-haiku-default/shots/004-click.png): "Your pattern: DNN Platform/Tests/ · 1 folder · 900 files"). Two explained why 900 left out made only 543 fewer: "some of those test files were already excluded by the build-output rule".
+- **drop, Folders:** all eight opened `DNN Platform`, scrolled to `Tests` and unticked it; the page wrote `/DNN Platform/Tests/` for them, and they read the pattern back.
+- **why:** all eight opened down to the folder (By reason: the build output reason, then `Dnn.AdminExperience/`; Folders: three levels of the tree) and said no, as build output beside a project. None named the `.gitignore` line, which the page shows only as a count on the group; one Haiku said so: "I did not check whether this particular folder is also matched by `.gitignore`. The page only says that 28 of the 162 build-output folders are also gitignored."
+- **Scan:** pressed three times, all by Haiku and all on `keep` (By reason, Folders with choice boxes, Folders with mixed boxes), after the total was right; each read back "A scan would read … This trial reads none." No other tester pressed it, and most said so unasked.
+- **Patterns typed:** only on `drop` By reason, `DNN Platform/Tests/` four times; no `!` pattern was typed by anyone.
+- **Gave up:** no one.
+
+### Reading
+
+- **Which layout for which question.** For a question about what is left out and why (read, why), By reason is answered surely and fast, the read task from the first picture; the Folders tree under the choice boxes hides how many files and which kind, and every read there fell short. For a question about one folder (keep, drop, why), both layouts were answered rightly; the tree was a few actions longer for `drop` and `why`, By reason a few longer for `keep` (an opened reason, a top folder, a scroll). By reason has no way to leave out a folder but a typed pattern, and every tester found and used the pattern box for it.
+- **Words misunderstood.** "Leave out build output and packages", the evidence switch, was read by every tester as the reason things are left out ("The reason is the "Leave out build output and packages" checkbox") rather than the rows' own reasons, and by one Haiku as the control to press to keep one folder. "Also ignored by .gitignore: 28 of 162" was read rightly as a count and gave no tester the line that named a folder. "3 build or package folders left out" was read as what it says and could not answer "how many files". No tester misread "Keep" or the plus.
+- **The two kinds of box.** On `keep` and `drop`, where a box is acted on, the choice boxes and the mixed boxes gave the same routes and the same counts: the folder named in the task carries its own empty or ticked box in both, and both kinds put "89 files left out · NuGet packages" on its row. The difference showed where a tester reads rather than acts: under the choice boxes a project folder reads ticked with "3 build or package folders left out", under the mixed boxes half-ticked with "110 left out" in files. The one run that went wrong on the mixed boxes went wrong at the switch above the tree, not at a box.
+- **The owner's caution.** Remarks such as "The page doesn't give per-folder file counts" are counted here only because the tester then answered short of the question; no wish is counted as a stumble.
+
 ## What a designer would look at next
 
 What strangers did and said across the 30 visitor runs of this probe (tasks 1, 3 and 4) and the two narrative runs, most common first. Each is a stumble named, with its picture; none is a proposal.
@@ -630,4 +717,4 @@ By the owner's caution, testers' remarks that "the map doesn't say" what a line 
 
 ## Pictures kept
 
-On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to. Run again after the Framing, Arrival, Step and Cut Counted trials and the leave-out pilots, it keeps 231 of the runs' pictures (34.1 MB); over its passes it moved 736 others (about 121 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning. The two pictures in [scan-root](scan-root/) were taken by a script outside the instrument and are kept whole.
+On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to. Run again after the Framing, Arrival, Step and Cut Counted trials and the 40 runs of the choice before a scan, it keeps 312 of the runs' pictures (40.9 MB), each run's first and last being most of them; over its passes it moved 820 others (about 130 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning. The two pictures in [scan-root](scan-root/) were taken by a script outside the instrument and are kept whole.

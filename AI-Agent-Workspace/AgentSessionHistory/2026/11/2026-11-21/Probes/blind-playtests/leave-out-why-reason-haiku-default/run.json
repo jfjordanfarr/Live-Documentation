@@ -1,0 +1,139 @@
+{
+  "task": "leave-out-why-reason",
+  "start": "http://127.0.0.1:40083/?layout=reason&switch=off",
+  "words": "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "settings": [],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "siteAtStart": {
+    "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T08:08:18.328Z"
+  },
+  "page": "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "query": "?layout=reason&switch=off",
+  "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source",
+  "handFolder": {
+    "input": "#folder-input",
+    "ready": "#totals"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?\n\nhttp://127.0.0.1:40083/?layout=reason&switch=off",
+  "startedAt": "2026-11-21T08:20:37.930Z",
+  "finishedAt": "2026-11-21T08:21:45.275Z",
+  "siteAtEnd": {
+    "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T08:08:18.328Z"
+  },
+  "setup": {
+    "handedFolder": {
+      "folder": "Source",
+      "input": "#folder-input",
+      "ready": "#totals",
+      "readyText": "10,945 files will be read · 6,299 files left out",
+      "ms": 44040,
+      "ok": true
+    },
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 59373,
+  "lockWaitMs": 7968,
+  "apiMs": 6527,
+  "turns": 6,
+  "assistantMessages": 11,
+  "toolCalls": 5,
+  "actions": 5,
+  "actionsByTool": {
+    "look": 3,
+    "point": 0,
+    "click": 2,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 8,
+    "cacheWrite": 5646,
+    "cacheRead": 13323,
+    "output": 938
+  },
+  "costUsd": 0.00173223,
+  "modelUsage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 938,
+      "cacheReadInputTokens": 13323,
+      "cacheCreationInputTokens": 5646,
+      "webSearchRequests": 0,
+      "costUSD": 0.00173223,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 390,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 5646,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:40083/?layout=reason&switch=off",
+  "init": {
+    "cwd": "/tmp/session-KJjvX5",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

@@ -1,0 +1,3 @@
+The scan now reads `DNN Platform/Library/packages`, and it will read 11,034 files. Before the change it was 10,945. The folder holds 89 files, which accounts for the difference.
+
+The page had been leaving that folder out because it treated it as a downloaded NuGet packages folder. I used the "Keep" (+) control on that one folder only. The other 42 `packages` folders under `DNN Platform` are still left out, and so is everything else in the exclusion list. The "Leave out build output and packages" box is still ticked. I didn't click Scan, so the 11,034 is the page's own count of what a scan will read.

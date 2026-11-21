@@ -32,6 +32,7 @@ console.log(`files ${all.length}; read ${t.read}; left out ${t.leftOutFiles}; fo
 for (const g of result.groups) {
   const files = g.files.length + g.folders.reduce((s: number, f: any) => s + (f.files ?? 0), 0);
   console.log(`  ${g.reason}: ${g.folders.length} folders, ${files} files`);
+  for (const [file, said] of g.also ?? []) console.log(`    also ignored by ${file}: ${said.folders} of ${g.folders.length} (${[...said.patterns].join(', ')})`);
   for (const f of g.folders.slice().sort((a: any, b: any) => (b.files ?? 0) - (a.files ?? 0)).slice(0, Number(process.env.SHOW ?? 3))) console.log(`      ${f.path}/ ${f.files}`);
   for (const f of g.files.slice(0, 3)) console.log(`      file ${f}`);
 }

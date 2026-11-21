@@ -1,0 +1,322 @@
+[
+  {
+    "name": "leave-out-read-reason-sonnet-medium",
+    "task": "leave-out-read-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-reason-sonnet-medium-2",
+    "task": "leave-out-read-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-reason-haiku-default",
+    "task": "leave-out-read-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-reason-haiku-default-2",
+    "task": "leave-out-read-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-reason-sonnet-medium",
+    "task": "leave-out-keep-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-reason-sonnet-medium-2",
+    "task": "leave-out-keep-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-reason-haiku-default",
+    "task": "leave-out-keep-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-reason-haiku-default-2",
+    "task": "leave-out-keep-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-reason-sonnet-medium",
+    "task": "leave-out-drop-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-reason-sonnet-medium-2",
+    "task": "leave-out-drop-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-reason-haiku-default",
+    "task": "leave-out-drop-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-reason-haiku-default-2",
+    "task": "leave-out-drop-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-reason-sonnet-medium",
+    "task": "leave-out-why-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-reason-sonnet-medium-2",
+    "task": "leave-out-why-reason",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-reason-haiku-default",
+    "task": "leave-out-why-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-reason-haiku-default-2",
+    "task": "leave-out-why-reason",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-folders-sonnet-medium",
+    "task": "leave-out-read-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-folders-sonnet-medium-2",
+    "task": "leave-out-read-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-folders-haiku-default",
+    "task": "leave-out-read-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-read-folders-haiku-default-2",
+    "task": "leave-out-read-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-sonnet-medium",
+    "task": "leave-out-keep-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-sonnet-medium-2",
+    "task": "leave-out-keep-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-haiku-default",
+    "task": "leave-out-keep-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-haiku-default-2",
+    "task": "leave-out-keep-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-sonnet-medium",
+    "task": "leave-out-drop-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-sonnet-medium-2",
+    "task": "leave-out-drop-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-haiku-default",
+    "task": "leave-out-drop-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-haiku-default-2",
+    "task": "leave-out-drop-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-folders-sonnet-medium",
+    "task": "leave-out-why-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-folders-sonnet-medium-2",
+    "task": "leave-out-why-folders",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-folders-haiku-default",
+    "task": "leave-out-why-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-why-folders-haiku-default-2",
+    "task": "leave-out-why-folders",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-mixed-sonnet-medium",
+    "task": "leave-out-keep-folders-mixed",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-mixed-sonnet-medium-2",
+    "task": "leave-out-keep-folders-mixed",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-mixed-haiku-default",
+    "task": "leave-out-keep-folders-mixed",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-keep-folders-mixed-haiku-default-2",
+    "task": "leave-out-keep-folders-mixed",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-mixed-sonnet-medium",
+    "task": "leave-out-drop-folders-mixed",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-mixed-sonnet-medium-2",
+    "task": "leave-out-drop-folders-mixed",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-mixed-haiku-default",
+    "task": "leave-out-drop-folders-mixed",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  },
+  {
+    "name": "leave-out-drop-folders-mixed-haiku-default-2",
+    "task": "leave-out-drop-folders-mixed",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source"
+  }
+]

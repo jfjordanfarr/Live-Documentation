@@ -1,0 +1,139 @@
+{
+  "task": "leave-out-read-folders",
+  "start": "http://127.0.0.1:42785/?layout=folders&switch=off&boxes=choice",
+  "words": "A scan of this folder is about to start. Without changing anything: how many files will it read, what is it leaving out, and why? Name the largest things left out and the reason for each.",
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "variant": "look-only",
+  "settings": [],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "siteAtStart": {
+    "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T08:08:18.328Z"
+  },
+  "page": "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "query": "?layout=folders&switch=off&boxes=choice",
+  "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/playtest-builder-6/Source",
+  "handFolder": {
+    "input": "#folder-input",
+    "ready": "#totals"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "A scan of this folder is about to start. Without changing anything: how many files will it read, what is it leaving out, and why? Name the largest things left out and the reason for each.\n\nhttp://127.0.0.1:42785/?layout=folders&switch=off&boxes=choice",
+  "startedAt": "2026-11-21T08:20:37.848Z",
+  "finishedAt": "2026-11-21T08:21:50.401Z",
+  "siteAtEnd": {
+    "/workspaces/Live-Documentation/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T08:08:18.328Z"
+  },
+  "setup": {
+    "handedFolder": {
+      "folder": "Source",
+      "input": "#folder-input",
+      "ready": "#totals",
+      "readyText": "10,945 files will be read · 6,299 files left out",
+      "ms": 48433,
+      "ok": true
+    },
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 62667,
+  "lockWaitMs": 9872,
+  "apiMs": 8047,
+  "turns": 4,
+  "assistantMessages": 6,
+  "toolCalls": 3,
+  "actions": 3,
+  "actionsByTool": {
+    "look": 2,
+    "point": 0,
+    "click": 1,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 8,
+    "cacheWrite": 3774,
+    "cacheRead": 11601,
+    "output": 700
+  },
+  "costUsd": 0.023272099999999997,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 700,
+      "cacheReadInputTokens": 11601,
+      "cacheCreationInputTokens": 3774,
+      "webSearchRequests": 0,
+      "costUSD": 0.023272099999999997,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 140,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3774,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:42785/?layout=folders&switch=off&boxes=choice",
+  "init": {
+    "cwd": "/tmp/session-QK78ZO",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}
