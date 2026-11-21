@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/project.ts`
-- Generated At: 2026-11-21T02:51:59.067Z
+- Generated At: 2026-11-21T04:54:08.011Z
 
 ## Authored
 ### Purpose
@@ -21,14 +21,14 @@ The adapter for .NET project files: what a project stands on. The project is the
 ### Public Symbols
 #### `projectKind` {#symbol-projectkind}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L41)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L42)
 
 ##### `projectKind` — Summary
-What the project builds.
+What the project builds, read from a project file's text, what its comments hold set aside.
 
 #### `projectAdapter` {#symbol-projectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L56)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L58)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `projectAdapter` — Summary
@@ -36,14 +36,14 @@ Language adapter for .NET project files: the project as a symbol, and what it re
 
 #### `projectStem` {#symbol-projectstem}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L94)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L97)
 
 ##### `projectStem` — Summary
 The name a project reference stands for when its file cannot be found: the file's stem.
 
 #### `referencedProjectName` {#symbol-referencedprojectname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L99)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L102)
 - Parameters: `symbolIndex`: [`WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `referencedProjectName` — Summary
@@ -56,6 +56,7 @@ The name the referenced project publishes, from the index when it is there, else
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
 - [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
+- [`dotnetXml.withoutXmlComments`](./dotnetXml.ts.mdmd.md#symbol-withoutxmlcomments)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

@@ -20,6 +20,7 @@ import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
 import { folderOf, joinWorkspacePath, workspaceFile } from "./dotnetPaths";
+import { withoutXmlComments } from "./dotnetXml";
 import type { LanguageAdapter } from "./index";
 
 const PROJECT_REFERENCE  = /<ProjectReference\b[^>]*?\bInclude\s*=\s*"([^"]+)"/giu;
@@ -37,8 +38,9 @@ function attribute(fragment: string, name: string): string | undefined {
   return new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, "iu").exec(fragment)?.[1];
 }
 
-/** What the project builds. */
-export function projectKind(content: string): string {
+/** What the project builds, read from a project file's text, what its comments hold set aside. */
+export function projectKind(text: string): string {
+  const content = withoutXmlComments(text);
   const sdk = SDK.exec(content)?.[1] ?? "";
   if (/\.Web$/iu.test(sdk) || (PROJECT_TYPE_GUIDS.exec(content)?.[1] ?? "").toLowerCase().includes(WEB_APPLICATION_GUID)) {
     return "web";
@@ -57,7 +59,8 @@ export const projectAdapter: LanguageAdapter = {
   id:         "dotnet-project",
   extensions: [".csproj", ".vbproj", ".fsproj"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await readSourceText(absolutePath);
+    // An XML comment is no element (`dotnetXml.ts`): what a comment holds is no reference, kind or name.
+    const content  = withoutXmlComments(await readSourceText(absolutePath));
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [{ name: projectName(thisFile, content), kind: projectKind(content), location: { line: 1, character: 1 } }];
 

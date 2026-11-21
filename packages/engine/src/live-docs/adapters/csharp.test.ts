@@ -197,6 +197,15 @@ describe("csharpAdapter", () => {
         expect(await links("Tool/Run.cs")).toEqual([]);
       });
 
+      // The reviewer's case of 2026-11-21: MSBuild gives A no reference, so the compiler cannot see Lib.Thing from A.
+      it("sees no project a commented-out reference names", async () => {
+        await write("A/A.csproj", ["<Project Sdk=\"Microsoft.NET.Sdk\"><ItemGroup><!-- <ProjectReference Include=\"../B/B.csproj\" /> --></ItemGroup></Project>"]);
+        await write("A/UseIt.cs", ["using Lib;", "namespace A { public class UseIt { public Thing Item { get; set; } } }"]);
+        await write("B/B.csproj", sdk());
+        await write("B/Thing.cs", ["namespace Lib { public class Thing { } }"]);
+        expect(await links("A/UseIt.cs")).toEqual([]);
+      });
+
       it("hands the reasons a type name has no link to the run as notices, each subject the name as written, since the run names the file", async () => {
         await write("Data/Data.csproj", sdk());
         await write("Data/Row.cs", ["namespace Shop.Data { public class Row { } }"]);

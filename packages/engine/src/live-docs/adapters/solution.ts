@@ -16,6 +16,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import { folderOf, joinWorkspacePath, workspaceFile } from "./dotnetPaths";
+import { withoutXmlComments } from "./dotnetXml";
 import type { LanguageAdapter } from "./index";
 import { projectStem, referencedProjectName } from "./project";
 
@@ -28,7 +29,8 @@ const SOLUTION_FOLDER = "2150e333-8fdc-42a3-9474-1a3956d46de8";
 
 /** The paths of the projects a solution names, as written, solution folders left out. */
 export function solutionProjects(content: string, extension: string): string[] {
-  if (extension === ".slnx") return Array.from(content.matchAll(SLNX_PROJECT), (match) => match[1]);
+  // The XML form's comments hold no project (`dotnetXml.ts`); the classic form has no comments of that kind.
+  if (extension === ".slnx") return Array.from(withoutXmlComments(content).matchAll(SLNX_PROJECT), (match) => match[1]);
   return Array.from(content.matchAll(SLN_PROJECT))
     .filter((match) => match[1].toLowerCase() !== SOLUTION_FOLDER)
     .map((match) => match[3]);

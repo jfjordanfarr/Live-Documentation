@@ -67,4 +67,13 @@ describe("solutionAdapter", () => {
 
     expect(result?.dependencies.map((entry) => entry.resolvedPath)).toEqual(["src/Shop.Web/Shop.Web.csproj", "tests/Shop.Tests/Shop.Tests.csproj"]);
   });
+
+  // `dotnet sln Shop.slnx list` names no project a comment holds (2026-11-21).
+  it("names no project an XML comment holds", async () => {
+    const solutionPath = path.join(workspaceRoot, "Shop.slnx");
+    await fs.writeFile(solutionPath, ["<Solution>", "  <Project Path=\"Shop.Web/Shop.Web.csproj\" />", "  <!-- <Project Path=\"Shop.Old/Shop.Old.csproj\" /> -->", "</Solution>"].join("\n"), "utf8");
+    const fileIndex = new Set(["Shop.slnx", "Shop.Web/Shop.Web.csproj", "Shop.Old/Shop.Old.csproj"]);
+    const result = await analyzeWithLanguageAdapters({ absolutePath: solutionPath, workspaceRoot, fileIndex });
+    expect(result?.dependencies.map((entry) => entry.specifier)).toEqual(["Shop.Web/Shop.Web.csproj"]);
+  });
 });

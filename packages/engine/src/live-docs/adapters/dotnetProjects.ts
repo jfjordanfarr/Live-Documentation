@@ -25,6 +25,7 @@ import path from "node:path";
 
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import { folderOf, isProjectFile, joinWorkspacePath, nearestProjectFolder, workspaceFile } from "./dotnetPaths";
+import { withoutXmlComments } from "./dotnetXml";
 import type { WorkspaceFileIndex } from "./index";
 
 const PROJECT_REFERENCE   = /<ProjectReference\b([^>]*?)(?:\/>|>([\s\S]*?)<\/ProjectReference>)/giu;
@@ -61,7 +62,9 @@ export function projectReach(workspaceRoot: string, fileIndex: WorkspaceFileInde
 }
 
 /** The project folders a project file references for its compiler, and whether it passes on its references' references. */
-export function readProjectReferences(projectFile: string, content: string, fileIndex: WorkspaceFileIndex): { references: string[]; transitive: boolean } {
+export function readProjectReferences(projectFile: string, text: string, fileIndex: WorkspaceFileIndex): { references: string[]; transitive: boolean } {
+  // An XML comment is no element (`dotnetXml.ts`): a reference it holds gives the compiler nothing.
+  const content = withoutXmlComments(text);
   const references: string[] = [];
   for (const match of content.matchAll(PROJECT_REFERENCE)) {
     const include = /\bInclude\s*=\s*"([^"]+)"/iu.exec(match[1])?.[1];

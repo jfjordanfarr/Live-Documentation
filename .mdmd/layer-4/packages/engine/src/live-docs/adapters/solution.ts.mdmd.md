@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/solution.ts`
-- Generated At: 2026-11-21T02:51:59.217Z
+- Generated At: 2026-11-21T04:54:08.227Z
 
 ## Authored
 ### Purpose
@@ -18,14 +18,14 @@ Reads a Visual Studio solution (`.sln`, and the XML `.slnx`) and links it to the
 ### Public Symbols
 #### `solutionProjects` {#symbol-solutionprojects}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/solution.ts#L30)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/solution.ts#L31)
 
 ##### `solutionProjects` — Summary
 The paths of the projects a solution names, as written, solution folders left out.
 
 #### `solutionAdapter` {#symbol-solutionadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/solution.ts#L38)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/solution.ts#L40)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `solutionAdapter` — Summary
@@ -38,6 +38,7 @@ Language adapter for Visual Studio solutions: the projects a solution names, as 
 - [`dotnetPaths.folderOf`](./dotnetPaths.ts.mdmd.md#symbol-folderof)
 - [`dotnetPaths.joinWorkspacePath`](./dotnetPaths.ts.mdmd.md#symbol-joinworkspacepath)
 - [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
+- [`dotnetXml.withoutXmlComments`](./dotnetXml.ts.mdmd.md#symbol-withoutxmlcomments)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`project.projectStem`](./project.ts.mdmd.md#symbol-projectstem)
 - [`project.referencedProjectName`](./project.ts.mdmd.md#symbol-referencedprojectname)
