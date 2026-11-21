@@ -34,11 +34,11 @@ opened: 2026-11-20
 With the press's mend a 2D map held during the change to 3D is made inert only when it is released, so for one to three seconds a Tab can move focus into it and lose it at the release; the destination map has had the same exposure since 2026-11-08. A guard on the held surface, with a browser case. What also still grows with the picture, found by the same builder and left: a second placement of the subject on the way to 2D, with the same anchor as the first, which draws the connections again (46 ms on the larger picture).
 
 ### A 3D link in a browser that gives no WebGL
-- state: active
-- holds: with a builder since 2026-11-21, uncommitted in its worktree (branch `worktree-agent-a2e1671885ba40563`); an interim handback at about 03:26 UTC: where WebGL is refused a 3D link, a remembered 3D and Back to a 3D entry all show the subject in 2D, the 3D control stays in the focus order marked unavailable with its reason, and a new browser regression passes 6 of 6 where 5 failed before the mend; sent on to change the reason's words, make Tuning's 3D group unavailable the same way, clear four failures seen under load, and commit
-- evidence: [the probe that found it](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md)
+- state: review
+- holds: the builder's branch `worktree-agent-a2e1671885ba40563`, commit `9d90aefbf`, read by root with its pictures; three follow-ups before it is merged: the question asked only when 3D is asked for or when the page is idle (asked at every load it cost a 2D visit up to 731 ms on a graphics card), one gap closed that root's own instruction had opened, and a browser case that is red on `main` itself found by this builder (`tuning-reset.spec.ts`, the changed lever's dot)
+- evidence: [the probe that found it](../AgentSessionHistory/2026/11/2026-11-21/Probes/weak-machine/README.md); a browser regression launched without WebGL (`tests/e2e/webgl-refused.spec.ts` on the branch), five of its cases failing before the mend with "The Explorer stopped" on screen; the design system's new rule on the branch: a view the browser cannot draw is not offered, its control says why, and a request for it shows the subject in a view the browser can draw
 
-Today the page stops with a stack trace. It should show the same subject in the 2D map and say, on the 3D control, why 3D is not offered.
+Where WebGL is refused, a link to the 3D map, a remembered 3D, Back to a 3D entry and the 3D control all show the same subject in 2D; the 3D control and Tuning's 3D Layout stay where they are, unavailable, saying "3D needs WebGL, which this browser does not offer"; a person's remembered choice of 3D is left alone for a browser that draws it.
 
 ### A WebGL context lost and never given back
 - state: open
