@@ -36,8 +36,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // Arrival the 2D layout group on 2026-11-19 (how the camera meets a new subject), and Framing beside it the same night (the camera that follows the pins). Frame joined the same day in a group
   // of its own, Page (the trial of a page without its sidebar beside today's). Step joined the 2D layout group on
   // 2026-11-21 (what the camera frames after a step, a trial beside the least pan), and Cut Counted beside it the same day.
-  // Wire Answers and Direction Marks joined the 2D wires group the same day (a wire that says who uses what, and its way).
-  await expect(controls).toHaveCount(76);
+  // Wire Answers and Direction Marks joined the 2D wires group the same day (a wire that says who uses what, and its way),
+  // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at).
+  await expect(controls).toHaveCount(77);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

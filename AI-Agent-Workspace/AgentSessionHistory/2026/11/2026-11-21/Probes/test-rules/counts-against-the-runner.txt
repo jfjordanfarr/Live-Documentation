@@ -1,0 +1,60 @@
+By language and cause:
+   73  C/C++	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    6  C/C++	test where runner says implementation: named by today's rule test_name.ext, which this language's runner does not hold or this project does not run
+    1  C/C++	test where runner says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
+   18  C#	test where runner says implementation: a folder whose name holds the word test (TestUtil, Tests.SA, Foo.Tests) but which no runner names
+  162  C#	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    5  C#	test where runner says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
+   19  Java	test where runner says implementation: a folder whose name holds the word test (TestUtil, Tests.SA, Foo.Tests) but which no runner names
+    4  Java	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    3  Java	test where runner says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
+   20  other (no runner runs it)	test where runner says implementation: a folder whose name holds the word test (TestUtil, Tests.SA, Foo.Tests) but which no runner names
+  374  other (no runner runs it)	test where runner says implementation: data, expectations or configuration in a test folder
+    1  other (no runner runs it)	test where runner says implementation: named by today's rule name_test.ext, which this language's runner does not hold or this project does not run
+    6  other (no runner runs it)	test where runner says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
+   15  other (no runner runs it)	test where runner says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
+    3  PowerShell	implementation where runner says test: PowerShell: a file the project's own Pester run names
+   20  PowerShell	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+   16  Python	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+   28  Ruby	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    1  Ruby	test where runner says implementation: named by today's rule test_name.ext, which this language's runner does not hold or this project does not run
+    1  Rust	implementation where runner says test: Rust: a module compiled only for tests, its name without _test
+    4  SQL	implementation where runner says test: tSQLt: a test class's procedures in a file not named for tests
+    5  SQL	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    4  SQL	test where runner says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
+    1  SQL	test where runner says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
+    3  TypeScript/JavaScript	implementation where runner says test: JavaScript: the project's own runner configuration (testMatch)
+   69  TypeScript/JavaScript	test where runner says implementation: code in a test folder that the runner does not select (helpers, stand-ins, setup, configuration)
+    3  TypeScript/JavaScript	test where runner says implementation: named by today's rule name_test.ext, which this language's runner does not hold or this project does not run
+    1  TypeScript/JavaScript	test where runner says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
+   18  TypeScript/JavaScript	test where runner says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
+
+By language:
+  416  other (no runner runs it)
+  185  C#
+   94  TypeScript/JavaScript
+   80  C/C++
+   29  Ruby
+   26  Java
+   23  PowerShell
+   16  Python
+   14  SQL
+    1  Rust
+
+By corpus:
+  419  DNN Platform
+  132  cJSON (CTest)
+   56  sinatra (Minitest, RSpec)
+   48  this repository
+   39  dbatools
+   35  gson (Maven)
+   34  AL-Go
+   22  mojoPortal
+   20  FluentValidation
+   17  tSQLt
+   17  click (pytest)
+   13  the sample programs
+   13  factory_bot (RSpec)
+   12  dom-testing-library (Jest)
+    6  ripgrep (cargo)
+    1  cobra (go test)

@@ -1,0 +1,46 @@
+{
+  "name": "shallow-eslint",
+  "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+  "gitChangesDigest": "21ebb1db62561a60",
+  "mainline": 200,
+  "reachable": 200,
+  "tags": 9,
+  "changedPaths": 2790,
+  "changedBlobs": 2627,
+  "changedBlobMegabytes": 40.5,
+  "headFiles": 2363,
+  "blobsHeldToGit": 500,
+  "blobsDifferingFromGit": 0,
+  "blobsFailingTheirId": 0,
+  "packs": 1,
+  "looseObjects": 0,
+  "notes": [],
+  "refusals": [],
+  "differenceCount": 0,
+  "differencesByKind": {},
+  "differences": [],
+  "gitMs": {
+    "resolve": 8,
+    "mainline": 11,
+    "reachable": 14,
+    "changes": 43,
+    "tags": 6,
+    "headTree": 11
+  },
+  "readerMs": {
+    "open": 9,
+    "mainline": 55,
+    "reachable": 8,
+    "changes": 269,
+    "tags": 1,
+    "headTree": 2,
+    "everyChangedBlobVerified": 1400
+  },
+  "hostCalls": {
+    "list": 2,
+    "read": 18,
+    "size": 1,
+    "slice": 87,
+    "bytes": 7896504
+  }
+}

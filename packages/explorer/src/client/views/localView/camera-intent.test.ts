@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalLookChange, arrivalPose, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -81,6 +81,25 @@ describe("an arrival's hold and ease", () => {
     expect(easeInOutCubic(1)).toBe(1);
     expect(easeInOutCubic(0.1)).toBeLessThan(0.1);
     expect(easeInOutCubic(0.9)).toBeGreaterThan(0.9);
+  });
+});
+
+describe("where an arrival's pull-back changes the look", () => {
+  it("changes it where the zoom crosses its edge, after the ease, or before it, by the Arrival choice", () => {
+    expect(arrivalLookChange("then-neighbours")).toBe("crossing");
+    expect(arrivalLookChange("then-neighbours-after")).toBe("after");
+    expect(arrivalLookChange("then-neighbours-before")).toBe("before");
+  });
+
+  it("has nothing to change where the arrival does not pull back", () => {
+    expect(arrivalLookChange("reading")).toBeNull();
+    expect(arrivalLookChange("neighbours")).toBeNull();
+  });
+
+  it("ends every pull-back that leaves reading size in the connections look, so that a look taken before the ease is the one it ends in", () => {
+    // The end's zoom lies between the connections look's last press (ARRIVAL_FLOOR_RATIO) and the reading look's edge.
+    expect(zoomLook(ARRIVAL_FLOOR_RATIO, "reading")).toBe("connections");
+    expect(zoomLook(ARRIVAL_FLOOR_RATIO * STEP_RATIO ** 2, "reading")).toBe("connections");
   });
 });
 

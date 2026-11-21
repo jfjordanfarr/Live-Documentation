@@ -132,6 +132,12 @@ export interface LocalMapTuning {
    */
   arrival: ArrivalFraming;
   /**
+   * Whether an arrival's rest at reading size waits while a pointer rests on the subject's card (a trial of 2026-11-21,
+   * default "never"): "pointed", the pull-back's hold starts again at every frame the pointer, moved there since the
+   * arrival began, stands on the card, so that a person reading it with the pointer on it is not pulled off its words.
+   */
+  arrivalWaits: ArrivalWait;
+  /**
    * Who frames the camera after an arrival (a trial for the owner's eye, 2026-11-19, Turn 37 of the November 18 record):
    * "hand", the default, the person, with Arrival and the step as they are; "follows", the camera follows the pinned set,
    * newest first, until the person pans or zooms, and Fit gives the following back (camera-intent.ts's pinsFrame).
@@ -413,11 +419,22 @@ export type HiddenFilesLook = "count" | "cells" | "under";
  */
 export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["under", "cells", "count"];
 
-/** How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the neighbours. */
-export type ArrivalFraming = "reading" | "then-neighbours" | "neighbours";
+/**
+ * How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the
+ * neighbours. The pull-back to the neighbours has two more forms beside it, trials of 2026-11-21 for the owner's eye on
+ * its motion: "then-neighbours-after" holds the cards' look through the ease and changes it once at rest at the end;
+ * "then-neighbours-before" changes it at rest before the ease begins (camera-intent.ts, `arrivalLookChange`).
+ */
+export type ArrivalFraming = "reading" | "then-neighbours" | "then-neighbours-after" | "then-neighbours-before" | "neighbours";
+
+/** Whether an arrival's pull-back waits while the pointer rests on the subject's card: never, the default, or while pointed at. */
+export type ArrivalWait = "never" | "pointed";
+
+/** Every Arrival Waits choice, in the order the control offers them; the first, never, is the default. */
+export const ARRIVAL_WAITS: readonly ArrivalWait[] = ["never", "pointed"];
 
 /** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
-export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "neighbours"];
+export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "then-neighbours-after", "then-neighbours-before", "neighbours"];
 
 /**
  * Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",

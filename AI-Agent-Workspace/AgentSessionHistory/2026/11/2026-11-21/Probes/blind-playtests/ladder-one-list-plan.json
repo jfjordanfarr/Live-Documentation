@@ -1,0 +1,258 @@
+[
+  {
+    "name": "one-list-cold-sonnet-medium",
+    "task": "one-list-cold",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-cold-sonnet-medium-2",
+    "task": "one-list-cold",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-cold-haiku-default",
+    "task": "one-list-cold",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-cold-haiku-default-2",
+    "task": "one-list-cold",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-own-files-sonnet-medium",
+    "task": "one-list-own-files",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-own-files-sonnet-medium-2",
+    "task": "one-list-own-files",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-own-files-haiku-default",
+    "task": "one-list-own-files",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-own-files-haiku-default-2",
+    "task": "one-list-own-files",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-dev-sonnet-medium",
+    "task": "one-list-dev",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-dev-sonnet-medium-2",
+    "task": "one-list-dev",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-dev-haiku-default",
+    "task": "one-list-dev",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-dev-haiku-default-2",
+    "task": "one-list-dev",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-vs-code-sonnet-medium",
+    "task": "one-list-vs-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-vs-code-sonnet-medium-2",
+    "task": "one-list-vs-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-vs-code-haiku-default",
+    "task": "one-list-vs-code",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-vs-code-haiku-default-2",
+    "task": "one-list-vs-code",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-png-tests-sonnet-medium",
+    "task": "one-list-png-tests",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-png-tests-sonnet-medium-2",
+    "task": "one-list-png-tests",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-png-tests-haiku-default",
+    "task": "one-list-png-tests",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-png-tests-haiku-default-2",
+    "task": "one-list-png-tests",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-keep-folder-sonnet-medium",
+    "task": "one-list-keep-folder",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-keep-folder-sonnet-medium-2",
+    "task": "one-list-keep-folder",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-keep-folder-haiku-default",
+    "task": "one-list-keep-folder",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-keep-folder-haiku-default-2",
+    "task": "one-list-keep-folder",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-integrate-sonnet-medium",
+    "task": "one-list-integrate",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-integrate-sonnet-medium-2",
+    "task": "one-list-integrate",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-integrate-haiku-default",
+    "task": "one-list-integrate",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-integrate-haiku-default-2",
+    "task": "one-list-integrate",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-reuse-sonnet-medium",
+    "task": "one-list-reuse",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-reuse-sonnet-medium-2",
+    "task": "one-list-reuse",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-reuse-haiku-default",
+    "task": "one-list-reuse",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  },
+  {
+    "name": "one-list-reuse-haiku-default-2",
+    "task": "one-list-reuse",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source"
+  }
+]

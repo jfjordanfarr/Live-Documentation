@@ -152,6 +152,76 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
   await context.close();
 });
 
+/**
+ * Every frame's scale and look from the page's start, read by the page itself (the pull-back's trials of 2026-11-21:
+ * where in the motion the look changes is what they change).
+ */
+async function frameLog(page: Page): Promise<Array<{ k: number; look: string }>> {
+  return page.evaluate(() => (window as unknown as { frameLog: Array<{ k: number; look: string }> }).frameLog);
+}
+
+async function visitLogged(browser: Browser, address: string, localMap: Record<string, string>) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
+  });
+  await context.addInitScript(() => {
+    const log: Array<{ k: number; look: string }> = (window as unknown as { frameLog: typeof log }).frameLog = [];
+    const tick = (): void => {
+      const viewport = document.querySelector<HTMLElement>("#map-viewport"), map = document.querySelector<HTMLElement>("#map-container");
+      const k = Number((viewport?.style.transform.match(/scale\(([\d.e-]+)\)/) ?? [])[1]);
+      if (map?.dataset.look && Number.isFinite(k)) log.push({ k, look: map.dataset.look });
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+  const page = await context.newPage();
+  await page.goto(address);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  return { context, page };
+}
+
+test("Look After holds the reading look through the whole ease and changes it once at rest; Look Before changes it at reading size before the camera moves", async ({ browser }) => {
+  test.setTimeout(120_000);
+  for (const arrival of ["then-neighbours-after", "then-neighbours-before"] as const) {
+    const { context, page } = await visitLogged(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, { arrival });
+    await expect.poll(async () => (await cameraOf(page)).moving, { timeout: 5_000, intervals: [20] }).toBe(true);
+    await still(page);
+    const log = await frameLog(page), start = log[0].k, end = log.at(-1)!;
+    expect(end.look, `${arrival}: it ends in the connections look`).toBe("connections");
+    expect(end.k).toBeLessThan(start * 0.5);
+    // The frames of the motion: each at a scale between the rest's and the end's.
+    const moving = log.filter(frame => frame.k < start - 1e-6 && frame.k > end.k + 1e-6);
+    expect(moving.length, `${arrival}: the ease draws frames`).toBeGreaterThan(2);
+    const looks = new Set(moving.map(frame => frame.look));
+    expect([...looks], `${arrival}: one look through the whole motion`).toEqual([arrival === "then-neighbours-after" ? "reading" : "connections"]);
+    if (arrival === "then-neighbours-before") {
+      expect(log.some(frame => frame.look === "connections" && Math.abs(frame.k - start) < 1e-6), "the look changed at reading size").toBe(true);
+    }
+    await context.close();
+  }
+});
+
+test("Arrival Waits, While Pointed At: a pointer brought to the subject's card holds the rest at reading size until it leaves", async ({ browser }) => {
+  test.setTimeout(120_000);
+  for (const arrivalWaits of ["never", "pointed"] as const) {
+    const { context, page } = await visitLogged(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, { arrival: "then-neighbours", arrivalWaits });
+    await expect.poll(async () => { const camera = await cameraOf(page); return camera.moving && camera.look === "reading"; }, { timeout: 5_000, intervals: [20] }).toBe(true);
+    const readingK = (await cameraOf(page)).k;
+    const name = (await page.locator(`${card(SUBJECT)} .local-file-name`).boundingBox())!;
+    await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2, { steps: 4 });
+    await page.waitForTimeout(3000);
+    const held = (await cameraOf(page)).k;
+    if (arrivalWaits === "never") expect(held, "never: pulled back while the pointer rests on the card").toBeLessThan(readingK * 0.9);
+    else {
+      expect(held, "while pointed at: still at reading size").toBeCloseTo(readingK, 6);
+      await page.mouse.move(2, 890, { steps: 4 });
+      await expect.poll(async () => (await cameraOf(page)).k, { timeout: 10_000 }).toBeLessThan(readingK * 0.9);
+    }
+    await context.close();
+  }
+});
+
 test("the person's input during the hold ends the arrival where it stands", async ({ browser }) => {
   const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "then-neighbours");
   await expect.poll(async () => { const camera = await cameraOf(page); return camera.moving && camera.look === "reading"; }, { timeout: 5_000, intervals: [20] }).toBe(true);

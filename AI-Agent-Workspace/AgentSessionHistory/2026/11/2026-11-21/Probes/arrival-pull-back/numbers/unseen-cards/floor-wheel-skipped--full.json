@@ -1,0 +1,3497 @@
+[
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "full",
+  "arrival": "reading",
+  "extra": {
+   "unseenCards": "skipped"
+  },
+  "elements": {
+   "map": 11859,
+   "cards": 80,
+   "bands": 20,
+   "wires": 220
+  },
+  "restBeforeEase": 4217,
+  "ease": {
+   "ms": 2117,
+   "frames": 54,
+   "fromK": 1,
+   "toK": 0.301,
+   "median": 33.3,
+   "p90": 83.2,
+   "worst": 266.7,
+   "whole": {
+    "script": 292.8,
+    "style": 366.1,
+    "layout": 41.6,
+    "paint": 689.4,
+    "other": 241.8,
+    "styles": [
+     {
+      "ms": 2.2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 67,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 4.5,
+      "elements": 156,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.8,
+      "elements": 64,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 62,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 8.5,
+      "elements": 669,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.5,
+      "elements": 38,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 153.3,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.5,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.8,
+      "elements": 48,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 43.2,
+      "elements": 1479,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 323,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.5,
+      "elements": 323,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 114,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 9.8,
+      "elements": 778,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 7.3,
+      "elements": 220,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2.1,
+      "elements": 55,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.6,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 77,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 67,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.6,
+      "elements": 81,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 23,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 4.4,
+      "elements": 124,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3.3,
+      "elements": 80,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.6,
+      "elements": 33,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 57,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.6,
+      "elements": 49,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 61,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 32,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 31,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 5,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533",
+       "measureLayoutExtents:5177:57276",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 2.8,
+      "elements": 75,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 77,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 54,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 61,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 62,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 62,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 65,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 213,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1033,
+   "ms": 266.7,
+   "k": 0.585,
+   "state": "connections|far||true|moving",
+   "script": 15.1,
+   "style": 169.2,
+   "layout": 14.3,
+   "paint": 46.3,
+   "other": 22.9,
+   "styles": [
+    {
+     "ms": 0.5,
+     "elements": 38,
+     "script": "FunctionCall a@index.js:5177:36340",
+     "stack": [
+      "framePlace:5177:81094",
+      "updateMapTransform:5177:76625",
+      ":5177:47044",
+      "a:5177:36544"
+     ]
+    },
+    {
+     "ms": 153.3,
+     "elements": 3827,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 15.5,
+     "elements": 870,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 83,
+    "ms": 66.7,
+    "k": 0.936,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.3,
+    "style": 2.3,
+    "layout": 0,
+    "paint": 55.2,
+    "other": 5.2,
+    "styles": [
+     {
+      "ms": 2.2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 200,
+    "ms": 116.6,
+    "k": 0.894,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.6,
+    "style": 2.1,
+    "layout": 0,
+    "paint": 20.6,
+    "other": 6.2,
+    "styles": [
+     {
+      "ms": 2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 267,
+    "ms": 66.8,
+    "k": 0.864,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.9,
+    "style": 1.3,
+    "layout": 0.6,
+    "paint": 10.1,
+    "other": 8.6,
+    "styles": [
+     {
+      "ms": 1.1,
+      "elements": 67,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 350,
+    "ms": 83.2,
+    "k": 0.861,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.7,
+    "style": 0.2,
+    "layout": 0,
+    "paint": 5.2,
+    "other": 3.1,
+    "styles": []
+   },
+   {
+    "at": 1033,
+    "ms": 266.7,
+    "k": 0.585,
+    "state": "connections|far||true|moving",
+    "script": 15.1,
+    "style": 169.2,
+    "layout": 14.3,
+    "paint": 46.3,
+    "other": 22.9,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 38,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 153.3,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.5,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1183,
+    "ms": 116.7,
+    "k": 0.568,
+    "state": "connections|far||false|moving",
+    "script": 6,
+    "style": 43.3,
+    "layout": 2.2,
+    "paint": 45.9,
+    "other": 14.6,
+    "styles": [
+     {
+      "ms": 43.2,
+      "elements": 1479,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 1300,
+    "ms": 83.4,
+    "k": 0.488,
+    "state": "connections|far||false|moving",
+    "script": 4.5,
+    "style": 6.9,
+    "layout": 1.2,
+    "paint": 40.2,
+    "other": 10.5,
+    "styles": [
+     {
+      "ms": 3.5,
+      "elements": 323,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 114,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2117,
+    "ms": 116.7,
+    "k": 0.301,
+    "state": "connections|far||false|",
+    "script": 36.6,
+    "style": 64.7,
+    "layout": 13.8,
+    "paint": 0,
+    "other": 4.9,
+    "styles": [
+     {
+      "ms": 0.9,
+      "elements": 5,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533",
+       "measureLayoutExtents:5177:57276",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 2.8,
+      "elements": 75,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 77,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.6,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 54,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 56,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 61,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 58,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 62,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 62,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 65,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 59,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "oP:5177:24415",
+       ":5177:25134",
+       "$r:5177:24899",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74533"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 213,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 0.95,
+    "look": "reading",
+    "style": 2.2,
+    "paint": 0,
+    "restyled": 355
+   },
+   {
+    "at": 83,
+    "ms": 66.7,
+    "k": 0.936,
+    "look": "reading",
+    "style": 2.3,
+    "paint": 55.2,
+    "restyled": 355
+   },
+   {
+    "at": 200,
+    "ms": 116.6,
+    "k": 0.894,
+    "look": "reading",
+    "style": 2.1,
+    "paint": 20.6,
+    "restyled": 355
+   },
+   {
+    "at": 267,
+    "ms": 66.8,
+    "k": 0.864,
+    "look": "reading",
+    "style": 1.3,
+    "paint": 10.1,
+    "restyled": 67
+   },
+   {
+    "at": 350,
+    "ms": 83.2,
+    "k": 0.861,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 5.2,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.7,
+    "k": 0.861,
+    "look": "reading",
+    "style": 0.1,
+    "paint": 0.1,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.7,
+    "k": 0.852,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 5,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.7,
+    "k": 0.836,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 5.1,
+    "restyled": 0
+   },
+   {
+    "at": 417,
+    "ms": 16.6,
+    "k": 0.822,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.5,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.7,
+    "k": 0.81,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.7,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.7,
+    "k": 0.798,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 4.9,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 16.6,
+    "k": 0.789,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 4.6,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 16.7,
+    "k": 0.78,
+    "look": "reading",
+    "style": 4.7,
+    "paint": 4.4,
+    "restyled": 156
+   },
+   {
+    "at": 500,
+    "ms": 16.7,
+    "k": 0.78,
+    "look": "reading",
+    "style": 0.1,
+    "paint": 10.9,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 16.6,
+    "k": 0.776,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.6,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 16.6,
+    "k": 0.757,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 9.9,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 33.4,
+    "k": 0.74,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 17.7,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.7,
+    "k": 0.71,
+    "look": "reading",
+    "style": 1.9,
+    "paint": 4,
+    "restyled": 64
+   },
+   {
+    "at": 600,
+    "ms": 16.7,
+    "k": 0.698,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 10.4,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 33.3,
+    "k": 0.687,
+    "look": "reading",
+    "style": 1.6,
+    "paint": 19.6,
+    "restyled": 62
+   },
+   {
+    "at": 667,
+    "ms": 33.3,
+    "k": 0.687,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 17.4,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.7,
+    "k": 0.659,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 0.7,
+    "restyled": 0
+   },
+   {
+    "at": 733,
+    "ms": 49.9,
+    "k": 0.643,
+    "look": "reading",
+    "style": 8.7,
+    "paint": 31.5,
+    "restyled": 669
+   },
+   {
+    "at": 767,
+    "ms": 33.4,
+    "k": 0.604,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 11,
+    "restyled": 0
+   },
+   {
+    "at": 1033,
+    "ms": 266.7,
+    "k": 0.585,
+    "look": "connections",
+    "style": 169.2,
+    "paint": 46.3,
+    "restyled": 4735
+   },
+   {
+    "at": 1067,
+    "ms": 33.3,
+    "k": 0.585,
+    "look": "connections",
+    "style": 0.8,
+    "paint": 13.7,
+    "restyled": 48
+   },
+   {
+    "at": 1183,
+    "ms": 116.7,
+    "k": 0.568,
+    "look": "connections",
+    "style": 43.3,
+    "paint": 45.9,
+    "restyled": 1479
+   },
+   {
+    "at": 1217,
+    "ms": 33.2,
+    "k": 0.498,
+    "look": "connections",
+    "style": 3.4,
+    "paint": 12.8,
+    "restyled": 323
+   },
+   {
+    "at": 1300,
+    "ms": 83.4,
+    "k": 0.488,
+    "look": "connections",
+    "style": 6.9,
+    "paint": 40.2,
+    "restyled": 437
+   },
+   {
+    "at": 1333,
+    "ms": 33.4,
+    "k": 0.488,
+    "look": "connections",
+    "style": 9.8,
+    "paint": 8.7,
+    "restyled": 778
+   },
+   {
+    "at": 1367,
+    "ms": 33.3,
+    "k": 0.469,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 16.3,
+    "restyled": 0
+   },
+   {
+    "at": 1383,
+    "ms": 16.6,
+    "k": 0.452,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 2.4,
+    "restyled": 0
+   },
+   {
+    "at": 1417,
+    "ms": 33.4,
+    "k": 0.444,
+    "look": "connections",
+    "style": 7.7,
+    "paint": 12,
+    "restyled": 220
+   },
+   {
+    "at": 1450,
+    "ms": 33.3,
+    "k": 0.432,
+    "look": "connections",
+    "style": 2.6,
+    "paint": 11.6,
+    "restyled": 55
+   },
+   {
+    "at": 1467,
+    "ms": 16.7,
+    "k": 0.432,
+    "look": "connections",
+    "style": 0.6,
+    "paint": 7.4,
+    "restyled": 56
+   },
+   {
+    "at": 1500,
+    "ms": 33.3,
+    "k": 0.427,
+    "look": "connections",
+    "style": 1.1,
+    "paint": 12,
+    "restyled": 77
+   },
+   {
+    "at": 1517,
+    "ms": 16.7,
+    "k": 0.407,
+    "look": "connections",
+    "style": 0.6,
+    "paint": 8.4,
+    "restyled": 45
+   },
+   {
+    "at": 1533,
+    "ms": 16.7,
+    "k": 0.398,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 9.5,
+    "restyled": 45
+   },
+   {
+    "at": 1583,
+    "ms": 50,
+    "k": 0.39,
+    "look": "connections",
+    "style": 2.2,
+    "paint": 13.4,
+    "restyled": 112
+   },
+   {
+    "at": 1600,
+    "ms": 16.6,
+    "k": 0.372,
+    "look": "connections",
+    "style": 1.7,
+    "paint": 5.3,
+    "restyled": 81
+   },
+   {
+    "at": 1633,
+    "ms": 33.4,
+    "k": 0.368,
+    "look": "connections",
+    "style": 5,
+    "paint": 9.2,
+    "restyled": 147
+   },
+   {
+    "at": 1667,
+    "ms": 33.3,
+    "k": 0.368,
+    "look": "connections",
+    "style": 3.8,
+    "paint": 18.9,
+    "restyled": 80
+   },
+   {
+    "at": 1700,
+    "ms": 33.3,
+    "k": 0.357,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 10.2,
+    "restyled": 0
+   },
+   {
+    "at": 1733,
+    "ms": 33.3,
+    "k": 0.342,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 11.6,
+    "restyled": 33
+   },
+   {
+    "at": 1783,
+    "ms": 50,
+    "k": 0.33,
+    "look": "connections",
+    "style": 3.1,
+    "paint": 14.7,
+    "restyled": 100
+   },
+   {
+    "at": 1800,
+    "ms": 16.7,
+    "k": 0.316,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 3.8,
+    "restyled": 49
+   },
+   {
+    "at": 1850,
+    "ms": 50,
+    "k": 0.313,
+    "look": "connections",
+    "style": 2.7,
+    "paint": 31.5,
+    "restyled": 116
+   },
+   {
+    "at": 1883,
+    "ms": 33.3,
+    "k": 0.306,
+    "look": "connections",
+    "style": 0.8,
+    "paint": 13.8,
+    "restyled": 43
+   },
+   {
+    "at": 1900,
+    "ms": 16.7,
+    "k": 0.303,
+    "look": "connections",
+    "style": 0.9,
+    "paint": 3.5,
+    "restyled": 32
+   },
+   {
+    "at": 1933,
+    "ms": 33.3,
+    "k": 0.303,
+    "look": "connections",
+    "style": 0.6,
+    "paint": 17.6,
+    "restyled": 0
+   },
+   {
+    "at": 1950,
+    "ms": 16.7,
+    "k": 0.302,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 7.4,
+    "restyled": 0
+   },
+   {
+    "at": 1967,
+    "ms": 16.7,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.9,
+    "paint": 0.5,
+    "restyled": 31
+   },
+   {
+    "at": 2000,
+    "ms": 33.3,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 14.5,
+    "restyled": 0
+   },
+   {
+    "at": 2117,
+    "ms": 116.7,
+    "k": 0.301,
+    "look": "connections",
+    "style": 64.7,
+    "paint": 0,
+    "restyled": 2167
+   }
+  ],
+  "changes": [
+   {
+    "at": -4217,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": -1817,
+    "k": 1,
+    "state": "reading|reading|0|false|"
+   },
+   {
+    "at": -67,
+    "k": 1,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1033,
+    "k": 0.585,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 1067,
+    "k": 0.585,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 2117,
+    "k": 0.301,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -4217,
+    "ms": 199.9,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -2117,
+    "ms": 2100,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1033,
+    "ms": 266.7,
+    "k": 0.585,
+    "look": "connections",
+    "script": 15.1,
+    "style": 169.2,
+    "layout": 14.3,
+    "paint": 46.3,
+    "other": 22.9,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 38,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 153.3,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.5,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1067,
+    "ms": 33.3,
+    "k": 0.585,
+    "look": "connections",
+    "script": 4.5,
+    "style": 0.8,
+    "layout": 0,
+    "paint": 13.7,
+    "other": 11.9,
+    "styles": [
+     {
+      "ms": 0.8,
+      "elements": 48,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1033,
+   "ms": 266.7,
+   "k": 0.585,
+   "state": "connections|far||true|moving",
+   "script": 15.1,
+   "style": 169.2,
+   "layout": 14.3,
+   "paint": 46.3,
+   "other": 22.9,
+   "styles": [
+    {
+     "ms": 0.5,
+     "elements": 38,
+     "script": "FunctionCall a@index.js:5177:36340",
+     "stack": [
+      "framePlace:5177:81094",
+      "updateMapTransform:5177:76625",
+      ":5177:47044",
+      "a:5177:36544"
+     ]
+    },
+    {
+     "ms": 153.3,
+     "elements": 3827,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 15.5,
+     "elements": 870,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 69,
+   "gaps": [
+    252,
+    61,
+    83,
+    60,
+    63,
+    73,
+    75,
+    15,
+    16,
+    16,
+    15,
+    15,
+    17,
+    16,
+    17,
+    17,
+    16,
+    20,
+    31,
+    18,
+    24,
+    21,
+    45,
+    36,
+    37,
+    17,
+    17,
+    17,
+    32,
+    304,
+    26,
+    24,
+    39,
+    29,
+    23,
+    24,
+    31,
+    41,
+    20,
+    19,
+    20,
+    20,
+    27,
+    19,
+    44,
+    21,
+    21,
+    32,
+    22,
+    20,
+    20,
+    23,
+    19,
+    20,
+    22,
+    24,
+    23,
+    24,
+    23,
+    23,
+    34,
+    23,
+    22,
+    22,
+    21,
+    21,
+    21,
+    123
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 2,
+  "condition": "full",
+  "arrival": "reading",
+  "extra": {
+   "unseenCards": "skipped"
+  },
+  "elements": {
+   "map": 11859,
+   "cards": 80,
+   "bands": 20,
+   "wires": 220
+  },
+  "restBeforeEase": 4016,
+  "ease": {
+   "ms": 1900,
+   "frames": 57,
+   "fromK": 1,
+   "toK": 0.301,
+   "median": 16.7,
+   "p90": 66.7,
+   "worst": 250,
+   "whole": {
+    "script": 254.3,
+    "style": 295.6,
+    "layout": 28.9,
+    "paint": 633.3,
+    "other": 226.8,
+    "styles": [
+     {
+      "ms": 2.7,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 67,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3.1,
+      "elements": 156,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.8,
+      "elements": 64,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 62,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 7.3,
+      "elements": 557,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.7,
+      "elements": 116,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.5,
+      "elements": 38,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 65,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.5,
+      "elements": 37,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 145.2,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.6,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.1,
+      "elements": 49,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 40,
+      "elements": 1479,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 114,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3.7,
+      "elements": 318,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.8,
+      "elements": 319,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 10.7,
+      "elements": 797,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 10.7,
+      "elements": 271,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.9,
+      "elements": 67,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 77,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 67,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.6,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 45,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 57,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 4.7,
+      "elements": 124,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.7,
+      "elements": 96,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2.9,
+      "elements": 80,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 33,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 57,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.5,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 60,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 43,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 55,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 1.6,
+      "elements": 61,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 33,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 30,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 967,
+   "ms": 250,
+   "k": 0.58,
+   "state": "connections|far||true|moving",
+   "script": 15.7,
+   "style": 161.6,
+   "layout": 15.1,
+   "paint": 41.9,
+   "other": 21.6,
+   "styles": [
+    {
+     "ms": 145.2,
+     "elements": 3827,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 15.6,
+     "elements": 870,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 83,
+    "ms": 83.4,
+    "k": 0.962,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.4,
+    "style": 2.8,
+    "layout": 0,
+    "paint": 26.8,
+    "other": 4.6,
+    "styles": [
+     {
+      "ms": 2.7,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 150,
+    "ms": 66.7,
+    "k": 0.901,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.6,
+    "style": 2.1,
+    "layout": 0,
+    "paint": 15.4,
+    "other": 5.7,
+    "styles": [
+     {
+      "ms": 2,
+      "elements": 355,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 233,
+    "ms": 83.3,
+    "k": 0.875,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.2,
+    "style": 0.2,
+    "layout": 0,
+    "paint": 4.9,
+    "other": 1.4,
+    "styles": []
+   },
+   {
+    "at": 967,
+    "ms": 250,
+    "k": 0.58,
+    "state": "connections|far||true|moving",
+    "script": 15.7,
+    "style": 161.6,
+    "layout": 15.1,
+    "paint": 41.9,
+    "other": 21.6,
+    "styles": [
+     {
+      "ms": 145.2,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.6,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1117,
+    "ms": 100,
+    "k": 0.472,
+    "state": "connections|far||false|moving",
+    "script": 5.3,
+    "style": 43.4,
+    "layout": 3,
+    "paint": 34.9,
+    "other": 12,
+    "styles": [
+     {
+      "ms": 40,
+      "elements": 1479,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 114,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1217,
+    "ms": 66.7,
+    "k": 0.463,
+    "state": "connections|far||false|moving",
+    "script": 4.5,
+    "style": 3.9,
+    "layout": 0,
+    "paint": 22.2,
+    "other": 24.9,
+    "styles": [
+     {
+      "ms": 3.8,
+      "elements": 319,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 1283,
+    "ms": 66.6,
+    "k": 0.436,
+    "state": "connections|far||false|moving",
+    "script": 4.7,
+    "style": 10.7,
+    "layout": 0,
+    "paint": 17.6,
+    "other": 8.5,
+    "styles": [
+     {
+      "ms": 10.7,
+      "elements": 797,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 1333,
+    "ms": 50.1,
+    "k": 0.419,
+    "state": "connections|far||false|moving",
+    "script": 4.5,
+    "style": 11.1,
+    "layout": 1.7,
+    "paint": 15.6,
+    "other": 5.4,
+    "styles": [
+     {
+      "ms": 10.7,
+      "elements": 271,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 83,
+    "ms": 83.4,
+    "k": 0.962,
+    "look": "reading",
+    "style": 2.8,
+    "paint": 26.8,
+    "restyled": 355
+   },
+   {
+    "at": 150,
+    "ms": 66.7,
+    "k": 0.901,
+    "look": "reading",
+    "style": 2.1,
+    "paint": 15.4,
+    "restyled": 355
+   },
+   {
+    "at": 233,
+    "ms": 83.3,
+    "k": 0.875,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 4.9,
+    "restyled": 0
+   },
+   {
+    "at": 267,
+    "ms": 33.3,
+    "k": 0.862,
+    "look": "reading",
+    "style": 1.2,
+    "paint": 9.6,
+    "restyled": 67
+   },
+   {
+    "at": 283,
+    "ms": 16.6,
+    "k": 0.862,
+    "look": "reading",
+    "style": 0.1,
+    "paint": 0.1,
+    "restyled": 0
+   },
+   {
+    "at": 300,
+    "ms": 16.8,
+    "k": 0.848,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 5.3,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 16.6,
+    "k": 0.833,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 5,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 16.7,
+    "k": 0.819,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.6,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 16.6,
+    "k": 0.807,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.8,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.7,
+    "k": 0.796,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.9,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.7,
+    "k": 0.786,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.7,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.7,
+    "k": 0.778,
+    "look": "reading",
+    "style": 3.3,
+    "paint": 5.5,
+    "restyled": 156
+   },
+   {
+    "at": 417,
+    "ms": 16.6,
+    "k": 0.778,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 8.6,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.6,
+    "k": 0.77,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.5,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.7,
+    "k": 0.752,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 10.7,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 16.7,
+    "k": 0.735,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 10.5,
+    "restyled": 0
+   },
+   {
+    "at": 500,
+    "ms": 33.3,
+    "k": 0.72,
+    "look": "reading",
+    "style": 1.8,
+    "paint": 15.8,
+    "restyled": 64
+   },
+   {
+    "at": 517,
+    "ms": 16.7,
+    "k": 0.695,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 10.8,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 16.7,
+    "k": 0.685,
+    "look": "reading",
+    "style": 1.5,
+    "paint": 5.5,
+    "restyled": 62
+   },
+   {
+    "at": 583,
+    "ms": 49.9,
+    "k": 0.685,
+    "look": "reading",
+    "style": 7.5,
+    "paint": 32.8,
+    "restyled": 557
+   },
+   {
+    "at": 600,
+    "ms": 16.8,
+    "k": 0.647,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.5,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 33.3,
+    "k": 0.632,
+    "look": "reading",
+    "style": 2.2,
+    "paint": 17.4,
+    "restyled": 116
+   },
+   {
+    "at": 650,
+    "ms": 16.6,
+    "k": 0.607,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 10.3,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 33.3,
+    "k": 0.596,
+    "look": "reading",
+    "style": 2,
+    "paint": 22,
+    "restyled": 103
+   },
+   {
+    "at": 700,
+    "ms": 16.7,
+    "k": 0.596,
+    "look": "reading",
+    "style": 0,
+    "paint": 10.4,
+    "restyled": 0
+   },
+   {
+    "at": 717,
+    "ms": 16.7,
+    "k": 0.596,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 0.4,
+    "restyled": 37
+   },
+   {
+    "at": 967,
+    "ms": 250,
+    "k": 0.58,
+    "look": "connections",
+    "style": 161.6,
+    "paint": 41.9,
+    "restyled": 4697
+   },
+   {
+    "at": 1017,
+    "ms": 50,
+    "k": 0.474,
+    "look": "connections",
+    "style": 1.1,
+    "paint": 29.3,
+    "restyled": 49
+   },
+   {
+    "at": 1117,
+    "ms": 100,
+    "k": 0.472,
+    "look": "connections",
+    "style": 43.4,
+    "paint": 34.9,
+    "restyled": 1593
+   },
+   {
+    "at": 1150,
+    "ms": 33.3,
+    "k": 0.472,
+    "look": "connections",
+    "style": 3.8,
+    "paint": 3.1,
+    "restyled": 318
+   },
+   {
+    "at": 1217,
+    "ms": 66.7,
+    "k": 0.463,
+    "look": "connections",
+    "style": 3.9,
+    "paint": 22.2,
+    "restyled": 319
+   },
+   {
+    "at": 1283,
+    "ms": 66.6,
+    "k": 0.436,
+    "look": "connections",
+    "style": 10.7,
+    "paint": 17.6,
+    "restyled": 797
+   },
+   {
+    "at": 1333,
+    "ms": 50.1,
+    "k": 0.419,
+    "look": "connections",
+    "style": 11.1,
+    "paint": 15.6,
+    "restyled": 271
+   },
+   {
+    "at": 1350,
+    "ms": 16.6,
+    "k": 0.419,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 0.6,
+    "restyled": 0
+   },
+   {
+    "at": 1367,
+    "ms": 16.7,
+    "k": 0.412,
+    "look": "connections",
+    "style": 1,
+    "paint": 0.9,
+    "restyled": 67
+   },
+   {
+    "at": 1400,
+    "ms": 33.3,
+    "k": 0.403,
+    "look": "connections",
+    "style": 1.1,
+    "paint": 18.9,
+    "restyled": 77
+   },
+   {
+    "at": 1417,
+    "ms": 16.7,
+    "k": 0.388,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 7.9,
+    "restyled": 45
+   },
+   {
+    "at": 1433,
+    "ms": 16.6,
+    "k": 0.382,
+    "look": "connections",
+    "style": 2.6,
+    "paint": 3.4,
+    "restyled": 112
+   },
+   {
+    "at": 1450,
+    "ms": 16.7,
+    "k": 0.376,
+    "look": "connections",
+    "style": 0.6,
+    "paint": 8,
+    "restyled": 45
+   },
+   {
+    "at": 1483,
+    "ms": 33.3,
+    "k": 0.371,
+    "look": "connections",
+    "style": 0.8,
+    "paint": 15.8,
+    "restyled": 45
+   },
+   {
+    "at": 1533,
+    "ms": 50,
+    "k": 0.364,
+    "look": "connections",
+    "style": 5.4,
+    "paint": 12.2,
+    "restyled": 181
+   },
+   {
+    "at": 1567,
+    "ms": 33.4,
+    "k": 0.364,
+    "look": "connections",
+    "style": 4.5,
+    "paint": 10.2,
+    "restyled": 176
+   },
+   {
+    "at": 1583,
+    "ms": 16.7,
+    "k": 0.349,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 6.3,
+    "restyled": 33
+   },
+   {
+    "at": 1617,
+    "ms": 33.3,
+    "k": 0.342,
+    "look": "connections",
+    "style": 3.2,
+    "paint": 18.7,
+    "restyled": 100
+   },
+   {
+    "at": 1633,
+    "ms": 16.7,
+    "k": 0.33,
+    "look": "connections",
+    "style": 0.6,
+    "paint": 7.3,
+    "restyled": 43
+   },
+   {
+    "at": 1650,
+    "ms": 16.6,
+    "k": 0.325,
+    "look": "connections",
+    "style": 1,
+    "paint": 6.6,
+    "restyled": 60
+   },
+   {
+    "at": 1683,
+    "ms": 33.3,
+    "k": 0.32,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 18.5,
+    "restyled": 43
+   },
+   {
+    "at": 1700,
+    "ms": 16.7,
+    "k": 0.313,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 8.7,
+    "restyled": 43
+   },
+   {
+    "at": 1733,
+    "ms": 33.3,
+    "k": 0.311,
+    "look": "connections",
+    "style": 2.6,
+    "paint": 14.8,
+    "restyled": 116
+   },
+   {
+    "at": 1767,
+    "ms": 33.4,
+    "k": 0.306,
+    "look": "connections",
+    "style": 0.7,
+    "paint": 10.9,
+    "restyled": 33
+   },
+   {
+    "at": 1783,
+    "ms": 16.6,
+    "k": 0.304,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 6.8,
+    "restyled": 0
+   },
+   {
+    "at": 1800,
+    "ms": 16.7,
+    "k": 0.303,
+    "look": "connections",
+    "style": 0.8,
+    "paint": 4.3,
+    "restyled": 30
+   },
+   {
+    "at": 1833,
+    "ms": 33.4,
+    "k": 0.302,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 12.8,
+    "restyled": 0
+   },
+   {
+    "at": 1850,
+    "ms": 16.5,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 5.5,
+    "restyled": 0
+   },
+   {
+    "at": 1867,
+    "ms": 16.8,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 5.4,
+    "restyled": 0
+   },
+   {
+    "at": 1883,
+    "ms": 16.6,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.5,
+    "paint": 2.3,
+    "restyled": 0
+   },
+   {
+    "at": 1900,
+    "ms": 16.7,
+    "k": 0.301,
+    "look": "connections",
+    "style": 0.4,
+    "paint": 3.4,
+    "restyled": 0
+   }
+  ],
+  "changes": [
+   {
+    "at": -4016,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": -1833,
+    "k": 1,
+    "state": "reading|reading|0|false|"
+   },
+   {
+    "at": -50,
+    "k": 1,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 967,
+    "k": 0.58,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 1017,
+    "k": 0.474,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 2017,
+    "k": 0.301,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -4016,
+    "ms": 216.7,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -2166,
+    "ms": 1849.9,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 967,
+    "ms": 250,
+    "k": 0.58,
+    "look": "connections",
+    "script": 15.7,
+    "style": 161.6,
+    "layout": 15.1,
+    "paint": 41.9,
+    "other": 21.6,
+    "styles": [
+     {
+      "ms": 145.2,
+      "elements": 3827,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 15.6,
+      "elements": 870,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1017,
+    "ms": 50,
+    "k": 0.474,
+    "look": "connections",
+    "script": 4.2,
+    "style": 1.1,
+    "layout": 0,
+    "paint": 29.3,
+    "other": 11.1,
+    "styles": [
+     {
+      "ms": 1.1,
+      "elements": 49,
+      "script": "FunctionCall a@index.js:5177:36340",
+      "stack": [
+       "framePlace:5177:81094",
+       "updateMapTransform:5177:76625",
+       ":5177:47044",
+       "a:5177:36544"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 967,
+   "ms": 250,
+   "k": 0.58,
+   "state": "connections|far||true|moving",
+   "script": 15.7,
+   "style": 161.6,
+   "layout": 15.1,
+   "paint": 41.9,
+   "other": 21.6,
+   "styles": [
+    {
+     "ms": 145.2,
+     "elements": 3827,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 15.6,
+     "elements": 870,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 67,
+   "gaps": [
+    263,
+    63,
+    73,
+    70,
+    77,
+    17,
+    16,
+    18,
+    16,
+    16,
+    17,
+    16,
+    17,
+    16,
+    17,
+    25,
+    30,
+    27,
+    17,
+    22,
+    18,
+    39,
+    39,
+    17,
+    30,
+    20,
+    17,
+    17,
+    356,
+    28,
+    23,
+    28,
+    25,
+    25,
+    29,
+    26,
+    28,
+    30,
+    21,
+    23,
+    21,
+    19,
+    47,
+    21,
+    25,
+    22,
+    22,
+    33,
+    21,
+    21,
+    31,
+    21,
+    23,
+    22,
+    24,
+    39,
+    22,
+    22,
+    21,
+    20,
+    20,
+    21,
+    20,
+    19,
+    19,
+    98
+   ]
+  }
+ }
+]

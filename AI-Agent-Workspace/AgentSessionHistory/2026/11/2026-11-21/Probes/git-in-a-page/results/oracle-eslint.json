@@ -1,0 +1,46 @@
+{
+  "name": "eslint",
+  "head": "e0148e30da6662318c5643f2230830af8407b2aa",
+  "gitChangesDigest": "535e5e8b8202bfe2",
+  "mainline": 8799,
+  "reachable": 11130,
+  "tags": 432,
+  "changedPaths": 43558,
+  "changedBlobs": 41122,
+  "changedBlobMegabytes": 812.4,
+  "headFiles": 2363,
+  "blobsHeldToGit": 2000,
+  "blobsDifferingFromGit": 0,
+  "blobsFailingTheirId": 0,
+  "packs": 1,
+  "looseObjects": 0,
+  "notes": [],
+  "refusals": [],
+  "differenceCount": 0,
+  "differencesByKind": {},
+  "differences": [],
+  "gitMs": {
+    "resolve": 7,
+    "mainline": 192,
+    "reachable": 449,
+    "changes": 1145,
+    "tags": 10,
+    "headTree": 10
+  },
+  "readerMs": {
+    "open": 14,
+    "mainline": 745,
+    "reachable": 298,
+    "changes": 7176,
+    "tags": 42,
+    "headTree": 6,
+    "everyChangedBlobVerified": 15478
+  },
+  "hostCalls": {
+    "list": 2,
+    "read": 9,
+    "size": 1,
+    "slice": 1841,
+    "bytes": 128715371
+  }
+}

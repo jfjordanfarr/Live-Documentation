@@ -293,7 +293,16 @@
             <select id="tuning-arrival">
               <option value="reading" selected>Reading Size</option>
               <option value="then-neighbours">Reading, Then Neighbours</option>
+              <option value="then-neighbours-after">Reading, Then Neighbours, Look After</option>
+              <option value="then-neighbours-before">Reading, Then Neighbours, Look Before</option>
               <option value="neighbours">Neighbours</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Arrival Waits</span>
+            <select id="tuning-arrival-waits">
+              <option value="never" selected>Never</option>
+              <option value="pointed">While Pointed At</option>
             </select>
           </label>
           <label class="tuning-slider">

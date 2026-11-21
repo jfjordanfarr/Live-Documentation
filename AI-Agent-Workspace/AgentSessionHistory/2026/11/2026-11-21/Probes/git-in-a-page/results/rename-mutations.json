@@ -1,0 +1,72 @@
+{
+  "no file-name pass": {
+    "case-1": 0,
+    "case-2": 0,
+    "case-3": 0,
+    "case-4": 0,
+    "case-5": 0,
+    "case-6": 0,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "file-name pass at the plain minimum": {
+    "case-1": 0,
+    "case-2": 0,
+    "case-3": 0,
+    "case-4": 0,
+    "case-5": 0,
+    "case-6": 0,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "a tie replaces a kept candidate": {
+    "case-1": 0,
+    "case-2": 0,
+    "case-3": 0,
+    "case-4": 0,
+    "case-5": 0,
+    "case-6": 0,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "no preference for a same file name among equal scores": {
+    "case-1": 0,
+    "case-2": 0,
+    "case-3": 0,
+    "case-4": 2,
+    "case-5": 0,
+    "case-6": 0,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "CR before LF counted": {
+    "case-1": 22,
+    "case-2": 42,
+    "case-3": 54,
+    "case-4": 60,
+    "case-5": 50,
+    "case-6": 32,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "exact renames take the last source": {
+    "case-1": 382,
+    "case-2": 350,
+    "case-3": 370,
+    "case-4": 292,
+    "case-5": 300,
+    "case-6": 322,
+    "this-repository": 0,
+    "eslint": 0
+  },
+  "score rounded, not truncated": {
+    "case-1": 0,
+    "case-2": 0,
+    "case-3": 0,
+    "case-4": 0,
+    "case-5": 0,
+    "case-6": 0,
+    "this-repository": 0,
+    "eslint": 0
+  }
+}

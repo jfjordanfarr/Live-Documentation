@@ -1,0 +1,58 @@
+{
+  "no file-name pass": {
+    "case-11": 6,
+    "case-12": 14,
+    "case-13": 14,
+    "case-14": 10,
+    "case-15": 6,
+    "case-16": 12
+  },
+  "file-name pass at the plain minimum": {
+    "case-11": 8,
+    "case-12": 10,
+    "case-13": 12,
+    "case-14": 10,
+    "case-15": 16,
+    "case-16": 2
+  },
+  "a tie replaces a kept candidate": {
+    "case-11": 40,
+    "case-12": 24,
+    "case-13": 38,
+    "case-14": 32,
+    "case-15": 28,
+    "case-16": 26
+  },
+  "no preference for a same file name among equal scores": {
+    "case-11": 2,
+    "case-12": 0,
+    "case-13": 0,
+    "case-14": 0,
+    "case-15": 0,
+    "case-16": 0
+  },
+  "CR before LF counted": {
+    "case-11": 50,
+    "case-12": 36,
+    "case-13": 68,
+    "case-14": 48,
+    "case-15": 40,
+    "case-16": 38
+  },
+  "exact renames take the last source": {
+    "case-11": 362,
+    "case-12": 388,
+    "case-13": 352,
+    "case-14": 344,
+    "case-15": 372,
+    "case-16": 382
+  },
+  "score rounded, not truncated": {
+    "case-11": 0,
+    "case-12": 0,
+    "case-13": 0,
+    "case-14": 0,
+    "case-15": 0,
+    "case-16": 0
+  }
+}

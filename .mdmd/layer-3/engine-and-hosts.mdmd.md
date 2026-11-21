@@ -137,15 +137,23 @@ Under the port, `read` keeps the bytes of a run so that every one of these asks 
 
 ## 4. What cannot cross into a page
 
-A page cannot start a program, so it cannot run git. Three things run git today.
+A page cannot start a program, so it cannot run git. Three things run git today; the third, the history, was shown on 2026-11-21 not to need the program at all.
 
 | Uses git today | Where | In the page instead |
 | --- | --- | --- |
 | Git's own word on what it ignores, a file it tracks always kept | `tooling/gitIgnored.ts` asks `git ls-files --ignored` | The `.gitignore` files are read from the listing by the shared leave-out function. Lost: `.git/info/exclude`, the global excludes file, and git's rule that a tracked file under an ignored folder is kept. Reading that last one would mean reading git's own index file. |
 | A scan of the files changed since the last commit (`--changed`) | `live-docs/gitUtils.ts` asks `git status` | Ask each kept file's size and time of change and compare them with those the last scan's facts recorded, and scan what moved; where that asking is itself slow, as it may be in a page, compare the bytes' own fingerprint instead, which costs a read and still saves the reader's work. This works without git, so the command line could do the same in a TFS folder. |
-| The history: what the map looked like at each commit | `live-docs/history/` and `generator/src/history/` | Does without. The command line computes the history and writes it into the facts, and the page shows it as it shows any facts. The Explorer already reads history that way: as data it is handed, not as git it runs. |
+| The history: what the map looked like at each commit | `live-docs/history/` and `generator/src/history/` | **Measured on 2026-11-21 to cross after all** (below): the engine reads the files under `.git` itself, through the same `read` as any other file, on both hosts. As first proposed that morning, the page did without and the command line computed the history for it. |
 
 In a folder with no `.git` at all, which is most of what the owner would map at work, the engine asks git nothing today, under Node or in the page. So for TFS folders the two hosts already lose nothing to each other.
+
+**The history can cross, by reading `.git` as files** (the owner, 2026-11-21, on being told it could not: "Git is just a hidden directory of files. Complex as can be, but we can read files from the browser..."). [A probe of that day](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/git-in-a-page/README.md) wrote one reader of `.git` in plain JavaScript, about 770 lines with its own inflate, and beside it a port of git's rename detection, about 200 lines. The same files run under Node and in a Chromium tab. Held to git 2.56.1 on every step of this repository's history and eslint's (over ten thousand commits): every commit's fields, every commit's changed paths, the tags, the head's tree, every changed file's bytes by its id, and every rename with its score, with no difference; twelve histories made to exercise the rename rules one at a time agree as well. A folder input hands a page every file under `.git`. So the history is no longer something only one host can compute:
+
+- **One implementation, not two.** The command line would stop starting the git program for the history (today some fifteen to twenty thousand processes for a rebuild of this repository, by the probe's estimate) and would not need git installed for it; the page gains the history.
+- **A commit's tree is itself a host.** `list()` is the tree's paths and `read(path)` is a blob's bytes, so the history becomes the scan run over many hosts, and nothing is written to a scratch folder to be read back.
+- **What it costs,** on eslint's 11,130 commits: every commit with its changed paths in 8.5 s in a tab and about 42 s on a tab slowed four times on two cores; renames for the whole history in half a second and 2.6 s; the newest commit within 40 ms, the walk going newest first and able to stop and resume. The engine's own work on each change, the reading of its files, is the larger cost and is unchanged by this.
+- **What still does not cross:** a repository in a form the reader refuses by name (reftable, SHA-256), or whose objects lie outside the picked folder (alternates, a linked worktree's or a submodule's `.git` file); a partial clone is untested. Git's dependence on a checkout's attributes for what is binary, and on its own version for renames, is deliberately not reproduced: every machine gets the same answer.
+- **Not built.** The reader and the port stand in the probe's folder. The first step in the engine is a version-control port shaped like today's, with git kept as the oracle in the tests.
 
 ## 5. The readers that read other files
 

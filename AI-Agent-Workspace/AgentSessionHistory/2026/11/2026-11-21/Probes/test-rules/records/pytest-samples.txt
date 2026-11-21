@@ -1,0 +1,5 @@
+python/ledger/tests/test_money.py
+python/ledger/tests/test_posting.py
+python/rosetta/src/test_helpers.py
+python/rosetta/src/test_pipeline.py
+python/rosetta/src/test_processor.py

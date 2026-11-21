@@ -1,0 +1,3 @@
+stockroom|lib|stockroom|rust/stockroom/src/lib.rs|true
+stockroom|bin|stockroom|rust/stockroom/src/main.rs|true
+stockroom|test|report|rust/stockroom/tests/report.rs|true
