@@ -245,6 +245,7 @@
     "packages/engine/src/live-docs/archetype.ts": {
       "node:path": [
         "basename",
+        "extname",
         "posix.dirname"
       ]
     },

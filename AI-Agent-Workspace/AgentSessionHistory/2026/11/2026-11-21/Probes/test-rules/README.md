@@ -1,6 +1,6 @@
 # What makes a file a test, language by language: each runner's rule beside today's
 
-A record of 2026-11-21, historical evidence written by a builder for the root, on the day branch at `a11f7d007`. It answers the owner's question of that day, "Should any architecture be in place to scope test file matching patterns in some way?", with a guard, an oracle per language, a measurement on real code, the open fork, and a design that is not built yet. Nothing under `packages/` changed but one new test file.
+A record of 2026-11-21, historical evidence written by a builder for the root, on the day branch at `a11f7d007`. It answers the owner's question of that day, "Should any architecture be in place to scope test file matching patterns in some way?", with a guard, an oracle per language, a measurement on real code, the fork, and a design. The first part of that design was built the same day; its account is the last section.
 
 ## The guard
 
@@ -38,7 +38,7 @@ Some rules were **asked** of the runner itself, and its answer is kept as a reco
 
 [`measure.mts`](scripts/measure.mts) walks each corpus and drops what discovery never documents (documents, lock files, `.git`, `node_modules`, binary files, which are assets). It then sets three answers side by side for every file: `resolveArchetype` today; **the runner**, meaning whether the language's runner selects the file as a test (reading (a) below); and **for the tests**, meaning the runner's answer or a file inside a test folder of the ecosystem's layout (`test`, `tests`, `spec`, `__tests__`, `__mocks__`, `__snapshots__`, `testdata`, `src/test/`), a .NET test project's file, or a support file the runner loads (`conftest.py`, a configured Jest setup file). That second answer is reading (b), turned into a rule. It is a stated approximation, not an oracle.
 
-[`causes.mjs`](scripts/causes.mjs) sorts the disagreements by what can be seen of their cause. Run from the checkout's root: `npx tsx <record>/scripts/measure.mts <out.tsv>`, then `node <record>/scripts/causes.mjs <out.tsv> runner` (or `forTests`). The corpora's folders are named at the script's head. The full lists: [against the runner](disagreements-with-the-runner.tsv) and [against for-the-tests](disagreements-with-for-the-tests.tsv), with their [counts](counts-against-the-runner.txt) and [counts](counts-against-for-the-tests.txt).
+[`causes.mjs`](scripts/causes.mjs) sorts the disagreements by what can be seen of their cause. Run from the checkout's root: `npx tsx <record>/scripts/measure.mts <out.tsv>`, then `node <record>/scripts/causes.mjs <out.tsv> runner` (or `forTests`). The corpora's folders are named at the script's head; `ARCHETYPE_MODULE=<copy>.ts` measures another copy of `archetype.ts` placed beside it, as the reading before the restructure below was measured. The full lists of this section, re-measured with the one correction to an oracle described below: [against the runner](before-restructure/disagreements-with-the-runner.tsv) and [against for-the-tests](before-restructure/disagreements-with-for-the-tests.tsv), with their [counts](before-restructure/counts-against-the-runner.txt) and [counts](before-restructure/counts-against-for-the-tests.txt). The figures below are those handed back before the correction, one higher in each total; the lists after the restructure are at the top of this folder.
 
 | Corpus | Commit | Files | Tests today | By the runner (a) | For the tests (b) |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -61,7 +61,7 @@ Some rules were **asked** of the runner itself, and its answer is kept as a reco
 | cJSON (CTest) | `6d9f2443ab071f86e5d9b43025a40929ec41c46c` | 210 | 168 | 18 | 167 |
 | **all** | | **21,128** | | | |
 
-dbatools, AL-Go, AzureStack-Tools, tSQLt, DNN Platform and mojoPortal are the PowerShell, SQL and .NET builders' corpora, at the commits [the joining's account](../readers-gathering/README.md) names. The other nine were cloned anonymously and shallow on 2026-11-21. Nothing of any corpus is committed. 25 files are of a language with no runner measured in their corpus, and are left out of the disagreements: this repository's five oracle programs in C#, Java and PowerShell, which no runner names; cJSON's 2 Python and 16 Ruby scripts; one Ruby file in ripgrep; one Python file in FluentValidation.
+dbatools, AL-Go, AzureStack-Tools, tSQLt, DNN Platform and mojoPortal are the PowerShell, SQL and .NET builders' corpora, at the commits [the joining's account](../readers-gathering/README.md) names. The other nine were cloned anonymously and shallow on 2026-11-21. Their commits were first read from each clone's `.git/shallow` by a script, after a loop that named git had been refused; the root ruled that the wrong route, and each was then confirmed by a plain `git -C <clone> rev-parse HEAD`, nine times, all nine equal to the table. Nothing of any corpus is committed. 25 files are of a language with no runner measured in their corpus, and are left out of the disagreements: this repository's five oracle programs in C#, Java and PowerShell, which no runner names; cJSON's 2 Python and 16 Ruby scripts; one Ruby file in ripgrep; one Python file in FluentValidation.
 
 ### Today against the runner: 884 files, 873 of them called tests where no runner runs them
 
@@ -144,3 +144,60 @@ dbatools, AL-Go, AzureStack-Tools, tSQLt, DNN Platform and mojoPortal are the Po
 - The guard grows one row per moved answer, each with the runner's word beside it.
 
 **What it would change, measured.** On the corpora above, the moves are the 196 rows of the second table, each listed in [the file](disagreements-with-for-the-tests.tsv), less what a project's own configuration adds later. On this repository, one file moves: `tests/page-scan/fixtures.ts` becomes a test, like its siblings. The guard's `wrong` rows would turn to agree, and its `fork` rows would stay as they are under (b).
+
+## The restructure, part one (built on 2026-11-21)
+
+**Decided by the root on this record's evidence; the owner may reverse it.** Reading (b): a test is a file that exists for the tests. Reading (a) is not built. The third reading — an `Entry: test` line on what a runner runs, so that an unused helper can show as unreachable — goes to the owner as an idea and is not built.
+
+**Built in `archetype.ts`, as the design above says.** `TEST_RULES` is one table, keyed by language. Each language's name rule and test roots apply to that language's files only.
+- The rule every language shares is a whole folder segment named `test` or `tests`, in any case, and nothing else.
+- The word inside a longer name is no longer a rule, and no language's name rule reads another language's files.
+- A folder named `fixtures` is a sample's only where `sampleRoots` names it.
+- A file of no runner's language is a test only inside a test root: the shared one, or a language's `roots` (`__tests__`, `__mocks__`, `__snapshots__`, `testdata`, `src/test`). Ruby's `spec/` is not among them, because elsewhere `spec/` holds specifications, so it applies to Ruby's own files only.
+- Overrides still come first and binary content before any rule; a sample root is still read from its own root.
+
+The guard's rows carry their runner's word, and each row that moved says `moved:` with its answer before. The marks are now `for the tests`, `wrong`, `project` and `interim`, each where the answer and the runner disagree, and `missed` where they agree but the file exists for the tests and nothing in its path says so. A new case requires a guard block for every language of `TEST_RULES`.
+
+**Interim, until the readers' facts arrive (part two).** These keep the reading of before the restructure exactly, in `interimReading`:
+- .NET files: `.cs`, project files, solutions, `.config`, ASP.NET markup.
+- Rust files: `.rs` and `Cargo.toml`.
+- SQL files: `.sql` and `.sqlproj`.
+
+So does a file of no runner's language in a folder named the way a .NET or database test project is named: a dotted name with `Test` or `Tests` as one of its parts. That covers FluentValidation's `TestMessages.resx` and `xunit.runner.json` in `FluentValidation.Tests/`, DNN's `.editorconfig` in `DotNetNuke.BulkInstall.DeployClient.Tests/`, tSQLt's `Tests.SA.sqlproj` and its two siblings, and AL-Go's `e2eTests/*/My App.Test/`. Without that last rule these would have become working code until the project reader reports the test project.
+
+The guard's rows under this interim reading:
+- every row of the blocks `.NET (interim)`, `Rust (interim)` and `SQL (interim)`;
+- in "Files no runner runs": `src/FluentValidation.Tests/xunit.runner.json`, `Tests.SA/Tests.SA.sqlproj` and `e2eTests/pte/My App.Test/app.json`;
+- in `archetype.test.ts`: `tests/fixtures/csharp/App.cs` and `tests/fixtures/rust/src/main.rs`, which still read the `fixtures` folder as a sample's.
+
+**Three corrections on the way, each from the measurement.**
+- **cJSON's `test.c`.** The top `CMakeLists.txt` registers it (`add_executable("${TEST_CJSON}" test.c)`, then `add_test`). This record's oracle had read only `tests/CMakeLists.txt`; it now reads both. That removed one disagreement from each total measured before the restructure (884 to 883, 196 to 195), and gave C and C++ a name rule for a file named for the word.
+- **`.sqlproj`** joins SQL's interim files. Without it, tSQLt's `TestUtilTests.sqlproj`, the project of its utility tests, would have become working code.
+- **The dotted test-project folder above.**
+
+**The two tables, before and after** (the same 21,128 files):
+
+| Disagreement | Before | After |
+| --- | ---: | ---: |
+| with the runner (reading (a)) | 883 | 849 |
+| with "there for the tests" (reading (b), as the measurement turns it into a rule) | 195 | 133 |
+
+The lists after are [against the runner](disagreements-with-the-runner.tsv) and [against for-the-tests](disagreements-with-for-the-tests.tsv), with [counts](counts-against-the-runner.txt) and [counts](counts-against-for-the-tests.txt). The 133 left are:
+- 67 sinatra-contrib templates under `spec/`, by the choice above;
+- the interim languages' files and the projects' own configurations (rosetta's C, Java and C# samples, dom-testing-library's `__node_tests__`, dbatools' named files);
+- DNN's 17 vendored CodeMirror `test.js` files, which Jest's default takes. The measurement reads DNN's JavaScript by Vitest's default, so they count as disagreements, though they are CodeMirror's tests and rightly tests.
+
+**Every file whose kind changed: 62** ([the list](moved-on-restructure.tsv), with each file's runner and for-the-tests answers).
+
+| Corpus | Files | What moved |
+| --- | ---: | --- |
+| this repository | 1 | `tests/page-scan/fixtures.ts`, working code to test (a helper in a test folder) |
+| the sample programs | 0 | nothing, in `tests/integration/programs` or `tests/integration/fixtures`: the regenerated Live Docs change one doc's kind, that of `tests/page-scan/fixtures.ts` |
+| gson | 25 | its three test modules, `test-shrinker/`, `test-jpms/` and `test-graal-native-image/`, test to working code: the word inside a folder's name. By the decided reading they exist for the tests, so they are a loss; the guard pins one as `missed` |
+| AL-Go | 17 | 10 JSON fixtures under `Tests/ReviewAgent/fixtures/` to test; the template `HelloWorld.Test.al` and six `Test … .settings.json` workflow settings to working code |
+| DNN Platform | 7 | 3 Jest `__mocks__` to test; to working code, `dnn.DataStructures.Tests.js` (a QUnit test, pinned `missed`) and three CodeMirror `*_test.js` tests (pinned `missed`) |
+| dbatools | 4 | four CI workflows named for tests, to working code |
+| tSQLt | 2 | two CI workflow files, to working code |
+| sinatra | 2 | `lib/sinatra/test_helpers.rb` (shipped library) and its CI workflow, to working code |
+| dom-testing-library | 1 | `src/queries/test-id.ts`, the `getByTestId` query, to working code |
+| click, cobra, ripgrep | 3 | a CI workflow or script each, to working code |

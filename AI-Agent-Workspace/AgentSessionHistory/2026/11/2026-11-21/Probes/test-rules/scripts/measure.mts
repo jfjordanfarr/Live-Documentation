@@ -9,7 +9,8 @@ import path from "node:path";
 const WT = process.cwd();
 const require = createRequire(path.join(WT, "package.json"));
 const picomatch = require("picomatch") as (glob: string | string[], options?: object) => (p: string) => boolean;
-const { resolveArchetype, isBinaryContent } = await import(path.join(WT, "packages/engine/src/live-docs/archetype.ts"));
+// ARCHETYPE_MODULE names another copy of archetype.ts beside it, as the reading before a change was measured.
+const { resolveArchetype, isBinaryContent } = await import(path.join(WT, "packages/engine/src/live-docs", process.env.ARCHETYPE_MODULE ?? "archetype.ts"));
 const { normalizeLiveDocumentationConfig } = await import(path.join(WT, "packages/engine/src/config/liveDocumentationConfig.ts"));
 
 // Where the corpora were on 2026-11-21: the builders' copies, this builder's clones, and its copies of the Go and Rust
@@ -270,7 +271,9 @@ const corpora: Corpus[] = [
     oracles: () => {
       const cmake = read(`${CLONES}/cJSON/tests/CMakeLists.txt`);
       const names = new Set([...cmake.matchAll(/set\((?:unity_tests|cjson_utils_tests)\s+([^)]*)\)/g)].flatMap(m => m[1].split(/\s+/).filter(Boolean)));
-      return { "C/C++": rel => rel.startsWith("tests/") && names.has(path.posix.basename(rel).replace(/\.c$/, "")) };
+      // The top CMakeLists.txt registers test.c too: add_executable("${TEST_CJSON}" test.c), then add_test(NAME ${TEST_CJSON} …).
+      const top = [...read(`${CLONES}/cJSON/CMakeLists.txt`).matchAll(/add_executable\("\$\{TEST_CJSON\}"\s+([^)\s]+)\)/g)].map(m => m[1]);
+      return { "C/C++": rel => (rel.startsWith("tests/") && names.has(path.posix.basename(rel).replace(/\.c$/, ""))) || top.includes(rel) };
     }
   }
 ];
