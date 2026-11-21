@@ -70,7 +70,6 @@
  * The rules are measured against PowerShell's own parser, whose record of
  * each PowerShell fixture is `expected/powershell-ast.json`.
  */
-import { createHash } from "node:crypto";
 import path from "node:path";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
@@ -1684,8 +1683,18 @@ interface Workspace {
 /** Each index's workspace, built once per index, which is built once per run, as the C# reader builds its type table. */
 const workspaces = new WeakMap<WorkspaceFileIndex, Promise<Workspace>>();
 
+/**
+ * What tells the text the analysis of a file is handed from the text the table read of that file in the same run: its
+ * length and a 32-bit FNV-1a hash of its UTF-16 code units. It compares two readings of one path within one run, so
+ * nothing cryptographic is needed, and it is written here rather than taken from `node:crypto`, which a browser has no
+ * stand-in for (the page scan bundles the engine for one; the root's ruling of 2026-11-21). Until then a SHA-1 digest.
+ */
 function digest(content: string): string {
-  return createHash("sha1").update(content).digest("base64");
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < content.length; index += 1) {
+    hash = Math.imul(hash ^ content.charCodeAt(index), 0x01000193) >>> 0;
+  }
+  return `${content.length}:${hash.toString(16)}`;
 }
 
 /** A function's name as callers write it: without a scope prefix, case-folded, as PowerShell finds commands. */
