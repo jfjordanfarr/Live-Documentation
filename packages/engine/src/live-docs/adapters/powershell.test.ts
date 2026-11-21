@@ -537,6 +537,35 @@ describe("calls to functions other files define: loaded, else unique", () => {
     expect(await wires("Backport/Use-Backport.ps1")).toEqual({ "Backport/Expand-Archive.ps1": ["Expand-Archive"] });
   });
 
+  it("treat a function PowerShell defines without a module as shipped: wired only to a definition the caller loads", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0): in run.ps1, which loads
+    // nothing, `Get-Command Pause` is "Function source='' file=''", PowerShell's own; in loads.ps1, which dot-sources the
+    // helper, it is the helper's ("file='…/lib/Helpers.ps1'"), a later function replacing an earlier one. `Invoke-Thing`
+    // is wired by the measured rule's "else unique", which PowerShell's run of run.ps1 alone cannot show.
+    await write({
+      "lib/Helpers.ps1": "function Pause { Read-Host 'Press Enter' | Out-Null }\nfunction Invoke-Thing { }\nfunction mkdir { }\nfunction ImportSystemModules { }\n",
+      "run.ps1": "Write-Host 'Building'\nPause\nInvoke-Thing\nmkdir out\nImportSystemModules\n",
+      "loads.ps1": ". \"$PSScriptRoot/lib/Helpers.ps1\"\nPause\n"
+    });
+    // `mkdir` is Windows PowerShell's and PowerShell 7's on Windows; `ImportSystemModules` is Windows PowerShell 5.1's alone.
+    expect(await wires("run.ps1")).toEqual({ "lib/Helpers.ps1": ["Invoke-Thing"] });
+    expect(await wires("loads.ps1")).toEqual({ "lib/Helpers.ps1": ["Pause"] });
+  });
+
+  it("read a call by one of PowerShell's aliases as a call to the command it names, never to a function of the alias's name", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0), lib.ps1 defining `select` and
+    // `Get-ChildItem` and run.ps1 dot-sourcing it: `'x' | select` printed "x", the alias Select-Object answering ahead of
+    // the loaded function; `gci` printed "the workspace's Get-ChildItem", the alias naming a command the loaded function
+    // answers. `sort` is an alias of Sort-Object in Windows PowerShell 5.1 (and PowerShell 7 on Windows), not on Linux.
+    await write({
+      "lib.ps1": "function select { }\nfunction Get-ChildItem { }\nfunction sort { }\n",
+      "run.ps1": ". \"$PSScriptRoot/lib.ps1\"\n'x' | select\ngci\n",
+      "elsewhere.ps1": "'x' | select\ngci\n'y' | sort\n"
+    });
+    expect(await wires("run.ps1")).toEqual({ "lib.ps1": ["Get-ChildItem"] });
+    expect(await wires("elsewhere.ps1")).toEqual({});
+  });
+
   it("never reach a test's definition as the only one from working code, but let a test reach another test's helper", async () => {
     await write({
       "tests/Stubs.Tests.ps1": "function Get-External { }\nfunction Get-Thing { }\n",

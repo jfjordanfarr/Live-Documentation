@@ -83,7 +83,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { DeclaredEntry, ReExportedSymbolInfo, SourceNotice } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
-import { SHIPPED_COMMANDS, SHIPPED_MODULES } from "./powershell.builtins";
+import { SHIPPED_ALIASES, SHIPPED_COMMANDS, SHIPPED_MODULES } from "./powershell.builtins";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
@@ -1872,17 +1872,21 @@ function isLoadedFrom(workspace: Workspace, file: string, definer: string): bool
  * itself is its own. Otherwise the call goes to the one defining file that the
  * caller's loading reaches; if it reaches several, to none; if it reaches
  * none, to the only file of the workspace that defines the name, unless the
- * name is a command PowerShell itself ships, which answers where nothing
- * loaded overrides it. That last reach passes over a test file unless the
- * caller is a test: nothing in a repository's working code depends on its
+ * name is a command or function PowerShell itself ships, which answers where
+ * nothing loaded overrides it. That last reach passes over a test file unless
+ * the caller is a test: nothing in a repository's working code depends on its
  * tests, so a test's stub of another module's command is never the only
- * definition working code finds.
+ * definition working code finds. A call by an alias PowerShell defines at
+ * start is a call to the command the alias names, since the alias outranks
+ * every function: `select` never reaches a function named `select`, and `gci`
+ * reaches one named `Get-ChildItem` only by this rule.
  */
 function calledFiles(workspace: Workspace, file: string, facts: FileFacts): Map<string, Set<string>> {
   const own    = new Set(facts.functions.map((fact) => callName(fact.name)));
   const called = new Map<string, Set<string>>();
   const caller = isTestFile(workspace.files, file);
-  for (const name of facts.calls) {
+  for (const written of facts.calls) {
+    const name = SHIPPED_ALIASES.get(written) ?? written;
     if (own.has(name)) continue;
     const definers = (workspace.definers.get(name) ?? []).filter((definer) => definer.file !== file);
     if (definers.length === 0) continue;

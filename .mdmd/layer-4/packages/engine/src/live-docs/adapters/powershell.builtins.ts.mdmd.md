@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.builtins.ts`
-- Generated At: 2026-11-21T05:11:09.482Z
+- Generated At: 2026-11-21T05:16:04.776Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,56 @@ The commands PowerShell itself ships, Windows PowerShell 5.1's and PowerShell 7'
 ### Public Symbols
 #### `WINDOWS_POWERSHELL_51_COMMANDS` {#symbol-windows_powershell_51_commands}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L34)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L66)
 
 ##### `WINDOWS_POWERSHELL_51_COMMANDS` — Summary
 Windows PowerShell 5.1's commands, 366.
 
 #### `POWERSHELL_7_COMMANDS` {#symbol-powershell_7_commands}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L104)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L136)
 
 ##### `POWERSHELL_7_COMMANDS` — Summary
 PowerShell 7.7.0's commands as installed on Linux, 288.
 
+#### `WINDOWS_POWERSHELL_51_FUNCTIONS` {#symbol-windows_powershell_51_functions}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L191)
+
+##### `WINDOWS_POWERSHELL_51_FUNCTIONS` — Summary
+Windows PowerShell 5.1's functions defined without a module, 38: `about_Built-in_Functions`.
+
+#### `POWERSHELL_7_FUNCTIONS` {#symbol-powershell_7_functions}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L198)
+
+##### `POWERSHELL_7_FUNCTIONS` — Summary
+PowerShell 7.7.0's functions defined without a module, on Linux, 10.
+
+#### `WINDOWS_POWERSHELL_51_ALIASES` {#symbol-windows_powershell_51_aliases}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L203)
+
+##### `WINDOWS_POWERSHELL_51_ALIASES` — Summary
+Windows PowerShell 5.1's aliases defined at start, 158, each with the command it names.
+
+#### `WINDOWS_POWERSHELL_51_MODULE_ALIASES` {#symbol-windows_powershell_51_module_aliases}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L244)
+
+##### `WINDOWS_POWERSHELL_51_MODULE_ALIASES` — Summary
+Windows PowerShell 5.1's aliases a module of its own exports, 28: present once the module loads, which calling one does.
+
+#### `POWERSHELL_7_ALIASES` {#symbol-powershell_7_aliases}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L256)
+
+##### `POWERSHELL_7_ALIASES` — Summary
+PowerShell 7.7.0's aliases defined at start, on Linux, 108, each with the command it names.
+
 #### `SHIPPED_MODULES` {#symbol-shipped_modules}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L163)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L289)
 - Returns: `ReadonlySet`
 
 ##### `SHIPPED_MODULES` — Summary
@@ -43,11 +78,19 @@ function of the workspace answers and no script of that path runs (pwsh 7.7.0, m
 
 #### `SHIPPED_COMMANDS` {#symbol-shipped_commands}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L172)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L298)
 - Returns: `ReadonlySet`
 
 ##### `SHIPPED_COMMANDS` — Summary
-Every shipped command's name, case-folded, as PowerShell compares command names.
+Every shipped command's and function's name, a module's alias among them, case-folded, as PowerShell compares command names.
+
+#### `SHIPPED_ALIASES` {#symbol-shipped_aliases}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L304)
+- Returns: `ReadonlyMap`
+
+##### `SHIPPED_ALIASES` — Summary
+Every alias PowerShell defines at start, in either edition, case-folded, with the command it names, case-folded.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
