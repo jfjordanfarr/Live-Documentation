@@ -709,6 +709,35 @@ describe("csharpAdapter", () => {
         { specifier: "dbo.Audit",                        symbols: [], kind: "import", basis: "contract" }
       ]);
     });
+
+    // T-SQL's order of search (`bindSqlName`): a name in a C# string is no module's, so it binds as a loose script's does.
+    it("binds a one-part SQL name to `dbo`'s object and not to a namesake in another schema, and a two-part name to its own schema's", async () => {
+      const callerPath = await write("Reports/Orders.cs", [
+        "namespace Shop.Reports",
+        "{",
+        "    public class Orders",
+        "    {",
+        "        public void Count() { Database.SqlQuery<int>(\"EXEC CountOrders\"); }",
+        "        public void Kept() { Database.SqlQuery<int>(\"SELECT * FROM archive.OrdersKept\"); }",
+        "        public void Archived() { Database.SqlQuery<int>(\"EXEC PurgeOrders\"); }",
+        "    }",
+        "}"
+      ]);
+      const symbolIndex = new Map([
+        ["CountOrders",         [{ liveDocPath: "d", sourcePath: "Database/procs.sql",   anchor: "symbol-countorders",         kind: "procedure" }]],
+        ["archive.CountOrders", [{ liveDocPath: "d", sourcePath: "Database/archive.sql", anchor: "symbol-archivecountorders",  kind: "procedure" }]],
+        ["archive.OrdersKept",  [{ liveDocPath: "d", sourcePath: "Database/archive.sql", anchor: "symbol-archiveorderskept",   kind: "table" }]],
+        ["archive.PurgeOrders", [{ liveDocPath: "d", sourcePath: "Database/archive.sql", anchor: "symbol-archivepurgeorders",  kind: "procedure" }]]
+      ]);
+
+      const result = await csharpAdapter.analyze({ absolutePath: callerPath, workspaceRoot, fileIndex: written, symbolIndex });
+
+      expect(result?.dependencies).toEqual([
+        { specifier: "Database/archive.sql", resolvedPath: "Database/archive.sql", symbols: ["archive.OrdersKept"], kind: "import", basis: "contract" },
+        { specifier: "Database/procs.sql",   resolvedPath: "Database/procs.sql",   symbols: ["CountOrders"],        kind: "import", basis: "contract" },
+        { specifier: "PurgeOrders",          symbols: [], kind: "import", basis: "contract" }
+      ]);
+    });
   });
 
   describe("program", () => {

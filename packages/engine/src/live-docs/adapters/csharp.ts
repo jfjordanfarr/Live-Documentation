@@ -54,6 +54,7 @@ import type {
 import type { ProgramEntry, SourceNotice, WorkspaceSymbolIndex } from "../coreTypes";
 import {
   ROUTE_KIND,
+  bindSqlName,
   chooseServers,
   matchRoute,
   matchSqlObject,
@@ -1545,7 +1546,8 @@ function contractDependencies(
     if (text) objects.push({ name: sqlObjectName(text), raw: text });
   }
   for (const object of objects) {
-    const declared = symbolIndex ? matchSqlObject(object.name, symbolIndex) : [];
+    // A name in a C# string is no module's, so a one-part name binds as a loose script's does: to `dbo`'s object.
+    const declared = bindSqlName({ name: object.name }, symbolIndex ? matchSqlObject(object.name, symbolIndex) : []);
     if (declared.length === 0) {
       unresolved.add(object.raw);
       continue;
