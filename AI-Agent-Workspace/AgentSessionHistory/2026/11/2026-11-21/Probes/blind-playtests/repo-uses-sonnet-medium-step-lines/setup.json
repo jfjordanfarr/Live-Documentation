@@ -1,0 +1,10 @@
+{
+  "settings": [
+    {
+      "setting": "localMap.step",
+      "wanted": "lines",
+      "shown": "lines"
+    }
+  ],
+  "ok": true
+}

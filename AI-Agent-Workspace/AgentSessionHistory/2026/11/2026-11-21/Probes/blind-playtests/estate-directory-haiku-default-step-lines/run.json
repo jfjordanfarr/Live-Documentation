@@ -1,0 +1,137 @@
+{
+  "task": "estate-directory",
+  "start": "http://127.0.0.1:8792/samples/estate/",
+  "words": "Can you open the PaymentService folder in this map and tell me how the files in it connect?",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "settings": [
+    "localMap.step=lines"
+  ],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-21T07:01:49.295Z",
+    "explorer-data.json": "2026-11-21T07:01:48.835Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:01:51.271Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Can you open the PaymentService folder in this map and tell me how the files in it connect?\n\nhttp://127.0.0.1:8792/samples/estate/",
+  "startedAt": "2026-11-21T07:03:48.569Z",
+  "finishedAt": "2026-11-21T07:04:34.608Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-21T07:01:49.295Z",
+    "explorer-data.json": "2026-11-21T07:01:48.835Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:01:51.271Z"
+  },
+  "setup": {
+    "settings": [
+      {
+        "setting": "localMap.step",
+        "wanted": "lines",
+        "shown": "lines"
+      }
+    ],
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 44264,
+  "lockWaitMs": 1768,
+  "apiMs": 9749,
+  "turns": 9,
+  "assistantMessages": 13,
+  "toolCalls": 8,
+  "actions": 8,
+  "actionsByTool": {
+    "look": 4,
+    "point": 0,
+    "click": 3,
+    "drag": 0,
+    "scroll": 0,
+    "type": 1,
+    "press": 0
+  },
+  "usage": {
+    "input": 16,
+    "cacheWrite": 11186,
+    "cacheRead": 42671,
+    "output": 1348
+  },
+  "costUsd": 0.00333951,
+  "modelUsage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 1348,
+      "cacheReadInputTokens": 42671,
+      "cacheCreationInputTokens": 11186,
+      "webSearchRequests": 0,
+      "costUSD": 0.00333951,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 493,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 11186,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAbxIHpc-IhsmSAAvvAAZqgO6Fw0TviKRBFUANYykABsrMSKmA6qXFBj8CQIETpsqLT0kEbEqGThdaqM8FSoklwhAF6zkCKV0RSipEFYCFcM8KpOYDFQTAB0TAItiQwmsPBwgtUppgOKsqD9fgIFpNplwAEoSGY-eAEfCJAAeoWhsPhcFqgyCHFyVFUFnhW12kmhri801ipXg3AsXAc8IB8B0eQ4LwAEqRJFjiJwuJIAELRAAKZCWhzJAwA6mZaeyQMdTgAtVCoCio7xsPQSDokkxsXIGo0mlbmqiWyB-ACcR0wdgAgiUGAoQIpUPhfNrcu5sAAxJx2UPzSrKJYAEWqWsRIA%2BO3wau6%2BG5ocqAzqjSaOSgzWwAvgACty5WuPBUFAANogZsAHRAkhtXHQHDa0U7sE78swdzBEIcXw6nYAuiB4B2uz2%2BwOhyOx3YqODudOuAB6JPQzBzkCz%2BBsyqUsh9gqzeDiyCt0fj7eTvcLkAvrc7qeRA9HhwmBng0QA",
+  "init": {
+    "cwd": "/tmp/session-77yiKc",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

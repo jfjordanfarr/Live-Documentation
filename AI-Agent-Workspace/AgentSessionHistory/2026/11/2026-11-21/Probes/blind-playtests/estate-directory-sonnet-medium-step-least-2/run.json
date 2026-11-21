@@ -1,0 +1,137 @@
+{
+  "task": "estate-directory",
+  "start": "http://127.0.0.1:8792/samples/estate/",
+  "words": "Can you open the PaymentService folder in this map and tell me how the files in it connect?",
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "variant": "look-only",
+  "settings": [
+    "localMap.step=least"
+  ],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-21T07:01:49.295Z",
+    "explorer-data.json": "2026-11-21T07:01:48.835Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:01:51.271Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Can you open the PaymentService folder in this map and tell me how the files in it connect?\n\nhttp://127.0.0.1:8792/samples/estate/",
+  "startedAt": "2026-11-21T07:04:48.210Z",
+  "finishedAt": "2026-11-21T07:06:24.954Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-21T07:01:49.295Z",
+    "explorer-data.json": "2026-11-21T07:01:48.835Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:01:51.271Z"
+  },
+  "setup": {
+    "settings": [
+      {
+        "setting": "localMap.step",
+        "wanted": "least",
+        "shown": "least"
+      }
+    ],
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 46310,
+  "lockWaitMs": 50431,
+  "apiMs": 12632,
+  "turns": 9,
+  "assistantMessages": 12,
+  "toolCalls": 8,
+  "actions": 7,
+  "actionsByTool": {
+    "look": 4,
+    "point": 0,
+    "click": 3,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 16,
+    "cacheWrite": 11090,
+    "cacheRead": 42174,
+    "output": 1114
+  },
+  "costUsd": 0.05974940000000001,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 1114,
+      "cacheReadInputTokens": 42174,
+      "cacheCreationInputTokens": 11090,
+      "webSearchRequests": 0,
+      "costUSD": 0.05974940000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 140,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 11090,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/samples/estate/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRAknNXHQHDq0VbsFbUswFwBQIcLwarYAuiB4C22x2uz2%2BwOh3YqIC2eOuAB6WNgzBTkCT%2BCMs6kshdgqjeBCyCNwfD9ejrczkAPtcbseRHd7jiYI8VEAA",
+  "init": {
+    "cwd": "/tmp/session-zX4xvI",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

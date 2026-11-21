@@ -1,0 +1,10 @@
+{
+  "settings": [
+    {
+      "setting": "localMap.step",
+      "wanted": "least",
+      "shown": "least"
+    }
+  ],
+  "ok": true
+}
