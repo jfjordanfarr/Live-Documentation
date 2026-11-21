@@ -110,7 +110,10 @@ export interface HistoryOptions {
   keepIndex: boolean;
   /** Carry the authors' names in the steps. */
   authors: boolean;
-  /** Remove the cache folders of every lens but the current one, once the current one holds every sampled change. */
+  /**
+   * Remove the cache folders of every lens but the current one and its twin, the same code's under the other way of
+   * running workers, once the current one holds every sampled change.
+   */
   removeSuperseded?: boolean;
   /**
    * Hold the history's last step to the Live Docs committed at the commit it ends at, as the person asserts those docs
@@ -131,7 +134,7 @@ export interface HistoryOptions {
   progress: (line: string) => void;
 }
 
-/** A cache folder under the history folder that belongs to another lens than the current one. */
+/** A cache folder under the history folder that belongs to another lens than the current one and its twin. */
 export interface SupersededCache {
   /** Its lens key, which names it. */
   lens: string;
@@ -270,7 +273,10 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   // Both identities are taken before any work, so that the record a run leaves is keyed with the code that did the run,
   // even when the code on disk changes while it runs (the independent review of 2026-11-20, finding 1).
   const [generator, code] = await Promise.all([generatorIdentity(), sequenceCodeIdentity()]);
-  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase(), keepWorkers: options.keepWorkers === true });
+  const ignoresCase = await versionControl.ignoresCase();
+  const lens = lensOf(generator, configuration, { ignoresCase, keepWorkers: options.keepWorkers === true });
+  // The same code's lens under the other way of running workers: no lens supersedes it, since neither way is the newer.
+  const twin = lensOf(generator, configuration, { ignoresCase, keepWorkers: options.keepWorkers !== true }).key;
 
   const end = await versionControl.mainlineEnd();
   const mainline = await versionControl.mainline();
@@ -289,7 +295,7 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     const claim = await holdLock(historyFolder, options.progress);
     scratch.hold(claim);
     try {
-      return await run(options, { workspaceRoot, versionControl, configuration, lens, code, end, mainline, sampled, historyFolder, cacheFolder, scratch });
+      return await run(options, { workspaceRoot, versionControl, configuration, lens, twin, code, end, mainline, sampled, historyFolder, cacheFolder, scratch });
     } finally {
       await scratch.release(claim);
     }
@@ -301,6 +307,8 @@ interface RunContext {
   versionControl: VersionControl;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
+  /** The key of the current lens's twin: the same code's under the other way of running workers, which is never superseded. */
+  twin: string;
   /** The identity of the code that reads summaries into a sequence, taken at the run's start (`sequenceCodeIdentity`). */
   code: string;
   end: Awaited<ReturnType<VersionControl["mainlineEnd"]>>;
@@ -312,16 +320,17 @@ interface RunContext {
 }
 
 async function run(options: HistoryOptions, context: RunContext): Promise<HistoryRun> {
-  const { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder } = context;
+  const { workspaceRoot, versionControl, configuration, lens, twin, end, mainline, sampled, historyFolder, cacheFolder } = context;
   const relative = (absolute: string): string => path.relative(workspaceRoot, absolute).split(path.sep).join("/");
   const leftovers = await removeLeftovers(historyFolder);
   if (leftovers > 0) {
     options.progress(`removed ${leftovers} files a stopped run left half written`);
   }
   if (options.removeSuperseded === true) {
-    // While the current lens fills, only the newest whole lens is kept beside it, so the folder never holds more than two.
-    for (const cache of await supersededCaches(historyFolder, lens.key, "all but the newest whole", relative)) {
-      if (cache.removed) options.progress(`removed ${cache.folder}, the cache of a lens that is neither the current one nor the newest whole one: ${formatBytes(cache.bytes)}`);
+    // While the current lens fills, only the newest whole lens is kept beside it and its twin, so the folder never holds
+    // more than three.
+    for (const cache of await supersededCaches(historyFolder, [lens.key, twin], "all but the newest whole", relative)) {
+      if (cache.removed) options.progress(`removed ${cache.folder}, the cache of a lens that is neither the current one, its twin under the other way of running workers, nor the newest whole one: ${formatBytes(cache.bytes)}`);
     }
   }
   const textStore = path.join(cacheFolder, TEXT_STORE_DIRECTORY);
@@ -451,8 +460,8 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
 
-  // Only now does the current lens hold every sampled change, so the caches of other lenses can go.
-  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true ? "all" : "none", relative);
+  // Only now does the current lens hold every sampled change, so the caches of other lenses can go, but its twin's.
+  const superseded = await supersededCaches(historyFolder, [lens.key, twin], options.removeSuperseded === true ? "all" : "none", relative);
   for (const cache of superseded) {
     options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
   }
@@ -575,15 +584,17 @@ async function inBatches<T>(items: readonly T[], work: (item: T) => Promise<void
 }
 
 /**
- * The cache folders under the history folder named by a lens key other than the current one, each removed as asked:
- * `all`, `none`, or `all but the newest whole`, which keeps the other lens a whole history was most recently written
- * from (its `whole.json`), so that a lens that comes back finds its cache.
+ * The cache folders under the history folder named by a lens key other than those kept, each removed as asked: `all`,
+ * `none`, or `all but the newest whole`, which keeps the other lens a whole history was most recently written from (its
+ * `whole.json`), so that a lens that comes back finds its cache. Kept are the current lens and its twin, the same code's
+ * lens under the other way of running workers (`--keep-workers`), which keys a lens of its own: neither way supersedes
+ * the other, and until 2026-11-21 a run either way with `--remove-superseded` removed the other's cache.
  */
-async function supersededCaches(historyFolder: string, current: string, remove: "all" | "none" | "all but the newest whole", relative: (absolute: string) => string): Promise<SupersededCache[]> {
+async function supersededCaches(historyFolder: string, kept: readonly string[], remove: "all" | "none" | "all but the newest whole", relative: (absolute: string) => string): Promise<SupersededCache[]> {
   const others: Array<{ lens: string; folder: string; whole?: string }> = [];
   for (const entry of await fs.readdir(historyFolder, { withFileTypes: true })) {
     // A lens key is sixteen hexadecimal digits (`lensOf`); nothing else the history folder holds is named so.
-    if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || entry.name === current) {
+    if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || kept.includes(entry.name)) {
       continue;
     }
     const folder = path.join(historyFolder, entry.name);

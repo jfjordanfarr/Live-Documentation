@@ -873,6 +873,29 @@ describe("the history with workers kept and without", () => {
     expect(kept.key).not.toBe(apart.key);
     expect(apart).toEqual(lensOf(apart.generator, apart.configuration));
   }, 300_000);
+
+  // The two ways key two lenses for one code, and neither supersedes the other: until 2026-11-21 a run either way with
+  // --remove-superseded removed the other way's cache as an older lens's.
+  it("keeps the same code's cache under the other way when asked to remove superseded caches, and removes an older code's", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "twins-"));
+    fs.mkdirSync(path.join(here, "src"));
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One file"]]) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    const run = (keepWorkers: boolean, removeSuperseded: boolean) =>
+      computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, keepWorkers, removeSuperseded, progress: () => undefined });
+    const apart = path.join(here, (await run(false, false)).cache);
+    const kept = path.join(here, (await run(true, false)).cache);
+    const older = path.join(path.dirname(apart), "0123456789abcdef");
+    for (const keepWorkers of [false, true]) {
+      fs.mkdirSync(older, { recursive: true });
+      fs.writeFileSync(path.join(older, "whole.json"), JSON.stringify({ head: "abc", changes: 1, at: "2026-11-01T00:00:00.000Z" }));
+      const result = await run(keepWorkers, true);
+      expect(fs.existsSync(older), `keepWorkers ${keepWorkers}`).toBe(false);
+      expect([fs.existsSync(apart), fs.existsSync(kept)], `keepWorkers ${keepWorkers}`).toEqual([true, true]);
+      expect(result.superseded.map((cache) => cache.lens)).toEqual(["0123456789abcdef"]);
+    }
+  }, 300_000);
 });
 
 /**
