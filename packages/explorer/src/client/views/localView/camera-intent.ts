@@ -336,20 +336,23 @@ export type ViewEdge = "left" | "right" | "top" | "bottom";
 export const VIEW_EDGES: readonly ViewEdge[] = ["left", "right", "top", "bottom"];
 
 /**
- * Tuning → 2D Layout → Step "Least Pan, Cut Counted" (a trial, 2026-11-21): of the newcomer's cards (in the picture's
- * units), those that go on past each edge of the view at the camera given, by edge; a card cut at a corner counts at both
- * of its edges. An edge past which nothing goes is absent.
+ * Tuning → 2D Layout → Cut Counted (a trial, 2026-11-21): of the newcomer's cards (in the picture's units), those not
+ * wholly in view at the camera given, each at the one edge it reaches farthest past on screen, so that the counts sum to
+ * the cards that are cut (the root's ruling: counted at every edge it went past, a folder up and to the right of the view
+ * said 31, 27 and 4 for 32 cards, and a person adds the numbers). An edge past which nothing goes is absent.
  */
 export function cutByEdge<K>(cards: readonly { key: K; bounds: Bounds }[], camera: MapTransform, frame: Frame): Partial<Record<ViewEdge, K[]>> {
   const cut: Partial<Record<ViewEdge, K[]>> = {};
-  const add = (edge: ViewEdge, key: K): void => { (cut[edge] ??= []).push(key); };
   for (const { key, bounds } of cards) {
-    const left = camera.x + bounds.left * camera.k, right = camera.x + bounds.right * camera.k;
-    const top = camera.y + bounds.top * camera.k, bottom = camera.y + bounds.bottom * camera.k;
-    if (left < -0.5) add("left", key);
-    if (right > frame.width + 0.5) add("right", key);
-    if (top < -0.5) add("top", key);
-    if (bottom > frame.height + 0.5) add("bottom", key);
+    // How far the card reaches past each edge on screen; the horizontal edges come first, so that a card as far past two
+    // edges is counted at the left or right, the edges a person reads a row of the map across.
+    const past: [ViewEdge, number][] = [
+      ["left", -(camera.x + bounds.left * camera.k)], ["right", camera.x + bounds.right * camera.k - frame.width],
+      ["top", -(camera.y + bounds.top * camera.k)], ["bottom", camera.y + bounds.bottom * camera.k - frame.height]
+    ];
+    let farthest: [ViewEdge, number] | null = null;
+    for (const entry of past) if (entry[1] > 0.5 && (!farthest || entry[1] > farthest[1])) farthest = entry;
+    if (farthest) (cut[farthest[0]] ??= []).push(key);
   }
   return cut;
 }

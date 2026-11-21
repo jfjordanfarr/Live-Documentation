@@ -49,20 +49,28 @@ The root asked to try a nearer bound for a step's ease, two thirds of reading sc
 
 ## The cut counted at the edges
 
-A lever of its own beside Step, Tuning → 2D Layout → **Cut Counted**, default off. At each edge past which what the last step opened goes on, it draws an arrow and the count of its cards there, a focus stop whose name and tooltip say what it counts. A press pans, the scale kept, to the nearest of those cards, whole. The pictures were taken with Least Pan and the lever on, by [`cut-probe.mjs`](cut-probe.mjs), which also reads what the controls watch (`data-cut-of`, `data-cut-cards`) and their boxes.
+A lever of its own beside Step, Tuning → 2D Layout → **Cut Counted**, default off. At each edge past which what the last step opened goes on, it draws an arrow and the count of its cards there, a focus stop whose name and tooltip say what it counts ("28 cards of what you opened past the view's right edge: show the nearest"). A press pans, at the same scale, to the nearest of that edge's cards, whole.
+
+Each cut card is counted once, at the edge it reaches farthest past on screen, a tie to the left or right, so the counts sum to the cards that are cut (the root's ruling of the same day). As first built, a card was counted at every edge it went past: on `history` that read ↑27, →31, ↓4, which is 62 for a folder of 32 cards.
+
+The pictures were taken with Least Pan and the lever on, by [`cut-probe.mjs`](cut-probe.mjs). It also reads what the controls watch (`data-cut-of`, `data-cut-cards`) and their boxes.
 
 | Picture | What it is |
 | --- | --- |
 | [`cut-counted--history--rest.png`](cut-counted--history--rest.png) | `live-docs/history` opened by its handle from `pathfind.ts`, at rest |
 | [`cut-counted--history--after-press.png`](cut-counted--history--after-press.png) | The same after one press of the right-hand control |
+| [`cut-counted--history--after-press-above.png`](cut-counted--history--after-press-above.png) | The same after one press of the control above, instead |
 | [`cut-counted--estate--nothing-cut.png`](cut-counted--estate--nothing-cut.png) | The estate's `Data` opened inside `PaymentService`, nothing of it cut |
 
-- **`history` at rest.** The label and `summary.ts` stand at the right at reading size, as without the lever. Three controls say the rest: ↑ 27 at the top's middle, → 31 at the right's middle, ↓ 4 at the bottom's middle. `history` holds 32 cards, and most of them stand up and to the right in the L of its membrane, so most count at two edges.
-  - The controls sit over the map in the toolbar's look and read at a glance.
-  - The right-hand one stands over the right end of `summary.ts`'s label row at the frame's edge, where a card meets the edge. On a picture where a card's control sits at the middle of that edge it would cover the control.
-- **After one press of → 31.** The camera pans, at the same scale, to the nearest of those cards: `format.ts` stands whole at the lower right, `summary.ts` and `history`'s label still in view. The controls now say ↑ 27, → 27, ↓ 3.
-  - The first build panned along the edge's axis alone to all of them at once. Because these cards lie up and to the right, that landed on `pathfind.test.ts` with none of `history`'s cards whole. A press now goes to one card whole and the next press to the next.
-  - Reaching the 27 up and to the right takes many presses. Whether a press should go to the nearest card or to the nearest group is a question for the eye.
-- **The estate's `Data`.** No control: `Data` stands whole after the step, so nothing of what it opened is cut. `PaymentService.cs`, cut at the right, is not part of what the step opened, so it is not counted.
-- **The counts are what the page shows.** The browser case reads each control's count against the directory's cards past each edge, before and after a press. The unit cases are written from the boxes the page drew on `history`.
-- **On the first round's report.** It said the controls counted 31, 27 and 4 on the estate's three-file step and drew nothing on `history`. That was a misread log: the counts printed were `history`'s, and the picture looked at was the estate's, where nothing should be drawn.
+- **`history` at rest: ↑1, →28, ↓2.** That is 31, the cards not wholly in view (`summary.ts` alone is), and `history`'s label and `summary.ts` stand at the right at reading size.
+  - The numbers now add up, and they still tell a person where to go: almost everything is to the right.
+  - What they no longer say is that most of those 28 also lie far above: the L of `history`'s membrane rises up and to the right. A card is counted at the edge it is farthest past, and for 26 of them that is the right edge by a few hundred pixels over the top.
+  - The →28 sits over the right end of `summary.ts`'s label row where it meets the edge (set down on the work item as known).
+- **After one press of →28: ↑6, →21, ↓3.** The camera pans, at the same scale, to `format.ts`, the nearest card past the right edge, which stands whole at the lower right with `summary.ts` and `history`'s label still in view. The place is kept and one more card is read.
+  - The numbers move between edges as the view moves (6 above now, where 1 was). Each is true of the view as it stands, but a person who watched →28 become →21 may expect the other 7 to have come into view, and only one did.
+- **After one press of ↑1, instead: →23, ↓7.** The only card counted above was `lens.ts`, at the top of `history`'s first column up and to the right. The press goes there whole, on both axes, about 1,600 px right and 1,300 px up, at the same scale.
+  - It lands somewhere sensible, the head of the folder's main block: `lens.ts`, `bundled.test.ts` and `rows.ts` whole, and the column of `lens.ts`'s neighbours to the left.
+  - It is a long jump with nothing kept: `history`'s label and `summary.ts` are gone from view. It reads as a jump rather than a step, since the smooth path the following camera takes for long moves is not used here. The ease is the flat one.
+- **The estate's `Data`.** No control: `Data` stands whole after the step. `PaymentService.cs`, cut at the right, is not part of what the step opened.
+- **The counts are what the page shows.** The unit cases hold the one-edge rule to the boxes the page drew on `history`; the partition was worked out by hand from those boxes before the function changed. The browser case reads each control's count against the directory's cards past each edge, by the same rule, and checks that the counts sum to the cards not wholly in view, before and after a press.
+- **On the first round's report.** It said the controls counted 31, 27 and 4 on the estate's three-file step and drew nothing on `history`. That was a misread log: those counts were `history`'s, and the picture looked at was the estate's, where nothing should be drawn.
