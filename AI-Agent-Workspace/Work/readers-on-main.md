@@ -143,6 +143,13 @@ Stale comments and run lines of the default mode; `--remove-superseded` removing
 **The guarantee broken twice, so the next piece is a design and not more cases.** "No reader reads what a comment or a string holds" was broken by review on the morning of 2026-11-21, guarded, and broken again that evening by other means. By the guide's rule the mending by cases stops after this landing, and the simplest design that does not need the guarantee is measured: each reader that matches patterns over text working from its language's own parse (markup with its script, style and server blocks; Ruby; CSS), and the SQL reader knowing each script's dialect, which is one question with which database a script belongs to.
 
 
+### A documentation comment's reference is drawn, as the author's word
+- state: open
+- holds: not begun; the first reader piece after the landing of 2026-11-21
+- evidence:
+
+The comment guard of 2026-11-21 stopped the C# reader reading a type's name inside a comment, and with it 16 pairs of DNN and 3 of mojoPortal that only a `<see cref>` or an `<inheritdoc cref>` drew. Root ruled that evening that a documentation reference is not a use by the code. **The owner reversed it** ([Turn 8](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-8)): "If an author made an effort to tell us in their own words that these two things are related, we should honor their word. The C# compiler agrees that they are real as well if I'm reading you correctly. That is strong signal to honor the intent of the author of that code." Root's design, theirs to reverse: a relation of its own kind (the author says these are related), carried by the Live Docs, shown on the map and in the lists, and not followed by `inspect --reachable`, the paths or the dead-code answer, so that a class named only in a comment is still reported unused. First the oracle: the compiler resolves every `cref` itself, and its answers are committed for the five C# samples and the two corpora before the reader changes. Then the same construct where other languages have it (`{@link}` in JSDoc and Javadoc, Rust's doc links, PowerShell's `.LINK`), each against its own tool. To count with it: how many of the 70 other pairs of DNN the guard removed were explicit references and how many a name in a comment's prose.
+
 ### One oracle for C#: the compiler, with scip-dotnet retired
 - state: open
 - holds: not begun; after the landing

@@ -42,6 +42,8 @@ Among them: a `From` of `.` owns no files; a board beside its things reads nothi
 
 No link sooner than "a hailstorm of false positive links". Candidates, each measured on the public corpora first: C# to a stored procedure it names; a PowerShell script to SQL it runs; the linked server's door (with [the readers](readers-on-main.md)).
 
+**The owner's picture of the wiring, 2026-11-21** ([Turn 8](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-8)): "we have good intellisense into each scanned object and some recommendations for what symbols and things we think _might_ touch each other (noting that false positives are very high, making intellisense-like suggestions the very best we could do on our own in many cases)". So a person wires and the tool helps: the field completes from what each scan found (recognition over recall), and a candidate is a suggestion shown with the line of code it rests on, drawn only when accepted, as the World Map's design has said since 2026-10-09 ("A suggestion never creates a thing"). Root's reading of where suggestions come from: a ghost in one piece (a name a file uses that its scan cannot find) and a declaration of that name in another. The same suggestions as data from a command, accepted by a line in the board's file, for an agent or a pipeline.
+
 ### A first placement that can be read
 - state: open
 - holds: not begun
