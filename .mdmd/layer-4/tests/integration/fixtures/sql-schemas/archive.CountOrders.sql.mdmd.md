@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/archive.CountOrders.sql`
 - Entry: opening [`archive.CountOrders`](#symbol-archivecountorders)
-- Generated At: 2026-11-21T04:55:45.771Z
+- Generated At: 2026-11-21T05:00:41.264Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,5 @@ A string a module executes is a batch of its own, bound by the caller's default 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->

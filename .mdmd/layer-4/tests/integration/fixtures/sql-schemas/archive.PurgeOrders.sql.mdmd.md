@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/archive.PurgeOrders.sql`
 - Entry: opening [`archive.PurgeOrders`](#symbol-archivepurgeorders)
-- Generated At: 2026-11-21T04:55:45.784Z
+- Generated At: 2026-11-21T05:00:41.275Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,5 @@ A module's DDL: `TRUNCATE TABLE` binds a one-part name by the caller's default s
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->

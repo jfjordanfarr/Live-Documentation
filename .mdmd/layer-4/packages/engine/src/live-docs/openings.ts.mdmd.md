@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/openings.ts`
-- Generated At: 2026-11-19T21:10:12.548Z
+- Generated At: 2026-11-21T05:00:32.308Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ The vocabulary of what a file serves across a process boundary, and how a call f
 - Since the evening of 2026-11-19 the reader reads the SQL a script executes from a string written out in full, as surely run as SQL standing bare: `EXEC ('…' + '…')`, `sp_executesql N'…'`, `OPENQUERY(server, '…')` and `EXEC (…) AT server`, with nested strings. What such a string creates is the script's symbol when the string runs in the script (inside a module's body it is made when the module runs, and on a linked server it is that server's); what it uses is the script's use, a name on the linked server written `server..schema.name` when it runs on one. A string with any computed part is not read. An `ALTER` of a procedure, function, view or trigger is a use; where the script itself creates the object (the "stub, then ALTER" idiom of an idempotent script: `EXEC('CREATE PROCEDURE x AS SELECT 1')` then `ALTER PROCEDURE x …`), the one symbol stands at the last `ALTER`, where its body is, since that is what a person reading the definition looks for; the stub is a placeholder. A written name's database and schema are now taken by their places, so a one-part name on a linked server, `server...name`, folds to `name`. On tSQLt this gave 28 symbols (`tSQLt.AssertStringIn` among them) and 32 dependency lines more, and ScriptDom's reading of the strings agreed with all of them ([the SQL reader's probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)).
 - What a script names, since 2026-11-19: what it executes (`EXEC @rc = dbo.p` too), reads (`FROM`, each table of a comma list `FROM Users u, Roles r`, a table in parentheses `LEFT JOIN (dbo.T t JOIN …)`, `JOIN`, `APPLY`, a `MERGE`'s `USING`), writes (`INSERT`, `UPDATE`, `DELETE`, `MERGE`, with or without the optional `INTO` and `FROM`), truncates or alters as a table, what a foreign key `REFERENCES`, and every function it calls by a name of two or more parts (`tSQLt.Private_IsTestClass(@c)`), which is how T-SQL calls a scalar function of a schema; a call by one part (`CONVERT(…)`) is the engine's own. Before, the reader missed the calls, the comma lists, the parenthesised joins, `EXEC @rc =`, `APPLY`, `USING`, the foreign keys and the writes without their optional word; ScriptDom found them all missing on tSQLt and on DNN's provider scripts. A line ends at a line feed, a carriage return and line feed, or a carriage return alone, as ScriptDom and editors count them; a lone carriage return in one of DNN's scripts had put 23 declarations a line early.
 - What a name stands for, read from the tokens around it: a temporary table (`#name`), a common table expression of the batch, a cursor a `FETCH … FROM` reads, an `UPDATE`'s or a `DELETE`'s target that is a table source of the statement's own `FROM` (an alias, `UPDATE c … FROM dbo.Customer AS c`, or a table variable's, `UPDATE Jobs … FROM @Jobs Jobs`), a service a `BEGIN DIALOG @h FROM SERVICE` names, an event or target an event session adds (`ADD EVENT sqlserver.rpc_completed (…)`), a method of the `xml` type on a column (`r.Lines.value('…', 'int')`, `CROSS APPLY r.Doc.nodes('…')`), the string PL/SQL's `EXECUTE IMMEDIATE` runs, the base type after `CREATE TYPE x FROM`, the login after `CREATE USER x FROM`, the `UPDATE` and `DELETE` of a foreign key's `ON UPDATE CASCADE`, and any word T-SQL reserves written bare (`EXECUTE AS`, `UPDATE STATISTICS`, `FROM OPENQUERY(…)`) are no objects, and make no reference. Nor, since a commit of its own the same day that revises the owner's rule of 2026-10-09 (see the SQL adapter's notes), is the engine's own: a name in the `sys` or `INFORMATION_SCHEMA` schema, or a one-part `OPENJSON`, `STRING_SPLIT` or `GENERATE_SERIES` called in a `FROM`. A common table expression is read across its batch, where T-SQL scopes it to its statement: a one-part name a later statement of the batch gives to a table of the same name is the price, which ScriptDom has not found on tSQLt.
+- Since 2026-11-21 a one-part name binds as T-SQL binds it, by `bindSqlName`: in a procedure, function, view or trigger, to the module's schema and then `dbo` (a trigger whose name writes no schema lives in its table's), and elsewhere, in a module's DDL (`TRUNCATE TABLE`, `ALTER TABLE`, a foreign key) and in a string a module executes, to the caller's default schema, which no text gives and is taken as `dbo`, then `dbo`; to nothing when neither holds it, however many other schemas do. Until then it matched an object of that name in every schema, so a dbo procedure's `Orders` linked to `archive.Orders` too. The reader records the schema a reference binds by as `moduleSchema`; the C# adapter, which reads SQL held in strings through the same reader, matches as before. An independent review found it, the SQL grader now binds names by the order Microsoft documents, and on tSQLt, DNN's SQL and DNN's provider scripts it changed no line ([the account](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 - `OPENING_KINDS` and `isToolingFile` (2026-10-15): the symbol kinds that make a file an entry by what it serves, and the file names a tool reads and no file imports (`tsconfig*.json`, `*.config.*`, `Web.config`, `App.config`, `packages.config`, and since 2026-10-16 every package manifest by its name, from the list `homeOf` reads, whether or not it publishes a package), shared by the composition of the `Entry` lines and by the manifest reader, which passes such a file over when it looks for what a command runs.
 - Since 2026-11-17 a development container's second configuration, one folder down (`.devcontainer/<name>/devcontainer.json`), is a tooling entry like the first: it is the third place the Dev Containers specification gives such a file, and this repository gained one that day for the host's graphics card, which the walk from the entry points then reported as a file nothing reaches ([the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#work-notes-turns-8-to-10)). Two folders down is no documented place and is not one here.
 
@@ -230,21 +231,21 @@ Reads a written object name: quotes off, server and database qualifiers off, cas
 
 #### `SqlDeclaration` {#symbol-sqldeclaration}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L739)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L746)
 
 ##### `SqlDeclaration` — Summary
 One object a script declares.
 
 #### `SqlReference` {#symbol-sqlreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L748)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L755)
 
 ##### `SqlReference` — Summary
 One object a script or a query names.
 
 #### `readSql` {#symbol-readsql}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L769)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L782)
 
 ##### `readSql` — Summary
 What a script creates and what it names, read from its tokens batch by
@@ -265,7 +266,7 @@ built-in table function, or a method of the `xml` type.
 
 #### `sqlDeclarations` {#symbol-sqldeclarations}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L936)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L966)
 - Returns: [`SqlDeclaration`](#symbol-sqldeclaration)[]
 
 ##### `sqlDeclarations` — Summary
@@ -273,7 +274,7 @@ Every object a script creates.
 
 #### `sqlReferences` {#symbol-sqlreferences}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L941)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L971)
 - Returns: [`SqlReference`](#symbol-sqlreference)[]
 
 ##### `sqlReferences` — Summary
@@ -281,14 +282,14 @@ Every object the text names after a verb that reads, writes, calls or alters it.
 
 #### `DeclaredSqlObject` {#symbol-declaredsqlobject}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L946)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L976)
 
 ##### `DeclaredSqlObject` — Summary
 A database object some script declares, as the symbol index records it.
 
 #### `declaredSqlObjects` {#symbol-declaredsqlobjects}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L955)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L985)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -297,7 +298,7 @@ Every procedure, table, view and function symbol of the workspace, read once per
 
 #### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L972)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1002)
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlNameMatches` — Summary
@@ -305,12 +306,27 @@ True when a written name names the declared object: schema and object when both 
 
 #### `matchSqlObject` {#symbol-matchsqlobject}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L980)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1010)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `matchSqlObject` — Summary
 The declared objects a name matches, by {@link sqlNameMatches}.
+
+#### `bindSqlName` {#symbol-bindsqlname}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1032)
+- Returns: `Declared`[]
+- Parameters: `matches`: `Declared`[]
+
+##### `bindSqlName` — Summary
+The declared objects a reference binds to, of those its name matches, by T-SQL's order of search. A name that
+writes its schema, or reaches a linked server, binds to every match. A one-part name binds to the matches in the
+first schema that holds one, of its module's schema ({@link SqlReference.moduleSchema}) and then `dbo`, and to none
+when neither does, however many other schemas hold one: Microsoft documents that a name in a module's body is
+searched in "the schema that contains this other procedure", and elsewhere in "the user's default schema", before
+`dbo`. The caller's default schema is no fact of the text; it is taken as `dbo`, the default a user is created with,
+and an object declared without a schema, in its creator's default schema, as `dbo`'s.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

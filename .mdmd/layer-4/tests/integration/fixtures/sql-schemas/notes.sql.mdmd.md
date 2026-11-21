@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/notes.sql`
 - Entry: opening [`dbo.ListNotes`](#symbol-dbolistnotes)
-- Generated At: 2026-11-21T04:55:45.798Z
+- Generated At: 2026-11-21T05:00:41.285Z
 
 ## Authored
 ### Purpose
@@ -24,5 +24,5 @@ A one-part name that neither the module's schema nor dbo holds binds to nothing 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`archive.archive.Notes`](./archive.sql.mdmd.md#symbol-archivenotes)
+- `Notes` (contract)
 <!-- LIVE-DOC:END Dependencies -->

@@ -6,7 +6,7 @@
 - Code Path: `tests/integration/fixtures/sql-schemas/procs.sql`
 - Entry: opening [`dbo.ListOrders`](#symbol-dbolistorders)
 - Entry: opening [`dbo.ListSisterOrders`](#symbol-dbolistsisterorders)
-- Generated At: 2026-11-21T04:55:45.801Z
+- Generated At: 2026-11-21T05:00:41.288Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,6 @@ The case the fixture was written for: a dbo procedure naming `Orders` by one par
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders)
 - [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders) (contract)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders) (contract)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/archive.ListOrders.sql`
 - Entry: opening [`archive.ListOrders`](#symbol-archivelistorders)
-- Generated At: 2026-11-21T04:55:45.777Z
+- Generated At: 2026-11-21T05:00:41.268Z
 
 ## Authored
 ### Purpose
@@ -26,5 +26,4 @@ An archive procedure's one-part names: `Orders` binds to `archive.Orders`, its o
 ### Dependencies
 - [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders)
 - [`tables.dbo.Customers`](./tables.sql.mdmd.md#symbol-dbocustomers)
-- [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->

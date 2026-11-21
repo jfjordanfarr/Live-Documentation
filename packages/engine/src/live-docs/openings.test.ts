@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { WorkspaceSymbolIndex } from "./coreTypes";
 import {
+  bindSqlName,
   chooseServers,
   homeOf,
   isToolingFile,
@@ -351,6 +352,55 @@ describe("database objects", () => {
     expect(matchSqlObject(sqlObjectName("ORACLE_CENTRAL..CENTRAL.ACCOUNT"), index).map((object) => object.name)).toEqual(["CENTRAL.ACCOUNT"]);
     expect(matchSqlObject(sqlObjectName("Payment"), index).map((object) => object.name)).toEqual(["dbo.Payment"]);
     expect(matchSqlObject(sqlObjectName("other.Payment"), index)).toEqual([]);
+  });
+
+  it("says which schema a one-part name binds by: its module's, a trigger's table's, and none in DDL, in a string or outside a module", () => {
+    const script = [
+      "SELECT 1 FROM Loose;",
+      "GO",
+      "CREATE PROCEDURE archive.ListOrders AS",
+      "BEGIN",
+      "    SELECT o.Id FROM Orders AS o JOIN dbo.Customers AS c ON c.Id = o.Id;",
+      "    EXEC Archive_Log;",
+      "    TRUNCATE TABLE Staging;",
+      "    EXEC ('SELECT 1 FROM InString');",
+      "END;",
+      "GO",
+      "CREATE TRIGGER OrdersKept ON archive.Orders AFTER DELETE AS INSERT INTO Kept (Id) VALUES (0);",
+      "GO",
+      "ALTER VIEW Reports.Totals AS SELECT 1 AS x FROM Ledger;",
+      "GO",
+      "CREATE FUNCTION Unwritten() RETURNS TABLE AS RETURN SELECT 1 AS x FROM Things;"
+    ].join("\n");
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.raw} ${reference.moduleSchema ?? "-"}`)).toEqual([
+      "FROM Loose -",
+      "FROM Orders archive",
+      "JOIN dbo.Customers archive",
+      "EXEC Archive_Log archive",
+      "TRUNCATE TABLE Staging -",
+      "FROM InString -",
+      "INSERT INTO Kept archive",
+      "ALTER Reports.Totals -",
+      "FROM Ledger reports",
+      "FROM Things -"
+    ]);
+  });
+
+  it("binds a one-part name to its module's schema, then dbo, and to nothing when neither holds it; a written schema to itself", () => {
+    const declared = [{ name: "dbo.Orders", parts: ["dbo", "orders"] }, { name: "archive.Orders", parts: ["archive", "orders"] }, { name: "archive.Notes", parts: ["archive", "notes"] }, { name: "Things", parts: ["things"] }];
+    const bound = (raw: string, moduleSchema?: string) => {
+      const name = sqlObjectName(raw);
+      const matches = declared.filter((object) => object.parts[object.parts.length - 1] === name.parts[name.parts.length - 1] && (name.parts.length === 1 || object.parts.join(".") === name.parts.join(".")));
+      return bindSqlName({ name, ...(moduleSchema ? { moduleSchema } : {}) }, matches).map((object) => object.name);
+    };
+    expect(bound("Orders")).toEqual(["dbo.Orders"]);
+    expect(bound("Orders", "archive")).toEqual(["archive.Orders"]);
+    expect(bound("Notes")).toEqual([]);
+    expect(bound("Notes", "sales")).toEqual([]);
+    expect(bound("Notes", "archive")).toEqual(["archive.Notes"]);
+    expect(bound("Things", "archive")).toEqual(["Things"]);
+    expect(bound("archive.Orders")).toEqual(["archive.Orders"]);
+    expect(bound("ORACLE_CENTRAL...Orders")).toEqual(["dbo.Orders", "archive.Orders"]);
   });
 });
 

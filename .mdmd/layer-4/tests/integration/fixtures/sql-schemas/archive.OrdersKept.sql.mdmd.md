@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/archive.OrdersKept.sql`
-- Generated At: 2026-11-21T04:55:45.781Z
+- Generated At: 2026-11-21T05:00:41.272Z
 
 ## Authored
 ### Purpose
@@ -22,5 +22,4 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`archive.archive.Orders`](./archive.sql.mdmd.md#symbol-archiveorders)
-- [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->

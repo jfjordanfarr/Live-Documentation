@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/sql.ts`
-- Generated At: 2026-11-19T22:40:10.250Z
+- Generated At: 2026-11-21T05:00:31.365Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,14 @@ The adapter for SQL scripts. What a script creates, a procedure, a table, a view
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-09/2026-10-09.1.record.md#turn-10)) a name the script uses that nothing in the scan creates is kept as written, a contract by name, the owner's choice of the wide rule with no builtins since the system schemas differ by database; a name the script itself creates is never kept. [The probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-09/Probes/two-scans.md) found the SQL Server to Oracle wire lost when the two databases were scanned apart, because the linked-server name was dropped; now it is a ghost of the script's doc that the estate graph matches to the table's.
 - Revised on 2026-11-19, for the root to confirm with the owner ([the SQL reader's probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)): a name in the `sys` or `INFORMATION_SCHEMA` schema, and SQL Server's unreserved built-in table functions (`OPENJSON`, `STRING_SPLIT`, `GENERATE_SERIES`), are the engine's own and are no longer kept. The October 9 worry was that system schemas differ by database; these two are the catalog in SQL Server and in Oracle (`SYS`), and `INFORMATION_SCHEMA` in MySQL and PostgreSQL too, while no user object can live in SQL Server's. On tSQLt they were 207 of the 213 ghosts left after the other mends, a door to "outside" on most scripts. The change is its own commit, so that it can be dropped if the owner holds to October 9.
 - Since 2026-11-19 a table a procedure's, function's or trigger's body creates is no symbol of the script: it is made when that module runs, not when the script does, as ScriptDom places it and as a SQL Server database project's model reads a script. It still counts as the script's own, so a use of it in the same file keeps no name. On tSQLt such tables were 374 of the reader's 376 symbols ScriptDom does not count as the scripts' objects (test fixtures such as `SchemaA.TableA`, created by many test procedures), and they drew links from one test file to another that made the same table. The price, for an estate, is a procedure that creates a permanent table at run time and no script that defines it: another script's use of that table is then a name kept, not a link to the procedure. A decision taken by the builder, for the root and the owner to confirm ([the SQL reader's probe](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)).
+- Since 2026-11-21 a one-part name is bound as T-SQL binds it before it is linked: among the objects of its name, the script's own included, those of its module's schema, else `dbo`'s, else none, and a name bound to none is kept. Until then a dbo procedure's `Orders` linked to `dbo.Orders` and `archive.Orders` both, a line T-SQL never draws. The order is Microsoft's, quoted in the SQL grader, which now binds by it too and could not fail on the old rule ([the account](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sqlAdapter` {#symbol-sqladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L25)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L26)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `sqlAdapter` — Summary
@@ -37,6 +38,7 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`openings.bindSqlName`](../openings.ts.mdmd.md#symbol-bindsqlname)
 - [`openings.matchSqlObject`](../openings.ts.mdmd.md#symbol-matchsqlobject)
 - [`openings.readSql`](../openings.ts.mdmd.md#symbol-readsql)
 - [`openings.sqlNameMatches`](../openings.ts.mdmd.md#symbol-sqlnamematches)
