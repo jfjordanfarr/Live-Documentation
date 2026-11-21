@@ -33,7 +33,7 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 
 ### What a scan leaves out is chosen on the listing, before anything is read
 - state: active
-- holds: the function itself with a builder since 04:39 UTC on 2026-11-21, on the branch `page-check`: new files only, nothing of Node, git's own answer its oracle for `.gitignore`, `.tfignore`'s unsaid rules sought in Microsoft's open-source client; its record to come at `AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/`. Wiring it into discovery waits for the interface above. How a person sees and changes the choice is designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
+- holds: the function is on the day branch since 2026-11-21 (four legs, the last merged as `3e8813006`; [its record](../AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)): new files only, nothing of Node, nothing calling it yet, git's own answer its oracle for `.gitignore` and Microsoft's open-source client's for `.tfignore`; a folder's own ignore files are asked for when something inside it is decided, which is what a walk that lists lazily needs. Wiring it into discovery waits for the interface above. How a person sees and changes the choice is designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
 - evidence:
 
 ### A scan's facts in one stored form, written by either host
