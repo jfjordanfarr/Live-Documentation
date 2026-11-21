@@ -1,0 +1,77 @@
+{
+  "tool": "SQLite 3.54.1, as node:sqlite carries it",
+  "files": {
+    "dialect.sql": {
+      "objects": [
+        {
+          "kind": "table",
+          "name": "after_the_trigger"
+        },
+        {
+          "kind": "table",
+          "name": "audit"
+        },
+        {
+          "kind": "view",
+          "name": "customer_names"
+        },
+        {
+          "kind": "table",
+          "name": "customers"
+        },
+        {
+          "kind": "table",
+          "name": "customers_archive"
+        },
+        {
+          "kind": "table",
+          "name": "legacy"
+        },
+        {
+          "kind": "table",
+          "name": "notes"
+        },
+        {
+          "kind": "table",
+          "name": "order lines"
+        },
+        {
+          "kind": "table",
+          "name": "tick`ed"
+        }
+      ]
+    },
+    "migrations/001_init.sql": {
+      "objects": [
+        {
+          "kind": "table",
+          "name": "acknowledgements"
+        },
+        {
+          "kind": "table",
+          "name": "artifacts"
+        },
+        {
+          "kind": "table",
+          "name": "change_events"
+        },
+        {
+          "kind": "table",
+          "name": "diagnostics"
+        },
+        {
+          "kind": "table",
+          "name": "links"
+        },
+        {
+          "kind": "table",
+          "name": "snapshots"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "dialect.sql": "df0386d330e384c34d47936898a6d7b180ed316f6a38a55e350088ad00c202cc",
+    "migrations/001_init.sql": "dd6a726f44e209b569726fde31d3056a00e6e8e914c210bb0933c3102bb6e675"
+  }
+}
