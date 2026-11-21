@@ -1,0 +1,111 @@
+{
+ "label": "made-blocks",
+ "absent": [],
+ "handedAndDecidedMs": 106028,
+ "offers": [
+  "What these folders hold 48 lines · 92,400 files left out",
+  "GitHub's Visual Studio list 234 lines · 92,472 files left out"
+ ],
+ "found": "Found 15 .tfignore files, in 2 top folders",
+ "1-first": {
+  "totals": "103,329 files will be read",
+  "listLines": 0,
+  "blocks": [
+   "Nothing is left out."
+  ],
+  "footer": "listed by the browser first · 64,505 folder listings · listing 965 ms · deciding 1053 ms · in all 5332 ms"
+ },
+ "2-proposed": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 48,
+  "blocks": [
+   "From what the folders hold: 48 lines .dll 37,812 · .pdb 12,606 · .xml 12,524 208 folders · 92,400 files",
+   "1 other line of your list leaves out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 104 ms · in all 427 ms"
+ },
+ "foundSaid": "",
+ "3-added": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 123,
+  "blocks": [
+   "From what the folders hold: 48 lines .dll 27,012 · .pdb 9,006 · .xml 8,924 193 folders · 65,985 files",
+   "Taken in from the folder: 15 .tfignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 15 folders · 26,415 files",
+   "76 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 94 ms · in all 150 ms"
+ },
+ "codeSigns": [
+  "Leaves out 6,035 files a reader would read",
+  "Leaves out 2,415 files a reader would read",
+  "Leaves out 306 files a reader would read"
+ ],
+ "visualStudioLines": [
+  "191 [Oo]bj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files",
+  "167 [Dd]ebug/ .js 27 · .config 1 · .htm 1 1 folder · 29 files",
+  "193 [Ll]og/ .cs 22 3 folders · 22 files",
+  "377 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 14 files",
+  "194 [Ll]ogs/ .resources 3 · .xsd 1 1 folder · 4 files",
+  "438 *.mdf .mdf 2 2 files",
+  "254 *.pdb .pdb 1 1 file"
+ ],
+ "4-visual-studio-opened": {
+  "totals": "10,857 files will be read · 92,472 files left out",
+  "listLines": 357,
+  "blocks": [
+   "From what the folders hold: 48 lines .dll 26,930 · .pdb 8,924 · .xml 8,924 112 folders · 65,413 files",
+   "Taken in from the folder: 15 .tfignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 15 folders · 26,415 files",
+   "GitHub's VisualStudio.gitignore (CC0) .cs 196 · .pdb 83 · .props 82 86 folders · 644 files 191 [Oo]bj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files 167 [Dd]ebug/ .js 27 · .config 1 · .htm 1 1 folder · 29 files 193 [Ll]og/ .cs 22 3 folders · 22 files 377 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 14 files 194 [Ll]ogs/ .resources 3 · .xsd 1 1 folder · 4 files 438 *.mdf .mdf 2 2 files 254 *.pdb .pdb 1 1 file",
+   "304 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 230 ms · in all 317 ms"
+ },
+ "editFullSpeed": {
+  "untilShownMs": 715,
+  "decidedMs": 194,
+  "walkedMs": 286,
+  "countedMs": 37,
+  "drawMs": {
+   "gutter": 3,
+   "found": 1,
+   "offers": 0,
+   "notes": 0,
+   "leftOut": 4,
+   "read": 20
+  }
+ },
+ "editSlowedFourTimesOnTwoCores": {
+  "untilShownMs": 8684,
+  "decidedMs": 743,
+  "walkedMs": 1241,
+  "countedMs": 139,
+  "drawMs": {
+   "gutter": 13,
+   "found": 7,
+   "offers": 1,
+   "notes": 1,
+   "leftOut": 23,
+   "read": 81
+  }
+ },
+ "listEnd": [
+  "",
+  "### Yours",
+  "*.png",
+  "/DNN Platform/Tests/"
+ ],
+ "5-minus": {
+  "totals": "8,994 files will be read · 94,335 files left out",
+  "listLines": 361,
+  "blocks": [
+   "From what the folders hold: 48 lines .dll 26,794 · .pdb 8,890 · .xml 8,890 95 folders · 65,175 files",
+   "Taken in from the folder: 15 .tfignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 15 folders · 26,415 files",
+   "Yours .png 1,325 · .cs 369 · .dll 153 1 folder · 2,224 files",
+   "GitHub's VisualStudio.gitignore (CC0) .cs 162 · .pdb 66 · .props 65 69 folders · 521 files 191 [Oo]bj/ .cs 129 · .props 65 · .txt 65 64 folders · 453 files 167 [Dd]ebug/ .js 27 · .config 1 · .htm 1 1 folder · 29 files 193 [Ll]og/ .cs 22 3 folders · 22 files 377 **/[Pp]ackages/* .cs 11 11 files 194 [Ll]ogs/ .resources 3 · .xsd 1 1 folder · 4 files 254 *.pdb .pdb 1 1 file 438 *.mdf .mdf 1 1 file",
+   "306 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 145 ms · in all 194 ms"
+ },
+ "focusedTool": "Copy the list",
+ "errors": []
+}

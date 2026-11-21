@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/sql.ts`
-- Generated At: 2026-11-21T05:00:31.365Z
+- Generated At: 2026-11-21T20:21:42.561Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,7 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`openings.readSql`](../openings.ts.mdmd.md#symbol-readsql)
 - [`openings.sqlNameMatches`](../openings.ts.mdmd.md#symbol-sqlnamematches)
 - [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
+- [`openings.tsqltTestClasses`](../openings.ts.mdmd.md#symbol-tsqlttestclasses)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)

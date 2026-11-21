@@ -282,6 +282,130 @@
         }
       ]
     },
+    "../Build/build.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Invoke-Build",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 1,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Invoke-Build"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Invoke-Build {"
+        }
+      ]
+    },
+    "../Build/Use-Build-Rooted.ps1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 2,
+          "column": 1,
+          "text": ". \"$PSScriptRoot/build\"",
+          "target": "$PSScriptRoot/build",
+          "resolved": "../Build/build"
+        }
+      ],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 2,
+          "column": 1,
+          "name": null,
+          "operator": ".",
+          "text": "\"$PSScriptRoot/build\"",
+          "resolved": "../Build/build",
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 2,
+          "kind": "dotSource",
+          "command": null,
+          "invokes": true,
+          "text": ". \"$PSScriptRoot/build\""
+        }
+      ]
+    },
+    "../Build/Use-Build.ps1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 2,
+          "column": 1,
+          "text": ". ./build",
+          "target": "./build",
+          "resolved": "../Build/build"
+        }
+      ],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 2,
+          "column": 1,
+          "name": "./build",
+          "operator": ".",
+          "text": "./build",
+          "resolved": "../Build/build",
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 2,
+          "kind": "dotSource",
+          "command": "./build",
+          "invokes": true,
+          "text": ". ./build"
+        }
+      ]
+    },
     "../Copies/Alpha.psm1": {
       "parseErrors": [],
       "functions": [
@@ -2296,6 +2420,9 @@
     "../Backport/Expand-Archive.ps1": "db29aca8b65c3b422628d6aeaa6d06ec2b0595c10fcf9a6b7d30d8e51e126563",
     "../Backport/Use-Archive.ps1": "805b14e27c0b4955f3415547ddd2681888a9c038e6fb851869d0f6b3db26fb76",
     "../Backport/Use-Backport.ps1": "6974fedc94e3fc2303251343cf4888af6e423ce49eb3ad807a4d16001c2c0f0a",
+    "../Build/Use-Build-Rooted.ps1": "7eaebd7c7d64b917fc2df533ed14c73ed5182c610bc59d61c5209c192029a3dd",
+    "../Build/Use-Build.ps1": "d38d4c32906d483dc06144fe2d3c3a67273ac8239c35e9098a6e239d0ce5e933",
+    "../Build/build.ps1": "4c9ca8054715c5feeab076ad1b12166fbd3a1809c86d078c0de9a6a6f1460fc1",
     "../Copies/Alpha.psm1": "d8f51f5544055e4b70e43d473c7721eb11ca2623cc07df17e81b2d9d5b8da81f",
     "../Copies/Beta.psm1": "7a0fd864ba2a924a74ee86d30ac6df3b17f4735444889c2c5e763aec04c7665b",
     "../Copies/Use-Alpha.ps1": "f0e54e8ac743848315b4aff315658e6abb1ab945fb3e212775ca0b9fa8f2d2e4",

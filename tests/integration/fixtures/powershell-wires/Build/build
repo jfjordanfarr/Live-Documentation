@@ -1,0 +1,1 @@
+Write-Output 'the file without an extension, which PowerShell on Unix runs for ./build'

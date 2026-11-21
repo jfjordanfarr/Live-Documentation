@@ -3,7 +3,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 
-import { STAND_INS } from "./build-page.mjs";
+import { GRAMMARS, REPO, STAND_INS } from "./build-page.mjs";
 import { NEEDS_FILE, nodeNeeds } from "./node-needs.mjs";
 
 /**
@@ -76,5 +76,21 @@ describe("what of Node the scan's path needs", () => {
       if (!derived.standIns["(global)"]?.some((member) => member === global || member.startsWith(`${global}.`))) faults.push(`the global ${global} is listed but not named`);
     }
     expect(faults).toEqual([]);
+  });
+});
+
+describe("the grammars the page carries", () => {
+  // A reader that comes to name a grammar (the Ruby reader, for its comments, on 2026-11-21) would find it missing in a
+  // page, and only a browser case would say so; this says it without one.
+  it("hold every grammar a reader of the engine names", () => {
+    const sources = fs.readdirSync(path.join(REPO, "packages", "engine", "src"), { recursive: true, encoding: "utf8" })
+      .filter((file) => file.endsWith(".ts") && !file.endsWith(".test.ts"));
+    const named = new Set<string>();
+    for (const file of sources) {
+      for (const match of fs.readFileSync(path.join(REPO, "packages", "engine", "src", file), "utf8").matchAll(/\breadTree\(\s*"([^"]+)"/gu)) named.add(match[1]);
+    }
+    const carried = new Set(GRAMMARS.map((file) => /tree-sitter-([^/]+)\.wasm$/u.exec(file)?.[1]));
+    expect(named.size).toBeGreaterThan(0);
+    expect(Array.from(named).filter((grammar) => !carried.has(grammar)).sort()).toEqual([]);
   });
 });

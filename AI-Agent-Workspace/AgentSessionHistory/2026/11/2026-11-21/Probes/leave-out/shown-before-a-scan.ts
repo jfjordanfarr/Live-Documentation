@@ -1,4 +1,6 @@
 /**
+ * A record of the third leg of 2026-11-21: it ran against commit d99fd0b7f and calls the layered `leaveOut` ({ ignoreFiles, evidence, person }) that the eighth leg replaced with one list (commit 9d7bfdaf9); it no longer runs against the present function, and its results stand in the README as measured then.
+ *
  * What a person would be shown before a scan, from the engine's `leaveOut`, two ways over one folder:
  *
  * - a lazy walk, as the product would make it: a folder is listed, each folder in it is decided before it is entered,

@@ -18,6 +18,7 @@ export type {
   SourceAnalysisResult,
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex,
+  WorkspaceTestIndex,
   TypeReference,
   PublicSymbolEntry,
   DependencyEntry,

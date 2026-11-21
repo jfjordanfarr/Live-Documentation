@@ -29,8 +29,10 @@ import type {
   PublicSymbolEntry,
   ReExportedSymbolInfo,
   ResolvedSymbolLocation,
+  TestFacts,
   WorkspaceEntryIndex,
-  WorkspaceSymbolIndex
+  WorkspaceSymbolIndex,
+  WorkspaceTestIndex
 } from "./coreTypes";
 import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
@@ -439,10 +441,12 @@ async function keptByGitAndConfiguration(
 // Index Building
 // ============================================================================
 
-/** The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries. */
+/** The indexes the first pass builds: the symbols every file publishes, the files manifests declare as entries, and what readers say exists for the tests. */
 export interface WorkspaceIndexes {
   symbols: WorkspaceSymbolIndex;
   entries: WorkspaceEntryIndex;
+  /** The readers' facts of which files exist for the tests, for the archetype's rules of tests (`archetype.ts`). */
+  tests: WorkspaceTestIndex;
   /**
    * The files whose reading threw in this pass, by absolute path, with what was thrown: none of their symbols is in the
    * index, so the generator names each as a file it could not map, with that error, which the history reads as the
@@ -461,8 +465,13 @@ export interface WorkspaceIndexes {
  * definition in another; several files may publish one name. The entry index
  * maps each file a manifest declares as an entry (a script it runs, a binary,
  * its main module) to what declares it, so that the file's doc carries the
- * `Entry` line. TypeScript and JavaScript files are read with the built-in
- * parser; every other file is read by its language adapter.
+ * `Entry` line. The test index gathers what readers say exists for the tests
+ * where no path shows it (each .NET project and whether it is a test project,
+ * Rust's modules compiled for the tests alone, the scripts that create the
+ * procedures of a tSQLt test class), so that the file's doc carries its
+ * `Archetype` by its language's rule of tests. TypeScript and JavaScript files
+ * are read with the built-in parser; every other file is read by its language
+ * adapter.
  *
  * Whatever a file throws while it is read, a failure of the machine's (too
  * many open files) or a stack run short, leaves its symbols out and names it in
@@ -489,6 +498,9 @@ export async function buildWorkspaceIndexes(options: {
   const index: WorkspaceSymbolIndex = new Map();
   const entries: WorkspaceEntryIndex = new Map();
   const unmapped = new Map<string, unknown>();
+  const tests: WorkspaceTestIndex = { projects: new Map(), files: new Set() };
+  const testClasses = new Set<string>();
+  const testProcedures: Array<{ sourcePath: string; schemas: string[] }> = [];
 
   const register = (name: string, location: ResolvedSymbolLocation): void => {
     const existing = index.get(name) ?? [];
@@ -511,6 +523,7 @@ export async function buildWorkspaceIndexes(options: {
     let declares: DeclaredEntry[] = [];
     let reExports: ReExportedSymbolInfo[] = [];
     let exportDependencies: DependencyEntry[] = [];
+    let testFacts: TestFacts | undefined;
     try {
       const ext = path.extname(absolutePath).toLowerCase();
 
@@ -549,6 +562,7 @@ export async function buildWorkspaceIndexes(options: {
         if (adapterResult) {
           symbols = adapterResult.symbols;
           declares = adapterResult.declares ?? [];
+          testFacts = adapterResult.tests;
         }
       }
     } catch (error) {
@@ -561,6 +575,11 @@ export async function buildWorkspaceIndexes(options: {
       by.push({ declarer: sourcePath, reason: declared.reason, ...(declared.name !== undefined ? { name: declared.name } : {}) });
       entries.set(declared.file, by);
     }
+
+    if (testFacts?.project) tests.projects.set(testFacts.project.folder, testFacts.project.test);
+    for (const file of testFacts?.files ?? []) tests.files.add(file);
+    for (const schema of testFacts?.testClasses ?? []) testClasses.add(schema);
+    if (testFacts?.testProcedureSchemas?.length) testProcedures.push({ sourcePath, schemas: testFacts.testProcedureSchemas });
 
     // Compute heading info for proper anchor slugs
     const headings = computePublicSymbolHeadingInfo(symbols);
@@ -597,5 +616,11 @@ export async function buildWorkspaceIndexes(options: {
     }
   }
 
-  return { symbols: index, entries, unmapped };
+  // A script that creates a `test…` procedure in a schema some script of the workspace makes a tSQLt test class holds
+  // tests: the class may be made in another script than its procedures.
+  for (const { sourcePath, schemas } of testProcedures) {
+    if (schemas.some((schema) => testClasses.has(schema))) tests.files.add(sourcePath);
+  }
+
+  return { symbols: index, entries, tests, unmapped };
 }

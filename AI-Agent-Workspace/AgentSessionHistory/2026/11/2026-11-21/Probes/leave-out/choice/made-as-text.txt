@@ -1,40 +1,42 @@
-made: 10,929 files will be read · 208 folders left out, not looked inside
+Found 15 .tfignore files; taken into the list.
+Taken in: 15 .tfignore files.
+made: 76,899 files will be read · 15 files left out · 15 folders left out, not looked inside
+The list: 75 lines, names matched without regard to case.
 
-Left out:
-  Build output beside a project  (162 folders)
-      DNN Platform/                               134
-      Dnn.AdminExperience/                         18
-      DotNetNuke.BulkInstall/                       6
-      Build/                                        2
-      DotNetNuke.Internal.SourceGenerators/         2
-  NuGet packages  (46 folders)
-    Also ignored by .tfignore: 15 of 46 (packages)
-      DNN Platform/                                43
-      At the top                                    2
-      Build/packages/
-        Also the .tfignore beside it, line 6: packages
+Left out, by block of the list:
+  The folder's own ignore files  (15 folders · 15 files; .json 15 [read])
+       6  Build/**/project.assets.json  (1 file; .json 1 [read])
+      12  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
+      18  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
+      24  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1 [read])
+      30  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1 [read])
+      36  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1 [read])
+      42  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1 [read])
+      48  DNN Platform/Controls/CountryListBox/**/project.assets.json  (1 file; .json 1 [read])
+          and 22 more lines that leave something out
 
 Will be read, by kind:
-  .cs                 3,973
-  .js                 1,330
-  .png                1,325
-  .gif                  671
-  .jsx                  482
-  .less                 305
-  .sqldataprovider      299
-  .svg                  283
-  .txt                  212
-  .resx                 203
+  .dll               27,013
+  .xml                9,016
+  .pdb                9,007
+  .ps1                5,844
+  .cs                 4,136
+  .txt                3,214
+  .props              3,009
+  .targets            2,925
+  .nupkg              2,920
+  .transform          2,920
 
-Will be read, by folder:
-  DNN Platform                                7,840
-  Dnn.AdminExperience                         2,894
-  Build                                          96
-  DotNetNuke.BulkInstall                         45
-  At the top                                     29
+Will be read, by top folder:
+  DNN Platform                               60,315
+  packages                                   13,201
+  Dnn.AdminExperience                         3,083
+  Build                                         116
+  DotNetNuke.BulkInstall                        108
+  DotNetNuke.Internal.SourceGenerators           24
   .github                                        21
-  DotNetNuke.Internal.SourceGenerators            3
+  Packages                                        1
   expected                                        1
 
-To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
-Listed 2,300 folders in 816 ms (listing 340 ms, deciding 212 ms).
+To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
+Listed 0 folders in 1085 ms (listing 0 ms, deciding 885 ms).

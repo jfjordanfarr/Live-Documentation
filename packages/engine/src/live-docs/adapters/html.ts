@@ -20,6 +20,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
+import { inSpaces } from "./spaces";
 
 // ============================================================================
 // Patterns
@@ -34,6 +35,95 @@ import type { LanguageAdapter } from "./index";
  */
 const HTML_RESOURCE_ATTR =
   /\b(?<attr>srcset|src|href|data-src|data-href|poster)\s*=\s*(?:"(?<dq>[^"]+)"|'(?<sq>[^']+)')/gi;
+
+// ============================================================================
+// Comments
+// ============================================================================
+
+/** The elements whose content HTML reads as text, in which `<!--` opens no comment: raw text and escapable raw text. */
+const TEXT_ELEMENTS: ReadonlySet<string> = new Set(["script", "style", "textarea", "title"]);
+
+/** A start tag's opening and its name. */
+const START_TAG = /^<([A-Za-z][^\s/>]*)/u;
+
+/** The first end of a comment after `from`, `-->` or `--!>` (WHATWG HTML, "comment end bang state"), as the index just past it; the text's end when there is none. */
+function commentEnd(text: string, from: number): number {
+  const ends = [text.indexOf("-->", from), text.indexOf("--!>", from)].filter((at) => at !== -1);
+  if (ends.length === 0) return text.length;
+  const at = Math.min(...ends);
+  return at + (text.startsWith("-->", at) ? 3 : 4);
+}
+
+/**
+ * The markup with what HTML makes no element of written over in spaces ({@link inSpaces}), so that positions keep:
+ * each comment, as HTML parses one, from `<!--` to the first `-->` or `--!>` after it, or at once when it is `<!-->`
+ * or `<!--->`, so that the content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`)
+ * leaves outside every comment is kept, and a comment left open runs to the end; and the text of each `<script>`,
+ * `<style>`, `<textarea>` and `<title>`, which HTML reads as text to that element's end tag, so that an `id=`, `src=`
+ * or `href=` a script's code or comment writes is no element's (mojoPortal's ckeditor samples write `// Replace the
+ * <textarea id="editor"> …`; a script's own references are the DOM heuristic's, read from its syntax tree). `<!--`
+ * opens a comment only where a tag may start: never inside a tag's quoted attribute value. No browser runs a script,
+ * loads a style sheet or makes an element that a comment holds, so the readers of markup read none (the comment guard
+ * of 2026-11-21, `commentGuard.test.ts`). A `<noscript>`'s text, raw to a browser that runs scripts, is read as markup.
+ */
+export function withoutHtmlComments(text: string): string {
+  let result = "";
+  let at = 0;
+  let index = 0;
+  for (;;) {
+    const open = text.indexOf("<", index);
+    if (open === -1) return result + text.slice(at);
+    if (text.startsWith("<!--", open)) {
+      const rest = text.slice(open + 4, open + 6);
+      const until = rest.startsWith(">") ? open + 5 : rest === "->" ? open + 6 : commentEnd(text, open + 4);
+      result += text.slice(at, open) + inSpaces(text.slice(open, until));
+      at = index = until;
+      continue;
+    }
+    const tag = START_TAG.exec(text.slice(open, open + 64));
+    if (!tag) {
+      index = open + 1;
+      continue;
+    }
+    index = endOfTag(text, open + 1);
+    const name = tag[1].toLowerCase();
+    // A tag closed by `/>` holds no text, as ASP.NET's page parser reads `<title />` in a page's head (DNN's
+    // `Default.aspx`); a browser reading such a tag in an `.html` file would take the rest for its text, which no page
+    // measured writes.
+    if (TEXT_ELEMENTS.has(name) && text[index - 2] !== "/") {
+      const end = new RegExp(`</${name}[\\s/>]`, "giu");
+      end.lastIndex = index;
+      const until = end.exec(text)?.index ?? text.length;
+      result += text.slice(at, index) + inSpaces(text.slice(index, until));
+      at = index = until;
+    }
+  }
+}
+
+/**
+ * The index just past a tag whose name starts at `start`, its quoted attribute values passed over, a quote opening a
+ * value only where one may start, after `=`; the text's end when it never closes.
+ */
+function endOfTag(text: string, start: number): number {
+  let quote: string | undefined;
+  let afterEquals = false;
+  for (let index = start; index < text.length; index += 1) {
+    const char = text[index];
+    if (quote) {
+      if (char === quote) quote = undefined;
+    } else if ((char === "\"" || char === "'") && afterEquals) {
+      quote = char;
+      afterEquals = false;
+    } else if (char === ">") {
+      return index + 1;
+    } else if (char === "=") {
+      afterEquals = true;
+    } else if (!/\s/u.test(char)) {
+      afterEquals = false;
+    }
+  }
+  return text.length;
+}
 
 // ============================================================================
 // URL Filtering
@@ -338,13 +428,13 @@ export function extractElementIds(content: string): string[] {
 // Adapter Export
 // ============================================================================
 
-/** Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. */
+/** Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. Neither is read inside an HTML comment ({@link withoutHtmlComments}). */
 export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],
 
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+    const content = withoutHtmlComments(await readSourceText(absolutePath));
 
     const dependencies = extractHtmlDependencies({
       content,

@@ -133,6 +133,9 @@
     "scripts/oracle/sql-scriptdom.cs": [
       "program"
     ],
+    "scripts/oracle/sql-sqlite.ts": [
+      "command oracle:sqlite of package.json"
+    ],
     "scripts/safe-to-commit.mjs": [
       "command ci-check of package.json",
       "command safe:commit of package.json"

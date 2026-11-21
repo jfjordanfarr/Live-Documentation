@@ -1,0 +1,14 @@
+- src/Libraries/Nop.Data/IRepository.cs	to	src/Libraries/Nop.Core/Domain/Common/ISoftDeletedEntity.cs
+- src/Libraries/Nop.Data/IRepository.cs	use	src/Libraries/Nop.Core/Domain/Common/ISoftDeletedEntity.cs#ISoftDeletedEntity
+- src/Libraries/Nop.Services/ArtificialIntelligence/IArtificialIntelligenceService.cs	to	src/Libraries/Nop.Core/Domain/Localization/LocalizationSettings.cs
+- src/Libraries/Nop.Services/ArtificialIntelligence/IArtificialIntelligenceService.cs	use	src/Libraries/Nop.Core/Domain/Localization/LocalizationSettings.cs#LocalizationSettings
++ src/Libraries/Nop.Services/Helpers/BrowscapXmlParser.cs	to	[browscap.crawlersonly.xml]
+- src/Libraries/Nop.Services/Helpers/ISyncCodeHelper.cs	to	src/Libraries/Nop.Core/Domain/Common/ISoftDeletedEntity.cs
+- src/Libraries/Nop.Services/Helpers/ISyncCodeHelper.cs	use	src/Libraries/Nop.Core/Domain/Common/ISoftDeletedEntity.cs#ISoftDeletedEntity
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_444444_256x240.png%22
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_555555_256x240.png%22
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_777620_256x240.png%22
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_777777_256x240.png%22
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_cc0000_256x240.png%22
+- src/Presentation/Nop.Web/wwwroot/lib_npm/jquery-ui-dist/jquery-ui.min.css	to	%22images%2Fui-icons_ffffff_256x240.png%22
+totals: {('gained', 'to'): 1, ('lost', 'to'): 9, ('lost', 'use'): 3} files: 5195 5195

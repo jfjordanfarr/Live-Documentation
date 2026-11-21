@@ -10,7 +10,9 @@
  * several scans can match the name to the project that publishes it; its package references, external as
  * `name@version`; and its assembly references, external by name. Compiled
  * files are not listed: a system is a folder, and the folder already says
- * which files belong to it.
+ * which files belong to it. The folder, and whether the project is a test
+ * project, go to the first pass's test index (`tests`), by which a file of a
+ * test project's folder is a test.
  */
 import path from "node:path";
 
@@ -31,6 +33,7 @@ const ASSEMBLY_NAME      = /<AssemblyName>\s*([^<]+?)\s*<\/AssemblyName>/iu;
 const SDK                = /<Project\b[^>]*?\bSdk\s*=\s*"([^"]+)"/iu;
 const PROJECT_TYPE_GUIDS = /<ProjectTypeGuids>([^<]*)<\/ProjectTypeGuids>/iu;
 const VERSION_ELEMENT    = /<Version>\s*([^<]+?)\s*<\/Version>/iu;
+const IS_TEST_PROJECT    = /<IsTestProject>\s*(true|false)\s*<\/IsTestProject>/iu;
 /** The project type of an ASP.NET web application in a classic project file. */
 const WEB_APPLICATION_GUID = "349c5851-65df-11da-9384-00065b846f21";
 
@@ -81,10 +84,12 @@ export const projectAdapter: LanguageAdapter = {
     }
 
     const external = new Set<string>();
+    let testSdk = false;
     for (const match of content.matchAll(PACKAGE_REFERENCE)) {
       const id      = attribute(match[1], "Include") ?? attribute(match[1], "Update");
       const version = attribute(match[1], "Version") ?? (match[2] ? VERSION_ELEMENT.exec(match[2])?.[1] : undefined);
       if (id) external.add(version ? `${id}@${version}` : id);
+      if (id?.toLowerCase() === "microsoft.net.test.sdk") testSdk = true;
     }
     for (const match of content.matchAll(ASSEMBLY_REFERENCE)) {
       external.add(match[1].trim());
@@ -94,9 +99,21 @@ export const projectAdapter: LanguageAdapter = {
       ...Array.from(projects.values()).sort((left, right) => compareText(left.specifier, right.specifier)),
       ...Array.from(external).sort().map((specifier) => ({ specifier, symbols: [], kind: "import" as const }))
     ];
-    return { symbols, dependencies };
+    return { symbols, dependencies, tests: { project: { folder: folderOf(thisFile), test: isTestProject(content, testSdk) } } };
   }
 };
+
+/**
+ * True for a test project, the one `dotnet test` runs: it sets `IsTestProject`, which the props of
+ * `Microsoft.NET.Test.Sdk` set (vstest's `Microsoft.TestPlatform.targets` skips any other), or its SDK is `MSTest.Sdk`;
+ * a project that says `IsTestProject` false is none. A reference to a test framework alone (xunit without the SDK)
+ * makes no test project (2026-11-21, the record `Probes/test-rules/`).
+ */
+function isTestProject(content: string, testSdk: boolean): boolean {
+  const said = IS_TEST_PROJECT.exec(content)?.[1].toLowerCase();
+  if (said !== undefined) return said === "true";
+  return testSdk || /^MSTest\.Sdk(?:\/|$)/iu.test(projectSdk(content));
+}
 
 /** The name a project reference stands for when its file cannot be found: the file's stem. */
 export function projectStem(include: string): string {

@@ -1,6 +1,8 @@
 /**
- * The engine's `leaveOut` against git's own word on a real folder: every file and folder of it (`.git` aside), the
- * `.gitignore` files found in it, and `git check-ignore -v -n --no-index` asked of every path. Prints the counts and
+ * The one list against git's own word on a real folder: the `.gitignore` files found in it taken into one list by the
+ * engine's `fromGitignores` and decided by `leaveOut` (since the eighth leg; before it, the layered function read the
+ * files in place), and `git check-ignore -v -n --no-index` asked of every path, every file and folder (`.git` aside),
+ * with the files in place. The list's deciding line is traced back to the file and line it was taken from. Prints the counts and
  * every disagreement by its path and the line each side names, and counts what a listing cannot know: a rule from
  * outside the tree (`.git/info/exclude`, a global excludes file) and a file git tracks beneath a folder it ignores.
  * Reads the folder and writes nothing there.
@@ -11,7 +13,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-import { leaveOut } from "../../../../../../../packages/engine/src/tooling/leaveOut";
+import { fromGitignores, leaveOut } from "../../../../../../../packages/engine/src/tooling/leaveOut";
 
 const root = path.resolve(process.argv[2] ?? ".");
 const entries: Array<{ path: string; folder: boolean }> = [];
@@ -31,7 +33,10 @@ const listMs = performance.now() - listedAt;
 const ignoreFiles = entries.filter((entry) => !entry.folder && path.posix.basename(entry.path) === ".gitignore")
   .map((entry) => ({ path: entry.path, text: fs.readFileSync(path.join(root, entry.path), "utf8") }));
 const decidedAt = performance.now();
-const decide = leaveOut({ ignoreFiles });
+// The repository's own core.ignorecase, as git reads it: the list's setting follows it.
+const ignoreCase = spawnSync("git", ["-C", root, "config", "--bool", "core.ignorecase"], { encoding: "utf8" }).stdout.trim() === "true";
+const taken = fromGitignores(ignoreFiles, { folders: entries.filter((entry) => entry.folder).map((entry) => entry.path), ignoreCase });
+const decide = leaveOut({ list: taken.lines.join("\n"), ignoreCase });
 const ours = new Map(entries.map((entry) => [entry.path, entry.folder ? decide.folder(entry.path) : decide.file(entry.path)]));
 const decideMs = performance.now() - decidedAt;
 
@@ -44,7 +49,8 @@ for (let i = 0; i + 3 < fields.length; i += 4) {
   const [source, line, pattern, name] = fields.slice(i, i + 4);
   const gitIgnores = source !== "" && !pattern.startsWith("!");
   const verdict = ours.get(name)!;
-  const ourRule = verdict.rule?.kind === "gitignore" ? `${verdict.rule.file}:${verdict.rule.line}` : "-";
+  const origin = verdict.line ? taken.from[verdict.line.number - 1] : undefined;
+  const ourRule = origin ? `${origin.file}:${origin.line}` : "-";
   const gitRule = source ? `${source}:${line}` : "-";
   if (!verdict.kept === gitIgnores && ourRule === gitRule) agree += 1;
   else if (source && (path.isAbsolute(source) || source.startsWith(".git/"))) fromOutside.push(`${name}  git: ${gitIgnores ? "ignored" : "kept"} by ${gitRule} (${pattern})`);
@@ -60,6 +66,9 @@ console.log(JSON.stringify({
   paths: entries.length,
   files: entries.filter((entry) => !entry.folder).length,
   gitignoreFiles: ignoreFiles.length,
+  listLines: taken.lines.length,
+  ignoreCase,
+  translatorSaid: taken.differences,
   agree,
   disagree: disagreements.length,
   decidedByARuleOutsideTheTree: fromOutside.length,

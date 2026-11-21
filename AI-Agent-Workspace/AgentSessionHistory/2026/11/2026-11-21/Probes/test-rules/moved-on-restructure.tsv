@@ -1,0 +1,63 @@
+corpus	language	path	before	after	runner	forTests
+this repository	TypeScript/JavaScript	tests/page-scan/fixtures.ts	implementation	test	implementation	test
+dbatools	other (no runner runs it)	.github/workflows/azure-migration-tests.yml	test	implementation	implementation	implementation
+dbatools	other (no runner runs it)	.github/workflows/integration-tests-external-table.yml	test	implementation	implementation	implementation
+dbatools	other (no runner runs it)	.github/workflows/integration-tests-s3.yml	test	implementation	implementation	implementation
+dbatools	other (no runner runs it)	.github/workflows/integration-tests.yml	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Actions/CreateApp/AppTemplate/HelloWorld.Test.al	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/AppSource App/.github/Test Current.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/AppSource App/.github/Test Next Major.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/AppSource App/.github/Test Next Minor.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/Per Tenant Extension/.github/Test Current.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/Per Tenant Extension/.github/Test Next Major.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Templates/Per Tenant Extension/.github/Test Next Minor.settings.json	test	implementation	implementation	implementation
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-consumer/http-consumed-false-01.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-consumer/privacy-008.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-consumer/privacy-015-cumulative-lines.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-consumer/privacy-015-normalization.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-consumer/privacy-015.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-report-roles/bcquality-findings-report.b74967bc.schema.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-report-roles/leaf-completed.security-clean-02.al-error-handling-review.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-report-roles/leaf-not-applicable-root-fields.http-consumed-false-01.al-finance-review.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-report-roles/leaf-not-applicable-root-fields.privacy-015-attempt2.al-finance-review.json	implementation	test	implementation	test
+AL-Go	other (no runner runs it)	Tests/ReviewAgent/fixtures/findings-report-roles/leaf-not-applicable-root-fields.privacy-015.al-query-review.json	implementation	test	implementation	test
+tSQLt	other (no runner runs it)	.github/workflows/aks_build_and_test.yml	test	implementation	implementation	implementation
+tSQLt	other (no runner runs it)	CI/Azure-DevOps/AZ_TempTest.yml	test	implementation	implementation	implementation
+DNN Platform	TypeScript/JavaScript	DNN Platform/Website/Resources/Shared/components/CodeEditor/addon/mode/multiplex_test.js	test	implementation	implementation	implementation
+DNN Platform	TypeScript/JavaScript	DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/css/less_test.js	test	implementation	implementation	implementation
+DNN Platform	TypeScript/JavaScript	DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/css/scss_test.js	test	implementation	implementation	implementation
+DNN Platform	TypeScript/JavaScript	DNN Platform/Website/Resources/Shared/scripts/dnn.DataStructures.Tests.js	test	implementation	implementation	implementation
+DNN Platform	TypeScript/JavaScript	Dnn.AdminExperience/ClientSide/Prompt.Web/src/localization/__mocks__/Localization.jsx	implementation	test	implementation	test
+DNN Platform	TypeScript/JavaScript	Dnn.AdminExperience/ClientSide/Prompt.Web/src/utils/__mocks__/helpers.js	implementation	test	implementation	test
+DNN Platform	TypeScript/JavaScript	Dnn.AdminExperience/ClientSide/Prompt.Web/src/utils/__mocks__/utilities.js	implementation	test	implementation	test
+click (pytest)	other (no runner runs it)	.github/workflows/tests.yaml	test	implementation	implementation	implementation
+cobra (go test)	other (no runner runs it)	.github/workflows/test.yml	test	implementation	implementation	implementation
+ripgrep (cargo)	other (no runner runs it)	ci/test-complete	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-graal-native-image/pom.xml	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-jpms/pom.xml	test	implementation	implementation	implementation
+gson (Maven)	Java	test-jpms/src/main/java/module-info.java	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-shrinker/common.pro	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-shrinker/pom.xml	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-shrinker/proguard.pro	test	implementation	implementation	implementation
+gson (Maven)	other (no runner runs it)	test-shrinker/r8.pro	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithAdapter.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithExposeAnnotation.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithHasArgsConstructor.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithJsonAdapterAnnotation.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithNamedFields.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithNoArgsConstructor.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithSerializedName.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithUnreferencedHasArgsConstructor.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithUnreferencedNoArgsConstructor.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/ClassWithVersionAnnotations.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/EnumClass.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/EnumClassWithSerializedName.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/GenericClasses.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/InterfaceWithImplementation.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/Main.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/NoSerializedNameMain.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/TestExecutor.java	test	implementation	implementation	implementation
+gson (Maven)	Java	test-shrinker/src/main/java/com/example/UnusedClass.java	test	implementation	implementation	implementation
+sinatra (Minitest, RSpec)	other (no runner runs it)	.github/workflows/test.yml	test	implementation	implementation	implementation
+sinatra (Minitest, RSpec)	Ruby	sinatra-contrib/lib/sinatra/test_helpers.rb	test	implementation	implementation	implementation
+dom-testing-library (Jest)	TypeScript/JavaScript	src/queries/test-id.ts	test	implementation	implementation	implementation

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
+- Archetype: test
 - Code Path: `tests/page-scan/fixtures.ts`
-- Generated At: 2026-11-21T03:40:56.644Z
+- Generated At: 2026-11-21T19:31:02.777Z
 
 ## Authored
 ### Purpose

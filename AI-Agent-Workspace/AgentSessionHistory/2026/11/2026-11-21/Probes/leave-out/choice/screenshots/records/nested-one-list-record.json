@@ -1,0 +1,131 @@
+{
+ "label": "nested-8",
+ "absent": [],
+ "handedAndDecidedMs": 10787,
+ "found": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+ "1-first": {
+  "totals": "17,245 files will be read",
+  "listLines": 0,
+  "byLine": [
+   "Nothing is left out."
+  ]
+ },
+ "foundFiles": 40,
+ "foundSaid": "",
+ "3-used": {
+  "totals": "15,594 files will be read · 1,651 files left out",
+  "listLines": 311,
+  "byLine": [
+   "33 Dnn.AdminExperience/**/[Bb]in .dll 72 · .config 18 · .pdb 18 9 folders · 126 files",
+   "34 Dnn.AdminExperience/**/[Oo]bj .cs 18 · .props 9 · .json 9 9 folders · 63 files",
+   "196 DNN Platform/Modules/Samples/Dnn.ContactList.Api/**/bin/ .dll 8 · .pdb 2 · .xml 2 1 folder · 14 files",
+   "197 DNN Platform/Modules/Samples/Dnn.ContactList.Api/**/obj/ .cs 2 · .json 1 · .props 1 1 folder · 7 files",
+   "200 DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/**/bin/ .dll 8 · .config 2 · .pdb 2 1 folder · 14 files",
+   "201 DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/**/obj/ .cs 2 · .json 1 · .props 1 1 folder · 7 files",
+   "204 DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/bin/ .dll 8 · .config 2 · .xml 2 1 folder · 14 files",
+   "205 DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/obj/ .cs 2 · .json 1 · .props 1 1 folder · 7 files",
+   "217 DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/**/bin/ .dll 8 · .pdb 2 · .config 2 1 folder · 14 files",
+   "218 DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/**/obj/ .cs 2 · .json 1 · .props 1 1 folder · 7 files",
+   "247 DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/**/obj/ .cs 2 · .json 1 · .props 1 1 folder · 7 files",
+   "248 DNN Platform/Providers/HtmlEditorProviders/DNNConnect.CKE/**/bin/ .dll 8 · .config 2 · .xml 2 1 folder · 14 files",
+   "254 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg .svg 2 2 files",
+   "256 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css .css 6 6 files",
+   "264 Build/**/packages .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "266 Build/**/project.assets.json .json 1 1 file",
+   "270 DNN Platform/DotNetNuke.ContentSecurityPolicy/**/packages .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "272 DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json .json 1 1 file",
+   "276 DNN Platform/DotNetNuke.Log4net/**/packages .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "278 DNN Platform/DotNetNuke.Log4net/**/project.assets.json .json 1 1 file"
+  ]
+ },
+ "proposedComment": "# From what the folders hold: 47 lines",
+ "4-proposed": {
+  "totals": "10,946 files will be read · 6,299 files left out",
+  "listLines": 358,
+  "byLine": [
+   "254 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg .svg 2 2 files",
+   "256 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css .css 6 6 files",
+   "354 bin/ .dll 650 · .config 164 · .pdb 164 81 folders · 1,142 files",
+   "356 obj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files",
+   "358 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "359 /DNN Platform/Controls/CountryListBox/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "360 /DNN Platform/Modules/Journal/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "361 /DNN Platform/Modules/DDRMenu/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "362 /DNN Platform/Modules/ResourceManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "363 /DNN Platform/Modules/CoreMessaging/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "364 /DNN Platform/Modules/HTML/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "365 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "366 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "367 /DNN Platform/Modules/MemberDirectory/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "368 /DNN Platform/Modules/DnnExportImport/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "369 /DNN Platform/Modules/RazorHost/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "370 /DNN Platform/Modules/Groups/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "371 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "372 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "373 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files"
+  ]
+ },
+ "visualStudioSourceFiles": [
+  "448 [Oo]bj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files",
+  "450 [Ll]og/ .cs 22 3 folders · 22 files",
+  "634 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 14 files"
+ ],
+ "5-visual-studio": {
+  "totals": "10,874 files will be read · 6,371 files left out",
+  "listLines": 592,
+  "byLine": [
+   "254 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg .svg 2 2 files",
+   "256 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css .css 6 6 files",
+   "354 bin/ .dll 650 · .config 164 · .pdb 164 81 folders · 1,142 files",
+   "358 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "359 /DNN Platform/Controls/CountryListBox/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "360 /DNN Platform/Modules/Journal/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "361 /DNN Platform/Modules/DDRMenu/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "362 /DNN Platform/Modules/ResourceManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "363 /DNN Platform/Modules/CoreMessaging/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "364 /DNN Platform/Modules/HTML/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "365 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "366 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "367 /DNN Platform/Modules/MemberDirectory/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "368 /DNN Platform/Modules/DnnExportImport/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "369 /DNN Platform/Modules/RazorHost/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "370 /DNN Platform/Modules/Groups/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "371 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "372 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "373 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "374 /DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files"
+  ]
+ },
+ "listEnd": [
+  "#*.lscache",
+  "*.png",
+  "/DNN Platform/Tests/"
+ ],
+ "6-minus": {
+  "totals": "9,011 files will be read · 8,234 files left out",
+  "listLines": 594,
+  "byLine": [
+   "254 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/scripts/bundles/*.svg .svg 2 2 files",
+   "256 Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css .css 6 6 files",
+   "354 bin/ .dll 514 · .config 130 · .pdb 130 64 folders · 904 files",
+   "358 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "359 /DNN Platform/Controls/CountryListBox/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "360 /DNN Platform/Modules/Journal/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "361 /DNN Platform/Modules/DDRMenu/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "362 /DNN Platform/Modules/ResourceManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "363 /DNN Platform/Modules/CoreMessaging/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "364 /DNN Platform/Modules/HTML/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "365 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "366 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "367 /DNN Platform/Modules/MemberDirectory/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "368 /DNN Platform/Modules/DnnExportImport/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "369 /DNN Platform/Modules/RazorHost/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "370 /DNN Platform/Modules/Groups/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "371 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "372 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "373 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files",
+   "374 /DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/ .dll 36 · .xml 12 · .pdb 12 1 folder · 89 files"
+  ]
+ },
+ "errors": []
+}

@@ -13,6 +13,7 @@ import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
 import { throwIfMachineFailure } from "../../tooling/sourceText";
 import { markProcess, TREE_DEPTH } from "../processMark";
+import { inSpaces } from "./spaces";
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
@@ -132,4 +133,48 @@ function beyondDepth(tree: Tree): boolean {
   } finally {
     cursor.delete();
   }
+}
+
+/** The node a grammar gives a comment: C#'s, Ruby's (`#` and `=begin` … `=end` alike) and most others'. */
+export const COMMENT_NODES: ReadonlySet<string> = new Set(["comment"]);
+
+/**
+ * Where a tree holds nodes of the given types, a comment by default: each one's start and end in the text, in its
+ * UTF-16 units, in order, as a flat list of pairs; what lies inside such a node is not visited. Walked by a cursor,
+ * like the depth's measure, so that it needs no stack of its own. With {@link writtenOver}, the shared step by which a
+ * reader that finds a construct by a pattern over a language's text reads nothing a comment holds, the grammar
+ * telling a comment from a string as the language does (the guard of 2026-11-21, `commentGuard.test.ts`).
+ */
+export function rangesOf(root: SyntaxNode, types: ReadonlySet<string> = COMMENT_NODES): number[] {
+  const ranges: number[] = [];
+  const cursor = root.walk();
+  try {
+    for (;;) {
+      if (types.has(cursor.nodeType)) {
+        ranges.push(cursor.startIndex, cursor.endIndex);
+      } else if (cursor.gotoFirstChild()) {
+        continue;
+      }
+      while (!cursor.gotoNextSibling()) {
+        if (!cursor.gotoParent()) return ranges;
+      }
+    }
+  } finally {
+    cursor.delete();
+  }
+}
+
+/**
+ * The text with each range of `ranges` (pairs of start and end, in order and apart, as {@link rangesOf} gives them)
+ * written over in spaces ({@link inSpaces}), its line breaks kept, so that a position or a line found in the result is
+ * the same in the text.
+ */
+export function writtenOver(text: string, ranges: readonly number[]): string {
+  let result = "";
+  let at = 0;
+  for (let index = 0; index + 1 < ranges.length; index += 2) {
+    result += text.slice(at, ranges[index]) + inSpaces(text.slice(ranges[index], ranges[index + 1]));
+    at = ranges[index + 1];
+  }
+  return result + text.slice(at);
 }

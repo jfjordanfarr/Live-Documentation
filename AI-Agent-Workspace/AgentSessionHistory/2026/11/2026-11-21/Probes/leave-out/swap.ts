@@ -1,4 +1,6 @@
 /**
+ * A record of the third leg of 2026-11-21: it ran against commit d99fd0b7f and calls the layered `leaveOut` ({ ignoreFiles, evidence, person }) that the eighth leg replaced with one list (commit 9d7bfdaf9); it no longer runs against the present function, and its results stand in the README as measured then.
+ *
  * What would change if discovery's way of leaving files out were swapped for the engine's `leaveOut`, without wiring
  * it in: on this repository and on a copy of every fixture outside any repository (as a scan of it runs), the files
  * today's discovery keeps (`discoverTargetFiles` and `discoverDocuments`: glob, git's word through `gitIgnored.ts`, the

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/css.ts`
-- Generated At: 2026-11-20T15:12:45.722Z
+- Generated At: 2026-11-21T21:13:43.009Z
 
 ## Authored
 ### Purpose
@@ -17,17 +17,31 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 - Deduplicates repeated references to the same resource across different quote styles
 - Strips query strings and fragments from URLs (e.g., cache-busting `?v=123` suffixes)
 - Returns empty symbols array since CSS files have no TypeScript-style exports
+- Since 2026-11-21 ([the comment guard](./commentGuard.test.ts.mdmd.md)) no `@import` or `url()` inside a comment is read (`withoutCssComments`): until then a commented-out rule was read as real, as in mojoPortal's `Web/Data/style/adminmenu/style.css`, whose 38 icons are in a comment, and jQuery UI's header comment, whose theme roller address holds six `url(…)`. The bundled CSS grammar was not used: it reads `/*` inside a string as a comment and `//` as one, which CSS does not.
+- Since the evening of 2026-11-21 a backslash outside a string escapes the character after it, so `.a\"b` opens no string ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md#the-second-round-after-an-independent-review)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `withoutCssComments` {#symbol-withoutcsscomments}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L54)
+
+##### `withoutCssComments` — Summary
+The style sheet with every comment written over in spaces, its line breaks kept, so that positions keep: a comment
+is `/*` to the first `*\/` after it (CSS Syntax, "Consume comments"), and none starts inside a string, which runs to
+its closing quote past any escaped character or to the line's end, nor inside an unquoted `url(…)`, which runs to its
+`)`. Outside a string a backslash escapes the character after it ("Consume an escaped code point"), so `.a\"b` opens
+no string. `//` is no comment in CSS. A comment left open runs to the end. The guard of 2026-11-21
+(`commentGuard.test.ts`): until then a commented-out `@import` or `url()` was read as real.
+
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L299)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L338)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cssAdapter` — Summary
-Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, custom properties, and `@import`/`url()` dependencies.
+Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, none inside a comment ({@link withoutCssComments}).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -35,6 +49,7 @@ Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, c
 - `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
+- [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)

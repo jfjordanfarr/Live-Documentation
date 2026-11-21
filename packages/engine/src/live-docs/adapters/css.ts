@@ -21,6 +21,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
+import { inSpaces } from "./spaces";
 
 // ============================================================================
 // Patterns
@@ -41,6 +42,44 @@ const CSS_IMPORT_PATTERN = /@import\s+(?:url\(\s*)?["']([^"']+)["']\s*\)?[^;]*;/
  * Handles double quotes, single quotes, and bare (unquoted) URLs.
  */
 const CSS_URL_PATTERN = /url\(\s*(?:"([^"()]+)"|'([^'()]+)'|([^"'()\s][^\s)]*?))\s*\)/gi;
+
+/**
+ * The style sheet with every comment written over in spaces, its line breaks kept, so that positions keep: a comment
+ * is `/*` to the first `*\/` after it (CSS Syntax, "Consume comments"), and none starts inside a string, which runs to
+ * its closing quote past any escaped character or to the line's end, nor inside an unquoted `url(…)`, which runs to its
+ * `)`. Outside a string a backslash escapes the character after it ("Consume an escaped code point"), so `.a\"b` opens
+ * no string. `//` is no comment in CSS. A comment left open runs to the end. The guard of 2026-11-21
+ * (`commentGuard.test.ts`): until then a commented-out `@import` or `url()` was read as real.
+ */
+export function withoutCssComments(text: string): string {
+  let result = "";
+  let at = 0;
+  let index = 0;
+  while (index < text.length) {
+    const char = text[index];
+    if (char === "/" && text[index + 1] === "*") {
+      const close = text.indexOf("*/", index + 2);
+      const until = close === -1 ? text.length : close + 2;
+      result += text.slice(at, index) + inSpaces(text.slice(index, until));
+      at = index = until;
+    } else if (char === "\\") {
+      index += 2;
+    } else if (char === "\"" || char === "'") {
+      index += 1;
+      while (index < text.length && text[index] !== char && text[index] !== "\n") index += text[index] === "\\" ? 2 : 1;
+      index += 1;
+    } else if (UNQUOTED_URL.test(text.slice(index, index + 256)) && !/[\w-]/u.test(text[index - 1] ?? "")) {
+      const close = text.indexOf(")", index);
+      index = close === -1 ? text.length : close + 1;
+    } else {
+      index += 1;
+    }
+  }
+  return result + text.slice(at);
+}
+
+/** The opening of a `url(` function whose address is not quoted, in any case. */
+const UNQUOTED_URL = /^url\(\s*[^\s"')]/iu;
 
 // ============================================================================
 // URL Filtering
@@ -295,7 +334,7 @@ function extractCssDependencies(params: {
 // Adapter Export
 // ============================================================================
 
-/** Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, custom properties, and `@import`/`url()` dependencies. */
+/** Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, none inside a comment ({@link withoutCssComments}). */
 export const cssAdapter: LanguageAdapter = {
   id: "css",
   extensions: [".css"],
@@ -304,7 +343,7 @@ export const cssAdapter: LanguageAdapter = {
     const content = await readSourceText(absolutePath);
 
     const dependencies = extractCssDependencies({
-      content,
+      content: withoutCssComments(content),
       absolutePath,
       workspaceRoot
     });

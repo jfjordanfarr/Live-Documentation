@@ -1,0 +1,9 @@
+VisualStudio-ignore.txt beside this file is GitHub's VisualStudio.gitignore, unchanged.
+
+Source:   https://github.com/github/gitignore, file VisualStudio.gitignore
+Blob:     bbcb2d27f96d51fb2cd9057cdafb8b46416c5c58 (git hash-object of the copy here)
+Revision: that exact file was introduced by commit 90e1bba3f058319173bcece4f1ff62f5cf18ee53
+          (2026-11-09, "Added *.msixbundle to VisualStudio.gitignore"), and is still the file at the
+          repository's head as fetched on 2026-11-21 evening, commit eeb775f7cbd229e8cd487ef06a1176dc239201d9.
+Licence:  CC0 1.0 Universal (the repository's LICENSE).
+Found:    2026-11-21, by the eighth leg's builder, from a blobless anonymous clone and git log --find-object.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/aspnet.ts`
-- Generated At: 2026-11-21T07:38:04.873Z
+- Generated At: 2026-11-21T21:13:42.657Z
 
 ## Authored
 ### Purpose
@@ -19,13 +19,14 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 - Since the same day a `<script src>` is read by the directives' rule, as an independent review asked: `~/` from the web application that holds the file, not the workspace's root, and a path from the site's root (`/…`) left unlinked, each path without a link kept as a line by its text and said as a notice. A query or fragment is taken off (`dnn.js?ver=<%= … %>` is `dnn.js`), a remote address (`https://`, `//host/…`) is not read, and neither is a path the page computes as it runs (a server expression or Razor's), which is no path the markup writes. Before building a reading of `<%= ResolveUrl("~/…") %>`, its constant argument, the shapes were counted: DNN's markup holds 9 relative paths and 5 with a computed query, mojoPortal's 10 `~/`, 6 from the site's root, 8 remote and one computed, and neither holds a server expression with a constant argument, so none is read. Measured on DNN: 5 lines gained, `UpgradeWizard.aspx`'s scripts, no notice added. On mojoPortal: 9 lines gained, the `~/` scripts of `Web/Views`, and 7 kept unlinked with a notice, 6 from the site's root in `layout.Master` (the files are under `Web/Content/`, which the site serves at `/Content/` when deployed at its root, a deployment the rule does not read) and one, `~/Scripts/jquery-1.10.2.min.js`, that no file of the repository holds. Nothing lost on either ([the account](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md)).
 - Since the same day no script tag a comment holds is read (`withoutMarkupComments`): the comments are written over in spaces first, positions kept, as `withoutXmlComments` does for project files. An HTML comment, which no browser runs a script inside, conditional comments among them since Internet Explorer 10, and the comment the server removes, Web Forms' `<%-- --%>` or Razor's `@* *@`. An HTML comment ends as HTML parses it, at the first `-->` or at once for `<!-->`, so what a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every comment is read. An independent review showed the three kinds drawn; read file by file both ways, DNN's and mojoPortal's markup hold none, and nothing moves.
 - Since the same day an ASP.NET Core application's `~/` is its web root, as Microsoft's "Static files in ASP.NET Core" gives it: a web project whose project file names the SDK `Microsoft.NET.Sdk.Web` and that has a `wwwroot` beside it serves `wwwroot`, so a view of it reads `~/` and `/` from that folder alone, and a module's or plugin's view reads `~/` from the web roots of the applications it may be deployed into; a Web Forms or MVC 5 project serves its own folder, as before. The evidence is the files' own (`projectSdk` in `project.ts`, and a `wwwroot` in the index), never a name. Razor code anywhere in a value (`summernote-@(language).min.js`) is a computed path, not read. Measured on three ASP.NET Core repositories (eShopOnWeb, nopCommerce, Orchard Core): eShopOnWeb gains its 2 scripts under `wwwroot` and nopCommerce 81, and what stays unlinked is said: `wwwroot/lib`, restored by LibMan and ignored by git, and files the framework serves from packages (`_content/…`, `_framework/…`); and, by conventions of those products that ASP.NET does not make, Orchard Core's 252 module scripts named `~/{module}/…` and served from that module's `wwwroot`, and nopCommerce's 4 plugin scripts named `~/Plugins/{plugin}/…` and copied there by the plugin project's `OutputPath`. DNN's and mojoPortal's markup reads as before ([the account](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md)).
+- Since the evening of 2026-11-21 ([the comment guard](./commentGuard.test.ts.mdmd.md)) an element id inside a comment is not read either, and the HTML comment is read as HTML reads it (`withoutHtmlComments` in `html.ts`): not inside a quoted attribute value or a script's text, where `<!--` had hidden every script after it. The server's comment is taken out first, as the server does. A directive is still read inside an HTML comment, which is literal text to the page parser. On mojoPortal 67 ids are gone, every one inside a comment (17 of `Web/Controls/mojoRating.ascx` in one `<%-- --%>`); no script or directive moved ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `aspNetMarkupAdapter` {#symbol-aspnetmarkupadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L64)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L65)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `aspNetMarkupAdapter` — Summary
@@ -39,26 +40,35 @@ symbols are element ids, server controls and plain HTML alike.
 
 #### `withoutMarkupComments` {#symbol-withoutmarkupcomments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L103)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L106)
 
 ##### `withoutMarkupComments` — Summary
-The markup with every comment written over in spaces, its line breaks kept, so that positions keep: an HTML comment
-(`<!-- … -->`, which no browser runs a script inside, a conditional comment's content among them since Internet
-Explorer 10), and the comment the server removes before anything is sent, Web Forms' `<%-- … --%>` or Razor's
-`@* … *@`. An HTML comment ends at the first `-->`, or at once when it is `<!-->` or `<!--->`, as HTML parses it, so
-the content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
-comment is kept.
+The markup with every comment written over in spaces, its line breaks kept, so that positions keep: first the
+comment the server removes before it parses anything else, Web Forms' `<%-- … --%>` or Razor's `@* … *@`, wherever
+it stands; then each HTML comment of what is left, as HTML reads one ({@link withoutHtmlComments}), which no browser
+runs a script inside, a conditional comment's content among them since Internet Explorer 10, and in which it makes
+no element. A directive is not read from this text: the page parser reads one inside an HTML comment, which is only
+literal text to it ({@link readDirectives}).
+
+#### `markupWithoutComments` {#symbol-markupwithoutcomments}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L128)
+
+##### `markupWithoutComments` — Summary
+A markup file's text with its comments written over, by its kind: Web Forms' and Razor's markup by
+{@link withoutMarkupComments}, any other (`.html`) by HTML's rule alone. For a reader that looks into markup it does
+not read itself, as the DOM heuristic looks for an element's id.
 
 #### `Directive` {#symbol-directive}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L179)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L185)
 
 ##### `Directive` — Summary
 One `<%@ … %>` directive: its name, lowercased, and its attributes by lowercased name.
 
 #### `readDirectives` {#symbol-readdirectives}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L185)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L191)
 - Returns: [`Directive`](#symbol-directive)[]
 
 ##### `readDirectives` — Summary
@@ -66,21 +76,21 @@ The directives of a markup file, by Microsoft's documented syntax; a directive w
 
 #### `DIRECTIVE_REASONS` {#symbol-directive_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L228)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L234)
 
 ##### `DIRECTIVE_REASONS` — Summary
 Why a directive's path has no link.
 
 #### `DirectivePath` {#symbol-directivepath}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L236)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L242)
 
 ##### `DirectivePath` — Summary
 A directive's path, resolved to a workspace file or left unlinked for a reason.
 
 #### `resolveDirectivePath` {#symbol-resolvedirectivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L261)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/aspnet.ts#L267)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveDirectivePath` — Summary
@@ -117,10 +127,12 @@ from the web roots of the applications it may be deployed into, as above.
 - [`dotnetPaths.nearestProjectFolder`](./dotnetPaths.ts.mdmd.md#symbol-nearestprojectfolder)
 - [`dotnetPaths.workspaceFile`](./dotnetPaths.ts.mdmd.md#symbol-workspacefile)
 - [`html.extractElementIds`](./html.ts.mdmd.md#symbol-extractelementids)
+- [`html.withoutHtmlComments`](./html.ts.mdmd.md#symbol-withouthtmlcomments)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`project.projectKind`](./project.ts.mdmd.md#symbol-projectkind)
 - [`project.projectSdk`](./project.ts.mdmd.md#symbol-projectsdk)
+- [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`coreTypes.SourceNotice`](../coreTypes.ts.mdmd.md#symbol-sourcenotice) (type-only)

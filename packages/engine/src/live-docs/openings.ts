@@ -270,8 +270,8 @@ export function sqlNameParts(written: string): string[] {
   let current = "";
   for (let index = 0; index < written.length; index += 1) {
     const char = written[index];
-    if (char === "[" || char === "\"") {
-      const close = char === "[" ? "]" : "\"";
+    if (char === "[" || char === "\"" || char === "`") {
+      const close = char === "[" ? "]" : char;
       let end = index + 1;
       while (end < written.length && !(written[end] === close && written[end + 1] !== close)) end += written[end] === close ? 2 : 1;
       current += written.slice(index + 1, end).split(close + close).join(close);
@@ -290,13 +290,13 @@ export function sqlNameParts(written: string): string[] {
 /**
  * A name's parts written as one name: joined by dots, a part bare unless it
  * holds what would split it or misread it (a dot, a bracket, a double quote,
- * a space at either end), which is then quoted in brackets. So
+ * a backtick, a space at either end), which is then quoted in brackets. So
  * `tests.[test it doesn't fail]` is written `tests.test it doesn't fail`, and
  * `[test fn.sums]` keeps its brackets, and {@link sqlNameParts} reads either
  * back into the same parts.
  */
 export function sqlWrittenName(parts: string[]): string {
-  return parts.map((part) => (/[.[\]"]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part)).join(".");
+  return parts.map((part) => (/[.[\]"`]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part)).join(".");
 }
 
 /**
@@ -380,14 +380,29 @@ const SQL_XML_METHODS: ReadonlySet<string> = new Set(["value", "query", "exist",
 const SQL_WORDS_BEFORE_A_NAMED_THING: readonly string[] = ["ON", "INTO", "FUNCTION", "PROCEDURE", "PROC", "TRIGGER", "VIEW", "TABLE", "TYPE", "INDEX", "EVENT", "TARGET"];
 
 /**
- * The words Oracle lets stand between `CREATE [OR REPLACE]` and what it makes:
- * `GLOBAL TEMPORARY` and `PRIVATE TEMPORARY` tables (a global temporary table
- * is a lasting object of its schema whose rows are temporary), `SHARDED`,
- * `DUPLICATED`, `IMMUTABLE` and `BLOCKCHAIN` tables, `EDITIONABLE` and
- * `NONEDITIONABLE` code, as Oracle's own export writes it, and `[NO] FORCE`
- * and `EDITIONING` views. Oracle's only; T-SQL writes none of them there.
+ * The words that may stand between `CREATE [OR REPLACE]` and what it makes,
+ * none of which T-SQL writes there. Oracle's: `GLOBAL TEMPORARY` and `PRIVATE
+ * TEMPORARY` tables, `SHARDED`, `DUPLICATED`, `IMMUTABLE` and `BLOCKCHAIN`
+ * tables, `EDITIONABLE` and `NONEDITIONABLE` code, as Oracle's own export
+ * writes it, and `[NO] FORCE` and `EDITIONING` views. SQLite's, PostgreSQL's
+ * and MySQL's: `TEMP` and `TEMPORARY` (PostgreSQL's `LOCAL` before them),
+ * PostgreSQL's `UNLOGGED` and SQLite's `VIRTUAL` tables.
  */
-const ORACLE_CREATE_MODIFIERS: readonly string[] = ["GLOBAL", "PRIVATE", "TEMPORARY", "SHARDED", "DUPLICATED", "IMMUTABLE", "BLOCKCHAIN", "EDITIONABLE", "NONEDITIONABLE", "FORCE", "EDITIONING"];
+const CREATE_MODIFIERS: readonly string[] = ["GLOBAL", "PRIVATE", "TEMPORARY", "SHARDED", "DUPLICATED", "IMMUTABLE", "BLOCKCHAIN", "EDITIONABLE", "NONEDITIONABLE", "FORCE", "EDITIONING", "TEMP", "LOCAL", "UNLOGGED", "VIRTUAL"];
+
+/**
+ * Whether the modifiers a `CREATE` wrote make an object that lives only as long
+ * as the connection that made it, as T-SQL's `#name` does, and so no object
+ * of the script: SQLite's, PostgreSQL's and MySQL's `TEMP` and `TEMPORARY`
+ * (SQLite puts such an object in its `temp` schema, not in `main`), and
+ * Oracle's `PRIVATE TEMPORARY`. Oracle's `GLOBAL TEMPORARY` table is a lasting
+ * object of its schema whose rows are temporary, and is one; PostgreSQL's
+ * `GLOBAL TEMPORARY`, which it reads as `TEMPORARY` and calls deprecated, is
+ * read as Oracle's.
+ */
+function makesTemporaryObject(modifiers: readonly string[]): boolean {
+  return modifiers.some((modifier) => modifier === "TEMP" || modifier === "TEMPORARY") && !modifiers.includes("GLOBAL");
+}
 
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
@@ -510,10 +525,12 @@ function isSpace(code: number): boolean {
 
 /**
  * SQL text as tokens. Comments are dropped, a string is one token whatever it
- * holds, and a name quoted in T-SQL's brackets (`]]` standing for `]`) or in
+ * holds, and a name quoted in T-SQL's brackets (`]]` standing for `]`), in
  * double quotes (`""` standing for `"`), as `QUOTED_IDENTIFIER`, on by default
- * in SQL Server's tools, reads them, is one token whose value is the name
- * itself: it can hold any character, an apostrophe, a dot or a line break. A
+ * in SQL Server's tools, reads them, or in MySQL's and SQLite's backticks
+ * (```` `` ```` standing for `` ` ``), which T-SQL and Oracle never write, is
+ * one token whose value is the name itself: it can hold any character, an
+ * apostrophe, a dot or a line break. A
  * string or comment left open runs to the end of the text. Each token carries
  * the lines it spans, counted in the text as it stands, where a line ends at
  * a line feed, a carriage return and line feed, or a carriage return alone, as
@@ -561,8 +578,8 @@ function sqlTokens(text: string): SqlToken[] {
       take("string", quotedEnd(text, open, "'"), unquoted(text, open, "'"));
       continue;
     }
-    if (char === "[" || char === "\"") {
-      const close = char === "[" ? "]" : "\"";
+    if (char === "[" || char === "\"" || char === "`") {
+      const close = char === "[" ? "]" : char;
       take("name", quotedEnd(text, index, close), unquoted(text, index, close));
       continue;
     }
@@ -794,6 +811,26 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
   return { declarations: read.declarations, references: read.references };
 }
 
+/**
+ * The schemas a script makes tSQLt test classes, case folded: `EXEC tSQLt.NewTestClass 'Name'`, the name given as a
+ * string, as an undelimited word (which T-SQL passes as a string), or by `@ClassName =`. tSQLt runs as tests the
+ * procedures of such a schema whose names begin with `test` (tsqlt.org, NewTestClass; its `tSQLt.Tests` view).
+ */
+export function tsqltTestClasses(text: string): string[] {
+  const tokens  = sqlTokens(text);
+  const classes = new Set<string>();
+  for (let index = 0; index < tokens.length; index += 1) {
+    if (!isWord(tokens[index], "EXEC", "EXECUTE")) continue;
+    const name = readName(tokens, index + 1);
+    if (name?.parts.length !== 2 || name.parts[0].toLowerCase() !== "tsqlt" || name.parts[1].toLowerCase() !== "newtestclass") continue;
+    let at = name.end;
+    if (tokens[at]?.kind === "variable" && tokens[at].value.toLowerCase() === "@classname" && isSymbol(tokens[at + 1], "=")) at += 2;
+    const argument = tokens[at];
+    if (argument && (argument.kind === "string" || argument.kind === "name" || argument.kind === "word")) classes.add(argument.value.toLowerCase());
+  }
+  return [...classes];
+}
+
 /** The key by which an `ALTER` finds the object a `CREATE` made: schema and name, a schema not written being `dbo`, as an `ALTER`'s DDL and a `CREATE`'s both take the user's default. */
 function alteredKey(written: string): string {
   const { parts } = sqlObjectName(written);
@@ -880,16 +917,28 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
       if (word === "CREATE") {
         let at = index + 1;
         if (isWord(tokens[at], "OR") && isWord(tokens[at + 1], "ALTER", "REPLACE")) at += 2;
-        while (isWord(tokens[at], ...ORACLE_CREATE_MODIFIERS) || (isWord(tokens[at], "NO") && isWord(tokens[at + 1], "FORCE"))) at += 1;
+        const modifiers: string[] = [];
+        while (isWord(tokens[at], ...CREATE_MODIFIERS) || (isWord(tokens[at], "NO") && isWord(tokens[at + 1], "FORCE"))) modifiers.push(tokens[at++].value.toUpperCase());
         if (isWord(tokens[at], "ASYMMETRIC", "SYMMETRIC")) at += 1;
         const kind = tokens[at]?.kind === "word" ? tokens[at].value.toUpperCase() : "";
-        const name = readName(tokens, at + 1);
+        // SQLite's, PostgreSQL's and MySQL's `IF NOT EXISTS` stands between the kind and the name; T-SQL writes none.
+        const named = isWord(tokens[at + 1], "IF") && isWord(tokens[at + 2], "NOT") && isWord(tokens[at + 3], "EXISTS") ? at + 4 : at + 1;
+        const name = readName(tokens, named);
         if (!name) continue;
-        if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#") && !place.server) {
+        if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#") && !makesTemporaryObject(modifiers) && !place.server) {
           declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line + place.offset, inBody: place.inBody || (kind === "TABLE" && inBody) });
         }
-        if (SQL_MODULES_WITH_BODIES.has(kind)) inBody = true;
+        // A trigger written with its timing before its table, as SQLite, MySQL, PostgreSQL and Oracle write one
+        // (`CREATE TRIGGER t AFTER INSERT ON x …`), opens no body that the rest of the script stands in: in none of
+        // them does a trigger's body create a table, and the script goes on after it. T-SQL's, `ON` right after its
+        // name, runs to the end of its batch, as every T-SQL module does.
+        if (SQL_MODULES_WITH_BODIES.has(kind) && (kind !== "TRIGGER" || isWord(tokens[name.end], "ON"))) inBody = true;
         if (SQL_MODULES_WITH_BODIES.has(kind) || kind === "VIEW") moduleSchema = moduleSchemaOf(kind, name, tokens);
+        // A virtual table's `USING` names the module that makes it, SQLite's `fts5` or `rtree`, no table.
+        if (modifiers.includes("VIRTUAL") && isWord(tokens[name.end], "USING") && isNameToken(tokens[name.end + 1])) {
+          index = (isSymbol(tokens[name.end + 2], "(") ? groupEnd(tokens, name.end + 2) : name.end + 2) - 1;
+          continue;
+        }
         index = SQL_KINDS_WITH_FROM.has(kind) && isWord(tokens[name.end], "FROM") ? name.end : name.end - 1;
         continue;
       }

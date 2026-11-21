@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-20T16:43:07.829Z
+- Generated At: 2026-11-21T20:21:45.517Z
 
 ## Authored
 ### Purpose
@@ -91,6 +91,7 @@ behind the `Entry` lines (2026-10-15).
 - [`core.WorkspaceEntryIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspaceentryindex)
 - [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
 - [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
+- [`core.WorkspaceTestIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacetestindex)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
 - [`core.composeCitedBy`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composecitedby)

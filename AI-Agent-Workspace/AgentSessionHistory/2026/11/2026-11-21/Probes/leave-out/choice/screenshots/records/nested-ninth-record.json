@@ -1,0 +1,130 @@
+{
+ "label": "nested-ninth",
+ "1-first": {
+  "totals": "17,245 files will be read",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Take them in",
+   "Ignore them"
+  ],
+  "offers": [
+   "What these folders hold 47 lines · 6,291 files left out",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ],
+  "listLines": 0
+ },
+ "2-offer-held": {
+  "totals": "10,954 files will be read · 6,291 files left out · 865 of them are code a reader would read",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders hold In your list",
+   "GitHub's Visual Studio list 234 lines · 6,363 files left out"
+  ],
+  "listLines": 47
+ },
+ "offersAfterAPressElsewhere": false,
+ "3-choices-on-a-list": {
+  "totals": "10,954 files will be read · 6,291 files left out · 865 of them are code a reader would read",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 47
+ },
+ "4-replaced": {
+  "totals": "15,594 files will be read · 1,651 files left out · 225 of them are code a reader would read",
+  "notice": "Your list is now their lines: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Add them to your list",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 311
+ },
+ "5-taken-back": {
+  "totals": "10,954 files will be read · 6,291 files left out · 865 of them are code a reader would read",
+  "notice": "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Add them to your list",
+   "Leave your list alone"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 47
+ },
+ "6-added": {
+  "totals": "10,946 files will be read · 6,299 files left out · 871 of them are code a reader would read",
+  "notice": "Added to your list: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 358
+ },
+ "codeBeforeTyping": " · 871 of them are code a reader would read",
+ "codeAfterTyping": " · 882 of them are code a reader would read",
+ "7-packages-typed": {
+  "totals": "10,932 files will be read · 6,313 files left out · 882 of them are code a reader would read",
+  "notice": "Added to your list: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 359
+ },
+ "totalsAfterUndoingTheTyping": "10,946 files will be read · 6,299 files left out · 871 of them are code a reader would read",
+ "packagesLine": "637 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 11 14 files",
+ "8-code-first": {
+  "totals": "10,874 files will be read · 6,371 files left out · 933 of them are code a reader would read",
+  "notice": "Added to your list: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 592
+ },
+ "totalsAndHeadingsInViewWhenScrolled": true,
+ "9-scrolled-to-the-end": {
+  "totals": "10,874 files will be read · 6,371 files left out · 933 of them are code a reader would read",
+  "notice": "Added to your list: 25 .gitignore files and 15 .tfignore files",
+  "choices": [
+   "Replace your list (removes 47 lines)",
+   "Put your list back"
+  ],
+  "offers": [
+   "What these folders holdIn your list",
+   "GitHub's Visual Studio list234 lines · 6,363 files left out"
+  ],
+  "listLines": 592
+ },
+ "errors": []
+}

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { heldToLedger, listedButNotRun } from "./adapters/knownDifferences";
 import type { WorkspaceSymbolIndex } from "./coreTypes";
 import {
   bindSqlName,
@@ -13,6 +14,7 @@ import {
   routesMatch,
   routeSymbolName,
   sqlDeclarations,
+  sqlNameParts,
   sqlObjectName,
   sqlReferences
 } from "./openings";
@@ -201,6 +203,9 @@ describe("database objects", () => {
     ]);
   });
 
+  // A private temporary table (Oracle 18c) is dropped at the end of its transaction or session and seen only by the
+  // session that made it (Oracle's "CREATE TABLE"), so, as T-SQL's `#name` and SQLite's `TEMP` table, it is no object of
+  // the script; until 2026-11-21 it was read as one, its word passed over with `GLOBAL`'s.
   it("reads Oracle's CREATE with the words that stand between CREATE and what it makes", () => {
     const script = [
       "create global temporary table ut_coverage_sources_tmp (a NUMBER) on commit preserve rows;",
@@ -215,7 +220,6 @@ describe("database objects", () => {
     ].join("\n");
     expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name} @${declaration.line}`)).toEqual([
       "table ut_coverage_sources_tmp @1",
-      "table ora$ptt_rows @2",
       "procedure central.close_day @3",
       "sql-function central.fmt @5",
       "view central.open_accounts @7",
@@ -327,6 +331,13 @@ describe("database objects", () => {
     expect(sqlDeclarations("CREATE PROC [a'b]\n'\nx]")).toEqual([{ kind: "procedure", name: "a'b", line: 1, inBody: false }]);
   });
 
+  // A backticked name, MySQL's and SQLite's, is quoted as a bracketed one: a dot inside it splits nothing, and a doubled
+  // backtick is one (MySQL's "Schema Object Names": "Identifier quote characters can be included within an identifier
+  // if you quote the identifier … double the character").
+  it("splits a written name at the dots outside its backticks, a doubled backtick one", () => {
+    expect(sqlNameParts("`odd.schema`.`tick``ed`")).toEqual(["odd.schema", "tick`ed"]);
+  });
+
   it("reads a name quoted in brackets or double quotes as the name itself, whatever it holds", () => {
     const script = [
       "CREATE PROCEDURE tests.[test it doesn't fail]",
@@ -347,6 +358,48 @@ describe("database objects", () => {
     ]);
     expect(sqlObjectName("tests.[test fn.sums ]]the[[ open ones]")).toEqual({ parts: ["tests", "test fn.sums ]the[[ open ones"], linked: false });
     expect(sqlObjectName("[Billing].[dbo].[Invoice]")).toEqual({ parts: ["dbo", "invoice"], linked: false });
+  });
+
+  // SQLite's answers (`node:sqlite`, SQLite 3.54.1, each script run in an empty database in memory, 2026-11-21): the
+  // backticked, `IF NOT EXISTS` and virtual tables and the table after the trigger are in `main`; the `TEMP` table is
+  // in `temp` alone; no object `fts5` exists, the module that makes the virtual table.
+  it("reads SQLite's, MySQL's and PostgreSQL's spellings of what a script creates and names, as SQLite holds them", () => {
+    const script = [
+      "CREATE TABLE IF NOT EXISTS `audit` (id INTEGER, note TEXT);",
+      "CREATE TEMP TABLE scratch (id INTEGER);",
+      "CREATE VIRTUAL TABLE IF NOT EXISTS notes USING fts5(body);",
+      "CREATE TRIGGER IF NOT EXISTS audit_ids AFTER INSERT ON customers",
+      "WHEN NEW.id > (SELECT CASE WHEN 1 = 1 THEN 0 END)",
+      "BEGIN",
+      "  INSERT INTO `audit` (id) VALUES (NEW.id);",
+      "END;",
+      "CREATE TABLE after_the_trigger (id INTEGER REFERENCES `tick``ed` (id));",
+      "SELECT * FROM `audit` JOIN notes ON 1 = 1;"
+    ].join("\n");
+    expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`)).toEqual([
+      "table audit",
+      "table notes",
+      "table after_the_trigger"
+    ]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.name.parts.join(".")}`)).toEqual([
+      "INSERT INTO audit",
+      "REFERENCES tick`ed",
+      "FROM audit",
+      "JOIN notes"
+    ]);
+  });
+
+  it("still reads a T-SQL trigger, its table after `ON`, as running to its batch's end", () => {
+    const script = [
+      "CREATE TRIGGER dbo.trg ON dbo.Orders AFTER INSERT AS",
+      "BEGIN",
+      "  INSERT dbo.Audit (Id) SELECT Id FROM inserted;",
+      "END;",
+      "CREATE TABLE dbo.MadeWhenTheTriggerFires (Id INT);"
+    ].join("\n");
+    expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`)).toEqual([
+      "table dbo.MadeWhenTheTriggerFires (in a body)"
+    ]);
   });
 
   it("matches a name to the declared objects of the workspace", () => {
@@ -426,6 +479,91 @@ describe("database objects", () => {
   });
 });
 
+/*
+ * A reviewer's cases of 2026-11-21, each red when committed: spellings of PostgreSQL and MySQL beside the family the
+ * batch of that day taught the reader (`IF NOT EXISTS`, backticks, `TEMP`), each with the dialect's own rule. No engine
+ * of either is on the machine, so each expectation is the manual's, quoted. Several are rules of one dialect that
+ * another reads otherwise on the same text (MySQL's `#` and T-SQL's `#name`, MySQL's `\'` and T-SQL's `'C:\Backup\'`):
+ * the reader knows no dialect, so a mend there is a fork, which the cases make visible rather than decide.
+ */
+describe("database objects in PostgreSQL's and MySQL's spellings", () => {
+  const declared = (script: string): string[] => sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`);
+  // Each case needs the reader to know a script's dialect, and is held to the ledger of known differences until it does.
+  const ledgered = (name: string, check: () => void): void => {
+    it(name, () => heldToLedger(`openings.test.ts > ${expect.getState().currentTestName ?? ""}`, check));
+  };
+
+  // PostgreSQL's default schema is `public` ("The Public Schema": "By default such tables (and other objects) are
+  // automatically put into a schema named "public""), a word PostgreSQL does not reserve, and `pg_dump` writes it before
+  // every name; T-SQL reserves PUBLIC, and the reader takes T-SQL's reserved words for no name. mojoPortal's
+  // PostgreSQL install scripts (13, read as `.sql`) are declared as nothing: 0 declarations, 517 when written `"public"`.
+  ledgered("reads a name in PostgreSQL's schema `public`", () => {
+    expect(declared("CREATE TABLE public.mp_pages (pageid integer);\nCREATE VIEW public.v AS SELECT * FROM public.mp_pages;\n")).toEqual(["table public.mp_pages", "view public.v"]);
+    expect(sqlReferences("SELECT * FROM public.mp_pages;").map((reference) => `${reference.verb} ${reference.name.parts.join(".")}`)).toEqual(["FROM public.mp_pages"]);
+  });
+
+  // "Dollar-Quoted String Constants": "inside the dollar-quoted string, single quotes can be used without needing to be
+  // escaped. Indeed, no characters inside a dollar-quoted string are ever escaped".
+  ledgered("reads past a dollar-quoted string that holds an apostrophe", () => {
+    expect(declared("COMMENT ON TABLE t IS $$It's the table$$;\nCREATE TABLE after_it (id int);\nCREATE TABLE after_two (id int);\n")).toEqual(["table after_it", "table after_two"]);
+  });
+
+  // A PostgreSQL function's body is the dollar-quoted string after `AS`; the statement ends at its `;`, where T-SQL's
+  // runs to the batch's end. Read as T-SQL's, every table after the function is taken for one its body makes.
+  ledgered("ends a PostgreSQL function at the end of its statement, not of the script", () => {
+    expect(declared([
+      "CREATE OR REPLACE FUNCTION touch() RETURNS trigger AS $$",
+      "BEGIN",
+      "  NEW.updated := now();",
+      "  RETURN NEW;",
+      "END;",
+      "$$ LANGUAGE plpgsql;",
+      "CREATE TABLE after_it (id int);"
+    ].join("\n"))).toEqual(["sql-function touch", "table after_it"]);
+  });
+
+  // "CREATE MATERIALIZED VIEW": PostgreSQL's (and Oracle's) lasting view whose rows are kept.
+  ledgered("reads a materialized view as a view", () => {
+    expect(declared("CREATE MATERIALIZED VIEW IF NOT EXISTS mv AS SELECT 1;\n")).toEqual(["view mv"]);
+  });
+
+  // MySQL's "Comments": "From a # character to the end of the line." (`#` followed by a space is never T-SQL's `#name`.)
+  ledgered("reads nothing after MySQL's `#` comment", () => {
+    expect(declared("# CREATE TABLE gone (id int);\nCREATE TABLE kept (id int);\n")).toEqual(["table kept"]);
+  });
+
+  // MySQL's "Comments": "/*! MySQL-specific code */ In this case, MySQL Server parses and executes the code within the
+  // comment as it would any other SQL statement"; `mysqldump` writes every view so.
+  ledgered("reads what MySQL's executable comment holds, as mysqldump writes a view", () => {
+    expect(declared([
+      "/*!50001 CREATE ALGORITHM=UNDEFINED */",
+      "/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */",
+      "/*!50001 VIEW `v_kept` AS select `t`.`id` AS `id` from `t` */;"
+    ].join("\n"))).toEqual(["view v_kept"]);
+  });
+
+  // MySQL's "CREATE PROCEDURE": `CREATE [DEFINER = user] PROCEDURE sp_name (…) routine_body`; the body is one
+  // statement, here `BEGIN … END`, which the client's `DELIMITER` lets hold `;`.
+  ledgered("reads MySQL's `CREATE DEFINER=… PROCEDURE`, and ends a procedure at its body's `END`", () => {
+    expect(declared([
+      "DELIMITER $$",
+      "CREATE DEFINER=`root`@`localhost` PROCEDURE `p_kept`()",
+      "BEGIN",
+      "  SELECT * FROM t;",
+      "END$$",
+      "DELIMITER ;",
+      "CREATE TABLE after_it (id int);"
+    ].join("\n"))).toEqual(["procedure p_kept", "table after_it"]);
+    expect(declared("DELIMITER //\nCREATE PROCEDURE p_kept()\nBEGIN\n  SELECT * FROM t;\nEND //\nDELIMITER ;\nCREATE TABLE after_it (id int);\n")).toEqual(["procedure p_kept", "table after_it"]);
+  });
+
+  // MySQL's "String Literals": `\'` is "A single quote (') character" unless NO_BACKSLASH_ESCAPES; mysqldump writes
+  // `\'` in every value that holds an apostrophe. T-SQL reads `'C:\Backup\'` as a whole string: the same text, two rules.
+  ledgered("reads past MySQL's backslash-escaped quote", () => {
+    expect(declared("INSERT INTO t VALUES ('it\\'s');\nCREATE TABLE after_it (id int);\n")).toEqual(["table after_it"]);
+  });
+});
+
 describe("isToolingFile", () => {
   it("knows a compiler's, a runner's and a .NET configuration by its name, anywhere", () => {
     for (const file of ["tsconfig.json", "packages/app/tsconfig.base.json", "vitest.config.ts", "tests/e2e/playwright.config.ts", "eslint.config.js", "src/Web.config", "packages.config", ".live-docs.config.json"]) {
@@ -451,5 +589,12 @@ describe("isToolingFile", () => {
     for (const file of ["settings.json", "devcontainer.json", "src/vscode/settings.json", ".vscode/README.md", "config.json", ".devcontainer/a/b/devcontainer.json", ".devcontainer/wsl2-graphics-card/settings.json"]) {
       expect(isToolingFile(file), file).toBe(false);
     }
+  });
+});
+
+describe("the ledger of known differences", () => {
+  // Last in the file, after every case it may list has run.
+  it("lists for this file only cases the file runs", () => {
+    expect(listedButNotRun("openings.test.ts")).toEqual([]);
   });
 });

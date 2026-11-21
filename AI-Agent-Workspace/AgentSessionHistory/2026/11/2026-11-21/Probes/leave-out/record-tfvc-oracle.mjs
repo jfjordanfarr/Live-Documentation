@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Records what Microsoft's own TFVC code decides for a set of trees with `.tfignore` files, so that the engine's
-// `leaveOut` can be held to it by a test that needs neither Java nor Microsoft's sources
-// (`packages/engine/src/tooling/leaveOut.tfvc.test.ts`). The oracle is Team Explorer Everywhere's matcher
+// `fromTfignores` (since the eighth leg; before it, the layered `leaveOut`) can be held to it by a test that needs
+// neither Java nor Microsoft's sources (`packages/engine/src/tooling/leaveOut.tfvc.test.ts`). It calls no part of the
+// engine, so the change of the engine's shape leaves it running as it was; what it needs is the oracle, built as below. The oracle is Team Explorer Everywhere's matcher
 // (`IgnoreFile`, `IgnoreEntry`, `LocalItemExclusionEvaluator`, MIT, commit 21e0e598), compiled unchanged with a small
 // driver that walks a tree and prints, for each file, TFVC's change scanner's verdict and the `.tfignore` and line
 // that decided it, and `tf add /recursive`'s, which does not enter an excluded folder; it was built for this probe in a scratch folder and is described in this folder's README.
