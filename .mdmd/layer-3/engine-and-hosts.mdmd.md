@@ -2,6 +2,8 @@
 
 _Proposed on 2026-11-21, at the owner's ask to explore an architecture that serves a page and a command line alike. Nothing here is built except the check that measures it._
 
+_Drafted by the builder of that check from every call it counted, then read and corrected by the root the same day (the listing carries names alone; the scan reports how far it has come). It is one design, set beside its alternatives in section 7, and what would overturn it is in section 8._
+
 Written for the owner first and for the builder who builds it second. Every number below was counted by [the check that the engine runs in a page](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/page-check/README.md), over the 45 sample programs and fixtures of this repository, unless it says otherwise.
 
 ## 1. What was asked
@@ -72,11 +74,11 @@ They fall into five shapes. Here is what each becomes.
 
 Two things, and a third that saves work, kept as small as they can be, because each must be written twice, once for a disk and once for a picked folder:
 
-- **`list()`**: every file in the folder, its path relative to the folder with forward slashes, its size and its time of change. Asked once, before anything is read.
+- **`list()`**: every file in the folder, as its path relative to the folder with forward slashes. Asked once, before anything is read. It carries no size and no time of change: a disk and a picked folder both give names for the price of a walk, but a page learns a file's size and time only by opening that file, one wait each, which on a hundred thousand files is the very cost the listing exists to avoid. Where a size or a time is wanted (to show how much a folder holds before a scan, or to find what changed since the last one), it is asked for the files that need it and no others.
 - **`read(path)`**: a file's bytes. It may take its time (in a page every read waits on the browser).
 - **`head(path, n)`**: a file's first `n` bytes, so that a file can be judged text or binary without reading all of it. A host may answer it by reading the whole file.
 
-And it takes one thing: **the sink**, where the engine puts what it derived.
+And it takes two things. **The sink**, where the engine puts what it derived. And **word of how far the scan has come**: how many of the kept files are done and which is in hand, said between files, with the thread handed back to the host as it is said. The owner asked that the tool run on a weak machine "even if some amount of precomputation time with reasonable progress indicators is required to do so", and measured in a tab today the scan lets the page draw nothing from its start to its end, so a progress indicator could not move. On the command line the same word is a line of text; in a page it is what lets anything be drawn at all.
 
 ### What the engine builds once over them
 
@@ -127,7 +129,7 @@ A page cannot start a program, so it cannot run git. Three things run git today.
 | Uses git today | Where | In the page instead |
 | --- | --- | --- |
 | Git's own word on what it ignores, a file it tracks always kept | `tooling/gitIgnored.ts` asks `git ls-files --ignored` | The `.gitignore` files are read from the listing by the shared leave-out function. Lost: `.git/info/exclude`, the global excludes file, and git's rule that a tracked file under an ignored folder is kept. Reading that last one would mean reading git's own index file. |
-| A scan of the files changed since the last commit (`--changed`) | `live-docs/gitUtils.ts` asks `git status` | Compare the listing's sizes and times of change with those the last scan's facts recorded, and scan what moved. This works without git, so the command line could do the same in a TFS folder. |
+| A scan of the files changed since the last commit (`--changed`) | `live-docs/gitUtils.ts` asks `git status` | Ask each kept file's size and time of change and compare them with those the last scan's facts recorded, and scan what moved; where that asking is itself slow, as it may be in a page, compare the bytes' own fingerprint instead, which costs a read and still saves the reader's work. This works without git, so the command line could do the same in a TFS folder. |
 | The history: what the map looked like at each commit | `live-docs/history/` and `generator/src/history/` | Does without. The command line computes the history and writes it into the facts, and the page shows it as it shows any facts. The Explorer already reads history that way: as data it is handed, not as git it runs. |
 
 In a folder with no `.git` at all, which is most of what the owner would map at work, the engine asks git nothing today, under Node or in the page. So for TFS folders the two hosts already lose nothing to each other.
@@ -165,7 +167,7 @@ Where the road could fork:
 - **Steps 2 and 9 could swap.** Owning paths early turns every later step into work on workspace-relative paths only, but it touches 34 modules at once.
 - **Whether the engine ever sees a full path.** If not, the hosts translate at the edge and Windows' drive letters never reach a reader. If so, the engine keeps two kinds of path, and Windows keeps its own failures.
 - **The order of the sink and the store.** The sink could take today's doc texts first (no fact changes), and the facts when the store's trial lands; or wait for the trial and move once.
-- **The caches kept by time of change.** A process that runs many generations in a row, as the history's workers do, keeps parsed files between runs by their time of change. Under the port that time comes from the listing, or the cache is kept by the bytes' own fingerprint.
+- **The caches kept by time of change.** A process that runs many generations in a row, as the history's workers do, keeps parsed files between runs by their time of change. Under the port that time is asked of the host for those files, or the cache is kept by the bytes' own fingerprint.
 
 ## 7. The alternatives
 
