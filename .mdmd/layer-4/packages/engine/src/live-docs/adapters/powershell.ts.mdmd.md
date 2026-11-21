@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-21T04:10:22.956Z
+- Generated At: 2026-11-21T05:08:50.717Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 ### Public Symbols
 #### `analyzePowerShellSource` {#symbol-analyzepowershellsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1988)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L1992)
 
 ##### `analyzePowerShellSource` — Summary
 Analyzes one PowerShell file from its text, without the generator: a
@@ -44,7 +44,7 @@ what it names and the root module it declares. Paths are resolved against
 
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2029)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2033)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary

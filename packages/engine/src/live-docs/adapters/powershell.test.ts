@@ -803,6 +803,16 @@ describe("what a load draws nothing for, said as a notice", () => {
     expect(analysis?.dependencies).toEqual([]);
   });
 
+  it("keeps a module named through a variable the file assigns once from a constant, and says nothing of it", async () => {
+    // PowerShell's own answer, `pwsh -NoProfile -NonInteractive -File run.ps1` over `$m = 'Pester'` then `Import-Module $m`,
+    // on a machine without Pester: "The specified module 'Pester' was not loaded because no valid module file was found
+    // in any module directory." The module it looks for is the one the assignment names.
+    await write({ "Run.ps1": "$m = 'Pester'\nImport-Module $m\n$n = \"PSReadLine\"\nImport-Module -Name \"$n\"\n" });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices).toBeUndefined();
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Pester", "PSReadLine"]);
+  });
+
   it("says nothing of a load a loop reads, nor of a script block run in the caller's scope", async () => {
     await write({
       "Module.psm1": [

@@ -38,7 +38,9 @@
  * in a path is found among the workspace's files as Windows finds it, without
  * regard to case. A module named rather than pathed, a path a string writes
  * with a variable no assignment fixes, and a path outside the workspace keep
- * their text as the specifier; a path built any other way is not read.
+ * their text as the specifier; a path built any other way is not read. A
+ * module named through a variable the text fixes so, `$m = 'Pester'` then
+ * `Import-Module $m`, keeps the name it is assigned.
  *
  * A call to a function another file defines is a dependency on that file,
  * carrying the function's name, by the rule measured on 2026-11-19, "loaded,
@@ -1404,6 +1406,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
             const strings = argumentStrings(node);
             const value   = strings.some((item) => item === undefined || OTHER_VARIABLE.test(item)) ? pathValue(node, scope) : undefined;
             if (value !== undefined && isModulePath(value)) facts.computed.push({ kind: "import", path: value, written: strings.length === 1 ? strings[0] : undefined });
+            // A module named through a variable the text fixes, `$m = 'Pester'` then `Import-Module $m`, is that module.
+            else if (value !== undefined) facts.moduleImports.push(value);
             else {
               facts.moduleImports.push(...strings.filter((item): item is string => item !== undefined));
               if (strings.includes(undefined)) unfixed(command);
