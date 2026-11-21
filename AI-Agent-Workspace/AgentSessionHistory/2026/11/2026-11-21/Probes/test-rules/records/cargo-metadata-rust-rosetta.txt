@@ -1,0 +1,1 @@
+rust-rosetta-fixture|bin|rust-rosetta-fixture|rust/rosetta/src/main.rs|true

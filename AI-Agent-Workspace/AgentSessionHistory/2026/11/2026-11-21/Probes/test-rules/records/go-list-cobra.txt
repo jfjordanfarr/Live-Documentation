@@ -1,0 +1,6 @@
+go: downloading github.com/cpuguy83/go-md2man/v2 v2.0.6
+go: downloading go.yaml.in/yaml/v3 v3.0.4
+go: downloading github.com/spf13/pflag v1.0.9
+go: downloading github.com/russross/blackfriday/v2 v2.1.0
+cobra|active_help.go,args.go,bash_completions.go,bash_completionsV2.go,cobra.go,command.go,command_notwin.go,completions.go,fish_completions.go,flag_groups.go,powershell_completions.go,shell_completions.go,zsh_completions.go|active_help_test.go,args_test.go,bash_completionsV2_test.go,bash_completions_test.go,cobra_test.go,command_test.go,completions_test.go,fish_completions_test.go,flag_groups_test.go,powershell_completions_test.go,zsh_completions_test.go||command_win.go
+cobra/doc|man_docs.go,md_docs.go,rest_docs.go,util.go,yaml_docs.go|cmd_test.go,man_docs_test.go,md_docs_test.go,rest_docs_test.go,yaml_docs_test.go|man_examples_test.go|

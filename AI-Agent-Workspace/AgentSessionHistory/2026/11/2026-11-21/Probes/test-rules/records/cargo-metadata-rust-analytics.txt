@@ -1,0 +1,1 @@
+rust-analytics-fixture|bin|rust-analytics-fixture|rust/analytics/src/main.rs|true

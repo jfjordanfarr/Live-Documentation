@@ -1,0 +1,6 @@
+     × TypeScript and JavaScript: src/test-utils.tsx is test today (fork) 25ms
+     × TypeScript and JavaScript: src/queries/test-id.ts is test today (wrong) 3ms
+     × SQL: Source/tSQLt.Tests.view.sql is test today (wrong) 3ms
+     × Files no runner runs: ci/test-complete is test today (wrong) 2ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 89 passed (93)
