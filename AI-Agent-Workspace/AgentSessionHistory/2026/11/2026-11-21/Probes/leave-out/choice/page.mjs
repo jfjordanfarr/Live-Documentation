@@ -32,8 +32,11 @@ const state = {
   source: null, result: null, list: remembered.list, ignoreCase: remembered.ignoreCase === undefined ? true : remembered.ignoreCase === "true",
   rememberedCase: remembered.ignoreCase, opened: new Set(), shown: new Map(), foundAnswered: undefined, foundSaid: undefined, leftAside: new Set(),
   // The list's earlier texts and those undone, for undo and redo; the list as it stood before a choice on the notice;
-  // which offer was taken while the offers are held in place.
-  history: [], future: [], beforeFound: undefined, offerTaken: undefined
+  // whether the starting lists' offers, once shown for this folder, are kept in place.
+  history: [], future: [], beforeFound: undefined, offersKept: false,
+  // How many decisions were begun, so that an answer for a list since changed is dropped; whether the field is to be
+  // written from the list at the next drawing (only after a change the page made).
+  decisions: 0, writeField: true
 };
 
 // ---------------------------------------------------------------------------
@@ -110,15 +113,22 @@ function filesSource(fileList) {
 // Walking and drawing
 // ---------------------------------------------------------------------------
 
+/**
+ * Decides the list as it stands and draws the answer. A decision is numbered: an answer decided for a list that has
+ * since changed (more typing taken in, an undo, a choice) is dropped, and only the newest is drawn.
+ */
 async function decideAgain() {
   if (!state.source) return;
   const progress = $("#progress");
-  // The walk hands the thread back every twenty folders, so that this word shows while it decides.
+  const decision = ++state.decisions;
+  // The walk hands the thread back as it goes, so that this word shows while it decides.
   progress.textContent = state.result ? "Deciding…" : "Listing…";
   const started = performance.now();
-  state.result = await walk(state.source, { list: state.list, ignoreCase: state.ignoreCase }, (folders) => {
+  const result = await walk(state.source, { list: state.list, ignoreCase: state.ignoreCase }, (folders) => {
     if (!state.result) progress.textContent = `${count(folders, "folder")} listed`;
   });
+  if (decision !== state.decisions) return;
+  state.result = result;
   state.result.shownAfterMs = performance.now() - started;
   progress.textContent = "";
   draw();
@@ -129,15 +139,26 @@ function draw() {
   $("#choice").hidden = !result;
   if (!result) return;
   const t = totals(result);
-  // Beside the totals, how many of the files left out a reader would have read: where the eye already is, so that an
-  // edit that raises it is seen (strangers typed `packages/` and missed the code it took).
-  const code = result.lines.reduce((sum, group) => sum + codeIn(group.kinds), 0);
-  $("#totals").replaceChildren([`${count(t.read, "file")} will be read`, t.leftOutFiles ? `${count(t.leftOutFiles, "file")} left out` : "",
-    state.source.lazy && t.notLookedInside ? `${count(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · "),
-  code ? element("span", { class: "totals-code" }, " · ", codeSign(code), element("span", { text: ` of them ${code === 1 ? "is" : "are"} code a reader would read` })) : "");
+  // Beside the totals, how many of the files left out look like the folder's own code: files a reader would read that
+  // lie outside every folder the evidence calls build output or downloaded packages, the sum of the rows' signs. Where
+  // the eye already is, so that an edit that raises it is seen (strangers typed `packages/` and missed the 11 `.cs`
+  // files of `Installer/Packages` it took, behind 457 downloaded ones that are rightly left out).
+  const code = result.lines.reduce((sum, group) => sum + group.restCode, 0);
+  // Said inside the files left out, joined to them by "of which", so that it cannot be read as a part of the files read
+  // (three strangers of twelve read "· 865 of them are code" so).
+  const leftOut = t.leftOutFiles ? element("span", {}, `${count(t.leftOutFiles, "file")} left out`,
+    code ? element("span", { class: "totals-code" }, ", ", codeSign(code), element("span", { text: " of which look like your own code" })) : "") : "";
+  $("#totals").replaceChildren(`${count(t.read, "file")} will be read`, leftOut ? " · " : "", leftOut,
+    state.source.lazy && t.notLookedInside ? ` · ${count(t.notLookedInside, "folder")} left out, not looked inside` : "");
   $("#undo").disabled = state.history.length === 0;
   $("#scan-result").textContent = "";
-  if ($("#list").value !== state.list) $("#list").value = state.list;
+  // The field is written only when the page itself changed the list (an offer, a choice, a plus or minus, undo, a
+  // file loaded): while a person types, the field is the truth for the text, and the page never writes into it or
+  // moves its caret.
+  if (state.writeField) {
+    state.writeField = false;
+    if ($("#list").value !== state.list) $("#list").value = state.list;
+  }
   // Each part's drawing timed, so that a slow one can be named (`state.drawTimes`).
   const times = {};
   const timed = (name, part) => {
@@ -181,48 +202,56 @@ function remember() {
  * Every change to the list, the page's own (a choice on the notice, a starting list, a plus, a minus, Empty) and the
  * person's typing alike, keeps what it replaced, so that it can be taken back: Control+Z in the list, or the undo tool.
  * Designers call this forgiveness: an action with a way back needs no warning. Typing is kept as one change per pause.
+ * What is kept is the list and the notice together, so that a choice taken back takes its notice back with it.
+ * `fromField` says the text came from the person's typing, which the page then never writes back into the field;
+ * `notice` is the notice as it stood before a choice that changes it.
  */
-function setList(text) {
+function setList(text, { fromField = false, notice = noticeNow() } = {}) {
   if (text !== state.list) {
-    state.history.push(state.list);
+    state.history.push({ list: state.list, notice });
     state.future = [];
   }
   state.list = text;
+  if (!fromField) state.writeField = true;
   remember();
   void decideAgain();
 }
 
-/** Typing not yet taken into the list (the 400 ms pause has not passed) is taken in first, so that undo begins there. */
+/** The notice's own state: which choice was taken, and the list as it stood before it. */
+const noticeNow = () => ({ answered: state.foundAnswered, before: state.beforeFound });
+
+/** Typing not yet taken into the list (the 400 ms pause has not passed) is taken in first, so that a change begins there. */
 function takeTyping() {
   clearTimeout(typing);
-  if ($("#list").value !== state.list) setList($("#list").value);
+  if ($("#list").value !== state.list) setList($("#list").value, { fromField: true });
 }
 
-function undo() {
+/** One step back, or forward: the list and the notice as they stood together. */
+function step(from, to) {
   takeTyping();
-  if (state.history.length === 0) return;
-  state.future.push(state.list);
-  state.list = state.history.pop();
+  if (from.length === 0) return;
+  to.push({ list: state.list, notice: noticeNow() });
+  const back = from.pop();
+  state.list = back.list;
+  state.foundAnswered = back.notice.answered;
+  state.beforeFound = back.notice.before;
+  state.writeField = true;
   remember();
   void decideAgain();
 }
-
-function redo() {
-  if (state.future.length === 0) return;
-  state.history.push(state.list);
-  state.list = state.future.pop();
-  remember();
-  void decideAgain();
-}
+const undo = () => step(state.history, state.future);
+const redo = () => step(state.future, state.history);
 
 /** A block added at the end of the list, led by its heading. */
 function addBlock(heading, lines) {
+  takeTyping();
   const body = state.list.replace(/\s+$/u, "");
   setList(`${body}${body ? "\n\n" : ""}### ${heading}\n${lines.join("\n")}\n`);
 }
 
 /** The person's own lines, added to their block "Yours" at the end, which is begun if the list does not end in it. */
 function addYours(lines, comment) {
+  takeTyping();
   const body = state.list.replace(/\s+$/u, "");
   const headings = body.split("\n").filter((line) => line.startsWith("### "));
   const inYours = headings.length > 0 && headings.at(-1) === "### Yours";
@@ -231,6 +260,7 @@ function addYours(lines, comment) {
 
 /** Lines taken out of the list, by their numbers from 1, first to last inclusive. */
 function removeLines(first, last = first) {
+  takeTyping();
   const lines = state.list.split("\n");
   lines.splice(first - 1, last - first + 1);
   setList(lines.join("\n"));
@@ -247,20 +277,25 @@ function blocksOf(text) {
   return blocks;
 }
 
-/** The numbers beside the list's lines, so that a row's line number can be found in the text. */
+/** The numbers beside the field's lines, as the field stands, so that a row's line number can be found in the text. */
 function drawGutter() {
-  const n = state.list.split("\n").length;
-  $("#gutter").textContent = Array.from({ length: n }, (_, index) => index + 1).join("\n");
+  const n = $("#list").value.split("\n").length;
+  if ($("#gutter").dataset.lines !== String(n)) {
+    $("#gutter").textContent = Array.from({ length: n }, (_, index) => index + 1).join("\n");
+    $("#gutter").dataset.lines = String(n);
+  }
   $("#gutter").scrollTop = $("#list").scrollTop;
 }
 
 let typing;
-$("#list").addEventListener("input", (event) => {
+$("#list").addEventListener("input", () => {
   // When an edit was made, so that the time until its answer is drawn can be told (`state.lastEditShownMs`).
   state.editedAt = performance.now();
+  drawGutter();
   clearTimeout(typing);
   $("#progress").textContent = "…";
-  typing = setTimeout(() => setList(event.target.value), 400);
+  // The text is read from the field when the pause ends, not when the key was pressed.
+  typing = setTimeout(() => setList($("#list").value, { fromField: true }), 400);
 });
 $("#list").addEventListener("scroll", () => {
   $("#gutter").scrollTop = $("#list").scrollTop;
@@ -348,22 +383,19 @@ function offer(kind) {
 document.querySelectorAll("[data-prefill]").forEach((button) => button.addEventListener("click", () => offer(button.dataset.prefill)));
 
 /**
- * Nothing a person may be about to press moves or goes as a side effect of their last press: once an offer is taken,
- * the offers stay where they are, the taken one marked, until the person acts anywhere outside them (a press or a key
- * elsewhere on the page). Only then do they leave, as the list now holds lines.
+ * Nothing a person may be about to press moves or goes away as a side effect of a press on something else. Once the
+ * offers have been shown for a folder they stay where they are, whatever the list then holds: an offer whose block is
+ * in the list reads "In your list" and cannot be pressed (it can again once that block is gone, by undo or by hand),
+ * the other stays pressable. They go only when the person puts them away with their own button, or gives another folder.
  */
-function letOffersGo(event) {
-  if (state.offerTaken === undefined || event.target.closest?.("#offers")) return;
-  state.offerTaken = undefined;
-  drawOffers();
-}
-document.addEventListener("pointerdown", letOffersGo, true);
-document.addEventListener("keydown", letOffersGo, true);
+const OFFERED_HEADINGS = { "what-it-holds": "What the folders hold", "visual-studio": VISUAL_STUDIO_HEADING };
+const inList = (kind) => state.list.split("\n").some((line) => line.trim() === `### ${OFFERED_HEADINGS[kind]}`);
 
-/** In the list's empty place, the starting lists as offers, each saying what it would do here; gone once the list acts. */
+/** In the list's empty place, the starting lists as offers, each saying what it would do here; kept once shown. */
 function drawOffers() {
   const empty = acting(state.list) === 0;
-  $("#offers").hidden = !empty && state.offerTaken === undefined;
+  if (empty) state.offersKept = true;
+  $("#offers").hidden = !state.offersKept;
   if ($("#offers").hidden) return;
   if (!state.offers) {
     $("#offers").replaceChildren(element("p", { class: "quiet", text: "Counting what each starting list would leave out here…" }));
@@ -379,22 +411,23 @@ function drawOffers() {
     return;
   }
   const card = (kind, title, said) => {
-    const taken = state.offerTaken === kind;
+    const taken = inList(kind);
     const button = element("button", { type: "button", class: `offer${taken ? " taken" : ""}`, "data-offer": kind, disabled: taken },
       icon(taken ? "tick" : "prefill"), element("span", {}, element("strong", { text: title }), element("span", { class: "quiet", text: taken ? "In your list" : said })));
-    button.addEventListener("click", () => {
-      state.offerTaken = kind;
-      offer(kind);
-    });
+    button.addEventListener("click", () => offer(kind));
     return button;
   };
+  const away = element("button", { type: "button", class: "icon-button tip offers-away", "aria-label": "Put the starting lists away", "data-tip": "Put the starting lists away" }, icon("remove"));
+  away.addEventListener("click", () => {
+    state.offersKept = false;
+    drawOffers();
+  });
   $("#offers").replaceChildren(
-    element("p", { class: "quiet", text: state.offerTaken ? "Taken into your list. Also start from" : "Your list is empty: nothing is left out. Start from" }),
+    element("div", { class: "offers-head" }, element("p", { class: "quiet", text: empty ? "Your list is empty: nothing is left out. Start from" : "Starting lists" }), empty ? "" : away),
     card("what-it-holds", "What these folders hold", `${count(state.offers.proposed.lines, "line")} · ${count(state.offers.proposed.files, "file")} left out`),
     card("visual-studio", "GitHub's Visual Studio list", `${count(state.offers.visualStudio.lines, "line")} · ${count(state.offers.visualStudio.files, "file")} left out`),
     element("p", { class: "quiet", text: "or write lines below, as in a .gitignore." }));
 }
-
 // ---------------------------------------------------------------------------
 // Ignore files found: one notice, three choices for all, a choice per file for whoever opens it
 // ---------------------------------------------------------------------------
@@ -473,13 +506,18 @@ function answerFound(take) {
 
 /** Ignore: the list as it stood before any choice; before one, nothing changes. */
 function leaveFound() {
+  takeTyping();
+  const notice = noticeNow();
   const before = state.foundAnswered === undefined ? undefined : state.beforeFound;
   answerFound("ignore");
-  if (before !== undefined && before !== state.list) setList(before);
+  if (before !== undefined && before !== state.list) setList(before, { notice });
   else draw();
 }
 
 function takeFound(take) {
+  takeTyping();
+  // The notice as it stood before this choice, kept with the list it replaces, so that undo takes both back.
+  const notice = noticeNow();
   answerFound(take);
   const chosen = state.result.found.filter((file) => !state.leftAside.has(file.path));
   const git = fromGitignores(chosen.filter((file) => file.kind === ".gitignore"), { folders: listingNow().folders, ignoreCase: state.ignoreCase });
@@ -494,8 +532,8 @@ function takeFound(take) {
   const lines = [...git.lines, ...tf.lines];
   // Each choice is worked from the list as it stood before the first, so that one choice can be traded for another.
   const before = state.beforeFound.replace(/\s+$/u, "");
-  if (take === "use") setList(`### ${heading}\n${lines.join("\n")}\n`);
-  else setList(`${before}${before ? "\n\n" : ""}### ${heading}\n${lines.join("\n")}\n`);
+  if (take === "use") setList(`### ${heading}\n${lines.join("\n")}\n`, { notice });
+  else setList(`${before}${before ? "\n\n" : ""}### ${heading}\n${lines.join("\n")}\n`, { notice });
 }
 
 /** One line saying how many `!` lines cannot keep what they name, opened on demand to the lines themselves. */
@@ -569,10 +607,13 @@ function kindsOf(kinds) {
 /** How many files of the kinds a reader reads these kinds hold. */
 const codeIn = (kinds) => [...kinds].reduce((sum, [kind, n]) => sum + (isCode(kind) ? n : 0), 0);
 
-/** The small sign beside a row that leaves out files a reader would read, with how many, named for whoever cannot see it. */
+/**
+ * The small sign beside a row that leaves out files a reader would read outside build output and downloaded packages,
+ * with how many, named for whoever cannot see it.
+ */
 function codeSign(n) {
-  if (n === 0) return null;
-  const words = `Leaves out ${count(n, "file")} a reader would read`;
+  if (!n) return null;
+  const words = `Leaves out ${count(n, "file")} a reader would read, outside build output and downloaded packages`;
   return element("span", { class: "code-sign", role: "img", "aria-label": words, title: words }, icon("code"), element("span", { text: n.toLocaleString("en") }));
 }
 
@@ -601,12 +642,13 @@ function drawByBlock(result) {
       element("span", { class: "quiet", text: "always" }))));
   }
   const blocks = blocksOf(state.list).map((block) => {
-    // The lines that leave out files a reader would read first, most such files first; then the rest, largest first.
+    // The lines that leave out what looks like the folder's own code first, most such files first; then those that
+    // leave out other files a reader would read; then the rest, largest first.
     const lines = result.lines.filter((group) => group.line.number >= block.first && group.line.number <= block.last)
-      .sort((a, b) => codeIn(b.kinds) - codeIn(a.kinds) || b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+      .sort((a, b) => b.restCode - a.restCode || codeIn(b.kinds) - codeIn(a.kinds) || b.leftOut - a.leftOut || b.folders.length - a.folders.length);
     const kinds = new Map();
     for (const group of lines) for (const [kind, n] of group.kinds) kinds.set(kind, (kinds.get(kind) ?? 0) + n);
-    return { ...block, lines, kinds, leftOut: lines.reduce((sum, group) => sum + group.leftOut, 0), folders: lines.flatMap((group) => group.folders) };
+    return { ...block, lines, kinds, restCode: lines.reduce((sum, group) => sum + group.restCode, 0), leftOut: lines.reduce((sum, group) => sum + group.leftOut, 0), folders: lines.flatMap((group) => group.folders) };
   }).filter((block) => block.lines.length > 0).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
   for (const block of blocks) {
     const key = `block ${block.first}`;
@@ -615,7 +657,7 @@ function drawByBlock(result) {
     const row = element("li", { class: "line-row block" }, element("div", { class: "row" },
       opener(key, title, open, redraw),
       element("span", { class: "grow" }, element("span", { class: "block-title", text: title }), kindsOf(block.kinds)),
-      codeSign(codeIn(block.kinds)),
+      codeSign(block.restCode),
       element("span", { class: "counts", text: filesAndFolders(block) }),
       quietButton("keep", `everything ${title} leaves out: take its lines ${block.first} to ${block.last} out of your list`, () => removeLines(block.first, block.last))));
     if (open) {
@@ -638,14 +680,20 @@ function drawLine(group, redraw) {
     opener(key, `line ${group.line.number}`, open, redraw),
     element("span", { class: "number", text: String(group.line.number) }),
     element("span", { class: "grow" }, pathText(group.line.text), group.kinds.size ? kindsOf(group.kinds) : null),
-    codeSign(codeIn(group.kinds)),
+    codeSign(group.restCode),
     element("span", { class: "counts", text: filesAndFolders(group) }),
     quietButton("keep", `everything line ${group.line.number} leaves out: take the line out of your list`, () => removeLines(group.line.number))));
   if (open) {
-    const members = [...group.folders.map((folder) => ({ path: folder.path, folder: true, files: folder.files })), ...group.files.map((file) => ({ path: file, folder: false }))];
+    // What looks like the folder's own code first, most of it first, each with its sign, so that the one folder to
+    // keep is not paged away behind the downloaded ones (`Installer/Packages` among the NuGet folders `[Pp]ackages/*` takes).
+    const rest = new Set(group.restCodeFiles);
+    const members = [...group.folders.map((folder) => ({ path: folder.path, folder: true, files: folder.files, restCode: folder.restCode })),
+      ...group.files.map((file) => ({ path: file, folder: false, restCode: rest.has(file) ? 1 : 0 }))]
+      .map((member, index) => ({ member, index })).sort((a, b) => b.member.restCode - a.member.restCode || a.index - b.index).map(({ member }) => member);
     const inner = element("ul", { class: "members" });
     paged(inner, key, members.map((member) => element("li", { class: "row" },
       element("span", { class: "grow" }, pathText(member.folder ? `${member.path}/` : member.path)),
+      codeSign(member.restCode),
       element("span", { class: "counts", text: member.folder ? (member.files === null ? "not looked inside" : count(member.files, "file")) : "" }),
       quietButton("keep", member.folder ? `${member.path}/` : member.path, () => addYours([`!${member.folder ? folderPattern(member.path) : filePattern(member.path)}`])))), redraw);
     row.append(inner);
@@ -746,7 +794,7 @@ async function start(source) {
   state.foundAnswered = undefined;
   state.foundSaid = undefined;
   state.beforeFound = undefined;
-  state.offerTaken = undefined;
+  state.offersKept = false;
   state.leftAside = new Set();
   state.offers = undefined;
   $("#folder-name").textContent = source.label;

@@ -60,6 +60,7 @@
   /* The offers in the list's empty place: each starting list, with what it would do here. */
   #offers { display: grid; gap: 8px; margin: 0 0 10px; }
   #offers p { margin: 0; }
+  .offers-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
   .offer { justify-content: flex-start; text-align: left; padding: 8px 10px; border-color: var(--offers); color: var(--text-normal); }
   .offer .icon { color: var(--offers); }
   .offer.taken { border-color: var(--line-interactive); cursor: default; }
@@ -142,8 +143,9 @@
           <button id="clear" type="button" class="icon-button tip" aria-label="Empty the list" data-tip="Empty the list" data-icon="remove"></button>
           <span id="list-said" class="quiet" role="status"></span>
         </div>
-        <ul id="notes" hidden></ul>
+        <!-- The offers above the notes: a note that comes with a starting list taken moves nothing a person may press next. -->
         <div id="offers" hidden></div>
+        <ul id="notes" hidden></ul>
         <div class="list-box">
           <pre id="gutter" aria-hidden="true"></pre>
           <textarea id="list" spellcheck="false" wrap="off" aria-label="Your list: one pattern a line, as in a .gitignore"></textarea>

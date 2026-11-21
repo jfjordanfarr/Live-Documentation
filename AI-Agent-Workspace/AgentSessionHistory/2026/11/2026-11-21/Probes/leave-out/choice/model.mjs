@@ -3,7 +3,8 @@
 // folder before it is entered by the one list the person sees; and what a person is shown of it, by the line of the
 // list that left each thing out. Pure of any browser or Node module, so that both hosts run the same code. A trial for
 // strangers and the owner, not the product: `Probes/leave-out/README.md`, the eighth leg.
-import { leaveOut } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
+import { hasReader } from "../../../../../../../../packages/engine/src/config/liveDocumentationConfig";
+import { leaveOut, proposeLines } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
 
 /** The tool's own output folder, never scanned. */
 export const OWN_OUTPUT = ".live-documentation";
@@ -73,9 +74,9 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
   const fixed = new Map();
   const notes = new Map();
   const groupOf = (verdict) => {
-    if (verdict.fixed) return fixed.get(verdict.fixed) ?? fixed.set(verdict.fixed, { fixed: verdict.fixed, folders: [], files: [], kinds: new Map() }).get(verdict.fixed);
+    if (verdict.fixed) return fixed.get(verdict.fixed) ?? fixed.set(verdict.fixed, { fixed: verdict.fixed, folders: [], files: [], kinds: new Map(), code: [] }).get(verdict.fixed);
     const key = verdict.line.number;
-    return byLine.get(key) ?? byLine.set(key, { line: verdict.line, folders: [], files: [], kinds: new Map() }).get(key);
+    return byLine.get(key) ?? byLine.set(key, { line: verdict.line, folders: [], files: [], kinds: new Map(), code: [] }).get(key);
   };
   const beneath = (path) => (source.lazy ? null : filesBeneath(source, path));
   let folders = 0;
@@ -100,10 +101,12 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
           const group = groupOf(verdict);
           const counting = performance.now();
           const inside = beneath(path);
-          group.folders.push({ path, files: inside === null ? null : inside.length });
+          const entry = { path, files: inside === null ? null : inside.length, code: [] };
+          group.folders.push(entry);
           for (const file of inside ?? []) {
             const kind = kindOf(file);
             group.kinds.set(kind, (group.kinds.get(kind) ?? 0) + 1);
+            if (hasReader(file)) entry.code.push(file);
           }
           countMs += performance.now() - counting;
           for (const note of verdict.notes ?? []) {
@@ -130,6 +133,7 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
           const group = groupOf(verdict);
           group.files.push(path);
           group.kinds.set(kindOf(path), (group.kinds.get(kindOf(path)) ?? 0) + 1);
+          if (hasReader(path)) group.code.push(path);
         }
       }
     }
@@ -143,11 +147,25 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
     .map(([file, text]) => ({ path: file, kind: file.endsWith(".gitignore") ? ".gitignore" : ".tfignore", text: text ?? "" }))
     .sort((a, b) => a.path.split("/").length - b.path.split("/").length || (a.path < b.path ? -1 : 1));
   const count = (group) => group.files.length + group.folders.reduce((sum, folder) => sum + (folder.files ?? 0), 0);
+  // Of the files a reader would read that a line leaves out, those outside every folder the evidence rules call build
+  // output or downloaded packages: the code a line takes by its name pattern alone, which is the number that warns
+  // (`[Pp]ackages/` takes 457 downloaded `.cs` files and the team's own 11 under `Installer/Packages`: the tenth leg).
+  const evidence = evidenceOf(source, ignoreCase);
+  const outside = (file) => {
+    for (let at = file.lastIndexOf("/"); at > 0; at = file.lastIndexOf("/", at - 1)) if (evidence.has(file.slice(0, at))) return false;
+    return true;
+  };
+  const split = (group) => {
+    const folders = group.folders.map(({ code, ...folder }) => ({ ...folder, restCode: code.filter(outside).length }));
+    const { code, ...rest } = group;
+    const restCodeFiles = code.filter(outside);
+    return { ...rest, folders, leftOut: count(group), restCodeFiles, restCode: restCodeFiles.length + folders.reduce((sum, folder) => sum + folder.restCode, 0) };
+  };
   return {
     root,
     kept,
-    lines: [...byLine.values()].map((group) => ({ ...group, leftOut: count(group) })).sort((a, b) => a.line.number - b.line.number),
-    fixed: [...fixed.values()].map((group) => ({ ...group, leftOut: count(group) })),
+    lines: [...byLine.values()].map(split).sort((a, b) => a.line.number - b.line.number),
+    fixed: [...fixed.values()].map(split),
     notes: [...notes.values()],
     found,
     gitIgnoreCase,
@@ -175,6 +193,18 @@ export function listingOf(source) {
   const folders = [...source.listed.keys()].filter((folder) => folder !== "");
   const names = (folder) => (source.listed.get(folder) ?? []).map((entry) => (entry.kind === "folder" ? `${entry.name}/` : entry.name));
   return { folders, names };
+}
+
+/**
+ * The folders the evidence rules (`proposeLines`) call build output or downloaded packages, as a set of paths: from
+ * every folder where the source listed everything, kept once for each case setting; from the folders listed so far
+ * where it walks lazily.
+ */
+function evidenceOf(source, ignoreCase) {
+  const listing = source.lazy ? listingOf(source) : { folders: source.folders ?? [], names: source.names ?? (() => []) };
+  const key = `${ignoreCase} ${listing.folders.length}`;
+  if (source.evidence?.key !== key) source.evidence = { key, folders: new Set(proposeLines(listing.folders, listing.names, ignoreCase).flatMap((each) => each.folders)) };
+  return source.evidence.folders;
 }
 
 /** What will be read, by kind of file, largest first. */

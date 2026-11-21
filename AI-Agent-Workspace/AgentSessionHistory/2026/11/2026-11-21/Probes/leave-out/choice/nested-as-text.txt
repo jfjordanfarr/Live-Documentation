@@ -1,11 +1,11 @@
 Found 25 .gitignore files and 15 .tfignore files; taken into the list.
 Taken in: 25 .gitignore files and 15 .tfignore files.
-nested: 15,594 files will be read · 22 files left out · 43 folders left out, not looked inside
+nested: 15,594 files will be read · 22 files left out, 6 of which look like your own code · 43 folders left out, not looked inside
 The list: 311 lines, names matched without regard to case.
 
 Left out, by block of the list:
-  The folder's own ignore files  (43 folders · 22 files; .json 14 [read], .css 6 [read], .svg 2)
-     257  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css  (6 files; .css 6 [read])
+  The folder's own ignore files  (43 folders · 22 files · 6 of which look like your own code; .json 14 [read], .css 6 [read], .svg 2)
+     257  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css  (6 files · 6 of which look like your own code; .css 6 [read])
      267  Build/**/project.assets.json  (1 file; .json 1 [read])
      273  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
      279  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
@@ -38,4 +38,4 @@ Will be read, by top folder:
   expected                                        1
 
 To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
-Listed 0 folders in 314 ms (listing 0 ms, deciding 272 ms).
+Listed 0 folders in 1196 ms (listing 0 ms, deciding 975 ms).
