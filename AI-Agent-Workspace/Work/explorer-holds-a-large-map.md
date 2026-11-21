@@ -17,7 +17,7 @@ opened: 2026-11-20
 
 ### A press costs the same whatever the picture's size
 - state: review
-- holds: the branch `press-landing` at `5594f9f1b`, its checkout `.claude/worktrees/landing`; not on `main`
+- holds: the branch `press-landing`, its checkout `.claude/worktrees/landing`: the mend's last commit is `5594f9f1b`, and `main` was merged into it on 2026-11-21; not on `main`
 - evidence: the builder's commit `13b2fb807`; [its record, with root's review at the end](../AgentSessionHistory/2026/11/2026-11-19/Probes/press-cost/README.md#roots-review-2026-11-21-the-press-is-mended-and-the-round-does-not-land-yet) and [its frames](../AgentSessionHistory/2026/11/2026-11-19/Screenshots/press-cost/README.md). Under one load, twelve runs in each checkout, a press of 2D took 496 ms at the median on `main` and 248 on the mend, a press of 3D 748 and 132. The whole browser suite on the mend merged at `main`'s tip: 596 passed, and the case red on `main` passed.
 
 `force-graph-focus.spec.ts:262` is red on `main`: the 3D press took 406 ms on a picture of four cards and 637 ms on five, against 500 ([the cause](../AgentSessionHistory/2026/11/2026-11-19/2026-11-19.1.record.md#work-notes-the-browser-stages-sixth-red-explained-the-presss-cost-grows-with-the-picture-and-this-landing-adds-two-files-to-the-picture-the-case-looks-at)). The bound is not moved.
