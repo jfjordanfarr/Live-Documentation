@@ -132,8 +132,9 @@ export interface RegenerationContext {
   keepIndex: boolean;
   jobs: number;
   /**
-   * The memory the pool may hold, in bytes, by which it was sized (`poolMemory` in `computeHistory.ts`): a worker that
-   * holds more than its share of it, this over `jobs`, after a change is replaced ({@link workerBound}).
+   * The memory the pool may hold, in bytes, by which it was sized (`poolMemory` in `computeHistory.ts`): where the lens
+   * keeps workers, a worker that holds more than its share of it, this over `jobs`, after a change is replaced
+   * ({@link workerBound}); by default every worker is ended after its one change, and this bounds nothing.
    */
   memory: number;
   /** When to start no further change, in milliseconds since the epoch; the changes running then are finished. */
@@ -277,9 +278,11 @@ export async function regenerate(changes: readonly MainlineChange[], context: Re
     for (const [reason, count] of [...writtenAnew].sort(([a], [b]) => (a < b ? -1 : 1))) {
       context.progress(`trees written anew at ${count} of the ${changes.length} changes regenerated: ${reason}`);
     }
+    // Without workers kept every change is decided by a fresh process, so the line says only which were summarized again.
+    const decidedHow = keep ? "were decided by a fresh process" : "were summarized again in a fresh worker";
     for (const [reason, words] of Object.entries(DECIDED_WORDS) as Array<[DecidedBy, string]>) {
       const count = decided.get(reason);
-      if (count !== undefined) context.progress(`${count} of the ${changes.length} changes regenerated were decided by a fresh process: ${words}`);
+      if (count !== undefined) context.progress(`${count} of the ${changes.length} changes regenerated ${decidedHow}: ${words}`);
     }
     if (unmappedFiles.size > 0) {
       context.progress(`${unmappedFiles.size} files the generator could not map, at ${unmappedChanges} of the ${changes.length} changes regenerated; each summary names its own`);

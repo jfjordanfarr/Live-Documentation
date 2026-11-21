@@ -283,17 +283,19 @@ export interface WorkerReport {
 }
 
 /**
- * A worker: a process the history command starts once, which summarizes changes one at a time as it is sent them, in a
- * tree it keeps under `folder`, written for its first change and brought forward from each change to the next in the
- * same folder (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, not a process
- * and a tree of its own. The repository is named by its git directory, `store`, which the command found in the
- * person's environment: the worker's own is bare, and git, asked to look for a repository there, could not see the
- * person's `safe.directory` (`openGitStore`).
+ * A worker: a process the history command starts, which summarizes the changes it is sent one at a time, in a tree it
+ * keeps under `folder`, written for its first change. By default the command ends it after that one change
+ * (`regenerate.ts`, since 2026-11-20), so that every summary is a fresh process's; only where the lens keeps workers
+ * (`--keep-workers`) does it go on, bringing its tree forward from each change to the next in the same folder
+ * (`WorkingTree.bringTo`), so that a change costs what differs from the worker's last one, not a process and a tree of
+ * its own. The repository is named by its git directory, `store`, which the command found in the person's environment:
+ * the worker's own is bare, and git, asked to look for a repository there, could not see the person's `safe.directory`
+ * (`openGitStore`).
  *
  * @remarks
  * Until 2026-11-20 every change had a process of its own, and the history command wrote every tree on its own main
  * thread, which was what a rebuild waited for; the record of that day (`Probes/history-rebuild-fast`) measures both.
- * What a process keeps from one summary to the next, each by name (that record, its section on the independent
+ * What a kept worker keeps from one summary to the next, each by name (that record, its section on the independent
  * review, and section 7 of `Probes/history-rebuild-speed` beside it):
  * - the tree's git variables, which the generator's git calls inherit without naming them (`gitIgnored`,
  *   `gitIgnoresCase`, {@link standingFiles}): set from the tree's environment just before the summary, and those same

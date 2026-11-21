@@ -170,7 +170,10 @@ describe("a pool that does not keep its workers", () => {
     const once = await standInPool(2, 1, 1e12, (worker) => (worker === 0 ? machine : {}));
     expect(once.calls).toEqual(["0:1", "0:end", "1:1", "1:end", "2:2", "2:end"]);
     expect(once.published).toEqual(["1", "2"]);
-    expect(once.lines).toContain("1 of the 2 changes regenerated were decided by a fresh process: a file that failed for a cause of the machine's");
+    // Every change here is decided by a fresh process, so the last line says which was summarized again, and never that
+    // one alone was decided by a fresh process, which would read as though the others were not.
+    expect(once.lines).toContain("1 of the 2 changes regenerated were summarized again in a fresh worker: a file that failed for a cause of the machine's");
+    expect(once.lines.filter((line) => line.includes("decided by a fresh process"))).toEqual([]);
     await expect(standInPool(1, 1, 1e12, () => machine)).rejects.toThrow("failed twice for a cause of the machine's");
   });
 

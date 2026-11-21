@@ -474,9 +474,10 @@ describe("the lock's half of the lens's key", () => {
   it("keys the launcher the command runs under as well as the one its workers run under, where the lock holds two", () => {
     // The command starts under the repository's own tsx (`npm run` puts the top's `node_modules/.bin` on the path) and
     // compiles the command's side of a summary with it; a worker starts under the tsx found from the generator.
+    // `glob` is keyed as the generator's manifest declares it, since 2026-11-21, where a root named it before.
     const packages = {
       "packages/engine": {},
-      "packages/generator": {},
+      "packages/generator": { dependencies: { glob: "^14.0.0" } },
       "node_modules/glob": { version: "14.0.0" },
       "node_modules/tsx": { version: "4.0.0" },
       "packages/generator/node_modules/tsx": { version: "5.0.0" }
@@ -610,8 +611,10 @@ describe("the lock's half of the lens's key", () => {
 
   it("names as roots every package the two packages load without declaring it", () => {
     expect(undeclaredImports(LOCK_ROOTS)).toEqual([]);
-    // The check can fail: the generator's code imports `glob`, which only the engine declares.
-    expect(undeclaredImports(LOCK_ROOTS.filter((root) => root.name !== "glob"))).toContain("packages/generator/src/generator.ts loads glob");
+    // The check can fail: the generator's code resolves `tsx`, which only the repository's own manifest declares.
     expect(undeclaredImports(LOCK_ROOTS.filter((root) => root.name !== "tsx"))).toContain("packages/generator/src/history/regenerate.ts loads tsx");
+    // `glob`, which the generator's code imports, is the generator's manifest's own since 2026-11-21, and no root's:
+    // with no root at all, the launcher is all that is found.
+    expect(undeclaredImports([]).filter((finding) => !finding.endsWith(" loads tsx"))).toEqual([]);
   });
 });

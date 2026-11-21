@@ -95,14 +95,9 @@ export const LOCK_ROOTS: ReadonlyArray<{ from: string; name: string; reason: str
     // `lens.ts`). Today it is the workers' entry too; a nested tsx under the generator would part them (the review of
     // 2026-11-20).
     reason: "the launcher the history command itself runs under"
-  },
-  {
-    from: "packages/generator",
-    name: "glob",
-    // `generator.ts` and `summarizeChange.ts` import it; the generator's manifest does not declare it, and it is found
-    // only because npm hoists the engine's own `glob` to the repository's `node_modules`.
-    reason: "imported by the generator's code without being declared by its manifest"
   }
+  // `glob`, which `generator.ts` and `summarizeChange.ts` import, was named here until 2026-11-21, when the generator's
+  // manifest did not declare it and it was found only because npm hoists the engine's own; the manifest declares it now.
 ];
 
 /**
