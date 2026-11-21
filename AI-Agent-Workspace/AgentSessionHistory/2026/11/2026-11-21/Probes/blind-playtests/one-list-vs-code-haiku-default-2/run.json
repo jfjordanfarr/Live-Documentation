@@ -1,0 +1,139 @@
+{
+  "task": "one-list-vs-code",
+  "start": "http://127.0.0.1:42981/",
+  "words": "Start from the standard Visual Studio ignore list. Does any line in it leave out real source code, code someone here wrote? Which line, and how many files?",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "settings": [],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "siteAtStart": {
+    "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T19:51:34.258Z"
+  },
+  "page": "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "query": "",
+  "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list/Source",
+  "handFolder": {
+    "input": "#folder-input",
+    "ready": "#totals"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Start from the standard Visual Studio ignore list. Does any line in it leave out real source code, code someone here wrote? Which line, and how many files?\n\nhttp://127.0.0.1:42981/",
+  "startedAt": "2026-11-21T20:20:05.262Z",
+  "finishedAt": "2026-11-21T20:21:50.659Z",
+  "siteAtEnd": {
+    "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T19:51:34.258Z"
+  },
+  "setup": {
+    "handedFolder": {
+      "folder": "Source",
+      "input": "#folder-input",
+      "ready": "#totals",
+      "readyText": "17,244 files will be read",
+      "ms": 12585,
+      "ok": true
+    },
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 38017,
+  "lockWaitMs": 67379,
+  "apiMs": 16661,
+  "turns": 14,
+  "assistantMessages": 20,
+  "toolCalls": 13,
+  "actions": 13,
+  "actionsByTool": {
+    "look": 6,
+    "point": 0,
+    "click": 5,
+    "drag": 0,
+    "scroll": 2,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 14,
+    "cacheWrite": 11205,
+    "cacheRead": 41059,
+    "output": 2634
+  },
+  "costUsd": 0.0039699900000000005,
+  "modelUsage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 14,
+      "outputTokens": 2634,
+      "cacheReadInputTokens": 41059,
+      "cacheCreationInputTokens": 11205,
+      "webSearchRequests": 0,
+      "costUSD": 0.0039699900000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1575,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 11205,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:42981/",
+  "init": {
+    "cwd": "/tmp/session-olGZPj",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}
