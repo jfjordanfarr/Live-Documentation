@@ -28,11 +28,11 @@
     "@live-documentation/engine": "file:../engine",
     "d3-force-3d": "^3.0.6",
     "esbuild": "^0.28.2",
-    "jszip": "^3.10.1",
+    "jszip": "^3.10.2",
     "lz-string": "^1.5.0",
-    "three": "^0.186.1"
+    "three": "^0.187.0"
   },
   "devDependencies": {
-    "@types/three": "^0.186.0"
+    "@types/three": "^0.187.0"
   }
 }
