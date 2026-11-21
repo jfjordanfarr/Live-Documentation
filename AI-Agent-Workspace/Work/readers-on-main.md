@@ -11,7 +11,7 @@ opened: 2026-11-20
 
 **Done when.** `main` holds the three readers; each language's grader runs by one command and agrees as its record says; the history is rebuilt once and every difference from the old summaries is one a reader was meant to make.
 
-**Rests on.** Three public codebases resembling yours. Asked twice and not yet answered, and it would rank what is mended next: which shapes your code has most of (scripts calling each other's functions, scripts running SQL, user controls, procedures named from C#).
+**Rests on.** Three public codebases resembling yours, which is too narrow a base by your own word of 2026-11-21 ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)). Asked a third time which shapes your code has most of, you declined on purpose: "if I allow this to be too specified, I will allow for early victory celebration well before we've achieved what we've set out to do. It is not in my best interest to make only my use case look pristine"; breadth across "a wide variety of codebase shapes and languages and connectivities" is what "forced, really" a "more parsimonious and simple design". So it is not asked again, and what the readers mend next is ranked by [breadth across real repositories](proven-on-real-repositories.md), each measured against its language's own parser or compiler.
 
 **Waiting on the owner.** Nothing blocks it. (Whether your Oracle side uses packages stays unknown; they are not built on a guess.)
 
@@ -19,7 +19,7 @@ opened: 2026-11-20
 
 ### Join the three branches onto today's engine
 - state: active
-- holds: with a builder since 2026-11-21, on a branch `readers-gathering` cut from the day branch at `a5d29b90f`; the three sources are SQL on `worktree-agent-a3f00007018f5adbe` at `779a15fc`; PowerShell on `worktree-agent-a29a6d3f4a47f410b` at `29b3bb24`; .NET on `worktree-agent-ac7ef8df4222b2e4b` at `32d03c79`
+- holds: with a builder since 2026-11-21, on a branch `readers-gathering` cut from the day branch at `a5d29b90f`; first leg handed back at 02:43 UTC with SQL and PowerShell joined (`5c2b41bdd`, `c47de8e36`), the gate green without the browser and the SQL graders equal to their record, and the builder sent on to the .NET merge, a committed command that scores a PowerShell corpus (the scripts that scored five on 2026-11-19 were lost with the old container) and a committed account of every grading; the three sources are SQL on `worktree-agent-a3f00007018f5adbe` at `779a15fc`; PowerShell on `worktree-agent-a29a6d3f4a47f410b` at `29b3bb24`; .NET on `worktree-agent-ac7ef8df4222b2e4b` at `32d03c79`
 - evidence:
 
 Each merges with conflicts only in generated docs, its own record, the decisions log and three readers (`powershell.ts`, `csharp.ts`, `aspnet.ts`). Since they were parked the engine has changed under them: every read goes through the one reading step and the rule that a machine's failure is thrown on (the structural test names any catch that swallows one); a syntax tree is taken only through the tree-sitter helper; a reader's notices go to the generator's channel (PowerShell drops two loads its text does not fix, at its lines 1363 and 1375 on that branch); PowerShell's `archetypeOf` reads the file index. Records: [SQL](../AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md), [PowerShell](../AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md), [.NET](../AgentSessionHistory/2026/11/2026-11-19/Probes/dotnet-gaps/README.md).
@@ -29,7 +29,7 @@ Each merges with conflicts only in generated docs, its own record, the decisions
 - holds: not begun
 - evidence:
 
-Ruled on 2026-11-19 as the right final form; it changes every adapter's first line, so it goes with this landing and its one rebuild.
+Ruled on 2026-11-19 as the right final form; it changes every adapter's first line, so it goes with this landing and its one rebuild. Since 2026-11-21 it is one face of a larger task, [the engine reading a folder through one interface](tool-arrives-on-windows.md#the-engine-reads-a-folder-through-one-interface), which a page needs too; the join's builder found that the hard part is the tables readers build across files (C#'s types, PowerShell's definitions, a project's reach), which read other files than the one in hand, and suggested the file index carry a `textOf(path)` beside the `archetypeOf` it now carries. Not begun, and not to be built as two things.
 
 ### An independent review with the graders as its oracles, then one rebuild
 - state: open
