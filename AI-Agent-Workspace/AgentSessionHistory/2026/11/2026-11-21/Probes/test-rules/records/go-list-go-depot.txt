@@ -1,0 +1,6 @@
+go/depot/cmd/depot|main.go|||
+go/depot/internal/audit|audit.go|||
+go/depot/report|count.go,format.go,report.go||report_test.go|
+go/depot/stock|item.go,quantity.go|quantity_test.go|item_test.go|
+go/depot/store|base.go,inventory.go|||
+go/depot/store/memory|memory.go|||

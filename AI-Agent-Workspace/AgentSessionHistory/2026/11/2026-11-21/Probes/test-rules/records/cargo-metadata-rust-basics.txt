@@ -1,0 +1,1 @@
+rust-basics-fixture|bin|rust-basics-fixture|rust/basics/src/main.rs|true
