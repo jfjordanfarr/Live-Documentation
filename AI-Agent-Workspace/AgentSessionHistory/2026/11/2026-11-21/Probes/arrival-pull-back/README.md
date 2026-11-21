@@ -369,3 +369,110 @@ The floor's runs (probe build, not landed):
 | floor-wheel-skipped--weak | heavy | 1 | 6367 | 27 | 116.7 | 949.9 | 1416.6 | 0.549 | 1200 ms, 4676; 1416.6 ms, 3016 | 3425, 3 |
 
 The second round's files: [`stills-probe.mjs`](stills-probe.mjs) (the stills compared), [`where.cjs`](where.cjs) (a trace's bundle positions mapped to the source through the source map), [`summarize2.mjs`](summarize2.mjs) (the tables above), [`unseen-cards.patch`](unseen-cards.patch) (the lever, not landed), [`numbers/unseen-cards/`](numbers/unseen-cards/) (every run and the stills' counts), and the strips and stills under [`Screenshots/arrival-pull-back/unseen-cards/`](../../Screenshots/arrival-pull-back/unseen-cards/). [`arrival-probe.mjs`](arrival-probe.mjs) now also takes a wheel journey (`JOURNEY=wheel`), every frame's restyle, each style pass's cause, and the floor's flag (`FLOOR=1`).
+
+## 6. Third round: where a look change's style time goes
+
+_Taken 20:13 to 21:10 UTC the same evening on the day branch at `8f88d9590`, merged into the builder's worktree. The load average is stated beside each group of times; the counts of elements do not depend on it._
+
+This round looked into the cost of each element's style when the zoom look changes. The heavy subject is `liveDocumentationConfig.ts`: 12,040 elements under the map at reading size, of which the look change restyles 6,474. The probes are kept beside this record:
+
+- [`style-probe.mjs`](style-probe.mjs) snapshots every computed property of every element at rest in each look.
+- [`cost-probe.mjs`](cost-probe.mjs) makes one change on the map at rest, flushes the style, and times the browser's own style pass, five times.
+- [`waste-probe.mjs`](waste-probe.mjs) snapshots before and after each change made in place.
+
+Their numbers are in [`numbers/look-style/`](numbers/look-style/).
+
+### A hypothesis, measured and refuted
+
+**The hypothesis (root's).** A custom property changed on the map is inherited by every element under it. So the held sizes the look writes there (`--text-scale`, `--control-scale` and the fade's `--look-*`) would make every element recompute, whether or not it reads them. If that were the cost, the remedy would be to register them as not inherited and set them only where they are read.
+
+**The mechanism is real.** Measured in place (`cost-probe`, at rest, the browser's style pass; load 2.6, median of five):
+
+| Case | Change made on the map | Elements restyled | Time |
+| --- | --- | ---: | ---: |
+| A | a custom property no rule reads | 7,348 | 118 ms |
+| A′ | the same property registered `inherits: false` | 1 | 0.1 ms |
+| C | the held scales alone, to the connections look's 2.2 | 7,348 | 70 ms |
+| D | the look's attributes alone (`data-lod`, `data-look`, `data-step`) | 6,474 | 143 ms |
+| B | the whole look change, attributes and held scales | 6,474 | 144 ms |
+| E | a data attribute no rule reads | 0 | 0 ms |
+
+**But it is not where the look change's time goes.** The attributes alone (D) restyle the same 6,474 elements in the same time as the whole change (B).
+
+The in-place snapshots (`waste-probe`) say why: of the 6,474 elements the whole change restyles, **5,909 genuinely change a computed value**. Only 565 (9 %) are restyled for nothing.
+
+- **The attributes alone** change 5,649 elements; the held scales add 923 more, nearly all `transform` on dots, names and row actions.
+- **By property, the changes are:** visibility on 2,168, display on 1,134, transition-delay on 1,211, transform-origin and perspective-origin (which follow a box's size) on about 3,000, and positions, insets and minimum sizes on 500 to 700 each.
+- **By element, they are:**
+  - the closed directories' cells: `svg` and `path` 585 each, `circle.local-cell` 365, `button.local-directory-cell` 328;
+  - the rows' parts: reading blocks, names and pins 273 each, anchors 198 to 300, read buttons 193;
+  - the prose: `wbr` 272, `p` 172, prose blocks 163, `code` 110.
+
+So moving the held scales to non-inherited properties would save at most the 9 % restyled for nothing. **Not built.** An earlier comparison of two rest states, made before the in-place one, had counted 4,463 elements (37 %) differing only in custom properties. Inside the change's own pass those are restyled by the attributes anyway, so that count does not apply.
+
+**Selector matching is a small share.** Chromium's selector statistics (trace category `disabled-by-default-blink.debug`) gave 110 ms of matching in total across the change's style passes. The pass was 4.1 s long, because that instrument slows it about twentyfold; it was used only for this share. The invalidation tracking named the causes:
+
+- "Related style rule" 3,519;
+- "Attribute" 1,446;
+- invalidation sets matched by class 1,545 and by tag 1,439;
+- the fade's "Animation" 649 to 1,284.
+
+### The upper bound of hiding two subtree kinds at their roots
+
+The two largest groups of elements that change are the closed directories' cell fields and the prose. In this probe each was hidden at its roots before the look change (`content-visibility: hidden`, which leaves the subtree's style uncomputed), and the look change then timed:
+
+| Subject, condition (load) | Whole change (B) | Cells skipped (F) | Prose skipped (G) | Both (H) |
+| --- | --- | --- | --- | --- |
+| heavy, full (5.3) | 6,474, 163 ms | 6,131, 173 ms | 5,984, 189 ms | 5,641, 147 ms |
+| heavy, weak (4.3) | 6,474, 900 ms | 6,131, 1,145 ms | 5,984, 814 ms | 5,641, 828 ms |
+| `pathfind.ts`, full (6.2) | 2,592, 132 ms | 2,327, 84 ms | 2,364, 90 ms | 2,099, 107 ms |
+| `pathfind.ts`, weak (4.6) | 2,592, 323 ms | 2,327, 352 ms | 2,364, 344 ms | 2,099, 374 ms |
+
+The roots were 30 cell fields and 546 prose blocks on the heavy subject, and 22 and 314 on `pathfind.ts`. **Both skipped remove 13 % of the elements on the heavy subject and 19 % on `pathfind.ts`**, and no time that rises above the load's noise. The 30 to 45 % I estimated before measuring does not hold: most of the cells' and the prose's changes are on their roots and first children, not deep in their subtrees.
+
+### The structural floor
+
+Of the 5,909 elements whose values change on the heavy subject, **1,848 are topmost**: no element above them up to the map changes. On `pathfind.ts` it is 944 of 3,158. The count is the same within each card or band. If every part that belongs to one look sat under one root of its own, and a look change swapped those roots, this is about how many elements a change would touch: **29 % of today's pass on the heavy subject, 36 % on `pathfind.ts`.**
+
+The topmost kinds are mostly per row: its anchor (300), its reading block (273), its name (193), its read and pin buttons (193 each), its More (30); and per card: its actions, its path, its directory line, its name, its type references, its meta line and its tests (60 to 86 each).
+
+So the honest design would be the second kind: *each look's parts under a root of their own*, the next look's subtree styled while the picture rests and swapped at its root. It is not *hide two subtree kinds at their roots*. It would bring the pass to about a third.
+
+What would have to stay equal for the stills:
+
+- **Box sizes.** Each look's subtree would have to give its card the same box in each look, since a card's box never changes with zoom.
+- **The 160 ms cross-fade.** It would have to run between two subtrees, not between two sizes of one, so the held things that travel from one look's size to the next would become a cross-fade of two elements.
+- **The wires' anchors.** The dots on the rows' edges stand inside the per-look parts, so they would have to stand in the same place in both subtrees, or sit outside them.
+
+It is a design, not a refactor, and it was not started.
+
+### The two small changes
+
+1. **The legend's question to the cells, moved after the frame: tried, and not landed** (`spatial-legend.ts`, `watchLocalKinds`).
+   - It is asked in the change's animation callbacks, which force the whole map's restyle from inside the legend's script, before the frame would have made it.
+   - Asked instead after the frame had been styled (a timer from the animation callback), no style pass was forced from the legend in the trace, and the time was unchanged, as section 5's floor said: the restyle is owed anyway.
+   - But the answer changed. In `spatial-legend.spec.ts` ("the Local Map shows the matching legend"), a press of 2D from the estate's 3D map then drew a kinds row, "Implementation", where the case expects none. Asked later, the legend found a coloured cell visible in a picture the earlier moment had not yet shown it in, and no later change asked it again.
+   - So its moment is part of its answer, and moving it is not the equivalent change it looked like. It is reverted.
+   - I did not try deriving the answer from the map's own state. That would copy the stylesheet's rules on which cells show in which look into script, where the two could drift apart, and it buys no frame time.
+2. **`frameRect` read once per ease: tried, and not landed.**
+   - Reading the frame once removed the forcing from the arrival's tick. The same restyle of 665 to 784 elements was then forced one call later, by `framePlace` in `updateMapTransform`.
+   - What was owed was traced with invalidation tracking:
+     - the end of the look's cross-fade, 200 ms after the change: its class removed, which re-matches its rules on the closed directories' cell buttons (226), the rows' pins, Mores, read buttons and names (49 to 55 each), and the reading blocks (51);
+     - its redrawing of the wires (104 path attributes).
+   - On the slowed machine Look Before's lead had seen the class gone inside the change's own long frame, and began the ease before that restyle had been drawn.
+   - **The mend that landed instead:** Look Before now waits one frame after the first frame without the class, so that the restyle is the browser's own in that frame. Its result is below.
+
+**Look Before's ease after the mend**, on two slowed cores in software (load 6.1):
+
+- **`pathfind.ts`:** 14 frames in the ease (median 50 ms, worst 183 ms at its last frame), where the first round had 3 frames in 483 ms. No style pass inside the ease restyles more than a handful of elements.
+- **The heavy subject:** 8 frames (median 133 ms, worst 333 ms at its last frame), where the first round had 1 to 3.
+
+The browser specs of the camera, Tuning and navigation pass with it.
+
+## Recommendation for the next day's piece
+
+Measure before designing, once more. Take a prototype of *each look's parts under a root of their own* on one card's markup, outside the stylesheet, and compare a swap of roots with today's attributes on the same card. The structural floor says about a third of today's pass; the prototype would say whether that third holds once the cross-fade and the anchors are kept, and what the stills would need.
+
+If it holds, it is the route to the owner's arrival without a stall: the next look's parts styled while the picture rests for 900 ms at reading size, and swapped at the crossing.
+
+If it does not, what is left is the stylesheet's weight per element. In that case the arrival should keep a look change at rest, as Look After does, and the owner should be told plainly that a pull-back on a picture of this size stutters once on a slow machine.

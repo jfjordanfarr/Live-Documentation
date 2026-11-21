@@ -1,0 +1,629 @@
+[
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-before",
+  "extra": {},
+  "elements": {
+   "map": 5912,
+   "cards": 16,
+   "bands": 12,
+   "wires": 151
+  },
+  "restBeforeEase": 21266,
+  "ease": {
+   "ms": 2417,
+   "frames": 2,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 1816.6,
+   "p90": 1816.6,
+   "worst": 1816.6,
+   "whole": {
+    "script": 751.2,
+    "style": 1225.7,
+    "layout": 32.9,
+    "paint": 253.6,
+    "other": 134.7,
+    "styles": [
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78899",
+      "stack": [
+       "$G:5176:33204",
+       "XG:5176:37599",
+       "Lk:5176:31523",
+       "drawConnections:5177:57054",
+       ":5177:78977"
+      ]
+     },
+     {
+      "ms": 189.2,
+      "elements": 784,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "updateMapTransform:5177:75982",
+       "s:5177:86995"
+      ]
+     },
+     {
+      "ms": 5.7,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "sayCut:5177:63209",
+       "updateMapTransform:5177:76001",
+       "s:5177:86995"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 4,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "updateMapTransform:5177:75982",
+       "releaseLook:5177:87487",
+       "s:5177:87058"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "$r:5177:24868",
+       "oP:5177:24964",
+       "measureLayoutExtents:5177:74467",
+       "measureLayoutExtents:5177:57210",
+       "XG:5176:37481"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "$G:5176:33204",
+       "XG:5176:37599",
+       "Lk:5176:31523",
+       "drawConnections:5177:57054",
+       "s:5177:87170"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "XG:5176:37671",
+       "Lk:5176:31523"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 119,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1817,
+   "ms": 1816.6,
+   "k": 1,
+   "state": "connections|far||false|moving",
+   "script": 294.1,
+   "style": 1209.3,
+   "layout": 20.7,
+   "paint": 172.1,
+   "other": 102.8,
+   "styles": [
+    {
+     "ms": 1.2,
+     "elements": 1,
+     "script": "FunctionCall @index.js:5177:78899",
+     "stack": [
+      "$G:5176:33204",
+      "XG:5176:37599",
+      "Lk:5176:31523",
+      "drawConnections:5177:57054",
+      ":5177:78977"
+     ]
+    },
+    {
+     "ms": 189.2,
+     "elements": 784,
+     "script": "FunctionCall s@index.js:5177:85640",
+     "stack": [
+      "framePlace:5177:80388",
+      "updateMapTransform:5177:75982",
+      "s:5177:86995"
+     ]
+    }
+   ],
+   "invalidations": [
+    [
+     "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-directory-cell local-directory-cell--file'",
+     226
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     226
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     104
+    ],
+    [
+     "StyleRecalc: Animation BUTTON class='local-symbol-pin'",
+     55
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-reading-full'",
+     51
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-reading-full'",
+     51
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class SPAN class='symbol-label-text'",
+     49
+    ],
+    [
+     "StyleRecalc: Related style rule SPAN class='symbol-label-text'",
+     49
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-symbol-pin'",
+     49
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-symbol-pin'",
+     49
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-symbol-more'",
+     49
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-symbol-more'",
+     49
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 1817,
+    "ms": 1816.6,
+    "k": 1,
+    "state": "connections|far||false|moving",
+    "script": 294.1,
+    "style": 1209.3,
+    "layout": 20.7,
+    "paint": 172.1,
+    "other": 102.8,
+    "styles": [
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78899",
+      "stack": [
+       "$G:5176:33204",
+       "XG:5176:37599",
+       "Lk:5176:31523",
+       "drawConnections:5177:57054",
+       ":5177:78977"
+      ]
+     },
+     {
+      "ms": 189.2,
+      "elements": 784,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "updateMapTransform:5177:75982",
+       "s:5177:86995"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-directory-cell local-directory-cell--file'",
+      226
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      226
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      104
+     ],
+     [
+      "StyleRecalc: Animation BUTTON class='local-symbol-pin'",
+      55
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-reading-full'",
+      51
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-reading-full'",
+      51
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='symbol-label-text'",
+      49
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='symbol-label-text'",
+      49
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-symbol-pin'",
+      49
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-symbol-pin'",
+      49
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched tagName BUTTON class='local-symbol-more'",
+      49
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-symbol-more'",
+      49
+     ]
+    ]
+   },
+   {
+    "at": 2417,
+    "ms": 600.1,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 457.1,
+    "style": 16.4,
+    "layout": 12.2,
+    "paint": 81.5,
+    "other": 31.8,
+    "styles": [
+     {
+      "ms": 5.7,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "sayCut:5177:63209",
+       "updateMapTransform:5177:76001",
+       "s:5177:86995"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 4,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "updateMapTransform:5177:75982",
+       "releaseLook:5177:87487",
+       "s:5177:87058"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "$r:5177:24868",
+       "oP:5177:24964",
+       "measureLayoutExtents:5177:74467",
+       "measureLayoutExtents:5177:57210",
+       "XG:5176:37481"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "$G:5176:33204",
+       "XG:5176:37599",
+       "Lk:5176:31523",
+       "drawConnections:5177:57054",
+       "s:5177:87170"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "XG:5176:37671",
+       "Lk:5176:31523"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 119,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      104
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path bundle-run'",
+      15
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer'",
+      3
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer'",
+      2
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer'",
+      2
+     ],
+     [
+      "StyleRecalc: Attribute svg class='connection-svg'",
+      2
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      1
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      1
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 1817,
+    "ms": 1816.6,
+    "k": 1,
+    "look": "connections",
+    "style": 1209.3,
+    "paint": 172.1,
+    "restyled": 785
+   },
+   {
+    "at": 2417,
+    "ms": 600.1,
+    "k": 0.335,
+    "look": "connections",
+    "style": 16.4,
+    "paint": 81.5,
+    "restyled": 132
+   }
+  ],
+  "changes": [
+   {
+    "at": -21266,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": -917,
+    "k": 1,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 0,
+    "k": 1,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 2417,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -21266,
+    "ms": 200.1,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -5983,
+    "ms": 15282.7,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -917,
+    "ms": 3516.5,
+    "k": 1,
+    "look": "connections",
+    "script": 676.3,
+    "style": 2122.7,
+    "layout": 137.2,
+    "paint": 322.5,
+    "other": 256.5,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:85640",
+      "stack": [
+       "framePlace:5177:80388",
+       "updateMapTransform:5177:75982",
+       "s:5177:86669"
+      ]
+     },
+     {
+      "ms": 1924.8,
+      "elements": 2596,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 196.8,
+      "elements": 650,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 0,
+    "ms": 916.6,
+    "k": 1,
+    "look": "connections",
+    "script": 515.2,
+    "style": 176.6,
+    "layout": 6,
+    "paint": 110.6,
+    "other": 129.4,
+    "styles": [
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78154",
+      "stack": [
+       "$G:5176:33204",
+       "XG:5176:37599",
+       "Lk:5176:31523",
+       "drawConnections:5177:57054",
+       ":5177:78212"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78154",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "XG:5176:37671",
+       "Lk:5176:31523"
+      ]
+     },
+     {
+      "ms": 48.9,
+      "elements": 177,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1144.4,
+      "elements": 1044,
+      "script": "FunctionCall @index.js:5177:78899",
+      "stack": [
+       "$r:5177:24868",
+       "oP:5177:24964",
+       "measureLayoutExtents:5177:74467",
+       "measureLayoutExtents:5177:57210",
+       "XG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": -917,
+   "ms": 3516.5,
+   "k": 1,
+   "state": "connections|far||true|moving",
+   "script": 676.3,
+   "style": 2122.7,
+   "layout": 137.2,
+   "paint": 322.5,
+   "other": 256.5,
+   "styles": [
+    {
+     "ms": 0.5,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:85640",
+     "stack": [
+      "framePlace:5177:80388",
+      "updateMapTransform:5177:75982",
+      "s:5177:86669"
+     ]
+    },
+    {
+     "ms": 1924.8,
+     "elements": 2596,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 196.8,
+     "elements": 650,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 12,
+   "gaps": [
+    90,
+    91,
+    227,
+    1940,
+    429,
+    98,
+    33,
+    40,
+    43,
+    37,
+    36
+   ]
+  }
+ }
+]

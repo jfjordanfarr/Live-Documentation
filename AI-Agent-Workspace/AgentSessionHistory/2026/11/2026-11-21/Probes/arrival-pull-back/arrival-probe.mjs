@@ -40,7 +40,7 @@ const all = {
   heavy: `${base}/?view=local&mode=2d&node=${encodeURIComponent(HEAVY)}`
 };
 const subjects = (process.env.SUBJECTS ?? 'estate,pathfind,heavy').split(',');
-const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.stack', 'blink.user_timing', 'v8.execute'];
+const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.stack', 'disabled-by-default-devtools.timeline.invalidationTracking', 'blink.user_timing', 'v8.execute'];
 const LONG = 50;
 
 /** The renderer main thread's complete events, nested, each with its self time. */
@@ -165,8 +165,14 @@ for (const name of subjects) for (let run = 1; run <= runs; run++) {
   const sorted = intervals.map(i => i.ms).sort((a, b) => a - b);
   const q = p => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] : null;
   const everyFrame = intervals.map(i => { const b = breakdown(list, (i.prevT + offset) * 1000, (i.t + offset) * 1000); return { at: i.at, ms: i.ms, k: i.k, look: i.state.split('|')[0], style: b.style, paint: b.paint, restyled: b.styles.reduce((s, x) => s + (x.elements ?? 0), 0) }; });
+  // What invalidated style in a frame: the invalidation records of the browser's tracking, by reason and by the
+  // element's class, from the frame before it to its end.
+  const invalidations = (from, to) => { const by = {};
+    for (const e of events) { if (!/StyleRecalcInvalidationTracking|StyleInvalidatorInvalidationTracking|ScheduleStyleInvalidationTracking/.test(e.name) || e.ts < from || e.ts > to) continue;
+      const d = e.args?.data ?? {}; const key = `${e.name.replace('InvalidationTracking', '')}: ${d.reason ?? d.changedAttribute ?? d.changedClass ?? ''} ${d.nodeName ?? ''}`.slice(0, 120); by[key] = (by[key] ?? 0) + 1; }
+    return Object.entries(by).sort((a, b) => b[1] - a[1]).slice(0, 12); };
   const longFrames = intervals.filter(i => i.ms > LONG).map(i => ({ at: i.at, ms: i.ms, k: i.k, state: i.state,
-    ...breakdown(list, (i.prevT + offset) * 1000, (i.t + offset) * 1000) }));
+    ...breakdown(list, (i.prevT + offset) * 1000, (i.t + offset) * 1000), invalidations: invalidations((i.prevT - 34 + offset) * 1000, (i.t + offset) * 1000) }));
   const changes = marked.filter((f, i) => i > 0 && f.state !== marked[i - 1].state).map(f => ({ at: easeStart >= 0 ? +(f.t - marked[easeStart].t).toFixed(0) : null, k: f.k === null ? null : +f.k.toFixed(3), state: f.state }));
   const restAt = moving >= 0 && easeStart >= 0 ? +(marked[easeStart].t - marked[moving].t).toFixed(0) : null;
   const whole = window_.length ? breakdown(list, (window_[0].t + offset) * 1000, (window_.at(-1).t + offset) * 1000) : null;

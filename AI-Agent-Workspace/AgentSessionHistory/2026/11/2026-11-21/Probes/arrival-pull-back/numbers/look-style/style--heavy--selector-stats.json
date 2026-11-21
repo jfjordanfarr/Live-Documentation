@@ -1,0 +1,716 @@
+{
+ "subject": "heavy",
+ "look": "connections",
+ "before": {
+  "elements": 12040,
+  "custom": 94
+ },
+ "after": {
+  "elements": 11860,
+  "custom": 97
+ },
+ "diff": {
+  "compared": 12040,
+  "same": 0,
+  "onlyCustom": 4463,
+  "standard": 7100,
+  "gone": 477,
+  "byProperty": [
+   [
+    "--text-scale",
+    11563
+   ],
+   [
+    "--control-scale",
+    11563
+   ],
+   [
+    "--look-from-scale",
+    11563
+   ],
+   [
+    "--look-zoom",
+    11563
+   ],
+   [
+    "--look-keep",
+    11563
+   ],
+   [
+    "visibility",
+    4396
+   ],
+   [
+    "perspective-origin",
+    1579
+   ],
+   [
+    "display",
+    1526
+   ],
+   [
+    "transform-origin",
+    1244
+   ],
+   [
+    "transition-delay",
+    1211
+   ],
+   [
+    "opacity",
+    1176
+   ],
+   [
+    "transform",
+    890
+   ],
+   [
+    "bottom",
+    772
+   ],
+   [
+    "inset-block-end",
+    772
+   ],
+   [
+    "inset-inline-end",
+    692
+   ],
+   [
+    "right",
+    692
+   ],
+   [
+    "text-wrap-mode",
+    573
+   ],
+   [
+    "min-block-size",
+    533
+   ],
+   [
+    "min-height",
+    533
+   ],
+   [
+    "inline-size",
+    531
+   ],
+   [
+    "width",
+    531
+   ],
+   [
+    "min-inline-size",
+    518
+   ],
+   [
+    "min-width",
+    518
+   ],
+   [
+    "block-size",
+    505
+   ],
+   [
+    "height",
+    505
+   ],
+   [
+    "inset-inline-start",
+    399
+   ],
+   [
+    "left",
+    399
+   ],
+   [
+    "overflow-inline",
+    353
+   ],
+   [
+    "overflow-x",
+    353
+   ],
+   [
+    "inset-block-start",
+    335
+   ],
+   [
+    "top",
+    335
+   ],
+   [
+    "max-inline-size",
+    273
+   ],
+   [
+    "max-width",
+    273
+   ],
+   [
+    "text-overflow",
+    273
+   ],
+   [
+    "position",
+    240
+   ],
+   [
+    "line-height",
+    132
+   ],
+   [
+    "overflow-block",
+    93
+   ],
+   [
+    "overflow-y",
+    93
+   ],
+   [
+    "text-align",
+    80
+   ],
+   [
+    "white-space-collapse",
+    80
+   ]
+  ],
+  "byClass": [
+   [
+    "WBR",
+    804
+   ],
+   [
+    "svg",
+    775
+   ],
+   [
+    "path",
+    775
+   ],
+   [
+    "local-directory-cell",
+    392
+   ],
+   [
+    "symbol-anchor",
+    300
+   ],
+   [
+    "P",
+    295
+   ],
+   [
+    "local-reading-block",
+    273
+   ],
+   [
+    "local-reading-prose",
+    273
+   ],
+   [
+    "local-reading-full",
+    273
+   ],
+   [
+    "symbol-label-text",
+    273
+   ],
+   [
+    "local-symbol-pin",
+    273
+   ],
+   [
+    "CODE",
+    233
+   ],
+   [
+    "local-symbol-read",
+    193
+   ],
+   [
+    "local-symbol-more",
+    110
+   ],
+   [
+    "node-link",
+    86
+   ],
+   [
+    "local-disclosure",
+    86
+   ],
+   [
+    "DIV",
+    85
+   ],
+   [
+    "local-reading-role",
+    85
+   ],
+   [
+    "SPAN",
+    85
+   ],
+   [
+    "type-badge",
+    84
+   ],
+   [
+    "local-file-name",
+    80
+   ],
+   [
+    "local-file-name-text",
+    80
+   ],
+   [
+    "local-file-name-held",
+    80
+   ],
+   [
+    "local-card-actions",
+    80
+   ],
+   [
+    "local-file-read",
+    80
+   ],
+   [
+    "local-file-pin",
+    80
+   ],
+   [
+    "node-path",
+    80
+   ],
+   [
+    "symbol-label-wrapper",
+    80
+   ],
+   [
+    "node-directory",
+    80
+   ],
+   [
+    "local-file-recentre",
+    79
+   ],
+   [
+    "circle",
+    79
+   ],
+   [
+    "type-refs-indicator",
+    67
+   ],
+   [
+    "local-reading-types",
+    67
+   ],
+   [
+    "node-meta",
+    60
+   ],
+   [
+    "node-tests__item",
+    48
+   ],
+   [
+    "local-handle-cells",
+    30
+   ],
+   [
+    "local-directory-row",
+    19
+   ],
+   [
+    "local-directory-controls",
+    19
+   ],
+   [
+    "local-directory-ancestors",
+    19
+   ],
+   [
+    "node-tests",
+    19
+   ]
+  ],
+  "cardCustom": 23,
+  "cardCustomNames": [
+   "--reading-available-width",
+   "--reading-card-width",
+   "--reading-prose-height",
+   "--reading-frame-height",
+   "--local-column-gap",
+   "--hover-dim-symbols",
+   "--hover-dim-connections",
+   "--slot-lines",
+   "--text-scale",
+   "--name-growth",
+   "--control-scale",
+   "--look-from-scale",
+   "--look-zoom",
+   "--look-keep",
+   "--hub-y",
+   "--overview-name-scale",
+   "--title-room-w",
+   "--title-head-h",
+   "--title-card-h",
+   "--title-more-h",
+   "--file-kept-x",
+   "--file-kept-y",
+   "--foot-scale"
+  ],
+  "cardInline": "--overview-name-scale: 3.600; --title-room-w: 345.2; --title-head-h: 100.5; --title-card-h: 420; --title-more-h: 20; --file-kept-x: 12.01; --file-kept-y: 47.01; --foot-scale: 2.2;",
+  "cardLook": "2.200"
+ },
+ "readers": {
+  "written": [
+   "--text-scale",
+   "--control-scale",
+   "--name-growth",
+   "--look-from-scale",
+   "--look-zoom",
+   "--look-keep"
+  ],
+  "reachedProperties": [
+   "--text-scale",
+   "--control-scale",
+   "--name-growth",
+   "--look-from-scale",
+   "--look-zoom",
+   "--look-keep"
+  ],
+  "readingRules": 0,
+  "elementsReading": 0,
+  "lookRules": 0,
+  "elementsMatchedByLookRules": 0,
+  "totalRules": 0,
+  "mapElements": 11860
+ },
+ "styles": [
+  {
+   "ms": 2.1,
+   "elements": 1
+  },
+  {
+   "ms": 170,
+   "elements": 284
+  },
+  {
+   "ms": 4.5,
+   "elements": 5
+  },
+  {
+   "ms": 104.4,
+   "elements": 212
+  },
+  {
+   "ms": 3.5,
+   "elements": 5
+  },
+  {
+   "ms": 110,
+   "elements": 212
+  },
+  {
+   "ms": 60.6,
+   "elements": 110
+  },
+  {
+   "ms": 4096.6,
+   "elements": 6479
+  },
+  {
+   "ms": 98.3,
+   "elements": 212
+  },
+  {
+   "ms": 89.6,
+   "elements": 212
+  },
+  {
+   "ms": 164.6,
+   "elements": 279
+  },
+  {
+   "ms": 663,
+   "elements": 982
+  },
+  {
+   "ms": 2036.6,
+   "elements": 2384
+  },
+  {
+   "ms": 94.4,
+   "elements": 212
+  },
+  {
+   "ms": 455.2,
+   "elements": 1406
+  }
+ ],
+ "invalidation": [
+  [
+   "StyleRecalcInvalidationTracking: Related style rule",
+   3519
+  ],
+  [
+   "LayoutInvalidationTracking: Removed from layout",
+   2706
+  ],
+  [
+   "LayoutInvalidationTracking: Style changed",
+   1819
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: has",
+   1748
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Invalidation set matched class",
+   1545
+  ],
+  [
+   "StyleRecalcInvalidationTracking: Attribute",
+   1446
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Invalidation set matched tagName",
+   1439
+  ],
+  [
+   "LayoutInvalidationTracking: Added to layout",
+   1212
+  ],
+  [
+   "LayoutInvalidationTracking: SVG resource invalidated",
+   1120
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Invalidation set invalidates self",
+   859
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: hidden",
+   784
+  ],
+  [
+   "StyleRecalcInvalidationTracking: Animation",
+   649
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: style",
+   467
+  ],
+  [
+   "StyleRecalcInvalidationTracking: Inline CSS style declaration was mutated",
+   466
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Element has pending invalidation list",
+   88
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: local-reading-faded",
+   80
+  ],
+  [
+   "StyleRecalcInvalidationTracking: Node was inserted into tree",
+   29
+  ],
+  [
+   "StyleRecalcInvalidationTracking: PseudoClass",
+   9
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Invalidation set matched id",
+   4
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: local-look-fading",
+   2
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: data-step",
+   1
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: data-look-from",
+   1
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: data-look",
+   1
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: data-lod",
+   1
+  ],
+  [
+   "StyleInvalidatorInvalidationTracking: Invalidation set invalidates subtree",
+   1
+  ],
+  [
+   "ScheduleStyleInvalidationTracking: empty",
+   1
+  ]
+ ],
+ "selectorMsTotal": 110.6,
+ "selectorTop": [
+  {
+   "selector": ".node-card:is(:has(.local-file-read), .local-slot-card) .symbol-row",
+   "ms": 7.36,
+   "attempts": 1092,
+   "matches": 1092
+  },
+  {
+   "selector": ":is(.history-step-actions, .history-step-dialog-header) button",
+   "ms": 7.28,
+   "attempts": 3704,
+   "matches": 0
+  },
+  {
+   "selector": "#main:has(#detail-panel.visible:not(.reading-dialog)) #controls",
+   "ms": 6.44,
+   "attempts": 4,
+   "matches": 0
+  },
+  {
+   "selector": "body:has(#map-container[data-lod=\"overview\"]) #local-legend .legend-row--gathered",
+   "ms": 5.26,
+   "attempts": 4,
+   "matches": 0
+  },
+  {
+   "selector": "[data-looks=\"three\"] .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory, .node-tests, .node-meta, .local-reading-slo",
+   "ms": 4.36,
+   "attempts": 12379,
+   "matches": 1507
+  },
+  {
+   "selector": ":is([data-lod=\"middle\"], [data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory",
+   "ms": 3.88,
+   "attempts": 12379,
+   "matches": 335
+  },
+  {
+   "selector": ":is(.history-step-content, .history-step-dialog-body) > :last-child",
+   "ms": 3.46,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": ":is(.local-closed-cells, .local-closed-cells-held) :is(.local-cell-nest, .local-cell--named)",
+   "ms": 3.27,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": "[data-looks=\"three\"]:is([data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory,",
+   "ms": 2.99,
+   "attempts": 12379,
+   "matches": 897
+  },
+  {
+   "selector": ":is([data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card :is(.local-symbol-read, .local-symbol-pin, .local-disclosure, .local-back-references)",
+   "ms": 2.63,
+   "attempts": 12379,
+   "matches": 452
+  },
+  {
+   "selector": "button",
+   "ms": 2.07,
+   "attempts": 14816,
+   "matches": 13416
+  },
+  {
+   "selector": "[data-lod=\"overview\"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor)",
+   "ms": 1.84,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": "div",
+   "ms": 1.62,
+   "attempts": 7122,
+   "matches": 6764
+  },
+  {
+   "selector": "[data-lod=\"reading\"]:not([data-step=\"0\"]) .local-slot-card .symbol-row:not(.local-name-wraps)",
+   "ms": 1.58,
+   "attempts": 1092,
+   "matches": 0
+  },
+  {
+   "selector": "button:disabled",
+   "ms": 1.52,
+   "attempts": 7408,
+   "matches": 0
+  },
+  {
+   "selector": ":is([data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card .local-card-actions > :not(.local-file-more)",
+   "ms": 1.5,
+   "attempts": 12379,
+   "matches": 480
+  },
+  {
+   "selector": "body.dragging *",
+   "ms": 1.43,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": ".local-look-fading[data-looks=\"three\"][data-look-from=\"reading\"] .local-slot-card :is(.local-symbol-pin, .local-symbol-read)",
+   "ms": 1.37,
+   "attempts": 12379,
+   "matches": 140
+  },
+  {
+   "selector": ":not(svg)",
+   "ms": 1.28,
+   "attempts": 3132,
+   "matches": 2436
+  },
+  {
+   "selector": "[data-looks=\"three\"][data-lod=\"overview\"] .local-slot-card .symbol-row:not(.symbol-pinned-named) > :is(.symbol-label-wrapper, .symbol-anchor)",
+   "ms": 1.26,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": ".symbol-row > *",
+   "ms": 1.18,
+   "attempts": 12379,
+   "matches": 640
+  },
+  {
+   "selector": ".local-look-fading[data-looks=\"three\"]:is([data-lod=\"overview\"], [data-look-from=\"overview\"]) .local-slot-card .symbol-row:not(.symbol-pinned-named) :is(.symbol",
+   "ms": 1.14,
+   "attempts": 12379,
+   "matches": 0
+  },
+  {
+   "selector": ":is([data-lod=\"middle\"], [data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card .symbol-row",
+   "ms": 1.14,
+   "attempts": 1092,
+   "matches": 819
+  },
+  {
+   "selector": ":is([data-lod=\"far\"], [data-lod=\"overview\"]) .local-slot-card .symbol-row",
+   "ms": 1.12,
+   "attempts": 1092,
+   "matches": 819
+  },
+  {
+   "selector": ".node-card:is(:has(.local-file-read), .local-slot-card) .symbol-row.branch-symbol-hidden",
+   "ms": 1.09,
+   "attempts": 652,
+   "matches": 652
+  }
+ ]
+}

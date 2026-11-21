@@ -1,0 +1,298 @@
+{
+ "condition": "weak",
+ "subject": "packages/engine/src/config/liveDocumentationConfig.ts",
+ "rules": {
+  "totalRules": 0,
+  "mapElements": 12040,
+  "byProperty": {
+   "--text-scale": {
+    "rules": 0,
+    "elementsMatched": 0
+   },
+   "--control-scale": {
+    "rules": 0,
+    "elementsMatched": 0
+   },
+   "--name-growth": {
+    "rules": 0,
+    "elementsMatched": 0
+   },
+   "--look-from-scale": {
+    "rules": 0,
+    "elementsMatched": 0
+   },
+   "--look-zoom": {
+    "rules": 0,
+    "elementsMatched": 0
+   },
+   "--look-keep": {
+    "rules": 0,
+    "elementsMatched": 0
+   }
+  },
+  "lookRules": {
+   "rules": 0,
+   "elementsMatched": 0
+  },
+  "declaringRules": 0
+ },
+ "boundRoots": {
+  "F": 30,
+  "G": 546,
+  "H": 576
+ },
+ "results": {
+  "A": {
+   "median": 757.6,
+   "min": 619.5,
+   "max": 906.8,
+   "elements": 7348,
+   "runs": [
+    {
+     "ms": 872.8,
+     "elements": 7348
+    },
+    {
+     "ms": 683,
+     "elements": 7348
+    },
+    {
+     "ms": 906.8,
+     "elements": 7348
+    },
+    {
+     "ms": 757.6,
+     "elements": 7348
+    },
+    {
+     "ms": 619.5,
+     "elements": 7348
+    }
+   ]
+  },
+  "A'": {
+   "median": 0.7,
+   "min": 0.1,
+   "max": 1.2,
+   "elements": 1,
+   "runs": [
+    {
+     "ms": 1.2,
+     "elements": 1
+    },
+    {
+     "ms": 0.1,
+     "elements": 1
+    },
+    {
+     "ms": 0.7,
+     "elements": 1
+    },
+    {
+     "ms": 0.1,
+     "elements": 1
+    },
+    {
+     "ms": 1.2,
+     "elements": 1
+    }
+   ]
+  },
+  "B": {
+   "median": 900.4,
+   "min": 640,
+   "max": 1304.5,
+   "elements": 6474,
+   "runs": [
+    {
+     "ms": 1304.5,
+     "elements": 6474
+    },
+    {
+     "ms": 900.4,
+     "elements": 6474
+    },
+    {
+     "ms": 1164.5,
+     "elements": 6474
+    },
+    {
+     "ms": 787,
+     "elements": 6474
+    },
+    {
+     "ms": 640,
+     "elements": 6474
+    }
+   ]
+  },
+  "C": {
+   "median": 603.8,
+   "min": 426.4,
+   "max": 1019.1,
+   "elements": 7348,
+   "runs": [
+    {
+     "ms": 1019.1,
+     "elements": 7348
+    },
+    {
+     "ms": 806,
+     "elements": 7348
+    },
+    {
+     "ms": 603.8,
+     "elements": 7348
+    },
+    {
+     "ms": 426.4,
+     "elements": 7348
+    },
+    {
+     "ms": 547.9,
+     "elements": 7348
+    }
+   ]
+  },
+  "D": {
+   "median": 1047.6,
+   "min": 814.2,
+   "max": 1185.8,
+   "elements": 6474,
+   "runs": [
+    {
+     "ms": 1185.8,
+     "elements": 6474
+    },
+    {
+     "ms": 1176.4,
+     "elements": 6474
+    },
+    {
+     "ms": 1047.6,
+     "elements": 6474
+    },
+    {
+     "ms": 858.7,
+     "elements": 6474
+    },
+    {
+     "ms": 814.2,
+     "elements": 6474
+    }
+   ]
+  },
+  "E": {
+   "median": 0,
+   "min": 0,
+   "max": 0,
+   "elements": 0,
+   "runs": [
+    {
+     "ms": 0,
+     "elements": 0
+    },
+    {
+     "ms": 0,
+     "elements": 0
+    },
+    {
+     "ms": 0,
+     "elements": 0
+    },
+    {
+     "ms": 0,
+     "elements": 0
+    },
+    {
+     "ms": 0,
+     "elements": 0
+    }
+   ]
+  },
+  "F": {
+   "median": 1145.3,
+   "min": 600.3,
+   "max": 1355,
+   "elements": 6131,
+   "runs": [
+    {
+     "ms": 1145.3,
+     "elements": 6131
+    },
+    {
+     "ms": 1164,
+     "elements": 6131
+    },
+    {
+     "ms": 1355,
+     "elements": 6131
+    },
+    {
+     "ms": 956,
+     "elements": 6131
+    },
+    {
+     "ms": 600.3,
+     "elements": 6131
+    }
+   ]
+  },
+  "G": {
+   "median": 813.5,
+   "min": 579.8,
+   "max": 1098,
+   "elements": 5984,
+   "runs": [
+    {
+     "ms": 1098,
+     "elements": 5984
+    },
+    {
+     "ms": 839.5,
+     "elements": 5984
+    },
+    {
+     "ms": 813.5,
+     "elements": 5984
+    },
+    {
+     "ms": 693.6,
+     "elements": 5984
+    },
+    {
+     "ms": 579.8,
+     "elements": 5984
+    }
+   ]
+  },
+  "H": {
+   "median": 827.8,
+   "min": 572.9,
+   "max": 1125,
+   "elements": 5641,
+   "runs": [
+    {
+     "ms": 1125,
+     "elements": 5641
+    },
+    {
+     "ms": 890.8,
+     "elements": 5641
+    },
+    {
+     "ms": 827.8,
+     "elements": 5641
+    },
+    {
+     "ms": 693.3,
+     "elements": 5641
+    },
+    {
+     "ms": 572.9,
+     "elements": 5641
+    }
+   ]
+  }
+ }
+}
