@@ -119,11 +119,11 @@ async function resolveScriptDependencies(
   for (const match of content.matchAll(SCRIPT_SRC_PATTERN)) {
     const written = match[1]?.trim();
     if (!written || REMOTE_ADDRESS.test(written)) continue;
-    const bare = written.replace(/[?#].*$/su, "");
+    const bare = written.replace(/\\/gu, "/").replace(/[?#].*$/su, "");
     if (!bare || bare.includes("<%") || bare.startsWith("@")) continue;
 
     // A script named without an extension is its `.js` file when there is one.
-    const asScript = path.posix.extname(bare) ? undefined : await resolveDirectivePath(`${bare}.js`, thisFile, workspaceRoot, fileIndex);
+    const asScript = path.extname(bare) ? undefined : await resolveDirectivePath(`${bare}.js`, thisFile, workspaceRoot, fileIndex);
     const resolved = asScript && "file" in asScript ? asScript : await resolveDirectivePath(bare, thisFile, workspaceRoot, fileIndex);
     if ("file" in resolved) {
       dependencies.push(fileDependency(resolved.file));
