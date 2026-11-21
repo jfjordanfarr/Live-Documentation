@@ -882,8 +882,11 @@ describe("the history with workers kept and without", () => {
     fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
     for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One file"]]) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
     process.env.TSX_TSCONFIG_PATH = tsconfigPath;
-    const run = (keepWorkers: boolean, removeSuperseded: boolean) =>
-      computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, keepWorkers, removeSuperseded, progress: () => undefined });
+    let lines: string[] = [];
+    const run = (keepWorkers: boolean, removeSuperseded: boolean) => {
+      lines = [];
+      return computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, keepWorkers, removeSuperseded, progress: (line) => lines.push(line) });
+    };
     const apart = path.join(here, (await run(false, false)).cache);
     const kept = path.join(here, (await run(true, false)).cache);
     const older = path.join(path.dirname(apart), "0123456789abcdef");
@@ -894,6 +897,9 @@ describe("the history with workers kept and without", () => {
       expect(fs.existsSync(older), `keepWorkers ${keepWorkers}`).toBe(false);
       expect([fs.existsSync(apart), fs.existsSync(kept)], `keepWorkers ${keepWorkers}`).toEqual([true, true]);
       expect(result.superseded.map((cache) => cache.lens)).toEqual(["0123456789abcdef"]);
+      // The twin is listed with its size in words of its own, never as superseded.
+      const twin = path.relative(here, keepWorkers ? apart : kept).split(path.sep).join("/");
+      expect(lines.filter((line) => line.includes(twin))).toEqual([expect.stringMatching(new RegExp(`^kept ${twin}, the same code's cache under the other way of running workers: \\d`, "u"))]);
     }
   }, 300_000);
 

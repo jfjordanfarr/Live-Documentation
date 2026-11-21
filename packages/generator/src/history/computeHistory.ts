@@ -471,6 +471,14 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   for (const cache of superseded) {
     options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
   }
+  // The twin is never superseded, but it is disk the person may want to know of, so it is listed with its size too.
+  const twinFolder = path.join(historyFolder, twin);
+  if (await fs.stat(twinFolder).then((stats) => stats.isDirectory(), (error: unknown) => {
+    throwIfMachineFailure(error);
+    return false;
+  })) {
+    options.progress(`kept ${relative(twinFolder)}, the same code's cache under the other way of running workers: ${formatBytes(await folderBytes(twinFolder))}`);
+  }
   if (superseded.some((cache) => !cache.removed)) {
     options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
   }
