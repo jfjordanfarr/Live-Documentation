@@ -299,7 +299,8 @@ export function clearSymbolHighlightDOM(
 ): void {
   const hadCollapsed = container.querySelector(".symbol-collapsed") !== null;
 
-  container.classList.remove("symbol-hover-active", "connections-lit");
+  // A wire answer's mark goes with the highlight it marked (wire-answers.ts), whoever clears it.
+  container.classList.remove("symbol-hover-active", "connections-lit", "wire-lit");
   overlay.classList.remove("symbol-hover-active");
 
   container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {

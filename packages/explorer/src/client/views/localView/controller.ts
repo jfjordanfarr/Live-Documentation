@@ -76,6 +76,7 @@ import type {
   MapTransform,
   ReadingControl
 } from "./types";
+import { WireAnswers } from "./wire-answers";
 import { atScale, CLOSEST_SCALE, farthestScale } from "./zoom-limits";
 
 /** Whether the person prefers reduced motion: a step's pan is then a cut, and an arrival rests on its end at once. */
@@ -380,6 +381,10 @@ export class LocalViewController implements LocalViewApi {
   /** The fades at the frame's edges that say the picture continues past them. */
   private readonly edgeSigns: EdgeSigns;
   private readonly cutSigns: CutSigns;
+  /** The Wire Answers trial (2026-11-21): a wire's words beside it, on a rest, a press or the keyboard's focus. */
+  private readonly wireAnswers: WireAnswers;
+  /** The width of a wire's band last written, in the map's units: twelve of the screen's pixels at the camera's scale. */
+  private wireBand = 0;
 
   /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
   private layerObserver: ResizeObserver | null = null;
@@ -501,6 +506,15 @@ export class LocalViewController implements LocalViewApi {
     this.cutSigns = createCutSigns(this.viewport, (edge, cards) => {
       const frame = this.frameRect();
       this.easeFollowing(cutPan(cards, edge, this.mapTransform, frame), frame);
+    });
+    this.wireAnswers = new WireAnswers({
+      view: this.viewport,
+      layer: () => this.container.parentElement,
+      container: this.container,
+      overlay: this.overlay,
+      scale: () => this.mapTransform.k,
+      enabled: () => this.options.state.tuning.localMap.wireAnswers === "on" && this.isShown(),
+      dragging: () => this.runtime.isDragging || this.pinch !== null
     });
     this.viewport.style.cursor = "grab";
     this.bindItemEvents();
@@ -832,6 +846,7 @@ export class LocalViewController implements LocalViewApi {
     // light again: the frames of a move report nothing, and its final frame reports the picture it arrived at (2026-11-15).
     if (!this.stage?.move) this.options.onBackwardConnections?.(backward);
     if (this.flowHover) this.applyFlowHover();
+    this.wireAnswers.redrawn();
   }
 
   /** Applies or removes the `selected` / `local-focus` CSS classes on node cards to reflect the current selection. */
@@ -924,6 +939,8 @@ export class LocalViewController implements LocalViewApi {
       this.overlay,
       () => this.drawConnections()
     );
+    // A wire's pinned words keep their wire lit once another hover has ended.
+    this.wireAnswers.relight();
   }
 
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
@@ -1734,6 +1751,20 @@ export class LocalViewController implements LocalViewApi {
     this.options.onZoomLimits?.(limits);
   }
 
+  /**
+   * Under Wire Answers, a wire's band stays twelve of the screen's pixels wide at every zoom (written only when the scale
+   * has moved by more than a hundredth), and a wire's words move with it.
+   */
+  private answerWires(): void {
+    if (this.options.state.tuning.localMap.wireAnswers !== "on") return;
+    const band = 12 / (this.mapTransform.k || 1);
+    if (Math.abs(band - this.wireBand) > band * 0.01) {
+      this.wireBand = band;
+      this.overlay.style.setProperty("--wire-band", `${band.toFixed(2)}px`);
+    }
+    this.wireAnswers.follow();
+  }
+
   /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */
   updateMapTransform(): void {
     // Apply transform to the viewport wrapper so container and overlay share the same stacking context
@@ -1746,6 +1777,7 @@ export class LocalViewController implements LocalViewApi {
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     this.sayCut();
+    this.answerWires();
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
     // From this frame's own scale, not the animation's destination: the owner saw the fonts "jump up in size before
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).

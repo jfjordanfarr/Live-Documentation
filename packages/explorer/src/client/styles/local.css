@@ -596,6 +596,45 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 .connections-lit.symbol-hover-active .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
 #map-connections .connection-path.returning:focus { outline: none; }
 #map-connections .connection-path.returning:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
+/* The Wire Answers trial (2026-11-21): a wire's band, an undrawn stroke along its route, twelve of the screen's pixels
+   wide or the wire's own width and a little, takes the pointer and the keyboard's focus for the wire (wire-answers.ts).
+   It draws nothing: its stroke is transparent, and the wire itself shows that it is asked about only by the others'
+   fading. The hand says it can be pressed; a drag from it still pans the map. */
+#map-connections .wire-band {
+    fill: none;
+    stroke: transparent;
+    stroke-width: max(var(--wire-band, 12px), calc(var(--wire-width, 2.2px) + 6px));
+    stroke-linecap: butt;
+    pointer-events: stroke;
+    cursor: pointer;
+}
+#map-connections .wire-band:focus { outline: none; }
+/* A wire's words, in the World Map wire panel's form (world.css, .world-evidence) and the 2D map's own floating ground:
+   its head names the two files, then what is used and how many references. A peek takes no pointer; pinned, it takes
+   one for its close control, and its border is the selected colour's. */
+.wire-answer {
+    position: absolute;
+    z-index: 32;
+    box-sizing: border-box;
+    max-width: 466px;
+    padding: 10px 12px;
+    background: var(--ground-deep);
+    border: 1px solid var(--line-border);
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(var(--ground-shade-rgb), 0.4);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+.wire-answer[hidden] { display: none; }
+.wire-answer.pinned { pointer-events: auto; border-color: var(--state-selected); border-left-width: 3px; }
+.wire-answer .head { display: flex; align-items: flex-start; gap: 8px; }
+.wire-answer .h { flex: 1; font-weight: 600; font-size: 13px; margin-bottom: 3px; color: var(--text-muted); }
+.wire-answer .name { color: var(--text-normal); }
+.wire-answer .close { flex: none; display: inline-flex; margin: -4px -6px 0 0; padding: 3px; border: 0; border-radius: 4px; background: none; color: var(--text-muted); cursor: pointer; }
+.wire-answer .close:hover, .wire-answer .close:focus-visible { color: var(--state-selected); }
+.wire-answer .close:focus-visible { outline: 2px solid var(--state-selected); }
 /* The shared run of a bundle beneath its wires, as wide as their number; it carries no reference and never highlights. */
 .connection-path.bundle-run { opacity: .45; stroke-linecap: butt; }
 /* Under a hover the run dims with every wire it carries; without this rule its own opacity above outranked the hover's

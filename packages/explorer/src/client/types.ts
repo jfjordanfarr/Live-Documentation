@@ -152,6 +152,18 @@ export interface LocalMapTuning {
    */
   cutCounted: CutCounted;
   /**
+   * Whether a 2D wire answers when asked (a trial of 2026-11-21, default off, on strangers' stumble over which way a line
+   * runs): a pointer resting on a wire, a press on it or the keyboard's focus fades the others and shows, beside it, which
+   * file uses which, what it uses and how many references (wire-answers.ts).
+   */
+  wireAnswers: WireAnswersChoice;
+  /**
+   * Small open chevrons on each 2D wire (a trial of 2026-11-21, default none): "along", from what is offered to what uses
+   * it, the owner's rule; "against", from the user to what it uses, the dependency arrow's convention, there only to learn
+   * which a stranger brings (wire-marks.ts).
+   */
+  directionMarks: DirectionMarks;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -432,6 +444,18 @@ export type CutCounted = "off" | "on";
 
 /** Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
 export const CUT_COUNTED: readonly CutCounted[] = ["off", "on"];
+
+/** Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: off, the default, or on (a trial, 2026-11-21). */
+export type WireAnswersChoice = "off" | "on";
+
+/** Every Wire Answers choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
+export const WIRE_ANSWERS: readonly WireAnswersChoice[] = ["off", "on"];
+
+/** The way a 2D wire's marks point: none drawn, along the owner's rule, or against it (a trial, 2026-11-21). */
+export type DirectionMarks = "none" | "along" | "against";
+
+/** Every Direction Marks choice, in the order the control offers them; the first, none, is the default. */
+export const DIRECTION_MARKS: readonly DirectionMarks[] = ["none", "along", "against"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

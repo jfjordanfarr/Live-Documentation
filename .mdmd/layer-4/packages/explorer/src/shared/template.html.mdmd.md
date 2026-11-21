@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-21T07:10:15.562Z
+- Generated At: 2026-11-21T09:00:49.482Z
 
 ## Authored
 ### Purpose
@@ -253,6 +253,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-descriptions-zoomed-out` {#symbol-tuning-descriptions-zoomed-out}
+- Type: variable
+
+#### `tuning-direction-marks` {#symbol-tuning-direction-marks}
 - Type: variable
 
 #### `tuning-directory-layout` {#symbol-tuning-directory-layout}
@@ -583,6 +586,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-width-cost-value` {#symbol-tuning-width-cost-value}
+- Type: variable
+
+#### `tuning-wire-answers` {#symbol-tuning-wire-answers}
 - Type: variable
 
 #### `tuning-zoom-looks` {#symbol-tuning-zoom-looks}
