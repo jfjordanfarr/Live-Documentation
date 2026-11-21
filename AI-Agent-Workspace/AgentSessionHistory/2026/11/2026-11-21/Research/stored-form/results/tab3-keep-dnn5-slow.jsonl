@@ -1,0 +1,12 @@
+browser-lane: waiting behind step-framing, stored-form
+browser-lane: stored-form holds the lane (waited 118.8 s, cap 300 s)
+{"kind":"write","page":"write-press-kept.html","mode":"stream","rate":4,"cores":2,"loadBefore":11.4,"pageReadyMs":188,"scriptStartedMs":76,"files":53880,"writeMs":40223.1,"bytes":7472274,"sha256":"bb3e3593e47d5158a64aabc195d7b97f3c3647bf00b2690baeeac8bff4af549a","heapMb":53,"rendererPeakMbAtWrite":313,"errors":[],"rendererPeakMb":313,"loadAfter":8.9}
+{"kind":"keep","page":"write-press-kept.html","mode":"<scratch>/profiles/f","rate":4,"cores":2,"loadBefore":8.9,"profile":"f","pageReadyMs":178,"scriptStartedMs":49,"files":53880,"frames":427,"writeMs":38376.7,"bytes":7472274,"sha256":"bb3e3593e47d5158a64aabc195d7b97f3c3647bf00b2690baeeac8bff4af549a","rendererPeakMbAtWrite":316,"errors":[],"rendererPeakMb":316,"loadAfter":6.9}
+browser-lane: released after 81.2 s, exit 0
+browser-lane: waiting behind step-framing, step-framing
+browser-lane: stored-form holds the lane (waited 31.6 s, cap 300 s)
+{"kind":"keep","page":"write-press-kept.html","mode":"<scratch>/profiles/g","rate":4,"cores":2,"loadBefore":5.7,"profile":"g","pageReadyMs":243,"scriptStartedMs":104,"closedAtShare":0.6,"rendererPeakMbAtClose":265,"closed":true,"errors":[],"rendererPeakMb":0,"loadAfter":5.8}
+{"kind":"resume","page":"write-press-kept.html","mode":"<scratch>/profiles/g","rate":4,"cores":2,"loadBefore":5.8,"profile":"g","pageReadyMs":144,"scriptStartedMs":50,"framesFound":255,"bytesFound":4325645,"filesBack":32512,"lastPath":"copy-4/DNN Platform/Connectors/GoogleAnalytics4/Images/GoogleAnalytics4_32X32_Standard.png","findMs":4071.1,"files":53880,"totalMs":20360.8,"bytes":7472274,"sha256":"bb3e3593e47d5158a64aabc195d7b97f3c3647bf00b2690baeeac8bff4af549a","rendererPeakMbAtWrite":351,"errors":[],"rendererPeakMb":351,"loadAfter":5.5}
+browser-lane: released after 47.3 s, exit 0
+browser-lane: waiting behind step-framing
+browser-lane: stored-form holds the lane (waited 5.0 s, cap 300 s)

@@ -1,0 +1,12 @@
+{"load":21.93,"design":"press, resumable and self-naming","spread":64,"mode":"wait","files":53880,"furthestDisplaced":41,"maxHeld":42,"ms":10424,"peakMb":290,"peakMbBefore":66,"bytes":7472274}
+{"load":19.95,"design":"press, resumable and self-naming","spread":1024,"mode":"wait","files":53880,"furthestDisplaced":548,"maxHeld":549,"ms":9347,"peakMb":345,"peakMbBefore":69,"bytes":7472274}
+{"load":18.25,"design":"press, resumable and self-naming","spread":1024,"mode":"sort","files":53880,"furthestDisplaced":548,"maxHeld":53880,"ms":8599,"peakMb":565,"peakMbBefore":68,"bytes":7472274}
+{"load":17.51,"design":"ledger","spread":64,"mode":"wait","files":53880,"furthestDisplaced":41,"maxHeld":42,"ms":14419,"peakMb":172,"peakMbBefore":67,"bytes":14079732}
+{"load":14.91,"design":"ledger","spread":1024,"mode":"wait","files":53880,"furthestDisplaced":548,"maxHeld":549,"ms":13969,"peakMb":190,"peakMbBefore":69,"bytes":14079732}
+{"load":12.88,"design":"ledger","spread":1024,"mode":"sort","files":53880,"furthestDisplaced":548,"maxHeld":53880,"ms":15871,"peakMb":470,"peakMbBefore":68,"bytes":14079732}
+{"load":11.38,"design":"indexed ledger","spread":64,"mode":"wait","files":53880,"furthestDisplaced":41,"maxHeld":42,"ms":7805,"peakMb":397,"peakMbBefore":66,"bytes":15000121}
+{"load":10.71,"design":"indexed ledger","spread":1024,"mode":"wait","files":53880,"furthestDisplaced":548,"maxHeld":549,"ms":8119,"peakMb":436,"peakMbBefore":68,"bytes":15000121}
+{"load":10.14,"design":"indexed ledger","spread":1024,"mode":"sort","files":53880,"furthestDisplaced":548,"maxHeld":53880,"ms":8450,"peakMb":778,"peakMbBefore":69,"bytes":15000121}
+{"load":9.78,"design":"press, written as facts arrive","spread":64,"mode":"wait","files":53880,"furthestDisplaced":41,"maxHeld":42,"ms":6740,"peakMb":296,"peakMbBefore":66,"bytes":6813331}
+{"load":9.32,"design":"press, written as facts arrive","spread":1024,"mode":"wait","files":53880,"furthestDisplaced":548,"maxHeld":549,"ms":6352,"peakMb":309,"peakMbBefore":68,"bytes":6813331}
+{"load":8.86,"design":"press, written as facts arrive","spread":1024,"mode":"sort","files":53880,"furthestDisplaced":548,"maxHeld":53880,"ms":6727,"peakMb":558,"peakMbBefore":69,"bytes":6813331}
