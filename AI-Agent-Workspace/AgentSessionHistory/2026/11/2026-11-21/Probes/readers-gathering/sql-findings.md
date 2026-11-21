@@ -60,6 +60,8 @@ The emitter had one fault of its own: ScriptDom holds a part left out between tw
 
 Measured by dumping every line the adapter writes, file by file, and comparing the dumps. The new grader on the same commits gives 969 of 969, 29 of 29 and 6,961 of 6,962 throughout: neither mend moved a committed score, so no expectation was touched.
 
+Two more corpora were graded after both mends, since the reader is shared. dbatools' `.sql` (`bin/`) gives 26 of 26 objects and 199 of 199 dependency lines, its record's. utPLSQL at `01a89eae`, fetched for this into scratch and graded whole by `npm run oracle:plsql` (its two graded folders could not be copied apart, below), gives 512 files read, 365 graded, 147 refused, and 658 dependency lines expected, 337 right, 321 missing, 370 invented: the whole checkout's figures in [the join's table](README.md#plsql-against-the-antlr-projects-grammar), unchanged.
+
 ### Forks decided
 
 - **Where the binding lives.** `bindSqlName` is in `openings.ts`, beside `matchSqlObject`, and only the SQL adapter calls it. The C# adapter reads SQL held in strings through the same reader and matches as before, a one-part name to every schema; it is a sibling's file, and adopting the binding there is one call. `sqlObjectName`'s change to `database..name` does reach the C# adapter and the estate join, since they share it.
@@ -133,4 +135,17 @@ A simpler form was considered and refused: committing each program's three count
 
 ### A fault in the comparison's own bookkeeping
 
-`rust/stockroom`'s two missing project references are no references: `compare.ts` builds every compiler project's file as `<directory>/<name>.csproj`, and rust-analyzer's Cargo targets come out as `src/stockroom src/main.rs.csproj → src/stockroom.csproj`. The project bucket is .NET's alone and should be read only for .NET projects, or name the manifest the compiler read. Not mended here: the projects' shape is written by `scip-edges.ts`, which is not this piece's.
+`rust/stockroom`'s two missing project references are not real references: `compare.ts` builds every compiler project's file as `<directory>/<name>.csproj`, and rust-analyzer's Cargo targets come out as `src/stockroom src/main.rs.csproj → src/stockroom.csproj`. The project bucket is .NET's alone and should be read only for .NET projects, or name the manifest the compiler read. Not mended here: the projects' shape is written by `scip-edges.ts`, which is not this piece's.
+
+## Verification
+
+`npm run safe:commit`, without the browser, at the part-two commits: Live Docs generated and validated (1,227 files), lint and build, unit tests 3,000 in 222 files, integration tests 480 in 36 files, the documentation link enforcement and the three SlopCop audits, all passing.
+
+The harness refused three shell commands of this builder's, none of them reached another way: a heredoc writing a scratch script (written with the file tool instead), a generation run chained with `git status` (run apart), and a copy of utPLSQL's `source/` folder, whose name the harness read as the shell's `source` command; utPLSQL was graded whole instead of by its two folders.
+
+## Open
+
+- **The C# adapter's SQL strings** still match a one-part name to every schema; `bindSqlName` is one call away for its owner.
+- **A three-part name to another database** links to the folder's object of the same schema and name, from source, as before. Whether it should is the linked server's question asked of a sister database.
+- **`dbo.X` against an object created as `X`**, without a schema: no line on either side, as before; not counted.
+- **The compiler's edges**: the ledger by cause above, for the root to rule on.
