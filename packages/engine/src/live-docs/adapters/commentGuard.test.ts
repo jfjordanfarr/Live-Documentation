@@ -32,7 +32,7 @@ import type { WorkspaceFileIndex } from "./index";
 import { heldToLedger, listedButNotRun } from "./knownDifferences";
 import { writtenOver } from "./treeSitter";
 
-/** This test's name as the ledger of known differences (`known-differences.json`) lists it. */
+/** This test's name as the ledger of known differences (`KNOWN_CAUSES` in `knownDifferences.ts`) lists it. */
 const LEDGERED = (): string => `commentGuard.test.ts > ${expect.getState().currentTestName ?? ""}`;
 
 /** A way of writing the construct that the language does not run: the commented construct and the live one, as the file's text. */
