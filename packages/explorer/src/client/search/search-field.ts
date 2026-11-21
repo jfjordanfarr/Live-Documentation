@@ -6,7 +6,8 @@
 
 import { announce, withdraw } from "../announce";
 import { escapeHtml } from "../graph-helpers";
-import { searchGraph, searchRows, type SearchGroup, type SearchHit, type SearchRow, type SearchScope } from "./graph-search";
+import { DIRECTORY_ICON, FILE_ICON } from "../panels/icon-button";
+import { DIRECTORY_LIMIT, FILE_LIMIT, searchGraph, searchRows, type SearchHit, type SearchResult, type SearchRow, type SearchScope } from "./graph-search";
 
 /** What a search field is made from: its input and its results element, the scope it searches, and what is done with the thing chosen. */
 export interface SearchFieldOptions {
@@ -30,12 +31,58 @@ export interface SearchField {
 /** What the results say, and the page's status region with them, when the words find nothing. */
 const NOTHING_FOUND = "Nothing found";
 
-/** A row of the field: a search row, or the fold that opens the files kept apart. */
-type FieldRow = SearchRow | { kind: "apart"; count: number };
+/** A row of the field: a search row, marked when it stands among the files kept apart, or the fold that opens them. */
+type FieldRow = (SearchRow & { apart?: boolean }) | { kind: "apart"; count: number };
+
+/** A search row that counts what the limits left out, and lists it when pressed. */
+type CountFold = Extract<SearchRow, { kind: "more" | "more-files" | "elsewhere" | "more-directories" }>;
+
+/** What a section of the list has been asked to show beyond the limits since the words last changed. */
+interface Revealed {
+  directories: Set<string>;
+  elsewhere: number;
+  directoryLimit: number;
+}
+
+const unrevealed = (): Revealed => ({ directories: new Set(), elsewhere: 0, directoryLimit: DIRECTORY_LIMIT });
 
 /** The words a row carries when the scope gives none: a file's kind, a directory's. */
 function plainBadge(hit: SearchHit): string {
   return hit.kind === "file" ? hit.node.archetype : hit.kind === "directory" ? "directory" : "";
+}
+
+/** The arrow of a fold, the one the map's cut signs point down with: more lies below, and a press brings it. */
+const FOLD_ARROW = '<svg class="search-fold-arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
+
+/** A kind's glyph beside a fold's count, so that a count at the list's end says what it counts. */
+const foldGlyph = (drawing: string): string =>
+  `<svg class="search-fold-glyph" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawing}</svg>`;
+
+const plural = (count: number, one: string, many: string): string => `${count} ${count === 1 ? one : many}`;
+
+/**
+ * The words of a fold for a screen reader and a resting pointer: what it counts, and what a press shows. On the
+ * screen it is an arrow and the count, and the kind's glyph where its place does not say the kind.
+ */
+export function foldName(fold: CountFold): string {
+  const them = (count: number, step: number): string => count <= step ? (count === 1 ? "show it" : "show them") : `show the next ${step}`;
+  switch (fold.kind) {
+    case "more": return `${plural(fold.count, "more symbol", "more symbols")} of ${fold.node.name}: ${them(fold.count, fold.count)}`;
+    case "more-files": return `${plural(fold.count, "more file", "more files")} in ${fold.directory || "the scan root"}: ${them(fold.count, fold.count)}`;
+    case "elsewhere": return `${plural(fold.count, "more file", "more files")} in other directories: ${them(fold.count, FILE_LIMIT)}`;
+    case "more-directories": return `${plural(fold.count, "more directory", "more directories")}: ${them(fold.count, DIRECTORY_LIMIT)}`;
+  }
+}
+
+/** What a row names, so that the rows a press brings can be told from those that stood before it. */
+function rowKey(row: FieldRow): string {
+  const apart = "apart" in row && row.apart ? "apart:" : "";
+  switch (row.kind) {
+    case "directory": return `${apart}directory:${row.directory}`;
+    case "file": return `${apart}file:${row.node.id}`;
+    case "symbol": return `${apart}symbol:${row.node.id}:${row.symbol}`;
+    default: return "";
+  }
 }
 
 /** Make a search field over an input and a results element: typing searches the scope, the arrows walk the rows, Enter or a click chooses, Escape settles. */
@@ -46,6 +93,7 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   let rows: FieldRow[] = [];
   let selected = -1;
   let expanded = new Set<string>();
+  let revealed = { offered: unrevealed(), apart: unrevealed() };
   let apartOpen = false;
   // Whether the results now say that nothing was found, so that the page's status region says it once.
   let emptyShown = false;
@@ -65,6 +113,14 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     + (context ? `<span class="search-row-context">${escapeHtml(context)}</span>` : "")
     + (badge ? `<span class="search-row-badge${words ? " search-row-badge--words" : ""}">${escapeHtml(badge)}</span>` : "")
     + "</div>";
+
+  /** A fold: an arrow, the count and, where its place does not say the kind, the kind's glyph; its words on hover and to a screen reader. */
+  const foldRow = (fold: CountFold, apart: boolean): string => {
+    const name = escapeHtml(foldName(fold));
+    const glyph = fold.kind === "elsewhere" ? foldGlyph(FILE_ICON) : fold.kind === "more-directories" ? foldGlyph(DIRECTORY_ICON) : "";
+    return `<div class="search-row search-row--fold search-row--${fold.kind}${apart ? " is-apart" : ""}" role="option" aria-selected="false" aria-label="${name}" title="${name}">`
+      + `<span class="search-fold">${FOLD_ARROW}<span class="search-fold-count">${fold.count}</span>${glyph}</span></div>`;
+  };
 
   /** Mark the selected row, name it as the input's active descendant, and keep it in view. */
   const mark = (): void => {
@@ -93,29 +149,35 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
       return;
     }
     const scope = options.scope();
-    const offered = searchGraph(query, scope.index, { expanded });
-    const apart = scope.apart ? searchGraph(query, scope.apart.index, { expanded }) : null;
+    const find = (over: SearchScope["index"], asked: Revealed): SearchResult => searchGraph(query, over, {
+      expanded, expandedDirectories: asked.directories, elsewhere: asked.elsewhere, directoryLimit: asked.directoryLimit
+    });
+    const offered = find(scope.index, revealed.offered);
+    const apart = scope.apart ? find(scope.apart.index, revealed.apart) : null;
     const html: string[] = [];
     const list: FieldRow[] = [];
     const words = !!scope.badge;
-    const section = (groups: readonly SearchGroup[], badgeOf: (hit: SearchHit) => string, isApart: boolean): void => {
-      for (const group of groups) {
+    const section = (result: SearchResult, badgeOf: (hit: SearchHit) => string, isApart: boolean): void => {
+      for (const group of result.groups) {
         const heading = group.directory || "Scan root";
         if (group.matched) html.push(row("directory", heading, badgeOf({ kind: "directory", directory: group.directory }), "", isApart, words));
         else html.push(`<div class="search-group${isApart ? " is-apart" : ""}" role="presentation">${escapeHtml(heading)}</div>`);
         for (const file of group.files) {
           html.push(row("file", file.node.name, badgeOf({ kind: "file", node: file.node }), file.node.codeRelativePath, isApart, words));
           for (const symbol of file.symbols) html.push(row("symbol", symbol, "", "", isApart));
-          if (file.moreSymbols > 0) html.push(row("more", `${file.moreSymbols} more ${file.moreSymbols === 1 ? "symbol" : "symbols"}`, "", "", isApart));
+          if (file.moreSymbols > 0) html.push(foldRow({ kind: "more", node: file.node, count: file.moreSymbols }, isApart));
         }
+        if (group.moreFiles > 0) html.push(foldRow({ kind: "more-files", directory: group.directory, count: group.moreFiles }, isApart));
       }
-      list.push(...searchRows(groups));
+      if (result.elsewhere > 0) html.push(foldRow({ kind: "elsewhere", count: result.elsewhere }, isApart));
+      if (result.moreDirectories > 0) html.push(foldRow({ kind: "more-directories", count: result.moreDirectories }, isApart));
+      list.push(...searchRows(result).map(each => isApart ? { ...each, apart: true } : each));
     };
-    section(offered.groups, hit => scope.badge?.(hit) ?? plainBadge(hit), false);
+    section(offered, hit => scope.badge?.(hit) ?? plainBadge(hit), false);
     if (scope.apart && apart && apart.files > 0) {
       html.push(row("apart", scope.apart.fold(apart.files, offered.files > 0), "", ""));
       list.push({ kind: "apart", count: apart.files });
-      if (apartOpen) section(apart.groups, () => scope.apart!.badge, true);
+      if (apartOpen) section(apart, () => scope.apart!.badge, true);
     }
     rows = list;
     selected = rows.length ? Math.min(Math.max(selected, 0), rows.length - 1) : -1;
@@ -149,21 +211,37 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     hide();
     query = "";
     expanded = new Set();
+    revealed = { offered: unrevealed(), apart: unrevealed() };
     apartOpen = false;
     input.value = shown;
+  };
+
+  /** Show what a fold counts, and move the keyboard's row to the first row it brought, wherever its group stands. */
+  const unfold = (fold: CountFold & { apart?: boolean }): void => {
+    const asked = fold.apart ? revealed.apart : revealed.offered;
+    if (fold.kind === "more") expanded.add(fold.node.id);
+    else if (fold.kind === "more-files") asked.directories.add(fold.directory);
+    else if (fold.kind === "elsewhere") asked.elsewhere += FILE_LIMIT;
+    else asked.directoryLimit += DIRECTORY_LIMIT;
+    const before = new Set(rows.map(rowKey));
+    render();
+    const brought = rows.findIndex(each => rowKey(each) !== "" && !before.has(rowKey(each)));
+    if (brought >= 0) {
+      selected = brought;
+      mark();
+    }
   };
 
   const choose = (at: number): void => {
     const chosen = rows[at];
     if (!chosen) return;
-    if (chosen.kind === "more") {
-      expanded.add(chosen.node.id);
-      render();
-      return;
-    }
     if (chosen.kind === "apart") {
       apartOpen = !apartOpen;
       render();
+      return;
+    }
+    if (chosen.kind !== "directory" && chosen.kind !== "file" && chosen.kind !== "symbol") {
+      unfold(chosen);
       return;
     }
     settle();
@@ -175,6 +253,8 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   const search = (): void => {
     query = input.value;
     selected = 0;
+    // What a fold showed belongs to the words it was pressed under; a file's symbols, named by the file, stay shown
+    revealed = { offered: unrevealed(), apart: unrevealed() };
     render();
   };
   input.addEventListener("input", search);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/icon-button.ts`
-- Generated At: 2026-11-19T21:10:13.749Z
+- Generated At: 2026-11-21T09:00:28.949Z
 
 ## Authored
 ### Purpose
@@ -40,23 +40,30 @@ The shared release glyph.
 ##### `DIRECTORY_ICON` — Summary
 A directory has containment, rather than the exposed-symbol marker of a file.
 
-#### `PIN_ICON` {#symbol-pin_icon}
+#### `FILE_ICON` {#symbol-file_icon}
 - Type: const
 - Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L18)
+
+##### `FILE_ICON` — Summary
+A file: a page with its corner turned.
+
+#### `PIN_ICON` {#symbol-pin_icon}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L21)
 
 ##### `PIN_ICON` — Summary
 Retain the file or symbol's connections.
 
 #### `CENTRE_ICON` {#symbol-centre_icon}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L24)
 
 ##### `CENTRE_ICON` — Summary
 Bring the named item to the centre of the map.
 
 #### `MORE_ICON` {#symbol-more_icon}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L24)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/icon-button.ts#L27)
 
 ##### `MORE_ICON` — Summary
 The item's additional commands.

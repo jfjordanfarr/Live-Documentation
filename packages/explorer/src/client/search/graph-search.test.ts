@@ -26,7 +26,7 @@ describe("directoriesOf", () => {
 
 describe("searchGraph", () => {
   it("finds nothing for an empty query and splits words", () => {
-    expect(searchGraph("   ", index)).toEqual({ groups: [], files: 0 });
+    expect(searchGraph("   ", index)).toEqual({ groups: [], files: 0, elsewhere: 0, moreDirectories: 0 });
     expect(termsOf("  Map  Camera ")).toEqual(["map", "camera"]);
   });
 
@@ -73,6 +73,104 @@ describe("searchGraph", () => {
   });
 });
 
+describe("a directory named by its path", () => {
+  // Shaped like the folder six blind testers were asked about on 2026-11-21: each typed its name or path first, and a
+  // path offered no row for the folder, only twelve of its 32 files under a heading
+  const history = "packages/engine/src/live-docs/history";
+  const pathIndex = searchIndexOf([
+    ...Array.from({ length: 32 }, (_, i) => file(`${history}/part${String(i).padStart(2, "0")}.ts`)),
+    file("packages/generator/src/history/generatorIdentity.ts"),
+    file("packages/engine/src/live-docs/historyless/other.ts"),
+    file("tests/integration/live-docs/expected/repository-entries.json", ["entries:scripts/live-docs/history.ts"])
+  ]);
+  const offered = (query: string, over: SearchIndex = pathIndex): string[] =>
+    searchGraph(query, over).groups.filter(group => group.matched).map(group => group.directory);
+
+  const historyless = "packages/engine/src/live-docs/historyless";
+
+  it("offers the directory whose last segments the words' segments are, by the end of its path or the whole", () => {
+    expect(offered("live-docs/history")).toEqual([history, historyless]);
+    expect(offered(history)).toEqual([history, historyless]);
+    expect(offered("src/live-docs/history")).toEqual([history, historyless]);
+    expect(offered("Live-Docs/History"), "without regard to case").toEqual([history, historyless]);
+  });
+
+  it("matches the last segment, still being typed, by its start, and every other segment whole", () => {
+    expect(offered("live-docs/hist")).toEqual([history, historyless]);
+    expect(offered("docs/history"), "a segment before the last is never matched by a part of it").toEqual([]);
+    expect(offered("engine/history"), "segments are consecutive").toEqual([]);
+    expect(offered("history/"), "a closing slash ends the last segment").toEqual([history, "packages/generator/src/history"]);
+    expect(offered("live-docs/history/")).toEqual([history]);
+  });
+
+  it("puts the directory named most exactly first: a whole segment before a begun one, the whole path before its end", () => {
+    expect(offered("live-docs/history")[0], "history whole, before historyless begun").toBe(history);
+    const nested = searchIndexOf([file("a/b/one.ts"), file("x/a/b/two.ts")]);
+    expect(offered("a/b", nested)).toEqual(["a/b", "x/a/b"]);
+    expect(searchGraph("a/b", nested).groups[0].directory).toBe("a/b");
+  });
+
+  it("stands the directory named by its path first, ahead of a file that only exposes a symbol of those words", () => {
+    const [first] = searchRows(searchGraph("live-docs/history", pathIndex));
+    expect(first).toEqual({ kind: "directory", directory: history });
+  });
+
+  it("still offers a directory by its bare name as before", () => {
+    expect(offered("history")).toEqual([history, "packages/generator/src/history", historyless]);
+  });
+});
+
+describe("the cut said", () => {
+  const history = "packages/engine/src/live-docs/history";
+  const pathIndex = searchIndexOf([
+    ...Array.from({ length: 32 }, (_, i) => file(`${history}/part${String(i).padStart(2, "0")}.ts`)),
+    ...Array.from({ length: 5 }, (_, i) => file(`elsewhere/d${i}/history-note${i}.md`))
+  ]);
+
+  it("counts under a group the files of its directory that matched but are not listed, and lists them all once expanded", () => {
+    const capped = searchGraph("live-docs/history", pathIndex);
+    const [group] = capped.groups;
+    expect(group.directory).toBe(history);
+    expect(group.files).toHaveLength(12);
+    expect(group.moreFiles).toBe(20);
+    const open = searchGraph("live-docs/history", pathIndex, { expandedDirectories: new Set([history]) });
+    expect(open.groups[0].files).toHaveLength(32);
+    expect(open.groups[0].moreFiles).toBe(0);
+  });
+
+  it("counts the matched files of directories no group stands for, and lists the next of them when asked", () => {
+    // "history" names the five notes by their name and the 32 by their path; no directory is offered by name here
+    const result = searchGraph("history", pathIndex, { fileLimit: 3, directoryLimit: 0 });
+    expect(result.groups.flatMap(group => group.files).map(entry => entry.node.name)).toEqual(["history-note0.md", "history-note1.md", "history-note2.md"]);
+    expect(result.elsewhere, "two notes and the folder's 32, none of whose directories stands").toBe(34);
+    const further = searchGraph("history", pathIndex, { fileLimit: 3, directoryLimit: 0, elsewhere: 3 });
+    expect(further.groups.flatMap(group => group.files).map(entry => entry.node.name)).toEqual([
+      "history-note0.md", "history-note1.md", "history-note2.md", "history-note3.md", "history-note4.md", "part00.ts"
+    ]);
+    // The folder's group now stands, so the rest of its files are counted under it, not elsewhere
+    expect(further.groups.find(group => group.directory === history)?.moreFiles).toBe(31);
+    expect(further.elsewhere).toBe(0);
+  });
+
+  it("counts the directories named beyond the limit, and offers them when the limit is raised", () => {
+    const libs = searchIndexOf(Array.from({ length: 8 }, (_, i) => file(`p${i}/lib/x.ts`)));
+    const capped = searchGraph("lib", libs);
+    expect(capped.groups.filter(group => group.matched)).toHaveLength(6);
+    expect(capped.moreDirectories).toBe(2);
+    const all = searchGraph("lib", libs, { directoryLimit: 12 });
+    expect(all.groups.filter(group => group.matched)).toHaveLength(8);
+    expect(all.moreDirectories).toBe(0);
+  });
+
+  it("walks each fold where what it counts would stand: a group's files under them, the rest at the end", () => {
+    const rows = searchRows(searchGraph("live-docs/history", pathIndex, { fileLimit: 2 }));
+    expect(rows.map(row => row.kind)).toEqual(["directory", "file", "file", "more-files"]);
+    expect(rows[3]).toEqual({ kind: "more-files", directory: history, count: 30 });
+    const ends = searchRows(searchGraph("history", pathIndex, { fileLimit: 1, directoryLimit: 0 }));
+    expect(ends.slice(-2)).toEqual([{ kind: "elsewhere", count: 36 }, { kind: "more-directories", count: 1 }]);
+  });
+});
+
 describe("ranking", () => {
   // Shaped like this repository's own: typing "generator" once listed generator.ts in the ninth row, behind a symbol of
   // tsconfig.base.json and the file exposing GeneratorIdentity, because the name was scored with its extension and the
@@ -101,7 +199,7 @@ describe("ranking", () => {
 
   it("puts the file named by the words first, whether or not its extension was typed", () => {
     for (const typed of ["generator", "generator.ts", "Generator"]) {
-      const [first] = searchRows(groupsOf(typed, generatorIndex)).filter(row => row.kind === "file");
+      const [first] = searchRows(searchGraph(typed, generatorIndex)).filter(row => row.kind === "file");
       expect(first.kind === "file" && first.node.id, typed).toBe("packages/generator/src/generator.ts");
     }
   });
@@ -130,11 +228,11 @@ describe("ranking", () => {
 
 describe("searchRows", () => {
   it("walks a matched directory, then each file, its symbols and its fold, in reading order", () => {
-    const rows = searchRows(groupsOf("project", index));
+    const rows = searchRows(searchGraph("project", index));
     expect(rows.map(row => row.kind)).toEqual(["file", "symbol", "symbol", "symbol", "symbol", "symbol", "more", "file", "symbol"]);
     const more = rows[6];
     expect(more.kind === "more" && more.count).toBe(2);
-    const named = searchRows(groupsOf("map", index));
+    const named = searchRows(searchGraph("map", index));
     expect(named[0]).toEqual({ kind: "directory", directory: "src/map" });
   });
 });

@@ -25,16 +25,25 @@ export interface SearchFile {
 /** A directory and the files found in it, directly or below. */
 export interface SearchGroup {
   directory: string;
-  /** Whether the directory's own name matched, so that the directory itself is offered. */
+  /** Whether the directory's own name or path matched, so that the directory itself is offered. */
   matched: boolean;
   files: SearchFile[];
+  /** Files of this directory the words matched beyond the limits, not listed; zero once the directory is expanded. */
+  moreFiles: number;
 }
 
-/** What a search found: the groups within the limits, and how many files the words matched before them. */
+/**
+ * What a search found: the groups within the limits, how many files the words matched before them, and what the limits
+ * left out where no group stands to count it.
+ */
 export interface SearchResult {
   groups: SearchGroup[];
   /** The files matched, counted before the file limit, so that a fold can say how many are not listed. */
   files: number;
+  /** Matched files not listed whose directory has no group: counted at the end of the list, where they would follow. */
+  elsewhere: number;
+  /** Directories the words name beyond the directory limit, not offered. */
+  moreDirectories: number;
 }
 
 /** What a field searches: the index offered, the words on an offered row, and the files kept apart under a fold. */
@@ -52,8 +61,17 @@ export interface SearchScope {
   };
 }
 
-/** A row the keyboard walks: a thing to choose, or the fold that reveals a file's remaining symbols. */
-export type SearchRow = SearchHit | { kind: "more"; node: ExplorerNodePayload; count: number };
+/**
+ * A row the keyboard walks: a thing to choose, or a fold that counts what the limits left out and lists it when
+ * pressed: a file's remaining symbols, a group's remaining files, the files of directories no group stands for, and
+ * the directories beyond the limit.
+ */
+export type SearchRow =
+  | SearchHit
+  | { kind: "more"; node: ExplorerNodePayload; count: number }
+  | { kind: "more-files"; directory: string; count: number }
+  | { kind: "elsewhere"; count: number }
+  | { kind: "more-directories"; count: number };
 
 /** What a search is run over: the files, and every directory above them, computed once. */
 export interface SearchIndex {
@@ -61,20 +79,29 @@ export interface SearchIndex {
   directories: readonly string[];
 }
 
-/** What a search is told beyond its words: which files list their matched symbols in full, and how many files, directories and symbols are offered. */
+/**
+ * What a search is told beyond its words: which files list their matched symbols in full, which directories list
+ * their matched files in full, and how many files, directories and symbols are offered.
+ */
 export interface SearchOptions {
   /** Files whose matched symbols are listed in full. */
   expanded?: ReadonlySet<string>;
+  /** Directories whose matched files are listed in full, beyond the file limit. */
+  expandedDirectories?: ReadonlySet<string>;
   /** The most files offered; the best scores win. */
   fileLimit?: number;
-  /** The most directories offered by their own name. */
+  /** Of the files the limit leaves out in directories no group stands for, how many to list as well, best first. */
+  elsewhere?: number;
+  /** The most directories offered by their own name or path. */
   directoryLimit?: number;
   /** Matched symbols listed under a file that is not expanded. */
   symbolCap?: number;
 }
 
-const FILE_LIMIT = 12;
-const DIRECTORY_LIMIT = 6;
+/** The files listed at first, and how many more a press on the files left elsewhere lists. */
+export const FILE_LIMIT = 12;
+/** The directories offered at first, and how many more a press on the directories left out offers. */
+export const DIRECTORY_LIMIT = 6;
 const SYMBOL_CAP = 5;
 
 /** Every directory above the files, the scan root as "", deepest last within a branch. */
@@ -110,10 +137,32 @@ function termScore(name: string, term: string): number {
   return name.includes(term) ? 25 : 0;
 }
 
-/** How well a directory's name answers the words, each word scored on its own and the scores summed. */
-function nameScore(name: string, terms: readonly string[]): number {
+/**
+ * How well a directory answers the words, each word scored on its own and the scores summed. A word without a slash
+ * is scored against the directory's last segment, its name. A word with one is a path, which names the directory
+ * when its segments are the directory's last segments: each whole, except the last, which may still be being typed
+ * and so is matched by its start, unless a closing slash ends it. Exact scores as a name does, begun as a name's
+ * prefix does, and the whole path typed, from the top, counts a little more than its end (2026-11-21: six blind
+ * testers asked what a folder held typed its path, and no row offered the folder).
+ */
+export function directoryScore(directory: string, terms: readonly string[]): number {
+  const segments = directory.toLowerCase().split("/");
+  const name = segments.at(-1) ?? "";
   let score = 0;
-  for (const term of terms) score += termScore(name, term);
+  for (const term of terms) {
+    if (!term.includes("/")) {
+      score += termScore(name, term);
+      continue;
+    }
+    const typed = term.split("/").filter(Boolean);
+    if (directory === "" || typed.length === 0 || typed.length > segments.length) continue;
+    const tail = segments.slice(-typed.length);
+    if (!typed.slice(0, -1).every((segment, at) => segment === tail[at])) continue;
+    const last = typed.at(-1)!;
+    const ended = term.endsWith("/");
+    const named = tail.at(-1) === last ? 100 : !ended && tail.at(-1)!.startsWith(last) ? 50 : 0;
+    if (named) score += named + (typed.length === segments.length ? 10 : 0);
+  }
   return score;
 }
 
@@ -136,17 +185,20 @@ export function fileNameScore(name: string, terms: readonly string[]): number {
 
 /**
  * The files and directories the words find, grouped by directory. A file scores by its name first, its path and its
- * symbols after, as the Explorer's searches always have; a directory by its last segment. The best-scored files are
- * kept; the groups stand in the order of their best score, a matched directory's own score counted with its files',
- * ties by directory, and the files inside a group by score, then name.
+ * symbols after, as the Explorer's searches always have; a directory by its name, or by its path when a word holds a
+ * slash (`directoryScore`). The best-scored files are kept, with every matched file of an expanded directory and the
+ * next files asked for elsewhere; the groups stand in the order of their best score, a matched directory's own score
+ * counted with its files', ties by directory, and the files inside a group by score, then name. What the limits leave
+ * out is counted where it would stand: under its directory's group when one stands, else at the end.
  */
 export function searchGraph(query: string, index: SearchIndex, options: SearchOptions = {}): SearchResult {
   const terms = termsOf(query);
-  if (terms.length === 0) return { groups: [], files: 0 };
+  if (terms.length === 0) return { groups: [], files: 0, elsewhere: 0, moreDirectories: 0 };
   const fileLimit = options.fileLimit ?? FILE_LIMIT;
   const directoryLimit = options.directoryLimit ?? DIRECTORY_LIMIT;
   const symbolCap = options.symbolCap ?? SYMBOL_CAP;
   const expanded = options.expanded ?? new Set<string>();
+  const expandedDirectories = options.expandedDirectories ?? new Set<string>();
 
   const matchedFiles = index.nodes
     .map(node => {
@@ -166,13 +218,26 @@ export function searchGraph(query: string, index: SearchIndex, options: SearchOp
     })
     .filter(entry => entry.score > 0)
     .sort((a, b) => b.score - a.score || a.node.id.localeCompare(b.node.id));
-  const files = matchedFiles.slice(0, fileLimit);
 
-  const directories = index.directories
-    .map(directory => ({ directory, score: nameScore((directory.split("/").pop() ?? "").toLowerCase(), terms) }))
+  const named = index.directories
+    .map(directory => ({ directory, score: directoryScore(directory, terms) }))
     .filter(entry => entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.directory.localeCompare(b.directory))
-    .slice(0, directoryLimit);
+    .sort((a, b) => b.score - a.score || a.directory.localeCompare(b.directory));
+  const directories = named.slice(0, directoryLimit);
+
+  // The best-scored files, every matched file of an expanded directory, and the next files asked for from the
+  // directories that stood for none of those
+  const standing = new Set(directories.map(entry => entry.directory));
+  for (const entry of matchedFiles.slice(0, fileLimit)) standing.add(directoryOf(entry.node.id));
+  for (const directory of expandedDirectories) standing.add(directory);
+  let elsewhereAsked = options.elsewhere ?? 0;
+  const files = matchedFiles.filter((entry, at) => {
+    const directory = directoryOf(entry.node.id);
+    if (at < fileLimit || expandedDirectories.has(directory)) return true;
+    if (standing.has(directory) || elsewhereAsked <= 0) return false;
+    elsewhereAsked--;
+    return true;
+  });
 
   // Each group with its best score: a matched directory's own, or its best file's
   const groups = new Map<string, { group: SearchGroup; score: number }>();
@@ -182,7 +247,7 @@ export function searchGraph(query: string, index: SearchIndex, options: SearchOp
       found.score = Math.max(found.score, score);
       return found.group;
     }
-    const group: SearchGroup = { directory, matched: false, files: [] };
+    const group: SearchGroup = { directory, matched: false, files: [], moreFiles: 0 };
     groups.set(directory, { group, score });
     return group;
   };
@@ -198,21 +263,37 @@ export function searchGraph(query: string, index: SearchIndex, options: SearchOp
       moreSymbols: entry.symbols.length - listed.length
     });
   }
+  // What the limits left out, counted under its directory's group, or at the end where no group stands for it
+  const listed = new Set(files);
+  let elsewhere = 0;
+  for (const entry of matchedFiles) {
+    if (listed.has(entry)) continue;
+    const group = groups.get(directoryOf(entry.node.id))?.group;
+    if (group) group.moreFiles++;
+    else elsewhere++;
+  }
   const ordered = [...groups.values()].sort((a, b) => b.score - a.score || a.group.directory.localeCompare(b.group.directory));
-  return { groups: ordered.map(entry => entry.group), files: matchedFiles.length };
+  return { groups: ordered.map(entry => entry.group), files: matchedFiles.length, elsewhere, moreDirectories: named.length - directories.length };
 }
 
-/** The rows of the groups in reading order: a matched directory, each file, its symbols, then the fold if any. */
-export function searchRows(groups: readonly SearchGroup[]): SearchRow[] {
+/**
+ * The rows of a result in reading order: for each group, a matched directory, each file with its symbols and their
+ * fold, then the fold of the group's remaining files; at the end, the fold of the files elsewhere, then that of the
+ * directories left out.
+ */
+export function searchRows(result: SearchResult): SearchRow[] {
   const rows: SearchRow[] = [];
-  for (const group of groups) {
+  for (const group of result.groups) {
     if (group.matched) rows.push({ kind: "directory", directory: group.directory });
     for (const file of group.files) {
       rows.push({ kind: "file", node: file.node });
       for (const symbol of file.symbols) rows.push({ kind: "symbol", node: file.node, symbol });
       if (file.moreSymbols > 0) rows.push({ kind: "more", node: file.node, count: file.moreSymbols });
     }
+    if (group.moreFiles > 0) rows.push({ kind: "more-files", directory: group.directory, count: group.moreFiles });
   }
+  if (result.elsewhere > 0) rows.push({ kind: "elsewhere", count: result.elsewhere });
+  if (result.moreDirectories > 0) rows.push({ kind: "more-directories", count: result.moreDirectories });
   return rows;
 }
 

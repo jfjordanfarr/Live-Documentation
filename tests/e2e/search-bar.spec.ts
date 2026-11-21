@@ -17,7 +17,7 @@ const INDEX = "packages/explorer/src/client/index.ts";
 const LAYOUT = "packages/explorer/src/client/views/forceGraphLayout.ts";
 const VIEWS = "packages/explorer/src/client/views";
 const ESTATE = "/samples/estate/";
-const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol"];
+const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", ".search-fold-count", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol"];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
@@ -268,17 +268,76 @@ test("a file's matched symbols are capped at five with the rest counted, and the
     let symbols = 0;
     let next = row.nextElementSibling;
     for (; next?.classList.contains("search-row--symbol"); next = next.nextElementSibling) symbols++;
-    const fold = next?.classList.contains("search-row--more") ? { text: next.textContent?.trim() ?? "", index: Number((next as HTMLElement).dataset.index) } : null;
+    const fold = next?.classList.contains("search-row--more")
+      ? { text: next.textContent?.trim() ?? "", name: next.getAttribute("aria-label"), index: Number((next as HTMLElement).dataset.index) }
+      : null;
     return { symbols, fold };
   });
   const capped = await under();
   expect(capped.symbols).toBe(5);
-  expect(capped.fold?.text).toBe(`${rich.matched.length - 5} more symbols`);
+  // The fold is the count with an arrow, as every fold of the list is since 2026-11-21; its words are its name
+  expect(capped.fold?.text).toBe(String(rich.matched.length - 5));
+  expect(capped.fold?.name).toBe(`${rich.matched.length - 5} more symbols of ${rich.node.name}: show them`);
   await results.locator(`.search-row[data-index="${capped.fold!.index}"]`).click();
   await expect(results).toBeVisible();
   const unfolded = await under();
   expect(unfolded.symbols).toBe(rich.matched.length);
   expect(unfolded.fold).toBeNull();
+});
+
+test("a folder is reached by its path, and the files its list leaves out are counted where they would stand and shown when asked", async ({ page }) => {
+  // Six blind testers asked what this folder holds (2026-11-21) each typed its name or path into the search first, and
+  // met twelve of its files under a heading, with no row for the folder and no sign of the rest
+  const HISTORY = "packages/engine/src/live-docs/history";
+  await page.goto(`/?view=local&mode=2d&node=${encodeURIComponent("packages/engine/src/live-docs/pathfind.ts")}`);
+  await page.locator(".local-placed").waitFor();
+  await localMapSettled(page);
+  const graph = await loadGraph(page, "/");
+  const inFolder = graph.nodes.filter(node => node.id.startsWith(`${HISTORY}/`) && !node.id.slice(HISTORY.length + 1).includes("/")).length;
+  expect(inFolder, "the folder holds more files than the list shows at first").toBeGreaterThan(12);
+
+  const results = page.locator("#search-subject-results");
+  const folder = results.locator(`.search-row--directory:has(.search-row-name:text-is("${HISTORY}"))`);
+  const folderFiles = () => results.locator(".search-row--file .search-row-context").evaluateAll((contexts, directory) =>
+    contexts.filter(context => context.textContent === `${directory}/${context.textContent!.split("/").pop()}`).length, HISTORY);
+  for (const typed of ["live-docs/history", HISTORY]) {
+    await page.click("#search-subject");
+    await page.keyboard.type(typed);
+    await expect(folder, `a row for the folder when "${typed}" is typed`).toBeVisible();
+    await expect(results.locator(".search-row").first(), "the folder named most exactly stands first").toHaveClass(/search-row--directory/u);
+    await expect(folder).toHaveAttribute("role", "option");
+    await page.keyboard.press("Escape");
+  }
+
+  // Under the folder's files, the count of those not shown: a number with an arrow, its words its accessible name
+  await page.click("#search-subject");
+  await page.keyboard.type("live-docs/history");
+  const fold = results.locator(".search-row--more-files");
+  await expect(fold).toHaveCount(1);
+  const shown = await folderFiles();
+  expect(shown).toBeLessThan(inFolder);
+  await expect(fold).toHaveText(String(inFolder - shown));
+  await expect(fold).toHaveAttribute("role", "option");
+  await expect(fold).toHaveAccessibleName(`${inFolder - shown} more files in ${HISTORY}: show them`);
+  expect(await fold.evaluate(element => element.previousElementSibling?.classList.contains("search-row--file")), "the count stands where the files would").toBe(true);
+
+  // Reached by the keyboard, Enter shows them all, and the keyboard's row moves to the first file it brought
+  const foldIndex = Number(await fold.getAttribute("data-index"));
+  for (let step = 0; step < foldIndex; step++) await page.keyboard.press("ArrowDown");
+  await expect(page.locator("#search-subject")).toHaveAttribute("aria-activedescendant", `search-subject-results-${foldIndex}`);
+  await page.keyboard.press("Enter");
+  await expect(results).toBeVisible();
+  await expect(fold).toHaveCount(0);
+  expect(await folderFiles()).toBe(inFolder);
+  const active = page.locator(`#${await page.locator("#search-subject").getAttribute("aria-activedescendant")}`);
+  await expect(active).toHaveClass(/search-row--file/u);
+  await expect(active).toHaveAttribute("aria-selected", "true");
+
+  // Pressing the folder's row opens it in the Local Map, its label drawn
+  await folder.click();
+  await localMapSettled(page);
+  expect(currentSnapshot(page).openDirectories.has(HISTORY)).toBe(true);
+  await expect(page.locator(`#map-container .local-directory-label[data-directory="${HISTORY}"]`)).toHaveCount(1);
 });
 
 test("the bar stands in every view, a file chosen on the World Map opens the Local Map pinned, and its words are never cut", async ({ page }) => {

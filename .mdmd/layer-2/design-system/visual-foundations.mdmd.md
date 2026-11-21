@@ -425,7 +425,7 @@ Counted from the stylesheets on 2026-11-18. Every word on screen is set in CSS; 
 
 - **The rule.** Italic marks text that speaks of something not itself on screen:
   - a placeholder (`.pin-tray-absent`);
-  - a summary of more (`.search-row--more`, `.search-row--apart`);
+  - a summary of more (`.search-row--apart`, the destination's files no path connects; the search's counts of what its limits leave out left italic words for an arrow and a number on 2026-11-21, `.search-fold`);
   - a status (`.loading-indicator`);
   - where a file lives (`.node-directory`);
   - the Internals row, a file's private implementation summarised in one row.

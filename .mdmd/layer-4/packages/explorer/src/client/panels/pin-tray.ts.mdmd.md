@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/pin-tray.ts`
-- Generated At: 2026-11-19T21:10:13.776Z
+- Generated At: 2026-11-21T09:00:28.991Z
 
 ## Authored
 ### Purpose
@@ -48,6 +48,7 @@ gives the words, or null when the pin stands.
 ### Dependencies
 - [`icon-button.CLOSE_ICON`](./icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.DIRECTORY_ICON`](./icon-button.ts.mdmd.md#symbol-directory_icon)
+- [`icon-button.FILE_ICON`](./icon-button.ts.mdmd.md#symbol-file_icon)
 - [`icon-button.MORE_ICON`](./icon-button.ts.mdmd.md#symbol-more_icon)
 - [`icon-button.iconButton`](./icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`item-menu.ItemCommand`](./item-menu.ts.mdmd.md#symbol-itemcommand) (type-only)
