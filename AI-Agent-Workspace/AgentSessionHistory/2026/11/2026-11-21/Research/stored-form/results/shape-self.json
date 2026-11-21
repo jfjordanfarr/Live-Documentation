@@ -1,0 +1,370 @@
+{
+  "graph": "self.json",
+  "wholeCompactJsonBytes": 6981523,
+  "counts": {
+    "files": 1134,
+    "symbols": 4244,
+    "sections": 3155,
+    "sectionLines": 6111,
+    "dependencies": 7667,
+    "dependenciesLinked": 6458,
+    "edges": 9375,
+    "edgesResolved": 8166,
+    "typeRefEdges": 1708,
+    "entries": 147,
+    "citedBy": 384,
+    "reExports": 0,
+    "filesWithSymbols": 680,
+    "filesWithAuthored": 1134,
+    "inboundPairs": 3047
+  },
+  "byteShares": {
+    "authored (the written words)": {
+      "bytes": 1961953,
+      "percentOfWhole": 28.1
+    },
+    "edges (the lines and type references, resolved)": {
+      "bytes": 1745551,
+      "percentOfWhole": 25
+    },
+    "dependencies (the lines as written)": {
+      "bytes": 823209,
+      "percentOfWhole": 11.8
+    },
+    "symbols: documentation sections (docstrings)": {
+      "bytes": 580313,
+      "percentOfWhole": 8.3
+    },
+    "symbols: name, slug, kind, flags, source line": {
+      "bytes": 539934,
+      "percentOfWhole": 7.7
+    },
+    "outbound + inbound (adjacency)": {
+      "bytes": 334018,
+      "percentOfWhole": 4.8
+    },
+    "symbols: type references (Returns, Parameters, ...)": {
+      "bytes": 216553,
+      "percentOfWhole": 3.1
+    },
+    "docPath": {
+      "bytes": 88051,
+      "percentOfWhole": 1.3
+    },
+    "key (the path as the files map's key)": {
+      "bytes": 64237,
+      "percentOfWhole": 0.9
+    },
+    "codePath": {
+      "bytes": 63103,
+      "percentOfWhole": 0.9
+    },
+    "citedBy": {
+      "bytes": 48431,
+      "percentOfWhole": 0.7
+    },
+    "layer, archetype, generatedAt": {
+      "bytes": 44656,
+      "percentOfWhole": 0.6
+    },
+    "entries": {
+      "bytes": 11026,
+      "percentOfWhole": 0.2
+    },
+    "reExports": {
+      "bytes": 0,
+      "percentOfWhole": 0
+    }
+  },
+  "sumOfSharesBytes": 6457932,
+  "strings": {
+    "path": {
+      "count": 1134,
+      "distinct": 1134,
+      "totalBytes": 60835,
+      "distinctBytes": 60835,
+      "medianBytes": 54,
+      "p90Bytes": 72,
+      "maxBytes": 105
+    },
+    "docPath": {
+      "count": 1134,
+      "distinct": 1134,
+      "totalBytes": 85783,
+      "distinctBytes": 85783,
+      "medianBytes": 76,
+      "p90Bytes": 94,
+      "maxBytes": 127
+    },
+    "archetype": {
+      "count": 1134,
+      "distinct": 3,
+      "totalBytes": 11770,
+      "distinctBytes": 23,
+      "medianBytes": 14,
+      "p90Bytes": 14,
+      "maxBytes": 14
+    },
+    "authored": {
+      "count": 1134,
+      "distinct": 1099,
+      "totalBytes": 1950198,
+      "distinctBytes": 1939892,
+      "medianBytes": 826,
+      "p90Bytes": 3969,
+      "maxBytes": 41404
+    },
+    "symbol name": {
+      "count": 4244,
+      "distinct": 3451,
+      "totalBytes": 65666,
+      "distinctBytes": 56901,
+      "medianBytes": 13,
+      "p90Bytes": 27,
+      "maxBytes": 73
+    },
+    "symbol slug": {
+      "count": 4244,
+      "distinct": 3389,
+      "totalBytes": 93104,
+      "distinctBytes": 78134,
+      "medianBytes": 20,
+      "p90Bytes": 33,
+      "maxBytes": 72
+    },
+    "symbol kind": {
+      "count": 4244,
+      "distinct": 32,
+      "totalBytes": 28113,
+      "distinctBytes": 222,
+      "medianBytes": 8,
+      "p90Bytes": 9,
+      "maxBytes": 17
+    },
+    "dependency label": {
+      "count": 7667,
+      "distinct": 2516,
+      "totalBytes": 160531,
+      "distinctBytes": 57507,
+      "medianBytes": 21,
+      "p90Bytes": 34,
+      "maxBytes": 61
+    },
+    "link": {
+      "count": 8166,
+      "distinct": 3969,
+      "totalBytes": 393320,
+      "distinctBytes": 187298,
+      "medianBytes": 45,
+      "p90Bytes": 79,
+      "maxBytes": 120
+    },
+    "edge kind": {
+      "count": 9375,
+      "distinct": 7,
+      "totalBytes": 60266,
+      "distinctBytes": 58,
+      "medianBytes": 6,
+      "p90Bytes": 9,
+      "maxBytes": 10
+    },
+    "edge to (path)": {
+      "count": 8166,
+      "distinct": 663,
+      "totalBytes": 398907,
+      "distinctBytes": 37300,
+      "medianBytes": 50,
+      "p90Bytes": 63,
+      "maxBytes": 105
+    },
+    "edge toSymbol": {
+      "count": 7706,
+      "distinct": 2298,
+      "totalBytes": 155053,
+      "distinctBytes": 47339,
+      "medianBytes": 20,
+      "p90Bytes": 27,
+      "maxBytes": 52
+    },
+    "section title": {
+      "count": 3155,
+      "distinct": 9,
+      "totalBytes": 22796,
+      "distinctBytes": 83,
+      "medianBytes": 7,
+      "p90Bytes": 7,
+      "maxBytes": 24
+    },
+    "section body (joined)": {
+      "count": 3155,
+      "distinct": 2995,
+      "totalBytes": 466437,
+      "distinctBytes": 460254,
+      "medianBytes": 83,
+      "p90Bytes": 339,
+      "maxBytes": 2063
+    },
+    "type name": {
+      "count": 2020,
+      "distinct": 601,
+      "totalBytes": 21397,
+      "distinctBytes": 7273,
+      "medianBytes": 11,
+      "p90Bytes": 17,
+      "maxBytes": 38
+    },
+    "parameter name": {
+      "count": 1283,
+      "distinct": 341,
+      "totalBytes": 7642,
+      "distinctBytes": 2222,
+      "medianBytes": 6,
+      "p90Bytes": 8,
+      "maxBytes": 24
+    },
+    "qualifier": {
+      "count": 875,
+      "distinct": 4,
+      "totalBytes": 7880,
+      "distinctBytes": 39,
+      "medianBytes": 9,
+      "p90Bytes": 9,
+      "maxBytes": 13
+    },
+    "symbol flag": {
+      "count": 5,
+      "distinct": 2,
+      "totalBytes": 37,
+      "distinctBytes": 16,
+      "medianBytes": 7,
+      "p90Bytes": 9,
+      "maxBytes": 9
+    }
+  },
+  "allStrings": {
+    "count": 68841,
+    "distinct": 20015,
+    "totalBytes": 3989735,
+    "distinctBytes": 2928988
+  },
+  "pathsFrontCoded": {
+    "pathBytes": 60835,
+    "sharedWithPrevious": 45435,
+    "percentShared": 74.7,
+    "directories": 274
+  },
+  "vocabularies": {
+    "archetype": {
+      "implementation": 722,
+      "test": 398,
+      "asset": 14
+    },
+    "symbol kind": {
+      "function": 1410,
+      "key": 665,
+      "interface": 664,
+      "const": 373,
+      "method": 217,
+      "variable": 202,
+      "type": 157,
+      "class": 146,
+      "field": 110,
+      "property": 60,
+      "unknown": 55,
+      "module": 38,
+      "constructor": 28,
+      "struct": 28,
+      "package": 26,
+      "enum": 10,
+      "record": 8,
+      "library": 8,
+      "setting": 7,
+      "route": 5,
+      "constant": 5,
+      "variant": 5,
+      "endpoint": 3,
+      "default": 2,
+      "table": 2
+    },
+    "edge kind": {
+      "import": 7629,
+      "parameter": 1049,
+      "returns": 586,
+      "extends": 41,
+      "re-export": 38,
+      "constraint": 27,
+      "implements": 5
+    },
+    "section title": {
+      "Summary": 2660,
+      "Parameters": 215,
+      "Returns": 157,
+      "Remarks": 64,
+      "Exceptions": 19,
+      "Links": 18,
+      "Examples": 17,
+      "Value": 3,
+      "Additional Documentation": 2
+    },
+    "qualifier": {
+      "type-only": 827,
+      "re-export": 38,
+      "contract": 7,
+      "configuration": 3
+    }
+  },
+  "degrees": {
+    "inbound": {
+      "median": 1,
+      "p90": 6,
+      "p99": 29,
+      "max": 72,
+      "zero": 472
+    },
+    "outbound": {
+      "median": 2,
+      "p90": 6,
+      "p99": 17,
+      "max": 47,
+      "zero": 283
+    },
+    "symbolsPerFile": {
+      "median": 1,
+      "p90": 10,
+      "p99": 31,
+      "max": 179
+    }
+  },
+  "questions": {
+    "subjects": {
+      "hub": "packages/engine/src/config/liveDocumentationConfig.ts",
+      "hubInbound": 72,
+      "reachableFrom": ".live-docs.config.json",
+      "reachableCount": 171,
+      "neighbourhoodOfHub": 73,
+      "typical": "packages/explorer/src/client/persistence/local-storage.test.ts",
+      "neighbourhoodOfTypical": 5
+    },
+    "what depends on this file (inbound)": {
+      "reads": "the file's inbound list, and the paths it names; without a stored inbound list, every file's edges",
+      "bytesWithStoredInbound": 3550,
+      "bytesWithoutStoredInbound": 479476,
+      "percentOfWholeWithout": 6.9
+    },
+    "what is reachable from here (outbound closure)": {
+      "reads": "the outbound list of every file the walk reaches, and their paths",
+      "bytes": 39410,
+      "allAdjacencyBytes": 334018,
+      "percentOfWhole": 0.56
+    },
+    "the Local Map of one file (the file and its neighbours, whole records)": {
+      "reads": "the full record of the file and of each file it is wired to either way",
+      "bytes": 657398,
+      "percentOfWhole": 9.42,
+      "medianFileBytes": 3657
+    },
+    "what changed between two commits": {
+      "reads": "two scans; per file, whether its facts differ, then the facts of those that do (measured in compare.mjs over two moments)"
+    }
+  }
+}

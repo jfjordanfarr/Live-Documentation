@@ -1,0 +1,104 @@
+{
+  "moments": [
+    "m1-0e88714c8.json",
+    "m2-cfe683fc5.json",
+    "m3-44fc8028a.json",
+    "m4-682ec1a55.json",
+    "m5-70a3b9481.json"
+  ],
+  "files": [
+    1036,
+    1052,
+    1067,
+    1132,
+    1132
+  ],
+  "bytes": {
+    "each moment its own file, summed": {
+      "json-gzip": 5163220,
+      "press": 4654197,
+      "ledger": 5372171
+    },
+    "ledger: the first moment, then each step's lines": 1921655,
+    "parts: every moment in one file": 3890546,
+    "parts: one moment alone (the last)": 1410988
+  },
+  "ledgerSteps": [
+    {
+      "removed": 1085,
+      "added": 1656
+    },
+    {
+      "removed": 1250,
+      "added": 1776
+    },
+    {
+      "removed": 2099,
+      "added": 4245
+    },
+    {
+      "removed": 2,
+      "added": 2
+    }
+  ],
+  "parts": {
+    "named": 1355,
+    "distinct": 331,
+    "sharedPercent": 75.6,
+    "perMoment": [
+      269,
+      270,
+      270,
+      273,
+      273
+    ]
+  },
+  "whatChanged": {
+    "json-gzip": {
+      "ms": 745.1,
+      "born": 99,
+      "dead": 3,
+      "changed": 197,
+      "sample": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/post-create.sh",
+        ".github/dependabot.yml"
+      ]
+    },
+    "press": {
+      "ms": 611.4,
+      "born": 99,
+      "dead": 3,
+      "changed": 197,
+      "sample": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/post-create.sh",
+        ".github/dependabot.yml"
+      ]
+    },
+    "ledger": {
+      "ms": 292.8,
+      "born": 99,
+      "dead": 3,
+      "changed": 197,
+      "sample": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/post-create.sh",
+        ".github/dependabot.yml"
+      ]
+    },
+    "parts": {
+      "ms": 831.3,
+      "partsRead": 72,
+      "partsInMoment": 273,
+      "born": 99,
+      "dead": 3,
+      "changed": 197,
+      "sample": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/post-create.sh",
+        ".github/dependabot.yml"
+      ]
+    }
+  }
+}
