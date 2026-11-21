@@ -43,7 +43,7 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 
 The owner's bar for the form (2026-11-19): "Don't just settle for JSON by default. Do a lot of research to choose a format that is going to be right for what we need at scale and prove it by the efficiency gains that are reaped." The values that research trades, as listed then: read by the Explorer's page with no network and nothing installed; read and written by Node on Windows with nothing compiled; the same bytes for the same facts; a question answered without reading the whole. Since 2026-11-21 there is one more: written by a page, and carried inside the one HTML file that page saves. The command line keeps the facts in a folder that ignores itself, the page keeps them in itself, and Markdown is exported from either, one way, when a person asks.
 
-**The research, two legs in (2026-11-21, [its account](../AgentSessionHistory/2026/11/2026-11-21/Research/stored-form/README.md), merged into the day branch as `323828e41`, read whole by root; a third leg is with its builder and the choice is the owner's, not made).** Seven forms holding the same facts, each read back identical field by field. The numbers that bear on the owner's machine are a Chromium tab slowed four times on two cores, on DNN (10,776 files) and on DNN repeated five times (53,880 files, which flatters forms that keep each string once):
+**The research, three legs (2026-11-21, [its account](../AgentSessionHistory/2026/11/2026-11-21/Research/stored-form/README.md), merged into the day branch as `323828e41` and `eb7be2344`, its second leg read whole by root and its third by its changes; the choice is the owner's, put to them at 05:26 UTC, not made).** Seven forms holding the same facts, each read back identical field by field. The numbers that bear on the owner's machine are a Chromium tab slowed four times on two cores, on DNN (10,776 files) and on DNN repeated five times (53,880 files, which flatters forms that keep each string once):
 
 | Form | Opens, DNN: first answer, whole map | Opens, five times DNN: first answer, memory | Saved page, DNN | Written as a scan goes, five times DNN | Read without our tool |
 | --- | --- | --- | ---: | --- | --- |
@@ -57,7 +57,21 @@ The owner's bar for the form (2026-11-19): "Don't just settle for JSON by defaul
 
 What it settled: JSON and the plain lines are out at fifty thousand files (1.3 GB to read in a tab). HDF5, which the owner named, writes different bytes for the same facts every time and weighs 5.6 MB in a page. SQLite is the best form on the command line alone (fastest read in place, least memory to write, a stopped scan kept to the last 512 files) and the worst to write in a page. Node and Chromium write byte for byte the same file for every form but SQLite (six header bytes) and HDF5, and "the same bytes" as the record uses it is met by naming a form's content with a hash. SQLite's three reasons for leaving in January 2026 were each tested: the duplication expires if it is the one store, its consumer's end does not apply to derived facts, and the native module's pain expired with Node's built-in. Five commits of history held as one file of lines and each step's changed lines take 1.92 MB against 5.16 MB as five JSON files.
 
-What it left open, sent on as a third leg: a page keeping a scan as it goes and going on after a closed tab (today a closed tab loses everything, in every form); the binary layout made resumable and self-naming; the indexed lines given a reader as careful as the binary layout's, since its memory and minutes are its simplest reader's; and what facts arriving out of path order cost. Two conditions it found for the engine's sink are written into [the design](../../.mdmd/layer-3/engine-and-hosts.mdmd.md): facts handed over in path order, and dependents built after the last file.
+**The third leg, the two finalists each at its best** (a tab slowed four times on two cores, taken in one hold of the browser):
+
+| | The binary layout, made resumable | The indexed lines of text, with a careful reader |
+| --- | --- | --- |
+| DNN, 10,776 files: first answer, whole map, memory | 0.2 s, 2.0 s, 215 MB | 0.17 s, 7.0 s, 250 MB |
+| Five times DNN: first answer, whole map, memory | 0.83 s, 11.0 s, 350 MB | 0.26 s, 27.6 s, 537 MB |
+| A walk of the wires, five times DNN | 13 ms | 1.8 s (it keeps no array of them; adding one is untried) |
+| Saved page, five times DNN | about 10 MB | about 20 MB |
+| Read without our tool | no | `zcat`, `grep`, `diff` |
+
+Most of what the indexed lines cost in the second leg was their simplest reader's (1.7 GB became 537 MB, 69 s became 27.6 s); what remains is the form's: every line is JSON to parse. The binary layout was made resumable and self-naming for 6 to 10 % more bytes: each section labelled, the footer a hash of its content.
+
+**A page that keeps a scan, and saves itself, is shown possible.** A page opened from disk put each finished piece into IndexedDB as the scan went (no more memory, at most 15 % more time). The browser was closed at sixty percent; a new browser found 6,400 of DNN's files in 3.4 s (32,512 of the larger corpus's in 4.1 s) and finished to the same bytes an unstopped scan writes, in Node or in a page. The page then built a copy of itself with the facts inside in under half a second at 53,880 files (10 MB), and the copy opened from disk and answered. Not measured: writing into a folder the person picks (its dialog cannot be driven), IndexedDB's allowance on a machine with a few gigabytes free, a browser killed outright.
+
+**For the engine's sink,** written into [the design](../../.mdmd/layer-3/engine-and-hosts.mdmd.md): facts handed over in path order, the engine owing a bound on how far out of order its readers finish (a wait of about five hundred files costs 20 to 55 MB; a sort at the end holds the whole scan); and each file's dependents built after the last file.
 
 ### One page that scans, shows the map and saves a copy of itself
 - state: open
