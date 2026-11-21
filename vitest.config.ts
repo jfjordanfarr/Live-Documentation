@@ -80,7 +80,8 @@ export default defineConfig({
         extends: true,
         test: {
           name: "integration",
-          include: ["tests/integration/live-docs/**/*.test.ts"],
+          // With the first, browserless level of the check that the engine runs in a page, which bundles the engine.
+          include: ["tests/integration/live-docs/**/*.test.ts", "tests/page-scan/**/*.test.ts"],
           // Every suite here runs the generator over a fixture workspace or spawns
           // the CLI through tsx; both take seconds, not milliseconds.
           testTimeout: 120_000,
