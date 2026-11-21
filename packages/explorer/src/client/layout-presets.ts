@@ -1,4 +1,4 @@
-import { ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -87,6 +87,7 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const closedCells = CLOSED_CELL_COLOURS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedCells);
       const hiddenFiles = HIDDEN_FILES_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).hiddenFiles);
       const arrival = ARRIVALS.slice(1).find(choice => choice === (input as Record<string, unknown>).arrival);
+      const arrivalWaits = ARRIVAL_WAITS.slice(1).find(choice => choice === (input as Record<string, unknown>).arrivalWaits);
       const framing = FRAMINGS.slice(1).find(choice => choice === (input as Record<string, unknown>).framing);
       const step = STEPS.slice(1).find(choice => choice === (input as Record<string, unknown>).step);
       const cutCounted = CUT_COUNTED.slice(1).find(choice => choice === (input as Record<string, unknown>).cutCounted);
@@ -94,10 +95,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       const directionMarks = DIRECTION_MARKS.slice(1).find(choice => choice === (input as Record<string, unknown>).directionMarks);
       const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
       const descriptionsZoomedOut = DESCRIPTIONS_ZOOMED_OUT.slice(1).find(choice => choice === (input as Record<string, unknown>).descriptionsZoomedOut);
-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || framing || step || cutCounted || wireAnswers || directionMarks || overviewFiles || descriptionsZoomedOut) {
+      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || arrivalWaits || framing || step || cutCounted || wireAnswers || directionMarks || overviewFiles || descriptionsZoomedOut) {
         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
           ...(closedDirectory ? { closedDirectory } : null), ...(closedShape ? { closedShape } : null), ...(closedCells ? { closedCells } : null),
-          ...(hiddenFiles ? { hiddenFiles } : null), ...(arrival ? { arrival } : null), ...(framing ? { framing } : null), ...(step ? { step } : null), ...(cutCounted ? { cutCounted } : null),
+          ...(hiddenFiles ? { hiddenFiles } : null), ...(arrival ? { arrival } : null), ...(arrivalWaits ? { arrivalWaits } : null), ...(framing ? { framing } : null), ...(step ? { step } : null), ...(cutCounted ? { cutCounted } : null),
           ...(wireAnswers ? { wireAnswers } : null), ...(directionMarks ? { directionMarks } : null),
           ...(overviewFiles ? { overviewFiles } : null), ...(descriptionsZoomedOut ? { descriptionsZoomedOut } : null) };
       }
@@ -131,7 +132,7 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0] } : null;
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0] } : null;
   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
   // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.

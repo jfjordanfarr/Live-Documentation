@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T09:00:41.726Z
+- Generated At: 2026-11-21T19:01:32.286Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L563)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L571)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -110,6 +110,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`tuning-reset.initTuningReset`](./tuning-reset.ts.mdmd.md#symbol-inittuningreset)
 - [`types.ARRIVALS`](../types.ts.mdmd.md#symbol-arrivals)
+- [`types.ARRIVAL_WAITS`](../types.ts.mdmd.md#symbol-arrival_waits)
 - [`types.BEYOND_HOPS`](../types.ts.mdmd.md#symbol-beyond_hops)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
@@ -131,6 +132,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-arrival`](../../shared/template.html.mdmd.md#symbol-tuning-arrival)
+- [`template.tuning-arrival-waits`](../../shared/template.html.mdmd.md#symbol-tuning-arrival-waits)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-closed-cells`](../../shared/template.html.mdmd.md#symbol-tuning-closed-cells)

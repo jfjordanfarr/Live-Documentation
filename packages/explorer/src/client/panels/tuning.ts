@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -83,6 +83,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const closedCellsSelect = document.getElementById("tuning-closed-cells") as HTMLSelectElement | null;
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
+  const arrivalWaitsSelect = document.getElementById("tuning-arrival-waits") as HTMLSelectElement | null;
   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
   const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
   const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
@@ -211,6 +212,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (closedCellsSelect) closedCellsSelect.value = state.tuning.localMap.closedCells;
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
+    if (arrivalWaitsSelect) arrivalWaitsSelect.value = state.tuning.localMap.arrivalWaits;
     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
     if (stepSelect) stepSelect.value = state.tuning.localMap.step;
     if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
@@ -337,6 +339,12 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (arrivalSelect) {
     arrivalSelect.addEventListener("change", () => {
       state.tuning.localMap.arrival = ARRIVALS.find(choice => choice === arrivalSelect.value) ?? ARRIVALS[0];
+      onTuningChange();
+    });
+  }
+  if (arrivalWaitsSelect) {
+    arrivalWaitsSelect.addEventListener("change", () => {
+      state.tuning.localMap.arrivalWaits = ARRIVAL_WAITS.find(choice => choice === arrivalWaitsSelect.value) ?? ARRIVAL_WAITS[0];
       onTuningChange();
     });
   }

@@ -1,0 +1,904 @@
+[
+ {
+  "subject": "estate",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {},
+  "elements": {
+   "map": 1197,
+   "cards": 8,
+   "bands": 4,
+   "wires": 23
+  },
+  "restBeforeEase": 2750,
+  "ease": {
+   "ms": 867,
+   "frames": 19,
+   "fromK": 1.45,
+   "toK": 0.576,
+   "median": 16.7,
+   "p90": 150.1,
+   "worst": 183.3,
+   "whole": {
+    "script": 202.1,
+    "style": 188.4,
+    "layout": 11.4,
+    "paint": 150.3,
+    "other": 59.3,
+    "styles": [
+     {
+      "ms": 5.9,
+      "elements": 1
+     },
+     {
+      "ms": 2.2,
+      "elements": 1
+     },
+     {
+      "ms": 2.3,
+      "elements": 17
+     },
+     {
+      "ms": 99.9,
+      "elements": 624
+     },
+     {
+      "ms": 13.1,
+      "elements": 75
+     },
+     {
+      "ms": 36.9,
+      "elements": 231
+     },
+     {
+      "ms": 7.1,
+      "elements": 102
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 567,
+   "ms": 183.3,
+   "k": 0.771,
+   "state": "connections|far||true|moving",
+   "script": 26.7,
+   "style": 114.9,
+   "layout": 6.8,
+   "paint": 19.4,
+   "other": 11.4,
+   "styles": [
+    {
+     "ms": 99.9,
+     "elements": 624
+    },
+    {
+     "ms": 13.1,
+     "elements": 75
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 567,
+    "ms": 183.3,
+    "k": 0.771,
+    "state": "connections|far||true|moving",
+    "script": 26.7,
+    "style": 114.9,
+    "layout": 6.8,
+    "paint": 19.4,
+    "other": 11.4,
+    "styles": [
+     {
+      "ms": 99.9,
+      "elements": 624
+     },
+     {
+      "ms": 13.1,
+      "elements": 75
+     }
+    ]
+   },
+   {
+    "at": 717,
+    "ms": 150,
+    "k": 0.586,
+    "state": "connections|far||false|moving",
+    "script": 29.7,
+    "style": 40,
+    "layout": 2.8,
+    "paint": 25.8,
+    "other": 8.7,
+    "styles": [
+     {
+      "ms": 36.9,
+      "elements": 231
+     }
+    ]
+   },
+   {
+    "at": 867,
+    "ms": 150.1,
+    "k": 0.576,
+    "state": "connections|far||false|",
+    "script": 24.6,
+    "style": 11.3,
+    "layout": 1.7,
+    "paint": 11.4,
+    "other": 7,
+    "styles": [
+     {
+      "ms": 7.1,
+      "elements": 102
+     }
+    ]
+   }
+  ],
+  "changes": [
+   {
+    "at": -2750,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 567,
+    "k": 0.771,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 717,
+    "k": 0.586,
+    "state": "connections|far||false|moving"
+   },
+   {
+    "at": 867,
+    "k": 0.576,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -2750,
+    "ms": 50,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1050,
+    "ms": 1699.9,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 567,
+    "ms": 183.3,
+    "k": 0.771,
+    "look": "connections",
+    "script": 26.7,
+    "style": 114.9,
+    "layout": 6.8,
+    "paint": 19.4,
+    "other": 11.4,
+    "styles": [
+     {
+      "ms": 99.9,
+      "elements": 624
+     },
+     {
+      "ms": 13.1,
+      "elements": 75
+     }
+    ]
+   },
+   {
+    "at": 717,
+    "ms": 150,
+    "k": 0.586,
+    "look": "connections",
+    "script": 29.7,
+    "style": 40,
+    "layout": 2.8,
+    "paint": 25.8,
+    "other": 8.7,
+    "styles": [
+     {
+      "ms": 36.9,
+      "elements": 231
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 567,
+   "ms": 183.3,
+   "k": 0.771,
+   "state": "connections|far||true|moving",
+   "script": 26.7,
+   "style": 114.9,
+   "layout": 6.8,
+   "paint": 19.4,
+   "other": 11.4,
+   "styles": [
+    {
+     "ms": 99.9,
+     "elements": 624
+    },
+    {
+     "ms": 13.1,
+     "elements": 75
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 48,
+   "gaps": [
+    33,
+    26,
+    30,
+    30,
+    30,
+    25,
+    24,
+    45,
+    23,
+    553,
+    27,
+    20,
+    22,
+    22,
+    22,
+    21,
+    21,
+    28,
+    22,
+    26,
+    40,
+    21,
+    24,
+    21,
+    22,
+    21,
+    22,
+    23,
+    25,
+    20,
+    31,
+    19,
+    18,
+    156,
+    27,
+    46,
+    44,
+    31,
+    18,
+    23,
+    17,
+    18,
+    17,
+    12,
+    16,
+    19,
+    20
+   ]
+  }
+ },
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {},
+  "elements": {
+   "map": 5910,
+   "cards": 16,
+   "bands": 12,
+   "wires": 151
+  },
+  "restBeforeEase": 6917,
+  "ease": {
+   "ms": 2017,
+   "frames": 10,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 50,
+   "p90": 1050,
+   "worst": 1050,
+   "whole": {
+    "script": 385,
+    "style": 889.7,
+    "layout": 60.4,
+    "paint": 403,
+    "other": 147.7,
+    "styles": [
+     {
+      "ms": 7.8,
+      "elements": 59
+     },
+     {
+      "ms": 657,
+      "elements": 2595
+     },
+     {
+      "ms": 62.4,
+      "elements": 649
+     },
+     {
+      "ms": 5.9,
+      "elements": 120
+     },
+     {
+      "ms": 6.1,
+      "elements": 120
+     },
+     {
+      "ms": 138.8,
+      "elements": 1043
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1417,
+   "ms": 1050,
+   "k": 0.502,
+   "state": "connections|far||true|moving",
+   "script": 53.4,
+   "style": 727.4,
+   "layout": 48.5,
+   "paint": 135.3,
+   "other": 90.5,
+   "styles": [
+    {
+     "ms": 7.8,
+     "elements": 59
+    },
+    {
+     "ms": 657,
+     "elements": 2595
+    },
+    {
+     "ms": 62.4,
+     "elements": 649
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 317,
+    "ms": 66.7,
+    "k": 0.785,
+    "state": "reading|reading|0|false|moving",
+    "script": 14,
+    "style": 0.4,
+    "layout": 0,
+    "paint": 44.4,
+    "other": 7.5,
+    "styles": []
+   },
+   {
+    "at": 1417,
+    "ms": 1050,
+    "k": 0.502,
+    "state": "connections|far||true|moving",
+    "script": 53.4,
+    "style": 727.4,
+    "layout": 48.5,
+    "paint": 135.3,
+    "other": 90.5,
+    "styles": [
+     {
+      "ms": 7.8,
+      "elements": 59
+     },
+     {
+      "ms": 657,
+      "elements": 2595
+     },
+     {
+      "ms": 62.4,
+      "elements": 649
+     }
+    ]
+   },
+   {
+    "at": 2017,
+    "ms": 599.9,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 213,
+    "style": 153.4,
+    "layout": 11.9,
+    "paint": 65.5,
+    "other": 30.3,
+    "styles": [
+     {
+      "ms": 5.9,
+      "elements": 120
+     },
+     {
+      "ms": 6.1,
+      "elements": 120
+     },
+     {
+      "ms": 138.8,
+      "elements": 1043
+     }
+    ]
+   }
+  ],
+  "changes": [
+   {
+    "at": -6917,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1417,
+    "k": 0.502,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 2017,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -6917,
+    "ms": 733.2,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1250,
+    "ms": 5666.5,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1417,
+    "ms": 1050,
+    "k": 0.502,
+    "look": "connections",
+    "script": 53.4,
+    "style": 727.4,
+    "layout": 48.5,
+    "paint": 135.3,
+    "other": 90.5,
+    "styles": [
+     {
+      "ms": 7.8,
+      "elements": 59
+     },
+     {
+      "ms": 657,
+      "elements": 2595
+     },
+     {
+      "ms": 62.4,
+      "elements": 649
+     }
+    ]
+   },
+   {
+    "at": 2017,
+    "ms": 599.9,
+    "k": 0.335,
+    "look": "connections",
+    "script": 213,
+    "style": 153.4,
+    "layout": 11.9,
+    "paint": 65.5,
+    "other": 30.3,
+    "styles": [
+     {
+      "ms": 5.9,
+      "elements": 120
+     },
+     {
+      "ms": 6.1,
+      "elements": 120
+     },
+     {
+      "ms": 138.8,
+      "elements": 1043
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1417,
+   "ms": 1050,
+   "k": 0.502,
+   "state": "connections|far||true|moving",
+   "script": 53.4,
+   "style": 727.4,
+   "layout": 48.5,
+   "paint": 135.3,
+   "other": 90.5,
+   "styles": [
+    {
+     "ms": 7.8,
+     "elements": 59
+    },
+    {
+     "ms": 657,
+     "elements": 2595
+    },
+    {
+     "ms": 62.4,
+     "elements": 649
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 19,
+   "gaps": [
+    64,
+    63,
+    40,
+    66,
+    78,
+    521,
+    27,
+    49,
+    30,
+    45,
+    65,
+    58,
+    54,
+    1113,
+    656,
+    64,
+    48,
+    47
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {},
+  "elements": {
+   "map": 11794,
+   "cards": 79,
+   "bands": 20,
+   "wires": 217
+  },
+  "restBeforeEase": 14483,
+  "ease": {
+   "ms": 5083,
+   "frames": 6,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 150,
+   "p90": 3283.1,
+   "worst": 3283.1,
+   "whole": {
+    "script": 1021.7,
+    "style": 2486.5,
+    "layout": 295.8,
+    "paint": 1030.4,
+    "other": 309.2,
+    "styles": [
+     {
+      "ms": 1770,
+      "elements": 6420
+     },
+     {
+      "ms": 111.3,
+      "elements": 278
+     },
+     {
+      "ms": 118.4,
+      "elements": 981
+     },
+     {
+      "ms": 24,
+      "elements": 319
+     },
+     {
+      "ms": 2.9,
+      "elements": 210
+     },
+     {
+      "ms": 570,
+      "elements": 2366
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 3667,
+   "ms": 3283.1,
+   "k": 0.427,
+   "state": "connections|far||true|moving",
+   "script": 300.9,
+   "style": 1999.9,
+   "layout": 283.8,
+   "paint": 526.4,
+   "other": 167.3,
+   "styles": [
+    {
+     "ms": 1770,
+     "elements": 6420
+    },
+    {
+     "ms": 111.3,
+     "elements": 278
+    },
+    {
+     "ms": 118.4,
+     "elements": 981
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 83,
+    "ms": 83.4,
+    "k": 0.998,
+    "state": "reading|reading|0|false|moving",
+    "script": 39.4,
+    "style": 3.9,
+    "layout": 0,
+    "paint": 33.4,
+    "other": 3.5,
+    "styles": []
+   },
+   {
+    "at": 150,
+    "ms": 66.6,
+    "k": 0.97,
+    "state": "reading|reading|0|false|moving",
+    "script": 31.5,
+    "style": 1.1,
+    "layout": 0,
+    "paint": 31,
+    "other": 3.2,
+    "styles": []
+   },
+   {
+    "at": 233,
+    "ms": 83.4,
+    "k": 0.903,
+    "state": "reading|reading|0|false|moving",
+    "script": 32.1,
+    "style": 1,
+    "layout": 0,
+    "paint": 46.5,
+    "other": 3.6,
+    "styles": []
+   },
+   {
+    "at": 383,
+    "ms": 150,
+    "k": 0.748,
+    "state": "reading|reading|0|false|moving",
+    "script": 20.4,
+    "style": 0.3,
+    "layout": 0,
+    "paint": 117.7,
+    "other": 13.6,
+    "styles": []
+   },
+   {
+    "at": 3667,
+    "ms": 3283.1,
+    "k": 0.427,
+    "state": "connections|far||true|moving",
+    "script": 300.9,
+    "style": 1999.9,
+    "layout": 283.8,
+    "paint": 526.4,
+    "other": 167.3,
+    "styles": [
+     {
+      "ms": 1770,
+      "elements": 6420
+     },
+     {
+      "ms": 111.3,
+      "elements": 278
+     },
+     {
+      "ms": 118.4,
+      "elements": 981
+     }
+    ]
+   },
+   {
+    "at": 5083,
+    "ms": 1416.7,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 597.4,
+    "style": 480.3,
+    "layout": 12,
+    "paint": 275.4,
+    "other": 118.1,
+    "styles": [
+     {
+      "ms": 24,
+      "elements": 319
+     },
+     {
+      "ms": 2.9,
+      "elements": 210
+     },
+     {
+      "ms": 570,
+      "elements": 2366
+     }
+    ]
+   }
+  ],
+  "changes": [
+   {
+    "at": -14483,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 3667,
+    "k": 0.427,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 5083,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -14483,
+    "ms": 716.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1267,
+    "ms": 13216.1,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 3667,
+    "ms": 3283.1,
+    "k": 0.427,
+    "look": "connections",
+    "script": 300.9,
+    "style": 1999.9,
+    "layout": 283.8,
+    "paint": 526.4,
+    "other": 167.3,
+    "styles": [
+     {
+      "ms": 1770,
+      "elements": 6420
+     },
+     {
+      "ms": 111.3,
+      "elements": 278
+     },
+     {
+      "ms": 118.4,
+      "elements": 981
+     }
+    ]
+   },
+   {
+    "at": 5083,
+    "ms": 1416.7,
+    "k": 0.335,
+    "look": "connections",
+    "script": 597.4,
+    "style": 480.3,
+    "layout": 12,
+    "paint": 275.4,
+    "other": 118.1,
+    "styles": [
+     {
+      "ms": 24,
+      "elements": 319
+     },
+     {
+      "ms": 2.9,
+      "elements": 210
+     },
+     {
+      "ms": 570,
+      "elements": 2366
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 3667,
+   "ms": 3283.1,
+   "k": 0.427,
+   "state": "connections|far||true|moving",
+   "script": 300.9,
+   "style": 1999.9,
+   "layout": 283.8,
+   "paint": 526.4,
+   "other": 167.3,
+   "styles": [
+    {
+     "ms": 1770,
+     "elements": 6420
+    },
+    {
+     "ms": 111.3,
+     "elements": 278
+    },
+    {
+     "ms": 118.4,
+     "elements": 981
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 13,
+   "gaps": [
+    31,
+    22,
+    23,
+    161,
+    583,
+    75,
+    74,
+    152,
+    4231,
+    111,
+    119,
+    285
+   ]
+  }
+ }
+]

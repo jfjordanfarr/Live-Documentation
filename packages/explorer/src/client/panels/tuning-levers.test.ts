@@ -22,8 +22,9 @@ describe("tuning help", () => {
     // the 3D map's trial of the next step past the hops; Arrival on 2026-11-19, how the 2D camera meets a new subject; Framing the same night, the camera that follows the pins;
     // Frame the same day, in a group of its own, Page (the trial of a page without its sidebar); Step on 2026-11-21, what the
     // 2D camera frames after a step (a trial beside the least pan), and Cut Counted beside it the same day; Wire Answers and
-    // Direction Marks the same day in the 2D wires group, the trials of a wire that says who uses what, and of its way.
-    expect(ids.length).toBe(76);
+    // Direction Marks the same day in the 2D wires group, the trials of a wire that says who uses what, and of its way;
+    // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at.
+    expect(ids.length).toBe(77);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -79,7 +80,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(76);
+    expect(ids.length).toBe(77);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

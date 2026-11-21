@@ -8,7 +8,7 @@
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
@@ -75,6 +75,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     // Cells under name since 2026-11-18, the first of its choices, so that a link's silence reads as the default.
     hiddenFiles: HIDDEN_FILES_LOOKS[0],
     arrival: ARRIVALS[0],
+    arrivalWaits: ARRIVAL_WAITS[0],
     framing: FRAMINGS[0],
     step: STEPS[0],
     cutCounted: CUT_COUNTED[0],

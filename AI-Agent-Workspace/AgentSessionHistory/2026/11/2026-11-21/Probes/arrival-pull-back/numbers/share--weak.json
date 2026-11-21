@@ -1,0 +1,111 @@
+{
+ "condition": "weak",
+ "subject": "packages/engine/src/config/liveDocumentationConfig.ts",
+ "counts": {
+  "map": 11974,
+  "cards": 79,
+  "cardsInView": 2,
+  "elementsInCards": 10347,
+  "elementsInView": 613
+ },
+ "rows": [
+  {
+   "kind": "whole",
+   "i": 0,
+   "ms": 718,
+   "elements": 6416
+  },
+  {
+   "kind": "whole",
+   "i": 1,
+   "ms": 551.2,
+   "elements": 6416
+  },
+  {
+   "kind": "whole",
+   "i": 2,
+   "ms": 427.7,
+   "elements": 6416
+  },
+  {
+   "kind": "view",
+   "i": 0,
+   "ms": 118.5,
+   "elements": 1457
+  },
+  {
+   "kind": "view",
+   "i": 1,
+   "ms": 99.4,
+   "elements": 1457
+  },
+  {
+   "kind": "view",
+   "i": 2,
+   "ms": 89.9,
+   "elements": 1457
+  }
+ ],
+ "inventory": {
+  "reading": {
+   "prose (descriptions)": {
+    "elements": 109,
+    "characters": 36064
+   },
+   "symbol names": {
+    "elements": 109,
+    "characters": 1397
+   },
+   "row and file actions": {
+    "elements": 534,
+    "characters": 0
+   },
+   "anchor dots": {
+    "elements": 139,
+    "characters": 0
+   },
+   "test chips": {
+    "elements": 56,
+    "characters": 872
+   },
+   "path and directory lines": {
+    "elements": 217,
+    "characters": 6728
+   },
+   "file names": {
+    "elements": 79,
+    "characters": 1388
+   }
+  },
+  "connections": {
+   "prose (descriptions)": {
+    "elements": 109,
+    "characters": 36064
+   },
+   "symbol names": {
+    "elements": 109,
+    "characters": 1397
+   },
+   "row and file actions": {
+    "elements": 297,
+    "characters": 0
+   },
+   "anchor dots": {
+    "elements": 139,
+    "characters": 0
+   },
+   "test chips": {
+    "elements": 56,
+    "characters": 872
+   },
+   "path and directory lines": {
+    "elements": 217,
+    "characters": 6728
+   },
+   "file names": {
+    "elements": 79,
+    "characters": 1388
+   }
+  }
+ }
+}

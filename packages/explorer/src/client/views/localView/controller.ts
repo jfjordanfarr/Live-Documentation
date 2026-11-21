@@ -12,7 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_LOOK_LEAD_MS, arrivalLookChange, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -213,7 +213,12 @@ export class LocalViewController implements LocalViewApi {
    * "Reading, Then Neighbours"): its subject, the frame it rests on and when it came to rest (0 until the picture has
    * settled), the end it eases to, measured when the ease begins, and its animation frame.
    */
-  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number } | null = null;
+  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number; lead: number; faded: number } | null = null;
+  /**
+   * The cards' look held whatever the zoom, while an arrival's pull-back changes it at rest rather than where the zoom
+   * crosses its edge (Tuning's Arrival, Look After and Look Before, trials of 2026-11-21); null otherwise.
+   */
+  private heldLook: ZoomLook | null = null;
   /** The subject whose arrival has come to rest on its neighbours, so that a later framing of it rests there too. */
   private arrivedSubject: string | null = null;
   /** Return to Reading Size was pressed: the next framing of the subject is at reading size, whatever Tuning's Arrival. */
@@ -1792,7 +1797,8 @@ export class LocalViewController implements LocalViewApi {
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
       // Below reading scale the prose fades and above it returns, with the same two ratios so that the edge does not
       // chatter; a card's box never changes with zoom (the owner, 2026-11-05).
-      const visible = this.readingVisible ? ratio >= 0.74 : ratio >= 0.92;
+      // A look held through an arrival's pull-back holds its prose with it.
+      const visible = this.heldLook ? this.heldLook === "reading" : this.readingVisible ? ratio >= 0.74 : ratio >= 0.92;
       if (visible !== this.readingVisible) this.readingFrame = requestAnimationFrame(() => {
         this.readingFrame = 0;
         if (!this.stage || !this.isShown()) return;
@@ -1848,7 +1854,7 @@ export class LocalViewController implements LocalViewApi {
     if (!Number.isFinite(ratio) || ratio <= 0) return;
     this.lod = ladderBand(ratio, this.lod);
     this.ladderStep = ladderStep(ratio, this.ladderStep);
-    this.look = zoomLook(ratio, this.look);
+    this.look = this.heldLook ?? zoomLook(ratio, this.look);
     const { textResistance, controlResistance, nameGrowth, zoomLooks, cardText } = this.options.state.tuning.localMap;
     // The trial's three looks replace the band and the step for slot cards: each look is a band of the ladder drawn at
     // one held scale for every zoom inside it, and the step leaves, so that nothing changes between the looks' edges.
@@ -2215,7 +2221,10 @@ export class LocalViewController implements LocalViewApi {
   /** Rest on the subject at reading size until the picture has settled and the hold has passed, then ease to the neighbours. */
   private beginArrival(subject: string): void {
     this.cancelArrival();
-    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0 };
+    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0, lead: 0, faded: 0 };
+    // Where the pointer stood when the arrival began: only a pointer moved since may hold the rest (Arrival Waits).
+    const pointerAtStart = this.pointerAt;
+    const change = arrivalLookChange(this.options.state.tuning.localMap.arrival);
     this.arrival = arrival;
     const tick = (now: number): void => {
       if (this.arrival !== arrival) return;
@@ -2231,6 +2240,11 @@ export class LocalViewController implements LocalViewApi {
         arrival.start = { ...this.mapTransform };
       }
       const frame = this.frameRect();
+      if (!arrival.end && this.options.state.tuning.localMap.arrivalWaits === "pointed" && this.pointerAt !== pointerAtStart
+        && this.container.querySelector(`.node-card[data-id="${CSS.escape(subject)}"]`)?.matches(":hover")) {
+        // A pointer brought to the subject's card and resting there holds the rest: the hold starts again.
+        arrival.restAt = now;
+      }
       if (!arrival.end && now - arrival.restAt >= ARRIVAL_HOLD_MS) {
         // The end is measured when the ease begins, on the picture as it has settled.
         const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(subject)}"]`);
@@ -2241,6 +2255,24 @@ export class LocalViewController implements LocalViewApi {
           return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
         });
         arrival.end = arrivalEndFrame(content, bounds, frame, this.readingReferenceScale);
+        if (change === "after") this.heldLook = this.look;
+        if (change === "before") {
+          // The look the ease ends in, taken now at rest; the camera waits for its cross-fade before it moves.
+          this.heldLook = zoomLook(arrival.end.k / this.readingReferenceScale, this.look);
+          arrival.lead = now;
+          this.updateMapTransform();
+        }
+      }
+      if (arrival.lead > 0) {
+        // The camera waits out the lead and the look's cross-fade, whose end restyles the cards again, and then a frame
+        // more, so that neither restyle falls in the ease: the lead's clock alone ran out under the change's own long
+        // frame on a large picture (measured 2026-11-21, a frame of 2,366 elements restyled in the ease's first frames).
+        if (this.container.classList.contains("local-look-fading")) arrival.faded = now;
+        const quiet = arrival.faded ? now - arrival.faded >= 30 : true;
+        if (now - arrival.lead < ARRIVAL_LOOK_LEAD_MS || !quiet) { arrival.frame = requestAnimationFrame(tick); return; }
+        // The ease begins now: the hold's clock is moved on by the lead.
+        arrival.restAt += now - arrival.lead;
+        arrival.lead = -1;
       }
       const pose = arrivalPose(arrival.start!, arrival.end ?? arrival.start!, now - arrival.restAt, frame);
       if (pose.phase !== "hold") {
@@ -2249,6 +2281,7 @@ export class LocalViewController implements LocalViewApi {
       }
       if (pose.phase === "done") {
         this.arrival = null;
+        this.releaseLook();
         this.arrivedSubject = subject;
         this.readingFrameTarget = null;
         this.mapInitialTransform = { ...pose.transform };
@@ -2268,7 +2301,15 @@ export class LocalViewController implements LocalViewApi {
     if (!arrival) return;
     cancelAnimationFrame(arrival.frame);
     this.arrival = null;
+    this.releaseLook();
     this.watchCamera();
+  }
+
+  /** Let a look held through an arrival's pull-back follow the zoom again: at rest, or where any input ended the arrival. */
+  private releaseLook(): void {
+    if (this.heldLook === null) return;
+    this.heldLook = null;
+    this.updateMapTransform();
   }
 
   // Placeholder utilities to be implemented below
