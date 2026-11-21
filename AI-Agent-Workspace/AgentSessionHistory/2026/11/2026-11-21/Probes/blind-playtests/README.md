@@ -693,7 +693,7 @@ Each cell: Sonnet's two runs, then Haiku's two; R right, P partly, W wrong; acti
 - **Patterns typed:** only on `drop` By reason, `DNN Platform/Tests/` four times; no `!` pattern was typed by anyone.
 - **Gave up:** no one.
 
-### Reading
+### Reading: the choice before a scan, tried on strangers
 
 - **Which layout for which question.** For a question about what is left out and why (read, why), By reason is answered surely and fast, the read task from the first picture; the Folders tree under the choice boxes hides how many files and which kind, and every read there fell short. For a question about one folder (keep, drop, why), both layouts were answered rightly; the tree was a few actions longer for `drop` and `why`, By reason a few longer for `keep` (an opened reason, a top folder, a scroll). By reason has no way to leave out a folder but a typed pattern, and every tester found and used the pattern box for it.
 - **Words misunderstood.** "Leave out build output and packages", the evidence switch, was read by every tester as the reason things are left out ("The reason is the "Leave out build output and packages" checkbox") rather than the rows' own reasons, and by one Haiku as the control to press to keep one folder. "Also ignored by .gitignore: 28 of 162" was read rightly as a count and gave no tester the line that named a folder. "3 build or package folders left out" was read as what it says and could not answer "how many files". No tester misread "Keep" or the plus.
