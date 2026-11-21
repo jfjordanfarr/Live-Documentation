@@ -236,6 +236,9 @@ describe("cargoProjects", () => {
   });
 });
 
+/** How long a case that has MSBuild evaluate its projects may take: MSBuild starts once a project, a few seconds each. */
+const MSBUILD_TIMEOUT = 120_000;
+
 describe("readProjects", () => {
   it("reads a solution's projects and their project references", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-sln-"));
@@ -263,7 +266,8 @@ describe("readProjects", () => {
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
-  });
+    // MSBuild is started once a project, a few seconds each and more beside the whole suite.
+  }, MSBUILD_TIMEOUT);
 
   // MSBuild's evaluation is the truth for a project's references since 2026-11-21: until then a pattern over the file's
   // text read a commented-out reference as real, agreeing with the reader it was meant to grade.
@@ -294,7 +298,7 @@ describe("readProjects", () => {
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
-  });
+  }, MSBUILD_TIMEOUT);
 
   it("treats a lone project file as one project at the root", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-csproj-"));
@@ -304,5 +308,5 @@ describe("readProjects", () => {
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
-  });
+  }, MSBUILD_TIMEOUT);
 });
