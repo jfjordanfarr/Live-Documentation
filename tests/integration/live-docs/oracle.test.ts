@@ -1,13 +1,17 @@
 /**
- * The oracle comparison must account for every expected edge, on every fixture that
- * carries expectations, without a compiler present. It asserts the bookkeeping, not
- * the adapter's score: what the adapter finds is the report's business.
+ * The readers held to the oracles of every sample program that carries expectations, without a compiler present.
+ *
+ * The bookkeeping is asserted for every bucket: the comparison accounts for every edge the compiler, a person or a
+ * project file asserts. The hand-verified edges are also held to the program's ledger
+ * (`expected/hand-verified-misses.json`): a hand-verified edge is a truth a person asserted, so one the readers do not
+ * draw fails the test unless the ledger lists it with its cause, and a listed edge that is drawn again, or no longer
+ * asserted, fails it too. The compiler's edges found, missing and extra are reported, and not yet held to a ledger.
  */
 import * as fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { compareFixture } from "../../../scripts/oracle/compare";
+import { compareFixture, heldToLedger } from "../../../scripts/oracle/compare";
 
 const FIXTURE_ROOT = path.resolve(__dirname, "../programs");
 
@@ -29,8 +33,16 @@ describe("oracle:compare", () => {
     expect(MEASURED_FIXTURES).toContain("csharp/estate");
   });
 
+  it("fails a missed hand-verified edge its ledger does not list, and a listed one no longer missed", () => {
+    const edge = { from: "a.cs", to: "b.config", via: "" };
+    const miss = { from: "a.cs", to: "b.config", cause: "a reason" };
+    expect(heldToLedger([edge], [miss])).toEqual({ unlisted: [], gone: [] });
+    expect(heldToLedger([edge], [])).toEqual({ unlisted: [edge], gone: [] });
+    expect(heldToLedger([], [miss])).toEqual({ unlisted: [], gone: [miss] });
+  });
+
   for (const fixture of MEASURED_FIXTURES) {
-    it(`accounts for every expected edge of ${fixture}`, async () => {
+    it(`accounts for every expected edge of ${fixture}, and draws every hand-verified edge its ledger does not excuse`, async () => {
       const fixtureDir = path.join(FIXTURE_ROOT, fixture);
       const expected   = JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "compiler-edges.json"), "utf8")) as { edges: unknown[] };
 
@@ -43,6 +55,9 @@ describe("oracle:compare", () => {
       if (report.handVerified) {
         const handVerified = JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "hand-verified-edges.json"), "utf8")) as { edges: unknown[] };
         expect(report.handVerified.found.length + report.handVerified.missing.length).toBe(handVerified.edges.length);
+        expect({ unlisted: report.handVerified.ledger.unlisted, gone: report.handVerified.ledger.gone }).toEqual({ unlisted: [], gone: [] });
+      } else {
+        expect(fs.existsSync(path.join(fixtureDir, "expected", "hand-verified-misses.json"))).toBe(false);
       }
       const expectedReferences = (JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "compiler-edges.json"), "utf8")) as { projects: Array<{ references: string[] }> }).projects
         .reduce((count, project) => count + project.references.length, 0);

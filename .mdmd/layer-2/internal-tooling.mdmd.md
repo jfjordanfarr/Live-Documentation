@@ -100,6 +100,8 @@ The oracle measures the shipped generator against a compiler, which shares no me
 
 The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside it.
 
+`tests/integration/live-docs/oracle.test.ts` runs the comparison over every sample program that keeps `expected/compiler-edges.json` and fails on a hand-verified edge the readers miss unless the program's `expected/hand-verified-misses.json` lists it with its cause, and on a listed edge that is drawn again; `oracle:compare` prints each missed edge's cause. A reader that comes to draw a listed edge removes its entry in the same commit. The compiler's edges are reported and not yet held to a ledger: on 2026-11-21 they were 50 missing and 4 extra over 26 programs, most of them C and C++ ([the account](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
+
 The SQL reader has an oracle of its own, Microsoft's T-SQL parser (ScriptDom, the parser SQL Server's tools use), since 2026-11-19 ([the probe](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)):
 
 | Command | What it does |
@@ -114,7 +116,7 @@ The PowerShell reader is graded on a whole folder by PowerShell's own parser sin
 | --- | --- |
 | `npm run oracle:powershell -- <folder>` | Reads every `.ps1`, `.psm1` and `.psd1` file of the folder with PowerShell's parser through `scripts/oracle/powershell-ast.ps1` (it needs `pwsh`), applies the rules of `scripts/oracle/powershell-wires.ts` to the parser's facts, reads the same files with the PowerShell adapter, and prints the wires (file pairs, by a load or a call), the calls (file, function, defining file) and the programs each side draws, and how many both do. Every file of the folder is the adapter's index, but the version control's folder and a folder of Live Docs. `--detail` lists every disagreement, `--json` prints data |
 
-What the comparison grades as a use of an object, and what it sets aside as no object of the folder (common table expressions, a statement's own table sources, temporary tables, SQL Server's system schemas and the `xml` type's methods), is stated once, at the head of `scripts/oracle/sql-compare.ts`.
+What the comparison grades as a use of an object, and what it sets aside as no object of the folder (common table expressions, a statement's own table sources, temporary tables, SQL Server's system schemas and the `xml` type's methods), is stated once, at the head of `scripts/oracle/sql-compare.ts`. So is how it binds a name, since 2026-11-21 by the order Microsoft documents and not by the product's matching, each sentence quoted with its page: a one-part name in a procedure, function, view or trigger by the module's schema, then `dbo`; elsewhere, in a module's DDL and strings, and in `database..name`, by the user's default schema, taken as `dbo` ([the account](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 
 ---
 

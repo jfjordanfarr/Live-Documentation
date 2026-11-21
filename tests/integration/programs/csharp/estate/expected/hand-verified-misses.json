@@ -1,0 +1,20 @@
+{
+  "convention": "The hand-verified edges of this program (hand-verified-edges.json) that the readers do not draw, each with the reason found by reading why. tests/integration/live-docs/oracle.test.ts fails on a missing edge this ledger does not list, and on a listed edge that is drawn again or no longer asserted. Paths are relative to this file.",
+  "misses": [
+    {
+      "from": "../Portal/Pages/Default.aspx.designer.cs",
+      "to": "../Portal/Pages/Default.aspx",
+      "cause": "The designer file declares one field per server control and names nothing else. The page publishes those controls' IDs as symbols (serverForm, PaymentsEnabledHidden, GatewayBaseUrlHidden), but the C# reader reads a field's declaration as the file's own symbol, never as a use of the page's control of the same ID, and the designer file holds no directive or name of its page to link by."
+    },
+    {
+      "from": "../Hub/PaymentHub.cs",
+      "to": "../Hub/App.config",
+      "cause": "The endpoint name is built at run time: ServiceRouting.EndpointNameFor(workload, environment) joins the constant EndpointPrefix to two parameters. The C# reader folds only constant strings, so it knows no name for the ChannelFactory<IPaymentService> to match against App.config's client endpoints, and matching their shared prefix PaymentService. would be a guess."
+    },
+    {
+      "from": "../PaymentService/Data/PostPaymentRow.cs",
+      "to": "../Database/SqlServer/dbo.usp_PostPayment.sql",
+      "cause": "The class's only ties to the procedure are a doc comment, which no reader reads, and its property names, which are the procedure's result columns: the SQL reader publishes no result column. The call that binds the class to the procedure's result, Database.SqlQuery<PostPaymentRow> with dbo.usp_PostPayment, is in PaymentsContext.cs, whose own edge to the script is drawn."
+    }
+  ]
+}

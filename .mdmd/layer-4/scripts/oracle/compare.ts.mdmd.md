@@ -5,14 +5,15 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/compare.ts`
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.320Z
+- Generated At: 2026-11-21T05:11:37.047Z
 
 ## Authored
 ### Purpose
 The `oracle:compare` command: runs the shipped generator over a copy of a sample program and lists where the dependency edges of its graph disagree with the program's compiler-derived and hand-verified expectations.
 
 ### Notes
-- Prints a list, never a score, and exits 0 either way; the integration suite `oracle.test.ts` asserts only that every expected edge is accounted for.
+- Prints a list, never a score, and exits 0 either way. The integration suite `oracle.test.ts` asserts that every expected edge is accounted for and, since 2026-11-21, that every hand-verified edge the readers miss is listed in the program's ledger, `expected/hand-verified-misses.json`, with its cause, and no listed edge is drawn again: `heldToLedger` says which of either there are, and the report prints each missed edge's cause ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
+- The project bucket builds every compiler project's file as `<directory>/<name>.csproj`, which is right for .NET only: on `rust/stockroom` it reports two missing references between `.csproj` files that do not exist, made of rust-analyzer's Cargo targets. Seen on 2026-11-21 and not mended, since the projects' shape is `scip-edges.ts`'s.
 - Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 - A fixture is generated under the product's default configuration as it stands. `fixtureGlobs()`, which rebuilt the default globs from their suffixes and so always equalled them, went on 2026-10-22 with the every-file default ([Turn 8 of the October 21 session](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-21/2026-10-21.1.record.md#turn-8)).
@@ -20,16 +21,40 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `HandVerifiedMiss` {#symbol-handverifiedmiss}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/compare.ts#L38)
+
+##### `HandVerifiedMiss` — Summary
+A hand-verified edge the readers do not draw, as a program's ledger lists it: its ends and its cause, in a sentence a maintainer can act on.
+
+#### `readHandVerifiedMisses` {#symbol-readhandverifiedmisses}
+- Type: function
+- Source: [source](../../../../scripts/oracle/compare.ts#L45)
+- Returns: [`HandVerifiedMiss`](#symbol-handverifiedmiss)[]
+
+##### `readHandVerifiedMisses` — Summary
+Reads a program's ledger of hand-verified misses, its paths relative to the ledger, into fixture-relative ones; empty when it keeps none.
+
+#### `heldToLedger` {#symbol-heldtoledger}
+- Type: function
+- Source: [source](../../../../scripts/oracle/compare.ts#L56)
+
+##### `heldToLedger` — Summary
+Holds the hand-verified edges the readers missed to the ledger: those it does not list, and its entries that are no
+longer missed, because the readers now draw the edge or nobody asserts it any more. Either is a failure, so that the
+ledger can only shrink truthfully.
+
 #### `Report` {#symbol-report}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L32)
+- Source: [source](../../../../scripts/oracle/compare.ts#L64)
 
 ##### `Report` — Summary
 What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L181)
+- Source: [source](../../../../scripts/oracle/compare.ts#L221)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
@@ -47,6 +72,7 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`files.HandVerifiedEdges`](./files.ts.mdmd.md#symbol-handverifiededges)
 - [`files.readHandVerifiedEdges`](./files.ts.mdmd.md#symbol-readhandverifiededges)
 - [`files.readOracleEdges`](./files.ts.mdmd.md#symbol-readoracleedges)
+- [`files.rebasePath`](./files.ts.mdmd.md#symbol-rebasepath)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
