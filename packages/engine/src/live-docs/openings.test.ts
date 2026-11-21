@@ -201,6 +201,9 @@ describe("database objects", () => {
     ]);
   });
 
+  // A private temporary table (Oracle 18c) is dropped at the end of its transaction or session and seen only by the
+  // session that made it (Oracle's "CREATE TABLE"), so, as T-SQL's `#name` and SQLite's `TEMP` table, it is no object of
+  // the script; until 2026-11-21 it was read as one, its word passed over with `GLOBAL`'s.
   it("reads Oracle's CREATE with the words that stand between CREATE and what it makes", () => {
     const script = [
       "create global temporary table ut_coverage_sources_tmp (a NUMBER) on commit preserve rows;",
@@ -215,7 +218,6 @@ describe("database objects", () => {
     ].join("\n");
     expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name} @${declaration.line}`)).toEqual([
       "table ut_coverage_sources_tmp @1",
-      "table ora$ptt_rows @2",
       "procedure central.close_day @3",
       "sql-function central.fmt @5",
       "view central.open_accounts @7",
@@ -347,6 +349,48 @@ describe("database objects", () => {
     ]);
     expect(sqlObjectName("tests.[test fn.sums ]]the[[ open ones]")).toEqual({ parts: ["tests", "test fn.sums ]the[[ open ones"], linked: false });
     expect(sqlObjectName("[Billing].[dbo].[Invoice]")).toEqual({ parts: ["dbo", "invoice"], linked: false });
+  });
+
+  // SQLite's answers (`node:sqlite`, SQLite 3.54.1, each script run in an empty database in memory, 2026-11-21): the
+  // backticked, `IF NOT EXISTS` and virtual tables and the table after the trigger are in `main`; the `TEMP` table is
+  // in `temp` alone; no object `fts5` exists, the module that makes the virtual table.
+  it("reads SQLite's, MySQL's and PostgreSQL's spellings of what a script creates and names, as SQLite holds them", () => {
+    const script = [
+      "CREATE TABLE IF NOT EXISTS `audit` (id INTEGER, note TEXT);",
+      "CREATE TEMP TABLE scratch (id INTEGER);",
+      "CREATE VIRTUAL TABLE IF NOT EXISTS notes USING fts5(body);",
+      "CREATE TRIGGER IF NOT EXISTS audit_ids AFTER INSERT ON customers",
+      "WHEN NEW.id > (SELECT CASE WHEN 1 = 1 THEN 0 END)",
+      "BEGIN",
+      "  INSERT INTO `audit` (id) VALUES (NEW.id);",
+      "END;",
+      "CREATE TABLE after_the_trigger (id INTEGER REFERENCES `tick``ed` (id));",
+      "SELECT * FROM `audit` JOIN notes ON 1 = 1;"
+    ].join("\n");
+    expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`)).toEqual([
+      "table audit",
+      "table notes",
+      "table after_the_trigger"
+    ]);
+    expect(sqlReferences(script).map((reference) => `${reference.verb} ${reference.name.parts.join(".")}`)).toEqual([
+      "INSERT INTO audit",
+      "REFERENCES tick`ed",
+      "FROM audit",
+      "JOIN notes"
+    ]);
+  });
+
+  it("still reads a T-SQL trigger, its table after `ON`, as running to its batch's end", () => {
+    const script = [
+      "CREATE TRIGGER dbo.trg ON dbo.Orders AFTER INSERT AS",
+      "BEGIN",
+      "  INSERT dbo.Audit (Id) SELECT Id FROM inserted;",
+      "END;",
+      "CREATE TABLE dbo.MadeWhenTheTriggerFires (Id INT);"
+    ].join("\n");
+    expect(sqlDeclarations(script).map((declaration) => `${declaration.kind} ${declaration.name}${declaration.inBody ? " (in a body)" : ""}`)).toEqual([
+      "table dbo.MadeWhenTheTriggerFires (in a body)"
+    ]);
   });
 
   it("matches a name to the declared objects of the workspace", () => {

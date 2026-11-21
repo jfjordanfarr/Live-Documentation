@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-wires/expected/powershell-ast.json`
-- Generated At: 2026-11-21T07:51:41.129Z
+- Generated At: 2026-11-21T19:30:06.846Z
 
 ## Authored
 ### Purpose
@@ -245,6 +245,141 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 - Type: key
 
 #### `files:../Backport/Use-Backport.ps1:statements` {#symbol-filesbackportuse-backportps1statements}
+- Type: key
+
+#### `files:../Build/build.ps1` {#symbol-filesbuildbuildps1}
+- Type: key
+
+#### `files:../Build/build.ps1:parseErrors` {#symbol-filesbuildbuildps1parseerrors}
+- Type: key
+
+#### `files:../Build/build.ps1:functions` {#symbol-filesbuildbuildps1functions}
+- Type: key
+
+#### `files:../Build/build.ps1:published` {#symbol-filesbuildbuildps1published}
+- Type: key
+
+#### `files:../Build/build.ps1:types` {#symbol-filesbuildbuildps1types}
+- Type: key
+
+#### `files:../Build/build.ps1:exportModuleMembers` {#symbol-filesbuildbuildps1exportmodulemembers}
+- Type: key
+
+#### `files:../Build/build.ps1:dotSources` {#symbol-filesbuildbuildps1dotsources}
+- Type: key
+
+#### `files:../Build/build.ps1:importModules` {#symbol-filesbuildbuildps1importmodules}
+- Type: key
+
+#### `files:../Build/build.ps1:usingStatements` {#symbol-filesbuildbuildps1usingstatements}
+- Type: key
+
+#### `files:../Build/build.ps1:requiredModules` {#symbol-filesbuildbuildps1requiredmodules}
+- Type: key
+
+#### `files:../Build/build.ps1:invocations` {#symbol-filesbuildbuildps1invocations}
+- Type: key
+
+#### `files:../Build/build.ps1:loads` {#symbol-filesbuildbuildps1loads}
+- Type: key
+
+#### `files:../Build/build.ps1:aliasCommands` {#symbol-filesbuildbuildps1aliascommands}
+- Type: key
+
+#### `files:../Build/build.ps1:paramBlock` {#symbol-filesbuildbuildps1paramblock}
+- Type: key
+
+#### `files:../Build/build.ps1:statements` {#symbol-filesbuildbuildps1statements}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1` {#symbol-filesbuilduse-build-rootedps1}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:parseErrors` {#symbol-filesbuilduse-build-rootedps1parseerrors}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:functions` {#symbol-filesbuilduse-build-rootedps1functions}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:published` {#symbol-filesbuilduse-build-rootedps1published}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:types` {#symbol-filesbuilduse-build-rootedps1types}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:exportModuleMembers` {#symbol-filesbuilduse-build-rootedps1exportmodulemembers}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:dotSources` {#symbol-filesbuilduse-build-rootedps1dotsources}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:importModules` {#symbol-filesbuilduse-build-rootedps1importmodules}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:usingStatements` {#symbol-filesbuilduse-build-rootedps1usingstatements}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:requiredModules` {#symbol-filesbuilduse-build-rootedps1requiredmodules}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:invocations` {#symbol-filesbuilduse-build-rootedps1invocations}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:loads` {#symbol-filesbuilduse-build-rootedps1loads}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:aliasCommands` {#symbol-filesbuilduse-build-rootedps1aliascommands}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:paramBlock` {#symbol-filesbuilduse-build-rootedps1paramblock}
+- Type: key
+
+#### `files:../Build/Use-Build-Rooted.ps1:statements` {#symbol-filesbuilduse-build-rootedps1statements}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1` {#symbol-filesbuilduse-buildps1}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:parseErrors` {#symbol-filesbuilduse-buildps1parseerrors}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:functions` {#symbol-filesbuilduse-buildps1functions}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:published` {#symbol-filesbuilduse-buildps1published}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:types` {#symbol-filesbuilduse-buildps1types}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:exportModuleMembers` {#symbol-filesbuilduse-buildps1exportmodulemembers}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:dotSources` {#symbol-filesbuilduse-buildps1dotsources}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:importModules` {#symbol-filesbuilduse-buildps1importmodules}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:usingStatements` {#symbol-filesbuilduse-buildps1usingstatements}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:requiredModules` {#symbol-filesbuilduse-buildps1requiredmodules}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:invocations` {#symbol-filesbuilduse-buildps1invocations}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:loads` {#symbol-filesbuilduse-buildps1loads}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:aliasCommands` {#symbol-filesbuilduse-buildps1aliascommands}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:paramBlock` {#symbol-filesbuilduse-buildps1paramblock}
+- Type: key
+
+#### `files:../Build/Use-Build.ps1:statements` {#symbol-filesbuilduse-buildps1statements}
 - Type: key
 
 #### `files:../Copies/Alpha.psm1` {#symbol-filescopiesalphapsm1}
@@ -1279,6 +1414,15 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 #### `sources:../Backport/Use-Backport.ps1` {#symbol-sourcesbackportuse-backportps1}
 - Type: key
 
+#### `sources:../Build/Use-Build-Rooted.ps1` {#symbol-sourcesbuilduse-build-rootedps1}
+- Type: key
+
+#### `sources:../Build/Use-Build.ps1` {#symbol-sourcesbuilduse-buildps1}
+- Type: key
+
+#### `sources:../Build/build.ps1` {#symbol-sourcesbuildbuildps1}
+- Type: key
+
 #### `sources:../Copies/Alpha.psm1` {#symbol-sourcescopiesalphapsm1}
 - Type: key
 
@@ -1353,6 +1497,7 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 ### Dependencies
 - [`Helpers`](../Aliases/Helpers.ps1.mdmd.md)
 - [`Expand-Archive`](../Backport/Expand-Archive.ps1.mdmd.md)
+- [`build`](../Build/build.mdmd.md)
 - [`Alpha`](../Copies/Alpha.psm1.mdmd.md)
 - [`Beta`](../Copies/Beta.psm1.mdmd.md)
 - [`One`](../Extras/One.ps1.mdmd.md)

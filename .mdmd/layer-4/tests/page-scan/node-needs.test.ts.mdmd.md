@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.test.ts`
-- Generated At: 2026-11-21T03:40:56.663Z
+- Generated At: 2026-11-21T19:30:08.295Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
+- [`build-page.GRAMMARS`](./build-page.mjs.mdmd.md#symbol-grammars)
+- [`build-page.REPO`](./build-page.mjs.mdmd.md#symbol-repo)
 - [`build-page.STAND_INS`](./build-page.mjs.mdmd.md#symbol-stand_ins)
 - [`node-needs.NEEDS_FILE`](./node-needs.mjs.mdmd.md#symbol-needs_file)
 - [`node-needs.nodeNeeds`](./node-needs.mjs.mdmd.md#symbol-nodeneeds)

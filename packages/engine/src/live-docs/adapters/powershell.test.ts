@@ -748,17 +748,22 @@ describe("loads the text fixes", () => {
   it("read a script run or dot-sourced by a path without its extension as PowerShell finds it: the file so named, else its .ps1", async () => {
     // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1`, run from the folder): with
     // only `a/build.ps1`, `a/build`, `& a/build`, `& "$PSScriptRoot/a/build"` and `. a/build` each "a/build.ps1 ran";
-    // with `b/build` and `b/build.ps1` both, `Get-Command b/build` is `b/build`, the file so named; with only
-    // `d/build.psm1`, `d/build` is `CommandNotFoundException`: no other extension is tried. And a name without a folder
-    // is a command: from `g/Use.ps1`, `. Stop-It` and `& Stop-It` beside `g/Stop-It.ps1` are `CommandNotFoundException`.
+    // with only `d/build.psm1`, `d/build` is `CommandNotFoundException`: no other extension is tried. And a name without
+    // a folder is a command: from `g/Use.ps1`, `. Stop-It` and `& Stop-It` beside `g/Stop-It.ps1` are
+    // `CommandNotFoundException`. With `b/build` and `b/build.ps1` both, the platforms differ, and the reader follows
+    // Windows: a relative `b/build` is `b/build.ps1` (the owner's run on their Windows machine, 2026-11-21, `Get-Command
+    // ./build` beside both was `build.ps1`), where pwsh on Linux found `b/build`; a rooted `"$PSScriptRoot/b/build"` is
+    // `b/build` on both, as PowerShell's source has it.
     await write({
       "a/build.ps1": "", "b/build": "", "b/build.ps1": "", "d/build.psm1": "", "g/Stop-It.ps1": "",
       "Deploy.ps1": ["a/build", "& \"$PSScriptRoot/a/build\" -Step publish", "b/build", "d/build"].join("\n"),
       "Library.ps1": ". \"$PSScriptRoot/a/build\"\nfunction Get-Thing { }\n",
+      "Rooted.ps1": ". \"$PSScriptRoot/b/build\"\n",
       "g/Use.ps1": ". Stop-It\n"
     });
     const analysis = await analyzeFile("Deploy.ps1");
-    expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["a/build.ps1", "b/build"]);
+    expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["a/build.ps1", "b/build.ps1"]);
+    expect(Object.keys(await wires("Rooted.ps1"))).toEqual(["b/build"]);
     expect(analysis?.notices).toEqual([{ reason: "loads whose path the text fixes but no file of the workspace holds, left unlinked", subject: "d/build" }]);
     expect(Object.keys(await wires("Library.ps1"))).toEqual(["a/build.ps1"]);
     expect(await wires("g/Use.ps1")).toEqual({});

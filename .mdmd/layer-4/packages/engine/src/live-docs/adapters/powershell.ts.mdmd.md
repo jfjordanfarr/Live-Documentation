@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-21T07:29:06.893Z
+- Generated At: 2026-11-21T19:29:59.758Z
 
 ## Authored
 ### Purpose
@@ -27,13 +27,14 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 - Programs since 2026-11-19: a `.ps1` whose own level only defines functions, filters, workflows, classes and enums and otherwise only sets up its scope (dot-sources, `Import-Module`, `Set-StrictMode`, `Export-ModuleMember`, `Set-Alias`, `New-Alias`, `Add-Type`, `Update-TypeData`, `Update-FormatData`, `Register-ArgumentCompleter`, assignments that call nothing on either side) does nothing when run and is a library, not the program's entry; one holding text the grammar could not read at its own level stays a program. On a seeded sixty it erred only toward calling a library a program: a helper that imports inside an `if`, and an include that only assigns a variable.
 - A manifest's `FunctionsToExport` offers each name it writes out from the one file of the module (its root and what that loads) that defines it at its own level, as a TypeScript barrel offers what it re-exports (`reExportedSymbols`, rendered as `Re-Exported Symbol Anchors` with a link to the origin), not as a wire; a wildcard, or a name the module does not define once, is not offered.
 - Measured by [`powershell-oracle.test.ts`](../../../../../../../.mdmd/layer-4/tests/integration/live-docs/powershell-oracle.test.ts.mdmd.md) against the parser's records `expected/powershell-ast.json` of `tests/integration/programs/powershell/rollout`, `tests/integration/fixtures/powershell-compendium` and, since 2026-11-19, `tests/integration/fixtures/powershell-wires`, the calls, loads, libraries and offers judged by the rules of [`powershell-wires.ts`](../../../../../../../.mdmd/layer-4/scripts/oracle/powershell-wires.ts.mdmd.md) over the parser's facts; its register holds one miss, the grammar's reading of `./scripts/Clean.ps1` as a dot-source. Before the wires the register was empty on the first two; `oracle:compare` finds 8 of 8 and 3 of 3 of the parser's edges with nothing extra. With the bundled grammar in place of the built one the register would list five misses on the rollout program and two on the compendium. The `pwsh` adapter it replaced found 7 of the rollout program's 12 published functions and 3 of its 8 dependencies. Guarded by [`powershell.test.ts`](./powershell.test.ts.mdmd.md) and, for the grammar, [`treeSitter.test.ts`](./treeSitter.test.ts.mdmd.md).
+- Since 2026-11-21 a relative path without its extension, `./build` beside both `build` and `build.ps1`, is `build.ps1`, as Windows runs it: the owner's run on their own Windows machine that day, kept as `tests/integration/fixtures/powershell-wires/expected/windows-runs.json`, and PowerShell's source both say so, where pwsh on Unix runs `build`; a rooted path, `$PSScriptRoot/build`, is `build` on both, as before (`resolveScript`). The parser's record, pwsh's on Linux, keeps Unix's answer, held in the oracle test's register by its cause. The four PowerShell corpora hold no such pair and moved by no line ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `analyzePowerShellSource` {#symbol-analyzepowershellsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2062)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2071)
 
 ##### `analyzePowerShellSource` — Summary
 Analyzes one PowerShell file from its text, without the generator: a
@@ -44,7 +45,7 @@ what it names and the root module it declares. Paths are resolved against
 
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2103)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2112)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary

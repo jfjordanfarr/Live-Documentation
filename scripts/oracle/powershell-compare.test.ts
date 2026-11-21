@@ -24,14 +24,16 @@ describe("the PowerShell comparison of a folder", () => {
     expect(folderFiles(folder)).toEqual(["a.ps1", "bin/b.ps1", "lib/c.psm1"]);
   });
 
-  // The fixture's kept record stands in for `pwsh`, so that the comparison is held without PowerShell; its one miss is
-  // the one `powershell-oracle.test.ts` registers for this fixture, the grammar's reading of `./scripts/Clean.ps1`.
-  it("sets the adapter's wires, calls and programs beside the parser's, naming the one wire the grammar misses", async () => {
+  // The fixture's kept record stands in for `pwsh`, so that the comparison is held without PowerShell; its misses are
+  // those `powershell-oracle.test.ts` registers for this fixture: the grammar's reading of `./scripts/Clean.ps1`, and
+  // `. ./build` beside `build` and `build.ps1`, which pwsh on Linux, the record's, reads as Unix does and the adapter as
+  // Windows does (`expected/windows-runs.json`, the owner's run).
+  it("sets the adapter's wires, calls and programs beside the parser's, naming the wires the grammar and the platform make differ", async () => {
     const ast = readPowerShellAst(path.join(fixture, "expected", "powershell-ast.json"), fixture)!;
     const report = await comparePowerShell(fixture, ast);
-    expect(report.wires.parserOnly).toEqual(["Deploy.ps1 → scripts/Clean.ps1"]);
-    expect(report.wires.adapterOnly).toEqual([]);
-    expect(report.wires.both).toBe(report.wires.adapter);
+    expect(report.wires.parserOnly).toEqual(["Build/Use-Build.ps1 → Build/build", "Deploy.ps1 → scripts/Clean.ps1"]);
+    expect(report.wires.adapterOnly).toEqual(["Build/Use-Build.ps1 → Build/build.ps1"]);
+    expect(report.wires.both).toBe(report.wires.adapter - report.wires.adapterOnly.length);
     expect(report.calls.parserOnly).toEqual([]);
     expect(report.calls.adapterOnly).toEqual([]);
     expect(report.calls.both).toBeGreaterThan(0);

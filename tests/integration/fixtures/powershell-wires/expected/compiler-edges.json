@@ -13,6 +13,9 @@
     "../Backport/Expand-Archive.ps1",
     "../Backport/Use-Archive.ps1",
     "../Backport/Use-Backport.ps1",
+    "../Build/Use-Build-Rooted.ps1",
+    "../Build/Use-Build.ps1",
+    "../Build/build.ps1",
     "../Copies/Alpha.psm1",
     "../Copies/Beta.psm1",
     "../Copies/Use-Alpha.ps1",
@@ -53,6 +56,20 @@
       "symbols": [
         ". \"$PSScriptRoot\\Expand-Archive.ps1\"",
         "calls Expand-Archive"
+      ]
+    },
+    {
+      "from": "../Build/Use-Build-Rooted.ps1",
+      "to": "../Build/build",
+      "symbols": [
+        ". \"$PSScriptRoot/build\""
+      ]
+    },
+    {
+      "from": "../Build/Use-Build.ps1",
+      "to": "../Build/build",
+      "symbols": [
+        ". ./build"
       ]
     },
     {
