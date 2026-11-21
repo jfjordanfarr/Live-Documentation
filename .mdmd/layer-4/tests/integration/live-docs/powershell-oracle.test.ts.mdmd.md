@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/powershell-oracle.test.ts`
-- Generated At: 2026-11-21T02:25:26.479Z
+- Generated At: 2026-11-21T05:16:14.082Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`powershell-edges.isDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-wires.ParserWorkspace`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-parserworkspace)
 - [`powershell-wires.isLibraryByParser`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)
+- [`powershell-wires.recordedShippedNames`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-recordedshippednames)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

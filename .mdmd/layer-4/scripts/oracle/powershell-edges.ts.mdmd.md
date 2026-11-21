@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-edges.ts`
-- Generated At: 2026-11-21T02:25:23.611Z
+- Generated At: 2026-11-21T05:16:10.410Z
 
 ## Authored
 ### Purpose
@@ -208,6 +208,7 @@ Moves every location of the record, the files' keys and every resolved path, fro
 - `node:child_process` - `spawnSync`
 - `node:path` - `path`
 - [`powershell-wires.ParserWorkspace`](./powershell-wires.ts.mdmd.md#symbol-parserworkspace)
+- [`powershell-wires.recordedShippedNames`](./powershell-wires.ts.mdmd.md#symbol-recordedshippednames)
 - [`scip-edges.OracleEdge`](./scip-edges.ts.mdmd.md#symbol-oracleedge) (type-only)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 - [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject) (type-only)

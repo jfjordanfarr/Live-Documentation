@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-compare.ts`
 - Entry: command `oracle:powershell` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T03:07:38.012Z
+- Generated At: 2026-11-21T05:16:10.391Z
 
 ## Authored
 ### Purpose
@@ -21,23 +21,23 @@ Grades the PowerShell reader on a whole folder against PowerShell's own parser: 
 ### Public Symbols
 #### `folderFiles` {#symbol-folderfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L56)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L59)
 
 ##### `folderFiles` — Summary
 Every file of a folder, folder-relative with `/`, but those of the folders left out.
 
 #### `parserReading` {#symbol-parserreading}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L91)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L94)
 - Returns: [`Reading`](../../tests/e2e/scenarios/reading.ts.mdmd.md#symbol-reading)
-- Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
+- Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast); `shipped`: [`ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames)
 
 ##### `parserReading` — Summary
-What the parser's facts make of the folder under the rules of `powershell-wires.ts`.
+What the parser's facts make of the folder under the rules of `powershell-wires.ts`, with the names pwsh answers by itself.
 
 #### `adapterReading` {#symbol-adapterreading}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L107)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L110)
 - Returns: [`Reading`](../../tests/e2e/scenarios/reading.ts.mdmd.md#symbol-reading)
 
 ##### `adapterReading` — Summary
@@ -45,18 +45,19 @@ What the adapter's analyses of the folder's files make of it, read as the parser
 
 #### `PowerShellReport` {#symbol-powershellreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L137)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L140)
 
 ##### `PowerShellReport` — Summary
 The comparison of one folder: what was read, and each measure set side by side.
 
 #### `comparePowerShell` {#symbol-comparepowershell}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L148)
-- Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
+- Source: [source](../../../../scripts/oracle/powershell-compare.ts#L156)
+- Parameters: `ast`: [`PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast); `names`: [`ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames)
 
 ##### `comparePowerShell` — Summary
-Reads the folder both ways and sets the readings side by side.
+Reads the folder both ways and sets the readings side by side. The names pwsh answers by itself are asked of the pwsh
+that parses the folder; a record given in its place, which runs no pwsh, is read with the names kept beside the rules.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -70,6 +71,9 @@ Reads the folder both ways and sets the readings side by side.
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-edges.parsePowerShellFixture`](./powershell-edges.ts.mdmd.md#symbol-parsepowershellfixture)
 - [`powershell-wires.ParserWorkspace`](./powershell-wires.ts.mdmd.md#symbol-parserworkspace)
+- [`powershell-wires.ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames)
+- [`powershell-wires.askShippedNames`](./powershell-wires.ts.mdmd.md#symbol-askshippednames)
 - [`powershell-wires.isLibraryByParser`](./powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)
 - [`powershell-wires.parserLoads`](./powershell-wires.ts.mdmd.md#symbol-parserloads)
+- [`powershell-wires.recordedShippedNames`](./powershell-wires.ts.mdmd.md#symbol-recordedshippednames)
 <!-- LIVE-DOC:END Dependencies -->

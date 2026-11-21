@@ -6,9 +6,12 @@
  * `powershell-ast.ps1` reads every `.ps1`, `.psm1` and `.psd1` file of the
  * folder with `System.Management.Automation.Language.Parser`, in batches, and
  * the rules of `powershell-wires.ts`, written again over the parser's facts
- * and sharing no code with the adapter, say which file each file loads, which
- * file each call reaches ("loaded, else unique"), and which scripts are
- * libraries. The PowerShell adapter reads the same files as the generator has
+ * with the names pwsh answers by itself (`powershell-shipped.ps1`), say which
+ * file each file loads, which file each call reaches ("loaded, else unique"),
+ * and which scripts are libraries. It grades the adapter's reading of the
+ * facts and its list of PowerShell's own names, not the rules, which both
+ * sides hold alike (`powershell-wires.ts` says what it cannot measure). The
+ * PowerShell adapter reads the same files as the generator has
  * it read them, with every file of the folder as the workspace's index. The
  * two are then set side by side:
  *
@@ -44,7 +47,7 @@ import { powershellAdapter } from "@live-documentation/engine/live-docs/adapters
 import type { SourceAnalysisResult } from "@live-documentation/engine/live-docs/core";
 
 import { isDataFileFacts, parsePowerShellFixture, type PowerShellAst } from "./powershell-edges";
-import { isLibraryByParser, parserLoads, ParserWorkspace } from "./powershell-wires";
+import { askShippedNames, isLibraryByParser, parserLoads, ParserWorkspace, recordedShippedNames, type ShippedNames } from "./powershell-wires";
 
 /** Folders a corpus's reading leaves out: the version control's, and the docs the default configuration writes. */
 const LEFT_OUT = new Set([".git", ".live-documentation"]);
@@ -87,9 +90,9 @@ interface Reading {
   programs: Set<string>;
 }
 
-/** What the parser's facts make of the folder under the rules of `powershell-wires.ts`. */
-export function parserReading(ast: PowerShellAst): Reading {
-  const workspace = new ParserWorkspace(ast);
+/** What the parser's facts make of the folder under the rules of `powershell-wires.ts`, with the names pwsh answers by itself. */
+export function parserReading(ast: PowerShellAst, shipped: ShippedNames): Reading {
+  const workspace = new ParserWorkspace(ast, shipped);
   const reading: Reading = { wires: new Set(), calls: new Set(), programs: new Set() };
   for (const [file, facts] of Object.entries(ast.files)) {
     for (const load of parserLoads(file, facts)) if (load.to !== file) reading.wires.add(`${file} → ${load.to}`);
@@ -137,6 +140,8 @@ function measure(parser: Set<string>, adapter: Set<string>): Measure {
 export interface PowerShellReport {
   folder:      string;
   tool:        string;
+  /** The pwsh whose own names the parser's side used: its version and system. */
+  shipped:     string;
   files:       { powershell: number; scripts: number; parseErrors: number };
   wires:       Measure;
   calls:       Measure;
@@ -144,23 +149,28 @@ export interface PowerShellReport {
   programs:    { agree: number; differ: string[] };
 }
 
-/** Reads the folder both ways and sets the readings side by side. */
-export async function comparePowerShell(root: string, ast?: PowerShellAst): Promise<PowerShellReport> {
-  const files  = folderFiles(root);
-  const record = ast ?? parseFolder(root, files);
+/**
+ * Reads the folder both ways and sets the readings side by side. The names pwsh answers by itself are asked of the pwsh
+ * that parses the folder; a record given in its place, which runs no pwsh, is read with the names kept beside the rules.
+ */
+export async function comparePowerShell(root: string, ast?: PowerShellAst, names?: ShippedNames): Promise<PowerShellReport> {
+  const files   = folderFiles(root);
+  const record  = ast ?? parseFolder(root, files);
+  const shipped = names ?? (ast ? recordedShippedNames() : askShippedNames());
   const index  = new Set(files);
   const analyses = new Map<string, SourceAnalysisResult>();
   for (const file of Object.keys(record.files).sort()) {
     const analysis = await powershellAdapter.analyze({ absolutePath: path.join(root, file), workspaceRoot: root, fileIndex: index });
     if (analysis) analyses.set(file, analysis);
   }
-  const parser  = parserReading(record);
+  const parser  = parserReading(record, shipped);
   const adapter = adapterReading(analyses);
   const scripts = Object.entries(record.files).filter(([, facts]) => !isDataFileFacts(facts)).map(([file]) => file);
   const differ  = scripts.filter((file) => parser.programs.has(file) !== adapter.programs.has(file)).sort();
   return {
     folder:   root,
     tool:     record.tool,
+    shipped:  `pwsh ${shipped.version} on ${shipped.os}`,
     files:    {
       powershell:  Object.keys(record.files).length,
       scripts:     scripts.length,
@@ -174,6 +184,7 @@ export async function comparePowerShell(root: string, ast?: PowerShellAst): Prom
 
 function printReport(report: PowerShellReport, detail: boolean): void {
   console.log(`The PowerShell reader against ${report.tool}'s parser, under the rules of scripts/oracle/powershell-wires.ts`);
+  console.log(`The names PowerShell answers by itself: those of ${report.shipped}`);
   console.log(`Folder: ${report.folder}`);
   console.log(`Files: ${report.files.powershell} PowerShell, ${report.files.scripts} of them scripts and modules, ${report.files.parseErrors} with a parse error`);
   console.log("");

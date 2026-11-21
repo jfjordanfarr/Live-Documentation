@@ -4,19 +4,63 @@
  * scripts are libraries rather than programs, and which functions a module
  * manifest offers from which file.
  *
- * The parser supplies every fact (`powershell-ast.ps1`): the functions each
- * file defines and where, the commands it calls, what it dot-sources, imports
- * and runs, with the files PowerShell itself would find, and the statements at
- * its own level. The rules are the design measured on 2026-11-19 against a
- * reading of sampled wires; they are written here again, over the parser's
- * record, and share no code with the adapter, which reads the same facts
- * from its grammar.
+ * What it measures: the adapter's reading of the facts. The parser supplies
+ * every fact (`powershell-ast.ps1`): the functions each file defines and
+ * where, the commands it calls, what it dot-sources, imports and runs, with
+ * the files PowerShell itself would find, and the statements at its own
+ * level. pwsh supplies the names it answers by itself, its commands, its
+ * functions without a module and its aliases (`powershell-shipped.ps1`, run
+ * in a clean session), so that the adapter's fixed list of them is graded
+ * too: where the two lists differ, the readings differ.
+ *
+ * What it cannot measure: the rules themselves. They are the design measured
+ * on 2026-11-19 against a reading of sampled wires ("loaded, else unique"),
+ * written here a second time over the parser's record, and the adapter holds
+ * the same rules, so a rule that is wrong is wrong on both sides and agrees
+ * with itself; only the hand reading of the sampled wires grades the rule. Nor
+ * does it grade which files are tests: both sides take that from the product's
+ * own `resolveArchetype`. And pwsh here is PowerShell 7 on Linux: the names
+ * Windows PowerShell 5.1 alone answers (`sort`, `curl`, `mkdir`, `gwmi`) are in
+ * the adapter's list from Microsoft's documentation and in no list here, so
+ * where they matter the readings differ, and the difference is the adapter's
+ * 5.1 half, which nothing on this machine can grade.
  */
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
+import path from "node:path";
+
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { SHIPPED_COMMANDS } from "@live-documentation/engine/live-docs/adapters/powershell.builtins";
 import { resolveArchetype } from "@live-documentation/engine/live-docs/archetype";
 
 import { isDataFileFacts, type PowerShellAst, type PowerShellDataFileFacts, type PowerShellScriptFacts } from "./powershell-edges";
+
+/** The names a clean PowerShell session answers by itself, as `powershell-shipped.ps1` prints them. */
+export interface ShippedNames {
+  version:   string;
+  os:        string;
+  commands:  string[];
+  functions: string[];
+  aliases:   Array<{ name: string; definition: string }>;
+}
+
+const SHIPPED_SCRIPT = path.join(__dirname, "powershell-shipped.ps1");
+
+/** The names the pwsh on the path answers by itself, asked of it in a clean session. */
+export function askShippedNames(): ShippedNames {
+  const run = spawnSync("pwsh", ["-NoLogo", "-NoProfile", "-NonInteractive", "-File", SHIPPED_SCRIPT], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
+  if (run.error) throw new Error(`pwsh could not be run: ${run.error.message}`);
+  if (run.status !== 0) throw new Error(`pwsh exited with ${run.status}:\n${run.stderr}`);
+  return JSON.parse(run.stdout) as ShippedNames;
+}
+
+/**
+ * The names pwsh answered by itself, kept beside this file (`powershell-shipped.json`, written by
+ * `pwsh -NoProfile -NonInteractive -File scripts/oracle/powershell-shipped.ps1`, PowerShell 7.7.0 on Linux, 2026-11-21),
+ * for readings of a committed record, which run no pwsh. Write it again when the parser's records are.
+ */
+export function recordedShippedNames(): ShippedNames {
+  return JSON.parse(fs.readFileSync(path.join(__dirname, "powershell-shipped.json"), "utf8")) as ShippedNames;
+}
 
 /** A load of one file by another, by kind: what a manifest names loads with the manifest's module. */
 export interface ParserLoad {
@@ -111,8 +155,14 @@ export class ParserWorkspace {
   private modules?: Map<string, string[]>;
   /** By call name: each file that defines the function at its own level, with the name as written there. */
   readonly definers = new Map<string, Array<{ file: string; name: string }>>();
+  /** pwsh's own commands and functions, case-folded. */
+  private readonly shipped: Set<string>;
+  /** pwsh's aliases, case-folded, each with the command it names. */
+  private readonly aliases: Map<string, string>;
 
-  constructor(readonly ast: PowerShellAst) {
+  constructor(readonly ast: PowerShellAst, shipped: ShippedNames) {
+    this.shipped = new Set([...shipped.commands, ...shipped.functions].map((name) => name.toLowerCase()));
+    this.aliases = new Map(shipped.aliases.map((alias) => [alias.name.toLowerCase(), alias.definition.toLowerCase()]));
     for (const [file, facts] of Object.entries(ast.files)) {
       this.loads.set(file, parserLoads(file, facts));
       if (isDataFileFacts(facts)) continue;
@@ -192,9 +242,10 @@ export class ParserWorkspace {
    * The files a script's calls reach, each with the functions called, under
    * "loaded, else unique": a name the script defines itself is its own; else
    * the one defining file its loading reaches; if several, none; if none, the
-   * only file that defines the name, unless PowerShell itself ships a command
-   * of that name; and from a script that is not a test, that last reach
-   * passes over every test file.
+   * only file that defines the name, unless pwsh answers a command or a
+   * function of that name by itself; and from a script that is not a test,
+   * that last reach passes over every test file. A call by one of pwsh's
+   * aliases is a call to the command the alias names.
    */
   wiresOf(file: string): Map<string, Set<string>> {
     const facts = this.ast.files[file];
@@ -202,13 +253,14 @@ export class ParserWorkspace {
     if (!facts || isDataFileFacts(facts)) return wires;
     const own = new Set(facts.functions.filter((fn) => !fn.member).map((fn) => callName(fn.name)));
     const test = isTestFile(file);
-    for (const name of parserCalls(facts)) {
+    for (const written of parserCalls(facts)) {
+      const name = this.aliases.get(written) ?? written;
       if (own.has(name)) continue;
       const definers = (this.definers.get(name) ?? []).filter((definer) => definer.file !== file);
       if (definers.length === 0) continue;
       const loaded = definers.filter((definer) => this.loadsFile(file, definer.file));
       const reach  = test ? definers : definers.filter((definer) => !isTestFile(definer.file));
-      const chosen = loaded.length === 1 ? loaded[0] : loaded.length === 0 && reach.length === 1 && !SHIPPED_COMMANDS.has(name) ? reach[0] : undefined;
+      const chosen = loaded.length === 1 ? loaded[0] : loaded.length === 0 && reach.length === 1 && !this.shipped.has(name) ? reach[0] : undefined;
       if (chosen) wires.set(chosen.file, new Set([...(wires.get(chosen.file) ?? []), chosen.name]));
     }
     return wires;

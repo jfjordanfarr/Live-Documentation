@@ -31,7 +31,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 
 import { readPowerShellAst } from "../../../scripts/oracle/files";
 import { isDataFileFacts, type PowerShellDataFileFacts, type PowerShellHelp, type PowerShellScriptFacts } from "../../../scripts/oracle/powershell-edges";
-import { isLibraryByParser, ParserWorkspace } from "../../../scripts/oracle/powershell-wires";
+import { isLibraryByParser, ParserWorkspace, recordedShippedNames } from "../../../scripts/oracle/powershell-wires";
 
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 
@@ -236,7 +236,7 @@ describe("the PowerShell adapter against PowerShell's parser", () => {
       const fixtureDir = path.join(INTEGRATION_ROOT, fixture);
       const ast        = readPowerShellAst(path.join(fixtureDir, "expected", "powershell-ast.json"), fixtureDir)!;
       const files      = fileIndex(fixtureDir);
-      const workspace  = new ParserWorkspace(ast);
+      const workspace  = new ParserWorkspace(ast, recordedShippedNames());
       const found: string[] = [];
       for (const [file, facts] of Object.entries(ast.files)) {
         const analysis = (await powershellAdapter.analyze({ absolutePath: path.join(fixtureDir, file), workspaceRoot: fixtureDir, fileIndex: files }))!;
