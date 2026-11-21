@@ -86,6 +86,32 @@ describe("JSON Adapter", () => {
     }
   });
 
+  // Until 2026-11-21 the reader asked TypeScript's host on Node whether names fold (`ts.sys.useCaseSensitiveFileNames`):
+  // the answer differed between Windows and Linux for the same folder, and where TypeScript has no host, as in a page,
+  // `ts.sys` is undefined and the read threw (the page check's ledger, tests/page-scan/differences.json).
+  it("reads a manifest beside a tsconfig the same whatever TypeScript's host on Node says of names, and with no host at all", async () => {
+    const actual = await vi.importActual<typeof import("typescript")>("typescript");
+    const real = (actual as typeof actual & { default?: typeof actual }).default ?? actual;
+    const read: unknown[] = [];
+    for (const sys of [real.sys, { ...real.sys, useCaseSensitiveFileNames: false }, undefined]) {
+      vi.resetModules();
+      // `sys` is a getter TypeScript will not let go of, so the module is stood in by one that answers it otherwise.
+      vi.doMock("typescript", () => {
+        const hosted = Object.create(real, { sys: { value: sys } }) as typeof real;
+        return { ...real, sys, default: hosted };
+      });
+      try {
+        const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");
+        read.push(await own.analyze(manifestBesideTsconfig(compiled(""))).catch((error: unknown) => ({ threw: String(error) })));
+      } finally {
+        vi.doUnmock("typescript");
+      }
+    }
+    expect((read[0] as { declares?: unknown }).declares).toEqual([{ reason: "command", file: "src/cli.ts", name: "start" }]);
+    expect(read[1]).toEqual(read[0]);
+    expect(read[2]).toEqual(read[0]);
+  });
+
   // Each quoted word that holds words is read a level down by `filesRunBy`'s own recursion, the tree's bound. Every
   // level must escape the quotes of each below it, so no script a manifest holds reaches 400 levels; the bound is made
   // small here to hold the count.
