@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { ArrivalFraming, CameraFraming } from "../../packages/explorer/src/client/types";
+import type { ArrivalFraming, CameraFraming, StepFraming } from "../../packages/explorer/src/client/types";
 import { ARRIVAL_FLOOR_RATIO } from "../../packages/explorer/src/client/views/localView/camera-intent";
 import { choose } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
@@ -339,7 +339,82 @@ test("following, pins that cannot all be framed leave the oldest out, always fra
   }
 });
 
+/**
+ * What a step frames (Tuning → 2D Layout → Step; a trial of 2026-11-21, the root's brief after blind testers answered
+ * from a cut-off view). Opening `live-docs/history` from pathfind.ts at reading size, a directory too large to stand
+ * whole at that scale. Least Pan, the default, is the case above; these are the trial's other camera values.
+ */
+async function visitStep(browser: Browser, step: StepFraming) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step } } })
+  });
+  const page = await context.newPage();
+  await page.goto(`/?view=local&node=${encodeURIComponent(SUBJECT)}`);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  await still(page);
+  return { context, page };
+}
+
 const band = (directory: string): string => `.local-directory-band:has(> .local-directory-label[data-directory="${directory}"])`;
+
+test("Step, Whole: an opened directory too large at the scale is eased out just far enough to stand whole, never past the floor", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitStep(browser, "whole");
+  const before = await scaleOf(page);
+  await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
+  await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  const after = await scaleOf(page), floor = before * ARRIVAL_FLOOR_RATIO;
+  expect(after, "eased out, never in").toBeLessThan(before);
+  expect(after, "never past the floor, where every card's names still read").toBeGreaterThanOrEqual(floor * 0.999);
+  const frame = await frameOf(page), drawn = (await boxOf(page, band(HISTORY)))!;
+  if (after > floor * 1.001) expect(inside(drawn, frame), `the opened directory ${JSON.stringify(drawn)} whole inside ${JSON.stringify(frame)}`).toBe(true);
+  else {
+    // Where the floor stops it short, its start, the label with the first row it holds, is in view: an opened
+    // directory's membrane is not a rectangle, so its box's top says nothing of where its label stands.
+    const label = await boxOf(page, `.local-directory-label[data-directory="${HISTORY}"]`);
+    expect(inside(label, frame), `the opened directory's label ${JSON.stringify(label)} inside ${JSON.stringify(frame)}`).toBe(true);
+  }
+  await context.close();
+});
+
+test("Step, With Its Lines: an opened directory is framed with the cards its lines reach, between the floor and reading scale", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitStep(browser, "lines");
+  const before = await scaleOf(page);
+  await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
+  await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  const after = await scaleOf(page), floor = before * ARRIVAL_FLOOR_RATIO;
+  expect(after).toBeLessThanOrEqual(before * 1.001);
+  expect(after).toBeGreaterThanOrEqual(floor * 0.999);
+  const reached = await page.evaluate(({ directory }) => {
+    const held = new Set([...document.querySelectorAll<HTMLElement>(`.local-directory-band:has(> .local-directory-label[data-directory="${directory}"]) .node-card[data-id]`)].map(card => card.dataset.id!));
+    const far = new Set<string>();
+    for (const path of document.querySelectorAll<SVGElement>("#map-connections [data-source-id][data-target-id]")) {
+      const { sourceId, targetId } = path.dataset;
+      if (held.has(sourceId!) && !held.has(targetId!)) far.add(targetId!);
+      if (held.has(targetId!) && !held.has(sourceId!)) far.add(sourceId!);
+    }
+    return [...far];
+  }, { directory: HISTORY });
+  const frame = await frameOf(page);
+  if (after > floor * 1.001) {
+    expect(inside(await boxOf(page, band(HISTORY)), frame), "the opened directory whole").toBe(true);
+    for (const id of reached) expect(inside(await boxOf(page, card(id)), frame), `${id}, which its lines reach, in view`).toBe(true);
+  }
+  await context.close();
+});
+
+test("a link carries Step: a fresh browser opens the link's choice", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  await page.goto(`${ESTATE}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: PAYMENTS, layout: { localMap: { step: "lines" } } })}`);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  await expect(page.locator("#tuning-step")).toHaveValue("lines");
+  await context.close();
+});
 
 test("a folder chosen in the search stands whole in the frame, not centred on its name with the window's upper half empty", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-19T21:10:17.873Z
+- Generated At: 2026-11-21T05:33:01.570Z
 
 ## Authored
 ### Purpose
@@ -538,6 +538,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-slot-lines-value` {#symbol-tuning-slot-lines-value}
+- Type: variable
+
+#### `tuning-step` {#symbol-tuning-step}
 - Type: variable
 
 #### `tuning-stub-factor` {#symbol-tuning-stub-factor}

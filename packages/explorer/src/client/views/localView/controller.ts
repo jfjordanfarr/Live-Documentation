@@ -12,7 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -996,7 +996,10 @@ export class LocalViewController implements LocalViewApi {
       frame.afterRender();
       // Opened while following, the directory is framed with the pins as their newest (the trial's choice, 2026-11-19).
       this.followDirectory = this.container.querySelector(label) ? directory : null;
-      if (!drawn && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
+      // Under Tuning's Step trial (2026-11-21) every opening is a step whose newcomer is the opened directory, its handle's
+      // label drawn before or not; under Least Pan, the default, only a label not drawn before is, as since 2026-11-19.
+      const step = this.options.state.tuning.localMap.step !== "least";
+      if ((!drawn || step) && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
       this.directoryArrivalPending = this.isShown();
       if (!this.stage?.move) this.settleArrival();
     } };
@@ -1979,6 +1982,19 @@ export class LocalViewController implements LocalViewApi {
     // A step's newcomer (camera-intent.ts): the least pan that brings it wholly into view at this scale, which wins over
     // the hold of what was pressed, and its outline emphasised for a moment, so that the eye finds it.
     const newcomer = step ? this.newcomerOf(step) : null;
+    const lever = this.options.state.tuning.localMap.step;
+    const whole = step && (lever === "whole" || lever === "lines") ? this.stepProduced(step) : null;
+    if (newcomer && whole) {
+      // Tuning's Step, a trial (2026-11-21): the whole newcomer, eased out only as far as it needs; or the newcomer with
+      // the cards its lines reach, as Fit would frame them; never past the connections look's farthest press. The ease is
+      // the following camera's, so that any input of the person's ends it where it stands and reduced motion makes it a cut.
+      const floor = this.readingReferenceScale * ARRIVAL_FLOOR_RATIO;
+      const end = lever === "whole" ? stepWholeFrame(whole.bounds, newcomer.bounds, next, frame, floor)
+        : stepLinesFrame(unionOf([whole.bounds, ...this.reachedBy(whole.ids)])!, whole.bounds, newcomer.bounds, frame, this.readingReferenceScale, floor);
+      this.markNewcomer(newcomer.mark);
+      this.easeFollowing(end, frame);
+      return;
+    }
     if (newcomer) {
       const pan = revealPan(newcomer.bounds, next, frame);
       next = { x: next.x + pan.x, y: next.y + pan.y, k: next.k };
@@ -2029,6 +2045,49 @@ export class LocalViewController implements LocalViewApi {
       const shape = this.container.querySelector(`.local-membrane-shape[data-directory="${key}"]`) ?? label;
       return { bounds: unionOf([local(label), ...firstRow])!, mark: shape };
     });
+  }
+
+  /**
+   * The whole of what a step produced, in the picture's own units (Tuning's Step, 2026-11-21): the new card, or the opened
+   * directory's box with its label; with the ids of the file cards it holds, at every depth, and each card and closed box
+   * it holds by its key (a file's id, a directory's path). Null when it is not drawn.
+   */
+  private stepProduced(step: NonNullable<LocalViewController["stepNewcomer"]>): { bounds: Bounds; ids: string[]; cards: { key: string; bounds: Bounds }[] } | null {
+    return withTransformReset(this.container, origin => {
+      const local = (element: Element): Bounds => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height };
+      };
+      if ("card" in step) {
+        const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(step.card)}"]`);
+        return card ? { bounds: local(card), ids: [step.card], cards: [{ key: step.card, bounds: local(card) }] } : null;
+      }
+      const key = CSS.escape(step.directory);
+      const label = this.container.querySelector<HTMLElement>(`.local-directory-label[data-directory="${key}"]`);
+      const band = label?.closest<HTMLElement>(".local-directory-band");
+      if (!label || !band) return null;
+      const held = [...band.querySelectorAll<HTMLElement>(".node-card[data-id], .local-directory-closed[data-directory]")];
+      const cards = held.map(element => ({ key: element.dataset.id ?? element.dataset.directory ?? "", bounds: local(element) }));
+      return { bounds: unionOf([local(label), local(band), ...cards.map(card => card.bounds)])!,
+        ids: held.filter(element => element.classList.contains("node-card")).map(element => element.dataset.id!), cards };
+    });
+  }
+
+  /** The cards, in the picture's own units, at the far end of a line drawn from any of these files' cards. */
+  private reachedBy(ids: readonly string[]): Bounds[] {
+    const own = new Set(ids), far = new Set<string>();
+    for (const path of this.overlay.querySelectorAll<SVGElement>("[data-source-id][data-target-id]")) {
+      const { sourceId, targetId } = path.dataset;
+      if (!sourceId || !targetId) continue;
+      if (own.has(sourceId) && !own.has(targetId)) far.add(targetId);
+      if (own.has(targetId) && !own.has(sourceId)) far.add(sourceId);
+    }
+    return withTransformReset(this.container, origin => [...far].flatMap(id => {
+      const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`);
+      if (!card) return [];
+      const rect = card.getBoundingClientRect();
+      return [{ left: rect.left - origin.left, top: rect.top - origin.top, right: rect.right - origin.left, bottom: rect.bottom - origin.top, width: rect.width, height: rect.height }];
+    }));
   }
 
   /** Draw a newcomer's outline emphasised, fading to its usual look over {@link STEP_MARK_MS} (local.css). */
