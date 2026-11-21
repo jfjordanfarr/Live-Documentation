@@ -24,5 +24,6 @@ The PowerShell fixture for connections between scripts: which file a call reache
 | A test's stub at its own level of a command another module supplies: working code that calls it is not wired to the test | `tests/Tools.Tests.ps1` (`Get-Vendor`), called by `scripts/Run-Step.ps1` |
 | `Split-Path -Parent $MyInvocation.MyCommand.Path`, the Windows PowerShell 5.1 way to find a neighbour | `Neighbour.ps1` loads `lib/Common.ps1` |
 | A loop over names written out, in a `foreach` and piped to `ForEach-Object` | `Extras/Extras.psm1` loads `Extras/One.ps1` and `Extras/Two.ps1` |
+| A call by one of PowerShell's aliases, beside loaded functions named for the alias and for its command (since 2026-11-21; `pwsh -NoProfile -NonInteractive -File Aliases/Use-Aliases.ps1` printed `x`, Select-Object answering `select`, then "the fixture's Get-ChildItem", the loaded function answering `gci`) | `Aliases/Use-Aliases.ps1` calls `Get-ChildItem` in `Aliases/Helpers.ps1`, never `select` |
 
 Index it: `npm run oracle:index -- tests/integration/fixtures/powershell-wires`.

@@ -8,6 +8,8 @@
     }
   ],
   "documents": [
+    "../Aliases/Helpers.ps1",
+    "../Aliases/Use-Aliases.ps1",
     "../Backport/Expand-Archive.ps1",
     "../Backport/Use-Archive.ps1",
     "../Backport/Use-Backport.ps1",
@@ -37,6 +39,14 @@
   ],
   "outside": [],
   "edges": [
+    {
+      "from": "../Aliases/Use-Aliases.ps1",
+      "to": "../Aliases/Helpers.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot/Helpers.ps1\"",
+        "calls Get-ChildItem"
+      ]
+    },
     {
       "from": "../Backport/Use-Backport.ps1",
       "to": "../Backport/Expand-Archive.ps1",

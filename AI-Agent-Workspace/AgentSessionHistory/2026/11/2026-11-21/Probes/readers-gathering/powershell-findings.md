@@ -125,3 +125,42 @@ No false wire of the 81 is drawn, by the rule or the adapter. The true wires not
 - AL-Go 60, the adapter alone: `CommentPublishing.ps1`'s call to `Test-GlobMatch`, the record's known miss, through a load in a file the grammar reads with an error.
 
 What a committed extract would hold, for the gate to run this without the corpora: for every PowerShell file of each of the four corpora at its commit, its path, the names of the functions it defines at its own level, the names of the commands it calls, the files its loads resolve to, and whether it reads as a test; no line of code. Their licences: dbatools, MIT (Copyright (c) 2018 Chrissy LeMaire, `license`); AL-Go, MIT (Copyright (c) Microsoft Corporation, `LICENSE`); AzureStack-Tools, MIT (Copyright (c) 2016 Microsoft, `LICENSE.txt`, with `ThirdPartyNotices.txt` and `third-party-license.txt` beside it); tSQLt, Apache 2.0 (`Build/License.txt`). The MIT licence asks that its notice go with "all copies or substantial portions"; Apache 2.0 that a redistribution carry the licence and keep the notices. An extract of names and paths would carry each corpus's notice beside it either way. Whether to commit it waits for the owner.
+
+## The third round, after the independent reviewer's second pass
+
+From `a14ed4cd9`, the readers' joining with this branch merged. On dbatools and AL-Go, with `npm run oracle:powershell`'s comparison over parser records written by the round-start script and by the mended one, every figure is unchanged (7,479 / 7,478 / 7,478 and 493 / 492 / 492 wires; 6,630 / 6,629 / 6,629 and 1,042 / 1,041 / 1,041 calls; 1,792 / 1 and 198 / 0 programs), and so are the lists of disagreements, the 26 and 76 notices and the 8,274 and 504 dependencies: no line changed.
+
+### A loop whose body sets its own item
+
+The reviewer's case, `foreach ($m in 'ModE', 'ModF') { $m = "$m.Extra"; Import-Module $m }`, kept ModE and ModF. pwsh 7.7.0, each module missing so that its error names what it looked for (`pwsh -NoProfile -NonInteractive -File run.ps1`):
+
+| Body | pwsh looked for |
+| --- | --- |
+| `$m = "$m.Extra"; Import-Module $m` | ModE.Extra, ModF.Extra |
+| `Import-Module $m; $m = 'Other'`, set after the load | ModG, ModG2 |
+| `$m += '.Plus'; Import-Module $m` | ModH.Plus |
+| `foreach ($m in 'Inner') { }; Import-Module $m`, a nested loop over the same name | Inner |
+| `'ModJ' \| ForEach-Object { $_ = 'ModJ.Changed'; Import-Module $_ }` | ModJ.Changed |
+| `'ModK' \| ForEach-Object { $PSItem = 'ModK.Changed'; Import-Module $_ }` | ModK.Changed: `$PSItem` and `$_` are one |
+| `foreach ($m in 'ModL') { if ($false) { $m = 'Never' }; Import-Module $m }` | ModL |
+| the plain `'ModA', 'ModB' \| ForEach-Object { Import-Module $_ }` and `foreach ($m in 'ModC', 'ModD') { Import-Module $m }` | ModA, ModB; ModC, ModD |
+
+The mend: a loop whose body sets its item, by any assignment, `++` or `--`, or a loop nested in it over the same name (`$_` and `$PSItem` alike in `ForEach-Object`), is not read as a loop, in the reader (`setsItem`, for loops over written-out names and over a `Get-ChildItem` listing) and in the grader's record (`Test-SetsItem`). What it loads is then read as any variable is: `$_` assigned once before its one use holds 'ModJ.Changed', as pwsh says, and the rest are notices. A body that sets its item after the load, or in a branch that never runs, gives a notice where pwsh would import the item: a notice, never a wrong name, as for a variable assigned more than once. Test: red (ModE, ModF, ModH, ModI, ModK and ModG kept), green.
+
+### The alias rule, now able to fail the oracle test
+
+The fixture `tests/integration/fixtures/powershell-wires` held no call by an alias, so `powershell-oracle.test.ts` passed with the reader's alias mapping switched off. It now holds `Aliases/Helpers.ps1`, defining `select` and `Get-ChildItem`, and `Aliases/Use-Aliases.ps1`, which dot-sources it and runs `'x' | select` and `gci`. pwsh (`-File Aliases/Use-Aliases.ps1`) printed `x`, Select-Object answering `select` ahead of the loaded function, and "the fixture's Get-ChildItem", the loaded function answering `gci`. The record was written again (`npm run oracle:index -- tests/integration/fixtures/powershell-wires`): the two files, and the one wire `Use-Aliases.ps1 → Helpers.ps1` with the dot-source and "calls Get-ChildItem", nothing else. With the mapping switched off the test fails: "PowerShell depends on Aliases/Helpers.ps1 (resolved), calling Get-ChildItem, the adapter does not" and "the adapter depends on Aliases/Helpers.ps1 (resolved), calling select, PowerShell does not"; with it on, it passes.
+
+That Windows PowerShell 5.1's own aliases (`curl`, `ls`, `sort`, …) win over a loaded function of the same name, though pwsh 7 on Linux has no such alias, is the Windows answer, which the engine promises.
+
+### A path without its extension beside a `.ps1` of the same name: Windows and Unix differ
+
+No Windows is here, so the question was put to PowerShell's own source, PowerShell/PowerShell at `ba2221aed027041b6620c5fe1c0675567f14452a` (MIT), fetched anonymously and read as text by a subagent of the builder's tier, with .NET's file-name matching read in dotnet/runtime at `8815a4ee8bd143180de3a717af9ca05be3ea9e56`. Paths are under `src/System.Management.Automation/`.
+
+- A relative path, `./tools/build` or `tools/build`, is not "qualified" (`namespaces/LocationGlobber.cs` 1393–1401 and 1491–1499 exclude `./` and `.\`), so the literal is not tried first (`engine/CommandSearcher.cs` 285–289, 303–308); its folder is searched (`CanDoPathLookup` 1442–1445, `setupPathSearcher` 1571–1604) for the names `ConstructSearchPatternsFromName` makes (1322–1363): `build.ps1`, then on Windows only (`#if !UNIX`, 1346–1354) `build` with each `PATHEXT` extension, then `build`.
+- What is listed differs by platform (`engine/CommandPathSearch.cs` 57–67): on Windows the one pattern `build.*`, which .NET's Win32 matching lets match `build` too (dotnet/runtime `FileSystemName.cs` 35–37, 139, 314–318), the matches taken in the order of the names above (499–509); on Unix the patterns `build`, then `build.ps1`, each listed in turn.
+- So, with both `tools/build` and `tools/build.ps1` standing: **Windows runs `tools/build.ps1`; Unix runs `tools/build`**, which pwsh 7.7.0 here agrees with (`Get-Command b/build` gave `b/build`).
+- An absolute or rooted path, `& "$PSScriptRoot/tools/build"`, `C:\…`, `/…`, `~/…`, tries the literal first on both platforms (`GetNextFromPath`, `CommandSearcher.cs` 458–465, under the `ResolveLiteralThenPathPatterns` that every command lookup sets, `CommandDiscovery.cs` 653): **both run `tools/build`**.
+- `&`, `.` and a bare path take the same route through discovery (`MiscOps.cs` 38–39, 153; `ExecutionContext.cs` 640–642); the dot only changes the scope.
+
+What the reader draws today, `tools/build` whenever that file stands and `tools/build.ps1` otherwise, is Unix's answer for a relative path and both platforms' for a rooted one. Under Windows' answer it would draw `tools/build.ps1` for a relative path when both stand (and, for a relative path with neither `build` nor `build.ps1` but a `build.cmd` or `build.exe`, a program outside PowerShell). The reader keeps `$PSScriptRoot` as written until it resolves a path, so it can tell the two shapes apart if the fork is decided. Not chosen here: it is the root's and the owner's. How often a run path meets it: in dbatools, AL-Go, AzureStack-Tools and tSQLt, no file without an extension stands beside a `.ps1` of the same name, and no load names a `.ps1`'s path without its extension (the two texts a search found were help text naming UNC paths).

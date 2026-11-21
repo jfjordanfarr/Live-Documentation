@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-wires/expected/powershell-ast.json`
-- Generated At: 2026-11-21T02:25:26.169Z
+- Generated At: 2026-11-21T07:29:14.992Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,96 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 - Type: key
 
 #### `files` {#symbol-files}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1` {#symbol-filesaliaseshelpersps1}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:parseErrors` {#symbol-filesaliaseshelpersps1parseerrors}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:functions` {#symbol-filesaliaseshelpersps1functions}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:published` {#symbol-filesaliaseshelpersps1published}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:types` {#symbol-filesaliaseshelpersps1types}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:exportModuleMembers` {#symbol-filesaliaseshelpersps1exportmodulemembers}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:dotSources` {#symbol-filesaliaseshelpersps1dotsources}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:importModules` {#symbol-filesaliaseshelpersps1importmodules}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:usingStatements` {#symbol-filesaliaseshelpersps1usingstatements}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:requiredModules` {#symbol-filesaliaseshelpersps1requiredmodules}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:invocations` {#symbol-filesaliaseshelpersps1invocations}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:loads` {#symbol-filesaliaseshelpersps1loads}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:aliasCommands` {#symbol-filesaliaseshelpersps1aliascommands}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:paramBlock` {#symbol-filesaliaseshelpersps1paramblock}
+- Type: key
+
+#### `files:../Aliases/Helpers.ps1:statements` {#symbol-filesaliaseshelpersps1statements}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1` {#symbol-filesaliasesuse-aliasesps1}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:parseErrors` {#symbol-filesaliasesuse-aliasesps1parseerrors}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:functions` {#symbol-filesaliasesuse-aliasesps1functions}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:published` {#symbol-filesaliasesuse-aliasesps1published}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:types` {#symbol-filesaliasesuse-aliasesps1types}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:exportModuleMembers` {#symbol-filesaliasesuse-aliasesps1exportmodulemembers}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:dotSources` {#symbol-filesaliasesuse-aliasesps1dotsources}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:importModules` {#symbol-filesaliasesuse-aliasesps1importmodules}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:usingStatements` {#symbol-filesaliasesuse-aliasesps1usingstatements}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:requiredModules` {#symbol-filesaliasesuse-aliasesps1requiredmodules}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:invocations` {#symbol-filesaliasesuse-aliasesps1invocations}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:loads` {#symbol-filesaliasesuse-aliasesps1loads}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:aliasCommands` {#symbol-filesaliasesuse-aliasesps1aliascommands}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:paramBlock` {#symbol-filesaliasesuse-aliasesps1paramblock}
+- Type: key
+
+#### `files:../Aliases/Use-Aliases.ps1:statements` {#symbol-filesaliasesuse-aliasesps1statements}
 - Type: key
 
 #### `files:../Backport/Expand-Archive.ps1` {#symbol-filesbackportexpand-archiveps1}
@@ -1174,6 +1264,7 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Helpers`](../Aliases/Helpers.ps1.mdmd.md)
 - [`Expand-Archive`](../Backport/Expand-Archive.ps1.mdmd.md)
 - [`Alpha`](../Copies/Alpha.psm1.mdmd.md)
 - [`Beta`](../Copies/Beta.psm1.mdmd.md)
