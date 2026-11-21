@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-21T04:08:31.471Z
+- Generated At: 2026-11-21T04:17:33.557Z
 
 ## Authored
 ### Purpose
@@ -415,3 +415,8 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/engine-and-hosts.mdmd.md`](../../../layer-3/engine-and-hosts.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->
