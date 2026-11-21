@@ -2,6 +2,91 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Fifth leg, later on 2026-11-21: the trial page's drawing mended before strangers see it
+
+The root's brief listed eight faults in the fourth leg's page; two more came from a stranger's pilot runs on the playtests' builder's own folder. Each mend below has a picture before and after, at 1,280 by 800, through the folder input (`choice/screenshots/`). Two faults in `leaveOut` came to light in the pictures; each was mended after a failing test.
+
+### Link parameters
+
+| Parameter | Effect |
+| --- | --- |
+| `?layout=reason` | Opens by reason (the default). |
+| `?layout=folders` | Opens on the folder tree. |
+| `&switch=off` | Hides the switch between the layouts, so a stranger sees one. |
+| `&boxes=choice` | The tree's alternative boxes (below); `&boxes=mixed`, or nothing, is the present kind. |
+
+For example, `choice.html?layout=folders&switch=off&boxes=choice`. The folder input, `#folder-input`, stays in the page under every parameter, so automation can hand it a folder.
+
+### What changed
+
+1. **An opened reason is no longer a wall.**
+   - The reason's own row keeps the one Keep with a word.
+   - Opened, its folders stand under their top folders, with counts, each opened on demand. A top folder with only one member shows that member on its own row.
+   - Each folder row has a quiet Keep: an icon alone, muted until the row is pointed at or the button has the focus. It is a button, so Tab reaches it, and its accessible name and tooltip are "Keep" and the path.
+   - Fifty rows are drawn at a time, and the rest are counted: "84 more not shown: show 50".
+   - The Keep icon is now a plus, not a tick. A tick beside something left out reads as "read", which is what the tree's ticked box means.
+2. **One thing is shown once.** A folder that an ignore file leaves out and that the evidence rules also recognise stands under the plain reason for what it is. The ignore file is a quieter line beneath that reason, counted by the kind of file ("Also ignored by .gitignore: 117 of 162"), with its patterns in the tooltip.
+   - On the made folder, the separate "`.tfignore`: packages" row of 15 folders is gone; "NuGet packages" holds all 46 and says "Also ignored by .tfignore: 15 of 46".
+   - On a copy of the made folder holding DNN's 26 nested `.gitignore` files, `[Oo]bj`, `[Bb]in`, `bin/`, `obj/` and four more patterns would each have had a row. They are now one line under "Build output beside a project". The lines that leave out what evidence does not recognise (`/*/css/*.css`, `*.de-DE.resx`, `/Build/Tools/`) keep their own rows.
+   - **The Keep of such a folder did not keep it,** a fault in `leaveOut`. A `.tfignore` entry matches any folder of a path, as TFVC's does. So `!/…/GoogleAnalytics/packages/` kept the folder, but its 80 package folders and its `repositories.config` came back as "Ignored by .tfignore: packages".
+     - The mend: a person's `!` on a folder takes away an entry's match on that folder's name, or on a name above it, for what it holds. A test came first.
+     - After the mend, keeping that folder takes the files read from 10,929 to 12,610, which is 1,681 of its 1,761. The other 80 are `.nupkg` files, left out by the same `.tfignore`'s `*.nupkg` line, which names them by their own name. They show as a row of their own.
+3. **Words in a person's voice.**
+   - "Ignored by .gitignore: .vscode/".
+   - A note reads "Your pattern !/Build/Tools/ cannot keep anything in Build/, which is left out whole." An ignore file's note names its line: "… (line 103 of .gitignore) …".
+   - The totals say "left out" only when something is, and "N folders left out, not looked inside" only after a lazy walk, and only when N is not zero.
+   - "(top)" is now "At the top". "and 60 mores" is now "and 60 more".
+   - **A second fault in `leaveOut` that the words exposed.** On the copy with DNN's nested files, seven notes said that lines like `!DNN [Pp]latform/[Cc]omponents` "cannot keep anything in …/bin/ or 176 more folders". The function read a pattern only as far as its first `[`. It now compares the pattern part by part with the folder, as git would match it, and those notes are gone. A test came first.
+4. **The files at a level are a row of their own.** The row reads "29 files here" and comes after that level's folders. It has a box, ticked, clear or mixed, which Space or a click changes.
+   - Leaving the row out writes one pattern per file (`/README.md`, …). Keeping it writes `!` per file that is left out.
+   - Git's patterns cannot name a level's files without its folders: `/*` with `!/*/` would also keep, as the person's own, every folder there that build output, packages or an ignore file left out.
+   - The cost is a long list of patterns: leaving out the 29 files at the top adds 29 lines.
+5. **The tree's alternative boxes** (`&boxes=choice`).
+   - A folder's box shows the person's own choice. It is mixed only for what they or their ignore files left out beneath it.
+   - What the starting rules left out is a quiet count beside it: "3 build or package folders left out".
+   - A folder left out itself is clear, whichever rule left it out, since a tick there would say it is read.
+6. **The footer.** The header and the footer hold their places and the page between them scrolls, so nothing sits under either. With three patterns added, the last pattern's bottom is at 750 px and the footer's top at 775 px.
+7. **The totals stay in view.** The totals line, the evidence switch and Scan stick to the top of the scrolling page. This came from a stranger who ticked a folder deep in the tree and scrolled back up to read the sum.
+8. **The terminal twin** uses the same words.
+   - It prints each reason's folders under their top folders, and the ignore files that also name them, with their patterns, since a terminal has no tooltip.
+   - Its output is in `choice/made-as-text.txt` and `choice/made-with-nested-as-text.txt`.
+
+### The pictures
+
+`choice/look.mjs` takes them, and can take its three pages in three holds of the browser lane, since the browser takes about 65 s to hand over each made folder. What it counted beside each picture is in `choice/screenshots/records/`. The made folder holds 103,329 files; the copy with DNN's nested `.gitignore` files is made by putting those 26 files back into a copy of it.
+
+| Fault | Before | After |
+| --- | --- | --- |
+| An opened reason | `made-2-group-opened.png` | `made-after-2-reason-opened.png`, `made-after-3-top-opened.png` (a quiet Keep with the keyboard's focus) |
+| One thing shown as two | `made-1-by-reason.png` | `made-after-1-by-reason.png`, `nested-after-1-by-reason.png` |
+| Keep of a merged folder | (no picture; 80 folders came back) | `made-after-4-merged-kept.png` |
+| Words | `made-1-by-reason.png`, `dnn-4-pattern-added.png` | `made-after-1-by-reason.png`, `nested-after-1-by-reason.png`; the note's new words are in the records, not pictured |
+| Files at a level | `made-5-tree-focus.png` | `made-after-6-tree-mixed.png`, `made-after-7-loose-left-out.png` |
+| The tree's boxes | `made-5-tree-focus.png` | `made-after-6-tree-mixed.png` beside `made-after-6-tree-choice.png` |
+| The footer | `made-before-5-three-patterns.png`, `dnn-4-pattern-added.png` | `made-after-5-three-patterns.png` |
+| Totals in view | (the stranger's pilot) | `made-after-6-tree-mixed-scrolled.png`, `made-after-6-tree-choice-scrolled.png` |
+
+**What my eye says:**
+
+- **By reason now fits on one screen.** The made folder shows two reasons. The copy with nested files shows seven: build output, NuGet packages, and five lines of DNN's own that leave out what evidence does not recognise. Before, it would have had eight more `.gitignore` rows for `bin` and `obj`.
+- **An opened reason reads as a table of contents:** five top folders with counts. Opening "DNN Platform/" draws 50 of its 134 rows, then "84 more not shown: show 50". The plus is quiet and turns blue on the row that is pointed at. With the keyboard's focus it has a clear blue ring (`made-after-3-top-opened.png`).
+- **A Keep's effect is visible at once.** Keeping the GoogleAnalytics `packages` folder takes the total to 12,610. NuGet packages drops to 45, the ".tfignore" line to 14 of 45, and the 80 `.nupkg` files appear under their own `.tfignore` line.
+- **The totals stay put** while the tree scrolls beneath them, and the footer never covers anything.
+- **The two kinds of box, side by side.**
+  - Present: on the made folder nearly every project folder is half-ticked, for its own `bin` and `obj`, so the half-tick says nothing a person did.
+  - Alternative: every folder is ticked, and only a quiet "3 build or package folders left out" says what the starting rules took.
+  - Leaving out the 29 files at the top clears that row's box and drops the total to 10,900.
+- **Still wrong or heavy:**
+  - "3 build or package folders left out" repeated on forty rows is a lot of our own text. A quiet number, with the words in a tooltip, would do.
+  - Under "Build output beside a project", each project gives two rows, `bin` and `obj`. One row per project would halve the list.
+  - Leaving out the files at a level writes one pattern per file, so "Your patterns" grows by 29 lines. That list should show them as one entry, removable together.
+  - Notes sit above both layouts. When there are several, they push the lists down.
+  - The lazy walk (Pick, Drop here) is not pictured, since automation cannot press the picker. So "left out, not looked inside" has not been seen on screen. Tooltips are not pictured either.
+
+**Which boxes I would keep: the alternative.** A box is the person's control, so it should show their decision. In the present boxes, the half-tick on nearly every project reports the starting rules, which the person never touched, so a half-tick that matters cannot be told from the rest. In the alternative, a half-tick appears only where the person or their own ignore file left something out beneath. That answers "what did I change, and where". What the starting rules took is still on the row as a count.
+
+The cost: a ticked folder no longer promises that every file beneath it is read, and the count beside it has to say so. The strangers can settle it, since `&boxes=` switches between the two.
+
 ## Fourth leg, later on 2026-11-21: the choice before a scan, as a trial page
 
 A trial page, not the product: `choice/choice.html` is one file, opened from disk. Its build is `choice/build.mjs`; its source is `choice/page.html`, `choice/page.mjs` and `choice/model.mjs`.

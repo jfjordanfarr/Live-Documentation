@@ -60,6 +60,29 @@ describe("leaveOut", () => {
     expect(leaveOut({ ignoreFiles, evidence: { names, apply: true }, person: ["!packages/"] }).folder("packages")).toMatchObject({ kept: true, rule: { kind: "person" } });
   });
 
+  // The trial page of 2026-11-21, fifth leg: keeping a `packages` folder that a `.tfignore` names kept the folder and
+  // left its every package out, since a TFVC entry matches any folder of a path; the person's keep is of all of it.
+  it("lets a person's ! on a folder keep what an ignore file left out only by that folder's name", () => {
+    const ignoreFiles = [{ path: ".tfignore", text: "packages\n*.pdb\n" }];
+    const decide = leaveOut({ ignoreFiles, evidence: { names, apply: true }, person: ["!/packages/"] });
+    expect(decide.folder("packages")).toMatchObject({ kept: true, rule: { kind: "person" } });
+    expect(decide.folder("packages/Newtonsoft.Json.13.0.3").kept).toBe(true);
+    expect(decide.file("packages/Newtonsoft.Json.13.0.3/lib/Newtonsoft.Json.dll").kept).toBe(true);
+    // What the ignore file names by a thing's own name still holds inside, and so does a `packages` deeper down.
+    expect(decide.file("packages/Newtonsoft.Json.13.0.3/lib/Newtonsoft.Json.pdb")).toMatchObject({ kept: false, rule: { kind: "tfignore", line: 2 } });
+    expect(decide.folder("packages/Newtonsoft.Json.13.0.3/packages")).toMatchObject({ kept: false, rule: { kind: "tfignore", line: 1 } });
+    // Elsewhere the entry leaves its folders out as before.
+    expect(decide.folder("src/packages")).toMatchObject({ kept: false, rule: { kind: "tfignore", line: 1 } });
+  });
+
+  // The trial page of 2026-11-21, fifth leg: DNN's `!DNN [Pp]latform/[Cc]omponents` was said to reach into 177 `bin`
+  // folders deeper down, read only as far as its first `[`.
+  it("names a ! line beside a folder left out whole only when its parts could name something inside the folder", () => {
+    const text = "[Bb]in/\n!DNN [Pp]latform/[Cc]omponents\n!DNN [Pp]latform/*/[Bb]in/keep.dll\n!**/kept.dll\n!other/bin/x\n";
+    const notes = leaveOut({ ignoreFiles: [{ path: ".gitignore", text }] }).folder("DNN Platform/Library/bin").notes ?? [];
+    expect(notes.map((note) => note.slice(0, note.indexOf(","))).sort()).toEqual([".gitignore line 3", ".gitignore line 4"]);
+  });
+
   // A lazy walk lists a folder only after deciding it; the trial page of 2026-11-21 missed every nested .gitignore until
   // a folder's own ignore files were asked for when something inside it is decided, and not when it is.
   it("asks for a folder's own ignore files only when something inside it is decided", () => {
