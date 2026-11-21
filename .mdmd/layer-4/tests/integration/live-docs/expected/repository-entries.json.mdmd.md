@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/expected/repository-entries.json`
-- Generated At: 2026-11-19T22:40:15.135Z
+- Generated At: 2026-11-21T03:07:40.419Z
 
 ## Authored
 ### Purpose
@@ -131,6 +131,9 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/oracle/powershell-ast.ps1` {#symbol-entriesscriptsoraclepowershell-astps1}
+- Type: key
+
+#### `entries:scripts/oracle/powershell-compare.ts` {#symbol-entriesscriptsoraclepowershell-comparets}
 - Type: key
 
 #### `entries:scripts/oracle/sql-compare.ts` {#symbol-entriesscriptsoraclesql-comparets}

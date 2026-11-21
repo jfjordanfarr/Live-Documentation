@@ -115,6 +115,9 @@
     "scripts/oracle/powershell-ast.ps1": [
       "program"
     ],
+    "scripts/oracle/powershell-compare.ts": [
+      "command oracle:powershell of package.json"
+    ],
     "scripts/oracle/sql-compare.ts": [
       "command oracle:sql of package.json"
     ],

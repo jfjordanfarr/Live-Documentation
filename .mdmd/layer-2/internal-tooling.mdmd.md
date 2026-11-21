@@ -96,6 +96,12 @@ The SQL reader has an oracle of its own, Microsoft's T-SQL parser (ScriptDom, th
 | `npm run oracle:plsql -- <folder>` | Grades the SQL reader on the folder's PL/SQL against the ANTLR project's PL/SQL grammar at a pinned commit, built with the machine's Java around `scripts/oracle/PlSqlEmitter.java` (the tool jar and grammar cached, checksummed, under `~/.cache/live-documentation/oracle-plsql`; without Java it says so and exits). SQL*Plus lines are blanked for both readers; the grammar resolves no names, and what it cannot judge is stated at the head of `scripts/oracle/plsql-compare.ts`. `--detail` lists every disagreement, `--json` prints data |
 | `npm run oracle:sql -- <fixture> --write` | Keeps ScriptDom's record as the fixture's `expected/sql-scriptdom.json`, which `tests/integration/live-docs/sql-oracle.test.ts` holds the adapter to, against a register of measured misses |
 
+The PowerShell reader is graded on a whole folder by PowerShell's own parser since 2026-11-21 ([the account of the grading](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md)); its fixtures are held file by file by `tests/integration/live-docs/powershell-oracle.test.ts`:
+
+| Command | What it does |
+| --- | --- |
+| `npm run oracle:powershell -- <folder>` | Reads every `.ps1`, `.psm1` and `.psd1` file of the folder with PowerShell's parser through `scripts/oracle/powershell-ast.ps1` (it needs `pwsh`), applies the rules of `scripts/oracle/powershell-wires.ts` to the parser's facts, reads the same files with the PowerShell adapter, and prints the wires (file pairs, by a load or a call), the calls (file, function, defining file) and the programs each side draws, and how many both do. Every file of the folder is the adapter's index, but the version control's folder and a folder of Live Docs. `--detail` lists every disagreement, `--json` prints data |
+
 What the comparison grades as a use of an object, and what it sets aside as no object of the folder (common table expressions, a statement's own table sources, temporary tables, SQL Server's system schemas and the `xml` type's methods), is stated once, at the head of `scripts/oracle/sql-compare.ts`.
 
 ---
