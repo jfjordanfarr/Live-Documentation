@@ -1,0 +1,2 @@
+{"folder":"this-repository","library":"isomorphic-git","result":{"openMs":68,"firstCommitMs":8308,"commitsMs":16248,"changesDigest":"ea89a7fe8a4709a8","commits":100,"changedPaths":2300,"changedBlobs":2040,"blobsMs":9671,"blobMegabytes":92.6},"peakRssMB":2846}
+{"folder":"eslint","library":"isomorphic-git","result":{"openMs":2791,"firstCommitMs":291,"commitsMs":20593,"changesDigest":"ef7e6a29d9e9e05e","commits":100,"changedPaths":221,"changedBlobs":205,"blobsMs":1595,"blobMegabytes":7.9},"peakRssMB":265}

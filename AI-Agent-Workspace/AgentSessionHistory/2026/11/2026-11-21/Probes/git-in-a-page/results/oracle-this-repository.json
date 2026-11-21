@@ -1,0 +1,45 @@
+{
+  "name": "this-repository",
+  "head": "a11f7d007f40a3f99e6a31c6b47d03055a6593ac",
+  "mainline": 1544,
+  "reachable": 2071,
+  "tags": 0,
+  "changedPaths": 46191,
+  "changedBlobs": 33134,
+  "changedBlobMegabytes": 1818.4,
+  "headFiles": 9793,
+  "blobsHeldToGit": 2000,
+  "blobsDifferingFromGit": 0,
+  "blobsFailingTheirId": 0,
+  "packs": 4,
+  "looseObjects": 5401,
+  "notes": [],
+  "refusals": [],
+  "differenceCount": 0,
+  "differencesByKind": {},
+  "differences": [],
+  "gitMs": {
+    "resolve": 8,
+    "mainline": 77,
+    "reachable": 14,
+    "changes": 303,
+    "tags": 5,
+    "headTree": 46
+  },
+  "readerMs": {
+    "open": 80,
+    "mainline": 892,
+    "reachable": 387,
+    "changes": 7736,
+    "tags": 0,
+    "headTree": 12,
+    "everyChangedBlobVerified": 43102
+  },
+  "hostCalls": {
+    "list": 2,
+    "read": 3652,
+    "size": 4,
+    "slice": 7670,
+    "bytes": 32026542267
+  }
+}
