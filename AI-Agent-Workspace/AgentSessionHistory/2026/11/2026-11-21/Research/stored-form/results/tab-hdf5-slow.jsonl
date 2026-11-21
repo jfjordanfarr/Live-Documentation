@@ -6,3 +6,5 @@ browser-lane: stored-form holds the lane (waited 331.5 s, cap 300 s)
 browser-lane: released after 67.7 s, exit 0
 browser-lane: waiting behind stored-form, stored-form
 browser-lane: stored-form holds the lane (waited 252.6 s, cap 300 s)
+{"kind":"write","page":"write-hdf5.html","mode":"gather","rate":4,"cores":2,"loadBefore":61.5,"pageReadyMs":13960,"scriptStartedMs":11725,"files":53880,"writeMs":137807.8,"bytes":7455053,"sha256":"6ba818af7fa65490cc5818a2d6d98edf3b548dfaba53de0785c369483c53eafe","heapMb":336,"rendererPeakMbAtWrite":741,"errors":[],"rendererPeakMb":741,"loadAfter":55.5}
+browser-lane: released after 159.4 s, exit 0

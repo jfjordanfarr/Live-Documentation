@@ -1,1 +1,7 @@
 browser-lane: waiting behind stored-form, stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 371.5 s, cap 300 s)
+{"kind":"read","page":"read-ledger-indexed-dnn5.html","rate":4,"cores":2,"loadBefore":54.7,"pageReadyMs":6357,"scriptStartedMs":5768,"base64Ms":353,"carriedBytes":15000121,"openMs":76.1,"inboundOfHub":632,"inboundMs":147.1,"firstAnswerMs":576.2,"reachable":1283,"reachableMs":5445,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":259.7,"hubNeighbourhood":661,"hubNeighbourhoodMs":124683.6,"allMs":68725.2,"files":53880,"totalMs":199829.5,"heapMb":527,"errors":[],"rendererPeakMb":1711,"loadAfter":36.5}
+
+browser-lane: the 300 s cap is reached; ending the command (0 of 0 cases had finished)
+{"kind":"write","page":"write-ledger-indexed.html","mode":"stream","rate":4,"cores":2,"loadBefore":36.5,"pageReadyMs":514,"scriptStartedMs":213,"failed":"Error: page.evaluate: Target page, context or browser has been closed","rendererPeakMb":0,"loadAfter":24.4}
+browser-lane: CUT by the 300 s cap. The command was ended before it finished; nothing after the cut says anything about the product.
