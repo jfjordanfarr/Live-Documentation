@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/expected/repository-entries.json`
-- Generated At: 2026-11-21T03:07:40.419Z
+- Generated At: 2026-11-21T05:27:16.210Z
 
 ## Authored
 ### Purpose
@@ -119,6 +119,12 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/oracle/compare.ts` {#symbol-entriesscriptsoraclecomparets}
+- Type: key
+
+#### `entries:scripts/oracle/csharp-compare.ts` {#symbol-entriesscriptsoraclecsharp-comparets}
+- Type: key
+
+#### `entries:scripts/oracle/csharp-compiler.cs` {#symbol-entriesscriptsoraclecsharp-compilercs}
 - Type: key
 
 #### `entries:scripts/oracle/index-fixture.ts` {#symbol-entriesscriptsoracleindex-fixturets}

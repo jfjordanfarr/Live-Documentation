@@ -62,6 +62,7 @@
     "oracle:sql": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/sql-compare.ts",
     "oracle:plsql": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/plsql-compare.ts",
     "oracle:powershell": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/powershell-compare.ts",
+    "oracle:csharp": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/csharp-compare.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts --docs-root .mdmd --base-layer layer-4",
     "contact:sheet": "tsx --tsconfig ./tsconfig.base.json scripts/contact-sheet/contact-sheet.ts",
     "layout:lab": "tsx --tsconfig ./tsconfig.base.json scripts/layout-lab/lab.ts",

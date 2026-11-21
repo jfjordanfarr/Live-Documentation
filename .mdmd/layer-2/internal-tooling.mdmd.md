@@ -108,6 +108,12 @@ The SQL reader has an oracle of its own, Microsoft's T-SQL parser (ScriptDom, th
 | `npm run oracle:plsql -- <folder>` | Grades the SQL reader on the folder's PL/SQL against the ANTLR project's PL/SQL grammar at a pinned commit, built with the machine's Java around `scripts/oracle/PlSqlEmitter.java` (the tool jar and grammar cached, checksummed, under `~/.cache/live-documentation/oracle-plsql`; without Java it says so and exits). SQL*Plus lines are blanked for both readers; the grammar resolves no names, and what it cannot judge is stated at the head of `scripts/oracle/plsql-compare.ts`. `--detail` lists every disagreement, `--json` prints data |
 | `npm run oracle:sql -- <fixture> --write` | Keeps ScriptDom's record as the fixture's `expected/sql-scriptdom.json`, which `tests/integration/live-docs/sql-oracle.test.ts` holds the adapter to, against a register of measured misses |
 
+The C# reader is graded on a whole folder by the C# compiler's own binding since 2026-11-21:
+
+| Command | What it does |
+| --- | --- |
+| `npm run oracle:csharp -- <folder>` | Builds one Roslyn compilation for each project of the folder through `scripts/oracle/csharp-compiler.cs` (a .NET file-based program; it needs the .NET SDK, and NuGet on its first run), each project's references taken from MSBuild's evaluation or, where MSBuild cannot evaluate it, from its XML's elements, said in the report; binds every simple name; reads the same C# files with the C# adapter; and prints the C# file pairs each draws and both, the adapter's own by cause (a namesake, a reference under a condition the default configuration does not meet, the rest) and the compiler's own. `--detail` lists every disagreement, `--json` prints data, `--write` keeps the compiler's record as a fixture's `expected/csharp-compiler.json`, read thereafter without .NET |
+
 The PowerShell reader is graded on a whole folder by PowerShell's own parser since 2026-11-21 ([the account of the grading](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/README.md)); its fixtures are held file by file by `tests/integration/live-docs/powershell-oracle.test.ts`:
 
 | Command | What it does |
