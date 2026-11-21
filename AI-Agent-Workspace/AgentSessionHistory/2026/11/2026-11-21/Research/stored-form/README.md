@@ -407,9 +407,11 @@ The page closed was closed by the driver through the browser's own close, as a p
 
 | Measured | DNN, slowed | Five times DNN, slowed |
 | --- | --- | --- |
-| Building the copy's bytes | 166 ms | pending |
-| The copy | 3.00 MB | pending |
-| The copy opened from disk | answered: first answer 334 ms, whole map 4.1 s (load 23) | pending |
+| Building the copy's bytes | 166 ms | 419 ms; the tab's peak 330 MB, writing included |
+| The copy | 3.00 MB | 9.98 MB |
+| The copy opened from disk | answered: first answer 334 ms, whole map 4.1 s (load 23) | answered: first answer 735 ms, whole map 12.8 s, 356 MB (load 7) |
+
+So the "saved page" of the first table is now a save, not only a size: the copy is built in under half a second at 53,880 files, and it opens and answers like any reading page. In a real Chromium the download goes to the person's downloads folder, or asks where, as the browser is set. The save dialog (`showSaveFilePicker`) would let the page choose the name, but it needs a person and was not automated.
 
 ## 9. "The same bytes for the same facts": what for, and who meets it
 
@@ -424,7 +426,7 @@ What comparing runs means here, read in the record and the code:
 None of these needs one form's file to be identical on two hosts. All need a cheap, certain way to say that two scans hold the same facts. **So the value is met by any form whose content can be named**, by a hash over its facts in a canonical text or over its uncompressed sections, with the compression only a wrapping. It would need the file itself identical only if the file were committed and diffed, or shared and checked by its hash, and nothing derived is committed now.
 
 **Measured, DNN's facts written in Node 26 and in Chromium 149:**
-- **JSON, the press (both ways of writing it), the ledger and the parts:** byte for byte the same file in both, at full speed and slowed. At five times DNN this was checked for the press and the ledger written as facts arrive. The indexed ledger written in the tab is byte for byte Node's too. Both link Chromium's fork of zlib (Node reports `1.3.2.1-motley`), and a sample of the same input gave the same raw deflate and gzip bytes in both. That is a fact of today's builds, not a promise. A Node built against another zlib could differ, so the rule that survives is to name the content.
+- **JSON, the press (both ways of writing it), the ledger and the parts:** byte for byte the same file in both, at full speed and slowed. At five times DNN this was checked for the press and the ledger written as facts arrive. The indexed ledger written in the tab is byte for byte Node's too. So is the resumable press, even when the page's browser was closed at 60 % and a new one went on from IndexedDB, at DNN and at five times. Its footer's name of the content (`b2cc365e…` at DNN) is the same either way. Both link Chromium's fork of zlib (Node reports `1.3.2.1-motley`), and a sample of the same input gave the same raw deflate and gzip bytes in both. That is a fact of today's builds, not a promise. A Node built against another zlib could differ, so the rule that survives is to name the content.
 - **The facts' hash** over the canonical text: read back from each of the eleven files the tab wrote at full speed, and computed in Node from the facts themselves. It is the same for every form, `884045c3…`.
 - **The database:** node:sqlite and sql.js write files of the same length, 29,560,832 bytes, differing in 6 bytes of the header: the change counter, the schema cookie, and the version of the library that last wrote it ([`results/sqlite-hosts-dnn.json`](results/sqlite-hosts-dnn.json)). The pages are the same. Written as facts arrive, the database differs from the one written all at once, since a file's number is then given in the order paths are met. Within one way of writing and one engine, two writes were the same.
 - **HDF5:** two writes of the same facts gave different files, on every corpus in Node and twice in the tab. The facts' hash read back from both tab writes is the same `884045c3…`.

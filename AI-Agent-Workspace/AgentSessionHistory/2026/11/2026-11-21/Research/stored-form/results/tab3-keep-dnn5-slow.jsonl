@@ -10,3 +10,9 @@ browser-lane: stored-form holds the lane (waited 31.6 s, cap 300 s)
 browser-lane: released after 47.3 s, exit 0
 browser-lane: waiting behind step-framing
 browser-lane: stored-form holds the lane (waited 5.0 s, cap 300 s)
+{"kind":"savecopy","page":"write-press-kept.html","rate":4,"cores":2,"loadBefore":5.4,"profile":"h","pageReadyMs":225,"scriptStartedMs":56,"files":53880,"frames":427,"writeMs":60573.1,"bytes":7472274,"sha256":"bb3e3593e47d5158a64aabc195d7b97f3c3647bf00b2690baeeac8bff4af549a","rendererPeakMbAtWrite":323,"buildMs":419.2,"copyBytes":9981235,"savedBytes":9981235,"errors":[],"rendererPeakMb":330,"loadAfter":7}
+browser-lane: released after 63.5 s, exit 0
+browser-lane: waiting behind step-framing
+browser-lane: stored-form holds the lane (waited 3.5 s, cap 300 s)
+{"kind":"read","page":"copy-dnn5-slow.html","rate":4,"cores":2,"loadBefore":6.8,"pageReadyMs":1353,"scriptStartedMs":1208,"base64Ms":69.4,"carriedBytes":7472274,"openMs":12,"inboundOfHub":632,"inboundMs":653.7,"firstAnswerMs":735.3,"reachable":1283,"reachableMs":10.4,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":998.5,"hubNeighbourhood":661,"hubNeighbourhoodMs":1594.5,"allMs":12792.7,"files":53880,"totalMs":16237,"heapMb":152,"errors":[],"rendererPeakMb":356,"loadAfter":6.8}
+browser-lane: released after 18.8 s, exit 0
