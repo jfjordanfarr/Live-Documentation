@@ -28,10 +28,10 @@ describe("what a reader reads", () => {
   });
 
   it("knows a file a reader handles by its extension, whatever its case, or a manifest by its exact name", () => {
-    for (const read of ["src/index.ts", "src/App.TSX", "a/b/Program.cs", "Cargo.toml", "crates/x/Cargo.toml", "go.mod", "pom.xml", "app/pyproject.toml"]) {
+    for (const read of ["src/index.ts", "src/App.TSX", "a/b/Program.cs", "Estate.sln", "Cargo.toml", "crates/x/Cargo.toml", "go.mod", "pom.xml", "app/pyproject.toml"]) {
       expect(hasReader(read), read).toBe(true);
     }
-    for (const unread of [".github/workflows/ci.yml", ".gitignore", ".nvmrc", "Makefile", "Estate.sln", "grammar.patch", "data/rows.toml", "cargo.toml", "pom.xml.bak", "tree-sitter-powershell.wasm", "logo.png"]) {
+    for (const unread of [".github/workflows/ci.yml", ".gitignore", ".nvmrc", "Makefile", "Estate.vcxproj", "grammar.patch", "data/rows.toml", "cargo.toml", "pom.xml.bak", "tree-sitter-powershell.wasm", "logo.png"]) {
       expect(hasReader(unread), unread).toBe(false);
     }
   });

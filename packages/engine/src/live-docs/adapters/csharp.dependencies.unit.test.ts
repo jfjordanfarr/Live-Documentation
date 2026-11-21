@@ -2,13 +2,10 @@
  * Unit tests for C# dependency extraction module.
  *
  * Tests cover configuration references, Type.GetType() calls, type name
- * literals, Hangfire job targets, and the file helpers around them.
+ * literals, Hangfire job targets, and the lookup of the nearest configuration file.
  */
 
-import { promises as fs } from "node:fs";
-import os from "node:os";
-import path from "node:path";
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import {
   collectConfigKeys,
@@ -17,7 +14,6 @@ import {
   collectHangfireTargets,
   collectTypeIdentifiers,
   locateNearestFile,
-  fileExists,
   resolveReflectionTargets
 } from "./csharp.dependencies";
 
@@ -213,83 +209,35 @@ describe("csharp.dependencies unit tests", () => {
     });
   });
 
-  describe("file system operations", () => {
-    let tempDir: string;
-
-    beforeEach(async () => {
-      tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "csharp-deps-test-"));
+  describe("locateNearestFile", () => {
+    it("finds the file in the source file's own folder", () => {
+      expect(locateNearestFile("src/file.cs", ["appsettings.json"], new Set(["src/file.cs", "src/appsettings.json"]))).toBe("src/appsettings.json");
     });
 
-    afterEach(async () => {
-      await fs.rm(tempDir, { recursive: true, force: true });
+    it("climbs to a parent folder", () => {
+      expect(locateNearestFile("src/nested/file.cs", ["appsettings.json"], new Set(["src/nested/file.cs", "appsettings.json"]))).toBe("appsettings.json");
     });
 
-    describe("fileExists", () => {
-      it("returns true for existing file", async () => {
-        const filePath = path.join(tempDir, "test.txt");
-        await fs.writeFile(filePath, "content");
-        expect(await fileExists(filePath)).toBe(true);
-      });
-
-      it("returns false for non-existent file", async () => {
-        expect(await fileExists(path.join(tempDir, "nope.txt"))).toBe(false);
-      });
-
-      it("returns false for directories", async () => {
-        const dirPath = path.join(tempDir, "subdir");
-        await fs.mkdir(dirPath);
-        expect(await fileExists(dirPath)).toBe(false);
-      });
+    it("tries the candidates in order in each folder", () => {
+      expect(locateNearestFile("file.cs", ["App.config", "Web.config"], new Set(["file.cs", "Web.config"]))).toBe("Web.config");
     });
 
-    describe("locateNearestFile", () => {
-      it("finds file in same directory", async () => {
-        const sourcePath = path.join(tempDir, "src", "file.cs");
-        await fs.mkdir(path.join(tempDir, "src"), { recursive: true });
-        await fs.writeFile(sourcePath, "content");
-        await fs.writeFile(path.join(tempDir, "src", "appsettings.json"), "{}");
-
-        const result = await locateNearestFile(sourcePath, tempDir, ["appsettings.json"]);
-        expect(result).toBe("src/appsettings.json");
-      });
-
-      it("finds file in parent directory", async () => {
-        const sourcePath = path.join(tempDir, "src", "nested", "file.cs");
-        await fs.mkdir(path.join(tempDir, "src", "nested"), { recursive: true });
-        await fs.writeFile(sourcePath, "content");
-        await fs.writeFile(path.join(tempDir, "appsettings.json"), "{}");
-
-        const result = await locateNearestFile(sourcePath, tempDir, ["appsettings.json"]);
-        expect(result).toBe("appsettings.json");
-      });
-
-      it("tries candidates in order", async () => {
-        const sourcePath = path.join(tempDir, "file.cs");
-        await fs.writeFile(sourcePath, "content");
-        await fs.writeFile(path.join(tempDir, "Web.config"), "");
-
-        const result = await locateNearestFile(sourcePath, tempDir, ["App.config", "Web.config"]);
-        expect(result).toBe("Web.config");
-      });
-
-      it("returns undefined when not found", async () => {
-        const sourcePath = path.join(tempDir, "file.cs");
-        await fs.writeFile(sourcePath, "content");
-
-        const result = await locateNearestFile(sourcePath, tempDir, ["notfound.json"]);
-        expect(result).toBeUndefined();
-      });
-
-      it("stops at workspace root", async () => {
-        const scanRoot = path.join(tempDir, "workspace");
-        await fs.mkdir(scanRoot);
-        await fs.writeFile(path.join(scanRoot, "file.cs"), "content");
-        await fs.writeFile(path.join(tempDir, "outside.json"), "{}");
-
-        expect(await locateNearestFile(path.join(scanRoot, "file.cs"), scanRoot, ["outside.json"])).toBeUndefined();
-      });
+    it("returns undefined when no folder holds one", () => {
+      expect(locateNearestFile("file.cs", ["notfound.json"], new Set(["file.cs"]))).toBeUndefined();
     });
 
+    it("finds a file named in another case, as Windows does, in its own spelling, and neither of two that differ by case alone", () => {
+      // The index stands for a Windows checkout; it is never asked of the disk, which on Linux tells case apart.
+      expect(locateNearestFile("Web/Data/Repository.cs", ["Web.config", "App.config"], new Set(["Web/Data/Repository.cs", "Web/WEB.CONFIG"]))).toBe("Web/WEB.CONFIG");
+      expect(locateNearestFile("Web/Data/Repository.cs", ["Web.config", "App.config"], new Set(["Web/Data/Repository.cs", "Web/web.config", "Web/Web.Config", "Web.config"]))).toBeUndefined();
+    });
+
+    it("finds nothing without the workspace's files", () => {
+      expect(locateNearestFile("file.cs", ["Web.config"], undefined)).toBeUndefined();
+    });
+  });
+
+  describe("reflection targets", () => {
     describe("resolveReflectionTargets", () => {
       const resolveType = (typeName: string) =>
         typeName === "MyNamespace.MyClass" || typeName === "MyClass"

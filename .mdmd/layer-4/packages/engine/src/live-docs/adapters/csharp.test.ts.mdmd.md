@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.test.ts`
-- Generated At: 2026-11-19T21:10:09.291Z
+- Generated At: 2026-11-21T02:51:58.730Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Keeps the C# adapter's claims since its rewrite on tree-sitter: the symbols it p
 ### Notes
 - Written on 2026-09-27 with the rewrite ([Turn 3](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-3)), when the adapter went from 0 to 37 of the estate's 37 compiler edges, and grown on 2026-09-28 with the opening cases ([Turn 34](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-34)). Every file is written to a temporary folder and analysed over it, so the resolution runs over real files and a real workspace table; the route and SQL cases use a hand-built symbol index with the estate's paths.
 - How the resolution works is told in `csharp.ts`'s own doc; these cases are the contract it keeps, and `oracle:compare` over the estate is the measure outside it.
+- Since the joining of 2026-11-21 ([the work item](../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)): the reasons a type name has no link reach the analysis result as notices, each subject the name as written, red with the hand-over taken out; and a failure of the machine's in reading a project file for its references (`dotnetProjects.ts`) is thrown, where one of the file's own reads it as referencing nothing, red with the catch swallowing it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -26,7 +27,7 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`csharp.csharpAdapter`](./csharp.ts.mdmd.md#symbol-csharpadapter)
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

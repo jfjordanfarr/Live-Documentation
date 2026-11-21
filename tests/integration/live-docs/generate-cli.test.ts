@@ -113,7 +113,8 @@ beforeAll(async () => {
   fs.mkdirSync(path.join(at.bare, "sub"));
   fs.writeFileSync(path.join(at.bare, "top.ts"), "export const top = 0;\n", "utf8");
   fs.writeFileSync(path.join(at.bare, "sub", "c.ts"), "export const c = 3;\n", "utf8");
-  // Kinds of file no reader reads, as a .NET Framework repository holds them, in any case, beside a picture, which has nothing to read.
+  // Kinds of file no reader reads, as a .NET Framework repository holds them, in any case, beside a picture, which has
+  // nothing to read, and a solution, which the solution reader reads since the .NET reader joined (2026-11-21).
   at.unread = makeWorkspace({});
   for (const name of ["Shop.sln", "src/Legacy.vb", "src/Old.VB", "Database/Install.SqlDataProvider", "logo.png"]) {
     fs.mkdirSync(path.dirname(path.join(at.unread, name)), { recursive: true });
@@ -346,10 +347,10 @@ describe("live-docs:orphans", () => {
 });
 
 describe("the kinds of file no reader reads", () => {
-  it("are named at the end of generation with their counts, a picture not among them", () => {
+  it("are named at the end of generation with their counts, a picture and a solution not among them", () => {
     const result = ran("generate, unread kinds");
     expect(result.status, result.stderr).toBe(0);
-    expect(result.stdout).toContain("[live-docs] Not read, so their docs hold no symbols or links: 2 .vb, 1 .sln, 1 .SqlDataProvider.\n");
+    expect(result.stdout).toContain("[live-docs] Not read, so their docs hold no symbols or links: 2 .vb, 1 .SqlDataProvider.\n");
   });
 
   it("are not mentioned when every file has a reader", () => {

@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { aspNetMarkupAdapter } from "./aspnet";
+import { aspNetMarkupAdapter, resolveDirectivePath } from "./aspnet";
 
 describe("aspNetMarkupAdapter", () => {
   let workspaceRoot: string;
@@ -50,7 +50,8 @@ describe("aspNetMarkupAdapter", () => {
 
     const analysis = await aspNetMarkupAdapter.analyze({
       absolutePath: markupPath,
-      workspaceRoot
+      workspaceRoot,
+      fileIndex: new Set(["Pages/_Host.razor", "Pages/_Host.razor.cs", "wwwroot/js/blazor-telemetry.js"])
     });
 
     expect(analysis).not.toBeNull();
@@ -90,5 +91,169 @@ describe("aspNetMarkupAdapter", () => {
       "paymentStatus",
       "serverForm"
     ]);
+  });
+
+  /** Writes the files given, and returns the workspace's file index: those files and the others named. */
+  async function workspace(files: Record<string, string>, others: string[] = []): Promise<Set<string>> {
+    for (const [relative, content] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(workspaceRoot, relative)), { recursive: true });
+      await fs.writeFile(path.join(workspaceRoot, relative), content, "utf8");
+    }
+    return new Set([...Object.keys(files), ...others]);
+  }
+
+  async function linksOf(relative: string, fileIndex: Set<string>): Promise<Array<string | undefined>> {
+    const analysis = await aspNetMarkupAdapter.analyze({ absolutePath: path.join(workspaceRoot, relative), workspaceRoot, fileIndex });
+    return (analysis?.dependencies ?? []).map((entry) => entry.resolvedPath ?? `unresolved ${entry.specifier}`);
+  }
+
+  const webProject = "<Project><PropertyGroup><ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids></PropertyGroup></Project>";
+
+  it("reads every directive that names a file: a user control's code-behind, its registered controls, a page's master page", async () => {
+    const fileIndex = await workspace({
+      "Site/Site.csproj": webProject,
+      "Site/Controls/Card.ascx": [
+        "<%@ Control Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Card.ascx.cs\" Inherits=\"Site.Controls.Card\" %>",
+        "<%@ Register TagPrefix=\"site\" TagName=\"Label\" Src=\"~/Controls/Label.ascx\" %>",
+        "<%@ Register TagPrefix=\"site\" TagName=\"Badge\" Src=\"Badge.ascx\" %>",
+        "<%-- <%@ Register TagPrefix=\"old\" TagName=\"Gone\" Src=\"~/Controls/Gone.ascx\" %> --%>",
+        "<%@ Register TagPrefix=\"asp\" Namespace=\"System.Web.UI\" Assembly=\"System.Web\" %>"
+      ].join("\n"),
+      "Site/Default.aspx": "<%@ Page Title=\"Home\" MasterPageFile=\"~/Site.Master\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Site.Default\" %>"
+    }, ["Site/Controls/Card.ascx.cs", "Site/Controls/Label.ascx", "Site/Controls/Badge.ascx", "Site/Controls/Gone.ascx", "Site/Site.Master", "Site/Default.aspx.cs"]);
+
+    expect(await linksOf("Site/Controls/Card.ascx", fileIndex)).toEqual(["Site/Controls/Card.ascx.cs", "Site/Controls/Label.ascx", "Site/Controls/Badge.ascx"]);
+    expect(await linksOf("Site/Default.aspx", fileIndex)).toEqual(["Site/Default.aspx.cs", "Site/Site.Master"]);
+  });
+
+  it("reads master pages, handlers, web services, the application file and WCF service files, and a directive whose name is left out", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Web/Site.Master": "<%@ Master Language=\"C#\" CodeBehind=\"Site.Master.cs\" Inherits=\"Web.SiteMaster\" %>",
+      "Web/Upload.ashx": "<%@ WebHandler Language=\"C#\" CodeBehind=\"Upload.ashx.cs\" Class=\"Web.Upload\" %>",
+      "Web/Lookup.asmx": "<%@ WebService Language=\"C#\" CodeBehind=\"~/App_Code/Lookup.cs\" Class=\"Web.Lookup\" %>",
+      "Web/Global.asax": "<%@ Application Codebehind=\"Global.asax.cs\" Inherits=\"Web.Global\" Language=\"C#\" %>",
+      "Web/Pricing.svc": "<%@ ServiceHost Language=\"C#\" Debug=\"true\" Service=\"Web.Pricing\" CodeBehind=\"Pricing.svc.cs\" %>",
+      "Web/Bare.aspx": "<%@ Language=\"C#\" CodeBehind='Bare.aspx.cs' %>"
+    }, ["Web/Site.Master.cs", "Web/Upload.ashx.cs", "Web/App_Code/Lookup.cs", "Web/Global.asax.cs", "Web/Pricing.svc.cs", "Web/Bare.aspx.cs"]);
+
+    expect(await linksOf("Web/Site.Master", fileIndex)).toEqual(["Web/Site.Master.cs"]);
+    expect(await linksOf("Web/Upload.ashx", fileIndex)).toEqual(["Web/Upload.ashx.cs"]);
+    expect(await linksOf("Web/Lookup.asmx", fileIndex)).toEqual(["Web/App_Code/Lookup.cs"]);
+    expect(await linksOf("Web/Global.asax", fileIndex)).toEqual(["Web/Global.asax.cs"]);
+    expect(await linksOf("Web/Pricing.svc", fileIndex)).toEqual(["Web/Pricing.svc.cs"]);
+    expect(await linksOf("Web/Bare.aspx", fileIndex)).toEqual(["Web/Bare.aspx.cs"]);
+    expect(aspNetMarkupAdapter.extensions).toEqual(expect.arrayContaining([".ascx", ".master", ".ashx", ".asmx", ".asax", ".svc"]));
+  });
+
+  it("reads `~/` from a deployed project as the one web application that holds the file, and links nothing where several or none do", async () => {
+    const fileIndex = await workspace({
+      "Website/Website.csproj": webProject,
+      "Shop/Shop.csproj": webProject,
+      "Providers/Editor/Editor.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>",
+      "Providers/Editor/Options.ascx": [
+        "<%@ Control CodeBehind=\"Options.ascx.cs\" %>",
+        "<%@ Register TagPrefix=\"dnn\" TagName=\"Label\" Src=\"~/controls/LabelControl.ascx\" %>",
+        "<%@ Register TagPrefix=\"dnn\" TagName=\"Menu\" Src=\"~/controls/Menu.ascx\" %>",
+        "<%@ Register TagPrefix=\"dnn\" TagName=\"Ddr\" Src=\"~/DesktopModules/DDRMenu/Menu.ascx\" %>",
+        "<%@ Register TagPrefix=\"dnn\" TagName=\"Rooted\" Src=\"/controls/LabelControl.ascx\" %>"
+      ].join("\n")
+    }, ["Providers/Editor/Options.ascx.cs", "Website/controls/LabelControl.ascx", "Website/controls/Menu.ascx", "Shop/controls/Menu.ascx"]);
+
+    expect(await linksOf("Providers/Editor/Options.ascx", fileIndex)).toEqual([
+      "Providers/Editor/Options.ascx.cs",
+      "Website/controls/LabelControl.ascx",
+      "unresolved ~/controls/Menu.ascx",
+      "unresolved ~/DesktopModules/DDRMenu/Menu.ascx",
+      "unresolved /controls/LabelControl.ascx"
+    ]);
+  });
+
+  it("says why a directive's path has no link: several projects hold it, no file does, two differ by case alone, or it starts at the site's root", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Features/Features.csproj": webProject
+    }, ["Features/Page.aspx", "Web/App_MasterPages/layout.Master", "Features/App_MasterPages/layout.Master", "Features/twin.ascx", "Features/TWIN.ascx"]);
+    const reason = async (written: string) => {
+      const resolved = await resolveDirectivePath(written, "Features/Page.aspx", workspaceRoot, fileIndex);
+      return "reason" in resolved ? resolved.reason : resolved.file;
+    };
+
+    expect(await reason("~/App_MasterPages/layout.Master")).toBe("paths several projects hold, left unlinked");
+    expect(await reason("~/App_MasterPages/Missing.Master")).toBe("paths no file in the workspace holds, left unlinked");
+    expect(await reason("Missing.ascx")).toBe("paths no file in the workspace holds, left unlinked");
+    expect(await reason("Twin.ascx")).toBe("paths two files match without regard to case, left unlinked");
+    expect(await reason("/App_MasterPages/layout.Master")).toBe("paths from the site's root, left unlinked");
+  });
+
+  it("links `~/` to the page's own project only when no other web project holds the same path, since a stub kept for compiling is not what the host serves", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Features/Features.csproj": webProject,
+      "Features/Blog/EditPost.aspx": [
+        "<%@ Page MasterPageFile=\"~/App_MasterPages/layout.Master\" CodeBehind=\"EditPost.aspx.cs\" %>",
+        "<%@ Register TagPrefix=\"blog\" TagName=\"List\" Src=\"~/Blog/Controls/PostList.ascx\" %>",
+        "<%@ Register TagPrefix=\"site\" TagName=\"Login\" Src=\"~/Controls/Login.ascx\" %>"
+      ].join("\n")
+    }, ["Features/Blog/EditPost.aspx.cs", "Features/App_MasterPages/layout.Master", "Web/App_MasterPages/layout.Master", "Features/Blog/Controls/PostList.ascx", "Web/Controls/Login.ascx"]);
+
+    expect(await linksOf("Features/Blog/EditPost.aspx", fileIndex)).toEqual([
+      "Features/Blog/EditPost.aspx.cs",
+      "unresolved ~/App_MasterPages/layout.Master",
+      "Features/Blog/Controls/PostList.ascx",
+      "Web/Controls/Login.ascx"
+    ]);
+  });
+
+  it("finds a file named in another case, as Windows does, links it in its own spelling, and links neither of two that differ by case alone", async () => {
+    // The index stands for a Windows checkout: these paths are never asked of the disk, which on Linux tells case apart.
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Web/default.aspx": "<%@ Page CodeBehind=\"Default.aspx.cs\" MasterPageFile=\"~/site.master\" %>",
+      "Web/Twins.aspx": "<%@ Page CodeBehind=\"Twins.aspx.cs\" %>"
+    }, ["Web/default.aspx.CS", "Web/Site.Master", "Web/twins.aspx.cs", "Web/TWINS.aspx.cs"]);
+
+    expect(await linksOf("Web/default.aspx", fileIndex)).toEqual(["Web/default.aspx.CS", "Web/Site.Master"]);
+    expect(await linksOf("Web/Twins.aspx", fileIndex)).toEqual(["unresolved Twins.aspx.cs"]);
+  });
+
+  it("hands the reasons a directive's path has no link to the run as notices, each subject the path as written, since the run names the file", async () => {
+    const fileIndex = await workspace({
+      "Web/Web.csproj": webProject,
+      "Features/Features.csproj": webProject,
+      "Features/Page.aspx": "<%@ Page MasterPageFile=\"~/App_MasterPages/layout.Master\" CodeBehind=\"Page.aspx.cs\" %>\n<%@ Register TagPrefix=\"x\" TagName=\"Gone\" Src=\"Gone.ascx\" %>"
+    }, ["Features/Page.aspx.cs", "Web/App_MasterPages/layout.Master", "Features/App_MasterPages/layout.Master"]);
+    const analysis = await aspNetMarkupAdapter.analyze({ absolutePath: path.join(workspaceRoot, "Features/Page.aspx"), workspaceRoot, fileIndex });
+    expect(analysis?.notices).toEqual([
+      { reason: "paths several projects hold, left unlinked", subject: "~/App_MasterPages/layout.Master" },
+      { reason: "paths no file in the workspace holds, left unlinked", subject: "Gone.ascx" }
+    ]);
+  });
+
+  // Too many open files, a file Windows holds: no property of the project file, so never read as a project that builds nothing.
+  it("throws a failure of the machine's in reading a project file for its kind, and reads one of the file's own as no web project", async () => {
+    vi.resetModules();
+    const failing = { error: undefined as Error | undefined };
+    vi.doMock("../../tooling/sourceText", async (importOriginal) => {
+      const actual = await importOriginal<typeof import("../../tooling/sourceText")>();
+      return { ...actual, readSourceText: (file: string) => (failing.error !== undefined && file.endsWith("Web.csproj") ? Promise.reject(failing.error) : actual.readSourceText(file)) };
+    });
+    try {
+      const { aspNetMarkupAdapter: own } = await vi.importActual<typeof import("./aspnet")>("./aspnet");
+      const read = async () => {
+        const fileIndex = await workspace({ "Web/Web.csproj": webProject, "Features/Features.csproj": webProject, "Features/Page.aspx": "<%@ Page MasterPageFile=\"~/Site.Master\" %>" }, ["Web/Site.Master"]);
+        return own.analyze({ absolutePath: path.join(workspaceRoot, "Features/Page.aspx"), workspaceRoot, fileIndex });
+      };
+      // Read, `Web` is the one web project that holds the master page.
+      expect((await read())?.dependencies.map((entry) => entry.resolvedPath ?? `unresolved ${entry.specifier}`)).toEqual(["Web/Site.Master"]);
+      failing.error = Object.assign(new Error("EMFILE: too many open files, open 'Web.csproj'"), { code: "EMFILE", syscall: "open", errno: -24 });
+      await expect(read()).rejects.toThrow("EMFILE: too many open files");
+      // A project file whose bytes fail for a cause of their own says nothing of what it builds, so `Web` is no host here.
+      failing.error = new Error("the project file's bytes could not be read");
+      expect((await read())?.dependencies.map((entry) => entry.resolvedPath ?? `unresolved ${entry.specifier}`)).toEqual(["unresolved ~/Site.Master"]);
+    } finally {
+      vi.doUnmock("../../tooling/sourceText");
+      vi.resetModules();
+    }
   });
 });

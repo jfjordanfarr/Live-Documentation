@@ -4,22 +4,23 @@
  * The project is the file's one public symbol, and its kind says what the
  * project builds: a `library`, a `program`, or a `web` application. Its
  * dependencies are its project references, linked to the project files they
- * name, or kept as the referenced project's name when the file lies outside
- * the scan or does not exist, so that a map of several scans can match the
- * name to the project that publishes it; its package references, external as
+ * name, in any case as Windows reads them (see `dotnetPaths`), or kept as the
+ * referenced project's name when the file lies outside the scan, does not
+ * exist, or is one of two whose names differ only by case, so that a map of
+ * several scans can match the name to the project that publishes it; its package references, external as
  * `name@version`; and its assembly references, external by name. Compiled
  * files are not listed: a system is a folder, and the folder already says
  * which files belong to it.
  */
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { PROJECT_KINDS } from "../openings";
-import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { folderOf, joinWorkspacePath, workspaceFile } from "./dotnetPaths";
+import type { LanguageAdapter } from "./index";
 
 const PROJECT_REFERENCE  = /<ProjectReference\b[^>]*?\bInclude\s*=\s*"([^"]+)"/giu;
 const PACKAGE_REFERENCE  = /<PackageReference\b([^>]*?)(?:\/>|>([\s\S]*?)<\/PackageReference>)/giu;
@@ -62,7 +63,7 @@ export const projectAdapter: LanguageAdapter = {
 
     const projects = new Map<string, DependencyEntry>();
     for (const match of content.matchAll(PROJECT_REFERENCE)) {
-      const referenced = await resolveProjectReference(match[1], absolutePath, workspaceRoot, fileIndex);
+      const referenced = workspaceFile(joinWorkspacePath(folderOf(thisFile), match[1]), fileIndex);
       if (referenced) {
         projects.set(referenced, { specifier: referenced, resolvedPath: referenced, symbols: [referencedProjectName(referenced, symbolIndex)], kind: "import" });
       } else {
@@ -90,26 +91,12 @@ export const projectAdapter: LanguageAdapter = {
 };
 
 /** The name a project reference stands for when its file cannot be found: the file's stem. */
-function projectStem(include: string): string {
+export function projectStem(include: string): string {
   return path.basename(include.replace(/\\/gu, "/")).replace(/\.[^.]+$/u, "");
 }
 
-/** The workspace-relative path of a referenced project file, when it exists. */
-async function resolveProjectReference(include: string, projectFile: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string | undefined> {
-  const absolute = path.resolve(path.dirname(projectFile), include.replace(/\\/gu, "/"));
-  const relative = normalizeWorkspacePath(path.relative(workspaceRoot, absolute));
-  if (relative.startsWith("../")) return undefined;
-  if (fileIndex?.has(relative)) return relative;
-  try {
-    return (await fs.stat(absolute)).isFile() ? relative : undefined;
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return undefined;
-  }
-}
-
 /** The name the referenced project publishes, from the index when it is there, else the file's stem. */
-function referencedProjectName(projectFile: string, symbolIndex: WorkspaceSymbolIndex | undefined): string {
+export function referencedProjectName(projectFile: string, symbolIndex: WorkspaceSymbolIndex | undefined): string {
   if (symbolIndex) {
     for (const [name, locations] of symbolIndex) {
       if (locations.some((location) => location.sourcePath === projectFile && PROJECT_KINDS.has(location.kind))) return name;

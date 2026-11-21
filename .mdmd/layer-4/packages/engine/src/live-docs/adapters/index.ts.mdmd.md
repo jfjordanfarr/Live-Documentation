@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/index.ts`
-- Generated At: 2026-11-21T02:25:18.816Z
+- Generated At: 2026-11-21T02:51:58.904Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L36)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L37)
 - Returns: [`LiveDocumentationArchetype`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 
 ##### `WorkspaceFileIndex` — Summary
@@ -37,7 +37,7 @@ sample roots; an index made otherwise, as a test's, has none.
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L48)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L49)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -51,14 +51,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L78)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L79)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L109)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L111)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -94,6 +94,7 @@ Analyzer output when an adapter reads the file by its name or its extension, oth
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
 - [`ruby.rubyAdapter`](./ruby.ts.mdmd.md#symbol-rubyadapter)
 - [`rust.rustAdapter`](./rust.ts.mdmd.md#symbol-rustadapter)
+- [`solution.solutionAdapter`](./solution.ts.mdmd.md#symbol-solutionadapter)
 - [`sql.sqlAdapter`](./sql.ts.mdmd.md#symbol-sqladapter)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)

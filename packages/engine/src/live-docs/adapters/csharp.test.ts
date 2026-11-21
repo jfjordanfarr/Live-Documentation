@@ -1,15 +1,18 @@
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { csharpAdapter } from "./csharp";
 
 describe("csharpAdapter", () => {
   let workspaceRoot: string;
+  /** The workspace's file index: every file the test wrote. */
+  let written: Set<string>;
 
   beforeEach(async () => {
     workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "csharp-adapter-"));
+    written = new Set();
   });
 
   afterEach(async () => {
@@ -20,11 +23,12 @@ describe("csharpAdapter", () => {
     const absolutePath = path.join(workspaceRoot, relativePath);
     await fs.mkdir(path.dirname(absolutePath), { recursive: true });
     await fs.writeFile(absolutePath, `${lines.join("\n")}\n`, "utf8");
+    written.add(relativePath);
     return absolutePath;
   }
 
   async function analyze(relativePath: string) {
-    const result = await csharpAdapter.analyze({ absolutePath: path.join(workspaceRoot, relativePath), workspaceRoot });
+    const result = await csharpAdapter.analyze({ absolutePath: path.join(workspaceRoot, relativePath), workspaceRoot, fileIndex: written });
     if (!result) throw new Error("adapter returned null");
     return result;
   }
@@ -134,6 +138,212 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    describe("what a file's project lets it see", () => {
+      const classic = (references: string[] = []) => [
+        "<Project ToolsVersion=\"15.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">",
+        "  <ItemGroup>",
+        ...references.map((reference) => `    <ProjectReference Include="${reference}" />`),
+        "  </ItemGroup>",
+        "</Project>"
+      ];
+      const sdk = (references: string[] = []) => [
+        "<Project Sdk=\"Microsoft.NET.Sdk\">",
+        "  <ItemGroup>",
+        ...references.map((reference) => `    <ProjectReference Include="${reference}" />`),
+        "  </ItemGroup>",
+        "</Project>"
+      ];
+      const links = async (file: string) => (await analyze(file)).dependencies.map((entry) => entry.resolvedPath ?? entry.specifier);
+
+      it("links a name to the namesake in the file's own project or a project it references, never to one it cannot see (the estate's two PaymentsControllers)", async () => {
+        await write("Contracts/Contracts.csproj", sdk());
+        await write("Contracts/PaymentRequest.cs", ["namespace Estate.Contracts { public class PaymentRequest { } }"]);
+        await write("Portal/Portal.csproj", classic());
+        await write("Portal/Controllers/PaymentsController.cs", ["namespace Estate.Controllers { public class PaymentsController { } }"]);
+        await write("Portal/Models/PaymentRequest.cs", ["namespace Estate.Contracts { public class PaymentRequest { } }"]);
+        await write("Portal/Pages/Default.aspx.cs", [
+          "using Estate.Contracts;",
+          "namespace Estate.Controllers { public class Page { PaymentsController controller; PaymentRequest request; } }"
+        ]);
+        await write("Gateway/Gateway.csproj", classic(["..\\Contracts\\Contracts.csproj"]));
+        await write("Gateway/Controllers/PaymentsController.cs", ["namespace Estate.Controllers { public class PaymentsController { } }"]);
+        await write("Gateway/Wcf/HubProxy.cs", [
+          "using Estate.Contracts;",
+          "namespace Estate.Controllers { public class HubProxy { PaymentsController controller; PaymentRequest request; } }"
+        ]);
+
+        expect(await links("Portal/Pages/Default.aspx.cs")).toEqual(["Portal/Controllers/PaymentsController.cs", "Portal/Models/PaymentRequest.cs"]);
+        expect(await links("Gateway/Wcf/HubProxy.cs")).toEqual(["Contracts/PaymentRequest.cs", "Gateway/Controllers/PaymentsController.cs"]);
+      });
+
+      it("sees the references of a reference from an SDK-style project and not from a classic one, as MSBuild passes them to the compiler", async () => {
+        await write("Data/Data.csproj", sdk());
+        await write("Data/Row.cs", ["namespace Shop.Data { public class Row { } }"]);
+        await write("Core/Core.csproj", sdk(["../Data/Data.csproj"]));
+        await write("App/App.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("App/Program.cs", ["using Shop.Data;", "namespace Shop { class Program { Row row; } }"]);
+        await write("Web/Web.csproj", sdk(["../Core/Core.csproj"]));
+        await write("Web/Startup.cs", ["using Shop.Data;", "namespace Shop { class Startup { Row row; } }"]);
+        await write("Tool/Tool.csproj", [
+          "<Project Sdk=\"Microsoft.NET.Sdk\">",
+          "  <PropertyGroup><DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences></PropertyGroup>",
+          "  <ItemGroup><ProjectReference Include=\"../Core/Core.csproj\" /></ItemGroup>",
+          "</Project>"
+        ]);
+        await write("Tool/Run.cs", ["using Shop.Data;", "namespace Shop { class Run { Row row; } }"]);
+
+        expect(await links("App/Program.cs")).toEqual([]);
+        expect(await links("Web/Startup.cs")).toEqual(["Data/Row.cs"]);
+        expect(await links("Tool/Run.cs")).toEqual([]);
+      });
+
+      it("hands the reasons a type name has no link to the run as notices, each subject the name as written, since the run names the file", async () => {
+        await write("Data/Data.csproj", sdk());
+        await write("Data/Row.cs", ["namespace Shop.Data { public class Row { } }"]);
+        await write("Left/Left.csproj", sdk());
+        await write("Left/Item.cs", ["namespace Shop.Items { public class Item { } }"]);
+        await write("Right/Right.csproj", sdk());
+        await write("Right/Item.cs", ["namespace Shop.Items { public class Item { } }"]);
+        await write("App/App.csproj", sdk(["../Left/Left.csproj", "../Right/Right.csproj"]));
+        await write("App/Program.cs", ["using Shop.Data;", "using Shop.Items;", "namespace Shop { class Program { Row row; Item item; } }"]);
+
+        const analysis = await analyze("App/Program.cs");
+        expect(analysis.dependencies.filter((entry) => entry.resolvedPath)).toEqual([]);
+        expect(analysis.notices).toEqual([
+          { reason: "type names declared only outside the project's reach, left unlinked", subject: "Row" },
+          { reason: "type names several projects in reach declare, left unlinked", subject: "Item" }
+        ]);
+      });
+
+      // Too many open files, a file Windows holds: no property of the project file, so never read as a project that references nothing.
+      it("throws a failure of the machine's in reading a project file for its references, and reads one of the file's own as referencing nothing", async () => {
+        vi.resetModules();
+        const failing = { error: undefined as Error | undefined };
+        vi.doMock("../../tooling/sourceText", async (importOriginal) => {
+          const actual = await importOriginal<typeof import("../../tooling/sourceText")>();
+          return { ...actual, readSourceText: (file: string) => (failing.error !== undefined && file.endsWith("Core.csproj") ? Promise.reject(failing.error) : actual.readSourceText(file)) };
+        });
+        try {
+          const { csharpAdapter: own } = await vi.importActual<typeof import("./csharp")>("./csharp");
+          await write("Data/Data.csproj", sdk());
+          await write("Data/Row.cs", ["namespace Shop.Data { public class Row { } }"]);
+          await write("Core/Core.csproj", sdk(["../Data/Data.csproj"]));
+          await write("Web/Web.csproj", sdk(["../Core/Core.csproj"]));
+          const startup = await write("Web/Startup.cs", ["using Shop.Data;", "namespace Shop { class Startup { Row row; } }"]);
+          // A new index each time, as each generation makes, so that nothing the last read kept is read again.
+          const read = async () => (await own.analyze({ absolutePath: startup, workspaceRoot, fileIndex: new Set(written) }))?.dependencies.map((entry) => entry.resolvedPath ?? entry.specifier);
+          expect(await read()).toEqual(["Data/Row.cs"]);
+          failing.error = Object.assign(new Error("EMFILE: too many open files, open 'Core.csproj'"), { code: "EMFILE", syscall: "open", errno: -24 });
+          await expect(read()).rejects.toThrow("EMFILE: too many open files");
+          // `Core` read as referencing nothing passes `Data` on to nobody, so `Row` lies outside `Web`'s reach.
+          failing.error = new Error("the project file's bytes could not be read");
+          expect(await read()).toEqual([]);
+        } finally {
+          vi.doUnmock("../../tooling/sourceText");
+          vi.resetModules();
+        }
+      });
+
+      it("prefers the own project's declaration, links every half of a partial type, and draws nothing for a true ambiguity", async () => {
+        await write("LibA/LibA.csproj", sdk());
+        await write("LibA/Helper.cs", ["namespace Shop { public class Helper { } public class Util { } }"]);
+        await write("LibB/LibB.csproj", sdk());
+        await write("LibB/Helper.cs", ["namespace Shop { public class Helper { } }"]);
+        await write("LibC/LibC.csproj", sdk());
+        await write("LibC/Order.cs", ["namespace Shop { public partial class Order { } }"]);
+        await write("LibC/Order.Lines.cs", ["namespace Shop { public partial class Order { } }"]);
+        await write("App/App.csproj", sdk(["../LibA/LibA.csproj", "../LibB/LibB.csproj", "../LibC/LibC.csproj"]));
+        await write("App/Util.cs", ["namespace Shop { public class Util { } }"]);
+        await write("App/Uses.cs", ["namespace Shop { class Uses { Helper helper; Util util; Order order; } }"]);
+        await write("Ref/Ref.csproj", [
+          "<Project Sdk=\"Microsoft.NET.Sdk\">",
+          "  <ItemGroup><ProjectReference Include=\"../LibB/LibB.csproj\" ReferenceOutputAssembly=\"false\" /></ItemGroup>",
+          "</Project>"
+        ]);
+        await write("Ref/Uses.cs", ["namespace Shop { class RefUses { Helper helper; } }"]);
+
+        expect(await links("App/Uses.cs")).toEqual(["App/Util.cs", "LibC/Order.cs", "LibC/Order.Lines.cs"]);
+        expect(await links("Ref/Uses.cs")).toEqual([]);
+      });
+
+      it("links a name to the declaration with as many type parameters as the use writes type arguments", async () => {
+        await write("Mvc/Mvc.csproj", sdk());
+        await write("Mvc/Helpers/DnnHelper.cs", ["namespace Dnn.Mvc { public class DnnHelper { } }"]);
+        await write("Mvc/Helpers/DnnHelper{TModel}.cs", ["namespace Dnn.Mvc { public class DnnHelper<TModel> : DnnHelper { } }"]);
+        await write("Mvc/Helpers/Pair{TKey,TValue}.cs", ["namespace Dnn.Mvc { public class Pair<TKey, TValue> { } public class Pair { } }"]);
+        await write("Mvc/Framework/DnnWebViewPage.cs", ["namespace Dnn.Mvc { public class DnnWebViewPage { public DnnHelper<object> Dnn; } }"]);
+        await write("Mvc/Framework/Plain.cs", ["namespace Dnn.Mvc { public class Plain { public DnnHelper Dnn; } }"]);
+        await write("Mvc/Framework/Open.cs", ["namespace Dnn.Mvc { public class Open { object a = typeof(DnnHelper<>); object b = typeof(Pair<,>); } }"]);
+
+        expect(await links("Mvc/Framework/DnnWebViewPage.cs")).toEqual(["Mvc/Helpers/DnnHelper{TModel}.cs"]);
+        expect(await links("Mvc/Framework/Plain.cs")).toEqual(["Mvc/Helpers/DnnHelper.cs"]);
+        expect(await links("Mvc/Framework/Open.cs")).toEqual(["Mvc/Helpers/DnnHelper{TModel}.cs", "Mvc/Helpers/Pair{TKey,TValue}.cs"]);
+      });
+
+      it("searches a namespace's own using directives before the namespaces around it, as C# does (DNN writes every using inside the namespace)", async () => {
+        await write("Abstractions/Abstractions.csproj", sdk());
+        await write("Abstractions/ClientResources/FileOrder.cs", ["namespace DotNetNuke.Abstractions.ClientResources { public enum FileOrder { } }"]);
+        await write("Client/Client.csproj", sdk(["../Abstractions/Abstractions.csproj"]));
+        await write("Client/FileOrder.cs", ["namespace DotNetNuke.Web.Client { public enum FileOrder { } }"]);
+        await write("Client/Controls/Inside.cs", [
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement",
+          "{",
+          "    using DotNetNuke.Abstractions.ClientResources;",
+          "    public class Inside { FileOrder order; }",
+          "}"
+        ]);
+        await write("Client/Controls/Outside.cs", [
+          "using DotNetNuke.Abstractions.ClientResources;",
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement",
+          "{",
+          "    public class Outside { FileOrder order; }",
+          "}"
+        ]);
+        await write("Client/Controls/FileScoped.cs", [
+          "namespace DotNetNuke.Web.Client.ClientResourceManagement;",
+          "using DotNetNuke.Abstractions.ClientResources;",
+          "public class FileScoped { FileOrder order; }"
+        ]);
+
+        expect(await links("Client/Controls/Inside.cs")).toEqual(["Abstractions/ClientResources/FileOrder.cs"]);
+        expect(await links("Client/Controls/Outside.cs")).toEqual(["Client/FileOrder.cs"]);
+        expect(await links("Client/Controls/FileScoped.cs")).toEqual(["Abstractions/ClientResources/FileOrder.cs"]);
+      });
+
+      it("reads the type arguments of a generic name anywhere in a member access, not only at its end", async () => {
+        await write("Library/Library.csproj", sdk());
+        await write("Library/EventHandlersContainer.cs", ["namespace Shop { public class EventHandlersContainer<T> { public static EventHandlersContainer<T> Instance; } }"]);
+        await write("Library/Users/IFriendshipEventHandlers.cs", ["namespace Shop.Friends { public interface IFriendshipEventHandlers { } }"]);
+        await write("Library/EventManager.cs", [
+          "using Shop.Friends;",
+          "namespace Shop { class EventManager { void Raise() { var all = EventHandlersContainer<IFriendshipEventHandlers>.Instance.ToString(); } } }"
+        ]);
+
+        expect(await links("Library/EventManager.cs")).toEqual(["Library/EventHandlersContainer.cs", "Library/Users/IFriendshipEventHandlers.cs"]);
+      });
+
+      it("applies a project's global using directives to every file of that project, and to no other project's", async () => {
+        await write("Core/Core.csproj", sdk());
+        await write("Core/Configuration/AppConfig.cs", ["namespace Shop.Core.Configuration; public static class AppConfig { }"]);
+        await write("Web/Web.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("Web/Components/GlobalUsings.cs", ["global using Shop.Core.Configuration;"]);
+        await write("Web/Controls/NewPageLink.cs", ["namespace Shop.Web.UI;", "public class NewPageLink { bool Enabled() => AppConfig.Enabled; }"]);
+        await write("Admin/Admin.csproj", classic(["..\\Core\\Core.csproj"]));
+        await write("Admin/Page.cs", ["namespace Shop.Admin; public class Page { bool Enabled() => AppConfig.Enabled; }"]);
+
+        expect(await links("Web/Controls/NewPageLink.cs")).toEqual(["Core/Configuration/AppConfig.cs"]);
+        expect(await links("Admin/Page.cs")).toEqual([]);
+      });
+
+      it("keeps today's reading for a file no project holds, except that several namesakes draw nothing", async () => {
+        await write("Lib/Thing.cs", ["namespace Shop { public class Thing { } public class Only { } }"]);
+        await write("Other/Thing.cs", ["namespace Shop { public class Thing { } }"]);
+        await write("Loose.cs", ["namespace Shop { class Loose { Thing thing; Only only; } }"]);
+
+        expect(await links("Loose.cs")).toEqual(["Lib/Thing.cs"]);
+      });
+    });
+
     it("prefers the enclosing namespace over a using directive, and never links a file to itself", async () => {
       await write("A/Thing.cs", ["namespace Shop.A { public class Thing { } }"]);
       await write("B/Thing.cs", ["namespace Shop.B { public class Thing { } }"]);
@@ -210,6 +420,49 @@ describe("csharpAdapter", () => {
       ]);
     });
 
+    it("links a partial class to its peer through members named as `this.member`, and through nothing else that starts at `this` or `base`", async () => {
+      await write("Controls/Card.ascx.cs", [
+        "namespace Site.Controls",
+        "{",
+        "    public partial class Card : Site.Controls.CardBase",
+        "    {",
+        "        protected void Page_Load(object sender, System.EventArgs e)",
+        "        {",
+        "            this.cmdSave.Click += this.OnSave;",
+        "            (this).lblTitle.Text = this.Caption.Trim();",
+        "            base.Render();",
+        "            ((CardBase)this).Shared = 1;",
+        "        }",
+        "        private void OnSave(object sender, System.EventArgs e) { }",
+        "        private string Caption => \"\";",
+        "    }",
+        "}"
+      ]);
+      await write("Controls/Card.ascx.designer.cs", [
+        "namespace Site.Controls",
+        "{",
+        "    public partial class Card",
+        "    {",
+        "        protected global::System.Web.UI.WebControls.LinkButton cmdSave;",
+        "        protected global::System.Web.UI.WebControls.Label lblTitle;",
+        "        protected global::System.Web.UI.WebControls.Label Render;",
+        "        protected global::System.Web.UI.WebControls.Label Shared;",
+        "    }",
+        "}"
+      ]);
+      await write("Controls/CardBase.cs", [
+        "namespace Site.Controls { public class CardBase : System.Web.UI.UserControl { public int Shared; } }"
+      ]);
+      await write("Text/Trim.cs", ["namespace Site.Controls { public class Trim { } }"]);
+
+      const { dependencies } = await analyze("Controls/Card.ascx.cs");
+
+      expect(dependencies).toEqual([
+        { specifier: "Controls/Card.ascx.designer.cs", resolvedPath: "Controls/Card.ascx.designer.cs", symbols: ["cmdSave", "lblTitle"], kind: "import" },
+        { specifier: "Controls/CardBase.cs",           resolvedPath: "Controls/CardBase.cs",           symbols: ["CardBase"],            kind: "import" }
+      ]);
+    });
+
     it("reads configuration keys held in constants, including constants of another file", async () => {
       await write("Web.config", ["<configuration><appSettings><add key=\"Portal.Url\" value=\"x\" /><add key=\"Portal.Flag\" value=\"y\" /></appSettings></configuration>"]);
       await write("Globals.cs", [
@@ -245,6 +498,18 @@ describe("csharpAdapter", () => {
       expect(flags.dependencies).toEqual([
         { specifier: "Globals.cs", resolvedPath: "Globals.cs", symbols: ["Globals"], kind: "import" },
         { specifier: "Web.config", resolvedPath: "Web.config", symbols: ["Portal.Flag", "Portal.Url"], kind: "import" }
+      ]);
+    });
+
+    it("finds a configuration file named in any case, as Windows does, in its own spelling", async () => {
+      await write("Shop/WEB.CONFIG", ["<configuration><appSettings><add key=\"AuditMode\" value=\"on\" /></appSettings></configuration>"]);
+      await write("Shop/Audit.cs", [
+        "using System.Configuration;",
+        "namespace Shop { public static class Audit { public static string Mode => ConfigurationManager.AppSettings[\"AuditMode\"]; } }"
+      ]);
+
+      expect((await analyze("Shop/Audit.cs")).dependencies).toEqual([
+        { specifier: "Shop/WEB.CONFIG", resolvedPath: "Shop/WEB.CONFIG", symbols: ["AuditMode"], kind: "import" }
       ]);
     });
 
@@ -390,7 +655,7 @@ describe("csharpAdapter", () => {
         ["dbo.Payment",         [{ liveDocPath: "d", sourcePath: "Database/dbo.Payment.sql",         anchor: "symbol-dbopayment",         kind: "table" }]]
       ]);
 
-      const result = await csharpAdapter.analyze({ absolutePath: contextPath, workspaceRoot, symbolIndex });
+      const result = await csharpAdapter.analyze({ absolutePath: contextPath, workspaceRoot, fileIndex: written, symbolIndex });
 
       expect(result?.dependencies).toEqual([
         { specifier: "PaymentService/App.config",       resolvedPath: "PaymentService/App.config",       symbols: ["PaymentsDb"],          kind: "import" },
