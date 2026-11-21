@@ -213,7 +213,7 @@ export class LocalViewController implements LocalViewApi {
    * "Reading, Then Neighbours"): its subject, the frame it rests on and when it came to rest (0 until the picture has
    * settled), the end it eases to, measured when the ease begins, and its animation frame.
    */
-  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number; lead: number; faded: number } | null = null;
+  private arrival: { subject: string; start: MapTransform | null; restAt: number; end: MapTransform | null; frame: number; lead: number; faded: number; cleared: number } | null = null;
   /**
    * The cards' look held whatever the zoom, while an arrival's pull-back changes it at rest rather than where the zoom
    * crosses its edge (Tuning's Arrival, Look After and Look Before, trials of 2026-11-21); null otherwise.
@@ -2221,7 +2221,7 @@ export class LocalViewController implements LocalViewApi {
   /** Rest on the subject at reading size until the picture has settled and the hold has passed, then ease to the neighbours. */
   private beginArrival(subject: string): void {
     this.cancelArrival();
-    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0, lead: 0, faded: 0 };
+    const arrival = { subject, start: null as MapTransform | null, restAt: 0, end: null as MapTransform | null, frame: 0, lead: 0, faded: 0, cleared: 0 };
     // Where the pointer stood when the arrival began: only a pointer moved since may hold the rest (Arrival Waits).
     const pointerAtStart = this.pointerAt;
     const change = arrivalLookChange(this.options.state.tuning.localMap.arrival);
@@ -2267,8 +2267,13 @@ export class LocalViewController implements LocalViewApi {
         // The camera waits out the lead and the look's cross-fade, whose end restyles the cards again, and then a frame
         // more, so that neither restyle falls in the ease: the lead's clock alone ran out under the change's own long
         // frame on a large picture (measured 2026-11-21, a frame of 2,366 elements restyled in the ease's first frames).
-        if (this.container.classList.contains("local-look-fading")) arrival.faded = now;
-        const quiet = arrival.faded ? now - arrival.faded >= 30 : true;
+        // The fade's end is seen at the first frame without its class; the ease waits one frame more, so that the
+        // restyle its end owes is the browser's own in that frame and not forced by the ease's first move (measured
+        // 2026-11-21: on two slowed cores the class went inside the change's own long frame, and the ease's first frame
+        // restyled the 784 cells, buttons and names its end had invalidated, forced by reading the frame's place).
+        if (this.container.classList.contains("local-look-fading")) { arrival.faded = now; arrival.cleared = 0; }
+        else if (arrival.faded && !arrival.cleared) arrival.cleared = now;
+        const quiet = arrival.faded ? arrival.cleared > 0 && now > arrival.cleared : true;
         if (now - arrival.lead < ARRIVAL_LOOK_LEAD_MS || !quiet) { arrival.frame = requestAnimationFrame(tick); return; }
         // The ease begins now: the hold's clock is moved on by the lead.
         arrival.restAt += now - arrival.lead;
