@@ -1,0 +1,316 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "Rosetta.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 12,
+  "names": 399,
+  "bound": 273,
+  "edges": [
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.CreateRecord"
+      ]
+    },
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Create",
+        "Record.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Helpers/HelpersTests.cs",
+      "to": "src/Helpers/Helpers.cs",
+      "type": [
+        "Helpers"
+      ],
+      "member": [
+        "Helpers.Average",
+        "Helpers.Format",
+        "Helpers.Sum"
+      ]
+    },
+    {
+      "from": "src/Models/ModelFactory.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/ModelFactory.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": [
+        "ProcessorConfig.BatchSize",
+        "ProcessorConfig.Timeout"
+      ]
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/Entry.cs",
+      "type": [
+        "Entry"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/Status.cs",
+      "type": [
+        "Status"
+      ],
+      "member": [
+        "Status.Pending"
+      ]
+    },
+    {
+      "from": "src/Models/Report.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Helpers/Helpers.cs",
+      "type": [
+        "Helpers"
+      ],
+      "member": [
+        "Helpers.Average",
+        "Helpers.Format",
+        "Helpers.Sum"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": [
+        "ProcessorConfig.BatchSize",
+        "ProcessorConfig.Strict",
+        "ProcessorConfig.Timeout"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Create"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/Types/Entry.cs",
+      "to": "src/Types/Status.cs",
+      "type": [
+        "Status"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "src/App/Main.cs": [
+      "Main"
+    ],
+    "src/App/PipelineTests.cs": [
+      "PipelineIntegration",
+      "PipelineTests"
+    ],
+    "src/Helpers/Helpers.cs": [
+      "Helpers"
+    ],
+    "src/Helpers/HelpersTests.cs": [
+      "AverageTests",
+      "FormatTests",
+      "HelpersTests",
+      "SumTests"
+    ],
+    "src/Models/ModelFactory.cs": [
+      "ModelFactory"
+    ],
+    "src/Models/Record.cs": [
+      "Record"
+    ],
+    "src/Models/Report.cs": [
+      "Report"
+    ],
+    "src/Processor/Processor.cs": [
+      "Processor"
+    ],
+    "src/Processor/ProcessorTests.cs": [
+      "ProcessorTests",
+      "RunTests",
+      "SummarizeTests"
+    ],
+    "src/Types/Entry.cs": [
+      "Entry"
+    ],
+    "src/Types/ProcessorConfig.cs": [
+      "ProcessorConfig"
+    ],
+    "src/Types/Status.cs": [
+      "Status"
+    ]
+  },
+  "sources": {
+    "Rosetta.csproj": "761545b787fedf9c7f1a2ef6966255e8f00dca6da9643d1b3efab0c92e69a621",
+    "src/App/Main.cs": "d8852282c1d0d47c6a7d645257e6c319ed0d1201c33ab91cd2da0174e236bf6a",
+    "src/App/PipelineTests.cs": "843801c79727e7c406338b2779204f220b5b7b643891f4ac5c6d147476973df6",
+    "src/Helpers/Helpers.cs": "34da1d9bdce8fd77b10869bfec6f5184aa5e24a5b6ef3fecc3a109d3782c4092",
+    "src/Helpers/HelpersTests.cs": "74ec82de98ef660a0022a9048611d62f8c0ed50b33395522afebe3059d3490c1",
+    "src/Models/ModelFactory.cs": "aae72ae4b6d2d13b4e77a3618a47222f17a85759f424e16ac877e1e4cd04d944",
+    "src/Models/Record.cs": "bfd223911400f8eec615e203fde6ae660710760d842eb3607513c550e07e740e",
+    "src/Models/Report.cs": "6152af426a945cfead9cc6d548ced2206fb63ef48ca87c7212b0ffa9c95b3f81",
+    "src/Processor/Processor.cs": "ed43197416eba9a2404ba7ec337e677dda742970c908c3e46a1bf046f5694082",
+    "src/Processor/ProcessorTests.cs": "803ffb5193e181352c47d564657faa9ac657ed28343bc526ee8d34790d897f9e",
+    "src/Types/Entry.cs": "6b4d0178cd805c11430c0441e8fdb9e18a011fe562c8639cbddc8f4b08539dd9",
+    "src/Types/ProcessorConfig.cs": "5e100156a2fed077428928ba7c074003e807b8ffc1e524af085bda3dbe5ae6e7",
+    "src/Types/Status.cs": "505115bc8ffa71f197401b8bbc7d001c712223c907ff7f2af83ac5c1658b5127"
+  }
+}

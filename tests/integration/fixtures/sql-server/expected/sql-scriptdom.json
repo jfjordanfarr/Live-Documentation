@@ -1,0 +1,759 @@
+{
+  "tool": "Microsoft.SqlServer.TransactSql.ScriptDom 17.0.191.0+0a5e0d21.0a5e0d21aa9136c8cbe90e484b76fdd0fcc1eac9 (TSql170Parser, quoted identifiers on)",
+  "files": {
+    "../Procedures/Billing.usp_Archive.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "Billing",
+            "name": "usp_Archive"
+          },
+          "line": 1,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "delete",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 6,
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Archive"
+            }
+          }
+        }
+      ],
+      "dynamic": []
+    },
+    "../Procedures/Billing.usp_Settle.sql": {
+      "parseErrors": [],
+      "creates": [],
+      "references": [
+        {
+          "how": "alter",
+          "name": {
+            "schema": "Billing",
+            "name": "usp_Settle"
+          },
+          "line": 6,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Settle"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "name": "sp_executesql"
+          },
+          "line": 13,
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Settle"
+            }
+          }
+        },
+        {
+          "how": "alter",
+          "name": {
+            "schema": "Billing",
+            "name": "vw_Legacy"
+          },
+          "line": 23,
+          "column": 12,
+          "module": {
+            "kind": "view",
+            "name": {
+              "schema": "Billing",
+              "name": "vw_Legacy"
+            }
+          }
+        }
+      ],
+      "dynamic": [
+        {
+          "how": "exec-string",
+          "line": 3,
+          "column": 5,
+          "scope": "script",
+          "literal": true,
+          "text": "CREATE PROCEDURE Billing.usp_Settle AS BEGIN SELECT 1 END",
+          "textLine": 3,
+          "parseErrors": [],
+          "creates": [
+            {
+              "kind": "procedure",
+              "name": {
+                "schema": "Billing",
+                "name": "usp_Settle"
+              },
+              "line": 3,
+              "column": 1,
+              "scope": "script"
+            }
+          ],
+          "references": [],
+          "nested": []
+        },
+        {
+          "how": "sp_executesql",
+          "line": 13,
+          "column": 5,
+          "scope": "module",
+          "literal": true,
+          "text": "UPDATE Billing.Invoice SET IsOpen = 0 WHERE CustomerId = @c",
+          "textLine": 13,
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "update",
+              "name": {
+                "schema": "Billing",
+                "name": "Invoice"
+              },
+              "line": 13,
+              "column": 8
+            }
+          ],
+          "nested": []
+        },
+        {
+          "how": "exec-string",
+          "line": 14,
+          "column": 5,
+          "scope": "module",
+          "literal": true,
+          "text": "SELECT CustomerId, Name FROM Billing.Customer WHERE Note = 'settled'",
+          "textLine": 14,
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "select",
+              "name": {
+                "schema": "Billing",
+                "name": "Customer"
+              },
+              "line": 14,
+              "column": 30
+            }
+          ],
+          "nested": []
+        },
+        {
+          "how": "exec-string",
+          "line": 15,
+          "column": 5,
+          "scope": "module",
+          "literal": false
+        },
+        {
+          "how": "openquery",
+          "line": 18,
+          "column": 12,
+          "scope": "module",
+          "literal": true,
+          "text": "SELECT BALANCE FROM CENTRAL.ACCOUNT",
+          "textLine": 18,
+          "server": "ORACLE_CENTRAL",
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "select",
+              "name": {
+                "schema": "CENTRAL",
+                "name": "ACCOUNT"
+              },
+              "line": 18,
+              "column": 21
+            }
+          ],
+          "nested": []
+        }
+      ]
+    },
+    "../Procedures/Billing.usp_Statement.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "Billing",
+            "name": "usp_Statement"
+          },
+          "line": 8,
+          "column": 1,
+          "scope": "script"
+        },
+        {
+          "kind": "table",
+          "name": {
+            "name": "#Totals"
+          },
+          "line": 24,
+          "column": 5,
+          "scope": "module"
+        }
+      ],
+      "references": [
+        {
+          "how": "select",
+          "name": {
+            "schema": "sys",
+            "name": "objects"
+          },
+          "line": 19,
+          "column": 76,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "Billing",
+            "name": "usp_Archive"
+          },
+          "line": 22,
+          "column": 22,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 26,
+          "column": 58,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "call",
+          "name": {
+            "database": "r",
+            "schema": "Lines",
+            "name": "value"
+          },
+          "line": 28,
+          "column": 35,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "name": "recent"
+          },
+          "line": 29,
+          "column": 10,
+          "standsFor": "cte",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "insert",
+          "name": {
+            "name": "#Totals"
+          },
+          "line": 31,
+          "column": 12,
+          "standsFor": "temporary",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "call",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_Balance"
+          },
+          "line": 32,
+          "column": 25,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "update",
+          "name": {
+            "name": "c"
+          },
+          "line": 34,
+          "column": 12,
+          "standsFor": "table source",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "schema": "Billing",
+            "name": "Customer"
+          },
+          "line": 36,
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "name": "#Totals"
+          },
+          "line": 40,
+          "column": 12,
+          "standsFor": "temporary",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        },
+        {
+          "how": "table-function",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_OpenInvoices"
+          },
+          "line": 41,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
+        }
+      ],
+      "dynamic": [
+        {
+          "how": "exec-string",
+          "line": 43,
+          "column": 5,
+          "scope": "module",
+          "literal": true,
+          "text": "SELECT COUNT(*) FROM Billing.Invoice WHERE IsOpen = 1",
+          "textLine": 43,
+          "parseErrors": [],
+          "creates": [],
+          "references": [
+            {
+              "how": "select",
+              "name": {
+                "schema": "Billing",
+                "name": "Invoice"
+              },
+              "line": 43,
+              "column": 22
+            }
+          ],
+          "nested": []
+        }
+      ]
+    },
+    "../Schema/Billing.Customer.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "table",
+          "name": {
+            "schema": "Billing",
+            "name": "Customer"
+          },
+          "line": 5,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [],
+      "dynamic": []
+    },
+    "../Schema/Billing.Invoice.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "table",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 2,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "foreign-key",
+          "name": {
+            "schema": "Billing",
+            "name": "Customer"
+          },
+          "line": 5,
+          "column": 51
+        }
+      ],
+      "dynamic": []
+    },
+    "../Schema/Billing.fn_Balance.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "function",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_Balance"
+          },
+          "line": 3,
+          "column": 1,
+          "scope": "script"
+        },
+        {
+          "kind": "function",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_OpenInvoices"
+          },
+          "line": 11,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "select",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 7,
+          "column": 46,
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_Balance"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 15,
+          "column": 58,
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_OpenInvoices"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "name": "open_invoices"
+          },
+          "line": 16,
+          "column": 35,
+          "standsFor": "cte",
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_OpenInvoices"
+            }
+          }
+        }
+      ],
+      "dynamic": []
+    },
+    "../Tests/BillingTests.class.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "BillingTests",
+            "name": "test it doesn't count a settled invoice"
+          },
+          "line": 6,
+          "column": 1,
+          "scope": "script"
+        },
+        {
+          "kind": "table",
+          "name": {
+            "schema": "BillingTests",
+            "name": "Expected"
+          },
+          "line": 9,
+          "column": 5,
+          "scope": "module"
+        },
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "BillingTests",
+            "name": "test fn_Balance.sums the open ones"
+          },
+          "line": 21,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "execute",
+          "name": {
+            "schema": "tSQLt",
+            "name": "NewTestClass"
+          },
+          "line": 3,
+          "column": 6
+        },
+        {
+          "how": "insert",
+          "name": {
+            "schema": "BillingTests",
+            "name": "Expected"
+          },
+          "line": 10,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "tSQLt",
+            "name": "FakeTable"
+          },
+          "line": 12,
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "insert",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 13,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "call",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_Balance"
+          },
+          "line": 15,
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "into",
+          "name": {
+            "schema": "BillingTests",
+            "name": "Actual"
+          },
+          "line": 15,
+          "column": 48,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "tSQLt",
+            "name": "AssertEqualsTable"
+          },
+          "line": 17,
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "tSQLt",
+            "name": "FakeTable"
+          },
+          "line": 25,
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
+        },
+        {
+          "how": "insert",
+          "name": {
+            "schema": "Billing",
+            "name": "Invoice"
+          },
+          "line": 26,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
+        },
+        {
+          "how": "call",
+          "name": {
+            "schema": "Billing",
+            "name": "fn_Balance"
+          },
+          "line": 27,
+          "column": 20,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "tSQLt",
+            "name": "AssertEquals"
+          },
+          "line": 28,
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
+        }
+      ],
+      "dynamic": []
+    }
+  },
+  "sources": {
+    "../Procedures/Billing.usp_Archive.sql": "b81246a9ccfff9039c7ea018ba35d7e898bc878129e458689782c25cfdf0c1ef",
+    "../Procedures/Billing.usp_Settle.sql": "1f4b4ee05bb34ac39e11f6cb5131e74a2cb84eac91a14b633ca943b50e9e06f9",
+    "../Procedures/Billing.usp_Statement.sql": "515122e55fe9e78f3f3d1596468bc2dbb8c1be880083d6e24e48679d26102309",
+    "../Schema/Billing.Customer.sql": "a3d7e0f3290d4bece35c03ab027cb6eeac72ec209e1be72c9ea6a336da9710e6",
+    "../Schema/Billing.Invoice.sql": "d204cbb85b8c02458b961b297b1b11b48f34e2a81a0737a4e40042199c89150c",
+    "../Schema/Billing.fn_Balance.sql": "1402b77a82196e05c4ebc290241c20b540edce1b3cbf0e3d1942d79778471250",
+    "../Tests/BillingTests.class.sql": "78bfb005e18ba0ac5e3b1a137bc3f95148cde37630da9f9ea72a23714f873fbe"
+  }
+}

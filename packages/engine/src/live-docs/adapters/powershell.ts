@@ -27,15 +27,31 @@
  * declares. The other sections are read past.
  *
  * Dependencies are dot-sources, `Import-Module`'s module names, `using
- * module` and `#requires -Modules`, all imports. A path is resolved to a file
- * of the workspace when the text alone fixes it: a string or a bare word
- * written out, in which `$PSScriptRoot` stands for the file's directory and
- * against which a relative path is resolved, as if the script ran from where
- * it lies. A module path may name a `.psm1`, a `.psd1`, or a directory holding
- * the module of its name. Each name in a path is found among the workspace's
- * files as Windows finds it, without regard to case. A module named rather
- * than pathed, a dynamic path and a path outside the workspace keep their
- * text as the specifier. A `.ps1` is the program's entry; a module is not.
+ * module`, `#requires -Modules` and scripts run by their path, all imports. A
+ * path is resolved to a file of the workspace when the text alone fixes it: a
+ * string or a bare word written out, in which `$PSScriptRoot` stands for the
+ * file's directory and against which a relative path is resolved, as if the
+ * script ran from where it lies; a `Join-Path` of such; a variable the file
+ * assigns once, at its own level, from such; or a loop that dot-sources each
+ * file a `Get-ChildItem` of such a folder lists. A module path may name a
+ * `.psm1`, a `.psd1`, or a directory holding the module of its name; a script
+ * dot-sourced or run by a path no file is so named by is the path's `.ps1`, as
+ * PowerShell tries it. Each name
+ * in a path is found among the workspace's files as Windows finds it, without
+ * regard to case. A module named rather than pathed, a path a string writes
+ * with a variable no assignment fixes, and a path outside the workspace keep
+ * their text as the specifier; a path built any other way is not read. A
+ * module named through a variable the text fixes so, `$m = 'Pester'` then
+ * `Import-Module $m`, keeps the name it is assigned, and a loop over names
+ * written out, `foreach ($m in 'A', 'B') { Import-Module $m }`, keeps each.
+ *
+ * A call to a function another file defines is a dependency on that file,
+ * carrying the function's name, by the rule measured on 2026-11-19, "loaded,
+ * else unique" ({@link calledFiles}): every PowerShell file of the workspace
+ * is read once, for the functions it defines at its own level and what it
+ * loads. A `.ps1` is the program's entry unless running it would do nothing,
+ * its own level only defining things and setting up its scope; a module is
+ * not.
  *
  * A `.psd1` whose table has a `RootModule` (or `ModuleToProcess`, its older
  * name), a `ModuleVersion` or a `FunctionsToExport` is a module manifest: the
@@ -44,25 +60,33 @@
  * `RequiredModules` name are its dependencies, each linked to the file it
  * names from the manifest's folder when the workspace holds it, and otherwise
  * kept by name, as `name@version` when a module specification writes a
- * `RequiredVersion` or a `ModuleVersion`; and its root module is the file it
- * declares as a `module` entry. Any other `.psd1` is a data file, of which
- * nothing is read.
+ * `RequiredVersion` or a `ModuleVersion`; its root module is the file it
+ * declares as a `module` entry; and each function its `FunctionsToExport`
+ * names is offered from the one file of the module that defines it, as a
+ * barrel re-exports. Any other `.psd1` is a data file, of which nothing is
+ * read.
  *
- * A file is read as PowerShell reads it, by its byte order mark: UTF-16 in
- * either order, else UTF-8.
+ * A file's text is taken through the engine's one reading step
+ * (`sourceText.ts`), the workspace's other PowerShell files' too. A
+ * dot-source or import whose path the text does not fix, and no loop reads,
+ * draws nothing and is said as a notice, as is a path built with `Join-Path`
+ * or a variable that names no file of the workspace.
  *
  * The rules are measured against PowerShell's own parser, whose record of
  * each PowerShell fixture is `expected/powershell-ast.json`.
  */
 import path from "node:path";
 
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import { powershellSyntax } from "../../languages";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText } from "../../tooling/sourceText";
+import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { resolveArchetype } from "../archetype";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, SymbolDocumentationParameter } from "../core";
-import type { DeclaredEntry } from "../coreTypes";
+import type { DeclaredEntry, ReExportedSymbolInfo, SourceNotice } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
+import { SHIPPED_ALIASES, SHIPPED_COMMANDS, SHIPPED_MODULES } from "./powershell.builtins";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
@@ -86,6 +110,8 @@ interface FunctionFact {
   help?:     CommentHelp;
   /** The parameters it declares, in its header or its `param()` block, as spelled there. */
   declared:  string[];
+  /** Whether it stands at the file's own level, inside no function and no script block, where whoever loads the file sees it. */
+  fileScope: boolean;
 }
 
 /** A class or an enum as the file defines it. */
@@ -99,6 +125,36 @@ interface TypeFact {
 /** A path or module name as written, `undefined` where the text is not a string written out. */
 type Written = string | undefined;
 
+/**
+ * A folder a `Get-ChildItem` lists, as written, `$PSScriptRoot` standing for
+ * the file's directory: a leaf may carry wildcards, and `-Filter`, `-Include`,
+ * `-Exclude` and `-Recurse` narrow and widen it as written.
+ */
+interface Listing {
+  path:     string;
+  filter?:  string;
+  include?: string[];
+  exclude?: string[];
+  recurse:  boolean;
+}
+
+/** A load whose path the text fixes only through `Join-Path` or a variable: drawn when it names a workspace file, and otherwise by its text as written, when there is one. */
+interface ComputedLoad {
+  kind:     "dot" | "import" | "run";
+  path:     string;
+  written?: string;
+  /**
+   * A run written as a module's command, `lib\Helpers`: a script of that path, its extension unwritten as PowerShell
+   * allows, where the workspace holds one; else a command of a module the workspace does not draw, which is no load.
+   */
+  qualified?: boolean;
+  /** An import of a module by its name, not its path, through a loop's item over names written out: kept by the name. */
+  named?: boolean;
+}
+
+/** A variable other than `$PSScriptRoot` in a path as written, which only the file's own assignments can fix. */
+const OTHER_VARIABLE = /\$(?!\{?PSScriptRoot\b)/i;
+
 interface FileFacts {
   functions:     FunctionFact[];
   types:         TypeFact[];
@@ -108,6 +164,16 @@ interface FileFacts {
   moduleImports: Written[];
   usingModules:  Written[];
   requires:      string[];
+  /** Loads built with `Join-Path` or a variable, and scripts run by a path. */
+  computed:      ComputedLoad[];
+  /** Folders whose scripts a loop over `Get-ChildItem` dot-sources. */
+  listings:      Listing[];
+  /** Every command called by a name, case-folded, without a scope prefix. */
+  calls:         string[];
+  /** Whether the file's own level only defines things and sets up its scope, so that running it would do nothing. */
+  library:       boolean;
+  /** The dot-sources and imports whose path the text does not fix and no loop reads, each as `line N: <command>`, said as notices. */
+  unfixed:       string[];
 }
 
 /** Whether a node lies inside a string; a comment found there is the grammar's misreading of the string's text, as a here-string's `#` lines are. */
@@ -318,23 +384,30 @@ const NOT_ARGUMENTS = new Set(["command_argument_sep", "command_parameter", "red
 /**
  * The strings bound to each parameter of a command, as PowerShell's binder
  * would bind them: an argument after a parameter that takes a value, or
- * joined to one by a colon, is that parameter's; any other argument is
- * positional. A parameter the signature does not know takes nothing.
+ * joined to one by a colon, is that parameter's; the other arguments fill, in
+ * order, the positional parameters no argument names. A parameter the
+ * signature does not know takes nothing.
  */
 function bindArguments(command: SyntaxNode, signature: CmdletSignature): Map<string, Written[]> {
-  const bound   = new Map<string, Written[]>();
+  return new Map(Array.from(bindNodes(command, signature), ([name, nodes]) => [name, nodes.flatMap(argumentStrings)]));
+}
+
+/** The argument nodes bound to each parameter of a command, by the binding {@link bindArguments} describes; a switch bound without a value has none. */
+function bindNodes(command: SyntaxNode, signature: CmdletSignature): Map<string, SyntaxNode[]> {
+  const bound   = new Map<string, SyntaxNode[]>();
   const bind    = (name: string, node: SyntaxNode): void => {
-    bound.set(name, [...(bound.get(name) ?? []), ...argumentStrings(node)]);
+    bound.set(name, [...(bound.get(name) ?? []), node]);
   };
   const elements = command.childForFieldName("command_elements")?.children ?? [];
+  const unnamed: SyntaxNode[] = [];
   let pending: CmdletParameter | undefined;
-  let position = 0;
   for (let index = 0; index < elements.length; index += 1) {
     const element = elements[index];
     if (element.type === "command_parameter") {
       const parameter = resolveParameter(signature, element.text);
       const colon     = elements[index + 1]?.type === "command_argument_sep" && elements[index + 1].text === ":";
       pending = parameter && (colon || !parameter.switch) ? parameter : undefined;
+      if (parameter?.switch && !colon && !bound.has(parameter.name)) bound.set(parameter.name, []);
       continue;
     }
     if (!element.isNamed || NOT_ARGUMENTS.has(element.type)) continue;
@@ -342,11 +415,15 @@ function bindArguments(command: SyntaxNode, signature: CmdletSignature): Map<str
       bind(pending.name, element);
       pending = undefined;
     } else {
-      const positional = signature.positional[position];
-      position += 1;
-      if (positional) bind(positional, element);
+      unnamed.push(element);
     }
   }
+  // Named arguments bind first; the rest take the positions left, as PowerShell's binder gives them.
+  const named = new Set(bound.keys());
+  const open  = signature.positional.filter((name) => !named.has(name));
+  unnamed.forEach((element, position) => {
+    if (open[position]) bind(open[position], element);
+  });
   return bound;
 }
 
@@ -374,11 +451,697 @@ function dotSourceTarget(command: SyntaxNode): Written {
     case "string_literal":
       return stringValue(target);
     case "command_name":
-    case "path_command_name":
       return target.text;
+    case "path_command_name":
+      // `$file.FullName` is a property of a variable, not a path; only a run can read it, unless a loop says what the variable holds.
+      return isMemberOfVariable(target) ? undefined : target.text;
     default:
       return undefined;
   }
+}
+
+/** Whether a dot-source runs a script block in the caller's scope, `. { … }`, which loads no file. */
+function dotSourcesBlock(command: SyntaxNode): boolean {
+  const name = command.childForFieldName("command_name");
+  const target = name?.type === "command_name_expr" ? name.namedChildren[0] : name;
+  return target !== undefined && target !== null && unwrapValue(target).type === "script_block_expression";
+}
+
+/** A command's text as a notice names it: its first line, its spaces folded, at most 80 characters. */
+function briefly(text: string): string {
+  const line = (text.split(/\r\n|\r|\n/u)[0] ?? "").replace(/\s+/gu, " ").trim();
+  return line.length > 80 ? `${line.slice(0, 79)}…` : line;
+}
+
+/** Whether a path-like command name is a variable's property, `$file.FullName`, rather than a path that begins with a variable. */
+function isMemberOfVariable(node: SyntaxNode): boolean {
+  const [first, second] = node.namedChildren;
+  return first?.type === "variable" && second !== undefined && /^\.\w+$/.test(second.text);
+}
+
+// ---------------------------------------------------------------------------
+// Paths the text fixes: Join-Path, variables, folder listings
+// ---------------------------------------------------------------------------
+
+/** `Join-Path` as Windows PowerShell 5.1 and PowerShell 7 declare it: a parent, a child, and in 7 any further children, each positional in turn. */
+const JOIN_PATH: CmdletSignature = {
+  positional: ["Path", "ChildPath", ...Array.from({ length: 8 }, () => "AdditionalChildPath")],
+  parameters: [...COMMON_PARAMETERS, value("Path", "PSPath"), value("ChildPath"), value("AdditionalChildPath"), flag("Resolve"), value("Credential")]
+};
+
+/** `Get-ChildItem` as both editions declare it: a path, then a filter, positionally. */
+const GET_CHILD_ITEM: CmdletSignature = {
+  positional: ["Path", "Filter"],
+  parameters: [
+    ...COMMON_PARAMETERS,
+    value("Path"), value("LiteralPath", "PSPath", "LP"), value("Filter"), value("Include"), value("Exclude"), flag("Recurse", "s"), value("Depth"),
+    flag("Force"), flag("Name"), value("Attributes", "af", "ad", "ah", "ap", "as"), flag("Directory", "dir"), flag("File"), flag("Hidden", "h"),
+    flag("ReadOnly", "ar"), flag("System", "as"), flag("FollowSymlink")
+  ]
+};
+
+/** The names `Get-ChildItem` answers to in Windows PowerShell 5.1, where scripts are written, and PowerShell 7. */
+const GET_CHILD_ITEM_NAMES = new Set(["get-childitem", "microsoft.powershell.management\\get-childitem", "gci", "dir", "ls"]);
+
+/** The names `ForEach-Object` answers to. */
+const FOREACH_OBJECT_NAMES = new Set(["foreach-object", "microsoft.powershell.core\\foreach-object", "%", "foreach"]);
+
+/** Node types that hold one value and only pass it on, from a pipeline down to the expression inside it. */
+const VALUE_WRAPPERS = new Set([...PASS_THROUGH, "pipeline", "pipeline_chain", "array_literal_expression", "command_name_expr"]);
+
+/**
+ * What attributes stand before (`[SuppressMessageAttribute(...)]` then `$x`), as PowerShell's
+ * AttributedExpressionAst holds it: such an attribute changes nothing assigned. A type constraint
+ * (`[int]$x`) is a cast, which converts, and is left as it is.
+ */
+function attributedTarget(node: SyntaxNode): SyntaxNode {
+  let current = node;
+  for (;;) {
+    const [only] = current.type === "expression_with_unary_operator" ? current.namedChildren : [current];
+    if (only?.type !== "attributed_expression") return current;
+    current = unwrapValue(only.namedChildren[only.namedChildren.length - 1]);
+  }
+}
+
+/** The one node a chain of wrappers holds. */
+function unwrapValue(node: SyntaxNode): SyntaxNode {
+  let current = node;
+  for (;;) {
+    if (!VALUE_WRAPPERS.has(current.type)) return current;
+    const children = current.namedChildren.filter((child) => child.type !== "comment");
+    if (children.length !== 1) return current;
+    current = children[0];
+  }
+}
+
+/** A variable's name as PowerShell compares it: case-folded, without `$`, braces or a scope prefix. */
+function variableName(text: string): string {
+  return text.replace(/^[$@]\{?|\}$/g, "").replace(/^(?:script|global|local|private):/i, "").toLowerCase();
+}
+
+/**
+ * Whether a node stands inside a function or a script block, which run in
+ * scopes of their own, or inside text the grammar could not read, where it
+ * cannot tell which: a test's stubs inside a block the grammar lost would
+ * otherwise stand at the file's own level and draw every call of their names.
+ */
+function inNestedScope(node: SyntaxNode): boolean {
+  for (let current = node.parent; current; current = current.parent) {
+    if (current.type === "function_statement" || current.type === "script_block_expression" || current.type === "ERROR") return true;
+  }
+  return false;
+}
+
+/** A variable's one assignment: the value, the function or script block it stands in (none at the file's own level), and where it starts. */
+interface Assignment {
+  value:     SyntaxNode;
+  container: SyntaxNode | null;
+  start:     number;
+}
+
+/** The nearest function or script block a node stands in, which holds its scope; null at the file's own level. */
+function scopeOf(node: SyntaxNode): SyntaxNode | null {
+  for (let current = node.parent; current; current = current.parent) {
+    if (current.type === "function_statement" || current.type === "script_block_expression") return current;
+  }
+  return null;
+}
+
+/**
+ * The variables a file assigns exactly once, by a plain `=`, outside text the
+ * grammar could not read: what each holds is fixed by the text wherever its
+ * scope reaches after the assignment ({@link variablePath}). A variable
+ * assigned anywhere else as well holds only what a run decides.
+ */
+function fileVariables(root: SyntaxNode): Map<string, Assignment> {
+  const assignments = new Map<string, SyntaxNode[]>();
+  const visit = (node: SyntaxNode): void => {
+    if (node.type === "assignment_expression") {
+      const left = node.namedChildren.find((child) => child.type === "left_assignment_expression");
+      const target = left ? attributedTarget(unwrapValue(left.namedChildren[0] ?? left)) : undefined;
+      if (target?.type === "variable") {
+        const name = variableName(target.text);
+        assignments.set(name, [...(assignments.get(name) ?? []), node]);
+      }
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+  const fixed = new Map<string, Assignment>();
+  for (const [name, nodes] of assignments) {
+    const [only] = nodes;
+    const operator = only.namedChildren.find((child) => child.type === "assignement_operator")?.text;
+    const value = only.childForFieldName("value");
+    const unread = (() => {
+      for (let current = only.parent; current; current = current.parent) if (current.type === "ERROR") return true;
+      return false;
+    })();
+    if (nodes.length === 1 && operator === "=" && value && !unread) fixed.set(name, { value, container: scopeOf(only), start: only.startIndex });
+  }
+  return fixed;
+}
+
+/** What the paths of one file are read against: its variables fixed by the text, a loop's item while its written-out list is read, and the variables being read, so that a cycle reads as nothing. */
+interface PathScope {
+  variables: Map<string, Assignment>;
+  items:     Map<string, string>;
+  reading:   Set<string>;
+}
+
+/**
+ * Whether a variable's one assignment fixes it where a node stands: before it in the text, in the function or script
+ * block that holds the node or one enclosing it, or in a Pester setup block whose It blocks hold it ({@link pesterSetupReaches}).
+ */
+function assignedFor(assigned: Assignment, at: SyntaxNode): boolean {
+  if (assigned.start >= at.startIndex) return false;
+  const container = assigned.container;
+  if (container === null || (container.startIndex <= at.startIndex && at.endIndex <= container.endIndex)) return !pesterRunBlockBetween(container, at);
+  return pesterSetupReaches(container, at);
+}
+
+/**
+ * Whether an `It` or `BeforeAll` block stands between a node and the scope a variable was assigned in. A variable
+ * assigned at the file's own level reaches both under Pester 3.4.0 and 4.10.1 and neither under 5.9.1, and one
+ * assigned in a `Describe`'s body reaches an `It` under 3 and 4 only (measured on each): true under one version and
+ * false under another, it is not read there.
+ */
+function pesterRunBlockBetween(container: SyntaxNode | null, at: SyntaxNode): boolean {
+  for (let current = scopeOf(at); current && current.id !== container?.id; current = scopeOf(current)) {
+    const command = current.type === "script_block_expression" ? blockCommand(current) : null;
+    const name = command ? calledName(command) : undefined;
+    if (name === "it" || name === "beforeall") return true;
+  }
+  return false;
+}
+
+/** The command a script block is written as an argument of, `BeforeAll { … }` for its block; null when it is no command's. */
+function blockCommand(block: SyntaxNode): SyntaxNode | null {
+  for (let current = block.parent; current; current = current.parent) {
+    if (current.type === "command") return current;
+    if (current.type !== "unary_expression" && current.type !== "array_literal_expression" && current.type !== "command_elements") return null;
+  }
+  return null;
+}
+
+/**
+ * Pester's setup: a variable assigned in a `BeforeAll` or `BeforeEach` block reaches the `It` blocks of the
+ * `Describe` or `Context` that holds that block. Pester 3.4.0, which Windows PowerShell 5.1 ships, 4.10.1 and
+ * 5.9.1 all run it so (measured on each). A `Describe`'s or `Context`'s own body, or the file's own level, reaches
+ * an `It` under Pester 3 and 4 but not under 5, which runs them only to discover the tests; so they are not read so.
+ */
+function pesterSetupReaches(setup: SyntaxNode, at: SyntaxNode): boolean {
+  const setupCommand = setup.type === "script_block_expression" ? blockCommand(setup) : null;
+  const setupName = setupCommand ? calledName(setupCommand) : undefined;
+  if (!setupCommand || (setupName !== "beforeall" && setupName !== "beforeeach")) return false;
+  const group = scopeOf(setupCommand);
+  const groupCommand = group?.type === "script_block_expression" ? blockCommand(group) : null;
+  const groupName = groupCommand ? calledName(groupCommand) : undefined;
+  if (!group || (groupName !== "describe" && groupName !== "context")) return false;
+  if (at.startIndex < group.startIndex || group.endIndex < at.endIndex) return false;
+  for (let current = scopeOf(at); current && current.id !== group.id; current = scopeOf(current)) {
+    const command = current.type === "script_block_expression" ? blockCommand(current) : null;
+    if (command && calledName(command) === "it") return true;
+  }
+  return false;
+}
+
+/** A variable's value as a path where a node stands: `$PSScriptRoot` as written, a loop's item, another variable by its one assignment. */
+function variablePath(text: string, scope: PathScope, at: SyntaxNode): string | undefined {
+  const name = variableName(text);
+  if (name === "psscriptroot") return "$PSScriptRoot";
+  const item = scope.items.get(name);
+  if (item !== undefined) return item;
+  const assigned = scope.variables.get(name);
+  if (!assigned || !assignedFor(assigned, at) || scope.reading.has(name)) return undefined;
+  scope.reading.add(name);
+  try {
+    return pathValue(assigned.value, scope);
+  } finally {
+    scope.reading.delete(name);
+  }
+}
+
+/** A string's text with each variable in it put in place, or undefined when one is not fixed or the string holds a sub-expression. */
+function expandedString(node: SyntaxNode, scope: PathScope): string | undefined {
+  const literal = node.namedChildren[0] ?? node;
+  if (!literal.type.startsWith("expandable") || literal.namedChildren.length === 0) return constantString(node);
+  if (literal.namedChildren.some((child) => child.type !== "variable")) return undefined;
+  const text = node.text;
+  const open = literal.type.includes("here_string") ? text.indexOf("\n") + 1 : 1;
+  let result = "";
+  let at = node.startIndex + open;
+  for (const variable of literal.namedChildren) {
+    const value = variablePath(variable.text, scope, variable);
+    if (value === undefined) return undefined;
+    result += text.slice(at - node.startIndex, variable.startIndex - node.startIndex) + value;
+    at = variable.endIndex;
+  }
+  const close = literal.type.includes("here_string") ? text.lastIndexOf("\n") : text.length - 1;
+  return result + text.slice(at - node.startIndex, close);
+}
+
+/** A bare word's text with the variables at its start or inside it put in place: `$PSScriptRoot\lib\x.psm1`. */
+function expandedWord(text: string, scope: PathScope, at: SyntaxNode): string | undefined {
+  let fixed = true;
+  const result = text.replace(/\$\{[^}]+\}|\$(?:(?:script|global|local|private):)?\w+/gi, (variable) => {
+    const value = variablePath(variable, scope, at);
+    if (value === undefined) fixed = false;
+    return value ?? "";
+  });
+  return fixed ? result : undefined;
+}
+
+/**
+ * The path an expression writes when the text alone fixes it: a string or a
+ * bare word whose variables are `$PSScriptRoot` or variables the file assigns
+ * once at its own level, or a `Join-Path` of such. `$PSScriptRoot` stays as
+ * written, to be read as the file's directory. Anything else, a sub-expression,
+ * a property, another command, is known only to a run.
+ */
+function pathValue(node: SyntaxNode, scope: PathScope): string | undefined {
+  const inner = unwrapValue(node);
+  switch (inner.type) {
+    case "string_literal":
+      return expandedString(inner, scope);
+    case "generic_token":
+    case "command_name":
+      return expandedWord(inner.text, scope, inner);
+    case "path_command_name":
+      return isMemberOfVariable(inner) ? undefined : expandedWord(inner.text, scope, inner);
+    case "variable":
+      return variablePath(inner.text, scope, inner);
+    case "command": {
+      if (inner.namedChildren.some((child) => child.type === "command_invokation_operator")) return undefined;
+      if (commandName(inner) === "split-path" || commandName(inner) === "microsoft.powershell.management\\split-path") return splitPathValue(inner, scope);
+      if (commandName(inner) !== "join-path" && commandName(inner) !== "microsoft.powershell.management\\join-path") return undefined;
+      const bound = bindNodes(inner, JOIN_PATH);
+      const parts = [...(bound.get("Path") ?? []), ...(bound.get("ChildPath") ?? []), ...(bound.get("AdditionalChildPath") ?? [])];
+      if ((bound.get("Path") ?? []).length !== 1 || (bound.get("ChildPath") ?? []).length !== 1) return undefined;
+      const values = parts.map((part) => pathValue(part, scope));
+      return values.every((part): part is string => part !== undefined) ? values.join("/") : undefined;
+    }
+    default:
+      return undefined;
+  }
+}
+
+/** `Split-Path` as both editions declare it: a path, positionally, and the part of it to give. */
+const SPLIT_PATH: CmdletSignature = {
+  positional: ["Path"],
+  parameters: [
+    ...COMMON_PARAMETERS, value("Path"), value("LiteralPath", "PSPath", "LP"), flag("Parent"), flag("Leaf"), flag("LeafBase"), flag("Extension"),
+    flag("Qualifier"), flag("NoQualifier"), flag("IsAbsolute"), flag("Resolve"), value("Credential")
+  ]
+};
+
+/** The script's own path, which `Split-Path` turns into its folder: `$PSCommandPath`, `$MyInvocation.MyCommand.Path` or `.Definition`. */
+const OWN_PATH = /^\$(?:PSCommandPath|MyInvocation\.MyCommand\.(?:Path|Definition))$/i;
+
+/**
+ * The folder `Split-Path` gives, when it gives a folder of a path the text
+ * fixes: of the script's own path, `$PSScriptRoot`, as Windows PowerShell 5.1
+ * scripts find their neighbours (`$here = Split-Path -Parent
+ * $MyInvocation.MyCommand.Path`); of another fixed path, its parent.
+ */
+function splitPathValue(command: SyntaxNode, scope: PathScope): string | undefined {
+  const bound = bindNodes(command, SPLIT_PATH);
+  if (["Leaf", "LeafBase", "Extension", "Qualifier", "NoQualifier", "IsAbsolute"].some((part) => bound.has(part))) return undefined;
+  const written = bound.get("Path") ?? bound.get("LiteralPath");
+  if (written?.length !== 1) return undefined;
+  if (OWN_PATH.test(unwrapValue(written[0]).text.trim())) return "$PSScriptRoot";
+  const path = pathValue(written[0], scope);
+  return path === undefined ? undefined : `${path}/..`;
+}
+
+/** The strings of an argument written out, each a constant; undefined when any is not. */
+function constantStrings(nodes: SyntaxNode[] | undefined): string[] | undefined {
+  if (!nodes) return undefined;
+  const strings = nodes.flatMap(argumentStrings);
+  return strings.every((item): item is string => item !== undefined) ? strings : undefined;
+}
+
+/** What a `Get-ChildItem` command lists, when the text fixes its folder and every narrowing; undefined otherwise. */
+function listingOf(command: SyntaxNode, scope: PathScope): Listing | undefined {
+  const bound   = bindNodes(command, GET_CHILD_ITEM);
+  const written = bound.get("Path") ?? bound.get("LiteralPath");
+  if (written?.length !== 1 || bound.has("Name") || bound.has("Directory")) return undefined;
+  const folder = pathValue(written[0], scope);
+  if (folder === undefined) return undefined;
+  const listing: Listing = { path: folder, recurse: bound.has("Recurse") };
+  for (const key of ["Filter", "Include", "Exclude"] as const) {
+    if (!bound.has(key)) continue;
+    const strings = constantStrings(bound.get(key));
+    if (!strings) return undefined;
+    if (key === "Filter") {
+      if (strings.length !== 1) return undefined;
+      listing.filter = strings[0];
+    } else {
+      listing[key === "Include" ? "include" : "exclude"] = strings;
+    }
+  }
+  return listing;
+}
+
+/**
+ * The folders a loop's collection lists: a `Get-ChildItem` written in place,
+ * a variable the file assigns once from one, or several of these joined by
+ * `+`, a comma or `@()`. Undefined when any part is something else.
+ */
+function listingsOf(node: SyntaxNode, scope: PathScope): Listing[] | undefined {
+  const inner = unwrapValue(node);
+  const parts = (nodes: SyntaxNode[]): Listing[] | undefined => {
+    const all: Listing[] = [];
+    for (const part of nodes) {
+      const listed = listingsOf(part, scope);
+      if (!listed) return undefined;
+      all.push(...listed);
+    }
+    return all;
+  };
+  switch (inner.type) {
+    case "command": {
+      if (inner.namedChildren.some((child) => child.type === "command_invokation_operator")) return undefined;
+      const name = commandName(inner);
+      if (!name || !GET_CHILD_ITEM_NAMES.has(name)) return undefined;
+      const listing = listingOf(inner, scope);
+      return listing ? [listing] : undefined;
+    }
+    case "variable": {
+      const name = variableName(inner.text);
+      const assigned = scope.variables.get(name);
+      if (!assigned || !assignedFor(assigned, inner) || scope.reading.has(name)) return undefined;
+      scope.reading.add(name);
+      try {
+        return listingsOf(assigned.value, scope);
+      } finally {
+        scope.reading.delete(name);
+      }
+    }
+    case "array_expression":
+      return parts(statementsOf(inner.childForFieldName("statements")));
+    case "additive_expression":
+      return inner.children.every((child) => child.isNamed || child.text === "+") ? parts(inner.namedChildren.filter((child) => child.type !== "comment")) : undefined;
+    case "array_literal_expression":
+      return parts(inner.namedChildren.filter((child) => child.type !== "comment"));
+    default:
+      return undefined;
+  }
+}
+
+/** Whether a dot-source's target is the loop's item, `$item` or its `FullName`, so that it dot-sources each file the loop lists. */
+function targetsItem(command: SyntaxNode, item: string): boolean {
+  const name   = command.childForFieldName("command_name");
+  const target = name?.type === "command_name_expr" ? unwrapValue(name) : name;
+  if (target?.type === "variable") return variableName(target.text) === item;
+  if (target?.type !== "path_command_name") return false;
+  const [first, second, ...rest] = target.namedChildren;
+  return first?.type === "variable" && variableName(first.text) === item && rest.length === 0 && /^\.FullName$/i.test(second?.text ?? "");
+}
+
+/** Whether a command is a dot-source: `. path`. */
+function isDotSource(command: SyntaxNode): boolean {
+  return command.namedChildren.some((child) => child.type === "command_invokation_operator" && child.text === ".");
+}
+
+/** The dot-sources inside a node that dot-source a loop's item. */
+function itemDotSources(node: SyntaxNode, item: string): SyntaxNode[] {
+  const found: SyntaxNode[] = [];
+  const visit = (current: SyntaxNode): void => {
+    if (current.type === "command" && isDotSource(current) && targetsItem(current, item)) found.push(current);
+    for (const child of current.namedChildren) visit(child);
+  };
+  visit(node);
+  return found;
+}
+
+/**
+ * The folders whose scripts a file dot-sources in a loop: `foreach ($f in
+ * <listing>) { . $f.FullName }`, or `<listing> | ForEach-Object { . $_.FullName }`,
+ * where the listing is one {@link listingsOf} reads.
+ */
+function loopListings(root: SyntaxNode, scope: PathScope, looped: Set<number>): Listing[] {
+  const listings: Listing[] = [];
+  const read = (found: Listing[] | undefined, dotSources: SyntaxNode[]): void => {
+    if (found === undefined) return;
+    listings.push(...found);
+    for (const command of dotSources) looped.add(command.startIndex);
+  };
+  const visit = (node: SyntaxNode): void => {
+    if (node.type === "foreach_statement") {
+      const item       = node.namedChildren.find((child) => child.type === "variable");
+      const collection = node.namedChildren.find((child) => child.type === "pipeline");
+      const body       = node.namedChildren.find((child) => child.type === "statement_block");
+      const dotSources = item && body && !setsItem(body, [variableName(item.text)]) ? itemDotSources(body, variableName(item.text)) : [];
+      if (collection && dotSources.length > 0) read(listingsOf(collection, scope), dotSources);
+    }
+    if (node.type === "pipeline_chain") {
+      const stages = node.namedChildren.filter((child) => child.type === "command");
+      stages.forEach((stage, index) => {
+        const name = commandName(stage);
+        if (index === 0 || !name || !FOREACH_OBJECT_NAMES.has(name)) return;
+        const blocks = (stage.childForFieldName("command_elements")?.namedChildren ?? []).map(unwrapValue).filter((child) => child.type === "script_block_expression");
+        if (blocks.length !== 1 || setsItem(blocks[0], ["_", "psitem"])) return;
+        const dotSources = [...itemDotSources(blocks[0], "_"), ...itemDotSources(blocks[0], "psitem")];
+        if (dotSources.length === 0) return;
+        read(listingsOf(stages[index - 1], scope), dotSources);
+      });
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+  return listings;
+}
+
+/**
+ * The names a loop's collection writes out: a string, a list of strings, an
+ * `@()` of such, or a variable assigned one, where its assignment fixes it.
+ * Undefined when any part is something else.
+ */
+function literalItems(node: SyntaxNode, scope: PathScope): string[] | undefined {
+  const inner = unwrapValue(node);
+  const parts = (nodes: SyntaxNode[]): string[] | undefined => {
+    const all: string[] = [];
+    for (const part of nodes) {
+      const items = literalItems(part, scope);
+      if (!items) return undefined;
+      all.push(...items);
+    }
+    return all;
+  };
+  switch (inner.type) {
+    case "string_literal": {
+      const literal = inner.namedChildren[0] ?? inner;
+      const value = literal.type.startsWith("expandable") && literal.namedChildren.length > 0 ? undefined : constantString(inner);
+      return value === undefined ? undefined : [value];
+    }
+    case "array_literal_expression":
+      return parts(inner.namedChildren.filter((child) => child.type !== "comment"));
+    case "array_expression":
+      return parts(statementsOf(inner.childForFieldName("statements")));
+    case "variable": {
+      const name = variableName(inner.text);
+      const assigned = scope.variables.get(name);
+      if (!assigned || !assignedFor(assigned, inner) || scope.reading.has(name)) return undefined;
+      scope.reading.add(name);
+      try {
+        return literalItems(assigned.value, scope);
+      } finally {
+        scope.reading.delete(name);
+      }
+    }
+    default:
+      return undefined;
+  }
+}
+
+/** The loads a command makes whose paths the text fixes: a dot-source, a module import by a path or by a name, or a script run by its path. */
+function fixedLoads(command: SyntaxNode, scope: PathScope): ComputedLoad[] {
+  if (isDotSource(command)) {
+    const target = command.childForFieldName("command_name");
+    const value  = target ? pathValue(target, scope) : undefined;
+    return value === undefined ? [] : [{ kind: "dot", path: value }];
+  }
+  const run = runLoad(command, scope);
+  if (run !== undefined) return [run];
+  const name = commandName(command);
+  if (name !== "import-module" && name !== "ipmo") return [];
+  return (bindNodes(command, IMPORT_MODULE).get("Name") ?? []).flatMap((node): ComputedLoad[] => {
+    const value = pathValue(node, scope);
+    if (value === undefined) return [];
+    return [isModulePath(value) ? { kind: "import", path: value } : { kind: "import", path: value, named: true }];
+  });
+}
+
+/** Every command a node holds. */
+function commandsIn(node: SyntaxNode): SyntaxNode[] {
+  const found: SyntaxNode[] = [];
+  const visit = (current: SyntaxNode): void => {
+    if (current.type === "command") found.push(current);
+    for (const child of current.namedChildren) visit(child);
+  };
+  visit(node);
+  return found;
+}
+
+/**
+ * Whether a loop's body sets its item, under any of the names it stands by: an assignment by any operator, `++` or
+ * `--`, or a loop nested in it over the same name. The body then loads what it set, not the item (pwsh 7.7.0,
+ * 2026-11-21: `$m = "$m.Extra"` looked for ModE.Extra, `$m += '.Plus'` for ModH.Plus, a nested `foreach ($m in
+ * 'Inner')` for Inner, `$PSItem = …` in ForEach-Object for what `$_` then held), and the item is not read, even where
+ * the body sets it after the load, as a variable assigned more than once is not.
+ */
+function setsItem(body: SyntaxNode, names: string[]): boolean {
+  const wanted = new Set(names);
+  const named = (node: SyntaxNode | null | undefined): boolean => node?.type === "variable" && wanted.has(variableName(node.text));
+  const visit = (node: SyntaxNode): boolean => {
+    if (node.type === "assignment_expression") {
+      const left = node.namedChildren.find((child) => child.type === "left_assignment_expression");
+      if (left && named(attributedTarget(unwrapValue(left.namedChildren[0] ?? left)))) return true;
+    }
+    if (/^(?:pre|post)_(?:in|de)crement_expression$/u.test(node.type) && node.namedChildren[0] && named(unwrapValue(node.namedChildren[0]))) return true;
+    if (node.type === "foreach_statement" && named(node.namedChildren.find((child) => child.type === "variable"))) return true;
+    return node.namedChildren.some(visit);
+  };
+  return visit(body);
+}
+
+/**
+ * The loads of a loop over names the text writes out, read once for each
+ * name with the loop's item standing for it: `foreach ($s in @('a.ps1',
+ * 'b.ps1')) { . (Join-Path $PSScriptRoot $s) }`, or `'a.ps1', 'b.ps1' |
+ * ForEach-Object { . "$PSScriptRoot\$_" }`.
+ */
+function listLoads(root: SyntaxNode, scope: PathScope, looped: Set<number>): ComputedLoad[] {
+  const loads: ComputedLoad[] = [];
+  const readEach = (items: string[], names: string[], body: SyntaxNode): void => {
+    if (setsItem(body, names)) return;
+    for (const item of items) {
+      for (const name of names) scope.items.set(name, item);
+      for (const command of commandsIn(body)) {
+        const fixed = fixedLoads(command, scope);
+        if (fixed.length > 0) looped.add(command.startIndex);
+        loads.push(...fixed);
+      }
+      for (const name of names) scope.items.delete(name);
+    }
+  };
+  const visit = (node: SyntaxNode): void => {
+    if (node.type === "foreach_statement") {
+      const item       = node.namedChildren.find((child) => child.type === "variable");
+      const collection = node.namedChildren.find((child) => child.type === "pipeline");
+      const body       = node.namedChildren.find((child) => child.type === "statement_block");
+      const items      = collection ? literalItems(collection, scope) : undefined;
+      if (item && body && items) readEach(items, [variableName(item.text)], body);
+    }
+    if (node.type === "pipeline_chain") {
+      const stages = node.namedChildren.filter((child) => child.type !== "comment");
+      stages.forEach((stage, index) => {
+        const name = stage.type === "command" ? commandName(stage) : undefined;
+        if (index === 0 || !name || !FOREACH_OBJECT_NAMES.has(name)) return;
+        const blocks = (stage.childForFieldName("command_elements")?.namedChildren ?? []).map(unwrapValue).filter((child) => child.type === "script_block_expression");
+        const items  = stages[index - 1].type === "command" ? undefined : literalItems(stages[index - 1], scope);
+        if (blocks.length === 1 && items) readEach(items, ["_", "psitem"], blocks[0]);
+      });
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+  return loads;
+}
+
+// ---------------------------------------------------------------------------
+// Programs and libraries
+// ---------------------------------------------------------------------------
+
+/** Commands that only set up a scope: what they do is undone or unseen when a script that does nothing else ends. */
+const SCOPE_SETUP = new Set([
+  "set-strictmode", "export-modulemember", "set-alias", "new-alias", "import-module", "ipmo", "add-type", "update-typedata", "update-formatdata",
+  "register-argumentcompleter"
+]);
+
+/** Whether a node calls anything: a command or a method. */
+function callsAnything(node: SyntaxNode): boolean {
+  if (node.type === "command" || node.type === "invokation_expression") return true;
+  return node.namedChildren.some(callsAnything);
+}
+
+/**
+ * Whether a script's own level only defines functions, filters, workflows,
+ * classes and enums, and otherwise only sets up its scope: dot-sources,
+ * module imports, {@link SCOPE_SETUP} commands and assignments that call
+ * nothing. Run, such a script would do nothing, since what it defines ends
+ * with its scope; it is there to be dot-sourced. It must define something.
+ */
+function isLibrary(root: SyntaxNode): boolean {
+  // Text the grammar could not read may run anything, so a file holding some at its own level is a program.
+  if (root.namedChildren.some((child) => child.type === "ERROR")) return false;
+  const list = root.namedChildren.find((child) => child.type === "statement_list") ?? null;
+  let defines = false;
+  for (const statement of statementsOf(list)) {
+    switch (statement.type) {
+      case "function_statement":
+      case "class_statement":
+      case "enum_statement":
+        defines = true;
+        continue;
+      case "using_statement":
+        continue;
+      case "pipeline": {
+        const chain    = statement.namedChildren.length === 1 ? statement.namedChildren[0] : undefined;
+        const commands = chain?.type === "pipeline_chain" ? chain.namedChildren.filter((child) => child.type !== "comment") : [];
+        const only     = commands.length === 1 ? commands[0] : undefined;
+        if (only?.type === "command" && (isDotSource(only) || SCOPE_SETUP.has(commandName(only) ?? ""))) continue;
+        const assignment = chain?.type === "assignment_expression" ? chain : statement.namedChildren.find((child) => child.type === "assignment_expression");
+        if (assignment && !callsAnything(assignment)) continue;
+        return false;
+      }
+      default:
+        return false;
+    }
+  }
+  return defines;
+}
+
+// ---------------------------------------------------------------------------
+// Calls
+// ---------------------------------------------------------------------------
+
+/** A command's name as a call: a bare word, or a string after `&` or `.`, that is not a path; undefined for a path or a value only a run knows. */
+function calledName(command: SyntaxNode): string | undefined {
+  const name = command.childForFieldName("command_name");
+  let written: string | undefined;
+  if (name?.type === "command_name") written = name.text;
+  else if (name?.type === "command_name_expr") {
+    // After `&` or `.`: a string, or a bare word, `. Stop-Function`, which calls the function in the caller's scope.
+    const inner = unwrapValue(name);
+    if (inner.type === "string_literal") written = constantString(inner);
+    else if (inner.type === "path_command_name" && inner.namedChildren.every((child) => child.type === "path_command_name_token")) written = inner.text;
+  }
+  if (!written || /[\\/]|\.(?:ps1|psm1|psd1|exe|cmd|bat)$/i.test(written)) return undefined;
+  return written.replace(/^(?:script|global|local|private):/i, "").toLowerCase();
+}
+
+/** A command named by its module, `Module\Command`: a module's name, one backslash, and a command's name without an extension. */
+const MODULE_QUALIFIED = /^([A-Za-z_][\w.-]*)\\([A-Za-z_][\w-]*)$/;
+
+/**
+ * The script a command runs by its path, when its name is one: `& ./x.ps1`, `& "$PSScriptRoot\x.ps1"`, `& (Join-Path …)`,
+ * `scripts\x.ps1`. A name written as a module's command, `Module\Command`, is PowerShell's own command when the module is
+ * one PowerShell ships, and no path; otherwise it is a script's path only where the workspace holds the script
+ * ({@link ComputedLoad.qualified}), as Windows, where a backslash separates folders, would find it.
+ */
+function runLoad(command: SyntaxNode, scope: PathScope): ComputedLoad | undefined {
+  if (isDotSource(command)) return undefined;
+  const name = command.childForFieldName("command_name");
+  if (!name) return undefined;
+  const inner = unwrapValue(name);
+  if (inner.type === "command_name") {
+    if (!/[\\/]|\.ps1$/i.test(inner.text)) return undefined;
+    const qualified = MODULE_QUALIFIED.exec(inner.text);
+    if (qualified) return SHIPPED_MODULES.has(qualified[1].toLowerCase()) ? undefined : { kind: "run", path: inner.text, qualified: true };
+  }
+  const written = pathValue(name, scope);
+  return written !== undefined && /[\\/]|\.ps1$/i.test(written) ? { kind: "run", path: written } : undefined;
 }
 
 /** The module a `using module` statement names: a name or path, or the `ModuleName` of a module specification; null for a `using namespace` or `using assembly`. */
@@ -637,7 +1400,17 @@ function declaredParameters(node: SyntaxNode): string[] {
 async function extractFacts(content: string): Promise<FileFacts> {
   return readTree("powershell", content, (root) => {
     const { functions, types, commands, usings, comments } = collect(root);
-    const facts: FileFacts = { functions: [], types: [], dotSources: [], moduleImports: [], usingModules: [], requires: [] };
+    const scope: PathScope = { variables: fileVariables(root), items: new Map(), reading: new Set() };
+    // The commands whose loads a loop reads, once for each file it lists or each name it writes out.
+    const looped = new Set<number>();
+    const facts: FileFacts = {
+      functions: [], types: [], dotSources: [], moduleImports: [], usingModules: [], requires: [], computed: [],
+      listings: loopListings(root, scope, looped), calls: [], library: isLibrary(root), unfixed: []
+    };
+    const listed = listLoads(root, scope, looped);
+    const unfixed = (command: SyntaxNode): void => {
+      if (!looped.has(command.startIndex)) facts.unfixed.push(`line ${command.startPosition.row + 1}: ${briefly(command.text)}`);
+    };
     for (const node of functions) {
       const name = node.namedChildren.find((child) => child.type === "function_name")?.text;
       if (!name) continue;
@@ -646,7 +1419,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
         line:      node.startPosition.row + 1,
         character: node.startPosition.column + 1,
         help:      helpOf(node, comments, content),
-        declared:  declaredParameters(node)
+        declared:  declaredParameters(node),
+        fileScope: !inNestedScope(node)
       });
     }
     for (const node of types) {
@@ -655,16 +1429,36 @@ async function extractFacts(content: string): Promise<FileFacts> {
       facts.types.push({ name, kind: node.type === "enum_statement" ? "enum" : "class", line: node.startPosition.row + 1, character: node.startPosition.column + 1 });
     }
 
+    const calls = new Set<string>();
     let exportsReadable = true;
     for (const command of commands) {
-      if (command.namedChildren.some((child) => child.type === "command_invokation_operator" && child.text === ".")) {
-        facts.dotSources.push(dotSourceTarget(command));
+      const called = calledName(command);
+      if (called) calls.add(called);
+      if (isDotSource(command)) {
+        const written = dotSourceTarget(command);
+        const target  = command.childForFieldName("command_name");
+        const value   = (written === undefined || OTHER_VARIABLE.test(written)) && target ? pathValue(target, scope) : undefined;
+        if (value !== undefined) facts.computed.push({ kind: "dot", path: value, written });
+        else if (written !== undefined) facts.dotSources.push(written);
+        else if (!dotSourcesBlock(command)) unfixed(command);
         continue;
       }
+      const run = runLoad(command, scope);
+      if (run !== undefined) facts.computed.push(run);
       switch (commandName(command)) {
         case "import-module":
         case "ipmo":
-          facts.moduleImports.push(...(bindArguments(command, IMPORT_MODULE).get("Name") ?? []));
+          for (const node of bindNodes(command, IMPORT_MODULE).get("Name") ?? []) {
+            const strings = argumentStrings(node);
+            const value   = strings.some((item) => item === undefined || OTHER_VARIABLE.test(item)) ? pathValue(node, scope) : undefined;
+            if (value !== undefined && isModulePath(value)) facts.computed.push({ kind: "import", path: value, written: strings.length === 1 ? strings[0] : undefined });
+            // A module named through a variable the text fixes, `$m = 'Pester'` then `Import-Module $m`, is that module.
+            else if (value !== undefined) facts.moduleImports.push(value);
+            else {
+              facts.moduleImports.push(...strings.filter((item): item is string => item !== undefined));
+              if (strings.includes(undefined)) unfixed(command);
+            }
+          }
           break;
         case "export-modulemember": {
           // A pattern that is not a string written out, such as a variable, is known only when the module runs, so the list narrows nothing.
@@ -679,6 +1473,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
       }
     }
     if (!exportsReadable) facts.exports = undefined;
+    facts.calls = Array.from(calls);
+    facts.computed.push(...listed);
 
     for (const statement of usings) {
       const name = usingModuleName(statement);
@@ -733,6 +1529,18 @@ function resolvePath(written: string, directory: string, files: WorkspaceFileInd
   if (file || !module) return file;
   const leaf = path.posix.basename(relative);
   return findFile(files, `${relative}/${leaf}.psd1`) ?? findFile(files, `${relative}/${leaf}.psm1`);
+}
+
+/**
+ * The script a path names as PowerShell runs or dot-sources it: the file so named, else the path with `.ps1` added,
+ * which PowerShell tries when no file is so named, whatever the name ends in (`a/build` and `f/Get-Thing.Tests` ran
+ * their `.ps1`, and a file `b/build` beside `b/build.ps1` was the one found); no other extension is tried (`d/build`
+ * beside only `d/build.psm1` was not found). pwsh 7.7.0, measured 2026-11-21. Only a path is so read: a name without
+ * a folder, `. Stop-Function`, is a command PowerShell looks up, never a script beside the file.
+ */
+function resolveScript(written: string, directory: string, files: WorkspaceFileIndex | undefined): string | undefined {
+  const named = resolvePath(written, directory, files, false);
+  return named ?? (/[\\/]/.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined);
 }
 
 /** A module named by a path rather than by its name: the text holds a directory separator, as `$PSScriptRoot` gives it one. */
@@ -808,21 +1616,333 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
     .map(({ entry }): PublicSymbolEntry => entry);
 }
 
-function toDependencies(facts: FileFacts, directory: string, files: WorkspaceFileIndex | undefined): DependencyEntry[] {
+/** A load of one file by another: a dot-source, an import of a module, a script run by its path, or a module or script a manifest names. */
+interface Load {
+  kind: "dot" | "import" | "run" | "manifest";
+  to:   string;
+}
+
+/** A load as a file's text gives it: its text when it was written out, the path the text fixes when it was built, and its file when the workspace holds one. */
+interface ScriptLoad {
+  kind:      Load["kind"];
+  written:   Written;
+  computed?: string;
+  to?:       string;
+}
+
+/** A file's loads in the order the dependencies list them. */
+function scriptLoads(facts: FileFacts, directory: string, files: WorkspaceFileIndex | undefined): ScriptLoad[] {
+  const loads: ScriptLoad[] = [];
+  const module = (written: Written): void => {
+    loads.push({ kind: "import", written, to: written !== undefined && isModulePath(written) ? resolvePath(written, directory, files, true) : undefined });
+  };
+  facts.moduleImports.forEach(module);
+  facts.usingModules.forEach(module);
+  facts.requires.forEach(module);
+  for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolveScript(written, directory, files) });
+  for (const load of facts.computed) {
+    if (load.named) {
+      module(load.path);
+      continue;
+    }
+    const to = load.kind === "import" ? resolvePath(load.path, directory, files, true) : resolveScript(load.path, directory, files);
+    if (load.qualified && !to) continue;
+    loads.push({ kind: load.kind, written: load.written, computed: load.path, to });
+  }
+  for (const listing of facts.listings) {
+    for (const to of listedFiles(listing, directory, files)) loads.push({ kind: "dot", written: undefined, to });
+  }
+  return loads;
+}
+
+/** Why a load draws nothing, as the notices say it. */
+const UNFIXED_LOAD = "dot-sources and imports whose path the text does not fix, left unlinked";
+const UNFOUND_LOAD = "loads whose path the text fixes but no file of the workspace holds, left unlinked";
+
+/**
+ * The dependencies of a script or module: what it loads, each under its file
+ * or, when the workspace holds none, its text as written; then the files whose
+ * functions it calls, by {@link calledFiles}, each with the functions called.
+ * A load with neither draws nothing and is said as a notice: a path the text
+ * does not fix, or a path built (`Join-Path`, a variable) that names no file
+ * of the workspace.
+ */
+function toDependencies(facts: FileFacts, sourcePath: string, files: WorkspaceFileIndex | undefined, workspace: Workspace | undefined): { dependencies: DependencyEntry[]; notices: SourceNotice[] } {
   const dependencies = new Map<string, DependencyEntry>();
-  const add = (written: Written, resolvedPath: string | undefined): void => {
-    const specifier = resolvedPath ?? written?.trim();
-    if (!specifier || dependencies.has(specifier)) return;
-    dependencies.set(specifier, { specifier, resolvedPath, symbols: [], kind: "import" });
-  };
-  const addModule = (written: Written): void => {
-    add(written, written !== undefined && isModulePath(written) ? resolvePath(written, directory, files, true) : undefined);
-  };
-  facts.moduleImports.forEach(addModule);
-  facts.usingModules.forEach(addModule);
-  facts.requires.forEach(addModule);
-  for (const written of facts.dotSources) add(written, written === undefined ? undefined : resolvePath(written, directory, files, false));
-  return Array.from(dependencies.values());
+  const notices: SourceNotice[] = facts.unfixed.map((subject) => ({ reason: UNFIXED_LOAD, subject }));
+  for (const load of scriptLoads(facts, path.posix.dirname(sourcePath), files)) {
+    const specifier = load.to ?? load.written?.trim();
+    if (!specifier && files !== undefined && load.computed !== undefined) notices.push({ reason: UNFOUND_LOAD, subject: load.computed });
+    if (!specifier || load.to === sourcePath || dependencies.has(specifier)) continue;
+    dependencies.set(specifier, { specifier, resolvedPath: load.to, symbols: [], kind: "import" });
+  }
+  const called = workspace ? calledFiles(workspace, sourcePath, facts) : new Map<string, Set<string>>();
+  for (const file of Array.from(called.keys()).sort()) {
+    const symbols = Array.from(called.get(file)!).sort();
+    const existing = dependencies.get(file);
+    if (existing) existing.symbols = symbols;
+    else dependencies.set(file, { specifier: file, resolvedPath: file, symbols, kind: "import" });
+  }
+  return { dependencies: Array.from(dependencies.values()), notices };
+}
+
+/** The scripts a `Get-ChildItem` listing names, as Windows finds them: its folder without regard to case, then its leaf, `-Filter`, `-Include` and `-Exclude` as PowerShell's wildcards; only scripts and modules, which a loop can dot-source. */
+function listedFiles(listing: Listing, directory: string, files: WorkspaceFileIndex | undefined): string[] {
+  if (!files) return [];
+  const expanded = listing.path.replace(SCRIPT_ROOT, ".").replace(/\\/g, "/");
+  if (expanded.includes("$") || /^(?:[a-z]:|\/)/i.test(expanded)) return [];
+  let folder = path.posix.normalize(path.posix.join(directory || ".", expanded)).replace(/\/$/, "");
+  let leaf: RegExp | undefined;
+  if (/[*?[]/.test(path.posix.basename(folder))) {
+    leaf   = wildcard(path.posix.basename(folder));
+    folder = path.posix.dirname(folder);
+  }
+  if (folder === ".." || folder.startsWith("../") || /[*?[]/.test(folder)) return [];
+  const named = leaf ? undefined : findFile(files, folder);
+  const filter  = listing.filter ? wildcard(listing.filter) : undefined;
+  const include = listing.include?.map(wildcard);
+  const exclude = listing.exclude?.map(wildcard);
+  const prefix  = folder === "." ? "" : `${folder.toLowerCase()}/`;
+  const listed: string[] = [];
+  for (const file of named ? [named] : files) {
+    if (!named) {
+      if (!file.toLowerCase().startsWith(prefix)) continue;
+      if (!listing.recurse && file.slice(prefix.length).includes("/")) continue;
+    }
+    const name = path.posix.basename(file);
+    if (!/\.(?:ps1|psm1)$/i.test(name)) continue;
+    if ((leaf && !leaf.test(name)) || (filter && !filter.test(name))) continue;
+    if ((include && !include.some((pattern) => pattern.test(name))) || exclude?.some((pattern) => pattern.test(name))) continue;
+    listed.push(file);
+  }
+  return listed.sort();
+}
+
+// ---------------------------------------------------------------------------
+// The workspace: what every PowerShell file defines and loads
+// ---------------------------------------------------------------------------
+
+/** What the table keeps of a module manifest or data file. */
+interface DataFacts {
+  manifest:   boolean;
+  /** The modules and scripts the manifest names, by key, the root module's first. */
+  references: Array<{ key: string; name: string; version?: string }>;
+  /** The functions `FunctionsToExport` names, as written. */
+  exports:    string[];
+}
+
+type TableEntry = { kind: "script"; hash: string; facts: FileFacts } | { kind: "data"; hash: string; facts: DataFacts };
+
+/**
+ * Every PowerShell file of a workspace, read once: its facts, which the
+ * analysis of the file itself reuses, the files that define each function at
+ * their own level, and, worked out when first asked, what each file loads,
+ * which files each module holds and which files each file's loading reaches.
+ */
+interface Workspace {
+  files:      WorkspaceFileIndex;
+  entries:    Map<string, TableEntry>;
+  /** By case-folded name without a scope prefix: each file that defines the function at its own level, with the name as written there. */
+  definers:   Map<string, Array<{ file: string; name: string }>>;
+  loads:      Map<string, Load[]>;
+  members:    Map<string, Set<string>>;
+  modulesOf?: Map<string, string[]>;
+  reach:      Map<string, Set<string>>;
+}
+
+/** Each index's workspace, built once per index, which is built once per run, as the C# reader builds its type table. */
+const workspaces = new WeakMap<WorkspaceFileIndex, Promise<Workspace>>();
+
+/**
+ * What tells the text the analysis of a file is handed from the text the table read of that file in the same run: its
+ * length and a 32-bit FNV-1a hash of its UTF-16 code units. It compares two readings of one path within one run, so
+ * nothing cryptographic is needed, and it is written here rather than taken from `node:crypto`, which a browser has no
+ * stand-in for (the page scan bundles the engine for one; the root's ruling of 2026-11-21). Until then a SHA-1 digest.
+ */
+function digest(content: string): string {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < content.length; index += 1) {
+    hash = Math.imul(hash ^ content.charCodeAt(index), 0x01000193) >>> 0;
+  }
+  return `${content.length}:${hash.toString(16)}`;
+}
+
+/** A function's name as callers write it: without a scope prefix, case-folded, as PowerShell finds commands. */
+function callName(name: string): string {
+  return name.replace(/^(?:script|global|local|private):/i, "").toLowerCase();
+}
+
+async function buildWorkspace(workspaceRoot: string, files: WorkspaceFileIndex): Promise<Workspace> {
+  const workspace: Workspace = { files, entries: new Map(), definers: new Map(), loads: new Map(), members: new Map(), reach: new Map() };
+  const extensions = new Set(powershellSyntax.extensions);
+  for (const file of Array.from(files).sort()) {
+    const extension = path.posix.extname(file).toLowerCase();
+    if (!extensions.has(extension)) continue;
+    try {
+      const content = await readSourceText(path.join(workspaceRoot, file));
+      workspace.entries.set(file, extension === ".psd1"
+        ? { kind: "data", hash: digest(content), facts: await extractDataFacts(content) }
+        : { kind: "script", hash: digest(content), facts: await extractFacts(content) });
+    } catch (error) {
+      // A failure of the machine's is thrown on, to the generator's catch, which names it. A file that cannot be read
+      // or parsed for a cause of its own defines and loads nothing here; its own analysis reports what it can.
+      throwIfMachineFailure(error);
+    }
+  }
+  for (const [file, entry] of workspace.entries) addDefiners(workspace, file, entry);
+  return workspace;
+}
+
+/** Records the functions a file defines at its own level, each name once, as the name it is written by there. */
+function addDefiners(workspace: Workspace, file: string, entry: TableEntry): void {
+  if (entry.kind !== "script") return;
+  const seen = new Set<string>();
+  for (const fact of entry.facts.functions) {
+    const name = callName(fact.name);
+    if (!fact.fileScope || seen.has(name)) continue;
+    seen.add(name);
+    workspace.definers.set(name, [...(workspace.definers.get(name) ?? []), { file, name: fact.name }]);
+  }
+}
+
+function workspaceOf(workspaceRoot: string, files: WorkspaceFileIndex): Promise<Workspace> {
+  let pending = workspaces.get(files);
+  if (!pending) {
+    pending = buildWorkspace(workspaceRoot, files);
+    workspaces.set(files, pending);
+  }
+  return pending;
+}
+
+/** The files a file loads, by the same reading its dependencies use. */
+function loadsOf(workspace: Workspace, file: string): Load[] {
+  let loads = workspace.loads.get(file);
+  if (!loads) {
+    const entry = workspace.entries.get(file);
+    loads = !entry ? [] : entry.kind === "script"
+      ? scriptLoads(entry.facts, path.posix.dirname(file), workspace.files).flatMap((load) => (load.to && load.to !== file ? [{ kind: load.kind, to: load.to }] : []))
+      : manifestFiles(entry.facts, file, workspace.files).map((to): Load => ({ kind: "manifest", to }));
+    workspace.loads.set(file, loads);
+  }
+  return loads;
+}
+
+/** Whether a file is a module's root: a `.psm1`, or a manifest. */
+function isModuleRoot(workspace: Workspace, file: string): boolean {
+  const entry = workspace.entries.get(file);
+  return entry?.kind === "data" ? entry.facts.manifest : /\.psm1$/i.test(file);
+}
+
+/** The files a module holds: its root, what a manifest root names, and what any of them dot-sources, followed. A module it imports is a module of its own. */
+function membersOf(workspace: Workspace, root: string): Set<string> {
+  let members = workspace.members.get(root);
+  if (!members) {
+    members = new Set([root]);
+    const pending = [root];
+    while (pending.length > 0) {
+      const at = pending.pop()!;
+      for (const load of loadsOf(workspace, at)) {
+        const follows = load.kind === "dot" || (load.kind === "manifest" && at === root);
+        if (follows && !members.has(load.to)) {
+          members.add(load.to);
+          pending.push(load.to);
+        }
+      }
+    }
+    workspace.members.set(root, members);
+  }
+  return members;
+}
+
+/** The module roots whose modules hold a file. */
+function modulesOf(workspace: Workspace, file: string): string[] {
+  if (!workspace.modulesOf) {
+    const modules = new Map<string, string[]>();
+    for (const root of Array.from(workspace.entries.keys()).filter((candidate) => isModuleRoot(workspace, candidate))) {
+      for (const member of membersOf(workspace, root)) modules.set(member, [...(modules.get(member) ?? []), root]);
+    }
+    workspace.modulesOf = modules;
+  }
+  return workspace.modulesOf.get(file) ?? [];
+}
+
+/**
+ * What loading reaches from some files: each file they dot-source, the files
+ * of each module they import, and what a manifest names, followed. A script
+ * run by its path runs in a scope of its own, whose functions do not come back.
+ */
+function reachOf(workspace: Workspace, key: string, start: Iterable<string>): Set<string> {
+  let reached = workspace.reach.get(key);
+  if (!reached) {
+    reached = new Set(start);
+    const pending = Array.from(reached);
+    while (pending.length > 0) {
+      const at = pending.pop()!;
+      for (const load of loadsOf(workspace, at)) {
+        if (load.kind === "run") continue;
+        const targets = load.kind === "import" && isModuleRoot(workspace, load.to) ? membersOf(workspace, load.to) : [load.to];
+        for (const target of targets) {
+          if (reached.has(target)) continue;
+          reached.add(target);
+          pending.push(target);
+        }
+      }
+    }
+    workspace.reach.set(key, reached);
+  }
+  return reached;
+}
+
+/**
+ * Whether a file is a test, by the archetype the product gives it: the
+ * generator's answer under the workspace's own configuration, which the file
+ * index carries (`archetypeOf`), its overrides and sample roots among it; an
+ * index made without the generator, as a test's, has the default
+ * configuration's conventions of tests in `resolveArchetype`.
+ */
+function isTestFile(files: WorkspaceFileIndex, file: string): boolean {
+  return (files.archetypeOf?.(file) ?? resolveArchetype(file, DEFAULT_LIVE_DOCUMENTATION_CONFIG)) === "test";
+}
+
+/** Whether a file's functions are loaded where another file runs: by what the file loads, or by its modules, their files and what they load. */
+function isLoadedFrom(workspace: Workspace, file: string, definer: string): boolean {
+  if (reachOf(workspace, `file|${file}`, [file]).has(definer)) return true;
+  return modulesOf(workspace, file).some((root) => reachOf(workspace, `module|${root}`, membersOf(workspace, root)).has(definer));
+}
+
+/**
+ * The files whose functions a file calls, each with the functions called,
+ * under the rule measured on 2026-11-19 ("loaded, else unique"). Only a
+ * function defined at a file's own level counts. A name the file defines
+ * itself is its own. Otherwise the call goes to the one defining file that the
+ * caller's loading reaches; if it reaches several, to none; if it reaches
+ * none, to the only file of the workspace that defines the name, unless the
+ * name is a command or function PowerShell itself ships, which answers where
+ * nothing loaded overrides it. That last reach passes over a test file unless
+ * the caller is a test: nothing in a repository's working code depends on its
+ * tests, so a test's stub of another module's command is never the only
+ * definition working code finds. A call by an alias PowerShell defines at
+ * start is a call to the command the alias names, since the alias outranks
+ * every function: `select` never reaches a function named `select`, and `gci`
+ * reaches one named `Get-ChildItem` only by this rule.
+ */
+function calledFiles(workspace: Workspace, file: string, facts: FileFacts): Map<string, Set<string>> {
+  const own    = new Set(facts.functions.map((fact) => callName(fact.name)));
+  const called = new Map<string, Set<string>>();
+  const caller = isTestFile(workspace.files, file);
+  for (const written of facts.calls) {
+    const name = SHIPPED_ALIASES.get(written) ?? written;
+    if (own.has(name)) continue;
+    const definers = (workspace.definers.get(name) ?? []).filter((definer) => definer.file !== file);
+    if (definers.length === 0) continue;
+    const loaded = definers.filter((definer) => isLoadedFrom(workspace, file, definer.file));
+    const reach  = caller ? definers : definers.filter((definer) => !isTestFile(workspace.files, definer.file));
+    const chosen = loaded.length === 1 ? loaded[0]
+      : loaded.length === 0 && reach.length === 1 && !SHIPPED_COMMANDS.has(name) ? reach[0]
+        : undefined;
+    if (chosen) called.set(chosen.file, new Set([...(called.get(chosen.file) ?? []), chosen.name]));
+  }
+  return called;
 }
 
 // ---------------------------------------------------------------------------
@@ -860,33 +1980,72 @@ function manifestEntries(value: DataValue): Array<{ name: string; version?: stri
   });
 }
 
-/** Reads one `.psd1`: a module manifest's module, what it names and the root module it declares; nothing of a data file. */
-async function analyzeDataFile(content: string, sourcePath: string, files: WorkspaceFileIndex | undefined): Promise<SourceAnalysisResult> {
-  return readTree("powershell", content, (root): SourceAnalysisResult => {
+/** Reads one `.psd1`'s table: whether it is a module manifest, the modules and scripts it names, and the functions it exports. */
+async function extractDataFacts(content: string): Promise<DataFacts> {
+  return readTree("powershell", content, (root): DataFacts => {
     const table = dataFileTable(root);
-    if (!table || !MANIFEST_KEYS.some((key) => table.has(key))) return { symbols: [], dependencies: [] };
-    const directory = path.posix.dirname(sourcePath);
-    const linked    = new Set<string>();
-    const external  = new Set<string>();
-    const declares: DeclaredEntry[] = [];
-    for (const key of MODULE_KEYS) {
-      for (const entry of manifestEntries(table.get(key))) {
-        const file = resolvePath(entry.name, directory, files, true);
-        if (file && file !== sourcePath) {
-          linked.add(file);
-          if (ROOT_MODULE_KEYS.includes(key) && declares.length === 0) declares.push({ reason: "module", file });
-        } else if (!file) {
-          external.add(entry.version ? `${entry.name}@${entry.version}` : entry.name);
-        }
-      }
-    }
-    const dependencies: DependencyEntry[] = [
-      ...Array.from(linked).sort().map((file): DependencyEntry => ({ specifier: file, resolvedPath: file, symbols: [], kind: "import" })),
-      ...Array.from(external).sort().map((specifier): DependencyEntry => ({ specifier, symbols: [], kind: "import" }))
-    ];
-    const symbols = packageSymbols(path.posix.basename(sourcePath).replace(/\.psd1$/i, ""));
-    return declares.length > 0 ? { symbols, dependencies, declares } : { symbols, dependencies };
+    if (!table || !MANIFEST_KEYS.some((key) => table.has(key))) return { manifest: false, references: [], exports: [] };
+    const references = MODULE_KEYS.flatMap((key) => manifestEntries(table.get(key)).map((entry) => ({ key, ...entry })));
+    const exported   = table.get("functionstoexport");
+    const exports    = (Array.isArray(exported) ? exported : [exported]).filter((name): name is string => typeof name === "string" && name.length > 0);
+    return { manifest: true, references, exports };
   });
+}
+
+/** The workspace files a manifest names, from its folder, the root module's first; never the manifest itself. */
+function manifestFiles(facts: DataFacts, sourcePath: string, files: WorkspaceFileIndex | undefined): string[] {
+  const directory = path.posix.dirname(sourcePath);
+  const named: string[] = [];
+  for (const reference of facts.references) {
+    const file = resolvePath(reference.name, directory, files, true);
+    if (file && file !== sourcePath && !named.includes(file)) named.push(file);
+  }
+  return named;
+}
+
+/**
+ * The functions a manifest's `FunctionsToExport` names, each offered under the
+ * name its origin defines it by and linked to that origin: the one file of the
+ * module, its root and what that loads, that defines the function at its own
+ * level. A name the module does not define exactly once, or a wildcard, is not
+ * offered; callers reach every function at its origin, not through the manifest.
+ */
+function manifestReExports(workspace: Workspace, sourcePath: string, facts: DataFacts): ReExportedSymbolInfo[] {
+  const members = membersOf(workspace, sourcePath);
+  const offered: ReExportedSymbolInfo[] = [];
+  for (const name of facts.exports) {
+    if (/[*?[]/.test(name)) continue;
+    const origins = (workspace.definers.get(callName(name)) ?? []).filter((definer) => members.has(definer.file));
+    if (origins.length === 1) offered.push({ name: origins[0].name, kind: "function", sourceModulePath: origins[0].file });
+  }
+  return offered;
+}
+
+/** Reads one `.psd1`: a module manifest's module, what it names, the root module it declares and the functions it offers; nothing of a data file. */
+function analyzeDataFile(facts: DataFacts, sourcePath: string, files: WorkspaceFileIndex | undefined, workspace: Workspace | undefined): SourceAnalysisResult {
+  if (!facts.manifest) return { symbols: [], dependencies: [] };
+  const directory = path.posix.dirname(sourcePath);
+  const linked    = new Set<string>();
+  const external  = new Set<string>();
+  const declares: DeclaredEntry[] = [];
+  for (const entry of facts.references) {
+    const file = resolvePath(entry.name, directory, files, true);
+    if (file && file !== sourcePath) {
+      linked.add(file);
+      if (ROOT_MODULE_KEYS.includes(entry.key) && declares.length === 0) declares.push({ reason: "module", file });
+    } else if (!file) {
+      external.add(entry.version ? `${entry.name}@${entry.version}` : entry.name);
+    }
+  }
+  const dependencies: DependencyEntry[] = [
+    ...Array.from(linked).sort().map((file): DependencyEntry => ({ specifier: file, resolvedPath: file, symbols: [], kind: "import" })),
+    ...Array.from(external).sort().map((specifier): DependencyEntry => ({ specifier, symbols: [], kind: "import" }))
+  ];
+  const symbols = packageSymbols(path.posix.basename(sourcePath).replace(/\.psd1$/i, ""));
+  const result: SourceAnalysisResult = declares.length > 0 ? { symbols, dependencies, declares } : { symbols, dependencies };
+  const offered = workspace ? manifestReExports(workspace, sourcePath, facts) : [];
+  if (offered.length > 0) result.reExportedSymbols = offered;
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -903,18 +2062,44 @@ async function analyzeDataFile(content: string, sourcePath: string, files: Works
 export async function analyzePowerShellSource(options: { content: string; absolutePath: string; workspaceRoot: string; fileIndex?: WorkspaceFileIndex }): Promise<SourceAnalysisResult> {
   const sourcePath = normalizeWorkspacePath(path.relative(options.workspaceRoot, options.absolutePath));
   const extension  = path.extname(options.absolutePath).toLowerCase();
-  if (extension === ".psd1") return analyzeDataFile(options.content, sourcePath, options.fileIndex);
-  const facts  = await extractFacts(options.content);
-  const result: SourceAnalysisResult = {
-    symbols:      toSymbols(facts),
-    dependencies: toDependencies(facts, path.posix.dirname(sourcePath), options.fileIndex)
-  };
-  // A script is what PowerShell runs, so every `.ps1` is the program's entry, whatever it holds; a module is not.
-  if (extension === ".ps1") result.program = {};
+  const workspace  = options.fileIndex ? await workspaceOf(options.workspaceRoot, options.fileIndex) : undefined;
+  const entry      = await admit(workspace, sourcePath, extension, options.content);
+  if (entry.kind === "data") return analyzeDataFile(entry.facts, sourcePath, options.fileIndex, workspace);
+  const facts  = entry.facts;
+  const { dependencies, notices } = toDependencies(facts, sourcePath, options.fileIndex, workspace);
+  const result: SourceAnalysisResult = { symbols: toSymbols(facts), dependencies };
+  if (notices.length > 0) result.notices = notices;
+  // A script is what PowerShell runs, so a `.ps1` is the program's entry unless running it would do nothing: a library, there to be dot-sourced. A module is not.
+  if (extension === ".ps1" && !facts.library) result.program = {};
   return result;
 }
 
-/** Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions with their comment-based help, classes and enums, dot-source, module and `#requires` dependencies, and module manifests; a `.ps1` script is the program's entry, a module or manifest is not. */
+/**
+ * The facts of the file being analyzed: the workspace's, read when the
+ * workspace was, when its text is the same, so that each file is parsed once
+ * a run; else read from the text given, which then stands for the file in the
+ * workspace too, everything worked out from the old text forgotten.
+ */
+async function admit(workspace: Workspace | undefined, sourcePath: string, extension: string, content: string): Promise<TableEntry> {
+  const hash  = digest(content);
+  const known = workspace?.entries.get(sourcePath);
+  if (known?.hash === hash) return known;
+  const entry: TableEntry = extension === ".psd1"
+    ? { kind: "data", hash, facts: await extractDataFacts(content) }
+    : { kind: "script", hash, facts: await extractFacts(content) };
+  if (workspace) {
+    workspace.entries.set(sourcePath, entry);
+    for (const [name, definers] of workspace.definers) workspace.definers.set(name, definers.filter((definer) => definer.file !== sourcePath));
+    addDefiners(workspace, sourcePath, entry);
+    workspace.loads.clear();
+    workspace.members.clear();
+    workspace.reach.clear();
+    workspace.modulesOf = undefined;
+  }
+  return entry;
+}
+
+/** Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions with their comment-based help, classes and enums, the files a script loads and the files whose functions it calls, and module manifests with the functions they offer; a `.ps1` script is the program's entry unless it is a library, a module or manifest is not. */
 export const powershellAdapter: LanguageAdapter = {
   id: "powershell-basic",
   extensions: powershellSyntax.extensions,

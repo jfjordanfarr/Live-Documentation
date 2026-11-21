@@ -1,0 +1,71 @@
+===
+An empty script block as a command's argument
+===
+
+Mock Stop-Function { }
+Mock Start-Sleep {}
+function Get-Thing { }
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token)
+            (command_argument_sep)
+            (array_literal_expression
+              (unary_expression
+                (script_block_expression)))))))
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token)
+            (command_argument_sep)
+            (array_literal_expression
+              (unary_expression
+                (script_block_expression)))))))
+    (function_statement
+      (function_name))))
+
+===
+Named blocks that a semicolon ends
+===
+
+function Write-Log {begin { };process {Write-Host $_};}
+function Get-Thing { }
+
+---
+
+(program
+  (statement_list
+    (function_statement
+      (function_name)
+      (script_block
+        (script_block_body
+          (named_block_list
+            (named_block
+              (block_name)
+              (statement_block))
+            (named_block
+              (block_name)
+              (statement_block
+                (statement_list
+                  (pipeline
+                    (pipeline_chain
+                      (command
+                        (command_name)
+                        (command_elements
+                          (command_argument_sep)
+                          (array_literal_expression
+                            (unary_expression
+                              (variable))))))))))))))
+    (function_statement
+      (function_name))))

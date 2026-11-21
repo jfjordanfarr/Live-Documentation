@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/regenerate.ts`
-- Generated At: 2026-11-20T19:52:27.042Z
+- Generated At: 2026-11-21T03:17:02.551Z
 
 ## Authored
 ### Purpose
@@ -58,7 +58,7 @@ What regenerating needs.
 
 #### `regenerate` {#symbol-regenerate}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L160)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L161)
 - Parameters: `context`: [`RegenerationContext`](#symbol-regenerationcontext)
 
 ##### `regenerate` — Summary
@@ -77,7 +77,7 @@ How long each change regenerated took, in milliseconds, and the largest peak mem
 
 #### `workerBound` {#symbol-workerbound}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L298)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L301)
 
 ##### `workerBound` — Summary
 The resident memory past which a worker is replaced after a change: its share of the memory the pool was sized by,
@@ -85,14 +85,14 @@ so that the workers together never hold more than the pool planned for, whatever
 
 #### `Worker` {#symbol-worker}
 - Type: interface
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L303)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L306)
 
 ##### `Worker` — Summary
 A summarizing process, which summarizes the changes it is handed one at a time in a tree it keeps until it is ended.
 
 #### `workerTask` {#symbol-workertask}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L370)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L373)
 - Returns: [`WorkerTask`](./summarizeChange.ts.mdmd.md#symbol-workertask)
 - Parameters: `change`: [`MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange)
 
@@ -105,7 +105,7 @@ trees pin git's `core.ignorecase`, so that the generator reads the value the key
 
 #### `summarizingEnvironment` {#symbol-summarizingenvironment}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L398)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L401)
 - Parameters: `environment`: `NodeJS.ProcessEnv`
 
 ##### `summarizingEnvironment` — Summary
@@ -116,7 +116,7 @@ repository is made at all, never what it says. Any other option in it stays out.
 
 #### `summarizingFlags` {#symbol-summarizingflags}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L429)
+- Source: [source](../../../../../../packages/generator/src/history/regenerate.ts#L432)
 
 ##### `summarizingFlags` — Summary
 The flags node is started with for the summarizing process, and no other: for the TypeScript module, under tsx,

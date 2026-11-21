@@ -1,5 +1,5 @@
 {
-  "tool": "pwsh 7.5.4",
+  "tool": "pwsh 7.7.0",
   "projects": [
     {
       "name": "powershell-compendium",
@@ -22,21 +22,24 @@
       "from": "../scripts/deploy.ps1",
       "to": "../common/logging.ps1",
       "symbols": [
-        ". \"../common/logging.ps1\""
+        ". \"../common/logging.ps1\"",
+        "calls Write-DeploymentLog"
       ]
     },
     {
       "from": "../workspace/scripts/deploy.ps1",
       "to": "../workspace/scripts/common/logging.ps1",
       "symbols": [
-        ". \"./Common/Logging.ps1\""
+        ". \"./Common/Logging.ps1\"",
+        "calls Write-DeploymentLog"
       ]
     },
     {
       "from": "../workspace/scripts/deploy.ps1",
       "to": "../workspace/scripts/modules/Inventory.psm1",
       "symbols": [
-        "Import-Module \"./modules/Inventory.psm1\""
+        "Import-Module \"./modules/Inventory.psm1\"",
+        "calls Get-InventorySnapshot"
       ]
     }
   ],

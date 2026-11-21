@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psd1`
 - Entry: tooling
-- Generated At: 2026-11-19T21:10:27.771Z
+- Generated At: 2026-11-21T02:25:26.931Z
 
 ## Authored
 ### Purpose
@@ -28,3 +28,21 @@ The manifest of the `Rollout.Steps` module: its root module, version, the module
 - `Microsoft.PowerShell.Utility@7.0.0.0`
 - [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Re-Exported Symbol Anchors -->
+### Re-Exported Symbol Anchors
+#### `Format-RolloutReport` {#symbol-format-rolloutreport}
+- Re-exported from [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md#symbol-format-rolloutreport)
+
+#### `Get-RolloutPlan` {#symbol-get-rolloutplan}
+- Re-exported from [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md#symbol-get-rolloutplan)
+
+#### `Invoke-RolloutStep` {#symbol-invoke-rolloutstep}
+- Re-exported from [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md#symbol-invoke-rolloutstep)
+
+#### `New-RolloutStep` {#symbol-new-rolloutstep}
+- Re-exported from [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md#symbol-new-rolloutstep)
+
+#### `Select-PendingStep` {#symbol-select-pendingstep}
+- Re-exported from [`Rollout.Steps`](./Rollout.Steps.psm1.mdmd.md#symbol-select-pendingstep)
+<!-- LIVE-DOC:END Re-Exported Symbol Anchors -->

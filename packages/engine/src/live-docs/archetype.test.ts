@@ -58,6 +58,75 @@ describe("sample archetypes", () => {
   });
 });
 
+describe("test folders and test names", () => {
+  const config = normalizeLiveDocumentationConfig({});
+
+  it("reads a PowerShell file's test-folder pattern against the folders alone, never against the file's own name", () => {
+    // PowerShell names a function for its approved verb, and a file for its function: Test-DbaPath is working code.
+    expect(resolveArchetype("public/Test-DbaPath.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("private/functions/flowcontrol/Test-Bound.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("tests/Get-Thing.ps1", config)).toBe("test");
+    expect(resolveArchetype("src/__tests__/helpers.ts", config)).toBe("test");
+    expect(resolveArchetype("Test/Helpers/Fake.cs", config)).toBe("test");
+  });
+
+  it("keeps a file named for the word alone a test, as JavaScript's and Django's conventions name them", () => {
+    expect(resolveArchetype("mode/css/test.js", config)).toBe("test");
+    expect(resolveArchetype("polls/tests.py", config)).toBe("test");
+    expect(resolveArchetype("Examples/Tests.sql", config)).toBe("test");
+  });
+
+  it("calls a PowerShell file a test by its name only as Pester's Name.Tests.ps1 or Name.Test.ps1", () => {
+    expect(resolveArchetype("src/Get-Thing.Test.ps1", config)).toBe("test");
+    expect(resolveArchetype("src/Get-Thing.tests.ps1", config)).toBe("test");
+    // An action, a module and a build step that run tests are working code.
+    expect(resolveArchetype("Actions/RunTests/RunTests.psm1", config)).toBe("implementation");
+    expect(resolveArchetype("Actions/AnalyzeTests/AnalyzeTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/tSQLt_BuildTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/Pester.Tests.psd1", config)).toBe("implementation");
+  });
+
+  it("keeps each language's name conventions: C#'s FooTests.cs, Java's FooTest.java and Pester's Name.Tests.ps1", () => {
+    expect(resolveArchetype("src/Estate/ParcelTests.cs", config)).toBe("test");
+    expect(resolveArchetype("src/main/java/HelpersTest.java", config)).toBe("test");
+    expect(resolveArchetype("public/Get-Thing.Tests.ps1", config)).toBe("test");
+  });
+
+  // PowerShell's rules were measured on PowerShell's corpora (dbatools' `Test-DbaPath.ps1`, where `Test` is a verb), and
+  // nowhere else: every other file is read as it was before them, the whole path against the test-folder pattern, by the
+  // answers of commit a5d29b90f. Whether `test-utils.tsx` ought to be a test has not been measured, and is not decided here.
+  it.each([
+    ["src/test-utils.tsx", "test"],
+    ["src/test-helpers.ts", "test"],
+    ["lib/test-setup.js", "test"],
+    ["src/Test-Thing.cs", "test"],
+    ["Source/tSQLt.Tests.view.sql", "test"],
+    ["mode/css/test.js", "test"],
+    ["polls/tests.py", "test"],
+    ["Examples/Tests.sql", "test"],
+    ["Test/Helpers/Fake.cs", "test"],
+    ["src/contest.ts", "implementation"],
+    ["src/attestation.ts", "implementation"],
+    ["docs/testing.md", "implementation"],
+    ["src/main.ts", "implementation"]
+  ])("reads %s, which is not PowerShell, as before PowerShell's rules: %s", (file, expected) => {
+    expect(resolveArchetype(file, config)).toBe(expected);
+  });
+
+  it.each([
+    ["public/Test-DbaPath.ps1", "implementation"],
+    ["private/functions/flowcontrol/Test-Bound.ps1", "implementation"],
+    ["Modules/Test-Module.psm1", "implementation"],
+    ["Modules/Test-Data.psd1", "implementation"],
+    ["Actions/RunTests/RunTests.psm1", "implementation"],
+    ["Build/tSQLt_BuildTests.ps1", "implementation"],
+    ["tests/Get-Thing.ps1", "test"],
+    ["src/Get-Thing.Tests.ps1", "test"]
+  ])("reads the PowerShell file %s by Pester's name and its folders alone: %s", (file, expected) => {
+    expect(resolveArchetype(file, config)).toBe(expected);
+  });
+});
+
 describe("binary files are assets, wherever they lie", () => {
   const config = normalizeLiveDocumentationConfig({ sampleRoots: ["tests/scenarios"] });
 

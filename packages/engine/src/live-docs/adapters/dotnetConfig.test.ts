@@ -120,4 +120,27 @@ describe("dotnetConfigAdapter", () => {
       { specifier: "Newtonsoft.Json",       symbols: [], kind: "import" }
     ] });
   });
+
+  // An XML comment is no element, as .NET's configuration system reads a file (2026-11-21).
+  it("reads no setting, connection, endpoint or package a comment holds, and keeps the lines of what it reads", async () => {
+    const configPath = path.join(workspaceRoot, "Web.config");
+    await fs.writeFile(configPath, [
+      "<configuration>",
+      "  <appSettings>",
+      "    <!-- <add key=\"Old.Setting\" value=\"x\" /> -->",
+      "    <!--",
+      "    <add key=\"Older.Setting\" value=\"y\" />",
+      "    -->",
+      "    <add key=\"Live.Setting\" value=\"z\" />",
+      "  </appSettings>",
+      "  <connectionStrings><!-- <add name=\"OldDb\" connectionString=\"x\" /> --></connectionStrings>",
+      "</configuration>"
+    ].join("\n"), "utf8");
+    const result = await dotnetConfigAdapter.analyze({ absolutePath: configPath, workspaceRoot });
+    expect(result?.symbols.map((symbol) => `${symbol.kind} ${symbol.name} ${symbol.location?.line ?? ""}`)).toEqual(["setting Live.Setting 7"]);
+
+    const packagesPath = path.join(workspaceRoot, "packages.config");
+    await fs.writeFile(packagesPath, "<packages><!-- <package id=\"EntityFramework\" version=\"6.5.1\" /> --><package id=\"Newtonsoft.Json\" /></packages>\n", "utf8");
+    expect((await dotnetConfigAdapter.analyze({ absolutePath: packagesPath, workspaceRoot }))?.dependencies.map((entry) => entry.specifier)).toEqual(["Newtonsoft.Json"]);
+  });
 });

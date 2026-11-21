@@ -1,12 +1,7 @@
 {
   "engine": {
     "packages/engine/src/live-docs/adapters/aspnet.ts": {
-      "node:fs": [
-        "promises.stat",
-        "statSync"
-      ],
       "node:path": [
-        "dirname",
         "extname",
         "join",
         "relative"
@@ -39,17 +34,6 @@
         "resolve"
       ]
     },
-    "packages/engine/src/live-docs/adapters/csharp.dependencies.ts": {
-      "node:fs": [
-        "promises.stat"
-      ],
-      "node:path": [
-        "dirname",
-        "join",
-        "relative",
-        "resolve"
-      ]
-    },
     "packages/engine/src/live-docs/adapters/csharp.ts": {
       "glob": [
         "glob"
@@ -76,6 +60,18 @@
     "packages/engine/src/live-docs/adapters/dotnetConfig.ts": {
       "node:path": [
         "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/dotnetPaths.ts": {
+      "node:path": [
+        "posix.dirname",
+        "posix.join",
+        "posix.normalize"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/dotnetProjects.ts": {
+      "node:path": [
+        "join"
       ]
     },
     "packages/engine/src/live-docs/adapters/go.ts": {
@@ -161,22 +157,19 @@
     "packages/engine/src/live-docs/adapters/powershell.ts": {
       "node:path": [
         "extname",
+        "join",
         "posix.basename",
         "posix.dirname",
+        "posix.extname",
         "posix.join",
         "posix.normalize",
         "relative"
       ]
     },
     "packages/engine/src/live-docs/adapters/project.ts": {
-      "node:fs": [
-        "promises.stat"
-      ],
       "node:path": [
         "basename",
-        "dirname",
-        "relative",
-        "resolve"
+        "relative"
       ]
     },
     "packages/engine/src/live-docs/adapters/pyproject.ts": {
@@ -221,6 +214,12 @@
         "dirname",
         "join",
         "posix.join",
+        "relative"
+      ]
+    },
+    "packages/engine/src/live-docs/adapters/solution.ts": {
+      "node:path": [
+        "extname",
         "relative"
       ]
     },

@@ -1,0 +1,112 @@
+{
+  "tool": "Microsoft.SqlServer.TransactSql.ScriptDom 17.0.191.0+0a5e0d21.0a5e0d21aa9136c8cbe90e484b76fdd0fcc1eac9 (TSql170Parser, quoted identifiers on)",
+  "files": {
+    "../Database/Oracle/CENTRAL.ACCOUNT.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "table",
+          "name": {
+            "schema": "CENTRAL",
+            "name": "ACCOUNT"
+          },
+          "line": 2,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "type",
+          "name": {
+            "name": "VARCHAR2"
+          },
+          "line": 4,
+          "column": 16
+        },
+        {
+          "how": "type",
+          "name": {
+            "name": "NUMBER"
+          },
+          "line": 5,
+          "column": 16
+        }
+      ],
+      "dynamic": []
+    },
+    "../Database/SqlServer/dbo.Payment.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "table",
+          "name": {
+            "schema": "dbo",
+            "name": "Payment"
+          },
+          "line": 1,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [],
+      "dynamic": []
+    },
+    "../Database/SqlServer/dbo.usp_PostPayment.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "schema": "dbo",
+            "name": "usp_PostPayment"
+          },
+          "line": 3,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "insert",
+          "name": {
+            "schema": "dbo",
+            "name": "Payment"
+          },
+          "line": 12,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "dbo",
+              "name": "usp_PostPayment"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "server": "ORACLE_CENTRAL",
+            "schema": "CENTRAL",
+            "name": "ACCOUNT"
+          },
+          "line": 18,
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "dbo",
+              "name": "usp_PostPayment"
+            }
+          }
+        }
+      ],
+      "dynamic": []
+    }
+  },
+  "sources": {
+    "../Database/Oracle/CENTRAL.ACCOUNT.sql": "86c9e561539cddbecf32fac3a7be6c022327cbed5d704e74d861870ccbb43ce6",
+    "../Database/SqlServer/dbo.Payment.sql": "ee320f48a1ee5f5d43122f318d380cebd467e4cee6ef47847a86e5454e6ab4d5",
+    "../Database/SqlServer/dbo.usp_PostPayment.sql": "f2241dcbc00175818c201c45388f8367e67a09c7ff06a33484c5ccc8973f6ec1"
+  }
+}

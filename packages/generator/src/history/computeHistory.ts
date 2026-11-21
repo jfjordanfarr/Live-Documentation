@@ -92,6 +92,7 @@ import { HISTORY_SUMMARY_FORMAT, textHash, type CommitSummary } from "@live-docu
 import { TEXT_STORE_DIRECTORY, textPath } from "@live-documentation/engine/live-docs/history/textStore";
 import type { MainlineChange, VersionControl } from "@live-documentation/engine/live-docs/history/versionControl";
 import { WORDS_DIRECTORY, wordsStore, type WordsHead } from "@live-documentation/engine/live-docs/history/words";
+import { throwIfMachineFailure } from "@live-documentation/engine/tooling/sourceText";
 
 import { generatorIdentity, sequenceCodeIdentity } from "./generatorIdentity";
 import { committedLiveDocGraph, headDifferences, leftOutAtHead } from "./headCheck";
@@ -110,7 +111,10 @@ export interface HistoryOptions {
   keepIndex: boolean;
   /** Carry the authors' names in the steps. */
   authors: boolean;
-  /** Remove the cache folders of every lens but the current one, once the current one holds every sampled change. */
+  /**
+   * Remove the cache folders of every lens but the current one and its twin, the same code's under the other way of
+   * running workers, once the current one holds every sampled change.
+   */
   removeSuperseded?: boolean;
   /**
    * Hold the history's last step to the Live Docs committed at the commit it ends at, as the person asserts those docs
@@ -131,7 +135,7 @@ export interface HistoryOptions {
   progress: (line: string) => void;
 }
 
-/** A cache folder under the history folder that belongs to another lens than the current one. */
+/** A cache folder under the history folder that belongs to another lens than the current one and its twin. */
 export interface SupersededCache {
   /** Its lens key, which names it. */
   lens: string;
@@ -181,7 +185,11 @@ export const HEAD_CHECK_RULE =
 
 /**
  * The record a run leaves beside the caches of how much memory one summarizing process took on this repository, so
- * that the next run sizes its pool by it: `<docsRoot>/history/pool.json`.
+ * that the next run sizes its pool by it: `<docsRoot>/history/pool.json`, a record for each way of running the workers
+ * (one change a worker, or `--keep-workers`), whose processes take different memory. Each is kept by
+ * {@link nextPoolRecord}, so that a new lens of the same way, the first run after a change of the code, takes its way's
+ * record over and a small run never lowers it. Until 2026-11-21 one record served both ways, so that each sized the
+ * other's pool and restarted its count; a file of that shape is no record, and is written over at the next measure.
  */
 const POOL_RECORD = "pool.json";
 
@@ -270,7 +278,10 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
   // Both identities are taken before any work, so that the record a run leaves is keyed with the code that did the run,
   // even when the code on disk changes while it runs (the independent review of 2026-11-20, finding 1).
   const [generator, code] = await Promise.all([generatorIdentity(), sequenceCodeIdentity()]);
-  const lens = lensOf(generator, configuration, { ignoresCase: await versionControl.ignoresCase(), keepWorkers: options.keepWorkers === true });
+  const ignoresCase = await versionControl.ignoresCase();
+  const lens = lensOf(generator, configuration, { ignoresCase, keepWorkers: options.keepWorkers === true });
+  // The same code's lens under the other way of running workers: no lens supersedes it, since neither way is the newer.
+  const twin = lensOf(generator, configuration, { ignoresCase, keepWorkers: options.keepWorkers !== true }).key;
 
   const end = await versionControl.mainlineEnd();
   const mainline = await versionControl.mainline();
@@ -289,7 +300,7 @@ export async function computeHistory(options: HistoryOptions): Promise<HistoryRu
     const claim = await holdLock(historyFolder, options.progress);
     scratch.hold(claim);
     try {
-      return await run(options, { workspaceRoot, versionControl, configuration, lens, code, end, mainline, sampled, historyFolder, cacheFolder, scratch });
+      return await run(options, { workspaceRoot, versionControl, configuration, lens, twin, code, end, mainline, sampled, historyFolder, cacheFolder, scratch });
     } finally {
       await scratch.release(claim);
     }
@@ -301,6 +312,8 @@ interface RunContext {
   versionControl: VersionControl;
   configuration: LiveDocumentationConfig;
   lens: HistoryLens;
+  /** The key of the current lens's twin: the same code's under the other way of running workers, which is never superseded. */
+  twin: string;
   /** The identity of the code that reads summaries into a sequence, taken at the run's start (`sequenceCodeIdentity`). */
   code: string;
   end: Awaited<ReturnType<VersionControl["mainlineEnd"]>>;
@@ -312,21 +325,23 @@ interface RunContext {
 }
 
 async function run(options: HistoryOptions, context: RunContext): Promise<HistoryRun> {
-  const { workspaceRoot, versionControl, configuration, lens, end, mainline, sampled, historyFolder, cacheFolder } = context;
+  const { workspaceRoot, versionControl, configuration, lens, twin, end, mainline, sampled, historyFolder, cacheFolder } = context;
   const relative = (absolute: string): string => path.relative(workspaceRoot, absolute).split(path.sep).join("/");
   const leftovers = await removeLeftovers(historyFolder);
   if (leftovers > 0) {
     options.progress(`removed ${leftovers} files a stopped run left half written`);
   }
   if (options.removeSuperseded === true) {
-    // While the current lens fills, only the newest whole lens is kept beside it, so the folder never holds more than two.
-    for (const cache of await supersededCaches(historyFolder, lens.key, "all but the newest whole", relative)) {
-      if (cache.removed) options.progress(`removed ${cache.folder}, the cache of a lens that is neither the current one nor the newest whole one: ${formatBytes(cache.bytes)}`);
+    // While the current lens fills, only the newest whole lens is kept beside it and its twin, so the folder never holds
+    // more than three.
+    for (const cache of await supersededCaches(historyFolder, [lens.key, twin], "all but the newest whole", relative)) {
+      if (cache.removed) options.progress(`removed ${cache.folder}, the cache of a lens that is neither the current one, its twin under the other way of running workers, nor the newest whole one: ${formatBytes(cache.bytes)}`);
     }
   }
   const textStore = path.join(cacheFolder, TEXT_STORE_DIRECTORY);
   const missing = await absentFromCache(sampled, cacheFolder, options.keepIndex);
-  const record = await recordedPool(historyFolder);
+  // The record of this run's way of running workers, whose processes take memory of their own.
+  const record = (await recordedPool(historyFolder))[poolWayOf(lens)];
   const machine = usableMachine({ totalMemory: os.totalmem(), constrainedMemory: process.constrainedMemory(), processors: os.availableParallelism() });
   const peak = record?.peakMemory ?? UNMEASURED_PEAK_MEMORY;
   const machineJobs = options.jobs ?? poolSize({ ...machine, peakMemory: peak });
@@ -356,7 +371,7 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
     timings.push(...regeneration.timings);
     peakMemory = Math.max(peakMemory, regeneration.peakMemory);
     if (regeneration.peakMemory > 0) {
-      await recordPeakMemory(historyFolder, lens.key, regeneration.peakMemory, regeneration.timings.length);
+      await recordPeakMemory(historyFolder, lens, regeneration.peakMemory, regeneration.timings.length);
       options.progress(`the largest summarizing process took ${formatBytes(regeneration.peakMemory)} at its peak; the next run sizes its pool by the largest measured here`);
     }
     if (regeneration.timings.length < changes.length) {
@@ -451,10 +466,18 @@ async function run(options: HistoryOptions, context: RunContext): Promise<Histor
   }
   await writeInPlace(path.join(cacheFolder, WHOLE_MARKER), `${JSON.stringify({ head: end.head, changes: sampled.length, at: new Date().toISOString() })}\n`);
 
-  // Only now does the current lens hold every sampled change, so the caches of other lenses can go.
-  const superseded = await supersededCaches(historyFolder, lens.key, options.removeSuperseded === true ? "all" : "none", relative);
+  // Only now does the current lens hold every sampled change, so the caches of other lenses can go, but its twin's.
+  const superseded = await supersededCaches(historyFolder, [lens.key, twin], options.removeSuperseded === true ? "all" : "none", relative);
   for (const cache of superseded) {
     options.progress(`${cache.removed ? "removed" : "kept"} ${cache.folder}, the cache of a lens that is not the current one: ${formatBytes(cache.bytes)}`);
+  }
+  // The twin is never superseded, but it is disk the person may want to know of, so it is listed with its size too.
+  const twinFolder = path.join(historyFolder, twin);
+  if (await fs.stat(twinFolder).then((stats) => stats.isDirectory(), (error: unknown) => {
+    throwIfMachineFailure(error);
+    return false;
+  })) {
+    options.progress(`kept ${relative(twinFolder)}, the same code's cache under the other way of running workers: ${formatBytes(await folderBytes(twinFolder))}`);
   }
   if (superseded.some((cache) => !cache.removed)) {
     options.progress(`--remove-superseded removes the caches of other lenses, ${formatBytes(superseded.reduce((sum, cache) => sum + cache.bytes, 0))} in all`);
@@ -575,15 +598,17 @@ async function inBatches<T>(items: readonly T[], work: (item: T) => Promise<void
 }
 
 /**
- * The cache folders under the history folder named by a lens key other than the current one, each removed as asked:
- * `all`, `none`, or `all but the newest whole`, which keeps the other lens a whole history was most recently written
- * from (its `whole.json`), so that a lens that comes back finds its cache.
+ * The cache folders under the history folder named by a lens key other than those kept, each removed as asked: `all`,
+ * `none`, or `all but the newest whole`, which keeps the other lens a whole history was most recently written from (its
+ * `whole.json`), so that a lens that comes back finds its cache. Kept are the current lens and its twin, the same code's
+ * lens under the other way of running workers (`--keep-workers`), which keys a lens of its own: neither way supersedes
+ * the other, and until 2026-11-21 a run either way with `--remove-superseded` removed the other's cache.
  */
-async function supersededCaches(historyFolder: string, current: string, remove: "all" | "none" | "all but the newest whole", relative: (absolute: string) => string): Promise<SupersededCache[]> {
+async function supersededCaches(historyFolder: string, kept: readonly string[], remove: "all" | "none" | "all but the newest whole", relative: (absolute: string) => string): Promise<SupersededCache[]> {
   const others: Array<{ lens: string; folder: string; whole?: string }> = [];
   for (const entry of await fs.readdir(historyFolder, { withFileTypes: true })) {
     // A lens key is sixteen hexadecimal digits (`lensOf`); nothing else the history folder holds is named so.
-    if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || entry.name === current) {
+    if (!entry.isDirectory() || !/^[0-9a-f]{16}$/u.test(entry.name) || kept.includes(entry.name)) {
       continue;
     }
     const folder = path.join(historyFolder, entry.name);
@@ -624,16 +649,30 @@ export interface PoolRecord {
   changes: number;
 }
 
-/** What a run last recorded of a summarizing process's peak memory on this repository, when one has. */
-async function recordedPool(historyFolder: string): Promise<PoolRecord | undefined> {
+/** The two ways of running the summarizing workers, each with a record of its own. */
+type PoolWay = "one change a worker" | "workers kept";
+const POOL_WAYS: readonly PoolWay[] = ["one change a worker", "workers kept"];
+
+function poolWayOf(lens: HistoryLens): PoolWay {
+  return lens.keepWorkers === true ? "workers kept" : "one change a worker";
+}
+
+/** The records of the pool, by way, as the file holds them; a file of another shape, or none, holds none. */
+async function recordedPool(historyFolder: string): Promise<Partial<Record<PoolWay, PoolRecord>>> {
+  let parsed: unknown;
   try {
-    const record = JSON.parse(await fs.readFile(path.join(historyFolder, POOL_RECORD), "utf8")) as Partial<PoolRecord>;
-    return typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string"
-      ? { lens: record.lens, peakMemory: record.peakMemory, changes: typeof record.changes === "number" ? record.changes : 0 }
-      : undefined;
+    parsed = JSON.parse(await fs.readFile(path.join(historyFolder, POOL_RECORD), "utf8"));
   } catch {
-    return undefined;
+    return {};
   }
+  const records: Partial<Record<PoolWay, PoolRecord>> = {};
+  for (const way of POOL_WAYS) {
+    const record = (parsed as Record<string, Partial<PoolRecord> | undefined> | null)?.[way];
+    if (record && typeof record.peakMemory === "number" && record.peakMemory > 0 && typeof record.lens === "string") {
+      records[way] = { lens: record.lens, peakMemory: record.peakMemory, changes: typeof record.changes === "number" ? record.changes : 0 };
+    }
+  }
+  return records;
 }
 
 /**
@@ -649,9 +688,12 @@ export function nextPoolRecord(previous: PoolRecord | undefined, lens: string, p
   return { lens, peakMemory: changes >= previous.changes ? peakMemory : Math.max(previous.peakMemory, peakMemory), changes };
 }
 
-async function recordPeakMemory(historyFolder: string, lens: string, peakMemory: number, changes: number): Promise<void> {
-  const record = nextPoolRecord(await recordedPool(historyFolder), lens, peakMemory, changes);
-  await writeInPlace(path.join(historyFolder, POOL_RECORD), `${JSON.stringify(record)}\n`);
+/** Records a run's measure in its way's record, by {@link nextPoolRecord}, leaving the other way's as it stands. */
+async function recordPeakMemory(historyFolder: string, lens: HistoryLens, peakMemory: number, changes: number): Promise<void> {
+  const records = await recordedPool(historyFolder);
+  const way = poolWayOf(lens);
+  records[way] = nextPoolRecord(records[way], lens.key, peakMemory, changes);
+  await writeInPlace(path.join(historyFolder, POOL_RECORD), `${JSON.stringify(records)}\n`);
 }
 
 /**

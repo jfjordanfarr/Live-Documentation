@@ -262,7 +262,7 @@ describe("the history command over a scripted repository", () => {
     expect(fs.existsSync(stale)).toBe(false);
     // The current lens's cache and the record of the pool stay.
     expect(fs.existsSync(path.join(history, sequence.lens.key))).toBe(true);
-    expect(JSON.parse(fs.readFileSync(path.join(history, "pool.json"), "utf8"))).toMatchObject({ lens: sequence.lens.key, peakMemory: expect.any(Number) });
+    expect(JSON.parse(fs.readFileSync(path.join(history, "pool.json"), "utf8"))).toMatchObject({ "one change a worker": { lens: sequence.lens.key, peakMemory: expect.any(Number) } });
   });
 
   it("checks a commit out as the repository stores it, whatever the person's git would convert", async () => {
@@ -872,6 +872,96 @@ describe("the history with workers kept and without", () => {
     expect(kept.key).toBe(lensOf(kept.generator, kept.configuration, { keepWorkers: true }).key);
     expect(kept.key).not.toBe(apart.key);
     expect(apart).toEqual(lensOf(apart.generator, apart.configuration));
+  }, 300_000);
+
+  // The two ways key two lenses for one code, and neither supersedes the other: until 2026-11-21 a run either way with
+  // --remove-superseded removed the other way's cache as an older lens's.
+  it("keeps the same code's cache under the other way when asked to remove superseded caches, and removes an older code's", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "twins-"));
+    fs.mkdirSync(path.join(here, "src"));
+    fs.writeFileSync(path.join(here, "src", "a.ts"), "/** A. */\nexport const a = 1;\n");
+    for (const args of [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One file"]]) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    let lines: string[] = [];
+    const run = (keepWorkers: boolean, removeSuperseded: boolean) => {
+      lines = [];
+      return computeHistory({ workspace: here, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, keepWorkers, removeSuperseded, progress: (line) => lines.push(line) });
+    };
+    const apart = path.join(here, (await run(false, false)).cache);
+    const kept = path.join(here, (await run(true, false)).cache);
+    const older = path.join(path.dirname(apart), "0123456789abcdef");
+    for (const keepWorkers of [false, true]) {
+      fs.mkdirSync(older, { recursive: true });
+      fs.writeFileSync(path.join(older, "whole.json"), JSON.stringify({ head: "abc", changes: 1, at: "2026-11-01T00:00:00.000Z" }));
+      const result = await run(keepWorkers, true);
+      expect(fs.existsSync(older), `keepWorkers ${keepWorkers}`).toBe(false);
+      expect([fs.existsSync(apart), fs.existsSync(kept)], `keepWorkers ${keepWorkers}`).toEqual([true, true]);
+      expect(result.superseded.map((cache) => cache.lens)).toEqual(["0123456789abcdef"]);
+      // The twin is listed with its size in words of its own, never as superseded.
+      const twin = path.relative(here, keepWorkers ? apart : kept).split(path.sep).join("/");
+      expect(lines.filter((line) => line.includes(twin))).toEqual([expect.stringMatching(new RegExp(`^kept ${twin}, the same code's cache under the other way of running workers: \\d`, "u"))]);
+    }
+  }, 300_000);
+
+  // Each way's processes take their own memory, and until 2026-11-21 one record beside the caches, taken by whichever
+  // lens ran last, sized the next run's pool and restarted the other way's count. Within one way a new lens, the first
+  // run after a change of the code, takes its way's record over, as the record of one way was always kept.
+  it("sizes each way's pool by its own record, alternating the ways resets neither, and a new lens takes its way's record", async () => {
+    const here = fs.mkdtempSync(path.join(privateTemporary, "pools-"));
+    fs.mkdirSync(path.join(here, "src"));
+    let commits = 0;
+    const commit = (): void => {
+      commits += 1;
+      fs.writeFileSync(path.join(here, "src", `f${commits}.ts`), `/** F${commits}. */\nexport const f${commits} = ${commits};\n`);
+      const steps = commits === 1 ? [["init", "--quiet", "-b", "main"], ["add", "--all"], ["commit", "--quiet", "-m", "One"]] : [["add", "--all"], ["commit", "--quiet", "-m", `Change ${commits}`]];
+      for (const args of steps) execFileSync("git", args, { cwd: here, env: FIXTURE_GIT_ENV });
+    };
+    process.env.TSX_TSCONFIG_PATH = tsconfigPath;
+    // No `--jobs`, so that the pool is sized by the record and the run says by which peak.
+    const run = async (keepWorkers: boolean): Promise<{ cache: string; lines: string[] }> => {
+      const lines: string[] = [];
+      const result = await computeHistory({ workspace: here, sampling: { rule: "every-commit" }, keepIndex: false, authors: true, keepWorkers, progress: (line) => lines.push(line) });
+      return { cache: path.join(here, result.cache), lines };
+    };
+    const MEBIBYTE = 1024 ** 2;
+    type Record = { lens: string; peakMemory: number; changes: number };
+    let file = "";
+    const records = () => JSON.parse(fs.readFileSync(file, "utf8")) as { "one change a worker": Record; "workers kept": Record };
+    const write = (value: unknown): void => fs.writeFileSync(file, JSON.stringify(value));
+    const sizedAt = (lines: string[]): string | undefined => lines.map((line) => / at ([^ ]+ [KMG]?B) a process, as measured here/u.exec(line)?.[1]).find((size) => size !== undefined);
+
+    commit();
+    const apartCache = (await run(false)).cache;
+    const apart = path.basename(apartCache);
+    const kept = path.basename((await run(true)).cache);
+    file = path.join(path.dirname(apartCache), "pool.json");
+    expect([records()["one change a worker"].lens, records()["workers kept"].lens]).toEqual([apart, kept]);
+    write({ "one change a worker": { lens: apart, peakMemory: 111 * MEBIBYTE, changes: 5 }, "workers kept": { lens: kept, peakMemory: 3 * 1024 * MEBIBYTE, changes: 7 } });
+    commit();
+    const first = await run(false);
+    expect(sizedAt(first.lines)).toBe("111.0 MB");
+    expect(records()["one change a worker"].changes).toBe(6);
+    expect(records()["workers kept"]).toEqual({ lens: kept, peakMemory: 3 * 1024 * MEBIBYTE, changes: 7 });
+    const second = await run(true);
+    expect(sizedAt(second.lines)).toBe("3.00 GB");
+    expect(records()["workers kept"].changes).toBe(8);
+    expect(records()["one change a worker"].changes).toBe(6);
+
+    // Within one way, a record another lens made: the run is sized by it, and its small measure does not lower it.
+    write({ ...records(), "one change a worker": { lens: "0123456789abcdef", peakMemory: 4 * 1024 * MEBIBYTE, changes: 900 } });
+    commit();
+    const carried = await run(false);
+    expect(sizedAt(carried.lines)).toBe("4.00 GB");
+    expect(records()["one change a worker"]).toEqual({ lens: apart, peakMemory: 4 * 1024 * MEBIBYTE, changes: 1 });
+    expect(records()["workers kept"].changes).toBe(8);
+
+    // A file of the shape before, one record for both ways, is no record, and the next measure writes over it.
+    write({ lens: apart, peakMemory: 222 * MEBIBYTE, changes: 9 });
+    commit();
+    const before = await run(false);
+    expect(sizedAt(before.lines)).toBeUndefined();
+    expect(before.lines.some((line) => line.includes("before any was measured here"))).toBe(true);
+    expect(Object.keys(records())).toEqual(["one change a worker"]);
   }, 300_000);
 });
 

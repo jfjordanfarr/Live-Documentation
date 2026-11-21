@@ -13,7 +13,10 @@
  * The indexer is chosen by what the fixture contains, in this order:
  *
  *   .sln or .csproj at the root   scip-dotnet      needs the dotnet SDK; the tool is built for an
- *                                                  older runtime, so it runs with DOTNET_ROLL_FORWARD=Major
+ *                                                  older runtime, so it runs with DOTNET_ROLL_FORWARD=Major;
+ *                                                  each project's references are MSBuild's evaluation of it
+ *                                                  (`dotnet msbuild -getItem:ProjectReference`), so the SDK is
+ *                                                  needed for them too, and a project it cannot evaluate stops the run
  *   go.mod                        scip-go
  *   Cargo.toml                    rust-analyzer    its `scip` subcommand; crates are read from Cargo's
  *                                                  conventional layout (lib, main, src/bin, tests, examples, benches)
@@ -40,6 +43,7 @@ import { writeOracleEdges, writePowerShellAst } from "./files";
 import { copyFixture, listFixtureFiles } from "./fixture";
 import { edgesFromPowerShellAst, parsePowerShellFixture, POWERSHELL_EXTENSIONS } from "./powershell-edges";
 import { cargoProjects, convertScipIndex, readProjects, type OracleEdges, type OracleProject } from "./scip-edges";
+import { sourceDigests } from "./sources";
 
 interface Detected {
   projectFile?: string;
@@ -150,7 +154,9 @@ const INDEXERS: Indexer[] = [
     name:   "pwsh",
     detect: (files) => (files.some((file) => /\.(ps1|psm1)$/iu.test(file)) ? {} : undefined),
     read(workDir, files, projects) {
-      const ast = parsePowerShellFixture(workDir, files.filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase())));
+      const read = files.filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase()));
+      // The record names the files the parser read with their digests, so that a file added later is not passed over.
+      const ast = { ...parsePowerShellFixture(workDir, read), sources: sourceDigests(workDir, read) };
       return {
         edges: edgesFromPowerShellAst(ast, projects),
         writeBeside(outputDir, fixtureDir) {

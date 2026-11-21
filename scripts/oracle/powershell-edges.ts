@@ -18,6 +18,7 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 
+import { ParserWorkspace, recordedShippedNames } from "./powershell-wires";
 import type { OracleEdge, OracleEdges, OracleProject } from "./scip-edges";
 
 /** An error the parser reported, at its line and column; an error reading a data file has neither. */
@@ -59,6 +60,10 @@ export interface PowerShellFunction {
   name:       string;
   keyword:    "function" | "filter" | "workflow";
   member:     boolean;
+  /** Whether it stands at the file's own level, inside no function and no script block, where whoever loads the file sees it. */
+  fileScope:  boolean;
+  /** The names its `[Alias()]` attribute gives it, as written. */
+  aliases:    string[];
   line:       number;
   column:     number;
   /** The parameters it declares, in its header or its `param()` block, as spelled there. */
@@ -114,6 +119,49 @@ export interface PowerShellUsingStatement {
   resolved: string | null;
 }
 
+/** A command, by the name it is called by when that is written out, with where it stands. */
+export interface PowerShellInvocation {
+  line:     number;
+  column:   number;
+  name:     string | null;
+  /** `&`, `.`, or empty. */
+  operator: string;
+  /** Its name's text as written, up to 200 characters. */
+  text:     string;
+  /** The file its name names, when the name is a path a string fixes. */
+  resolved: string | null;
+  /** The function it stands in, the nearest. */
+  function: string | null;
+  /** The commands whose script-block arguments it stands in, nearest first. */
+  blocks:   string[];
+}
+
+/** A load only a reading of loops or of a run by path finds: a loop's dot-sources of the files a `Get-ChildItem` lists, a loop's loads over names written out, or a script run by its path. */
+export interface PowerShellLoad {
+  line:     number;
+  kind:     "dot" | "import" | "run";
+  text:     string;
+  resolved: string[];
+}
+
+/** A statement at a file's own level, by kind: `function`, `type`, `dotSource`, `command`, `assignment`, `expression`, or the parser's name for another. */
+export interface PowerShellStatement {
+  line:    number;
+  kind:    string;
+  command: string | null;
+  /** Whether it calls a command or a method outside the functions and classes it defines. */
+  invokes: boolean;
+  text:    string;
+}
+
+/** A `Set-Alias` or `New-Alias`, its name and value when written out. */
+export interface PowerShellAliasCommand {
+  line:  number;
+  text:  string;
+  name:  string | null;
+  value: string | null;
+}
+
 /** A module a `#requires -Modules` names. */
 export interface PowerShellRequiredModule {
   name:            string;
@@ -136,6 +184,11 @@ export interface PowerShellScriptFacts {
   importModules:       PowerShellImportModule[];
   usingStatements:     PowerShellUsingStatement[];
   requiredModules:     PowerShellRequiredModule[];
+  invocations:         PowerShellInvocation[];
+  loads:               PowerShellLoad[];
+  aliasCommands:       PowerShellAliasCommand[];
+  paramBlock:          boolean;
+  statements:          PowerShellStatement[];
 }
 
 /** A module or script a manifest's table names: under which key, by what name, at what version when a module specification writes one, and the file it resolves to. */
@@ -160,6 +213,8 @@ export type PowerShellFileFacts = PowerShellScriptFacts | PowerShellDataFileFact
 export interface PowerShellAst {
   tool:  string;
   files: Record<string, PowerShellFileFacts>;
+  /** The files the parser read, each with its digest (`sources.ts`), so that a kept record is tied to the files it was made from. */
+  sources?: Record<string, string>;
 }
 
 /** The extensions PowerShell reads: scripts, modules and data files. */
@@ -189,8 +244,8 @@ export function parsePowerShellFixture(workDir: string, files: string[]): PowerS
   return { tool: `pwsh ${printed.version}`, files: printed.files };
 }
 
-/** Every reference of a file that resolves to a file of the fixture, with the text that makes it. */
-function referencesOf(facts: PowerShellFileFacts): Array<{ to: string; evidence: string }> {
+/** Every reference of a file that resolves to a file of the fixture, with the text that makes it: what it loads, and the functions it calls in another file. */
+function referencesOf(file: string, facts: PowerShellFileFacts, workspace: ParserWorkspace): Array<{ to: string; evidence: string }> {
   if (isDataFileFacts(facts)) {
     return facts.references.flatMap((reference) => (reference.resolved ? [{ to: reference.resolved, evidence: `${reference.key} = '${reference.value}'` }] : []));
   }
@@ -198,7 +253,9 @@ function referencesOf(facts: PowerShellFileFacts): Array<{ to: string; evidence:
     ...facts.dotSources.flatMap((dotSource) => (dotSource.resolved ? [{ to: dotSource.resolved, evidence: dotSource.text }] : [])),
     ...facts.importModules.flatMap((command) => command.names.flatMap((name) => (name.resolved ? [{ to: name.resolved, evidence: command.text }] : []))),
     ...facts.usingStatements.flatMap((using) => (using.resolved ? [{ to: using.resolved, evidence: using.text }] : [])),
-    ...facts.requiredModules.flatMap((module) => (module.resolved ? [{ to: module.resolved, evidence: `#requires -Modules ${module.name}` }] : []))
+    ...facts.requiredModules.flatMap((module) => (module.resolved ? [{ to: module.resolved, evidence: `#requires -Modules ${module.name}` }] : [])),
+    ...facts.loads.flatMap((load) => load.resolved.map((to) => ({ to, evidence: load.text }))),
+    ...Array.from(workspace.wiresOf(file), ([to, names]) => ({ to, evidence: `calls ${Array.from(names).sort().join(", ")}` }))
   ];
 }
 
@@ -210,8 +267,9 @@ function referencesOf(facts: PowerShellFileFacts): Array<{ to: string; evidence:
 export function edgesFromPowerShellAst(ast: PowerShellAst, projects: OracleProject[]): OracleEdges {
   const documents = Object.keys(ast.files).sort();
   const edges     = new Map<string, OracleEdge>();
+  const workspace = new ParserWorkspace(ast, recordedShippedNames());
   for (const from of documents) {
-    for (const { to, evidence } of referencesOf(ast.files[from])) {
+    for (const { to, evidence } of referencesOf(from, ast.files[from], workspace)) {
       if (to === from) continue;
       const key  = `${from}|${to}`;
       const edge = edges.get(key) ?? { from, to, symbols: [] };
@@ -241,8 +299,11 @@ export function rebasePowerShellAst(ast: PowerShellAst, move: (value: string) =>
           dotSources:      facts.dotSources.map((dotSource) => ({ ...dotSource, resolved: resolved(dotSource.resolved) })),
           importModules:   facts.importModules.map((command) => ({ ...command, names: command.names.map((name) => ({ ...name, resolved: resolved(name.resolved) })) })),
           usingStatements: facts.usingStatements.map((using) => ({ ...using, resolved: resolved(using.resolved) })),
-          requiredModules: facts.requiredModules.map((module) => ({ ...module, resolved: resolved(module.resolved) }))
+          requiredModules: facts.requiredModules.map((module) => ({ ...module, resolved: resolved(module.resolved) })),
+          invocations:     facts.invocations.map((invocation) => ({ ...invocation, resolved: resolved(invocation.resolved) })),
+          loads:           facts.loads.map((load) => ({ ...load, resolved: load.resolved.map(move) }))
         };
   }
-  return { ...ast, files };
+  if (!ast.sources) return { ...ast, files };
+  return { ...ast, files, sources: Object.fromEntries(Object.entries(ast.sources).map(([file, digest]) => [move(file), digest])) };
 }

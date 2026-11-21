@@ -21,6 +21,7 @@
     "watch": "tsc -p tsconfig.json --watch"
   },
   "dependencies": {
-    "@live-documentation/engine": "file:../engine"
+    "@live-documentation/engine": "file:../engine",
+    "glob": "^14.0.6"
   }
 }

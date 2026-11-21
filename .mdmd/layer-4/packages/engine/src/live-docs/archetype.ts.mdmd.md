@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/archetype.ts`
-- Generated At: 2026-11-19T22:40:10.268Z
+- Generated At: 2026-11-21T05:01:58.124Z
 
 ## Authored
 ### Purpose
@@ -79,7 +79,7 @@ const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L150)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L159)
 
 ##### `hasMeaningfulAuthoredContent` — Summary
 Checks whether an authored markdown block carries information beyond the default placeholders and the note a doc of a file no reader handles starts with.
@@ -92,7 +92,7 @@ Checks whether an authored markdown block carries information beyond the default
 
 #### `matchesPathPattern` {#symbol-matchespathpattern}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L180)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L189)
 
 ##### `matchesPathPattern` — Summary
 True when a workspace-relative path matches a configuration pattern: a path

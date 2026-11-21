@@ -1,0 +1,164 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "CSharpBasic.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 6,
+  "names": 99,
+  "bound": 78,
+  "edges": [
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "type": [
+        "Repository"
+      ],
+      "member": [
+        "Repository.GetLatest"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "type": [
+        "Formatter"
+      ],
+      "member": [
+        "Formatter.Render"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Services/ReportService.cs",
+      "type": [
+        "ReportService"
+      ],
+      "member": [
+        "ReportService.Process"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Data/Repository.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Models/FormattedReport.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": [
+        "FormattedReport.Headline"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Timestamp",
+        "Record.Title"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "type": [
+        "Repository"
+      ],
+      "member": [
+        "Repository.GetLatest"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "type": [
+        "Formatter"
+      ],
+      "member": [
+        "Formatter.BuildHeadline"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "src/Diagnostics/App.cs": [
+      "App"
+    ],
+    "src/Diagnostics/Data/Repository.cs": [
+      "Repository"
+    ],
+    "src/Diagnostics/Models/FormattedReport.cs": [
+      "FormattedReport"
+    ],
+    "src/Diagnostics/Models/Formatter.cs": [
+      "Formatter"
+    ],
+    "src/Diagnostics/Models/Record.cs": [
+      "Record"
+    ],
+    "src/Diagnostics/Services/ReportService.cs": [
+      "ReportService"
+    ]
+  },
+  "sources": {
+    "CSharpBasic.csproj": "753b6bae7cc0e384041d9c9d0284d8e75f9caa0568f74d170b3be9e743cf406a",
+    "src/Diagnostics/App.cs": "79621f8e3fd05d149719157e00964d98c1a1060c7731a18ed87f8a75466d4dbc",
+    "src/Diagnostics/Data/Repository.cs": "566f59fec4970422bf1aae48ce00d71e91abfda4096fdd8647a32e5558ffb63a",
+    "src/Diagnostics/Models/FormattedReport.cs": "7c4723278b3c9a5cccc2be805b242648dbb671f0280d24a391a2dcf642382a7f",
+    "src/Diagnostics/Models/Formatter.cs": "91bbffd4f3a8406cf1fc385bd98bba9dc5a0821df0efb705b516bd97ee6d4eb6",
+    "src/Diagnostics/Models/Record.cs": "c52abd3ba899c8a86fefeaca1b601a15a88c2651cdfb36a5c26687cc895360f8",
+    "src/Diagnostics/Services/ReportService.cs": "d8b468208b6442424348167c142aa140669b4f191120c47955f6a6df69730e55"
+  }
+}

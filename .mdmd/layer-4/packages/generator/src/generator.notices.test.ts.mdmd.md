@@ -11,7 +11,7 @@
 Holds that what a reader says it left undrawn, its `notices`, is counted a reason across files with each subject, returned by the run, and written into no Live Doc.
 
 ### Notes
-- Written 2026-11-19 in [the Windows and command-line probe's third leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#third-leg-november-19), at the root's ruling, for the .NET reader's paths that several projects hold, the SQL reader's strings computed in part and the PowerShell reader's loads it cannot follow. No reader gives a notice yet, so the analysis is wrapped: a fake reader gives two reasons across three files. It failed before the channel existed.
+- Written 2026-11-19 in [the Windows and command-line probe's third leg](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md#third-leg-november-19), at the root's ruling, for the .NET reader's paths that several projects hold, the SQL reader's strings computed in part and the PowerShell reader's loads it cannot follow. No reader gave a notice then, so the analysis is wrapped: a fake reader gives two reasons across three files. It failed before the channel existed. Since the joining of 2026-11-21 the PowerShell reader gives notices of its own, held in `powershell.test.ts`; the wrap stays, so that the count is held apart from any one reader.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

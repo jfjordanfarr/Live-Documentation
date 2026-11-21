@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/generatorIdentity.ts`
-- Generated At: 2026-11-20T15:11:43.928Z
+- Generated At: 2026-11-21T03:17:02.483Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ cannot show them.
 
 #### `keyedLockEntries` {#symbol-keyedlockentries}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L151)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L146)
 - Parameters: `roots`: `ReadonlyArray`
 
 ##### `keyedLockEntries` — Summary
@@ -61,7 +61,7 @@ naming the record.
 
 #### `installationDifference` {#symbol-installationdifference}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L222)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L217)
 
 ##### `installationDifference` — Summary
 Where the installation differs from the lock in the entries the lens keys, as text for the key's modified half, or
@@ -83,7 +83,7 @@ trusted to be the lock's.
 
 #### `lockIdentity` {#symbol-lockidentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L270)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L265)
 
 ##### `lockIdentity` — Summary
 The half of the key a lock gives: a hash of {@link keyedLockEntries} in the order of their places, so that a change
@@ -92,14 +92,14 @@ it as it was. An absent lock has an identity of its own.
 
 #### `HISTORY_FOLDERS` {#symbol-history_folders}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L277)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L272)
 
 ##### `HISTORY_FOLDERS` — Summary
 The folders of the history's own modules, most of which read summaries and never make one.
 
 #### `SUMMARY_MODULES` {#symbol-summary_modules}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L284)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L279)
 
 ##### `SUMMARY_MODULES` — Summary
 The modules of {@link HISTORY_FOLDERS} that decide what a summary says: those the summarizing process runs, and those
@@ -108,14 +108,14 @@ environment.
 
 #### `SUMMARY_ENTRIES` {#symbol-summary_entries}
 - Type: const
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L295)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L290)
 
 ##### `SUMMARY_ENTRIES` — Summary
 The modules from which the guard reads what decides a summary: the summarizing process, and the command's side of it.
 
 #### `keysTheLens` {#symbol-keysthelens}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L301)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L296)
 
 ##### `keysTheLens` — Summary
 Whether a file, by its repository-relative path, keys the lens: every file of the two packages but a test and the
@@ -123,7 +123,7 @@ TypeScript modules of the history folders that decide nothing of a summary, and 
 
 #### `generatorIdentity` {#symbol-generatoridentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L324)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L319)
 
 ##### `generatorIdentity` — Summary
 The generator's package version and, when it runs from a checkout of this
@@ -137,7 +137,7 @@ scanned project's lock is never read.
 
 #### `readsSummaries` {#symbol-readssummaries}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L336)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L331)
 
 ##### `readsSummaries` — Summary
 Whether a file, by its repository-relative path, is code the history command may run while it reads summaries into
@@ -147,7 +147,7 @@ reads summaries with), so that a module whose part in the reading nobody has wei
 
 #### `sequenceCodeIdentity` {#symbol-sequencecodeidentity}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L352)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L347)
 
 ##### `sequenceCodeIdentity` — Summary
 The identity of the code that turns summaries into a sequence, as {@link generatorIdentity} is the identity of the
@@ -163,7 +163,7 @@ steps derived anew than those written.
 
 #### `checkoutOf` {#symbol-checkoutof}
 - Type: function
-- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L364)
+- Source: [source](../../../../../../packages/generator/src/history/generatorIdentity.ts#L359)
 
 ##### `checkoutOf` — Summary
 The keyed inputs of a checkout of this repository whose generator package stands at `packageRoot`, by the rule

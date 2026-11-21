@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { cargoProjects, edgesFromIndex, readProjects, type OracleProject, type ScipIndex } from "./scip-edges";
+import { cargoProjects, edgesFromIndex, projectReferencesFrom, readProjects, type OracleProject, type ScipIndex } from "./scip-edges";
 
 const DEFINITION = 1;
 const REFERENCE  = 0;
@@ -236,7 +236,59 @@ describe("cargoProjects", () => {
   });
 });
 
+/**
+ * MSBuild's own answers, kept as text so that the reading of them is held without `dotnet` (the repository's tests run
+ * without the languages' toolchains): `dotnet msbuild Gateway/Gateway.csproj -getItem:ProjectReference -nologo` over
+ * the estate sample (status 0), and the same over DNN Platform's `Dnn.Modules.Console.csproj`, an old-style web
+ * project whose Visual Studio targets the .NET SDK on Linux does not ship (status 1), each written on 2026-11-21 by
+ * MSBuild 18 of the .NET SDK 10.0.404, their folders shortened to `/repo` and `/corpus`.
+ */
+const MSBUILD_EVALUATED = `{
+  "Items": {
+    "ProjectReference": [
+      {
+        "Identity": "../Contracts/Contracts.csproj",
+        "Targets": "",
+        "OutputItemType": "",
+        "ReferenceSourceTarget": "ProjectReference",
+        "FullPath": "/repo/estate/Contracts/Contracts.csproj",
+        "RootDir": "/",
+        "Filename": "Contracts",
+        "Extension": ".csproj",
+        "RelativeDir": "../Contracts/",
+        "Directory": "repo/estate/Contracts/",
+        "RecursiveDir": "",
+        "ModifiedTime": "",
+        "CreatedTime": "",
+        "AccessedTime": "",
+        "DefiningProjectFullPath": "/repo/estate/Gateway/Gateway.csproj",
+        "DefiningProjectDirectory": "/repo/estate/Gateway/",
+        "DefiningProjectName": "Gateway",
+        "DefiningProjectExtension": ".csproj"
+      }
+    ]
+  }
+}
+`;
+const MSBUILD_REFUSED = "/corpus/DNN Platform/Admin Modules/Dnn.Modules.Console/Dnn.Modules.Console.csproj(153,3): error MSB4019: The imported project \"/usr/share/dotnet/sdk/10.0.404/Microsoft/VisualStudio/v18.0/WebApplications/Microsoft.WebApplication.targets\" was not found. Confirm that the expression in the Import declaration \"$(VSToolsPath)/WebApplications/Microsoft.WebApplication.targets\", which evaluated to \"/usr/share/dotnet/sdk/10.0.404/Microsoft/VisualStudio/v18.0/WebApplications/Microsoft.WebApplication.targets\", is correct, and that the file exists on disk.\n";
+
+describe("MSBuild's answer for a project's references", () => {
+  it("is read for the full path of every project it names", () => {
+    expect(projectReferencesFrom("/repo/estate/Gateway/Gateway.csproj", { status: 0, stdout: MSBUILD_EVALUATED, stderr: "" })).toEqual(["/repo/estate/Contracts/Contracts.csproj"]);
+    expect(projectReferencesFrom("/repo/A.csproj", { status: 0, stdout: "{\n  \"Items\": {\n    \"ProjectReference\": []\n  }\n}\n", stderr: "" })).toEqual([]);
+  });
+
+  it("stops the oracle where MSBuild could not evaluate the project, naming it and MSBuild's reason, and never reads the file by a pattern instead", () => {
+    expect(() => projectReferencesFrom("/corpus/Dnn.Modules.Console.csproj", { status: 1, stdout: "", stderr: MSBUILD_REFUSED })).toThrow(/^MSBuild could not evaluate \/corpus\/Dnn\.Modules\.Console\.csproj: .*error MSB4019: The imported project/u);
+    expect(() => projectReferencesFrom("/repo/A.csproj", { status: 0, stdout: "not JSON", stderr: "" })).toThrow(/MSBuild could not evaluate \/repo\/A\.csproj: exit 0/u);
+  });
+});
+
 describe("readProjects", () => {
+  /** A stand-in for MSBuild's evaluation: the references each project file holds, by its full path. */
+  const evaluation = (root: string, references: Record<string, string[]>) => (projectPath: string): string[] =>
+    (references[path.relative(root, projectPath).split(path.sep).join("/")] ?? []).map((reference) => path.join(root, reference));
+
   it("reads a solution's projects and their project references", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-sln-"));
     try {
@@ -256,10 +308,42 @@ describe("readProjects", () => {
         ].join("\n")
       );
 
-      expect(readProjects(path.join(root, "Estate.sln"))).toEqual([
+      expect(readProjects(path.join(root, "Estate.sln"), evaluation(root, { "Gateway/Gateway.csproj": ["Contracts/Contracts.csproj"] }))).toEqual([
         { name: "Contracts", directory: "Contracts", references: [] },
         { name: "Gateway",   directory: "Gateway",   references: ["Contracts"] }
       ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  // MSBuild's evaluation is the truth for a project's references since 2026-11-21: until then a pattern over the file's
+  // text read a commented-out reference as real, agreeing with the reader it was meant to grade. The project file is
+  // never read for its references here: a reference only its text holds is no reference.
+  it("takes a project's references from the evaluation alone, not from the file's text", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-evaluation-"));
+    try {
+      fs.mkdirSync(path.join(root, "A"));
+      fs.mkdirSync(path.join(root, "B"));
+      fs.writeFileSync(path.join(root, "A", "A.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"><ItemGroup><!-- <ProjectReference Include=\"../B/B.csproj\" /> --></ItemGroup></Project>\n");
+      fs.writeFileSync(path.join(root, "B", "B.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>\n");
+      fs.writeFileSync(
+        path.join(root, "Pair.sln"),
+        [
+          "Microsoft Visual Studio Solution File, Format Version 12.00",
+          "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"A\", \"A\\A.csproj\", \"{11111111-1111-1111-1111-111111111111}\"",
+          "EndProject",
+          "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"B\", \"B\\B.csproj\", \"{22222222-2222-2222-2222-222222222222}\"",
+          "EndProject",
+          ""
+        ].join("\n")
+      );
+      expect(readProjects(path.join(root, "Pair.sln"), evaluation(root, {}))).toEqual([
+        { name: "A", directory: "A", references: [] },
+        { name: "B", directory: "B", references: [] }
+      ]);
+      const refused = (projectPath: string): string[] => projectReferencesFrom(projectPath, { status: 1, stdout: "", stderr: MSBUILD_REFUSED });
+      expect(() => readProjects(path.join(root, "Pair.sln"), refused)).toThrow(/MSBuild could not evaluate .*A\.csproj/u);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
@@ -269,7 +353,7 @@ describe("readProjects", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-csproj-"));
     try {
       fs.writeFileSync(path.join(root, "WebForms.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>\n");
-      expect(readProjects(path.join(root, "WebForms.csproj"))).toEqual([{ name: "WebForms", directory: ".", references: [] }]);
+      expect(readProjects(path.join(root, "WebForms.csproj"), evaluation(root, {}))).toEqual([{ name: "WebForms", directory: ".", references: [] }]);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }

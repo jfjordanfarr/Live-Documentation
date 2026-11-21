@@ -1,0 +1,81 @@
+{
+  "tool": "scip-dotnet 0.2.16",
+  "projectFile": "../Names.sln",
+  "projects": [
+    {
+      "name": "A",
+      "directory": "../A",
+      "references": []
+    },
+    {
+      "name": "App",
+      "directory": "../App",
+      "references": []
+    },
+    {
+      "name": "B",
+      "directory": "../B",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../A/UseIt.cs",
+    "../A/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "../A/obj/Debug/net10.0/A.AssemblyInfo.cs",
+    "../App/Base.cs",
+    "../App/Derived.cs",
+    "../App/Helper.cs",
+    "../App/HelperOfT.cs",
+    "../App/MemberOverUsing.cs",
+    "../App/Other.cs",
+    "../App/Use.cs",
+    "../App/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "../App/obj/Debug/net10.0/App.AssemblyInfo.cs",
+    "../B/Thing.cs",
+    "../B/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+    "../B/obj/Debug/net10.0/B.AssemblyInfo.cs"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../App/Derived.cs",
+      "to": "../App/Base.cs",
+      "symbols": [
+        "App/Base#",
+        "App/Base#Options#"
+      ]
+    },
+    {
+      "from": "../App/MemberOverUsing.cs",
+      "to": "../App/Base.cs",
+      "symbols": [
+        "App/Base#",
+        "App/Base#Gadget."
+      ]
+    },
+    {
+      "from": "../App/Use.cs",
+      "to": "../App/Helper.cs",
+      "symbols": [
+        "Lib/Helper#"
+      ]
+    },
+    {
+      "from": "../App/Use.cs",
+      "to": "../App/HelperOfT.cs",
+      "symbols": [
+        "Lib/Helper#"
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "from": "../App/Use.cs",
+      "symbol": "Lib/Helper#",
+      "candidates": [
+        "../App/Helper.cs",
+        "../App/HelperOfT.cs"
+      ]
+    }
+  ]
+}

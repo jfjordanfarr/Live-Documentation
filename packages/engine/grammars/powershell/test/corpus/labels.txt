@@ -1,0 +1,54 @@
+===
+A labelled loop that break and continue name without the colon
+===
+
+:main foreach ($a in $b) { continue main }
+:outer while ($true) { break outer }
+function Get-Thing { }
+
+---
+
+(program
+  (statement_list
+    (label)
+    (foreach_statement
+      (variable)
+      (pipeline
+        (pipeline_chain
+          (logical_expression
+            (bitwise_expression
+              (comparison_expression
+                (additive_expression
+                  (multiplicative_expression
+                    (format_expression
+                      (range_expression
+                        (array_literal_expression
+                          (unary_expression
+                            (variable))))))))))))
+      (statement_block
+        (statement_list
+          (flow_control_statement
+            (label_expression
+              (label))))))
+    (label)
+    (while_statement
+      (while_condition
+        (pipeline
+          (pipeline_chain
+            (logical_expression
+              (bitwise_expression
+                (comparison_expression
+                  (additive_expression
+                    (multiplicative_expression
+                      (format_expression
+                        (range_expression
+                          (array_literal_expression
+                            (unary_expression
+                              (variable)))))))))))))
+      (statement_block
+        (statement_list
+          (flow_control_statement
+            (label_expression
+              (label))))))
+    (function_statement
+      (function_name))))

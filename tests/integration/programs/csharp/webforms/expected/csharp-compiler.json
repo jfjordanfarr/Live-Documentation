@@ -1,0 +1,53 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "WebForms.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 3,
+  "names": 42,
+  "bound": 21,
+  "edges": [
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/App_Code/Globals.cs",
+      "type": [
+        "Globals"
+      ],
+      "member": [
+        "Globals.GetClientConfig",
+        "Globals.GetWidgetToggle"
+      ]
+    },
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/Pages/Default.aspx.designer.cs",
+      "type": [],
+      "member": [
+        "Default.ClientConfigHidden",
+        "Default.WidgetToggleHidden"
+      ]
+    }
+  ],
+  "declared": {
+    "src/App_Code/Globals.cs": [
+      "Globals"
+    ],
+    "src/Pages/Default.aspx.cs": [
+      "Default"
+    ],
+    "src/Pages/Default.aspx.designer.cs": [
+      "Default"
+    ]
+  },
+  "sources": {
+    "WebForms.csproj": "c346678da9b7f775375bc848d3f5166558e872a7dd95af502e6a48ac407a65a3",
+    "src/App_Code/Globals.cs": "fa710d092b71ce12299a8d0b475d3d7797dbd3ed32de0f24bdb29f2b92529811",
+    "src/Pages/Default.aspx.cs": "9094c857878702cb9235099977e2c5c82081315a18b10bafdfe9efa4a9cabf97",
+    "src/Pages/Default.aspx.designer.cs": "fd106611764c58b44420323a4406db43fcc6ceec3fe2ce3bd19a7df413a105c4"
+  }
+}

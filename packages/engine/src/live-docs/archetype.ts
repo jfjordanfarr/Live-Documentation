@@ -97,14 +97,21 @@ export function resolveArchetype(
   //   test_*.py, test_*.c      (Python, C)
   //   *Test.java, *Tests.cs    (Java, C#)
   //   *_spec.rb                (Ruby)
+  //   Name.Tests.ps1           (PowerShell: Pester's own, and the only one it has)
+  // PowerShell's rules, its name and its folders alone, were measured on PowerShell's corpora only (2026-11-19, where
+  // dbatools' `Test-DbaPath.ps1` is named for its verb), so they govern PowerShell's files only: every other file is
+  // read as it was before them, its whole path against the test-folder pattern below (the ruling of 2026-11-21).
   const basename = path.basename(sourcePath);
-  if (
-    /\.(test|spec)\.[^.]+$/.test(basename) ||   // foo.test.ts, foo.spec.js
-    /_test\.[^.]+$/.test(basename) ||            // foo_test.go, foo_test.rs
-    /^test_[^.]+\.[^.]+$/.test(basename) ||      // test_foo.py, test_foo.c
-    /Tests?\.[^.]+$/.test(basename) ||           // FooTest.java, FooTests.cs
-    /_spec\.[^.]+$/.test(basename)               // foo_spec.rb
-  ) {
+  const powershell = /\.(ps1|psm1|psd1)$/i.test(basename);
+  const nameIsTest = powershell
+    // A PowerShell file named for what it does to tests, AL-Go's RunTests.psm1 or AnalyzeTests.ps1, is working code.
+    ? /\.Tests?\.ps1$/i.test(basename)            // Get-Thing.Tests.ps1, AL-Go's Name.Test.ps1
+    : /\.(test|spec)\.[^.]+$/.test(basename) ||   // foo.test.ts, foo.spec.js
+      /_test\.[^.]+$/.test(basename) ||           // foo_test.go, foo_test.rs
+      /^test_[^.]+\.[^.]+$/.test(basename) ||     // test_foo.py, test_foo.c
+      /Tests?\.[^.]+$/.test(basename) ||          // FooTest.java, FooTests.cs
+      /_spec\.[^.]+$/.test(basename);             // foo_spec.rb
+  if (nameIsTest) {
     return "test";
   }
 
@@ -132,8 +139,10 @@ export function resolveArchetype(
     return "implementation";
   }
 
-  // Check for test directories (but not individual test files - those were caught above)
-  if (/\btests?\b|__tests__/i.test(sourcePath)) {
+  // Check for test directories: a PowerShell file's against its folders alone, since its own name makes it a test only
+  // by Pester's convention above (`Test-DbaPath.ps1`, named for its approved verb, is working code); any other file's
+  // against its whole path, which also takes a file named for the word alone (`test.js`, `tests.py`) for a test.
+  if (/\btests?\b|__tests__/i.test(powershell ? path.posix.dirname(sourcePath) : sourcePath)) {
     return "test";
   }
 

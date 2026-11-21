@@ -1,5 +1,5 @@
 {
-  "tool": "pwsh 7.5.4",
+  "tool": "pwsh 7.7.0",
   "files": {
     "../common/logging.ps1": {
       "parseErrors": [],
@@ -8,6 +8,8 @@
           "name": "Write-DeploymentLog",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 1,
           "column": 1,
           "parameters": [
@@ -24,7 +26,20 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Write-DeploymentLog {"
+        }
+      ]
     },
     "../config/settings.psd1": {
       "parseErrors": [],
@@ -44,6 +59,8 @@
           "name": "Get-InventorySnapshot",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 1,
           "column": 1,
           "parameters": [
@@ -55,6 +72,8 @@
           "name": "Get-InventorySecret",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 12,
           "column": 1,
           "parameters": [],
@@ -84,7 +103,45 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 16,
+          "column": 1,
+          "name": "Export-ModuleMember",
+          "operator": "",
+          "text": "Export-ModuleMember",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-InventorySnapshot {"
+        },
+        {
+          "line": 12,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-InventorySecret {"
+        },
+        {
+          "line": 16,
+          "kind": "command",
+          "command": "Export-ModuleMember",
+          "invokes": true,
+          "text": "Export-ModuleMember -Function Get-InventorySnapshot"
+        }
+      ]
     },
     "../scripts/deploy.ps1": {
       "parseErrors": [],
@@ -93,6 +150,8 @@
           "name": "Invoke-Deployment",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 12,
           "column": 1,
           "parameters": [
@@ -158,6 +217,91 @@
           "guid": null,
           "resolved": null
         }
+      ],
+      "invocations": [
+        {
+          "line": 9,
+          "column": 1,
+          "name": "../common/logging.ps1",
+          "operator": ".",
+          "text": "\"../common/logging.ps1\"",
+          "resolved": "../common/logging.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 10,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 17,
+          "column": 5,
+          "name": "Write-DeploymentLog",
+          "operator": "",
+          "text": "Write-DeploymentLog",
+          "resolved": null,
+          "function": "Invoke-Deployment",
+          "blocks": []
+        },
+        {
+          "line": 18,
+          "column": 5,
+          "name": "Get-InventorySnapshot",
+          "operator": "",
+          "text": "Get-InventorySnapshot",
+          "resolved": null,
+          "function": "Invoke-Deployment",
+          "blocks": []
+        },
+        {
+          "line": 21,
+          "column": 1,
+          "name": "Invoke-Deployment",
+          "operator": "",
+          "text": "Invoke-Deployment",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": true,
+      "statements": [
+        {
+          "line": 9,
+          "kind": "dotSource",
+          "command": "../common/logging.ps1",
+          "invokes": true,
+          "text": ". \"../common/logging.ps1\""
+        },
+        {
+          "line": 10,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module MyCompany.Inventory"
+        },
+        {
+          "line": 12,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Invoke-Deployment {"
+        },
+        {
+          "line": 21,
+          "kind": "command",
+          "command": "Invoke-Deployment",
+          "invokes": true,
+          "text": "Invoke-Deployment -Environment $Region"
+        }
       ]
     },
     "../workspace/scripts/common/logging.ps1": {
@@ -167,6 +311,8 @@
           "name": "Write-DeploymentLog",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 8,
           "column": 1,
           "parameters": [
@@ -205,7 +351,20 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 8,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Write-DeploymentLog {"
+        }
+      ]
     },
     "../workspace/scripts/deploy.ps1": {
       "parseErrors": [],
@@ -214,6 +373,8 @@
           "name": "Invoke-Deployment",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 17,
           "column": 1,
           "parameters": [
@@ -301,6 +462,91 @@
           "guid": null,
           "resolved": null
         }
+      ],
+      "invocations": [
+        {
+          "line": 4,
+          "column": 1,
+          "name": "./Common/Logging.ps1",
+          "operator": ".",
+          "text": "\"./Common/Logging.ps1\"",
+          "resolved": "../workspace/scripts/common/logging.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 5,
+          "column": 1,
+          "name": "Import-Module",
+          "operator": "",
+          "text": "Import-Module",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 22,
+          "column": 5,
+          "name": "Write-DeploymentLog",
+          "operator": "",
+          "text": "Write-DeploymentLog",
+          "resolved": null,
+          "function": "Invoke-Deployment",
+          "blocks": []
+        },
+        {
+          "line": 23,
+          "column": 5,
+          "name": "Get-InventorySnapshot",
+          "operator": "",
+          "text": "Get-InventorySnapshot",
+          "resolved": null,
+          "function": "Invoke-Deployment",
+          "blocks": []
+        },
+        {
+          "line": 26,
+          "column": 1,
+          "name": "Invoke-Deployment",
+          "operator": "",
+          "text": "Invoke-Deployment",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 4,
+          "kind": "dotSource",
+          "command": "./Common/Logging.ps1",
+          "invokes": true,
+          "text": ". \"./Common/Logging.ps1\""
+        },
+        {
+          "line": 5,
+          "kind": "command",
+          "command": "Import-Module",
+          "invokes": true,
+          "text": "Import-Module \"./modules/Inventory.psm1\""
+        },
+        {
+          "line": 17,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Invoke-Deployment {"
+        },
+        {
+          "line": 26,
+          "kind": "command",
+          "command": "Invoke-Deployment",
+          "invokes": true,
+          "text": "Invoke-Deployment"
+        }
       ]
     },
     "../workspace/scripts/modules/Inventory.psm1": {
@@ -310,6 +556,8 @@
           "name": "Get-InventorySnapshot",
           "keyword": "function",
           "member": false,
+          "fileScope": true,
+          "aliases": [],
           "line": 8,
           "column": 1,
           "parameters": [
@@ -363,7 +611,47 @@
       "dotSources": [],
       "importModules": [],
       "usingStatements": [],
-      "requiredModules": []
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 19,
+          "column": 1,
+          "name": "Export-ModuleMember",
+          "operator": "",
+          "text": "Export-ModuleMember",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 8,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-InventorySnapshot {"
+        },
+        {
+          "line": 19,
+          "kind": "command",
+          "command": "Export-ModuleMember",
+          "invokes": true,
+          "text": "Export-ModuleMember -Function Get-InventorySnapshot"
+        }
+      ]
     }
+  },
+  "sources": {
+    "../common/logging.ps1": "7b6f5b339d9d3e574f7c9892049c909ee8671c7d46f0365495bc7f2f6b92faca",
+    "../config/settings.psd1": "d5b7056099448698f7cc26b4c72f8da8811bfc2a38644dce52aea5315314d30f",
+    "../modules/Inventory.psm1": "56520e32de10daeb7efa1e972efde37d9c3690bd47ead978c7ce52a7736e090a",
+    "../scripts/deploy.ps1": "411ef7a35705c6498bc37bfb066125af5e00717383b6bcd661ba5222fdfbdcf8",
+    "../workspace/scripts/common/logging.ps1": "5cd38f83ed0f692e697ff450fe9c8e177a209bb435d12a3da3c5986b40271850",
+    "../workspace/scripts/deploy.ps1": "2afc4b2ed009f0e211229096e4d58fa321c79f5c1e4ab16469345917671e12eb",
+    "../workspace/scripts/modules/Inventory.psm1": "2464ae58ecb6666b0f26c5a430b4bbf1cee4116f3c10ba8a3ee543886bcd6b1e"
   }
 }

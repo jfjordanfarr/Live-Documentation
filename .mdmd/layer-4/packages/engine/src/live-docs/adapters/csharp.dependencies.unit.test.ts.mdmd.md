@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts`
-- Generated At: 2026-11-19T21:10:09.257Z
+- Generated At: 2026-11-21T02:51:58.715Z
 
 ## Authored
 ### Purpose
@@ -24,16 +24,12 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
-- `node:os` - `os`
-- `node:path` - `path`
 - [`csharp.dependencies.collectConfigKeys`](./csharp.dependencies.ts.mdmd.md#symbol-collectconfigkeys)
 - [`csharp.dependencies.collectConfigurationIndexerKeys`](./csharp.dependencies.ts.mdmd.md#symbol-collectconfigurationindexerkeys)
 - [`csharp.dependencies.collectHangfireTargets`](./csharp.dependencies.ts.mdmd.md#symbol-collecthangfiretargets)
 - [`csharp.dependencies.collectTypeIdentifiers`](./csharp.dependencies.ts.mdmd.md#symbol-collecttypeidentifiers)
 - [`csharp.dependencies.collectTypeNameLiterals`](./csharp.dependencies.ts.mdmd.md#symbol-collecttypenameliterals)
-- [`csharp.dependencies.fileExists`](./csharp.dependencies.ts.mdmd.md#symbol-fileexists)
 - [`csharp.dependencies.locateNearestFile`](./csharp.dependencies.ts.mdmd.md#symbol-locatenearestfile)
 - [`csharp.dependencies.resolveReflectionTargets`](./csharp.dependencies.ts.mdmd.md#symbol-resolvereflectiontargets)
-- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+- `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

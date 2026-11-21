@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/package.json`
 - Entry: tooling
-- Generated At: 2026-11-19T21:10:17.909Z
+- Generated At: 2026-11-21T03:17:02.285Z
 
 ## Authored
 ### Purpose
@@ -24,5 +24,6 @@ The manifest of the generator package: one entry, `generator.ts`, that analyses 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `glob@^14.0.6`
 - [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-live-documentationengine)
 <!-- LIVE-DOC:END Dependencies -->

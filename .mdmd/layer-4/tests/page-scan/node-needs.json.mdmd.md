@@ -23,9 +23,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/aspnet.ts` {#symbol-enginepackagesenginesrclive-docsadaptersaspnetts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/aspnet.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersaspnettsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/aspnet.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersaspnettsnodepath}
 - Type: key
 
@@ -42,15 +39,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/cargo.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterscargotsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/csharp.dependencies.ts` {#symbol-enginepackagesenginesrclive-docsadapterscsharpdependenciests}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/csharp.dependencies.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadapterscsharpdependenciestsnodefs}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/csharp.dependencies.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterscsharpdependenciestsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/csharp.ts` {#symbol-enginepackagesenginesrclive-docsadapterscsharpts}
@@ -78,6 +66,18 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/dotnetConfig.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersdotnetconfigtsnodepath}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/dotnetPaths.ts` {#symbol-enginepackagesenginesrclive-docsadaptersdotnetpathsts}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/dotnetPaths.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersdotnetpathstsnodepath}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/dotnetProjects.ts` {#symbol-enginepackagesenginesrclive-docsadaptersdotnetprojectsts}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/dotnetProjects.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersdotnetprojectstsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/go.ts` {#symbol-enginepackagesenginesrclive-docsadaptersgots}
@@ -155,9 +155,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/project.ts` {#symbol-enginepackagesenginesrclive-docsadaptersprojectts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/project.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersprojecttsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/project.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersprojecttsnodepath}
 - Type: key
 
@@ -195,6 +192,12 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/rust.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersrusttsnodepath}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/solution.ts` {#symbol-enginepackagesenginesrclive-docsadapterssolutionts}
+- Type: key
+
+#### `engine:packages/engine/src/live-docs/adapters/solution.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterssolutiontsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/sql.ts` {#symbol-enginepackagesenginesrclive-docsadapterssqlts}

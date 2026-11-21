@@ -1,5 +1,5 @@
 {
-  "tool": "pwsh 7.5.4",
+  "tool": "pwsh 7.7.0",
   "projects": [
     {
       "name": "rollout",
@@ -24,21 +24,24 @@
       "from": "../Invoke-Rollout.ps1",
       "to": "../lib/Logging.ps1",
       "symbols": [
-        ". \"$PSScriptRoot/lib/Logging.ps1\""
+        ". \"$PSScriptRoot/lib/Logging.ps1\"",
+        "calls Write-RolloutBanner, Write-RolloutLog"
       ]
     },
     {
       "from": "../Invoke-Rollout.ps1",
       "to": "../lib/Settings.ps1",
       "symbols": [
-        ". ./lib/Settings.ps1"
+        ". ./lib/Settings.ps1",
+        "calls Read-RolloutSettings"
       ]
     },
     {
       "from": "../Invoke-Rollout.ps1",
       "to": "../modules/Rollout.Notify/Rollout.Notify.psm1",
       "symbols": [
-        "Import-Module $PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1 -Force"
+        "Import-Module $PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1 -Force",
+        "calls Send-RolloutNotice"
       ]
     },
     {
@@ -50,9 +53,17 @@
     },
     {
       "from": "../Invoke-Rollout.ps1",
+      "to": "../modules/Rollout.Steps/Rollout.Steps.psm1",
+      "symbols": [
+        "calls Format-RolloutReport, Get-RolloutPlan, Invoke-RolloutStep, Select-PendingStep"
+      ]
+    },
+    {
+      "from": "../Invoke-Rollout.ps1",
       "to": "../modules/Rollout.Targets/Rollout.Targets.psm1",
       "symbols": [
-        "using module ./modules/Rollout.Targets/Rollout.Targets.psm1"
+        "using module ./modules/Rollout.Targets/Rollout.Targets.psm1",
+        "calls Get-RolloutTarget"
       ]
     },
     {
@@ -66,14 +77,16 @@
       "from": "../scripts/Show-RolloutPlan.ps1",
       "to": "../lib/Logging.ps1",
       "symbols": [
-        ". $PSScriptRoot\\..\\lib\\Logging.ps1"
+        ". $PSScriptRoot\\..\\lib\\Logging.ps1",
+        "calls Write-RolloutBanner"
       ]
     },
     {
       "from": "../scripts/Show-RolloutPlan.ps1",
       "to": "../modules/Rollout.Steps/Rollout.Steps.psm1",
       "symbols": [
-        "Import-Module $PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1 -Force"
+        "Import-Module $PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1 -Force",
+        "calls Format-RolloutReport, Get-RolloutPlan"
       ]
     }
   ],

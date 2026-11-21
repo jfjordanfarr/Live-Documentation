@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml`
-- Generated At: 2026-11-19T21:10:24.780Z
+- Generated At: 2026-11-21T06:12:24.195Z
 
 ## Authored
 ### Purpose
@@ -23,5 +23,6 @@ Models the Blazor Server host page that renders hidden telemetry attributes cons
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `js/blazor-telemetry.js`
 - [`_Host.cshtml`](./_Host.cshtml.cs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

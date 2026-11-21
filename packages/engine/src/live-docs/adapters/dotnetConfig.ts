@@ -17,6 +17,7 @@ import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { ADDRESS_KIND } from "../openings";
 import { resolveWorkspaceTypes } from "./csharp";
+import { withoutXmlComments } from "./dotnetXml";
 import type { LanguageAdapter } from "./index";
 
 const TAG_PATTERN = /<(\/?)([A-Za-z_][\w.:-]*)\b([^>]*?)(\/?)>/gu;
@@ -72,7 +73,8 @@ export const dotnetConfigAdapter: LanguageAdapter = {
   id:         "dotnet-config",
   extensions: [".config"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+    // An XML comment is no element: it is written over in spaces before any pattern runs, its lines kept.
+    const content = withoutXmlComments(await readSourceText(absolutePath));
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [];
     const seen    = new Set<string>();

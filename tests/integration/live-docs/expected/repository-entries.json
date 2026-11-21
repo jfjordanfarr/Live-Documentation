@@ -103,10 +103,34 @@
     "scripts/oracle/compare.ts": [
       "command oracle:compare of package.json"
     ],
+    "scripts/oracle/csharp-compare.ts": [
+      "command oracle:csharp of package.json"
+    ],
+    "scripts/oracle/csharp-compiler.cs": [
+      "program"
+    ],
     "scripts/oracle/index-fixture.ts": [
       "command oracle:index of package.json"
     ],
+    "scripts/oracle/PlSqlEmitter.java": [
+      "program main"
+    ],
+    "scripts/oracle/plsql-compare.ts": [
+      "command oracle:plsql of package.json"
+    ],
     "scripts/oracle/powershell-ast.ps1": [
+      "program"
+    ],
+    "scripts/oracle/powershell-compare.ts": [
+      "command oracle:powershell of package.json"
+    ],
+    "scripts/oracle/powershell-shipped.ps1": [
+      "program"
+    ],
+    "scripts/oracle/sql-compare.ts": [
+      "command oracle:sql of package.json"
+    ],
+    "scripts/oracle/sql-scriptdom.cs": [
       "program"
     ],
     "scripts/safe-to-commit.mjs": [
