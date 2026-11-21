@@ -42,6 +42,15 @@ node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task estate-uses --model
 
 `--setting <group>.<name>=<value>` (repeatable; in a ladder plan, `"settings": ["<group>.<name>=<value>"]`) starts the run as a viewer who has already made that choice in Tuning, for trying a default on strangers: `--setting localMap.framing=follows` is Tuning → 2D Layout → Framing → Follows Pins. Before the page's own code first runs, the window writes the choice where the page keeps a viewer's choices, its saved interface state in the browser (`live-docs-explorer:ui:v2`, as `{ "version": 2, "tuning": { "<group>": { "<name>": "<value>" } } }`), once a tab, so that a later load keeps what the page has saved since. `run.json` names the settings, and the setup checks, before the tester begins, that Tuning's own control for each (`#tuning-<name>`) shows the value; `setup.json` holds what was wanted and what was shown, and a setting the page did not take fails the setup, which ends the run as below. The values are those of the control's options in `packages/explorer/src/shared/template.html`. Added on 2026-11-21 for the Framing trial in that day's probe.
 
+## A page that is not the Explorer, and a folder handed to it
+
+Added on 2026-11-21 for the trial page of the choice before a scan (`Probes/leave-out/choice/choice.html` of that day).
+
+- **The page.** `--page <file>[?query]`, or a task's `page` (a path from the repository's root) with its `query`, serves that one file read-only at `http://127.0.0.1:8793/` for the run: the address the tester sees names no folder of this repository, and the window's block on other origins holds as for the Explorer. The Explorer is then not served. `run.json` names the page and its query, and its time stamps are the page file's.
+- **The folder.** A task's `handFolder` (`{ "input": "<selector>", "ready": "<selector>" }`) with `--folder <dir>` (in a ladder plan, `"folder"`), or `--folder <dir> --input <selector> --ready <selector>`, hands that folder to the page's file input before the tester's first look, as a person choosing it would have; the window waits until the `ready` element is shown with words in it, then for the page to rest. The page cannot be given a folder through a picker or a drop by automation.
+- **Presses.** `--press <selector>` (repeatable; a task's `press`, a plan's `"press"`) presses a control of the page in the same setup, after the folder.
+- `setup.json` records the folder's name, the input, the ready element's words and how long the handing took, and each press; a failure of any ends the run as a failed setup does.
+
 ## The narrative playtest
 
 On 2026-11-19 the owner named a test of the whole product: "a true test of the efficacy of our product would be to hand it to an agent which watches the evolution of the software and have it functionally restate the narrative.md just by using the software". They also named the bias such a test must allow for: "Models live on text. It's natural for them to wish for there to be more."

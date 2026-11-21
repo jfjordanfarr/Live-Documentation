@@ -7,6 +7,8 @@
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task <id from tasks.json> --model <id> --effort <level>
 //        [--variant look-only|after-each] [--out <run folder>] [--max-actions 60] [--site <built explorer dir>] [--claude <program>]
 //        [--setting <group>.<name>=<value> ...]
+//   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --page <file>[?query] --words <text> [--folder <dir> --input <selector>
+//        --ready <selector>] [--press <selector> ...] ...
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --start <url> --words <the visitor's message> ...
 //
 // The tester is launched from an empty directory outside the repository, with no built-in tools, this window as its
@@ -15,6 +17,7 @@
 // the window's seven tools and nothing else. The site is served read-only on 127.0.0.1:8792 for the run if nothing
 // serves it there already. The whole tester runs under the shared browser lock, so the window's browser does too.
 import fs from 'node:fs';
+import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn, execFileSync } from 'node:child_process';
@@ -35,7 +38,23 @@ const tools = ['look', 'point', 'click', 'drag', 'scroll', 'type', 'press'];
 const taskId = option('--task');
 const task = taskId ? JSON.parse(fs.readFileSync(path.join(here, 'tasks.json'), 'utf8')).tasks.find((t) => t.id === taskId) : null;
 if (taskId && !task) { console.error(`no task ${taskId} in tasks.json`); process.exit(2); }
-const start = option('--start', task?.start);
+// The main checkout's built Explorer, also when this script runs from a worktree.
+const mainCheckout = path.dirname(execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'], { cwd: here, encoding: 'utf8' }).trim());
+// A page that is not the Explorer (2026-11-21): `--page <file>[?query]`, or a task's `page` (relative to the repository)
+// and `query`, serves that one file read-only at http://127.0.0.1:8793/, so that the address the tester sees names no
+// folder of this repository. A task's `handFolder` ({ input, ready }) and `--folder <dir>` hand a folder to the page's
+// file input before the tester's first look; `--press <selector>` (repeatable, or a task's `press`) presses a control in
+// the same setup.
+const pagePort = 8793;
+const pageOption = option('--page', task?.page ? path.join(mainCheckout, task.page) + (task.query ?? '') : null);
+const pageFile = pageOption ? path.resolve(pageOption.replace(/\?.*$/s, '')) : null;
+const pageQuery = pageOption?.includes('?') ? pageOption.slice(pageOption.indexOf('?')) : '';
+if (pageFile && !fs.existsSync(pageFile)) { console.error(`no page at ${pageFile}`); process.exit(2); }
+const folder = option('--folder') && path.resolve(option('--folder'));
+const handFolder = task?.handFolder ?? (folder ? { input: option('--input', 'input[type=file]'), ready: option('--ready') } : null);
+if (handFolder && !folder) { console.error('this task hands the page a folder: name it with --folder <dir>'); process.exit(2); }
+const presses = [...(task?.press ?? []), ...args.flatMap((arg, i) => (arg === '--press' ? [args[i + 1]] : []))];
+const start = pageFile ? `http://127.0.0.1:${pagePort}/${pageQuery}` : option('--start', task?.start);
 const words = option('--words', task?.words);
 const model = option('--model');
 const effort = option('--effort');
@@ -45,10 +64,8 @@ if (!start || !words || !model || !effort || !['look-only', 'after-each'].includ
   console.error('usage: playtest.mjs (--task <id> | --start <url> --words <text>) --model <id> --effort <level|default> [--variant look-only|after-each] [--out <dir>]');
   process.exit(2);
 }
-if (!start.startsWith(`http://127.0.0.1:${port}/`)) { console.error(`the start address must be on http://127.0.0.1:${port}/`); process.exit(2); }
+if (!pageFile && !start.startsWith(`http://127.0.0.1:${port}/`)) { console.error(`the start address must be on http://127.0.0.1:${port}/`); process.exit(2); }
 
-// The main checkout's built Explorer, also when this script runs from a worktree.
-const mainCheckout = path.dirname(execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'], { cwd: here, encoding: 'utf8' }).trim());
 const site = path.resolve(option('--site', path.join(mainCheckout, 'dist', 'explorer')));
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const out = path.resolve(option('--out', path.join(mainCheckout, 'AI-Agent-Workspace', 'tmp', 'playtests', `${stamp}-${taskId ?? 'free'}-${model}-${effort}-${variant}`)));
@@ -66,7 +83,15 @@ async function serving() {
 }
 
 let server = null;
-if (!await serving()) {
+let pageServer = null;
+if (pageFile) {
+  pageServer = http.createServer((request, response) => {
+    if (new URL(request.url, 'http://127.0.0.1').pathname !== '/') { response.writeHead(404); response.end(); return; }
+    response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+    fs.createReadStream(pageFile).pipe(response);
+  });
+  await new Promise((resolve, reject) => pageServer.once('error', reject).listen(pagePort, '127.0.0.1', resolve));
+} else if (!await serving()) {
   if (!fs.existsSync(path.join(site, 'index.html'))) { console.error(`no built Explorer at ${site}`); process.exit(2); }
   const httpServer = createRequire(import.meta.url).resolve('http-server/bin/http-server');
   server = spawn(process.execPath, [httpServer, site, '-a', '127.0.0.1', '-p', String(port), '-c-1', '--silent'], { stdio: 'ignore' });
@@ -84,6 +109,8 @@ for (const flag of task?.window ?? []) if (['--open-history', '--hide-step-words
 // A viewer's Tuning choices made before the page first loads, as `--setting localMap.framing=follows` (repeatable).
 const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] : []));
 for (const setting of settings) windowArgs.push('--setting', setting);
+if (handFolder) windowArgs.push('--hand-folder', folder, '--hand-input', handFolder.input, ...(handFolder.ready ? ['--ready', handFolder.ready] : []));
+for (const selector of presses) windowArgs.push('--press', selector);
 const mcp = { mcpServers: { window: { type: 'stdio', command: process.execPath, args: windowArgs } } };
 const claudeArgs = [
   '-p', prompt,
@@ -104,12 +131,12 @@ const env = { HOME: os.homedir(), PATH: process.env.PATH, LANG: process.env.LANG
   MCP_TIMEOUT: '120000', MCP_TOOL_TIMEOUT: '120000', ...(process.env.CLAUDE_CONFIG_DIR ? { CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR } : {}) };
 
 // When the built site was last written, at the start and the end: a gate that rebuilds it under a run shows here.
-const siteStamp = () => Object.fromEntries(['index.html', 'explorer-data.json', 'samples/estate/explorer-data.json'].map((file) => {
+const siteStamp = () => pageFile ? { [pageFile]: fs.statSync(pageFile).mtime.toISOString() } : Object.fromEntries(['index.html', 'explorer-data.json', 'samples/estate/explorer-data.json'].map((file) => {
   try { return [file, fs.statSync(path.join(site, file)).mtime.toISOString()]; } catch { return [file, null]; }
 }));
 const siteAtStart = siteStamp();
 fs.writeFileSync(path.join(out, 'run.json'), JSON.stringify({ task: taskId, start, words, model, effort, variant, settings, maxActions: Number(maxActions),
-  site, siteAtStart, systemPrompt: system, prompt, startedAt: new Date().toISOString() }, null, 2) + '\n');
+  site: pageFile ?? site, siteAtStart, ...(pageFile ? { page: pageFile, query: pageQuery } : {}), ...(handFolder ? { folder, handFolder } : {}), ...(presses.length ? { presses } : {}), systemPrompt: system, prompt, startedAt: new Date().toISOString() }, null, 2) + '\n');
 
 const began = Date.now();
 const child = spawn('flock', ['-s', lock, claude, ...claudeArgs], { cwd: empty, env, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -175,6 +202,7 @@ clearInterval(setupWatch);
 const wallMs = Date.now() - (initAt ?? began);
 const lockWaitMs = (initAt ?? began) - began;
 server?.kill();
+pageServer?.close();
 fs.rmSync(empty, { recursive: true, force: true });
 
 const actions = fs.existsSync(path.join(out, 'actions.jsonl'))

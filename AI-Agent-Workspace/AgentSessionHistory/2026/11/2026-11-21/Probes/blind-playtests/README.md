@@ -6,7 +6,7 @@ The owner's caution on reading testers (2026-11-19): "Models live on text. It's 
 
 ## What was run
 
-Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 and the Framing, Arrival and Step trials ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $9.22 as the program reports it, $5.76 of it the two narrative runs and their grades.
+Every visitor run is look-only (the instrument's default), at most 60 actions (150 for the narrative task). Tasks 1 to 3 ran one tester at a time under the shared browser lock, in the order of [ladder-plan.json](ladder-plan.json); task 4 and the Framing, Arrival and Step trials ran through `ladder.mjs`, four at a time. Model ids: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Sonnet ran at medium effort and Haiku at its own default, as on November 19. Everything here, testers, the two grades and the setup check, cost $9.29 as the program reports it, $5.76 of it the two narrative runs and their grades.
 
 | Run | Task | Model, effort | Turns | Actions (looks) | Tokens in, out | Wall | Cost |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -99,6 +99,9 @@ Every visitor run is look-only (the instrument's default), at most 60 actions (1
 | [repo-uses-sonnet-medium-step-lines](repo-uses-sonnet-medium-step-lines/) | repo-uses with localMap.step=lines | Sonnet, medium | 4 | 3 (2) | 18k, 0.8k | 14 s | $0.028 |
 | [repo-uses-haiku-default-step-lines](repo-uses-haiku-default-step-lines/) | repo-uses with localMap.step=lines | Haiku, default | 12 | 11 (6) | 65k, 1.7k | 21 s | $0.004 |
 | [setup-failure-check](setup-failure-check/) | narrative-picture | Haiku, default | - | 0 (0) | - | 31 s | -, outcome "setup failed" |
+| [instrument-check-estate-uses-haiku](instrument-check-estate-uses-haiku/) | estate-uses | Haiku, default | 11 | 10 (5) | 50k, 2.5k | 24 s | $0.004 |
+| [pilot-leave-out-read-reason-sonnet](pilot-leave-out-read-reason-sonnet/) | leave-out-read-reason | Sonnet, medium | 2 | 1 (1) | 6k, 0.6k | 38 s | $0.015 |
+| [pilot-leave-out-keep-folders-sonnet](pilot-leave-out-keep-folders-sonnet/) | leave-out-keep-folders with [data-layout="tree"] | Sonnet, medium | 13 | 12 (6) | 58k, 1.0k | 33 s | $0.055 |
 
 Costs and times are as the program reports them; "Actions" counts every tool call, with the number of `look`s in brackets.
 
@@ -463,7 +466,7 @@ The runs: [ladder-step-plan.json](ladder-step-plan.json), 20 runs through `ladde
 - **repo-directory.** The two values gave one picture on every step a tester took. The Sonnet testers walked down from the World Map (the `explorer` box, then `src`, then `client`): `src` fits at reading size under both ([least, #4](repo-directory-sonnet-medium-step-least/shots/004-click.png)), and `client` is too large to hold at or above the floor, so With Its Lines did what Least Pan does, the scale kept and `client`'s label and first row brought in at the left, `palette.ts` and its test at reading size, the rest of `client` beyond the edges ([least, #6](repo-directory-sonnet-medium-step-least/shots/006-click.png); [lines, #6](repo-directory-sonnet-medium-step-lines/shots/006-click.png), the same picture). The Haiku testers never opened a folder in the map: as this morning, they typed the folder's path into the search, which lists its four files under a heading, and opened a file from the list.
 - **repo-uses.** No tester pressed a cell, so no step was taken under either value; the runs measure nothing of the lever.
 
-### What the testers did
+### What the testers did under each Step value
 
 estate-directory, the step being `Data/` opened. "Whole after the step" asks whether the first picture after it shows `Data/`'s files and the folder's other connected files whole.
 
@@ -507,6 +510,59 @@ repo-uses: all four done. Under both values Haiku went to `pathfind.ts`'s reader
 - **The lever on this repository.** Not exercised: the one large step taken (`client`) is beyond the floor, so both values gave the same picture, and the Haiku testers took no step at all. The repo-directory results differ between the two values (two done and two partly under Least Pan, four done under With Its Lines), but no step framing differed between them, so the difference belongs to the testers' own routes through the readers, not to the lever. Under both values both Sonnet testers spent 21 to 26 actions walking down and scrolling `client`; under With Its Lines both gave up the walk and typed the path into the search, as the walking Sonnet tester did this morning.
 - **Where a value loses the tester's place.** Least Pan's estate step leaves App.config's name half under the search bar's shade at the top: the folder the tester did not open is the one cut. With Its Lines loses nothing visible on the estate; whether the ease loses a person's place in motion is what the instrument hides.
 
+## The choice before a scan: the instrument, the folder and the tasks (runs to come)
+
+Asked by the root on November 21, after the Step trial: try on strangers the choice a person makes before a scan, what it will read and what it leaves out, on its trial page (`Probes/leave-out/choice/choice.html`, the [leave-out record](../leave-out/README.md), "Fourth leg"), in its two layouts, *By reason* and *Folders*. The owner, 2026-11-21: "This would then behoove us to ensure that the user, either via CLI or the page, has a good solid way to create ignore patterns on what they scan, before they scan it." Their clone at work holds over 100,000 files, most of them packages, under git and TFS. The 32 runs wait for the page's builder to mend its drawing and add the link parameters `?layout=reason|folders` and `&switch=off`; this section holds what was made for them and two pilot runs on the page as it stood at 07:10 UTC.
+
+### What the instrument gained
+
+Described in [its README](../../../../../../scripts/playtest/README.md#a-page-that-is-not-the-explorer-and-a-folder-handed-to-it): a run can start on a page given by its file (served read-only at `http://127.0.0.1:8793/` with its query, so the address names no folder of this repository), hand a folder to a named file input before the tester's first look, waiting for a named element to show its words and the page to rest, and press controls in the same setup. `setup.json` records each. **Checked:** `estate-uses` on Haiku was run again with no new option ([instrument-check-estate-uses-haiku](instrument-check-estate-uses-haiku/)): served on 8792 from `dist/explorer` as before, no `setup.json` written, 10 actions, right (the four files from the reader's Dependents).
+
+### The folder
+
+[make-leave-out-folder.mjs](make-leave-out-folder.mjs) makes it; to make it again:
+
+1. Clone DNN shallowly and anonymously, with nothing of this project in the request: `GIT_TERMINAL_PROMPT=0 git -c credential.helper= clone --depth 1 https://github.com/dnnsoftware/Dnn.Platform.git dnn`. On November 21 that gave `d6c3af4d78c2a064913bfd72f0bac4a992997e3a` (10,940 files without `.git`, 82 project files, 26 `.gitignore` files).
+2. `node make-leave-out-folder.mjs dnn Source`. It runs `Probes/leave-out/make-folder.mjs` (unchanged) to make the full folder of the owner's shape, then:
+   - removes DNN's own top `Packages/` (one `repositories.config`), which on a Windows drive is the same folder as the made `packages/`;
+   - keeps in each `packages` folder its `repositories.config` and its first packages by name, 30 at the top and 4 in a project folder;
+   - puts back DNN's 25 nested `.gitignore` files, not its top one: a TFS folder has none at its top, and that one would leave out every `bin`, `obj` and `packages` by its own lines.
+
+The folder is named `Source`, the name the page shows. It holds **17,244 files**: DNN's own (with the nested `.gitignore` files), 1,714 built files under `bin` and `obj` beside the projects, 4,577 package files in 45 NuGet-shaped `packages` folders, and NuGet's recommended `.tfignore` in 15 project folders. It took 54 s to make. Handed through the folder input it is listed and decided in 10.4 s at a load of 3 to 5, and 29.8 s at a load near 18 (`setup.json` of the pilots); the full made folder takes 65 to 71 s. It lives in the builder's scratch folder and is not committed.
+
+The page shows: **10,945 files will be read · 6,299 files left out**. The left-out groups: NuGet packages, 30 folders, 3,242 files; build output beside a project, 134 folders, 1,420 files; `.tfignore: packages`, 15 folders, 1,335 files; `.gitignore: [Bb]in` 9 folders 126 files, `[Oo]bj` 9 and 63, `bin/` 5 and 70, `obj/` 5 and 35; `/*/css/*.css` 6 files; `/*/scripts/bundles/*.svg` 2 files. Checked against the making: 1,714 built and 4,577 package files plus the 8 single files are exactly 6,299. [leave-out-answers.mts](leave-out-answers.mts) prints these from the page's own model over the folder, with patterns added, and gave the answers below.
+
+### The tasks, with their answers written before any run
+
+In [tasks.json](../../../../../../scripts/playtest/tasks.json), each twice, `-reason` and `-folders`, each with `?layout=…&switch=off`. The root's four, changed: each names a real folder of the made tree and gives the visitor's own reason, so that a tester is asked to act on a premise and not told how; task 4 says "without changing anything". No sentence names a control or what the page calls anything.
+
+| Task | The visitor's words | The answer |
+| --- | --- | --- |
+| `leave-out-read` | "A scan of this folder is about to start. Without changing anything: how many files will it read, what is it leaving out, and why? Name the largest things left out and the reason for each." | 10,945 read, 6,299 left out; the largest: NuGet packages 3,242 (the top `packages/` 661), build output 1,420, `.tfignore: packages` 1,335, then the nested `.gitignore` groups. |
+| `leave-out-keep` | "Our team wrote what is in `DNN Platform/Library/packages` ourselves; it isn't downloaded. Make the scan read that folder, then tell me how many files the scan will read." | Left out as NuGet packages (89 files); kept, **11,034** read. Keeping the whole group would give 14,187. |
+| `leave-out-drop` | "We don't want the tests in this scan. Make it leave out `DNN Platform/Tests`, then tell me how many files the scan will read." | 900 files, 543 of them read until then; left out, **10,402** read. |
+| `leave-out-why` | "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?" | No: the line `[Bb]in` (line 53) of `Dnn.AdminExperience/.gitignore`, shown as `.gitignore: [Bb]in`; 14 files; as a project's build output it would be left out without the line too. |
+
+The full answers, with what counts as right, partly and wrong, are each task's `rightAnswer`.
+
+### Two pilots, on the page as it stood
+
+The page did not yet read `?layout` or `&switch`, so the query was ignored, the switch was drawn, and the Folders pilot's setup pressed `[data-layout="tree"]` to open Folders before the first look.
+
+| Run | Task | Model | Turns | Actions (looks) | Tokens in, out | Wall | Lock wait | Cost |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [pilot-leave-out-read-reason-sonnet](pilot-leave-out-read-reason-sonnet/) | leave-out-read, By reason | Sonnet, medium | 2 | 1 (1) | 6k, 0.6k | 38 s | 54 s | $0.015 |
+| [pilot-leave-out-keep-folders-sonnet](pilot-leave-out-keep-folders-sonnet/) | leave-out-keep, Folders | Sonnet, medium | 13 | 12 (6) | 58k, 1.0k | 33 s | 301 s | $0.055 |
+
+- **leave-out-read, By reason: right in one look** ([answer](pilot-leave-out-read-reason-sonnet/answer.md); the [picture](pilot-leave-out-read-reason-sonnet/shots/001-look.png) it read). The totals, all nine groups with their counts, and a reason for each: "downloaded third-party packages … skipped because the 'Leave out build output and packages' option is checked"; "The folder's `.tfignore` file (Team Foundation's ignore list) excludes the `packages` folders". It added "It won't look inside 0 folders", the page's own words read back without meaning. On this layout the task is answered by the first picture; it measures reading, not finding.
+- **leave-out-keep, Folders: right in 12 actions** ([answer](pilot-leave-out-keep-folders-sonnet/answer.md)). It opened `DNN Platform`, scrolled, opened `Library`, scrolled until the row `packages · 89 files left out · NuGet packages` stood with an empty box ([#8](pilot-leave-out-keep-folders-sonnet/shots/008-scroll.png)), ticked it, scrolled back to the top and read "11,034 files will be read · 6,210 files left out" ([#11](pilot-leave-out-keep-folders-sonnet/shots/011-scroll.png)). What I see: the row it wanted carries its reason at the right edge, and the totals sit above the tree, out of view once the tree is scrolled, so it scrolled back to read them.
+- **The wording.** Both testers took the visitor's words as meant and changed nothing they were not asked to. Neither pressed Scan ("I didn't press Scan, so nothing has been run yet"). The By reason read task may prove easy for every tester; the Folders read task and the three acting tasks are where the layouts should part.
+
+### Not yet done
+
+- The 32 runs, on the root's word once the mended page with its link parameters is merged. The plan is the eight `leave-out-*` tasks on Sonnet at medium and Haiku at default, two each, with `"folder"` the made `Source`; the folder and the DNN clone stay in the builder's scratch folder until then.
+- The four runs of Cut Counted (`localMap.cutCounted=on`), on the root's word once its counts are changed.
+
 ## What a designer would look at next
 
 What strangers did and said across the 30 visitor runs of this probe (tasks 1, 3 and 4) and the two narrative runs, most common first. Each is a stumble named, with its picture; none is a proposal.
@@ -524,4 +580,4 @@ By the owner's caution, testers' remarks that "the map doesn't say" what a line 
 
 ## Pictures kept
 
-On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to. Run again after the Framing, Arrival and Step trials, it keeps 201 of the runs' pictures (27.7 MB); over its passes it moved 559 others (about 75 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning. The two pictures in [scan-root](scan-root/) were taken by a script outside the instrument and are kept whole.
+On November 21, once the runs were judged, [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) kept in this folder each run's first and last picture and every picture this README links to. Run again after the Framing, Arrival and Step trials and the leave-out pilots, it keeps 207 of the runs' pictures (28.3 MB); over its passes it moved 566 others (about 76 MB) to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores and which is not kept; each run's `actions.jsonl` still names every picture. A run can be had again for a few cents (the narrative runs for about two dollars each), though not on the Explorer as it was built that morning. The two pictures in [scan-root](scan-root/) were taken by a script outside the instrument and are kept whole.
