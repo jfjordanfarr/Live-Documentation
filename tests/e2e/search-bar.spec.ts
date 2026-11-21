@@ -333,11 +333,11 @@ test("a folder is reached by its path, and the files its list leaves out are cou
   await expect(active).toHaveClass(/search-row--file/u);
   await expect(active).toHaveAttribute("aria-selected", "true");
 
-  // Pressing the folder's row opens it in the Local Map, its label drawn
+  // Pressing the folder's row opens it in the Local Map, its label in view (camera-intent.spec.ts holds how it is framed)
   await folder.click();
   await localMapSettled(page);
   expect(currentSnapshot(page).openDirectories.has(HISTORY)).toBe(true);
-  await expect(page.locator(`#map-container .local-directory-label[data-directory="${HISTORY}"]`)).toHaveCount(1);
+  await expect(page.locator(`#map-container .local-directory-label[data-directory="${HISTORY}"]`)).toBeInViewport();
 });
 
 test("the bar stands in every view, a file chosen on the World Map opens the Local Map pinned, and its words are never cut", async ({ page }) => {

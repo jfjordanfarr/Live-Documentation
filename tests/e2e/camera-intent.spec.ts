@@ -509,3 +509,39 @@ test("a folder chosen in the search stands whole in the frame, not centred on it
   expect(Math.abs(above - below), `centred: ${above} px above it, ${below} px below`).toBeLessThan(24);
   await context.close();
 });
+
+test("a folder chosen in the search that no frame holds is entered at its label and its first row, at reading size", async ({ browser }) => {
+  // The search's builder's picture of 2026-11-21: live-docs/history chosen in the search beside pathfind.ts opened and
+  // left its label below the window, the camera entering the folder's box at its top-left, which in Flow stands some
+  // 2,000 px above the label, beside the columns of the folder that holds it. A step's rule is the one that holds here.
+  test.setTimeout(120_000);
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+  });
+  const page = await context.newPage();
+  await page.goto(`/?view=local&mode=2d&node=${encodeURIComponent(SUBJECT)}`);
+  await page.waitForSelector("#map-container .node-card.local-focus", { timeout: 20_000 });
+  await still(page);
+  await choose(page, "subject", "live-docs/history", { directory: HISTORY });
+  await expect(page.locator(band(HISTORY))).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  const frame = await frameOf(page), drawn = (await boxOf(page, band(HISTORY)))!;
+  expect(drawn.bottom - drawn.top, "no frame at reading size holds the folder").toBeGreaterThan(frame.bottom - frame.top);
+  expect((await cameraOf(page)).k, "at reading size").toBeCloseTo(1, 3);
+  const label = `.local-directory-label[data-directory="${HISTORY}"]`;
+  expect(inside(await boxOf(page, label), frame), `the folder's label ${JSON.stringify(await boxOf(page, label))} inside ${JSON.stringify(frame)}`).toBe(true);
+  // Its first row: the cards it holds directly that stand highest below its label.
+  const firstRow = await page.evaluate(selector => {
+    const head = document.querySelector(selector)!, folder = head.closest(".local-directory-band")!, top = head.getBoundingClientRect().top;
+    const held = [...folder.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed")]
+      .filter(element => element.parentElement?.closest(".local-directory-band") === folder)
+      .map(element => element.getBoundingClientRect()).filter(box => box.top >= top);
+    const highest = Math.min(...held.map(box => box.top));
+    return held.filter(box => box.top <= highest + 8).map(box => ({ left: box.left, top: box.top, right: box.right, bottom: box.bottom }));
+  }, label);
+  expect(firstRow.length, "the folder holds cards under its label").toBeGreaterThan(0);
+  for (const box of firstRow) expect(box.top, "the first row's top in view").toBeLessThan(frame.bottom);
+  expect(firstRow.some(box => inside(box, frame) || (box.left < frame.right && box.top >= frame.top && box.top < frame.bottom)), "a card of the first row in view").toBe(true);
+  await context.close();
+});

@@ -275,17 +275,23 @@ export function wholeTransform(content: Bounds, frame: Frame, readingScale: numb
   return { x: frame.width / 2 - (content.left + content.width / 2) * k, y: frame.height / 2 - (content.top + content.height / 2) * k, k };
 }
 
-/** Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas. */
-export function focusTransform(target: Bounds, current: MapTransform, frame: Frame): MapTransform {
+/**
+ * Frame an explicitly requested row, file or opened directory at reading size, including its actions, inside the usable
+ * canvas: centred along each axis it fits, and along an axis it does not, entered at `entry`, the place a person reads it
+ * from, which is its own top or left unless given (an opened directory's label and first row, 2026-11-21: entered at its
+ * box's corner, live-docs/history chosen in the search stood with its label 2,000 px below the window, its box reaching up
+ * beside the columns of the folder that holds it).
+ */
+export function focusTransform(target: Bounds, current: MapTransform, frame: Frame, entry: { left: number; top: number } = target): MapTransform {
   const { horizontal, vertical } = framePadding(frame);
   const k = Math.max(1, Math.min(current.k,
     (frame.width - 2 * horizontal) / Math.max(1, target.width),
     (frame.height - 2 * vertical) / Math.max(1, target.height)));
   return {
     x: target.width * k > frame.width - 2 * horizontal
-      ? horizontal - target.left * k : frame.width / 2 - (target.left + target.width / 2) * k,
+      ? horizontal - entry.left * k : frame.width / 2 - (target.left + target.width / 2) * k,
     y: target.height * k > frame.height - 2 * vertical
-      ? vertical - target.top * k : frame.height / 2 - (target.top + target.height / 2) * k,
+      ? vertical - entry.top * k : frame.height / 2 - (target.top + target.height / 2) * k,
     k
   };
 }

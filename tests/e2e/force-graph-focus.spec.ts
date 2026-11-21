@@ -311,19 +311,20 @@ test("search moves focus smoothly, survives filtering, and resizes with its cont
 test("direct labels release independent pins, preserve required neighbors, and share the remaining set into 2D", async ({ page, browser }) => {
   test.setTimeout(60_000);
   await observeGraph(page);
-  const file = "Portal/Services/GatewayClient.cs", orphan = "Estate.sln";
+  const file = "Portal/Services/GatewayClient.cs", solution = "Estate.sln";
   await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d",
-    pinSet: { entries: [{ nodeId: file, symbol: "*" }, { nodeId: orphan, symbol: "*" }] } })}`);
+    pinSet: { entries: [{ nodeId: file, symbol: "*" }, { nodeId: solution, symbol: "*" }] } })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const label = (id: string) => page.locator(`.force-graph-label[data-node-id="${id}"], .force-graph-focus[data-node-id="${id}"]`);
-  await expect(label(orphan)).toHaveAttribute("aria-pressed", "true");
-  await label(orphan).click();
+  await expect(label(solution)).toHaveAttribute("aria-pressed", "true");
+  await label(solution).click();
   expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
-  // The pointer's preview still owns the released label until it leaves; then the lone seed is dimmed as the frontier.
+  // The pointer's preview still owns the released label until it leaves; then the released seed is dimmed as the frontier.
   const away = await emptyPoint(page);
   await page.mouse.move(away.x, away.y);
-  // Released, the lone file stays in the picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
-  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === orphan)?.opacity).toBeLessThan(0.5);
+  // Released, the solution stays in the picture as its own group's seed, dimmed beyond the frontier (2026-11-02): the most
+  // connected file of the group it makes with its five projects since the .NET reader of 2026-11-21, a lone file before.
+  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === solution)?.opacity).toBeLessThan(0.5);
   const shared = await browser.newPage();
   try {
     await shared.goto(page.url());

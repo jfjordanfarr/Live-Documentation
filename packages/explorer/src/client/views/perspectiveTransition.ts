@@ -59,7 +59,7 @@ export interface LocalScene {
   directories: DirectorySnapshot[];
 }
 
-/** A capture of the 2D map: its scene, complete once `copied` resolves, the cards' copies made a slice at a time. */
+/** A capture of the 2D map: its scene, complete once `copied` resolves, the copies of its cards and its directories' shells made a slice at a time. */
 export interface LocalCapture {
   scene: LocalScene;
   /** Resolves when every card the frame meets has its copy; the transition waits for it. */
@@ -79,14 +79,15 @@ const COPY_SLICE = 16, COPY_SLICE_MOST = 100;
 
 /**
  * Capture native cards, rendered symbol curves and directory shells before hiding their view. Every place, every wire
- * and every shell is read at once, while the picture stands as it was pressed; the cards' copies, the costly part, are
+ * and every shell is read at once, while the picture stands as it was pressed; the copies, of the cards and of the
+ * directories' shells, the costly part, are
  * made in slices of the page's main thread between which it answers input and draws, while the caller holds the
  * picture still ({@link holdPerspective}), and `copied` says when they are done (2026-11-07: made at once, they had held
  * the page for seconds).
  */
 export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCapture {
   const started = performance.now();
-  const copies: { card: CardSnapshot; steps: Generator<void, HTMLElement> }[] = [];
+  const copies: { steps: Generator<void, HTMLElement>; done: (copy: HTMLElement) => void }[] = [];
   const moving = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // What the transition can show of a copy: its frame, grown so that a part standing a little past its box is kept.
   const seen = { left: frame.left - SEEN_MARGIN, top: frame.top - SEEN_MARGIN, right: frame.right + SEEN_MARGIN, bottom: frame.bottom + SEEN_MARGIN };
@@ -103,7 +104,7 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
       clone: null, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
       offsetX: x - rect.left, offsetY: y - rect.top };
     // Under reduced motion there is no transition to draw a copy in: none is made, and the switch does not wait for any.
-    if (moving && meets(rect, frame)) copies.push({ card: snapshot, steps: visualCopySteps(card, true, seen, { x, y }) });
+    if (moving && meets(rect, frame)) copies.push({ steps: visualCopySteps(card, true, seen, { x, y }), done: copy => { snapshot.clone = copy; } });
     return [snapshot];
   });
   const cardsDone = performance.now();
@@ -130,19 +131,26 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
     const rect = band.getBoundingClientRect();
     // A band is drawn only inside its own box, so one outside the frame stands in the layer as an empty box of its
     // size, keeping its identity and depth; its outline and its label are copied where the frame meets them.
-    const clone = meets(rect, seen) ? visualCopy(band, false) : document.createElement("div");
     // Only the shell travels here, its outline and its label; cards and nested bands each have one identity.
     const shape = band.querySelector<HTMLElement>(":scope > .local-membrane");
-    if (shape && meets(shape.getBoundingClientRect(), seen)) clone.append(visualCopy(shape, true, seen));
     const label = band.querySelector<HTMLElement>(":scope > .local-directory-label");
-    if (label && meets(label.getBoundingClientRect(), seen)) clone.append(visualCopy(label, true, seen));
-    Object.assign(clone.style, { display: "block", width: `${band.offsetWidth}px`, height: `${band.offsetHeight}px`,
-      boxSizing: "border-box", margin: "0", position: "absolute", transformOrigin: "0 0" });
+    const parts = { own: meets(rect, seen), shape: shape && meets(shape.getBoundingClientRect(), seen) ? shape : null,
+      label: label && meets(label.getBoundingClientRect(), seen) ? label : null };
+    const box = { display: "block", width: `${band.offsetWidth}px`, height: `${band.offsetHeight}px`,
+      boxSizing: "border-box", margin: "0", position: "absolute", transformOrigin: "0 0" };
     let depth = 0;
     for (let parent = band.parentElement; parent && parent !== root; parent = parent.parentElement) {
       if (parent.classList.contains("local-directory-band")) depth++;
     }
-    return { directory: band.dataset.directory ?? "", depth, clone, x: rect.left, y: rect.top, scale: rect.width / band.offsetWidth };
+    // The box stands at once; its copies are made in the slices with the cards' (2026-11-21: made at once, the 22
+    // shells of graph.ts's picture held the 3D press for 325 to 383 ms of its 600 to 690).
+    const snapshot: DirectorySnapshot = { directory: band.dataset.directory ?? "", depth, clone: document.createElement("div"),
+      x: rect.left, y: rect.top, scale: rect.width / band.offsetWidth };
+    Object.assign(snapshot.clone.style, box);
+    if (moving && (parts.own || parts.shape || parts.label)) {
+      copies.push({ steps: shellCopySteps(band, parts, seen), done: copy => { Object.assign(copy.style, box); snapshot.clone = copy; } });
+    }
+    return snapshot;
   });
   performance.measure("live-docs:capture-directories", { start: wiresDone });
   performance.mark("live-docs:capture-counts", { detail: { cards: cards.length, copied: copies.length, wires: wires.length, directories: directories.length } });
@@ -160,7 +168,7 @@ export function captureLocalScene(root: HTMLElement, frame: DOMRect): LocalCaptu
         let step: IteratorResult<void, HTMLElement>;
         // A card the page removed or changed under the copy is left undrawn, rather than the transition never starting.
         try { step = copies[0].steps.next(); } catch { copies.shift(); continue; }
-        if (step.done) { copies[0].card.clone = step.value; copies.shift(); continue; }
+        if (step.done) { copies[0].done(step.value); copies.shift(); continue; }
         if (performance.now() - begun >= budget) { paused = performance.now(); channel.port2.postMessage(null); return; }
       }
       channel.port1.close();
@@ -428,16 +436,21 @@ function meets(box: Box, frame: Box): boolean {
   return box.right > frame.left && box.left < frame.right && box.bottom > frame.top && box.top < frame.bottom;
 }
 
-/** Freeze computed appearance without duplicating live selectors, IDs or controls. */
-function visualCopy(root: HTMLElement, deep = true, seen?: Box): HTMLElement {
-  const steps = visualCopySteps(root, deep, seen);
-  for (;;) {
-    const step = steps.next();
-    if (step.done) return step.value;
-  }
+/**
+ * A directory's shell copied an element at a time: the band's own box where the frame meets it, else an empty box, with
+ * its outline and its label where the frame meets them.
+ */
+function* shellCopySteps(band: HTMLElement, parts: { own: boolean; shape: HTMLElement | null; label: HTMLElement | null }, seen: Box): Generator<void, HTMLElement> {
+  const clone = parts.own ? yield* visualCopySteps(band, false) : document.createElement("div");
+  if (parts.shape) clone.append(yield* visualCopySteps(parts.shape, true, seen));
+  if (parts.label) clone.append(yield* visualCopySteps(parts.label, true, seen));
+  return clone;
 }
 
-/** {@link visualCopy} an element at a time, pausing after each, so that a large copy can be spread over slices. */
+/**
+ * Freeze an element's computed appearance without duplicating live selectors, IDs or controls, an element at a time,
+ * pausing after each, so that a large copy can be spread over slices.
+ */
 function* visualCopySteps(root: HTMLElement, deep = true, seen?: Box, anchor?: TransitionPoint): Generator<void, HTMLElement> {
   const copy = root.cloneNode(false) as HTMLElement;
   const style = getComputedStyle(root);
