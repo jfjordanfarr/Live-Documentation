@@ -451,16 +451,21 @@ test("Cut Counted: the edges past which an opened directory goes on each say how
       const band = label.closest(".local-directory-band")!;
       const frame = document.querySelector(".map-cut-signs")!.getBoundingClientRect();
       const cards = [...band.querySelectorAll<HTMLElement>(".node-card[data-id], .local-directory-closed[data-directory]")].map(card => card.getBoundingClientRect());
-      const past = {
-        left: cards.filter(rect => rect.left < frame.left - 0.5).length, right: cards.filter(rect => rect.right > frame.right + 0.5).length,
-        top: cards.filter(rect => rect.top < frame.top - 0.5).length, bottom: cards.filter(rect => rect.bottom > frame.bottom + 0.5).length
-      };
+      // Each card not wholly in view counted once, at the edge it reaches farthest past, a tie to the left or right.
+      const past: Record<string, number> = { left: 0, right: 0, top: 0, bottom: 0 };
+      let cut = 0;
+      for (const rect of cards) {
+        const beyond: Array<[string, number]> = [["left", frame.left - rect.left], ["right", rect.right - frame.right], ["top", frame.top - rect.top], ["bottom", rect.bottom - frame.bottom]];
+        const farthest = beyond.filter(([, by]) => by > 0.5).sort((a, b) => b[1] - a[1])[0];
+        if (farthest) { past[farthest[0]]++; cut++; }
+      }
       const said = Object.fromEntries([...document.querySelectorAll<HTMLElement>(".map-cut-sign:not([hidden])")].map(sign => [sign.dataset.edge, Number(sign.textContent)]));
-      return { past: Object.fromEntries(Object.entries(past).filter(([, count]) => count > 0)), said };
+      return { past: Object.fromEntries(Object.entries(past).filter(([, count]) => count > 0)), said, cut };
     }, HISTORY);
     const first = await read();
     expect(Object.keys(first.said).length, "the opened directory goes on past at least one edge, and that is said").toBeGreaterThan(0);
     expect(first.said).toEqual(first.past);
+    expect(Object.values(first.said as Record<string, number>).reduce((sum, count) => sum + count, 0), "the counts sum to the cards not wholly in view").toBe(first.cut);
     const edge = Object.keys(first.said)[0];
     const sign = page.locator(`.map-cut-sign[data-edge="${edge}"]`);
     await expect(sign).toHaveAccessibleName(new RegExp(`^${first.said[edge]} cards? of what you opened`));

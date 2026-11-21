@@ -368,14 +368,22 @@ describe("a step's frame under Step, With Its Lines", () => {
 describe("the cut counted under Step, Least Pan, Cut Counted", () => {
   const camera = { x: 0, y: 0, k: 1 };
 
-  it("counts the newcomer's cards past each edge, a card cut at a corner at both its edges, and names no edge past which nothing goes", () => {
+  it("counts each cut card at one edge only, the one it lies farthest past, and names no edge past which nothing goes", () => {
     const cards = [
       { key: "inside", bounds: box(100, 100, 200, 150) },
       { key: "east", bounds: box(1100, 100, 200, 150) },
       { key: "south", bounds: box(100, 700, 200, 150) },
-      { key: "corner", bounds: box(1100, 700, 200, 150) }
+      // 100 px past the right edge and 50 past the bottom: counted at the right.
+      { key: "corner", bounds: box(1100, 700, 200, 150) },
+      // 20 px past the right edge and 90 past the bottom: counted at the bottom.
+      { key: "low corner", bounds: box(1020, 740, 200, 150) }
     ];
-    expect(cutByEdge(cards, camera, frame)).toEqual({ right: ["east", "corner"], bottom: ["south", "corner"] });
+    expect(cutByEdge(cards, camera, frame)).toEqual({ right: ["east", "corner"], bottom: ["south", "low corner"] });
+  });
+
+  it("gives a card as far past two edges to the edge across, left or right", () => {
+    // 100 px past the right edge and 100 past the bottom.
+    expect(cutByEdge([{ key: "even", bounds: box(1100, 750, 200, 150) }], camera, frame)).toEqual({ right: ["even"] });
   });
 
   it("reads the cards on screen at the camera's scale and place", () => {
@@ -397,7 +405,8 @@ describe("the cut counted under Step, Least Pan, Cut Counted", () => {
 /**
  * The boxes the page drew on 2026-11-21, read in the browser after live-docs/history was opened by its handle from
  * pathfind.ts under Least Pan, at 1,280 by 800: each of the directory's cards relative to the map's frame, at the camera
- * then (so the camera here is the identity). The page said 31 past the right edge, 27 above and 4 below.
+ * then (so the camera here is the identity). Counted at every edge a card goes past, as first built, the page said 31 past
+ * the right edge, 27 above and 4 below: 62 for 32 cards, since the folder lies up and to the right of the view.
  */
 const HISTORY_FRAME = { width: 1019, height: 680 };
 const HISTORY_CARDS: Array<[string, number, number, number, number]> = [
@@ -440,10 +449,15 @@ describe("the cut counted on the page's own boxes", () => {
   const cards = HISTORY_CARDS.map(([key, left, top, right, bottom]) => ({ key, bounds: box(left, top, right - left, bottom - top) }));
   const identity = { x: 0, y: 0, k: 1 };
 
-  it("counts what the page said: 31 past the right edge, 27 above, 4 below, none at the left", () => {
+  it("counts each of the 31 cards not wholly in view at one edge, so the counts sum to what is cut", () => {
     const cut = cutByEdge(cards, identity, HISTORY_FRAME);
-    expect({ left: cut.left?.length ?? 0, right: cut.right?.length ?? 0, top: cut.top?.length ?? 0, bottom: cut.bottom?.length ?? 0 })
-      .toEqual({ left: 0, right: 31, top: 27, bottom: 4 });
+    const counts = { left: cut.left?.length ?? 0, right: cut.right?.length ?? 0, top: cut.top?.length ?? 0, bottom: cut.bottom?.length ?? 0 };
+    // Worked from the boxes above by hand: of the 32, summary.ts alone is wholly in view; shape.ts and bundled.ts reach
+    // farther past the bottom (619, 854 px) than the right (534); lens.ts farther past the top (1,669) than the right
+    // (1,537); every other card farthest past the right.
+    expect(counts).toEqual({ left: 0, right: 28, top: 1, bottom: 2 });
+    const inView = cards.filter(({ bounds }) => bounds.left >= 0 && bounds.top >= 0 && bounds.right <= HISTORY_FRAME.width && bounds.bottom <= HISTORY_FRAME.height);
+    expect(counts.left + counts.right + counts.top + counts.bottom).toBe(cards.length - inView.length);
   });
 
   it("the right-hand sign's press lands on format.ts, the nearest past that edge, whole", () => {
