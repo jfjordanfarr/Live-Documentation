@@ -10,22 +10,24 @@
  * the kinds the readers read wrongly left out. Reads the folder and writes nothing there.
  *
  *   tsx --tsconfig tsconfig.base.json <this file> <folder> [--depth 2] [--no-ignore-files] [--ignore-case]
- *     [--starting fixed|visualstudio|tfvc|evidence|nothing] [--own <folder>] [--manifest <file>]
+ *     [--evidence apply|report|none] [--own <folder>] [--manifest <file>]
+ *
+ * The second leg of 2026-11-21 also measured three lists of names (`starting-lists/`); by the root's ruling on those
+ * numbers no list of names is a starting list any more, the function no longer takes one, and their listings stand in
+ * `listings/` as measured.
  */
 import fs from "node:fs";
 import path from "node:path";
 
 import { LANGUAGE_ADAPTERS } from "../../../../../../../packages/engine/src/live-docs/adapters/index";
-import { leaveOut, type IgnoreFileText, type StartingList } from "../../../../../../../packages/engine/src/tooling/leaveOut";
+import { leaveOut, type IgnoreFileText } from "../../../../../../../packages/engine/src/tooling/leaveOut";
 
 const args = process.argv.slice(2);
 const option = (name: string): string | undefined => (args.includes(name) ? args[args.indexOf(name) + 1] : undefined);
 const root = path.resolve(args[0]);
 const depth = Number(option("--depth") ?? 2);
 const noIgnoreFiles = args.includes("--no-ignore-files");
-const lists = path.join(__dirname, "starting-lists");
-const patternsOf = (file: string): string[] => fs.readFileSync(path.join(lists, file), "utf8").split(/\r?\n/u);
-const startingName = option("--starting") ?? "nothing";
+const evidenceMode = option("--evidence") ?? "none";
 const own = option("--own");
 const manifest = option("--manifest") ? (JSON.parse(fs.readFileSync(option("--manifest")!, "utf8")) as { build: string[]; packages: string[] }) : undefined;
 const made = new Set(manifest ? [...manifest.build, ...manifest.packages] : []);
@@ -47,18 +49,13 @@ const namesIn = (folder: string): string[] => {
   namesCache.set(folder, names);
   return names;
 };
-const starting: StartingList | undefined = startingName === "fixed" ? patternsOf("fixed-list.txt")
-  : startingName === "visualstudio" ? patternsOf("VisualStudio-ignore.txt")
-  : startingName === "tfvc" ? patternsOf("tfvc-default.txt")
-  : startingName === "evidence" ? { evidence: namesIn }
-  : undefined;
 
 const ignoreFilesIn = (folder: string): IgnoreFileText[] => {
   if (noIgnoreFiles) return [];
   return ["gitignore", "tfignore"].map((kind) => (folder ? `${folder}/.${kind}` : `.${kind}`)).filter((file) => fs.existsSync(path.join(root, file)))
     .map((file) => ({ path: file, text: fs.readFileSync(path.join(root, file), "utf8") }));
 };
-const decide = leaveOut({ ignoreFiles: ignoreFilesIn, gitIgnoreCase: args.includes("--ignore-case"), startingList: starting, ownOutput: own ? [own] : [] });
+const decide = leaveOut({ ignoreFiles: ignoreFilesIn, gitIgnoreCase: args.includes("--ignore-case"), evidence: evidenceMode === "none" ? undefined : { names: namesIn, apply: evidenceMode === "apply" }, ownOutput: own ? [own] : [] });
 
 // The lazy walk.
 const walkedAt = performance.now();
@@ -119,7 +116,7 @@ for (const file of all) {
 const wronglyKept = kept.filter((file) => made.has(file));
 const wronglyLeftOut = all.filter((file) => !keptSet.has(file) && !made.has(file) && READ.has(path.extname(file).toLowerCase()));
 
-console.log(`${path.basename(root)}: ${all.length} files; starting list ${startingName}${args.includes("--ignore-case") ? ", .gitignore without regard to case" : ""}${noIgnoreFiles ? ", ignore files not read" : ""}`);
+console.log(`${path.basename(root)}: ${all.length} files; evidence ${evidenceMode}${args.includes("--ignore-case") ? ", .gitignore without regard to case" : ""}${noIgnoreFiles ? ", ignore files not read" : ""}`);
 console.log(`kept ${kept.length}, left out ${all.length - kept.length}; the lazy walk listed ${listed} entries in ${folders} folders, left ${unlisted.length} folders unlisted, and the evidence rules listed ${evidenceListings} folders more; walk and decide ${Math.round(walkMs)} ms`);
 if (manifest) console.log(`made output wrongly kept: ${wronglyKept.length} of ${made.size}; source files of the kinds the readers read wrongly left out: ${wronglyLeftOut.length}${wronglyLeftOut.length ? `, such as ${wronglyLeftOut.slice(0, 6).join(", ")}` : ""}`);
 else console.log(`source files of the kinds the readers read left out: ${wronglyLeftOut.length}${wronglyLeftOut.length ? `, such as ${wronglyLeftOut.slice(0, 6).join(", ")}` : ""}`);

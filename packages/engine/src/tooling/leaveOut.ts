@@ -4,10 +4,10 @@
  * page over a folder a person picked, so that the choice can be shown to a
  * person and changed before the scan. It reads nothing and imports nothing of
  * Node: it is given the listing's paths (relative, forward slashes, as
- * written), the texts of the ignore files the listing names, a starting list,
- * a person's own patterns and the folders the tool itself writes to, and
- * answers for each path whether it is kept, or left out and by which rule,
- * file and line.
+ * written), the texts of the ignore files the listing names, the evidence
+ * rules' setting, a person's own patterns and the folders the tool itself
+ * writes to, and answers for each path whether it is kept, or left out and by
+ * which rule, file and line.
  *
  * @remarks
  * **A folder left out is left out whole**, whichever rule leaves it out: it
@@ -51,19 +51,26 @@
  * an opinion decides, so a subfolder's file adds to its parent's rather than
  * replacing them. The folder part of a pattern is compared without regard to
  * case, as TEE compares it on Windows (on Linux it respects case). TFVC's global
- * list of exclusions, which a collection's server sends, and its skipping of
- * its own `$tf` folders are not applied here; the first is a candidate starting
- * list.
+ * list of exclusions, which a collection's server sends, is not applied here:
+ * by the root's ruling of 2026-11-21 no list of names is, since each one
+ * measured left out real source in folders that happened to bear its names.
  *
- * **Which rule wins:** the tool's own output first, which is never scanned
- * whatever the ignore files say; then a person's own patterns; then the ignore
- * files (left out when either kind leaves a path out); then the starting list,
- * which applies only where no ignore file lies at or above a path's folder: it
- * is offered for a folder that has none. The person's patterns and a starting
- * list of patterns are read by git's rules without regard to case, since the
- * folders they will meet are Windows's. A starting list may instead be the
- * evidence rules ({@link EVIDENCE}), which look one level into a folder, by
- * the names it holds, before leaving it out.
+ * **The evidence rules** ({@link EVIDENCE}) leave a folder out by what it is,
+ * read from the names it holds or stands beside, never by its name alone:
+ * build output beside a project file, a folder of NuGet's packages, a folder of
+ * node's packages. What a folder is holds beneath any ignore file, so they apply
+ * wherever they find one, beneath a `.tfignore` and a `.gitignore` alike, as
+ * TFVC adds its own defaults beside a `.tfignore`. In a git repository they can
+ * leave out files git tracks (a committed `packages` folder), so they are one
+ * setting: applied, or only reported on the folder's answer.
+ *
+ * **Which rule wins:** a version control's own folder (`.git`, `.hg`, `.svn`,
+ * TFVC's `$tf` and `.tf`) and the tool's own output first, which are never
+ * scanned whatever any rule says; then a person's own patterns, whose `!` keeps
+ * what any rule below would leave out; then an ignore file that leaves a path
+ * out (either kind); then the evidence rules; then an ignore file's `!`. The
+ * person's patterns are read by git's rules without regard to case, since the
+ * folders they will meet are Windows's.
  *
  * The decider keeps each folder's state, derived once from its parent's and the
  * ignore files in it, so that a walk asks of each folder once, before going in,
@@ -84,19 +91,21 @@ export interface IgnoreFileText {
 
 /** The rule that decided a path. */
 export type LeaveOutRule =
-  | { kind: "own output"; folder: string }
+  | { kind: "own output" | "version control"; folder: string }
   | { kind: "gitignore" | "tfignore"; file: string; line: number; pattern: string }
-  | { kind: "starting list"; index: number; pattern: string }
+  | { kind: "evidence"; index: number; pattern: string }
   | { kind: "person"; index: number; pattern: string };
 
 /**
  * The answer for one path: kept or left out, and the rule that decided, if any did (a kept path's rule is one that
- * re-included it); and, for a path left out with its folder, the `!` lines that could have named it.
+ * re-included it); for a path left out with its folder, the `!` lines that could have named it; and, where the evidence
+ * rules are only reported, the rule that would have left a kept folder out.
  */
 export interface LeaveOutVerdict {
   kept: boolean;
   rule?: LeaveOutRule;
   notes?: string[];
+  evidence?: LeaveOutRule;
 }
 
 /** The answer for a folder, and whether nothing beneath it can be kept, so that a walk need not go in. */
@@ -107,10 +116,13 @@ export interface FolderVerdict extends LeaveOutVerdict {
 }
 
 /**
- * A starting list: patterns, read by git's rules without regard to case; or the evidence rules, given the names a
- * folder holds (a folder's with a trailing `/`), which a lazy walk answers by listing one level further.
+ * The evidence rules' setting: the names a folder holds (a folder's with a trailing `/`), which a lazy walk answers by
+ * listing one level further; and whether a folder they find is left out (`apply`) or kept and reported.
  */
-export type StartingList = readonly string[] | { evidence: (folder: string) => readonly string[] };
+export interface EvidenceSetting {
+  names: (folder: string) => readonly string[];
+  apply: boolean;
+}
 
 /** What decides a scan's leaving out. */
 export interface LeaveOutInput {
@@ -118,7 +130,7 @@ export interface LeaveOutInput {
   ignoreFiles: readonly IgnoreFileText[] | ((folder: string) => readonly IgnoreFileText[]);
   /** The repository's `core.ignorecase`: whether `.gitignore` patterns match names without regard to case. */
   gitIgnoreCase?: boolean;
-  startingList?: StartingList;
+  evidence?: EvidenceSetting;
   person?: readonly string[];
   /** The folders the tool writes to, relative: never scanned. */
   ownOutput?: readonly string[];
@@ -543,8 +555,11 @@ function tfFileOpinion(entries: readonly TfEntry[], path: string, isFolder: bool
 }
 
 // ---------------------------------------------------------------------------
-// The evidence rules, a starting list that looks before it leaves out
+// The evidence rules: a folder left out by what it is, never by its name alone
 // ---------------------------------------------------------------------------
+
+/** A version control's own folder (or git's pointer file of that name): git's, Mercurial's, Subversion's, and TFVC's baseline folders (`BaselineFolder.java`). */
+const VERSION_CONTROL = /^(?:\.git|\.hg|\.svn|\$tf(?:[1-9]|1[0-5])?|\.tf(?:[1-9]|1[0-5])?)$/iu;
 
 const PROJECT_FILE = /\.(?:cs|vb|fs|vcx|sql|wix|nj)proj$/iu;
 const NUGET_PACKAGE = /^[A-Za-z0-9_][A-Za-z0-9_.-]*?\.\d+(?:\.\d+){1,3}(?:-[0-9A-Za-z.-]+)?\/$/u;
@@ -583,8 +598,6 @@ interface FolderState {
   git: Array<{ file: string; patterns: GitPattern[] }>;
   /** The `.tfignore` files at and above this folder, the deepest last. */
   tf: Array<{ file: string; entries: TfEntry[] }>;
-  /** Whether an ignore file stands at or above this folder, which turns the starting list off for what it holds. */
-  ruled: boolean;
 }
 
 /** The last matching pattern of one list, as git's `last_matching_pattern_from_list`. */
@@ -604,7 +617,7 @@ function couldNameInside(pattern: GitPattern, folder: string, ignoreCase: boolea
   return fold(literal).startsWith(inside) || (special !== -1 && inside.startsWith(fold(literal)));
 }
 
-/** The decider for one listing's ignore files, starting list, person's patterns and the tool's own output. */
+/** The decider for one listing's ignore files, evidence rules, person's patterns and the tool's own output. */
 export function leaveOut(input: LeaveOutInput): LeaveOut {
   const ignoreCase = input.gitIgnoreCase === true;
   const byFolder = new Map<string, IgnoreFileText[]>();
@@ -616,14 +629,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
   }
   const ignoreFilesIn = typeof input.ignoreFiles === "function" ? input.ignoreFiles : (folder: string) => byFolder.get(folder) ?? [];
   const person = gitPatterns((input.person ?? []).join("\n"), "");
-  const starting = input.startingList;
-  const startingPatterns = Array.isArray(starting) ? gitPatterns((starting as readonly string[]).join("\n"), "") : [];
-  const evidence = !Array.isArray(starting) && starting ? (starting as { evidence: (folder: string) => readonly string[] }).evidence : undefined;
+  const evidence = input.evidence;
   const ownOutput = new Set((input.ownOutput ?? []).map((folder) => folder.toLowerCase()));
   const states = new Map<string, FolderState>();
 
   /** One path's verdict, its folder's state in hand. */
   const judge = (path: string, isDir: boolean, parent: FolderState): LeaveOutVerdict => {
+    // A `.git` that is a file points a worktree or a submodule at its repository, and is the version control's too.
+    if (VERSION_CONTROL.test(nameOf(path))) return { kept: false, rule: { kind: "version control", folder: path } };
     if (isDir && ownOutput.has(path.toLowerCase())) return { kept: false, rule: { kind: "own output", folder: path } };
     const own = lastMatching(person, path, isDir, true);
     if (own) return { kept: own.negative, rule: { kind: "person", index: own.line - 1, pattern: own.original } };
@@ -639,15 +652,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     }
     if (byGit?.excluded) return { kept: false, rule: byGit.rule };
     if (byTf?.excluded) return { kept: false, rule: byTf.rule };
-    if (byGit || byTf) return { kept: true, rule: (byGit ?? byTf)!.rule };
-    if (parent.ruled) return { kept: true };
-    const start = lastMatching(startingPatterns, path, isDir, true);
-    if (start) return { kept: start.negative, rule: { kind: "starting list", index: start.line - 1, pattern: start.original } };
+    let found: LeaveOutRule | undefined;
     if (evidence && isDir) {
-      const index = EVIDENCE.findIndex((rule) => rule.name === nameOf(path).toLowerCase() && rule.holds(path, evidence));
-      if (index !== -1) return { kept: false, rule: { kind: "starting list", index, pattern: EVIDENCE[index].pattern } };
+      const index = EVIDENCE.findIndex((rule) => rule.name === nameOf(path).toLowerCase() && rule.holds(path, evidence.names));
+      if (index !== -1) found = { kind: "evidence", index, pattern: EVIDENCE[index].pattern };
     }
-    return { kept: true };
+    if (found && evidence?.apply) return { kept: false, rule: found };
+    const kept: LeaveOutVerdict = byGit || byTf ? { kept: true, rule: (byGit ?? byTf)!.rule } : { kept: true };
+    return found ? { ...kept, evidence: found } : kept;
   };
 
   /** The `!` lines at or above a folder left out whole that could have named something inside it. */
@@ -664,7 +676,6 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
         if (under.startsWith(at) || (entry.recursive && at.startsWith(under))) say(`${file} line ${entry.line}`, entry.original);
       }
     }
-    for (const pattern of startingPatterns) if (pattern.negative && couldNameInside(pattern, folder, true)) say(`the starting list's pattern ${pattern.line}`, pattern.original);
     return notes;
   };
 
@@ -672,18 +683,15 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
   const withOwnFiles = (folder: string, inherited: FolderState, verdict: LeaveOutVerdict): FolderState => {
     const git = [...inherited.git];
     const tf = [...inherited.tf];
-    let ruled = inherited.ruled;
     for (const file of ignoreFilesIn(folder)) {
       const name = nameOf(file.path);
       if (name === ".gitignore") {
         git.push({ file: file.path, patterns: gitPatterns(file.text, folder) });
-        ruled = true;
       } else if (name.toLowerCase() === ".tfignore") {
         tf.push({ file: file.path, entries: tfEntries(file.text, folder) });
-        ruled = true;
       }
     }
-    return { verdict, git, tf, ruled };
+    return { verdict, git, tf };
   };
 
   const stateOf = (folder: string): FolderState => {
@@ -691,7 +699,7 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     if (known) return known;
     let state: FolderState;
     if (folder === "") {
-      state = withOwnFiles("", { verdict: { kept: true }, git: [], tf: [], ruled: false }, { kept: true });
+      state = withOwnFiles("", { verdict: { kept: true }, git: [], tf: [] }, { kept: true });
     } else {
       const parent = stateOf(folderOf(folder));
       if (parent.whole) {
