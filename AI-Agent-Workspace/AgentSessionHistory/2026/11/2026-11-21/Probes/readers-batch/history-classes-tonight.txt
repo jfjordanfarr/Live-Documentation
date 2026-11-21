@@ -1,0 +1,21 @@
+summaries the same 1191, differing 352, only in the old cache 41, only in the new 22
+
+## SQL: IF NOT EXISTS, backticks, TEMP and virtual tables, the trigger's body: dependencies lost: 198 entries, 198 commits, 1 paths
+   paths: data/migrations/001_init.sql
+   e.g. 0096036222 data/migrations/001_init.sql: {"entries":{"added":["{\"reason\":\"opening\",\"symbol\":\"artifacts\"}","{\"reason\":\"opening\",\"symbol\":\"links\"}","{\"reason\":\"opening\",\"symbol\":\"change_events\"}","{\"reason\":\"opening\",\"symbol\":\"diagnostics\"}","{\"reason\":\"opening\",\"symbol\":\"acknowledgements\"}","{\"reason\":\"opening\",\"symbol\":\"snapshots\"}"],"removed":[]},"symbols":{"added":["{\"name\":\"artifacts\",\"slug\":\"symbol-artifacts\",\"kind\":\"table\"}","{\"name\":\"links\",\"slug\":\"symbol-links\",\"kind\":\"table\"}","{\"name\":\"change_events\",\"slug\":\"symbol-change_events\",\"kind\":\"table
+
+## SQL: IF NOT EXISTS, backticks, TEMP and virtual tables, the trigger's body: entries gained: 198 entries, 198 commits, 1 paths
+   paths: data/migrations/001_init.sql
+   e.g. 0096036222 data/migrations/001_init.sql: {"entries":{"added":["{\"reason\":\"opening\",\"symbol\":\"artifacts\"}","{\"reason\":\"opening\",\"symbol\":\"links\"}","{\"reason\":\"opening\",\"symbol\":\"change_events\"}","{\"reason\":\"opening\",\"symbol\":\"diagnostics\"}","{\"reason\":\"opening\",\"symbol\":\"acknowledgements\"}","{\"reason\":\"opening\",\"symbol\":\"snapshots\"}"],"removed":[]},"symbols":{"added":["{\"name\":\"artifacts\",\"slug\":\"symbol-artifacts\",\"kind\":\"table\"}","{\"name\":\"links\",\"slug\":\"symbol-links\",\"kind\":\"table\"}","{\"name\":\"change_events\",\"slug\":\"symbol-change_events\",\"kind\":\"table
+
+## SQL: IF NOT EXISTS, backticks, TEMP and virtual tables, the trigger's body: symbols gained: 198 entries, 198 commits, 1 paths
+   paths: data/migrations/001_init.sql
+   e.g. 0096036222 data/migrations/001_init.sql: {"entries":{"added":["{\"reason\":\"opening\",\"symbol\":\"artifacts\"}","{\"reason\":\"opening\",\"symbol\":\"links\"}","{\"reason\":\"opening\",\"symbol\":\"change_events\"}","{\"reason\":\"opening\",\"symbol\":\"diagnostics\"}","{\"reason\":\"opening\",\"symbol\":\"acknowledgements\"}","{\"reason\":\"opening\",\"symbol\":\"snapshots\"}"],"removed":[]},"symbols":{"added":["{\"name\":\"artifacts\",\"slug\":\"symbol-artifacts\",\"kind\":\"table\"}","{\"name\":\"links\",\"slug\":\"symbol-links\",\"kind\":\"table\"}","{\"name\":\"change_events\",\"slug\":\"symbol-change_events\",\"kind\":\"table
+
+## the test rules: archetype implementation to test: 33404 entries, 323 commits, 298 paths
+   paths: tests/integration/benchmarks/fixtures/c/basics/expected.json, tests/integration/benchmarks/fixtures/c/basics/inferred.json, tests/integration/benchmarks/fixtures/c/basics/src/helpers.h, tests/integration/benchmarks/fixtures/c/basics/src/main.c, tests/integration/benchmarks/fixtures/c/basics/src/util.c, tests/integration/benchmarks/fixtures/c/basics/src/util.h, tests/integration/benchmarks/fixtures/c/libuv/expected.json, tests/integration/benchmarks/fixtures/c/libuv/inferred.json, tests/integration/benchmarks/fixtures/c/modular/expected.json, tests/integration/benchmarks/fixtures/c/modular/inferred.json, tests/integration/benchmarks/fixtures/c/modular/src/logger.c, tests/integration/benchmarks/fixtures/c/modular/src/logger.h, tests/integration/benchmarks/fixtures/c/modular/src/main.c, tests/integration/benchmarks/fixtures/c/modular/src/metrics.c, tests/integration/benchmarks/fixtures/c/modular/src/metrics.h, …
+   e.g. 0096036222 tests/integration/benchmarks/fixtures/c/basics/expected.json: {"archetype":{"before":"implementation","after":"test"}}
+   e.g. 0096036222 tests/integration/benchmarks/fixtures/c/basics/inferred.json: {"archetype":{"before":"implementation","after":"test"}}
+   e.g. 0096036222 tests/integration/benchmarks/fixtures/c/basics/src/helpers.h: {"archetype":{"before":"implementation","after":"test"}}
+
+entries under a class no change of the evening was meant to make: 0
