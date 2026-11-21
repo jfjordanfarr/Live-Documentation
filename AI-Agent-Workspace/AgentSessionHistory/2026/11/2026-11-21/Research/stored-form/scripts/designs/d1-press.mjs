@@ -38,7 +38,7 @@ function countStrings(value, counts, order) {
   }
 }
 
-function put(out, value, ids) {
+export function put(out, value, ids) {
   if (value === null || value === undefined) out.varint(NULLISH);
   else if (typeof value === "boolean") out.varint((value ? 1 : 0) * 8 + BOOL);
   else if (typeof value === "number") {
@@ -65,7 +65,7 @@ function put(out, value, ids) {
 }
 
 /** Walks one encoded value, collecting the ids of the strings it names. */
-function scan(cursor, needed) {
+export function scan(cursor, needed) {
   const v = cursor.varint();
   const tag = v % 8;
   const payload = Math.floor(v / 8);
@@ -75,7 +75,7 @@ function scan(cursor, needed) {
   else if (tag === OBJECT) for (let i = 0; i < payload; i += 1) { needed.add(cursor.varint()); scan(cursor, needed); }
 }
 
-function take(cursor, str) {
+export function take(cursor, str) {
   const v = cursor.varint();
   const tag = v % 8;
   const payload = Math.floor(v / 8);
@@ -91,7 +91,7 @@ function take(cursor, str) {
   }
 }
 
-function stringList(list) {
+export function stringList(list) {
   const out = new Bytes(1 << 16);
   for (const s of list) {
     const b = encoder.encode(s);
@@ -101,7 +101,7 @@ function stringList(list) {
   return out.done();
 }
 
-function readStringList(bytes, count) {
+export function readStringList(bytes, count) {
   const c = new Cursor(bytes);
   const out = new Array(count);
   for (let i = 0; i < count; i += 1) {
@@ -112,7 +112,11 @@ function readStringList(bytes, count) {
   return out;
 }
 
-export async function encode(graph) {
+/**
+ * Writes the press; with `{ raw: true }` returns its header and its sections uncompressed instead, so that another
+ * container (the HDF5 design) can hold the same sections under its own compression.
+ */
+export async function encode(graph, { raw: keepRaw = false } = {}) {
   const paths = Object.keys(graph.files).sort(comparePaths);
   const records = paths.map((p) => recordOf(graph.files[p]));
   const counts = new Map();
@@ -125,7 +129,7 @@ export async function encode(graph) {
   const sections = [];
   const header = { format: "press/1", location: { root: graph.root, baseLayer: graph.baseLayer, extension: graph.extension }, files: paths.length, strings: strings.length, block: BLOCK, chunk: CHUNK, sections: {} };
   const add = async (key, raw) => {
-    const packed = await compress(raw, "deflate-raw");
+    const packed = keepRaw ? raw : await compress(raw, "deflate-raw");
     sections.push(packed);
     return { size: packed.length, raw: raw.length };
   };
@@ -155,6 +159,7 @@ export async function encode(graph) {
     }
     header.sections.chunks.push(await add("records", concat([u32Bytes(offsets), body.done()])));
   }
+  if (keepRaw) return { header, sections };
   const headerBytes = encoder.encode(JSON.stringify(header));
   return concat([MAGIC, u32Bytes([headerBytes.length]), headerBytes, ...sections]);
 }
@@ -169,7 +174,12 @@ export async function open(bytes) {
   const adjacencySection = place(header.sections.adjacency);
   const blocks = header.sections.stringBlocks.map(place);
   const chunks = header.sections.chunks.map(place);
-  const raw = (s) => inflate(bytes.subarray(s.at, s.at + s.size), "deflate-raw");
+  return reader(bytes, header, { pathsSection, adjacencySection, blocks, chunks });
+}
+
+/** A reader over a press's sections, wherever they lie in the file: press/1 puts them in a fixed order, press/2 as written. */
+export function reader(bytes, header, { pathsSection, adjacencySection, blocks, chunks }, load) {
+  const raw = load ?? ((s) => inflate(bytes.subarray(s.at, s.at + s.size), "deflate-raw"));
 
   let paths;
   let adjacency;

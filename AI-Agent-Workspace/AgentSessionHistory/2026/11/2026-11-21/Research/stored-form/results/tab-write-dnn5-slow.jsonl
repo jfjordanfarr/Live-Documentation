@@ -1,0 +1,7 @@
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 238.5 s, cap 300 s)
+{"kind":"write","page":"write-press-stream.html","mode":"stream","rate":4,"cores":2,"loadBefore":12.5,"pageReadyMs":196,"scriptStartedMs":57,"files":53880,"writeMs":45904.8,"bytes":6813331,"sha256":"440f4b9360c3954d5f1cb972331cb1189380edb0b3d0d72be136e1b32f51073a","heapMb":100,"rendererPeakMbAtWrite":305,"errors":[],"rendererPeakMb":305,"loadAfter":9.6}
+{"kind":"write","page":"write-ledger.html","mode":"stream","rate":4,"cores":2,"loadBefore":9.6,"pageReadyMs":196,"scriptStartedMs":51,"files":53880,"writeMs":59470.7,"bytes":14079732,"sha256":"9f53c5e9e68198126fe2c4a460d83cd7da85de58c77b083debd57a9a4053e9b2","heapMb":114,"rendererPeakMbAtWrite":314,"errors":[],"rendererPeakMb":314,"loadAfter":9.1}
+browser-lane: released after 108.3 s, exit 0
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 46.9 s, cap 300 s)

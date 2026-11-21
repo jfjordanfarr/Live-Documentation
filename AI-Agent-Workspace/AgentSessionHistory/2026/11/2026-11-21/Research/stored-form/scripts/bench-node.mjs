@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import zlib from "node:zlib";
 import crypto from "node:crypto";
-import { canonical } from "./designs/common.mjs";
+import { canonical, docPathOf } from "./designs/common.mjs";
 
 const [mode, designName, a, b] = process.argv.slice(2);
 const design = await import(`./designs/${designName}.mjs`);
@@ -20,7 +20,45 @@ const ms = (t0) => +(Number(process.hrtime.bigint() - t0) / 1e6).toFixed(1);
 const peakMb = () => Math.round(process.resourceUsage().maxRSS / 1024);
 const out = { mode, design: design.name, node: process.version };
 
-if (mode === "write") {
+if (mode === "stream" || mode === "gather") {
+  // The facts handed over file by file from a file of one line per file (scale.mjs --ndjson): "stream" gives each to
+  // the design's writer as it comes and holds nothing else; "gather" builds the whole graph first and then encodes it,
+  // as a design that needs every fact before its first byte must.
+  const { createInterface } = await import("node:readline");
+  const lines = createInterface({ input: fs.createReadStream(a), crlfDelay: Infinity });
+  const t0 = process.hrtime.bigint();
+  let location;
+  let w;
+  const graph = { files: {} };
+  let n = 0;
+  for await (const line of lines) {
+    if (!line) continue;
+    if (!location) {
+      const head = JSON.parse(line);
+      location = { root: head.root, baseLayer: head.baseLayer, extension: head.extension };
+      Object.assign(graph, location);
+      if (mode === "stream") w = design.writer(location, b);
+      continue;
+    }
+    const [path, record, outbound] = JSON.parse(line);
+    n += 1;
+    if (mode === "stream") await w.add(path, record, outbound);
+    else graph.files[path] = { codePath: path, docPath: docPathOf(location, path), ...record, outbound, inbound: [] };
+  }
+  if (mode === "gather") for (const [p, f] of Object.entries(graph.files)) for (const q of f.outbound) graph.files[q].inbound.push(p);
+  const bytes = mode === "stream" ? await w.finish() : await design.encode(graph);
+  out.files = n;
+  out.writeMs = ms(t0);
+  out.peakMb = peakMb();
+  if (bytes) {
+    fs.writeFileSync(b, bytes);
+    out.bytes = bytes.length;
+    out.sha256 = crypto.createHash("sha256").update(bytes).digest("hex");
+  } else {
+    out.bytes = fs.statSync(b).size;
+    out.sha256 = crypto.createHash("sha256").update(fs.readFileSync(b)).digest("hex");
+  }
+} else if (mode === "write") {
   const graph = JSON.parse(fs.readFileSync(a, "utf8"));
   const baseMb = peakMb();
   const t0 = process.hrtime.bigint();

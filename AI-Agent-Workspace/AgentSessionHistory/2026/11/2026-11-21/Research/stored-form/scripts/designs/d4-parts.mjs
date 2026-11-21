@@ -75,6 +75,67 @@ export async function encode(graph) {
   return pack([await cut(graph)]);
 }
 
+/**
+ * Written as the facts arrive, in path order. A directory's part is complete once a path arrives that does not lie
+ * beneath it, since no later path can; it is then named, compressed and set down, and its files are let go. Held until
+ * the end: the directories still open (the ancestors of the last path), the paths, and the outbound wires.
+ */
+export function writer(location) {
+  const open = new Map(); // directory -> its files' paths and records, while it can still gain files
+  const done = new Map(); // hash -> compressed part
+  const manifestParts = [];
+  const paths = [];
+  const outbound = [];
+  const close = async (dir) => {
+    const files = open.get(dir);
+    open.delete(dir);
+    const graph = { files: Object.fromEntries(files.map(([p, r]) => [p, r])) };
+    const raw = ledgerBytes(graph, files.map(([p]) => p));
+    const hash = await sha256Hex(raw);
+    if (!done.has(hash)) done.set(hash, await compress(raw, "deflate-raw"));
+    manifestParts.push({ dir, hash, count: files.length });
+  };
+  return {
+    async add(path, record, out) {
+      for (const dir of [...open.keys()]) if (dir !== "" && !path.startsWith(`${dir}/`)) await close(dir);
+      const dir = directoryOf(path);
+      (open.get(dir) ?? open.set(dir, []).get(dir)).push([path, record]);
+      paths.push(path);
+      outbound.push(out);
+    },
+    async finish() {
+      for (const dir of [...open.keys()]) await close(dir);
+      manifestParts.sort((a, b) => comparePaths(a.dir, b.dir));
+      const index = new Map(paths.map((p, i) => [p, i]));
+      const oo = [0];
+      const ot = [];
+      const inLists = paths.map(() => []);
+      outbound.forEach((targets, i) => {
+        for (const t of targets) {
+          ot.push(index.get(t));
+          inLists[index.get(t)].push(i);
+        }
+        oo.push(ot.length);
+      });
+      const io = [0];
+      const it = [];
+      for (const list of inLists) {
+        it.push(...list);
+        io.push(it.length);
+      }
+      const adjacency = await compress(concat([u32Bytes([ot.length, it.length]), u32Bytes(oo), u32Bytes(ot), u32Bytes(io), u32Bytes(it)]), "deflate-raw");
+      const header = { format: "parts/1", moments: [{ location, paths, parts: manifestParts, adjacency: { size: adjacency.length } }], parts: [] };
+      const sections = [adjacency];
+      for (const hash of [...done.keys()].sort()) {
+        sections.push(done.get(hash));
+        header.parts.push({ hash, size: done.get(hash).length });
+      }
+      const headerBytes = encoder.encode(JSON.stringify(header));
+      return concat([MAGIC, u32Bytes([headerBytes.length]), headerBytes, ...sections]);
+    }
+  };
+}
+
 /** Opens a file of parts; `moment` picks which of its moments the reader answers for. */
 export async function open(bytes, _path, moment = 0) {
   const headerLength = u32Array(bytes, 4, 1)[0];

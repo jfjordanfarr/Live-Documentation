@@ -1,0 +1,128 @@
+{
+  "dnn/d5-hdf5-node": {
+    "corpus": "dnn",
+    "write": {
+      "mode": "write",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "encodeMs": 2398.6,
+      "peakMbBeforeEncode": 221,
+      "peakMb": 320,
+      "bytes": 2410526,
+      "gzipBytes": 2232150,
+      "base64OfGzipBytes": 2976200,
+      "base64Bytes": 3214036,
+      "sha256": "f66c534252ff0dff934a74119e3aa540481ca21baa8a54795b6aeff0dce3a910"
+    },
+    "sameBytesTwice": false,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "readFileMs": 5.4,
+      "openMs": 153.4,
+      "inboundOfHub": 632,
+      "inboundMs": 55,
+      "reachable": 1208,
+      "reachableMs": 2,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 29.9,
+      "hubNeighbourhood": 661,
+      "hubNeighbourhoodMs": 260.5,
+      "firstAnswerMs": 214.10000000000002,
+      "peakMbAfterQuestions": 144,
+      "allMs": 546.5,
+      "files": 10776,
+      "peakMb": 236
+    },
+    "firstAnswerMsRange": [
+      181.9,
+      220.39999999999995
+    ]
+  },
+  "dnn5/d5-hdf5-node": {
+    "corpus": "dnn5",
+    "write": {
+      "mode": "write",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "encodeMs": 11178.8,
+      "peakMbBeforeEncode": 837,
+      "peakMb": 1003,
+      "bytes": 7455053,
+      "gzipBytes": 6846596,
+      "base64OfGzipBytes": 9128796,
+      "base64Bytes": 9940072,
+      "sha256": "7eab5c0a0ef0042142e4a986e33653dfa7c0cbafa4cd04e5007b9edbf5e2421f"
+    },
+    "sameBytesTwice": false,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "readFileMs": 16.6,
+      "openMs": 182.5,
+      "inboundOfHub": 632,
+      "inboundMs": 180,
+      "reachable": 1283,
+      "reachableMs": 5.5,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 117.9,
+      "hubNeighbourhood": 661,
+      "hubNeighbourhoodMs": 306,
+      "firstAnswerMs": 379.30000000000007,
+      "peakMbAfterQuestions": 178,
+      "allMs": 2895.7,
+      "files": 53880,
+      "peakMb": 404
+    },
+    "firstAnswerMsRange": [
+      367.80000000000007,
+      398.3
+    ]
+  },
+  "self/d5-hdf5-node": {
+    "corpus": "self",
+    "write": {
+      "mode": "write",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "encodeMs": 925,
+      "peakMbBeforeEncode": 105,
+      "peakMb": 159,
+      "bytes": 1112621,
+      "gzipBytes": 1070063,
+      "base64OfGzipBytes": 1426752,
+      "base64Bytes": 1483496,
+      "sha256": "cd90f7c839363d00e2ab96178e4cb64ff498bab16d2166684e5f2723cd5d666d"
+    },
+    "sameBytesTwice": false,
+    "identical": true,
+    "read": {
+      "mode": "read",
+      "design": "hdf5 (h5wasm)",
+      "node": "v26.13.1",
+      "readFileMs": 3.1,
+      "openMs": 207.3,
+      "inboundOfHub": 72,
+      "inboundMs": 29.1,
+      "reachable": 171,
+      "reachableMs": 0.8,
+      "typicalNeighbourhood": 5,
+      "typicalNeighbourhoodMs": 80.4,
+      "hubNeighbourhood": 73,
+      "hubNeighbourhoodMs": 43,
+      "firstAnswerMs": 239.7,
+      "peakMbAfterQuestions": 116,
+      "allMs": 90.3,
+      "files": 1134,
+      "peakMb": 126
+    },
+    "firstAnswerMsRange": [
+      196.29999999999998,
+      293.5
+    ]
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "dnn/d0-json/gather": {
+    "mode": "gather",
+    "design": "json-gzip",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2530.7,
+    "peakMb": 376,
+    "bytes": 2735362,
+    "sha256": "e321054082220ae4c1cbcb3c7b729ae53bf2615f2388076c9d20725c1bce5467",
+    "identical": true
+  },
+  "dnn/d1-press/gather": {
+    "mode": "gather",
+    "design": "press",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2665.5,
+    "peakMb": 269,
+    "bytes": 2210956,
+    "sha256": "7c30ae66d7c4985b7e0dbda28cb7b2d88c4089dc8c22302b454556e05eb140c5",
+    "identical": true
+  },
+  "dnn/d1s-press-stream/stream": {
+    "mode": "stream",
+    "design": "press, written as facts arrive",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2257.9,
+    "peakMb": 188,
+    "bytes": 2112277,
+    "sha256": "deccdb5a85470f9b2c5dc5a257cf92ea7849410597d545e6add84ff20c29a011",
+    "identical": true
+  },
+  "dnn/d2-sqlite-node/gather": {
+    "mode": "gather",
+    "design": "sqlite (node:sqlite)",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2257.3,
+    "peakMb": 288,
+    "bytes": 29560832,
+    "sha256": "1c851f4b77a421caf57ade57360902c969ad7c95ea2a1d530fcd68b0a9e93453",
+    "identical": true
+  },
+  "dnn/d2-sqlite-node/stream": {
+    "mode": "stream",
+    "design": "sqlite (node:sqlite)",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2827,
+    "peakMb": 76,
+    "bytes": 29569024,
+    "sha256": "c697509cc2ebf28503fc58bc933d4e020d6c35410cca0297d273c3c5c5e562ec",
+    "identical": true
+  },
+  "dnn/d3-ledger/gather": {
+    "mode": "gather",
+    "design": "ledger",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2379.7,
+    "peakMb": 461,
+    "bytes": 2798719,
+    "sha256": "c06c3adfb1f4ab1ccac347b74ee9363539dcaae4fdf5599cb0b59a11bdc24996",
+    "identical": true
+  },
+  "dnn/d3-ledger/stream": {
+    "mode": "stream",
+    "design": "ledger",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 2575.3,
+    "peakMb": 146,
+    "bytes": 2798719,
+    "sha256": "c06c3adfb1f4ab1ccac347b74ee9363539dcaae4fdf5599cb0b59a11bdc24996",
+    "identical": true
+  },
+  "dnn/d4-parts/gather": {
+    "mode": "gather",
+    "design": "parts",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 3215.3,
+    "peakMb": 344,
+    "bytes": 4865426,
+    "sha256": "2acebaa9f565c225bbc44e738b0c357916edec03a5b63fb59acf3219b1768199",
+    "identical": true
+  },
+  "dnn/d4-parts/stream": {
+    "mode": "stream",
+    "design": "parts",
+    "node": "v26.13.1",
+    "files": 10776,
+    "writeMs": 3850.6,
+    "peakMb": 252,
+    "bytes": 4865426,
+    "sha256": "2acebaa9f565c225bbc44e738b0c357916edec03a5b63fb59acf3219b1768199",
+    "identical": true
+  },
+  "dnn5/d0-json/gather": {
+    "mode": "gather",
+    "design": "json-gzip",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 8128.9,
+    "peakMb": 1372,
+    "bytes": 13438774,
+    "sha256": "7dcffd9f7f63eb2e4d57020b7dd4199a71cb56cebdb78562fd43fd9587e48689"
+  },
+  "dnn5/d1-press/gather": {
+    "mode": "gather",
+    "design": "press",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 8097.6,
+    "peakMb": 564,
+    "bytes": 6892496,
+    "sha256": "7cc55db2fb4ad54b998f4cd8f37166e53286ae4fe23c2c3f9947c986eb4e29f1"
+  },
+  "dnn5/d1s-press-stream/stream": {
+    "mode": "stream",
+    "design": "press, written as facts arrive",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 7519.6,
+    "peakMb": 255,
+    "bytes": 6813331,
+    "sha256": "440f4b9360c3954d5f1cb972331cb1189380edb0b3d0d72be136e1b32f51073a"
+  },
+  "dnn5/d2-sqlite-node/gather": {
+    "mode": "gather",
+    "design": "sqlite (node:sqlite)",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 8532.1,
+    "peakMb": 1033,
+    "bytes": 148959232,
+    "sha256": "12158943aca63ccbc183172923238e2e7b72abd82cf2bc7db603351f0fcc105a"
+  },
+  "dnn5/d2-sqlite-node/stream": {
+    "mode": "stream",
+    "design": "sqlite (node:sqlite)",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 27728.9,
+    "peakMb": 92,
+    "bytes": 148938752,
+    "sha256": "3a46fd75f747e58350c4ea2fb84adffa01afc5155192940806124af8fb875b9d"
+  },
+  "dnn5/d3-ledger/gather": {
+    "mode": "gather",
+    "design": "ledger",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 22151.5,
+    "peakMb": 1623,
+    "bytes": 14079732,
+    "sha256": "9f53c5e9e68198126fe2c4a460d83cd7da85de58c77b083debd57a9a4053e9b2"
+  },
+  "dnn5/d3-ledger/stream": {
+    "mode": "stream",
+    "design": "ledger",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 25600.2,
+    "peakMb": 185,
+    "bytes": 14079732,
+    "sha256": "9f53c5e9e68198126fe2c4a460d83cd7da85de58c77b083debd57a9a4053e9b2"
+  },
+  "dnn5/d4-parts/gather": {
+    "mode": "gather",
+    "design": "parts",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 25598,
+    "peakMb": 910,
+    "bytes": 24906396,
+    "sha256": "cb0fa283d7ef4e7c53abf2bedc219c90d6c78eeff9e7b5498f9f3c0ed9a2d4b9"
+  },
+  "dnn5/d4-parts/stream": {
+    "mode": "stream",
+    "design": "parts",
+    "node": "v26.13.1",
+    "files": 53880,
+    "writeMs": 15761.3,
+    "peakMb": 418,
+    "bytes": 24906396,
+    "sha256": "cb0fa283d7ef4e7c53abf2bedc219c90d6c78eeff9e7b5498f9f3c0ed9a2d4b9"
+  }
+}
