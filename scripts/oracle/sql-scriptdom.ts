@@ -52,7 +52,17 @@ export type ScriptDomHow =
   | "execute" | "select" | "insert" | "update" | "delete" | "merge" | "call" | "table-function" | "truncate" | "alter-table"
   | "alter" | "drop" | "foreign-key" | "grant" | "type" | "sequence" | "into" | "synonym-for" | "trigger-on" | "index-on" | "other";
 
-/** A place a statement names a schema object. `standsFor` says when the statement decides the name is not an object of the database. */
+/** The procedure, function, view or trigger whose definition holds a reference: its name as written, and a trigger's table. */
+export interface ScriptDomModule {
+  kind: "procedure" | "function" | "view" | "trigger";
+  name: ScriptDomName;
+  on?:  ScriptDomName;
+}
+
+/**
+ * A place a statement names a schema object. `standsFor` says when the statement decides the name is not an object of
+ * the database; `module` names the module whose definition holds it, when one does. The parser binds no name.
+ */
 export interface ScriptDomReference {
   how:        ScriptDomHow;
   name:       ScriptDomName;
@@ -60,6 +70,7 @@ export interface ScriptDomReference {
   column:     number;
   standsFor?: "cte" | "table source" | "temporary";
   context?:   string;
+  module?:    ScriptDomModule;
 }
 
 /** An `EXEC (…)` of a string, an `sp_executesql`, or an `EXEC @variable`; when the text is written out, what the parser reads in it. */

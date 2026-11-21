@@ -13,6 +13,7 @@ The SQL reader held to Microsoft's T-SQL parser, without .NET: over every fixtur
 ### Notes
 - Written on 2026-11-19 ([the probe](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/sql-reader/README.md)) in the manner of the PowerShell oracle's test. The register for `fixtures/sql-server` first held every fault the cold run found on tSQLt, in a few files of its shape; each mend of the reader shortened it in the same commit. The estate's SQL Server files have agreed with the parser from the start.
 - `npm run oracle:sql -- <fixture> --write` rewrites a record after a fixture changes; the register changes only by a reading of what changed.
+- Since 2026-11-21 a third fixture, `fixtures/sql-schemas`, holds one table name in two schemas, named by one part from modules of each, from a module's DDL and executed string, a trigger and a loose script, and by `SisterDb..Orders`; the comparison binds each as T-SQL documents. Its register's one entry is a trigger, a kind the reader gives no symbol ([the account](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

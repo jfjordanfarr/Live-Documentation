@@ -40,12 +40,66 @@
  *     type's methods (`value`, `query`, `exist`, `nodes`, `modify`) on a
  *     column, as a call or as a table-valued function, which the parser itself
  *     cannot tell from a function of that name;
- *   - a name a file uses that it creates itself, at either scope, makes no line,
- *     as the adapter writes none;
- *   - a one-part name is matched to an object of that name in any schema, two
- *     parts to that schema and name, as the product matches them; T-SQL itself
- *     resolves a one-part name by the caller's default schema, which the text
- *     does not give;
+ *   - a used name is bound as T-SQL binds it, by the order Microsoft documents,
+ *     the parser giving where the name stands and the documentation what it
+ *     binds to (ScriptDom parses a name into its parts and says which module
+ *     holds it, and binds nothing):
+ *       * a name that writes its schema is that schema's object;
+ *       * a one-part name in a batch binds by the user's default schema, then
+ *         `dbo`: "When database objects are referenced by using a one-part
+ *         name, SQL Server first looks in the user's default schema. If the
+ *         object is not found there, SQL Server looks next in the dbo schema.
+ *         If the object is not in the dbo schema, an error is returned."
+ *         (Microsoft Learn, "Ownership and user-schema separation in SQL
+ *         Server", the dbo schema);
+ *       * a one-part name inside a procedure, function, view or trigger binds
+ *         by that module's schema instead of the user's: "If the nonqualified
+ *         procedure name appears inside the body of another procedure
+ *         definition, the schema that contains this other procedure is
+ *         searched next", after `sys` and before `dbo` (Microsoft Learn,
+ *         "Execute a stored procedure", user-defined stored procedures); and,
+ *         for every object a module names, "Active default schema is schema of
+ *         the SQL module if entity referenced by a statement (except DDL,
+ *         dynamic SQL, a.k.a. EXECUTE statements, or intrinsic such as
+ *         object_id()) inside a procedure, function or view. Otherwise, active
+ *         default schema is current user's default schema." (Microsoft's SQL
+ *         Server programmability team, "Name resolution, default schema,
+ *         implicit schema Part I", 2006, archived on Microsoft Learn). So a
+ *         one-part name a module's DDL names (TRUNCATE TABLE, ALTER TABLE, a
+ *         foreign key: "Data Definition Language (DDL) statements", Microsoft
+ *         Learn, "Transact-SQL statements"), or a string the module executes
+ *         names, binds by the user's default schema. A DML trigger takes the
+ *         schema of its table when its own name writes none: "DML triggers are
+ *         scoped to the schema of the table or view on which they're created"
+ *         (Microsoft Learn, "CREATE TRIGGER", schema_name). A one-part name
+ *         that neither schema holds binds to nothing, however many other
+ *         schemas hold one;
+ *       * `database..name` omits only the schema, whose default is a user's in
+ *         that database, never the module's: "For object references outside
+ *         SQL modules, or DDL, dynamic SQL inside SQL modules, current user's
+ *         default schema in the specified database is used. Otherwise, the
+ *         module schema owner's default schema in the specified database is
+ *         used." ("Part III" of the same series); and "SQL
+ *         Server first looks for DBZ.UserB.TableY. If there is no table with
+ *         this name, SQL Server then looks for a table DBZ.dbo.TableY."
+ *         (SQL Server 2008 Books Online, "Object Visibility and Qualification
+ *         Rules"). It is read as the three-part `database.<default>.name`,
+ *         and a three-part name, like a two-part one, is matched by its
+ *         schema and name to the folder's objects, the database not being
+ *         one the text ties to a folder;
+ *       * the user's default schema is no fact of the text. The grading takes
+ *         `dbo`, which "By default, users created with the CREATE USER
+ *         Transact-SQL command have dbo as their default schema" (the
+ *         ownership page again) makes the default, so a one-part name outside
+ *         a module binds to `dbo` alone; and an object created without a
+ *         written schema, in its creator's default schema, is `dbo`'s, bound
+ *         by a one-part name at `dbo` and by `dbo.name` alike;
+ *       * a name on a linked server is matched by schema and name, and by
+ *         nothing when it omits the schema, which the linked login's default
+ *         on the remote server decides; its link is marked as reached through
+ *         the linked server, as the adapter marks it a contract;
+ *   - a name a file uses that binds to what it creates itself, at either
+ *     scope, makes no line, as the adapter writes none;
  *   - the other ways a statement names an object (a drop, a grant, a type, a
  *     sequence, a synonym's target, a trigger's or an index's table,
  *     SELECT … INTO) are counted and not graded: the reader does not claim
@@ -75,6 +129,7 @@ import {
   type ScriptDomCreate,
   type ScriptDomDynamic,
   type ScriptDomHow,
+  type ScriptDomModule,
   type ScriptDomName,
   type ScriptDomRecord,
   type ScriptDomReference
@@ -190,6 +245,8 @@ interface CreatedObject {
   kind:  ScriptDomCreate["kind"];
   name:  string;
   parts: string[];
+  /** The parser's name, by whose schema and name a use binds to the object. */
+  named: ScriptDomName;
   line:  number;
 }
 
@@ -199,18 +256,49 @@ export function isSqlServerOwn(reference: Pick<ScriptDomReference, "how" | "name
   return (reference.how === "call" || reference.how === "table-function") && XML_METHODS.has(reference.name.name.toLowerCase());
 }
 
-/** True when a used name names the created object: schema and name when two parts are used, the name alone otherwise. */
-function names(used: string[], created: string[]): boolean {
-  const tail = used.slice(-2).map((part) => part.toLowerCase());
-  const own  = created.slice(-2).map((part) => part.toLowerCase());
-  return tail.length >= 2 ? own.length === 2 && own[0] === tail[0] && own[1] === tail[1] : own[own.length - 1] === tail[0];
+/** The default schema the text never gives, taken as the one a user is created with. */
+const DEFAULT_SCHEMA = "dbo";
+
+/** The ways of naming an object that are DDL, which bind by the user's default schema even inside a module. */
+const DDL_HOWS: ReadonlySet<ScriptDomHow> = new Set(["truncate", "alter-table", "foreign-key", "alter", "drop", "index-on", "trigger-on"]);
+
+/** The schema a module's one-part names bind by: its own, or a trigger's table's when the trigger's name writes none. */
+function moduleSchema(module: ScriptDomModule): string | undefined {
+  return module.name.schema ?? (module.kind === "trigger" ? module.on?.schema : undefined);
 }
 
-/** A dependency line as the comparison holds it: a link, `-> file :: object`, or a kept name, `= name`. */
+/**
+ * The schemas, in the order T-SQL searches them, in which a used name may bind, each case folded; a schema not written
+ * is the default one. None when the name is on a linked server and omits its schema.
+ */
+export function searchedSchemas(reference: Pick<ScriptDomReference, "how" | "name" | "module">): string[] {
+  const { name } = reference;
+  if (name.schema !== undefined) return [name.schema.toLowerCase()];
+  if (name.server !== undefined) return [];
+  const inModule = name.database === undefined && reference.module !== undefined && !DDL_HOWS.has(reference.how);
+  const first    = (inModule ? moduleSchema(reference.module!) : undefined) ?? DEFAULT_SCHEMA;
+  return Array.from(new Set([first.toLowerCase(), DEFAULT_SCHEMA]));
+}
+
+/**
+ * The objects a used name binds to: those of its name in the first schema searched that holds one. An object created
+ * without a written schema is in its creator's default schema, taken as `dbo`.
+ */
+export function bindName<Created extends { named: ScriptDomName }>(reference: Pick<ScriptDomReference, "how" | "name" | "module">, created: Created[]): Created[] {
+  const name    = reference.name.name.toLowerCase();
+  const same    = created.filter((object) => object.named.name.toLowerCase() === name);
+  for (const schema of searchedSchemas(reference)) {
+    const found = same.filter((object) => (object.named.schema ?? DEFAULT_SCHEMA).toLowerCase() === schema);
+    if (found.length > 0) return found;
+  }
+  return [];
+}
+
+/** A dependency line as the comparison holds it: a link, `-> file :: object`, marked when reached through a linked server, or a kept name, `= name`. */
 type Line = string;
 
-function linkLine(file: string, object: string): Line {
-  return `-> ${file} :: ${foldedWritten(partsOfWritten(object))}`;
+function linkLine(file: string, object: string, linked = false): Line {
+  return `-> ${file} :: ${foldedWritten(partsOfWritten(object))}${linked ? " (linked)" : ""}`;
 }
 
 function keptLine(parts: string[]): Line {
@@ -238,18 +326,18 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
     for (const create of facts.creates) {
       if (create.name.name.startsWith("#")) { if (reported.has(file)) temporaryCreates += 1; continue; }
       const parts   = partsOf(create.name);
-      const altered = facts.alters.filter((alter) => names(partsOf(alter.name), parts) && alter.line > create.line).map((alter) => alter.line);
-      const object  = { file, kind: create.kind, name: writtenName(create.name), parts, line: Math.max(create.line, ...altered) };
+      const altered = facts.alters.filter((alter) => bindName(alter, [{ named: create.name }]).length > 0 && alter.line > create.line).map((alter) => alter.line);
+      const object  = { file, kind: create.kind, name: writtenName(create.name), parts, named: create.name, line: Math.max(create.line, ...altered) };
       (create.effective === "script" ? objects : moduleCreates).push(object);
     }
   }
-  const byLastPart = new Map<string, CreatedObject[]>();
+  const byName = new Map<string, CreatedObject[]>();
   for (const object of objects) {
-    const last = object.parts[object.parts.length - 1].toLowerCase();
-    byLastPart.set(last, [...(byLastPart.get(last) ?? []), object]);
+    const name = object.named.name.toLowerCase();
+    byName.set(name, [...(byName.get(name) ?? []), object]);
   }
-  const candidates = (parts: string[]): CreatedObject[] => byLastPart.get(parts[parts.length - 1].toLowerCase()) ?? [];
-  const createdHere = (parts: string[]): boolean => candidates(parts).some((object) => names(parts, object.parts));
+  const candidates  = (reference: ScriptDomReference): CreatedObject[] => byName.get(reference.name.name.toLowerCase()) ?? [];
+  const createdHere = (reference: ScriptDomReference): boolean => bindName(reference, candidates(reference)).length > 0;
 
   const lines    = new Map<string, Map<Line, Set<ScriptDomHow>>>();
   const setAside: Record<string, number> = {};
@@ -257,23 +345,24 @@ function expectations(record: ScriptDomRecord, graded: string[], reported: Reado
   const count = (bucket: string) => { setAside[bucket] = (setAside[bucket] ?? 0) + 1; };
   for (const file of graded.filter((candidate) => reported.has(candidate))) {
     const facts = read.get(file)!;
-    const own   = facts.creates.map((create) => partsOf(create.name));
+    const own   = facts.creates.map((create): CreatedObject => ({ file, kind: create.kind, name: writtenName(create.name), parts: partsOf(create.name), named: create.name, line: create.line }));
     const mine  = new Map<Line, Set<ScriptDomHow>>();
     for (const reference of facts.references) {
       const parts = partsOf(reference.name);
       if (!GRADED_HOWS.has(reference.how)) {
         const entry = ungraded[reference.how] ?? { count: 0, ofObjectsHere: 0 };
         entry.count += 1;
-        if (!reference.standsFor && createdHere(parts)) entry.ofObjectsHere += 1;
+        if (!reference.standsFor && createdHere(reference)) entry.ofObjectsHere += 1;
         ungraded[reference.how] = entry;
         continue;
       }
       if (reference.standsFor) { count(reference.standsFor); continue; }
       if (isSqlServerOwn(reference)) { count("SQL Server's own"); continue; }
-      const targets = candidates(parts).filter((object) => object.file !== file && names(parts, object.parts));
+      const bound   = bindName(reference, [...candidates(reference), ...own]);
+      const targets = bound.filter((object) => object.file !== file);
       const made: Line[] = targets.length > 0
-        ? targets.map((object) => linkLine(object.file, object.name))
-        : own.some((created) => names(parts, created)) ? [] : [keptLine(parts)];
+        ? targets.map((object) => linkLine(object.file, object.name, reference.name.server !== undefined))
+        : bound.length > 0 ? [] : [keptLine(parts)];
       if (made.length === 0) { count("the file's own"); continue; }
       for (const line of made) {
         const hows = mine.get(line) ?? new Set<ScriptDomHow>();
@@ -321,7 +410,7 @@ function adapterLines(dependencies: DependencyEntry[]): Set<Line> {
   const lines = new Set<Line>();
   for (const dependency of dependencies) {
     if (dependency.resolvedPath) {
-      for (const symbol of dependency.symbols) lines.add(linkLine(dependency.resolvedPath, symbol));
+      for (const symbol of dependency.symbols) lines.add(linkLine(dependency.resolvedPath, symbol, dependency.basis === "contract"));
     } else {
       lines.add(keptLine(partsOfWritten(dependency.specifier)));
     }
@@ -392,9 +481,9 @@ export function drawSample(files: string[], count: number, seed: number): string
   return shuffled.slice(0, count).sort();
 }
 
-function namesInDynamic(dynamic: ScriptDomDynamic): { names: string[]; creates: string[] } {
+function namesInDynamic(dynamic: ScriptDomDynamic): { used: ScriptDomReference[]; creates: string[] } {
   return {
-    names:   (dynamic.references ?? []).filter((reference) => GRADED_HOWS.has(reference.how) && !reference.standsFor).map((reference) => writtenName(reference.name)),
+    used:    (dynamic.references ?? []).filter((reference) => GRADED_HOWS.has(reference.how) && !reference.standsFor),
     creates: (dynamic.creates ?? []).map((create) => `${create.kind} ${writtenName(create.name)}`)
   };
 }
@@ -482,17 +571,16 @@ export async function compareSql(root: string, record: ScriptDomRecord, options:
   const examples: SqlReport["dynamic"]["examples"] = [];
   let naming = 0;
   let namingHere = 0;
-  const createdHere = (parts: string[]): boolean => expected.objects.some((object) => names(parts, object.parts));
   const tally = (file: string, dynamic: ScriptDomDynamic): void => {
     const label = `${dynamic.how}${!dynamic.literal ? " (computed)" : (dynamic.parseErrors?.length ?? 0) > 0 ? " (written out, not parsed)" : " (written out)"}`;
     dynamicByHow[label] = (dynamicByHow[label] ?? 0) + 1;
     for (const nested of dynamic.nested ?? []) tally(file, nested);
     if (!dynamic.literal) return;
-    const { names: used, creates } = namesInDynamic(dynamic);
+    const { used, creates } = namesInDynamic(dynamic);
     if (used.length === 0 && creates.length === 0) return;
     naming += 1;
-    if (used.some((name) => createdHere(partsOfWritten(name)))) namingHere += 1;
-    examples.push({ file, line: dynamic.line, how: dynamic.how, names: used, creates, text: (dynamic.text ?? "").replace(/\s+/gu, " ").trim().slice(0, 160) });
+    if (used.some((reference) => bindName(reference, expected.objects).length > 0)) namingHere += 1;
+    examples.push({ file, line: dynamic.line, how: dynamic.how, names: used.map((reference) => writtenName(reference.name)), creates, text: (dynamic.text ?? "").replace(/\s+/gu, " ").trim().slice(0, 160) });
   };
   for (const file of reported) {
     for (const dynamic of record.files[file].dynamic) tally(file, dynamic);

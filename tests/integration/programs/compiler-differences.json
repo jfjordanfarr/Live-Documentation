@@ -1,0 +1,94 @@
+{
+  "convention": "Every edge between two files the compiler indexed that the compiler records and the readers do not draw (missing), or the readers draw and the compiler does not record (extra), on every sample program that keeps expected/compiler-edges.json, listed under its cause. An edge the program's hand-verified list asserts is never extra. Each cause says what the reader does and what the compiler does, and whether it is a gap the readers mean to close or a difference of grain they may keep. tests/integration/live-docs/oracle.test.ts fails on a difference no cause lists and on a listed one no longer found. Paths are relative to the program.",
+  "causes": [
+    {
+      "cause": "C and C++: a call of a function, and a header's prototype of it, to the file that defines it. The reader draws the #include a file writes, to the header that declares the function, with the names the file uses from it, and no file includes a .c; the compiler (scip-clang) records every use of the function, the header's prototype among them, as a reference to its definition in the .c or .cpp file the build compiled. A gap: a caller does not reach the file that implements what it calls, so the map answers what is reachable from main.c with headers only, and finds nothing that reaches store.c, which would look like dead code. Not mended yet: a rule, such as a prototype's one defining file in the workspace, is to be measured against scip-clang on real C repositories first, since which file defines a function is the build's choice.",
+      "kind": "gap",
+      "differences": [
+        { "program": "c/basics", "side": "missing", "from": "src/main.c", "to": "src/util.c" },
+        { "program": "c/basics", "side": "missing", "from": "src/util.h", "to": "src/util.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/logger.h", "to": "src/logger.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/main.c", "to": "src/logger.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/main.c", "to": "src/pipeline.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/metrics.h", "to": "src/metrics.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/pipeline.c", "to": "src/logger.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/pipeline.c", "to": "src/metrics.c" },
+        { "program": "c/modular", "side": "missing", "from": "src/pipeline.h", "to": "src/pipeline.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/helpers.h", "to": "src/helpers.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/main.c", "to": "src/models.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/main.c", "to": "src/processor.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/models.h", "to": "src/models.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/processor.c", "to": "src/helpers.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/processor.c", "to": "src/models.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/processor.h", "to": "src/processor.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/test_helpers.c", "to": "src/helpers.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/test_pipeline.c", "to": "src/models.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/test_pipeline.c", "to": "src/processor.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/test_processor.c", "to": "src/models.c" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/test_processor.c", "to": "src/processor.c" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/helpers.hpp", "to": "src/helpers.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/main.cpp", "to": "src/models.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/main.cpp", "to": "src/processor.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/models.hpp", "to": "src/models.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/processor.cpp", "to": "src/helpers.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/processor.cpp", "to": "src/models.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/processor.hpp", "to": "src/processor.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/test_helpers.cpp", "to": "src/helpers.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/test_pipeline.cpp", "to": "src/models.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/test_pipeline.cpp", "to": "src/processor.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/test_processor.cpp", "to": "src/models.cpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/test_processor.cpp", "to": "src/processor.cpp" }
+      ]
+    },
+    {
+      "cause": "C and C++: a name declared in a header the file reaches only through another header. The reader draws a file's own includes and gives each the names the file uses that it declares itself, so a struct of types.h used in models.c, which includes models.h, which includes types.h, is drawn to no file; the compiler records the use against the header that declares the name, however the include reached it. Proposed as a gap to close: the chain of includes is a fact of the text, and the reader already resolves every link of it.",
+      "kind": "gap",
+      "differences": [
+        { "program": "c/rosetta", "side": "missing", "from": "src/models.c", "to": "src/types.h" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/processor.c", "to": "src/models.h" },
+        { "program": "c/rosetta", "side": "missing", "from": "src/processor.c", "to": "src/types.h" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/models.cpp", "to": "src/types.hpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/processor.cpp", "to": "src/models.hpp" },
+        { "program": "cpp/rosetta", "side": "missing", "from": "src/processor.cpp", "to": "src/types.hpp" }
+      ]
+    },
+    {
+      "cause": "Go: a file to the one file the indexer makes its package's, or an imported package's, defining file. The reader links a use of a name to the file that declares it, within the package and across imports, and draws nothing for a package clause or an import by itself; scip-go gives each package one defining file (here the first of its files by name) and records every file's package clause and every import of the package as a reference to it, though nothing that file declares is used. Proposed as a difference of grain to keep: the edge names no declaration of the file it reaches.",
+      "kind": "grain",
+      "differences": [
+        { "program": "go/depot", "side": "missing", "from": "report/format.go", "to": "report/count.go" },
+        { "program": "go/depot", "side": "missing", "from": "report/report.go", "to": "report/count.go" },
+        { "program": "go/depot", "side": "missing", "from": "report/report.go", "to": "store/base.go" },
+        { "program": "go/depot", "side": "missing", "from": "stock/quantity.go", "to": "stock/item.go" },
+        { "program": "go/depot", "side": "missing", "from": "stock/quantity_test.go", "to": "stock/item.go" },
+        { "program": "go/depot", "side": "missing", "from": "store/inventory.go", "to": "store/base.go" },
+        { "program": "go/rosetta", "side": "missing", "from": "src/main/pipeline_test.go", "to": "src/main/main.go" }
+      ]
+    },
+    {
+      "cause": "A method called on a value whose type the code does not write: in Go, inventory := memstore.New() then inventory.Listen(...), a method the memory store's type gets from its embedded store.Base; in Python, account.balance() on what open_account returns; in Rust, item.describe(...) in a closure over what on_hand() returns. The readers resolve names the code writes, qualified by a package, a module or an import, and follow no variable's inferred type; the compiler knows every value's type. Proposed as a gap, and not a cheap one: closing it takes type inference.",
+      "kind": "gap",
+      "differences": [
+        { "program": "go/depot", "side": "missing", "from": "cmd/depot/main.go", "to": "store/base.go" },
+        { "program": "python/ledger", "side": "missing", "from": "ledger/cli.py", "to": "ledger/models/account.py" },
+        { "program": "rust/stockroom", "side": "missing", "from": "src/report.rs", "to": "src/stock/item.rs" }
+      ]
+    },
+    {
+      "cause": "Python: from ..util import money to the package's __init__.py. The reader takes from M import name to depend on M's own file as well as on where name is defined, since importing a package runs its __init__.py; the compiler (scip-python) records only the names used, here the module money. Proposed as a difference of grain to keep: the import does execute that file.",
+      "kind": "grain",
+      "differences": [
+        { "program": "python/ledger", "side": "extra", "from": "ledger/models/account.py", "to": "ledger/util/__init__.py" }
+      ]
+    },
+    {
+      "cause": "Rust: the crate root, src/lib.rs, as a file. The reader draws a binary's and a test's use stockroom::... to the library's crate root beside the files that define each name, which is the crate dependency the compiler lists among its projects (the binary and the test using the library); the compiler records each name's definition and nothing in lib.rs for the crate's name. The other way, pub(crate) in src/stock/quantity.rs is for the compiler a reference to the crate root module, and names nothing the reader draws. Proposed as a difference of grain to keep, on both sides.",
+      "kind": "grain",
+      "differences": [
+        { "program": "rust/stockroom", "side": "extra", "from": "src/main.rs", "to": "src/lib.rs" },
+        { "program": "rust/stockroom", "side": "extra", "from": "tests/report.rs", "to": "src/lib.rs" },
+        { "program": "rust/stockroom", "side": "missing", "from": "src/stock/quantity.rs", "to": "src/lib.rs" }
+      ]
+    }
+  ]
+}

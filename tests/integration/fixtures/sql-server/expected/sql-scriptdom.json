@@ -23,7 +23,14 @@
             "name": "Invoice"
           },
           "line": 6,
-          "column": 12
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Archive"
+            }
+          }
         }
       ],
       "dynamic": []
@@ -39,7 +46,14 @@
             "name": "usp_Settle"
           },
           "line": 6,
-          "column": 17
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Settle"
+            }
+          }
         },
         {
           "how": "execute",
@@ -47,7 +61,14 @@
             "name": "sp_executesql"
           },
           "line": 13,
-          "column": 10
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Settle"
+            }
+          }
         },
         {
           "how": "alter",
@@ -56,7 +77,14 @@
             "name": "vw_Legacy"
           },
           "line": 23,
-          "column": 12
+          "column": 12,
+          "module": {
+            "kind": "view",
+            "name": {
+              "schema": "Billing",
+              "name": "vw_Legacy"
+            }
+          }
         }
       ],
       "dynamic": [
@@ -194,7 +222,14 @@
             "name": "objects"
           },
           "line": 19,
-          "column": 76
+          "column": 76,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "execute",
@@ -203,7 +238,14 @@
             "name": "usp_Archive"
           },
           "line": 22,
-          "column": 22
+          "column": 22,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "select",
@@ -212,7 +254,14 @@
             "name": "Invoice"
           },
           "line": 26,
-          "column": 58
+          "column": 58,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "call",
@@ -222,7 +271,14 @@
             "name": "value"
           },
           "line": 28,
-          "column": 35
+          "column": 35,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "select",
@@ -231,7 +287,14 @@
           },
           "line": 29,
           "column": 10,
-          "standsFor": "cte"
+          "standsFor": "cte",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "insert",
@@ -240,7 +303,14 @@
           },
           "line": 31,
           "column": 12,
-          "standsFor": "temporary"
+          "standsFor": "temporary",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "call",
@@ -249,7 +319,14 @@
             "name": "fn_Balance"
           },
           "line": 32,
-          "column": 25
+          "column": 25,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "update",
@@ -258,7 +335,14 @@
           },
           "line": 34,
           "column": 12,
-          "standsFor": "table source"
+          "standsFor": "table source",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "select",
@@ -267,7 +351,14 @@
             "name": "Customer"
           },
           "line": 36,
-          "column": 12
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "select",
@@ -276,7 +367,14 @@
           },
           "line": 40,
           "column": 12,
-          "standsFor": "temporary"
+          "standsFor": "temporary",
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         },
         {
           "how": "table-function",
@@ -285,7 +383,14 @@
             "name": "fn_OpenInvoices"
           },
           "line": 41,
-          "column": 17
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "Billing",
+              "name": "usp_Statement"
+            }
+          }
         }
       ],
       "dynamic": [
@@ -390,7 +495,14 @@
             "name": "Invoice"
           },
           "line": 7,
-          "column": 46
+          "column": 46,
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_Balance"
+            }
+          }
         },
         {
           "how": "select",
@@ -399,7 +511,14 @@
             "name": "Invoice"
           },
           "line": 15,
-          "column": 58
+          "column": 58,
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_OpenInvoices"
+            }
+          }
         },
         {
           "how": "select",
@@ -408,7 +527,14 @@
           },
           "line": 16,
           "column": 35,
-          "standsFor": "cte"
+          "standsFor": "cte",
+          "module": {
+            "kind": "function",
+            "name": {
+              "schema": "Billing",
+              "name": "fn_OpenInvoices"
+            }
+          }
         }
       ],
       "dynamic": []
@@ -464,7 +590,14 @@
             "name": "Expected"
           },
           "line": 10,
-          "column": 17
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "execute",
@@ -473,7 +606,14 @@
             "name": "FakeTable"
           },
           "line": 12,
-          "column": 10
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "insert",
@@ -482,7 +622,14 @@
             "name": "Invoice"
           },
           "line": 13,
-          "column": 17
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "call",
@@ -491,7 +638,14 @@
             "name": "fn_Balance"
           },
           "line": 15,
-          "column": 12
+          "column": 12,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "into",
@@ -500,7 +654,14 @@
             "name": "Actual"
           },
           "line": 15,
-          "column": 48
+          "column": 48,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "execute",
@@ -509,7 +670,14 @@
             "name": "AssertEqualsTable"
           },
           "line": 17,
-          "column": 10
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test it doesn't count a settled invoice"
+            }
+          }
         },
         {
           "how": "execute",
@@ -518,7 +686,14 @@
             "name": "FakeTable"
           },
           "line": 25,
-          "column": 10
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
         },
         {
           "how": "insert",
@@ -527,7 +702,14 @@
             "name": "Invoice"
           },
           "line": 26,
-          "column": 17
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
         },
         {
           "how": "call",
@@ -536,7 +718,14 @@
             "name": "fn_Balance"
           },
           "line": 27,
-          "column": 20
+          "column": 20,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
         },
         {
           "how": "execute",
@@ -545,7 +734,14 @@
             "name": "AssertEquals"
           },
           "line": 28,
-          "column": 10
+          "column": 10,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "BillingTests",
+              "name": "test fn_Balance.sums the open ones"
+            }
+          }
         }
       ],
       "dynamic": []

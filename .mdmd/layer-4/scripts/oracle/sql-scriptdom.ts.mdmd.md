@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/sql-scriptdom.ts`
-- Generated At: 2026-11-21T02:15:32.640Z
+- Generated At: 2026-11-21T04:55:42.522Z
 
 ## Authored
 ### Purpose
@@ -51,16 +51,24 @@ A CREATE statement: what it makes, at the line and column of its first word, and
 ##### `ScriptDomHow` — Summary
 How a statement names an object; `other` carries the parser's parent and property in `context`.
 
-#### `ScriptDomReference` {#symbol-scriptdomreference}
+#### `ScriptDomModule` {#symbol-scriptdommodule}
 - Type: interface
 - Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L56)
 
+##### `ScriptDomModule` — Summary
+The procedure, function, view or trigger whose definition holds a reference: its name as written, and a trigger's table.
+
+#### `ScriptDomReference` {#symbol-scriptdomreference}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L66)
+
 ##### `ScriptDomReference` — Summary
-A place a statement names a schema object. `standsFor` says when the statement decides the name is not an object of the database.
+A place a statement names a schema object. `standsFor` says when the statement decides the name is not an object of
+the database; `module` names the module whose definition holds it, when one does. The parser binds no name.
 
 #### `ScriptDomDynamic` {#symbol-scriptdomdynamic}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L66)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L77)
 
 ##### `ScriptDomDynamic` — Summary
 An `EXEC (…)` of a string, an `sp_executesql`, or an `EXEC
@@ -70,21 +78,21 @@ An `EXEC (…)` of a string, an `sp_executesql`, or an `EXEC
 
 #### `ScriptDomFileFacts` {#symbol-scriptdomfilefacts}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L86)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L97)
 
 ##### `ScriptDomFileFacts` — Summary
 What the parser says about one file.
 
 #### `ScriptDomRecord` {#symbol-scriptdomrecord}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L94)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L105)
 
 ##### `ScriptDomRecord` — Summary
 The parser's record of a folder, file by file, in folder-relative coordinates.
 
 #### `parseSqlFiles` {#symbol-parsesqlfiles}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L102)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L113)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `parseSqlFiles` — Summary
@@ -92,7 +100,7 @@ Runs the parser over the named files of a folder; `dotnet` must be on the path.
 
 #### `writeScriptDomRecord` {#symbol-writescriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L126)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L137)
 - Parameters: `record`: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `writeScriptDomRecord` — Summary
@@ -100,7 +108,7 @@ Writes the record beside a fixture's other expectations, each file named relativ
 
 #### `readScriptDomRecord` {#symbol-readscriptdomrecord}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L132)
+- Source: [source](../../../../scripts/oracle/sql-scriptdom.ts#L143)
 - Returns: [`ScriptDomRecord`](#symbol-scriptdomrecord)
 
 ##### `readScriptDomRecord` — Summary

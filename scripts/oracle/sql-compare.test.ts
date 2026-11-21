@@ -1,6 +1,54 @@
 import { describe, expect, it } from "vitest";
 
-import { drawSample, isSqlServerOwn, partsOfWritten, writtenName } from "./sql-compare";
+import { bindName, drawSample, isSqlServerOwn, partsOfWritten, searchedSchemas, writtenName } from "./sql-compare";
+import type { ScriptDomModule } from "./sql-scriptdom";
+
+describe("the SQL comparison's binding of names, by the order Microsoft documents", () => {
+  const archive: ScriptDomModule = { kind: "procedure", name: { schema: "archive", name: "ListOrders" } };
+
+  it("searches a batch's one-part name in the default schema, dbo, and a module's in the module's schema, then dbo", () => {
+    expect(searchedSchemas({ how: "select", name: { name: "Orders" } })).toEqual(["dbo"]);
+    expect(searchedSchemas({ how: "select", name: { name: "Orders" }, module: archive })).toEqual(["archive", "dbo"]);
+    expect(searchedSchemas({ how: "execute", name: { name: "usp_Post" }, module: archive })).toEqual(["archive", "dbo"]);
+    expect(searchedSchemas({ how: "select", name: { name: "Orders" }, module: { kind: "procedure", name: { name: "ListOrders" } } })).toEqual(["dbo"]);
+  });
+
+  it("takes a trigger's schema from its table when its own name writes none", () => {
+    expect(searchedSchemas({ how: "insert", name: { name: "Orders" }, module: { kind: "trigger", name: { name: "OrdersKept" }, on: { schema: "archive", name: "Orders" } } })).toEqual(["archive", "dbo"]);
+  });
+
+  it("binds a module's DDL by the default schema, as the user's, not the module's", () => {
+    for (const how of ["truncate", "alter-table", "foreign-key"] as const) expect(searchedSchemas({ how, name: { name: "Orders" }, module: archive })).toEqual(["dbo"]);
+  });
+
+  it("reads database..name by the default schema in that database, never the module's, and a written schema as itself", () => {
+    expect(searchedSchemas({ how: "select", name: { database: "SisterDb", name: "Orders" }, module: archive })).toEqual(["dbo"]);
+    expect(searchedSchemas({ how: "select", name: { database: "SisterDb", schema: "dbo", name: "Orders" } })).toEqual(["dbo"]);
+    expect(searchedSchemas({ how: "select", name: { schema: "Sales", name: "Orders" }, module: archive })).toEqual(["sales"]);
+  });
+
+  it("searches no schema for a linked server's name that omits one, the remote login's default deciding it", () => {
+    expect(searchedSchemas({ how: "select", name: { server: "ORACLE_CENTRAL", name: "ACCOUNT" } })).toEqual([]);
+    expect(searchedSchemas({ how: "select", name: { server: "ORACLE_CENTRAL", schema: "CENTRAL", name: "ACCOUNT" } })).toEqual(["central"]);
+  });
+
+  it("binds to the first schema searched that holds the name, to nothing when neither does, and a schema-less creation as dbo's", () => {
+    const created = [
+      { named: { schema: "dbo", name: "Orders" } },
+      { named: { schema: "archive", name: "Orders" } },
+      { named: { schema: "archive", name: "Notes" } },
+      { named: { name: "Things" } }
+    ];
+    const bound = (reference: Parameters<typeof bindName>[0]) => bindName(reference, created).map((object) => `${object.named.schema ?? "(none)"}.${object.named.name}`);
+    expect(bound({ how: "select", name: { name: "orders" } })).toEqual(["dbo.Orders"]);
+    expect(bound({ how: "select", name: { name: "Orders" }, module: archive })).toEqual(["archive.Orders"]);
+    expect(bound({ how: "select", name: { name: "Notes" } })).toEqual([]);
+    expect(bound({ how: "select", name: { name: "Notes" }, module: archive })).toEqual(["archive.Notes"]);
+    expect(bound({ how: "select", name: { name: "Things" }, module: archive })).toEqual(["(none).Things"]);
+    expect(bound({ how: "select", name: { schema: "dbo", name: "Things" } })).toEqual(["(none).Things"]);
+    expect(bound({ how: "select", name: { schema: "archive", name: "Things" } })).toEqual([]);
+  });
+});
 
 describe("the SQL comparison's names", () => {
   it("writes a parser's name as the product writes one, bracketing only a part that would split", () => {

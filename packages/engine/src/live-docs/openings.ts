@@ -299,11 +299,16 @@ export function sqlWrittenName(parts: string[]): string {
   return parts.map((part) => (/[.[\]"]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part)).join(".");
 }
 
-/** Reads a written object name: quotes off, server and database qualifiers off, case folded. */
+/**
+ * Reads a written object name: quotes off, server and database qualifiers off, case folded. Four parts name a
+ * linked server's object; three name a database's, `database.schema.name`, and `database..name` leaves only the
+ * schema to its default, a user's in that database, which no text gives and is taken as `dbo`, so it reads as
+ * `database.dbo.name` does (Microsoft's "Transact-SQL syntax conventions": "Server and schema name are omitted").
+ */
 export function sqlObjectName(raw: string): SqlObjectName {
   const parts = sqlNameParts(raw);
-  const linked = parts.length === 4 || (parts.length >= 3 && parts.slice(1, -1).some((part) => part === ""));
-  return { parts: parts.slice(-2).filter((part) => part !== "").map((part) => part.toLowerCase()), linked };
+  const named = parts.length === 3 && parts[1] === "" ? [parts[0], "dbo", parts[2]] : parts;
+  return { parts: named.slice(-2).filter((part) => part !== "").map((part) => part.toLowerCase()), linked: parts.length === 4 };
 }
 
 /** The kind of a `CREATE` statement, as a symbol kind. A SQL function is `sql-function`, so that it is never mistaken for a function of a source language. */
@@ -397,6 +402,13 @@ const SQL_MODULES_WITH_BODIES: ReadonlySet<string> = new Set(["PROCEDURE", "PROC
 
 /** The kinds of module an `ALTER` redefines; the `ALTER` uses the module, and where the script itself creates it, stands for its definition. */
 const SQL_ALTERED_MODULES: readonly string[] = ["PROCEDURE", "PROC", "FUNCTION", "VIEW", "TRIGGER"];
+
+/**
+ * The verbs of the DDL a reference can stand in (`TRUNCATE TABLE`, `ALTER TABLE`, a foreign key's `REFERENCES`, an
+ * `ALTER` of a module): Microsoft's "Transact-SQL statements" lists them as Data Definition Language, and T-SQL binds
+ * a one-part name in DDL by the caller's default schema even inside a module.
+ */
+const SQL_DDL_VERBS: ReadonlySet<string> = new Set(["TRUNCATE TABLE", "ALTER TABLE", "REFERENCES", "ALTER"]);
 
 /** The kinds of `CREATE` whose name a `FROM` may follow that is no table source: `CREATE TYPE x FROM INT`, `CREATE USER x FROM LOGIN y`. */
 const SQL_KINDS_WITH_FROM: ReadonlySet<string> = new Set(["TYPE", "USER", "LOGIN", "CERTIFICATE", "ASSEMBLY", "KEY"]);
@@ -750,6 +762,12 @@ export interface SqlReference {
   name: SqlObjectName;
   /** The name as written, each part unquoted, written back by {@link sqlWrittenName}. */
   raw: string;
+  /**
+   * The schema, case folded, that a one-part name binds by before `dbo`: that of the procedure, function, view or
+   * trigger whose definition holds the reference, when its name, or a trigger's table, writes one, and the use is no
+   * DDL. Absent elsewhere, where T-SQL binds a one-part name by the caller's default schema. See {@link bindSqlName}.
+   */
+  moduleSchema?: string;
 }
 
 /**
@@ -770,10 +788,16 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
   const read: SqlReading = { declarations: [], references: [], alters: new Map() };
   readSqlText(text, { offset: 0, inBody: false }, read);
   for (const declaration of read.declarations) {
-    const altered = read.alters.get(sqlObjectName(declaration.name).parts.join("."));
+    const altered = read.alters.get(alteredKey(declaration.name));
     if (!declaration.inBody && altered !== undefined && altered > declaration.line) declaration.line = altered;
   }
   return { declarations: read.declarations, references: read.references };
+}
+
+/** The key by which an `ALTER` finds the object a `CREATE` made: schema and name, a schema not written being `dbo`, as an `ALTER`'s DDL and a `CREATE`'s both take the user's default. */
+function alteredKey(written: string): string {
+  const { parts } = sqlObjectName(written);
+  return (parts.length === 1 ? ["dbo", ...parts] : parts).join(".");
 }
 
 /** What a reading gathers: declarations, references, and the last line at which the script itself alters each object. */
@@ -805,6 +829,18 @@ function literalText(tokens: SqlToken[], start: number, end: number): { text: st
   return parts.length > 0 ? { text: parts.join(""), line: tokens[start].line } : undefined;
 }
 
+/**
+ * The schema, case folded, a module's one-part names bind by: the one its name writes, or for a trigger whose name
+ * writes none, that of the table after its `ON`, since a DML trigger lives in its table's schema. Undefined when the
+ * text gives none, as for a module created in its creator's default schema.
+ */
+function moduleSchemaOf(kind: string, name: { parts: string[]; end: number }, tokens: SqlToken[]): string | undefined {
+  const schemaOf = (parts: string[]): string | undefined => (parts.length >= 2 && parts[parts.length - 2] !== "" ? parts[parts.length - 2].toLowerCase() : undefined);
+  if (name.parts.length >= 2 || kind !== "TRIGGER" || !isWord(tokens[name.end], "ON")) return schemaOf(name.parts);
+  const table = readName(tokens, name.end + 1);
+  return table ? schemaOf(table.parts) : undefined;
+}
+
 /** A name's parts on a linked server: the server first, then the database, schema and object in their places, an empty place for one not written. */
 function onServer(server: string, parts: string[]): string[] {
   return parts.length >= 4 ? parts : [server, ...Array<string>(3 - parts.length).fill(""), ...parts];
@@ -817,6 +853,8 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
     /** Where a table source's name starts that a comma list has read already, so that no later token reads it as a call. */
     const read = new Set<number>();
     let inBody = false;
+    /** The schema of the module the batch defines, which its one-part names bind by; a string it executes is a batch of its own. */
+    let moduleSchema: string | undefined;
     const refer = (verb: string, parts: string[], at: number, target: boolean): void => {
       const last = parts[parts.length - 1];
       if (last.startsWith("#")) return;
@@ -826,7 +864,8 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
       if (parts.length === 1 && expressions.has(last.toLowerCase())) return;
       if (target && parts.length === 1 && statementSources(tokens, at).has(last.toLowerCase())) return;
       const raw = sqlWrittenName(place.server ? onServer(place.server, parts) : parts);
-      references.push({ verb, name: sqlObjectName(raw), raw });
+      const bindsBy = moduleSchema !== undefined && !SQL_DDL_VERBS.has(verb) ? { moduleSchema } : {};
+      references.push({ verb, name: sqlObjectName(raw), raw, ...bindsBy });
     };
     /** Reads an executed string's text, which runs where the statement that executes it runs, or on the server named. */
     const execute = (literal: { text: string; line: number }, server?: string): void => {
@@ -850,6 +889,7 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
           declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line + place.offset, inBody: place.inBody || (kind === "TABLE" && inBody) });
         }
         if (SQL_MODULES_WITH_BODIES.has(kind)) inBody = true;
+        if (SQL_MODULES_WITH_BODIES.has(kind) || kind === "VIEW") moduleSchema = moduleSchemaOf(kind, name, tokens);
         index = SQL_KINDS_WITH_FROM.has(kind) && isWord(tokens[name.end], "FROM") ? name.end : name.end - 1;
         continue;
       }
@@ -858,7 +898,8 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
         const name = readName(tokens, index + 2);
         if (!name) continue;
         refer("ALTER", name.parts, name.end, false);
-        if (!place.inBody && !place.server) into.alters.set(sqlObjectName(sqlWrittenName(name.parts)).parts.join("."), token.line + place.offset);
+        moduleSchema = moduleSchemaOf(tokens[index + 1].value.toUpperCase(), name, tokens);
+        if (!place.inBody && !place.server) into.alters.set(alteredKey(sqlWrittenName(name.parts)), token.line + place.offset);
         index = name.end - 1;
         continue;
       }
@@ -968,12 +1009,17 @@ export function declaredSqlObjects(index: WorkspaceSymbolIndex): DeclaredSqlObje
   return objects;
 }
 
-/** True when a written name names the declared object: schema and object when both are written, the object alone otherwise. */
+/**
+ * True when a written name names the declared object: schema and object when both are written, the object alone
+ * otherwise. An object declared without a schema is in its creator's default schema, taken as `dbo`, so `dbo.X` names
+ * a declared `X`.
+ */
 export function sqlNameMatches(name: SqlObjectName, declared: SqlObjectName): boolean {
+  const last = declared.parts[declared.parts.length - 1];
   if (name.parts.length >= 2) {
-    return declared.parts.length === 2 && declared.parts[0] === name.parts[0] && declared.parts[1] === name.parts[1];
+    return last === name.parts[1] && (declared.parts.length === 2 ? declared.parts[0] : "dbo") === name.parts[0];
   }
-  return declared.parts[declared.parts.length - 1] === name.parts[0];
+  return last === name.parts[0];
 }
 
 /** The declared objects a name matches, by {@link sqlNameMatches}. */
@@ -988,6 +1034,24 @@ export function matchSqlObject(name: SqlObjectName, index: WorkspaceSymbolIndex)
     sqlObjectsByNameCache.set(index, byName);
   }
   return (byName.get(name.parts[name.parts.length - 1]) ?? []).filter((object) => sqlNameMatches(name, { parts: object.parts, linked: false }));
+}
+
+/**
+ * The declared objects a reference binds to, of those its name matches, by T-SQL's order of search. A name that
+ * writes its schema, or reaches a linked server, binds to every match. A one-part name binds to the matches in the
+ * first schema that holds one, of its module's schema ({@link SqlReference.moduleSchema}) and then `dbo`, and to none
+ * when neither does, however many other schemas hold one: Microsoft documents that a name in a module's body is
+ * searched in "the schema that contains this other procedure", and elsewhere in "the user's default schema", before
+ * `dbo`. The caller's default schema is no fact of the text; it is taken as `dbo`, the default a user is created with,
+ * and an object declared without a schema, in its creator's default schema, as `dbo`'s.
+ */
+export function bindSqlName<Declared extends { parts: string[] }>(reference: Pick<SqlReference, "name" | "moduleSchema">, matches: Declared[]): Declared[] {
+  if (reference.name.linked || reference.name.parts.length >= 2) return matches;
+  for (const schema of [reference.moduleSchema ?? "dbo", "dbo"]) {
+    const bound = matches.filter((object) => (object.parts.length >= 2 ? object.parts[object.parts.length - 2] : "dbo") === schema);
+    if (bound.length > 0) return bound;
+  }
+  return [];
 }
 
 /** The declared objects by the last part of their name, so that a name is matched only against those it could match; read once per index. */

@@ -22,6 +22,10 @@
 //                for when the statement around it decides that: a common table expression the
 //                statement defines, a name standing for a table source of the statement's own FROM
 //                (an alias, or a table's exposed name), or a temporary table or procedure (`#name`).
+//                Each names the module whose definition holds it, when one does: the procedure,
+//                function, view or trigger, with its name as written and, for a trigger, the table it
+//                is on. That is where the name stands, which the parser knows; what it binds to is the
+//                comparison's to say, since the parser binds no name.
 //                A column, a variable, a table variable and a SQL Server data type (`INT`, `NVARCHAR`,
 //                `XML`: the parser's own `SqlDataTypeReference` and `XmlDataTypeReference`) are not
 //                schema objects and are not listed;
@@ -78,7 +82,10 @@ namespace SqlScriptDomOracle
 
     record Create(string Kind, ObjectName Name, int Line, int Column, string Scope);
 
-    record Reference(string How, ObjectName Name, int Line, int Column, string? StandsFor = null, string? Context = null);
+    /// <summary>The module whose definition holds a reference: its kind, its name as written, and a trigger's table.</summary>
+    record Module(string Kind, ObjectName Name, ObjectName? On);
+
+    record Reference(string How, ObjectName Name, int Line, int Column, string? StandsFor = null, string? Context = null, Module? Module = null);
 
     record Dynamic(string How, int Line, int Column, string Scope, bool Literal, string? Text, int? TextLine, string? Server, List<ParseError>? ParseErrors, List<Create>? Creates, List<Reference>? References, List<Dynamic>? Nested);
 
@@ -131,7 +138,7 @@ namespace SqlScriptDomOracle
                         ReadCall(call);
                         break;
                     case SecurityTargetObjectName target when target.MultiPartIdentifier != null:
-                        References.Add(new Reference("grant", FromIdentifiers(target.MultiPartIdentifier.Identifiers), target.StartLine, target.StartColumn));
+                        References.Add(new Reference("grant", FromIdentifiers(target.MultiPartIdentifier.Identifiers), target.StartLine, target.StartColumn, Module: ModuleOf(target)));
                         break;
                     case ExecuteSpecification execute:
                         ReadExecute(execute);
@@ -170,6 +177,24 @@ namespace SqlScriptDomOracle
         /// <summary>Script, or module when a procedure's, function's or trigger's body holds the statement.</summary>
         string ScopeOf(TSqlFragment statement) =>
             Ancestors(statement).Any(node => node is ProcedureStatementBodyBase or TriggerStatementBody) ? "module" : "script";
+
+        /// <summary>The nearest procedure, function, view or trigger whose definition holds the node, if any.</summary>
+        Module? ModuleOf(TSqlFragment node)
+        {
+            foreach (var ancestor in Ancestors(node))
+            {
+                Module? module = ancestor switch
+                {
+                    ProcedureStatementBody { ProcedureReference.Name: { } name } => new Module("procedure", FromName(name), null),
+                    FunctionStatementBody { Name: { } name }                     => new Module("function", FromName(name), null),
+                    ViewStatementBody { SchemaObjectName: { } name }             => new Module("view", FromName(name), null),
+                    TriggerStatementBody { Name: { } name } trigger              => new Module("trigger", FromName(name), trigger.TriggerObject?.Name is { } on ? FromName(on) : null),
+                    _                                                            => null
+                };
+                if (module != null) return module;
+            }
+            return null;
+        }
 
         /// <summary>Records a CREATE and returns the name it gives its own object, which is no reference.</summary>
         SchemaObjectName? ReadCreate(TSqlFragment node)
@@ -215,7 +240,7 @@ namespace SqlScriptDomOracle
             };
             var objectName = FromName(name);
             if (standsFor == null && objectName.Name.StartsWith('#')) standsFor = "temporary";
-            References.Add(new Reference(how, objectName, name.StartLine, name.StartColumn, standsFor, how == "other" ? $"{parent?.GetType().Name}.{entry.Property}" : null));
+            References.Add(new Reference(how, objectName, name.StartLine, name.StartColumn, standsFor, how == "other" ? $"{parent?.GetType().Name}.{entry.Property}" : null, ModuleOf(name)));
         }
 
         /// <summary>How a table reference is used: as the target of the statement that holds it, or read.</summary>
@@ -287,7 +312,7 @@ namespace SqlScriptDomOracle
         {
             if (call.CallTarget is not MultiPartIdentifierCallTarget target) return;
             var parts = target.MultiPartIdentifier.Identifiers.Append(call.FunctionName).ToList();
-            References.Add(new Reference("call", FromIdentifiers(parts), call.StartLine, call.StartColumn));
+            References.Add(new Reference("call", FromIdentifiers(parts), call.StartLine, call.StartColumn, Module: ModuleOf(call)));
         }
 
         void ReadExecute(ExecuteSpecification execute)
@@ -337,8 +362,9 @@ namespace SqlScriptDomOracle
             Nested     = nested.Nested?.Select(inner => Shift(inner, offset, scope)).ToList()
         };
 
+        /// <summary>A name's parts; a part left out between two dots (`db..name`), which the parser holds as empty, is not written.</summary>
         static ObjectName FromName(SchemaObjectName name) =>
-            new(name.ServerIdentifier?.Value, name.DatabaseIdentifier?.Value, name.SchemaIdentifier?.Value, name.BaseIdentifier.Value);
+            new(NullIfEmpty(name.ServerIdentifier?.Value), NullIfEmpty(name.DatabaseIdentifier?.Value), NullIfEmpty(name.SchemaIdentifier?.Value), name.BaseIdentifier.Value);
 
         /// <summary>A dotted name read from its last part back: object, schema, database, server.</summary>
         static ObjectName FromIdentifiers(IList<Identifier> identifiers)
