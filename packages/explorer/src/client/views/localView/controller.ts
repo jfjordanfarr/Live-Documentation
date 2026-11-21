@@ -990,16 +990,14 @@ export class LocalViewController implements LocalViewApi {
     // the focus had stayed on it and been dropped with it (found 2026-11-15, on the keyboard's way to close what it opened).
     const focusSelector = [`${label} .local-directory-handle`, `.local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-handle`];
     const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
-    // A directory opened whose label was not drawn (a skin pressed among a handle's cells, a closed box) is a newcomer.
-    const drawn = !!this.container.querySelector(label);
     return { ...frame, afterRender: () => {
       frame.afterRender();
       // Opened while following, the directory is framed with the pins as their newest (the trial's choice, 2026-11-19).
       this.followDirectory = this.container.querySelector(label) ? directory : null;
-      // Under Tuning's Step trial (2026-11-21) every opening is a step whose newcomer is the opened directory, its handle's
-      // label drawn before or not; under Least Pan, the default, only a label not drawn before is, as since 2026-11-19.
-      const step = this.options.state.tuning.localMap.step !== "least";
-      if ((!drawn || step) && this.container.querySelector(label)) this.stepNewcomer ??= { directory };
+      // Every opening is a step whose newcomer is the opened directory, its handle's label drawn before or not: a
+      // directory opened by the handle on its drawn label is a directory opened (the root's ruling, 2026-11-21; until
+      // then only a label not drawn before was, and live-docs/history opened by its handle stood cut at the view's edge).
+      if (this.container.querySelector(label)) this.stepNewcomer ??= { directory };
       this.directoryArrivalPending = this.isShown();
       if (!this.stage?.move) this.settleArrival();
     } };

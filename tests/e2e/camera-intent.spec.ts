@@ -370,6 +370,21 @@ const labelAndFirstRow = (page: Page, directory: string): Promise<{ label: Box; 
   return { label: box(head), row: held.filter(rect => rect.top <= top + 8).map(box) };
 }, directory);
 
+test("Least Pan: a directory opened by the handle on its drawn label is a step, its label and first row brought into view at the same scale", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitStep(browser, "least");
+  const before = await scaleOf(page);
+  await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
+  await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  expect(await scaleOf(page), "a step keeps the scale").toBeCloseTo(before, 6);
+  const frame = await frameOf(page), { label, row } = await labelAndFirstRow(page, HISTORY);
+  expect(inside(label, frame), `the opened directory's label ${JSON.stringify(label)} inside ${JSON.stringify(frame)}`).toBe(true);
+  expect(row.length, "a first row under the label").toBeGreaterThan(0);
+  for (const box of row) expect(inside(box, frame), `its first row ${JSON.stringify(box)} inside ${JSON.stringify(frame)}`).toBe(true);
+  await context.close();
+});
+
 for (const step of ["whole", "lines"] as const) {
   test(`Step, ${step}: a directory no scale at or above the floor holds whole is not eased out; the step is Least Pan's`, async ({ browser }) => {
     test.setTimeout(120_000);
