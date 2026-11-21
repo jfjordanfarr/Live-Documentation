@@ -1,0 +1,86 @@
+[
+  {
+    "name": "repo-uses-sonnet-medium-look-only",
+    "task": "repo-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-uses-sonnet-medium-look-only-2",
+    "task": "repo-uses",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-uses-haiku-default-look-only",
+    "task": "repo-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-uses-haiku-default-look-only-2",
+    "task": "repo-uses",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-directory-sonnet-medium-look-only",
+    "task": "repo-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-directory-sonnet-medium-look-only-2",
+    "task": "repo-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-directory-haiku-default-look-only",
+    "task": "repo-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-directory-haiku-default-look-only-2",
+    "task": "repo-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-link-sonnet-medium-look-only",
+    "task": "repo-link",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-link-sonnet-medium-look-only-2",
+    "task": "repo-link",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-link-haiku-default-look-only",
+    "task": "repo-link",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  },
+  {
+    "name": "repo-link-haiku-default-look-only-2",
+    "task": "repo-link",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only"
+  }
+]

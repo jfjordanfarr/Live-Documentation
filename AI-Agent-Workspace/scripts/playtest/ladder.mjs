@@ -5,8 +5,10 @@
 //
 // Usage:
 //   node AI-Agent-Workspace/scripts/playtest/ladder.mjs --plan <plan.json> --into <records folder> [--parallel 4] [--gap 30]
+//        [--claude <program>]
 //
-// The plan is a list of runs: { "name", "task", "model", "effort", "variant" }. Each run goes to <into>/<name>; a run
+// The plan is a list of runs: { "name", "task", "model", "effort", "variant" }, with "settings": ["<group>.<name>=<value>"]
+// where a run starts with a viewer's Tuning choices made. Each run goes to <into>/<name>; a run
 // whose folder already holds a finished run.json is skipped, so a ladder that stopped is resumed by running it again.
 // One server serves the site for the whole ladder, so that no run's end stops the site under another.
 import fs from 'node:fs';
@@ -22,6 +24,7 @@ const planFile = option('--plan');
 const into = option('--into');
 const parallel = Number(option('--parallel', '4'));
 const gapSeconds = Number(option('--gap', '30'));
+const claude = option('--claude') ? ['--claude', option('--claude')] : []; // passed on; each tester otherwise finds the program
 if (!planFile || !into) { console.error('usage: ladder.mjs --plan <plan.json> --into <records folder> [--parallel 4] [--gap 30]'); process.exit(2); }
 
 // Finished means the tester gave a result; a run stopped before it did (outcome "no result") is run again, afresh.
@@ -44,7 +47,8 @@ if (!await serving()) {
 const one = (run) => new Promise((resolve) => {
   fs.rmSync(path.join(into, run.name), { recursive: true, force: true }); // what a stopped run left, never a finished one
   const child = spawn(process.execPath, [path.join(here, 'playtest.mjs'), '--task', run.task, '--model', run.model, '--effort', run.effort,
-    '--variant', run.variant, '--out', path.join(into, run.name)], { stdio: ['ignore', 'pipe', 'pipe'] });
+    '--variant', run.variant, '--out', path.join(into, run.name), ...claude,
+    ...(run.settings ?? []).flatMap((setting) => ['--setting', setting])], { stdio: ['ignore', 'pipe', 'pipe'] });
   let said = '';
   child.stdout.on('data', (chunk) => { said += chunk; });
   child.stderr.on('data', (chunk) => { said += chunk; });

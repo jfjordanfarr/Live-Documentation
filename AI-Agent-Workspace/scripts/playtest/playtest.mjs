@@ -5,7 +5,8 @@
 //
 // Usage:
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --task <id from tasks.json> --model <id> --effort <level>
-//        [--variant look-only|after-each] [--out <run folder>] [--max-actions 60] [--site <built explorer dir>]
+//        [--variant look-only|after-each] [--out <run folder>] [--max-actions 60] [--site <built explorer dir>] [--claude <program>]
+//        [--setting <group>.<name>=<value> ...]
 //   node AI-Agent-Workspace/scripts/playtest/playtest.mjs --start <url> --words <the visitor's message> ...
 //
 // The tester is launched from an empty directory outside the repository, with no built-in tools, this window as its
@@ -20,11 +21,13 @@ import { spawn, execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
+import { claudeProgram } from './claude-program.mjs';
+
 const here = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const option = (name, fallback = null) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : fallback; };
 
-const claude = option('--claude', '/home/node/.vscode-server/extensions/anthropic.claude-code-2.1.327-linux-x64/resources/native-binary/claude');
+const claude = claudeProgram(args);
 const port = 8792;
 const lock = '/tmp/live-docs-browser.lock';
 const tools = ['look', 'point', 'click', 'drag', 'scroll', 'type', 'press'];
@@ -78,6 +81,9 @@ if (variant === 'after-each') windowArgs.push('--after-each');
 // A task may ask the window to prepare the page before the tester begins (the narrative playtest's history and its
 // condition); the window records what it did in setup.json.
 for (const flag of task?.window ?? []) if (['--open-history', '--hide-step-words'].includes(flag)) windowArgs.push(flag);
+// A viewer's Tuning choices made before the page first loads, as `--setting localMap.framing=follows` (repeatable).
+const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] : []));
+for (const setting of settings) windowArgs.push('--setting', setting);
 const mcp = { mcpServers: { window: { type: 'stdio', command: process.execPath, args: windowArgs } } };
 const claudeArgs = [
   '-p', prompt,
@@ -102,7 +108,7 @@ const siteStamp = () => Object.fromEntries(['index.html', 'explorer-data.json', 
   try { return [file, fs.statSync(path.join(site, file)).mtime.toISOString()]; } catch { return [file, null]; }
 }));
 const siteAtStart = siteStamp();
-fs.writeFileSync(path.join(out, 'run.json'), JSON.stringify({ task: taskId, start, words, model, effort, variant, maxActions: Number(maxActions),
+fs.writeFileSync(path.join(out, 'run.json'), JSON.stringify({ task: taskId, start, words, model, effort, variant, settings, maxActions: Number(maxActions),
   site, siteAtStart, systemPrompt: system, prompt, startedAt: new Date().toISOString() }, null, 2) + '\n');
 
 const began = Date.now();
@@ -153,7 +159,19 @@ function take(line) {
   }
 }
 
+// A setup the window could not make ends the run: the tester is stopped as soon as setup.json says so. (Claude Code
+// restarts a window that exits, and on 2026-11-21 a restarted window set the page up again and the tester went on.)
+let setupFailed = false;
+const setupWatch = setInterval(() => {
+  try {
+    if (JSON.parse(fs.readFileSync(path.join(out, 'setup.json'), 'utf8')).ok !== false) return;
+  } catch { return; }
+  setupFailed = true;
+  clearInterval(setupWatch);
+  try { execFileSync('pkill', ['-TERM', '-P', String(child.pid)]); } catch { child.kill(); } // the tester under flock
+}, 500);
 const code = await new Promise((resolve) => child.on('close', resolve));
+clearInterval(setupWatch);
 const wallMs = Date.now() - (initAt ?? began);
 const lockWaitMs = (initAt ?? began) - began;
 server?.kill();
@@ -167,7 +185,7 @@ const summary = {
   ...JSON.parse(fs.readFileSync(path.join(out, 'run.json'), 'utf8')),
   finishedAt: new Date().toISOString(), siteAtEnd: siteStamp(),
   setup: fs.existsSync(path.join(out, 'setup.json')) ? JSON.parse(fs.readFileSync(path.join(out, 'setup.json'), 'utf8')) : null,
-  siteChanged: JSON.stringify(siteStamp()) !== JSON.stringify(siteAtStart), exitCode: code, outcome: result?.subtype ?? 'no result', wallMs, lockWaitMs, apiMs: result?.duration_api_ms,
+  siteChanged: JSON.stringify(siteStamp()) !== JSON.stringify(siteAtStart), exitCode: code, outcome: setupFailed ? 'setup failed' : result?.subtype ?? 'no result', wallMs, lockWaitMs, apiMs: result?.duration_api_ms,
   turns: result?.num_turns, assistantMessages, toolCalls, actions: actions.length,
   actionsByTool: Object.fromEntries(tools.map((t) => [t, actions.filter((a) => a.tool === t).length])),
   usage: result?.usage && { input: result.usage.input_tokens, cacheWrite: result.usage.cache_creation_input_tokens,

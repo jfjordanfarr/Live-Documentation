@@ -1,0 +1,7 @@
+I found `scripts/live-docs/inspect.ts` by searching for it and opened it. The window now shows its card in the Local Map view. The card is titled "inspect.ts" and shows the path `scripts/live-docs/inspect.ts`. Its description reads "Trace Live Documentation dependencies from the…", it lists no public symbols, and it sits in the "Internals" group of `scripts/live-docs`. It's pinned (the page shows "1 pin").
+
+This link should show you the same view. The page keeps its state in the address, so I copied the address from the browser:
+
+http://127.0.0.1:8792/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAYsAL7wAGaoDuhcNE74ikQRVADWMpAAbKzEipgOqlxQffAkCBE6bKi09JBGxKhk4WxUqozwVKiSXCEAXqOQIiA60RSipEFYCMcM8KpOYDFQTAB0TAJLJGFzHhwglx8ENMBxZlQ3u8BBNBsMuAAlCQjN7wAj4RIAD1CYIhULgiHWHSCHFyGwsUKWq0kYNcXmGsVK8G4Fi4DihX3gOjyHDuAAlSJJUcROFxJAAhaIABTIUy2hM6AHUzBSmSAdnsAFqoVAUBHeNh6CQNfEmNi5bW6-UzI1UE2QD4ATm2mDsAEESgwFCBFKh8L41bl3NgAGJOOwB8ZnZRTAAiwNVMJATxW%2BEVzXwbIDZw66xAFSqOSg1Ww3PgACti6WuPBUFAANogesAHRA%2BHWrdgrZ06AcbHwHB0AHoIu4ALSSDDD9Y6TPoDjvQed1sAKlbAF0QOvtlAzr3%2B4OR2xx5P0NOqLOuPPF754Px66BIZA932B8PR1wJ1OhzO5wvByAXK7iu%2BbrhUQA
+
+I didn't put anything on the clipboard. The link points to `127.0.0.1`, which is this machine's own address. It will only open for you if you can reach that local server.
