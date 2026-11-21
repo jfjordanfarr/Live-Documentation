@@ -1,0 +1,4 @@
+{"n":1,"at":"2026-11-21T21:20:45.583Z","elapsedMs":17707,"tool":"look","args":{},"settled":true,"address":"http://127.0.0.1:38557/","title":"What a scan reads","shot":"shots/001-look.png","notes":[],"failure":null,"blocked":[]}
+{"n":2,"at":"2026-11-21T21:20:47.645Z","elapsedMs":19803,"tool":"click","args":{"x":200,"y":560},"settled":true,"address":"http://127.0.0.1:38557/","title":"What a scan reads","shot":"shots/002-click.png","notes":[],"failure":null,"blocked":[]}
+{"n":3,"at":"2026-11-21T21:20:48.181Z","elapsedMs":24578,"tool":"type","args":{"text":"*.png\n/DNN Platform/Tests/"},"settled":true,"address":"http://127.0.0.1:38557/","title":"What a scan reads","shot":"shots/003-type.png","notes":[],"failure":null,"blocked":[]}
+{"n":4,"at":"2026-11-21T21:20:52.954Z","elapsedMs":25102,"tool":"look","args":{},"settled":true,"address":"http://127.0.0.1:38557/","title":"What a scan reads","shot":"shots/003-type.png","notes":[],"failure":null,"blocked":[]}

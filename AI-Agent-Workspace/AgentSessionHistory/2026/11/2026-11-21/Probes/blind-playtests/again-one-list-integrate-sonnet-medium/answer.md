@@ -1,0 +1,1 @@
+With your existing skip list kept and the folder's own ignore files added to it (25 .gitignore files and 15 .tfignore files), **10,945 files will be read**. That's 8 fewer than the 10,953 you'd get with your list alone. 6,299 files are left out.

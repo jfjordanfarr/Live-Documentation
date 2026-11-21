@@ -1,0 +1,145 @@
+{
+  "task": "one-list-reuse",
+  "start": "http://127.0.0.1:34381/",
+  "words": "I'll be scanning more folders like this one. Set it up to skip build output and downloaded packages, then get me that setup in a form I can use again next time.",
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "variant": "look-only",
+  "settings": [],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "siteAtStart": {
+    "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T20:51:26.508Z"
+  },
+  "page": "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html",
+  "query": "",
+  "folder": "/tmp/claude-1000/-workspaces-Live-Documentation/1501b25e-9b79-43c7-b25c-c8b29500c331/scratchpad/strangers-one-list-2/Source",
+  "handFolder": {
+    "input": "#folder-input",
+    "ready": "#totals"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "I'll be scanning more folders like this one. Set it up to skip build output and downloaded packages, then get me that setup in a form I can use again next time.\n\nhttp://127.0.0.1:34381/",
+  "startedAt": "2026-11-21T21:24:33.071Z",
+  "finishedAt": "2026-11-21T21:25:21.352Z",
+  "siteAtEnd": {
+    "/workspaces/Live-Documentation/.claude/worktrees/agent-acb90fe6d791704f2/AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/choice/choice.html": "2026-11-21T20:51:26.508Z"
+  },
+  "setup": {
+    "handedFolder": {
+      "folder": "Source",
+      "input": "#folder-input",
+      "ready": "#totals",
+      "readyText": "17,244 files will be read",
+      "ms": 27603,
+      "ok": true
+    },
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 44246,
+  "lockWaitMs": 4033,
+  "apiMs": 9040,
+  "turns": 6,
+  "assistantMessages": 8,
+  "toolCalls": 5,
+  "actions": 5,
+  "actionsByTool": {
+    "look": 3,
+    "point": 0,
+    "click": 2,
+    "drag": 0,
+    "scroll": 0,
+    "type": 0,
+    "press": 0
+  },
+  "usage": {
+    "input": 10,
+    "cacheWrite": 5326,
+    "cacheRead": 16672,
+    "output": 774
+  },
+  "costUsd": 0.0307312,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 10,
+      "outputTokens": 774,
+      "cacheReadInputTokens": 16672,
+      "cacheCreationInputTokens": 5326,
+      "webSearchRequests": 0,
+      "costUSD": 0.0307312,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 162,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 5326,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [
+    {
+      "afterAction": 4,
+      "at": "2026-11-21T21:25:16.460Z",
+      "text": "### What the folders hold\n# bin/ beside a project file\nbin/\n# obj/ beside a project file\nobj/\n# packages/ holding NuGet's <Id>.<Version> folders or a repositories.config\n/DNN Platform/Dnn.AuthServices.Jwt/packages/\n/DNN Platform/Controls/CountryListBox/packages/\n/DNN Platform/Modules/Journal/packages/\n/DNN Platform/Modules/DDRMenu/packages/\n/DNN Platform/Modules/ResourceManager/packages/\n/DNN Platform/Modules/CoreMessaging/packages/\n/DNN Platform/Modules/HTML/packages/\n/DNN Platform/Modules/HtmlEditorManager/packages/\n/DNN Platform/Modules/TelerikRemoval/packages/\n/DNN Platform/Modules/MemberDirectory/packages/\n/DNN Platform/Modules/DnnExportImport/packages/\n/DNN Platform/Modules/RazorHost/packages/\n/DNN Platform/Modules/Groups/packages/\n/DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/\n/DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/\n/DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/\n/DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/\n/DNN Platform/Modules/DnnExportImportLibrary/packages/\n/DNN Platform/HttpModules/packages/\n/DNN Platform/DotNetNuke.Web.Client/packages/\n/DNN Platform/Admin Modules/Dnn.Modules.Console/packages/\n/DNN Platform/DotNetNuke.Web.Client.ResourceManager/packages/\n/DNN Platform/Connectors/GoogleTagManager/packages/\n/DNN Platform/Connectors/GoogleAnalytics/packages/\n/DNN Platform/Connectors/GoogleAnalytics4/packages/\n/DNN Platform/Connectors/Azure/packages/\n/DNN Platform/DotNetNuke.Abstractions/packages/\n/DNN Platform/DotNetNuke.Web.Razor/packages/\n/DNN Platform/DotNetNuke.ContentSecurityPolicy/packages/\n/DNN Platform/DotNetNuke.Instrumentation/packages/\n/DNN Platform/DotNetNuke.Log4net/packages/\n/DNN Platform/Library/packages/\n/DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/packages/\n/DNN Platform/Providers/CachingProviders/DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider/packages/\n/DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/packages/\n/DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.LiveConnect/packages/\n/DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Twitter/packages/\n/DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Google/packages/\n/DNN Platform/DotNetNuke.ModulePipeline/packages/\n/DNN Platform/DotNetNuke.Web/packages/\n/DNN Platform/DotNetNuke.DependencyInjection/packages/\n/DNN Platform/DotNetNuke.Web.Mvc/packages/\n/DNN Platform/DotNetNuke.Maintenance/packages/\n/Build/packages/\n/packages/\n"
+    }
+  ],
+  "finalAddress": "http://127.0.0.1:34381/",
+  "init": {
+    "cwd": "/tmp/session-Xy5glO",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

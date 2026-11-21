@@ -1,0 +1,3 @@
+{"n":1,"at":"2026-11-21T21:13:37.264Z","elapsedMs":26824,"tool":"look","args":{},"settled":true,"address":"http://127.0.0.1:46517/","title":"What a scan reads","shot":"shots/001-look.png","notes":[],"failure":null,"blocked":[]}
+{"n":2,"at":"2026-11-21T21:13:40.829Z","elapsedMs":31161,"tool":"click","args":{"x":1082,"y":143},"settled":true,"address":"http://127.0.0.1:46517/","title":"What a scan reads","shot":"shots/002-click.png","notes":[],"failure":null,"blocked":[]}
+{"n":3,"at":"2026-11-21T21:13:42.196Z","elapsedMs":33582,"tool":"look","args":{},"settled":true,"address":"http://127.0.0.1:46517/","title":"What a scan reads","shot":"shots/002-click.png","notes":[],"failure":null,"blocked":[]}

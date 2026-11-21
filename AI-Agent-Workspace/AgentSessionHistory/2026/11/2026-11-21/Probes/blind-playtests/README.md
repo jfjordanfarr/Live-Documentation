@@ -818,3 +818,88 @@ What Use does to a list that already holds lines, and whether a person can get b
 ### Pictures kept for this section
 
 [keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) was run once this section was written: each run's first and last picture and every picture linked above stay, 69 pictures (7.4 MB) for these 33 runs; the other 105 went to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores.
+
+## One list tried on strangers again, after its mends
+
+Asked by the root once the first round's stumbles had gone to the page's builder and the page was mended (the leave-out record's "Ninth leg"; `choice.html` at `2d8d16274` on its builder's branch, in the same worktree): the same eight tasks over the mended page, so that the mends are judged by what strangers do and not by the builder's own pictures. Read as the first round was: actions and routes first, right and wrong second, wishes for more words marked as the text bias.
+
+### What changed in the page, and in the tasks
+
+What I saw on the page myself, with the made folder, before any run:
+- **The notice.** With the list empty it offers "Take them in" and "Ignore them". With lines in the list it offers "Replace your list (removes 47 lines)", "Add them to your list" and "Leave your list alone". After a choice it keeps the others ("Put your list back", and Replace or Add).
+- **Undo.** An undo tool stands first among the list's tools, and Control+Z works in the list.
+- **The code count.** The top line now reads, for example, "10,953 files will be read · 6,291 files left out · ‹› 865 of them are code a reader would read". A row's kinds list the code kinds first.
+- **Scrolling.** The totals, the notice and the three headings stay put, and each column scrolls on its own.
+- **The offers.** A starting list taken stays in place, ticked "In your list", until the next press elsewhere ([the integrate pilot's first picture](pilot-again-one-list-integrate-sonnet/shots/001-look.png)).
+
+**The counts did not move.** The folder was made again from DNN at `d6c3af4d` (17,244 files), and [one-list-answers.sh](one-list-answers.sh) gave every number of the first round again. The page's totals met them at every state I passed through: Take them in 15,593; the folders' offer 10,953; Replace then Add 10,945; the Visual Studio list 10,881.
+
+**The tasks' words were not changed**, so that the rounds compare. None now sits on a label of the page: "Go by the ignore files" against "Take them in"; "Keep that, and also go by" against "Add them to your list". The answers that the mends change are appended to each task's `rightAnswer` in [tasks.json](../../../../../../scripts/playtest/tasks.json), dated, written before these runs:
+- `cold`: the notice's two choices;
+- `own-files`: Take them in;
+- `integrate`: Add them to your list, or a Replace taken back, then Add;
+- `vs-code`: still judged by the first criteria. Whether a tester names the third line, `**/[Pp]ackages/*`, is noted apart.
+
+**For the runs**, the eight tasks' `page` was pointed at the worktree's copy by a temporary edit and put back afterwards to the committed value, the place the page takes once its branch is merged. [ladder-one-list-again-plan.json](ladder-one-list-again-plan.json) is the same plan under new run names (`again-one-list-*`), with the folder in a scratch folder of its own. A pilot of `integrate` on Sonnet was read first ([pilot-again-one-list-integrate-sonnet](pilot-again-one-list-integrate-sonnet/)): setup handed the folder and pressed the offer, and the tester was right in three actions. Every transcript holds only `init`, `used`, `got` and `said`. **Cost:** $0.54 for the 33 runs (Sonnet $0.50 for 91 actions, Haiku $0.04 for 153). Lock waits were up to 248 s, behind other builders.
+
+### Run by run, beside the first round
+
+Actions per run; R right, W wrong. First round, then this one.
+
+| Task | First round: actions (route) | Again: actions | Again: route | Again: result |
+| --- | --- | --- | --- | --- |
+| cold | 1, 1, 1, 1 | 1, 1, 1, 1 | answered from the first picture; every tester named "Take them in" and "Ignore them" and both starting lists | R R R R |
+| own-files | 3, 3, 3, 3 (Use) | 3, 3, 3, 3 | Take them in | R R R R |
+| dev | 5, 3, 5, 5 | Sonnet 5, 7; Haiku 7, 11 | Sonnet 1 took the Visual Studio list; Sonnet 2 took the folders' offer, then also pressed "Add them to your list" (10,945, unasked); the Haiku testers took the folders' offer and checked what stayed | R R R R |
+| vs-code | 13, 14, 8, 13 | Sonnet 9, 11; Haiku 10, 15 | Visual Studio offer; block; `!` note (Sonnet); the `[Ll]og/` and `[Dd]ebug/` lines; Haiku 1 opened and shut the packages line ([#6](again-one-list-vs-code-haiku-default/shots/006-click.png)) | R R R R |
+| png-tests | 4, 6, 4, 6 | 4, 4, 4, 4 | all typed the two lines; no minus used | R R R R |
+| keep-folder | 11, 12, 16 (plus on line 38); 32, 17 (Haiku: deleted by keys) | Sonnet 12, 11; Haiku 11, 12 | Sonnet 1: opened the block, pressed the plus on the wrong row, then the undo tool, then the right plus. Sonnet 2 and both Haiku scrolled the list's own column to line 38 and deleted it by keys ([#10](again-one-list-keep-folder-haiku-default/shots/010-press.png)). Haiku 2 pressed Scan | R R R R |
+| integrate | 20, 31, 13, 12, all Use first | 3, 3, 3, 3 (and the pilot 3) | "Add them to your list" at once ([#2](again-one-list-integrate-haiku-default/shots/002-click.png)) | R R R R (pilot R) |
+| reuse | 5, 5, 7, 18 | Sonnet 5, 6; Haiku 41, 24 | Sonnet: the folders' offer, then copy (Sonnet 2 also pressed "Leave your list alone"). Haiku: the offer, then replaced it with typed generic lines, which came out garbled and were typed again ([#11](again-one-list-reuse-haiku-default-2/shots/011-type.png)), then save (refused), then copy | R R R R |
+
+32 right of 32, against 28 of 32. **Actions: 244 in all, against 301**, the four `integrate` runs going from 76 actions to 12. Over the 33 runs:
+- "Take them in" was pressed 4 times and "Add them to your list" 6 times (four on `integrate`, the pilot, and once unasked on `dev`). "Leave your list alone" was pressed once, Replace never.
+- The undo tool was pressed once, by the one tester who needed it.
+- Copy was pressed 4 times, save twice, Scan once.
+
+### The first round's stumbles, this time
+
+1. **Use read as "add these too", with no way back: gone.** Four testers of four and the pilot pressed "Add them to your list" as their first act, each in three actions: "The ignore files panel has an "Add them to your list" option, which matches what you asked for". No one pressed Replace. The way back was needed once, on another task: on `keep-folder`, Sonnet 1 pressed the plus of the top `/packages/` row by mistake (11,614 read, [#4](again-one-list-keep-folder-sonnet-medium/shots/004-click.png)). It found the undo tool at once: "I undid my first change, because it re-included the wrong folder". The notice's "Put your list back" was never needed.
+2. **Code left out unremarked: half changed.**
+   - **The top line's count is read.** It is quoted in 12 runs: "Of the files left out, 225 are code that a reader would normally read". In 3 of them it is read as a count of the files to be read: "865 of the remaining files are code a reader would read" (`dev` Haiku 2), "the page flags 871 of the files read as code" (`dev` Sonnet 2), "Of the files that will be read, 856 are code" (`keep-folder` Haiku 1). That is a new misreading; see below.
+   - **The third line is still missed: unchanged.** `**/[Pp]ackages/*` leaves out the 11 `.cs` files of DNN's own `Installer/Packages`, and no `vs-code` tester of four named it. Every one set the line aside as third-party: "`*/[Pp]ackages/*` drops 468 code files, which look like third-party NuGet packages". With code kinds first, its row reads ".ps1 412 · .config 45 · .cs 11 · .dll 1,854", and the downloaded packages' own scripts lead ([#6](again-one-list-vs-code-haiku-default/shots/006-click.png)). The line, opened, lists 206 folders by package name; the team's folder is not among the first. The page's builder named this as still wrong before the runs.
+   - **A count raised by an edit: not noticed.** Both Haiku `reuse` testers typed a bare `packages/`, and the top line went from 865 to 876 ([#11](again-one-list-reuse-haiku-default-2/shots/011-type.png)). Neither mentioned it, as in the first round.
+3. **One line among many: shorter.** `keep-folder` took 11 to 12 actions on both models, against 11 to 32. With the list's column scrolling on its own, three of four went to line 38 in the text and deleted it by keys. In the first round only the Haiku testers did, after a longer search. No tester lost the totals: none scrolled back up for them, and several quoted them after the edit.
+4. **Save before copy: unchanged.** Both Haiku `reuse` testers pressed save first, as in the first round. This is the instrument's refusal of downloads, not the page's fault.
+5. **The offer gone from under the pointer: recurred once.** `dev` Haiku 2 took the folders' offer, then opened `DNN Platform` under Will be read; that press elsewhere took the offers away. Its next press, aimed at the Visual Studio offer, landed in the list ([#6](again-one-list-dev-haiku-default-2/shots/006-click.png)): "Accidentally focused the list text box when I tried to click the GitHub Visual Studio preset".
+6. **The code sign's number read as a folder's files, and the list's line count taken for packages lines: not seen again.** The misreading of the code count moved to the top line instead (above).
+
+### New stumbles, and what the mends were asked to show
+
+- **Typing came out garbled: new to the runs, not to the page.** Both Haiku `reuse` testers typed a short list of several lines, and the list showed it mangled: "dist/uild/", "# build output and downloaded kages", "node_dules/" ([#11](again-one-list-reuse-haiku-default-2/shots/011-type.png)).
+  - The cost: they cleared it and typed again, Haiku 1 at last line by line with Enter between, and still had to mend "di/" by hand. That took 41 and 24 actions, where the Sonnet testers, who copied the offer, took 5 and 6.
+  - The likely cause, read from `page.mjs` and not reproduced by me: after a 400 ms pause in typing, the page takes the text in and decides. When it draws the answer, it writes the list's text back into the field (`if ($("#list").value !== state.list) $("#list").value = state.list`). The text is written back as it stood at the pause, so keys pressed while it decided are lost, and the caret jumps to the end.
+  - The window types at 25 ms a key. On a loaded machine (as tonight) a pause of 400 ms can fall inside a line.
+  - The same writing-back stands in the eighth leg's page (`4f5703485`), and the first round's typed lines came through whole. So it is exposed tonight, not made by the mends. A person who pauses mid-line while the page is deciding would meet it too.
+- **The top line's code count read the wrong way round:** 3 of the 12 runs that quoted it (above). "of them" follows "files left out" on the line, and three testers took it to mean the files read.
+- **The three choices are read rightly.** The cold testers each named the empty list's two choices. Every tester who had to choose pressed the one the task meant.
+- **Undo is found by the one who needed it** (1 of 1, `keep-folder` Sonnet 1, by the tool, not by Control+Z).
+- **Columns that scroll on their own** hid nothing a tester then failed to find, in these tasks.
+- **What I saw myself, not a stranger** (my own look, not in any run):
+  - I took the folders' offer, chose Replace, then "Add them to your list", which gave 10,945. One press of undo then shows the replaced list (15,593) while the notice still reads "Added to your list" with "Replace your list (removes 47 lines)" ([the builder's record](../leave-out/README.md) says a choice taken back leaves the notice as it was before it).
+  - A second undo brings the 47 lines and the three choices back.
+  - No tester went that way.
+
+**Wishes, not stumbles** (the text bias): `vs-code` testers again "didn't open the files", and two Haiku `reuse` testers judged the folders' offer "tied to this one project's paths" and replaced it with generic lines, which is a judgment of the list, not of the page.
+
+### What these runs cannot show, again
+
+- **Attention and motion.** As in the first round: each tester read every picture whole, and nothing here judges how the page moves.
+- **A real browser.** There is still no reload, address bar, download, picker or drop.
+- **A slower or faster typist.** The garbled typing depends on when a pause falls. Its rate on a person's keyboard, and on an idle machine, is unknown.
+- **Whether the mends teach.** Each tester met the page once. Whether a person who once replaced their list would trust the way back is not shown.
+- **The tasks' words.** They were the first round's, written by me knowing the page, and they told each tester what to want.
+
+### Pictures kept for the second round
+
+[keep-pictures.mjs](../../../../../../scripts/playtest/keep-pictures.mjs) was run once this section was written: each run's first and last picture and every picture linked above stay, 66 pictures (7.7 MB) for these 33 runs; the other 97 went to the main checkout's `AI-Agent-Workspace/tmp/playtests/2026-11-21/<run>/shots/`, which git ignores.
