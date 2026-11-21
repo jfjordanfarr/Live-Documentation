@@ -404,40 +404,6 @@ function makesTemporaryObject(modifiers: readonly string[]): boolean {
   return modifiers.some((modifier) => modifier === "TEMP" || modifier === "TEMPORARY") && !modifiers.includes("GLOBAL");
 }
 
-/**
- * The index just past the body of a trigger written with its timing before its
- * table, `CREATE TRIGGER name {BEFORE | AFTER | INSTEAD OF} … ON table …`, as
- * SQLite, MySQL, PostgreSQL and Oracle write one: a `BEGIN … END` block, in
- * which a `CASE … END` is passed over and PL/SQL's `END IF` and `END LOOP`
- * close what they close, or else one statement, to its `;`, after a `DECLARE`
- * section, PL/SQL's, that runs to its `BEGIN`. A script goes on after it, where
- * T-SQL's trigger, `CREATE TRIGGER name ON table … AS`, runs to the end of its
- * batch, as every T-SQL module does, and is not read here.
- */
-function triggerBodyEnd(tokens: SqlToken[], start: number): number {
-  const open: string[] = [];
-  let declaring = false;
-  for (let index = start; index < tokens.length; index += 1) {
-    const token = tokens[index];
-    const afterEnd = isWord(tokens[index - 1], "END");
-    if (isWord(token, "DECLARE") && open.length === 0) {
-      declaring = true;
-    } else if (isWord(token, "BEGIN") || (isWord(token, "CASE") && !afterEnd)) {
-      open.push(token.value.toUpperCase());
-      declaring = false;
-    } else if (isWord(token, "END") && open.length > 0 && !isWord(tokens[index + 1], "IF", "LOOP")) {
-      if (open.pop() === "BEGIN" && open.length === 0) {
-        let end = index + 1;
-        while (end < tokens.length && end <= index + 2 && !isSymbol(tokens[end], ";")) end += 1;
-        return isSymbol(tokens[end], ";") ? end + 1 : index + 1;
-      }
-    } else if (isSymbol(token, ";") && open.length === 0 && !declaring) {
-      return index + 1;
-    }
-  }
-  return tokens.length;
-}
-
 /** The kinds of `CREATE` a script's symbols are made from. */
 const SQL_DECLARED_KINDS: ReadonlySet<string> = new Set(["PROCEDURE", "PROC", "TABLE", "VIEW", "FUNCTION"]);
 
@@ -923,8 +889,6 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
     const expressions = commonTableExpressions(tokens);
     /** Where a table source's name starts that a comma list has read already, so that no later token reads it as a call. */
     const read = new Set<number>();
-    /** Where the body of the module the batch defines ends, a token's index: a T-SQL module's runs to the batch's end, a trigger written with its timing first to its own (`triggerBodyEnd`). */
-    let bodyUntil = -1;
     let inBody = false;
     /** The schema of the module the batch defines, which its one-part names bind by; a string it executes is a batch of its own. */
     let moduleSchema: string | undefined;
@@ -946,7 +910,6 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
     };
     for (let index = 0; index < tokens.length; index += 1) {
       const token = tokens[index];
-      inBody = index < bodyUntil;
       if (token.kind !== "word" && token.kind !== "name") continue;
       const word = token.kind === "word" ? token.value.toUpperCase() : "";
       const previous = tokens[index - 1];
@@ -965,8 +928,11 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
         if (SQL_DECLARED_KINDS.has(kind) && !name.parts[name.parts.length - 1].startsWith("#") && !makesTemporaryObject(modifiers) && !place.server) {
           declarations.push({ kind: sqlKind(kind), name: sqlWrittenName(name.parts), line: token.line + place.offset, inBody: place.inBody || (kind === "TABLE" && inBody) });
         }
-        if (kind === "TRIGGER" && !isWord(tokens[name.end], "ON")) bodyUntil = triggerBodyEnd(tokens, name.end);
-        else if (SQL_MODULES_WITH_BODIES.has(kind)) bodyUntil = tokens.length;
+        // A trigger written with its timing before its table, as SQLite, MySQL, PostgreSQL and Oracle write one
+        // (`CREATE TRIGGER t AFTER INSERT ON x …`), opens no body that the rest of the script stands in: in none of
+        // them does a trigger's body create a table, and the script goes on after it. T-SQL's, `ON` right after its
+        // name, runs to the end of its batch, as every T-SQL module does.
+        if (SQL_MODULES_WITH_BODIES.has(kind) && (kind !== "TRIGGER" || isWord(tokens[name.end], "ON"))) inBody = true;
         if (SQL_MODULES_WITH_BODIES.has(kind) || kind === "VIEW") moduleSchema = moduleSchemaOf(kind, name, tokens);
         // A virtual table's `USING` names the module that makes it, SQLite's `fts5` or `rtree`, no table.
         if (modifiers.includes("VIRTUAL") && isWord(tokens[name.end], "USING") && isNameToken(tokens[name.end + 1])) {
@@ -977,7 +943,7 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
         continue;
       }
       if (word === "ALTER" && isWord(tokens[index + 1], ...SQL_ALTERED_MODULES)) {
-        if (!isWord(tokens[index + 1], "VIEW")) bodyUntil = tokens.length;
+        if (!isWord(tokens[index + 1], "VIEW")) inBody = true;
         const name = readName(tokens, index + 2);
         if (!name) continue;
         refer("ALTER", name.parts, name.end, false);

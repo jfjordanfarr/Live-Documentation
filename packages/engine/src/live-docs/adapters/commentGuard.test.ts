@@ -24,7 +24,16 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { SourceAnalysisResult } from "../core";
 import { buildWorkspaceIndexes } from "../discovery";
 import { analyzeSourceFile } from "../sourceAnalysis";
+import { withoutMarkupComments } from "./aspnet";
+import { withoutCssComments } from "./css";
+import { withoutXmlComments } from "./dotnetXml";
+import { withoutHtmlComments } from "./html";
 import type { WorkspaceFileIndex } from "./index";
+import { heldToLedger, listedButNotRun } from "./knownDifferences";
+import { writtenOver } from "./treeSitter";
+
+/** This test's name as the ledger of known differences (`KNOWN_CAUSES` in `knownDifferences.ts`) lists it. */
+const LEDGERED = (): string => `commentGuard.test.ts > ${expect.getState().currentTestName ?? ""}`;
 
 /** A way of writing the construct that the language does not run: the commented construct and the live one, as the file's text. */
 interface Form {
@@ -73,8 +82,47 @@ const HTML_COMMENT: Form = { name: "an HTML comment, `<!-- … -->`", around: be
 
 /** The forms where an HTML comment's opening stands where HTML reads no comment, which must not hide what follows. */
 const HTML_STRINGS: Form[] = [
-  { name: "`<!--` and `-->` inside attribute values around it", hides: false, around: (gone, kept) => `<a title="<!--"></a>\n${gone}\n${kept}\n<a title="-->"></a>\n` },
+  // Each value holds a `>` before its marker, so that only reading the quoted value to its end keeps the marker inside the tag.
+  { name: "`<!--` and `-->` inside attribute values around it", hides: false, around: (gone, kept) => `<a title="x > <!--"></a>\n${gone}\n${kept}\n<a title="y > -->"></a>\n` },
+  // A quote opens a value only after `=` (WHATWG HTML, "attribute name state": a quote there is part of the name), so
+  // the apostrophe of `it's` opens nothing and the comment after the tag is a comment.
+  { name: "an HTML comment after a tag whose attribute's name holds a quote", around: (gone, kept) => `<a it's="1"></a>\n<!--\n${gone}\n-->\n${kept}\n<b title='x'></b>\n` },
   { name: "`<!--` and `-->` inside a script's text around it", hides: false, around: (gone, kept) => `<script>var a = "<!--";</script>\n${gone}\n${kept}\n<script>var b = "-->";</script>\n` }
+];
+
+/*
+ * A reviewer's forms of 2026-11-21, each red when committed, each from the language's own rule. HTML: a comment also
+ * ends at `--!>` (WHATWG, "comment end bang state": "an incorrectly-closed-comment parse error … Emit the current comment
+ * token"), and with scripting on a `<noscript>`'s content is raw text, in which `<!--` opens nothing ("noscript: If
+ * parser's parser scripting disabled is false, then switch the tokenizer to the RAWTEXT state"). A script's own comment
+ * is no markup either: no element is made of `<div id>` written in a `//` line of a `<script>`, as mojoPortal's ckeditor
+ * samples write `// Replace the <textarea id="editor"> …`, read as an id `editor` that no element of the page holds.
+ */
+const HTML_MORE: Form[] = [
+  { name: "an HTML comment closed by `--!>`, as HTML closes one", around: beside((text) => `<!--\n${text}\n--!>`) },
+  { name: "`<!--` and `-->` inside a `<noscript>`'s text around it", hides: false, around: (gone, kept) => `<noscript><!--</noscript>\n${gone}\n${kept}\n<noscript>--></noscript>\n` }
+];
+
+/** A script's comments inside markup, for a construct that holds no `</script>` of its own. */
+const SCRIPT_COMMENTS: Form[] = [
+  { name: "a JavaScript line comment inside a `<script>`'s text", around: (gone, kept) => `<script>\n// ${gone}\n</script>\n${kept}\n` },
+  { name: "a JavaScript block comment inside a `<script>`'s text", around: (gone, kept) => `<script>\n/* ${gone} */\n</script>\n${kept}\n` }
+];
+
+/*
+ * The server's code inside ASP.NET markup, C# to the page parser: a C# comment there renders nothing, and `<!--` inside
+ * a C# string opens no HTML comment. Razor's `@@` is an escaped `@` ("To escape an @ symbol in Razor markup, use a second
+ * @ symbol"), so `@@*` opens no Razor comment.
+ */
+const WEB_FORMS_CODE: Form[] = [
+  { name: "a C# comment inside a `<script runat=\"server\">` block", around: (gone, kept) => `<script runat="server">\n// ${gone}\n</script>\n${kept}\n` },
+  { name: "`<!--` and `-->` inside C# strings of code blocks around it", hides: false, around: (gone, kept) => `<% var open = "<!--"; %>\n${gone}\n${kept}\n<% var close = "-->"; %>\n` }
+];
+const RAZOR_CODE: Form[] = [
+  { name: "a C# line comment inside a Razor code block, `@{ // … }`", around: (gone, kept) => `@{\n  // ${gone}\n}\n${kept}\n` },
+  { name: "a C# block comment inside a Razor code block, `@{ /* … */ }`", around: (gone, kept) => `@{\n  /* ${gone} */\n}\n${kept}\n` },
+  { name: "`<!--` and `-->` inside C# strings of Razor code blocks around it", hides: false, around: (gone, kept) => `@{ var open = "<!--"; }\n${gone}\n${kept}\n@{ var close = "-->"; }\n` },
+  { name: "`@@*` and `*@@`, escaped `@`s, around it", hides: false, around: (gone, kept) => `<p>@@*</p>\n${gone}\n${kept}\n<p>*@@</p>\n` }
 ];
 
 const SQL_FORMS: Form[] = [
@@ -108,13 +156,35 @@ const RUBY_FORMS: Form[] = [
   { name: "`#` inside a string on the line before", hides: false, around: (gone, kept) => `a = "#"\n${gone}\n${kept}\n` }
 ];
 
+/*
+ * A reviewer's form of 2026-11-21, red when committed: a heredoc's text is a string, which Ruby never runs as code, so
+ * a `require_relative`, a `def`, an `include` or the program's guard written in it is none; the reader's patterns run
+ * over lines with only the comments and the data after `__END__` written over.
+ */
+const RUBY_HEREDOC: Form = { name: "a heredoc's text, which Ruby runs as no code", around: (gone, kept) => `text = <<~TEXT\n${gone}\nTEXT\n${kept}\n` };
+
+/*
+ * A reviewer's form of 2026-11-21, red when committed: an expandable here-string's text is literal to PowerShell, so a
+ * `<#` and a `#>` in two of them open no block comment; PowerShell's parser (pwsh 7.7.0,
+ * `[Parser]::ParseInput`) finds the dot-source between them, with no parse error. A literal here-string (`@' … '@`)
+ * is read right; the bundled grammar misreads the expandable one.
+ */
+const POWERSHELL_HERE_STRINGS: Form = { name: "`<#` and `#>` inside expandable here-strings around it", hides: false, around: (gone, kept) => `$a = @"\n<#\n"@\n${gone}\n${kept}\n$b = @"\n#>\n"@\n` };
+
 const within = (prelude: string, postlude: string, forms: Form[]): Form[] =>
   forms.map((form) => ({ ...form, around: (gone, kept) => `${prelude}\n${form.around(gone, kept)}\n${postlude}\n` }));
 
 const csharpType = (namespace: string) => (name: string): string => `namespace ${namespace} { public class ${name} { public void Run() { } } }\n`;
 const CSHARP_TARGETS = { "Lib/Kept.cs": csharpType("Lib")(KEPT), "Lib/Gone.cs": csharpType("Lib")(GONE) };
 const CSHARP_STRINGS = C_STRINGS((value, at) => `string s${at} = "${value}";`);
-const CSHARP_MEMBER_FORMS = within("using System;\nusing Hangfire;\nusing Lib;\nnamespace App {\nclass Program {", "} }", [...C_LIKE, { name: "a documentation comment, `///`", around: beside(perLine("/// ")) }, ...CSHARP_STRINGS]);
+/*
+ * A reviewer's form of 2026-11-21, red when committed: a section `#if false` skips is not lexed at all (C#'s
+ * "Conditional compilation directives": "Except for pre-processing directives, skipped source code is not subject to
+ * lexical analysis"), so the compiler sees no name, key or job there under any configuration; the syntax tree parses
+ * every branch, and DNN holds six such sections, one a whole file (`DotNetNuke.Web/Common/DotNetNukeSecurity.cs`).
+ */
+const CSHARP_IF_FALSE: Form = { name: "a section `#if false` skips, which C# does not lex", around: (gone, kept) => `#if false\n${gone}\n#endif\n${kept}\n` };
+const CSHARP_MEMBER_FORMS = within("using System;\nusing Hangfire;\nusing Lib;\nnamespace App {\nclass Program {", "} }", [...C_LIKE, { name: "a documentation comment, `///`", around: beside(perLine("/// ")) }, ...CSHARP_STRINGS, CSHARP_IF_FALSE]);
 
 const CASES: GuardCase[] = [
   // TypeScript and JavaScript: the TypeScript compiler's syntax tree.
@@ -135,7 +205,7 @@ const CASES: GuardCase[] = [
     reader: "JavaScript, the DOM heuristic", construct: "an element id in the markup it searches", file: "site/index.html", subject: "site/app.js",
     text: (name) => `<div id="${name}"></div>`, fact: (name) => `to:site/index.html#${name}`,
     files: { "site/app.js": `document.getElementById("${KEPT}");\ndocument.getElementById("${GONE}");\n` },
-    forms: [HTML_COMMENT, ...HTML_STRINGS]
+    forms: [HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...SCRIPT_COMMENTS]
   },
 
   // C: tree-sitter.
@@ -186,7 +256,10 @@ const CASES: GuardCase[] = [
       // In a regular string `\n` is a line break, which ends SQL's line comment (C#'s "String literals").
       { name: "SQL's line comment, `--`, ended by the escape `\\n` inside a regular string", around: (gone, kept) => `string q = "-- ${gone}\\n${kept}";` },
       { name: "SQL's block comment inside the string", around: (gone, kept) => `string q = "/* ${gone} */ ${kept}";` },
-      { name: "C#'s line comment around the string", around: (gone, kept) => `// string g = "${gone}";\nstring q = "${kept}";` }
+      { name: "C#'s line comment around the string", around: (gone, kept) => `// string g = "${gone}";\nstring q = "${kept}";` },
+      // A reviewer's form of 2026-11-21, red when committed: in an interpolated string the grammar gives each escape a
+      // node of its own (`escape_sequence`), which the string's parts leave out, so the line break is lost.
+      { name: "SQL's line comment, `--`, ended by the escape `\\n` inside an interpolated string", around: (gone, kept) => `string q = $"-- ${gone}\\n${kept}";` }
     ])
   },
 
@@ -231,24 +304,24 @@ const CASES: GuardCase[] = [
     reader: "Ruby", construct: "a `require_relative`", file: "main.rb",
     text: (name) => `require_relative "${name.toLowerCase()}"`, fact: (name) => `to:${name.toLowerCase()}.rb`,
     files: { "kept.rb": "def kept; end\n", "gone.rb": "def gone; end\n" },
-    forms: [...RUBY_FORMS, { name: "`=begin` inside a heredoc before it", hides: false, around: (gone, kept) => `doc = <<~TEXT\n=begin\nTEXT\n${gone}\n${kept}\n` }]
+    forms: [...RUBY_FORMS, { name: "`=begin` inside a heredoc before it", hides: false, around: (gone, kept) => `doc = <<~TEXT\n=begin\nTEXT\n${gone}\n${kept}\n` }, RUBY_HEREDOC]
   },
   {
     reader: "Ruby", construct: "a method defined", file: "main.rb",
     text: (name) => `def ${name.toLowerCase()}\nend`, fact: (name) => `sym:${name.toLowerCase()}`,
-    forms: RUBY_FORMS
+    forms: [...RUBY_FORMS, RUBY_HEREDOC]
   },
   {
     reader: "Ruby", construct: "a mixin", file: "main.rb",
     text: (name) => `  include ${name}`, fact: (name) => `dep:${name}`,
-    forms: within("class Host", "end", RUBY_FORMS.filter((form) => !form.name.includes("__END__")))
+    forms: within("class Host", "end", [...RUBY_FORMS.filter((form) => !form.name.includes("__END__")), RUBY_HEREDOC])
   },
 
   // PowerShell: tree-sitter, with `#requires` read from its comment as PowerShell reads it.
   {
     reader: "PowerShell", construct: "a dot-source", file: "main.ps1",
     text: (name) => `. "$PSScriptRoot/${name}.ps1"`, fact: (name) => `to:${name}.ps1`,
-    files: { "Kept.ps1": "function Use-Kept { }\n", "Gone.ps1": "function Use-Gone { }\n" }, forms: POWERSHELL_FORMS
+    files: { "Kept.ps1": "function Use-Kept { }\n", "Gone.ps1": "function Use-Gone { }\n" }, forms: [...POWERSHELL_FORMS, POWERSHELL_HERE_STRINGS]
   },
   {
     reader: "PowerShell", construct: "`Import-Module` by path", file: "main.ps1",
@@ -272,7 +345,7 @@ const CASES: GuardCase[] = [
   },
   {
     reader: "PowerShell", construct: "a function defined", file: "main.ps1",
-    text: (name) => `function Use-${name} { }`, fact: (name) => `sym:Use-${name}`, forms: POWERSHELL_FORMS
+    text: (name) => `function Use-${name} { }`, fact: (name) => `sym:Use-${name}`, forms: [...POWERSHELL_FORMS, POWERSHELL_HERE_STRINGS]
   },
   {
     reader: "PowerShell, a module manifest", construct: "a nested module", file: "Tool.psd1",
@@ -303,7 +376,14 @@ const CASES: GuardCase[] = [
     forms: [
       { name: "a comment, `/* … */`", around: beside((text) => `/* ${text} */`) },
       { name: "a comment over lines", around: beside((text) => `/*\n${text}\n*/`) },
-      { name: "`/*` and `*/` inside strings around it", hides: false, around: (gone, kept) => `a::before { content: "/*"; }\n${gone}\n${kept}\nb::after { content: "*/"; }\n` }
+      { name: "`/*` and `*/` inside strings around it", hides: false, around: (gone, kept) => `a::before { content: "/*"; }\n${gone}\n${kept}\nb::after { content: "*/"; }\n` },
+      // A reviewer's form of 2026-11-21, red when committed: outside a string `\"` is an escaped character of a name
+      // (CSS Syntax, "Consume an escaped code point"), no quote, so the comment after it on the line is a comment.
+      { name: "a comment after an escaped quote in a selector, `.a\\\"b`", around: (gone, kept) => `.a\\"b { color: red; } /* ${gone} */\n${kept}\n` },
+      // An unquoted `url(…)` runs to its `)`, opening no comment at a `/*` it holds (CSS Syntax, "Consume a url token").
+      { name: "`/*` inside an unquoted `url(…)` before it", hides: false, around: (gone, kept) => `.a { background: url(//cdn.example/*.png); }\n${gone}\n${kept}\n.b { color: red; } /* end */\n` },
+      // A string runs past an escaped quote ("Consume a string token"), so the `/*` after it is still the string's.
+      { name: "an escaped quote and `/*` inside a string before it", hides: false, around: (gone, kept) => `a::before { content: "\\"/*"; }\n${gone}\n${kept}\nb::after { content: "*/"; }\n` }
     ]
   },
   {
@@ -320,16 +400,16 @@ const CASES: GuardCase[] = [
   {
     reader: "HTML", construct: "a `<script src>`", file: "index.html",
     text: (name) => `<script src="${name}.js"></script>`, fact: (name) => `to:${name}.js`,
-    files: { "Kept.js": "", "Gone.js": "" }, forms: [HTML_COMMENT, ...HTML_STRINGS]
+    files: { "Kept.js": "", "Gone.js": "" }, forms: [HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE]
   },
   {
     reader: "HTML", construct: "a stylesheet `<link href>`", file: "index.html",
     text: (name) => `<link rel="stylesheet" href="${name}.css">`, fact: (name) => `to:${name}.css`,
-    files: { "Kept.css": "", "Gone.css": "" }, forms: [HTML_COMMENT, ...HTML_STRINGS]
+    files: { "Kept.css": "", "Gone.css": "" }, forms: [HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...SCRIPT_COMMENTS]
   },
   {
     reader: "HTML", construct: "an element id", file: "index.html",
-    text: (name) => `<div id="${name}"></div>`, fact: (name) => `sym:${name}`, forms: [HTML_COMMENT, ...HTML_STRINGS]
+    text: (name) => `<div id="${name}"></div>`, fact: (name) => `sym:${name}`, forms: [HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...SCRIPT_COMMENTS]
   },
 
   // ASP.NET markup: patterns over the text.
@@ -348,23 +428,25 @@ const CASES: GuardCase[] = [
     reader: "ASP.NET Web Forms", construct: "a `<script src>`", file: "Default.aspx",
     text: (name) => `<script src="${name}.js"></script>`, fact: (name) => `to:${name}.js`,
     files: { "Kept.js": "", "Gone.js": "" },
-    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS]
+    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...WEB_FORMS_CODE]
   },
   {
     reader: "ASP.NET Web Forms", construct: "an element id", file: "Default.aspx",
     text: (name) => `<div id="${name}"></div>`, fact: (name) => `sym:${name}`,
-    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS]
+    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...WEB_FORMS_CODE,
+      // The page parser closes `<title />`, as DNN's `Default.aspx` writes it in its head, so it holds no text.
+      { name: "a `<title />` the page parser closes, before it", hides: false, around: (gone, kept) => `<head runat="server"><title /></head>\n${gone}\n${kept}\n` }]
   },
   {
     reader: "ASP.NET Razor", construct: "a `<script src>`", file: "Index.cshtml",
     text: (name) => `<script src="${name}.js"></script>`, fact: (name) => `to:${name}.js`,
     files: { "Kept.js": "", "Gone.js": "" },
-    forms: [{ name: "a Razor comment, `@* … *@`", around: beside((text) => `@*\n${text}\n*@`) }, HTML_COMMENT, ...HTML_STRINGS]
+    forms: [{ name: "a Razor comment, `@* … *@`", around: beside((text) => `@*\n${text}\n*@`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...RAZOR_CODE]
   },
   {
     reader: "ASP.NET Razor", construct: "an element id", file: "Index.cshtml",
     text: (name) => `<div id="${name}"></div>`, fact: (name) => `sym:${name}`,
-    forms: [{ name: "a Razor comment, `@* … *@`", around: beside((text) => `@*\n${text}\n*@`) }, HTML_COMMENT, ...HTML_STRINGS]
+    forms: [{ name: "a Razor comment, `@* … *@`", around: beside((text) => `@*\n${text}\n*@`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...RAZOR_CODE]
   },
 
   // JSON with comments, and the shell lines a manifest's scripts hold.
@@ -502,7 +584,9 @@ const ALONE: AloneCase[] = [
       "a line comment, `#`": "def main; end\n# if __FILE__ == $0\n",
       "a comment after a statement": "def main; end\nmain # if __FILE__ == $0\n",
       "an embedded document, `=begin … =end`": "def main; end\n=begin\nif __FILE__ == $0\n  main\nend\n=end\n",
-      "the data after `__END__`": "def main; end\n__END__\nif __FILE__ == $0\n  main\nend\n"
+      "the data after `__END__`": "def main; end\n__END__\nif __FILE__ == $0\n  main\nend\n",
+      // A reviewer's case of 2026-11-21, red when committed: the guard written in a heredoc's text is a string.
+      "a heredoc's text": "def main; end\nUSAGE = <<~TEXT\nif __FILE__ == $0\n  main\nend\nTEXT\n"
     }
   }
 ];
@@ -526,13 +610,78 @@ describe("no reader reads what a comment holds", () => {
       for (const form of guardCase.forms) {
         const hides = form.hides ?? true;
         it(hides ? `reads nothing inside ${form.name}, and the construct beside it` : `reads on past ${form.name}`, async () => {
-          const text = form.around(guardCase.text(GONE), guardCase.text(KEPT));
-          const facts = await read({ ...guardCase.files, [guardCase.file]: text }, guardCase.subject ?? guardCase.file);
-          const shown = `\n--- ${guardCase.file}\n${text}\n--- facts of ${guardCase.subject ?? guardCase.file}\n${Array.from(facts).sort().join("\n")}`;
-          expect(facts.has(guardCase.fact(KEPT)), `the live construct's fact, ${guardCase.fact(KEPT)}${shown}`).toBe(true);
-          expect(facts.has(guardCase.fact(GONE)), `${hides ? "the commented construct's fact is read" : "the construct after the marker is not read"}: ${guardCase.fact(GONE)}${shown}`).toBe(!hides);
+          await heldToLedger(LEDGERED(), async () => {
+            const text = form.around(guardCase.text(GONE), guardCase.text(KEPT));
+            const facts = await read({ ...guardCase.files, [guardCase.file]: text }, guardCase.subject ?? guardCase.file);
+            const shown = `\n--- ${guardCase.file}\n${text}\n--- facts of ${guardCase.subject ?? guardCase.file}\n${Array.from(facts).sort().join("\n")}`;
+            expect(facts.has(guardCase.fact(KEPT)), `the live construct's fact, ${guardCase.fact(KEPT)}${shown}`).toBe(true);
+            expect(facts.has(guardCase.fact(GONE)), `${hides ? "the commented construct's fact is read" : "the construct after the marker is not read"}: ${guardCase.fact(GONE)}${shown}`).toBe(!hides);
+          });
         });
       }
     });
   }
+});
+
+/*
+ * A reviewer's cases of 2026-11-21, red when committed. Every comment step says that it writes a comment over "so that
+ * positions keep", and `writtenOver` that "a position or a line found in the result is the same in the text"; each
+ * writes over with `/[^\r\n]/gu`, which with the `u` flag takes a character outside the Basic Multilingual Plane, two
+ * UTF-16 units of the text, as one, and writes one space for it. So every offset after such a character in a comment
+ * is one less in the result than in the text, which is what the engine's positions count in.
+ */
+describe("every comment step keeps each position of the text", () => {
+  const steps: Array<{ name: string; text: string; step: (text: string) => string }> = [
+    { name: "`writtenOver` (C#, Ruby)", text: "/* a note 😀 */ after", step: (text) => writtenOver(text, [0, text.indexOf("*/") + 2]) },
+    { name: "`withoutHtmlComments` (HTML, the DOM heuristic's markup)", text: "<!-- a note 😀 --> after", step: withoutHtmlComments },
+    { name: "`withoutCssComments` (CSS)", text: "/* a note 😀 */ after", step: withoutCssComments },
+    { name: "`withoutMarkupComments` (ASP.NET Web Forms)", text: "<%-- a note 😀 --%> after", step: (text) => withoutMarkupComments(text, false) }
+  ];
+  for (const { name, text, step } of steps) {
+    it(`${name} writes a comment holding an emoji over in as many UTF-16 units as it holds`, () => {
+      const result = step(text);
+      expect(result.length).toBe(text.length);
+      expect(result.indexOf("after")).toBe(text.indexOf("after"));
+    });
+  }
+  it("`withoutXmlComments` (.NET project files and configuration) writes a comment holding an emoji over in as many UTF-16 units as it holds", () => {
+    const text = "<!-- a note 😀 --> after";
+    expect(withoutXmlComments(text).indexOf("after")).toBe(text.indexOf("after"));
+  });
+});
+
+/*
+ * C#'s string literals as the program holds them ("String literals"; "Interpolated strings"): each escape form the C#
+ * reader decodes before it reads the SQL a string holds, held by whether `dbo.Kept` is then named. In a regular string
+ * `\n`, `\x0a`, `\u000a` and `\U0000000a` are a line break, which ends SQL's line comment; in a verbatim one (`@"…"`,
+ * `$@"…"`) a backslash is itself and `""` is one quote. Each case fails if its form is read otherwise.
+ */
+describe("C#'s strings, read as the program holds them before the SQL in them is read", () => {
+  const forms: Array<{ name: string; literal: string; names: boolean }> = [
+    { name: "`\\n` in a regular string", literal: String.raw`"-- note\nSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\x0a` in a regular string", literal: String.raw`"-- note\x0aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\u000a` in a regular string", literal: String.raw`"-- note\u000aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\U0000000a` in a regular string", literal: String.raw`"-- note\U0000000aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\n` in an interpolated string", literal: String.raw`$"-- note\nSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\n` in a verbatim string, a backslash and an n", literal: String.raw`@"-- note\nSELECT * FROM dbo.Kept"`, names: false },
+    { name: "`\\n` in a verbatim interpolated string, a backslash and an n", literal: String.raw`$@"-- note\nSELECT * FROM dbo.Kept"`, names: false },
+    { name: "`\"\"` in a verbatim string, one quote", literal: String.raw`@"SELECT * FROM ""dbo"".""Kept"""`, names: true },
+    { name: "`\"\"` in a verbatim interpolated string, one quote", literal: String.raw`$@"SELECT * FROM ""dbo"".""Kept"""`, names: true }
+  ];
+  for (const form of forms) {
+    it(`reads ${form.name}`, async () => {
+      const facts = await read({
+        "db/Kept.sql": "CREATE TABLE dbo.Kept (id int);\n",
+        "App/Program.cs": `namespace App {\nclass Program {\nstring q = ${form.literal};\n} }\n`
+      }, "App/Program.cs");
+      expect(facts.has("to:db/Kept.sql"), Array.from(facts).join("\n")).toBe(form.names);
+    });
+  }
+});
+
+describe("the ledger of known differences", () => {
+  // Last in the file, after every case it may list has run.
+  it("lists for this file only cases the file runs", () => {
+    expect(listedButNotRun("commentGuard.test.ts")).toEqual([]);
+  });
 });

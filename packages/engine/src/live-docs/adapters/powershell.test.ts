@@ -768,6 +768,17 @@ describe("loads the text fixes", () => {
     expect(Object.keys(await wires("Library.ps1"))).toEqual(["a/build.ps1"]);
     expect(await wires("g/Use.ps1")).toEqual({});
   });
+
+  // A reviewer's case of 2026-11-21, red when committed. Windows tries `.ps1` first only for a name without an
+  // extension: PowerShell's `ConstructSearchPatternsFromName` adds the name itself first when `Path.HasExtension(name)`
+  // is true, and `build.v2` has the extension `.v2`, so beside both `build.v2` and `build.v2.ps1` Windows runs
+  // `build.v2`; Unix does too (pwsh 7.7.0 on Linux, `Get-Command ./build.v2` beside both: `…/build.v2`, `Application`).
+  // The reader read it so before the change that follows Windows for `./build`.
+  it("read a relative path whose name has an extension of its own, `./build.v2`, as the file so named on both platforms", async () => {
+    await write({ "v/build.v2": "", "v/build.v2.ps1": "", "v/Use.ps1": ". ./build.v2\n", "v/Run.ps1": "& ./build.v2\n" });
+    expect(Object.keys(await wires("v/Use.ps1"))).toEqual(["v/build.v2"]);
+    expect(Object.keys(await wires("v/Run.ps1"))).toEqual(["v/build.v2"]);
+  });
 });
 
 describe("programs and libraries", () => {

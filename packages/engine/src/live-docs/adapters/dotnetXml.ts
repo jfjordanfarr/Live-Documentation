@@ -7,6 +7,7 @@
  *
  * @module
  */
+import { inSpaces } from "./spaces";
 
 /**
  * The text with every XML comment (`<!-- … -->`) written over in spaces, its line breaks kept, so that a position
@@ -29,7 +30,7 @@ export function withoutXmlComments(text: string): string {
     }
     const end = text.indexOf("-->", comment + 4);
     const until = end === -1 ? text.length : end + 3;
-    result += text.slice(at, comment) + text.slice(comment, until).replace(/[^\r\n]/gu, " ");
+    result += text.slice(at, comment) + inSpaces(text.slice(comment, until));
     at = until;
   }
 }

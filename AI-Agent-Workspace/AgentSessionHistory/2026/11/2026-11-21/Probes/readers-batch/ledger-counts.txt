@@ -1,0 +1,14 @@
+sql: a name in the schema public: 100 places in 3 files
+sql: a dollar-quoted string: 160 places in 8 files
+sql: MySQL's # comment: 1 places in 1 files
+sql: MySQL's executable comment /*!: 0 places in 0 files
+sql: a backslash-escaped quote: 2 places in 1 files
+sql: CREATE DEFINER=: 0 places in 0 files
+sql: DELIMITER: 0 places in 0 files
+sql: a materialized view: 0 places in 0 files
+sql: a table in the temp schema: 0 places in 0 files
+markup: <!-- inside a <noscript>: 0 places in 0 files
+markup: a C# comment inside a Razor code block: 444 places in 440 files
+markup: <!-- or --> inside a server block's or Razor block's string: 0 places in 0 files
+markup: Razor's escaped @@: 33 places in 8 files
+powershell: <# or #> inside an expandable here-string: 3 places in 2 files

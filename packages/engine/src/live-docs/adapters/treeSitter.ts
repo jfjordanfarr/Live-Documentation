@@ -13,6 +13,7 @@ import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
 import { throwIfMachineFailure } from "../../tooling/sourceText";
 import { markProcess, TREE_DEPTH } from "../processMark";
+import { inSpaces } from "./spaces";
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
@@ -164,18 +165,16 @@ export function rangesOf(root: SyntaxNode, types: ReadonlySet<string> = COMMENT_
 }
 
 /**
- * The text with each range of `ranges` (pairs of start and end, as {@link rangesOf} gives them) written over in
- * spaces, its line breaks kept, so that a position or a line found in the result is the same in the text.
+ * The text with each range of `ranges` (pairs of start and end, in order and apart, as {@link rangesOf} gives them)
+ * written over in spaces ({@link inSpaces}), its line breaks kept, so that a position or a line found in the result is
+ * the same in the text.
  */
 export function writtenOver(text: string, ranges: readonly number[]): string {
   let result = "";
   let at = 0;
   for (let index = 0; index + 1 < ranges.length; index += 2) {
-    const start = Math.max(ranges[index], at);
-    const end = ranges[index + 1];
-    if (end <= start) continue;
-    result += text.slice(at, start) + text.slice(start, end).replace(/[^\r\n]/gu, " ");
-    at = end;
+    result += text.slice(at, ranges[index]) + inSpaces(text.slice(ranges[index], ranges[index + 1]));
+    at = ranges[index + 1];
   }
   return result + text.slice(at);
 }

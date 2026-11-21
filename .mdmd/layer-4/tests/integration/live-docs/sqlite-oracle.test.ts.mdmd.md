@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/sqlite-oracle.test.ts`
-- Generated At: 2026-11-21T19:30:07.319Z
+- Generated At: 2026-11-21T21:13:53.009Z
 
 ## Authored
 ### Purpose
@@ -23,11 +23,15 @@ _No public symbols detected_
 ### Dependencies
 - `glob` - `globSync`
 - `node:fs`
+- `node:os`
 - `node:path` - `path`
+- [`knownDifferences.heldToLedger`](../../../packages/engine/src/live-docs/adapters/knownDifferences.ts.mdmd.md#symbol-heldtoledger)
+- [`knownDifferences.listedButNotRun`](../../../packages/engine/src/live-docs/adapters/knownDifferences.ts.mdmd.md#symbol-listedbutnotrun)
 - [`sources.sourceDigests`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcedigests)
 - [`sources.sourcesDiffer`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcesdiffer)
 - [`sql-sqlite.SqliteRecord`](../../../scripts/oracle/sql-sqlite.ts.mdmd.md#symbol-sqliterecord)
 - [`sql-sqlite.compareSqlite`](../../../scripts/oracle/sql-sqlite.ts.mdmd.md#symbol-comparesqlite)
+- [`sql-sqlite.runSqlite`](../../../scripts/oracle/sql-sqlite.ts.mdmd.md#symbol-runsqlite)
 - [`sql-sqlite.sqliteSources`](../../../scripts/oracle/sql-sqlite.ts.mdmd.md#symbol-sqlitesources)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -8,6 +8,7 @@ import { folderOf, isProjectFile, joinWorkspacePath, lookUpWorkspaceFile, neares
 import { extractElementIds, withoutHtmlComments } from "./html";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { projectKind, projectSdk } from "./project";
+import { inSpaces } from "./spaces";
 
 const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const SERVER_COMMENT = /<%--[\s\S]*?--%>/gu;
@@ -111,7 +112,7 @@ export function withoutMarkupComments(text: string, razor: boolean): string {
     if (start === -1) return withoutHtmlComments(result + text.slice(at));
     const close = text.indexOf(server.close, start + server.open.length);
     const until = close === -1 ? text.length : close + server.close.length;
-    result += text.slice(at, start) + text.slice(start, until).replace(/[^\r\n]/gu, " ");
+    result += text.slice(at, start) + inSpaces(text.slice(start, until));
     at = until;
   }
 }

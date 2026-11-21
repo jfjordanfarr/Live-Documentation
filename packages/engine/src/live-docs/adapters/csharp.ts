@@ -68,6 +68,7 @@ import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarg
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
 import { projectReach, type ProjectReach } from "./dotnetProjects";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { inSpaces } from "./spaces";
 import { rangesOf, readTree, writtenOver, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
@@ -410,11 +411,14 @@ function stringParts(node: SyntaxNode | null | undefined): StringPart[] | null {
       return value === undefined ? null : [{ literal: value }];
     }
     case "interpolated_string_expression": {
+      // The grammar gives a regular string's escapes nodes of their own and leaves a verbatim one's `""` in its text.
       const parts: StringPart[] = [];
       const verbatim = /^(?:\$@|@\$)/u.test(node.text);
       for (const child of node.namedChildren) {
         if (child.type === "string_content" || child.type === "interpolated_string_text") {
           parts.push({ literal: stringValue(child.text, verbatim) });
+        } else if (child.type === "escape_sequence") {
+          parts.push({ literal: stringValue(child.text, false) });
         } else if (child.type === "interpolation") {
           const inner = child.namedChildren.find((candidate) => candidate.type !== "interpolation_brace");
           parts.push({ chain: identifierChain(inner ?? null) ?? [] });
@@ -1027,13 +1031,55 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   factsRun = fileIndex;
 }
 
+/** A line that is a conditional directive, `#if`, `#elif`, `#else` or `#endif`, with what follows its name. */
+const CONDITIONAL_DIRECTIVE = /^[ \t]*#[ \t]*(if|elif|else|endif)\b(.*)$/u;
+
+/** A condition that is the literal `false`, which no configuration makes true; a directive may end in a comment. */
+const LITERAL_FALSE = /^[ \t]*\(?[ \t]*false[ \t]*\)?[ \t]*(?:\/\/.*)?$/u;
+
+/**
+ * The file's text with each section a conditional directive whose condition is the literal `false` skips written over
+ * in spaces ({@link inSpaces}), its lines kept: an `#if false` or `#elif false` to the `#elif`, `#else` or `#endif` that
+ * ends it, a conditional nested in it counted. C# lexes no such section ("Conditional compilation directives":
+ * "skipped source code is not subject to lexical analysis"), and no configuration compiles it, so the syntax tree, which
+ * parses every branch, must not see it. A condition on a symbol (`#if DEBUG`) is read in every branch, as before: which
+ * symbols a build defines is the open question of a declaration in any branch of `#if`. A line inside a verbatim or raw
+ * string that looks like a directive is taken for one. The comment guard of 2026-11-21 (`commentGuard.test.ts`).
+ */
+function withoutFalseSections(text: string): string {
+  const pieces = text.split(/(\r\n|\n|\r)/u);
+  /** For each open conditional: whether a section around it skips, and whether its own current section does. */
+  const open: Array<{ outer: boolean; skipping: boolean }> = [];
+  let changed = false;
+  for (let index = 0; index < pieces.length; index += 2) {
+    const line = pieces[index];
+    const directive = CONDITIONAL_DIRECTIVE.exec(line);
+    const skipping = open.length > 0 && open[open.length - 1].skipping;
+    if (directive) {
+      const [, name, rest] = directive;
+      if (name === "if") open.push({ outer: skipping, skipping: skipping || LITERAL_FALSE.test(rest) });
+      else if (name === "endif") open.pop();
+      else if (open.length > 0) {
+        const top = open[open.length - 1];
+        top.skipping = top.outer || (name === "elif" && LITERAL_FALSE.test(rest));
+      }
+      continue;
+    }
+    if (skipping && line.length > 0) {
+      pieces[index] = inSpaces(line);
+      changed = true;
+    }
+  }
+  return changed ? pieces.join("") : text;
+}
+
 async function fileFacts(absolutePath: string): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) {
     return cached.facts;
   }
-  const content = await readSourceText(absolutePath);
+  const content = withoutFalseSections(await readSourceText(absolutePath));
   const facts   = await readTree("c-sharp", content, (root) => ({ ...new FileExtractor().extract(root), comments: rangesOf(root) }));
   factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
   return facts;
@@ -1608,7 +1654,8 @@ export const csharpAdapter: LanguageAdapter = {
     const facts    = await fileFacts(absolutePath);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
-    const content  = await readSourceText(absolutePath);
+    // The text the syntax tree was read from, its comments' places counted in it.
+    const content  = withoutFalseSections(await readSourceText(absolutePath));
     const reach    = await projectReach(workspaceRoot, fileIndex);
     // `resolved.notices` says why each type name left unlinked has no link, for the run to count at its end.
     const resolved = toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex);

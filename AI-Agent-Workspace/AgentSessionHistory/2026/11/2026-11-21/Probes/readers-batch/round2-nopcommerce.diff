@@ -1,0 +1,13 @@
+- src/Plugins/Nop.Plugin.Payments.PayPalCommerce/Views/Public/_Buttons.Recurring.cshtml	sym	paypal-divider
+- src/Plugins/Nop.Plugin.Payments.PayPalCommerce/Views/Public/_Buttons.cshtml	sym	btn-appl
+- src/Plugins/Nop.Plugin.Payments.PayPalCommerce/Views/Public/_Buttons.cshtml	sym	paypal-divider
+- src/Plugins/Nop.Plugin.Shipping.FixedByWeightByTotal/Views/_ByWeightByTotal.cshtml	sym	 + data + 
+- src/Presentation/Nop.Web/Areas/Admin/Views/Discount/_CreateOrUpdate.Requirements.cshtml	sym	deleterequirement{{>DiscountRequirementId}}
+- src/Presentation/Nop.Web/Areas/Admin/Views/Discount/_CreateOrUpdate.Requirements.cshtml	sym	editrequirementplaceholder{{>DiscountRequirementId}}
+- src/Presentation/Nop.Web/Areas/Admin/Views/Discount/_CreateOrUpdate.Requirements.cshtml	sym	editrequirement{{>DiscountRequirementId}}
+- src/Presentation/Nop.Web/Areas/Admin/Views/Discount/_CreateOrUpdate.Requirements.cshtml	sym	interactiontype{{>DiscountRequirementId}}
+- src/Presentation/Nop.Web/Areas/Admin/Views/Security/Permissions.cshtml	sym	permission-applied-for-' + row.Id + '
+- src/Presentation/Nop.Web/Areas/Admin/Views/Shared/Table.cshtml	sym	child' + d.@(curModel.PrimaryKeyColumn) + '_@(tableName)' + '
+- src/Presentation/Nop.Web/Areas/Admin/Views/Vendor/AddCustomerToVendorPopup.cshtml	sym	@(ViewBag.customerId)
+- src/Presentation/Nop.Web/Views/Customer/_CheckUsernameAvailability.cshtml	sym	username-availabilty
+totals: {('lost', 'sym'): 12} files: 5226 5226

@@ -1,0 +1,11 @@
+- Web/ClientScript/ckeditor_4-20/samples/old/api.html	to	/Test1.html
+- Web/ClientScript/ckeditor_4-20/samples/old/divarea/divarea.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/inlinetextarea.html	sym	tech-details
+- Web/ClientScript/ckeditor_4-20/samples/old/replacebycode.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/stylesheetparser/stylesheetparser.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/tableresize/tableresize.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/uicolor.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/uilanguages.html	sym	editor
+- Web/ClientScript/ckeditor_4-20/samples/old/uilanguages.html	sym	languages
+- mojoPortal.Features.UI/App_MasterPages/layout.Master	sym	PageTitle1
+totals: {('lost', 'sym'): 9, ('lost', 'to'): 1} files: 3870 3870

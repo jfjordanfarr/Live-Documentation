@@ -21,6 +21,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
+import { inSpaces } from "./spaces";
 
 // ============================================================================
 // Patterns
@@ -46,7 +47,8 @@ const CSS_URL_PATTERN = /url\(\s*(?:"([^"()]+)"|'([^'()]+)'|([^"'()\s][^\s)]*?))
  * The style sheet with every comment written over in spaces, its line breaks kept, so that positions keep: a comment
  * is `/*` to the first `*\/` after it (CSS Syntax, "Consume comments"), and none starts inside a string, which runs to
  * its closing quote past any escaped character or to the line's end, nor inside an unquoted `url(…)`, which runs to its
- * `)`. `//` is no comment in CSS. A comment left open runs to the end. The guard of 2026-11-21
+ * `)`. Outside a string a backslash escapes the character after it ("Consume an escaped code point"), so `.a\"b` opens
+ * no string. `//` is no comment in CSS. A comment left open runs to the end. The guard of 2026-11-21
  * (`commentGuard.test.ts`): until then a commented-out `@import` or `url()` was read as real.
  */
 export function withoutCssComments(text: string): string {
@@ -58,8 +60,10 @@ export function withoutCssComments(text: string): string {
     if (char === "/" && text[index + 1] === "*") {
       const close = text.indexOf("*/", index + 2);
       const until = close === -1 ? text.length : close + 2;
-      result += text.slice(at, index) + text.slice(index, until).replace(/[^\r\n]/gu, " ");
+      result += text.slice(at, index) + inSpaces(text.slice(index, until));
       at = index = until;
+    } else if (char === "\\") {
+      index += 2;
     } else if (char === "\"" || char === "'") {
       index += 1;
       while (index < text.length && text[index] !== char && text[index] !== "\n") index += text[index] === "\\" ? 2 : 1;
