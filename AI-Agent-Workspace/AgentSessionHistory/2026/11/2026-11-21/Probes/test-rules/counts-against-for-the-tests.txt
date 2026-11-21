@@ -1,38 +1,26 @@
 By language and cause:
     6  C/C++	test where forTests says implementation: named by today's rule test_name.ext, which this language's runner does not hold or this project does not run
-    7  C#	test where forTests says implementation: a folder whose name holds the word test (TestUtil, Tests.SA, Foo.Tests) but which no runner names
     5  C#	test where forTests says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
     3  Java	test where forTests says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
    67  other (no runner runs it)	implementation where forTests says test: other (no runner runs it): other
-    8  other (no runner runs it)	test where forTests says implementation: a folder whose name holds the word test (TestUtil, Tests.SA, Foo.Tests) but which no runner names
-    3  other (no runner runs it)	test where forTests says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
-    1  other (no runner runs it)	test where forTests says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
     3  PowerShell	implementation where forTests says test: PowerShell: a file the project's own Pester run names
-    1  Rust	implementation where forTests says test: Rust: a module compiled only for tests, its name without _test
-    4  SQL	implementation where forTests says test: tSQLt: a test class's procedures in a file not named for tests
-    4  SQL	test where forTests says implementation: named by today's rule NameTest.ext / NameTests.ext, which this language's runner does not hold or this project does not run
-    1  SQL	test where forTests says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
+    1  SQL	implementation where forTests says test: tSQLt: a test class's procedures in a file not named for tests
     3  TypeScript/JavaScript	implementation where forTests says test: JavaScript: the project's own runner configuration (testMatch)
    17  TypeScript/JavaScript	test where forTests says implementation: the word test in the file's own name (test-utils, test.js, Test-Thing)
 
 By language:
-   79  other (no runner runs it)
+   67  other (no runner runs it)
    20  TypeScript/JavaScript
-   12  C#
-    9  SQL
     6  C/C++
+    5  C#
     3  Java
     3  PowerShell
-    1  Rust
+    1  SQL
 
 By corpus:
    67  sinatra (Minitest, RSpec)
    19  DNN Platform
-   13  tSQLt
    12  the sample programs
-    8  FluentValidation
-    6  AL-Go
     3  dbatools
     3  dom-testing-library (Jest)
-    1  mojoPortal
-    1  ripgrep (cargo)
+    1  tSQLt

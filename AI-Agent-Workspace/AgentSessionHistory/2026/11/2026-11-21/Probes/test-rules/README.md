@@ -182,7 +182,7 @@ The guard's rows under this interim reading:
 | with the runner (reading (a)) | 883 | 849 |
 | with "there for the tests" (reading (b), as the measurement turns it into a rule) | 195 | 133 |
 
-The lists after are [against the runner](disagreements-with-the-runner.tsv) and [against for-the-tests](disagreements-with-for-the-tests.tsv), with [counts](counts-against-the-runner.txt) and [counts](counts-against-for-the-tests.txt). The 133 left are:
+The lists in this folder's top are now those after part two, below. The 133 left after part one were:
 - 67 sinatra-contrib templates under `spec/`, by the choice above;
 - the interim languages' files and the projects' own configurations (rosetta's C, Java and C# samples, dom-testing-library's `__node_tests__`, dbatools' named files);
 - DNN's 17 vendored CodeMirror `test.js` files, which Jest's default takes. The measurement reads DNN's JavaScript by Vitest's default, so they count as disagreements, though they are CodeMirror's tests and rightly tests.
@@ -201,3 +201,58 @@ The lists after are [against the runner](disagreements-with-the-runner.tsv) and 
 | sinatra | 2 | `lib/sinatra/test_helpers.rb` (shipped library) and its CI workflow, to working code |
 | dom-testing-library | 1 | `src/queries/test-id.ts`, the `getByTestId` query, to working code |
 | click, cobra, ripgrep | 3 | a CI workflow or script each, to working code |
+
+## The restructure, part two: the readers' facts (built on 2026-11-21)
+
+Built on the day branch after the readers' batch was merged (`6a0a62d84`). Three facts a reader sees and a path does not now reach the rule through the generator's first pass:
+- `buildWorkspaceIndexes` gathers them into a `WorkspaceTestIndex` beside the symbol and entry indexes.
+- The generator hands that index to `resolveArchetype` as its fourth argument, both for the doc's `Archetype` line and for the file index's `archetypeOf`.
+
+The Live Docs' format did not grow: the fact's consequence is the `Archetype` line each doc already carries. The interim reading and `isInterimTestProjectFolder` are deleted.
+
+**What each reader reports, and the lines touched** (`tests` on the analysis result, typed `TestFacts` in `coreTypes.ts`):
+
+- **.NET, `adapters/project.ts`.** Each project's folder, and whether the project is a test project.
+  - The rule is vstest's: a test project sets `IsTestProject`, which the props of `Microsoft.NET.Test.Sdk` set, or its SDK is `MSTest.Sdk`. An `IsTestProject` of false says no.
+  - What a comment holds is not read, because the reader strips XML comments first. A reference under a condition is read as the reader reads it today, as a reference.
+  - In `archetype.ts`, the nearest project decides, within a sample root, for a .NET file and for a file of no runner's language. A file of another runner's language follows its own rule.
+  - Changed lines: one constant (`IS_TEST_PROJECT`); the `testSdk` flag in the package-reference loop; the `tests` field on the result; the function `isTestProject`; one sentence of the module comment.
+- **Rust, `adapters/rust.ts`.** The files of the modules a file declares under `#[cfg(test)]`, and of every module beneath them, taken from the reader's own module table.
+  - The attribute is found among the item's outer attributes (`underCfgTest`). `#[cfg(not(test))]` and an inline `#[cfg(test)] mod tests { }` make no test-only file.
+  - Changed lines: the field `testDeclared` and its initial value; one line in `readModule`; the function `underCfgTest`; two lines in `analyze`; the function `testOnlyFiles`.
+  - Cargo's `tests/` is the shared `tests` root, so the Cargo reader needed no change.
+- **SQL, `adapters/sql.ts` and `openings.ts`.**
+  - `tsqltTestClasses` (new in `openings.ts`) reads `EXEC tSQLt.NewTestClass` from the script's own tokens, so a comment or a string does not count. It takes the class's name as a string, as an undelimited word, or by `@ClassName =`.
+  - `sql.ts` reports those classes, and the schemas in which the script creates a `test…` procedure (case-insensitive, as tSQLt's `tSQLt.Tests` view matches it). The first pass joins the two across scripts, as tSQLt's `tSQLt.Tests` view does.
+  - Changed lines: in `sql.ts`, one import and about ten lines at the end of `analyze`; in `openings.ts`, the one new function.
+
+**The .NET name kept.** A C# file named `*Test.cs` or `*Tests.cs` outside any test project is still a test: that is the name the frameworks' projects give a class of tests. This holds the rosetta sample, whose project references xunit without the test SDK, so `dotnet test` skips it. Its guard row stays `project`, as the root ruled. It also keeps two `wrong` rows, DNN's build tasks `RunUnitTests.cs` and `UnitTests.cs`. Every other .NET file named or placed by the word now moves: `Test.razor`, `test.config`, the benchmark project.
+
+**Each fact against its oracle**, on the corpora ([the record](records/facts-against-oracles.txt), written by [`measure.mts`](scripts/measure.mts)):
+
+| Fact | Oracle | Agree | Differ |
+| --- | --- | ---: | ---: |
+| .NET test project | vstest's rule, read from each project file as text (DNN 83, mojoPortal 25, the samples 11, tSQLt 4, FluentValidation 4 projects) | 127 | 0 |
+| Rust test-only file | `cargo metadata`'s targets and the `mod` tree from them, with `#[cfg(test)]` (ripgrep 102, the samples 25 files); a file under `tests/` is the shared root's | 127 | 0 |
+| tSQLt test script | the documented rule, read as text (tSQLt 281, mojoPortal 46, dbatools 25, DNN 12, the samples 3 scripts) | 366 | 1 |
+
+The one difference is the oracle's error. `Experiments/GenerateTestsForResultsetFilterDataTypes.sql` holds `CREATE PROCEDURE tSQLtclr_test.[test …]` inside a string it `PRINT`s: it generates a test, but does not create one. The reader, which reads tokens, is right.
+
+**The two tables**, re-measured on the merged tree: 21,132 files, four more than part one measured, since the merge added files. The Vitest record was refreshed for them. Part one's code, measured again on this tree, gives the same totals as before.
+
+| Disagreement | Part one | Part two |
+| --- | ---: | ---: |
+| with the runner | 849 | 821 |
+| with "there for the tests" | 133 | 105 |
+
+The lists after part two are at this folder's top: [against the runner](disagreements-with-the-runner.tsv), [against for-the-tests](disagreements-with-for-the-tests.tsv), and their [counts](counts-against-the-runner.txt) and [counts](counts-against-for-the-tests.txt).
+
+**Every file whose kind changed: 28** ([the list](moved-on-facts.tsv)). None of them is in this repository or in the sample programs. The regenerated Live Docs change no doc's `Archetype` line, which also covers `tests/integration/fixtures`.
+
+| Corpus | Files | What moved |
+| --- | ---: | --- |
+| tSQLt | 12 | 3 scripts of test classes, to test: `TestUtilTests/tSQLt_testutil_test.class.sql` and its `_SA` twin, and `Examples/TestThatExamplesAreDeployed.sql`. 9 to working code: four `Experiments/*Test*.sql` that make no test class; tSQLt's own `Source/tSQLt.Tests.view.sql`; and four database projects (`TestUtilTests.sqlproj`, `Tests.SA.sqlproj`, `Tests.EXTERNAL_ACCESS.sqlproj`, `Tests.EXTERNAL_ACCESS_KEY_EXISTS.sqlproj`), which no reader reads. The last four are a loss, pinned `missed` |
+| FluentValidation | 8 | its benchmark project, `FluentValidation.Tests.Benchmarks/`, to working code: not a test project |
+| AL-Go | 6 | the files of its two end-to-end test apps, `e2eTests/*/My App.Test/`, to working code. Business Central's AL has no reader here, so this is a loss, pinned `missed` |
+| mojoPortal | 1 | `Web/Data/test.config`, to working code |
+| ripgrep | 1 | `crates/searcher/src/testutil.rs`, to test: `#[cfg(test)] mod testutil;` |

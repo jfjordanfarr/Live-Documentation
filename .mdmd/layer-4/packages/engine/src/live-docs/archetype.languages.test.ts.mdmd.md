@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/archetype.languages.test.ts`
-- Generated At: 2026-11-21T19:30:54.925Z
+- Generated At: 2026-11-21T20:21:42.588Z
 
 ## Authored
 ### Purpose
@@ -15,9 +15,8 @@ Each row gives today's answer and what that language's own test runner says of t
 - `for the tests`: a helper, fixture or setup file that the runner does not run.
 - `wrong`: wrong by that reading.
 - `project`: the answer depends on a project's own runner configuration.
-- `interim`: a .NET, Rust or SQL file that keeps the reading of before until a reader reports its fact.
 
-Where the two agree, `missed` marks a file that exists for the tests but that nothing in its path shows. The last cases check the marks, and that every language of `TEST_RULES` has a block. The runners' rules, where each comes from, and the measurement over real code are in [the record of 2026-11-21](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/test-rules/README.md). Undoing the PowerShell confinement turns four rows red, none of them PowerShell.
+Where the two agree, `missed` marks a file that exists for the tests but that nothing in its path shows. The .NET, Rust and SQL rows stand on readers' facts, given as `FACTS`; `archetype.facts.test.ts` holds how the readers report them. The last cases check the marks, and that every language of `TEST_RULES` has a block. The runners' rules, where each comes from, and the measurement over real code are in [the record of 2026-11-21](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/test-rules/README.md). Undoing the PowerShell confinement turns four rows red, none of them PowerShell.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -31,5 +30,6 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`archetype.TEST_RULES`](./archetype.ts.mdmd.md#symbol-test_rules)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype)
+- [`coreTypes.WorkspaceTestIndex`](./coreTypes.ts.mdmd.md#symbol-workspacetestindex) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

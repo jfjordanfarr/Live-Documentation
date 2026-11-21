@@ -1,0 +1,15 @@
+the sample programs	.NET project	11 agree	0 differ
+the sample programs	SQL	3 agree	0 differ
+the sample programs	Rust	25 agree	0 differ
+dbatools	SQL	25 agree	0 differ
+tSQLt	.NET project	4 agree	0 differ
+tSQLt	SQL	280 agree	1 differ
+DNN Platform	.NET project	83 agree	0 differ
+DNN Platform	SQL	12 agree	0 differ
+mojoPortal	.NET project	25 agree	0 differ
+mojoPortal	SQL	46 agree	0 differ
+FluentValidation	.NET project	4 agree	0 differ
+ripgrep (cargo)	Rust	102 agree	0 differ
+
+corpus	language	subject	oracle	reader
+tSQLt	SQL	Experiments/GenerateTestsForResultsetFilterDataTypes.sql	true	false

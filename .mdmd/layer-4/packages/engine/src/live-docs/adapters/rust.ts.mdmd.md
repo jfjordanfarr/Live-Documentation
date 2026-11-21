@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/rust.ts`
-- Generated At: 2026-11-21T18:54:37.340Z
+- Generated At: 2026-11-21T20:21:42.538Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L904)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L915)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rustAdapter` — Summary

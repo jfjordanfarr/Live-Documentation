@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/openings.ts`
-- Generated At: 2026-11-21T19:30:00.623Z
+- Generated At: 2026-11-21T20:21:43.133Z
 
 ## Authored
 ### Purpose
@@ -271,9 +271,18 @@ names, as an `UPDATE`'s or a `DELETE`'s target a table source of the
 statement's own `FROM`, or the engine's own: a name in a system schema, a
 built-in table function, or a method of the `xml` type.
 
+#### `tsqltTestClasses` {#symbol-tsqlttestclasses}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L853)
+
+##### `tsqltTestClasses` — Summary
+The schemas a script makes tSQLt test classes, case folded: `EXEC tSQLt.NewTestClass 'Name'`, the name given as a
+string, as an undelimited word (which T-SQL passes as a string), or by `@ClassName =`. tSQLt runs as tests the
+procedures of such a schema whose names begin with `test` (tsqlt.org, NewTestClass; its `tSQLt.Tests` view).
+
 #### `sqlDeclarations` {#symbol-sqldeclarations}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1040)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1060)
 - Returns: [`SqlDeclaration`](#symbol-sqldeclaration)[]
 
 ##### `sqlDeclarations` — Summary
@@ -281,7 +290,7 @@ Every object a script creates.
 
 #### `sqlReferences` {#symbol-sqlreferences}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1045)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1065)
 - Returns: [`SqlReference`](#symbol-sqlreference)[]
 
 ##### `sqlReferences` — Summary
@@ -289,14 +298,14 @@ Every object the text names after a verb that reads, writes, calls or alters it.
 
 #### `DeclaredSqlObject` {#symbol-declaredsqlobject}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1050)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1070)
 
 ##### `DeclaredSqlObject` — Summary
 A database object some script declares, as the symbol index records it.
 
 #### `declaredSqlObjects` {#symbol-declaredsqlobjects}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1059)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1079)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -305,7 +314,7 @@ Every procedure, table, view and function symbol of the workspace, read once per
 
 #### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1080)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1100)
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlNameMatches` — Summary
@@ -315,7 +324,7 @@ a declared `X`.
 
 #### `matchSqlObject` {#symbol-matchsqlobject}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1089)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1109)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -324,7 +333,7 @@ The declared objects a name matches, by {@link sqlNameMatches}.
 
 #### `bindSqlName` {#symbol-bindsqlname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1113)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1133)
 - Returns: `Declared`[]
 - Parameters: `matches`: `Declared`[]
 

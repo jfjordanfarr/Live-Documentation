@@ -34,7 +34,9 @@ describe("sample archetypes", () => {
     ["ruby/helpers_spec.rb", "test"],
     ["c/test_helpers.c", "test"]
   ])("retains the role of %s when its collection, named a sample root, lies beneath tests/", (file, expected) => {
-    expect(resolveArchetype(`tests/scenarios/${file}`, config)).toBe(expected);
+    // As the rosetta sample's main.rs declares it: `#[cfg(test)] mod helpers_test;`, a fact of the Rust reader's.
+    const facts = { projects: new Map<string, boolean>(), files: new Set(["tests/scenarios/rust/helpers_test.rs"]) };
+    expect(resolveArchetype(`tests/scenarios/${file}`, config, false, facts)).toBe(expected);
   });
 
   it("does not change neighboring test directories or similarly prefixed names", () => {
@@ -45,12 +47,12 @@ describe("sample archetypes", () => {
 
   it("reads a folder named fixtures as any other folder where the configuration does not name it a sample root", () => {
     // Until 2026-11-21 the word fixtures made a sample root of any folder; now only the configuration's sampleRoots do,
-    // and a fixture under tests/ is there for the tests. .NET and Rust keep the old reading for now (interim).
+    // and a fixture under tests/ is there for the tests, in every language.
     expect(resolveArchetype("tests/fixtures/typescript/src/main.ts", config)).toBe("test");
     expect(resolveArchetype("tests/fixtures/catalog.json", config)).toBe("test");
     expect(resolveArchetype("src/__fixtures__/catalog.json", config)).toBe("implementation");
-    expect(resolveArchetype("tests/fixtures/csharp/App.cs", config)).toBe("implementation");
-    expect(resolveArchetype("tests/fixtures/rust/src/main.rs", config)).toBe("implementation");
+    expect(resolveArchetype("tests/fixtures/csharp/App.cs", config)).toBe("test");
+    expect(resolveArchetype("tests/fixtures/rust/src/main.rs", config)).toBe("test");
   });
 
   it("respects explicit role overrides ahead of sample conventions", () => {

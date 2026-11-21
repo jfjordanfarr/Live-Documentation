@@ -34,6 +34,7 @@
 [integration] tests/integration/live-docs/sample-metadata.test.ts
 [integration] tests/integration/live-docs/sql-generation.test.ts
 [integration] tests/integration/live-docs/sql-oracle.test.ts
+[integration] tests/integration/live-docs/sqlite-oracle.test.ts
 [integration] tests/integration/live-docs/tidepool.test.ts
 [unit-serial] scripts/layout-lab/approximation.test.ts
 [unit-serial] packages/engine/src/live-docs/document.fuzz.test.ts
@@ -84,12 +85,13 @@
 [unit] packages/generator/src/generator.utf16.test.ts
 [unit] scripts/live-docs/inspect/history.test.ts
 [unit] scripts/live-docs/inspect/resolve.test.ts
-[unit] tests/integration/slopcop/assetsAudit.test.ts
-[unit] tests/integration/slopcop/symbolsAudit.test.ts
 [unit] tests/e2e/scenarios/judgments.test.ts
 [unit] tests/e2e/scenarios/tokens.test.ts
+[unit] tests/integration/slopcop/assetsAudit.test.ts
+[unit] tests/integration/slopcop/symbolsAudit.test.ts
 [unit] packages/engine/src/config/liveDocumentationConfig.test.ts
 [unit] packages/engine/src/languages/index.test.ts
+[unit] packages/engine/src/live-docs/archetype.facts.test.ts
 [unit] packages/engine/src/live-docs/archetype.languages.test.ts
 [unit] packages/engine/src/live-docs/archetype.test.ts
 [unit] packages/engine/src/live-docs/board.test.ts
@@ -135,6 +137,7 @@
 [unit] packages/engine/src/live-docs/adapters/c.docstring.test.ts
 [unit] packages/engine/src/live-docs/adapters/c.test.ts
 [unit] packages/engine/src/live-docs/adapters/cargo.test.ts
+[unit] packages/engine/src/live-docs/adapters/commentGuard.test.ts
 [unit] packages/engine/src/live-docs/adapters/csharp.dependencies.unit.test.ts
 [unit] packages/engine/src/live-docs/adapters/csharp.hangfire.test.ts
 [unit] packages/engine/src/live-docs/adapters/csharp.test.ts

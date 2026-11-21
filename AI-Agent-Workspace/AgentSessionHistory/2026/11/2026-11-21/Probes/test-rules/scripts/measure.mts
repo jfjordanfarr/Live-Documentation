@@ -278,16 +278,51 @@ const corpora: Corpus[] = [
   }
 ];
 
+// The readers' facts, as the generator's first pass gathers them (`buildWorkspaceIndexes`), over the files whose readers
+// report them: the project files, the Rust and the SQL files; every file of the corpus is in its file index. Unless
+// NO_FACTS is set, as the reading before the facts was measured.
+const { buildWorkspaceIndexes } = await import(path.join(WT, "packages/engine/src/live-docs/discovery.ts"));
+const RUST_ORACLE: Record<string, (rel: string) => boolean> = {
+  "the sample programs": (() => { const set = rustTests(fs.readdirSync(RECORDS).filter(f => f.startsWith("cargo-metadata-rust-")).map(f => `${RECORDS}/${f}`), path.join(SCRATCH, "copies")); return (rel: string) => set.has(rel); })(),
+  "ripgrep (cargo)": (() => { const set = rustTests([`${RECORDS}/cargo-metadata-ripgrep.txt`], path.join(SCRATCH, "copies")); return (rel: string) => set.has(`ripgrep/${rel}`); })()
+};
+const facts: string[] = ["corpus\tlanguage\tsubject\toracle\treader"];
+const factCounts = new Map<string, { agree: number; differ: number }>();
+const tally = (corpus: string, lang: string, subject: string, oracle: boolean, reader: boolean): void => {
+  const key = `${corpus}\t${lang}`;
+  const count = factCounts.get(key) ?? { agree: 0, differ: 0 };
+  if (oracle === reader) count.agree += 1;
+  else { count.differ += 1; facts.push([corpus, lang, subject, oracle, reader].join("\t")); }
+  factCounts.set(key, count);
+};
+
 const walkCache = new Map<string, string[]>();
 const rows: string[] = ["corpus\tlanguage\tpath\ttoday\trunner\tforTests"];
 for (const corpus of corpora) {
   const files = walk(corpus.root, corpus.skip);
   walkCache.set(corpus.root, files);
   const oracles = corpus.oracles(files);
+  const workspaceRoot = corpus.prefix ? WT : corpus.root;
+  const readOnly = files.filter(rel => /\.(?:csproj|vbproj|fsproj|rs|sql)$/i.test(rel));
+  const index = process.env.NO_FACTS ? undefined : (await buildWorkspaceIndexes({
+    targetFiles: readOnly.map(rel => path.join(corpus.root, rel)), workspaceRoot, liveDocsRoot: ".mdmd/layer-4", docExtension: ".mdmd.md",
+    fileIndex: new Set(files.map(rel => `${corpus.prefix}${rel}`))
+  })).tests;
+  if (index) {
+    // Each fact against its oracle: a project's test flag against vstest's rule, a script against tSQLt's, a Rust file
+    // against cargo metadata's targets and the compiler's #[cfg(test)] (a file under a tests/ folder is the shared root's).
+    for (const [dir, project] of dotnetProjects(corpus.root, files)) {
+      tally(corpus.name, ".NET project", dir, project.test, index.projects.get(`${corpus.prefix}${dir === "." ? "" : dir}`.replace(/\/$/, "")) === true);
+    }
+    const sql = tsqltTests(corpus.root, files);
+    for (const rel of files.filter(f => f.toLowerCase().endsWith(".sql"))) tally(corpus.name, "SQL", rel, sql(rel, path.join(corpus.root, rel)), index.files.has(`${corpus.prefix}${rel}`));
+    const rust = RUST_ORACLE[corpus.name];
+    if (rust) for (const rel of files.filter(f => f.endsWith(".rs"))) tally(corpus.name, "Rust", rel, rust(rel), index.files.has(`${corpus.prefix}${rel}`) || /(?:^|\/)tests\//.test(rel));
+  }
   for (const rel of files) {
     const lang = langOf(rel);
     const abs = path.join(corpus.root, rel);
-    const today = resolveArchetype(`${corpus.prefix}${rel}`, corpus.config);
+    const today = resolveArchetype(`${corpus.prefix}${rel}`, corpus.config, false, index);
     const oracle = oracles[lang] ?? (lang.startsWith("other") ? NOT_RUN : undefined);
     const runner = oracle ? (oracle(rel, abs) ? "test" : "implementation") : "no runner measured";
     const forTests = runner === "test" || inTestFolder(rel) || path.posix.basename(rel) === "conftest.py" || (corpus.support?.(rel, abs) ?? false) ? "test" : "implementation";
@@ -296,3 +331,7 @@ for (const corpus of corpora) {
 }
 fs.writeFileSync(process.argv[2], `${rows.join("\n")}\n`);
 console.log(`${rows.length - 1} files`);
+if (process.argv[3]) {
+  const counts = [...factCounts].map(([key, { agree, differ }]) => `${key}\t${agree} agree\t${differ} differ`);
+  fs.writeFileSync(process.argv[3], `${counts.join("\n")}\n\n${facts.join("\n")}\n`);
+}

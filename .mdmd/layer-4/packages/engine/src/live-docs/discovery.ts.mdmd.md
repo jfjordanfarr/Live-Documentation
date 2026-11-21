@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-20T17:26:47.531Z
+- Generated At: 2026-11-21T20:21:42.768Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `docsRootWithin` {#symbol-docsrootwithin}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L177)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L179)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `docsRootWithin` — Summary
@@ -47,7 +47,7 @@ itself, or somewhere outside it.
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L224)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L226)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -94,7 +94,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L251)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L253)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -113,7 +113,7 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `inWorkspaceOrder` {#symbol-inworkspaceorder}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L373)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L375)
 - Returns: `T`[]
 - Parameters: `files`: `T`[]
 
@@ -125,14 +125,14 @@ the one in which files register their symbols, so it must not depend on the plat
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L443)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L445)
 
 ##### `WorkspaceIndexes` — Summary
-The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
+The indexes the first pass builds: the symbols every file publishes, the files manifests declare as entries, and what readers say exists for the tests.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L482)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L491)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -144,8 +144,13 @@ locations, so that a type reference in one Live Doc links to the type's
 definition in another; several files may publish one name. The entry index
 maps each file a manifest declares as an entry (a script it runs, a binary,
 its main module) to what declares it, so that the file's doc carries the
-`Entry` line. TypeScript and JavaScript files are read with the built-in
-parser; every other file is read by its language adapter.
+`Entry` line. The test index gathers what readers say exists for the tests
+where no path shows it (each .NET project and whether it is a test project,
+Rust's modules compiled for the tests alone, the scripts that create the
+procedures of a tSQLt test class), so that the file's doc carries its
+`Archetype` by its language's rule of tests. TypeScript and JavaScript files
+are read with the built-in parser; every other file is read by its language
+adapter.
 
 Whatever a file throws while it is read, a failure of the machine's (too
 many open files) or a stack run short, leaves its symbols out and names it in
@@ -182,8 +187,10 @@ re-exports it, with no mark and no warning.
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ReExportedSymbolInfo`](./coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
+- [`coreTypes.TestFacts`](./coreTypes.ts.mdmd.md#symbol-testfacts) (type-only)
 - [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`coreTypes.WorkspaceTestIndex`](./coreTypes.ts.mdmd.md#symbol-workspacetestindex) (type-only)
 - [`dependencies.augmentWithReExportedSymbols`](./dependencies.ts.mdmd.md#symbol-augmentwithreexportedsymbols)
 - [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)

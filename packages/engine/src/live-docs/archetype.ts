@@ -27,6 +27,7 @@ import { rubySyntax } from "../languages/ruby";
 import { rustSyntax } from "../languages/rust";
 import { unmarkedUtf16 } from "../tooling/sourceText";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
+import type { WorkspaceTestIndex } from "./coreTypes";
 import { UNREAD_NOTE } from "./document";
 
 /** How much of a file's head {@link isBinaryContent} reads: git's own window for the same question. */
@@ -83,29 +84,27 @@ export function isBinaryContent(head: Uint8Array): boolean {
  * sources and the measurement are in the record,
  * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/test-rules/README.md`.
  *
- * Three languages are interim (`interim`): .NET, where a test project's
- * reference to the test SDK makes its files tests; Rust, where a module
- * declared under `#[cfg(test)]` is compiled for the tests alone; SQL, where
- * tSQLt's test classes are the tests. Each needs a fact a reader sees and a path
- * does not, so until the readers report it their files keep the reading of
- * before the table exactly ({@link interimReading}), and so does a file of no
- * runner's language in a folder named as a test project is named
- * ({@link isInterimTestProjectFolder}), so that nothing of theirs gets worse
- * while it waits.
+ * Three languages need a fact a reader sees and a path does not, which the first
+ * pass gathers into the {@link WorkspaceTestIndex}: in .NET, a test project (it
+ * sets `IsTestProject`, which `Microsoft.NET.Test.Sdk` sets, or its SDK is
+ * `MSTest.Sdk`) makes the files of its folder tests, .NET's and those of no
+ * runner's language, the nearest project's folder deciding; in Rust, a module
+ * declared under `#[cfg(test)]` is built for the tests alone, and so is every
+ * module beneath it; in SQL, a script that creates a `test…` procedure in a
+ * schema made a tSQLt test class holds tests. Without the index (a caller that
+ * has none, a unit test) those facts are simply absent.
  */
 interface TestRule {
   /** The extensions of the language's files, lowercase with the dot. */
   readonly extensions: readonly string[];
-  /** Exact names of the language's files that their extension does not give: its manifest. */
-  readonly fileNames?: readonly string[];
   /** The runner's default name of a test file, tested against the file's own name: a test wherever it lies. */
   readonly name?: RegExp;
   /** Folders of the layout whose files, of this language or of none, are there for the tests: a segment, or a run of segments. */
   readonly roots?: readonly string[];
   /** Folders whose files of this language alone are there for the tests. */
   readonly ownRoots?: readonly string[];
-  /** Read as before the table until a reader reports the fact the honest rule needs ({@link interimReading}). */
-  readonly interim?: true;
+  /** A test project's folder holds this language's tests ({@link WorkspaceTestIndex.projects}). */
+  readonly testProjects?: true;
 }
 
 /** The folder every language takes for a test root: a whole segment named `test` or `tests`, in any case. */
@@ -130,24 +129,24 @@ export const TEST_RULES: Readonly<Record<string, TestRule>> = {
   // No runner names C or C++ files (CTest runs what add_test registers); the names its projects use, Ceedling's
   // `test_` prefix, GoogleTest's `_test` and `Test` suffixes, and a file named for the word (cJSON registers test.c).
   "C and C++": { extensions: cSyntax.extensions, name: /^tests?\.[^.]+$|^test_[^.]+\.[^.]+$|_test\.[^.]+$|Tests?\.[^.]+$/ },
-  // Interim: a test project's files, by the project's reference to Microsoft.NET.Test.Sdk, MSTest.Sdk or IsTestProject.
-  // The .NET readers' files: C#, project files, solutions, .config and ASP.NET markup.
-  ".NET": { extensions: [...csharpSyntax.extensions, ".csproj", ".vbproj", ".fsproj", ".sln", ".slnx", ".config", ".aspx", ".ascx", ".master", ".ashx", ".asmx", ".asax", ".svc", ".cshtml", ".razor"], interim: true },
-  // Interim: Cargo's tests/ and the modules declared under #[cfg(test)].
-  Rust: { extensions: rustSyntax.extensions, fileNames: ["Cargo.toml"], interim: true },
-  // Interim: tSQLt's test classes, whose test* procedures are the tests; no file name counts. With the database
-  // projects (`.sqlproj`) that hold them, as tSQLt's own TestUtilTests.sqlproj.
-  SQL: { extensions: [".sql", ".sqlproj"], interim: true }
+  // No name makes a test for `dotnet test`: a test project does, its folder's files tests. The name the frameworks'
+  // projects give a class of tests (`ParcelTests.cs`) is kept for a C# file outside one, where a project references a
+  // framework without the test SDK (the rosetta sample). The .NET readers' files: C#, project files, solutions,
+  // .config and ASP.NET markup.
+  ".NET": { extensions: [...csharpSyntax.extensions, ".csproj", ".vbproj", ".fsproj", ".sln", ".slnx", ".config", ".aspx", ".ascx", ".master", ".ashx", ".asmx", ".asax", ".svc", ".cshtml", ".razor"], name: /Tests?\.cs$/, testProjects: true },
+  // Cargo's tests/, the shared root, and the modules declared under #[cfg(test)], from the Rust reader. No name counts.
+  Rust: { extensions: rustSyntax.extensions },
+  // tSQLt's test classes, from the SQL reader: the scripts of their test* procedures. No file name counts.
+  SQL: { extensions: [".sql"] }
 };
 
 /** The roots in which a file of no runner's language is a test: the shared ones and every language's `roots`. */
 const ROOTS_OF_EVERY_FILE: readonly string[] = [...SHARED_ROOTS, ...Object.values(TEST_RULES).flatMap(rule => rule.roots ?? [])];
 
-/** The rule of the language a file belongs to, by its exact name or its extension; none for a file of no runner's language. */
+/** The rule of the language a file belongs to, by its extension; none for a file of no runner's language. */
 function testRuleOf(basename: string): TestRule | undefined {
   const extension = path.extname(basename).toLowerCase();
-  const rules = Object.values(TEST_RULES);
-  return rules.find(rule => rule.fileNames?.includes(basename)) ?? (extension ? rules.find(rule => rule.extensions.includes(extension)) : undefined);
+  return extension ? Object.values(TEST_RULES).find(rule => rule.extensions.includes(extension)) : undefined;
 }
 
 /** True when one of the folders holding a file is a root: a whole segment, or a run of whole segments, without regard to case. */
@@ -160,6 +159,21 @@ function withinRoot(folders: readonly string[], roots: readonly string[]): boole
 }
 
 /**
+ * True when the nearest .NET project holding the file, within its sample root if it lies in one, is a test project:
+ * the project whose folder is the file's own or the closest above it, as an SDK project compiles every file beneath it.
+ */
+function inTestProject(sourcePath: string, sampleRoot: string | undefined, tests: WorkspaceTestIndex | undefined): boolean {
+  if (!tests || tests.projects.size === 0) return false;
+  const top = sampleRoot === undefined || sampleRoot === "." ? "" : sampleRoot;
+  for (let folder = path.posix.dirname(sourcePath); ; folder = path.posix.dirname(folder)) {
+    const key = folder === "." ? "" : folder;
+    const test = tests.projects.get(key);
+    if (test !== undefined) return test;
+    if (key === top || key === "") return false;
+  }
+}
+
+/**
  * Determines which Live Documentation archetype applies to a given source file.
  *
  * @remarks
@@ -167,18 +181,20 @@ function withinRoot(folders: readonly string[], roots: readonly string[]): boole
  * binary file is an asset, wherever it lies (`binary` is the caller's reading of
  * the content, {@link isBinaryContent}); the asset extensions of discovery say
  * which files are found, and the content says what they are. Then the rule of
- * tests of the file's own language decides ({@link TEST_RULES}), and within a
- * sample root it reads the path inside the sample, so that a sample's own
- * `tests/` folder is a test folder and the harness around the sample is not.
- * Everything else is implementation: a sample's manifest, configuration, data or
- * SQL file is as much its code as it is anywhere else (the owner's rule of
- * 2026-10-16, which retired the fixtures-era rule that called every non-code
- * file under a sample root an asset). A folder named `fixtures` is a sample's
- * only where the configuration's `sampleRoots` name it.
+ * tests of the file's own language decides ({@link TEST_RULES}), with the facts
+ * the readers report (`tests`), and within a sample root it reads the path
+ * inside the sample, so that a sample's own `tests/` folder is a test folder and
+ * the harness around the sample is not. Everything else is implementation: a
+ * sample's manifest, configuration, data or SQL file is as much its code as it
+ * is anywhere else (the owner's rule of 2026-10-16, which retired the
+ * fixtures-era rule that called every non-code file under a sample root an
+ * asset). A folder named `fixtures` is a sample's only where the
+ * configuration's `sampleRoots` name it.
  *
  * @param sourcePath - Workspace-relative source path using forward slashes.
  * @param config - Live Documentation configuration containing archetype overrides.
  * @param binary - Whether the file's content is binary; false when not known.
+ * @param tests - The readers' facts of which files exist for the tests, from the first pass; absent, none is known.
  *
  * @returns The archetype that should be reflected in the generated markdown metadata.
  *
@@ -191,7 +207,8 @@ function withinRoot(folders: readonly string[], roots: readonly string[]): boole
 export function resolveArchetype(
   sourcePath: string,
   config: LiveDocumentationConfig,
-  binary = false
+  binary = false,
+  tests?: WorkspaceTestIndex
 ): LiveDocumentationArchetype {
   const overrides = config.archetypeOverrides ?? {};
   for (const [pattern, archetype] of Object.entries(overrides)) {
@@ -204,65 +221,31 @@ export function resolveArchetype(
     return "asset";
   }
 
-  const basename = path.basename(sourcePath);
-  const rule = testRuleOf(basename);
-  if (rule?.interim) {
-    return interimReading(sourcePath, config);
+  // What a reader saw that the path does not say: a Rust module built for the tests alone, a script of a tSQLt test class.
+  if (tests?.files.has(sourcePath)) {
+    return "test";
   }
 
+  const basename = path.basename(sourcePath);
+  const rule = testRuleOf(basename);
   // Within a sample root, the path inside the sample: the sample is read as it would be as its own repository.
   const sampleRoot = sampleRootOf(sourcePath, config);
   const inner = sampleRoot === undefined || sampleRoot === "." ? sourcePath : sourcePath.slice(sampleRoot.length + 1);
   const folders = path.posix.dirname(inner).split("/").filter(folder => folder !== "." && folder !== "");
+  const testProject = (rule === undefined || rule.testProjects === true) && inTestProject(sourcePath, sampleRoot, tests);
   if (rule === undefined) {
-    return withinRoot(folders, ROOTS_OF_EVERY_FILE) || folders.some(isInterimTestProjectFolder) ? "test" : "implementation";
+    return testProject || withinRoot(folders, ROOTS_OF_EVERY_FILE) ? "test" : "implementation";
   }
-  if (rule.name?.test(basename) || withinRoot(folders, [...SHARED_ROOTS, ...(rule.roots ?? []), ...(rule.ownRoots ?? [])])) {
+  if (testProject || rule.name?.test(basename) || withinRoot(folders, [...SHARED_ROOTS, ...(rule.roots ?? []), ...(rule.ownRoots ?? [])])) {
     return "test";
   }
   return "implementation";
-}
-
-/**
- * Interim, beside {@link interimReading}: a folder named as a .NET or database test project is named, a dotted name
- * with `Test` or `Tests` as one of its parts (`FluentValidation.Tests`, tSQLt's `Tests.SA`). A file of no runner's
- * language inside one (a `.resx`, `xunit.runner.json`, a `.sqlproj`) is there for that project's tests, which the
- * project's reference to the test SDK will say once the readers report it; until then the folder's name keeps the
- * answer it had before the table.
- */
-function isInterimTestProjectFolder(folder: string): boolean {
-  return folder.includes(".") && /(?:^|\.)tests?(?:\.|$)/i.test(folder);
 }
 
 /** The longest configured sample root that holds the path, `.` for a sample opened as its own workspace. */
 function sampleRootOf(sourcePath: string, config: LiveDocumentationConfig): string | undefined {
   return [...config.sampleRoots].sort((a, b) => b.length - a.length)
     .find(root => root === "." || sourcePath === root || sourcePath.startsWith(`${root}/`));
-}
-
-/**
- * Interim, for the languages whose honest rule needs a reader's fact (.NET's test
- * projects, Rust's `#[cfg(test)]` modules, tSQLt's test classes): the reading of
- * before the table, exactly, for their files alone, until the readers report the
- * fact through the first pass's index. Every language's name is a test name here
- * (`FooTests.cs`, `foo_test.rs`), the word anywhere in the path makes a test, and
- * a folder named `fixtures` or `__fixtures__` is read as a sample's.
- */
-function interimReading(sourcePath: string, config: LiveDocumentationConfig): LiveDocumentationArchetype {
-  const basename = path.basename(sourcePath);
-  if (/\.(test|spec)\.[^.]+$/.test(basename) || /_test\.[^.]+$/.test(basename) || /^test_[^.]+\.[^.]+$/.test(basename) ||
-      /Tests?\.[^.]+$/.test(basename) || /_spec\.[^.]+$/.test(basename)) {
-    return "test";
-  }
-  const sampleRoot = sampleRootOf(sourcePath, config);
-  if (sampleRoot !== undefined || sourcePath.includes("/__fixtures__/") || /\bfixtures\b/.test(sourcePath)) {
-    const fixtureRoot = sourcePath.match(/^(.*\/)?(?:__fixtures__|fixtures)\//)?.[0];
-    const samplePath = sampleRoot === "." ? sourcePath
-      : sampleRoot !== undefined ? sourcePath.slice(sampleRoot.length + 1)
-      : fixtureRoot ? sourcePath.slice(fixtureRoot.length) : "";
-    return /(?:^|\/)(?:tests?|__tests__)(?:\/|$)/i.test(path.posix.dirname(samplePath)) ? "test" : "implementation";
-  }
-  return /\btests?\b|__tests__/i.test(sourcePath) ? "test" : "implementation";
 }
 
 /**

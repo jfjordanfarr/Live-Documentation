@@ -845,6 +845,26 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
   return { declarations: read.declarations, references: read.references };
 }
 
+/**
+ * The schemas a script makes tSQLt test classes, case folded: `EXEC tSQLt.NewTestClass 'Name'`, the name given as a
+ * string, as an undelimited word (which T-SQL passes as a string), or by `@ClassName =`. tSQLt runs as tests the
+ * procedures of such a schema whose names begin with `test` (tsqlt.org, NewTestClass; its `tSQLt.Tests` view).
+ */
+export function tsqltTestClasses(text: string): string[] {
+  const tokens  = sqlTokens(text);
+  const classes = new Set<string>();
+  for (let index = 0; index < tokens.length; index += 1) {
+    if (!isWord(tokens[index], "EXEC", "EXECUTE")) continue;
+    const name = readName(tokens, index + 1);
+    if (name?.parts.length !== 2 || name.parts[0].toLowerCase() !== "tsqlt" || name.parts[1].toLowerCase() !== "newtestclass") continue;
+    let at = name.end;
+    if (tokens[at]?.kind === "variable" && tokens[at].value.toLowerCase() === "@classname" && isSymbol(tokens[at + 1], "=")) at += 2;
+    const argument = tokens[at];
+    if (argument && (argument.kind === "string" || argument.kind === "name" || argument.kind === "word")) classes.add(argument.value.toLowerCase());
+  }
+  return [...classes];
+}
+
 /** The key by which an `ALTER` finds the object a `CREATE` made: schema and name, a schema not written being `dbo`, as an `ALTER`'s DDL and a `CREATE`'s both take the user's default. */
 function alteredKey(written: string): string {
   const { parts } = sqlObjectName(written);

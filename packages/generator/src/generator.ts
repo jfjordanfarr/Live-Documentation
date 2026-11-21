@@ -8,7 +8,7 @@ import {
   noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex, type WorkspaceTestIndex } from "@live-documentation/engine/live-docs/core";
 import { inWorkspaceOrder } from "@live-documentation/engine/live-docs/discovery";
 import {
   DEFAULT_AUTHORED_BLOCK,
@@ -161,10 +161,12 @@ export async function generateLiveDocs(
 
   // Resolution requires every discovered file, even when only a few are regenerated. The index also answers each
   // path's archetype under this run's configuration, so that a reader telling a test from working code reads the
-  // workspace's overrides and sample roots, as the docs' `Archetype` lines do (2026-11-19, the PowerShell probe).
+  // workspace's overrides and sample roots, as the docs' `Archetype` lines do (2026-11-19, the PowerShell probe), and,
+  // once the first pass has gathered them, the readers' facts of which files exist for the tests (2026-11-21).
+  const gathered: { tests?: WorkspaceTestIndex } = {};
   const fileIndex: WorkspaceFileIndex = Object.assign(
     new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
-    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig) }
+    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) }
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 
@@ -172,13 +174,14 @@ export async function generateLiveDocs(
   const liveDocsRoot = normalizeWorkspacePath(
     path.join(normalizedConfig.root, normalizedConfig.baseLayer)
   );
-  const { symbols: symbolIndex, entries: entryIndex, unmapped: unindexed } = await buildWorkspaceIndexes({
+  const { symbols: symbolIndex, entries: entryIndex, tests, unmapped: unindexed } = await buildWorkspaceIndexes({
     targetFiles: allTargetFiles,
     workspaceRoot,
     liveDocsRoot,
     docExtension: normalizedConfig.extension,
     fileIndex
   });
+  gathered.tests = tests;
   logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names and an entry index with ${entryIndex.size} declared files`);
 
   // The documents that cite each file, for the `Cited By` sections, read from every markdown document discovery finds
@@ -234,7 +237,7 @@ export async function generateLiveDocs(
     try {
       // A file whose reading threw in the index pass is one this run could not map, though it reads here.
       if (unindexed.has(absoluteSourcePath)) throw unindexed.get(absoluteSourcePath);
-      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
+      const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)), tests);
 
       // Which rule of the one reading step reads the file's text, counted for the run's last lines, where a reader reads it.
       if (hasReader(normalizedSourcePath)) {
