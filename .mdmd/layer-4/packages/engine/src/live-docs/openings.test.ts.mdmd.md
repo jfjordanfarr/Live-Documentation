@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/openings.test.ts`
-- Generated At: 2026-11-21T05:00:32.277Z
+- Generated At: 2026-11-21T21:13:44.678Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`knownDifferences.heldToLedger`](./adapters/knownDifferences.ts.mdmd.md#symbol-heldtoledger)
+- [`knownDifferences.listedButNotRun`](./adapters/knownDifferences.ts.mdmd.md#symbol-listedbutnotrun)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.bindSqlName`](./openings.ts.mdmd.md#symbol-bindsqlname)
 - [`openings.chooseServers`](./openings.ts.mdmd.md#symbol-chooseservers)
@@ -35,6 +37,7 @@ _No public symbols detected_
 - [`openings.routeSymbolName`](./openings.ts.mdmd.md#symbol-routesymbolname)
 - [`openings.routesMatch`](./openings.ts.mdmd.md#symbol-routesmatch)
 - [`openings.sqlDeclarations`](./openings.ts.mdmd.md#symbol-sqldeclarations)
+- [`openings.sqlNameParts`](./openings.ts.mdmd.md#symbol-sqlnameparts)
 - [`openings.sqlObjectName`](./openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.sqlReferences`](./openings.ts.mdmd.md#symbol-sqlreferences)
 - `vitest` - `describe`, `expect`, `it`

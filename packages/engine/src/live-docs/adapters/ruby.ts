@@ -47,19 +47,24 @@ const DIRECTIVE_PATTERN = /^#\s*(?:frozen_string_literal|rubocop)/i;
  */
 const MAIN_GUARD_PATTERN = /^(?:\S.*\s)?if\s+\(?\s*(?:__FILE__\s*==\s*\$(?:0|PROGRAM_NAME)|\$(?:0|PROGRAM_NAME)\s*==\s*__FILE__)\s*\)?(?:\s+then\b.*|\s*#.*)?\s*$/;
 
-/** The data after `__END__`, which Ruby never runs, as the Ruby grammar names it. */
-const DATA_NODES: ReadonlySet<string> = new Set(["uninterpreted"]);
+/**
+ * What Ruby runs as no code and no comment documents, as the Ruby grammar names it: the data after `__END__`, and a
+ * heredoc's text, a string whose lines the reader's patterns would otherwise read as code (since the evening of
+ * 2026-11-21, an independent review's case).
+ */
+const DATA_NODES: ReadonlySet<string> = new Set(["uninterpreted", "heredoc_body"]);
 
-/** What Ruby never runs: a comment, `#` or `=begin` … `=end`, and the data after `__END__`. */
+/** What Ruby never runs: a comment, `#` or `=begin` … `=end`, the data after `__END__` and a heredoc's text. */
 const UNRUN_NODES: ReadonlySet<string> = new Set([...COMMENT_NODES, ...DATA_NODES]);
 
 /**
  * Language adapter for Ruby (`.rb`). Extracts classes, modules, methods, and `require`/`require_relative`
  * dependencies, and reports a file guarded by `__FILE__ == $0` as the program's entry. Its patterns run over lines;
  * the Ruby grammar first finds what Ruby never runs, telling a comment from a string and a heredoc as Ruby does, and
- * that is written over in spaces: the comments and the data after `__END__` for the dependencies and the guard, the
- * data alone for the symbols, whose documentation is read from the comments before them (the comment guard of
- * 2026-11-21, `commentGuard.test.ts`).
+ * that is written over in spaces: the comments, the data after `__END__` and a heredoc's text for the dependencies and
+ * the guard, the data and the heredocs alone for the symbols, whose documentation is read from the comments before them
+ * (the comment guard of 2026-11-21, `commentGuard.test.ts`). A string written on one line is left as it is, since a
+ * `require`'s path is one; a multi-line string that is no heredoc is read as code.
  */
 export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",

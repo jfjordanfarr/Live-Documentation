@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/commentGuard.test.ts`
-- Generated At: 2026-11-21T20:49:35.750Z
+- Generated At: 2026-11-21T21:13:42.829Z
 
 ## Authored
 ### Purpose
@@ -29,8 +29,11 @@ _No public symbols detected_
 - `node:path`
 - [`aspnet.withoutMarkupComments`](./aspnet.ts.mdmd.md#symbol-withoutmarkupcomments)
 - [`css.withoutCssComments`](./css.ts.mdmd.md#symbol-withoutcsscomments)
+- [`dotnetXml.withoutXmlComments`](./dotnetXml.ts.mdmd.md#symbol-withoutxmlcomments)
 - [`html.withoutHtmlComments`](./html.ts.mdmd.md#symbol-withouthtmlcomments)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`knownDifferences.heldToLedger`](./knownDifferences.ts.mdmd.md#symbol-heldtoledger)
+- [`knownDifferences.listedButNotRun`](./knownDifferences.ts.mdmd.md#symbol-listedbutnotrun)
 - [`treeSitter.writtenOver`](./treeSitter.ts.mdmd.md#symbol-writtenover)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`discovery.buildWorkspaceIndexes`](../discovery.ts.mdmd.md#symbol-buildworkspaceindexes)

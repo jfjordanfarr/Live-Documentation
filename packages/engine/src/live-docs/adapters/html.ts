@@ -20,6 +20,7 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter } from "./index";
+import { inSpaces } from "./spaces";
 
 // ============================================================================
 // Patterns
@@ -45,14 +46,25 @@ const TEXT_ELEMENTS: ReadonlySet<string> = new Set(["script", "style", "textarea
 /** A start tag's opening and its name. */
 const START_TAG = /^<([A-Za-z][^\s/>]*)/u;
 
+/** The first end of a comment after `from`, `-->` or `--!>` (WHATWG HTML, "comment end bang state"), as the index just past it; the text's end when there is none. */
+function commentEnd(text: string, from: number): number {
+  const ends = [text.indexOf("-->", from), text.indexOf("--!>", from)].filter((at) => at !== -1);
+  if (ends.length === 0) return text.length;
+  const at = Math.min(...ends);
+  return at + (text.startsWith("-->", at) ? 3 : 4);
+}
+
 /**
- * The markup with every HTML comment written over in spaces, its line breaks kept, so that positions keep, as HTML
- * parses a comment: from `<!--` to the first `-->` after it, or at once when it is `<!-->` or `<!--->`, so that the
- * content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
- * comment is kept; a comment left open runs to the end. `<!--` opens a comment only where a tag may start: never
- * inside a tag's quoted attribute value, nor in the text of a `<script>`, `<style>`, `<textarea>` or `<title>`, which
- * runs to that element's end tag. No browser runs a script, loads a style sheet or makes an element that a comment
- * holds, so the readers of markup read none (the comment guard of 2026-11-21, `commentGuard.test.ts`).
+ * The markup with what HTML makes no element of written over in spaces ({@link inSpaces}), so that positions keep:
+ * each comment, as HTML parses one, from `<!--` to the first `-->` or `--!>` after it, or at once when it is `<!-->`
+ * or `<!--->`, so that the content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`)
+ * leaves outside every comment is kept, and a comment left open runs to the end; and the text of each `<script>`,
+ * `<style>`, `<textarea>` and `<title>`, which HTML reads as text to that element's end tag, so that an `id=`, `src=`
+ * or `href=` a script's code or comment writes is no element's (mojoPortal's ckeditor samples write `// Replace the
+ * <textarea id="editor"> …`; a script's own references are the DOM heuristic's, read from its syntax tree). `<!--`
+ * opens a comment only where a tag may start: never inside a tag's quoted attribute value. No browser runs a script,
+ * loads a style sheet or makes an element that a comment holds, so the readers of markup read none (the comment guard
+ * of 2026-11-21, `commentGuard.test.ts`). A `<noscript>`'s text, raw to a browser that runs scripts, is read as markup.
  */
 export function withoutHtmlComments(text: string): string {
   let result = "";
@@ -63,10 +75,8 @@ export function withoutHtmlComments(text: string): string {
     if (open === -1) return result + text.slice(at);
     if (text.startsWith("<!--", open)) {
       const rest = text.slice(open + 4, open + 6);
-      const abrupt = rest.startsWith(">") ? open + 5 : rest === "->" ? open + 6 : undefined;
-      const close = text.indexOf("-->", open + 4);
-      const until = abrupt ?? (close === -1 ? text.length : close + 3);
-      result += text.slice(at, open) + text.slice(open, until).replace(/[^\r\n]/gu, " ");
+      const until = rest.startsWith(">") ? open + 5 : rest === "->" ? open + 6 : commentEnd(text, open + 4);
+      result += text.slice(at, open) + inSpaces(text.slice(open, until));
       at = index = until;
       continue;
     }
@@ -77,10 +87,15 @@ export function withoutHtmlComments(text: string): string {
     }
     index = endOfTag(text, open + 1);
     const name = tag[1].toLowerCase();
-    if (TEXT_ELEMENTS.has(name)) {
+    // A tag closed by `/>` holds no text, as ASP.NET's page parser reads `<title />` in a page's head (DNN's
+    // `Default.aspx`); a browser reading such a tag in an `.html` file would take the rest for its text, which no page
+    // measured writes.
+    if (TEXT_ELEMENTS.has(name) && text[index - 2] !== "/") {
       const end = new RegExp(`</${name}[\\s/>]`, "giu");
       end.lastIndex = index;
-      index = end.exec(text)?.index ?? text.length;
+      const until = end.exec(text)?.index ?? text.length;
+      result += text.slice(at, index) + inSpaces(text.slice(index, until));
+      at = index = until;
     }
   }
 }

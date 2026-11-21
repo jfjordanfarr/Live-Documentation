@@ -26,9 +26,14 @@ import { buildWorkspaceIndexes } from "../discovery";
 import { analyzeSourceFile } from "../sourceAnalysis";
 import { withoutMarkupComments } from "./aspnet";
 import { withoutCssComments } from "./css";
+import { withoutXmlComments } from "./dotnetXml";
 import { withoutHtmlComments } from "./html";
 import type { WorkspaceFileIndex } from "./index";
+import { heldToLedger, listedButNotRun } from "./knownDifferences";
 import { writtenOver } from "./treeSitter";
+
+/** This test's name as the ledger of known differences (`known-differences.json`) lists it. */
+const LEDGERED = (): string => `commentGuard.test.ts > ${expect.getState().currentTestName ?? ""}`;
 
 /** A way of writing the construct that the language does not run: the commented construct and the live one, as the file's text. */
 interface Form {
@@ -77,7 +82,11 @@ const HTML_COMMENT: Form = { name: "an HTML comment, `<!-- … -->`", around: be
 
 /** The forms where an HTML comment's opening stands where HTML reads no comment, which must not hide what follows. */
 const HTML_STRINGS: Form[] = [
-  { name: "`<!--` and `-->` inside attribute values around it", hides: false, around: (gone, kept) => `<a title="<!--"></a>\n${gone}\n${kept}\n<a title="-->"></a>\n` },
+  // Each value holds a `>` before its marker, so that only reading the quoted value to its end keeps the marker inside the tag.
+  { name: "`<!--` and `-->` inside attribute values around it", hides: false, around: (gone, kept) => `<a title="x > <!--"></a>\n${gone}\n${kept}\n<a title="y > -->"></a>\n` },
+  // A quote opens a value only after `=` (WHATWG HTML, "attribute name state": a quote there is part of the name), so
+  // the apostrophe of `it's` opens nothing and the comment after the tag is a comment.
+  { name: "an HTML comment after a tag whose attribute's name holds a quote", around: (gone, kept) => `<a it's="1"></a>\n<!--\n${gone}\n-->\n${kept}\n<b title='x'></b>\n` },
   { name: "`<!--` and `-->` inside a script's text around it", hides: false, around: (gone, kept) => `<script>var a = "<!--";</script>\n${gone}\n${kept}\n<script>var b = "-->";</script>\n` }
 ];
 
@@ -370,7 +379,11 @@ const CASES: GuardCase[] = [
       { name: "`/*` and `*/` inside strings around it", hides: false, around: (gone, kept) => `a::before { content: "/*"; }\n${gone}\n${kept}\nb::after { content: "*/"; }\n` },
       // A reviewer's form of 2026-11-21, red when committed: outside a string `\"` is an escaped character of a name
       // (CSS Syntax, "Consume an escaped code point"), no quote, so the comment after it on the line is a comment.
-      { name: "a comment after an escaped quote in a selector, `.a\\\"b`", around: (gone, kept) => `.a\\"b { color: red; } /* ${gone} */\n${kept}\n` }
+      { name: "a comment after an escaped quote in a selector, `.a\\\"b`", around: (gone, kept) => `.a\\"b { color: red; } /* ${gone} */\n${kept}\n` },
+      // An unquoted `url(…)` runs to its `)`, opening no comment at a `/*` it holds (CSS Syntax, "Consume a url token").
+      { name: "`/*` inside an unquoted `url(…)` before it", hides: false, around: (gone, kept) => `.a { background: url(//cdn.example/*.png); }\n${gone}\n${kept}\n.b { color: red; } /* end */\n` },
+      // A string runs past an escaped quote ("Consume a string token"), so the `/*` after it is still the string's.
+      { name: "an escaped quote and `/*` inside a string before it", hides: false, around: (gone, kept) => `a::before { content: "\\"/*"; }\n${gone}\n${kept}\nb::after { content: "*/"; }\n` }
     ]
   },
   {
@@ -420,7 +433,9 @@ const CASES: GuardCase[] = [
   {
     reader: "ASP.NET Web Forms", construct: "an element id", file: "Default.aspx",
     text: (name) => `<div id="${name}"></div>`, fact: (name) => `sym:${name}`,
-    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...WEB_FORMS_CODE]
+    forms: [{ name: "a server comment, `<%-- … --%>`", around: beside((text) => `<%--\n${text}\n--%>`) }, HTML_COMMENT, ...HTML_STRINGS, ...HTML_MORE, ...WEB_FORMS_CODE,
+      // The page parser closes `<title />`, as DNN's `Default.aspx` writes it in its head, so it holds no text.
+      { name: "a `<title />` the page parser closes, before it", hides: false, around: (gone, kept) => `<head runat="server"><title /></head>\n${gone}\n${kept}\n` }]
   },
   {
     reader: "ASP.NET Razor", construct: "a `<script src>`", file: "Index.cshtml",
@@ -595,11 +610,13 @@ describe("no reader reads what a comment holds", () => {
       for (const form of guardCase.forms) {
         const hides = form.hides ?? true;
         it(hides ? `reads nothing inside ${form.name}, and the construct beside it` : `reads on past ${form.name}`, async () => {
-          const text = form.around(guardCase.text(GONE), guardCase.text(KEPT));
-          const facts = await read({ ...guardCase.files, [guardCase.file]: text }, guardCase.subject ?? guardCase.file);
-          const shown = `\n--- ${guardCase.file}\n${text}\n--- facts of ${guardCase.subject ?? guardCase.file}\n${Array.from(facts).sort().join("\n")}`;
-          expect(facts.has(guardCase.fact(KEPT)), `the live construct's fact, ${guardCase.fact(KEPT)}${shown}`).toBe(true);
-          expect(facts.has(guardCase.fact(GONE)), `${hides ? "the commented construct's fact is read" : "the construct after the marker is not read"}: ${guardCase.fact(GONE)}${shown}`).toBe(!hides);
+          await heldToLedger(LEDGERED(), async () => {
+            const text = form.around(guardCase.text(GONE), guardCase.text(KEPT));
+            const facts = await read({ ...guardCase.files, [guardCase.file]: text }, guardCase.subject ?? guardCase.file);
+            const shown = `\n--- ${guardCase.file}\n${text}\n--- facts of ${guardCase.subject ?? guardCase.file}\n${Array.from(facts).sort().join("\n")}`;
+            expect(facts.has(guardCase.fact(KEPT)), `the live construct's fact, ${guardCase.fact(KEPT)}${shown}`).toBe(true);
+            expect(facts.has(guardCase.fact(GONE)), `${hides ? "the commented construct's fact is read" : "the construct after the marker is not read"}: ${guardCase.fact(GONE)}${shown}`).toBe(!hides);
+          });
         });
       }
     });
@@ -627,4 +644,44 @@ describe("every comment step keeps each position of the text", () => {
       expect(result.indexOf("after")).toBe(text.indexOf("after"));
     });
   }
+  it("`withoutXmlComments` (.NET project files and configuration) writes a comment holding an emoji over in as many UTF-16 units as it holds", () => {
+    const text = "<!-- a note 😀 --> after";
+    expect(withoutXmlComments(text).indexOf("after")).toBe(text.indexOf("after"));
+  });
+});
+
+/*
+ * C#'s string literals as the program holds them ("String literals"; "Interpolated strings"): each escape form the C#
+ * reader decodes before it reads the SQL a string holds, held by whether `dbo.Kept` is then named. In a regular string
+ * `\n`, `\x0a`, `\u000a` and `\U0000000a` are a line break, which ends SQL's line comment; in a verbatim one (`@"…"`,
+ * `$@"…"`) a backslash is itself and `""` is one quote. Each case fails if its form is read otherwise.
+ */
+describe("C#'s strings, read as the program holds them before the SQL in them is read", () => {
+  const forms: Array<{ name: string; literal: string; names: boolean }> = [
+    { name: "`\\n` in a regular string", literal: String.raw`"-- note\nSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\x0a` in a regular string", literal: String.raw`"-- note\x0aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\u000a` in a regular string", literal: String.raw`"-- note\u000aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\U0000000a` in a regular string", literal: String.raw`"-- note\U0000000aSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\n` in an interpolated string", literal: String.raw`$"-- note\nSELECT * FROM dbo.Kept"`, names: true },
+    { name: "`\\n` in a verbatim string, a backslash and an n", literal: String.raw`@"-- note\nSELECT * FROM dbo.Kept"`, names: false },
+    { name: "`\\n` in a verbatim interpolated string, a backslash and an n", literal: String.raw`$@"-- note\nSELECT * FROM dbo.Kept"`, names: false },
+    { name: "`\"\"` in a verbatim string, one quote", literal: String.raw`@"SELECT * FROM ""dbo"".""Kept"""`, names: true },
+    { name: "`\"\"` in a verbatim interpolated string, one quote", literal: String.raw`$@"SELECT * FROM ""dbo"".""Kept"""`, names: true }
+  ];
+  for (const form of forms) {
+    it(`reads ${form.name}`, async () => {
+      const facts = await read({
+        "db/Kept.sql": "CREATE TABLE dbo.Kept (id int);\n",
+        "App/Program.cs": `namespace App {\nclass Program {\nstring q = ${form.literal};\n} }\n`
+      }, "App/Program.cs");
+      expect(facts.has("to:db/Kept.sql"), Array.from(facts).join("\n")).toBe(form.names);
+    });
+  }
+});
+
+describe("the ledger of known differences", () => {
+  // Last in the file, after every case it may list has run.
+  it("lists for this file only cases the file runs", () => {
+    expect(listedButNotRun("commentGuard.test.ts")).toEqual([]);
+  });
 });

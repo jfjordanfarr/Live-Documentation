@@ -13,6 +13,8 @@ import * as os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
+import { heldToLedger, listedButNotRun } from "@live-documentation/engine/live-docs/adapters/knownDifferences";
+
 import { sourceDigests, sourcesDiffer } from "../../../scripts/oracle/sources";
 import { compareSqlite, runSqlite, sqliteSources, type SqliteRecord } from "../../../scripts/oracle/sql-sqlite";
 
@@ -66,10 +68,19 @@ describe("the SQL reader against SQLite, on scripts SQLite runs here", () => {
         fs.writeFileSync(path.join(folder, file), script, "utf8");
         const record = await runSqlite(folder, [file]);
         expect(record.files[file].refused).toBeUndefined();
-        expect(compareSqlite(folder, record)).toEqual([]);
+        await heldToLedger(`sqlite-oracle.test.ts > ${expect.getState().currentTestName ?? ""}`, () => {
+          expect(compareSqlite(folder, record)).toEqual([]);
+        });
       } finally {
         fs.rmSync(folder, { recursive: true, force: true });
       }
     });
   }
+});
+
+describe("the ledger of known differences", () => {
+  // Last in the file, after every case it may list has run.
+  it("lists for this file only cases the file runs", () => {
+    expect(listedButNotRun("sqlite-oracle.test.ts")).toEqual([]);
+  });
 });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.ts`
-- Generated At: 2026-11-21T18:54:36.757Z
+- Generated At: 2026-11-21T21:13:42.942Z
 
 ## Authored
 ### Purpose
@@ -21,20 +21,21 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Since the same day a SQL name in a C# string binds by T-SQL's order of search, the SQL reader's `bindSqlName` in `openings.ts`: a name in a string is no module's, so a one-part name binds as a loose script's does, to `dbo`'s object and to none in another schema, and a two-part name to its own schema's. Until then a one-part name linked its namesake in every schema. Generated before and after, nothing moves on the estate sample (its two names are two-part) or on DNN (3 edges from C# to SQL files, none one-part names with a namesake in another schema).
 - Known and not mended (2026-11-21): a member hides a type of its name where an expression is read, and the reader does not tell where an expression is read from where a type is, for a type's own members or its inherited ones. So `Gadget * 2` inside `MemberOverUsing : Base`, `Base`'s property, is taken for the class a `using` brings in (the `names` sample's `MemberOverUsing.cs`, listed in both oracle tests as a known miss). On mojoPortal it is 3 edges, three pages drawn to `Controls/SkinSetting.ascx.designer.cs` by a control field `SkinSetting` their own designer half declares; the 2 namesake edges on DNN are of other causes, a member name in an anonymous object's initializer (`BrowserTypes = …`) read as a type, and an interface two projects declare.
 - Since 2026-11-21 ([the comment guard](./commentGuard.test.ts.mdmd.md), [its record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md)) the facts of a file carry where its comments lie, found by the grammar, and the patterns of `csharp.dependencies.ts` run over the text with them written over in spaces. A string's text is what the program holds: a regular string's escapes are the characters they stand for, so `"-- note\nSELECT …"` holds a line break that ends SQL's line comment; a verbatim string's doubled quote is one quote. No string in DNN's, mojoPortal's or the Core repositories' C# holds SQL so; one string of nopCommerce's prose, `… delete \"browscap.crawlersonly.xml\" …`, is now read as SQL naming `browscap.crawlersonly.xml`, since a string that holds `from` is read as SQL.
+- Since the evening of 2026-11-21 a section an `#if false` or `#elif false` skips is written over before the syntax tree is read, a nested conditional counted, since C# lexes none: on DNN, six such sections, one the whole of `DotNetNuke.Web/Common/DotNetNukeSecurity.cs`, whose 11 C# pairs and 2 symbols are gone, none a pair the compiler binds. A condition on a symbol is read in every branch, as before. An interpolated string's escapes, nodes of their own in the grammar, are decoded too, and a test holds each form decoded ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md#the-second-round-after-an-independent-review)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TYPE_NAME_REASONS` {#symbol-type_name_reasons}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1147)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1193)
 
 ##### `TYPE_NAME_REASONS` — Summary
 Why a type name has no link although the workspace declares it.
 
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1592)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1638)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -42,7 +43,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1603)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1649)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -62,6 +63,7 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`dotnetProjects.projectReach`](./dotnetProjects.ts.mdmd.md#symbol-projectreach-function)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.rangesOf`](./treeSitter.ts.mdmd.md#symbol-rangesof)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)

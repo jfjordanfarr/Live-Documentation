@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-21T19:29:59.758Z
+- Generated At: 2026-11-21T21:13:43.427Z
 
 ## Authored
 ### Purpose
@@ -28,13 +28,14 @@ The PowerShell adapter: parses `.ps1`, `.psm1` and `.psd1` with the engine's own
 - A manifest's `FunctionsToExport` offers each name it writes out from the one file of the module (its root and what that loads) that defines it at its own level, as a TypeScript barrel offers what it re-exports (`reExportedSymbols`, rendered as `Re-Exported Symbol Anchors` with a link to the origin), not as a wire; a wildcard, or a name the module does not define once, is not offered.
 - Measured by [`powershell-oracle.test.ts`](../../../../../../../.mdmd/layer-4/tests/integration/live-docs/powershell-oracle.test.ts.mdmd.md) against the parser's records `expected/powershell-ast.json` of `tests/integration/programs/powershell/rollout`, `tests/integration/fixtures/powershell-compendium` and, since 2026-11-19, `tests/integration/fixtures/powershell-wires`, the calls, loads, libraries and offers judged by the rules of [`powershell-wires.ts`](../../../../../../../.mdmd/layer-4/scripts/oracle/powershell-wires.ts.mdmd.md) over the parser's facts; its register holds one miss, the grammar's reading of `./scripts/Clean.ps1` as a dot-source. Before the wires the register was empty on the first two; `oracle:compare` finds 8 of 8 and 3 of 3 of the parser's edges with nothing extra. With the bundled grammar in place of the built one the register would list five misses on the rollout program and two on the compendium. The `pwsh` adapter it replaced found 7 of the rollout program's 12 published functions and 3 of its 8 dependencies. Guarded by [`powershell.test.ts`](./powershell.test.ts.mdmd.md) and, for the grammar, [`treeSitter.test.ts`](./treeSitter.test.ts.mdmd.md).
 - Since 2026-11-21 a relative path without its extension, `./build` beside both `build` and `build.ps1`, is `build.ps1`, as Windows runs it: the owner's run on their own Windows machine that day, kept as `tests/integration/fixtures/powershell-wires/expected/windows-runs.json`, and PowerShell's source both say so, where pwsh on Unix runs `build`; a rooted path, `$PSScriptRoot/build`, is `build` on both, as before (`resolveScript`). The parser's record, pwsh's on Linux, keeps Unix's answer, held in the oracle test's register by its cause. The four PowerShell corpora hold no such pair and moved by no line ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md)).
+- Since the evening of 2026-11-21 the `.ps1` is tried first only for a name with no extension of its own, as PowerShell's `ConstructSearchPatternsFromName` does: `./build.v2` beside `build.v2` and `build.v2.ps1` is `build.v2` on both platforms, as the reader read it before the change of that day ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md#the-second-round-after-an-independent-review)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `analyzePowerShellSource` {#symbol-analyzepowershellsource}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2071)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2075)
 
 ##### `analyzePowerShellSource` — Summary
 Analyzes one PowerShell file from its text, without the generator: a
@@ -45,7 +46,7 @@ what it names and the root module it declares. Paths are resolved against
 
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2112)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.ts#L2116)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary

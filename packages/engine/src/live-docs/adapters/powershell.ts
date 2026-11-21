@@ -1543,12 +1543,16 @@ const ROOTED_BY_SCRIPT_ROOT = /^(?:\$\{PSScriptRoot\}|\$PSScriptRoot(?!\w))/i;
  * Windows, PowerShell's home: a relative path (`./build`, `tools/build`) is `build.ps1`, as the owner's run on their
  * Windows machine showed on 2026-11-21 and PowerShell's source says (Windows searches the folder for `build.ps1`
  * first; Unix tries `build` first); a rooted one (`$PSScriptRoot/build`) is `build` on both, its literal tried first.
- * Only a path is so read: a name without a folder, `. Stop-Function`, is a command PowerShell looks up, never a script
- * beside the file.
+ * Windows tries the `.ps1` first only for a name with no extension of its own (`ConstructSearchPatternsFromName` puts
+ * the name itself first when `Path.HasExtension` holds), so `./build.v2` beside `build.v2` and `build.v2.ps1` is
+ * `build.v2` on both platforms (an independent review's case, pwsh on Linux agreeing). Only a path is so read: a name
+ * without a folder, `. Stop-Function`, is a command PowerShell looks up, never a script beside the file.
  */
 function resolveScript(written: string, directory: string, files: WorkspaceFileIndex | undefined): string | undefined {
-  const asScript = /[\\/]/.test(written) && !/\.ps1$/i.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined;
-  if (asScript && !ROOTED_BY_SCRIPT_ROOT.test(written)) return asScript;
+  if (!/[\\/]/.test(written)) return resolvePath(written, directory, files, false);
+  const asScript = /\.ps1$/i.test(written) ? undefined : resolvePath(`${written}.ps1`, directory, files, false);
+  const bare = path.posix.extname(written.replace(/\\/g, "/").split("/").pop() ?? "") === "";
+  if (asScript && bare && !ROOTED_BY_SCRIPT_ROOT.test(written)) return asScript;
   return resolvePath(written, directory, files, false) ?? asScript;
 }
 
