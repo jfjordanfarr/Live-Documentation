@@ -299,11 +299,16 @@ export function sqlWrittenName(parts: string[]): string {
   return parts.map((part) => (/[.[\]"]/u.test(part) || part !== part.trim() ? `[${part.replace(/\]/gu, "]]")}]` : part)).join(".");
 }
 
-/** Reads a written object name: quotes off, server and database qualifiers off, case folded. */
+/**
+ * Reads a written object name: quotes off, server and database qualifiers off, case folded. Four parts name a
+ * linked server's object; three name a database's, `database.schema.name`, and `database..name` leaves only the
+ * schema to its default, a user's in that database, which no text gives and is taken as `dbo`, so it reads as
+ * `database.dbo.name` does (Microsoft's "Transact-SQL syntax conventions": "Server and schema name are omitted").
+ */
 export function sqlObjectName(raw: string): SqlObjectName {
   const parts = sqlNameParts(raw);
-  const linked = parts.length === 4 || (parts.length >= 3 && parts.slice(1, -1).some((part) => part === ""));
-  return { parts: parts.slice(-2).filter((part) => part !== "").map((part) => part.toLowerCase()), linked };
+  const named = parts.length === 3 && parts[1] === "" ? [parts[0], "dbo", parts[2]] : parts;
+  return { parts: named.slice(-2).filter((part) => part !== "").map((part) => part.toLowerCase()), linked: parts.length === 4 };
 }
 
 /** The kind of a `CREATE` statement, as a symbol kind. A SQL function is `sql-function`, so that it is never mistaken for a function of a source language. */

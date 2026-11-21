@@ -82,6 +82,14 @@ describe("database objects", () => {
     expect(sqlObjectName("Payment")).toEqual({ parts: ["payment"], linked: false });
   });
 
+  it("reads database..name as the database's object in the default schema, dbo, and never as a linked server's", () => {
+    expect(sqlObjectName("SisterDb..Orders")).toEqual({ parts: ["dbo", "orders"], linked: false });
+    expect(sqlObjectName("SisterDb..Orders")).toEqual(sqlObjectName("SisterDb.dbo.Orders"));
+    expect(sqlObjectName("[Sister Db]..[Orders]")).toEqual({ parts: ["dbo", "orders"], linked: false });
+    expect(sqlObjectName("ORACLE_CENTRAL.CENTRAL_DB..ACCOUNT")).toEqual({ parts: ["account"], linked: true });
+    expect(sqlObjectName("ORACLE_CENTRAL...ACCOUNT")).toEqual({ parts: ["account"], linked: true });
+  });
+
   it("reads nothing inside a comment, a nested comment or a string", () => {
     const text = "SELECT 1 -- FROM nowhere\n/* FROM x /* FROM nested */ FROM still.comment */ SELECT 'FROM y' AS a FROM dbo.T";
     expect(sqlReferences(text)).toEqual([{ verb: "FROM", name: { parts: ["dbo", "t"], linked: false }, raw: "dbo.T" }]);
