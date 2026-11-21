@@ -1,0 +1,463 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "Contracts/Contracts.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    },
+    {
+      "project": "Gateway/Gateway.csproj",
+      "readBy": "msbuild",
+      "references": [
+        "Contracts/Contracts.csproj"
+      ],
+      "xmlReferences": [
+        "Contracts/Contracts.csproj"
+      ]
+    },
+    {
+      "project": "Hub/Hub.csproj",
+      "readBy": "msbuild",
+      "references": [
+        "Contracts/Contracts.csproj"
+      ],
+      "xmlReferences": [
+        "Contracts/Contracts.csproj"
+      ]
+    },
+    {
+      "project": "PaymentService/PaymentService.csproj",
+      "readBy": "msbuild",
+      "references": [
+        "Contracts/Contracts.csproj"
+      ],
+      "xmlReferences": [
+        "Contracts/Contracts.csproj"
+      ]
+    },
+    {
+      "project": "Portal/Portal.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 21,
+  "names": 447,
+  "bound": 262,
+  "edges": [
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": []
+    },
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": []
+    },
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "type": [
+        "PaymentResult"
+      ],
+      "member": []
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": []
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": []
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "type": [
+        "PaymentResult"
+      ],
+      "member": []
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": [
+        "PaymentQuery.Environment",
+        "PaymentQuery.PaymentId",
+        "PaymentQuery.Workload"
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": [
+        "PaymentRequest.Environment",
+        "PaymentRequest.Workload"
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Gateway/GatewaySettings.cs",
+      "type": [
+        "GatewaySettings"
+      ],
+      "member": [
+        "GatewaySettings.Environment",
+        "GatewaySettings.Workload"
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Gateway/Wcf/HubProxy.cs",
+      "type": [
+        "HubProxy"
+      ],
+      "member": [
+        "HubProxy.GetPayment",
+        "HubProxy.PostPayment"
+      ]
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/IPaymentHub.cs",
+      "type": [
+        "IPaymentHub"
+      ],
+      "member": []
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": []
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": []
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "type": [
+        "PaymentResult"
+      ],
+      "member": []
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/IPaymentHub.cs",
+      "type": [
+        "IPaymentHub"
+      ],
+      "member": []
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/IPaymentService.cs",
+      "type": [
+        "IPaymentService"
+      ],
+      "member": []
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": [
+        "PaymentQuery.Environment",
+        "PaymentQuery.Workload"
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": [
+        "PaymentRequest.Environment",
+        "PaymentRequest.Workload"
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "type": [
+        "PaymentResult"
+      ],
+      "member": []
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Hub/ServiceRouting.cs",
+      "type": [
+        "ServiceRouting"
+      ],
+      "member": [
+        "ServiceRouting.EndpointNameFor"
+      ]
+    },
+    {
+      "from": "PaymentService/Data/PaymentsContext.cs",
+      "to": "PaymentService/Data/Payment.cs",
+      "type": [
+        "Payment"
+      ],
+      "member": []
+    },
+    {
+      "from": "PaymentService/Data/PaymentsContext.cs",
+      "to": "PaymentService/Data/PostPaymentRow.cs",
+      "type": [
+        "PostPaymentRow"
+      ],
+      "member": []
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/IPaymentService.cs",
+      "type": [
+        "IPaymentService"
+      ],
+      "member": []
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "type": [
+        "PaymentQuery"
+      ],
+      "member": [
+        "PaymentQuery.PaymentId"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "type": [
+        "PaymentRequest"
+      ],
+      "member": [
+        "PaymentRequest.AccountNumber",
+        "PaymentRequest.Amount"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "type": [
+        "PaymentResult"
+      ],
+      "member": [
+        "PaymentResult.AccountBalance",
+        "PaymentResult.PaymentId",
+        "PaymentResult.Status"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/Payment.cs",
+      "type": [
+        "Payment"
+      ],
+      "member": [
+        "Payment.PaymentId",
+        "Payment.Status"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/PaymentsContext.cs",
+      "type": [
+        "PaymentsContext"
+      ],
+      "member": [
+        "PaymentsContext.Payments",
+        "PaymentsContext.PostPayment"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/PostPaymentRow.cs",
+      "type": [
+        "PostPaymentRow"
+      ],
+      "member": [
+        "PostPaymentRow.AccountBalance",
+        "PostPaymentRow.PaymentId",
+        "PostPaymentRow.Status"
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/App_Code/Globals.cs",
+      "type": [
+        "Globals"
+      ],
+      "member": [
+        "Globals.GatewayBaseUrl",
+        "Globals.PaymentsEnabled"
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Models/PaymentRequestModel.cs",
+      "type": [
+        "PaymentRequestModel"
+      ],
+      "member": []
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Models/PaymentResultModel.cs",
+      "type": [
+        "PaymentResultModel"
+      ],
+      "member": []
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Services/GatewayClient.cs",
+      "type": [
+        "GatewayClient"
+      ],
+      "member": [
+        "GatewayClient.GetPaymentAsync",
+        "GatewayClient.PostPaymentAsync"
+      ]
+    },
+    {
+      "from": "Portal/Pages/Default.aspx.cs",
+      "to": "Portal/App_Code/Globals.cs",
+      "type": [
+        "Globals"
+      ],
+      "member": [
+        "Globals.GatewayBaseUrl",
+        "Globals.PaymentsEnabled"
+      ]
+    },
+    {
+      "from": "Portal/Pages/Default.aspx.cs",
+      "to": "Portal/Pages/Default.aspx.designer.cs",
+      "type": [],
+      "member": [
+        "Default.GatewayBaseUrlHidden",
+        "Default.PaymentsEnabledHidden"
+      ]
+    },
+    {
+      "from": "Portal/Services/GatewayClient.cs",
+      "to": "Portal/Models/PaymentRequestModel.cs",
+      "type": [
+        "PaymentRequestModel"
+      ],
+      "member": []
+    },
+    {
+      "from": "Portal/Services/GatewayClient.cs",
+      "to": "Portal/Models/PaymentResultModel.cs",
+      "type": [
+        "PaymentResultModel"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "Contracts/IPaymentHub.cs": [
+      "IPaymentHub"
+    ],
+    "Contracts/IPaymentService.cs": [
+      "IPaymentService"
+    ],
+    "Contracts/PaymentQuery.cs": [
+      "PaymentQuery"
+    ],
+    "Contracts/PaymentRequest.cs": [
+      "PaymentRequest"
+    ],
+    "Contracts/PaymentResult.cs": [
+      "PaymentResult"
+    ],
+    "Gateway/Controllers/PaymentsController.cs": [
+      "PaymentsController"
+    ],
+    "Gateway/GatewaySettings.cs": [
+      "GatewaySettings"
+    ],
+    "Gateway/Wcf/HubProxy.cs": [
+      "HubProxy"
+    ],
+    "Hub/PaymentHub.cs": [
+      "PaymentHub"
+    ],
+    "Hub/ServiceRouting.cs": [
+      "ServiceRouting"
+    ],
+    "PaymentService/Data/Payment.cs": [
+      "Payment"
+    ],
+    "PaymentService/Data/PaymentsContext.cs": [
+      "PaymentsContext"
+    ],
+    "PaymentService/Data/PostPaymentRow.cs": [
+      "PostPaymentRow"
+    ],
+    "PaymentService/PaymentService.cs": [
+      "PaymentService"
+    ],
+    "Portal/App_Code/Globals.cs": [
+      "Globals"
+    ],
+    "Portal/Controllers/PaymentsController.cs": [
+      "PaymentsController"
+    ],
+    "Portal/Models/PaymentRequestModel.cs": [
+      "PaymentRequestModel"
+    ],
+    "Portal/Models/PaymentResultModel.cs": [
+      "PaymentResultModel"
+    ],
+    "Portal/Pages/Default.aspx.cs": [
+      "Default"
+    ],
+    "Portal/Pages/Default.aspx.designer.cs": [
+      "Default"
+    ],
+    "Portal/Services/GatewayClient.cs": [
+      "GatewayClient"
+    ]
+  }
+}

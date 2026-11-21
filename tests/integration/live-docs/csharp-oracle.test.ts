@@ -26,10 +26,15 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  * independent review of the reader found on 2026-11-21: a nested type named
  * inside a class that inherits it, which C# finds in the base class before any
  * `using`, and an alias to the non-generic one of two types that differ only
- * by arity; both were mended the same day.
+ * by arity; both were mended the same day. The other C# samples had none
+ * when their records were first kept, the same day.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
-  "programs/csharp/names": []
+  "programs/csharp/basic":    [],
+  "programs/csharp/estate":   [],
+  "programs/csharp/names":    [],
+  "programs/csharp/rosetta":  [],
+  "programs/csharp/webforms": []
 };
 
 /** Discover compiler records independently of the register of measured misses. */

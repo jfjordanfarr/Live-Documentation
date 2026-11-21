@@ -15,7 +15,7 @@ Every directory below holds committed source. The seven vendored fixtures that w
 | TypeScript | `basic`, `layered`, `rosetta`                 | all: the oracle; `rosetta`: Rosetta parity                              |
 | C          | `basics`, `modular`, `rosetta`                | all: the oracle (scip-clang, since 2026-10-16); `rosetta`: Rosetta parity |
 | C++        | `rosetta`                                     | all: the oracle; `rosetta`: Rosetta parity (the ninth language, 2026-10-16) |
-| C#         | `basic`, `webforms`, `estate`, `rosetta`, `names` | all: the oracle; `rosetta`: Rosetta parity; `names`: the compiler's binding (since 2026-11-21) |
+| C#         | `basic`, `webforms`, `estate`, `rosetta`, `names` | all: the oracle and the compiler's binding (since 2026-11-21); `rosetta`: Rosetta parity |
 | Go         | `rosetta`, `depot`                            | all: the oracle; `rosetta`: Rosetta parity                              |
 | Java       | `basic`, `service`, `rosetta`, `warehouse`    | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
 | PowerShell | `rollout`                                     | the oracle (PowerShell's own parser, since 2026-10-16)                  |

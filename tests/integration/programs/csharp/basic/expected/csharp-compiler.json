@@ -1,0 +1,155 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "CSharpBasic.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 6,
+  "names": 99,
+  "bound": 78,
+  "edges": [
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "type": [
+        "Repository"
+      ],
+      "member": [
+        "Repository.GetLatest"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "type": [
+        "Formatter"
+      ],
+      "member": [
+        "Formatter.Render"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Services/ReportService.cs",
+      "type": [
+        "ReportService"
+      ],
+      "member": [
+        "ReportService.Process"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Data/Repository.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Models/FormattedReport.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": [
+        "FormattedReport.Headline"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Timestamp",
+        "Record.Title"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "type": [
+        "Repository"
+      ],
+      "member": [
+        "Repository.GetLatest"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "type": [
+        "FormattedReport"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "type": [
+        "Formatter"
+      ],
+      "member": [
+        "Formatter.BuildHeadline"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "src/Diagnostics/App.cs": [
+      "App"
+    ],
+    "src/Diagnostics/Data/Repository.cs": [
+      "Repository"
+    ],
+    "src/Diagnostics/Models/FormattedReport.cs": [
+      "FormattedReport"
+    ],
+    "src/Diagnostics/Models/Formatter.cs": [
+      "Formatter"
+    ],
+    "src/Diagnostics/Models/Record.cs": [
+      "Record"
+    ],
+    "src/Diagnostics/Services/ReportService.cs": [
+      "ReportService"
+    ]
+  }
+}

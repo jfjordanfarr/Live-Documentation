@@ -100,3 +100,15 @@ After the review, the record's compiler program became the committed grader `npm
 | After the alias's arity (`842ff72aa`) | unchanged | unchanged |
 
 The one edge the base-type lookup draws on DNN is `DNN Platform/Library/Services/GeneratedImage/ImageQuantization/GrayscaleQuantizer.cs` to `Quantizer.cs`, which the compiler binds; nothing is lost on either corpus. The namesakes left are of other causes: on DNN `CryptographyProvider.cs` to `ICryptographyProvider.cs` and `SiteSettingsController.cs` to `BrowserTypes.cs`; on mojoPortal three pages to `Web/Controls/SkinSetting.ascx.designer.cs`. mojoPortal's 15 conditional references carry no edge of ours that the compiler lacks. The cases themselves, and two more the compiler settled for the tests (a class does not inherit an interface's nested types; an interface does inherit its base interfaces'), are in the `names` sample and `csharp.test.ts`. One the alias work met and left open: a type nested in a generic type has the same qualified name in the reader as one nested in its non-generic namesake (`Lib.Helper.Part`), so `H.Part` through `using H = Lib.Helper;` is taken for an ambiguity and links nothing, where the compiler binds `Helper.cs`.
+
+**Where scip-dotnet and the compiler program differ on the C# samples.** Each sample now keeps both records (`expected/compiler-edges.json`, scip-dotnet 0.2.14 or 0.2.16; `expected/csharp-compiler.json`, Roslyn 4.12), and `csharp-oracle.test.ts` holds the reader to the second. Over C# file pairs, scip's edges resting only on an ambiguous symbol set apart:
+
+| Sample | scip-dotnet: settled + ambiguous | The compiler | Both | Where they differ |
+| --- | --- | --- | --- | --- |
+| `basic` | 13 + 0 | 13 | 13 | nowhere |
+| `estate` | 37 + 0 | 37 | 37 | nowhere |
+| `rosetta` | 24 + 0 | 24 | 24 | nowhere |
+| `webforms` | 2 + 0 | 2 | 2 | nowhere |
+| `names` | 1 + 2 | 2 | 1 | the alias: scip leaves `Lib/Helper#` to `Helper.cs` and `HelperOfT.cs`, the compiler binds `Helper.cs` |
+
+The reader agrees with the compiler on every pair of all five. On these samples scip-dotnet's C# file pairs tell nothing the compiler program does not, and where it is unsure the compiler is not; what scip's record still carries that the program's does not is the list of documents it indexed, which `oracle:compare` uses to tell an extra edge from one beyond the compiler's view, and the oracle comparison's run of the whole generator, project files and markup included.

@@ -1,0 +1,47 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "WebForms.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 3,
+  "names": 42,
+  "bound": 21,
+  "edges": [
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/App_Code/Globals.cs",
+      "type": [
+        "Globals"
+      ],
+      "member": [
+        "Globals.GetClientConfig",
+        "Globals.GetWidgetToggle"
+      ]
+    },
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/Pages/Default.aspx.designer.cs",
+      "type": [],
+      "member": [
+        "Default.ClientConfigHidden",
+        "Default.WidgetToggleHidden"
+      ]
+    }
+  ],
+  "declared": {
+    "src/App_Code/Globals.cs": [
+      "Globals"
+    ],
+    "src/Pages/Default.aspx.cs": [
+      "Default"
+    ],
+    "src/Pages/Default.aspx.designer.cs": [
+      "Default"
+    ]
+  }
+}

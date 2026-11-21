@@ -1,0 +1,301 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "Rosetta.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 12,
+  "names": 399,
+  "bound": 273,
+  "edges": [
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.CreateRecord"
+      ]
+    },
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/App/Main.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Create",
+        "Record.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/App/PipelineTests.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Helpers/HelpersTests.cs",
+      "to": "src/Helpers/Helpers.cs",
+      "type": [
+        "Helpers"
+      ],
+      "member": [
+        "Helpers.Average",
+        "Helpers.Format",
+        "Helpers.Sum"
+      ]
+    },
+    {
+      "from": "src/Models/ModelFactory.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/ModelFactory.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": [
+        "ProcessorConfig.BatchSize",
+        "ProcessorConfig.Timeout"
+      ]
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/Entry.cs",
+      "type": [
+        "Entry"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Models/Record.cs",
+      "to": "src/Types/Status.cs",
+      "type": [
+        "Status"
+      ],
+      "member": [
+        "Status.Pending"
+      ]
+    },
+    {
+      "from": "src/Models/Report.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Helpers/Helpers.cs",
+      "type": [
+        "Helpers"
+      ],
+      "member": [
+        "Helpers.Average",
+        "Helpers.Format",
+        "Helpers.Sum"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/ModelFactory.cs",
+      "type": [
+        "ModelFactory"
+      ],
+      "member": [
+        "ModelFactory.ValidateConfig"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": []
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/Processor/Processor.cs",
+      "to": "src/Types/ProcessorConfig.cs",
+      "type": [
+        "ProcessorConfig"
+      ],
+      "member": [
+        "ProcessorConfig.BatchSize",
+        "ProcessorConfig.Strict",
+        "ProcessorConfig.Timeout"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Models/Record.cs",
+      "type": [
+        "Record"
+      ],
+      "member": [
+        "Record.Create"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Models/Report.cs",
+      "type": [
+        "Report"
+      ],
+      "member": [
+        "Report.Average",
+        "Report.Records",
+        "Report.Total"
+      ]
+    },
+    {
+      "from": "src/Processor/ProcessorTests.cs",
+      "to": "src/Processor/Processor.cs",
+      "type": [
+        "Processor"
+      ],
+      "member": [
+        "Processor.Run",
+        "Processor.Summarize"
+      ]
+    },
+    {
+      "from": "src/Types/Entry.cs",
+      "to": "src/Types/Status.cs",
+      "type": [
+        "Status"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "src/App/Main.cs": [
+      "Main"
+    ],
+    "src/App/PipelineTests.cs": [
+      "PipelineIntegration",
+      "PipelineTests"
+    ],
+    "src/Helpers/Helpers.cs": [
+      "Helpers"
+    ],
+    "src/Helpers/HelpersTests.cs": [
+      "AverageTests",
+      "FormatTests",
+      "HelpersTests",
+      "SumTests"
+    ],
+    "src/Models/ModelFactory.cs": [
+      "ModelFactory"
+    ],
+    "src/Models/Record.cs": [
+      "Record"
+    ],
+    "src/Models/Report.cs": [
+      "Report"
+    ],
+    "src/Processor/Processor.cs": [
+      "Processor"
+    ],
+    "src/Processor/ProcessorTests.cs": [
+      "ProcessorTests",
+      "RunTests",
+      "SummarizeTests"
+    ],
+    "src/Types/Entry.cs": [
+      "Entry"
+    ],
+    "src/Types/ProcessorConfig.cs": [
+      "ProcessorConfig"
+    ],
+    "src/Types/Status.cs": [
+      "Status"
+    ]
+  }
+}
