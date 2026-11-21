@@ -26,7 +26,7 @@ Each merges with conflicts only in generated docs, its own record, the decisions
 
 ### What the independent review found, to be mended before the landing
 - state: active
-- holds: with the join's builder since 2026-11-21, on `readers-gathering`
+- holds: with three builders since 04:35 UTC on 2026-11-21, split by reader: the join's builder keeps .NET (findings 3, 1, 2, 9) on `readers-gathering`, a second has PowerShell and the archetype (4 to 7, and a tenth found since), a third has SQL (8); each on a branch from `cdbf98aa9`, to be merged into `readers-gathering` after review
 - evidence:
 
 Each shown by running the generator on a few lines, unless marked read. Four were on `main` before the branch (the first, the third in part, the eighth in part, the ninth).
@@ -42,6 +42,21 @@ Each shown by running the generator on a few lines, unless marked read. Four wer
 9. ASP.NET, read: a `<script src>` resolves `~/` from the workspace's root where the directives resolve it from the project, and one that resolves nowhere is dropped unsaid.
 
 Root's rulings went to the builder with each case: the reviewer's input committed first as a failing test with its answer from the language's own tool, then the mend, then the real corpora's numbers before and after; a second pass by the same reviewer; then one rebuild of the history.
+
+Found since, by the join's builder:
+
+10. PowerShell: a command qualified by its module (`Microsoft.PowerShell.Utility\New-Object`) is taken for a script's path, and noticed as a load no file holds. Seen in the reader's own notices on dbatools.
+11. The committed C# oracle reads a project's references by the same kind of pattern the reader does, so on the third finding it agrees with the fault. Ruled: MSBuild's evaluation is its source.
+12. scip-dotnet's symbols do not carry a generic type's arity, so it cannot grade the second finding. Ruled: the compiler's own binding, through the November 19 probe's program, is committed as the C# grader with a command of its own; where scip-dotnet cannot tell two types apart its expectation says ambiguous and counts neither way.
+
+Already mended on the branch before the split (`cdbf98aa9`): the PowerShell reader no longer needs `node:crypto`; a run with `--remove-superseded` keeps the same code's cache under the other way of running workers. Ruled twice: the record of a summarizing process's memory is one per way of running workers, carried across changes of the code by the rule it had, since a first run after every upgrade sized by the default is what an 8 GB machine cannot afford.
+
+### The comparison against the oracles, as a test that can fail
+- state: active
+- holds: with the SQL findings' builder since 2026-11-21, after its SQL mend
+- evidence:
+
+[`oracle.test.ts`](../../tests/integration/live-docs/oracle.test.ts) says of itself that it "asserts the bookkeeping, not the adapter's score": it checks that found plus missing equals what was expected, so no reader's regression on a sample program can fail the gate. Root found by hand on 2026-11-21 that three of the estate's twenty hand-verified edges are missing on the day branch (`Hub/PaymentHub.cs` to `Hub/App.config`; `Default.aspx.designer.cs` to `Default.aspx`; `PostPaymentRow.cs` to `dbo.usp_PostPayment.sql`) with nothing saying so. Asked for: a table of every sample program's found, missing and extra; then, for hand-verified edges, a committed ledger of the known misses, each with its cause, failing on a miss it does not list and on a listed one that is found, as [the page check's ledger](../../tests/page-scan/differences.json) does. For the compiler's edges the form waits on the table's sizes.
 
 ### The generator reads each file once and hands its text to its reader
 - state: open

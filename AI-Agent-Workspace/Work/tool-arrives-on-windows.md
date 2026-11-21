@@ -43,6 +43,18 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 
 The owner's bar for the form (2026-11-19): "Don't just settle for JSON by default. Do a lot of research to choose a format that is going to be right for what we need at scale and prove it by the efficiency gains that are reaped." The values that research trades, as listed then: read by the Explorer's page with no network and nothing installed; read and written by Node on Windows with nothing compiled; the same bytes for the same facts; a question answered without reading the whole. Since 2026-11-21 there is one more: written by a page, and carried inside the one HTML file that page saves. The command line keeps the facts in a folder that ignores itself, the page keeps them in itself, and Markdown is exported from either, one way, when a person asks.
 
+**The research's first leg (2026-11-21, commit `72832287e` on its branch, read by root; the browser leg follows and its lean is not adopted).** On DNN, 10,776 files and 39.0 MB as compact JSON: strings repeat heavily (475,296, of which 109,035 are distinct), the median file has no wire in or out while the hub has 632 dependents, and three of the four real questions read a few percent of the whole. Five designs, each read back identical field by field and written twice to the same bytes, in Node:
+
+| Design | On disk | First answer, cold | What it buys |
+| --- | ---: | ---: | --- |
+| JSON, gzipped | 2.74 MB | 1,913 ms | the baseline; any answer reads everything |
+| A binary layout of our own | 2.21 MB | 117 ms | smallest; read with nothing but a browser's built-ins |
+| SQLite, by Node's built-in module | 29.6 MB | 95 ms from memory, 20 ms read in place | a person can query it without our tool; 688 KB of WebAssembly in a page |
+| Sorted lines of text, one fact a line, gzipped | 2.80 MB | 820 ms | `grep` and `diff` work on it; five commits of history held as one file plus each step's changed lines take 1.92 MB against 5.16 MB as five JSON files |
+| The lines cut into parts named by their hash | 4.87 MB | 83 ms | unchanged parts held once across moments, which saved 25 % where line changes saved 63 % |
+
+HDF5, which the owner named, fails two values by measurement: it stamps times into the file (32 bytes differ between two writes of the same facts) and cannot compress strings of varying length. SQLite's three reasons for leaving in January 2026, tested against today: it duplicated the docs (expires if it is the one store), its consumer went away (does not apply to derived facts), and its native module broke on Windows (expired: Node's own needs nothing compiled). Added to the next leg from the owner's words of the day: a size five times DNN's, slowed in a tab; whether each design can be written as facts arrive one file at a time; what a stopped scan leaves; and what "the same bytes" is for now that the stored form is not committed.
+
 ### One page that scans, shows the map and saves a copy of itself
 - state: open
 - holds: not begun
