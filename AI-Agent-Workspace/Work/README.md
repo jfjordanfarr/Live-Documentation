@@ -53,6 +53,7 @@ The road to the showing at the owner's work on about December 7 or 8, 2026, on t
 | Order | Issue | State | What it rests on |
 | --- | --- | --- | --- |
 | 10 | [Their kinds of code read truthfully: the readers on `main`](readers-on-main.md) | active | Three public codebases, too narrow a base by the owner's word; breadth ranks what is mended next |
+| 15 | [A stranger follows a request from the World Map down to its files](stranger-follows-a-request.md) | active | Thirty-two blind runs of 2026-11-21, by models, mostly on one sample; each stumble to be answered with alternatives tried on strangers |
 | 20 | [A scan leaves no trace in the repository it maps](scan-leaves-no-trace.md) | open | The scan writing docs into the folder; and, new on 2026-11-21, a person choosing what is left out before the scan |
 | 30 | [The tool arrives as a page and as a command line, from one engine](tool-arrives-on-windows.md) | active | An exploration: one interface the engine reads a folder through, two hosts; a standing check that it runs in a page |
 | 40 | [Proven on real repositories, on Linux and on Windows](proven-on-real-repositories.md) | open | Stands; its report can no longer be carried home from work |
