@@ -44,4 +44,16 @@ What a `.tfignore` says, read from [Microsoft's page on it](https://learn.micros
 
 **Ruled by root the same day:** a left-out folder is left out whole under either syntax (`tf add`'s reading, and git's), so that packages are never listed, and a `!` line that could have named something inside one is said, not looked for; the folder the tool writes to is never scanned; the starting list and a person's own patterns match without regard to case.
 
-**Measured so far on DNN with its ignore files taken away, as a TFS folder would be:** GitHub's standard Visual Studio ignore list leaves out 60 real source files (its `[Ll]og/` and `**/[Pp]ackages/*` lines catch DNN's `Services/Installer/Log` and `Services/Installer/Packages`), so a starting list by folder name alone is not safe. Five candidates are being measured on a folder of over a hundred thousand files: a small fixed list, that standard list, TFVC's own 56 defaults, nothing, and by evidence (a `packages` folder whose children are NuGet's, `bin` and `obj` beside a project file).
+**The starting list, decided by measurement on 2026-11-21: by what a folder holds, never by its name.** Five ways were measured, with case folded as Windows folds it, on a folder made to the owner's shape (DNN's 10,941 files, with NuGet-shaped `packages` folders, built output under `bin` and `obj`, and NuGet's recommended `.tfignore` in 15 of 45 project folders: 103,329 files) and on clean DNN with its ignore files taken away:
+
+| What decides | Kept of 103,329 | Made output wrongly kept | Real source wrongly left out (clean DNN) | Entries a walk lists |
+| --- | ---: | ---: | ---: | ---: |
+| Nothing | 76,899 | 65,969 | 0 | 123,418 |
+| A fixed list of names (`bin/`, `obj/`, `packages/`, `node_modules/`, `.vs/`, `TestResults/`) | 11,228 | 313 | 12 | 13,749 |
+| GitHub's standard Visual Studio list | 11,170 | 313 | 63 | 16,789 |
+| TFVC's own 56 defaults | 40,374 | 29,543 | 29 | 121,805 |
+| By evidence: `bin` and `obj` only beside a project file, `packages` only where it holds NuGet's `<Id>.<Version>` folders or a `repositories.config`, `node_modules` only where its children hold a `package.json` | 11,242 | 313 | 1 (NuGet's own `repositories.config`) | 13,763, and 99 more for the evidence |
+
+Every list of names leaves out real source, since DNN has source folders named `Packages`, `Log` and `Debug`; evidence does not, and costs 99 more folder listings and no file's bytes. Root's ruling on the 313 files every way kept (build output in folders whose `.tfignore` names only `packages`): evidence says what a folder is, so it applies whatever ignore files stand above it, and a person's own pattern overrules it either way. Deciding 167,833 paths takes about half a second in Node and about a second in a page slowed four times. Handing the whole folder to a page through a folder input took 73 s and lists everything first; a walk that skips left-out folders needs a directory handle, which the picker gives and automation cannot press, so it is not yet timed (a dropped folder is being tried as a way in).
+
+**Open, for the owner with the next leg's list in hand:** in a git repository evidence can leave out files git tracks (a committed `packages` folder); whether a scan there applies evidence by default or only offers it. Also open, for the design of what a person sees: where their own patterns are kept (with the scan's own settings, in the saved page, or in the folder when they ask for a trace), and whether a pattern may be written with `\` as well as `/`.
