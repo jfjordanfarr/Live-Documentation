@@ -1067,6 +1067,9 @@
 }
 
 details.tuning-subsection > summary { cursor: pointer; }
+/* The 3D layout's group where the browser cannot draw 3D (2026-11-21): its heading faded as the toolbar's 3D control is,
+   by its colour so that a focus ring is not faded with it, and it opens nothing. */
+details.tuning-subsection > summary[aria-disabled="true"] { cursor: default; color: color-mix(in srgb, var(--state-selected) 55%, transparent); }
 /* A group inside a group, such as the 3D layout's forces, spacing and appearance: named more quietly than its parent. */
 .tuning-subsection .tuning-subsection { margin: 8px 0 12px; }
 .tuning-subsection .tuning-subsection > .subsection-label { color: var(--text-muted); border-bottom: none; padding-bottom: 0; }

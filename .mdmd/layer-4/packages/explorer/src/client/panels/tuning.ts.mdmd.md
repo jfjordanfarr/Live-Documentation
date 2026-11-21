@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-19T21:10:14.075Z
+- Generated At: 2026-11-21T03:33:17.637Z
 
 ## Authored
 ### Purpose
@@ -80,7 +80,7 @@ Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L34)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L36)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -126,6 +126,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
+- [`template.tuning-force-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-hops)
 - [`template.tuning-frame`](../../shared/template.html.mdmd.md#symbol-tuning-frame)
 - [`template.tuning-framing`](../../shared/template.html.mdmd.md#symbol-tuning-framing)
 - [`template.tuning-hidden-files`](../../shared/template.html.mdmd.md#symbol-tuning-hidden-files)

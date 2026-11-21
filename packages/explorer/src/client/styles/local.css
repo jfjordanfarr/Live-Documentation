@@ -324,6 +324,11 @@ span.local-disclosure { cursor: default; }
 @keyframes backward-rise { 0%, 100% { box-shadow: var(--backward-glow); } 40% { box-shadow: 0 0 20px 7px rgba(var(--signal-cue-rgb), 0.666667); } }
 @media (prefers-reduced-motion: reduce) { .perspective-controls button.has-backward-wires.backward-rising { animation: none; } }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
+/* Not offered by this browser, and kept as a focus stop that says why (the 3D control where WebGL is refused, 2026-11-21):
+   the same faded label, by its colour rather than the element's opacity, which would fade its focus ring too: in Today's
+   palette the ring stands at 5.84 to 1 on the toolbar's ground and would fall to 2.52, under WCAG's 3 to 1 for a
+   control's outline. The button's face and border are transparent, so the two draw the label alike. */
+.perspective-controls button[aria-disabled="true"] { cursor: default; color: color-mix(in srgb, var(--text-normal) 55%, transparent); }
 
 .pin-tray { position: absolute; right: 18px; bottom: calc(18px + var(--history-room)); z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; pointer-events: none; }
 /* Only the panel and toggle are surfaces; the empty space beside the narrower toggle must not swallow map controls. */
