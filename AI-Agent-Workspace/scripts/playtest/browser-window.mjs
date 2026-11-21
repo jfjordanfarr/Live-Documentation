@@ -35,7 +35,7 @@ const openHistory = args.includes('--open-history');
 const hideStepWords = args.includes('--hide-step-words');
 // A viewer's Tuning choice made before the page first loads (2026-11-21): `--setting <group>.<name>=<value>`, repeatable,
 // as `localMap.framing=follows`. It is written where the page keeps a viewer's choices, its saved interface state, and
-// the setup checks that Tuning's own control for it (`#tuning-<name>`) shows the value.
+// the setup checks that Tuning's own control for it (`#tuning-<name in kebab case>`) shows the value.
 const settings = args.flatMap((arg, i) => (arg === '--setting' ? [args[i + 1]] : [])).map((text) => {
   const match = /^(\w+)\.(\w+)=(.+)$/.exec(text ?? '');
   if (!match) { console.error(`--setting takes <group>.<name>=<value>, not ${text}`); process.exit(2); }
@@ -153,7 +153,9 @@ async function setUp() {
   if (settings.length) {
     check.settings = [];
     for (const { group, name, value } of settings) {
-      const shown = await page.locator(`#tuning-${name}`).first().inputValue({ timeout: 5000 }).catch(() => null);
+      // The control's id is the setting's name in kebab case: `cutCounted` is `#tuning-cut-counted` (2026-11-21).
+      const control = `#tuning-${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`;
+      const shown = await page.locator(control).first().inputValue({ timeout: 5000 }).catch(() => null);
       check.settings.push({ setting: `${group}.${name}`, wanted: value, shown });
     }
   }

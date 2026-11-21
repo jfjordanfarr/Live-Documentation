@@ -3,7 +3,7 @@
 // folder before it is entered; and what a person is shown of it, grouped by the reason a thing is left out. Pure of
 // any browser or Node module, so that both hosts run the same code. A trial for strangers and the owner, not the
 // product: `Probes/leave-out/README.md`, the fourth leg.
-import { leaveOut } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
+import { EVIDENCE, leaveOut } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
 
 /** The tool's own output folder, never scanned. */
 export const OWN_OUTPUT = ".live-documentation";
@@ -14,9 +14,9 @@ export function reasonOf(rule) {
     case "evidence":
       return ["Build output beside a project", "Build output beside a project", "NuGet packages", "Node packages"][rule.index] ?? rule.pattern;
     case "gitignore":
-      return `.gitignore: ${rule.pattern}`;
+      return `Ignored by .gitignore: ${rule.pattern}`;
     case "tfignore":
-      return `.tfignore: ${rule.pattern}`;
+      return `Ignored by .tfignore: ${rule.pattern}`;
     case "own output":
       return "The tool's own output";
     case "version control":
@@ -80,15 +80,46 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
   }
   const decide = leaveOut({ ignoreFiles, gitIgnoreCase, ownOutput: [OWN_OUTPUT], person, evidence: { names, apply: evidenceApplied } });
 
-  const root = { path: "", name: "", kept: true, folders: [], filesKept: 0, filesLeftOut: 0, unlisted: false };
+  // Beside what is kept and left out beneath a folder: the files at its own level (`loose…`), the folders left out
+  // beneath it, and of what is left out, what the person or their ignore files chose (`…ByChoice`) apart from what the
+  // starting rules, build output and packages, took out (`…ByStart`).
+  const fresh = (fields) => ({ folders: [], filesKept: 0, filesLeftOut: 0, looseKept: 0, looseLeftOut: 0, foldersLeftOut: 0, byStart: 0, foldersByStart: 0, byChoice: 0, foldersByChoice: 0, ...fields });
+  const root = fresh({ path: "", name: "", kept: true, unlisted: false });
   const groups = new Map();
   const kept = [];
   const notes = new Map();
   const leftOutFolder = (path, verdict) => {
-    const key = groupKey(verdict.rule);
-    const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(verdict.rule), rule: verdict.rule, folders: [], files: [] }).get(key);
-    group.folders.push({ path, files: source.lazy ? null : countBeneath(source, path) });
-    for (const note of verdict.notes ?? []) notes.set(note, path);
+    // A folder an ignore file leaves out that the evidence rules also recognise is shown once, under what it is, with
+    // the ignore file as a second fact; while the evidence rules are applied, since with them off the ignore file alone
+    // leaves it out.
+    let rule = verdict.rule;
+    let also;
+    if (evidenceApplied && (rule.kind === "gitignore" || rule.kind === "tfignore")) {
+      const name = path.slice(path.lastIndexOf("/") + 1).toLowerCase();
+      const index = EVIDENCE.findIndex((each) => each.name === name && each.holds(path, names));
+      if (index !== -1) {
+        also = { file: `.${rule.kind}`, pattern: rule.pattern };
+        rule = { kind: "evidence", index, pattern: EVIDENCE[index].pattern };
+      }
+    }
+    const key = groupKey(rule);
+    const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(rule), rule, folders: [], files: [], also: new Map() }).get(key);
+    group.folders.push({ path, files: source.lazy ? null : countBeneath(source, path), also });
+    // By the kind of ignore file alone, its patterns kept for whoever asks: DNN's nested files name `bin` eight ways.
+    if (also) {
+      const said = group.also.get(also.file) ?? group.also.set(also.file, { folders: 0, patterns: new Set() }).get(also.file);
+      said.folders += 1;
+      said.patterns.add(also.pattern);
+    }
+    for (const note of verdict.notes ?? []) {
+      // The function's sentence, said as a person is told it: which `!` cannot reach into which folder.
+      const said = /^(.*?), `(.*)`, may name files/u.exec(note);
+      if (!said) continue;
+      const key = `${said[1]}\u0000${said[2]}`;
+      const entry = notes.get(key) ?? notes.set(key, { source: said[1], pattern: said[2], folders: [] }).get(key);
+      entry.folders.push(path);
+    }
+    return rule;
   };
   let folders = 0;
   const visit = async (node) => {
@@ -110,16 +141,25 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
         const started = performance.now();
         const verdict = decide.folder(path);
         decideMs += performance.now() - started;
-        const child = { path, name: entry.name, kept: !verdict.prunable, rule: verdict.rule, evidence: verdict.evidence, folders: [], filesKept: 0, filesLeftOut: 0, unlisted: verdict.prunable && source.lazy };
+        const child = fresh({ path, name: entry.name, kept: !verdict.prunable, rule: verdict.rule, evidence: verdict.evidence, unlisted: verdict.prunable && source.lazy });
         node.folders.push(child);
         if (verdict.prunable) {
-          leftOutFolder(path, verdict);
+          child.shownAs = leftOutFolder(path, verdict);
           child.filesLeftOut = source.lazy ? 0 : countBeneath(source, path);
+          // What the starting rules took out, apart from what the person or their ignore files did; the version
+          // control's folder and the tool's own output are neither, being never scanned.
+          child.foldersLeftOut = 1;
+          if (child.shownAs.kind === "evidence") {
+            child.byStart = child.filesLeftOut;
+            child.foldersByStart = 1;
+          } else if (child.shownAs.kind === "person" || child.shownAs.kind === "gitignore" || child.shownAs.kind === "tfignore") {
+            child.byChoice = child.filesLeftOut;
+            child.foldersByChoice = 1;
+          }
         } else {
           await visit(child);
         }
-        node.filesKept += child.filesKept;
-        node.filesLeftOut += child.filesLeftOut;
+        for (const field of ["filesKept", "filesLeftOut", "foldersLeftOut", "byStart", "foldersByStart", "byChoice", "foldersByChoice"]) node[field] += child[field];
       } else {
         const started = performance.now();
         const verdict = decide.file(path);
@@ -127,11 +167,14 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
         if (verdict.kept) {
           kept.push(path);
           node.filesKept += 1;
+          node.looseKept += 1;
         } else {
           const key = groupKey(verdict.rule);
-          const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(verdict.rule), rule: verdict.rule, folders: [], files: [] }).get(key);
+          const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(verdict.rule), rule: verdict.rule, folders: [], files: [], also: new Map() }).get(key);
           group.files.push(path);
           node.filesLeftOut += 1;
+          node.looseLeftOut += 1;
+          node.byChoice += 1;
         }
       }
     }
@@ -150,7 +193,12 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
     root,
     kept,
     groups: [...groups.values()].sort((a, b) => b.folders.length * 1000 + b.files.length - (a.folders.length * 1000 + a.files.length)),
-    notes: [...notes].map(([note, folder]) => ({ note, folder })),
+    notes: [...notes.values()].map(({ source, pattern, folders }) => ({
+      pattern,
+      folders,
+      // Said as a person is told it: the pattern, whose it is, and the folder it cannot reach into.
+      text: `${source.startsWith("the person") ? `Your pattern ${pattern}` : `${pattern} (${source.replace(/^(.*) line (\d+)$/u, "line $2 of $1")})`} cannot keep anything in ${folders[0]}/${folders.length > 1 ? ` or ${folders.length - 1} more folders` : ""}, which ${folders.length > 1 ? "are" : "is"} left out whole.`
+    })),
     offered,
     gitIgnoreCase,
     timings: { totalMs: performance.now() - started, listMs, decideMs, listings, folders }
@@ -180,7 +228,7 @@ export function readSummary(kept) {
     const dot = name.lastIndexOf(".");
     const kind = dot > 0 ? name.slice(dot).toLowerCase() : "(no extension)";
     byKind.set(kind, (byKind.get(kind) ?? 0) + 1);
-    const top = file.includes("/") ? file.slice(0, file.indexOf("/")) : "(top)";
+    const top = file.includes("/") ? file.slice(0, file.indexOf("/")) : "At the top";
     byTop.set(top, (byTop.get(top) ?? 0) + 1);
   }
   const sorted = (map) => [...map].sort((a, b) => b[1] - a[1]);

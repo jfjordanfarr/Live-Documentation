@@ -22,19 +22,26 @@ async function main(): Promise<void> {
   const result = await walk(source, { evidenceApplied: !args.includes("--offered"), person });
   const t = totals(result);
   const lines: string[] = [];
-  lines.push(`${path.basename(root)}: ${t.read.toLocaleString("en")} files will be read; ${t.leftOutFiles.toLocaleString("en")} files left out where they were listed; ${t.notLookedInside.toLocaleString("en")} folders not looked inside.`);
+  const plural = (n: number, one: string): string => `${n.toLocaleString("en")} ${n === 1 ? one : `${one}s`}`;
+  // The page's words: folders left out whole are not looked inside on a lazy walk, and that is said only when there are some.
+  lines.push(`${path.basename(root)}: ${[`${plural(t.read, "file")} will be read`, t.leftOutFiles ? `${plural(t.leftOutFiles, "file")} left out` : "", t.notLookedInside ? `${plural(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ")}`);
   lines.push("", "Left out:");
   if (result.groups.length === 0) lines.push("  Nothing.");
   for (const group of result.groups) {
-    const plural = (n: number, one: string): string => `${n} ${n === 1 ? one : `${one}s`}`;
-    const parts = [group.folders.length ? `${plural(group.folders.length, "folder")}, not looked inside` : "", group.files.length ? plural(group.files.length, "file") : ""].filter(Boolean).join("; ");
+    const parts = [group.folders.length ? plural(group.folders.length, "folder") : "", group.files.length ? plural(group.files.length, "file") : ""].filter(Boolean).join(" · ");
     lines.push(`  ${group.reason}  (${parts})`);
-    for (const folder of group.folders.slice(0, 5)) lines.push(`      ${folder.path}/`);
-    if (group.folders.length > 5) lines.push(`      and ${group.folders.length - 5} more folders`);
-    for (const file of group.files.slice(0, 3)) lines.push(`      ${file}`);
-    if (group.files.length > 3) lines.push(`      and ${group.files.length - 3} more files`);
+    for (const [file, { folders, patterns }] of group.also) lines.push(`    Also ignored by ${file}: ${folders === group.folders.length ? `all ${folders}` : `${folders} of ${group.folders.length}`} (${[...patterns].join("  ")})`);
+    // Under their top folders, as the page draws them, so that a reason of many folders is not a wall.
+    const byTop = new Map<string, string[]>();
+    for (const member of [...group.folders.map((folder: { path: string }) => `${folder.path}/`), ...group.files]) {
+      const top = member.indexOf("/") < member.length - 1 && member.includes("/") ? `${member.slice(0, member.indexOf("/"))}/` : "At the top";
+      byTop.set(top, [...(byTop.get(top) ?? []), member]);
+    }
+    const tops = [...byTop].sort((a, b) => b[1].length - a[1].length);
+    for (const [top, members] of tops.slice(0, 5)) lines.push(members.length === 1 ? `      ${members[0]}` : `      ${top.padEnd(40)} ${String(members.length).padStart(6)}`);
+    if (tops.length > 5) lines.push(`      and ${tops.slice(5).reduce((sum, [, members]) => sum + members.length, 0).toLocaleString("en")} more under ${plural(tops.length - 5, "other top folder")}`);
   }
-  for (const { note } of result.notes) lines.push(`  Note: ${note}`);
+  for (const note of result.notes) lines.push(`  Note: ${note.text}`);
   if (result.offered.length) {
     lines.push("", "Would also leave out, if asked:");
     for (const offer of result.offered.slice(0, 10)) lines.push(`  ${offer.reason}: ${offer.path}/`);

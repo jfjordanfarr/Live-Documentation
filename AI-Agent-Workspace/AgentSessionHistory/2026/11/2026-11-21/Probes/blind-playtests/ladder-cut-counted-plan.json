@@ -1,0 +1,46 @@
+[
+  {
+    "name": "repo-directory-haiku-default-cut-counted",
+    "task": "repo-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-directory-haiku-default-cut-counted-2",
+    "task": "repo-directory",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-directory-sonnet-medium-cut-counted",
+    "task": "repo-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-directory-sonnet-medium-cut-counted-2",
+    "task": "repo-directory",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  }
+]

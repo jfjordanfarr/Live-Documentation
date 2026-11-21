@@ -1,0 +1,68 @@
+[
+  {
+    "name": "repo-open-history-sonnet-medium-cut-counted",
+    "task": "repo-open-history",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-open-history-sonnet-medium-cut-counted-2",
+    "task": "repo-open-history",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-open-history-sonnet-medium-cut-off",
+    "task": "repo-open-history",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=off"
+    ]
+  },
+  {
+    "name": "repo-open-history-haiku-default-cut-counted",
+    "task": "repo-open-history",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-open-history-haiku-default-cut-counted-2",
+    "task": "repo-open-history",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=on"
+    ]
+  },
+  {
+    "name": "repo-open-history-haiku-default-cut-off",
+    "task": "repo-open-history",
+    "model": "claude-haiku-5-5",
+    "effort": "default",
+    "variant": "look-only",
+    "settings": [
+      "localMap.step=least",
+      "localMap.cutCounted=off"
+    ]
+  }
+]
