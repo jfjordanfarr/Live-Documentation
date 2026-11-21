@@ -345,7 +345,10 @@ function compilerPaths(directory: string): { outDir: string; rootDirs: string[] 
     }
   };
   const host: ts.ParseConfigHost = {
-    useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
+    // The scan reads names as they are written, whatever machine it runs on. Until 2026-11-21 this asked TypeScript's
+    // host on Node (`ts.sys`), whose answer differs between Windows and Linux for the same folder, which a repository's
+    // history must not, and which is undefined where TypeScript runs without Node, as in a page, where the read threw.
+    useCaseSensitiveFileNames: true,
     readDirectory: () => [],
     fileExists: (file) => kept(() => statSync(file).isFile(), false),
     readFile: (file) => kept(() => {

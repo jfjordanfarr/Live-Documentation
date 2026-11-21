@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-21T03:40:56.648Z
+- Generated At: 2026-11-21T04:17:33.557Z
 
 ## Authored
 ### Purpose
@@ -132,9 +132,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/json.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersjsontsnodepath}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/json.ts:typescript` {#symbol-enginepackagesenginesrclive-docsadaptersjsontstypescript}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/manifest.ts` {#symbol-enginepackagesenginesrclive-docsadaptersmanifestts}
@@ -365,9 +362,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `hostedByNode` {#symbol-hostedbynode}
 - Type: key
 
-#### `hostedByNode:typescript` {#symbol-hostedbynodetypescript}
-- Type: key
-
 #### `globals` {#symbol-globals}
 - Type: key
 
@@ -421,3 +415,8 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/engine-and-hosts.mdmd.md`](../../../layer-3/engine-and-hosts.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->
