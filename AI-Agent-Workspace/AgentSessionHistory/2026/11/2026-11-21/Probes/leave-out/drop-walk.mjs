@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// A record of the third leg of 2026-11-21: it ran against commit d99fd0b7f and calls the layered `leaveOut` ({ ignoreFiles, evidence, person }) that the eighth leg replaced with one list (commit 9d7bfdaf9); it no longer runs against the present function, and its results stand in the README as measured then.
+//
 // A folder dropped on a page, without a person: the browser's debugging protocol makes the drop
 // (`Input.dispatchDragEvent`, its drag data a list of file paths), the page asks the dropped item for a handle
 // (`DataTransferItem.getAsFileSystemHandle()`), and, if it is a folder's, walks it lazily with the engine's

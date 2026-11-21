@@ -1,45 +1,41 @@
-nested: 10,946 files will be read · 8 files left out · 207 folders left out, not looked inside
+Found 25 .gitignore files and 15 .tfignore files; taken into the list.
+Taken in: 25 .gitignore files and 15 .tfignore files.
+nested: 15,594 files will be read · 22 files left out · 43 folders left out, not looked inside
+The list: 311 lines, names matched without regard to case.
 
-Left out:
-  Build output beside a project  (162 folders)
-    Also ignored by .gitignore: 28 of 162 (bin/  obj/  [Bb]in  [Oo]bj)
-      DNN Platform/                               134
-      Dnn.AdminExperience/                         18
-      DotNetNuke.BulkInstall/                       6
-      Build/                                        2
-      DotNetNuke.Internal.SourceGenerators/         2
-  NuGet packages  (45 folders)
-    Also ignored by .tfignore: 15 of 45 (packages)
-      DNN Platform/                                43
-      Build/packages/
-        Also the .tfignore beside it, line 6: packages
-      packages/
-  Ignored by .gitignore: /*/css/*.css  (6 files)
-      Dnn.AdminExperience/                          6
-  Ignored by .gitignore: /*/scripts/bundles/*.svg  (2 files)
-      Dnn.AdminExperience/                          2
+Left out, by block of the list:
+  The folder's own ignore files  (43 folders · 22 files; .json 14 [read], .css 6 [read], .svg 2)
+     257  Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/*/css/*.css  (6 files; .css 6 [read])
+     267  Build/**/project.assets.json  (1 file; .json 1 [read])
+     273  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
+     279  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
+     285  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1 [read])
+     291  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1 [read])
+     297  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1 [read])
+     303  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1 [read])
+          and 35 more lines that leave something out
 
 Will be read, by kind:
-  .cs                 3,973
+  .cs                 4,108
+  .dll                1,921
   .js                 1,330
   .png                1,325
   .gif                  671
+  .xml                  666
+  .pdb                  643
   .jsx                  482
+  .txt                  426
   .less                 305
-  .sqldataprovider      299
-  .svg                  281
-  .txt                  212
-  .resx                 203
 
-Will be read, by folder:
-  DNN Platform                                7,850
+Will be read, by top folder:
+  DNN Platform                               11,733
   Dnn.AdminExperience                         2,901
-  Build                                          96
-  DotNetNuke.BulkInstall                         45
-  At the top                                     29
+  packages                                      661
+  Build                                         116
+  DotNetNuke.BulkInstall                        108
+  DotNetNuke.Internal.SourceGenerators           24
   .github                                        21
-  DotNetNuke.Internal.SourceGenerators            3
   expected                                        1
 
-To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave a folder out: --pattern '/DNN Platform/Tests/'; a kind of file: --pattern '*.png'.
-Listed 2,299 folders in 1135 ms (listing 371 ms, deciding 467 ms).
+To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
+Listed 0 folders in 790 ms (listing 0 ms, deciding 659 ms).

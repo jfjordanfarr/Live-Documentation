@@ -1,0 +1,76 @@
+{
+ "label": "made-final",
+ "absent": [
+  "a block for the Visual Studio list"
+ ],
+ "handedAndDecidedMs": 96746,
+ "offers": [
+  "What these folders hold 48 lines · 92,400 files left out",
+  "GitHub's Visual Studio list 234 lines · 92,472 files left out"
+ ],
+ "found": "Found 15 .tfignore files, in 2 top folders",
+ "1-first": {
+  "totals": "103,329 files will be read",
+  "listLines": 0,
+  "blocks": [
+   "Nothing is left out."
+  ],
+  "footer": "listed by the browser first · 64,505 folder listings · listing 1322 ms · deciding 1861 ms · in all 8464 ms"
+ },
+ "2-proposed": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 48,
+  "blocks": [
+   "What the folders hold .dll 37,812 · .pdb 12,606 · .xml 12,524 8,694 208 folders · 92,400 files",
+   "1 other line of your list leaves out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 150 ms · in all 497 ms"
+ },
+ "foundSaid": "",
+ "3-added": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 123,
+  "blocks": [
+   "What the folders hold .dll 27,012 · .pdb 9,006 · .xml 8,924 6,279 193 folders · 65,985 files",
+   "The folder's own ignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 2,415 15 folders · 26,415 files",
+   "76 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 138 ms · in all 209 ms"
+ },
+ "codeSigns": [
+  "Leaves out 6,035 files a reader would read",
+  "Leaves out 2,415 files a reader would read",
+  "Leaves out 306 files a reader would read"
+ ],
+ "4-visual-studio-opened": {
+  "totals": "10,857 files will be read · 92,472 files left out",
+  "listLines": 357,
+  "blocks": [
+   "What the folders hold .dll 26,930 · .pdb 8,924 · .xml 8,924 6,035 112 folders · 65,413 files",
+   "The folder's own ignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 2,415 15 folders · 26,415 files",
+   "Visual Studio's list (GitHub, CC0) .cs 196 · .pdb 83 · .props 82 306 86 folders · 644 files",
+   "304 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 299 ms · in all 3284 ms"
+ },
+ "listEnd": [
+  "",
+  "### Yours",
+  "*.png",
+  "/DNN Platform/Tests/"
+ ],
+ "5-minus": {
+  "totals": "8,994 files will be read · 94,335 files left out",
+  "listLines": 359,
+  "blocks": [
+   "What the folders hold .dll 26,794 · .pdb 8,890 · .xml 8,890 6,001 95 folders · 65,175 files",
+   "The folder's own ignore files .dll 10,800 · .pdb 3,600 · .xml 3,600 2,415 15 folders · 26,415 files",
+   "Yours .png 1,325 · .cs 369 · .dll 153 445 1 folder · 2,224 files",
+   "Visual Studio's list (GitHub, CC0) .cs 162 · .pdb 66 · .props 65 255 69 folders · 521 files",
+   "304 other lines of your list leave out nothing here"
+  ],
+  "footer": "listed by the browser first · 0 folder listings · listing 0 ms · deciding 280 ms · in all 406 ms"
+ },
+ "focusedTool": "Copy the list",
+ "errors": []
+}

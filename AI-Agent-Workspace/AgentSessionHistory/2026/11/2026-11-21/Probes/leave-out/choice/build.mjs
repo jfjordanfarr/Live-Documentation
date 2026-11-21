@@ -10,7 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const script = (await build({ entryPoints: [path.join(here, "page.mjs")], bundle: true, write: false, format: "iife", platform: "browser", target: "es2022", minify: true, logLevel: "silent" })).outputFiles[0].text;
+const script = (await build({ entryPoints: [path.join(here, "page.mjs")], bundle: true, write: false, format: "iife", platform: "browser", target: "es2022", minify: true, logLevel: "silent", loader: { ".txt": "text" } })).outputFiles[0].text;
 const hash = createHash("sha256").update(script).digest("base64");
 const policy = `default-src 'none'; script-src 'sha256-${hash}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'`;
 const html = fs.readFileSync(path.join(here, "page.html"), "utf8").replace("POLICY", policy).replace("<script></script>", () => `<script>${script}</script>`);

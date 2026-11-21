@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// A record of the third leg of 2026-11-21: it ran against commit d99fd0b7f and calls the layered `leaveOut` ({ ignoreFiles, evidence, person }) that the eighth leg replaced with one list (commit 9d7bfdaf9); it no longer runs against the present function, and its results stand in the README as measured then.
+//
 // How long `leaveOut` takes to decide a whole listing, in Node and in a browser page, apart from the time to list it.
 //
 //   node decide-bench.mjs listing <folder> <out.json>        writes the folder's full listing and its ignore files' texts

@@ -1,0 +1,131 @@
+{
+ "label": "made-8",
+ "absent": [],
+ "handedAndDecidedMs": 73101,
+ "found": "Found 15 .tfignore files, in 2 top folders",
+ "1-first": {
+  "totals": "103,329 files will be read",
+  "listLines": 0,
+  "byLine": [
+   "Nothing is left out."
+  ]
+ },
+ "foundFiles": 15,
+ "foundSaid": "",
+ "3-used": {
+  "totals": "76,899 files will be read · 26,430 files left out",
+  "listLines": 75,
+  "byLine": [
+   "3 Build/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "5 Build/**/project.assets.json .json 1 1 file",
+   "9 DNN Platform/DotNetNuke.ContentSecurityPolicy/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "11 DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json .json 1 1 file",
+   "15 DNN Platform/DotNetNuke.Log4net/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "17 DNN Platform/DotNetNuke.Log4net/**/project.assets.json .json 1 1 file",
+   "21 DNN Platform/DotNetNuke.ModulePipeline/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "23 DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json .json 1 1 file",
+   "27 DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "29 DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json .json 1 1 file",
+   "33 DNN Platform/HttpModules/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "35 DNN Platform/HttpModules/**/project.assets.json .json 1 1 file",
+   "39 DNN Platform/Connectors/GoogleAnalytics/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "41 DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json .json 1 1 file",
+   "45 DNN Platform/Controls/CountryListBox/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "47 DNN Platform/Controls/CountryListBox/**/project.assets.json .json 1 1 file",
+   "51 DNN Platform/Modules/DDRMenu/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "53 DNN Platform/Modules/DDRMenu/**/project.assets.json .json 1 1 file",
+   "57 DNN Platform/Modules/Groups/**/packages .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "59 DNN Platform/Modules/Groups/**/project.assets.json .json 1 1 file"
+  ]
+ },
+ "proposedComment": "# From what the folders hold: 48 lines",
+ "4-proposed": {
+  "totals": "10,929 files will be read · 92,400 files left out",
+  "listLines": 123,
+  "byLine": [
+   "93 bin/ .dll 650 · .config 164 · .pdb 164 81 folders · 1,142 files",
+   "95 obj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files",
+   "97 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "98 /DNN Platform/Controls/CountryListBox/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "99 /DNN Platform/Modules/Journal/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "100 /DNN Platform/Modules/DDRMenu/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "101 /DNN Platform/Modules/ResourceManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "102 /DNN Platform/Modules/CoreMessaging/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "103 /DNN Platform/Modules/HTML/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "104 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "105 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "106 /DNN Platform/Modules/MemberDirectory/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "107 /DNN Platform/Modules/DnnExportImport/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "108 /DNN Platform/Modules/RazorHost/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "109 /DNN Platform/Modules/Groups/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "110 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "111 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "112 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "113 /DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "114 /DNN Platform/Modules/DnnExportImportLibrary/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files"
+  ]
+ },
+ "visualStudioSourceFiles": [
+  "188 [Oo]bj/ .cs 163 · .props 82 · .txt 82 81 folders · 572 files",
+  "190 [Ll]og/ .cs 22 3 folders · 22 files",
+  "374 **/[Pp]ackages/* .cs 11 · .xml 2 · .zip 1 14 files"
+ ],
+ "5-visual-studio": {
+  "totals": "10,857 files will be read · 92,472 files left out",
+  "listLines": 357,
+  "byLine": [
+   "93 bin/ .dll 650 · .config 164 · .pdb 164 81 folders · 1,142 files",
+   "97 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "98 /DNN Platform/Controls/CountryListBox/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "99 /DNN Platform/Modules/Journal/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "100 /DNN Platform/Modules/DDRMenu/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "101 /DNN Platform/Modules/ResourceManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "102 /DNN Platform/Modules/CoreMessaging/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "103 /DNN Platform/Modules/HTML/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "104 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "105 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "106 /DNN Platform/Modules/MemberDirectory/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "107 /DNN Platform/Modules/DnnExportImport/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "108 /DNN Platform/Modules/RazorHost/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "109 /DNN Platform/Modules/Groups/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "110 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "111 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "112 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "113 /DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "114 /DNN Platform/Modules/DnnExportImportLibrary/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "115 /DNN Platform/HttpModules/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files"
+  ]
+ },
+ "listEnd": [
+  "#*.lscache",
+  "*.png",
+  "/DNN Platform/Tests/"
+ ],
+ "6-minus": {
+  "totals": "8,994 files will be read · 94,335 files left out",
+  "listLines": 359,
+  "byLine": [
+   "93 bin/ .dll 514 · .config 130 · .pdb 130 64 folders · 904 files",
+   "97 /DNN Platform/Dnn.AuthServices.Jwt/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "98 /DNN Platform/Controls/CountryListBox/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "99 /DNN Platform/Modules/Journal/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "100 /DNN Platform/Modules/DDRMenu/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "101 /DNN Platform/Modules/ResourceManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "102 /DNN Platform/Modules/CoreMessaging/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "103 /DNN Platform/Modules/HTML/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "104 /DNN Platform/Modules/HtmlEditorManager/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "105 /DNN Platform/Modules/TelerikRemoval/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "106 /DNN Platform/Modules/MemberDirectory/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "107 /DNN Platform/Modules/DnnExportImport/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "108 /DNN Platform/Modules/RazorHost/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "109 /DNN Platform/Modules/Groups/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "110 /DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "111 /DNN Platform/Modules/Samples/Dnn.ContactList.Spa/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "112 /DNN Platform/Modules/Samples/Dnn.ContactList.Mvc/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "113 /DNN Platform/Modules/Samples/Dnn.ContactList.Api/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "114 /DNN Platform/Modules/DnnExportImportLibrary/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files",
+   "115 /DNN Platform/HttpModules/packages/ .dll 720 · .pdb 240 · .xml 240 1 folder · 1,761 files"
+  ]
+ },
+ "errors": []
+}

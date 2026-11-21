@@ -1,7 +1,12 @@
-// The trial page's script: give it a folder (pick, drop, or a folder input), see what a scan would read and what it
-// would leave out and why, in two layouts (by reason, or the folder tree), and change it before scanning. Everything
-// stays on the machine: the page reads names, and the text of ignore files, and nothing else. A trial, not the product.
-import { folderPattern, readSummary, totals, walk } from "./model.mjs";
+// The trial page's script: give it a folder (pick, drop, or a folder input), and see what a scan would read and what
+// it would leave out, by the line of one list the person sees and edits: the list is the truth, every act on the
+// preview is an edit of it, ignore files found in the folder are offered to use, add or ignore, and starting lists are
+// prefills the person chooses. Everything stays on the machine: the page reads names, and the text of ignore files, and
+// nothing else. A trial, not the product: `Probes/leave-out/README.md`, the eighth leg.
+import { hasReader } from "../../../../../../../../packages/engine/src/config/liveDocumentationConfig";
+import { fromGitignores, fromTfignores, leaveOut, proposeLines } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
+import VISUAL_STUDIO from "../starting-lists/VisualStudio-ignore.txt";
+import { byKind, filePattern, folderPattern, listingOf, OWN_OUTPUT, totals, walk } from "./model.mjs";
 
 const $ = (selector) => document.querySelector(selector);
 const element = (tag, attributes = {}, ...children) => {
@@ -15,13 +20,18 @@ const element = (tag, attributes = {}, ...children) => {
 };
 const count = (n, one, many = `${one}s`) => `${n.toLocaleString("en")} ${n === 1 ? one : many}`;
 
-// The screen is By reason. A link can open the folder tree instead (`?layout=folders`), kept for the owner's eye,
-// draw the switch between the two (`&switch=on`), and choose what the tree's boxes say (`&boxes=mixed`, or
-// `&boxes=choice`). The evidence rules are always applied: a person keeps build output or packages back by the Keep
-// on their reason, the switch strangers misread as the reason itself being gone.
-const query = new URLSearchParams(location.search);
-const state = { source: null, result: null, layout: query.get("layout") === "folders" ? "tree" : "reason", boxes: query.get("boxes") === "choice" ? "choice" : "mixed", person: [], opened: new Set([""]), openedGroups: new Set(), shown: new Map(), focused: "" };
-document.querySelector(".segmented").hidden = query.get("switch") !== "on";
+// The list and its case setting, as the page remembers them for the next folder where it can.
+const remembered = (() => {
+  try {
+    return { list: localStorage.getItem("leave-out-list") ?? "", ignoreCase: localStorage.getItem("leave-out-ignore-case") ?? undefined };
+  } catch {
+    return { list: "", ignoreCase: undefined };
+  }
+})();
+const state = {
+  source: null, result: null, list: remembered.list, ignoreCase: remembered.ignoreCase === undefined ? true : remembered.ignoreCase === "true",
+  rememberedCase: remembered.ignoreCase, opened: new Set(), shown: new Map(), foundAnswered: undefined, foundSaid: undefined, leftAside: new Set()
+};
 
 // ---------------------------------------------------------------------------
 // Sources: a directory handle, walked lazily; or the files of a folder input, listed by the browser beforehand
@@ -77,10 +87,13 @@ function filesSource(fileList) {
       folder = at;
     }
   }
+  const names = (folder) => [...(children.get(folder) ?? new Map())].map(([name, kind]) => (kind === "folder" ? `${name}/` : name));
   return {
     lazy: false,
     label,
     allFiles: [...files.keys()],
+    folders: [...children.keys()].filter((folder) => folder !== ""),
+    names,
     async list(path) {
       return [...(children.get(path) ?? new Map())].map(([name, kind]) => ({ name, kind }));
     },
@@ -97,10 +110,13 @@ function filesSource(fileList) {
 async function decideAgain() {
   if (!state.source) return;
   const progress = $("#progress");
-  progress.textContent = "Listing…";
-  state.result = await walk(state.source, { evidenceApplied: true, person: state.person }, (folders) => {
-    progress.textContent = `${count(folders, "folder")} listed`;
+  // The walk hands the thread back every twenty folders, so that this word shows while it decides.
+  progress.textContent = state.result ? "Deciding…" : "Listing…";
+  const started = performance.now();
+  state.result = await walk(state.source, { list: state.list, ignoreCase: state.ignoreCase }, (folders) => {
+    if (!state.result) progress.textContent = `${count(folders, "folder")} listed`;
   });
+  state.result.shownAfterMs = performance.now() - started;
   progress.textContent = "";
   draw();
 }
@@ -110,64 +126,307 @@ function draw() {
   $("#choice").hidden = !result;
   if (!result) return;
   const t = totals(result);
-  // "Not looked inside" belongs to a lazy walk, and like "left out" is said only when there is some.
   $("#totals").textContent = [`${count(t.read, "file")} will be read`, t.leftOutFiles ? `${count(t.leftOutFiles, "file")} left out` : "",
     state.source.lazy && t.notLookedInside ? `${count(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ");
   $("#scan-result").textContent = "";
-  drawPatterns();
-  drawNotes(result);
-  $("#by-reason").hidden = state.layout !== "reason";
-  $("#by-tree").hidden = state.layout !== "tree";
-  document.querySelectorAll("[data-layout]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.layout === state.layout)));
-  if (state.layout === "reason") drawByReason(result);
-  else drawTree(result);
+  if ($("#list").value !== state.list) $("#list").value = state.list;
+  // Each part's drawing timed, so that a slow one can be named (`state.drawTimes`).
+  const times = {};
+  const timed = (name, part) => {
+    const started = performance.now();
+    part();
+    times[name] = Math.round(performance.now() - started);
+  };
+  timed("gutter", drawGutter);
+  $("#ignore-case").checked = state.ignoreCase;
+  timed("found", () => drawFound(result));
+  timed("offers", drawOffers);
+  timed("notes", () => drawNotes(result));
+  timed("leftOut", () => drawByBlock(result));
+  timed("read", () => drawRead(result));
+  state.drawTimes = times;
   const time = result.timings;
   $("#timings").textContent = `${state.source.lazy ? "walked lazily" : "listed by the browser first"} · ${count(time.listings, "folder listing")} · listing ${Math.round(time.listMs)} ms · deciding ${Math.round(time.decideMs)} ms · in all ${Math.round(time.totalMs)} ms`;
+  if (state.editedAt !== undefined) {
+    state.lastEditShownMs = Math.round(performance.now() - state.editedAt);
+    state.editedAt = undefined;
+  }
 }
 
-const keepPattern = (member) => `!${member.folder ? folderPattern(member.path) : folderPattern(member.path).slice(0, -1)}`;
-const filePattern = (file) => folderPattern(file).slice(0, -1);
+// ---------------------------------------------------------------------------
+// The list: the one truth, edited as text or by any act on the preview, in blocks each led by a `###` heading
+// ---------------------------------------------------------------------------
 
-/**
- * A person's choices: each entry the patterns one action wrote, with a label where it wrote more than one (a reason's
- * Keep, the files at one level), so that "Your patterns" lists and removes it as one. The function reads them flat.
- */
-function choose(patterns, label) {
-  state.person.push({ patterns, label });
+/** The lines that act: neither blank nor a comment. */
+const acting = (text) => text.split("\n").filter((line) => line.trim() !== "" && !line.trim().startsWith("#")).length;
+
+function remember() {
+  try {
+    localStorage.setItem("leave-out-list", state.list);
+    localStorage.setItem("leave-out-ignore-case", String(state.ignoreCase));
+  } catch {
+    // A page that cannot keep anything still works; the list is only not remembered.
+  }
+}
+
+function setList(text) {
+  state.list = text;
+  remember();
   void decideAgain();
 }
 
-/** The reason's own Keep, a word and an icon; on a reason that is the person's own, it takes that choice back. */
-function keepButton(group, patterns) {
-  const button = element("button", { type: "button", class: "keep", "aria-label": `Keep everything left out as ${group.reason}` }, icon("keep"), element("span", { text: "Keep" }));
-  button.addEventListener("click", () => {
-    if (group.rule.kind === "person") {
-      state.person.splice(group.entry, 1);
-      void decideAgain();
-    } else choose(patterns, patterns.length > 1 ? `${group.reason}, ${count(patterns.length, "folder")}` : undefined);
-  });
-  return button;
+/** A block added at the end of the list, led by its heading. */
+function addBlock(heading, lines) {
+  const body = state.list.replace(/\s+$/u, "");
+  setList(`${body}${body ? "\n\n" : ""}### ${heading}\n${lines.join("\n")}\n`);
 }
 
-/** A row's own action, quiet: an icon alone, named and explained on hover and focus, blue when the row is pointed at. */
-function quietButton(kind, label, patterns, entryLabel) {
+/** The person's own lines, added to their block "Yours" at the end, which is begun if the list does not end in it. */
+function addYours(lines, comment) {
+  const body = state.list.replace(/\s+$/u, "");
+  const headings = body.split("\n").filter((line) => line.startsWith("### "));
+  const inYours = headings.length > 0 && headings.at(-1) === "### Yours";
+  setList(`${body}${body ? "\n" : ""}${inYours ? "" : `${body ? "\n" : ""}### Yours\n`}${comment ? `# ${comment}\n` : ""}${lines.join("\n")}\n`);
+}
+
+/** Lines taken out of the list, by their numbers from 1, first to last inclusive. */
+function removeLines(first, last = first) {
+  const lines = state.list.split("\n");
+  lines.splice(first - 1, last - first + 1);
+  setList(lines.join("\n"));
+}
+
+/** The list's blocks: each from a `###` heading to the line before the next; the lines above the first are a block too. */
+function blocksOf(text) {
+  const lines = text.split("\n");
+  const blocks = [];
+  lines.forEach((line, index) => {
+    if (line.startsWith("### ") || blocks.length === 0) blocks.push({ title: line.startsWith("### ") ? line.slice(4).trim() : "", first: index + 1, last: index + 1 });
+    else blocks.at(-1).last = index + 1;
+  });
+  return blocks;
+}
+
+/** The numbers beside the list's lines, so that a row's line number can be found in the text. */
+function drawGutter() {
+  const n = state.list.split("\n").length;
+  $("#gutter").textContent = Array.from({ length: n }, (_, index) => index + 1).join("\n");
+  $("#gutter").scrollTop = $("#list").scrollTop;
+}
+
+let typing;
+$("#list").addEventListener("input", (event) => {
+  // When an edit was made, so that the time until its answer is drawn can be told (`state.lastEditShownMs`).
+  state.editedAt = performance.now();
+  clearTimeout(typing);
+  $("#progress").textContent = "…";
+  typing = setTimeout(() => setList(event.target.value), 400);
+});
+$("#list").addEventListener("scroll", () => {
+  $("#gutter").scrollTop = $("#list").scrollTop;
+});
+$("#ignore-case").addEventListener("change", (event) => {
+  state.ignoreCase = event.target.checked;
+  remember();
+  state.offers = undefined;
+  void decideAgain();
+});
+$("#clear").addEventListener("click", () => setList(""));
+$("#copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(state.list);
+    $("#list-said").textContent = "Copied";
+  } catch {
+    $("#list").select();
+    $("#list-said").textContent = "Selected: copy with Ctrl+C";
+  }
+});
+$("#save").addEventListener("click", () => {
+  // The file is made here and saved by the browser; nothing leaves the machine.
+  const link = element("a", { href: URL.createObjectURL(new Blob([state.list], { type: "text/plain" })), download: "leave-out.gitignore" });
+  link.click();
+  URL.revokeObjectURL(link.href);
+});
+$("#load").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (file) setList(await file.text());
+  event.target.value = "";
+});
+$("#prefill").addEventListener("click", () => {
+  const menu = $("#prefill-menu");
+  menu.hidden = !menu.hidden;
+  $("#prefill").setAttribute("aria-expanded", String(!menu.hidden));
+});
+
+// ---------------------------------------------------------------------------
+// Starting lists: offers, each with what it would do on this folder before it is pressed
+// ---------------------------------------------------------------------------
+
+// The headings the page writes into the list: short, since each is a row's title in "Left out".
+const VISUAL_STUDIO_HEADING = "Visual Studio's list (GitHub, CC0)";
+const listingNow = () => (state.source.lazy ? listingOf(state.source) : { folders: state.source.folders, names: state.source.names });
+
+function proposedBlock() {
+  const listing = listingNow();
+  const proposed = proposeLines(listing.folders, listing.names, state.ignoreCase);
+  const lines = [];
+  for (const rule of [...new Set(proposed.map((each) => each.rule))]) lines.push(`# ${rule}`, ...proposed.filter((each) => each.rule === rule).map((each) => each.line));
+  return { lines, count: proposed.length };
+}
+const visualStudioLines = () => VISUAL_STUDIO.replace(/\s+$/u, "").split(/\r?\n/u);
+
+/** How many files a list would leave out of what the page has listed: the same function, asked of every file known. */
+function wouldLeaveOut(text) {
+  const decide = leaveOut({ list: text, ignoreCase: state.ignoreCase, ownOutput: [OWN_OUTPUT] });
+  const files = state.source.lazy ? [...state.source.listed].flatMap(([folder, entries]) => entries.filter((entry) => entry.kind === "file").map((entry) => (folder ? `${folder}/${entry.name}` : entry.name))) : state.source.allFiles;
+  let n = 0;
+  for (const file of files) {
+    const verdict = decide.file(file);
+    if (!verdict.kept && !verdict.fixed) n += 1;
+  }
+  return n;
+}
+
+function offer(kind) {
+  $("#prefill-menu").hidden = true;
+  $("#prefill").setAttribute("aria-expanded", "false");
+  if (kind === "visual-studio") addBlock(VISUAL_STUDIO_HEADING, visualStudioLines());
+  else {
+    addBlock("What the folders hold", proposedBlock().lines);
+  }
+}
+document.querySelectorAll("[data-prefill]").forEach((button) => button.addEventListener("click", () => offer(button.dataset.prefill)));
+
+/** In the list's empty place, the starting lists as offers, each saying what it would do here; gone once the list acts. */
+function drawOffers() {
+  const empty = acting(state.list) === 0;
+  $("#offers").hidden = !empty;
+  if (!empty) return;
+  if (!state.offers) {
+    $("#offers").replaceChildren(element("p", { class: "quiet", text: "Counting what each starting list would leave out here…" }));
+    // Counted after the page has drawn, the thread handed back first.
+    setTimeout(() => {
+      const proposed = proposedBlock();
+      state.offers = {
+        proposed: { lines: proposed.count, files: wouldLeaveOut(proposed.lines.join("\n")) },
+        visualStudio: { lines: acting(VISUAL_STUDIO), files: wouldLeaveOut(VISUAL_STUDIO) }
+      };
+      drawOffers();
+    }, 0);
+    return;
+  }
+  const card = (kind, title, said) => {
+    const button = element("button", { type: "button", class: "offer", "data-offer": kind }, icon("prefill"), element("span", {}, element("strong", { text: title }), element("span", { class: "quiet", text: said })));
+    button.addEventListener("click", () => offer(kind));
+    return button;
+  };
+  $("#offers").replaceChildren(
+    element("p", { class: "quiet", text: "Your list is empty: nothing is left out. Start from" }),
+    card("what-it-holds", "What these folders hold", `${count(state.offers.proposed.lines, "line")} · ${count(state.offers.proposed.files, "file")} left out`),
+    card("visual-studio", "GitHub's Visual Studio list", `${count(state.offers.visualStudio.lines, "line")} · ${count(state.offers.visualStudio.files, "file")} left out`),
+    element("p", { class: "quiet", text: "or write lines below, as in a .gitignore." }));
+}
+
+// ---------------------------------------------------------------------------
+// Ignore files found: one notice, three choices for all, a choice per file for whoever opens it
+// ---------------------------------------------------------------------------
+
+function drawFound(result) {
+  const box = $("#found");
+  if (result.found.length === 0 || state.foundAnswered === "ignore") {
+    box.hidden = true;
+    return;
+  }
+  box.hidden = false;
+  const kinds = [".gitignore", ".tfignore"].map((kind) => [kind, result.found.filter((file) => file.kind === kind).length]).filter(([, n]) => n > 0);
+  const where = new Set(result.found.map((file) => (file.path.includes("/") ? file.path.slice(0, file.path.indexOf("/")) : "the top"))).size;
+  $("#found-what").textContent = state.foundAnswered
+    ? `Taken into your list: ${kinds.map(([kind, n]) => count(n, `${kind} file`)).join(" and ")}`
+    : `Found ${kinds.map(([kind, n]) => count(n, `${kind} file`)).join(" and ")}, in ${count(where, "top folder")}`;
+  document.querySelectorAll("[data-take]").forEach((button) => (button.hidden = Boolean(state.foundAnswered)));
+  const open = $("#found-open").getAttribute("aria-expanded") === "true";
+  $("#found-open").replaceChildren(icon(open ? "open" : "closed"));
+  $("#found-files").hidden = !open;
+  $("#found-files").replaceChildren(...result.found.map((file) => {
+    const box = element("input", { type: "checkbox", "aria-label": `Take ${file.path}` });
+    box.checked = !state.leftAside.has(file.path);
+    box.disabled = Boolean(state.foundAnswered);
+    box.addEventListener("change", () => {
+      if (box.checked) state.leftAside.delete(file.path);
+      else state.leftAside.add(file.path);
+    });
+    const lines = file.text.split(/\r?\n/u).filter((line) => line.trim() && !line.trim().startsWith("#")).length;
+    return element("li", {}, box, element("code", { text: file.path }), element("span", { class: "quiet", text: count(lines, "line") }));
+  }));
+  $("#found-said").hidden = !state.foundSaid;
+  $("#found-said").textContent = state.foundSaid ?? "";
+}
+
+$("#found-open").addEventListener("click", () => {
+  const open = $("#found-open").getAttribute("aria-expanded") === "true";
+  $("#found-open").setAttribute("aria-expanded", String(!open));
+  $("#found-open").setAttribute("aria-label", open ? "Show the files found" : "Hide the files found");
+  drawFound(state.result);
+});
+document.querySelectorAll("[data-take]").forEach((button) => button.addEventListener("click", () => {
+  const take = button.dataset.take;
+  state.foundAnswered = take;
+  // Answered: the notice folds back to its one line.
+  $("#found-open").setAttribute("aria-expanded", "false");
+  $("#found-open").setAttribute("aria-label", "Show the files found");
+  if (take === "ignore") {
+    draw();
+    return;
+  }
+  const chosen = state.result.found.filter((file) => !state.leftAside.has(file.path));
+  const git = fromGitignores(chosen.filter((file) => file.kind === ".gitignore"), { folders: listingNow().folders, ignoreCase: state.ignoreCase });
+  const tf = fromTfignores(chosen.filter((file) => file.kind === ".tfignore"));
+  const said = [...git.differences, ...tf.differences];
+  if (tf.lines.length > 0 && !state.ignoreCase) {
+    state.ignoreCase = true;
+    said.unshift("A .tfignore matches names without case, so your list now does too.");
+  }
+  state.foundSaid = said.length ? said.join(" ") : undefined;
+  const heading = "The folder's own ignore files";
+  const lines = [...git.lines, ...tf.lines];
+  if (take === "use") setList(`### ${heading}\n${lines.join("\n")}\n`);
+  else addBlock(heading, lines);
+}));
+
+/** One line saying how many `!` lines cannot keep what they name, opened on demand to the lines themselves. */
+function drawNotes(result) {
+  const notes = $("#notes");
+  notes.hidden = result.notes.length === 0;
+  if (notes.hidden) return;
+  const open = state.opened.has("notes");
+  const head = element("li", { class: "row" }, opener("notes", "the lines that cannot keep what they name", open, () => drawNotes(result)),
+    element("span", { class: "grow", text: `${count(result.notes.length, "! line")} cannot keep what ${result.notes.length === 1 ? "it names" : "they name"}: a folder above is left out whole` }));
+  notes.replaceChildren(head, ...(open ? result.notes.map((note) => element("li", { class: "note" }, element("span", { class: "number", text: String(note.number) }), " ", pathText(note.text),
+    element("span", { class: "quiet", text: ` · ${note.folders[0]}/${note.folders.length > 1 ? ` and ${count(note.folders.length - 1, "more folder")}` : ""}` }))) : []));
+}
+
+// ---------------------------------------------------------------------------
+// Left out: a row a block of the list, largest first; opened, its lines that act, largest first
+// ---------------------------------------------------------------------------
+
+const PAGE = 50;
+
+function quietButton(kind, label, act) {
   const words = `${kind === "keep" ? "Keep" : "Leave out"} ${label}`;
   const button = element("button", { type: "button", class: "icon-button quiet-act", "aria-label": words, title: words }, icon(kind));
-  button.addEventListener("click", () => choose(patterns, entryLabel));
+  button.addEventListener("click", act);
   return button;
 }
 
 function opener(key, label, open, redraw) {
   const button = element("button", { type: "button", class: "twisty", "aria-expanded": String(open), "aria-label": `${open ? "Close" : "Open"} ${label}` }, icon(open ? "open" : "closed"));
   button.addEventListener("click", () => {
-    if (open) state.openedGroups.delete(key);
-    else state.openedGroups.add(key);
+    if (open) state.opened.delete(key);
+    else state.opened.add(key);
     redraw();
   });
   return button;
 }
-
-const PAGE = 50;
 
 /** Rows drawn 50 at a time under a key (`first` at first), and the rest said, with a button for the next fifty. */
 function paged(list, key, rows, redraw, first = PAGE) {
@@ -183,129 +442,124 @@ function paged(list, key, rows, redraw, first = PAGE) {
   }
 }
 
-/**
- * Where an ignore file also names a folder: the file, its lines and their words, said on the folder's own row; a file
- * in the folder the row names is "this folder's", and one in the folder that holds it "the … beside it", since its
- * path would repeat the row's.
- */
-function alsoText(alsos, folder) {
-  const byFile = new Map();
-  for (const also of alsos.filter(Boolean)) byFile.set(also.path, new Map([...(byFile.get(also.path) ?? []), [also.line, also.pattern]]));
-  return [...byFile].map(([file, lines]) => {
-    const name = file.slice(file.lastIndexOf("/") + 1);
-    const parent = folder.includes("/") ? folder.slice(0, folder.lastIndexOf("/")) : "";
-    const where = file === `${folder}/${name}` ? `this folder's ${name}` : file === (parent ? `${parent}/${name}` : name) ? `the ${name} beside it` : file;
-    return `Also ${where}, ${[...lines].sort((a, b) => a[0] - b[0]).map(([line, pattern]) => `line ${line}: ${pattern}`).join(" · ")}`;
-  }).join(" · ");
+/** Whether a reader reads files of this kind: the engine's own list of what its readers read, asked of a file of the kind. */
+const isCode = (kind) => kind.startsWith(".") && hasReader(`file${kind}`);
+
+/** The three largest kinds left out, those a reader reads set in weight, with their meaning in words for a screen reader. */
+function kindsOf(kinds) {
+  const top = [...kinds].sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const said = top.map(([kind, n]) => `${kind} ${n.toLocaleString("en")}${isCode(kind) ? ", read by a reader" : ""}`).join("; ");
+  const span = element("span", { class: "kinds", "aria-label": said });
+  top.forEach(([kind, n], index) => {
+    if (index > 0) span.append(" · ");
+    span.append(element("span", { class: isCode(kind) ? "code" : "", text: `${kind} ${n.toLocaleString("en")}` }));
+  });
+  return span;
 }
 
-function drawByReason(result) {
-  const list = $("#reasons");
+/** How many files of the kinds a reader reads these kinds hold. */
+const codeIn = (kinds) => [...kinds].reduce((sum, [kind, n]) => sum + (isCode(kind) ? n : 0), 0);
+
+/** The small sign beside a row that leaves out files a reader would read, with how many, named for whoever cannot see it. */
+function codeSign(n) {
+  if (n === 0) return null;
+  const words = `Leaves out ${count(n, "file")} a reader would read`;
+  return element("span", { class: "code-sign", role: "img", "aria-label": words, title: words }, icon("code"), element("span", { text: n.toLocaleString("en") }));
+}
+
+/** Text with places to break after each `/` and each `.` before a letter, so that a long path or name breaks between its parts, never inside one. */
+function breakable(tag, attributes, text) {
+  const node = element(tag, attributes);
+  for (const part of text.split(/(?<=\/|\.(?=[A-Za-z]))/u)) {
+    if (node.childNodes.length > 0) node.append(document.createElement("wbr"));
+    node.append(part);
+  }
+  return node;
+}
+const pathText = (text) => breakable("code", { class: "line-text" }, text);
+
+const filesAndFolders = (group) => [group.folders.length ? count(group.folders.length, "folder") : "", group.leftOut ? count(group.leftOut, "file") : "", group.folders.some((folder) => folder.files === null) ? "not looked inside" : ""].filter(Boolean).join(" · ");
+
+function drawByBlock(result) {
+  const redraw = () => drawByBlock(result);
+  const list = $("#by-line");
   list.replaceChildren();
-  const redraw = () => drawByReason(result);
-  if (result.groups.length === 0) list.append(element("li", { class: "quiet", text: "Nothing is left out." }));
-  for (const group of result.groups) {
-    // Opened by its reason, not its place: a Keep reorders the reasons.
-    const key = group.reason;
-    const open = state.openedGroups.has(key);
-    const unseen = group.folders.filter((folder) => folder.files === null).length;
-    const files = group.files.length + group.folders.reduce((sum, folder) => sum + (folder.files ?? 0), 0);
-    const counts = [group.folders.length ? count(group.folders.length, "folder") : "", unseen ? "not looked inside" : "", files ? count(files, "file") : ""].filter(Boolean).join(" · ");
-    const fixed = group.rule.kind === "own output" || group.rule.kind === "version control";
-    const members = [...group.folders.map((folder) => ({ path: folder.path, folder: true, files: folder.files, also: folder.also })), ...group.files.map((file) => ({ path: file, folder: false }))];
-    const row = element("li", { class: "reason" }, element("div", { class: "row" },
-      opener(key, group.reason, open, redraw),
-      element("span", { class: "why", text: group.reason }),
-      element("span", { class: "counts", text: counts }),
-      fixed ? element("span", { class: "quiet", text: "always" }) : keepButton(group, members.map(keepPattern))));
-    // An ignore file that also names some of these folders, said once and quietly; each folder's row names its line.
-    for (const [file, { folders }] of group.also ?? []) {
-      const n = folders === group.folders.length ? `all ${folders.toLocaleString("en")}` : `${folders.toLocaleString("en")} of ${group.folders.length.toLocaleString("en")}`;
-      row.append(element("div", { class: "also", text: `Also ignored by ${file}: ${n}` }));
+  for (const group of result.fixed) {
+    list.append(element("li", { class: "line-row" }, element("div", { class: "row" },
+      element("span", { class: "twisty-space" }),
+      element("span", { class: "grow", text: group.fixed === "version control" ? "Version control's own folder" : "The tool's own output" }),
+      element("span", { class: "counts", text: filesAndFolders(group) }),
+      element("span", { class: "quiet", text: "always" }))));
+  }
+  const blocks = blocksOf(state.list).map((block) => {
+    // The lines that leave out files a reader would read first, most such files first; then the rest, largest first.
+    const lines = result.lines.filter((group) => group.line.number >= block.first && group.line.number <= block.last)
+      .sort((a, b) => codeIn(b.kinds) - codeIn(a.kinds) || b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+    const kinds = new Map();
+    for (const group of lines) for (const [kind, n] of group.kinds) kinds.set(kind, (kinds.get(kind) ?? 0) + n);
+    return { ...block, lines, kinds, leftOut: lines.reduce((sum, group) => sum + group.leftOut, 0), folders: lines.flatMap((group) => group.folders) };
+  }).filter((block) => block.lines.length > 0).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+  for (const block of blocks) {
+    const key = `block ${block.first}`;
+    const open = state.opened.has(key);
+    const title = block.title || (blocks.length === 1 ? "Your list" : "Lines above the first heading");
+    const row = element("li", { class: "line-row block" }, element("div", { class: "row" },
+      opener(key, title, open, redraw),
+      element("span", { class: "grow" }, element("span", { class: "block-title", text: title }), kindsOf(block.kinds)),
+      codeSign(codeIn(block.kinds)),
+      element("span", { class: "counts", text: filesAndFolders(block) }),
+      quietButton("keep", `everything ${title} leaves out: take its lines ${block.first} to ${block.last} out of your list`, () => removeLines(block.first, block.last))));
+    if (open) {
+      const inner = element("ul", { class: "members" });
+      paged(inner, key, block.lines.map((group) => drawLine(group, redraw)), redraw);
+      row.append(inner);
     }
-    if (open) row.append(drawMembers(key, members, fixed, redraw));
     list.append(row);
   }
-  drawRead(result);
+  const written = acting(state.list);
+  const deciding = result.lines.length;
+  if (written > deciding) list.append(element("li", { class: "quiet", text: `${count(written - deciding, "other line")} of your list ${written - deciding === 1 ? "leaves" : "leave"} out nothing here` }));
+  if (written === 0 && result.fixed.length === 0) list.append(element("li", { class: "quiet", text: "Nothing is left out." }));
 }
 
-/**
- * A reason's members under their top folders, each opened on demand, so that a reason of many folders is not a wall;
- * the folders of one parent (a project's `bin` and `obj`) are one row.
- */
-function drawMembers(key, members, fixed, redraw) {
-  const byParent = new Map();
-  for (const member of members) {
-    const parent = member.folder && member.path.includes("/") ? member.path.slice(0, member.path.lastIndexOf("/")) : `\u0000${member.path}`;
-    byParent.set(parent, [...(byParent.get(parent) ?? []), member]);
+function drawLine(group, redraw) {
+  const key = `line ${group.line.number}`;
+  const open = state.opened.has(key);
+  const row = element("li", {}, element("div", { class: "row" },
+    opener(key, `line ${group.line.number}`, open, redraw),
+    element("span", { class: "number", text: String(group.line.number) }),
+    element("span", { class: "grow" }, pathText(group.line.text), group.kinds.size ? kindsOf(group.kinds) : null),
+    codeSign(codeIn(group.kinds)),
+    element("span", { class: "counts", text: filesAndFolders(group) }),
+    quietButton("keep", `everything line ${group.line.number} leaves out: take the line out of your list`, () => removeLines(group.line.number))));
+  if (open) {
+    const members = [...group.folders.map((folder) => ({ path: folder.path, folder: true, files: folder.files })), ...group.files.map((file) => ({ path: file, folder: false }))];
+    const inner = element("ul", { class: "members" });
+    paged(inner, key, members.map((member) => element("li", { class: "row" },
+      element("span", { class: "grow" }, pathText(member.folder ? `${member.path}/` : member.path)),
+      element("span", { class: "counts", text: member.folder ? (member.files === null ? "not looked inside" : count(member.files, "file")) : "" }),
+      quietButton("keep", member.folder ? `${member.path}/` : member.path, () => addYours([`!${member.folder ? folderPattern(member.path) : filePattern(member.path)}`])))), redraw);
+    row.append(inner);
   }
-  const rows = [...byParent].map(([parent, inParent]) => (inParent.length === 1 ? { path: inParent[0].path, label: inParent[0].folder ? `${inParent[0].path}/` : inParent[0].path, members: inParent }
-    : { path: parent, label: `${parent}/ ${inParent.map((member) => `${member.path.slice(parent.length + 1)}/`).sort().join(" ")}`, members: inParent }));
-  const byTop = new Map();
-  for (const each of rows) {
-    const top = each.path.includes("/") ? each.path.slice(0, each.path.indexOf("/")) : "(top)";
-    byTop.set(top, [...(byTop.get(top) ?? []), each]);
-  }
-  const leaf = (each, shortLabel) => {
-    const files = each.members.reduce((sum, member) => (member.files === null || sum === null ? null : sum + (member.files ?? 0)), 0);
-    // The folder the row names first: the project of a `bin` and an `obj`, or the one folder.
-    const also = alsoText(each.members.map((member) => member.also), each.path);
-    return element("li", { class: "row" },
-      element("span", { class: "twisty-space" }),
-      element("span", { class: "path" }, element("span", { text: shortLabel ?? each.label, title: each.label }), also ? element("span", { class: "also-line", text: also }) : null),
-      element("span", { class: "counts", text: each.members[0].folder ? (files === null ? "not looked inside" : count(files, "file")) : "" }),
-      fixed ? null : quietButton("keep", each.label, each.members.map(keepPattern), each.members.length > 1 ? each.label : undefined));
-  };
-  const inner = element("ul", { class: "members" });
-  for (const [top, inTop] of [...byTop].sort((a, b) => b[1].length - a[1].length)) {
-    if (inTop.length === 1 && byTop.size > 1) {
-      inner.append(leaf(inTop[0]));
-      continue;
-    }
-    const topKey = `${key}/${top}`;
-    const topOpen = state.openedGroups.has(topKey) || byTop.size === 1;
-    const inTopMembers = inTop.flatMap((each) => each.members);
-    const folders = inTopMembers.filter((member) => member.folder).length;
-    const said = [folders ? count(folders, "folder") : "", inTopMembers.length - folders ? count(inTopMembers.length - folders, "file") : ""].filter(Boolean).join(" · ");
-    const where = top === "(top)" ? "the top folder" : `${top}/`;
-    const topRow = element("li", {}, element("div", { class: "row" },
-      byTop.size === 1 ? element("span", { class: "twisty-space" }) : opener(topKey, top, topOpen, redraw),
-      element("span", { class: "path", text: top === "(top)" ? "At the top" : `${top}/` }),
-      element("span", { class: "counts", text: said }),
-      fixed || byTop.size === 1 ? null : quietButton("keep", `these ${said} in ${where}`, inTopMembers.map(keepPattern), `${said} in ${where}`)));
-    if (topOpen) {
-      const leaves = element("ul", { class: "members" });
-      paged(leaves, topKey, inTop.map((each) => leaf(each, top === "(top)" ? each.label : each.label.slice(top.length + 1))), redraw);
-      topRow.append(leaves);
-    }
-    inner.append(topRow);
-  }
-  return inner;
+  return row;
 }
 
-/**
- * What will be read, answered as what is left out is: by kind, each with a quiet control to leave that kind out
- * (`*.png`); by folder, each folder opening to its own folders and the files at its level, 50 at a time, each with a
- * quiet control to leave it out, which writes what the tree's box wrote (`/a/b/`).
- */
+// ---------------------------------------------------------------------------
+// What will be read, answered as what is left out is; each minus adds a line
+// ---------------------------------------------------------------------------
+
 function drawRead(result) {
   const redraw = () => drawRead(result);
-  const summary = readSummary(result.kept);
-  const kinds = element("ul", { class: "counts-list" });
-  paged(kinds, "kinds", summary.byKind.map(([kind, n]) => element("li", { class: "row" },
-    element("span", { class: "path", text: kind }),
-    element("span", { class: "counts", text: n.toLocaleString("en") }),
-    kind.startsWith(".") ? quietButton("leave", `every ${kind} file`, [`*${kind.replace(/[\\*?[\]!#]/gu, (c) => `\\${c}`)}`]) : element("span", { class: "icon-space" }))), redraw, 12);
   const kept = new Set(result.kept);
   const folderRows = (node, depth) => {
-    const rows = node.folders.filter((child) => child.kept && child.filesKept > 0).sort((a, b) => b.filesKept - a.filesKept).map((child) => {
+    const rows = node.folders.filter((child) => child.filesKept > 0).map((child) => {
       const key = `read/${child.path}`;
-      const open = state.openedGroups.has(key);
+      const open = state.opened.has(key);
       const item = element("li", {}, element("div", { class: "row" },
         opener(key, child.path, open, redraw),
-        element("span", { class: "path", text: depth === 0 ? child.name : `${child.name}/` }),
+        breakable("span", { class: "grow" }, depth === 0 ? child.name : `${child.name}/`),
         element("span", { class: "counts", text: child.filesKept.toLocaleString("en") }),
-        quietButton("leave", `${child.path}/`, [folderPattern(child.path)])));
+        quietButton("leave", `${child.path}/`, () => addYours([folderPattern(child.path)]))));
       if (open) {
         const inner = element("ul", { class: "members" });
         paged(inner, key, folderRows(child, depth + 1), redraw);
@@ -314,220 +568,24 @@ function drawRead(result) {
       return item;
     });
     if (node.looseKept > 0) {
-      // The files at this level, as a row of their own, left out together as one choice.
       const files = (state.source.listed.get(node.path) ?? []).filter((entry) => entry.kind === "file").map((entry) => (node.path ? `${node.path}/${entry.name}` : entry.name)).filter((file) => kept.has(file));
       const where = node.path ? `${node.path}/` : "the top folder";
       rows.push(element("li", { class: "row" },
         element("span", { class: "twisty-space" }),
-        element("span", { class: "path", text: node.path ? `${count(files.length, "file")} here` : "At the top" }),
+        element("span", { class: "grow", text: node.path ? `${count(files.length, "file")} here` : "At the top" }),
         element("span", { class: "counts", text: files.length.toLocaleString("en") }),
-        quietButton("leave", `the ${count(files.length, "file")} in ${where}`, files.map(filePattern), `the ${count(files.length, "file")} in ${where}`)));
+        quietButton("leave", `the ${count(files.length, "file")} in ${where}`, () => addYours(files.map(filePattern), `the ${count(files.length, "file")} in ${where}`))));
     }
     return rows;
   };
-  const folders = element("ul", { class: "counts-list" });
+  const folders = element("ul", {});
   paged(folders, "read", folderRows(result.root, 0), redraw);
-  // By folder first, as the left column goes by folder.
+  const kinds = element("ul", {});
+  paged(kinds, "kinds", byKind(result.kept).map(([kind, n]) => element("li", { class: "row" },
+    element("span", { class: `grow path${isCode(kind) ? " code" : ""}`, text: kind, "aria-label": isCode(kind) ? `${kind}, read by a reader` : undefined }),
+    element("span", { class: "counts", text: n.toLocaleString("en") }),
+    kind.startsWith(".") ? quietButton("leave", `every ${kind} file`, () => addYours([`*${kind.replace(/[\\*?[\]]/gu, (c) => `\\${c}`)}`])) : element("span", { class: "icon-space" }))), redraw, 12);
   $("#read").replaceChildren(element("h3", { text: "By folder" }), folders, element("h3", { text: "By kind" }), kinds);
-}
-
-// The folder tree: a box per folder and per folder's own files, only opened rows drawn, one tab stop, arrows inside.
-const LOOSE = "\u0000files";
-const looseKey = (path) => `${path}${LOOSE}`;
-
-function rowsOf(node, depth, rows) {
-  for (const child of node.folders) {
-    rows.push({ node: child, depth });
-    if (state.opened.has(child.path) && child.kept) rowsOf(child, depth + 1, rows);
-  }
-  // The files at this level, a row of their own after its folders.
-  if (node.looseKept + node.looseLeftOut > 0) rows.push({ loose: node, depth });
-  return rows;
-}
-
-/** The present boxes: a folder's box is half-ticked whenever anything beneath it is left out, by any rule. */
-function checkedMixed(node) {
-  if (!node.kept) return "false";
-  return node.filesLeftOut > 0 || node.foldersLeftOut > 0 ? "mixed" : "true";
-}
-
-/**
- * The alternative (`?boxes=choice`): a box says the person's own choice. A folder is half-ticked only for what they or
- * their ignore files left out beneath it; what the starting rules leave out (build output, packages) is a quiet count
- * beside it. A folder left out itself is clear whichever rule left it out, since a tick there would say it is read.
- */
-function checkedChoice(node) {
-  if (!node.kept) return "false";
-  return node.byChoice > 0 || node.foldersByChoice > 0 ? "mixed" : "true";
-}
-
-const checked = (node) => (state.boxes === "choice" ? checkedChoice(node) : checkedMixed(node));
-
-/** A folder's counts, and in the alternative a quieter count of what the starting rules took out beneath it. */
-function countsOf(node) {
-  if (!node.kept) return [node.unlisted ? "not looked inside" : `${count(node.filesLeftOut, "file")} left out`, ""];
-  const kept = `${node.filesKept.toLocaleString("en")} kept`;
-  if (state.boxes !== "choice") return [`${kept}${node.filesLeftOut ? ` · ${node.filesLeftOut.toLocaleString("en")} left out` : ""}`, ""];
-  const chosen = node.byChoice ? ` · ${node.byChoice.toLocaleString("en")} left out` : node.foldersByChoice ? ` · ${count(node.foldersByChoice, "folder")} left out` : "";
-  return [`${kept}${chosen}`, node.foldersByStart ? `${count(node.foldersByStart, "build or package folder")} left out` : ""];
-}
-
-function boxMark(box) {
-  return element("span", { class: `box ${box}`, "aria-hidden": "true" }, box === "true" ? icon("tick") : box === "mixed" ? icon("dash") : null);
-}
-
-const opensOf = (node) => node.kept && (node.folders.length > 0 || node.looseKept + node.looseLeftOut > 0);
-
-function drawTree(result) {
-  const tree = $("#tree");
-  const rows = rowsOf(result.root, 1, []);
-  const keyOf = (row) => (row.loose ? looseKey(row.loose.path) : row.node.path);
-  if (!rows.some((row) => keyOf(row) === state.focused)) state.focused = rows[0] ? keyOf(rows[0]) : "";
-  const indent = (depth) => element("span", { class: "indent", style: `width:${(depth - 1) * 18}px` });
-  tree.replaceChildren(...rows.map((row) => {
-    const key = keyOf(row);
-    const focus = key === state.focused ? "0" : "-1";
-    if (row.loose) {
-      const node = row.loose;
-      const box = node.looseLeftOut === 0 ? "true" : node.looseKept === 0 ? "false" : "mixed";
-      const total = node.looseKept + node.looseLeftOut;
-      const item = element("li", { role: "treeitem", "aria-level": String(row.depth), "aria-checked": box, tabindex: focus, "data-path": key, class: `loose${box === "false" ? " left-out" : ""}` },
-        indent(row.depth),
-        element("span", { class: "twisty-mark", "aria-hidden": "true" }),
-        boxMark(box),
-        element("span", { class: "name", text: `${count(total, "file")} here` }),
-        element("span", { class: "counts", text: box === "mixed" ? `${node.looseKept.toLocaleString("en")} kept · ${node.looseLeftOut.toLocaleString("en")} left out` : box === "false" ? "left out" : "" }));
-      item.addEventListener("click", () => {
-        state.focused = key;
-        toggleLoose(node);
-      });
-      return item;
-    }
-    const { node, depth } = row;
-    const [counts, start] = countsOf(node);
-    const item = element("li", {
-      role: "treeitem", "aria-level": String(depth), "aria-checked": checked(node), "aria-expanded": opensOf(node) ? String(state.opened.has(node.path)) : undefined,
-      tabindex: focus, "data-path": key, class: node.kept ? "" : "left-out"
-    },
-    indent(depth),
-    element("span", { class: "twisty-mark", "aria-hidden": "true" }, opensOf(node) ? icon(state.opened.has(node.path) ? "open" : "closed") : null),
-    boxMark(checked(node)),
-    element("span", { class: "name", text: node.name }),
-    element("span", { class: "counts", text: counts }),
-    start ? element("span", { class: "start", text: start }) : null,
-    !node.kept && node.rule ? element("span", { class: "why", text: reasonText(node) }) : null);
-    item.addEventListener("click", (event) => {
-      state.focused = key;
-      if (event.target.closest(".box")) toggleKeep(node);
-      else toggleOpen(node);
-    });
-    return item;
-  }));
-  tree.querySelector('[tabindex="0"]')?.focus({ preventScroll: true });
-}
-
-function reasonText(node) {
-  const group = state.result.groups.find((each) => each.folders.some((folder) => folder.path === node.path));
-  return group ? group.reason : "";
-}
-
-function toggleOpen(node) {
-  if (!node.kept) return;
-  if (state.opened.has(node.path)) state.opened.delete(node.path);
-  else state.opened.add(node.path);
-  drawTree(state.result);
-}
-
-function toggleKeep(node) {
-  const pattern = folderPattern(node.path);
-  // Ticking a folder left out keeps it, and walks it then; clearing a kept one leaves it out.
-  state.person = state.person.filter((each) => each.patterns.length !== 1 || (each.patterns[0] !== pattern && each.patterns[0] !== `!${pattern}`));
-  state.person.push({ patterns: [node.kept ? pattern : `!${pattern}`] });
-  state.focused = node.path;
-  void decideAgain();
-}
-
-// The files at one level, kept or left out together, each by its own pattern (`/a/b.cs`, `!/a/b.cs`). Git's patterns
-// have no way to name a level's files and none of its folders: `/a/*` with `!/a/*/` would keep, being the person's,
-// every folder there that build output, packages or an ignore file left out.
-function toggleLoose(node) {
-  const files = (state.source.listed.get(node.path) ?? []).filter((entry) => entry.kind === "file").map((entry) => (node.path ? `${node.path}/${entry.name}` : entry.name));
-  const own = new Set(files.flatMap((file) => [filePattern(file), `!${filePattern(file)}`]));
-  // The person's earlier choices for these files are taken back, and what is left of each entry stays.
-  state.person = state.person.map((each) => ({ ...each, patterns: each.patterns.filter((pattern) => !own.has(pattern)) })).filter((each) => each.patterns.length > 0);
-  const leftOut = new Set(state.result.groups.flatMap((group) => group.files));
-  // All kept: leave each out. Some or all left out: keep each that is left out now. One choice, listed as one.
-  const where = node.path ? `${node.path}/` : "the top folder";
-  const patterns = node.looseLeftOut === 0 ? files.map(filePattern) : files.filter((file) => leftOut.has(file)).map((file) => `!${filePattern(file)}`);
-  state.person.push({ patterns, label: `the ${count(patterns.length, "file")} in ${where}` });
-  state.focused = looseKey(node.path);
-  void decideAgain();
-}
-
-$("#tree").addEventListener("keydown", (event) => {
-  const items = [...$("#tree").querySelectorAll('[role="treeitem"]')];
-  const at = items.findIndex((item) => item.dataset.path === state.focused);
-  const move = (index) => {
-    if (index < 0 || index >= items.length) return;
-    state.focused = items[index].dataset.path;
-    items[at]?.setAttribute("tabindex", "-1");
-    items[index].setAttribute("tabindex", "0");
-    items[index].focus();
-  };
-  const looseOf = state.focused.endsWith(LOOSE) ? find(state.result.root, state.focused.slice(0, -LOOSE.length)) : undefined;
-  const current = looseOf ? undefined : find(state.result.root, state.focused);
-  if (event.key === "ArrowDown") move(at + 1);
-  else if (event.key === "ArrowUp") move(at - 1);
-  else if (event.key === "Home") move(0);
-  else if (event.key === "End") move(items.length - 1);
-  else if (event.key === "ArrowRight") {
-    if (current && opensOf(current) && !state.opened.has(current.path)) toggleOpen(current);
-    else move(at + 1);
-  } else if (event.key === "ArrowLeft") {
-    if (current && state.opened.has(current.path)) toggleOpen(current);
-    else {
-      const path = looseOf ? looseOf.path : current?.path ?? "";
-      const parent = looseOf ? path : path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "";
-      if (parent) {
-        state.focused = parent;
-        drawTree(state.result);
-      }
-    }
-  } else if (event.key === " ") {
-    if (looseOf) toggleLoose(looseOf);
-    else if (current) toggleKeep(current);
-  } else if (event.key === "Enter" && current) toggleOpen(current);
-  else return;
-  event.preventDefault();
-});
-
-function find(node, path) {
-  if (node.path === path) return node;
-  for (const child of node.folders) if (path === child.path || path.startsWith(`${child.path}/`)) return find(child, path);
-  return undefined;
-}
-
-function drawPatterns() {
-  const list = $("#patterns");
-  // One row a choice: a typed pattern as it was typed, and a choice of many patterns by what it named, its patterns in
-  // its tooltip; each removed as one.
-  list.replaceChildren(...state.person.map((entry, index) => {
-    const said = entry.label ?? entry.patterns.join("  ");
-    const remove = element("button", { type: "button", class: "icon-button", "aria-label": `Remove ${said}`, title: "Remove" }, icon("remove"));
-    remove.addEventListener("click", () => {
-      state.person.splice(index, 1);
-      void decideAgain();
-    });
-    const keeps = entry.patterns.every((pattern) => pattern.startsWith("!"));
-    return element("li", {}, entry.label ? element("span", { text: entry.label, title: entry.patterns.join("\n") }) : element("code", { text: said }),
-      element("span", { class: "quiet", text: entry.label ? (keeps ? "kept" : "left out") : keeps ? "keeps" : "leaves out" }), remove);
-  }));
-}
-
-function drawNotes(result) {
-  const shown = result.notes.slice(0, 5);
-  $("#notes").replaceChildren(...shown.map(({ text }) => element("li", { text })), result.notes.length > shown.length ? element("li", { class: "quiet", text: `and ${count(result.notes.length - shown.length, "more like these")}` }) : "");
-  $("#notes").hidden = result.notes.length === 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -538,16 +596,19 @@ const ICONS = {
   pick: "M3 6h6l2 2h10v10H3z",
   drop: "M12 3v12M7 10l5 5 5-5M4 19h16",
   input: "M4 5h16v14H4zM8 9h8M8 13h8",
-  // A plus, "back into what is read": a tick beside something left out would read as already read, as the tree's box does.
+  // A plus, "back into what is read"; a minus, its opposite, "out of what is read".
   keep: "M12 5v14M5 12h14",
-  // The plus's opposite: out of what is read.
   leave: "M5 12h14",
   remove: "M6 6l12 12M18 6L6 18",
   open: "M6 9l6 6 6-6",
   closed: "M9 6l6 6-6 6",
-  tick: "M5 12l4 4 10-10",
-  dash: "M6 12h12",
-  scan: "M8 5l11 7-11 7z"
+  scan: "M8 5l11 7-11 7z",
+  copy: "M8 8h11v11H8zM5 16V5h11",
+  save: "M12 4v11M7 10l5 5 5-5M5 20h14",
+  load: "M12 20V9M7 14l5-5 5 5M5 4h14",
+  prefill: "M4 6h16M4 12h10M4 18h7M17 15v6M14 18h6",
+  // Angle brackets, for what a reader reads.
+  code: "M8 7l-5 5 5 5M16 7l5 5-5 5"
 };
 function icon(name) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -562,17 +623,24 @@ function icon(name) {
 document.querySelectorAll("[data-icon]").forEach((node) => node.prepend(icon(node.dataset.icon)));
 
 // ---------------------------------------------------------------------------
-// The three ways in, and the controls
+// The three ways in, and Scan
 // ---------------------------------------------------------------------------
 
 async function start(source) {
   state.source = source;
   state.result = null;
-  state.person = [];
-  state.opened = new Set([""]);
-  state.openedGroups = new Set();
+  state.opened = new Set();
   state.shown = new Map();
+  state.foundAnswered = undefined;
+  state.foundSaid = undefined;
+  state.leftAside = new Set();
+  state.offers = undefined;
   $("#folder-name").textContent = source.label;
+  // The list's case: as remembered, else the repository's own setting, else without case, as on Windows.
+  if (state.rememberedCase === undefined) {
+    const config = source.lazy ? undefined : await source.text(".git/config");
+    state.ignoreCase = config === undefined ? true : /^\s*ignorecase\s*=\s*true\s*$/imu.test(config);
+  }
   await decideAgain();
 }
 
@@ -603,19 +671,6 @@ zone.addEventListener("drop", async (event) => {
   const handle = item?.getAsFileSystemHandle ? await item.getAsFileSystemHandle() : null;
   if (handle?.kind === "directory") await start(handleSource(handle));
   else $("#progress").textContent = "Drop a folder; this browser gave no folder.";
-});
-document.querySelectorAll("[data-layout]").forEach((button) => button.addEventListener("click", () => {
-  state.layout = button.dataset.layout;
-  draw();
-}));
-$("#pattern-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const field = $("#pattern");
-  const pattern = field.value.trim();
-  if (!pattern) return;
-  state.person.push({ patterns: [pattern] });
-  field.value = "";
-  void decideAgain();
 });
 $("#scan").addEventListener("click", () => {
   if (state.result) $("#scan-result").textContent = `A scan would read ${count(state.result.kept.length, "file")}. This trial reads none.`;

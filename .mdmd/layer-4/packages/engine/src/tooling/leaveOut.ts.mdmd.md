@@ -4,18 +4,19 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/leaveOut.ts`
-- Generated At: 2026-11-21T08:03:31.978Z
+- Generated At: 2026-11-21T19:01:42.533Z
 
 ## Authored
 ### Purpose
-Decides what a scan leaves out from a folder's listing alone, before anything is read: given the paths, the texts of the `.gitignore` and `.tfignore` files the listing names, a starting list and a person's own patterns, it answers for each path kept or left out and by which file and line, entry or pattern; and for a folder, whether a walk may leave it unlisted. It reads nothing and imports nothing of Node, so both hosts can share it.
+Decides what a scan leaves out by one list of patterns the person sees, read as one `.gitignore` at the top of the scanned folder: given the list's text, whether its names match without regard to case and the tool's own output folders, it answers for each path kept or left out and by which line of the list, and for a folder, whether a walk may leave it unlisted. A version control's own folder and the tool's own output stand outside the list and are never scanned. Beside the decider it holds the two translators that take a folder's ignore files into the list, `fromGitignores` and `fromTfignores`, each with what it could not carry, and `proposeLines`, which proposes lines naming the folders a listing shows to be build output or packages. It reads nothing and imports nothing of Node, so both hosts can share it.
 
 ### Notes
 - Written on 2026-11-21 at the owner's ask ([Turn 3](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-3)) for "a good solid way to create ignore patterns on what they scan, before they scan it", as the one function [the design of one engine with two hosts](../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names; built standalone and not yet wired into discovery. What it was measured against is [the leave-out probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md).
-- `.gitignore` follows git's own rules, ported from git's `dir.c` and `wildmatch.c`, and is held to `git check-ignore` rule for rule by `leaveOut.oracle.test.ts`. `.tfignore` follows Microsoft's open-source TFVC client, Team Explorer Everywhere, since Visual Studio's is not public, and is held to that code's recorded verdicts by `leaveOut.tfvc.test.ts`. The one deliberate difference: a pattern's folder part is compared without regard to case, as TEE does on Windows.
-- Since the root's ruling of 2026-11-21 a folder left out is left out whole under either syntax: it is not entered, and a `!` line keeps something only where its folder is kept, as git and TFVC's `tf add` both have it. TFVC's change scanner, which looks inside, is given up for it, and where a `!` line at or above could have named something inside, the folder's answer carries a note naming the line. In the same round: `.gitignore`'s case became the repository's `core.ignorecase`, handed in; the tool's own output is never scanned, by a rule kind of its own; the person's patterns and a starting list are read without regard to case; the evidence rules joined the starting lists; and each folder's state is kept, so that 167,833 paths are decided in about half a second in Node ([the probe's second leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md#second-leg-later-on-2026-11-21-the-roots-five-rulings-built-and-measured)).
-- In the third leg the same day the starting list was decided: the evidence rules, which leave a folder out by what it is, and no list of names, since each list measured left out real source in folders that bore its names (12, 63 and 29 files on DNN). The evidence rules apply beneath any ignore file, only a person's `!` keeps what they find, and they are one setting, applied or only reported, since in a git repository they can leave out files git tracks. A version control's own folder (`.git`, `.hg`, `.svn`, TFVC's `$tf` and `.tf`) is never scanned, nor a `.git` pointer file. Measured against today's discovery on this repository and every fixture, swapping the function in would change nothing but what discovery's own rules by name, the configuration's `exclude` and git's word on tracked files decide ([the probe's third leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md#third-leg-later-on-2026-11-21-the-starting-list-decided-the-swap-and-a-dropped-folder)).
-- In the fourth leg the trial page of the choice before a scan, which walks a picked folder lazily, found that a folder's own ignore files were asked for when the folder was decided, before a lazy walk had listed it; they are now asked for when something inside it is decided ([the probe's fourth leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md#fourth-leg-later-on-2026-11-21-the-choice-before-a-scan-as-a-trial-page)).
+- Until the probe's eighth leg it weighed five layers in turn (the tool's own folders, a person's patterns, the ignore files in place, the evidence rules applied by default, an ignore file's `!`). The owner's model of that evening replaced them: "The list the user sees for ignore patterns is the source of truth for our software, and we can take that in from other ignore patterns as needed." Ignore files became sources a person chooses to use, add or ignore, and the evidence rules became proposals, never applied in silence ([the probe's eighth leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)).
+- The list follows git's own rules, ported from git's `dir.c` and `wildmatch.c`. `fromGitignores` puts a nested file's folder in front of its lines and orders the files shallowest first, so that last-match-wins gives what git gives; `leaveOut.oracle.test.ts` holds the result to `git check-ignore` with the files in place, and the probe's `git-agreement.ts` did the same on three real folders, 50,051 paths, without a difference. The one difference a list cannot remove is said, not hidden: where a list matching without case meets a folder spelled otherwise than one holding a nested file, which only a disk that tells case apart can hold.
+- `fromTfignores` follows Microsoft's open-source TFVC client, Team Explorer Everywhere, since Visual Studio's is not public, and is held to that client's 468 recorded verdicts by `leaveOut.tfvc.test.ts`; its lines need a list that matches without regard to case. It cannot carry TFVC's rule that a final `.` matches a name with no extension, and says so.
+- The list is readied once, as git readies its own: a name with no wildcard is looked up by a path's last part, a whole path with no wildcard by the path, `*` and a plain ending by the last part's end, a line beginning with plain folders (as a nested file taken in reads) is asked only of paths beneath them, a no-slash line's answer is kept for each name, and only the rest meet the matcher, from the last line back. On the made folder's full list (its `.tfignore` files taken in, the proposed lines and the Visual Studio list, 357 lines) deciding the 13,333 paths a walk asks went from 861 ms to 200 ms in Node, and on the nested tree's 592 lines from 1,716 ms to 278 ms, with every oracle unchanged ([the probe's eighth leg](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md)).
+- A folder left out is left out whole, as git and TFVC's `tf add` both have it; where a `!` line could have named something inside, the folder's answer carries a note naming the line.
 - Not known from a listing: `.git/info/exclude`, a person's global excludes file, and git's keeping of a file it tracks beneath an ignored folder; nor TFVC's global exclusion list, which a server sends.
 
 ## Generated
@@ -23,60 +24,52 @@ Decides what a scan leaves out from a folder's listing alone, before anything is
 ### Public Symbols
 #### `IgnoreFileText` {#symbol-ignorefiletext}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L52)
 
 ##### `IgnoreFileText` — Summary
 An ignore file the listing names, at its path relative to the scanned folder, with its text.
 
-#### `LeaveOutRule` {#symbol-leaveoutrule}
-- Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L94)
+#### `DecidingLine` {#symbol-decidingline}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L58)
 
-##### `LeaveOutRule` — Summary
-The rule that decided a path.
+##### `DecidingLine` — Summary
+The line of the list that decided a path: its number from 1, and its text as written.
 
 #### `LeaveOutVerdict` {#symbol-leaveoutverdict}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L105)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L68)
 
 ##### `LeaveOutVerdict` — Summary
-The answer for one path: kept or left out, and the rule that decided, if any did (a kept path's rule is one that
-re-included it); for a path left out with its folder, the `!` lines that could have named it; and, where the evidence
-rules are only reported, the rule that would have left a kept folder out.
+The answer for one path: kept or left out; the line that decided, if one did (a kept path's line is a `!` that
+re-included it); `fixed` where the path is a version control's own or the tool's own output, which no line can keep;
+and, for a path left out with its folder, the `!` lines that could have named it.
 
 #### `FolderVerdict` {#symbol-folderverdict}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L113)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L76)
 - Extends: [`LeaveOutVerdict`](#symbol-leaveoutverdict)
 
 ##### `FolderVerdict` — Summary
 The answer for a folder, and whether nothing beneath it can be kept, so that a walk need not go in.
 
-#### `EvidenceSetting` {#symbol-evidencesetting}
-- Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L123)
-
-##### `EvidenceSetting` — Summary
-The evidence rules' setting: the names a folder holds (a folder's with a trailing `/`), which a lazy walk answers by
-listing one level further; and whether a folder they find is left out (`apply`) or kept and reported.
-
 #### `LeaveOutInput` {#symbol-leaveoutinput}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L129)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L81)
 
 ##### `LeaveOutInput` — Summary
 What decides a scan's leaving out.
 
 #### `LeaveOut (interface)` {#symbol-leaveout-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L141)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L91)
 
 ##### `LeaveOut (interface)` — Summary
-The decider of one listing: a file's verdict and a folder's, the folder's with whether a walk may leave it unlisted.
+The decider of one list: a file's verdict and a folder's, the folder's with whether a walk may leave it unlisted.
 
 #### `EVIDENCE` {#symbol-evidence}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L575)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L476)
 - Returns: `ReadonlyArray`
 
 ##### `EVIDENCE` — Summary
@@ -87,12 +80,62 @@ holding NuGet's `<Id>.<Version>` folders or a `repositories.config`; `node_modul
 
 #### `leaveOut (function)` {#symbol-leaveout-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L647)
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L588)
 - Returns: [`LeaveOut`](#symbol-leaveout-interface)
 - Parameters: `input`: [`LeaveOutInput`](#symbol-leaveoutinput)
 
 ##### `leaveOut (function)` — Summary
-The decider for one listing's ignore files, evidence rules, person's patterns and the tool's own output.
+The decider of one list. Each folder's answer is kept, so that a walk asks of each folder once, before going in.
+
+#### `TakenIn` {#symbol-takenin}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L643)
+
+##### `TakenIn` — Summary
+One kind of ignore file rewritten as lines of the one list, and what the rewrite could not carry.
+
+#### `fromGitignores` {#symbol-fromgitignores}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L670)
+- Returns: [`TakenIn`](#symbol-takenin)
+
+##### `fromGitignores` — Summary
+A folder's `.gitignore` files as lines of the one list that decide as the files did in place: each line of a file in
+a folder below the top has that folder put in front (`docs/*.md` in `sub/` becomes `sub/docs/*.md`, a name alone
+becomes `sub/**` and the name, so that it still matches at any depth below `sub`), anchoring and `!` and a trailing
+`/` kept; the files go shallowest first, so that the last matching line is the deepest file's, as git asks the
+deepest file first. Names match as the repository's `core.ignorecase` says, which the list's own setting must follow.
+
+#### `fromTfignores` {#symbol-fromtfignores}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L705)
+- Returns: [`TakenIn`](#symbol-takenin)
+
+##### `fromTfignores` — Summary
+A folder's `.tfignore` files as lines of the one list, by TFVC's rules as Team Explorer Everywhere reads them: `\`
+becomes `/`; a leading separator, "this folder only", anchors the line at its file's folder (`/bin`), else the name
+matches at any depth below it (`sub/**` and the name); a path before the name names a folder literally; only `*` and
+`?` are wildcards, every other character is written literally. An exclusion in TFVC leaves out whatever lies
+beneath a folder it names even where a `!` keeps the folder itself, so where any file has a `!`, each exclusion is
+followed by the same line with `/**`. Names match without regard to case, so the list must too.
+
+#### `ProposedLine` {#symbol-proposedline}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L740)
+
+##### `ProposedLine` — Summary
+A line proposed for the list, the rule of what the folders are that proposed it, and the folders it names.
+
+#### `proposeLines` {#symbol-proposelines}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/leaveOut.ts#L752)
+- Returns: [`ProposedLine`](#symbol-proposedline)[]
+
+##### `proposeLines` — Summary
+Lines naming the folders a listing shows to be build output or packages, by the evidence rules, for the person to
+take into the list or not. A name alone (`bin/`) is proposed only where it leaves out no folder of that name that
+the exact lines would keep, and, for a list that matches case, only where every such folder is spelled alike; else
+one anchored line a folder (`/src/App/bin/`). A folder inside another proposed folder is not named again.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

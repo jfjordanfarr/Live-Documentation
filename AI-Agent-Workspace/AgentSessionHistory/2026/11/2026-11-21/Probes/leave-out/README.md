@@ -2,6 +2,280 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Eighth leg, evening of 2026-11-21: one list, the person's, is the truth
+
+The owner, 18:15 UTC: "The list the user sees for ignore patterns is the source of truth for our software, and we can take that in from other ignore patterns as needed." An ignore file found in the folder is offered to "use (replace current ignore pattern in browser window), integrate (add to current ignore pattern in browser window), or ignore". On a committed packages folder: "The user will likely need to make that decision themselves. Might be helpful as they're concocting the ignore pattern for the scan to know what would be ignored so they can tune it on the spot." The layered rules of the earlier legs and the evidence rules applied by default are gone. This section is the first milestone: the function's new shape held to both oracles, and the page's first pictures.
+
+### The function (`packages/engine/src/tooling/leaveOut.ts`)
+
+- **`leaveOut({ list, ignoreCase, ownOutput })`.** The list's text, read as one `.gitignore` at the top of the scanned folder, decides each path, and the verdict names the deciding line (number and text). Two things stand outside the list, shown and never scanned: a version control's own folder and the tool's own output. A folder left out is left out whole, and a `!` line that could have named something inside it is noted.
+- **`fromGitignores(files, { folders, ignoreCase })`.** It rewrites a folder's `.gitignore` files as lines of the one list:
+  - each line of a nested file gets its folder in front (`sub/docs/*.md`; a name alone becomes `sub/**/name`);
+  - anchoring, `!` and a trailing `/` are kept;
+  - the files go shallowest first, so that the last matching line is the deepest file's, as git asks the deepest file first;
+  - each line carries its origin (file and line), and the page and the oracles trace a verdict back through it.
+- **`fromTfignores(files)`.**
+  - It writes TFVC's lines in the list's syntax: `\` becomes `/`; a leading separator anchors (`/src/bin`); a name alone becomes `src/**/name`; a folder part is literal; only `*` and `?` are wildcards.
+  - Where any file holds a `!`, each exclusion is followed by the same line with `/**`. TFVC leaves out what lies beneath a folder it names even when a `!` keeps the folder itself.
+  - Its lines need a list that matches without regard to case.
+- **`proposeLines(folders, names, ignoreCase)`.** The evidence rules, turned into proposals.
+  - A name alone (`bin/`) is proposed only where it leaves out no folder of that name that the exact lines would keep, and, in a list that matches case, only where every such folder is spelled alike.
+  - Otherwise it proposes one anchored line per folder; a folder inside another proposed folder is not named again.
+- **Deleted:** the layered decider, the `person` and `evidence` settings, and TFVC's matcher (its behaviour now lives in the translator, held to the same recordings).
+
+### The two oracle comparisons, in full
+
+**Git, with the files in place** (`leaveOut.oracle.test.ts`; `git-agreement.ts` on real folders, recorded in `listings/one-list-git-agreement.json`):
+
+| Folder | Paths | `.gitignore` files | Lines in the one list | Agree | Differ |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| this repository (the builder's worktree at `a11f7d007`, with `node_modules`, `dist`, `test-results`) | 23,554 | 1 | 46 | 23,554 | 0 |
+| DNN (the readers' corpus, a git clone) | 26,227 | 26 | 364 | 26,227 | 0 |
+| MediatR (cloned again, shallow and anonymous; no build outputs placed this time, so 270 paths where the second leg had 479) | 270 | 1 | 131 | 270 | 0 |
+| the nested made tree, copied into a fresh repository | 23,038 | 25 | 261 | 23,038 | 0 |
+
+The named cases all agree: 17 of them, each asked with `core.ignorecase` false and true. One of the 17 is new this leg: "a nested file whose folder has a twin spelled otherwise".
+
+The generator's 60 random trees found the one difference a flat list cannot remove. A nested file speaks for its own folder alone. A list that matches names without regard to case also reaches a folder spelled otherwise (`build/` beside `Build/.gitignore`). Only a disk that tells case apart can hold both, so on the owner's Windows machines it cannot occur. `fromGitignores` says it whenever it sees such a twin, the test sets those paths apart and requires the sentence, and the page shows it at import.
+
+**TFVC, against the client's recorded verdicts** (`leaveOut.tfvc.test.ts`; counted by `tfvc-agreement.ts` in `listings/one-list-tfvc-agreement.json`):
+
+| Verdicts | Compared | Agree | Differ | Left out whole where `tf add` does not enter | In a version control's own folder | Set apart by a difference the translator says |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 468 | 448 | 447 | 1 | 17 | 1 | 2 |
+
+- **The one difference** is the earlier legs' deliberate one: `b-case docs/y.md`. The recording ran on Linux, where TEE compares a pattern's folder part with regard to case; on Windows it does not, and neither does the list.
+- **The difference the translator says:** `x*.`. TFVC lets a final `.` match a name with no extension (`xnoext`, and a folder `a/x` above `a/x/b/c.txt`), and no `.gitignore` line can say "no dot anywhere". The page will say it at import.
+
+### Case: a fork, with a recommendation
+
+- **The question.** TFVC matches names without regard to case. A `.gitignore` matches as the repository's `core.ignorecase` says. The list can have only one setting.
+- **Built for the trial:** the list carries one setting, "Names match without case". It starts from what the page remembers; if nothing is remembered, from the folder's `.git/config` when a folder input can read it; otherwise on, as on Windows.
+  - Taking in any `.tfignore` turns it on, and the page says so.
+  - The command line's twin defaults it on, with `--case` to turn it off.
+- **A mixed folder** (a `.gitignore` in a case-sensitive repository beside a `.tfignore`): the setting is on, and the one difference above is said for any twin folder.
+- **Recommendation:** keep the one setting, defaulted on. Every folder the owner scans is on Windows, where git's own default is on. The alternative, spelling every letter as a class (`[Bb][Ii][Nn]`) to carry case per line, would make the list unreadable, and readability is its point.
+
+### Lines proposed from what the folders hold (`listings/proposals.json`)
+
+| Folder | Files | Lines proposed | Of which a name alone | Exact | Files they leave out | Files read |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| the made folder | 103,329 | 48 | 2 (`bin/`, `obj/`) | 46 (`packages` folders) | 92,400 | 10,929 |
+| DNN | 21,719 | 1 | 0 | 1 (its NuGet `Packages/`) | 1 | 21,718 |
+| nested | 17,245 | 47 | 2 | 45 | 6,291 | 10,954 |
+
+**How the lines could be written, when there are many** (a fork brought, not decided):
+- exact lines, as built, grouped under a comment for each rule;
+- a name alone, as built where it is honest;
+- a name alone followed by `!` lines for the folders of that name that are not packages. On the made folder that is `packages/` plus one `!` per `packages` folder holding source. It is shorter, but it leaves out any new folder of that name the next day.
+
+My recommendation is grouped exact lines with names alone where they are honest, as built.
+
+### The Visual Studio list
+
+GitHub's `VisualStudio.gitignore` (CC0) is the copy in `starting-lists/`. Its exact source revision was not recorded when it was copied, and is still owed.
+
+On `nested`, the preview shows by kind what its lines leave out:
+- `[Ll]og/` leaves out 22 `.cs` files (DNN's `Services/Installer/Log`);
+- `**/[Pp]ackages/*` leaves out 11 `.cs` files (DNN's own `Packages`);
+- `[Oo]bj/` takes over the 163 `.cs` files in the made `obj` folders from the proposed `obj/` line, because the last matching line decides.
+
+Nothing corrects the person's choice.
+
+### The page, first pictures
+
+What it is now:
+- **The list is the truth.** It is editable text, with copy, save as a file (`leave-out.gitignore`), load from a file, empty, and a prefill menu (Visual Studio; "From what the folders hold"). The page remembers it for the next folder where it may.
+- **One notice of ignore files found** (for example "Found 25 .gitignore files and 15 .tfignore files, in 3 top folders") with Use, Add and Ignore for all of them. The files themselves are behind a disclosure, each with a checkbox to leave it aside.
+- **"Left out", by line.** The line's number and text, what it leaves out in folders and files, the three largest kinds, and a plus that takes the line out of the list. Opened, it lists what the line leaves out, each item with a plus that adds a `!` line.
+- **"Will be read"** by folder and by kind, as in the sixth leg, with a minus on each row that adds a line.
+
+The folder tree and the layout switch are gone from the page.
+
+**Pictures** (`choice/screenshots/`, 1,280 by 800, through the folder input; counts beside them in `records/nested-one-list-record.json` and `records/made-one-list-record.json`):
+- `nested-one-list-1-first` … `nested-one-list-6-minus`;
+- `made-one-list-1-first` … `made-one-list-6-minus`.
+
+The steps of each run, starting from an empty list: the first screen, the notice opened, Use, "From what the folders hold", Visual Studio added, then the minus on `.png` and on `DNN Platform/Tests/`.
+
+| Step | `nested` (17,245 files): read | list lines | made folder (103,329 files): read | list lines |
+| --- | ---: | ---: | ---: | ---: |
+| The first screen, an empty list | 17,245 | 0 | 103,329 | 0 |
+| Use: the 25 `.gitignore` and 15 `.tfignore` files (made: the 15 `.tfignore`) | 15,594 | 311 | 76,899 | 75 |
+| From what the folders hold | 10,946 | 358 | 10,929 | 123 |
+| Visual Studio added | 10,874 | 592 | 10,857 | 357 |
+| Minus on `.png`, then on `DNN Platform/Tests/` | 9,011 | 594 | 8,994 | 359 |
+
+The made folder took 73 s to be handed over at a load near 40; `nested` took 10 s.
+
+**What my eye sees:**
+- **The first screen says what the folder holds before anything is left out.** The made folder reads "103,329 files will be read", and under "Will be read" `packages` stands second with 13,201 files and `.dll` first among the kinds with 37,813. That is what the owner asked to see "so they can tune it on the spot". Above, one line: "Found 15 .tfignore files, in 2 top folders", with Use, Add and Ignore.
+- **Use folds the notice back to one line** ("Taken into your list: …"). The list fills with each file's lines under a comment naming it, and "Left out" shows each line that left something out, with its number, counts and kinds: `Dnn.AdminExperience/**/[Bb]in` "9 folders · 126 files", ".dll 72 · .config 18 · .pdb 18".
+- **Every act shows as a line.** After the two minuses, the list ends `*.png` and `/DNN Platform/Tests/`, and the totals fall by the 1,324 images and the 543 test files.
+
+**Still wrong or missing:**
+- The list has no line numbers, while "Left out" names lines by number, so a person counts down the text to find line 354. A numbered gutter is owed.
+- "Left out" goes in the list's order. After a long prefill, the Visual Studio lines that leave out real source (`[Ll]og/` with 22 `.cs`) sit far down. A way to bring the lines that leave out code to the eye is owed, without correcting the choice.
+- Long anchored lines wrap over two or three lines in the middle column.
+- What the translator cannot carry is shown under the notice when it occurs. Neither folder has such a line or a case twin, so it is not pictured.
+- The list of files found, opened, fills the screen when there are 40; it should hold its own height.
+
+**Not built yet:**
+- **Forks brought:**
+  - the name and place of the list file the command line reads, given that a scan leaves no trace in the scanned folder;
+  - how the proposals are written when they are many (above).
+- **The strangers' leave-out tasks** in `scripts/playtest/tasks.json` assume the sixth leg's page, where build output and packages were left out by default. Their answers must change before any new run (the read task now starts from nothing left out). They are not changed in this milestone.
+
+### Second milestone: the overview by block, the empty list's offers, speed, and code marked
+
+The root's six points on the first milestone, in their order.
+
+1. **`URL.revokeObjectURL` is back.** I had removed a working call to quiet the asset audit, whose CSS `url(` pattern matched the end of `revokeObjectURL(`. That was the wrong mend. The root corrected the audit on the day branch (`0b0751a22`). With the call restored, the audit passes on the built page.
+2. **"Left out" is an overview again, by the list's own structure.**
+   - **Blocks.** A block runs from a `###` heading to the next one. The page writes a heading for each source it adds: "Taken in from the folder: …", "From what the folders hold: 48 lines", "GitHub's VisualStudio.gitignore (CC0)", and "Yours" for the person's own minus and plus. A person can type a heading too. The lines above the first heading are a block of their own.
+   - **One row a block,** largest first, with its folders, files and three largest kinds.
+   - **Opened,** a block shows its lines that act, largest first. Each line still names its number and opens to what it leaves out.
+   - **A line that leaves nothing out** gets no row; the lines that leave nothing out are counted once at the end.
+   - **The list has a numbered gutter** that scrolls with it, so that a row's number can be found in the text.
+   - **The plus** on a block takes the block's lines out of the list. On a line, it takes that line out. On a single item, it adds a `!` line to "Yours".
+3. **The empty list offers what would fill it.** When no line acts, the list's place holds an offer for each starting list, with what it would do on this folder, counted by the same function before anything is pressed. On the made folder: "What these folders hold: 48 lines · 92,400 files left out". The Visual Studio list gets its own line count and files. The offers go once a line acts, and remain under the tool above the list. Nothing is applied by itself.
+4. **Speed** (below, before and after).
+5. **The kinds a reader reads are marked.** "Which kinds a reader reads" comes from the engine's own list (`hasReader` in `packages/engine/src/config/liveDocumentationConfig.ts`, which a test holds to the adapters' registry); there is no second list.
+   - In a row's kinds, such a kind is set in weight.
+   - A block or line that leaves out such files carries a small sign of angle brackets, named "Leaves out N files a reader would read" for a screen reader and on hover.
+   - Colour is not used: blue offers, green uses.
+6. **Small things.**
+   - The notes now stand above the list, where the footer cannot cut them off.
+   - A line's text breaks only after a `/`, never inside a name.
+   - Each of the five tools above the list shows its name on hover and on keyboard focus: "Add a starting list", "Copy the list", "Save the list as a file", "Load a list from a file", "Empty the list".
+
+**Also done.**
+- **The older probes.** `swap.ts`, `shown-before-a-scan.ts`, `decide-bench.mjs` and `drop-walk.mjs` call the layered API and are now marked at their top: each is a record of the third leg, ran against `d99fd0b7f`, and no longer runs against the present function.
+- **`record-tfvc-oracle.mjs`** calls no part of the engine. It runs the compiled TFVC oracle, so the engine's change leaves it running as it was; its header says so.
+- **The Visual Studio list's source** is recorded in `starting-lists/VisualStudio-ignore.source.txt`. The copy is byte for byte the file at GitHub's `github/gitignore` commit `eeb775f7` (its head on the evening of 2026-11-21). That exact file was introduced by `90e1bba3` (2026-11-09), found with a blobless anonymous clone and `git log --find-object`. The licence is CC0 1.0 Universal.
+
+#### Speed, before and after
+
+**Deciding in Node** (`one-list-bench.ts`):
+- The setup is the page's full list on each folder: the folder's own ignore files taken in, the proposed lines and the Visual Studio list.
+- Each figure is the median of five runs, on a machine at a load near 40.
+- Every verdict is unchanged: the three test files still pass 98 of 98, and four real folders still agree with git on all 73,137 paths. The repository has 23,602 paths since the merge, where the first milestone counted 23,554.
+
+| Folder | List lines | Paths decided | Before | After |
+| --- | ---: | ---: | ---: | ---: |
+| made (103,329 files) | 357 | 13,333 | 861 ms | 200 ms |
+| nested (17,245 files) | 592 | 13,357 | 1,716 ms | 278 ms |
+
+**What changed (engine commit `ccdd6f9be`).** The list is readied once, as git readies its own:
+- a name with no wildcard is looked up by a path's last part;
+- a whole path with no wildcard is looked up by the path;
+- `*` and a plain ending is compared with the last part's end;
+- a line that begins with plain folders, as a nested file taken in reads, is asked only of paths beneath them;
+- a no-slash line's answer is kept for each name;
+- only the rest meet the matcher, from the last line back, and no further than a line already found.
+
+**On the page:**
+- An edit waits for a 400 ms pause in typing.
+- The page says "…" at once and "Deciding…" while it walks.
+- The walk hands the thread back every 20 folders.
+- The thread is handed back after 30 ms of work, not every 20 folders. A browser holds each pause to at least 4 ms, so the per-folder pauses had cost more than the deciding: before the change, an edit on `nested` took 1,960 ms to show, 876 of them walking.
+
+**From an edit to its drawn answer,** timed in the page from the input event to the end of drawing, the 400 ms pause included. The edit is one line added to the full list; the processor is then slowed four times and held to two cores by the browser's own emulation.
+
+| Folder | Full speed: shown after | of it, deciding | walk in all | drawing | Slowed: shown after | of it, deciding | walk in all | drawing |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| nested | 679 ms | 218 ms | 255 ms | (not timed then) | 3,009 ms | 1,011 ms | 1,316 ms | (not timed then) |
+| made | 715 ms | 194 ms | 286 ms | 31 ms | 8,684 ms | 743 ms | 1,241 ms | 126 ms |
+
+**What the slowed made folder says.** At four times slower, the page's own code accounts for under 2 s of the 8.7 s: the pause, the walk with its deciding, and the drawing. The rest falls between the page's tasks: the browser's own work in the pauses the walk takes, under the emulated throttle. I have not localized it, and it is unfinished. At full speed an edit shows in under three-quarters of a second on both folders.
+
+#### The second milestone's pictures
+
+These were taken at 1,280 by 800 through the folder input (`choice/screenshots/`, counts in `records/nested-blocks-record.json` and `records/made-blocks-record.json`). Each run goes: the first screen with its offers; the offer of what the folders hold taken; the ignore files found added; GitHub's Visual Studio list added and its block opened; the minus on `.png` and on `DNN Platform/Tests/`; a list tool's name on keyboard focus.
+
+**Look at these first:**
+1. `made-blocks-1-first.png`: the empty list's offers on the made folder, "What these folders hold: 48 lines · 92,400 files left out" and "GitHub's Visual Studio list: 234 lines · 92,472 files left out", with the notice of 15 `.tfignore` files above.
+2. `nested-blocks-4-visual-studio-opened.png`: the blocks, largest first, and the Visual Studio block opened. Its lines that leave out code are marked: `[Oo]bj/` with **.cs 163**, `[Dd]ebug/` with **.js 27**, `[Ll]og/` with **.cs 22**, `**/[Pp]ackages/*` with **.cs 11**, each with the angle-bracket sign.
+3. `nested-final-5-minus.png`, from the closing pictures: the list's end in the gutter's numbers, `### Yours`, `*.png`, `/DNN Platform/Tests/`, and the block "Yours" in "Left out" with **.cs 369**. The second milestone's own pictures of that step and the next held the two lines the timing typed into the list, so they were removed and taken again on the closing run.
+
+| Step | nested: read | made: read |
+| --- | ---: | ---: |
+| The first screen | 17,245 | 103,329 |
+| What these folders hold | 10,954 | 10,929 |
+| The ignore files found, added | 10,946 | 10,929 |
+| Visual Studio list added | 10,874 | 10,857 |
+| Minus on `.png` and `DNN Platform/Tests/` | 9,011 | 8,994 |
+
+**What my eye sees.** "Left out" is an overview again: on `nested`, three blocks after the Visual Studio list, four after the minuses, each one row with its counts, kinds and the code sign where it applies.
+- **Code shows.** The `.cs` in a row reads heavier than the `.dll` beside it. The code sign says how many files a reader would have read: 458, 169 and 306 on `nested` across three blocks.
+- **The empty list explains itself.**
+- **The tools' names show on focus,** as a small label under the icon.
+
+**Still wrong:**
+- A block's title wraps over two lines in the middle column.
+- Three kinds with their counts sometimes wrap.
+- The one note left above the list still takes three lines.
+- The slowed made folder is slow for a reason not yet found (above).
+
+### Closing the leg: five small things from the second milestone's pictures
+
+1. **No picture holds the measuring script's lines.** The timing now runs on its own (`look.mjs … timing`), and its pictures are not kept. The final pictures (`nested-final-*`, `made-final-*`) show only what a person did.
+2. **The code sign carries its number.** It reads "‹› 6,001" on what the folders hold, "‹› 255" on the Visual Studio list, and so on. Inside an opened block, the lines that leave out files a reader would read come first, most such files first, then the rest, largest first. The bold kinds stay.
+3. **The headings the page writes are short:** "What the folders hold", "The folder's own ignore files", "Visual Studio's list (GitHub, CC0)" and "Yours". "Left out" has the most width now (the columns go 0.95 : 1.55 : 0.85); nothing was made smaller. Each block's title now takes one line at 1,280 by 800.
+4. **The notes are one line,** for example "3 ! lines cannot keep what they name: a folder above is left out whole". It opens on demand to each line, its number and the folder it cannot reach into. In the left column that line wraps to two at 1,280 by 800.
+5. **The slowed made folder, traced.** A run of its own traced the slowed edit with Chromium's own tracing (`records/made-timing-record.json`), at a load near 3 once the other builders' work had passed. Two earlier tries were spoiled by load: one ran at a load near 31, the other timed out.
+
+   | Edit on the made folder | Shown after | Walk | of it, deciding | counting | drawing |
+   | --- | ---: | ---: | ---: | ---: | ---: |
+   | full speed | 1,902 ms | 210 ms | 154 ms | 31 ms | 26 ms |
+   | slowed four times, two cores | 8,335 ms | 7,841 ms | 843 ms | 124 ms | 92 ms |
+
+   - **What the trace shows.** The slowed edit's window holds 515 tasks over 22 s. One of them lasts 8.2 s, and the processor was given to the page's thread for all of it (8,224 of 8,225 ms), so these seconds are not idle time waiting on throttled timers.
+   - **What the page's own timing shows.** Of the walk's 7.8 s, the work the page times (deciding and counting) is under 1 s. That work slowed by its throttle's factor: deciding 5.5-fold, counting 4-fold. The walk as a whole slowed 37-fold. The excess, about 6.9 s, sits inside that one task, in the walk's own bookkeeping, which takes about 25 ms at full speed.
+   - **My reading.** The emulation stretches something there far beyond its factor; the page's own work does not grow to fill it. I did not attribute the 6.9 s to a function: that needs a JavaScript profile of the same run, which this trace's categories do not carry.
+   - **Not mended:** I found no real work of the page to remove. At full speed an edit on the made folder shows within 2 s, the 400 ms pause included.
+
+**The final pictures** (`choice/screenshots/`, counts in `records/nested-final-record.json` and `records/made-final-record.json`):
+- `nested-final-1-first` … `nested-final-6-tool-named`;
+- `made-final-1-first` … `made-final-6-tool-named`.
+
+On the made run, the step that opens the Visual Studio block missed its block because I had renamed the heading, so `made-final-4` shows the block closed. The nested run, taken after the mend, shows it opened.
+
+**The engine files that moved since `a11f7d007`:**
+- `packages/engine/src/tooling/leaveOut.ts`;
+- `leaveOut.test.ts`, `leaveOut.oracle.test.ts` and `leaveOut.tfvc.test.ts`;
+- their four Live Docs under `.mdmd/layer-4/packages/engine/src/tooling/`.
+
+They moved in `9d7bfdaf9` (the one list) and `ccdd6f9be` (its readying for speed). Nothing else under `packages/` changed.
+
+#### The command line's list: where it lives (a fork for the owner)
+
+The page saves the list as `leave-out.gitignore`, and the command line reads the same text. A scan leaves no trace in the scanned folder. Three places it could live:
+
+1. **The person's own settings folder, outside every scanned folder.** For example `%APPDATA%\live-documentation\lists\<name>.gitignore`, chosen with `--list <name or path>`.
+   - No trace in the scanned folder, ever.
+   - The list does not travel with the folder: a colleague, or the same person on another machine, starts again unless the file is passed along.
+   - The page's saved file lands where the browser saves, and the person moves it.
+2. **Beside the tool's own output** (`.live-documentation/leave-out.gitignore`, where the output goes).
+   - The next scan finds it without being told.
+   - Where the output is configured to live inside the scanned folder, the scan already writes there, so this adds one file to an existing trace. Where the output lives elsewhere, there is no trace.
+   - It is versioned with the docs if they are.
+3. **Named in the repository's own configuration** (`.live-docs.config.json`, by path or with the lines in it).
+   - It travels with the repository and is reviewed like code.
+   - It is a trace the person chooses to commit, and a TFS folder without the configuration has none.
+
+My reading: 1 keeps the rule "a scan leaves no trace" without exception. 2 is the most convenient where an output folder already exists. 3 suits a team. This is the owner's choice.
+
+#### The strangers' tasks: what would change (`scripts/playtest/tasks.json`, left alone)
+
+- **The parameters.** `?layout=reason|folders&switch=off` no longer mean anything: the page has one screen and no switch.
+- **read.**
+  - Nothing is left out until the person chooses: the strangers' `Source` reads 17,244 files on the first screen, with the notice of 25 `.gitignore` and 15 `.tfignore` files found.
+  - The old answer (10,945 read, build output and NuGet packages as the reasons) is what the list gives only after the offer "What these folders hold" is taken.
+- **keep.** `DNN Platform/Library/packages` is read by default. The task makes sense only after the proposals are taken, when its plus adds `!/DNN Platform/Library/packages/` to "Yours".
+- **drop.** The minus on `DNN Platform/Tests` adds `/DNN Platform/Tests/`. The count depends on what the list already leaves out (for example 17,244 − 900 on an empty list).
+- **why.** `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin` is read until a line leaves it out. After Use or Add it is left out by the line taken from `Dnn.AdminExperience/.gitignore` (`[Bb]in`); after the proposals, by `bin/`.
+
 ## Sixth leg, later on 2026-11-21: one layout, symmetric
 
 Forty blind runs on the fifth leg's page settled which layout serves ([the strangers' record](../blind-playtests/README.md#the-choice-before-a-scan-tried-on-strangers)). By reason got 16 of 16 right. "What is left out and why" was answered from the first picture, and the quiet plus was found by four of four. The tree's read tasks all fell short, because its rows count folders, never files.

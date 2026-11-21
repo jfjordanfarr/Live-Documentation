@@ -1,0 +1,20 @@
+{
+ "trees": 52,
+ "verdicts": 468,
+ "compared": 448,
+ "agree": 447,
+ "disagree": 1,
+ "unreachedLeftOutWhole": 17,
+ "inVersionControl": 1,
+ "setApartByASaidDifference": 2,
+ "said": [
+  "g-grammar: .tfignore line 15, `x*.`: TFVC lets a final \".\" match a name with no extension; the list's line does not."
+ ],
+ "setApart": [
+  "g-grammar a/x/b/c.txt: TFVC leaves out by .tfignore:15; the list keeps",
+  "g-grammar xnoext: TFVC leaves out by .tfignore:15; the list keeps"
+ ],
+ "disagreements": [
+  "b-case docs/y.md: TFVC keeps by null:null; the list leaves out by .tfignore:2"
+ ]
+}

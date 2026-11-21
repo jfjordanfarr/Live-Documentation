@@ -2,10 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { leaveOut } from "./leaveOut";
+import { fromTfignores, leaveOut } from "./leaveOut";
 
 /**
- * `leaveOut`'s `.tfignore` half held to Microsoft's own TFVC code: for each tree recorded in
+ * A tree's `.tfignore` files taken into one list by `fromTfignores` and decided by `leaveOut`, its names matched
+ * without regard to case, held to Microsoft's own TFVC code; the list's deciding line is traced back to the file and
+ * line it was taken from: for each tree recorded in
  * `__fixtures__/tfignore-oracle.json`, every file TFVC's change scanner judged (Team Explorer Everywhere's
  * `LocalItemExclusionEvaluator`, compiled unchanged and run with no global exclusion list), whether it is left out and
  * which `.tfignore` and line decided. Where a file lies under a folder `tf add /recursive` does not enter, the function
@@ -37,28 +39,35 @@ const ON_WINDOWS = new Map([["b-case docs/y.md", { excluded: true, source: ".tfi
  */
 const inVersionControl = (file: string): boolean => file.split("/").slice(0, -1).some((part) => /^(?:\.git|\.hg|\.svn)$/iu.test(part));
 
-describe("leaveOut's .tfignore half against TFVC's own code", () => {
+describe("a tree's .tfignore files taken into one list, against TFVC's own code", () => {
   for (const tree of recorded.trees) {
     it(tree.name, () => {
-      const decide = leaveOut({ ignoreFiles: Object.entries(tree.tfignores).map(([file, text]) => ({ path: file, text })) });
-      for (const { path: file } of tree.verdicts.filter((verdict) => inVersionControl(verdict.path))) expect(decide.file(file)).toMatchObject({ kept: false, rule: { kind: "version control" } });
-      const reached = tree.verdicts.filter((verdict) => !verdict.add.startsWith("unreached:") && !inVersionControl(verdict.path));
+      const taken = fromTfignores(Object.entries(tree.tfignores).map(([file, text]) => ({ path: file, text })));
+      expect(taken.needsIgnoreCase).toBe(true);
+      const decide = leaveOut({ list: taken.lines.join("\n"), ignoreCase: true });
+      const origin = (number: number | undefined) => (number === undefined ? undefined : taken.from[number - 1]);
+      for (const { path: file } of tree.verdicts.filter((verdict) => inVersionControl(verdict.path))) expect(decide.file(file)).toMatchObject({ kept: false, fixed: "version control" });
+      // A line the translator said it cannot carry: the verdicts TFVC gave by it are set apart, and there must be some.
+      const unsaid = new Set(taken.differences.map((difference) => /^(.*) line (\d+),/u.exec(difference)).filter((found) => found !== null).map((found) => `${found[1]}:${found[2]}`));
+      const byUnsaid = (verdict: RecordedTree["verdicts"][number]): boolean => unsaid.has(`${verdict.source}:${verdict.line}`);
+      for (const line of unsaid) expect(tree.verdicts.some((verdict) => `${verdict.source}:${verdict.line}` === line), `${line} decides something`).toBe(true);
+      const reached = tree.verdicts.filter((verdict) => !verdict.add.startsWith("unreached:") && !inVersionControl(verdict.path) && !byUnsaid(verdict));
       const ours = reached.map(({ path: file }) => {
         const verdict = decide.file(file);
-        const rule = verdict.rule?.kind === "tfignore" ? verdict.rule : undefined;
-        return { path: file, excluded: !verdict.kept, source: rule?.file ?? null, line: rule?.line ?? null };
+        const from = origin(verdict.line?.number);
+        return { path: file, excluded: !verdict.kept, source: from?.file ?? null, line: from?.line ?? null };
       });
       const expected = reached.map(({ path: file, excluded, source, line }) => ({ path: file, excluded, source, line, ...ON_WINDOWS.get(`${tree.name} ${file}`) }));
       expect(ours).toEqual(expected);
       // Follows `tf add`: a file under a folder it does not enter is left out by a .tfignore, and a `!` line the scanner kept it by is named.
-      for (const { path: file, excluded, source, line, add } of tree.verdicts.filter((verdict) => verdict.add.startsWith("unreached:"))) {
+      for (const { path: file, excluded, source, line, add } of tree.verdicts.filter((verdict) => verdict.add.startsWith("unreached:") && !byUnsaid(verdict))) {
         const verdict = decide.file(file);
-        expect({ file, kept: verdict.kept, kind: verdict.rule?.kind }).toEqual({ file, kept: false, kind: "tfignore" });
+        expect({ file, kept: verdict.kept, fromTfignore: origin(verdict.line?.number) !== undefined }).toEqual({ file, kept: false, fromTfignore: true });
+        const named = (verdict.notes ?? []).map((note) => origin(Number(/^line (\d+),/u.exec(note)?.[1])));
         // A `!` line in a .tfignore at or above the folder is named; one in a .tfignore inside it is never read, as `tf add` never reads it.
         const folder = add.slice("unreached:".length);
         const inside = source !== null && source.toLowerCase().startsWith(`${folder.toLowerCase()}/`);
-        if (!excluded && !inside) expect(verdict.notes?.some((note) => note.startsWith(`${source} line ${line},`)), `${file}: a note names ${source} line ${line}`).toBe(true);
-        if (!excluded && inside) expect(verdict.notes?.some((note) => note.startsWith(`${source} `)) ?? false, `${file}: ${source} lies inside a folder not entered, and is not read`).toBe(false);
+        if (!excluded && !inside) expect(named.some((each) => each?.file === source && each.line === line), `${file}: a note names ${source} line ${line}`).toBe(true);
       }
     });
   }
