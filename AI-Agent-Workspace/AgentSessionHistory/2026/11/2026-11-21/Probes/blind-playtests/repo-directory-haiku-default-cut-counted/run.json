@@ -1,0 +1,143 @@
+{
+  "task": "repo-directory",
+  "start": "http://127.0.0.1:8792/",
+  "words": "Can you open the folder packages/explorer/src/client/search in this map and tell me how the files in it connect?",
+  "model": "claude-haiku-5-5",
+  "effort": "default",
+  "variant": "look-only",
+  "settings": [
+    "localMap.step=least",
+    "localMap.cutCounted=on"
+  ],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-21T07:44:55.853Z",
+    "explorer-data.json": "2026-11-21T07:44:55.347Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:44:58.022Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "Can you open the folder packages/explorer/src/client/search in this map and tell me how the files in it connect?\n\nhttp://127.0.0.1:8792/",
+  "startedAt": "2026-11-21T07:53:13.987Z",
+  "finishedAt": "2026-11-21T07:55:40.511Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-21T07:44:55.853Z",
+    "explorer-data.json": "2026-11-21T07:44:55.347Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:44:58.022Z"
+  },
+  "setup": {
+    "settings": [
+      {
+        "setting": "localMap.step",
+        "wanted": "least",
+        "shown": "least"
+      },
+      {
+        "setting": "localMap.cutCounted",
+        "wanted": "on",
+        "shown": "on"
+      }
+    ],
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 68197,
+  "lockWaitMs": 78324,
+  "apiMs": 12045,
+  "turns": 17,
+  "assistantMessages": 26,
+  "toolCalls": 16,
+  "actions": 16,
+  "actionsByTool": {
+    "look": 7,
+    "point": 0,
+    "click": 6,
+    "drag": 0,
+    "scroll": 0,
+    "type": 3,
+    "press": 0
+  },
+  "usage": {
+    "input": 16,
+    "cacheWrite": 17120,
+    "cacheRead": 66535,
+    "output": 1893
+  },
+  "costUsd": 0.00503745,
+  "modelUsage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 16,
+      "outputTokens": 1893,
+      "cacheReadInputTokens": 66535,
+      "cacheCreationInputTokens": 17120,
+      "webSearchRequests": 0,
+      "costUSD": 0.00503745,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 426,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 17120,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAbxxGRaqGRU3JJQIKhUIAC%2B8ABmqA7oXDRO%2BIpEEVQA1jKQAGysxIqYDqpcUNPwJAgROmzNE0bENeFsVKqM8FSoklwhAF5LkCIgOtEUoqRBWAi3DPCqTmAxUEwAHRMAS7EhhZoeDhBLj4eaYDhbFqQIECVZzBZcABKEkWAPgBHwiQAHqEEUiAYC4IhDqMghxckcLJTdmR8JIEa4vAtYqV4NwLFwHJSQfAdHkOB8ABKkBoo1acLiSABC0QACmR1icaWMAOpmZl8kBnC4ALVQqAoWO8bD0El6lOpply5st1s2dqoDpRgIAnKdMHYAIIlBgKECKVD4XxG3LubAAMScdhjKweynWABFYYa0SAfvtdQN8EKYw9Roc2u0clAOthxfAAFa1%2BtceCoKAAbRAnYAOiB8Id%2B7B%2B3D0KNMIsdAB6LjE8LdIXTnQ9afoCJQ5dceboRTTn4ERQAWnFO8UgI4OmH-YAVP2ALogeB9gdDp%2BjzDjyfeWfztC5Bxl1Xdc2E3U8ej3cDdyPcQHAvK93xAO8QEfZ9RzfEcB0-Ccp1-BcAKA9A1w3OotzPMiIKPDpQIQSR4OvJCHxQ05GjHHCfznfClxXIiQLA7cIIo6DqK4Wj4KfAcu1AZEsK-XDOP-bjgJIjghL3A9BhPATd3EsVGhvNpYGk1jsO-GcFMXQCeOI0DSKgyDtOPWDdIefTDOMyBZPY8y-0swibP48j7Komi6MvCSywM1p71aIA",
+  "init": {
+    "cwd": "/tmp/session-uiTYjh",
+    "model": "claude-haiku-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

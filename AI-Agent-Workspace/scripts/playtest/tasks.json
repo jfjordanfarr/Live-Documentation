@@ -177,6 +177,13 @@
       },
       "words": "Without changing anything: will the scan read the folder `Dnn.AdminExperience/EditBar/Dnn.EditBar.UI/bin`? Why or why not?",
       "rightAnswer": "The folder is the one `Probes/blind-playtests/make-leave-out-folder.mjs` makes from DNN at d6c3af4d (17,244 files; see the 2026-11-21 blind-playtests README, 'The choice before a scan'), handed to the page's folder input before the tester begins. Answers written 2026-11-21 before any run, from the folder as made and from the page's own model (`choice/model.mjs`) run over it with the same listed-first source the page builds; the construction checks the totals independently: 1,714 built files and 4,577 package files were made, and 6,299 files are left out. Layout: Folders, the switch between layouts hidden. No. It is left out by the line `[Bb]in` (line 53) of `Dnn.AdminExperience/.gitignore`; the page groups it as `.gitignore: [Bb]in` (9 folders, 126 files) and shows that reason on its row among the folders. It holds 14 files (`Debug` and `Release` builds of `Dnn.EditBar.UI.dll` and three dependencies), and as the build output beside `Dnn.EditBar.UI.csproj` it would be left out without the line too. Right: no, with the `.gitignore` as the reason (naming build output as well is a plus). Partly: no, with build output alone or a reason the page does not give. Wrong: yes, or no reason."
+    },
+    {
+      "id": "repo-open-history",
+      "map": "repository",
+      "start": "http://127.0.0.1:8792/?view=local&node=packages/engine/src/live-docs/pathfind.ts",
+      "words": "A colleague sent me this link to one of our files. What is in the `history` folder that sits beside it? List every file in it.",
+      "rightAnswer": "Written 2026-11-21 before any run, from the built Explorer's data (dist/explorer of 07:44 UTC, from b37c67fec), for the Cut Counted trial: a folder too large for the window, opened from inside the map. `packages/engine/src/live-docs/history/` holds 32 files, no subfolder: 18 code files (bundled.ts, codec.ts, derive.ts, directories.ts, format.ts, git.ts, lens.ts, queries.ts, rows.ts, sampling.ts, sequence.ts, shape.ts, summary.ts, textStore.ts, ticks.ts, versionControl.ts, window.ts, words.ts) and 14 tests (bundled, derive, directories, git, lens, queries, rows, sampling, sequence, summary, textStore, ticks, window and words, each `.test.ts`). Right: every file, or the 18 code files with the tests named or counted. Partly: most of them (24 or more) with none invented, or the right count with a few names. Wrong: another folder, invented files, or fewer than half."
     }
   ]
 }
