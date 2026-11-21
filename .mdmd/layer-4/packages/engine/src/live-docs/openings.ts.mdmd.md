@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/openings.ts`
-- Generated At: 2026-11-21T07:20:18.803Z
+- Generated At: 2026-11-21T19:30:00.623Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ The vocabulary of what a file serves across a process boundary, and how a call f
 - Since 2026-11-21 a three-part name is never a linked server's: `database..name` leaves out only the schema, a user's default in that database, taken as `dbo`, and reads as `database.dbo.name` does, as Microsoft's syntax conventions give it ("Server and schema name are omitted"). Until then `SisterDb..Orders` was read as a linked server's one-part name, drawn as a contract to every schema's `Orders`, while `SisterDb.dbo.Orders` was drawn from source to `dbo.Orders`: one object classed two ways by its spelling. On the three corpora the only such names are of `tempdb`, `master` and `msdb`, kept as written before and after ([the account](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 - Since the same day a linked server's name that leaves its schema out, `Srv...Orders`, binds to nothing and is kept as written: its schema is the default of the login the linked server is reached by, which no file states. Until then it bound to every local namesake, `dbo.Orders` among them, as a contract. A four-part name that writes its schema binds as before, so the estate's line from SQL Server to Oracle stands, and its hand-verified edges stay 17 of 20. An independent review's second pass found it through the T-SQL grader, which already expected the name kept (`fixtures/sql-schemas/linked.sql`).
 - Since 2026-11-21 an object declared without a schema is `dbo`'s for every name that uses it, by `sqlNameMatches`: `dbo.X` names a declared `X`, as a one-part `X` already did, and an `ALTER PROCEDURE dbo.X` stands for a `CREATE PROCEDURE X` of the same script. Both rest on the one presumption Microsoft documents, that a user created without a default schema has `dbo`. Until then the reader took the default for `dbo` on one side of a match and for nobody on the other. On DNN's provider scripts it adds 103 lines, every one to the oldest upgrade scripts, which create procedures without a schema, from later ones that write `dbo.`; ten drawn at random were each a true use. On tSQLt, DNN's SQL and dbatools' SQL it adds none, and no C# or estate doc of this repository changed ([the account](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
+- Since the evening of 2026-11-21 SQLite's, MySQL's and PostgreSQL's spellings of what a script creates are read as SQLite, run on them, holds them (`npm run oracle:sqlite`, the fixture `sql-sqlite`): `IF NOT EXISTS` between the kind and the name; a name in backticks; a `TEMP` or `TEMPORARY` object, and Oracle's `PRIVATE TEMPORARY` table, no object of the script, as `#name` is none, where Oracle's `GLOBAL TEMPORARY` table stays one; a virtual table a table, its `USING` module none; and a trigger written with its timing before its table ending at its `END`, or its `;`, where T-SQL's runs to its batch's end. Before, `CREATE TABLE IF NOT EXISTS t` declared nothing, and mojoPortal's SQLite and MySQL schemas, all in backticks, declared none of their tables. ScriptDom's and the PL/SQL grammar's reports on tSQLt, DNN, its provider scripts, dbatools and utPLSQL are the same line for line. Where several databases' scripts declare the same tables, as mojoPortal's data layers do, a name links to every one of them, the binding taking the workspace for one database, an older fault the new declarations show more of ([the record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-batch/README.md)).
 - `OPENING_KINDS` and `isToolingFile` (2026-10-15): the symbol kinds that make a file an entry by what it serves, and the file names a tool reads and no file imports (`tsconfig*.json`, `*.config.*`, `Web.config`, `App.config`, `packages.config`, and since 2026-10-16 every package manifest by its name, from the list `homeOf` reads, whether or not it publishes a package), shared by the composition of the `Entry` lines and by the manifest reader, which passes such a file over when it looks for what a command runs.
 - Since 2026-11-17 a development container's second configuration, one folder down (`.devcontainer/<name>/devcontainer.json`), is a tooling entry like the first: it is the third place the Dev Containers specification gives such a file, and this repository gained one that day for the host's graphics card, which the walk from the entry points then reported as a file nothing reaches ([the record](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#work-notes-turns-8-to-10)). Two folders down is no documented place and is not one here.
 
@@ -219,7 +220,7 @@ The parts of a written name, split at the dots outside its quoted names, each qu
 ##### `sqlWrittenName` — Summary
 A name's parts written as one name: joined by dots, a part bare unless it
 holds what would split it or misread it (a dot, a bracket, a double quote,
-a space at either end), which is then quoted in brackets. So
+a backtick, a space at either end), which is then quoted in brackets. So
 `tests.[test it doesn't fail]` is written `tests.test it doesn't fail`, and
 `[test fn.sums]` keeps its brackets, and {@link sqlNameParts} reads either
 back into the same parts.
@@ -237,21 +238,21 @@ schema to its default, a user's in that database, which no text gives and is tak
 
 #### `SqlDeclaration` {#symbol-sqldeclaration}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L751)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L802)
 
 ##### `SqlDeclaration` — Summary
 One object a script declares.
 
 #### `SqlReference` {#symbol-sqlreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L760)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L811)
 
 ##### `SqlReference` — Summary
 One object a script or a query names.
 
 #### `readSql` {#symbol-readsql}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L787)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L838)
 
 ##### `readSql` — Summary
 What a script creates and what it names, read from its tokens batch by
@@ -272,7 +273,7 @@ built-in table function, or a method of the `xml` type.
 
 #### `sqlDeclarations` {#symbol-sqldeclarations}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L977)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1040)
 - Returns: [`SqlDeclaration`](#symbol-sqldeclaration)[]
 
 ##### `sqlDeclarations` — Summary
@@ -280,7 +281,7 @@ Every object a script creates.
 
 #### `sqlReferences` {#symbol-sqlreferences}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L982)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1045)
 - Returns: [`SqlReference`](#symbol-sqlreference)[]
 
 ##### `sqlReferences` — Summary
@@ -288,14 +289,14 @@ Every object the text names after a verb that reads, writes, calls or alters it.
 
 #### `DeclaredSqlObject` {#symbol-declaredsqlobject}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L987)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1050)
 
 ##### `DeclaredSqlObject` — Summary
 A database object some script declares, as the symbol index records it.
 
 #### `declaredSqlObjects` {#symbol-declaredsqlobjects}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L996)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1059)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -304,7 +305,7 @@ Every procedure, table, view and function symbol of the workspace, read once per
 
 #### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1017)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1080)
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlNameMatches` — Summary
@@ -314,7 +315,7 @@ a declared `X`.
 
 #### `matchSqlObject` {#symbol-matchsqlobject}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1026)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1089)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -323,7 +324,7 @@ The declared objects a name matches, by {@link sqlNameMatches}.
 
 #### `bindSqlName` {#symbol-bindsqlname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1050)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L1113)
 - Returns: `Declared`[]
 - Parameters: `matches`: `Declared`[]
 

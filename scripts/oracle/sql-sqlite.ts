@@ -21,7 +21,7 @@
 import * as fs from "node:fs";
 import path from "node:path";
 
-import { readSql } from "@live-documentation/engine/live-docs/openings";
+import { readSql, sqlNameParts } from "@live-documentation/engine/live-docs/openings";
 
 import { listFixtureFiles } from "./fixture";
 import { sourceDigests } from "./sources";
@@ -77,7 +77,8 @@ export function compareSqlite(folder: string, record: SqliteRecord): string[] {
     const text = fs.readFileSync(path.join(folder, file), "utf8");
     const declared = readSql(text).declarations
       .filter((declaration) => !declaration.inBody && (declaration.kind === "table" || declaration.kind === "view"))
-      .map((declaration) => `${declaration.kind} ${declaration.name.toLowerCase()}`);
+      // The name as the database holds it: a quoted name unquoted, SQLite keeping every object in one schema of a file.
+      .map((declaration) => `${declaration.kind} ${(sqlNameParts(declaration.name).at(-1) ?? "").toLowerCase()}`);
     const expected = made.objects.map((object) => `${object.kind} ${object.name.toLowerCase()}`);
     for (const object of expected) if (!declared.includes(object)) found.push(`${file}: SQLite makes ${object}, the reader does not declare it`);
     for (const object of declared) if (!expected.includes(object)) found.push(`${file}: the reader declares ${object}, SQLite makes no such object`);

@@ -5,39 +5,39 @@
       "objects": [
         {
           "kind": "table",
-          "name": "after_the_trigger"
+          "name": "shop order lines"
         },
         {
           "kind": "table",
-          "name": "audit"
+          "name": "shop_after_the_trigger"
+        },
+        {
+          "kind": "table",
+          "name": "shop_audit"
         },
         {
           "kind": "view",
-          "name": "customer_names"
+          "name": "shop_customer_names"
         },
         {
           "kind": "table",
-          "name": "customers"
+          "name": "shop_customers"
         },
         {
           "kind": "table",
-          "name": "customers_archive"
+          "name": "shop_customers_archive"
         },
         {
           "kind": "table",
-          "name": "legacy"
+          "name": "shop_legacy"
         },
         {
           "kind": "table",
-          "name": "notes"
+          "name": "shop_notes"
         },
         {
           "kind": "table",
-          "name": "order lines"
-        },
-        {
-          "kind": "table",
-          "name": "tick`ed"
+          "name": "shop_tick`ed"
         }
       ]
     },
@@ -71,7 +71,7 @@
     }
   },
   "sources": {
-    "dialect.sql": "df0386d330e384c34d47936898a6d7b180ed316f6a38a55e350088ad00c202cc",
+    "dialect.sql": "70d084e5115792bebae9d2b160bd3916ebc536ed586512d432830bc44f14500d",
     "migrations/001_init.sql": "dd6a726f44e209b569726fde31d3056a00e6e8e914c210bb0933c3102bb6e675"
   }
 }
