@@ -31,8 +31,9 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  *
  * `fixtures/sql-schemas`, of 2026-11-21, holds the same table name in two
  * schemas and names it by one part from modules of either, from a module's
- * DDL and executed string, from a trigger and a loose script, and by
- * `database..name`, each bound by the order Microsoft documents. Its one
+ * DDL and executed string, from a trigger and a loose script, by
+ * `database..name`, and on a linked server with its schema written and left
+ * out, each bound by the order Microsoft documents. Its one
  * register entry is a kind of object the reader gives no symbol, a trigger.
  */
 const MEASURED_MISSES: Record<string, string[]> = {

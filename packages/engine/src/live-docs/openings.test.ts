@@ -420,7 +420,9 @@ describe("database objects", () => {
     expect(bound("Notes", "archive")).toEqual(["archive.Notes"]);
     expect(bound("Things", "archive")).toEqual(["Things"]);
     expect(bound("archive.Orders")).toEqual(["archive.Orders"]);
-    expect(bound("ORACLE_CENTRAL...Orders")).toEqual(["dbo.Orders", "archive.Orders"]);
+    // A linked server's name with its schema left out is in its login's default schema there, which no file states.
+    expect(bound("ORACLE_CENTRAL...Orders")).toEqual([]);
+    expect(bound("ORACLE_CENTRAL..archive.Orders")).toEqual(["archive.Orders"]);
   });
 });
 

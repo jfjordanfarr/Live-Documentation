@@ -251,6 +251,33 @@
       ],
       "dynamic": []
     },
+    "../linked.sql": {
+      "parseErrors": [],
+      "creates": [],
+      "references": [
+        {
+          "how": "select",
+          "name": {
+            "server": "Srv",
+            "name": "Orders"
+          },
+          "line": 3,
+          "column": 16
+        },
+        {
+          "how": "select",
+          "name": {
+            "server": "Srv",
+            "database": "Sales",
+            "schema": "archive",
+            "name": "Orders"
+          },
+          "line": 4,
+          "column": 16
+        }
+      ],
+      "dynamic": []
+    },
     "../notes.sql": {
       "parseErrors": [],
       "creates": [

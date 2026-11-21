@@ -1038,7 +1038,9 @@ export function matchSqlObject(name: SqlObjectName, index: WorkspaceSymbolIndex)
 
 /**
  * The declared objects a reference binds to, of those its name matches, by T-SQL's order of search. A name that
- * writes its schema, or reaches a linked server, binds to every match. A one-part name binds to the matches in the
+ * writes its schema binds to every match, on a linked server as here. A linked server's name that leaves its schema
+ * out (`server...name`) binds to none: the schema is then the default of the login the linked server is reached by,
+ * which no file states. A one-part name binds to the matches in the
  * first schema that holds one, of its module's schema ({@link SqlReference.moduleSchema}) and then `dbo`, and to none
  * when neither does, however many other schemas hold one: Microsoft documents that a name in a module's body is
  * searched in "the schema that contains this other procedure", and elsewhere in "the user's default schema", before
@@ -1046,7 +1048,9 @@ export function matchSqlObject(name: SqlObjectName, index: WorkspaceSymbolIndex)
  * and an object declared without a schema, in its creator's default schema, as `dbo`'s.
  */
 export function bindSqlName<Declared extends { parts: string[] }>(reference: Pick<SqlReference, "name" | "moduleSchema">, matches: Declared[]): Declared[] {
-  if (reference.name.linked || reference.name.parts.length >= 2) return matches;
+  if (reference.name.parts.length >= 2) return matches;
+  // A four-part name read to one part left its schema out: the linked login's default, which no file states.
+  if (reference.name.linked) return [];
   for (const schema of [reference.moduleSchema ?? "dbo", "dbo"]) {
     const bound = matches.filter((object) => (object.parts.length >= 2 ? object.parts[object.parts.length - 2] : "dbo") === schema);
     if (bound.length > 0) return bound;
