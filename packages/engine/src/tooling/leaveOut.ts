@@ -589,15 +589,22 @@ const nameOf = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
 
 type Opinion = { excluded: boolean; rule: LeaveOutRule; negations?: string[] } | undefined;
 
-/** A folder's state, derived once from its parent's: left out whole, or the ignore files that speak for what it holds. */
+/** The ignore files that speak for what a folder holds: those at and above it, the deepest last. */
+interface FolderFiles {
+  git: Array<{ file: string; patterns: GitPattern[] }>;
+  tf: Array<{ file: string; entries: TfEntry[] }>;
+}
+
+/**
+ * A folder's state, derived once from its parent's: left out whole, or the ignore files that speak for what it holds.
+ * Those are asked for only when something inside the folder is decided, so that a walk which lists a folder after
+ * deciding it, as a lazy one does, has read its ignore files by then.
+ */
 interface FolderState {
   verdict: LeaveOutVerdict;
   /** The verdict that leaves this folder, or one above it, out whole. */
   whole?: LeaveOutVerdict;
-  /** The `.gitignore` files at and above this folder, the deepest last. */
-  git: Array<{ file: string; patterns: GitPattern[] }>;
-  /** The `.tfignore` files at and above this folder, the deepest last. */
-  tf: Array<{ file: string; entries: TfEntry[] }>;
+  files: () => FolderFiles;
 }
 
 /** The last matching pattern of one list, as git's `last_matching_pattern_from_list`. */
@@ -641,14 +648,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     const own = lastMatching(person, path, isDir, true);
     if (own) return { kept: own.negative, rule: { kind: "person", index: own.line - 1, pattern: own.original } };
     let byGit: Opinion;
-    for (let i = parent.git.length - 1; i >= 0 && !byGit; i--) {
-      const pattern = lastMatching(parent.git[i].patterns, path, isDir, ignoreCase);
-      if (pattern) byGit = { excluded: !pattern.negative, rule: { kind: "gitignore", file: parent.git[i].file, line: pattern.line, pattern: pattern.original } };
+    for (let i = parent.files().git.length - 1; i >= 0 && !byGit; i--) {
+      const pattern = lastMatching(parent.files().git[i].patterns, path, isDir, ignoreCase);
+      if (pattern) byGit = { excluded: !pattern.negative, rule: { kind: "gitignore", file: parent.files().git[i].file, line: pattern.line, pattern: pattern.original } };
     }
     let byTf: Opinion;
-    for (let i = parent.tf.length - 1; i >= 0 && !byTf; i--) {
-      const entry = tfFileOpinion(parent.tf[i].entries, path, isDir);
-      if (entry) byTf = { excluded: entry.excluded, rule: { kind: "tfignore", file: parent.tf[i].file, line: entry.line, pattern: entry.original } };
+    for (let i = parent.files().tf.length - 1; i >= 0 && !byTf; i--) {
+      const entry = tfFileOpinion(parent.files().tf[i].entries, path, isDir);
+      if (entry) byTf = { excluded: entry.excluded, rule: { kind: "tfignore", file: parent.files().tf[i].file, line: entry.line, pattern: entry.original } };
     }
     if (byGit?.excluded) return { kept: false, rule: byGit.rule };
     if (byTf?.excluded) return { kept: false, rule: byTf.rule };
@@ -667,8 +674,8 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     const notes: string[] = [];
     const say = (where: string, pattern: string) => notes.push(`${where}, \`${pattern}\`, may name files inside folders left out whole; they are not looked for`);
     for (const pattern of person) if (pattern.negative && couldNameInside(pattern, folder, true)) say(`the person's pattern ${pattern.line}`, pattern.original);
-    for (const { file, patterns } of parent.git) for (const pattern of patterns) if (pattern.negative && couldNameInside(pattern, folder, ignoreCase)) say(`${file} line ${pattern.line}`, pattern.original);
-    for (const { file, entries } of parent.tf) {
+    for (const { file, patterns } of parent.files().git) for (const pattern of patterns) if (pattern.negative && couldNameInside(pattern, folder, ignoreCase)) say(`${file} line ${pattern.line}`, pattern.original);
+    for (const { file, entries } of parent.files().tf) {
       for (const entry of entries) {
         if (entry.excluded) continue;
         const under = entry.folder === "" ? "" : `${entry.folder.toLowerCase()}/`;
@@ -680,18 +687,22 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
   };
 
   /** A folder's own ignore files added to what it inherits. */
-  const withOwnFiles = (folder: string, inherited: FolderState, verdict: LeaveOutVerdict): FolderState => {
-    const git = [...inherited.git];
-    const tf = [...inherited.tf];
-    for (const file of ignoreFilesIn(folder)) {
-      const name = nameOf(file.path);
-      if (name === ".gitignore") {
-        git.push({ file: file.path, patterns: gitPatterns(file.text, folder) });
-      } else if (name.toLowerCase() === ".tfignore") {
-        tf.push({ file: file.path, entries: tfEntries(file.text, folder) });
+  const withOwnFiles = (folder: string, inherited: () => FolderFiles, verdict: LeaveOutVerdict): FolderState => {
+    let known: FolderFiles | undefined;
+    const files = (): FolderFiles => {
+      if (known) return known;
+      const above = inherited();
+      const git = [...above.git];
+      const tf = [...above.tf];
+      for (const file of ignoreFilesIn(folder)) {
+        const name = nameOf(file.path);
+        if (name === ".gitignore") git.push({ file: file.path, patterns: gitPatterns(file.text, folder) });
+        else if (name.toLowerCase() === ".tfignore") tf.push({ file: file.path, entries: tfEntries(file.text, folder) });
       }
-    }
-    return { verdict, git, tf };
+      known = { git, tf };
+      return known;
+    };
+    return { verdict, files };
   };
 
   const stateOf = (folder: string): FolderState => {
@@ -699,14 +710,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
     if (known) return known;
     let state: FolderState;
     if (folder === "") {
-      state = withOwnFiles("", { verdict: { kept: true }, git: [], tf: [] }, { kept: true });
+      state = withOwnFiles("", () => ({ git: [], tf: [] }), { kept: true });
     } else {
       const parent = stateOf(folderOf(folder));
       if (parent.whole) {
         state = { ...parent, verdict: parent.whole };
       } else {
         const verdict = judge(folder, true, parent);
-        if (verdict.kept) state = withOwnFiles(folder, parent, verdict);
+        if (verdict.kept) state = withOwnFiles(folder, parent.files, verdict);
         else {
           const notes = notesFor(folder, parent);
           const whole = notes.length > 0 ? { ...verdict, notes } : verdict;

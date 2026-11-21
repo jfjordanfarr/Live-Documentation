@@ -2,6 +2,76 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Fourth leg, later on 2026-11-21: the choice before a scan, as a trial page
+
+A trial page, not the product: `choice/choice.html` is one file, opened from disk. Its build is `choice/build.mjs`; its source is `choice/page.html`, `choice/page.mjs` and `choice/model.mjs`.
+
+- **Policy.** One script admitted by its hash, no network (`default-src 'none'`), and listeners rather than inline handlers.
+- **What it holds.** The engine's `leaveOut`.
+- **What it reads.** Names, the text of ignore files, and `.git/config` for `core.ignorecase`. Nothing leaves the machine.
+
+### What it does
+
+- **Giving it a folder,** three ways, each an icon and one word:
+  - **Pick:** a directory handle, walked lazily, so a folder left out is never listed.
+  - **Drop here:** the same handle, where the browser gives one.
+  - **Choose:** `<input webkitdirectory>`. The browser lists everything first. Automation and the other browsers can use it.
+- **While it walks,** it hands the thread back every 20 folders and says how many it has listed.
+- **The timings line** at the bottom: how the folder was walked, the listings, and listing and deciding time. A person who picks or drops a folder there times the first lazy walk.
+- **By reason** (a summary with its exceptions):
+  - one line of totals;
+  - what is left out, grouped by its reason in plain words: "Build output beside a project", "NuGet packages", "Node packages", "`.tfignore`: packages", "`.gitignore`: .vscode/", "The tool's own output", "Version control's own folder", "Your pattern: …". Largest first, with how many folders and files ("not looked inside" where nothing was listed). Each row has a Keep control, and opens to its folders, each with its own Keep;
+  - what will be read, by kind and by top folder.
+- **Folders** (the tri-state tree):
+  - each row is a folder: its name, how many files it keeps and leaves out, a box ticked, empty or mixed, and beside a row left out its reason;
+  - only opened rows are drawn;
+  - one tab stop, with the arrow keys, Home and End inside it; Space ticks a box and Enter opens a row;
+  - ticking a folder left out adds a pattern of the person's own (`!/path/`) and walks it then.
+- **In both:**
+  - a field for a pattern of one's own, read by git's rules without regard to case, with the person's patterns listed and each removable;
+  - the evidence switch, applied to begin with;
+  - the notes beside `!` lines that may name files inside folders left out whole;
+  - **Scan**, which in this trial only says how many files it would read.
+
+### A change the function needed
+
+The page's first pictures showed DNN's nested `.gitignore` files having no effect on the first walk; they took effect only after a change was made.
+
+- **The cause, in `leaveOut`.** It asked for a folder's own ignore files when the folder was decided. A lazy walk lists a folder, and reads its ignore files, only after deciding it.
+- **The mend.** A folder's ignore files are now asked for when something inside it is decided.
+- **The test.** A case in `leaveOut.test.ts` holds that order: deciding a folder does not ask for its files, and deciding a file inside it does.
+- **What else this touched.** The Node probes of the earlier legs listed folders on demand, so this did not touch their numbers. The never-run `drop-walk.mjs` had the same order.
+
+### The pictures (`choice/screenshots/`, 1,280 by 800, through the folder input)
+
+**Clean DNN** (10,941 files, its own `.gitignore` files):
+- 10,915 files will be read and 26 left out;
+- handed over and decided in 6.2 s, deciding 344 ms;
+- keeping `Build/Tools/` makes it 13 left out;
+- the pattern `Build/` makes it 108.
+
+**The made folder** (103,329 files):
+- 10,929 files will be read, 92,400 left out;
+- handed over in about 71 s, the browser's listing of everything before the page sees anything;
+- the walk over what was handed took 2.7 s in all: listing 266 ms, deciding 38 ms, and the rest the walk handing the thread back every 20 folders;
+- before a fault of the page's own was mended it took 12.7 s: it counted the files beneath each left-out folder by scanning the whole list.
+
+**What my eye says:**
+
+- **The by-reason list answers "why is this left out" at a glance.** Each row says its reason in the person's terms, with counts. Its Keep sits beside the reason, so "how do I keep it" is answered in the same place.
+  - Opened, a group of 162 folders draws a Keep on every row, which is heavy. One Keep for the group and a quieter control per folder would read better.
+- **The tree answers "what about this folder"** better than "why". The reason shows only on rows left out, at the right edge, after the counts. On the made folder nearly every project reads "mixed", because each holds a `bin` and an `obj` that evidence leaves out, so the tick tells little until a row is opened.
+- **The keyboard's focus in the tree** is a clear blue ring around the whole row (`made-5-tree-focus.png`).
+- **"0 folders not looked inside"** after the folder input is true, since the browser listed everything, but the phrase belongs to a lazy walk. With the input, the counts of what lies inside are known and shown instead.
+- **The drop target** was first drawn grey and dashed, like a disabled button. It is now drawn in the offered blue, and says "Drop here".
+- **Where a person would not know what a row means:** `.gitignore: .vscode/` assumes they know what a `.gitignore` is. The reason could read "Ignored by .gitignore" with the pattern after it. Not changed.
+- **What the page hides:** the files in the top folder (`(top)`) appear only in the counts; the tree lists folders, not files.
+- **What I cannot judge for the owner:** which layout a stranger understands faster. That is the strangers' question.
+
+### The same choice as text
+
+`choice/as-text.ts` prints, for a folder, the totals, what is left out by reason with its folders, and what will be read by kind and by folder. It uses the same model, walked lazily over the disk. Its output for the made folder is `choice/made-as-text.txt`: 2,300 folders listed in 0.36 s. No command was added to the product.
+
 ## Third leg, later on 2026-11-21: the starting list decided, the swap, and a dropped folder
 
 ### The starting list, decided: the evidence rules, and no list of names

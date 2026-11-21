@@ -60,6 +60,20 @@ describe("leaveOut", () => {
     expect(leaveOut({ ignoreFiles, evidence: { names, apply: true }, person: ["!packages/"] }).folder("packages")).toMatchObject({ kept: true, rule: { kind: "person" } });
   });
 
+  // A lazy walk lists a folder only after deciding it; the trial page of 2026-11-21 missed every nested .gitignore until
+  // a folder's own ignore files were asked for when something inside it is decided, and not when it is.
+  it("asks for a folder's own ignore files only when something inside it is decided", () => {
+    const asked: string[] = [];
+    const decide = leaveOut({ ignoreFiles: (folder) => {
+      asked.push(folder);
+      return folder === "a" ? [{ path: "a/.gitignore", text: "*.log\n" }] : [];
+    } });
+    expect(decide.folder("a").kept).toBe(true);
+    expect(asked).toEqual([""]);
+    expect(decide.file("a/x.log").kept).toBe(false);
+    expect(asked).toEqual(["", "a"]);
+  });
+
   it("only reports what evidence finds when it is not applied", () => {
     const decide = leaveOut({ ignoreFiles: [], evidence: { names, apply: false } });
     expect(decide.folder("packages")).toMatchObject({ kept: true, prunable: false, evidence: { kind: "evidence", index: 2 } });

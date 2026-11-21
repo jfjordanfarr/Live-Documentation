@@ -1,0 +1,49 @@
+made: 10,929 files will be read; 0 files left out where they were listed; 208 folders not looked inside.
+
+Left out:
+  Build output beside a project  (162 folders, not looked inside)
+      Build/bin/
+      Build/obj/
+      DNN Platform/Admin Modules/Dnn.Modules.Console/bin/
+      DNN Platform/Admin Modules/Dnn.Modules.Console/obj/
+      DNN Platform/Connectors/Azure/bin/
+      and 157 more folders
+  NuGet packages  (31 folders, not looked inside)
+      DNN Platform/Admin Modules/Dnn.Modules.Console/packages/
+      DNN Platform/Connectors/Azure/packages/
+      DNN Platform/Connectors/GoogleAnalytics4/packages/
+      DNN Platform/Connectors/GoogleTagManager/packages/
+      DNN Platform/Dnn.AuthServices.Jwt/packages/
+      and 26 more folders
+  .tfignore: packages  (15 folders, not looked inside)
+      Build/packages/
+      DNN Platform/Connectors/GoogleAnalytics/packages/
+      DNN Platform/Controls/CountryListBox/packages/
+      DNN Platform/DotNetNuke.ContentSecurityPolicy/packages/
+      DNN Platform/DotNetNuke.Log4net/packages/
+      and 10 more folders
+
+Will be read, by kind:
+  .cs                 3,973
+  .js                 1,330
+  .png                1,325
+  .gif                  671
+  .jsx                  482
+  .less                 305
+  .sqldataprovider      299
+  .svg                  283
+  .txt                  212
+  .resx                 203
+
+Will be read, by folder:
+  DNN Platform                                7,840
+  Dnn.AdminExperience                         2,894
+  Build                                          96
+  DotNetNuke.BulkInstall                         45
+  (top)                                          29
+  .github                                        21
+  DotNetNuke.Internal.SourceGenerators            3
+  expected                                        1
+
+To keep something, name it with ! in front: --pattern '!/packages/MyOwnPackage/'. To leave something out: --pattern 'docs/'.
+Listed 2,300 folders in 359 ms (listing 138 ms, deciding 76 ms).
