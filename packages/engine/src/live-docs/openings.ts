@@ -788,10 +788,16 @@ export function readSql(text: string): { declarations: SqlDeclaration[]; referen
   const read: SqlReading = { declarations: [], references: [], alters: new Map() };
   readSqlText(text, { offset: 0, inBody: false }, read);
   for (const declaration of read.declarations) {
-    const altered = read.alters.get(sqlObjectName(declaration.name).parts.join("."));
+    const altered = read.alters.get(alteredKey(declaration.name));
     if (!declaration.inBody && altered !== undefined && altered > declaration.line) declaration.line = altered;
   }
   return { declarations: read.declarations, references: read.references };
+}
+
+/** The key by which an `ALTER` finds the object a `CREATE` made: schema and name, a schema not written being `dbo`, as an `ALTER`'s DDL and a `CREATE`'s both take the user's default. */
+function alteredKey(written: string): string {
+  const { parts } = sqlObjectName(written);
+  return (parts.length === 1 ? ["dbo", ...parts] : parts).join(".");
 }
 
 /** What a reading gathers: declarations, references, and the last line at which the script itself alters each object. */
@@ -893,7 +899,7 @@ function readSqlText(text: string, place: SqlPlace, into: SqlReading): void {
         if (!name) continue;
         refer("ALTER", name.parts, name.end, false);
         moduleSchema = moduleSchemaOf(tokens[index + 1].value.toUpperCase(), name, tokens);
-        if (!place.inBody && !place.server) into.alters.set(sqlObjectName(sqlWrittenName(name.parts)).parts.join("."), token.line + place.offset);
+        if (!place.inBody && !place.server) into.alters.set(alteredKey(sqlWrittenName(name.parts)), token.line + place.offset);
         index = name.end - 1;
         continue;
       }
@@ -1003,12 +1009,17 @@ export function declaredSqlObjects(index: WorkspaceSymbolIndex): DeclaredSqlObje
   return objects;
 }
 
-/** True when a written name names the declared object: schema and object when both are written, the object alone otherwise. */
+/**
+ * True when a written name names the declared object: schema and object when both are written, the object alone
+ * otherwise. An object declared without a schema is in its creator's default schema, taken as `dbo`, so `dbo.X` names
+ * a declared `X`.
+ */
 export function sqlNameMatches(name: SqlObjectName, declared: SqlObjectName): boolean {
+  const last = declared.parts[declared.parts.length - 1];
   if (name.parts.length >= 2) {
-    return declared.parts.length === 2 && declared.parts[0] === name.parts[0] && declared.parts[1] === name.parts[1];
+    return last === name.parts[1] && (declared.parts.length === 2 ? declared.parts[0] : "dbo") === name.parts[0];
   }
-  return declared.parts[declared.parts.length - 1] === name.parts[0];
+  return last === name.parts[0];
 }
 
 /** The declared objects a name matches, by {@link sqlNameMatches}. */

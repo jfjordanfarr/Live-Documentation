@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/legacy.sql`
 - Entry: opening [`ListLegacy`](#symbol-listlegacy)
-- Generated At: 2026-11-21T05:37:52.648Z
+- Generated At: 2026-11-21T05:38:45.195Z
 
 ## Authored
 ### Purpose
@@ -19,11 +19,10 @@ A procedure created without a schema, as scripts written before schemas were (DN
 ### Public Symbols
 #### `ListLegacy` {#symbol-listlegacy}
 - Type: procedure
-- Source: [source](../../../../../../tests/integration/fixtures/sql-schemas/legacy.sql#L3)
+- Source: [source](../../../../../../tests/integration/fixtures/sql-schemas/legacy.sql#L5)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `dbo.ListLegacy` (contract)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->
