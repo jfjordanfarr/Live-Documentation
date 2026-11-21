@@ -1,0 +1,44 @@
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	sym	DotNetNukeSecurity
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	sym	Initialize
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/DotNetNuke.Instrumentation/DnnLoggingController.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Application/DotNetNukeContext.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Common/Globals.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Entities/Controllers/HostController.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Entities/Host/Host.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Obsolete/HostController.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Obsolete/LogInfo.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Services/Localization/Localization.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Services/Log/EventLog/LogController.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Services/Log/EventLog/LogInfo.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	to	DNN Platform/Library/Services/Mail/Mail.cs
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/DotNetNuke.Instrumentation/DnnLoggingController.cs#DnnLoggingController
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Application/DotNetNukeContext.cs#DotNetNukeContext
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Common/Globals.cs#Globals
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Common/Globals.cs#UpgradeStatus
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Entities/Controllers/HostController.cs#HostController
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Entities/Host/Host.cs#Host
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Obsolete/HostController.cs#HostController
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Obsolete/LogInfo.cs#LogInfo
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Services/Localization/Localization.cs#Localization
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Services/Log/EventLog/LogController.cs#LogController
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Services/Log/EventLog/LogInfo.cs#LogInfo
+- DNN Platform/DotNetNuke.Web/Common/DotNetNukeSecurity.cs	use	DNN Platform/Library/Services/Mail/Mail.cs#Mail
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/clike/scala.html	to	../immutable/Stream.html
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/django/index.html	to	{% url 'item_view' item.name|slugify %}
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/jade/index.html	to	/css/bootstrap.min.css
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/jade/index.html	to	/css/index.css
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/jade/index.html	to	/js/bootstrap.min.js
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/jade/index.html	to	/js/jquery-1.9.1.min.js
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/jade/index.html	to	img/placeholder.png
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	sym	ProjectSubmenu
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	to	/path/to/img.jpg
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	to	/projects/markdown/
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	to	/projects/markdown/dingus
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	to	/projects/markdown/license
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/markdown/index.html	to	/projects/markdown/syntax
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/slim/index.html	sym	logo
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/slim/index.html	sym	tagline
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/slim/index.html	sym	test
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/slim/index.html	sym	user_#{user.id}
+- DNN Platform/Website/Resources/Shared/components/CodeEditor/mode/slim/index.html	to	work
+totals: {('lost', 'sym'): 7, ('lost', 'to'): 24, ('lost', 'use'): 12} files: 6557 6557
