@@ -48,7 +48,7 @@ Filesystem locations in both expectation files are relative to the JSON file con
 
 ## The names program
 
-`csharp/names` was written on 2026-11-21 from an independent review of the C# reader, three projects small enough to read whole, each case one way a simple name is found in C#. In `App`, `Derived` inherits `Base`, which declares a nested `Options`, while a `using` brings in a namespace with an `Options` of its own: C# finds the inherited one first. `Use` names `Helper` through an alias to `Lib.Helper`, beside `Lib.Helper<T>`: the alias names the non-generic one. `A` has its reference to `B` inside an XML comment, so `UseIt`'s `Thing` reaches nothing. It carries scip-dotnet's record, whose one ambiguity is the alias's `Lib/Helper#`, and the compiler's, which settles it.
+`csharp/names` was written on 2026-11-21 from an independent review of the C# reader, three projects small enough to read whole, each case one way a simple name is found in C#. In `App`, `Derived` inherits `Base`, which declares a nested `Options`, while a `using` brings in a namespace with an `Options` of its own: C# finds the inherited one first. `MemberOverUsing`, a `Base` too, reads `Gadget * 2` beside a `using` whose namespace declares a class `Gadget`: where an expression is read C# passes over types, and it is `Base`'s property, a case the reader still misses and both oracle tests list (added later the same day). `Use` names `Helper` through an alias to `Lib.Helper`, beside `Lib.Helper<T>`: the alias names the non-generic one. `A` has its reference to `B` inside an XML comment, so `UseIt`'s `Thing` reaches nothing. It carries scip-dotnet's record, whose one ambiguity is the alias's `Lib/Helper#`, and the compiler's, which settles it.
 
 ## The ledger program
 

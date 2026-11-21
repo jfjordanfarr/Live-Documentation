@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T07:25:48.516Z
+- Generated At: 2026-11-21T07:28:52.353Z
 
 ## Authored
 ### Purpose
@@ -52,6 +52,9 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 #### `declared:App/HelperOfT.cs` {#symbol-declaredapphelperoftcs}
 - Type: key
 
+#### `declared:App/MemberOverUsing.cs` {#symbol-declaredappmemberoverusingcs}
+- Type: key
+
 #### `declared:App/Other.cs` {#symbol-declaredappothercs}
 - Type: key
 
@@ -83,6 +86,9 @@ The C# compiler's binding of the `names` sample, written by `npm run oracle:csha
 - Type: key
 
 #### `sources:App/HelperOfT.cs` {#symbol-sourcesapphelperoftcs}
+- Type: key
+
+#### `sources:App/MemberOverUsing.cs` {#symbol-sourcesappmemberoverusingcs}
 - Type: key
 
 #### `sources:App/Other.cs` {#symbol-sourcesappothercs}

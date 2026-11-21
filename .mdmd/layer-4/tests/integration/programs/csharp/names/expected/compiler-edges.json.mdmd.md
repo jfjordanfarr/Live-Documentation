@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/expected/compiler-edges.json`
-- Generated At: 2026-11-21T05:35:21.948Z
+- Generated At: 2026-11-21T07:28:52.350Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,7 @@ The file-to-file edges scip-dotnet resolved for the `names` sample, written by `
 - [`Derived`](../App/Derived.cs.mdmd.md)
 - [`Helper`](../App/Helper.cs.mdmd.md)
 - [`HelperOfT`](../App/HelperOfT.cs.mdmd.md)
+- [`MemberOverUsing`](../App/MemberOverUsing.cs.mdmd.md)
 - [`Other`](../App/Other.cs.mdmd.md)
 - [`Use`](../App/Use.cs.mdmd.md)
 - [`Thing`](../B/Thing.cs.mdmd.md)

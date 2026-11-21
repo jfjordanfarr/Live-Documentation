@@ -33,11 +33,18 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  * `using`, and an alias to the non-generic one of two types that differ only
  * by arity; both were mended the same day. The other C# samples had none
  * when their records were first kept, the same day.
+ *
+ * Its one known miss, found by the review's second pass and not mended: a
+ * member a type inherits hides a type of the same name where an expression is
+ * read, so `Gadget * 2` inside `MemberOverUsing : Base` is `Base`'s property;
+ * the reader does not tell where an expression is read from where a type is,
+ * for a type's own members either, and takes `Gadget` for the class a `using`
+ * brings in.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
   "programs/csharp/basic":    [],
   "programs/csharp/estate":   [],
-  "programs/csharp/names":    [],
+  "programs/csharp/names":    ["the adapter draws App/MemberOverUsing.cs → App/Other.cs on a namesake"],
   "programs/csharp/rosetta":  [],
   "programs/csharp/webforms": []
 };
