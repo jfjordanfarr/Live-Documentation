@@ -42,7 +42,8 @@
  * with a variable no assignment fixes, and a path outside the workspace keep
  * their text as the specifier; a path built any other way is not read. A
  * module named through a variable the text fixes so, `$m = 'Pester'` then
- * `Import-Module $m`, keeps the name it is assigned.
+ * `Import-Module $m`, keeps the name it is assigned, and a loop over names
+ * written out, `foreach ($m in 'A', 'B') { Import-Module $m }`, keeps each.
  *
  * A call to a function another file defines is a dependency on that file,
  * carrying the function's name, by the rule measured on 2026-11-19, "loaded,
@@ -147,6 +148,8 @@ interface ComputedLoad {
    * allows, where the workspace holds one; else a command of a module the workspace does not draw, which is no load.
    */
   qualified?: boolean;
+  /** An import of a module by its name, not its path, through a loop's item over names written out: kept by the name. */
+  named?: boolean;
 }
 
 /** A variable other than `$PSScriptRoot` in a path as written, which only the file's own assignments can fix. */
@@ -951,7 +954,7 @@ function literalItems(node: SyntaxNode, scope: PathScope): string[] | undefined 
   }
 }
 
-/** The loads a command makes whose paths the text fixes: a dot-source, a module import by a path, or a script run by its path. */
+/** The loads a command makes whose paths the text fixes: a dot-source, a module import by a path or by a name, or a script run by its path. */
 function fixedLoads(command: SyntaxNode, scope: PathScope): ComputedLoad[] {
   if (isDotSource(command)) {
     const target = command.childForFieldName("command_name");
@@ -964,7 +967,8 @@ function fixedLoads(command: SyntaxNode, scope: PathScope): ComputedLoad[] {
   if (name !== "import-module" && name !== "ipmo") return [];
   return (bindNodes(command, IMPORT_MODULE).get("Name") ?? []).flatMap((node): ComputedLoad[] => {
     const value = pathValue(node, scope);
-    return value !== undefined && isModulePath(value) ? [{ kind: "import", path: value }] : [];
+    if (value === undefined) return [];
+    return [isModulePath(value) ? { kind: "import", path: value } : { kind: "import", path: value, named: true }];
   });
 }
 
@@ -1614,6 +1618,10 @@ function scriptLoads(facts: FileFacts, directory: string, files: WorkspaceFileIn
   facts.requires.forEach(module);
   for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolveScript(written, directory, files) });
   for (const load of facts.computed) {
+    if (load.named) {
+      module(load.path);
+      continue;
+    }
     const to = load.kind === "import" ? resolvePath(load.path, directory, files, true) : resolveScript(load.path, directory, files);
     if (load.qualified && !to) continue;
     loads.push({ kind: load.kind, written: load.written, computed: load.path, to });

@@ -861,6 +861,22 @@ describe("what a load draws nothing for, said as a notice", () => {
     expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Pester", "PSReadLine"]);
   });
 
+  it("keeps each module a loop over written-out names imports, and says nothing of it; a name a run computes stays a notice", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0) over
+    // `foreach ($m in 'Alpha.Missing', 'Beta.Missing') { Import-Module $m }`: "The specified module 'Alpha.Missing' was not
+    // loaded …" then the same of 'Beta.Missing', each name of the list in turn; and of 'Gamma.Missing' piped to ForEach-Object.
+    await write({
+      "Run.ps1": [
+        "foreach ($m in 'Alpha.Missing', 'Beta.Missing') { Import-Module $m }",
+        "'Gamma.Missing' | ForEach-Object { Import-Module -Name $_ }",
+        "foreach ($m in (Get-Content modules.txt)) { Import-Module $m }"
+      ].join("\n")
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Alpha.Missing", "Beta.Missing", "Gamma.Missing"]);
+    expect(analysis?.notices).toEqual([{ reason: "dot-sources and imports whose path the text does not fix, left unlinked", subject: "line 3: Import-Module $m" }]);
+  });
+
   it("takes a command qualified by its module for a command, not a script's path, unless the workspace holds that script", async () => {
     // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1` from a folder holding
     // `Microsoft.PowerShell.Utility/New-Object.ps1`, and a function `New-Object` defined first): the qualified name runs
