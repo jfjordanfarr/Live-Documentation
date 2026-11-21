@@ -34,11 +34,16 @@
  * script ran from where it lies; a `Join-Path` of such; a variable the file
  * assigns once, at its own level, from such; or a loop that dot-sources each
  * file a `Get-ChildItem` of such a folder lists. A module path may name a
- * `.psm1`, a `.psd1`, or a directory holding the module of its name. Each name
+ * `.psm1`, a `.psd1`, or a directory holding the module of its name; a script
+ * dot-sourced or run by a path no file is so named by is the path's `.ps1`, as
+ * PowerShell tries it. Each name
  * in a path is found among the workspace's files as Windows finds it, without
  * regard to case. A module named rather than pathed, a path a string writes
  * with a variable no assignment fixes, and a path outside the workspace keep
- * their text as the specifier; a path built any other way is not read.
+ * their text as the specifier; a path built any other way is not read. A
+ * module named through a variable the text fixes so, `$m = 'Pester'` then
+ * `Import-Module $m`, keeps the name it is assigned, and a loop over names
+ * written out, `foreach ($m in 'A', 'B') { Import-Module $m }`, keeps each.
  *
  * A call to a function another file defines is a dependency on that file,
  * carrying the function's name, by the rule measured on 2026-11-19, "loaded,
@@ -81,7 +86,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { DeclaredEntry, ReExportedSymbolInfo, SourceNotice } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
-import { SHIPPED_COMMANDS } from "./powershell.builtins";
+import { SHIPPED_ALIASES, SHIPPED_COMMANDS, SHIPPED_MODULES } from "./powershell.builtins";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
@@ -138,6 +143,13 @@ interface ComputedLoad {
   kind:     "dot" | "import" | "run";
   path:     string;
   written?: string;
+  /**
+   * A run written as a module's command, `lib\Helpers`: a script of that path, its extension unwritten as PowerShell
+   * allows, where the workspace holds one; else a command of a module the workspace does not draw, which is no load.
+   */
+  qualified?: boolean;
+  /** An import of a module by its name, not its path, through a loop's item over names written out: kept by the name. */
+  named?: boolean;
 }
 
 /** A variable other than `$PSScriptRoot` in a path as written, which only the file's own assignments can fix. */
@@ -942,20 +954,21 @@ function literalItems(node: SyntaxNode, scope: PathScope): string[] | undefined 
   }
 }
 
-/** The loads a command makes whose paths the text fixes: a dot-source, a module import by a path, or a script run by its path. */
+/** The loads a command makes whose paths the text fixes: a dot-source, a module import by a path or by a name, or a script run by its path. */
 function fixedLoads(command: SyntaxNode, scope: PathScope): ComputedLoad[] {
   if (isDotSource(command)) {
     const target = command.childForFieldName("command_name");
     const value  = target ? pathValue(target, scope) : undefined;
     return value === undefined ? [] : [{ kind: "dot", path: value }];
   }
-  const run = runPath(command, scope);
-  if (run !== undefined) return [{ kind: "run", path: run }];
+  const run = runLoad(command, scope);
+  if (run !== undefined) return [run];
   const name = commandName(command);
   if (name !== "import-module" && name !== "ipmo") return [];
   return (bindNodes(command, IMPORT_MODULE).get("Name") ?? []).flatMap((node): ComputedLoad[] => {
     const value = pathValue(node, scope);
-    return value !== undefined && isModulePath(value) ? [{ kind: "import", path: value }] : [];
+    if (value === undefined) return [];
+    return [isModulePath(value) ? { kind: "import", path: value } : { kind: "import", path: value, named: true }];
   });
 }
 
@@ -1085,15 +1098,27 @@ function calledName(command: SyntaxNode): string | undefined {
   return written.replace(/^(?:script|global|local|private):/i, "").toLowerCase();
 }
 
-/** The path a command runs a script by, when its name is one: `& ./x.ps1`, `& "$PSScriptRoot\x.ps1"`, `& (Join-Path …)`, `scripts\x.ps1`. */
-function runPath(command: SyntaxNode, scope: PathScope): string | undefined {
+/** A command named by its module, `Module\Command`: a module's name, one backslash, and a command's name without an extension. */
+const MODULE_QUALIFIED = /^([A-Za-z_][\w.-]*)\\([A-Za-z_][\w-]*)$/;
+
+/**
+ * The script a command runs by its path, when its name is one: `& ./x.ps1`, `& "$PSScriptRoot\x.ps1"`, `& (Join-Path …)`,
+ * `scripts\x.ps1`. A name written as a module's command, `Module\Command`, is PowerShell's own command when the module is
+ * one PowerShell ships, and no path; otherwise it is a script's path only where the workspace holds the script
+ * ({@link ComputedLoad.qualified}), as Windows, where a backslash separates folders, would find it.
+ */
+function runLoad(command: SyntaxNode, scope: PathScope): ComputedLoad | undefined {
   if (isDotSource(command)) return undefined;
   const name = command.childForFieldName("command_name");
   if (!name) return undefined;
   const inner = unwrapValue(name);
-  if (inner.type === "command_name" && !/[\\/]|\.ps1$/i.test(inner.text)) return undefined;
+  if (inner.type === "command_name") {
+    if (!/[\\/]|\.ps1$/i.test(inner.text)) return undefined;
+    const qualified = MODULE_QUALIFIED.exec(inner.text);
+    if (qualified) return SHIPPED_MODULES.has(qualified[1].toLowerCase()) ? undefined : { kind: "run", path: inner.text, qualified: true };
+  }
   const written = pathValue(name, scope);
-  return written !== undefined && /[\\/]|\.ps1$/i.test(written) ? written : undefined;
+  return written !== undefined && /[\\/]|\.ps1$/i.test(written) ? { kind: "run", path: written } : undefined;
 }
 
 /** The module a `using module` statement names: a name or path, or the `ModuleName` of a module specification; null for a `using namespace` or `using assembly`. */
@@ -1395,8 +1420,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
         else if (!dotSourcesBlock(command)) unfixed(command);
         continue;
       }
-      const run = runPath(command, scope);
-      if (run !== undefined) facts.computed.push({ kind: "run", path: run });
+      const run = runLoad(command, scope);
+      if (run !== undefined) facts.computed.push(run);
       switch (commandName(command)) {
         case "import-module":
         case "ipmo":
@@ -1404,6 +1429,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
             const strings = argumentStrings(node);
             const value   = strings.some((item) => item === undefined || OTHER_VARIABLE.test(item)) ? pathValue(node, scope) : undefined;
             if (value !== undefined && isModulePath(value)) facts.computed.push({ kind: "import", path: value, written: strings.length === 1 ? strings[0] : undefined });
+            // A module named through a variable the text fixes, `$m = 'Pester'` then `Import-Module $m`, is that module.
+            else if (value !== undefined) facts.moduleImports.push(value);
             else {
               facts.moduleImports.push(...strings.filter((item): item is string => item !== undefined));
               if (strings.includes(undefined)) unfixed(command);
@@ -1479,6 +1506,18 @@ function resolvePath(written: string, directory: string, files: WorkspaceFileInd
   if (file || !module) return file;
   const leaf = path.posix.basename(relative);
   return findFile(files, `${relative}/${leaf}.psd1`) ?? findFile(files, `${relative}/${leaf}.psm1`);
+}
+
+/**
+ * The script a path names as PowerShell runs or dot-sources it: the file so named, else the path with `.ps1` added,
+ * which PowerShell tries when no file is so named, whatever the name ends in (`a/build` and `f/Get-Thing.Tests` ran
+ * their `.ps1`, and a file `b/build` beside `b/build.ps1` was the one found); no other extension is tried (`d/build`
+ * beside only `d/build.psm1` was not found). pwsh 7.7.0, measured 2026-11-21. Only a path is so read: a name without
+ * a folder, `. Stop-Function`, is a command PowerShell looks up, never a script beside the file.
+ */
+function resolveScript(written: string, directory: string, files: WorkspaceFileIndex | undefined): string | undefined {
+  const named = resolvePath(written, directory, files, false);
+  return named ?? (/[\\/]/.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined);
 }
 
 /** A module named by a path rather than by its name: the text holds a directory separator, as `$PSScriptRoot` gives it one. */
@@ -1577,8 +1616,16 @@ function scriptLoads(facts: FileFacts, directory: string, files: WorkspaceFileIn
   facts.moduleImports.forEach(module);
   facts.usingModules.forEach(module);
   facts.requires.forEach(module);
-  for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolvePath(written, directory, files, false) });
-  for (const load of facts.computed) loads.push({ kind: load.kind, written: load.written, computed: load.path, to: resolvePath(load.path, directory, files, load.kind === "import") });
+  for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolveScript(written, directory, files) });
+  for (const load of facts.computed) {
+    if (load.named) {
+      module(load.path);
+      continue;
+    }
+    const to = load.kind === "import" ? resolvePath(load.path, directory, files, true) : resolveScript(load.path, directory, files);
+    if (load.qualified && !to) continue;
+    loads.push({ kind: load.kind, written: load.written, computed: load.path, to });
+  }
   for (const listing of facts.listings) {
     for (const to of listedFiles(listing, directory, files)) loads.push({ kind: "dot", written: undefined, to });
   }
@@ -1847,17 +1894,21 @@ function isLoadedFrom(workspace: Workspace, file: string, definer: string): bool
  * itself is its own. Otherwise the call goes to the one defining file that the
  * caller's loading reaches; if it reaches several, to none; if it reaches
  * none, to the only file of the workspace that defines the name, unless the
- * name is a command PowerShell itself ships, which answers where nothing
- * loaded overrides it. That last reach passes over a test file unless the
- * caller is a test: nothing in a repository's working code depends on its
+ * name is a command or function PowerShell itself ships, which answers where
+ * nothing loaded overrides it. That last reach passes over a test file unless
+ * the caller is a test: nothing in a repository's working code depends on its
  * tests, so a test's stub of another module's command is never the only
- * definition working code finds.
+ * definition working code finds. A call by an alias PowerShell defines at
+ * start is a call to the command the alias names, since the alias outranks
+ * every function: `select` never reaches a function named `select`, and `gci`
+ * reaches one named `Get-ChildItem` only by this rule.
  */
 function calledFiles(workspace: Workspace, file: string, facts: FileFacts): Map<string, Set<string>> {
   const own    = new Set(facts.functions.map((fact) => callName(fact.name)));
   const called = new Map<string, Set<string>>();
   const caller = isTestFile(workspace.files, file);
-  for (const name of facts.calls) {
+  for (const written of facts.calls) {
+    const name = SHIPPED_ALIASES.get(written) ?? written;
     if (own.has(name)) continue;
     const definers = (workspace.definers.get(name) ?? []).filter((definer) => definer.file !== file);
     if (definers.length === 0) continue;

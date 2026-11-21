@@ -18,7 +18,7 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 
-import { ParserWorkspace } from "./powershell-wires";
+import { ParserWorkspace, recordedShippedNames } from "./powershell-wires";
 import type { OracleEdge, OracleEdges, OracleProject } from "./scip-edges";
 
 /** An error the parser reported, at its line and column; an error reading a data file has neither. */
@@ -265,7 +265,7 @@ function referencesOf(file: string, facts: PowerShellFileFacts, workspace: Parse
 export function edgesFromPowerShellAst(ast: PowerShellAst, projects: OracleProject[]): OracleEdges {
   const documents = Object.keys(ast.files).sort();
   const edges     = new Map<string, OracleEdge>();
-  const workspace = new ParserWorkspace(ast);
+  const workspace = new ParserWorkspace(ast, recordedShippedNames());
   for (const from of documents) {
     for (const { to, evidence } of referencesOf(from, ast.files[from], workspace)) {
       if (to === from) continue;

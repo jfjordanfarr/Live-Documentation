@@ -1,0 +1,3454 @@
+{
+ "repository": "MicrosoftDocs/PowerShell-Docs",
+ "commit": "aedd8efe1fece22f04e478c2521c3fccc17ab03d",
+ "fetched": "2026-11-21",
+ "lineNumbersRelativeTo": "paths are relative to the repository root at the pinned commit. 'line' is the 1-based line of the cited passage: for a NOTES alias, the line 'Windows PowerShell includes the following aliases for ...'; for a front-matter-only alias, the line of its entry under 'aliases:'. 'pwsh75' is the cross-check against reference/7.5 at the same commit.",
+ "aliases": [
+  {
+   "name": "%",
+   "definition": "ForEach-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/ForEach-Object.md",
+   "line": 476,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/ForEach-Object.md"
+   }
+  },
+  {
+   "name": "?",
+   "definition": "Where-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Where-Object.md",
+   "line": 1165,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Where-Object.md"
+   }
+  },
+  {
+   "name": "ac",
+   "definition": "Add-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Add-Content.md",
+   "line": 501,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Add-Content.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:252 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "algm",
+   "definition": "Add-LocalGroupMember",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Add-LocalGroupMember.md",
+   "line": 195,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "asnp",
+   "definition": "Add-PSSnapin",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Add-PSSnapin.md",
+   "line": 164,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "cat",
+   "definition": "Get-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Content.md",
+   "line": 680,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Content.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:253 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:89"
+   ]
+  },
+  {
+   "name": "cd",
+   "definition": "Set-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Location.md",
+   "line": 241,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:77"
+   ]
+  },
+  {
+   "name": "CFS",
+   "definition": "ConvertFrom-String",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/ConvertFrom-String.md",
+   "line": 403,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "chdir",
+   "definition": "Set-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Location.md",
+   "line": 241,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:77"
+   ]
+  },
+  {
+   "name": "clc",
+   "definition": "Clear-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Clear-Content.md",
+   "line": 344,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Clear-Content.md"
+   }
+  },
+  {
+   "name": "clear",
+   "definition": "Clear-Host",
+   "definitionType": "function",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Clear-Host.md",
+   "line": 71,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Clear-Host.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:254 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:78"
+   ]
+  },
+  {
+   "name": "clhy",
+   "definition": "Clear-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Clear-History.md",
+   "line": 396,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Clear-History.md"
+   }
+  },
+  {
+   "name": "cli",
+   "definition": "Clear-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Clear-Item.md",
+   "line": 289,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Clear-Item.md"
+   }
+  },
+  {
+   "name": "clp",
+   "definition": "Clear-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Clear-ItemProperty.md",
+   "line": 302,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Clear-ItemProperty.md"
+   }
+  },
+  {
+   "name": "cls",
+   "definition": "Clear-Host",
+   "definitionType": "function",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Clear-Host.md",
+   "line": 71,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "linux and macos",
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Clear-Host.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:78"
+   ]
+  },
+  {
+   "name": "clv",
+   "definition": "Clear-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Clear-Variable.md",
+   "line": 241,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Clear-Variable.md"
+   }
+  },
+  {
+   "name": "cnsn",
+   "definition": "Connect-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Connect-PSSession.md",
+   "line": 729,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Connect-PSSession.md"
+   }
+  },
+  {
+   "name": "compare",
+   "definition": "Compare-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Compare-Object.md",
+   "line": 477,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Compare-Object.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:255 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "copy",
+   "definition": "Copy-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Copy-Item.md",
+   "line": 725,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Copy-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:79"
+   ]
+  },
+  {
+   "name": "cp",
+   "definition": "Copy-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Copy-Item.md",
+   "line": 725,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Copy-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:256 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:79"
+   ]
+  },
+  {
+   "name": "cpi",
+   "definition": "Copy-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Copy-Item.md",
+   "line": 725,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Copy-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:79"
+   ]
+  },
+  {
+   "name": "cpp",
+   "definition": "Copy-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Copy-ItemProperty.md",
+   "line": 316,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Copy-ItemProperty.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:257 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "curl",
+   "definition": "Invoke-WebRequest",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Invoke-WebRequest.md",
+   "line": 785,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "not listed in the 7.5 NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Invoke-WebRequest.md"
+   }
+  },
+  {
+   "name": "cvpa",
+   "definition": "Convert-Path",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Convert-Path.md",
+   "line": 144,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Convert-Path.md"
+   }
+  },
+  {
+   "name": "dbp",
+   "definition": "Disable-PSBreakpoint",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Disable-PSBreakpoint.md",
+   "line": 212,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Disable-PSBreakpoint.md"
+   }
+  },
+  {
+   "name": "del",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "diff",
+   "definition": "Compare-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Compare-Object.md",
+   "line": 477,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Compare-Object.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:258 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "dir",
+   "definition": "Get-ChildItem",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ChildItem.md",
+   "line": 1028,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ChildItem.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:81"
+   ]
+  },
+  {
+   "name": "dlu",
+   "definition": "Disable-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Disable-LocalUser.md",
+   "line": 177,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "dnsn",
+   "definition": "Disconnect-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Disconnect-PSSession.md",
+   "line": 542,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Disconnect-PSSession.md"
+   }
+  },
+  {
+   "name": "ebp",
+   "definition": "Enable-PSBreakpoint",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Enable-PSBreakpoint.md",
+   "line": 233,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Enable-PSBreakpoint.md"
+   }
+  },
+  {
+   "name": "echo",
+   "definition": "Write-Output",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Write-Output.md",
+   "line": 158,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Write-Output.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:82"
+   ]
+  },
+  {
+   "name": "elu",
+   "definition": "Enable-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Enable-LocalUser.md",
+   "line": 179,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "epal",
+   "definition": "Export-Alias",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Export-Alias.md",
+   "line": 368,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Export-Alias.md"
+   }
+  },
+  {
+   "name": "epcsv",
+   "definition": "Export-Csv",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Export-Csv.md",
+   "line": 607,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Export-Csv.md"
+   }
+  },
+  {
+   "name": "epsn",
+   "definition": "Export-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Export-PSSession.md",
+   "line": 504,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "in 7.5 front matter only, not in its NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Export-PSSession.md"
+   }
+  },
+  {
+   "name": "erase",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "etsn",
+   "definition": "Enter-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Enter-PSSession.md",
+   "line": 711,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Enter-PSSession.md"
+   }
+  },
+  {
+   "name": "exsn",
+   "definition": "Exit-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Exit-PSSession.md",
+   "line": 105,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Exit-PSSession.md"
+   }
+  },
+  {
+   "name": "fc",
+   "definition": "Format-Custom",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Format-Custom.md",
+   "line": 294,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Format-Custom.md"
+   }
+  },
+  {
+   "name": "fhx",
+   "definition": "Format-Hex",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Format-Hex.md",
+   "line": 263,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Format-Hex.md"
+   }
+  },
+  {
+   "name": "fl",
+   "definition": "Format-List",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Format-List.md",
+   "line": 309,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Format-List.md"
+   }
+  },
+  {
+   "name": "foreach",
+   "definition": "ForEach-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/ForEach-Object.md",
+   "line": 476,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/ForEach-Object.md"
+   }
+  },
+  {
+   "name": "ft",
+   "definition": "Format-Table",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Format-Table.md",
+   "line": 524,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Format-Table.md"
+   }
+  },
+  {
+   "name": "fw",
+   "definition": "Format-Wide",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Format-Wide.md",
+   "line": 308,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Format-Wide.md"
+   }
+  },
+  {
+   "name": "gal",
+   "definition": "Get-Alias",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-Alias.md",
+   "line": 225,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-Alias.md"
+   }
+  },
+  {
+   "name": "gbp",
+   "definition": "Get-PSBreakpoint",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-PSBreakpoint.md",
+   "line": 272,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-PSBreakpoint.md"
+   }
+  },
+  {
+   "name": "gc",
+   "definition": "Get-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Content.md",
+   "line": 680,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Content.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:89"
+   ]
+  },
+  {
+   "name": "gcai",
+   "definition": "Get-CimAssociatedInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Get-CimAssociatedInstance.md",
+   "line": 326,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Get-CimAssociatedInstance.md"
+   }
+  },
+  {
+   "name": "gcb",
+   "definition": "Get-Clipboard",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Clipboard.md",
+   "line": 155,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Clipboard.md"
+   }
+  },
+  {
+   "name": "gci",
+   "definition": "Get-ChildItem",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ChildItem.md",
+   "line": 1028,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ChildItem.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:81"
+   ]
+  },
+  {
+   "name": "gcim",
+   "definition": "Get-CimInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Get-CimInstance.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Get-CimInstance.md"
+   }
+  },
+  {
+   "name": "gcls",
+   "definition": "Get-CimClass",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Get-CimClass.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Get-CimClass.md"
+   }
+  },
+  {
+   "name": "gcm",
+   "definition": "Get-Command",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-Command.md",
+   "line": 667,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-Command.md"
+   }
+  },
+  {
+   "name": "gcms",
+   "definition": "Get-CimSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Get-CimSession.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Get-CimSession.md"
+   }
+  },
+  {
+   "name": "gcs",
+   "definition": "Get-PSCallStack",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-PSCallStack.md",
+   "line": 111,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-PSCallStack.md"
+   }
+  },
+  {
+   "name": "gdr",
+   "definition": "Get-PSDrive",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-PSDrive.md",
+   "line": 317,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-PSDrive.md"
+   }
+  },
+  {
+   "name": "ghy",
+   "definition": "Get-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-History.md",
+   "line": 155,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-History.md"
+   }
+  },
+  {
+   "name": "gi",
+   "definition": "Get-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Item.md",
+   "line": 557,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Item.md"
+   }
+  },
+  {
+   "name": "gin",
+   "definition": "Get-ComputerInfo",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ComputerInfo.md",
+   "line": 104,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ComputerInfo.md"
+   }
+  },
+  {
+   "name": "gjb",
+   "definition": "Get-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-Job.md",
+   "line": 740,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-Job.md"
+   }
+  },
+  {
+   "name": "gl",
+   "definition": "Get-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Location.md",
+   "line": 269,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:86"
+   ]
+  },
+  {
+   "name": "glg",
+   "definition": "Get-LocalGroup",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Get-LocalGroup.md",
+   "line": 112,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "glgm",
+   "definition": "Get-LocalGroupMember",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Get-LocalGroupMember.md",
+   "line": 153,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "glu",
+   "definition": "Get-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Get-LocalUser.md",
+   "line": 147,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "gm",
+   "definition": "Get-Member",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-Member.md",
+   "line": 499,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-Member.md"
+   }
+  },
+  {
+   "name": "gmo",
+   "definition": "Get-Module",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-Module.md",
+   "line": 643,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-Module.md"
+   }
+  },
+  {
+   "name": "gp",
+   "definition": "Get-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ItemProperty.md",
+   "line": 284,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ItemProperty.md"
+   }
+  },
+  {
+   "name": "gps",
+   "definition": "Get-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Process.md",
+   "line": 466,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Process.md"
+   }
+  },
+  {
+   "name": "gpv",
+   "definition": "Get-ItemPropertyValue",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ItemPropertyValue.md",
+   "line": 277,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ItemPropertyValue.md"
+   }
+  },
+  {
+   "name": "group",
+   "definition": "Group-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Group-Object.md",
+   "line": 399,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Group-Object.md"
+   }
+  },
+  {
+   "name": "gsn",
+   "definition": "Get-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-PSSession.md",
+   "line": 810,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-PSSession.md"
+   }
+  },
+  {
+   "name": "gsnp",
+   "definition": "Get-PSSnapin",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-PSSnapin.md",
+   "line": 132,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "gsv",
+   "definition": "Get-Service",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Service.md",
+   "line": 390,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Service.md"
+   }
+  },
+  {
+   "name": "gtz",
+   "definition": "Get-TimeZone",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-TimeZone.md",
+   "line": 150,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-TimeZone.md"
+   }
+  },
+  {
+   "name": "gu",
+   "definition": "Get-Unique",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-Unique.md",
+   "line": 193,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-Unique.md"
+   }
+  },
+  {
+   "name": "gv",
+   "definition": "Get-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Get-Variable.md",
+   "line": 197,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Get-Variable.md"
+   }
+  },
+  {
+   "name": "gwmi",
+   "definition": "Get-WmiObject",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-WmiObject.md",
+   "line": 624,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "h",
+   "definition": "Get-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-History.md",
+   "line": 155,
+   "evidence": "NOTES passage only (front matter omits it)",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-History.md"
+   }
+  },
+  {
+   "name": "history",
+   "definition": "Get-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Get-History.md",
+   "line": 155,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Get-History.md"
+   }
+  },
+  {
+   "name": "icim",
+   "definition": "Invoke-CimMethod",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Invoke-CimMethod.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Invoke-CimMethod.md"
+   }
+  },
+  {
+   "name": "icm",
+   "definition": "Invoke-Command",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Invoke-Command.md",
+   "line": 1409,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Invoke-Command.md"
+   }
+  },
+  {
+   "name": "iex",
+   "definition": "Invoke-Expression",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Invoke-Expression.md",
+   "line": 166,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Invoke-Expression.md"
+   }
+  },
+  {
+   "name": "ihy",
+   "definition": "Invoke-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Invoke-History.md",
+   "line": 165,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Invoke-History.md"
+   }
+  },
+  {
+   "name": "ii",
+   "definition": "Invoke-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Invoke-Item.md",
+   "line": 267,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "unqualified"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Invoke-Item.md"
+   }
+  },
+  {
+   "name": "ipal",
+   "definition": "Import-Alias",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Import-Alias.md",
+   "line": 219,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Import-Alias.md"
+   }
+  },
+  {
+   "name": "ipcsv",
+   "definition": "Import-Csv",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Import-Csv.md",
+   "line": 446,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Import-Csv.md"
+   }
+  },
+  {
+   "name": "ipmo",
+   "definition": "Import-Module",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Import-Module.md",
+   "line": 1184,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Import-Module.md"
+   }
+  },
+  {
+   "name": "ipsn",
+   "definition": "Import-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Import-PSSession.md",
+   "line": 612,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "in 7.5 front matter only, not in its NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Import-PSSession.md"
+   }
+  },
+  {
+   "name": "irm",
+   "definition": "Invoke-RestMethod",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Invoke-RestMethod.md",
+   "line": 740,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Invoke-RestMethod.md"
+   }
+  },
+  {
+   "name": "ise",
+   "definition": "PowerShell_ISE",
+   "definitionType": "application",
+   "source": "reference/docs-conceptual/windows-powershell/Starting-Windows-PowerShell.md",
+   "line": 62,
+   "evidence": "'type: `PowerShell_ISE`. In Windows PowerShell, you can use the alias `ise`.'",
+   "commandModule": null,
+   "pwsh75": {
+    "status": "windows PowerShell only",
+    "source": "reference/docs-conceptual/learn/ps101/01-getting-started.md:54",
+    "caveat": "'The ISE only works with Windows PowerShell 5.1.'; no 7.x page names an ise alias"
+   }
+  },
+  {
+   "name": "iwmi",
+   "definition": "Invoke-WmiMethod",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Invoke-WmiMethod.md",
+   "line": 554,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "iwr",
+   "definition": "Invoke-WebRequest",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Invoke-WebRequest.md",
+   "line": 785,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Invoke-WebRequest.md"
+   }
+  },
+  {
+   "name": "kill",
+   "definition": "Stop-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Stop-Process.md",
+   "line": 302,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Stop-Process.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:259 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "lp",
+   "definition": "Out-Printer",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Out-Printer.md",
+   "line": 126,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "not listed in the 7.5 NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Out-Printer.md"
+   }
+  },
+  {
+   "name": "ls",
+   "definition": "Get-ChildItem",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-ChildItem.md",
+   "line": 1028,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-ChildItem.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:260 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:81"
+   ]
+  },
+  {
+   "name": "man",
+   "definition": "help",
+   "definitionType": "function",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 46,
+   "evidence": "About topic heading '`help` (alias: `man`)'",
+   "commandModule": null,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/Get-Help.md:158 ('`man` is an alias for the `help` function.')",
+    "reference/docs-conceptual/whats-new/unix-support.md:261 (listed as not available on Linux or macOS)"
+   ],
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/docs-conceptual/whats-new/unix-support.md",
+    "caveat": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:49 lists '`help` (alias: `man`)' with no platform qualifier"
+   }
+  },
+  {
+   "name": "md",
+   "definition": "mkdir",
+   "definitionType": "function",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 81,
+   "evidence": "About topic heading '`mkdir` (alias: `md`)'",
+   "commandModule": null,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/About/about_FileSystem_Provider.md:284 ('a `mkdir` function (alias `md`)')"
+   ],
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:81",
+    "caveat": "7.5 says the mkdir function is only defined for Windows; the alias md is not separately qualified"
+   }
+  },
+  {
+   "name": "measure",
+   "definition": "Measure-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Measure-Object.md",
+   "line": 405,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Measure-Object.md"
+   }
+  },
+  {
+   "name": "mi",
+   "definition": "Move-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Move-Item.md",
+   "line": 397,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Move-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:84"
+   ]
+  },
+  {
+   "name": "mount",
+   "definition": "New-PSDrive",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/New-PSDrive.md",
+   "line": 514,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/New-PSDrive.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:262 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "move",
+   "definition": "Move-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Move-Item.md",
+   "line": 397,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Move-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:84"
+   ]
+  },
+  {
+   "name": "mp",
+   "definition": "Move-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Move-ItemProperty.md",
+   "line": 317,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Move-ItemProperty.md"
+   }
+  },
+  {
+   "name": "mv",
+   "definition": "Move-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Move-Item.md",
+   "line": 397,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Move-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:263 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:84"
+   ]
+  },
+  {
+   "name": "nal",
+   "definition": "New-Alias",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/New-Alias.md",
+   "line": 294,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/New-Alias.md"
+   }
+  },
+  {
+   "name": "ncim",
+   "definition": "New-CimInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/New-CimInstance.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/New-CimInstance.md"
+   }
+  },
+  {
+   "name": "ncms",
+   "definition": "New-CimSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/New-CimSession.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/New-CimSession.md"
+   }
+  },
+  {
+   "name": "ncso",
+   "definition": "New-CimSessionOption",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/New-CimSessionOption.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/New-CimSessionOption.md"
+   }
+  },
+  {
+   "name": "ndr",
+   "definition": "New-PSDrive",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/New-PSDrive.md",
+   "line": 514,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/New-PSDrive.md"
+   }
+  },
+  {
+   "name": "ni",
+   "definition": "New-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/New-Item.md",
+   "line": 682,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/New-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:83"
+   ]
+  },
+  {
+   "name": "nlg",
+   "definition": "New-LocalGroup",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/New-LocalGroup.md",
+   "line": 129,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "nlu",
+   "definition": "New-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/New-LocalUser.md",
+   "line": 329,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "nmo",
+   "definition": "New-Module",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/New-Module.md",
+   "line": 417,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/New-Module.md"
+   }
+  },
+  {
+   "name": "npssc",
+   "definition": "New-PSSessionConfigurationFile",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/New-PSSessionConfigurationFile.md",
+   "line": 1072,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "in 7.5 front matter only, not in its NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/New-PSSessionConfigurationFile.md"
+   }
+  },
+  {
+   "name": "nsn",
+   "definition": "New-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/New-PSSession.md",
+   "line": 771,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/New-PSSession.md"
+   }
+  },
+  {
+   "name": "nv",
+   "definition": "New-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/New-Variable.md",
+   "line": 391,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/New-Variable.md"
+   }
+  },
+  {
+   "name": "nwsn",
+   "definition": "New-PSWorkflowSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/PSWorkflow/New-PSWorkflowSession.md",
+   "line": 400,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "PSWorkflow",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "ogv",
+   "definition": "Out-GridView",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Out-GridView.md",
+   "line": 295,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Out-GridView.md"
+   }
+  },
+  {
+   "name": "oh",
+   "definition": "Out-Host",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Out-Host.md",
+   "line": 138,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Out-Host.md"
+   }
+  },
+  {
+   "name": "popd",
+   "definition": "Pop-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Pop-Location.md",
+   "line": 160,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Pop-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:85"
+   ]
+  },
+  {
+   "name": "ps",
+   "definition": "Get-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Process.md",
+   "line": 466,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Process.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:264 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "pushd",
+   "definition": "Push-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Push-Location.md",
+   "line": 223,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Push-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:87"
+   ]
+  },
+  {
+   "name": "pwd",
+   "definition": "Get-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Location.md",
+   "line": 269,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:86"
+   ]
+  },
+  {
+   "name": "r",
+   "definition": "Invoke-History",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Invoke-History.md",
+   "line": 165,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Invoke-History.md"
+   }
+  },
+  {
+   "name": "rbp",
+   "definition": "Remove-PSBreakpoint",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Remove-PSBreakpoint.md",
+   "line": 182,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Remove-PSBreakpoint.md"
+   }
+  },
+  {
+   "name": "rcie",
+   "definition": "Register-CimIndicationEvent",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Register-CimIndicationEvent.md",
+   "line": 10,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Register-CimIndicationEvent.md"
+   }
+  },
+  {
+   "name": "rcim",
+   "definition": "Remove-CimInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Remove-CimInstance.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Remove-CimInstance.md"
+   }
+  },
+  {
+   "name": "rcjb",
+   "definition": "Receive-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Receive-Job.md",
+   "line": 613,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Receive-Job.md"
+   }
+  },
+  {
+   "name": "rcms",
+   "definition": "Remove-CimSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Remove-CimSession.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Remove-CimSession.md"
+   }
+  },
+  {
+   "name": "rcsn",
+   "definition": "Receive-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Receive-PSSession.md",
+   "line": 898,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "windows only (command unavailable on Linux/macOS)",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Receive-PSSession.md",
+    "caveat": "the 7.5 page groups the alias under 'All platforms', but reference/docs-conceptual/whats-new/unix-support.md:176 says Receive-PSSession isn't available on Linux or macOS"
+   }
+  },
+  {
+   "name": "rd",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "rdr",
+   "definition": "Remove-PSDrive",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-PSDrive.md",
+   "line": 228,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-PSDrive.md"
+   }
+  },
+  {
+   "name": "ren",
+   "definition": "Rename-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Rename-Item.md",
+   "line": 331,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Rename-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:88"
+   ]
+  },
+  {
+   "name": "ri",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "rjb",
+   "definition": "Remove-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Remove-Job.md",
+   "line": 431,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Remove-Job.md"
+   }
+  },
+  {
+   "name": "rlg",
+   "definition": "Remove-LocalGroup",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Remove-LocalGroup.md",
+   "line": 173,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rlgm",
+   "definition": "Remove-LocalGroupMember",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Remove-LocalGroupMember.md",
+   "line": 191,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rlu",
+   "definition": "Remove-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Remove-LocalUser.md",
+   "line": 167,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rm",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:265 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "rmdir",
+   "definition": "Remove-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-Item.md",
+   "line": 539,
+   "evidence": "NOTES passage only (front matter omits it)",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:266 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:80"
+   ]
+  },
+  {
+   "name": "rmo",
+   "definition": "Remove-Module",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Remove-Module.md",
+   "line": 281,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Remove-Module.md"
+   }
+  },
+  {
+   "name": "rni",
+   "definition": "Rename-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Rename-Item.md",
+   "line": 331,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Rename-Item.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:88"
+   ]
+  },
+  {
+   "name": "rnlg",
+   "definition": "Rename-LocalGroup",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Rename-LocalGroup.md",
+   "line": 185,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rnlu",
+   "definition": "Rename-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Rename-LocalUser.md",
+   "line": 183,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rnp",
+   "definition": "Rename-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Rename-ItemProperty.md",
+   "line": 318,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Rename-ItemProperty.md"
+   }
+  },
+  {
+   "name": "rp",
+   "definition": "Remove-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-ItemProperty.md",
+   "line": 304,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Remove-ItemProperty.md"
+   }
+  },
+  {
+   "name": "rsn",
+   "definition": "Remove-PSSession",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Remove-PSSession.md",
+   "line": 379,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Remove-PSSession.md"
+   }
+  },
+  {
+   "name": "rsnp",
+   "definition": "Remove-PSSnapin",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Remove-PSSnapin.md",
+   "line": 158,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rujb",
+   "definition": "Resume-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Resume-Job.md",
+   "line": 399,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "rv",
+   "definition": "Remove-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Remove-Variable.md",
+   "line": 191,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Remove-Variable.md"
+   }
+  },
+  {
+   "name": "rvpa",
+   "definition": "Resolve-Path",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Resolve-Path.md",
+   "line": 232,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Resolve-Path.md"
+   }
+  },
+  {
+   "name": "rwmi",
+   "definition": "Remove-WmiObject",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Remove-WmiObject.md",
+   "line": 445,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "sajb",
+   "definition": "Start-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Start-Job.md",
+   "line": 582,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Start-Job.md"
+   }
+  },
+  {
+   "name": "sal",
+   "definition": "Set-Alias",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Set-Alias.md",
+   "line": 414,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Set-Alias.md"
+   }
+  },
+  {
+   "name": "saps",
+   "definition": "Start-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Start-Process.md",
+   "line": 468,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Start-Process.md"
+   }
+  },
+  {
+   "name": "sasv",
+   "definition": "Start-Service",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Start-Service.md",
+   "line": 284,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Start-Service.md"
+   }
+  },
+  {
+   "name": "sbp",
+   "definition": "Set-PSBreakpoint",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Set-PSBreakpoint.md",
+   "line": 405,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Set-PSBreakpoint.md"
+   }
+  },
+  {
+   "name": "sc",
+   "definition": "Set-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Content.md",
+   "line": 504,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "in 7.5 front matter only, not in its NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Content.md"
+   }
+  },
+  {
+   "name": "scb",
+   "definition": "Set-Clipboard",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Clipboard.md",
+   "line": 213,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Clipboard.md"
+   }
+  },
+  {
+   "name": "scim",
+   "definition": "Set-CimInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/CimCmdlets/Set-CimInstance.md",
+   "line": 9,
+   "evidence": "front matter only (no NOTES passage names it)",
+   "commandModule": "CimCmdlets",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/CimCmdlets/Set-CimInstance.md"
+   }
+  },
+  {
+   "name": "select",
+   "definition": "Select-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Select-Object.md",
+   "line": 729,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Select-Object.md"
+   }
+  },
+  {
+   "name": "set",
+   "definition": "Set-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Set-Variable.md",
+   "line": 401,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Set-Variable.md"
+   }
+  },
+  {
+   "name": "shcm",
+   "definition": "Show-Command",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Show-Command.md",
+   "line": 333,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Show-Command.md"
+   }
+  },
+  {
+   "name": "si",
+   "definition": "Set-Item",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Item.md",
+   "line": 421,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Item.md"
+   }
+  },
+  {
+   "name": "sl",
+   "definition": "Set-Location",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-Location.md",
+   "line": 241,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-Location.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:77"
+   ]
+  },
+  {
+   "name": "sleep",
+   "definition": "Start-Sleep",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Start-Sleep.md",
+   "line": 117,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Start-Sleep.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:267 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "slg",
+   "definition": "Set-LocalGroup",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Set-LocalGroup.md",
+   "line": 184,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "sls",
+   "definition": "Select-String",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Select-String.md",
+   "line": 690,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Select-String.md"
+   }
+  },
+  {
+   "name": "slu",
+   "definition": "Set-LocalUser",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.LocalAccounts/Set-LocalUser.md",
+   "line": 312,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.LocalAccounts",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "sort",
+   "definition": "Sort-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Sort-Object.md",
+   "line": 542,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Sort-Object.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:268 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "sp",
+   "definition": "Set-ItemProperty",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-ItemProperty.md",
+   "line": 499,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-ItemProperty.md"
+   }
+  },
+  {
+   "name": "spjb",
+   "definition": "Stop-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Stop-Job.md",
+   "line": 412,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Stop-Job.md"
+   }
+  },
+  {
+   "name": "spps",
+   "definition": "Stop-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Stop-Process.md",
+   "line": 302,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Stop-Process.md"
+   }
+  },
+  {
+   "name": "spsv",
+   "definition": "Stop-Service",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Stop-Service.md",
+   "line": 284,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Stop-Service.md"
+   }
+  },
+  {
+   "name": "start",
+   "definition": "Start-Process",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Start-Process.md",
+   "line": 468,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Start-Process.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:269 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "stz",
+   "definition": "Set-TimeZone",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-TimeZone.md",
+   "line": 211,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Set-TimeZone.md"
+   }
+  },
+  {
+   "name": "sujb",
+   "definition": "Suspend-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Suspend-Job.md",
+   "line": 434,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "sv",
+   "definition": "Set-Variable",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Set-Variable.md",
+   "line": 401,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Set-Variable.md"
+   }
+  },
+  {
+   "name": "swmi",
+   "definition": "Set-WmiInstance",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Set-WmiInstance.md",
+   "line": 605,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "command not in the 7.5 reference",
+    "source": null
+   }
+  },
+  {
+   "name": "tee",
+   "definition": "Tee-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Tee-Object.md",
+   "line": 248,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Tee-Object.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:270 (listed as not available on Linux or macOS)"
+   ]
+  },
+  {
+   "name": "trcm",
+   "definition": "Trace-Command",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Trace-Command.md",
+   "line": 354,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "in 7.5 front matter only, not in its NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Trace-Command.md"
+   }
+  },
+  {
+   "name": "type",
+   "definition": "Get-Content",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Management/Get-Content.md",
+   "line": 680,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Management",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Management/Get-Content.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/learn/shell/using-aliases.md:89"
+   ]
+  },
+  {
+   "name": "wget",
+   "definition": "Invoke-WebRequest",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Invoke-WebRequest.md",
+   "line": 785,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "not listed in the 7.5 NOTES passage",
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Invoke-WebRequest.md"
+   }
+  },
+  {
+   "name": "where",
+   "definition": "Where-Object",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Where-Object.md",
+   "line": 1165,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Where-Object.md"
+   }
+  },
+  {
+   "name": "wjb",
+   "definition": "Wait-Job",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/Wait-Job.md",
+   "line": 497,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Core",
+   "pwsh75": {
+    "status": "all platforms",
+    "groups": [
+     "all platforms"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Core/Wait-Job.md"
+   }
+  },
+  {
+   "name": "write",
+   "definition": "Write-Output",
+   "definitionType": "cmdlet",
+   "source": "reference/5.1/Microsoft.PowerShell.Utility/Write-Output.md",
+   "line": 158,
+   "evidence": "NOTES passage and front matter",
+   "commandModule": "Microsoft.PowerShell.Utility",
+   "pwsh75": {
+    "status": "windows only",
+    "groups": [
+     "windows"
+    ],
+    "source": "reference/7.5/Microsoft.PowerShell.Utility/Write-Output.md"
+   },
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/unix-support.md:271 (listed as not available on Linux or macOS)",
+    "reference/docs-conceptual/learn/shell/using-aliases.md:82"
+   ]
+  }
+ ],
+ "functions": [
+  {
+   "name": "cd..",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 24,
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:24"
+   }
+  },
+  {
+   "name": "cd\\",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 30,
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:30"
+   }
+  },
+  {
+   "name": "pause",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 36,
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:44"
+   },
+   "casingNote": "documented in lower case; the name's exact casing in Function: is not documented"
+  },
+  {
+   "name": "Get-Verb",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 41,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/Get-Verb.md:23 ('The `Get-Verb` function gets verbs ...')",
+    "reference/docs-conceptual/whats-new/cmdlet-versions.md:128 (5.1 in Microsoft.PowerShell.Core; 'Moved to Microsoft.PowerShell.Utility 6.0+')"
+   ],
+   "pwsh75": {
+    "status": "absent as a function (a cmdlet in Microsoft.PowerShell.Utility from 6.0)",
+    "source": "reference/docs-conceptual/whats-new/cmdlet-versions.md:421"
+   }
+  },
+  {
+   "name": "help",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 46,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/Get-Help.md:155 ('`help` is a function that runs `Get-Help` cmdlet internally')"
+   ],
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:49"
+   },
+   "aliases": [
+    "man"
+   ]
+  },
+  {
+   "name": "ImportSystemModules",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 51,
+   "pwsh75": {
+    "status": "absent from the 7.5 list",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md"
+   },
+   "documentedBehaviour": "deprecated; an empty function that does nothing"
+  },
+  {
+   "name": "prompt",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 55,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/About/about_Prompts.md:114 ('PowerShell includes a built-in `prompt` function.')"
+   ],
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:59"
+   }
+  },
+  {
+   "name": "more",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 61,
+   "alsoDocumentedIn": [
+    "reference/docs-conceptual/whats-new/differences-from-windows-powershell.md:966 ('In the past, PowerShell shipped a function on Windows called `more` ... That function has now been removed.')",
+    "reference/docs-conceptual/learn/ps101/02-help-system.md:658 (the 5.1 book finds the `more` function with `help *more*`)"
+   ],
+   "pwsh75": {
+    "status": "removed",
+    "source": "reference/docs-conceptual/whats-new/differences-from-windows-powershell.md:964"
+   }
+  },
+  {
+   "name": "Clear-Host",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 65,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/Clear-Host.md:28 ('The `Clear-Host` function removes all text ...')",
+    "reference/5.1/Microsoft.PowerShell.Core/Clear-Host.md:76 ('`Clear-Host` is a simple function, not an advanced function.')"
+   ],
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:65"
+   },
+   "aliases": [
+    "clear",
+    "cls"
+   ]
+  },
+  {
+   "name": "TabExpansion2",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 70,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/TabExpansion2.md:33 ('`TabExpansion2` is a built-in function ...')"
+   ],
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:70"
+   }
+  },
+  {
+   "name": "oss",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 75,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Utility/Out-String.md:32 ('PowerShell also adds the `oss` function ...')"
+   ],
+   "pwsh75": {
+    "status": "present",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:75"
+   }
+  },
+  {
+   "name": "mkdir",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 81,
+   "alsoDocumentedIn": [
+    "reference/5.1/Microsoft.PowerShell.Core/About/about_FileSystem_Provider.md:284",
+    "reference/5.1/Microsoft.PowerShell.Core/Disconnect-PSSession.md:177 ('The manager uses the `MkDir` function ...')"
+   ],
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:81"
+   },
+   "aliases": [
+    "md"
+   ]
+  },
+  {
+   "name": "A:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "B:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "C:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "D:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "E:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "F:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "G:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "H:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "I:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "J:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "K:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "L:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "M:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "N:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "O:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "P:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "Q:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "R:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "S:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "T:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "U:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "V:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "W:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "X:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "Y:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  },
+  {
+   "name": "Z:",
+   "source": "reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md",
+   "line": 92,
+   "pwsh75": {
+    "status": "windows only",
+    "source": "reference/7.5/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md:105"
+   },
+   "group": "drive letter functions ('a function for every possible drive letter, `A:` through `Z:`')"
+  }
+ ],
+ "believedUndocumented": [],
+ "notes": [
+  "Main alias route: every page under reference/5.1/<Module>/ (About topics excluded) was read for two independent statements of a command's aliases: the YAML front matter key 'aliases:' and the NOTES passage 'Windows PowerShell includes the following aliases for `<Cmdlet>`:'. 384 pages; 140 NOTES passages (all parsed); 172 names in NOTES passages and 181 in front matter; their union gives 183 aliases. Three more come from About/conceptual pages (man, md, ise). Each alias entry's 'evidence' says which of the two statements carries it.",
+  "Function route: reference/5.1/Microsoft.PowerShell.Core/About/about_Built-in_Functions.md is an explicit list of the functions 'loaded into every PowerShell session ... not included in any module ... defined in the PowerShell engine itself'. All 12 named functions plus A: through Z: are taken from it and cross-checked against the cmdlet and About pages listed per entry. It confirms the expected mkdir, more, ImportSystemModules, Get-Verb and the drive functions.",
+  "On some 5.1 pages the front matter and the NOTES passage disagree. Each case is an omission, never a conflicting definition: Get-History front matter omits 'h'; Remove-Item front matter omits 'rmdir'. The 11 CimCmdlets pages other than Get-CimAssociatedInstance (gcim, gcls, gcms, icim, ncim, ncms, ncso, rcie, rcim, rcms, scim) have front-matter aliases but no NOTES passage.",
+  "The documentation does not distinguish the aliases a module exports from those the engine defines. These documented 5.1 aliases belong to commands outside the Core/Management/Utility set: CimCmdlets (12: gcai, gcim, gcls, gcms, icim, ncim, ncms, ncso, rcie, rcim, rcms, scim); Microsoft.PowerShell.LocalAccounts (15: algm, dlu, elu, glg, glgm, glu, nlg, nlu, rlg, rlgm, rlu, rnlg, rnlu, slg, slu); PSWorkflow (1: nwsn). about_Modules.md:23-24 says PowerShell 'automatically loads an installed module the first time you use a command from the module'. I believe, without documentary support, that these aliases are defined by their modules and appear in Get-Alias only once the module is imported, while invoking one by name triggers autoloading. On the same belief, the aliases of Microsoft.PowerShell.Core/Management/Utility commands, plus man, md and ise, are engine built-ins present at start. Each alias carries 'commandModule' (from the page's 'Module Name:' front matter) so a consumer can make this cut. The 5.1 docs also say LocalAccounts is 'not available in 32-bit PowerShell on a 64-bit system' (reference/5.1/Microsoft.PowerShell.LocalAccounts/Add-LocalGroupMember.md:199).",
+  "Aliases whose target is a function, not a cmdlet: clear and cls -> Clear-Host (Clear-Host.md calls it a function, though its page sits under Module Name Microsoft.PowerShell.Core), man -> help, md -> mkdir. ise -> PowerShell_ISE targets the ISE executable; the documentation gives the command as `PowerShell_ISE`, not an exact definition string.",
+  "The 'pwsh75' field compares each 5.1 alias with the 7.5 cmdlet reference at the same commit. Its NOTES passages group aliases under 'All platforms:', 'Windows:' and 'Linux and macOS:'. 'windows only' means the alias would not exist in pwsh 7 on Linux. The 7.5 reference adds one alias absent from 5.1 docs (gerr -> Get-Error, a 7.x cmdlet) and has no other alias missing from the 5.1 set.",
+  "7.5 documentation contradicts itself on several aliases that 5.1 lists: Set-Content (sc), Export-PSSession (epsn), Import-PSSession (ipsn), Trace-Command (trcm) and New-PSSessionConfigurationFile (npssc) keep the alias in their 7.5 front matter, but their 7.5 NOTES passage names none. curl and wget (Invoke-WebRequest) and lp (Out-Printer) are in neither in 7.5; 7.5 lists only iwr for Invoke-WebRequest. differences-from-windows-powershell.md never states that curl, wget, sc or lp were removed.",
+  "7.5 New-PSDrive.md NOTES passage reads 'PowerShell includes the following aliases for `Get-PSDrive`:' and then lists ndr and mount. It is a copy error: the 5.1 New-PSDrive page and unix-support.md:262 both give mount -> New-PSDrive.",
+  "man on Linux: unix-support.md:261 lists man (-> help) as not available on Linux or macOS, but 7.5 about_Built-in_Functions.md:49 heads its section '`help` (alias: `man`)' with no platform qualifier.",
+  "7.5 Clear-Host lists cls under both 'Windows:' and 'Linux and macOS:' and clear under 'Windows:' only, which agrees with unix-support.md:254. 7.5 Invoke-Item lists ii with no platform group, and is taken here as all platforms.",
+  "unix-support.md:273 says its table 'doesn't include aliases unavailable for cmdlets that don't exist on non-Windows platforms'. The 'windows only' and 'command not in the 7.5 reference' statuses cover those cases (for example gsv, sasv, gcim, gwmi). One alias contradicts it: 7.5 Receive-PSSession.md groups rcsn under 'All platforms', while unix-support.md:176 says Receive-PSSession isn't available on Linux or macOS. rcsn is marked 'windows only (command unavailable on Linux/macOS)'.",
+  "Belief, not documented: curl, wget, sc and lp no longer exist in PowerShell 7 on any platform, Windows included. The 7.5 NOTES passages omit them, but no page states their removal.",
+  "using-aliases.md heads its table 'Compatibility aliases in Windows' and says 'The aliases in this table are Windows-specific'. The page speaks of current PowerShell across platforms, not of 5.1 against 7. Its row 'md | mkdir | New-Item | ni' does not say md is an alias of New-Item. about_Built-in_Functions.md:81 makes md the alias of the mkdir function.",
+  "Two 5.1 pages, Clear-Variable.md and Export-Alias.md, say 'PowerShell includes the following aliases' where all the others say 'Windows PowerShell includes'. The wording makes no difference to the content.",
+  "Select-String.md (5.1) NOTES remarks that the official alias prefix for Select-* is 'sc' and that 'sls' is an exception. That is about naming convention: 'sc' is the alias of Set-Content, not of any Select-* cmdlet.",
+  "differences-from-windows-powershell.md:418-421: 'AllScope was removed from most default aliases' in PowerShell 7. By implication the 5.1 default aliases carry the AllScope option. No page lists the option per alias.",
+  "Functions of 7.5 against 5.1 (about_Built-in_Functions at both versions): 7.5 drops Get-Verb (a Utility cmdlet from 6.0 per cmdlet-versions.md:128/421), ImportSystemModules and more (removed per differences-from-windows-powershell.md:964-967). It adds cd~ (7.4) and exec (7.3.1). It says mkdir and the drive-letter functions are not defined on non-Windows systems.",
+  "Excluded as module functions: PSConsoleHostReadLine is defined by the PSReadLine module, which the 5.1 console host loads automatically (reference/5.1/PSReadLine/PSConsoleHostReadLine.md:23-29). It is therefore present at start in the console host but not 'with no module'. Functions exported by any other module are likewise out of scope.",
+  "'pause' is documented in lower case (about_Built-in_Functions.md:36). Function lookup is case-insensitive, and the casing Get-Command would show is not documented."
+ ]
+}

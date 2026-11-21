@@ -537,6 +537,35 @@ describe("calls to functions other files define: loaded, else unique", () => {
     expect(await wires("Backport/Use-Backport.ps1")).toEqual({ "Backport/Expand-Archive.ps1": ["Expand-Archive"] });
   });
 
+  it("treat a function PowerShell defines without a module as shipped: wired only to a definition the caller loads", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0): in run.ps1, which loads
+    // nothing, `Get-Command Pause` is "Function source='' file=''", PowerShell's own; in loads.ps1, which dot-sources the
+    // helper, it is the helper's ("file='…/lib/Helpers.ps1'"), a later function replacing an earlier one. `Invoke-Thing`
+    // is wired by the measured rule's "else unique", which PowerShell's run of run.ps1 alone cannot show.
+    await write({
+      "lib/Helpers.ps1": "function Pause { Read-Host 'Press Enter' | Out-Null }\nfunction Invoke-Thing { }\nfunction mkdir { }\nfunction ImportSystemModules { }\n",
+      "run.ps1": "Write-Host 'Building'\nPause\nInvoke-Thing\nmkdir out\nImportSystemModules\n",
+      "loads.ps1": ". \"$PSScriptRoot/lib/Helpers.ps1\"\nPause\n"
+    });
+    // `mkdir` is Windows PowerShell's and PowerShell 7's on Windows; `ImportSystemModules` is Windows PowerShell 5.1's alone.
+    expect(await wires("run.ps1")).toEqual({ "lib/Helpers.ps1": ["Invoke-Thing"] });
+    expect(await wires("loads.ps1")).toEqual({ "lib/Helpers.ps1": ["Pause"] });
+  });
+
+  it("read a call by one of PowerShell's aliases as a call to the command it names, never to a function of the alias's name", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0), lib.ps1 defining `select` and
+    // `Get-ChildItem` and run.ps1 dot-sourcing it: `'x' | select` printed "x", the alias Select-Object answering ahead of
+    // the loaded function; `gci` printed "the workspace's Get-ChildItem", the alias naming a command the loaded function
+    // answers. `sort` is an alias of Sort-Object in Windows PowerShell 5.1 (and PowerShell 7 on Windows), not on Linux.
+    await write({
+      "lib.ps1": "function select { }\nfunction Get-ChildItem { }\nfunction sort { }\n",
+      "run.ps1": ". \"$PSScriptRoot/lib.ps1\"\n'x' | select\ngci\n",
+      "elsewhere.ps1": "'x' | select\ngci\n'y' | sort\n"
+    });
+    expect(await wires("run.ps1")).toEqual({ "lib.ps1": ["Get-ChildItem"] });
+    expect(await wires("elsewhere.ps1")).toEqual({});
+  });
+
   it("never reach a test's definition as the only one from working code, but let a test reach another test's helper", async () => {
     await write({
       "tests/Stubs.Tests.ps1": "function Get-External { }\nfunction Get-Thing { }\n",
@@ -715,6 +744,25 @@ describe("loads the text fixes", () => {
     });
     expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["scripts/Other.ps1", "scripts/Run-Step.ps1", "scripts/Third.ps1"]);
   });
+
+  it("read a script run or dot-sourced by a path without its extension as PowerShell finds it: the file so named, else its .ps1", async () => {
+    // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1`, run from the folder): with
+    // only `a/build.ps1`, `a/build`, `& a/build`, `& "$PSScriptRoot/a/build"` and `. a/build` each "a/build.ps1 ran";
+    // with `b/build` and `b/build.ps1` both, `Get-Command b/build` is `b/build`, the file so named; with only
+    // `d/build.psm1`, `d/build` is `CommandNotFoundException`: no other extension is tried. And a name without a folder
+    // is a command: from `g/Use.ps1`, `. Stop-It` and `& Stop-It` beside `g/Stop-It.ps1` are `CommandNotFoundException`.
+    await write({
+      "a/build.ps1": "", "b/build": "", "b/build.ps1": "", "d/build.psm1": "", "g/Stop-It.ps1": "",
+      "Deploy.ps1": ["a/build", "& \"$PSScriptRoot/a/build\" -Step publish", "b/build", "d/build"].join("\n"),
+      "Library.ps1": ". \"$PSScriptRoot/a/build\"\nfunction Get-Thing { }\n",
+      "g/Use.ps1": ". Stop-It\n"
+    });
+    const analysis = await analyzeFile("Deploy.ps1");
+    expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["a/build.ps1", "b/build"]);
+    expect(analysis?.notices).toEqual([{ reason: "loads whose path the text fixes but no file of the workspace holds, left unlinked", subject: "d/build" }]);
+    expect(Object.keys(await wires("Library.ps1"))).toEqual(["a/build.ps1"]);
+    expect(await wires("g/Use.ps1")).toEqual({});
+  });
 });
 
 describe("programs and libraries", () => {
@@ -801,6 +849,57 @@ describe("what a load draws nothing for, said as a notice", () => {
     expect(analysis?.notices?.map((notice) => notice.reason)).toEqual([UNFOUND, UNFOUND]);
     expect(analysis?.notices?.map((notice) => notice.subject.toLowerCase())).toEqual(["$psscriptroot/missing.ps1", "$psscriptroot/gone.psm1"]);
     expect(analysis?.dependencies).toEqual([]);
+  });
+
+  it("keeps a module named through a variable the file assigns once from a constant, and says nothing of it", async () => {
+    // PowerShell's own answer, `pwsh -NoProfile -NonInteractive -File run.ps1` over `$m = 'Pester'` then `Import-Module $m`,
+    // on a machine without Pester: "The specified module 'Pester' was not loaded because no valid module file was found
+    // in any module directory." The module it looks for is the one the assignment names.
+    await write({ "Run.ps1": "$m = 'Pester'\nImport-Module $m\n$n = \"PSReadLine\"\nImport-Module -Name \"$n\"\n" });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices).toBeUndefined();
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Pester", "PSReadLine"]);
+  });
+
+  it("keeps each module a loop over written-out names imports, and says nothing of it; a name a run computes stays a notice", async () => {
+    // PowerShell's own answer (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0) over
+    // `foreach ($m in 'Alpha.Missing', 'Beta.Missing') { Import-Module $m }`: "The specified module 'Alpha.Missing' was not
+    // loaded …" then the same of 'Beta.Missing', each name of the list in turn; and of 'Gamma.Missing' piped to ForEach-Object.
+    await write({
+      "Run.ps1": [
+        "foreach ($m in 'Alpha.Missing', 'Beta.Missing') { Import-Module $m }",
+        "'Gamma.Missing' | ForEach-Object { Import-Module -Name $_ }",
+        "foreach ($m in (Get-Content modules.txt)) { Import-Module $m }"
+      ].join("\n")
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Alpha.Missing", "Beta.Missing", "Gamma.Missing"]);
+    expect(analysis?.notices).toEqual([{ reason: "dot-sources and imports whose path the text does not fix, left unlinked", subject: "line 3: Import-Module $m" }]);
+  });
+
+  it("takes a command qualified by its module for a command, not a script's path, unless the workspace holds that script", async () => {
+    // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1` from a folder holding
+    // `Microsoft.PowerShell.Utility/New-Object.ps1`, and a function `New-Object` defined first): the qualified name runs
+    // the shipped cmdlet ("Microsoft.PowerShell.Utility\New-Object gave a StringBuilder"), never the function nor the
+    // script; and a name qualified by a module nothing loads, `TabExpansionPlusPlus\Register-ArgumentCompleter`, is a
+    // module's command PowerShell tries to load ("CouldNotAutoLoadModule"), not a path. dbatools writes both.
+    await write({
+      "Run.ps1": [
+        "Microsoft.PowerShell.Utility\\New-Object -TypeName System.Text.StringBuilder",
+        "TabExpansionPlusPlus\\Register-ArgumentCompleter -CommandName x -ScriptBlock { }",
+        "lib\\Helpers",
+        "lib\\Build.ps1"
+      ].join("\n"),
+      "Microsoft.PowerShell.Utility/New-Object.ps1": "'a script'\n",
+      "lib/Helpers.ps1": "'a script'\n",
+      "lib/Build.ps1": "'a script'\n"
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices).toBeUndefined();
+    // On Windows, where a backslash separates folders, `lib\Helpers` is a path when the workspace holds the script, which
+    // PowerShell runs without its extension written (pwsh here, where only `/` separates: `lib/Helpers` gave "the script
+    // lib/Helpers.ps1 ran"). pwsh on Linux reads `lib\Helpers` as a module's command, which no Windows run would.
+    expect(analysis?.dependencies.map((dependency) => dependency.resolvedPath)).toEqual(["lib/Helpers.ps1", "lib/Build.ps1"]);
   });
 
   it("says nothing of a load a loop reads, nor of a script block run in the caller's scope", async () => {

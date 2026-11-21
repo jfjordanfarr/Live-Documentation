@@ -1,0 +1,755 @@
+{
+  "version": "7.7.0",
+  "edition": "Core",
+  "platform": "Unix",
+  "os": "Debian GNU/Linux 13 (trixie)",
+  "modules": [
+    "Microsoft.PowerShell.Archive",
+    "Microsoft.PowerShell.Core",
+    "Microsoft.PowerShell.Host",
+    "Microsoft.PowerShell.Management",
+    "Microsoft.PowerShell.PSResourceGet",
+    "Microsoft.PowerShell.Security",
+    "Microsoft.PowerShell.ThreadJob",
+    "Microsoft.PowerShell.Utility",
+    "PackageManagement",
+    "PowerShellGet",
+    "PSReadLine"
+  ],
+  "commands": [
+    "Add-Content",
+    "Add-History",
+    "Add-Member",
+    "Add-Type",
+    "Clear-Content",
+    "Clear-History",
+    "Clear-Item",
+    "Clear-ItemProperty",
+    "Clear-Variable",
+    "Compare-Object",
+    "Compress-Archive",
+    "Compress-PSResource",
+    "Convert-Path",
+    "ConvertFrom-CliXml",
+    "ConvertFrom-Csv",
+    "ConvertFrom-Json",
+    "ConvertFrom-Markdown",
+    "ConvertFrom-SecureString",
+    "ConvertFrom-StringData",
+    "ConvertTo-CliXml",
+    "ConvertTo-Csv",
+    "ConvertTo-Html",
+    "ConvertTo-Json",
+    "ConvertTo-SecureString",
+    "ConvertTo-Xml",
+    "Copy-Item",
+    "Copy-ItemProperty",
+    "Debug-Job",
+    "Debug-Process",
+    "Debug-Runspace",
+    "Disable-ExperimentalFeature",
+    "Disable-PSBreakpoint",
+    "Disable-RunspaceDebug",
+    "Enable-ExperimentalFeature",
+    "Enable-PSBreakpoint",
+    "Enable-RunspaceDebug",
+    "Enter-PSHostProcess",
+    "Enter-PSSession",
+    "Exit-PSHostProcess",
+    "Exit-PSSession",
+    "Expand-Archive",
+    "Export-Alias",
+    "Export-Clixml",
+    "Export-Csv",
+    "Export-FormatData",
+    "Export-ModuleMember",
+    "Export-PSSession",
+    "Find-Command",
+    "Find-DscResource",
+    "Find-Module",
+    "Find-Package",
+    "Find-PackageProvider",
+    "Find-PSResource",
+    "Find-RoleCapability",
+    "Find-Script",
+    "ForEach-Object",
+    "Format-Custom",
+    "Format-Hex",
+    "Format-List",
+    "Format-Table",
+    "Format-Wide",
+    "Get-Alias",
+    "Get-ChildItem",
+    "Get-Clipboard",
+    "Get-CmsMessage",
+    "Get-Command",
+    "Get-Content",
+    "Get-Credential",
+    "Get-CredsFromCredentialProvider",
+    "Get-Culture",
+    "Get-Date",
+    "Get-Error",
+    "Get-Event",
+    "Get-EventSubscriber",
+    "Get-ExecutionPolicy",
+    "Get-ExperimentalFeature",
+    "Get-FileHash",
+    "Get-FormatData",
+    "Get-Help",
+    "Get-History",
+    "Get-Host",
+    "Get-InstalledModule",
+    "Get-InstalledPSResource",
+    "Get-InstalledScript",
+    "Get-Item",
+    "Get-ItemProperty",
+    "Get-ItemPropertyValue",
+    "Get-Job",
+    "Get-Location",
+    "Get-MarkdownOption",
+    "Get-Member",
+    "Get-Module",
+    "Get-Package",
+    "Get-PackageProvider",
+    "Get-PackageSource",
+    "Get-PfxCertificate",
+    "Get-Process",
+    "Get-PSBreakpoint",
+    "Get-PSCallStack",
+    "Get-PSDrive",
+    "Get-PSHostProcessInfo",
+    "Get-PSProvider",
+    "Get-PSReadLineKeyHandler",
+    "Get-PSReadLineOption",
+    "Get-PSRepository",
+    "Get-PSResourceRepository",
+    "Get-PSScriptFileInfo",
+    "Get-PSSession",
+    "Get-PSSubsystem",
+    "Get-Random",
+    "Get-Runspace",
+    "Get-RunspaceDebug",
+    "Get-SecureRandom",
+    "Get-TimeZone",
+    "Get-TraceSource",
+    "Get-TypeData",
+    "Get-UICulture",
+    "Get-Unique",
+    "Get-Uptime",
+    "Get-Variable",
+    "Get-Verb",
+    "Group-Object",
+    "Import-Alias",
+    "Import-Clixml",
+    "Import-Csv",
+    "Import-LocalizedData",
+    "Import-Module",
+    "Import-PackageProvider",
+    "Import-PowerShellDataFile",
+    "Import-PSGetRepository",
+    "Import-PSSession",
+    "Install-Module",
+    "Install-Package",
+    "Install-PackageProvider",
+    "Install-PSResource",
+    "Install-Script",
+    "Invoke-Command",
+    "Invoke-Expression",
+    "Invoke-History",
+    "Invoke-Item",
+    "Invoke-RestMethod",
+    "Invoke-WebRequest",
+    "Join-Path",
+    "Join-String",
+    "Measure-Command",
+    "Measure-Object",
+    "Move-Item",
+    "Move-ItemProperty",
+    "New-Alias",
+    "New-Event",
+    "New-Guid",
+    "New-Item",
+    "New-ItemProperty",
+    "New-Module",
+    "New-ModuleManifest",
+    "New-Object",
+    "New-PSDrive",
+    "New-PSRoleCapabilityFile",
+    "New-PSScriptFileInfo",
+    "New-PSSession",
+    "New-PSSessionConfigurationFile",
+    "New-PSSessionOption",
+    "New-PSTransportOption",
+    "New-ScriptFileInfo",
+    "New-TemporaryDirectory",
+    "New-TemporaryFile",
+    "New-TimeSpan",
+    "New-Variable",
+    "Out-Default",
+    "Out-File",
+    "Out-Host",
+    "Out-Null",
+    "Out-String",
+    "Pop-Location",
+    "Protect-CmsMessage",
+    "PSConsoleHostReadLine",
+    "Publish-Module",
+    "Publish-PSResource",
+    "Publish-Script",
+    "Push-Location",
+    "Read-Host",
+    "Receive-Job",
+    "Register-ArgumentCompleter",
+    "Register-EngineEvent",
+    "Register-ObjectEvent",
+    "Register-PackageSource",
+    "Register-PSRepository",
+    "Register-PSResourceRepository",
+    "Remove-Alias",
+    "Remove-Event",
+    "Remove-Item",
+    "Remove-ItemProperty",
+    "Remove-Job",
+    "Remove-Module",
+    "Remove-PSBreakpoint",
+    "Remove-PSDrive",
+    "Remove-PSReadLineKeyHandler",
+    "Remove-PSSession",
+    "Remove-TypeData",
+    "Remove-Variable",
+    "Rename-Item",
+    "Rename-ItemProperty",
+    "Reset-PSResourceRepository",
+    "Resolve-Path",
+    "Restart-Computer",
+    "Save-Help",
+    "Save-Module",
+    "Save-Package",
+    "Save-PSResource",
+    "Save-Script",
+    "Select-Object",
+    "Select-String",
+    "Select-Xml",
+    "Send-MailMessage",
+    "Set-Alias",
+    "Set-Clipboard",
+    "Set-Content",
+    "Set-Date",
+    "Set-ExecutionPolicy",
+    "Set-Item",
+    "Set-ItemProperty",
+    "Set-Location",
+    "Set-MarkdownOption",
+    "Set-PackageSource",
+    "Set-PSBreakpoint",
+    "Set-PSDebug",
+    "Set-PSReadLineKeyHandler",
+    "Set-PSReadLineOption",
+    "Set-PSRepository",
+    "Set-PSResourceRepository",
+    "Set-StrictMode",
+    "Set-TraceSource",
+    "Set-Variable",
+    "Show-Markdown",
+    "Sort-Object",
+    "Split-Path",
+    "Start-Job",
+    "Start-Process",
+    "Start-Sleep",
+    "Start-ThreadJob",
+    "Start-Transcript",
+    "Stop-Computer",
+    "Stop-Job",
+    "Stop-Process",
+    "Stop-Transcript",
+    "Switch-Process",
+    "Tee-Object",
+    "Test-Connection",
+    "Test-Json",
+    "Test-ModuleManifest",
+    "Test-Path",
+    "Test-PSScriptFileInfo",
+    "Test-ScriptFileInfo",
+    "Trace-Command",
+    "Unblock-File",
+    "Uninstall-Module",
+    "Uninstall-Package",
+    "Uninstall-PSResource",
+    "Uninstall-Script",
+    "Unprotect-CmsMessage",
+    "Unregister-Event",
+    "Unregister-PackageSource",
+    "Unregister-PSRepository",
+    "Unregister-PSResourceRepository",
+    "Update-FormatData",
+    "Update-Help",
+    "Update-List",
+    "Update-Module",
+    "Update-ModuleManifest",
+    "Update-PSModuleManifest",
+    "Update-PSResource",
+    "Update-PSScriptFileInfo",
+    "Update-Script",
+    "Update-ScriptFileInfo",
+    "Update-TypeData",
+    "Wait-Debugger",
+    "Wait-Event",
+    "Wait-Job",
+    "Wait-Process",
+    "Where-Object",
+    "Write-Debug",
+    "Write-Error",
+    "Write-Host",
+    "Write-Information",
+    "Write-Output",
+    "Write-Progress",
+    "Write-Verbose",
+    "Write-Warning"
+  ],
+  "functions": [
+    "cd..",
+    "cd\\",
+    "cd~",
+    "Clear-Host",
+    "exec",
+    "help",
+    "oss",
+    "Pause",
+    "prompt",
+    "TabExpansion2"
+  ],
+  "aliases": [
+    {
+      "name": "?",
+      "definition": "Where-Object"
+    },
+    {
+      "name": "%",
+      "definition": "ForEach-Object"
+    },
+    {
+      "name": "cd",
+      "definition": "Set-Location"
+    },
+    {
+      "name": "chdir",
+      "definition": "Set-Location"
+    },
+    {
+      "name": "clc",
+      "definition": "Clear-Content"
+    },
+    {
+      "name": "clhy",
+      "definition": "Clear-History"
+    },
+    {
+      "name": "cli",
+      "definition": "Clear-Item"
+    },
+    {
+      "name": "clp",
+      "definition": "Clear-ItemProperty"
+    },
+    {
+      "name": "cls",
+      "definition": "Clear-Host"
+    },
+    {
+      "name": "clv",
+      "definition": "Clear-Variable"
+    },
+    {
+      "name": "copy",
+      "definition": "Copy-Item"
+    },
+    {
+      "name": "cpi",
+      "definition": "Copy-Item"
+    },
+    {
+      "name": "cvpa",
+      "definition": "Convert-Path"
+    },
+    {
+      "name": "dbp",
+      "definition": "Disable-PSBreakpoint"
+    },
+    {
+      "name": "del",
+      "definition": "Remove-Item"
+    },
+    {
+      "name": "dir",
+      "definition": "Get-ChildItem"
+    },
+    {
+      "name": "ebp",
+      "definition": "Enable-PSBreakpoint"
+    },
+    {
+      "name": "echo",
+      "definition": "Write-Output"
+    },
+    {
+      "name": "epal",
+      "definition": "Export-Alias"
+    },
+    {
+      "name": "epcsv",
+      "definition": "Export-Csv"
+    },
+    {
+      "name": "erase",
+      "definition": "Remove-Item"
+    },
+    {
+      "name": "etsn",
+      "definition": "Enter-PSSession"
+    },
+    {
+      "name": "exsn",
+      "definition": "Exit-PSSession"
+    },
+    {
+      "name": "fc",
+      "definition": "Format-Custom"
+    },
+    {
+      "name": "fhx",
+      "definition": "Format-Hex"
+    },
+    {
+      "name": "fl",
+      "definition": "Format-List"
+    },
+    {
+      "name": "foreach",
+      "definition": "ForEach-Object"
+    },
+    {
+      "name": "ft",
+      "definition": "Format-Table"
+    },
+    {
+      "name": "fw",
+      "definition": "Format-Wide"
+    },
+    {
+      "name": "gal",
+      "definition": "Get-Alias"
+    },
+    {
+      "name": "gbp",
+      "definition": "Get-PSBreakpoint"
+    },
+    {
+      "name": "gc",
+      "definition": "Get-Content"
+    },
+    {
+      "name": "gci",
+      "definition": "Get-ChildItem"
+    },
+    {
+      "name": "gcm",
+      "definition": "Get-Command"
+    },
+    {
+      "name": "gcs",
+      "definition": "Get-PSCallStack"
+    },
+    {
+      "name": "gdr",
+      "definition": "Get-PSDrive"
+    },
+    {
+      "name": "gerr",
+      "definition": "Get-Error"
+    },
+    {
+      "name": "ghy",
+      "definition": "Get-History"
+    },
+    {
+      "name": "gi",
+      "definition": "Get-Item"
+    },
+    {
+      "name": "gjb",
+      "definition": "Get-Job"
+    },
+    {
+      "name": "gl",
+      "definition": "Get-Location"
+    },
+    {
+      "name": "gm",
+      "definition": "Get-Member"
+    },
+    {
+      "name": "gmo",
+      "definition": "Get-Module"
+    },
+    {
+      "name": "gp",
+      "definition": "Get-ItemProperty"
+    },
+    {
+      "name": "gps",
+      "definition": "Get-Process"
+    },
+    {
+      "name": "gpv",
+      "definition": "Get-ItemPropertyValue"
+    },
+    {
+      "name": "group",
+      "definition": "Group-Object"
+    },
+    {
+      "name": "gsn",
+      "definition": "Get-PSSession"
+    },
+    {
+      "name": "gu",
+      "definition": "Get-Unique"
+    },
+    {
+      "name": "gv",
+      "definition": "Get-Variable"
+    },
+    {
+      "name": "h",
+      "definition": "Get-History"
+    },
+    {
+      "name": "history",
+      "definition": "Get-History"
+    },
+    {
+      "name": "icm",
+      "definition": "Invoke-Command"
+    },
+    {
+      "name": "iex",
+      "definition": "Invoke-Expression"
+    },
+    {
+      "name": "ihy",
+      "definition": "Invoke-History"
+    },
+    {
+      "name": "ii",
+      "definition": "Invoke-Item"
+    },
+    {
+      "name": "ipal",
+      "definition": "Import-Alias"
+    },
+    {
+      "name": "ipcsv",
+      "definition": "Import-Csv"
+    },
+    {
+      "name": "ipmo",
+      "definition": "Import-Module"
+    },
+    {
+      "name": "irm",
+      "definition": "Invoke-RestMethod"
+    },
+    {
+      "name": "iwr",
+      "definition": "Invoke-WebRequest"
+    },
+    {
+      "name": "md",
+      "definition": "mkdir"
+    },
+    {
+      "name": "measure",
+      "definition": "Measure-Object"
+    },
+    {
+      "name": "mi",
+      "definition": "Move-Item"
+    },
+    {
+      "name": "move",
+      "definition": "Move-Item"
+    },
+    {
+      "name": "mp",
+      "definition": "Move-ItemProperty"
+    },
+    {
+      "name": "nal",
+      "definition": "New-Alias"
+    },
+    {
+      "name": "ndr",
+      "definition": "New-PSDrive"
+    },
+    {
+      "name": "ni",
+      "definition": "New-Item"
+    },
+    {
+      "name": "nmo",
+      "definition": "New-Module"
+    },
+    {
+      "name": "nsn",
+      "definition": "New-PSSession"
+    },
+    {
+      "name": "nv",
+      "definition": "New-Variable"
+    },
+    {
+      "name": "oh",
+      "definition": "Out-Host"
+    },
+    {
+      "name": "popd",
+      "definition": "Pop-Location"
+    },
+    {
+      "name": "pushd",
+      "definition": "Push-Location"
+    },
+    {
+      "name": "pwd",
+      "definition": "Get-Location"
+    },
+    {
+      "name": "r",
+      "definition": "Invoke-History"
+    },
+    {
+      "name": "rbp",
+      "definition": "Remove-PSBreakpoint"
+    },
+    {
+      "name": "rcjb",
+      "definition": "Receive-Job"
+    },
+    {
+      "name": "rcsn",
+      "definition": "Receive-PSSession"
+    },
+    {
+      "name": "rd",
+      "definition": "Remove-Item"
+    },
+    {
+      "name": "rdr",
+      "definition": "Remove-PSDrive"
+    },
+    {
+      "name": "ren",
+      "definition": "Rename-Item"
+    },
+    {
+      "name": "ri",
+      "definition": "Remove-Item"
+    },
+    {
+      "name": "rjb",
+      "definition": "Remove-Job"
+    },
+    {
+      "name": "rmo",
+      "definition": "Remove-Module"
+    },
+    {
+      "name": "rni",
+      "definition": "Rename-Item"
+    },
+    {
+      "name": "rnp",
+      "definition": "Rename-ItemProperty"
+    },
+    {
+      "name": "rp",
+      "definition": "Remove-ItemProperty"
+    },
+    {
+      "name": "rsn",
+      "definition": "Remove-PSSession"
+    },
+    {
+      "name": "rv",
+      "definition": "Remove-Variable"
+    },
+    {
+      "name": "rvpa",
+      "definition": "Resolve-Path"
+    },
+    {
+      "name": "sajb",
+      "definition": "Start-Job"
+    },
+    {
+      "name": "sal",
+      "definition": "Set-Alias"
+    },
+    {
+      "name": "saps",
+      "definition": "Start-Process"
+    },
+    {
+      "name": "sbp",
+      "definition": "Set-PSBreakpoint"
+    },
+    {
+      "name": "select",
+      "definition": "Select-Object"
+    },
+    {
+      "name": "set",
+      "definition": "Set-Variable"
+    },
+    {
+      "name": "si",
+      "definition": "Set-Item"
+    },
+    {
+      "name": "sl",
+      "definition": "Set-Location"
+    },
+    {
+      "name": "sls",
+      "definition": "Select-String"
+    },
+    {
+      "name": "sp",
+      "definition": "Set-ItemProperty"
+    },
+    {
+      "name": "spjb",
+      "definition": "Stop-Job"
+    },
+    {
+      "name": "spps",
+      "definition": "Stop-Process"
+    },
+    {
+      "name": "sv",
+      "definition": "Set-Variable"
+    },
+    {
+      "name": "type",
+      "definition": "Get-Content"
+    },
+    {
+      "name": "where",
+      "definition": "Where-Object"
+    },
+    {
+      "name": "wjb",
+      "definition": "Wait-Job"
+    }
+  ]
+}

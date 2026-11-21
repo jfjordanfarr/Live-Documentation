@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/oracle/powershell-compare.test.ts`
-- Generated At: 2026-11-21T03:07:38.004Z
+- Generated At: 2026-11-21T05:19:49.119Z
 
 ## Authored
 ### Purpose
@@ -27,5 +27,8 @@ _No public symbols detected_
 - [`files.readPowerShellAst`](./files.ts.mdmd.md#symbol-readpowershellast)
 - [`powershell-compare.comparePowerShell`](./powershell-compare.ts.mdmd.md#symbol-comparepowershell)
 - [`powershell-compare.folderFiles`](./powershell-compare.ts.mdmd.md#symbol-folderfiles)
+- [`powershell-compare.parserReading`](./powershell-compare.ts.mdmd.md#symbol-parserreading)
+- [`powershell-wires.ParserWorkspace`](./powershell-wires.ts.mdmd.md#symbol-parserworkspace)
+- [`powershell-wires.recordedShippedNames`](./powershell-wires.ts.mdmd.md#symbol-recordedshippednames)
 - `vitest` - `afterAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

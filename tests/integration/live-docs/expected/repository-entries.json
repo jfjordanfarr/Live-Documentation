@@ -124,6 +124,9 @@
     "scripts/oracle/powershell-compare.ts": [
       "command oracle:powershell of package.json"
     ],
+    "scripts/oracle/powershell-shipped.ps1": [
+      "program"
+    ],
     "scripts/oracle/sql-compare.ts": [
       "command oracle:sql of package.json"
     ],

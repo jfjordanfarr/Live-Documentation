@@ -1,15 +1,23 @@
 /**
- * The commands PowerShell itself ships, by edition: every cmdlet and function of
- * the modules PowerShell installs with itself.
+ * The names PowerShell itself answers, by edition: every cmdlet and function of
+ * the modules PowerShell installs with itself, the functions it defines without
+ * a module (`Pause`, `help`, `prompt`, on Windows `mkdir` and `more`), and the
+ * aliases it defines at start (`select`, `sort`, `%`, `gci`).
  *
- * A call whose name is one of these never wires to a workspace file merely by
- * that file being the only one that defines the name: a script that defines
- * such a function does so as a stand-in, often only on an older PowerShell
- * (dbatools' `opt/` back-ports), and the shipped command is what answers
- * elsewhere. A definition the caller loads still wins, as a function shadows a
- * cmdlet of the same name. Nothing else is listed.
+ * A call whose name is a shipped command or function never wires to a workspace
+ * file merely by that file being the only one that defines the name: a script
+ * that defines such a function does so as a stand-in, often only on an older
+ * PowerShell (dbatools' `opt/` back-ports), and the shipped command is what
+ * answers elsewhere. A definition the caller loads still wins, as a function
+ * shadows a cmdlet of the same name and a later function an earlier one.
  *
- * Sources, recorded on 2026-11-19:
+ * A call by an alias is a call to the command the alias names, since an alias
+ * outranks every function in PowerShell's lookup: `select` never reaches a
+ * function named `select`, loaded or not, and `gci` reaches a loaded function
+ * named `Get-ChildItem` (pwsh 7.7.0, measured 2026-11-21). The names are the
+ * union of both editions, since a script written for one is run by the other.
+ *
+ * Sources of the commands, recorded on 2026-11-19:
  * - Windows PowerShell 5.1: Microsoft's reference, the command pages of every
  *   module under `reference/5.1` of MicrosoftDocs/PowerShell-Docs at commit
  *   `aedd8efe1fece22f04e478c2521c3fccc17ab03d`:
@@ -28,6 +36,30 @@
  *   PackageManagement, PowerShellGet, PSReadLine.
  *   Its Windows-only modules are not installed there; their commands that
  *   Windows PowerShell 5.1 also ships are in the first list.
+ *   `scripts/oracle/powershell-shipped.ps1` produces this list again, and the
+ *   functions and aliases below, from the pwsh it runs on.
+ *
+ * Sources of the functions without a module and the aliases, recorded on 2026-11-21:
+ * - Windows PowerShell 5.1: Microsoft's reference at the same commit of
+ *   MicrosoftDocs/PowerShell-Docs, fetched anonymously, since no Windows runs
+ *   here. The functions are those `reference/5.1/Microsoft.PowerShell.Core/About/
+ *   about_Built-in_Functions.md` lists as "not included in any module". The
+ *   aliases are those every command page under `reference/5.1/<Module>/` names,
+ *   in its front matter's `aliases:` and in its NOTES ("Windows PowerShell
+ *   includes the following aliases for …"), with `man` and `md` from
+ *   `about_Built-in_Functions.md` and `ise` from `docs-conceptual/
+ *   windows-powershell/Starting-Windows-PowerShell.md`. The aliases of
+ *   CimCmdlets, Microsoft.PowerShell.LocalAccounts and PSWorkflow are kept
+ *   apart: those modules export them, so they answer once the module loads,
+ *   which calling one does, and are counted shipped commands, not aliases a
+ *   function can never outrank.
+ * - PowerShell 7: `scripts/oracle/powershell-shipped.ps1`, run as
+ *   `pwsh -NoProfile -NonInteractive -File`, by PowerShell 7.7.0 on Debian
+ *   GNU/Linux 13 (trixie): `Get-Command -CommandType Function` with no module,
+ *   and `Get-Alias`. PowerShell 7 on Windows adds `mkdir`, the drive functions
+ *   and aliases its 7.5 reference marks for Windows only, such as `ls`, `sort`
+ *   and `cat`; those Windows PowerShell 5.1 has too are in its lists, and no
+ *   other is known here.
  */
 
 /** Windows PowerShell 5.1's commands, 366. */
@@ -155,5 +187,120 @@ export const POWERSHELL_7_COMMANDS: readonly string[] = [
   "Write-Host", "Write-Information", "Write-Output", "Write-Progress", "Write-Verbose", "Write-Warning"
 ];
 
-/** Every shipped command's name, case-folded, as PowerShell compares command names. */
-export const SHIPPED_COMMANDS: ReadonlySet<string> = new Set([...WINDOWS_POWERSHELL_51_COMMANDS, ...POWERSHELL_7_COMMANDS].map((name) => name.toLowerCase()));
+/** Windows PowerShell 5.1's functions defined without a module, 38: `about_Built-in_Functions`. */
+export const WINDOWS_POWERSHELL_51_FUNCTIONS: readonly string[] = [
+  "A:", "B:", "C:", "cd..", "cd\\", "Clear-Host", "D:", "E:", "F:", "G:", "Get-Verb", "H:", "help", "I:",
+  "ImportSystemModules", "J:", "K:", "L:", "M:", "mkdir", "more", "N:", "O:", "oss", "P:", "pause", "prompt", "Q:",
+  "R:", "S:", "T:", "TabExpansion2", "U:", "V:", "W:", "X:", "Y:", "Z:"
+];
+
+/** PowerShell 7.7.0's functions defined without a module, on Linux, 10. */
+export const POWERSHELL_7_FUNCTIONS: readonly string[] = [
+  "cd..", "cd\\", "cd~", "Clear-Host", "exec", "help", "oss", "Pause", "prompt", "TabExpansion2"
+];
+
+/** Windows PowerShell 5.1's aliases defined at start, 158, each with the command it names. */
+export const WINDOWS_POWERSHELL_51_ALIASES: Readonly<Record<string, string>> = {
+  "%": "ForEach-Object", "?": "Where-Object", "ac": "Add-Content", "asnp": "Add-PSSnapin", "cat": "Get-Content",
+  "cd": "Set-Location", "CFS": "ConvertFrom-String", "chdir": "Set-Location", "clc": "Clear-Content",
+  "clear": "Clear-Host", "clhy": "Clear-History", "cli": "Clear-Item", "clp": "Clear-ItemProperty",
+  "cls": "Clear-Host", "clv": "Clear-Variable", "cnsn": "Connect-PSSession", "compare": "Compare-Object",
+  "copy": "Copy-Item", "cp": "Copy-Item", "cpi": "Copy-Item", "cpp": "Copy-ItemProperty",
+  "curl": "Invoke-WebRequest", "cvpa": "Convert-Path", "dbp": "Disable-PSBreakpoint", "del": "Remove-Item",
+  "diff": "Compare-Object", "dir": "Get-ChildItem", "dnsn": "Disconnect-PSSession", "ebp": "Enable-PSBreakpoint",
+  "echo": "Write-Output", "epal": "Export-Alias", "epcsv": "Export-Csv", "epsn": "Export-PSSession",
+  "erase": "Remove-Item", "etsn": "Enter-PSSession", "exsn": "Exit-PSSession", "fc": "Format-Custom",
+  "fhx": "Format-Hex", "fl": "Format-List", "foreach": "ForEach-Object", "ft": "Format-Table", "fw": "Format-Wide",
+  "gal": "Get-Alias", "gbp": "Get-PSBreakpoint", "gc": "Get-Content", "gcb": "Get-Clipboard", "gci": "Get-ChildItem",
+  "gcm": "Get-Command", "gcs": "Get-PSCallStack", "gdr": "Get-PSDrive", "ghy": "Get-History", "gi": "Get-Item",
+  "gin": "Get-ComputerInfo", "gjb": "Get-Job", "gl": "Get-Location", "gm": "Get-Member", "gmo": "Get-Module",
+  "gp": "Get-ItemProperty", "gps": "Get-Process", "gpv": "Get-ItemPropertyValue", "group": "Group-Object",
+  "gsn": "Get-PSSession", "gsnp": "Get-PSSnapin", "gsv": "Get-Service", "gtz": "Get-TimeZone", "gu": "Get-Unique",
+  "gv": "Get-Variable", "gwmi": "Get-WmiObject", "h": "Get-History", "history": "Get-History",
+  "icm": "Invoke-Command", "iex": "Invoke-Expression", "ihy": "Invoke-History", "ii": "Invoke-Item",
+  "ipal": "Import-Alias", "ipcsv": "Import-Csv", "ipmo": "Import-Module", "ipsn": "Import-PSSession",
+  "irm": "Invoke-RestMethod", "ise": "PowerShell_ISE", "iwmi": "Invoke-WmiMethod", "iwr": "Invoke-WebRequest",
+  "kill": "Stop-Process", "lp": "Out-Printer", "ls": "Get-ChildItem", "man": "help", "md": "mkdir",
+  "measure": "Measure-Object", "mi": "Move-Item", "mount": "New-PSDrive", "move": "Move-Item",
+  "mp": "Move-ItemProperty", "mv": "Move-Item", "nal": "New-Alias", "ndr": "New-PSDrive", "ni": "New-Item",
+  "nmo": "New-Module", "npssc": "New-PSSessionConfigurationFile", "nsn": "New-PSSession", "nv": "New-Variable",
+  "ogv": "Out-GridView", "oh": "Out-Host", "popd": "Pop-Location", "ps": "Get-Process", "pushd": "Push-Location",
+  "pwd": "Get-Location", "r": "Invoke-History", "rbp": "Remove-PSBreakpoint", "rcjb": "Receive-Job",
+  "rcsn": "Receive-PSSession", "rd": "Remove-Item", "rdr": "Remove-PSDrive", "ren": "Rename-Item",
+  "ri": "Remove-Item", "rjb": "Remove-Job", "rm": "Remove-Item", "rmdir": "Remove-Item", "rmo": "Remove-Module",
+  "rni": "Rename-Item", "rnp": "Rename-ItemProperty", "rp": "Remove-ItemProperty", "rsn": "Remove-PSSession",
+  "rsnp": "Remove-PSSnapin", "rujb": "Resume-Job", "rv": "Remove-Variable", "rvpa": "Resolve-Path",
+  "rwmi": "Remove-WmiObject", "sajb": "Start-Job", "sal": "Set-Alias", "saps": "Start-Process",
+  "sasv": "Start-Service", "sbp": "Set-PSBreakpoint", "sc": "Set-Content", "scb": "Set-Clipboard",
+  "select": "Select-Object", "set": "Set-Variable", "shcm": "Show-Command", "si": "Set-Item", "sl": "Set-Location",
+  "sleep": "Start-Sleep", "sls": "Select-String", "sort": "Sort-Object", "sp": "Set-ItemProperty",
+  "spjb": "Stop-Job", "spps": "Stop-Process", "spsv": "Stop-Service", "start": "Start-Process",
+  "stz": "Set-TimeZone", "sujb": "Suspend-Job", "sv": "Set-Variable", "swmi": "Set-WmiInstance", "tee": "Tee-Object",
+  "trcm": "Trace-Command", "type": "Get-Content", "wget": "Invoke-WebRequest", "where": "Where-Object",
+  "wjb": "Wait-Job", "write": "Write-Output"
+};
+
+/** Windows PowerShell 5.1's aliases a module of its own exports, 28: present once the module loads, which calling one does. */
+export const WINDOWS_POWERSHELL_51_MODULE_ALIASES: Readonly<Record<string, string>> = {
+  "algm": "Add-LocalGroupMember", "dlu": "Disable-LocalUser", "elu": "Enable-LocalUser",
+  "gcai": "Get-CimAssociatedInstance", "gcim": "Get-CimInstance", "gcls": "Get-CimClass", "gcms": "Get-CimSession",
+  "glg": "Get-LocalGroup", "glgm": "Get-LocalGroupMember", "glu": "Get-LocalUser", "icim": "Invoke-CimMethod",
+  "ncim": "New-CimInstance", "ncms": "New-CimSession", "ncso": "New-CimSessionOption", "nlg": "New-LocalGroup",
+  "nlu": "New-LocalUser", "nwsn": "New-PSWorkflowSession", "rcie": "Register-CimIndicationEvent",
+  "rcim": "Remove-CimInstance", "rcms": "Remove-CimSession", "rlg": "Remove-LocalGroup",
+  "rlgm": "Remove-LocalGroupMember", "rlu": "Remove-LocalUser", "rnlg": "Rename-LocalGroup",
+  "rnlu": "Rename-LocalUser", "scim": "Set-CimInstance", "slg": "Set-LocalGroup", "slu": "Set-LocalUser"
+};
+
+/** PowerShell 7.7.0's aliases defined at start, on Linux, 108, each with the command it names. */
+export const POWERSHELL_7_ALIASES: Readonly<Record<string, string>> = {
+  "%": "ForEach-Object", "?": "Where-Object", "cd": "Set-Location", "chdir": "Set-Location", "clc": "Clear-Content",
+  "clhy": "Clear-History", "cli": "Clear-Item", "clp": "Clear-ItemProperty", "cls": "Clear-Host",
+  "clv": "Clear-Variable", "copy": "Copy-Item", "cpi": "Copy-Item", "cvpa": "Convert-Path",
+  "dbp": "Disable-PSBreakpoint", "del": "Remove-Item", "dir": "Get-ChildItem", "ebp": "Enable-PSBreakpoint",
+  "echo": "Write-Output", "epal": "Export-Alias", "epcsv": "Export-Csv", "erase": "Remove-Item",
+  "etsn": "Enter-PSSession", "exsn": "Exit-PSSession", "fc": "Format-Custom", "fhx": "Format-Hex",
+  "fl": "Format-List", "foreach": "ForEach-Object", "ft": "Format-Table", "fw": "Format-Wide", "gal": "Get-Alias",
+  "gbp": "Get-PSBreakpoint", "gc": "Get-Content", "gci": "Get-ChildItem", "gcm": "Get-Command",
+  "gcs": "Get-PSCallStack", "gdr": "Get-PSDrive", "gerr": "Get-Error", "ghy": "Get-History", "gi": "Get-Item",
+  "gjb": "Get-Job", "gl": "Get-Location", "gm": "Get-Member", "gmo": "Get-Module", "gp": "Get-ItemProperty",
+  "gps": "Get-Process", "gpv": "Get-ItemPropertyValue", "group": "Group-Object", "gsn": "Get-PSSession",
+  "gu": "Get-Unique", "gv": "Get-Variable", "h": "Get-History", "history": "Get-History", "icm": "Invoke-Command",
+  "iex": "Invoke-Expression", "ihy": "Invoke-History", "ii": "Invoke-Item", "ipal": "Import-Alias",
+  "ipcsv": "Import-Csv", "ipmo": "Import-Module", "irm": "Invoke-RestMethod", "iwr": "Invoke-WebRequest",
+  "md": "mkdir", "measure": "Measure-Object", "mi": "Move-Item", "move": "Move-Item", "mp": "Move-ItemProperty",
+  "nal": "New-Alias", "ndr": "New-PSDrive", "ni": "New-Item", "nmo": "New-Module", "nsn": "New-PSSession",
+  "nv": "New-Variable", "oh": "Out-Host", "popd": "Pop-Location", "pushd": "Push-Location", "pwd": "Get-Location",
+  "r": "Invoke-History", "rbp": "Remove-PSBreakpoint", "rcjb": "Receive-Job", "rcsn": "Receive-PSSession",
+  "rd": "Remove-Item", "rdr": "Remove-PSDrive", "ren": "Rename-Item", "ri": "Remove-Item", "rjb": "Remove-Job",
+  "rmo": "Remove-Module", "rni": "Rename-Item", "rnp": "Rename-ItemProperty", "rp": "Remove-ItemProperty",
+  "rsn": "Remove-PSSession", "rv": "Remove-Variable", "rvpa": "Resolve-Path", "sajb": "Start-Job",
+  "sal": "Set-Alias", "saps": "Start-Process", "sbp": "Set-PSBreakpoint", "select": "Select-Object",
+  "set": "Set-Variable", "si": "Set-Item", "sl": "Set-Location", "sls": "Select-String", "sp": "Set-ItemProperty",
+  "spjb": "Stop-Job", "spps": "Stop-Process", "sv": "Set-Variable", "type": "Get-Content", "where": "Where-Object",
+  "wjb": "Wait-Job"
+};
+
+/**
+ * The modules PowerShell installs with itself, in either edition, case-folded: the modules the lists of commands above
+ * were read from. A command qualified by one, `Microsoft.PowerShell.Utility\New-Object`, is PowerShell's own, which no
+ * function of the workspace answers and no script of that path runs (pwsh 7.7.0, measured 2026-11-21).
+ */
+export const SHIPPED_MODULES: ReadonlySet<string> = new Set([
+  "CimCmdlets", "ISE", "Microsoft.PowerShell.Archive", "Microsoft.PowerShell.Core", "Microsoft.PowerShell.Diagnostics",
+  "Microsoft.PowerShell.Host", "Microsoft.PowerShell.LocalAccounts", "Microsoft.PowerShell.Management",
+  "Microsoft.PowerShell.ODataUtils", "Microsoft.PowerShell.Operation.Validation", "Microsoft.PowerShell.PSResourceGet",
+  "Microsoft.PowerShell.Security", "Microsoft.PowerShell.ThreadJob", "Microsoft.PowerShell.Utility", "Microsoft.WSMan.Management",
+  "PackageManagement", "PowerShellGet", "PSDiagnostics", "PSReadLine", "PSScheduledJob", "PSWorkflow", "PSWorkflowUtility"
+].map((name) => name.toLowerCase()));
+
+/** Every shipped command's and function's name, a module's alias among them, case-folded, as PowerShell compares command names. */
+export const SHIPPED_COMMANDS: ReadonlySet<string> = new Set([
+  ...WINDOWS_POWERSHELL_51_COMMANDS, ...POWERSHELL_7_COMMANDS, ...WINDOWS_POWERSHELL_51_FUNCTIONS, ...POWERSHELL_7_FUNCTIONS,
+  ...Object.keys(WINDOWS_POWERSHELL_51_MODULE_ALIASES)
+].map((name) => name.toLowerCase()));
+
+/** Every alias PowerShell defines at start, in either edition, case-folded, with the command it names, case-folded. */
+export const SHIPPED_ALIASES: ReadonlyMap<string, string> = new Map([
+  ...Object.entries(WINDOWS_POWERSHELL_51_ALIASES), ...Object.entries(POWERSHELL_7_ALIASES)
+].map(([alias, command]): [string, string] => [alias.toLowerCase(), command.toLowerCase()]));
