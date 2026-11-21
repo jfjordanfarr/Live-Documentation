@@ -11,7 +11,7 @@ opened: 2026-11-20
 
 **Done when.** One HTML file, opened from disk in Edge or Chrome on a machine that has never seen this repository, maps a folder a person picks, shows the map, and saves a blank or a filled copy of itself; the command line maps the same folder to the same facts; and a check fails the day the two would differ.
 
-**Rests on.** An exploration, not a decision: that the engine can read a folder through one small interface (list once, read a file, write) with two hosts behind it, Node and the browser's directory handle. For it: [on 2026-11-19](../AgentSessionHistory/2026/11/2026-11-19/Probes/execution-surface/README.md) the unchanged generator, with stand-ins for Node's file system, wrote in a page what Node writes. Against calling it done: two days later that probe no longer built until its stand-ins were given three more answers ([the scan in a tab](../AgentSessionHistory/2026/11/2026-11-21/Probes/scan-in-a-tab/README.md)), so stand-ins drift and only a standing check keeps a page running. Not in a page whatever is built: anything that runs git (a repository's history, changed-only runs), which stays the command line's and reaches the page as facts already computed. What would overturn it: a reader that cannot be given its files through the interface without a second copy of its logic, or a scan in a tab too slow on a weak machine to be borne with a progress indicator.
+**Rests on.** An exploration, not a decision: that the engine can read a folder through one small interface (list once, read a file, write) with two hosts behind it, Node and the browser's directory handle. For it: [on 2026-11-19](../AgentSessionHistory/2026/11/2026-11-19/Probes/execution-surface/README.md) the unchanged generator, with stand-ins for Node's file system, wrote in a page what Node writes. Against calling it done: two days later that probe no longer built until its stand-ins were given three more answers ([the scan in a tab](../AgentSessionHistory/2026/11/2026-11-21/Probes/scan-in-a-tab/README.md)), so stand-ins drift and only a standing check keeps a page running. Not in a page whatever is built: anything that runs git (a repository's history, changed-only runs), which stays the command line's and reaches the page as facts already computed. And what either host writes is not the Markdown doc per file that the command line writes today: by the owner's leave of 2026-11-19 a scan's facts are to be tried as data with Markdown exported on demand, which root's first picture of this architecture left out and the owner caught ([their words](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-4): "Wasn't that piece going to change?"). In a page the facts can only be data held in the page, so the store's trial and the page are one move. What would overturn it: a reader that cannot be given its files through the interface without a second copy of its logic, or a scan in a tab too slow on a weak machine to be borne with a progress indicator.
 
 **Waiting on the owner.** Nothing.
 
@@ -35,6 +35,13 @@ List once, read a file's bytes, is-a-file answered from the listing, write. It c
 - state: open
 - holds: not begun; designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
 - evidence:
+
+### A scan's facts in one stored form, written by either host
+- state: open
+- holds: not begun; it is [the store's trial](../Memory/direction.md#engine-and-docs), given leave on 2026-11-19 and ordered after the readers' landing
+- evidence:
+
+The owner's bar for the form (2026-11-19): "Don't just settle for JSON by default. Do a lot of research to choose a format that is going to be right for what we need at scale and prove it by the efficiency gains that are reaped." The values that research trades, as listed then: read by the Explorer's page with no network and nothing installed; read and written by Node on Windows with nothing compiled; the same bytes for the same facts; a question answered without reading the whole. Since 2026-11-21 there is one more: written by a page, and carried inside the one HTML file that page saves. The command line keeps the facts in a folder that ignores itself, the page keeps them in itself, and Markdown is exported from either, one way, when a person asks.
 
 ### One page that scans, shows the map and saves a copy of itself
 - state: open
