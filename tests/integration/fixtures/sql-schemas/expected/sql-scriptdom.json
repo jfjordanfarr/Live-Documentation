@@ -203,6 +203,54 @@
       "references": [],
       "dynamic": []
     },
+    "../legacy.sql": {
+      "parseErrors": [],
+      "creates": [
+        {
+          "kind": "procedure",
+          "name": {
+            "name": "ListLegacy"
+          },
+          "line": 3,
+          "column": 1,
+          "scope": "script"
+        }
+      ],
+      "references": [
+        {
+          "how": "alter",
+          "name": {
+            "schema": "dbo",
+            "name": "ListLegacy"
+          },
+          "line": 5,
+          "column": 17,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "dbo",
+              "name": "ListLegacy"
+            }
+          }
+        },
+        {
+          "how": "select",
+          "name": {
+            "name": "Orders"
+          },
+          "line": 5,
+          "column": 50,
+          "module": {
+            "kind": "procedure",
+            "name": {
+              "schema": "dbo",
+              "name": "ListLegacy"
+            }
+          }
+        }
+      ],
+      "dynamic": []
+    },
     "../notes.sql": {
       "parseErrors": [],
       "creates": [
@@ -321,8 +369,17 @@
           "name": {
             "name": "Orders"
           },
-          "line": 2,
+          "line": 3,
           "column": 16
+        },
+        {
+          "how": "execute",
+          "name": {
+            "schema": "dbo",
+            "name": "ListLegacy"
+          },
+          "line": 4,
+          "column": 6
         }
       ],
       "dynamic": []

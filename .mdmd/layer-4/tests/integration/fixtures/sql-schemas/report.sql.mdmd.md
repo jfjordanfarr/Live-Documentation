@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/report.sql`
-- Generated At: 2026-11-21T05:00:41.291Z
+- Generated At: 2026-11-21T05:37:52.655Z
 
 ## Authored
 ### Purpose
@@ -21,5 +21,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `dbo.ListLegacy` (contract)
 - [`tables.dbo.Orders`](./tables.sql.mdmd.md#symbol-dboorders)
 <!-- LIVE-DOC:END Dependencies -->

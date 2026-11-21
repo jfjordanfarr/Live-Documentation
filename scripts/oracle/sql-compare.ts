@@ -92,9 +92,8 @@
  *         Transact-SQL command have dbo as their default schema" (the
  *         ownership page again) makes the default, so a one-part name outside
  *         a module binds to `dbo` alone; and an object created without a
- *         written schema, in its creator's default schema, is the one a name
- *         used without a written schema binds to at `dbo`, and no name that
- *         writes a schema binds to it;
+ *         written schema, in its creator's default schema, is `dbo`'s, bound
+ *         by a one-part name at `dbo` and by `dbo.name` alike;
  *       * a name on a linked server is matched by schema and name, and by
  *         nothing when it omits the schema, which the linked login's default
  *         on the remote server decides; its link is marked as reached through
@@ -283,12 +282,11 @@ export function searchedSchemas(reference: Pick<ScriptDomReference, "how" | "nam
 
 /**
  * The objects a used name binds to: those of its name in the first schema searched that holds one. An object created
- * without a written schema is in its creator's default schema, bound only by a use that writes none either.
+ * without a written schema is in its creator's default schema, taken as `dbo`.
  */
 export function bindName<Created extends { named: ScriptDomName }>(reference: Pick<ScriptDomReference, "how" | "name" | "module">, created: Created[]): Created[] {
   const name    = reference.name.name.toLowerCase();
-  const written = reference.name.schema !== undefined;
-  const same    = created.filter((object) => object.named.name.toLowerCase() === name && (written ? object.named.schema !== undefined : true));
+  const same    = created.filter((object) => object.named.name.toLowerCase() === name);
   for (const schema of searchedSchemas(reference)) {
     const found = same.filter((object) => (object.named.schema ?? DEFAULT_SCHEMA).toLowerCase() === schema);
     if (found.length > 0) return found;

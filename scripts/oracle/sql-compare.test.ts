@@ -32,7 +32,7 @@ describe("the SQL comparison's binding of names, by the order Microsoft document
     expect(searchedSchemas({ how: "select", name: { server: "ORACLE_CENTRAL", schema: "CENTRAL", name: "ACCOUNT" } })).toEqual(["central"]);
   });
 
-  it("binds to the first schema searched that holds the name, to nothing when neither does, and a schema-less creation only by a schema-less use", () => {
+  it("binds to the first schema searched that holds the name, to nothing when neither does, and a schema-less creation as dbo's", () => {
     const created = [
       { named: { schema: "dbo", name: "Orders" } },
       { named: { schema: "archive", name: "Orders" } },
@@ -45,7 +45,8 @@ describe("the SQL comparison's binding of names, by the order Microsoft document
     expect(bound({ how: "select", name: { name: "Notes" } })).toEqual([]);
     expect(bound({ how: "select", name: { name: "Notes" }, module: archive })).toEqual(["archive.Notes"]);
     expect(bound({ how: "select", name: { name: "Things" }, module: archive })).toEqual(["(none).Things"]);
-    expect(bound({ how: "select", name: { schema: "dbo", name: "Things" } })).toEqual([]);
+    expect(bound({ how: "select", name: { schema: "dbo", name: "Things" } })).toEqual(["(none).Things"]);
+    expect(bound({ how: "select", name: { schema: "archive", name: "Things" } })).toEqual([]);
   });
 });
 

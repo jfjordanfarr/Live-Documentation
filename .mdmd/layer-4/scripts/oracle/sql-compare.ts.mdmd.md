@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/sql-compare.ts`
 - Entry: command `oracle:sql` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T05:11:37.480Z
+- Generated At: 2026-11-21T05:37:49.995Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ Grades the SQL reader against ScriptDom: `npm run oracle:sql -- <folder>` reads 
 ### Public Symbols
 #### `GRADED_HOWS` {#symbol-graded_hows}
 - Type: const
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L140)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L139)
 - Returns: `ReadonlySet`
 
 ##### `GRADED_HOWS` — Summary
@@ -32,7 +32,7 @@ The ways of naming an object the grading counts as a use.
 
 #### `readFacts` {#symbol-readfacts}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L153)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L152)
 - Returns: `ReadFacts`
 
 ##### `readFacts` — Summary
@@ -40,7 +40,7 @@ The parser's facts of a file, and of every string it executes that is written ou
 
 #### `writtenPart` {#symbol-writtenpart}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L190)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L189)
 
 ##### `writtenPart` — Summary
 One name part as the product writes it in a symbol or a kept name: bare, or
@@ -50,7 +50,7 @@ product's documented form, not imported from it.
 
 #### `writtenName` {#symbol-writtenname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L195)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L194)
 - Parameters: `name`: [`ScriptDomName`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomname)
 
 ##### `writtenName` — Summary
@@ -58,21 +58,21 @@ A parser's name in the product's written form: the parts written, from the first
 
 #### `partsOfWritten` {#symbol-partsofwritten}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L202)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L201)
 
 ##### `partsOfWritten` — Summary
 Reads a name the product wrote back into its parts: dots outside brackets split it, brackets come off and `]]` is `]`.
 
 #### `isSqlServerOwn` {#symbol-issqlserverown}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L255)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L254)
 
 ##### `isSqlServerOwn` — Summary
 Whether a used name is SQL Server's own: a system schema, or an `xml` method on a column.
 
 #### `searchedSchemas` {#symbol-searchedschemas}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L275)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L274)
 
 ##### `searchedSchemas` — Summary
 The schemas, in the order T-SQL searches them, in which a used name may bind, each case folded; a schema not written
@@ -80,31 +80,31 @@ is the default one. None when the name is on a linked server and omits its schem
 
 #### `bindName` {#symbol-bindname}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L288)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L287)
 - Returns: `Created`[]
 - Parameters: `created`: `Created`[]
 
 ##### `bindName` — Summary
 The objects a used name binds to: those of its name in the first schema searched that holds one. An object created
-without a written schema is in its creator's default schema, bound only by a use that writes none either.
+without a written schema is in its creator's default schema, taken as `dbo`.
 
 #### `SqlReport` {#symbol-sqlreport}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L428)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L426)
 
 ##### `SqlReport` — Summary
 What the comparison found.
 
 #### `drawSample` {#symbol-drawsample}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L476)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L474)
 
 ##### `drawSample` — Summary
 Draws `count` of the files, in a Fisher–Yates shuffle of their sorted list by the seed, returned sorted.
 
 #### `compareSql` {#symbol-comparesql}
 - Type: function
-- Source: [source](../../../../scripts/oracle/sql-compare.ts#L494)
+- Source: [source](../../../../scripts/oracle/sql-compare.ts#L492)
 - Parameters: `record`: [`ScriptDomRecord`](./sql-scriptdom.ts.mdmd.md#symbol-scriptdomrecord)
 
 ##### `compareSql` — Summary

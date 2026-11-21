@@ -362,6 +362,18 @@ describe("database objects", () => {
     expect(matchSqlObject(sqlObjectName("other.Payment"), index)).toEqual([]);
   });
 
+  it("takes an object created without a schema for dbo's, named by dbo.X and altered as dbo.X", () => {
+    const index: WorkspaceSymbolIndex = new Map([
+      ["ListLegacy", [{ liveDocPath: "d", sourcePath: "legacy.sql", anchor: "symbol-listlegacy", kind: "procedure" }]]
+    ]);
+    expect(matchSqlObject(sqlObjectName("dbo.ListLegacy"), index).map((object) => object.name)).toEqual(["ListLegacy"]);
+    expect(matchSqlObject(sqlObjectName("[dbo].[listlegacy]"), index).map((object) => object.name)).toEqual(["ListLegacy"]);
+    expect(matchSqlObject(sqlObjectName("archive.ListLegacy"), index)).toEqual([]);
+    expect(sqlDeclarations("CREATE PROCEDURE ListLegacy AS SELECT 1;\nGO\nALTER PROCEDURE dbo.ListLegacy AS SELECT 2;")).toEqual([
+      { kind: "procedure", name: "ListLegacy", line: 3, inBody: false }
+    ]);
+  });
+
   it("says which schema a one-part name binds by: its module's, a trigger's table's, and none in DDL, in a string or outside a module", () => {
     const script = [
       "SELECT 1 FROM Loose;",

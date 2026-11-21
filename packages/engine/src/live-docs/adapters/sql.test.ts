@@ -135,7 +135,9 @@ describe("sqlAdapter", () => {
       "count.sql":   "CREATE PROCEDURE archive.CountOrders AS EXEC ('SELECT COUNT(*) FROM Orders');",
       "kept.sql":    "CREATE TRIGGER OrdersKept ON archive.Orders AFTER DELETE AS INSERT INTO Orders (Id) VALUES (0);",
       "notes.sql":   "CREATE PROCEDURE dbo.ListNotes AS SELECT Id FROM Notes;",
-      "report.sql":  "SELECT Id FROM Orders;"
+      "report.sql":  "SELECT Id FROM Orders;",
+      "legacy.sql":  "CREATE PROCEDURE ListLegacy AS SELECT 1 AS Id;",
+      "caller.sql":  "EXEC dbo.ListLegacy;"
     });
     const lines = (file: string) => (results.get(file)?.dependencies ?? []).map((dependency) => `${dependency.specifier} ${dependency.symbols.join(",")}`);
 
@@ -145,6 +147,7 @@ describe("sqlAdapter", () => {
     expect(lines("kept.sql")).toEqual(["archive.sql archive.Orders"]);
     expect(lines("notes.sql")).toEqual(["Notes "]);
     expect(lines("report.sql")).toEqual(["tables.sql dbo.Orders"]);
+    expect(lines("caller.sql")).toEqual(["legacy.sql ListLegacy"]);
   });
 
   it("publishes tables, views and functions, with brackets off", async () => {

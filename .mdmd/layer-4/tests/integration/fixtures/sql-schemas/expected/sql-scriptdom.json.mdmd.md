@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/sql-schemas/expected/sql-scriptdom.json`
-- Generated At: 2026-11-21T04:55:45.792Z
+- Generated At: 2026-11-21T05:37:52.645Z
 
 ## Authored
 ### Purpose
@@ -95,6 +95,21 @@ What Microsoft's T-SQL parser says about the schemas fixture's scripts, written 
 - Type: key
 
 #### `files:../archive.sql:dynamic` {#symbol-filesarchivesqldynamic}
+- Type: key
+
+#### `files:../legacy.sql` {#symbol-fileslegacysql}
+- Type: key
+
+#### `files:../legacy.sql:parseErrors` {#symbol-fileslegacysqlparseerrors}
+- Type: key
+
+#### `files:../legacy.sql:creates` {#symbol-fileslegacysqlcreates}
+- Type: key
+
+#### `files:../legacy.sql:references` {#symbol-fileslegacysqlreferences}
+- Type: key
+
+#### `files:../legacy.sql:dynamic` {#symbol-fileslegacysqldynamic}
 - Type: key
 
 #### `files:../notes.sql` {#symbol-filesnotessql}
