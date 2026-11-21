@@ -18,11 +18,11 @@ opened: 2026-11-20
 ## Tasks
 
 ### A check that the engine, bundled for a browser, maps what Node maps
-- state: active
-- holds: with a builder since 2026-11-21, on a branch `page-check` cut from the day branch; tests and a build script only, no change to the engine
-- evidence:
+- state: done
+- holds: on the day branch since 2026-11-21 (`8f4a86d2e`, merged as `a95f93b91`); `main` receives it with the day's merge. Its builder is mending the one cause of difference it found and drafting the interface's design
+- evidence: [the builder's account](../AgentSessionHistory/2026/11/2026-11-21/Probes/page-check/README.md); root ran the browser-free tests (3 files, 10 tests) and the 45 browser cases again and all pass
 
-Every fixture family mapped twice, in a real Chromium page and under Node, and the docs and index compared; the stand-ins count each call the engine makes of them by kind and by calling module, which is the living inventory of what the interface must cover. Where the page differs today the difference is listed with its cause, and the list can only shrink.
+All 45 sample folders, which between them reach every one of the 19 readers, are mapped in a real Chromium page and under Node with the same clock and compared file by file: 43 identical, and the two that differ (six files) share one cause in the engine, a question put to TypeScript's host on Node that a page cannot answer and that Windows and Linux answer differently. Over the 45 the page took 6.3 s where Node took 9.6 s. Three guards now stand: the bundle refuses any Node module the scan imports that has no stand-in; a committed list says what the scan needs of Node, and changes to it show in review; the ledger of differences fails on a new difference and on a listed one that has gone. What the scan needs of Node today is 36 modules, 13 of them only for paths: in order of use, path arithmetic, 2,163 synchronous is-a-file probes, 2,144 file reads, and five walks of the folder for each scan.
 
 ### The engine reads a folder through one interface
 - state: open
