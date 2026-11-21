@@ -12,10 +12,11 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, cutPan, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
+import { createCutSigns, type CutCard, type CutSigns } from "./cut-signs";
 import { flowNeighbours } from "./directory-flow";
 import { NO_OPEN_DIRECTORIES, type OpenDirectories } from "./directory-state";
 import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
@@ -222,6 +223,11 @@ export class LocalViewController implements LocalViewApi {
    */
   private stepNewcomer: { card: string } | { directory: string } | null = null;
   /**
+   * The last step whose cut Tuning's Cut Counted says at the frame's edges (cut-signs.ts, a trial of 2026-11-21), with
+   * what it opened as last measured; null after an arrival, and before any step.
+   */
+  private cutStep: { step: { card: string } | { directory: string }; cards: CutCard[] } | null = null;
+  /**
    * Whether the camera follows the pins, under Tuning's Framing at Follows Pins (camera-intent.ts's pinsFrame): true
    * from an arrival or a press of Fit, false from the person's own pan, wheel, pinch, zoom button or Return to Reading
    * Size, or an explicit focus on one thing, after which a new pin only does what a step does.
@@ -373,6 +379,7 @@ export class LocalViewController implements LocalViewApi {
   private contentBounds: Bounds | null = null;
   /** The fades at the frame's edges that say the picture continues past them. */
   private readonly edgeSigns: EdgeSigns;
+  private readonly cutSigns: CutSigns;
 
   /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
   private layerObserver: ResizeObserver | null = null;
@@ -490,6 +497,11 @@ export class LocalViewController implements LocalViewApi {
     this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
     this.edgeSigns = createEdgeSigns(this.viewport);
+    // A sign's press pans along its edge's axis to the cards cut there, in the following camera's ease, which any input ends.
+    this.cutSigns = createCutSigns(this.viewport, (edge, cards) => {
+      const frame = this.frameRect();
+      this.easeFollowing(cutPan(cards, edge, this.mapTransform, frame), frame);
+    });
     this.viewport.style.cursor = "grab";
     this.bindItemEvents();
     this.bindPointerEvents();
@@ -737,6 +749,7 @@ export class LocalViewController implements LocalViewApi {
       // A fresh subject: its next framing is an arrival, which Tuning's Arrival frames (camera-intent.ts).
       this.cancelArrival();
       this.arrivalPending = centeredId !== null;
+      this.cutStep = null;
       this.arrivalFocus = false;
       this.arrivedSubject = null;
       this.readingVisible = true;
@@ -1056,6 +1069,11 @@ export class LocalViewController implements LocalViewApi {
     const step = this.stepNewcomer, settle = this.directoryArrivalPending;
     this.stepNewcomer = null;
     this.directoryArrivalPending = false;
+    // What the last step opened, measured again once the picture has settled, since the layout may have moved it.
+    const cut = step ?? this.cutStep?.step;
+    const opened = cut ? this.stepProduced(cut) : null;
+    this.cutStep = cut && opened ? { step: cut, cards: opened.cards } : null;
+    this.sayCut();
     if (this.followsPins()) {
       // Following: once the picture has settled, after a pin, an opening, the search's rearrangement or a card grown by
       // its reading, one ease to the pins' frame; the newcomer is still marked so that the eye finds it.
@@ -1064,6 +1082,19 @@ export class LocalViewController implements LocalViewApi {
       if (this.reframePins()) return;
     }
     if (settle || step) this.settleIntoFrame(settle, step);
+  }
+
+  /** Says at the frame's edges what of the last step's opening is cut, where Tuning's Cut Counted is on. */
+  private sayCut(): void {
+    const on = this.options.state.tuning.localMap.cutCounted === "on" && this.isShown();
+    // What the controls watch, said on the map for whoever reads the page: the step's thing and how many cards it holds.
+    const watched = this.cutStep ? ("card" in this.cutStep.step ? this.cutStep.step.card : `${this.cutStep.step.directory}/`) : null;
+    if (watched === null) { delete this.container.dataset.cutOf; delete this.container.dataset.cutCards; }
+    else if (this.container.dataset.cutOf !== watched || this.container.dataset.cutCards !== String(this.cutStep!.cards.length)) {
+      this.container.dataset.cutOf = watched;
+      this.container.dataset.cutCards = String(this.cutStep!.cards.length);
+    }
+    this.cutSigns.update(on ? this.cutStep?.cards ?? null : null, this.mapTransform, this.framePlace());
   }
 
   /** Whether Tuning's Framing is Follows Pins. */
@@ -1714,6 +1745,7 @@ export class LocalViewController implements LocalViewApi {
       }
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
+    this.sayCut();
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
     // From this frame's own scale, not the animation's destination: the owner saw the fonts "jump up in size before
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).

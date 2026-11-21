@@ -384,12 +384,77 @@ describe("the cut counted under Step, Least Pan, Cut Counted", () => {
     expect(cutByEdge(cards, { x: 0, y: 0, k: 0.5 }, frame)).toEqual({});
   });
 
-  it("a sign pans along its own axis alone, the least that brings the cards cut there in", () => {
-    const cut = [box(1100, 100, 200, 150), box(1150, 300, 200, 150)];
+  it("a sign's press brings the nearest card cut at its edge wholly into view, on both axes, the scale kept", () => {
+    const cut = [box(1100, 100, 200, 150), box(1600, 300, 200, 150)];
     const end = cutPan(cut, "right", camera, frame);
-    const { horizontal } = framePadding(frame);
-    expect(end.y).toBe(0);
+    const { horizontal, vertical } = framePadding(frame), drawn = onScreen(cut[0], end);
     expect(end.k).toBe(1);
-    expect(end.x + 1350).toBeCloseTo(frame.width - horizontal, 9);
+    expect(drawn.right).toBeCloseTo(frame.width - horizontal, 9);
+    expect(drawn.top).toBeGreaterThanOrEqual(vertical);
+  });
+});
+
+/**
+ * The boxes the page drew on 2026-11-21, read in the browser after live-docs/history was opened by its handle from
+ * pathfind.ts under Least Pan, at 1,280 by 800: each of the directory's cards relative to the map's frame, at the camera
+ * then (so the camera here is the identity). The page said 31 past the right edge, 27 above and 4 below.
+ */
+const HISTORY_FRAME = { width: 1019, height: 680 };
+const HISTORY_CARDS: Array<[string, number, number, number, number]> = [
+  ["summary.ts", 654, 378, 999, 589],
+  ["format.ts", 1203, 598, 1553, 829],
+  ["textStore.ts", 1203, 853, 1553, 1064],
+  ["shape.ts", 1203, 1088, 1553, 1299],
+  ["bundled.ts", 1203, 1323, 1553, 1534],
+  ["lens.ts", 2217, -1669, 2556, -1458],
+  ["bundled.test.ts", 2217, -1370, 2556, -1215],
+  ["rows.ts", 2217, -1190, 2556, -979],
+  ["directories.ts", 2217, -955, 2556, -744],
+  ["summary.test.ts", 2760, -1676, 3102, -1521],
+  ["textStore.test.ts", 2760, -1439, 3102, -1284],
+  ["versionControl.ts", 2760, -1195, 3102, -984],
+  ["lens.test.ts", 3306, -1676, 3699, -1521],
+  ["git.ts", 3306, -1446, 3699, -1235],
+  ["codec.ts", 3306, -1154, 3699, -943],
+  ["derive.ts", 3306, -862, 3699, -672],
+  ["sampling.ts", 3306, -648, 3699, -437],
+  ["directories.test.ts", 3306, -413, 3699, -258],
+  ["git.test.ts", 3903, -1662, 4248, -1507],
+  ["rows.test.ts", 3903, -1439, 4248, -1284],
+  ["sequence.ts", 3903, -1216, 4248, -1005],
+  ["sampling.test.ts", 3903, -924, 4248, -769],
+  ["derive.test.ts", 3903, -701, 4248, -546],
+  ["queries.ts", 4452, -1676, 4693, -1465],
+  ["words.ts", 4452, -1441, 4693, -1210],
+  ["window.ts", 4452, -1101, 4693, -890],
+  ["ticks.ts", 4452, -866, 4693, -655],
+  ["queries.test.ts", 4897, -1463, 5165, -1289],
+  ["words.test.ts", 4897, -1264, 5165, -1109],
+  ["sequence.test.ts", 4897, -1084, 5165, -929],
+  ["window.test.ts", 4897, -904, 5165, -749],
+  ["ticks.test.ts", 4897, -724, 5165, -569]
+];
+
+
+describe("the cut counted on the page's own boxes", () => {
+  const cards = HISTORY_CARDS.map(([key, left, top, right, bottom]) => ({ key, bounds: box(left, top, right - left, bottom - top) }));
+  const identity = { x: 0, y: 0, k: 1 };
+
+  it("counts what the page said: 31 past the right edge, 27 above, 4 below, none at the left", () => {
+    const cut = cutByEdge(cards, identity, HISTORY_FRAME);
+    expect({ left: cut.left?.length ?? 0, right: cut.right?.length ?? 0, top: cut.top?.length ?? 0, bottom: cut.bottom?.length ?? 0 })
+      .toEqual({ left: 0, right: 31, top: 27, bottom: 4 });
+  });
+
+  it("the right-hand sign's press lands on format.ts, the nearest past that edge, whole", () => {
+    const right = cutByEdge(cards, identity, HISTORY_FRAME).right!;
+    const end = cutPan(cards.filter(card => right.includes(card.key)).map(card => card.bounds), "right", identity, HISTORY_FRAME);
+    const format = cards.find(card => card.key === "format.ts")!.bounds, drawn = onScreen(format, end);
+    const { horizontal, vertical } = framePadding(HISTORY_FRAME);
+    expect(drawn.left).toBeGreaterThanOrEqual(horizontal - 1e-6);
+    expect(drawn.right).toBeLessThanOrEqual(HISTORY_FRAME.width - horizontal + 1e-6);
+    expect(drawn.top).toBeGreaterThanOrEqual(vertical - 1e-6);
+    expect(drawn.bottom).toBeLessThanOrEqual(HISTORY_FRAME.height - vertical + 1e-6);
+    expect(cutByEdge(cards, end, HISTORY_FRAME).right?.includes("format.ts") ?? false).toBe(false);
   });
 });

@@ -146,6 +146,12 @@ export interface LocalMapTuning {
    */
   step: StepFraming;
   /**
+   * Whether the cut is said at the frame's edges after a step (a trial beside Step, 2026-11-21, default off): at each edge
+   * past which what the step opened goes on, an arrow and the count of its cards there, which pans to them when pressed
+   * (cut-signs.ts).
+   */
+  cutCounted: CutCounted;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -420,6 +426,12 @@ export type StepFraming = "least" | "whole" | "lines";
 
 /** Every Step choice, in the order the control offers them; the first, the least pan, is the default until the owner has seen the others. */
 export const STEPS: readonly StepFraming[] = ["least", "whole", "lines"];
+
+/** Whether the cut is said at the edges after a step: off, the default, or on (a trial, 2026-11-21). */
+export type CutCounted = "off" | "on";
+
+/** Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
+export const CUT_COUNTED: readonly CutCounted[] = ["off", "on"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

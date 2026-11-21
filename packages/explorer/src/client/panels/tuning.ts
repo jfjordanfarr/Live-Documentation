@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVALS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVALS, CUT_COUNTED, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -85,6 +85,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
   const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
+  const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -210,6 +211,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
     if (stepSelect) stepSelect.value = state.tuning.localMap.step;
+    if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -345,6 +347,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (stepSelect) {
     stepSelect.addEventListener("change", () => {
       state.tuning.localMap.step = STEPS.find(choice => choice === stepSelect.value) ?? STEPS[0];
+      onTuningChange();
+    });
+  }
+  // Whether the cut is said changes no picture: the next step reads it.
+  if (cutCountedSelect) {
+    cutCountedSelect.addEventListener("change", () => {
+      state.tuning.localMap.cutCounted = CUT_COUNTED.find(choice => choice === cutCountedSelect.value) ?? CUT_COUNTED[0];
       onTuningChange();
     });
   }
