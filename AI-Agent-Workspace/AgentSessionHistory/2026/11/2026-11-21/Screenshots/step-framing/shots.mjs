@@ -41,8 +41,14 @@ const steps = [
   { name: 'repo-history', address: `${base}/?view=local&node=${encodeURIComponent('packages/engine/src/live-docs/pathfind.ts')}`, start: async () => {},
     press: page => page.getByRole('button', { name: 'Open packages/engine/src/live-docs/history', exact: true }).click() },
   { name: 'repo-cell', address: `${base}/?view=local&node=${encodeURIComponent('packages/engine/src/live-docs/pathfind.ts')}`, start: async () => {},
-    press: page => page.locator('.local-directory-label[data-directory="packages/engine/src/live-docs/history"] .local-directory-field .local-directory-cell--file:not([hidden])').first().click() }
-];
+    press: page => page.locator('.local-directory-label[data-directory="packages/engine/src/live-docs/history"] .local-directory-field .local-directory-cell--file:not([hidden])').first().click() },
+  // Folders of middling size, opened from the client folder chosen in the search; the press is the control's own click,
+  // since the folder's box may stand outside the view.
+  { name: 'repo-panels', address: `${base}/?view=local&node=${encodeURIComponent('packages/explorer/src/client/index.ts')}`, start: searchFolder('client', 'packages/explorer/src/client'),
+    press: page => page.getByRole('button', { name: 'Open packages/explorer/src/client/panels', exact: true }).evaluate(button => button.click()) },
+  { name: 'repo-persistence', address: `${base}/?view=local&node=${encodeURIComponent('packages/explorer/src/client/index.ts')}`, start: searchFolder('client', 'packages/explorer/src/client'),
+    press: page => page.getByRole('button', { name: 'Open packages/explorer/src/client/persistence', exact: true }).evaluate(button => button.click()) }
+].filter(step => !process.env.STEPS || process.env.STEPS.split(',').includes(step.name));
 const settled = page => page.waitForFunction(() => {
   const map = document.querySelector('#map-container'), placed = map?.querySelector('.local-placed');
   return !!placed && map.dataset.camera !== 'moving' && placed.dataset.moving !== 'true' && placed.dataset.searchStatus !== 'running';
@@ -52,7 +58,7 @@ const report = [];
 for (const value of values) {
   for (const step of steps) {
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
-    await context.addInitScript(({ key, tuning }) => localStorage.setItem(key, tuning), { key: PERSISTED_UI_KEY, tuning: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step: value } } }) });
+    await context.addInitScript(({ key, tuning }) => localStorage.setItem(key, tuning), { key: PERSISTED_UI_KEY, tuning: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step: value, cutCounted: process.env.CUT ?? 'off' } } }) });
     const page = await context.newPage();
     const errors = []; page.on('pageerror', e => errors.push(e.message));
     await page.goto(step.address);
@@ -69,6 +75,15 @@ for (const value of values) {
     while (Date.now() - t0 < 2600) { const f = `${stem}--f${String(frames.length).padStart(2, '0')}.png`; await page.screenshot({ path: f }); frames.push(f); }
     await settled(page).catch(() => {}); await page.waitForTimeout(500); await settled(page).catch(() => {});
     await page.screenshot({ path: `${stem}--1-rest.png` });
+    const sign = page.locator('.map-cut-sign:not([hidden])').first();
+    if (await sign.count()) {
+      const said = await page.locator('.map-cut-sign:not([hidden])').evaluateAll(signs => signs.map(s => `${s.dataset.edge} ${s.textContent} "${s.getAttribute('aria-label')}"`));
+      console.log(JSON.stringify({ signs: said }));
+      await sign.click();
+      await settled(page).catch(() => {}); await page.waitForTimeout(600); await settled(page).catch(() => {});
+      await page.screenshot({ path: `${stem}--2-after-sign.png` });
+      console.log(JSON.stringify({ after: await page.locator('.map-cut-sign:not([hidden])').evaluateAll(signs => signs.map(s => `${s.dataset.edge} ${s.textContent}`)) }));
+    }
     const k1 = await page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector('#map-viewport')).transform).a);
     const pick = frames.length <= 6 ? frames : [0, 1, 2, 3, 4, 5].map(i => frames[Math.round(i * (frames.length - 1) / 5)]);
     execFileSync('montage', [...pick, '-tile', `${pick.length}x1`, '-geometry', '426x266+3+3', '-background', '#444', `${stem}--frames.png`]);

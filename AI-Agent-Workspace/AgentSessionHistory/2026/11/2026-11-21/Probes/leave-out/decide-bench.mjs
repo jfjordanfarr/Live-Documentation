@@ -8,7 +8,8 @@
 //                                                             the browser's own throttle; only through the browser lane,
 //                                                             under `taskset -c 0,1` to hold it to two cores
 //
-// Every folder of the listing is asked `folder()`, and every file `file()`, as a walk that lists everything would ask;
+// Every folder of the listing is asked `folder()`, and every file `file()`, as a walk that lists everything would ask,
+// with the evidence rules applied and their names taken from the listing;
 // a walk that prunes asks less. The page is the function bundled by esbuild into one inline script.
 import { build } from "esbuild";
 import fs from "node:fs";
@@ -28,7 +29,11 @@ const bundle = async () => (await build({
 /** The decide step over a listing: every folder, then every file, by a fresh decider. */
 const DECIDE = `(listing) => {
   const started = performance.now();
-  const decide = globalThis.leaveOut({ ignoreFiles: listing.ignoreFiles, gitIgnoreCase: true, startingList: listing.startingList, ownOutput: [".live-documentation"] });
+  const names = new Map();
+  for (const folder of ["", ...listing.folders]) names.set(folder, []);
+  for (const folder of listing.folders) { const at = folder.lastIndexOf("/"); names.get(at === -1 ? "" : folder.slice(0, at)).push(folder.slice(at + 1) + "/"); }
+  for (const file of listing.files) { const at = file.lastIndexOf("/"); names.get(at === -1 ? "" : file.slice(0, at)).push(file.slice(at + 1)); }
+  const decide = globalThis.leaveOut({ ignoreFiles: listing.ignoreFiles, gitIgnoreCase: true, ownOutput: [".live-documentation"], evidence: { names: (folder) => names.get(folder) ?? [], apply: true } });
   let kept = 0;
   for (const folder of listing.folders) decide.folder(folder);
   for (const file of listing.files) if (decide.file(file).kept) kept += 1;
@@ -52,8 +57,7 @@ if (mode === "listing") {
     }
   };
   walk("");
-  const startingList = fs.readFileSync(path.join(here, "starting-lists", "fixed-list.txt"), "utf8").split("\n");
-  fs.writeFileSync(third, JSON.stringify({ files, folders, ignoreFiles, startingList }));
+  fs.writeFileSync(third, JSON.stringify({ files, folders, ignoreFiles }));
   console.log(`${files.length} files, ${folders.length} folders, ${ignoreFiles.length} ignore files`);
 } else if (mode === "bundle") {
   fs.writeFileSync(input, await bundle());

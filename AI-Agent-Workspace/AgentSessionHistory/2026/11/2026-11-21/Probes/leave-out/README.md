@@ -2,6 +2,168 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Fourth leg, later on 2026-11-21: the choice before a scan, as a trial page
+
+A trial page, not the product: `choice/choice.html` is one file, opened from disk. Its build is `choice/build.mjs`; its source is `choice/page.html`, `choice/page.mjs` and `choice/model.mjs`.
+
+- **Policy.** One script admitted by its hash, no network (`default-src 'none'`), and listeners rather than inline handlers.
+- **What it holds.** The engine's `leaveOut`.
+- **What it reads.** Names, the text of ignore files, and `.git/config` for `core.ignorecase`. Nothing leaves the machine.
+
+### What it does
+
+- **Giving it a folder,** three ways, each an icon and one word:
+  - **Pick:** a directory handle, walked lazily, so a folder left out is never listed.
+  - **Drop here:** the same handle, where the browser gives one.
+  - **Choose:** `<input webkitdirectory>`. The browser lists everything first. Automation and the other browsers can use it.
+- **While it walks,** it hands the thread back every 20 folders and says how many it has listed.
+- **The timings line** at the bottom: how the folder was walked, the listings, and listing and deciding time. A person who picks or drops a folder there times the first lazy walk.
+- **By reason** (a summary with its exceptions):
+  - one line of totals;
+  - what is left out, grouped by its reason in plain words: "Build output beside a project", "NuGet packages", "Node packages", "`.tfignore`: packages", "`.gitignore`: .vscode/", "The tool's own output", "Version control's own folder", "Your pattern: …". Largest first, with how many folders and files ("not looked inside" where nothing was listed). Each row has a Keep control, and opens to its folders, each with its own Keep;
+  - what will be read, by kind and by top folder.
+- **Folders** (the tri-state tree):
+  - each row is a folder: its name, how many files it keeps and leaves out, a box ticked, empty or mixed, and beside a row left out its reason;
+  - only opened rows are drawn;
+  - one tab stop, with the arrow keys, Home and End inside it; Space ticks a box and Enter opens a row;
+  - ticking a folder left out adds a pattern of the person's own (`!/path/`) and walks it then.
+- **In both:**
+  - a field for a pattern of one's own, read by git's rules without regard to case, with the person's patterns listed and each removable;
+  - the evidence switch, applied to begin with;
+  - the notes beside `!` lines that may name files inside folders left out whole;
+  - **Scan**, which in this trial only says how many files it would read.
+
+### A change the function needed
+
+The page's first pictures showed DNN's nested `.gitignore` files having no effect on the first walk; they took effect only after a change was made.
+
+- **The cause, in `leaveOut`.** It asked for a folder's own ignore files when the folder was decided. A lazy walk lists a folder, and reads its ignore files, only after deciding it.
+- **The mend.** A folder's ignore files are now asked for when something inside it is decided.
+- **The test.** A case in `leaveOut.test.ts` holds that order: deciding a folder does not ask for its files, and deciding a file inside it does.
+- **What else this touched.** The Node probes of the earlier legs listed folders on demand, so this did not touch their numbers. The never-run `drop-walk.mjs` had the same order.
+
+### The pictures (`choice/screenshots/`, 1,280 by 800, through the folder input)
+
+**Clean DNN** (10,941 files, its own `.gitignore` files):
+- 10,915 files will be read and 26 left out;
+- handed over and decided in 6.2 s, deciding 344 ms;
+- keeping `Build/Tools/` makes it 13 left out;
+- the pattern `Build/` makes it 108.
+
+**The made folder** (103,329 files):
+- 10,929 files will be read, 92,400 left out;
+- handed over in about 71 s, the browser's listing of everything before the page sees anything;
+- the walk over what was handed took 2.7 s in all: listing 266 ms, deciding 38 ms, and the rest the walk handing the thread back every 20 folders;
+- before a fault of the page's own was mended it took 12.7 s: it counted the files beneath each left-out folder by scanning the whole list.
+
+**What my eye says:**
+
+- **The by-reason list answers "why is this left out" at a glance.** Each row says its reason in the person's terms, with counts. Its Keep sits beside the reason, so "how do I keep it" is answered in the same place.
+  - Opened, a group of 162 folders draws a Keep on every row, which is heavy. One Keep for the group and a quieter control per folder would read better.
+- **The tree answers "what about this folder"** better than "why". The reason shows only on rows left out, at the right edge, after the counts. On the made folder nearly every project reads "mixed", because each holds a `bin` and an `obj` that evidence leaves out, so the tick tells little until a row is opened.
+- **The keyboard's focus in the tree** is a clear blue ring around the whole row (`made-5-tree-focus.png`).
+- **"0 folders not looked inside"** after the folder input is true, since the browser listed everything, but the phrase belongs to a lazy walk. With the input, the counts of what lies inside are known and shown instead.
+- **The drop target** was first drawn grey and dashed, like a disabled button. It is now drawn in the offered blue, and says "Drop here".
+- **Where a person would not know what a row means:** `.gitignore: .vscode/` assumes they know what a `.gitignore` is. The reason could read "Ignored by .gitignore" with the pattern after it. Not changed.
+- **What the page hides:** the files in the top folder (`(top)`) appear only in the counts; the tree lists folders, not files.
+- **What I cannot judge for the owner:** which layout a stranger understands faster. That is the strangers' question.
+
+### The same choice as text
+
+`choice/as-text.ts` prints, for a folder, the totals, what is left out by reason with its folders, and what will be read by kind and by folder. It uses the same model, walked lazily over the disk. Its output for the made folder is `choice/made-as-text.txt`: 2,300 folders listed in 0.36 s. No command was added to the product.
+
+## Third leg, later on 2026-11-21: the starting list decided, the swap, and a dropped folder
+
+### The starting list, decided: the evidence rules, and no list of names
+
+The second leg's tables below decided it. On clean DNN read as a TFS folder, every list that goes by a folder's name left out real source:
+
+- the fixed list, 12 files;
+- the Visual Studio list, 63;
+- TFVC's 56 defaults, 29;
+- the evidence rules, 1 (NuGet's own `Packages/repositories.config`).
+
+The lists also kept wildly different amounts. So, by the root's ruling, the starting list is the evidence rules. The function takes no list of names any more. The three lists stay in `starting-lists/` and `listings/` as what was measured and why they lost.
+
+**Evidence now applies everywhere,** beneath a `.tfignore` and a `.gitignore` alike, since what a folder is holds beneath any ignore file. Only a person's own `!` keeps what it would leave out. It is one setting of the input, `evidence: { names, apply }`: applied, or reported on the folder's answer (`evidence`) and not applied.
+
+On the made folder, with evidence applied everywhere (`listings/made-evidence-applied-everywhere.txt`):
+
+- 10,929 kept, 92,400 left out;
+- **made output wrongly kept: 0 of 92,399**, where it was 313 when the rules stood off beneath a `.tfignore`;
+- real source wrongly left out: 1, NuGet's `Packages/repositories.config`;
+- the walk listed 13,390 entries, and the evidence rules listed 114 folders more;
+- walk and decide: 0.23 s.
+
+### A version control's own folder is never scanned
+
+The rule kind is `version control`: `.git`, `.hg`, `.svn`, and TFVC's `$tf`, `.tf`, `$tf1` to `$tf15` and `.tf1` to `.tf15`, which are TFVC's baseline folders (`BaselineFolder.java`). It covers a file named `.git` too, the pointer a worktree or a submodule holds, which the swap found. In TEE's recording, `e-defaults` holds a `.git/HEAD` that TEE judges like any file on Linux; the TFVC test now holds it to this rule and says so.
+
+### Evidence in a git repository: applied or offered
+
+This question is for the owner. The swap below, both ways, found **nothing** that the evidence rules would leave out of this repository or of any of the 45 fixtures that discovery keeps today:
+
+- in this repository, `node_modules` is ignored by `.gitignore`;
+- no fixture commits a `packages`, `node_modules` or `bin`.
+
+The case does exist in a real git repository: DNN commits a `Packages/` folder holding `repositories.config` (one file), which evidence would leave out. No measured repository has committed packages in bulk.
+
+### The swap: the function against today's discovery
+
+`swap.ts` compares today's discovery (`discoverTargetFiles` and `discoverDocuments`: glob, git's word through `gitIgnored.ts`, the configuration's exclusions and its rules by name) with a lazy walk using `leaveOut`. It runs on this repository and on a copy of every fixture outside any repository, with evidence applied and with it reported. The full output is `swap.txt`.
+
+**All 45 fixtures, both ways: 0 differences.**
+
+**This repository** (my worktree): discovery keeps 1,231 files and the function 7,640, with the same 6,413 differences both ways:
+
+| Files | Kept by | Cause |
+| ---: | --- | --- |
+| 6,408 | the function | the configuration's `exclude` (`AI-Agent-Workspace/**`), which is discovery's and was not handed to the function |
+| 3 | the function | lock files, which discovery leaves out by name (`package-lock.json`, two `devcontainer-lock.json`) |
+| 1 | discovery | `.vscode/settings.json`: `.gitignore` line 18 `/.vscode/` leaves it out, but git tracks the file, which a listing cannot know |
+| 1 | discovery | `packages/explorer/src/shared/d3-force-3d.d.ts`: line 35 `packages/**/src/**/*.d.ts`, the same case |
+
+A first run found a fourth cause: the worktree's own `.git` pointer file, kept by the function. That led to the rule above, after which it no longer differs.
+
+**What swapping the function in would need:**
+
+- discovery's rules by name (lock files, documents, the docs root) and the configuration's `exclude` handed in beside it;
+- git's word kept for tracked files, which the Node host can ask and a page cannot.
+
+### A dropped folder, walked lazily
+
+`drop-walk.mjs` makes a drop with the browser's debugging protocol (`Input.dispatchDragEvent`, its data a list of paths), asks the dropped item for a handle (`getAsFileSystemHandle()`), and walks it. Each folder is decided by the function before it is entered; the evidence names are listed one level further where the rules ask.
+
+The result is the paragraph below.
+
+**It does not work in this headless Chromium** (Playwright 1.61.1), so the lazy walk stays untimed until a person drops or picks a folder. Each run was made through the lane, at a load of 3 to 10. Where it stops:
+
+- **The made folder (103,329 files).** `dragEnter`, `dragOver` and `drop` were sent, and no `drop` event reached the page within 10 s. The next run, slowed, hung in a call to the protocol until the lane's cap ended it.
+- **A folder of three files.** The page's renderer crashed ("Target crashed") before the `drop` event was seen.
+- **Clean DNN (10,941 files).** The protocol call hung until the `timeout` round it ended it at 170 s.
+
+So a drop made by the protocol, with a folder's path as its drag data, never reached `getAsFileSystemHandle()` here. Whether it would with a newer browser, or headed, is not known.
+
+**What a dropped folder would mean for a person.** It is a second way to give a folder, with no dialog: they drag it from Explorer onto the page. In Chromium the dropped item can give a `FileSystemDirectoryHandle`, the same kind of handle the picker gives. So the page could walk it lazily, leaving `packages` unlisted, where `<input webkitdirectory>` lists everything first (the 73 s of the second leg). Writing beside the code would still ask the person's leave, as with the picker. Measured here: nothing of this. It is the browser's documented behaviour, to be tried by a person.
+
+### More evidence, proposed and not built
+
+| Ecosystem | Folder | The mark that makes it evidence | Listings it costs | A public repository to measure it on |
+| --- | --- | --- | --- | --- |
+| Python | a virtual environment, whatever its name (`.venv`, `venv`, `env`) | it holds `pyvenv.cfg`, which `venv` and virtualenv write | the folder's own names: one | any Python project with a made environment, e.g. `pallets/flask` |
+| Rust | `target` | it holds `CACHEDIR.TAG`, which cargo writes, and stands beside `Cargo.toml` | one, and the parent's names, already listed | `BurntSushi/ripgrep` |
+| Go | `vendor` | it holds `modules.txt`, which `go mod vendor` writes, beside `go.mod` | one | `kubernetes/kubernetes`, which commits its `vendor` |
+| Maven | `target` | beside `pom.xml` | none: the parent's names | `apache/commons-lang` |
+| Gradle | `build` and `.gradle` | beside `build.gradle`, `build.gradle.kts` or `settings.gradle(.kts)` | none | `square/okhttp` |
+| Any | a folder holding `CACHEDIR.TAG` | the Cache Directory Tagging convention, written by cargo, ccache and others | one | `BurntSushi/ripgrep` after a build |
+| CMake | a build folder, whatever its name | it holds `CMakeCache.txt` | one | `nlohmann/json` after a configure |
+| PHP | `vendor` | beside `composer.json`, holding `autoload.php` | one | `laravel/laravel` after `composer install` |
+| Elixir | `_build`, `deps` | beside `mix.exs` | none | `phoenixframework/phoenix` |
+| Dart | `.dart_tool` | beside `pubspec.yaml` | none | `flutter/samples` |
+| Python | `__pycache__` | it holds only `*.pyc` | one | any Python project after a run |
+
+Each row is a mark of what a folder is, never its name alone. Those that need no listing (Maven, Gradle, Elixir, Dart) read only names the walk already holds. A built repository would have to be made for most of them, since a fresh clone holds none of these folders.
+
 ## Second leg, later on 2026-11-21: the root's five rulings, built and measured
 
 ### What changed in the function

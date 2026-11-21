@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="POLICY">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a scan reads</title>
+<style>
+  :root {
+    --ground-page: #18181a; --ground-surface: #1e1e1e; --ground-raised: #1f1f22; --ground-card: #232326; --ground-hover: #2f2f33;
+    --ground-control: #333333; --ground-deep: #111111; --line-border: #2f2f34; --line-interactive: #3f3f46; --line-hover: #777777;
+    --text-strong: #ffffff; --text-normal: #e4e4e4; --text-secondary: #cccccc; --text-muted: #939393; --offers: #38bdf8; --focus: #0091ff;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--ground-page); color: var(--text-normal); font: 13px/1.5 system-ui, "Segoe UI", sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 20px; background: var(--ground-raised); border-bottom: 1px solid var(--line-border); }
+  h1 { margin: 0 12px 0 0; font-size: 15px; color: var(--text-strong); font-weight: 600; }
+  h2 { font-size: 13px; color: var(--text-strong); margin: 18px 0 8px; font-weight: 600; }
+  h3 { font-size: 12px; color: var(--text-secondary); margin: 12px 0 4px; font-weight: 600; }
+  main { padding: 12px 20px 72px; max-width: 1100px; }
+  button, .choose { font: inherit; color: var(--text-normal); background: var(--ground-control); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 10px; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  button:hover, .choose:hover { border-color: var(--line-hover); }
+  button:focus-visible, .choose:focus-within, input:focus-visible, [role="treeitem"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .offered { color: var(--offers); border-color: var(--offers); }
+  .icon { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .choose input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  #drop { border: 1px dashed var(--offers); border-radius: 6px; padding: 4px 12px; color: var(--offers); display: inline-flex; gap: 6px; align-items: center; }
+  #drop.over { border-color: var(--offers); color: var(--offers); }
+  .segmented { display: inline-flex; border: 1px solid var(--line-interactive); border-radius: 4px; overflow: hidden; }
+  .segmented button { border: 0; border-radius: 0; background: transparent; }
+  .segmented button[aria-pressed="true"] { background: rgba(0, 145, 255, 0.16); color: var(--text-strong); }
+  .switch { display: inline-flex; gap: 6px; align-items: center; color: var(--text-secondary); }
+  #folder-name { color: var(--text-strong); font-weight: 600; }
+  #totals { font-size: 14px; color: var(--text-strong); margin: 4px 0 0; }
+  .quiet, .counts { color: var(--text-muted); }
+  .counts { white-space: nowrap; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .reason { border-bottom: 1px solid var(--line-border); }
+  .row { display: flex; gap: 10px; align-items: center; min-height: 32px; padding: 2px 4px; }
+  .row .why, .row .path { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .members { padding: 0 0 8px 30px; }
+  .members .row { min-height: 28px; }
+  .path, code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; }
+  .twisty, .icon-button { padding: 2px; background: transparent; border-color: transparent; }
+  .keep { color: var(--offers); border-color: var(--line-interactive); background: transparent; }
+  .text-button { background: transparent; border: 0; color: var(--offers); padding: 4px 0; }
+  .columns { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 28px; }
+  .counts-list li { display: flex; justify-content: space-between; gap: 12px; padding: 1px 0; }
+  #tree { border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-surface); padding: 4px 0; }
+  [role="treeitem"] { display: flex; gap: 8px; align-items: center; min-height: 28px; padding: 0 10px; cursor: default; }
+  [role="treeitem"]:hover { background: var(--ground-hover); }
+  [role="treeitem"].left-out .name { color: var(--text-muted); }
+  .twisty-mark { width: 16px; display: inline-flex; }
+  .box { width: 16px; height: 16px; border: 1px solid var(--line-hover); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .box.true, .box.mixed { background: var(--focus); border-color: var(--focus); color: #fff; }
+  .box .icon { width: 12px; height: 12px; stroke-width: 3; }
+  [role="treeitem"] .name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  [role="treeitem"] .why { color: var(--text-secondary); }
+  form { display: flex; gap: 8px; margin: 6px 0; }
+  input[type="text"] { font: inherit; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 8px; width: 320px; }
+  #patterns li { display: flex; gap: 10px; align-items: center; }
+  #notes li { color: var(--text-secondary); padding: 2px 0; }
+  .bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+  #scan { border-color: var(--offers); color: var(--offers); }
+  footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 4px 20px; font-size: 11px; color: var(--text-muted); background: var(--ground-raised); border-top: 1px solid var(--line-border); }
+</style>
+</head>
+<body>
+<header>
+  <h1>What a scan reads</h1>
+  <button id="pick" type="button" class="offered" data-icon="pick" aria-label="Pick a folder">Pick</button>
+  <span id="drop" data-icon="drop" aria-label="Drop a folder here">Drop here</span>
+  <label class="choose" data-icon="input" aria-label="Choose a folder: every file is listed first">Choose<input id="folder-input" type="file" webkitdirectory></label>
+  <span id="folder-name"></span>
+  <span id="progress" class="quiet" role="status"></span>
+</header>
+<main>
+  <section id="choice" hidden>
+    <p id="totals"></p>
+    <div class="bar">
+      <span class="segmented" role="group" aria-label="Layout">
+        <button type="button" data-layout="reason" aria-pressed="true">By reason</button>
+        <button type="button" data-layout="tree" aria-pressed="false">Folders</button>
+      </span>
+      <label class="switch"><input id="evidence" type="checkbox" checked> Leave out build output and packages</label>
+      <button id="scan" type="button" data-icon="scan" aria-label="Scan what is kept">Scan</button>
+      <span id="scan-result" role="status"></span>
+    </div>
+    <ul id="notes" hidden></ul>
+    <div id="by-reason" class="columns">
+      <div><h2>Left out</h2><ul id="reasons"></ul></div>
+      <div><h2>Will be read</h2><div id="read"></div></div>
+    </div>
+    <div id="by-tree" hidden><ul id="tree" role="tree" aria-label="Folders"></ul></div>
+    <h2>Your patterns</h2>
+    <form id="pattern-form"><input id="pattern" type="text" aria-label="A pattern: a name to leave out, or ! and a name to keep" placeholder="bin/  or  !packages/keep/"><button type="submit" class="offered">Add</button></form>
+    <ul id="patterns"></ul>
+  </section>
+</main>
+<footer id="timings"></footer>
+<script></script>
+</body>
+</html>

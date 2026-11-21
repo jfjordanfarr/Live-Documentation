@@ -620,6 +620,18 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 .map-edge-right { top: 0; bottom: 0; right: 0; width: 48px; background: linear-gradient(to left, rgba(var(--ground-shade-rgb), 0.627451), transparent); }
 .map-edges[data-above="true"] .map-edge-above, .map-edges[data-below="true"] .map-edge-below,
 .map-edges[data-left="true"] .map-edge-left, .map-edges[data-right="true"] .map-edge-right { opacity: 1; }
+/* The cut said at the edges (Tuning's Cut Counted, a trial of 2026-11-21, cut-signs.ts): at each edge past which what the
+   last step opened goes on, an arrow and the count of its cards there, pressed to pan to them. Over the fades, in the
+   toolbar's own look, at the middle of its edge; the layer itself takes no pointer, only the controls do. */
+.map-cut-signs { position: absolute; z-index: 31; pointer-events: none; }
+.map-cut-sign { position: absolute; display: inline-flex; align-items: center; gap: 4px; min-width: 32px; min-height: 28px; padding: 4px 8px; border: 1px solid var(--line-border); border-radius: 14px; background: var(--ground-deep); color: var(--text-normal); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; pointer-events: auto; }
+.map-cut-sign[hidden] { display: none; }
+.map-cut-sign:hover { border-color: var(--state-selected); color: var(--state-selected); }
+.map-cut-sign:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
+.map-cut-sign[data-edge="left"] { left: 8px; top: 50%; transform: translateY(-50%); }
+.map-cut-sign[data-edge="right"] { right: 8px; top: 50%; transform: translateY(-50%); }
+.map-cut-sign[data-edge="top"] { top: 8px; left: 50%; transform: translateX(-50%); }
+.map-cut-sign[data-edge="bottom"] { bottom: 8px; left: 50%; transform: translateX(-50%); }
 
 .perspective-transition { position: fixed; z-index: 104; overflow: hidden; pointer-events: auto; }
 /* The source of a change of perspective, held as it stands over the destination while that draws its first frame

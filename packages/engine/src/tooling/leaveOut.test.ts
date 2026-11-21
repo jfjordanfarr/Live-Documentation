@@ -2,13 +2,30 @@ import { describe, expect, it } from "vitest";
 
 import { leaveOut } from "./leaveOut";
 
-/** What `leaveOut` decides beyond git's and TFVC's own rules: the tool's own output, whole folders, the starting lists. */
+/** What `leaveOut` decides beyond git's and TFVC's own rules: its own folders, whole folders, case, the evidence rules. */
+
+/** The names a small tree holds, by folder, a folder's with a trailing slash, as the evidence rules ask. */
+const NAMES: Record<string, string[]> = {
+  "": ["App.csproj", "bin/", "packages/", "web/", "src/", "lib/"],
+  packages: ["Newtonsoft.Json.13.0.3/", "repositories.config"],
+  web: ["node_modules/", "bin/"],
+  "web/node_modules": ["left-pad/"],
+  "web/node_modules/left-pad": ["package.json", "index.js"],
+  src: ["packages/"],
+  "src/packages": ["IPackageController.cs", "PackageController.cs"],
+  lib: ["Lib.csproj", "obj/", ".tfignore"]
+};
+const names = (folder: string): string[] => NAMES[folder] ?? [];
 
 describe("leaveOut", () => {
-  it("never scans the tool's own output, whatever the ignore files and the person say", () => {
-    const decide = leaveOut({ ignoreFiles: [{ path: ".gitignore", text: "!.live-documentation/\n" }], person: ["!.live-documentation/**"], ownOutput: [".live-documentation"] });
+  it("never scans the tool's own output nor a version control's own folder, whatever the ignore files and the person say", () => {
+    const decide = leaveOut({ ignoreFiles: [{ path: ".gitignore", text: "!.live-documentation/\n" }], person: ["!.live-documentation/**", "!.git/"], ownOutput: [".live-documentation"] });
     expect(decide.folder(".live-documentation")).toMatchObject({ kept: false, rule: { kind: "own output", folder: ".live-documentation" }, prunable: true });
     expect(decide.file(".live-documentation/source/a.ts.md")).toMatchObject({ kept: false, rule: { kind: "own output" } });
+    for (const folder of [".git", "sub/.hg", ".svn", "$tf", ".tf1", "$TF"]) expect(decide.folder(folder)).toMatchObject({ kept: false, rule: { kind: "version control" } });
+    expect(decide.folder(".tf16").kept).toBe(true);
+    // A worktree's `.git` is a file that points at its repository.
+    expect(decide.file(".git")).toMatchObject({ kept: false, rule: { kind: "version control" } });
   });
 
   it("leaves a folder out whole under a .tfignore, as tf add does, and names the ! line that could have kept something inside", () => {
@@ -19,37 +36,47 @@ describe("leaveOut", () => {
     expect(decide.file("packages/keep/x.targets")).toMatchObject({ kept: false, rule: { line: 1 } });
   });
 
-  it("reads a person's patterns and a starting list without regard to case, and .gitignore as the repository says", () => {
+  it("reads a person's patterns without regard to case, and .gitignore as the repository says", () => {
     const folded = leaveOut({ ignoreFiles: [{ path: ".gitignore", text: "packages/\n" }], gitIgnoreCase: true });
     const exact = leaveOut({ ignoreFiles: [{ path: ".gitignore", text: "packages/\n" }], gitIgnoreCase: false });
     expect(folded.folder("Packages").kept).toBe(false);
     expect(exact.folder("Packages").kept).toBe(true);
     expect(leaveOut({ ignoreFiles: [], person: ["bin/"] }).folder("Bin").kept).toBe(false);
-    expect(leaveOut({ ignoreFiles: [], startingList: ["obj/"] }).folder("src/OBJ").kept).toBe(false);
   });
 
-  it("offers the starting list only where no ignore file stands at or above", () => {
-    const decide = leaveOut({ ignoreFiles: [{ path: "a/.tfignore", text: "*.log\n" }], startingList: ["bin/"] });
-    expect(decide.folder("a/bin").kept).toBe(true);
-    expect(decide.folder("b/bin").kept).toBe(false);
-  });
-
-  it("leaves out by evidence: bin beside a project file, packages holding NuGet's folders, node_modules holding packages", () => {
-    const names: Record<string, string[]> = {
-      "": ["App.csproj", "bin/", "packages/", "web/", "src/"],
-      packages: ["Newtonsoft.Json.13.0.3/", "repositories.config"],
-      web: ["node_modules/", "bin/"],
-      "web/node_modules": ["left-pad/"],
-      "web/node_modules/left-pad": ["package.json", "index.js"],
-      src: ["packages/"],
-      "src/packages": ["IPackageController.cs", "PackageController.cs"]
-    };
-    const decide = leaveOut({ ignoreFiles: [], startingList: { evidence: (folder) => names[folder] ?? [] } });
-    expect(decide.folder("bin")).toMatchObject({ kept: false, rule: { kind: "starting list", pattern: "bin/ beside a project file" } });
+  it("leaves out by evidence: bin beside a project file, packages holding NuGet's folders, node_modules holding packages, and nothing by its name alone", () => {
+    const decide = leaveOut({ ignoreFiles: [], evidence: { names, apply: true } });
+    expect(decide.folder("bin")).toMatchObject({ kept: false, rule: { kind: "evidence", pattern: "bin/ beside a project file" } });
     expect(decide.folder("packages").kept).toBe(false);
     expect(decide.folder("web/node_modules").kept).toBe(false);
-    // No project file beside it, and no NuGet folder inside: kept.
     expect(decide.folder("web/bin").kept).toBe(true);
     expect(decide.folder("src/packages").kept).toBe(true);
+  });
+
+  it("applies evidence beneath any ignore file, a .gitignore's ! among them, and lets only a person's ! keep what it finds", () => {
+    const ignoreFiles = [{ path: ".gitignore", text: "!packages/\n" }, { path: "lib/.tfignore", text: "packages\n" }];
+    expect(leaveOut({ ignoreFiles, evidence: { names, apply: true } }).folder("packages")).toMatchObject({ kept: false, rule: { kind: "evidence" } });
+    expect(leaveOut({ ignoreFiles, evidence: { names, apply: true } }).folder("lib/obj")).toMatchObject({ kept: false, rule: { kind: "evidence", pattern: "obj/ beside a project file" } });
+    expect(leaveOut({ ignoreFiles, evidence: { names, apply: true }, person: ["!packages/"] }).folder("packages")).toMatchObject({ kept: true, rule: { kind: "person" } });
+  });
+
+  // A lazy walk lists a folder only after deciding it; the trial page of 2026-11-21 missed every nested .gitignore until
+  // a folder's own ignore files were asked for when something inside it is decided, and not when it is.
+  it("asks for a folder's own ignore files only when something inside it is decided", () => {
+    const asked: string[] = [];
+    const decide = leaveOut({ ignoreFiles: (folder) => {
+      asked.push(folder);
+      return folder === "a" ? [{ path: "a/.gitignore", text: "*.log\n" }] : [];
+    } });
+    expect(decide.folder("a").kept).toBe(true);
+    expect(asked).toEqual([""]);
+    expect(decide.file("a/x.log").kept).toBe(false);
+    expect(asked).toEqual(["", "a"]);
+  });
+
+  it("only reports what evidence finds when it is not applied", () => {
+    const decide = leaveOut({ ignoreFiles: [], evidence: { names, apply: false } });
+    expect(decide.folder("packages")).toMatchObject({ kept: true, prunable: false, evidence: { kind: "evidence", index: 2 } });
+    expect(decide.file("packages/Newtonsoft.Json.13.0.3/lib/x.dll").kept).toBe(true);
   });
 });

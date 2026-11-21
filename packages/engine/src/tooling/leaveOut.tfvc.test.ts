@@ -31,11 +31,18 @@ const recorded = JSON.parse(fs.readFileSync(path.join(__dirname, "__fixtures__",
  */
 const ON_WINDOWS = new Map([["b-case docs/y.md", { excluded: true, source: ".tfignore", line: 2 }]]);
 
+/**
+ * A file inside a version control's own folder, which the function never scans (the root's ruling of 2026-11-21) and
+ * TEE judges like any other on Linux, where `.git` is not hidden.
+ */
+const inVersionControl = (file: string): boolean => file.split("/").slice(0, -1).some((part) => /^(?:\.git|\.hg|\.svn)$/iu.test(part));
+
 describe("leaveOut's .tfignore half against TFVC's own code", () => {
   for (const tree of recorded.trees) {
     it(tree.name, () => {
       const decide = leaveOut({ ignoreFiles: Object.entries(tree.tfignores).map(([file, text]) => ({ path: file, text })) });
-      const reached = tree.verdicts.filter((verdict) => !verdict.add.startsWith("unreached:"));
+      for (const { path: file } of tree.verdicts.filter((verdict) => inVersionControl(verdict.path))) expect(decide.file(file)).toMatchObject({ kept: false, rule: { kind: "version control" } });
+      const reached = tree.verdicts.filter((verdict) => !verdict.add.startsWith("unreached:") && !inVersionControl(verdict.path));
       const ours = reached.map(({ path: file }) => {
         const verdict = decide.file(file);
         const rule = verdict.rule?.kind === "tfignore" ? verdict.rule : undefined;

@@ -21,8 +21,8 @@ describe("tuning help", () => {
     // Hidden Files the same day, the trial of cells in place of an encasing directory's count; Beyond the Hops on 2026-11-18,
     // the 3D map's trial of the next step past the hops; Arrival on 2026-11-19, how the 2D camera meets a new subject; Framing the same night, the camera that follows the pins;
     // Frame the same day, in a group of its own, Page (the trial of a page without its sidebar); Step on 2026-11-21, what the
-    // 2D camera frames after a step (a trial beside the least pan).
-    expect(ids.length).toBe(73);
+    // 2D camera frames after a step (a trial beside the least pan), and Cut Counted beside it the same day.
+    expect(ids.length).toBe(74);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -78,7 +78,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(73);
+    expect(ids.length).toBe(74);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];
