@@ -4,12 +4,13 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { leaveOut, type IgnoreFileText } from "./leaveOut";
+import { fromGitignores, leaveOut, type IgnoreFileText } from "./leaveOut";
 
 /**
- * `leaveOut`'s `.gitignore` half held to git's own answer, rule for rule: for every file and folder of a tree, whether
- * git ignores it and which file and line decided (`git check-ignore -v -n --no-index`, which names a negation that
- * matched too). Each tree is made in a fresh repository with nothing tracked and git's global and system configuration
+ * A tree's `.gitignore` files taken into one list by `fromGitignores` and decided by `leaveOut`, held to git's own
+ * answer with the files in place, rule for rule: for every file and folder of a tree, whether git ignores it and which
+ * file and line decided (`git check-ignore -v -n --no-index`, which names a negation that matched too); the list's
+ * deciding line is traced back to the file and line it was taken from. Each tree is made in a fresh repository with nothing tracked and git's global and system configuration
  * kept out, and asked twice: with names matched as written (`core.ignorecase=false`, as on Linux) and without regard to
  * case (`core.ignorecase=true`, as in every repository made on Windows).
  */
@@ -44,8 +45,12 @@ function listing(root: string): Array<{ path: string; folder: boolean }> {
   return found.sort((a, b) => (a.path < b.path ? -1 : 1));
 }
 
-/** Git's word and the function's on each path of a tree, in one comparable line each: `path  ignored|kept  file:line`. */
-function bothWords(tree: Tree, ignoreCase: boolean): { git: string[]; ours: string[] } {
+/**
+ * Git's word and the list's on each path of a tree, in one comparable line each: `path  ignored|kept  file:line`; and
+ * the folders the translator said it cannot speak for exactly (a folder spelled otherwise than one holding a nested
+ * `.gitignore`, which a list matching without case reaches too), with every path at or under them set apart from both.
+ */
+function bothWords(tree: Tree, ignoreCase: boolean): { git: string[]; ours: string[]; differences: string[]; setApart: string[] } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "leave-out-git-"));
   made.push(root);
   expect(git(root, ["init", "-q", "."]).status).toBe(0);
@@ -73,13 +78,24 @@ function bothWords(tree: Tree, ignoreCase: boolean): { git: string[]; ours: stri
   }
   const ignoreFiles: IgnoreFileText[] = entries.filter((entry) => !entry.folder && path.posix.basename(entry.path) === ".gitignore")
     .map((entry) => ({ path: entry.path, text: fs.readFileSync(path.join(root, entry.path), "utf8") }));
-  const decide = leaveOut({ ignoreFiles, gitIgnoreCase: ignoreCase });
+  const folders = entries.filter((entry) => entry.folder).map((entry) => entry.path);
+  const taken = fromGitignores(ignoreFiles, { folders, ignoreCase });
+  const bases = ignoreFiles.map((each) => path.posix.dirname(each.path)).filter((base) => base !== ".");
+  const twins = ignoreCase ? folders.filter((folder) => bases.some((base) => base !== folder && base.toLowerCase() === folder.toLowerCase())) : [];
+  const apart = (line: string): boolean => twins.some((twin) => line === twin || line.startsWith(`${twin}/`) || line.startsWith(`${twin}  `));
+  const decide = leaveOut({ list: taken.lines.join("\n"), ignoreCase });
   const ours = entries.map((entry) => {
     const verdict = entry.folder ? decide.folder(entry.path) : decide.file(entry.path);
-    const rule = verdict.rule?.kind === "gitignore" ? `${verdict.rule.file}:${verdict.rule.line}` : "-";
+    const origin = verdict.line ? taken.from[verdict.line.number - 1] : undefined;
+    const rule = origin ? `${origin.file}:${origin.line}` : "-";
     return `${entry.path}  ${verdict.kept ? "kept" : "ignored"}  ${rule}`;
   });
-  return { git: gitWords.sort(), ours: ours.sort() };
+  return {
+    git: gitWords.filter((line) => !apart(line)).sort(),
+    ours: ours.filter((line) => !apart(line)).sort(),
+    differences: taken.differences,
+    setApart: [...gitWords.filter(apart)].sort()
+  };
 }
 
 /** The named cases: each a shape of git's rules. */
@@ -144,18 +160,24 @@ const CASES: Record<string, Tree> = {
     files: ["A.txt", "a.txt", "Bq", "bq", "Cx", "cx", "Dy", "dy", "Ez", "ez", "Logs/one", "src/Logs/two", "F/g/H"],
     ignores: { ".gitignore": "[A].txt\n\\Bq\n[A-C]x\n[[:upper:]]y\n[[:lower:]]z\nlogs/\nf/G/h\n" }
   },
+  "a nested file whose folder has a twin spelled otherwise, said and set apart": {
+    files: ["Build/log", "build/log", "build/keep"],
+    ignores: { "Build/.gitignore": "log\n" }
+  },
   "a pattern with a dot folder and dot files": {
     files: [".env", ".config/a", "x/.cache/b", ".gitkeep"],
     ignores: { ".gitignore": ".*\n!.gitkeep\n!.gitignore\n" }
   }
 };
 
-describe("leaveOut's .gitignore half against git's own answer", () => {
+describe("a tree's .gitignore files taken into one list, against git's own answer with the files in place", () => {
   for (const [name, tree] of Object.entries(CASES)) {
     for (const ignoreCase of [false, true]) {
       it(`${name}, core.ignorecase=${ignoreCase}`, () => {
         const words = bothWords(tree, ignoreCase);
         expect(words.ours).toEqual(words.git);
+        // A difference is said exactly when paths were set apart for it.
+        expect(words.differences.length > 0).toBe(words.setApart.length > 0);
       }, 30_000);
     }
   }
@@ -186,6 +208,7 @@ describe("leaveOut's .gitignore half against git's own answer", () => {
       if (folder && random(2) === 0) ignores[`${folder}/.gitignore`] = `${pattern()}\n${pattern()}\n`;
       for (const ignoreCase of [false, true]) {
         const words = bothWords({ files: kept, ignores }, ignoreCase);
+        if (words.differences.length > 0 !== words.setApart.length > 0) disagreements.push(JSON.stringify({ unsaid: words.setApart, differences: words.differences }));
         if (JSON.stringify(words.ours) !== JSON.stringify(words.git)) disagreements.push(JSON.stringify({ ignoreCase, files: kept, ignores, git: words.git, ours: words.ours }));
       }
     }
