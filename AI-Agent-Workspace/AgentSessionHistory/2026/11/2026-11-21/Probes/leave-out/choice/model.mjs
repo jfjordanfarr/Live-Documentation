@@ -38,6 +38,8 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
   let listMs = 0;
   let decideMs = 0;
   let listings = 0;
+  // The time spent counting, by kind, what each folder left out whole holds.
+  let countMs = 0;
   const listFolder = async (path) => {
     if (source.listed.has(path)) return source.listed.get(path);
     const started = performance.now();
@@ -77,12 +79,16 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
   };
   const beneath = (path) => (source.lazy ? null : filesBeneath(source, path));
   let folders = 0;
+  // The thread is handed back every 30 ms of work, not every so many folders: a page keeps drawing, and a walk is not
+  // slowed by a pause it does not need (a browser holds each pause to at least 4 ms).
+  let worked = performance.now();
   const visit = async (node) => {
     const entries = await listFolder(node.path);
     folders += 1;
-    if (folders % 20 === 0) {
+    if (performance.now() - worked > 30) {
       progress(folders);
       await pause();
+      worked = performance.now();
     }
     for (const entry of entries) {
       const path = node.path ? `${node.path}/${entry.name}` : entry.name;
@@ -92,9 +98,14 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
         decideMs += performance.now() - started;
         if (verdict.prunable) {
           const group = groupOf(verdict);
+          const counting = performance.now();
           const inside = beneath(path);
           group.folders.push({ path, files: inside === null ? null : inside.length });
-          for (const file of inside ?? []) group.kinds.set(kindOf(file), (group.kinds.get(kindOf(file)) ?? 0) + 1);
+          for (const file of inside ?? []) {
+            const kind = kindOf(file);
+            group.kinds.set(kind, (group.kinds.get(kind) ?? 0) + 1);
+          }
+          countMs += performance.now() - counting;
           for (const note of verdict.notes ?? []) {
             const said = /^line (\d+), `(.*)`, may name files/u.exec(note);
             if (!said) continue;
@@ -140,7 +151,7 @@ export async function walk(source, { list, ignoreCase }, progress = () => undefi
     notes: [...notes.values()],
     found,
     gitIgnoreCase,
-    timings: { totalMs: performance.now() - started, listMs, decideMs, listings, folders }
+    timings: { totalMs: performance.now() - started, listMs, decideMs, countMs, listings, folders }
   };
 }
 

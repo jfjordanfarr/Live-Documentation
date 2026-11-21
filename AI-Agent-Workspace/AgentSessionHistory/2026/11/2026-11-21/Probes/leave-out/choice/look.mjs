@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // Pictures of the trial page at 1,280 by 800, for judging by eye, with what was counted beside them (written to
 // `<label>-record.json`, so that no later run writes over it): a folder given through the folder input (automation
-// cannot press the picker or make a drop that reaches the page) with an empty list; the notice of ignore files found,
-// opened; Use; the lines proposed from what the folders hold; GitHub's Visual Studio list added; a kind and a folder
-// left out by their minus; the end of the list. Only through the browser lane, the page built first:
+// cannot press the picker or make a drop that reaches the page) with an empty list and its offers; the offer of what
+// the folders hold taken; the ignore files found added; GitHub's Visual Studio list added and its block opened; a kind
+// and a folder left out by their minus; a list tool's name shown on focus; and how long an edit takes to show, at full
+// speed and with the processor slowed four times on two cores. Only through the browser lane, the page built first:
 //   node look.mjs <folder> <label> <out folder>
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
@@ -24,12 +25,16 @@ page.on("console", (message) => {
 });
 const settled = async () => page.waitForFunction(() => document.getElementById("progress").textContent === "" && !document.getElementById("choice").hidden, undefined, { timeout: 300_000 });
 const shot = async (name) => page.screenshot({ path: path.join(out, `${label}-${name}.png`) });
-const rows = () => page.$$eval("#by-line > li", (items) => items.slice(0, 20).map((item) => item.innerText.replace(/\s+/gu, " ").trim()));
+const rows = () => page.$$eval("#by-line > li", (items) => items.slice(0, 12).map((item) => item.innerText.replace(/\s+/gu, " ").trim()));
 const listLines = () => page.$eval("#list", (area) => area.value.split("\n").filter((line) => line.trim() && !line.trim().startsWith("#")).length);
 const look = async (name) => {
-  record[name] = { totals: await page.textContent("#totals"), listLines: await listLines(), byLine: await rows() };
+  record[name] = { totals: await page.textContent("#totals"), listLines: await listLines(), blocks: await rows(), footer: await page.textContent("#timings") };
   await shot(name);
 };
+const scrollListToEnd = async () => page.$eval("#list", (area) => {
+  area.scrollTop = area.scrollHeight;
+  area.dispatchEvent(new Event("scroll"));
+});
 
 await page.goto(pathToFileURL(path.join(here, "choice.html")).href);
 const given = Date.now();
@@ -37,38 +42,64 @@ const given = Date.now();
 await page.setInputFiles("#folder-input", folder, { timeout: 360_000 });
 await settled();
 record.handedAndDecidedMs = Date.now() - given;
+await page.waitForSelector("#offers .offer", { timeout: 120_000 });
+record.offers = await page.$$eval("#offers .offer", (offers) => offers.map((offer) => offer.innerText.replace(/\s+/gu, " ").trim()));
 record.found = await page.textContent("#found-what").catch(() => null);
 await look("1-first");
 
-// The notice opened, its files and a choice each.
+// The offer of what the folders hold, taken from the list's empty place.
+await page.click('#offers [data-offer="what-it-holds"]');
+await settled();
+await look("2-proposed");
+
+// The ignore files found, added to the list.
 if (await page.isVisible("#found")) {
-  await page.click("#found-open");
-  record.foundFiles = await page.$$eval("#found-files li", (items) => items.length);
-  await shot("2-found-open");
-  await page.click('[data-take="use"]');
+  await page.click('[data-take="add"]');
   await settled();
   record.foundSaid = await page.textContent("#found-said");
-  await look("3-used");
+  await look("3-added");
 } else record.absent.push("a notice of ignore files found");
 
-// The lines proposed from what the folders hold.
-await page.click("#prefill");
-await page.click('[data-prefill="what-it-holds"]');
-await settled();
-record.proposedComment = await page.$eval("#list", (area) => area.value.split("\n").find((line) => line.startsWith("# From what the folders hold")) ?? null);
-await page.$eval("#list", (area) => {
-  area.scrollTop = area.scrollHeight;
-});
-await look("4-proposed");
-
-// GitHub's Visual Studio list, and what each of its lines leaves out here, by kind.
+// GitHub's Visual Studio list, from the tool above the list, and its block opened: its lines that act, largest first.
 await page.click("#prefill");
 await page.click('[data-prefill="visual-studio"]');
 await settled();
-record.visualStudioSourceFiles = await page.$$eval("#by-line > li", (items) => items.map((item) => item.innerText.replace(/\s+/gu, " ").trim()).filter((text) => /\.cs \d/u.test(text)));
-await look("5-visual-studio");
+const visualStudio = page.locator("#by-line > li.block", { hasText: "VisualStudio.gitignore" });
+record.codeSigns = await page.$$eval("#by-line .code-sign", (signs) => signs.map((sign) => sign.getAttribute("aria-label")));
+if (await visualStudio.count()) {
+  await visualStudio.locator(".twisty").first().click();
+  record.visualStudioLines = await visualStudio.locator(".members > li").evaluateAll((items) => items.slice(0, 12).map((item) => item.innerText.replace(/\s+/gu, " ").trim()));
+  await visualStudio.first().evaluate((row) => row.scrollIntoView({ block: "start" }));
+} else record.absent.push("a block for the Visual Studio list");
+await look("4-visual-studio-opened");
 
-// A kind and a folder left out by their minus: each a line at the end of the list.
+// How long an edit takes to show: a line typed at the end of the list, at full speed, then with the processor slowed.
+// Timed in the page itself, from the input event to the end of drawing the answer, the 400 ms pause for typing included.
+const edit = async (line) => {
+  await page.evaluate(() => {
+    window.choicePage.state.lastEditShownMs = undefined;
+  });
+  await page.$eval("#list", (area, added) => {
+    area.value = `${area.value.replace(/\s+$/u, "")}\n${added}\n`;
+    area.dispatchEvent(new Event("input"));
+  }, line);
+  await page.waitForFunction(() => window.choicePage.state.lastEditShownMs !== undefined, undefined, { timeout: 120_000 });
+  return {
+    untilShownMs: await page.evaluate(() => window.choicePage.state.lastEditShownMs),
+    decidedMs: await page.evaluate(() => Math.round(window.choicePage.state.result.timings.decideMs)),
+    walkedMs: await page.evaluate(() => Math.round(window.choicePage.state.result.shownAfterMs)),
+    countedMs: await page.evaluate(() => Math.round(window.choicePage.state.result.timings.countMs)),
+    drawMs: await page.evaluate(() => window.choicePage.state.drawTimes)
+  };
+};
+record.editFullSpeed = await edit("/nothing-here-at-full-speed/");
+const cdp = await context.newCDPSession(page);
+await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+await cdp.send("Emulation.setHardwareConcurrencyOverride", { hardwareConcurrency: 2 });
+record.editSlowedFourTimesOnTwoCores = await edit("/nothing-here-slowed/");
+await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
+
+// A kind and a folder left out by their minus: each a line in the block "Yours" at the end of the list.
 const png = page.locator('#read [aria-label="Leave out every .png file"]');
 if (await png.count()) await png.click();
 else record.absent.push("the minus of .png");
@@ -82,13 +113,20 @@ if (await platform.count()) {
     await settled();
   } else record.absent.push("the minus of DNN Platform/Tests/");
 } else record.absent.push("DNN Platform under Will be read");
-await page.$eval("#list", (area) => {
-  area.scrollTop = area.scrollHeight;
+await page.evaluate(() => {
+  document.querySelector("main").scrollTop = 0;
 });
-record.listEnd = await page.$eval("#list", (area) => area.value.trimEnd().split("\n").slice(-3));
-await look("6-minus");
+await scrollListToEnd();
+record.listEnd = await page.$eval("#list", (area) => area.value.trimEnd().split("\n").slice(-4));
+await look("5-minus");
+
+// A list tool's name, shown on keyboard focus.
+await page.focus("#prefill");
+await page.keyboard.press("Tab");
+record.focusedTool = await page.evaluate(() => document.activeElement?.getAttribute("aria-label"));
+await shot("6-tool-named");
 
 record.errors = errors;
 fs.writeFileSync(path.join(out, `${label}-record.json`), `${JSON.stringify(record, null, 1)}\n`);
-console.log(JSON.stringify({ label, absent: record.absent, errors }, null, 1));
+console.log(JSON.stringify({ label, absent: record.absent, errors, editFullSpeed: record.editFullSpeed, editSlowed: record.editSlowedFourTimesOnTwoCores }, null, 1));
 await browser.close();

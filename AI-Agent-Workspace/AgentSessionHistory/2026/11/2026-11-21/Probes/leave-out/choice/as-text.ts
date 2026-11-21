@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { hasReader } from "../../../../../../../../packages/engine/src/config/liveDocumentationConfig";
 import { fromGitignores, fromTfignores } from "../../../../../../../../packages/engine/src/tooling/leaveOut";
 import { byKind, totals, walk } from "./model.mjs";
 
@@ -36,21 +37,38 @@ async function main(): Promise<void> {
     const tf = fromTfignores(found.filter((file) => file.kind === ".tfignore"));
     if (tf.lines.length) ignoreCase = true;
     for (const difference of [...git.differences, ...tf.differences]) lines.push(`  Not carried exactly: ${difference}`);
-    list = [...git.lines, ...tf.lines].join("\n");
+    const kinds = [[".gitignore", found.filter((file) => file.kind === ".gitignore").length], [".tfignore", found.filter((file) => file.kind === ".tfignore").length]].filter(([, n]) => Number(n) > 0);
+    list = [`### Taken in from the folder: ${kinds.map(([kind, n]) => plural(Number(n), `${kind} file`)).join(" and ")}`, ...git.lines, ...tf.lines].join("\n");
     result = await walk(source, { list, ignoreCase });
   }
   const t = totals(result);
   lines.push(`${path.basename(root)}: ${[`${plural(t.read, "file")} will be read`, t.leftOutFiles ? `${plural(t.leftOutFiles, "file")} left out` : "", t.notLookedInside ? `${plural(t.notLookedInside, "folder")} left out, not looked inside` : ""].filter(Boolean).join(" · ")}`);
   lines.push(`The list: ${plural(list.split("\n").filter((line) => line.trim() && !line.trim().startsWith("#")).length, "line")}, names matched ${ignoreCase ? "without" : "with"} regard to case.`);
-  lines.push("", "Left out, by line:");
+  // As the page shows it: a row a block of the list (from a `###` heading to the next), largest first, then its lines
+  // that act, largest first; a kind a reader reads is marked `[read]`.
+  const kindsOf = (kinds: Map<string, number>): string => [...kinds].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([kind, n]) => `${kind} ${n}${kind.startsWith(".") && hasReader(`file${kind}`) ? " [read]" : ""}`).join(", ");
+  const said = (group: { folders: unknown[]; leftOut: number }): string => [group.folders.length ? plural(group.folders.length, "folder") : "", group.leftOut ? plural(group.leftOut, "file") : ""].filter(Boolean).join(" · ");
+  lines.push("", "Left out, by block of the list:");
   for (const group of result.fixed) lines.push(`  ${group.fixed === "version control" ? "Version control's own folder" : "The tool's own output"}  (${plural(group.folders.length, "folder")}, always)`);
   if (result.lines.length === 0 && result.fixed.length === 0) lines.push("  Nothing.");
-  for (const group of result.lines.slice(0, 40)) {
-    const kinds = [...group.kinds].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([kind, n]) => `${kind} ${n}`).join(", ");
-    const said = [group.folders.length ? plural(group.folders.length, "folder") : "", group.leftOut ? plural(group.leftOut, "file") : ""].filter(Boolean).join(" · ");
-    lines.push(`  ${String(group.line.number).padStart(4)}  ${group.line.text}  (${said}${kinds ? `; ${kinds}` : ""})`);
+  const text = list.split("\n");
+  const blocks: Array<{ title: string; first: number; last: number }> = [];
+  text.forEach((line, index) => {
+    if (line.startsWith("### ") || blocks.length === 0) blocks.push({ title: line.startsWith("### ") ? line.slice(4).trim() : "Lines above the first heading", first: index + 1, last: index + 1 });
+    else blocks[blocks.length - 1].last = index + 1;
+  });
+  type Group = { line: { number: number; text: string }; folders: unknown[]; leftOut: number; kinds: Map<string, number> };
+  const rows = blocks.map((block) => {
+    const acting = (result.lines as Group[]).filter((group) => group.line.number >= block.first && group.line.number <= block.last).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+    const kinds = new Map<string, number>();
+    for (const group of acting) for (const [kind, n] of group.kinds) kinds.set(kind, (kinds.get(kind) ?? 0) + n);
+    return { ...block, acting, kinds, leftOut: acting.reduce((sum, group) => sum + group.leftOut, 0), folders: acting.flatMap((group) => group.folders) };
+  }).filter((block) => block.acting.length > 0).sort((a, b) => b.leftOut - a.leftOut || b.folders.length - a.folders.length);
+  for (const block of rows) {
+    lines.push(`  ${block.title}  (${said(block)}; ${kindsOf(block.kinds)})`);
+    for (const group of block.acting.slice(0, 8)) lines.push(`    ${String(group.line.number).padStart(4)}  ${group.line.text}  (${said(group)}${group.kinds.size ? `; ${kindsOf(group.kinds)}` : ""})`);
+    if (block.acting.length > 8) lines.push(`          and ${plural(block.acting.length - 8, "more line")} that leave something out`);
   }
-  if (result.lines.length > 40) lines.push(`  and ${plural(result.lines.length - 40, "more line")}`);
   lines.push("", "Will be read, by kind:", ...byKind(result.kept).slice(0, 10).map(([kind, n]) => `  ${kind.padEnd(16)} ${n.toLocaleString("en").padStart(8)}`));
   lines.push("", "Will be read, by top folder:", ...result.root.folders.slice(0, 10).map((folder: { name: string; filesKept: number }) => `  ${folder.name.padEnd(40)} ${folder.filesKept.toLocaleString("en").padStart(8)}`));
   lines.push("", "To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.");

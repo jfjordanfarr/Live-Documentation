@@ -1,20 +1,20 @@
 {
- "this repository (the builder worktree at a11f7d007, with node_modules, dist, test-results)": {
-  "paths": 23554,
-  "files": 20344,
+ "this repository (the builder worktree after merging the day branch at 0b0751a22, with node_modules, dist, test-results)": {
+  "paths": 23602,
+  "files": 20392,
   "gitignoreFiles": 1,
   "listLines": 46,
   "ignoreCase": false,
   "translatorSaid": [],
-  "agree": 23554,
+  "agree": 23602,
   "disagree": 0,
   "decidedByARuleOutsideTheTree": 0,
   "trackedButLeftOut": 11,
-  "keptByUs": 11581,
+  "keptByUs": 11601,
   "topmostPrunableFolders": 12,
-  "filesUnderThem": 10556,
-  "listMs": 89,
-  "decideMs": 164,
+  "filesUnderThem": 10584,
+  "listMs": 111,
+  "decideMs": 180,
   "disagreements": [],
   "fromOutside": [],
   "trackedLeftOutSample": [
@@ -25,7 +25,7 @@
    "AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-09/Probes/capture-batching/lint.log"
   ]
  },
- "DNN (the readers corpus, a git clone, read only)": {
+ "DNN (the readers corpus, a clone, read only)": {
   "paths": 26227,
   "files": 21719,
   "gitignoreFiles": 26,
@@ -39,8 +39,8 @@
   "keptByUs": 26189,
   "topmostPrunableFolders": 6,
   "filesUnderThem": 18,
-  "listMs": 163,
-  "decideMs": 1580,
+  "listMs": 159,
+  "decideMs": 370,
   "disagreements": [],
   "fromOutside": [],
   "trackedLeftOutSample": [
@@ -66,12 +66,12 @@
   "topmostPrunableFolders": 0,
   "filesUnderThem": 0,
   "listMs": 3,
-  "decideMs": 17,
+  "decideMs": 18,
   "disagreements": [],
   "fromOutside": [],
   "trackedLeftOutSample": []
  },
- "the nested made tree (the strangers recipe from the DNN corpus: 25 nested .gitignore files, bin and obj beside 82 projects, 45 packages folders), copied into a fresh repository with nothing tracked": {
+ "the nested made tree (the strangers recipe from the DNN corpus: 25 nested ignore files of the first kind, bin and obj beside 82 projects, 45 packages folders), copied into a fresh repository with nothing tracked": {
   "paths": 23038,
   "files": 17245,
   "gitignoreFiles": 25,
@@ -85,8 +85,8 @@
   "keptByUs": 22666,
   "topmostPrunableFolders": 28,
   "filesUnderThem": 294,
-  "listMs": 220,
-  "decideMs": 869,
+  "listMs": 209,
+  "decideMs": 212,
   "disagreements": [],
   "fromOutside": [],
   "trackedLeftOutSample": []

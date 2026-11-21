@@ -2,37 +2,17 @@ Found 15 .tfignore files; taken into the list.
 made: 76,899 files will be read · 15 files left out · 15 folders left out, not looked inside
 The list: 75 lines, names matched without regard to case.
 
-Left out, by line:
-     3  Build/**/packages  (1 folder)
-     5  Build/**/project.assets.json  (1 file; .json 1)
-     9  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/packages  (1 folder)
-    11  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1)
-    15  DNN Platform/DotNetNuke.Log4net/**/packages  (1 folder)
-    17  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1)
-    21  DNN Platform/DotNetNuke.ModulePipeline/**/packages  (1 folder)
-    23  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1)
-    27  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/packages  (1 folder)
-    29  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1)
-    33  DNN Platform/HttpModules/**/packages  (1 folder)
-    35  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1)
-    39  DNN Platform/Connectors/GoogleAnalytics/**/packages  (1 folder)
-    41  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1)
-    45  DNN Platform/Controls/CountryListBox/**/packages  (1 folder)
-    47  DNN Platform/Controls/CountryListBox/**/project.assets.json  (1 file; .json 1)
-    51  DNN Platform/Modules/DDRMenu/**/packages  (1 folder)
-    53  DNN Platform/Modules/DDRMenu/**/project.assets.json  (1 file; .json 1)
-    57  DNN Platform/Modules/Groups/**/packages  (1 folder)
-    59  DNN Platform/Modules/Groups/**/project.assets.json  (1 file; .json 1)
-    63  DNN Platform/Modules/Journal/**/packages  (1 folder)
-    65  DNN Platform/Modules/Journal/**/project.assets.json  (1 file; .json 1)
-    69  DNN Platform/Modules/ResourceManager/**/packages  (1 folder)
-    71  DNN Platform/Modules/ResourceManager/**/project.assets.json  (1 file; .json 1)
-    75  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/packages  (1 folder)
-    77  DNN Platform/Modules/Samples/Dnn.ContactList.Spa/**/project.assets.json  (1 file; .json 1)
-    81  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/**/packages  (1 folder)
-    83  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Facebook/**/project.assets.json  (1 file; .json 1)
-    87  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Twitter/**/packages  (1 folder)
-    89  DNN Platform/Providers/AuthenticationProviders/DotNetNuke.Authentication.Twitter/**/project.assets.json  (1 file; .json 1)
+Left out, by block of the list:
+  Taken in from the folder: 15 .tfignore files  (15 folders · 15 files; .json 15 [read])
+       6  Build/**/project.assets.json  (1 file; .json 1 [read])
+      12  DNN Platform/DotNetNuke.ContentSecurityPolicy/**/project.assets.json  (1 file; .json 1 [read])
+      18  DNN Platform/DotNetNuke.Log4net/**/project.assets.json  (1 file; .json 1 [read])
+      24  DNN Platform/DotNetNuke.ModulePipeline/**/project.assets.json  (1 file; .json 1 [read])
+      30  DNN Platform/DotNetNuke.Web.Client.ResourceManager/**/project.assets.json  (1 file; .json 1 [read])
+      36  DNN Platform/HttpModules/**/project.assets.json  (1 file; .json 1 [read])
+      42  DNN Platform/Connectors/GoogleAnalytics/**/project.assets.json  (1 file; .json 1 [read])
+      48  DNN Platform/Controls/CountryListBox/**/project.assets.json  (1 file; .json 1 [read])
+          and 22 more lines that leave something out
 
 Will be read, by kind:
   .dll               27,013
@@ -58,4 +38,4 @@ Will be read, by top folder:
   expected                                        1
 
 To leave a folder out, add a line naming it: /DNN Platform/Tests/; a kind of file: *.png; to keep something back: !/packages/MyOwnPackage/.
-Listed 0 folders in 5559 ms (listing 0 ms, deciding 2706 ms).
+Listed 0 folders in 3698 ms (listing 0 ms, deciding 936 ms).
