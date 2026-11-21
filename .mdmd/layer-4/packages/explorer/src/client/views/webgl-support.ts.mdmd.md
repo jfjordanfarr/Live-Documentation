@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/webgl-support.ts`
-- Generated At: 2026-11-21T04:32:50.307Z
+- Generated At: 2026-11-21T04:52:09.178Z
 
 ## Authored
 ### Purpose
@@ -83,10 +83,11 @@ browser is known to draw it.
 
 #### `whenIdle` {#symbol-whenidle}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/webgl-support.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/webgl-support.ts#L82)
 
 ##### `whenIdle` — Summary
-Runs `then` once the page is idle, or after `most` ms whatever happens; by a timer where the browser has no idle callback.
+Runs `then` once the page is idle, or after `most` ms whatever happens. Where the browser has no idle callback (Safari)
+it runs after `most` ms: a timer of no delay would run before the first picture, which is what the wait is for.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

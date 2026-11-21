@@ -75,8 +75,11 @@ export function perspectiveRemembered(shown: LocalMapPerspective, before: LocalM
   return offered === true ? shown : before ?? shown;
 }
 
-/** Runs `then` once the page is idle, or after `most` ms whatever happens; by a timer where the browser has no idle callback. */
+/**
+ * Runs `then` once the page is idle, or after `most` ms whatever happens. Where the browser has no idle callback (Safari)
+ * it runs after `most` ms: a timer of no delay would run before the first picture, which is what the wait is for.
+ */
 export function whenIdle(then: () => void, most: number): void {
   if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(() => then(), { timeout: most });
-  else window.setTimeout(then, 0);
+  else window.setTimeout(then, most);
 }
