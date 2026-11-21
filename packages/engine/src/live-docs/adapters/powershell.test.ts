@@ -813,6 +813,31 @@ describe("what a load draws nothing for, said as a notice", () => {
     expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Pester", "PSReadLine"]);
   });
 
+  it("takes a command qualified by its module for a command, not a script's path, unless the workspace holds that script", async () => {
+    // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1` from a folder holding
+    // `Microsoft.PowerShell.Utility/New-Object.ps1`, and a function `New-Object` defined first): the qualified name runs
+    // the shipped cmdlet ("Microsoft.PowerShell.Utility\New-Object gave a StringBuilder"), never the function nor the
+    // script; and a name qualified by a module nothing loads, `TabExpansionPlusPlus\Register-ArgumentCompleter`, is a
+    // module's command PowerShell tries to load ("CouldNotAutoLoadModule"), not a path. dbatools writes both.
+    await write({
+      "Run.ps1": [
+        "Microsoft.PowerShell.Utility\\New-Object -TypeName System.Text.StringBuilder",
+        "TabExpansionPlusPlus\\Register-ArgumentCompleter -CommandName x -ScriptBlock { }",
+        "lib\\Helpers",
+        "lib\\Build.ps1"
+      ].join("\n"),
+      "Microsoft.PowerShell.Utility/New-Object.ps1": "'a script'\n",
+      "lib/Helpers.ps1": "'a script'\n",
+      "lib/Build.ps1": "'a script'\n"
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices).toBeUndefined();
+    // On Windows, where a backslash separates folders, `lib\Helpers` is a path when the workspace holds the script, which
+    // PowerShell runs without its extension written (pwsh here, where only `/` separates: `lib/Helpers` gave "the script
+    // lib/Helpers.ps1 ran"). pwsh on Linux reads `lib\Helpers` as a module's command, which no Windows run would.
+    expect(analysis?.dependencies.map((dependency) => dependency.resolvedPath)).toEqual(["lib/Helpers.ps1", "lib/Build.ps1"]);
+  });
+
   it("says nothing of a load a loop reads, nor of a script block run in the caller's scope", async () => {
     await write({
       "Module.psm1": [

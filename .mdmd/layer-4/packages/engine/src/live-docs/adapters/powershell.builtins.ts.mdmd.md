@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.builtins.ts`
-- Generated At: 2026-11-21T02:25:18.933Z
+- Generated At: 2026-11-21T05:11:09.482Z
 
 ## Authored
 ### Purpose
@@ -31,9 +31,19 @@ Windows PowerShell 5.1's commands, 366.
 ##### `POWERSHELL_7_COMMANDS` — Summary
 PowerShell 7.7.0's commands as installed on Linux, 288.
 
+#### `SHIPPED_MODULES` {#symbol-shipped_modules}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L163)
+- Returns: `ReadonlySet`
+
+##### `SHIPPED_MODULES` — Summary
+The modules PowerShell installs with itself, in either edition, case-folded: the modules the lists of commands above
+were read from. A command qualified by one, `Microsoft.PowerShell.Utility\New-Object`, is PowerShell's own, which no
+function of the workspace answers and no script of that path runs (pwsh 7.7.0, measured 2026-11-21).
+
 #### `SHIPPED_COMMANDS` {#symbol-shipped_commands}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L159)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.builtins.ts#L172)
 - Returns: `ReadonlySet`
 
 ##### `SHIPPED_COMMANDS` — Summary

@@ -83,7 +83,7 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 import type { DeclaredEntry, ReExportedSymbolInfo, SourceNotice } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { packageSymbols } from "./manifest";
-import { SHIPPED_COMMANDS } from "./powershell.builtins";
+import { SHIPPED_COMMANDS, SHIPPED_MODULES } from "./powershell.builtins";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
@@ -140,6 +140,11 @@ interface ComputedLoad {
   kind:     "dot" | "import" | "run";
   path:     string;
   written?: string;
+  /**
+   * A run written as a module's command, `lib\Helpers`: a script of that path, its extension unwritten as PowerShell
+   * allows, where the workspace holds one; else a command of a module the workspace does not draw, which is no load.
+   */
+  qualified?: boolean;
 }
 
 /** A variable other than `$PSScriptRoot` in a path as written, which only the file's own assignments can fix. */
@@ -951,8 +956,8 @@ function fixedLoads(command: SyntaxNode, scope: PathScope): ComputedLoad[] {
     const value  = target ? pathValue(target, scope) : undefined;
     return value === undefined ? [] : [{ kind: "dot", path: value }];
   }
-  const run = runPath(command, scope);
-  if (run !== undefined) return [{ kind: "run", path: run }];
+  const run = runLoad(command, scope);
+  if (run !== undefined) return [run];
   const name = commandName(command);
   if (name !== "import-module" && name !== "ipmo") return [];
   return (bindNodes(command, IMPORT_MODULE).get("Name") ?? []).flatMap((node): ComputedLoad[] => {
@@ -1087,15 +1092,27 @@ function calledName(command: SyntaxNode): string | undefined {
   return written.replace(/^(?:script|global|local|private):/i, "").toLowerCase();
 }
 
-/** The path a command runs a script by, when its name is one: `& ./x.ps1`, `& "$PSScriptRoot\x.ps1"`, `& (Join-Path …)`, `scripts\x.ps1`. */
-function runPath(command: SyntaxNode, scope: PathScope): string | undefined {
+/** A command named by its module, `Module\Command`: a module's name, one backslash, and a command's name without an extension. */
+const MODULE_QUALIFIED = /^([A-Za-z_][\w.-]*)\\([A-Za-z_][\w-]*)$/;
+
+/**
+ * The script a command runs by its path, when its name is one: `& ./x.ps1`, `& "$PSScriptRoot\x.ps1"`, `& (Join-Path …)`,
+ * `scripts\x.ps1`. A name written as a module's command, `Module\Command`, is PowerShell's own command when the module is
+ * one PowerShell ships, and no path; otherwise it is a script's path only where the workspace holds the script
+ * ({@link ComputedLoad.qualified}), as Windows, where a backslash separates folders, would find it.
+ */
+function runLoad(command: SyntaxNode, scope: PathScope): ComputedLoad | undefined {
   if (isDotSource(command)) return undefined;
   const name = command.childForFieldName("command_name");
   if (!name) return undefined;
   const inner = unwrapValue(name);
-  if (inner.type === "command_name" && !/[\\/]|\.ps1$/i.test(inner.text)) return undefined;
+  if (inner.type === "command_name") {
+    if (!/[\\/]|\.ps1$/i.test(inner.text)) return undefined;
+    const qualified = MODULE_QUALIFIED.exec(inner.text);
+    if (qualified) return SHIPPED_MODULES.has(qualified[1].toLowerCase()) ? undefined : { kind: "run", path: inner.text, qualified: true };
+  }
   const written = pathValue(name, scope);
-  return written !== undefined && /[\\/]|\.ps1$/i.test(written) ? written : undefined;
+  return written !== undefined && /[\\/]|\.ps1$/i.test(written) ? { kind: "run", path: written } : undefined;
 }
 
 /** The module a `using module` statement names: a name or path, or the `ModuleName` of a module specification; null for a `using namespace` or `using assembly`. */
@@ -1397,8 +1414,8 @@ async function extractFacts(content: string): Promise<FileFacts> {
         else if (!dotSourcesBlock(command)) unfixed(command);
         continue;
       }
-      const run = runPath(command, scope);
-      if (run !== undefined) facts.computed.push({ kind: "run", path: run });
+      const run = runLoad(command, scope);
+      if (run !== undefined) facts.computed.push(run);
       switch (commandName(command)) {
         case "import-module":
         case "ipmo":
@@ -1582,7 +1599,11 @@ function scriptLoads(facts: FileFacts, directory: string, files: WorkspaceFileIn
   facts.usingModules.forEach(module);
   facts.requires.forEach(module);
   for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolvePath(written, directory, files, false) });
-  for (const load of facts.computed) loads.push({ kind: load.kind, written: load.written, computed: load.path, to: resolvePath(load.path, directory, files, load.kind === "import") });
+  for (const load of facts.computed) {
+    const to = resolvePath(load.path, directory, files, load.kind === "import") ?? (load.qualified ? resolvePath(`${load.path}.ps1`, directory, files, false) : undefined);
+    if (load.qualified && !to) continue;
+    loads.push({ kind: load.kind, written: load.written, computed: load.path, to });
+  }
   for (const listing of facts.listings) {
     for (const to of listedFiles(listing, directory, files)) loads.push({ kind: "dot", written: undefined, to });
   }

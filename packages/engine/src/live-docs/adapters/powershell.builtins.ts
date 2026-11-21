@@ -155,5 +155,18 @@ export const POWERSHELL_7_COMMANDS: readonly string[] = [
   "Write-Host", "Write-Information", "Write-Output", "Write-Progress", "Write-Verbose", "Write-Warning"
 ];
 
+/**
+ * The modules PowerShell installs with itself, in either edition, case-folded: the modules the lists of commands above
+ * were read from. A command qualified by one, `Microsoft.PowerShell.Utility\New-Object`, is PowerShell's own, which no
+ * function of the workspace answers and no script of that path runs (pwsh 7.7.0, measured 2026-11-21).
+ */
+export const SHIPPED_MODULES: ReadonlySet<string> = new Set([
+  "CimCmdlets", "ISE", "Microsoft.PowerShell.Archive", "Microsoft.PowerShell.Core", "Microsoft.PowerShell.Diagnostics",
+  "Microsoft.PowerShell.Host", "Microsoft.PowerShell.LocalAccounts", "Microsoft.PowerShell.Management",
+  "Microsoft.PowerShell.ODataUtils", "Microsoft.PowerShell.Operation.Validation", "Microsoft.PowerShell.PSResourceGet",
+  "Microsoft.PowerShell.Security", "Microsoft.PowerShell.ThreadJob", "Microsoft.PowerShell.Utility", "Microsoft.WSMan.Management",
+  "PackageManagement", "PowerShellGet", "PSDiagnostics", "PSReadLine", "PSScheduledJob", "PSWorkflow", "PSWorkflowUtility"
+].map((name) => name.toLowerCase()));
+
 /** Every shipped command's name, case-folded, as PowerShell compares command names. */
 export const SHIPPED_COMMANDS: ReadonlySet<string> = new Set([...WINDOWS_POWERSHELL_51_COMMANDS, ...POWERSHELL_7_COMMANDS].map((name) => name.toLowerCase()));
