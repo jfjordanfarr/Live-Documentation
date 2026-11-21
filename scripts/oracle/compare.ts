@@ -16,7 +16,9 @@
  * to the ledger of causes the sample programs share at their root
  * (`compiler-differences.json`), each cause a sentence over the edges it
  * explains, since one cause, such as C's header against the file that defines a
- * function, explains edges of several programs.
+ * function, explains edges of several programs. An edge the program's
+ * hand-verified list asserts is never counted extra: a person found it true,
+ * and it is one the compiler cannot see.
  *
  * Usage:
  *   npm run oracle:compare -- <fixture-dir> [--json]
@@ -78,12 +80,12 @@ export interface CompilerDifference extends LedgerEdge {
 
 /**
  * A cause of differences with the compiler, as the sample programs' ledger (`compiler-differences.json`) states it:
- * what the reader does and what the compiler does, in a sentence; whether it is a gap the readers mean to close, a
- * difference of grain they may keep, or an edge beyond what the compiler sees; and the differences it explains.
+ * what the reader does and what the compiler does, in a sentence; whether it is a gap the readers mean to close or a
+ * difference of grain they may keep; and the differences it explains.
  */
 export interface CompilerCause {
   cause:       string;
-  kind:        "gap" | "grain" | "beyond the compiler";
+  kind:        "gap" | "grain";
   differences: CompilerDifference[];
 }
 
@@ -198,7 +200,9 @@ function buildReport(fixtureDir: string, expectations: Expectations, adapter: Ad
   const compilerFiles = new Set(compiler.documents);
 
   const missing = compiler.edges.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`));
-  const extra   = adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`));
+  // An edge a person asserted is true and one the compiler cannot see, an HTTP call between deployments say: no extra.
+  const asserted = new Set((handVerified?.edges ?? []).map((edge) => `${edge.from}|${edge.to}`));
+  const extra    = adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`) && !asserted.has(`${edge.from}|${edge.to}`));
   const listed  = causes.flatMap((cause) => cause.differences.filter((difference) => difference.program === program).map((difference) => ({ difference, cause })));
   const differences: CompilerDifference[] = [
     ...missing.map(({ from, to }) => ({ program, side: "missing" as const, from, to })),

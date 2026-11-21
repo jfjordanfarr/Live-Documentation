@@ -1,5 +1,5 @@
 {
-  "convention": "Every edge between two files the compiler indexed that the compiler records and the readers do not draw (missing), or the readers draw and the compiler does not record (extra), on every sample program that keeps expected/compiler-edges.json, listed under its cause. Each cause says what the reader does and what the compiler does, and whether it is a gap the readers mean to close, a difference of grain they may keep, or an edge beyond what the compiler sees; a kind proposed by a builder is the root's to rule. tests/integration/live-docs/oracle.test.ts fails on a difference no cause lists and on a listed one no longer found. Paths are relative to the program.",
+  "convention": "Every edge between two files the compiler indexed that the compiler records and the readers do not draw (missing), or the readers draw and the compiler does not record (extra), on every sample program that keeps expected/compiler-edges.json, listed under its cause. An edge the program's hand-verified list asserts is never extra. Each cause says what the reader does and what the compiler does, and whether it is a gap the readers mean to close or a difference of grain they may keep. tests/integration/live-docs/oracle.test.ts fails on a difference no cause lists and on a listed one no longer found. Paths are relative to the program.",
   "causes": [
     {
       "cause": "C and C++: a call of a function, and a header's prototype of it, to the file that defines it. The reader draws the #include a file writes, to the header that declares the function, with the names the file uses from it, and no file includes a .c; the compiler (scip-clang) records every use of the function, the header's prototype among them, as a reference to its definition in the .c or .cpp file the build compiled. Proposed as a difference of grain to keep: which file defines a declared function is decided by what the build compiles and links into which program, not by any file's text, and the header is what the source names.",
@@ -88,13 +88,6 @@
         { "program": "rust/stockroom", "side": "extra", "from": "src/main.rs", "to": "src/lib.rs" },
         { "program": "rust/stockroom", "side": "extra", "from": "tests/report.rs", "to": "src/lib.rs" },
         { "program": "rust/stockroom", "side": "missing", "from": "src/stock/quantity.rs", "to": "src/lib.rs" }
-      ]
-    },
-    {
-      "cause": "An edge across deployments, which no compiler sees: Portal/Services/GatewayClient.cs calls the gateway's routes api/payments and api/payments/{paymentId} over HTTP, and the reader draws the call to the controller that serves them. No fault of the reader's: a person asserted the edge in the estate's hand-verified-edges.json (remote), where it is found, and that list is its right home; it is listed here only because the comparison counts as extra every drawn edge between two files the compiler indexed and did not link.",
-      "kind": "beyond the compiler",
-      "differences": [
-        { "program": "csharp/estate", "side": "extra", "from": "Portal/Services/GatewayClient.cs", "to": "Gateway/Controllers/PaymentsController.cs" }
       ]
     }
   ]

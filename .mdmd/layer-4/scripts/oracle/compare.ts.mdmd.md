@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/compare.ts`
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T05:42:31.655Z
+- Generated At: 2026-11-21T05:58:58.074Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 
 ### Notes
 - Prints a list, never a score, and exits 0 either way. The integration suite `oracle.test.ts` asserts that every expected edge is accounted for and, since 2026-11-21, that every hand-verified edge the readers miss is listed in the program's ledger, `expected/hand-verified-misses.json`, with its cause, and no listed edge is drawn again: `heldToLedger` says which of either there are, and the report prints each missed edge's cause ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
-- Since 2026-11-21 the compiler's missing and extra edges are held to `tests/integration/programs/compiler-differences.json`, a ledger by cause found at the root of the sample programs (`<root>/<language>/<program>`): the report names each edge's cause and kind, the ones no cause lists, and the listed ones no longer found, an edge being told by its side as well as its ends; `heldToLedger` serves both ledgers ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
+- Since 2026-11-21 the compiler's missing and extra edges are held to `tests/integration/programs/compiler-differences.json`, a ledger by cause found at the root of the sample programs (`<root>/<language>/<program>`): the report names each edge's cause and kind, the ones no cause lists, and the listed ones no longer found, an edge being told by its side as well as its ends; `heldToLedger` serves both ledgers. An edge the program's hand-verified list asserts is never counted extra, since a person found it true and the compiler cannot see it, as the estate's HTTP call from the portal to the gateway ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 - A project reference is graded between the manifests standing in the two projects' folders: the project file named for the project, or else the folder's one manifest (Cargo's, npm's, Maven's, Gradle's, Go's, Python's). A reference between projects with no manifest of their own in the fixture is listed apart, by the projects' names, and graded neither found nor missing: Cargo's targets are such, a binary's and a test's folder being their crate root's. Until 2026-11-21 every project was named `<directory>/<name>.csproj`, right for .NET alone, and `rust/stockroom` reported two missing references between `.csproj` files that do not exist ([the account](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/readers-gathering/sql-findings.md)).
 - Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
@@ -24,14 +24,14 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 ### Public Symbols
 #### `HandVerifiedMiss` {#symbol-handverifiedmiss}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L42)
+- Source: [source](../../../../scripts/oracle/compare.ts#L44)
 
 ##### `HandVerifiedMiss` — Summary
 A hand-verified edge the readers do not draw, as a program's ledger lists it: its ends and its cause, in a sentence a maintainer can act on.
 
 #### `readHandVerifiedMisses` {#symbol-readhandverifiedmisses}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L49)
+- Source: [source](../../../../scripts/oracle/compare.ts#L51)
 - Returns: [`HandVerifiedMiss`](#symbol-handverifiedmiss)[]
 
 ##### `readHandVerifiedMisses` — Summary
@@ -39,7 +39,7 @@ Reads a program's ledger of hand-verified misses, its paths relative to the ledg
 
 #### `heldToLedger` {#symbol-heldtoledger}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L60)
+- Source: [source](../../../../scripts/oracle/compare.ts#L62)
 - Constraints: `LedgerEdge`
 
 ##### `heldToLedger` — Summary
@@ -49,7 +49,7 @@ ledger can only shrink truthfully. An edge is told by its ends and, for the comp
 
 #### `CompilerDifference` {#symbol-compilerdifference}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L74)
+- Source: [source](../../../../scripts/oracle/compare.ts#L76)
 - Extends: `LedgerEdge`
 
 ##### `CompilerDifference` — Summary
@@ -57,23 +57,23 @@ An edge the compiler records and the readers do not draw, or the reverse, in one
 
 #### `CompilerCause` {#symbol-compilercause}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L84)
+- Source: [source](../../../../scripts/oracle/compare.ts#L86)
 
 ##### `CompilerCause` — Summary
 A cause of differences with the compiler, as the sample programs' ledger (`compiler-differences.json`) states it:
-what the reader does and what the compiler does, in a sentence; whether it is a gap the readers mean to close, a
-difference of grain they may keep, or an edge beyond what the compiler sees; and the differences it explains.
+what the reader does and what the compiler does, in a sentence; whether it is a gap the readers mean to close or a
+difference of grain they may keep; and the differences it explains.
 
 #### `COMPILER_LEDGER` {#symbol-compiler_ledger}
 - Type: const
-- Source: [source](../../../../scripts/oracle/compare.ts#L91)
+- Source: [source](../../../../scripts/oracle/compare.ts#L93)
 
 ##### `COMPILER_LEDGER` — Summary
 The ledger of differences with the compiler, kept once for every sample program at the root they share.
 
 #### `readCompilerCauses` {#symbol-readcompilercauses}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L94)
+- Source: [source](../../../../scripts/oracle/compare.ts#L96)
 - Returns: [`CompilerCause`](#symbol-compilercause)[]
 
 ##### `readCompilerCauses` — Summary
@@ -81,14 +81,14 @@ Reads the ledger of causes; empty when there is none.
 
 #### `Report` {#symbol-report}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L105)
+- Source: [source](../../../../scripts/oracle/compare.ts#L107)
 
 ##### `Report` — Summary
 What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L321)
+- Source: [source](../../../../scripts/oracle/compare.ts#L325)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
