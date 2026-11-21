@@ -132,6 +132,8 @@ Stale comments and run lines of the default mode; `--remove-superseded` removing
 
 **What the key covers, as the rebuild's builder read it on 2026-11-21:** every file of `packages/engine` and `packages/generator` but tests (in the two `history` folders only the summarizing modules and what is not a TypeScript module), `tsconfig.base.json`, the lock's entries for the packages the summarizing process can load, the package's version and the runtime's Unicode version; the lens adds the configuration, `core.ignorecase` where true, and the way workers run. Outside it: tests, the Explorer's code, `scripts/`, Node's and git's versions. So any change to an engine or generator source re-keys the whole history, even to a module nothing calls yet (`tooling/leaveOut.ts`), and a rebuild on this machine with three builders beside it ran at about 3 to 5 s a change over 1,497 changes. Open: whether the key should cover only what the summarizing process can reach.
 
+**The next change of the keyed code, begun 2026-11-21 at 18:27 UTC as one batch with one rebuild:** a standing guard that no reader working by pattern reads what a comment holds (the owner, told of the commented-out reference: "We've avoided capturing comments for a long long time, no? How did that lapse?"; it lapsed where a reader matched a pattern over raw text, the project reader since 2026-09-28, and its grader matched the same way); a PowerShell relative path without its extension read as Windows runs it (the owner's own run of 2026-11-21, in [Turn 5](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-5): `./build` beside `build` and `build.ps1` is `build.ps1`); `CREATE TABLE IF NOT EXISTS` and its kin; and with them the test rules below and the new shape of the function that decides what a scan leaves out.
+
 
 ### One oracle for C#: the compiler, with scip-dotnet retired
 - state: open
@@ -141,11 +143,13 @@ Stale comments and run lines of the default mode; `--remove-superseded` removing
 Run side by side on the five C# sample programs on 2026-11-21, scip-dotnet and the compiler's own binding agree on every pair of four, and on the fifth scip-dotnet cannot say what the compiler can (its symbols carry no arity, so `Helper` and `Helper<T>` are one name to it). What scip-dotnet's record still gives the comparison is the list of documents indexed and the projects, which the compiler's program can give. Ruled by root: one oracle for a language, the language's own compiler; the handling of scip-dotnet's ambiguous symbols and of its namespace-only type names then goes for C#.
 
 ### What makes a file a test, in each language
-- state: open
-- holds: not begun
+- state: active
+- holds: a builder's first milestone since 2026-11-21, 18:27 UTC (a guard, the oracles, the measurement and the fork; no behaviour changed)
 - evidence:
 
 One pattern serves every language but PowerShell: a path that holds the word `test` or `tests`, or a file's name in one of a few shapes. Nobody has measured it. Known wrong on real code: tSQLt's `Source/tSQLt.Tests.view.sql`, the framework's own view, is read as a test; whether `src/test-utils.tsx` is a test is a guess either way. PowerShell's rule was measured (Pester's own name, folders alone) and is confined to PowerShell's files since 2026-11-21. The oracle each language already has: its test runner's own rule for finding tests (Jest's and Vitest's patterns, pytest's, Go's `_test.go`, Pester's `.Tests.ps1`, an attribute in .NET). To be measured against those on real repositories before any rule changes.
+
+**Begun 2026-11-21 at 18:27 UTC,** on the owner's question ([Turn 5](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-5)): "Where else do you see builders making regressions like this? Should any architecture be in place to scope test file matching patterns in some way?" The first milestone changes no behaviour: a table test across every language that pins today's answers, so that a change for one language that moves another fails; each language's own test runner as the oracle; the disagreements counted on real code; and the fork of what "test" means for the map, a file its runner runs or a file that exists for the tests, brought with numbers. The restructure follows: each language's rule with that language, applied to its files only.
 
 ### A query through a linked server reaches the Oracle piece
 - state: open
