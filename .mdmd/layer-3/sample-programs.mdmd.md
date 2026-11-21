@@ -15,7 +15,7 @@ Every directory below holds committed source. The seven vendored fixtures that w
 | TypeScript | `basic`, `layered`, `rosetta`                 | all: the oracle; `rosetta`: Rosetta parity                              |
 | C          | `basics`, `modular`, `rosetta`                | all: the oracle (scip-clang, since 2026-10-16); `rosetta`: Rosetta parity |
 | C++        | `rosetta`                                     | all: the oracle; `rosetta`: Rosetta parity (the ninth language, 2026-10-16) |
-| C#         | `basic`, `webforms`, `estate`, `rosetta`      | all: the oracle; `rosetta`: Rosetta parity                              |
+| C#         | `basic`, `webforms`, `estate`, `rosetta`, `names` | all: the oracle; `rosetta`: Rosetta parity; `names`: the compiler's binding (since 2026-11-21) |
 | Go         | `rosetta`, `depot`                            | all: the oracle; `rosetta`: Rosetta parity                              |
 | Java       | `basic`, `service`, `rosetta`, `warehouse`    | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
 | PowerShell | `rollout`                                     | the oracle (PowerShell's own parser, since 2026-10-16)                  |
@@ -34,6 +34,7 @@ The repository declares this collection in `sampleRoots` in `.live-docs.config.j
 A fixture that has been measured carries an `expected/` directory.
 
 - `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, `scip-clang` for a `compile_commands.json` (a compilation database the C and C++ programs carry by hand, with `"directory": "."`, rewritten to the working copy before indexing), and `scip-python` for a directory of `.py` files; a program of `.ps1` and `.psm1` files, which no SCIP indexer reads, is read by PowerShell's own parser through `pwsh` (`scripts/oracle/powershell-ast.ps1`), whose edges are its dot-sources, module imports, `using module` and a manifest's module entries that name a file of the program. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read. For a Cargo package the crates are read from the conventional layout, so a `crate::` reference resolves to the referencing file's own crate root instead of every root of the package.
+- `csharp-compiler.json` is written by `npm run oracle:csharp -- <fixture> --write` (since 2026-11-21): the C# compiler's own binding of every simple name of a C# program, one compilation for each project with its references as MSBuild evaluates them, as file-to-file edges by a type or only a member, with each file's declared type names. Unlike scip-dotnet's symbols, which carry neither arity nor outer namespaces, it says which of two types that differ only by arity a name binds. `csharp-oracle.test.ts` compares the C# adapter with it, with no `dotnet` present.
 - `hand-verified-edges.json` is authored: the hops no compiler can see, each with the evidence a reader can check, and `remote: true` where the hop crosses a deployment.
 - `powershell-ast.json` is written by `oracle:index` beside a PowerShell program's edges: everything PowerShell's parser says about each file, untrimmed. For a script or module, its parse errors; every function definition with its keyword, line, column, declared parameters, comment-based help as `GetHelpContent` returns it, and whether it is a class's member; the functions it publishes; each `Export-ModuleMember` and `Import-Module` with the arguments PowerShell's static binder binds to each parameter; each dot-source; each `using` statement; and the modules its `#requires` names. For a `.psd1`, its table as `Import-PowerShellDataFile` reads it and the modules and scripts a manifest names. Each path that resolves to a file of the program is given beside the text, a relative dot-source or module path taken from the file's own directory, as if the script ran from where it lies. `powershell-oracle.test.ts` compares the adapter with it, with no `pwsh` present.
 
@@ -44,6 +45,10 @@ Filesystem locations in both expectation files are relative to the JSON file con
 ## The estate fixture
 
 `csharp/estate` is the owner's payment chain in miniature, five .NET Framework 4.8 projects and the SQL behind them; its [README](../../tests/integration/programs/csharp/estate/README.md) draws the chain and says which hops each expectation file covers.
+
+## The names program
+
+`csharp/names` was written on 2026-11-21 from an independent review of the C# reader, three projects small enough to read whole, each case one way a simple name is found in C#. In `App`, `Derived` inherits `Base`, which declares a nested `Options`, while a `using` brings in a namespace with an `Options` of its own: C# finds the inherited one first. `Use` names `Helper` through an alias to `Lib.Helper`, beside `Lib.Helper<T>`: the alias names the non-generic one. `A` has its reference to `B` inside an XML comment, so `UseIt`'s `Thing` reaches nothing. It carries scip-dotnet's record, whose one ambiguity is the alias's `Lib/Helper#`, and the compiler's, which settles it.
 
 ## The ledger program
 

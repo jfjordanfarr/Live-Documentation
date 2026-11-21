@@ -1,0 +1,72 @@
+{
+  "tool": "Microsoft.CodeAnalysis.CSharp 4.12.0.0",
+  "projects": [
+    {
+      "project": "A/A.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    },
+    {
+      "project": "App/App.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    },
+    {
+      "project": "B/B.csproj",
+      "readBy": "msbuild",
+      "references": [],
+      "xmlReferences": []
+    }
+  ],
+  "files": 8,
+  "names": 19,
+  "bound": 16,
+  "edges": [
+    {
+      "from": "App/Derived.cs",
+      "to": "App/Base.cs",
+      "type": [
+        "Base",
+        "Options"
+      ],
+      "member": []
+    },
+    {
+      "from": "App/Use.cs",
+      "to": "App/Helper.cs",
+      "type": [
+        "Helper"
+      ],
+      "member": []
+    }
+  ],
+  "declared": {
+    "A/UseIt.cs": [
+      "UseIt"
+    ],
+    "App/Base.cs": [
+      "Base",
+      "Options"
+    ],
+    "App/Derived.cs": [
+      "Derived"
+    ],
+    "App/Helper.cs": [
+      "Helper"
+    ],
+    "App/HelperOfT.cs": [
+      "Helper"
+    ],
+    "App/Other.cs": [
+      "Options"
+    ],
+    "App/Use.cs": [
+      "Use"
+    ],
+    "B/Thing.cs": [
+      "Thing"
+    ]
+  }
+}
