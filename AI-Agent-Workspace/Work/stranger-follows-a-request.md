@@ -31,6 +31,15 @@ Every tester asked how a folder's files connect hedged the directions it read fr
 
 Arriving on a pinned file cuts its neighbours off at both edges ([the picture](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-uses-sonnet-medium-look-only/shots/001-look.png)); opening a folder pushes its files off the right and the bottom ([the picture](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-directory-sonnet-medium-look-only/shots/007-click.png)). Four runs answered from a cut-off view and fell short. Recurs from November 19; then nine of ten testers recovered with fit, now one of four.
 
+**What a step frames: alternatives set down by root on 2026-11-21, none built.** Today a step keeps the scale and pans the least distance that brings the opened folder's label and first row into view (the rule of 2026-11-19, after your "I might wish the camera followed the newly-opened one though, as I quickly lose it"). On the estate that shows `PaymentService/Data` opened with `Payment.cs` cut at the bottom and the file everything runs to, `PaymentService.cs`, cut at the right edge ([the picture](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-directory-sonnet-medium-arrival-then-neighbours/shots/007-click.png)). Two principles pull against each other: *object constancy*, that what was pressed stays where it was and the size it was, so a person keeps their place; and *visibility of the result*, that what a press produced is on screen whole. Four ways to settle them, to be built as one lever and tried on strangers on the estate's folder, this repository's and a larger one, counted by answers read from a cut-off view:
+
+1. *As now*: the scale kept, the least pan, the label and first row.
+2. *Whole when it fits, out when it does not*: the scale kept where the opened folder fits whole at it; otherwise eased out just far enough to hold it whole, never past the scale at which names still read (the floor the Arrival lever uses), what was pressed kept still.
+3. *The folder with what it connects to*: eased to the opened folder and the cards its lines reach, the frame Fit gives.
+4. *The camera as now, and the cut said*: at each edge where the opened folder goes on beyond the window, a count of what lies there, which pans to it when pressed; nothing moves that the person did not move.
+
+Also seen in those runs and not yet explained: a folder chosen in the search arrives whole in the lower half of the window with the upper half empty ([the picture](../AgentSessionHistory/2026/11/2026-11-21/Probes/blind-playtests/estate-directory-sonnet-medium-look-only/shots/005-click.png)).
+
 ### The way down from the World Map keeps the request in view
 - state: open
 - holds: not begun
