@@ -40,7 +40,7 @@ A fixture that has been measured carries an `expected/` directory.
 
 Filesystem locations in both expectation files are relative to the JSON file containing them: for example, `../src/main.ts` refers to the program’s source from its `expected/` folder. The writer and reader translate these locations to and from the fixture-relative coordinates used by the compiler comparison. Opaque compiler symbol identifiers, project reference names, evidence and all observations are preserved.
 
-`npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. The reports are recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md): the C# baseline of 2026-09-27 and the tree-sitter result that replaced it, and the same day's baseline of the other scanners.
+`npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. An edge of the compiler's that rests only on a symbol the record lists as ambiguous, every candidate file an edge, is counted neither found nor missing, and the adapter's edge to a candidate is not extra (since 2026-11-21): the indexer did not know which file the name meant. The reports are recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md): the C# baseline of 2026-09-27 and the tree-sitter result that replaced it, and the same day's baseline of the other scanners.
 
 ## The estate fixture
 

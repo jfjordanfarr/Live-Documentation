@@ -36,7 +36,7 @@ describe("oracle:compare", () => {
 
       const report = await compareFixture(fixtureDir);
 
-      expect(report.compiler.found.length + report.compiler.missing.length).toBe(expected.edges.length);
+      expect(report.compiler.found.length + report.compiler.missing.length + report.compiler.ambiguous.length).toBe(expected.edges.length);
       for (const edge of report.compiler.extra) {
         expect(report.compiler.found).not.toContainEqual(edge);
       }

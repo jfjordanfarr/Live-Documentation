@@ -8,6 +8,12 @@
  * `expected/hand-verified-edges.json`. It prints a list, not a score, and it exits 0
  * either way: the list is the measurement.
  *
+ * An edge of the compiler's that rests only on a symbol its record lists as ambiguous
+ * (scip-dotnet's symbols carry no arity, so `Helper` and `Helper<T>` of one namespace
+ * are one symbol, and every file that defines it is a candidate) is the indexer not
+ * knowing, so it is counted neither found nor missing, and an edge the adapter draws to
+ * a candidate is not extra; the report lists such edges apart.
+ *
  * Usage:
  *   npm run oracle:compare -- <fixture-dir> [--json]
  */
@@ -21,7 +27,7 @@ import { generateLiveDocs } from "@live-documentation/generator/generator";
 
 import { readOracleEdges, readHandVerifiedEdges, type HandVerifiedEdge, type HandVerifiedEdges } from "./files";
 import { copyFixture } from "./fixture";
-import type { OracleEdges } from "./scip-edges";
+import type { OracleEdge, OracleEdges } from "./scip-edges";
 
 interface AdapterEdge {
   from: string;
@@ -36,6 +42,8 @@ export interface Report {
     found:   Array<{ from: string; to: string }>;
     missing: Array<{ from: string; to: string; symbols: string[] }>;
     extra:   Array<{ from: string; to: string }>;
+    /** Edges resting only on a symbol the record leaves to more than one file: neither found nor missing. */
+    ambiguous: OracleEdge[];
   };
   handVerified?: {
     found:   HandVerifiedEdge[];
@@ -85,18 +93,30 @@ function dedupe(edges: AdapterEdge[]): AdapterEdge[] {
   return Array.from(seen.values()).sort((left, right) => left.from.localeCompare(right.from) || left.to.localeCompare(right.to));
 }
 
+/**
+ * The compiler's edges set apart by whether the record settles them: an edge is ambiguous when every symbol it rests on
+ * is one the record lists as ambiguous for its file, with its target among the candidates.
+ */
+export function settledEdges(compiler: Pick<OracleEdges, "edges" | "ambiguous">): { settled: OracleEdge[]; ambiguous: OracleEdge[] } {
+  const candidates = new Map(compiler.ambiguous.map((item) => [`${item.from}|${item.symbol}`, item.candidates]));
+  const unsettled  = (edge: OracleEdge): boolean => edge.symbols.length > 0 && edge.symbols.every((symbol) => candidates.get(`${edge.from}|${symbol}`)?.includes(edge.to) === true);
+  return { settled: compiler.edges.filter((edge) => !unsettled(edge)), ambiguous: compiler.edges.filter(unsettled) };
+}
+
 function buildReport(fixtureDir: string, compiler: OracleEdges, handVerified: HandVerifiedEdges | undefined, adapter: AdapterEdge[], unresolved: Report["unresolved"]): Report {
   const adapterKeys   = new Set(adapter.map((edge) => `${edge.from}|${edge.to}`));
   const compilerKeys  = new Set(compiler.edges.map((edge) => `${edge.from}|${edge.to}`));
   const compilerFiles = new Set(compiler.documents);
+  const { settled, ambiguous } = settledEdges(compiler);
 
   const report: Report = {
     fixture:  path.relative(process.cwd(), fixtureDir),
     compiler: {
-      tool:    compiler.tool,
-      found:   compiler.edges.filter((edge) => adapterKeys.has(`${edge.from}|${edge.to}`)).map(({ from, to }) => ({ from, to })),
-      missing: compiler.edges.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`)),
-      extra:   adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`))
+      tool:      compiler.tool,
+      found:     settled.filter((edge) => adapterKeys.has(`${edge.from}|${edge.to}`)).map(({ from, to }) => ({ from, to })),
+      missing:   settled.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`)),
+      extra:     adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`)),
+      ambiguous
     },
     beyondCompiler: adapter.filter((edge) => !(compilerFiles.has(edge.from) && compilerFiles.has(edge.to))),
     unresolved
@@ -132,13 +152,16 @@ function printReport(report: Report): void {
   const lines: string[] = [];
   lines.push(`Oracle comparison for ${report.fixture}`);
   lines.push("");
-  lines.push(`Compiler edges (${report.compiler.tool}): ${report.compiler.found.length} found, ${report.compiler.missing.length} missing, ${report.compiler.extra.length} extra`);
+  lines.push(`Compiler edges (${report.compiler.tool}): ${report.compiler.found.length} found, ${report.compiler.missing.length} missing, ${report.compiler.extra.length} extra, ${report.compiler.ambiguous.length} on an ambiguous symbol, counted neither way`);
   for (const edge of report.compiler.missing) {
     lines.push(`  missing  ${edge.from} -> ${edge.to}`);
     lines.push(`           via ${edge.symbols.join(", ")}`);
   }
   for (const edge of report.compiler.extra) {
     lines.push(`  extra    ${edge.from} -> ${edge.to}`);
+  }
+  for (const edge of report.compiler.ambiguous) {
+    lines.push(`  ambiguous  ${edge.from} -> ${edge.to}  via ${edge.symbols.join(", ")}`);
   }
 
   if (report.handVerified) {

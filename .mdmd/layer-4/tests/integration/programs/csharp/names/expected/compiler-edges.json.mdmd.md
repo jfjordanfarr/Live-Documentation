@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-The file-to-file edges scip-dotnet resolved for the `names` sample, written by `npm run oracle:index`; `oracle:compare` measures the adapter against it. Its one ambiguity is `Lib/Helper#`, which names both `Helper.cs` and `HelperOfT.cs`.
+The file-to-file edges scip-dotnet resolved for the `names` sample, written by `npm run oracle:index`; `oracle:compare` measures the adapter against it. Its one ambiguity is `Lib/Helper#`, which names both `Helper.cs` and `HelperOfT.cs`, so the two edges resting on it are counted neither found nor missing.
 
 ### Notes
 - Never hand-edited. Regenerate with `oracle:index` after changing the program; nothing in it is trimmed to fit the adapter. Written on 2026-11-21 in the joining of the readers, from an independent review of the C# reader ([the work item](../../../../../../../../AI-Agent-Workspace/Work/readers-on-main.md)); what the program exercises is in [Sample Programs](../../../../../../../layer-3/sample-programs.mdmd.md#the-names-program).
