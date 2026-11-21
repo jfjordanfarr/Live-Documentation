@@ -11,3 +11,5 @@ browser-lane: stored-form holds the lane (waited 124.2 s, cap 300 s)
 browser-lane: released after 31.0 s, exit 0
 browser-lane: waiting behind stored-form, stored-form
 browser-lane: stored-form holds the lane (waited 368.3 s, cap 300 s)
+{"kind":"read","page":"read-parts-dnn5.html","rate":4,"cores":2,"loadBefore":12.1,"pageReadyMs":4888,"scriptStartedMs":4621,"base64Ms":330.4,"carriedBytes":24906396,"openMs":442.7,"inboundOfHub":632,"inboundMs":102.5,"firstAnswerMs":875.6,"reachable":1283,"reachableMs":9,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":128.4,"hubNeighbourhood":661,"hubNeighbourhoodMs":13527,"allMs":166038,"files":53880,"totalMs":180662.4,"heapMb":488,"errors":[],"rendererPeakMb":844,"loadAfter":12.4}
+browser-lane: released after 187.5 s, exit 0

@@ -7,7 +7,7 @@ Historical research of 2026-11-21, by a builder for the root, on branch `stored-
 - the tab's at DNN's size for six of them;
 - the tab's reads at five times DNN for most of them.
 
-Still waiting for the browser lane when this was written: the indexed ledger in a tab, and HDF5's and the parts' rows at five times. Those rows say "pending".
+Still waiting for the browser lane when this was written: the indexed ledger in a tab. Its rows say "pending".
 
 ## The question, in the owner's words
 
@@ -26,10 +26,10 @@ Each form below holds the same facts: every field of every file of a scan, as to
 | **JSON, gzipped** (today's index, the baseline) | one text, compressed | 3.2 s, then nothing more | 3.65 MB | cannot: every file's dependents must be known first. All at once: 11.5 s, 625 MB | yes, after unzipping (any editor, `jq`, PowerShell) | nothing is left |
 | **The press** | our own binary layout: a table of where things are, the wires as plain arrays of numbers, each section compressed on its own | **0.15 s**, then 1.7 to 2.2 s | **2.83 MB** | **8.7 s, 243 MB** | no: needs our reader | prefix left; readable only if each section is given a small label (not built) |
 | **The database** (SQLite) | tables of files, symbols, dependencies and edges | 1.6 s, then 5.0 s | 6.19 MB, of which 0.99 MB is the SQLite engine | 17.2 s, 317 MB (in a tab the database is in memory, whole) | **yes, with any SQLite tool**; in Node it is read in place on disk | on disk (the command line): everything up to the last 512 files. In a tab: nothing |
-| **The ledger** | one fact per line, sorted by path, gzipped | 1.8 s, then 2.4 s | 3.74 MB | 15.4 s, 227 MB | **yes, with `grep`, `diff`, any editor** after unzipping | on disk: all but the last few dozen files |
+| **The ledger** | one fact per line, sorted by path, gzipped | 1.8 s, then 2.4 s | 3.74 MB | 15.4 s, 227 MB | **yes, with `grep`, `diff`, any editor** after unzipping | on disk, read by Node: all but the last 89 files handed over. A page cannot read a cut stream |
 | **The store of parts** | the ledger cut by directory, each part named by its fingerprint | 0.17 s, but the whole map 27 s | 6.50 MB | 47.3 s, 196 MB | yes, part by part, with our small reader | each finished directory, if parts are kept as files |
-| **The indexed ledger** (built last) | the ledger in gzip pieces of 256 files, each piece's header saying where it lies, then each file's dependents as lines | pending in the tab; in Node 0.11 s to the first answer (the plain ledger's is 0.82 s), then 1.1 s | 3.98 MB | pending in the tab; in Node 2.4 s, 245 MB | **yes, with `zcat`, `grep`, `diff`**, as the ledger | **every finished piece is whole and readable**, in a page or in Node |
-| **HDF5** (the owner's) | the press's sections held as HDF5 datasets | 0.82 s, then 2.6 s | 8.82 MB, of which 5.6 MB is its library | cannot, as built. All at once: 20.0 s, 384 MB | **yes, with HDF5 tools** (h5py, HDFView) | not measured |
+| **The indexed ledger** (built last) | the ledger in gzip pieces of 256 files, each piece's header saying where it lies, then each file's dependents as lines | slowed pending; at full speed 0.07 s, then 5.4 s as its reader is built | 3.98 MB | slowed pending; at full speed 14.9 s, 247 MB | **yes, with `zcat`, `grep`, `diff`**, as the ledger | **every finished piece is whole and readable**, in a page or in Node |
+| **HDF5** (the owner's) | the press's sections held as HDF5 datasets | 0.82 s, then 2.6 s, after **6.7 s** for the page itself to be ready | 8.82 MB, of which 5.6 MB is its library | cannot, as built. All at once: 20.0 s, 384 MB | **yes, with HDF5 tools** (h5py, HDFView) | not measured |
 
 What the columns mean:
 - **Opens on a weak machine** is the time from the page's data to the answer of "what depends on `Globals.cs`" (632 files), and then to every fact of every file, as the Explorer loads a map today.
@@ -41,7 +41,7 @@ What the table says, in plain words:
 - **The press opens twenty times faster than JSON and carries the smallest page.** Written as facts arrive, it takes about as little memory in a tab as any form: 243 MB, against the ledger's 227 and the parts' 196. What it gives up is that a person can read it without our tool.
 - **The ledger keeps what the Markdown was best at:** `grep` and `diff` work on it. At DNN's size it is about JSON's size and opens about twice as fast. At five times DNN its reader, as built, needs 1.3 GB in a tab, as JSON does.
 - **The database opens about twice as fast as JSON and answers questions in SQL with tools a person may have.** In a page it costs a megabyte of engine, and memory the size of the database.
-- **The indexed ledger, built last, keeps `grep` and answers as fast as the press.** Every finished piece survives a stopped scan. Loading its whole map costs what the plain ledger's does. Its tab numbers are pending.
+- **The indexed ledger, built last, keeps `grep` and answers a first question as fast as the press.** Every finished piece survives a stopped scan. But in a tab, as its reader is built, every question that touches many files is slow, and loading its whole map costs what the plain ledger's does.
 - **The store of parts is the form for many moments and many scans.** It is not the form for loading one map whole in a page.
 - **HDF5 writes different bytes each time** for the same facts, because it stamps times into the file and h5wasm offers no way to turn that off.
 
@@ -53,7 +53,7 @@ The owner's values, as the brief listed them (the eighth was the Markdown's stre
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1. Read by the page with nothing installed | holds | holds, 11 KB of reader | bent: 0.99 MB of WebAssembly engine | holds, 10 KB | holds, 12 KB | holds, 13 KB | bent: 5.6 MB of WebAssembly library |
 | 2. Node on Windows, nothing compiled | holds | holds | holds: `node:sqlite` is built in (release candidate in Node 26) | holds | holds | holds | holds: WebAssembly |
-| 3. Same bytes for the same facts | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | bent: the same within one engine; 6 header bytes differ between Node's and the page's engine | holds, and the same in Node and Chromium | holds in Node; the tab pending | holds, and the same in Node and Chromium | **bent**: two writes differ |
+| 3. Same bytes for the same facts | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | bent: the same within one engine; 6 header bytes differ between Node's and the page's engine | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | holds, and the same in Node and Chromium | **bent**: two writes differ |
 | 4. A question without reading the whole | **bent**: everything is inflated and parsed | holds | holds; in Node truly, pages read from disk; in a page the whole is in memory | bent: the whole is inflated, but not parsed | holds | holds | holds |
 | 5. Written by a page and carried in one HTML file | holds, all at once | holds, as facts arrive | holds, in memory | holds, as facts arrive | holds, as facts arrive | holds, as facts arrive | holds, all at once |
 | 6. The weak machine (bytes, memory, time to open) | worst | best | largest on disk (10 times the press), middling to open | middling at DNN, 1.3 GB to read at five times | about the ledger's size; pending in the tab | largest page | small file, heavy page (5.6 MB of library) |
@@ -188,7 +188,17 @@ Each table is printed from the raw results by `node scripts/tables.mjs results`.
 | Ledger | 3.74 MB | 10 KB | 396 ms | 1.8 s | 0.8 s | 2.4 s | 381 MB |
 | Parts | 6.50 MB | 13 KB | 31 ms | 166 ms | 9.8 s | 27 s | 443 MB |
 | HDF5 | 8.82 MB | 5.6 MB | 109 ms | 815 ms | 2.7 s | 2.6 s | 231 MB |
-| Indexed ledger | 3.98 MB | 12 KB | pending | pending | pending | pending | pending |
+| Indexed ledger | 3.98 MB | 12 KB | 71 ms | pending | 5.7 s at full speed | 5.4 s at full speed | 505 MB at full speed |
+
+**Pages ready.** Before a page can answer anything, its script must be read and, for the database and HDF5, its WebAssembly compiled. Slowed, that took:
+- 0.4 to 0.6 s for JSON, the press and the ledger;
+- 1.0 s for the database;
+- 1.2 s for the parts;
+- **6.7 s for HDF5**, whose script is 5.6 MB.
+
+The table's times start after that.
+
+The indexed ledger's full-speed run was taken at a load of 14 to 60, the machine shared with other agents, and its reader is the simplest that works. Even so, it shows the shape: the first answer as quick as the press's, and every question that touches many files slow (1.4 s for the reachable walk, against the press's 3 ms), since each file's lines are found by searching a piece's text.
 
 The parts' whole map is slow in a page because the browser's own decompressor is started once per part (2,087 parts here), and each start costs time a slowed tab feels. The press starts it about 50 times.
 
@@ -208,24 +218,25 @@ The parts are slow to write in a tab for the reason they are slow to read there:
 
 This is the root's test of growth: a form fine at ten thousand files that needs gigabytes at fifty thousand is out.
 
-| Form | Saved page | First answer | Hub's Local Map | Whole map | Tab's peak reading | Write as facts arrive: time, peak | Write all at once: time, peak |
-| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| JSON gzipped | 18.3 MB | **25.8 s** | 6 ms | (in the first) | **1,309 MB** | cannot | pending |
-| Press | 9.20 MB | 1.1 s | 3.4 s | 17.8 s | 347 MB | (as below) | pending |
-| Press, written as facts arrive | 9.10 MB | 1.0 s | 1.8 s | 13.0 s | 351 MB | 45.9 s, 305 MB | (not this way) |
-| Database (sql.js) | 27.1 MB | 7.2 s | 2.4 s | 26.0 s | 819 MB | **132 s, 854 MB** | pending |
-| Ledger | 18.8 MB | **12.2 s** | 1.6 s | 11.1 s | **1,298 MB** | 59.5 s, 314 MB | pending |
-| Parts | 33.2 MB | pending | pending | pending | pending | more than 160 s: cut by the lane's five-minute hold before it finished | pending |
-| HDF5 | 15.5 MB | 1.5 s | 1.9 s | 13.0 s | 395 MB | (cannot, as built) | pending |
-| Indexed ledger | 20.0 MB | pending | pending | pending | pending | pending | (not this way) |
+| Form | Saved page | First answer | Hub's Local Map | Whole map | Tab's peak reading | Write as facts arrive: time, peak |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| JSON gzipped | 18.3 MB | **25.8 s** | 6 ms | (in the first) | **1,309 MB** | cannot |
+| Press | 9.20 MB | 1.1 s | 3.4 s | 17.8 s | 347 MB | (written as below) |
+| Press, written as facts arrive | 9.10 MB | 1.0 s | 1.8 s | 13.0 s | 351 MB | 45.9 s, 305 MB |
+| Database (sql.js) | 27.1 MB | 7.2 s | 2.4 s | 26.0 s | 819 MB | **132 s, 854 MB** |
+| Ledger | 18.8 MB | **12.2 s** | 1.6 s | 11.1 s | **1,298 MB** | 59.5 s, 314 MB |
+| Parts | 33.2 MB | 0.9 s | 13.5 s | **166 s** | 844 MB | more than 160 s: cut by the lane's five-minute hold before it finished |
+| HDF5 | 15.5 MB | 1.5 s | 1.9 s | 13.0 s | 395 MB | cannot, as built |
+| Indexed ledger | 20.0 MB | pending | pending | pending | pending | pending |
+
+Writing all at once was not run in a tab at this size; those runs were given up for the indexed ledger's. Node's figures for it are in the table after next: every form needs the whole graph in memory first, 0.6 to 1.6 GB.
 
 **What grows out of proportion, read in a tab at five times DNN:**
 - **JSON:** 26 s to the first answer and 1.3 GB, because it must inflate and parse everything first.
-- **The ledger, as its reader is built:** 12 s and 1.3 GB. The reader holds the whole text as one string and indexes its lines.
-  - A ledger compressed in ranges of lines, as the press compresses its chunks, would not need that.
-  - But then it is no longer one gzip that a person unzips and greps.
+- **The ledger, as its reader is built:** 12 s and 1.3 GB. The reader holds the whole text as one string and indexes its lines. The indexed ledger, compressed in pieces and still one file that gzip reads, needs that only to load the whole map; its tab numbers are pending.
 - **The press:** 1 s to the first answer and about 350 MB, from a page of 9.1 MB. HDF5, which holds the press's own sections, grows the same way (1.5 s, 395 MB), from a page of 15.5 MB.
 - **The database:** 7 s and 819 MB, the database whole in the tab's memory.
+- **The parts:** a quick first answer (0.9 s), but nearly three minutes and 844 MB to load the whole map, the cost of starting the browser's decompressor ten thousand times.
 - **Writing as facts arrive grows gently for the press and the ledger:** about 310 MB at five times DNN, against about 235 MB at DNN.
 - **The database written in a tab does not grow gently:** 317 MB at DNN, 854 MB and more than two minutes at five times. In a page the whole database lives in the WebAssembly memory and is copied out whole at the end. In Node, on disk, the same writing takes 92 MB.
 
@@ -315,8 +326,8 @@ What comparing runs means here, read in the record and the code:
 None of these needs one form's file to be identical on two hosts. All need a cheap, certain way to say that two scans hold the same facts. **So the value is met by any form whose content can be named**, by a hash over its facts in a canonical text or over its uncompressed sections, with the compression only a wrapping. It would need the file itself identical only if the file were committed and diffed, or shared and checked by its hash, and nothing derived is committed now.
 
 **Measured, DNN's facts written in Node 26 and in Chromium 149:**
-- **JSON, the press (both ways of writing it), the ledger and the parts:** byte for byte the same file in both. Both link Chromium's fork of zlib (Node reports `1.3.2.1-motley`), and a sample of the same input gave the same raw deflate and gzip bytes in both. That is a fact of today's builds, not a promise. A Node built against another zlib could differ, so the rule that survives is to name the content.
-- **The facts' hash** over the canonical text, read back from each of the eleven files written in the tab and in Node: the same for every form, `884045c3…`.
+- **JSON, the press (both ways of writing it), the ledger and the parts:** byte for byte the same file in both, at full speed and slowed. At five times DNN this was checked for the press and the ledger written as facts arrive. The indexed ledger written in the tab is byte for byte Node's too. Both link Chromium's fork of zlib (Node reports `1.3.2.1-motley`), and a sample of the same input gave the same raw deflate and gzip bytes in both. That is a fact of today's builds, not a promise. A Node built against another zlib could differ, so the rule that survives is to name the content.
+- **The facts' hash** over the canonical text: read back from each of the eleven files the tab wrote at full speed, and computed in Node from the facts themselves. It is the same for every form, `884045c3…`.
 - **The database:** node:sqlite and sql.js write files of the same length, 29,560,832 bytes, differing in 6 bytes of the header: the change counter, the schema cookie, and the version of the library that last wrote it ([`results/sqlite-hosts-dnn.json`](results/sqlite-hosts-dnn.json)). The pages are the same. Written as facts arrive, the database differs from the one written all at once, since a file's number is then given in the order paths are met. Within one way of writing and one engine, two writes were the same.
 - **HDF5:** two writes of the same facts gave different files, on every corpus in Node and twice in the tab. The facts' hash read back from both tab writes is the same `884045c3…`.
 
@@ -378,7 +389,7 @@ What counts for it:
 - **The owner's machine.** The slowed tab ranks the forms; it does not predict that VM, and the machine here was shared at loads of 6 to 16.
 - **A real corpus five times DNN.** The five-times corpus repeats DNN, which flatters the forms that keep each string once.
 - **Parquet**, measured, and a columnar form queryable by DuckDB. It was surveyed only. Its pure-script writer has Snappy compression only, which `DecompressionStream` cannot inflate, so a page would also carry a Snappy decoder.
-- **HDF5 written as facts arrive** (chunked datasets extended one file at a time), and HDF5 in a tab at five times DNN. The latter is pending.
+- **HDF5 written as facts arrive** (chunked datasets extended one file at a time). Not tried.
 - **A Chromium page writing progressively into IndexedDB** or a picked folder, and reading it back after a closed tab. Only that IndexedDB opens was measured.
 - **The press made resumable** by labelling its sections. This is an argument, not built.
 - **The indexed ledger in a tab**, slowed, at DNN and at five times. It was built last and was still waiting for the browser lane at this writing.
@@ -408,7 +419,11 @@ A few rows of the tab measurements were still pending when this was written. Non
 - a stopped scan resumable from every finished piece, in a page as in Node;
 - `grep` intact.
 
-What it did not do is load a whole map cheaply. Every line is JSON to parse: 1.1 s and 544 MB at DNN, 9.7 s and 1.5 GB at five times in Node, against the press's 0.4 s and 2.4 s. The Explorer loads a whole map today, so the press stays my choice. Its numbers in a slowed tab are pending, and a better reader could narrow the gap.
+What it did not do is load a whole map cheaply. Every line is JSON to parse:
+- 1.1 s and 544 MB at DNN, and 9.7 s and 1.5 GB at five times, in Node, against the press's 0.4 s and 2.4 s;
+- in a tab at full speed, 5.4 s for the whole map and 1.4 s for the reachable walk, against the press's 0.3 s and 3 ms.
+
+The Explorer loads a whole map today, so the press stays my choice. A better reader, one that indexes each piece's paths once, would narrow the gap; it was not built.
 
 **What would overturn the choice:**
 - **The owner ranking "usable without our tool" above the time and memory of loading a whole map.** Then the indexed ledger is the stored form: about 40 % larger than the press at DNN, as quick to a first answer, resumable, and readable, at the cost of the whole map's load.

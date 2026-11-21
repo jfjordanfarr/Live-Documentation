@@ -1,1 +1,5 @@
 browser-lane: waiting behind stored-form, stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 292.6 s, cap 300 s)
+{"kind":"read","page":"read-ledger-indexed-dnn.html","rate":1,"cores":20,"loadBefore":14.5,"pageReadyMs":513,"scriptStartedMs":352,"base64Ms":31.4,"carriedBytes":2978919,"openMs":3.2,"inboundOfHub":632,"inboundMs":35.8,"firstAnswerMs":70.5,"reachable":1208,"reachableMs":1359.7,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":97.1,"hubNeighbourhood":661,"hubNeighbourhoodMs":5651.7,"allMs":5405.6,"files":10776,"totalMs":12592.8,"heapMb":98,"errors":[],"rendererPeakMb":505,"loadAfter":24.3}
+{"kind":"write","page":"write-ledger-indexed.html","mode":"stream","rate":1,"cores":20,"loadBefore":24.3,"pageReadyMs":299,"scriptStartedMs":95,"files":10776,"writeMs":14897.6,"bytes":2978919,"sha256":"e7437006d10c318a89c13a3342f02212f65513c72089c991e8d8dbc0ca522707","heapMb":89,"rendererPeakMbAtWrite":247,"contentHash":"884045c3f1a9c940cfa14d14268d7558ce2e1cc3f3a4776188844226ea36e91c","errors":[],"rendererPeakMb":717,"loadAfter":60.2}
+browser-lane: released after 64.4 s, exit 0
