@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1`
 - Entry: program
-- Generated At: 2026-11-19T21:10:27.701Z
+- Generated At: 2026-11-21T02:25:26.915Z
 
 ## Authored
 ### Purpose
@@ -32,9 +32,14 @@ Stops the rollout when an environment has no targets.
 ### Dependencies
 - `Microsoft.PowerShell.Management`
 - `Microsoft.PowerShell.Utility`
-- [`Logging`](./lib/Logging.ps1.mdmd.md)
-- [`Settings`](./lib/Settings.ps1.mdmd.md)
-- [`Rollout.Notify`](./modules/Rollout.Notify/Rollout.Notify.psm1.mdmd.md)
+- [`Logging.Write-RolloutBanner`](./lib/Logging.ps1.mdmd.md#symbol-write-rolloutbanner)
+- [`Logging.Write-RolloutLog`](./lib/Logging.ps1.mdmd.md#symbol-write-rolloutlog)
+- [`Settings.Read-RolloutSettings`](./lib/Settings.ps1.mdmd.md#symbol-read-rolloutsettings)
+- [`Rollout.Notify.Send-RolloutNotice`](./modules/Rollout.Notify/Rollout.Notify.psm1.mdmd.md#symbol-send-rolloutnotice)
 - [`Rollout.Steps`](./modules/Rollout.Steps/Rollout.Steps.psd1.mdmd.md)
-- [`Rollout.Targets`](./modules/Rollout.Targets/Rollout.Targets.psm1.mdmd.md)
+- [`Rollout.Steps.Format-RolloutReport`](./modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-format-rolloutreport)
+- [`Rollout.Steps.Get-RolloutPlan`](./modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-get-rolloutplan)
+- [`Rollout.Steps.Invoke-RolloutStep`](./modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-invoke-rolloutstep)
+- [`Rollout.Steps.Select-PendingStep`](./modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-select-pendingstep)
+- [`Rollout.Targets.Get-RolloutTarget`](./modules/Rollout.Targets/Rollout.Targets.psm1.mdmd.md#symbol-get-rollouttarget)
 <!-- LIVE-DOC:END Dependencies -->

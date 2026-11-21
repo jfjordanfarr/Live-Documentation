@@ -1,0 +1,236 @@
+{
+  "tool": "pwsh 7.7.0",
+  "projects": [
+    {
+      "name": "powershell-wires",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../Backport/Expand-Archive.ps1",
+    "../Backport/Use-Archive.ps1",
+    "../Backport/Use-Backport.ps1",
+    "../Copies/Alpha.psm1",
+    "../Copies/Beta.psm1",
+    "../Copies/Use-Alpha.ps1",
+    "../Copies/Use-Both.ps1",
+    "../Copies/Use-Neither.ps1",
+    "../Deploy.ps1",
+    "../Extras/Extras.psm1",
+    "../Extras/One.ps1",
+    "../Extras/Two.ps1",
+    "../Neighbour.ps1",
+    "../Own.ps1",
+    "../Tools/Private/Format-Tool.ps1",
+    "../Tools/Public/Get-Tool.ps1",
+    "../Tools/Public/Set-Tool.ps1",
+    "../Tools/Tools.psd1",
+    "../Tools/Tools.psm1",
+    "../lib/Common.ps1",
+    "../lib/Helper.ps1",
+    "../lib/Paths.ps1",
+    "../lib/Settings.inc.ps1",
+    "../scripts/Clean.ps1",
+    "../scripts/Run-Step.ps1",
+    "../tests/Tools.Tests.ps1"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../Backport/Use-Backport.ps1",
+      "to": "../Backport/Expand-Archive.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot\\Expand-Archive.ps1\"",
+        "calls Expand-Archive"
+      ]
+    },
+    {
+      "from": "../Copies/Use-Alpha.ps1",
+      "to": "../Copies/Alpha.psm1",
+      "symbols": [
+        "Import-Module \"$PSScriptRoot/Alpha.psm1\"",
+        "calls Resolve-Target"
+      ]
+    },
+    {
+      "from": "../Copies/Use-Both.ps1",
+      "to": "../Copies/Alpha.psm1",
+      "symbols": [
+        "Import-Module \"$PSScriptRoot/Alpha.psm1\""
+      ]
+    },
+    {
+      "from": "../Copies/Use-Both.ps1",
+      "to": "../Copies/Beta.psm1",
+      "symbols": [
+        "Import-Module \"$PSScriptRoot/Beta.psm1\""
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../lib/Common.ps1",
+      "symbols": [
+        ". (Join-Path $PSScriptRoot 'lib\\Common.ps1')",
+        "calls Get-Setting, Write-Log"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../lib/Helper.ps1",
+      "symbols": [
+        ". $helper"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../lib/Paths.ps1",
+      "symbols": [
+        ". (Join-Path -Path $PSScriptRoot -ChildPath 'lib/Paths.ps1' -Resolve)",
+        "calls Get-DataPath"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../lib/Settings.inc.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot/lib/Settings.inc.ps1\""
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../scripts/Clean.ps1",
+      "symbols": [
+        "./scripts/Clean.ps1"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../scripts/Run-Step.ps1",
+      "symbols": [
+        "& \"$PSScriptRoot\\scripts\\Run-Step.ps1\" -Step publish"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../Tools/Public/Get-Tool.ps1",
+      "symbols": [
+        "calls Get-Tool"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../Tools/Public/Set-Tool.ps1",
+      "symbols": [
+        "calls Set-Tool"
+      ]
+    },
+    {
+      "from": "../Deploy.ps1",
+      "to": "../Tools/Tools.psd1",
+      "symbols": [
+        "Import-Module (Join-Path $PSScriptRoot 'Tools') -Force"
+      ]
+    },
+    {
+      "from": "../Extras/Extras.psm1",
+      "to": "../Extras/One.ps1",
+      "symbols": [
+        ". (Join-Path $PSScriptRoot $helper)"
+      ]
+    },
+    {
+      "from": "../Extras/Extras.psm1",
+      "to": "../Extras/Two.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot\\$_\""
+      ]
+    },
+    {
+      "from": "../Extras/Two.ps1",
+      "to": "../Extras/One.ps1",
+      "symbols": [
+        "calls Get-One"
+      ]
+    },
+    {
+      "from": "../Neighbour.ps1",
+      "to": "../lib/Common.ps1",
+      "symbols": [
+        ". \"$here\\lib\\Common.ps1\"",
+        "calls Write-Log"
+      ]
+    },
+    {
+      "from": "../scripts/Run-Step.ps1",
+      "to": "../lib/Common.ps1",
+      "symbols": [
+        "calls Write-Log"
+      ]
+    },
+    {
+      "from": "../tests/Tools.Tests.ps1",
+      "to": "../Tools/Private/Format-Tool.ps1",
+      "symbols": [
+        ". (Join-Path $toolsRoot 'Private/Format-Tool.ps1')"
+      ]
+    },
+    {
+      "from": "../tests/Tools.Tests.ps1",
+      "to": "../Tools/Public/Get-Tool.ps1",
+      "symbols": [
+        "calls Get-Tool"
+      ]
+    },
+    {
+      "from": "../tests/Tools.Tests.ps1",
+      "to": "../Tools/Tools.psd1",
+      "symbols": [
+        "Import-Module \"$PSScriptRoot/../Tools/Tools.psd1\" -Force"
+      ]
+    },
+    {
+      "from": "../Tools/Public/Get-Tool.ps1",
+      "to": "../Tools/Private/Format-Tool.ps1",
+      "symbols": [
+        "calls Format-Tool"
+      ]
+    },
+    {
+      "from": "../Tools/Public/Set-Tool.ps1",
+      "to": "../Tools/Private/Format-Tool.ps1",
+      "symbols": [
+        "calls Format-Tool"
+      ]
+    },
+    {
+      "from": "../Tools/Tools.psd1",
+      "to": "../Tools/Tools.psm1",
+      "symbols": [
+        "RootModule = 'Tools.psm1'"
+      ]
+    },
+    {
+      "from": "../Tools/Tools.psm1",
+      "to": "../Tools/Private/Format-Tool.ps1",
+      "symbols": [
+        "Get-ChildItem \"$PSScriptRoot\\Private\\*.ps1\" | ForEach-Object { . $_.FullName }"
+      ]
+    },
+    {
+      "from": "../Tools/Tools.psm1",
+      "to": "../Tools/Public/Get-Tool.ps1",
+      "symbols": [
+        "foreach ($file in $public) {"
+      ]
+    },
+    {
+      "from": "../Tools/Tools.psm1",
+      "to": "../Tools/Public/Set-Tool.ps1",
+      "symbols": [
+        "foreach ($file in $public) {"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

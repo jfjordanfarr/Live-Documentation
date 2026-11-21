@@ -4,6 +4,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { analyzePowerShellSource, powershellAdapter } from "./powershell";
+import { readTree, type SyntaxNode } from "./treeSitter";
 
 const repoRoot = path.resolve(__dirname, "../../../../..");
 const fixtureRoot = path.join(repoRoot, "tests", "integration", "fixtures", "powershell-compendium");
@@ -61,7 +62,7 @@ describe("powershellAdapter over the compendium", () => {
       { specifier: "MyCompany.Inventory", resolvedPath: undefined, symbols: [], kind: "import" },
       { specifier: "Microsoft.PowerShell.Utility", resolvedPath: undefined, symbols: [], kind: "import" },
       { specifier: "Microsoft.PowerShell.Management", resolvedPath: undefined, symbols: [], kind: "import" },
-      { specifier: "powershell-compendium/common/logging.ps1", resolvedPath: "powershell-compendium/common/logging.ps1", symbols: [], kind: "import" }
+      { specifier: "powershell-compendium/common/logging.ps1", resolvedPath: "powershell-compendium/common/logging.ps1", symbols: ["Write-DeploymentLog"], kind: "import" }
     ]);
   });
 
@@ -81,12 +82,12 @@ describe("powershellAdapter over the compendium", () => {
     expect(analysis?.dependencies.find((dependency) => dependency.specifier.endsWith("Inventory.psm1"))).toEqual({
       specifier: "powershell-compendium/workspace/scripts/modules/Inventory.psm1",
       resolvedPath: "powershell-compendium/workspace/scripts/modules/Inventory.psm1",
-      symbols: [],
+      symbols: ["Get-InventorySnapshot"],
       kind: "import"
     });
   });
 
-  it("reports every script as the program entry, even one with nothing else to report, and no module", async () => {
+  it("reports a script that runs anything as the program entry, even one with nothing else to report, and no module", async () => {
     expect((await analyzeFile("powershell-compendium/scripts/deploy.ps1"))?.program).toEqual({});
 
     await write({ "bare.ps1": "Write-Output 'hello'\n" });
@@ -451,5 +452,385 @@ describe("module manifests", () => {
     });
     expect(await analyzeFile("config/targets.psd1")).toStrictEqual({ symbols: [], dependencies: [] });
     expect(await analyzeFile("config/computed.psd1")).toStrictEqual({ symbols: [], dependencies: [] });
+  });
+});
+
+/** The files a file's dependencies resolve to, each with the functions it calls there. */
+async function wires(relative: string): Promise<Record<string, string[]>> {
+  const analysis = await analyzeFile(relative);
+  return Object.fromEntries((analysis?.dependencies ?? []).filter((dependency) => dependency.resolvedPath).map((dependency) => [dependency.resolvedPath!, dependency.symbols]));
+}
+
+describe("calls to functions other files define: loaded, else unique", () => {
+  const common = { "lib/Common.ps1": "function Write-Log { param($Message) }\nfunction Get-Setting { }\n" };
+
+  it("wire a call to the only file that defines the function, under the name it is defined by there, however it is called", async () => {
+    await write({ ...common, "lib/Region.ps1": "function Set-Region { }\n", "Run.ps1": "write-log 'hello'\nGet-Setting\n& 'Get-Setting'\n. Set-Region -Name west\n" });
+    expect(await wires("Run.ps1")).toEqual({ "lib/Common.ps1": ["Get-Setting", "Write-Log"], "lib/Region.ps1": ["Set-Region"] });
+  });
+
+  it("count only a definition at a file's own level: one inside a script block or a function is local to it", async () => {
+    await write({
+      ...common,
+      "tests/Run.Tests.ps1": "Describe 'x' {\n  BeforeAll {\n    function Write-Log { }\n    function Get-Stub { }\n  }\n}\n",
+      "lib/Outer.ps1": "function Invoke-Outer {\n  function Get-Inner { }\n}\n",
+      "Run.ps1": "Write-Log 'hello'\nGet-Stub\nGet-Inner\n"
+    });
+    expect(await wires("Run.ps1")).toEqual({ "lib/Common.ps1": ["Write-Log"] });
+  });
+
+  it("leave a call to a name the caller defines itself, at any depth, to its own definition", async () => {
+    await write({ ...common, "Own.ps1": "Describe 'x' {\n  function Write-Log { }\n}\nWrite-Log 'mine'\n" });
+    expect(await wires("Own.ps1")).toEqual({});
+  });
+
+  it("choose the one definition the caller loads among several the workspace holds", async () => {
+    await write({
+      "Copies/Alpha.psm1": "function Resolve-Target { 'alpha' }\n",
+      "Copies/Beta.psm1": "function Resolve-Target { 'beta' }\n",
+      "Copies/Use-Alpha.ps1": "Import-Module \"$PSScriptRoot/Alpha.psm1\"\nResolve-Target\n"
+    });
+    expect(await wires("Copies/Use-Alpha.ps1")).toEqual({ "Copies/Alpha.psm1": ["Resolve-Target"] });
+  });
+
+  it("draw no call wire when the caller loads several definitions of the name", async () => {
+    await write({
+      "Copies/Alpha.psm1": "function Resolve-Target { 'alpha' }\n",
+      "Copies/Beta.psm1": "function Resolve-Target { 'beta' }\n",
+      "Copies/Use-Both.ps1": "Import-Module \"$PSScriptRoot/Alpha.psm1\"\nImport-Module \"$PSScriptRoot/Beta.psm1\"\nResolve-Target\n"
+    });
+    expect(await wires("Copies/Use-Both.ps1")).toEqual({ "Copies/Alpha.psm1": [], "Copies/Beta.psm1": [] });
+  });
+
+  it("draw none when the caller loads no definition and two files define the name", async () => {
+    await write({
+      "Copies/Alpha.psm1": "function Resolve-Target { 'alpha' }\n",
+      "Copies/Beta.psm1": "function Resolve-Target { 'beta' }\n",
+      "Copies/Use-Neither.ps1": "Resolve-Target\n"
+    });
+    expect(await wires("Copies/Use-Neither.ps1")).toEqual({});
+  });
+
+  it("count a definition inside text the grammar could not read as none", async () => {
+    // PowerShell ends a string at a typographic quote, and the grammar does not: it loses the Describe block and reads
+    // the function after it inside an error, though PowerShell reads this without one. The smallest input found so.
+    const unread = ["Describe 'x' {", "    $path = 'C:\\\u2019", "    $name = 'y'", "}", "function Get-Thing { }", "$z = 'w'"].join("\n");
+    const lost: string[] = [];
+    const visit = (node: SyntaxNode, inError: boolean): void => {
+      if (node.type === "function_statement" && inError) lost.push(node.text);
+      for (const child of node.children) if (child) visit(child, inError || node.type === "ERROR");
+    };
+    await readTree("powershell", unread, (root) => visit(root, false));
+    // Should the grammar learn to read this, the test proves nothing until it is given another input the grammar loses.
+    expect(lost).toEqual(["function Get-Thing { }"]);
+    await write({ "Unread.ps1": unread, "Run.ps1": "Get-Thing\n" });
+    expect(await wires("Run.ps1")).toEqual({});
+  });
+
+  it("never wire a command PowerShell ships merely because one file defines it, but wire it when the caller loads that file", async () => {
+    await write({
+      "Backport/Expand-Archive.ps1": "if ($PSVersionTable.PSVersion.Major -lt 5) {\n  function Expand-Archive { }\n}\n",
+      "Backport/Use-Archive.ps1": "Expand-Archive -Path a.zip\n",
+      "Backport/Use-Backport.ps1": ". \"$PSScriptRoot\\Expand-Archive.ps1\"\nExpand-Archive -Path a.zip\n"
+    });
+    expect(await wires("Backport/Use-Archive.ps1")).toEqual({});
+    expect(await wires("Backport/Use-Backport.ps1")).toEqual({ "Backport/Expand-Archive.ps1": ["Expand-Archive"] });
+  });
+
+  it("never reach a test's definition as the only one from working code, but let a test reach another test's helper", async () => {
+    await write({
+      "tests/Stubs.Tests.ps1": "function Get-External { }\nfunction Get-Thing { }\n",
+      "lib/Impl.ps1": "function Get-Thing { }\n",
+      "lib/Run.ps1": "Get-External\nGet-Thing\n",
+      "tests/Other.Tests.ps1": "Get-External\n"
+    });
+    expect(await wires("lib/Run.ps1")).toEqual({ "lib/Impl.ps1": ["Get-Thing"] });
+    expect(await wires("tests/Other.Tests.ps1")).toEqual({ "tests/Stubs.Tests.ps1": ["Get-External"] });
+  });
+
+  it("treat a module that runs tests as working code: AL-Go's RunTests.psm1 never reaches a test's stub", async () => {
+    await write({
+      // AL-Go's Tests/RunTests.Test.ps1 stubs BcContainerHelper's commands at its own level.
+      "Tests/RunTests.Test.ps1": "function Get-AppJsonFromAppFile { }\nfunction Get-BcContainerEventLog { }\n",
+      "Actions/RunTests/RunTests.psm1": "function Invoke-Run {\n    Get-AppJsonFromAppFile\n    Get-BcContainerEventLog\n}\n"
+    });
+    expect(await wires("Actions/RunTests/RunTests.psm1")).toEqual({});
+  });
+
+  it("let a module's files call each other, and its importers reach them through its manifest and what its root module loads", async () => {
+    await write({
+      "Tools/Tools.psd1": "@{ RootModule = 'Tools.psm1'; ModuleVersion = '1.0' }",
+      "Tools/Tools.psm1": "foreach ($file in (Get-ChildItem -Path \"$PSScriptRoot/Public\" -Filter *.ps1)) { . $file.FullName }\n. \"$PSScriptRoot/Private/Format-Tool.ps1\"\n",
+      "Tools/Public/Get-Tool.ps1": "function Get-Tool { Format-Tool }\n",
+      "Tools/Private/Format-Tool.ps1": "function Format-Tool { }\n",
+      "Other/Format-Tool.ps1": "function Format-Tool { }\n",
+      "Deploy.ps1": "Import-Module \"$PSScriptRoot/Tools\"\nGet-Tool\nFormat-Tool\n"
+    });
+    expect(await wires("Tools/Public/Get-Tool.ps1")).toEqual({ "Tools/Private/Format-Tool.ps1": ["Format-Tool"] });
+    expect(await wires("Deploy.ps1")).toEqual({ "Tools/Tools.psd1": [], "Tools/Public/Get-Tool.ps1": ["Get-Tool"], "Tools/Private/Format-Tool.ps1": ["Format-Tool"] });
+  });
+});
+
+describe("loads the text fixes", () => {
+  it("read a dot-source or Import-Module of Join-Path from $PSScriptRoot, positionally or by name, with -Resolve", async () => {
+    await write({
+      "lib/A.ps1": "", "lib/B.ps1": "", "Mods/Tools/Tools.psm1": "", "Mods/Log.psm1": "",
+      "Deploy.ps1": [
+        ". (Join-Path $PSScriptRoot 'lib\\A.ps1')",
+        ". (Join-Path -Path $PSScriptRoot -ChildPath \"lib/B.ps1\" -Resolve)",
+        "Import-Module (Join-Path $PSScriptRoot 'Mods/Tools') -Force",
+        "Import-Module (Join-Path -Path $PSScriptRoot \"Mods/Log.psm1\" -Resolve)",
+        ". (Join-Path $env:ROOT 'lib/A.ps1')"
+      ].join("\n")
+    });
+    expect(await wires("Deploy.ps1")).toEqual({ "lib/A.ps1": [], "lib/B.ps1": [], "Mods/Tools/Tools.psm1": [], "Mods/Log.psm1": [] });
+  });
+
+  it("read a variable assigned once at the file's own level from such a path, and not one assigned twice", async () => {
+    await write({
+      "lib/A.ps1": "", "lib/B.ps1": "",
+      "Deploy.ps1": [
+        "$script:Root = $PSScriptRoot",
+        "$a = Join-Path $script:Root 'lib/A.ps1'",
+        ". $a",
+        "$b = Join-Path $PSScriptRoot 'lib/B.ps1'",
+        "$b = 'elsewhere.ps1'",
+        ". $b"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Deploy.ps1"))).toEqual(["lib/A.ps1"]);
+  });
+
+  it("read an assignment that carries an attribute on the line before it as PowerShell does, in a program and in a library", async () => {
+    const suppress = "[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Justification = 'Read by a dot-sourced script.')]";
+    await write({
+      "lib/A.ps1": "",
+      "Deploy.ps1": [suppress, "$libFolder = Join-Path $PSScriptRoot 'lib'", ". (Join-Path $libFolder 'A.ps1')"].join("\n"),
+      // AL-Go's Actions/AL-Go-Helper.ps1 opens so: a library every action dot-sources.
+      "Helper.ps1": [suppress, "$ALGoFolderName = '.AL-Go'", "function Get-A { }"].join("\n")
+    });
+    expect(Object.keys(await wires("Deploy.ps1"))).toEqual(["lib/A.ps1"]);
+    expect(await analyzeFile("Helper.ps1")).not.toHaveProperty("program");
+  });
+  it("read a variable assigned once in the block that holds the load or one enclosing it, before the load, and not elsewhere", async () => {
+    await write({
+      "Actions/Helper.ps1": "", "Actions/Other.ps1": "", "Actions/Third.ps1": "", "lib/Late.ps1": "",
+      "Tests/Helper.Test.ps1": [
+        "Describe 'helper' {",
+        "    BeforeAll {",
+        "        $scriptRoot = Join-Path $PSScriptRoot '..\\Actions' -Resolve",
+        "        . (Join-Path $scriptRoot 'Helper.ps1')",
+        "        & { . \"$scriptRoot\\Third.ps1\" }",
+        "    }",
+        "    & { . \"$scriptRoot\\Other.ps1\" }",
+        "}",
+        ". $late",
+        "$late = Join-Path $PSScriptRoot '../lib/Late.ps1'"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Tests/Helper.Test.ps1")).sort()).toEqual(["Actions/Helper.ps1", "Actions/Third.ps1"]);
+  });
+
+  it("follow what Pester's BeforeAll and BeforeEach assign into the It blocks beneath them, and nothing Pester 5 would not", async () => {
+    await write({
+      "Actions/A.ps1": "", "Actions/B.ps1": "", "Actions/C.ps1": "", "Actions/D.ps1": "", "Actions/E.ps1": "", "Actions/F.ps1": "",
+      "Tests/Pester.Test.ps1": [
+        "$here = Join-Path $PSScriptRoot '..\\Actions'",
+        "Describe 'actions' {",
+        "    BeforeAll { $scriptRoot = Join-Path $PSScriptRoot '..\\Actions' }",
+        "    BeforeEach { $each = Join-Path $PSScriptRoot '..\\Actions' }",
+        "    $body = Join-Path $PSScriptRoot '..\\Actions'",
+        "    It 'loads' { . (Join-Path $scriptRoot 'A.ps1') }",
+        "    Context 'inner' {",
+        "        It 'loads' { . (Join-Path $each 'B.ps1') }",
+        "    }",
+        // Pester 3 and 4 run these as written; Pester 5 runs a Describe's body and the file's own level only to discover the tests.
+        "    It 'loads from the body' { . (Join-Path $body 'C.ps1') }",
+        "    It 'loads from the file' { . (Join-Path $here 'D.ps1') }",
+        "    BeforeAll { . (Join-Path $here 'E.ps1') }",
+        "}",
+        "Describe 'another' { It 'loads' { . (Join-Path $scriptRoot 'F.ps1') } }"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Tests/Pester.Test.ps1")).sort()).toEqual(["Actions/A.ps1", "Actions/B.ps1"]);
+  });
+
+  it("read Split-Path of the script's own path as its folder, and of another fixed path as its parent", async () => {
+    await write({
+      "scripts/lib.ps1": "", "scripts/b.ps1": "", "c.ps1": "", "scripts/d.ps1": "",
+      "scripts/Run.ps1": [
+        "$here = Split-Path -Parent $MyInvocation.MyCommand.Path",
+        ". \"$here\\lib.ps1\"",
+        ". (Join-Path (Split-Path $PSCommandPath) 'b.ps1')",
+        "$root = Split-Path $PSScriptRoot -Parent",
+        ". \"$root/c.ps1\"",
+        "$name = Split-Path -Leaf $MyInvocation.MyCommand.Definition",
+        ". \"$PSScriptRoot/$name\""
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("scripts/Run.ps1")).sort()).toEqual(["c.ps1", "scripts/b.ps1", "scripts/lib.ps1"]);
+  });
+
+  it("read a loop over names written out, in a foreach, piped to ForEach-Object, or through a variable assigned the list", async () => {
+    await write({
+      "M/a.ps1": "", "M/b.ps1": "", "M/c.ps1": "", "M/d.ps1": "", "M/E.psm1": "",
+      "M/M.psm1": [
+        "foreach ($s in @('a.ps1', 'b.ps1')) { . (Join-Path $PSScriptRoot $s) }",
+        "'c.ps1', 'd.ps1' | ForEach-Object { . \"$PSScriptRoot\\$_\" }",
+        "$modules = @('E.psm1')",
+        "foreach ($m in $modules) { Import-Module \"$PSScriptRoot/$m\" }",
+        "foreach ($x in (Get-Content names.txt)) { . (Join-Path $PSScriptRoot $x) }"
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("M/M.psm1")).sort()).toEqual(["M/E.psm1", "M/a.ps1", "M/b.ps1", "M/c.ps1", "M/d.ps1"]);
+  });
+
+  it("read a foreach over Get-ChildItem of a fixed folder, by its filter and recursion, written in place or through variables", async () => {
+    await write({
+      "M/Public/Get-A.ps1": "", "M/Public/Deep/Get-B.ps1": "", "M/Public/notes.txt": "", "M/Private/Set-C.ps1": "", "M/Private/Skip.psm1": "",
+      "M/One.psm1": "$script:ModuleRoot = $PSScriptRoot\nforeach ($f in (Get-ChildItem -Path \"$script:ModuleRoot/Public/\" -Recurse -Filter *.ps1)) { . $f.FullName }\n",
+      "M/Two.psm1": "$public = @(Get-ChildItem -Path $PSScriptRoot\\Public\\*.ps1)\n$private = @(Get-ChildItem -Path \"$PSScriptRoot\\Private\" -Filter *.ps1)\nforeach ($import in @($public + $private)) { . $import.FullName }\n"
+    });
+    expect(Object.keys(await wires("M/One.psm1")).sort()).toEqual(["M/Public/Deep/Get-B.ps1", "M/Public/Get-A.ps1"]);
+    expect(Object.keys(await wires("M/Two.psm1")).sort()).toEqual(["M/Private/Set-C.ps1", "M/Public/Get-A.ps1"]);
+  });
+
+  it("read Get-ChildItem piped to ForEach-Object that dot-sources each item", async () => {
+    await write({
+      "M/Private/Set-C.ps1": "", "M/Private/Get-D.ps1": "",
+      "M/M.psm1": "Get-ChildItem \"$PSScriptRoot\\Private\\*.ps1\" | ForEach-Object { . $_.FullName }\n"
+    });
+    expect(Object.keys(await wires("M/M.psm1")).sort()).toEqual(["M/Private/Get-D.ps1", "M/Private/Set-C.ps1"]);
+  });
+
+  it("read a script run by its path, and not a path only a run knows", async () => {
+    await write({
+      "scripts/Run-Step.ps1": "", "scripts/Other.ps1": "", "scripts/Third.ps1": "",
+      "Deploy.ps1": [
+        "& \"$PSScriptRoot\\scripts\\Run-Step.ps1\" -Step publish",
+        "& (Join-Path $PSScriptRoot 'scripts/Other.ps1')",
+        "scripts\\Third.ps1",
+        "& \"$env:TEMP\\Run-Step.ps1\""
+      ].join("\n")
+    });
+    expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["scripts/Other.ps1", "scripts/Run-Step.ps1", "scripts/Third.ps1"]);
+  });
+});
+
+describe("programs and libraries", () => {
+  it("call a script whose own level only defines functions and classes a library, not a program", async () => {
+    await write({ "lib/Strict.ps1": "function Get-A { }\nfilter Select-B { $_ }\nclass C { }\n" });
+    expect(await analyzeFile("lib/Strict.ps1")).not.toHaveProperty("program");
+  });
+
+  it("let a library also set up its scope: dot-sources, module imports, strict mode, exports, aliases and assignments that call nothing", async () => {
+    await write({
+      "lib/Other.ps1": "",
+      "lib/Lenient.ps1": [
+        "Set-StrictMode -Version Latest",
+        ". \"$PSScriptRoot/Other.ps1\"",
+        "Import-Module Microsoft.PowerShell.Archive",
+        "$script:Cache = @{}",
+        "function Get-A { }",
+        "Set-Alias -Name ga -Value Get-A"
+      ].join("\n")
+    });
+    expect(await analyzeFile("lib/Lenient.ps1")).not.toHaveProperty("program");
+  });
+
+  it("call a script a program when its own level runs anything, or defines nothing", async () => {
+    await write({
+      "Run.ps1": "function Get-A { }\nGet-A\n",
+      "Assign.ps1": "function Get-A { }\n$now = Get-Date\n",
+      "Hide.ps1": "function global:Get-A { }\n(Get-Item Function:\\Get-A).Visibility = 'Private'\n",
+      "Unread.ps1": "function Get-A { }\n)\n",
+      "Empty.ps1": ""
+    });
+    for (const file of ["Run.ps1", "Assign.ps1", "Hide.ps1", "Unread.ps1", "Empty.ps1"]) expect((await analyzeFile(file))?.program, file).toEqual({});
+  });
+
+  it("keep two kinds of library programs, as measured: one that imports inside an if, and an include that only assigns a variable", async () => {
+    // Known misses, pinned: both are dot-sourced, never run, and the rule errs toward calling a library a program.
+    await write({
+      "lib/Helper.ps1": "if (-not (Get-Module X)) { Import-Module X }\nfunction Get-A { }\n",
+      "lib/Settings.inc.ps1": "$Settings = @{ Region = 'west' }\n"
+    });
+    expect((await analyzeFile("lib/Helper.ps1"))?.program).toEqual({});
+    expect((await analyzeFile("lib/Settings.inc.ps1"))?.program).toEqual({});
+  });
+});
+
+describe("a manifest's FunctionsToExport", () => {
+  it("offers each function from the one file of its module that defines it, and no name the module does not define once, nor a wildcard", async () => {
+    await write({
+      "Tools/Tools.psd1": "@{ RootModule = 'Tools.psm1'; FunctionsToExport = @('get-tool', 'Remove-Tool', 'Set-*', 'Format-Twice') }",
+      "Tools/Tools.psm1": "foreach ($f in (Get-ChildItem \"$PSScriptRoot/Public\" -Filter *.ps1)) { . $f.FullName }\n",
+      "Tools/Public/Get-Tool.ps1": "function Get-Tool { }\n",
+      "Tools/Public/Set-Tool.ps1": "function Set-Tool { }\n",
+      "Tools/Public/Format-A.ps1": "function Format-Twice { }\n",
+      "Tools/Public/Format-B.ps1": "function Format-Twice { }\n",
+      "Elsewhere/Remove-Tool.ps1": "function Remove-Tool { }\n"
+    });
+    const analysis = await analyzeFile("Tools/Tools.psd1");
+    expect(analysis?.reExportedSymbols).toEqual([{ name: "Get-Tool", kind: "function", sourceModulePath: "Tools/Public/Get-Tool.ps1" }]);
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["Tools/Tools.psm1"]);
+  });
+});
+
+describe("what a load draws nothing for, said as a notice", () => {
+  const UNFIXED = "dot-sources and imports whose path the text does not fix, left unlinked";
+  const UNFOUND = "loads whose path the text fixes but no file of the workspace holds, left unlinked";
+
+  it("names a dot-source and an import whose path the text does not fix, by line and command, and draws nothing for them", async () => {
+    await write({
+      "Run.ps1": ["param($Settings, $Module)", ". $Settings.Path", "Import-Module -Name $Module -Force", ". \"$PSScriptRoot/lib/Helper.ps1\"", ". $Settings\\Extra.ps1"].join("\n"),
+      "lib/Helper.ps1": "function Get-Help2 { }\n"
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices).toEqual([
+      { reason: UNFIXED, subject: "line 2: . $Settings.Path" },
+      { reason: UNFIXED, subject: "line 3: Import-Module -Name $Module -Force" }
+    ]);
+    // A path that begins with a variable no assignment fixes keeps its text, as it always has, and says nothing.
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["lib/Helper.ps1", "$Settings\\Extra.ps1"]);
+  });
+
+  it("names a load built with Join-Path or a variable that no file of the workspace holds, by its path", async () => {
+    await write({ "Run.ps1": ". (Join-Path $PSScriptRoot 'missing.ps1')\n$m = Join-Path $PSScriptRoot 'Gone.psm1'\nImport-Module $m\n" });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.notices?.map((notice) => notice.reason)).toEqual([UNFOUND, UNFOUND]);
+    expect(analysis?.notices?.map((notice) => notice.subject.toLowerCase())).toEqual(["$psscriptroot/missing.ps1", "$psscriptroot/gone.psm1"]);
+    expect(analysis?.dependencies).toEqual([]);
+  });
+
+  it("says nothing of a load a loop reads, nor of a script block run in the caller's scope", async () => {
+    await write({
+      "Module.psm1": [
+        "foreach ($file in (Get-ChildItem -Path \"$PSScriptRoot/Public\" -Filter *.ps1)) { . $file.FullName }",
+        "Get-ChildItem \"$PSScriptRoot/Private\" -Filter *.ps1 | ForEach-Object { . $_.FullName }",
+        "foreach ($name in @('One.ps1', 'Two.ps1')) { . (Join-Path $PSScriptRoot $name) }",
+        ". { $script:ready = $true }"
+      ].join("\n"),
+      "Public/Get-A.ps1": "function Get-A { }\n",
+      "Private/Get-B.ps1": "function Get-B { }\n",
+      "One.ps1": "function Get-One { }\n",
+      "Two.ps1": "function Get-Two { }\n"
+    });
+    const analysis = await analyzeFile("Module.psm1");
+    expect(analysis?.notices).toBeUndefined();
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier).sort()).toEqual(["One.ps1", "Private/Get-B.ps1", "Public/Get-A.ps1", "Two.ps1"]);
+  });
+});
+
+describe("the archetype the generator's index carries", () => {
+  it("passes over a file the workspace's configuration calls a test when working code reaches the only definition", async () => {
+    await write({ "harness/Stubs.ps1": "function Get-External { }\n", "lib/Run.ps1": "Get-External\n" });
+    const files = await fileIndex();
+    const read = (index: Set<string>) => analyzePowerShellSource({ content: "Get-External\n", absolutePath: path.join(workspaceRoot, "lib/Run.ps1"), workspaceRoot, fileIndex: index });
+    // By the default configuration `harness/` holds working code, so the call reaches it.
+    expect((await read(files)).dependencies.map((dependency) => dependency.resolvedPath)).toEqual(["harness/Stubs.ps1"]);
+    // A configuration that names `harness/` a test folder, as the generator's index answers, leaves the call unwired.
+    const configured = Object.assign(new Set(files), { archetypeOf: (file: string) => (file.startsWith("harness/") ? "test" as const : "implementation" as const) });
+    expect((await read(configured)).dependencies).toEqual([]);
   });
 });

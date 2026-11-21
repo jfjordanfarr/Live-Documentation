@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/powershell-oracle.test.ts`
-- Generated At: 2026-11-19T21:10:25.846Z
+- Generated At: 2026-11-21T02:25:26.479Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@ The PowerShell adapter held to PowerShell's own parser, without `pwsh`: over eve
 
 ### Notes
 - Written on 2026-10-16 when the adapter moved to the grammar ([Turn 3 of the October 16 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-3)). The register then held the bundled grammar's three misses on the rollout program, a bare-word comma list given to `Export-ModuleMember` (twice) and an unquoted `$PSScriptRoot\...` path given to `Import-Module`; the same evening the engine built its own grammar ([Turn 4](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-16/2026-10-16.1.record.md#turn-4)) and the register is empty on both fixtures. With the bundled grammar put back it lists five misses on the rollout program and two on the compendium, which is how the test was shown to fail.
+- Since 2026-11-19 ([the probe](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md); [the decision](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#a-powershell-call-reaches-what-its-caller-loads-else-the-only-definition-recorded-2026-11-19)) the dependencies compared carry the functions called there, and the loads only `Join-Path`, variables and loops give; which file a call reaches, which script is a library and which function a manifest offers are judged by the rules of [`powershell-wires.ts`](../../../scripts/oracle/powershell-wires.ts.mdmd.md) over the parser's facts, so a script's program mark is the parser's statements read by the library rule, not its extension. The third fixture, `fixtures/powershell-wires`, came with the rule; its register holds one miss, the grammar's reading of `./scripts/Clean.ps1` as a dot-source.
 - Proved to run with `pwsh` off the path (`PATH=/usr/local/bin`, 2026-10-16). `npm run oracle:index` rewrites the records after a fixture changes; the register changes only by a reading of what changed.
 
 ## Generated
@@ -36,6 +37,8 @@ _No public symbols detected_
 - [`powershell-edges.PowerShellHelp`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellhelp)
 - [`powershell-edges.PowerShellScriptFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
 - [`powershell-edges.isDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
+- [`powershell-wires.ParserWorkspace`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-parserworkspace)
+- [`powershell-wires.isLibraryByParser`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -6,10 +6,14 @@
  * index, and what it reports is set beside what the parser said: of a script
  * or module, the functions it publishes and the classes and enums it defines,
  * by name, line and column, the functions with their help, the dependencies,
- * by specifier and resolved file, and the program mark of a script; of a
- * `.psd1`, whether its table, as `Import-PowerShellDataFile` read it, makes it
- * a module manifest, and then the module it publishes, the files and modules
- * it names and the root module it declares. Nothing here runs `pwsh`.
+ * by specifier, resolved file and the functions called there, and the program
+ * mark of a script; of a `.psd1`, whether its table, as
+ * `Import-PowerShellDataFile` read it, makes it a module manifest, and then the
+ * module it publishes, the files and modules it names, the root module it
+ * declares and the functions it offers from their origin files. Which file a
+ * call reaches, which script is a library and which function a manifest offers
+ * are the rules of `scripts/oracle/powershell-wires.ts` applied to the
+ * parser's facts. Nothing here runs `pwsh`.
  *
  * Where they disagree the disagreement is listed, in words, and the list must
  * equal the register below exactly: a miss fixed, or a new one, fails the
@@ -27,18 +31,26 @@ import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDo
 
 import { readPowerShellAst } from "../../../scripts/oracle/files";
 import { isDataFileFacts, type PowerShellDataFileFacts, type PowerShellHelp, type PowerShellScriptFacts } from "../../../scripts/oracle/powershell-edges";
+import { isLibraryByParser, ParserWorkspace } from "../../../scripts/oracle/powershell-wires";
 
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 
 /**
- * The measured misses, fixture by fixture. None remains since the engine
- * builds its own PowerShell grammar (`packages/engine/grammars/powershell`),
+ * The measured misses, fixture by fixture. None remained once the engine
+ * built its own PowerShell grammar (`packages/engine/grammars/powershell`),
  * which reads the comma lists, variable-led paths and `using` statements the
- * bundled grammar could not.
+ * bundled grammar could not. One is the grammar's again, recorded on
+ * 2026-11-19: it reads `./scripts/Clean.ps1`, a script run by its path, as the
+ * dot-source `. /scripts/Clean.ps1`, so the adapter keeps a rooted path no
+ * workspace holds where PowerShell runs the script beside it.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
   "programs/powershell/rollout": [],
-  "fixtures/powershell-compendium": []
+  "fixtures/powershell-compendium": [],
+  "fixtures/powershell-wires": [
+    "Deploy.ps1: PowerShell depends on scripts/Clean.ps1 (resolved), the adapter does not",
+    "Deploy.ps1: the adapter depends on /scripts/Clean.ps1, PowerShell does not"
+  ]
 };
 
 /** Discover parser records independently of the register of measured misses. */
@@ -75,31 +87,50 @@ function expectedDocumentation(help: PowerShellHelp | null): SymbolDocumentation
 interface Dependency {
   specifier: string;
   resolved?: string;
+  /** The functions called in the file, sorted. */
+  calls?:    string[];
 }
 
-/** The dependencies the parser's record makes: module imports, `using module`, `#requires` and dot-sources, a resolved one under its file. */
-function expectedDependencies(facts: PowerShellScriptFacts): Dependency[] {
+/**
+ * The dependencies the parser's record makes: module imports, `using module`,
+ * `#requires`, dot-sources, loops' listings and scripts run by path, a
+ * resolved one under its file and an unresolved one under its text; then the
+ * files whose functions the script calls, with those functions.
+ */
+function expectedDependencies(file: string, facts: PowerShellScriptFacts, workspace: ParserWorkspace): Dependency[] {
   const written: Array<{ text: string | null; resolved: string | null }> = [
     ...facts.importModules.flatMap((command) => command.names.map((name) => ({ text: name.name, resolved: name.resolved }))),
     ...facts.usingStatements.filter((using) => using.kind === "Module").map((using) => ({ text: using.name, resolved: using.resolved })),
     ...facts.requiredModules.map((module) => ({ text: module.name, resolved: module.resolved })),
-    ...facts.dotSources.map((dotSource) => ({ text: dotSource.target, resolved: dotSource.resolved }))
+    ...facts.dotSources.map((dotSource) => ({ text: dotSource.target, resolved: dotSource.resolved })),
+    ...facts.loads.flatMap((load) => load.resolved.map((resolved) => ({ text: null, resolved })))
   ];
   const dependencies = new Map<string, Dependency>();
   for (const { text, resolved } of written) {
     const specifier = resolved ?? text?.trim();
-    if (specifier && !dependencies.has(specifier)) dependencies.set(specifier, resolved ? { specifier, resolved } : { specifier });
+    if (specifier && specifier !== file && !dependencies.has(specifier)) dependencies.set(specifier, resolved ? { specifier, resolved } : { specifier });
+  }
+  for (const [to, names] of workspace.wiresOf(file)) {
+    const calls = Array.from(names).sort();
+    const existing = dependencies.get(to);
+    if (existing) existing.calls = calls;
+    else dependencies.set(to, { specifier: to, resolved: to, calls });
   }
   return Array.from(dependencies.values());
 }
 
-const describeDependency = (dependency: Dependency): string => `${dependency.specifier}${dependency.resolved ? " (resolved)" : ""}`;
+const describeDependency = (dependency: Dependency): string =>
+  `${dependency.specifier}${dependency.resolved ? " (resolved)" : ""}${dependency.calls?.length ? `, calling ${dependency.calls.join(", ")}` : ""}`;
 
 /** Every way the adapter's dependencies differ from the expected ones, in words. */
 function compareDependencies(file: string, wanted: Dependency[], dependencies: DependencyEntry[]): string[] {
   const found: string[] = [];
-  const actual = dependencies.map((dependency): Dependency => (dependency.resolvedPath ? { specifier: dependency.specifier, resolved: dependency.resolvedPath } : { specifier: dependency.specifier }));
-  const key    = (dependency: Dependency): string => `${dependency.specifier}|${dependency.resolved ?? ""}`;
+  const actual = dependencies.map((dependency): Dependency => ({
+    specifier: dependency.specifier,
+    ...(dependency.resolvedPath ? { resolved: dependency.resolvedPath } : {}),
+    ...(dependency.symbols.length > 0 ? { calls: [...dependency.symbols].sort() } : {})
+  }));
+  const key    = (dependency: Dependency): string => `${dependency.specifier}|${dependency.resolved ?? ""}|${(dependency.calls ?? []).join(",")}`;
   for (const dependency of wanted) {
     if (!actual.some((candidate) => key(candidate) === key(dependency))) found.push(`${file}: PowerShell depends on ${describeDependency(dependency)}, the adapter does not`);
   }
@@ -110,7 +141,7 @@ function compareDependencies(file: string, wanted: Dependency[], dependencies: D
 }
 
 /** Every way the adapter's reading of a script or module differs from the parser's, in words. */
-function compareScript(file: string, facts: PowerShellScriptFacts, analysis: SourceAnalysisResult): string[] {
+function compareScript(file: string, facts: PowerShellScriptFacts, analysis: SourceAnalysisResult, workspace: ParserWorkspace): string[] {
   const found: string[] = [];
   const expected = [
     ...facts.functions.filter((fact) => !fact.member && facts.published.includes(fact.name)).map((fact) => ({ name: fact.name, kind: "function", line: fact.line, column: fact.column, help: fact.help })),
@@ -136,9 +167,9 @@ function compareScript(file: string, facts: PowerShellScriptFacts, analysis: Sou
   }
   for (const symbol of remaining) found.push(`${file}: the adapter reports ${symbol.kind} ${symbol.name}, PowerShell does not`);
 
-  found.push(...compareDependencies(file, expectedDependencies(facts), analysis.dependencies));
+  found.push(...compareDependencies(file, expectedDependencies(file, facts, workspace), analysis.dependencies));
   const program = analysis.program !== undefined;
-  if (program !== file.endsWith(".ps1")) found.push(`${file}: the adapter ${program ? "marks" : "does not mark"} it as the program's entry`);
+  if (program !== (file.endsWith(".ps1") && !isLibraryByParser(facts))) found.push(`${file}: the adapter ${program ? "marks" : "does not mark"} it as the program's entry`);
   return found;
 }
 
@@ -148,7 +179,7 @@ function tableKeys(data: unknown): Set<string> {
 }
 
 /** Every way the adapter's reading of a `.psd1` differs from what PowerShell's reading of its table makes of it, in words. */
-function compareDataFile(file: string, facts: PowerShellDataFileFacts, analysis: SourceAnalysisResult): string[] {
+function compareDataFile(file: string, facts: PowerShellDataFileFacts, analysis: SourceAnalysisResult, workspace: ParserWorkspace): string[] {
   const keys     = tableKeys(facts.data);
   const manifest = ["rootmodule", "moduletoprocess", "moduleversion", "functionstoexport"].some((key) => keys.has(key));
   if (!manifest) {
@@ -173,6 +204,10 @@ function compareDataFile(file: string, facts: PowerShellDataFileFacts, analysis:
   const declares = JSON.stringify(analysis.declares ?? []);
   const expected = JSON.stringify(root ? [{ reason: "module", file: root }] : []);
   if (declares !== expected) found.push(`${file}: declares ${expected} for PowerShell, ${declares} for the adapter`);
+
+  const offered  = JSON.stringify(workspace.offeredBy(file).map((offer) => `${offer.name} from ${offer.from}`).sort());
+  const reported = JSON.stringify((analysis.reExportedSymbols ?? []).map((offer) => `${offer.name} from ${offer.sourceModulePath}`).sort());
+  if (offered !== reported) found.push(`${file}: offers ${offered} for PowerShell, ${reported} for the adapter`);
   return found;
 }
 
@@ -201,10 +236,11 @@ describe("the PowerShell adapter against PowerShell's parser", () => {
       const fixtureDir = path.join(INTEGRATION_ROOT, fixture);
       const ast        = readPowerShellAst(path.join(fixtureDir, "expected", "powershell-ast.json"), fixtureDir)!;
       const files      = fileIndex(fixtureDir);
+      const workspace  = new ParserWorkspace(ast);
       const found: string[] = [];
       for (const [file, facts] of Object.entries(ast.files)) {
         const analysis = (await powershellAdapter.analyze({ absolutePath: path.join(fixtureDir, file), workspaceRoot: fixtureDir, fileIndex: files }))!;
-        found.push(...(isDataFileFacts(facts) ? compareDataFile(file, facts, analysis) : compareScript(file, facts, analysis)));
+        found.push(...(isDataFileFacts(facts) ? compareDataFile(file, facts, analysis, workspace) : compareScript(file, facts, analysis, workspace)));
       }
       expect(found).toEqual(MEASURED_MISSES[fixture]);
     });

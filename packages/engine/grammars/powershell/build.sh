@@ -6,7 +6,12 @@
 # grammar does not: a comma list of bare words (`Export-ModuleMember -Function A, B`), a
 # bare word that begins with a variable (`Import-Module $PSScriptRoot\x.psm1`), a native
 # command's `--name=value`, `using` statements, a script that is empty or only a param
-# block, and a string that begins with `<#`. Before building, the script runs the
+# block, a string that begins with `<#`, an empty script block (`Mock Stop-Function { }`),
+# an attribute before an expression, even on the line before it
+# (`[SuppressMessageAttribute('Rule', '')]` then `$x = 1`), named blocks a semicolon
+# ends (`process { };`), a number's multiplier, suffix and exponent in any case (`1GB`,
+# `10L`, `1E3`), a label `break` or `continue` names bare (`continue outer`), and a switch
+# label in quotes (`"In Progress" { }`). Before building, the script runs the
 # grammar's own corpus and this folder's test/corpus, which prove each of those; the
 # build stops on any failure. The patch and its tests are what to offer upstream, and
 # once upstream has them this folder can go.

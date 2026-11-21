@@ -671,6 +671,62 @@ Settled in September 2026: derived views (the graph index, the Explorer bundle) 
 - **What one commit a worker does not settle**: a summary is not a function of its commit alone for a file nested near the stack's limit, and was not before the pool either. An independent reviewer of this change showed it by running: one commit holding five TypeScript tables nested 190 deep and then `src/zz.ts` nested 1,000 deep, six runs of the history by default, same code and key, each in a fresh copy: two mapped `src/zz.ts` and four said "could not map src/zz.ts: Maximum call stack size exceeded". Probing `generateLiveDocs` in fresh processes, with 0 to 5 smaller tables before the deep file it was not mapped, with 6 to 40 it was, and at 5 it was mapped 2 times in 7. So whether such a file is read depends on the files read before it in the same commit and on timing (V8 compiles on background threads), and the cache keeps whichever outcome the first run got. One commit a worker removes every dependence on another commit's summarizing; it does not remove this one. A lead, open as a design fork: under `node --single-threaded` the outcome looked repeatable (5 of 5 either way on each side of the switch point); its cost, and what it does to the WebAssembly parsers, are not measured.
 - **Alternatives considered**: the count of nesting, mended a fourth time, which no one could show complete; a bound by the stack really used, measured and set aside (above); kept workers with V8's optimizing compilers off (`--no-maglev --no-turbofan`), which removes the cause, since a warmed process then reads 1.04 times what a fresh one does, the same for all fourteen constructs measured, against 2.23 to 5.71 times with them on, but a generation of this checkout then takes 31.7 s against 11.6 s, so such a worker would be about as slow as a fresh process with them (the root's measurement, 19:12 to 19:17 UTC, `no-opt-probe.sh` beside the stack's).
 
+### A PowerShell Call Reaches What Its Caller Loads, Else the Only Definition _(Recorded 2026-11-19)_
+
+- **Context**: [A cold run](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/cold-run/README.md) on dbatools found 1,947 of its 1,977 files with no connection at all, and every `.ps1` marked `Entry: program`. The map drew a PowerShell wire only where a dot-source, `Import-Module`, `using module` or `#requires` wrote a path out; it never drew a function defined in one script and called from another. The owner will show the tool at work on Windows PowerShell 5.1 and SQL Server code: "I don't want to compromise on quality in the slightest."
+- **Why it was hard**: PowerShell finds a command by name at run time, among whatever has been dot-sourced or imported by then, so any rule is a claim about names. A rule recorded for another reader without measuring had just been overturned by measuring it, so this one was measured first ([the probe](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md)).
+- **How it was measured**:
+  - Five corpora were read with PowerShell's own parser: dbatools, AL-Go (a pile of action scripts), AzureStack-Tools (modules that share helper names), tSQLt's build scripts, and the cold run's hand-made shop.
+  - Eight rules were scored on wires drawn, files left with no wire, and a seeded sample of sixty wires each, read in the source by two readers who agreed on every wire.
+  - Every wire on which two rules disagree was judged as well, or forty of them where there were more:
+
+  | Rule | Sample of 60 (true / false / arguable) | Its wires beyond the rule below it, judged |
+  | --- | --- | --- |
+  | A-all: the only file defining the name anywhere | 54 / 6 / 0 | 918 beyond A: 0 of 40 true, every one a test's stub of a cmdlet inside a block |
+  | A: the only file defining it at its own level | 60 / 0 / 0 | 2,515 beyond A-all: 40 of 40 true |
+  | B: as A, else the caller's module, by folder | 60 / 0 / 0 | 27 beyond A: 5 true, 20 false, 2 arguable |
+  | B: as A, else the caller's module, by what it loads | 60 / 0 / 0 | none beyond A |
+  | C: as B, else every definition | 58 / 2 / 0 | 34 and 88 beyond B: 16 of 34 and 16 of 40 true |
+  | L: only what the caller loads | 60 / 0 / 0 | draws half of A: 916 dbatools files left alone |
+  | **R: L, else A** | **60 / 0 / 0** | **13 beyond A: 13 of 13 true** |
+
+- **The cause of every false wire, in every rule**: a definition the caller never loads.
+  - A test's stub inside a block.
+  - A sibling script's private copy. In a pile of scripts a folder is not a module.
+  - A sibling module's copy.
+- **Decision**: rule R, "loaded, else unique", read by the PowerShell adapter.
+  - **Which definitions count.** Only a definition at a file's own level. One inside a function, inside a script block, or inside text the grammar could not read counts as none.
+  - **The caller's own definition.** A name the caller defines itself is its own.
+  - **Otherwise.** The call goes to the one defining file that the caller's loading reaches. "Loading" means the caller's dot-sources, imports and `using module`, followed, and its modules' files and their loads; a script run by its path is not followed. If the loading reaches several defining files, the call goes to none. If it reaches none, the call goes to the only file of the workspace that defines the name.
+  - **Names PowerShell ships.** A name PowerShell itself ships never wires by being unique alone. A definition the caller loads still wins, since a function shadows a cmdlet. The list comes from PowerShell itself:
+    - Windows PowerShell 5.1's commands from Microsoft's reference;
+    - PowerShell 7.7's from its own modules.
+  - **The wire.** A call wire is a dependency on the defining file, carrying the function's name.
+  - **Loads the text fixes, read with the rule:**
+    - `Join-Path` from `$PSScriptRoot`;
+    - a variable assigned once at the file's own level;
+    - a loop dot-sourcing a `Get-ChildItem` of a fixed folder;
+    - a script run by its path.
+
+    Each is a wire of its own. A path built any other way is not read.
+  - **Programs.** A `.ps1` whose own level only defines things and sets up its scope is a library, not a program.
+  - **Manifests.** A manifest's `FunctionsToExport` offers each function from its origin file through the re-export anchors a TypeScript barrel uses, with no wire.
+- **Held by**:
+  - **The oracle.** `scripts/oracle/powershell-wires.ts` writes the rules again over the parser's facts, sharing no code with the adapter. `powershell-oracle.test.ts` grades every fixture's calls, loads, libraries and offers. Its register holds one miss, the grammar's reading of `./script.ps1` as a dot-source.
+  - **A score on the corpora**, with the oracle's wires as the standard. In wires, then calls:
+    - dbatools: 7,477 of 7,479 wires and 6,628 of 6,630 calls drawn, none invented;
+    - AL-Go: 471 of 475 and 1,040 of 1,045, none invented. The misses are a test's stubs of an outside module's commands, written at the test's own level; the oracle draws them but they are false.
+    - tSQLt: 34 of 39 wires, every call. The misses are the `./script.ps1` misreading.
+    - AzureStack-Tools: every wire and call, and 2 more wires from two manifests that `Import-PowerShellDataFile` refuses to read. Those 2 are older than this rule.
+  - **A second sample**, drawn after the build: sixty wires the built adapter draws on dbatools and AL-Go, with a new seed. Two readers read them in the source, each writing their verdicts before seeing the other's: 59 true and 1 arguable, the same verdict on every wire. The arguable one is a parameter's default that calls a function before the script loads it.
+- **Cost**: the table is read once per run, and a file's own analysis reuses its facts, so each PowerShell file is parsed once a run where it was parsed twice before. Generating dbatools from scratch took 93.5 and 90.7 processor-seconds after the change, against 86.8 and 81.1 before, on a machine at a load of 18 to 33. Its peak memory was 665 and 891 MB after, against 885 and 639 MB before. The extra time is the wires: dbatools' docs now carry about 7,500 dependency lines, each resolved and written, where they carried 9.
+- **What it cannot see**:
+  - a name defined in several files that the caller does not load (16 calls in dbatools, 76 in AL-Go);
+  - a command named by a value only a run knows;
+  - a binary module's cmdlets.
+- **A known weakness**: a test that stubs an outside module's command at its own level becomes that command's only definition, and every caller would wire to it. The grammar happens to lose AL-Go's five today. _(Narrowed later on 2026-11-19, by the root's rulings after the build: the reach to the only defining file passes over test files when the caller is not a test, so the weakness stands only between tests; a PowerShell file is a test by its own name only as Pester's `Name.Tests.ps1` or `Name.Test.ps1`, and the archetype's test folders are read against a file's folders, never its own name; a variable a Pester `BeforeAll` or `BeforeEach` assigns once is followed into the `It` blocks beneath it. The scores after those rulings are in [the probe](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/powershell-wires/README.md): dbatools 7,477 wires, AL-Go 492 of the oracle's 493, none invented.)_
+- **Alternatives considered**: A-all, A, B by folder and by loading, C and L, each measured above. The probe also considered a wire from a manifest to each function file, 724 from `dbatools.psd1` alone, which adds nothing that the callers' own wires do not already say.
+
 ## Descoped Decisions (Audit Trail)
 
 The following decisions were explored and explicitly removed from scope during the Dev Day 70–72 codebase cleanup (February 2026). They are retained here for architectural traceability.

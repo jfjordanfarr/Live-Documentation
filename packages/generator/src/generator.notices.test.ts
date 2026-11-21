@@ -4,7 +4,8 @@
  * reason; nothing of it is written into a Live Doc (the root's ruling of 2026-11-19, for the .NET reader's paths that
  * several projects hold, the SQL reader's computed strings and the PowerShell reader's loads it cannot follow).
  *
- * The analysis is wrapped here, a fake reader giving two reasons across three files, since no reader gives one yet.
+ * The analysis is wrapped here, a fake reader giving two reasons across three files, so that the count is held apart
+ * from what any one reader says (the PowerShell reader's own notices are held in `powershell.test.ts`).
  */
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

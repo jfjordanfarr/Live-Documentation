@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/scripts/Show-RolloutPlan.ps1`
 - Entry: program
-- Generated At: 2026-11-19T21:10:27.803Z
+- Generated At: 2026-11-21T02:25:26.937Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Logging`](../lib/Logging.ps1.mdmd.md)
-- [`Rollout.Steps`](../modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md)
+- [`Logging.Write-RolloutBanner`](../lib/Logging.ps1.mdmd.md#symbol-write-rolloutbanner)
+- [`Rollout.Steps.Format-RolloutReport`](../modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-format-rolloutreport)
+- [`Rollout.Steps.Get-RolloutPlan`](../modules/Rollout.Steps/Rollout.Steps.psm1.mdmd.md#symbol-get-rolloutplan)
 <!-- LIVE-DOC:END Dependencies -->

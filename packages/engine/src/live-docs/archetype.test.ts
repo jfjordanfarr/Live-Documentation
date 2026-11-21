@@ -58,6 +58,43 @@ describe("sample archetypes", () => {
   });
 });
 
+describe("test folders and test names", () => {
+  const config = normalizeLiveDocumentationConfig({});
+
+  it("reads the test-folder pattern against the folders alone, never against the file's own name", () => {
+    // PowerShell names a function for its approved verb, and a file for its function: Test-DbaPath is working code.
+    expect(resolveArchetype("public/Test-DbaPath.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("private/functions/flowcontrol/Test-Bound.ps1", config)).toBe("implementation");
+    // tSQLt's own view of the tests it holds is part of the framework.
+    expect(resolveArchetype("Source/tSQLt.Tests.view.sql", config)).toBe("implementation");
+    expect(resolveArchetype("tests/Get-Thing.ps1", config)).toBe("test");
+    expect(resolveArchetype("src/__tests__/helpers.ts", config)).toBe("test");
+    expect(resolveArchetype("Test/Helpers/Fake.cs", config)).toBe("test");
+  });
+
+  it("keeps a file named for the word alone a test, as JavaScript's and Django's conventions name them", () => {
+    expect(resolveArchetype("mode/css/test.js", config)).toBe("test");
+    expect(resolveArchetype("polls/tests.py", config)).toBe("test");
+    expect(resolveArchetype("Examples/Tests.sql", config)).toBe("test");
+  });
+
+  it("calls a PowerShell file a test by its name only as Pester's Name.Tests.ps1 or Name.Test.ps1", () => {
+    expect(resolveArchetype("src/Get-Thing.Test.ps1", config)).toBe("test");
+    expect(resolveArchetype("src/Get-Thing.tests.ps1", config)).toBe("test");
+    // An action, a module and a build step that run tests are working code.
+    expect(resolveArchetype("Actions/RunTests/RunTests.psm1", config)).toBe("implementation");
+    expect(resolveArchetype("Actions/AnalyzeTests/AnalyzeTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/tSQLt_BuildTests.ps1", config)).toBe("implementation");
+    expect(resolveArchetype("Build/Pester.Tests.psd1", config)).toBe("implementation");
+  });
+
+  it("keeps each language's name conventions: C#'s FooTests.cs, Java's FooTest.java and Pester's Name.Tests.ps1", () => {
+    expect(resolveArchetype("src/Estate/ParcelTests.cs", config)).toBe("test");
+    expect(resolveArchetype("src/main/java/HelpersTest.java", config)).toBe("test");
+    expect(resolveArchetype("public/Get-Thing.Tests.ps1", config)).toBe("test");
+  });
+});
+
 describe("binary files are assets, wherever they lie", () => {
   const config = normalizeLiveDocumentationConfig({ sampleRoots: ["tests/scenarios"] });
 

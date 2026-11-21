@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import type { LiveDocumentationArchetype } from "../../config/liveDocumentationConfig";
 import type { SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
@@ -27,9 +28,12 @@ import { sqlAdapter } from "./sql";
  * @remarks
  * Used by adapters like JSON to resolve string values to known workspace files
  * without filesystem crawling. The index is built by the discovery phase before
- * analysis begins.
+ * analysis begins. Built by the generator, it also answers each path's
+ * archetype under the workspace's own configuration (`archetypeOf`), so that a
+ * reader telling a test from working code reads the workspace's overrides and
+ * sample roots; an index made otherwise, as a test's, has none.
  */
-export type WorkspaceFileIndex = Set<string>;
+export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype };
 
 /**
  * Contract for a language-specific source analyser.

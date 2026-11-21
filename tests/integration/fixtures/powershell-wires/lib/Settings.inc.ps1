@@ -1,0 +1,3 @@
+$Settings = @{
+    Region = 'west'
+}

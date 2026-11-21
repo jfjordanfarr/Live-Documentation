@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/index.ts`
-- Generated At: 2026-11-19T21:10:09.842Z
+- Generated At: 2026-11-21T02:25:18.816Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,8 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L32)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L36)
+- Returns: [`LiveDocumentationArchetype`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 
 ##### `WorkspaceFileIndex` — Summary
 Set of workspace-relative file paths for cross-file reference resolution.
@@ -29,11 +30,14 @@ Set of workspace-relative file paths for cross-file reference resolution.
 ##### `WorkspaceFileIndex` — Remarks
 Used by adapters like JSON to resolve string values to known workspace files
 without filesystem crawling. The index is built by the discovery phase before
-analysis begins.
+analysis begins. Built by the generator, it also answers each path's
+archetype under the workspace's own configuration (`archetypeOf`), so that a
+reader telling a test from working code reads the workspace's overrides and
+sample roots; an index made otherwise, as a test's, has none.
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L48)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -47,14 +51,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L74)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L78)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L105)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L109)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -71,6 +75,7 @@ Analyzer output when an adapter reads the file by its name or its extension, oth
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
+- [`liveDocumentationConfig.LiveDocumentationArchetype`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
 - [`aspnet.aspNetMarkupAdapter`](./aspnet.ts.mdmd.md#symbol-aspnetmarkupadapter)
 - [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
 - [`cargo.cargoAdapter`](./cargo.ts.mdmd.md#symbol-cargoadapter)

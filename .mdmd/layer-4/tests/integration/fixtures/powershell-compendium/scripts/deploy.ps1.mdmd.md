@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1`
 - Entry: program
-- Generated At: 2026-11-19T21:10:25.312Z
+- Generated At: 2026-11-21T02:25:26.115Z
 
 ## Authored
 ### Purpose
@@ -27,5 +27,5 @@ Pairs with the module and logging fixtures to exercise dependency fan-out, ensur
 - `Microsoft.PowerShell.Management`
 - `Microsoft.PowerShell.Utility`
 - `MyCompany.Inventory`
-- [`logging`](../common/logging.ps1.mdmd.md)
+- [`logging.Write-DeploymentLog`](../common/logging.ps1.mdmd.md#symbol-write-deploymentlog)
 <!-- LIVE-DOC:END Dependencies -->

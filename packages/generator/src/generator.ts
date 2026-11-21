@@ -159,11 +159,12 @@ export async function generateLiveDocs(
     : workspaceFiles;
   const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 
-  // Resolution requires every discovered file, even when only a few are regenerated.
-  const fileIndex: WorkspaceFileIndex = new Set(
-    allTargetFiles.map((absPath) =>
-      normalizeWorkspacePath(path.relative(workspaceRoot, absPath))
-    )
+  // Resolution requires every discovered file, even when only a few are regenerated. The index also answers each
+  // path's archetype under this run's configuration, so that a reader telling a test from working code reads the
+  // workspace's overrides and sample roots, as the docs' `Archetype` lines do (2026-11-19, the PowerShell probe).
+  const fileIndex: WorkspaceFileIndex = Object.assign(
+    new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
+    { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig) }
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 

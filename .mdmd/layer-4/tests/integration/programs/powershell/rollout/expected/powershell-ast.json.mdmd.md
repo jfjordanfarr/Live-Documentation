@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/expected/powershell-ast.json`
-- Generated At: 2026-11-19T21:10:27.730Z
+- Generated At: 2026-11-21T02:25:26.922Z
 
 ## Authored
 ### Purpose
@@ -70,6 +70,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 #### `files:../Invoke-Rollout.ps1:requiredModules` {#symbol-filesinvoke-rolloutps1requiredmodules}
 - Type: key
 
+#### `files:../Invoke-Rollout.ps1:invocations` {#symbol-filesinvoke-rolloutps1invocations}
+- Type: key
+
+#### `files:../Invoke-Rollout.ps1:loads` {#symbol-filesinvoke-rolloutps1loads}
+- Type: key
+
+#### `files:../Invoke-Rollout.ps1:aliasCommands` {#symbol-filesinvoke-rolloutps1aliascommands}
+- Type: key
+
+#### `files:../Invoke-Rollout.ps1:paramBlock` {#symbol-filesinvoke-rolloutps1paramblock}
+- Type: key
+
+#### `files:../Invoke-Rollout.ps1:statements` {#symbol-filesinvoke-rolloutps1statements}
+- Type: key
+
 #### `files:../lib/Logging.ps1` {#symbol-fileslibloggingps1}
 - Type: key
 
@@ -98,6 +113,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 - Type: key
 
 #### `files:../lib/Logging.ps1:requiredModules` {#symbol-fileslibloggingps1requiredmodules}
+- Type: key
+
+#### `files:../lib/Logging.ps1:invocations` {#symbol-fileslibloggingps1invocations}
+- Type: key
+
+#### `files:../lib/Logging.ps1:loads` {#symbol-fileslibloggingps1loads}
+- Type: key
+
+#### `files:../lib/Logging.ps1:aliasCommands` {#symbol-fileslibloggingps1aliascommands}
+- Type: key
+
+#### `files:../lib/Logging.ps1:paramBlock` {#symbol-fileslibloggingps1paramblock}
+- Type: key
+
+#### `files:../lib/Logging.ps1:statements` {#symbol-fileslibloggingps1statements}
 - Type: key
 
 #### `files:../lib/Settings.ps1` {#symbol-fileslibsettingsps1}
@@ -130,6 +160,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 #### `files:../lib/Settings.ps1:requiredModules` {#symbol-fileslibsettingsps1requiredmodules}
 - Type: key
 
+#### `files:../lib/Settings.ps1:invocations` {#symbol-fileslibsettingsps1invocations}
+- Type: key
+
+#### `files:../lib/Settings.ps1:loads` {#symbol-fileslibsettingsps1loads}
+- Type: key
+
+#### `files:../lib/Settings.ps1:aliasCommands` {#symbol-fileslibsettingsps1aliascommands}
+- Type: key
+
+#### `files:../lib/Settings.ps1:paramBlock` {#symbol-fileslibsettingsps1paramblock}
+- Type: key
+
+#### `files:../lib/Settings.ps1:statements` {#symbol-fileslibsettingsps1statements}
+- Type: key
+
 #### `files:../modules/Rollout.Notify/Rollout.Notify.psm1` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1}
 - Type: key
 
@@ -158,6 +203,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 - Type: key
 
 #### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:requiredModules` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1requiredmodules}
+- Type: key
+
+#### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:invocations` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1invocations}
+- Type: key
+
+#### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:loads` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1loads}
+- Type: key
+
+#### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:aliasCommands` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1aliascommands}
+- Type: key
+
+#### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:paramBlock` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1paramblock}
+- Type: key
+
+#### `files:../modules/Rollout.Notify/Rollout.Notify.psm1:statements` {#symbol-filesmodulesrolloutnotifyrolloutnotifypsm1statements}
 - Type: key
 
 #### `files:../modules/Rollout.Steps/Rollout.Steps.psd1` {#symbol-filesmodulesrolloutstepsrolloutstepspsd1}
@@ -235,6 +295,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 #### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:requiredModules` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1requiredmodules}
 - Type: key
 
+#### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:invocations` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1invocations}
+- Type: key
+
+#### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:loads` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1loads}
+- Type: key
+
+#### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:aliasCommands` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1aliascommands}
+- Type: key
+
+#### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:paramBlock` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1paramblock}
+- Type: key
+
+#### `files:../modules/Rollout.Steps/Rollout.Steps.psm1:statements` {#symbol-filesmodulesrolloutstepsrolloutstepspsm1statements}
+- Type: key
+
 #### `files:../modules/Rollout.Targets/Rollout.Targets.psm1` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1}
 - Type: key
 
@@ -265,6 +340,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 #### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:requiredModules` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1requiredmodules}
 - Type: key
 
+#### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:invocations` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1invocations}
+- Type: key
+
+#### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:loads` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1loads}
+- Type: key
+
+#### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:aliasCommands` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1aliascommands}
+- Type: key
+
+#### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:paramBlock` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1paramblock}
+- Type: key
+
+#### `files:../modules/Rollout.Targets/Rollout.Targets.psm1:statements` {#symbol-filesmodulesrollouttargetsrollouttargetspsm1statements}
+- Type: key
+
 #### `files:../scripts/Show-RolloutPlan.ps1` {#symbol-filesscriptsshow-rolloutplanps1}
 - Type: key
 
@@ -293,6 +383,21 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 - Type: key
 
 #### `files:../scripts/Show-RolloutPlan.ps1:requiredModules` {#symbol-filesscriptsshow-rolloutplanps1requiredmodules}
+- Type: key
+
+#### `files:../scripts/Show-RolloutPlan.ps1:invocations` {#symbol-filesscriptsshow-rolloutplanps1invocations}
+- Type: key
+
+#### `files:../scripts/Show-RolloutPlan.ps1:loads` {#symbol-filesscriptsshow-rolloutplanps1loads}
+- Type: key
+
+#### `files:../scripts/Show-RolloutPlan.ps1:aliasCommands` {#symbol-filesscriptsshow-rolloutplanps1aliascommands}
+- Type: key
+
+#### `files:../scripts/Show-RolloutPlan.ps1:paramBlock` {#symbol-filesscriptsshow-rolloutplanps1paramblock}
+- Type: key
+
+#### `files:../scripts/Show-RolloutPlan.ps1:statements` {#symbol-filesscriptsshow-rolloutplanps1statements}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

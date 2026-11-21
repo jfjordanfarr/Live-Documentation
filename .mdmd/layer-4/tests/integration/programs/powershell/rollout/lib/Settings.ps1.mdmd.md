@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/lib/Settings.ps1`
-- Entry: program
-- Generated At: 2026-11-19T21:10:27.752Z
+- Generated At: 2026-11-21T02:25:26.928Z
 
 ## Authored
 ### Purpose

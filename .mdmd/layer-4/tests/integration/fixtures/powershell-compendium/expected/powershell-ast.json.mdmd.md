@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-compendium/expected/powershell-ast.json`
-- Generated At: 2026-11-19T21:10:25.293Z
+- Generated At: 2026-11-21T02:25:26.109Z
 
 ## Authored
 ### Purpose
@@ -50,6 +50,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 - Type: key
 
 #### `files:../common/logging.ps1:requiredModules` {#symbol-filescommonloggingps1requiredmodules}
+- Type: key
+
+#### `files:../common/logging.ps1:invocations` {#symbol-filescommonloggingps1invocations}
+- Type: key
+
+#### `files:../common/logging.ps1:loads` {#symbol-filescommonloggingps1loads}
+- Type: key
+
+#### `files:../common/logging.ps1:aliasCommands` {#symbol-filescommonloggingps1aliascommands}
+- Type: key
+
+#### `files:../common/logging.ps1:paramBlock` {#symbol-filescommonloggingps1paramblock}
+- Type: key
+
+#### `files:../common/logging.ps1:statements` {#symbol-filescommonloggingps1statements}
 - Type: key
 
 #### `files:../config/settings.psd1` {#symbol-filesconfigsettingspsd1}
@@ -103,6 +118,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 #### `files:../modules/Inventory.psm1:requiredModules` {#symbol-filesmodulesinventorypsm1requiredmodules}
 - Type: key
 
+#### `files:../modules/Inventory.psm1:invocations` {#symbol-filesmodulesinventorypsm1invocations}
+- Type: key
+
+#### `files:../modules/Inventory.psm1:loads` {#symbol-filesmodulesinventorypsm1loads}
+- Type: key
+
+#### `files:../modules/Inventory.psm1:aliasCommands` {#symbol-filesmodulesinventorypsm1aliascommands}
+- Type: key
+
+#### `files:../modules/Inventory.psm1:paramBlock` {#symbol-filesmodulesinventorypsm1paramblock}
+- Type: key
+
+#### `files:../modules/Inventory.psm1:statements` {#symbol-filesmodulesinventorypsm1statements}
+- Type: key
+
 #### `files:../scripts/deploy.ps1` {#symbol-filesscriptsdeployps1}
 - Type: key
 
@@ -131,6 +161,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 - Type: key
 
 #### `files:../scripts/deploy.ps1:requiredModules` {#symbol-filesscriptsdeployps1requiredmodules}
+- Type: key
+
+#### `files:../scripts/deploy.ps1:invocations` {#symbol-filesscriptsdeployps1invocations}
+- Type: key
+
+#### `files:../scripts/deploy.ps1:loads` {#symbol-filesscriptsdeployps1loads}
+- Type: key
+
+#### `files:../scripts/deploy.ps1:aliasCommands` {#symbol-filesscriptsdeployps1aliascommands}
+- Type: key
+
+#### `files:../scripts/deploy.ps1:paramBlock` {#symbol-filesscriptsdeployps1paramblock}
+- Type: key
+
+#### `files:../scripts/deploy.ps1:statements` {#symbol-filesscriptsdeployps1statements}
 - Type: key
 
 #### `files:../workspace/scripts/common/logging.ps1` {#symbol-filesworkspacescriptscommonloggingps1}
@@ -163,6 +208,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 #### `files:../workspace/scripts/common/logging.ps1:requiredModules` {#symbol-filesworkspacescriptscommonloggingps1requiredmodules}
 - Type: key
 
+#### `files:../workspace/scripts/common/logging.ps1:invocations` {#symbol-filesworkspacescriptscommonloggingps1invocations}
+- Type: key
+
+#### `files:../workspace/scripts/common/logging.ps1:loads` {#symbol-filesworkspacescriptscommonloggingps1loads}
+- Type: key
+
+#### `files:../workspace/scripts/common/logging.ps1:aliasCommands` {#symbol-filesworkspacescriptscommonloggingps1aliascommands}
+- Type: key
+
+#### `files:../workspace/scripts/common/logging.ps1:paramBlock` {#symbol-filesworkspacescriptscommonloggingps1paramblock}
+- Type: key
+
+#### `files:../workspace/scripts/common/logging.ps1:statements` {#symbol-filesworkspacescriptscommonloggingps1statements}
+- Type: key
+
 #### `files:../workspace/scripts/deploy.ps1` {#symbol-filesworkspacescriptsdeployps1}
 - Type: key
 
@@ -193,6 +253,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 #### `files:../workspace/scripts/deploy.ps1:requiredModules` {#symbol-filesworkspacescriptsdeployps1requiredmodules}
 - Type: key
 
+#### `files:../workspace/scripts/deploy.ps1:invocations` {#symbol-filesworkspacescriptsdeployps1invocations}
+- Type: key
+
+#### `files:../workspace/scripts/deploy.ps1:loads` {#symbol-filesworkspacescriptsdeployps1loads}
+- Type: key
+
+#### `files:../workspace/scripts/deploy.ps1:aliasCommands` {#symbol-filesworkspacescriptsdeployps1aliascommands}
+- Type: key
+
+#### `files:../workspace/scripts/deploy.ps1:paramBlock` {#symbol-filesworkspacescriptsdeployps1paramblock}
+- Type: key
+
+#### `files:../workspace/scripts/deploy.ps1:statements` {#symbol-filesworkspacescriptsdeployps1statements}
+- Type: key
+
 #### `files:../workspace/scripts/modules/Inventory.psm1` {#symbol-filesworkspacescriptsmodulesinventorypsm1}
 - Type: key
 
@@ -221,6 +296,21 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 - Type: key
 
 #### `files:../workspace/scripts/modules/Inventory.psm1:requiredModules` {#symbol-filesworkspacescriptsmodulesinventorypsm1requiredmodules}
+- Type: key
+
+#### `files:../workspace/scripts/modules/Inventory.psm1:invocations` {#symbol-filesworkspacescriptsmodulesinventorypsm1invocations}
+- Type: key
+
+#### `files:../workspace/scripts/modules/Inventory.psm1:loads` {#symbol-filesworkspacescriptsmodulesinventorypsm1loads}
+- Type: key
+
+#### `files:../workspace/scripts/modules/Inventory.psm1:aliasCommands` {#symbol-filesworkspacescriptsmodulesinventorypsm1aliascommands}
+- Type: key
+
+#### `files:../workspace/scripts/modules/Inventory.psm1:paramBlock` {#symbol-filesworkspacescriptsmodulesinventorypsm1paramblock}
+- Type: key
+
+#### `files:../workspace/scripts/modules/Inventory.psm1:statements` {#symbol-filesworkspacescriptsmodulesinventorypsm1statements}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 
