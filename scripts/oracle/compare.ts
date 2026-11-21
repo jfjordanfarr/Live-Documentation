@@ -12,7 +12,11 @@
  * not draw is held to the program's ledger, `expected/hand-verified-misses.json`,
  * which names it with its cause: the report says which missing edges the ledger
  * does not list and which listed edges are now drawn, and the integration suite
- * fails on either.
+ * fails on either. The compiler's missing and extra edges are held the same way
+ * to the ledger of causes the sample programs share at their root
+ * (`compiler-differences.json`), each cause a sentence over the edges it
+ * explains, since one cause, such as C's header against the file that defines a
+ * function, explains edges of several programs.
  *
  * Usage:
  *   npm run oracle:compare -- <fixture-dir> [--json]
@@ -49,15 +53,52 @@ export function readHandVerifiedMisses(file: string, fixtureDir: string): HandVe
 }
 
 /**
- * Holds the hand-verified edges the readers missed to the ledger: those it does not list, and its entries that are no
- * longer missed, because the readers now draw the edge or nobody asserts it any more. Either is a failure, so that the
- * ledger can only shrink truthfully.
+ * Holds the differences found to a ledger of them: those it does not list, and its entries no longer found, because a
+ * reader now draws the edge, or no longer draws it, or nobody asserts it any more. Either is a failure, so that the
+ * ledger can only shrink truthfully. An edge is told by its ends and, for the compiler's, by its side.
  */
-export function heldToLedger(missing: readonly HandVerifiedEdge[], ledger: readonly HandVerifiedMiss[]): { unlisted: HandVerifiedEdge[]; gone: HandVerifiedMiss[] } {
-  const key = (edge: { from: string; to: string }): string => `${edge.from}|${edge.to}`;
+export function heldToLedger<Found extends LedgerEdge, Listed extends LedgerEdge>(found: readonly Found[], ledger: readonly Listed[]): { unlisted: Found[]; gone: Listed[] } {
+  const key = (edge: LedgerEdge): string => `${edge.side ?? ""}|${edge.from}|${edge.to}`;
   const listed = new Set(ledger.map(key));
-  const missed = new Set(missing.map(key));
-  return { unlisted: missing.filter((edge) => !listed.has(key(edge))), gone: ledger.filter((miss) => !missed.has(key(miss))) };
+  const seen   = new Set(found.map(key));
+  return { unlisted: found.filter((edge) => !listed.has(key(edge))), gone: ledger.filter((entry) => !seen.has(key(entry))) };
+}
+
+interface LedgerEdge {
+  from:  string;
+  to:    string;
+  side?: "missing" | "extra";
+}
+
+/** An edge the compiler records and the readers do not draw, or the reverse, in one sample program. */
+export interface CompilerDifference extends LedgerEdge {
+  program: string;
+  side:    "missing" | "extra";
+}
+
+/**
+ * A cause of differences with the compiler, as the sample programs' ledger (`compiler-differences.json`) states it:
+ * what the reader does and what the compiler does, in a sentence; whether it is a gap the readers mean to close, a
+ * difference of grain they may keep, or an edge beyond what the compiler sees; and the differences it explains.
+ */
+export interface CompilerCause {
+  cause:       string;
+  kind:        "gap" | "grain" | "beyond the compiler";
+  differences: CompilerDifference[];
+}
+
+/** The ledger of differences with the compiler, kept once for every sample program at the root they share. */
+export const COMPILER_LEDGER = "compiler-differences.json";
+
+/** Reads the ledger of causes; empty when there is none. */
+export function readCompilerCauses(file: string): CompilerCause[] {
+  return fs.existsSync(file) ? (JSON.parse(fs.readFileSync(file, "utf8")) as { causes: CompilerCause[] }).causes : [];
+}
+
+/** A sample program's name, `<language>/<program>`, and the ledger of causes at the root of the sample programs. */
+function sampleProgram(fixtureDir: string): { program: string; ledger: string } {
+  const language = path.dirname(fixtureDir);
+  return { program: `${path.basename(language)}/${path.basename(fixtureDir)}`, ledger: path.join(path.dirname(language), COMPILER_LEDGER) };
 }
 
 /** What the comparison found, bucket by bucket. */
@@ -68,6 +109,8 @@ export interface Report {
     found:   Array<{ from: string; to: string }>;
     missing: Array<{ from: string; to: string; symbols: string[] }>;
     extra:   Array<{ from: string; to: string }>;
+    /** The missing and extra edges no cause of the ledger lists, its entries for this program no longer found, and each edge's cause. */
+    ledger:  { unlisted: CompilerDifference[]; gone: CompilerDifference[]; causeOf: Record<string, CompilerCause> };
   };
   handVerified?: {
     found:   HandVerifiedEdge[];
@@ -140,18 +183,38 @@ function dedupe(edges: AdapterEdge[]): AdapterEdge[] {
   return Array.from(seen.values()).sort((left, right) => left.from.localeCompare(right.from) || left.to.localeCompare(right.to));
 }
 
-function buildReport(fixtureDir: string, compiler: OracleEdges, handVerified: HandVerifiedEdges | undefined, misses: HandVerifiedMiss[], adapter: AdapterEdge[], unresolved: Report["unresolved"]): Report {
+interface Expectations {
+  compiler:     OracleEdges;
+  handVerified: HandVerifiedEdges | undefined;
+  misses:       HandVerifiedMiss[];
+  program:      string;
+  causes:       CompilerCause[];
+}
+
+function buildReport(fixtureDir: string, expectations: Expectations, adapter: AdapterEdge[], unresolved: Report["unresolved"]): Report {
+  const { compiler, handVerified, misses, program, causes } = expectations;
   const adapterKeys   = new Set(adapter.map((edge) => `${edge.from}|${edge.to}`));
   const compilerKeys  = new Set(compiler.edges.map((edge) => `${edge.from}|${edge.to}`));
   const compilerFiles = new Set(compiler.documents);
 
+  const missing = compiler.edges.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`));
+  const extra   = adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`));
+  const listed  = causes.flatMap((cause) => cause.differences.filter((difference) => difference.program === program).map((difference) => ({ difference, cause })));
+  const differences: CompilerDifference[] = [
+    ...missing.map(({ from, to }) => ({ program, side: "missing" as const, from, to })),
+    ...extra.map(({ from, to }) => ({ program, side: "extra" as const, from, to }))
+  ];
   const report: Report = {
     fixture:  path.relative(process.cwd(), fixtureDir),
     compiler: {
       tool:    compiler.tool,
       found:   compiler.edges.filter((edge) => adapterKeys.has(`${edge.from}|${edge.to}`)).map(({ from, to }) => ({ from, to })),
-      missing: compiler.edges.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`)),
-      extra:   adapter.filter((edge) => compilerFiles.has(edge.from) && compilerFiles.has(edge.to) && !compilerKeys.has(`${edge.from}|${edge.to}`))
+      missing,
+      extra,
+      ledger:  {
+        ...heldToLedger(differences, listed.map((entry) => entry.difference)),
+        causeOf: Object.fromEntries(listed.map((entry) => [`${entry.difference.side}|${entry.difference.from}|${entry.difference.to}`, entry.cause]))
+      }
     },
     beyondCompiler: adapter.filter((edge) => !(compilerFiles.has(edge.from) && compilerFiles.has(edge.to))),
     unresolved
@@ -194,14 +257,22 @@ function printReport(report: Report): void {
   const lines: string[] = [];
   lines.push(`Oracle comparison for ${report.fixture}`);
   lines.push("");
-  lines.push(`Compiler edges (${report.compiler.tool}): ${report.compiler.found.length} found, ${report.compiler.missing.length} missing, ${report.compiler.extra.length} extra`);
+  const { ledger: causes } = report.compiler;
+  const because = (side: "missing" | "extra", edge: { from: string; to: string }): string => {
+    const cause = causes.causeOf[`${side}|${edge.from}|${edge.to}`];
+    return cause ? `           because (${cause.kind}) ${cause.cause}` : "           not in the ledger";
+  };
+  lines.push(`Compiler edges (${report.compiler.tool}): ${report.compiler.found.length} found, ${report.compiler.missing.length} missing, ${report.compiler.extra.length} extra, ${causes.unlisted.length} of them in no cause of the ledger, ${causes.gone.length} listed and no longer found`);
   for (const edge of report.compiler.missing) {
     lines.push(`  missing  ${edge.from} -> ${edge.to}`);
     lines.push(`           via ${edge.symbols.join(", ")}`);
+    lines.push(because("missing", edge));
   }
   for (const edge of report.compiler.extra) {
     lines.push(`  extra    ${edge.from} -> ${edge.to}`);
+    lines.push(because("extra", edge));
   }
+  for (const difference of causes.gone) lines.push(`  listed and no longer found  ${difference.side} ${difference.from} -> ${difference.to}`);
 
   if (report.handVerified) {
     const { ledger } = report.handVerified;
@@ -252,10 +323,11 @@ export async function compareFixture(fixtureDir: string): Promise<Report> {
   if (!compiler) {
     throw new Error(`no expected/compiler-edges.json under ${fixtureDir}; run oracle:index first`);
   }
-  const handVerified = readHandVerifiedEdges(path.join(fixtureDir, "expected", "hand-verified-edges.json"), fixtureDir);
-  const misses       = readHandVerifiedMisses(path.join(fixtureDir, "expected", "hand-verified-misses.json"), fixtureDir);
+  const handVerified        = readHandVerifiedEdges(path.join(fixtureDir, "expected", "hand-verified-edges.json"), fixtureDir);
+  const misses              = readHandVerifiedMisses(path.join(fixtureDir, "expected", "hand-verified-misses.json"), fixtureDir);
+  const { program, ledger } = sampleProgram(fixtureDir);
   const { edges, unresolved } = await adapterEdges(fixtureDir);
-  return buildReport(fixtureDir, compiler, handVerified, misses, edges, unresolved);
+  return buildReport(fixtureDir, { compiler, handVerified, misses, program, causes: readCompilerCauses(ledger) }, edges, unresolved);
 }
 
 async function main(): Promise<void> {

@@ -67,7 +67,7 @@ Two more corpora were graded after both mends, since the reader is shared. dbato
 - **Where the binding lives.** `bindSqlName` is in `openings.ts`, beside `matchSqlObject`, and only the SQL adapter calls it. The C# adapter reads SQL held in strings through the same reader and matches as before, a one-part name to every schema; it is a sibling's file, and adopting the binding there is one call. `sqlObjectName`'s change to `database..name` does reach the C# adapter and the estate join, since they share it.
 - **DDL.** `TRUNCATE TABLE`, `ALTER TABLE`, a foreign key and a module's `ALTER` bind by the caller's default schema, by the archived team blog's "except DDL" and the statements page's list.
 - **Triggers.** A trigger is bound like a module, its schema its table's when its name writes none: "DML triggers are scoped to the schema of the table or view on which they're created" (Microsoft Learn, "CREATE TRIGGER", `schema_name`). The blog names procedures, functions and views; a DML trigger is a module of its table's schema, and the page calls a trigger "a special type of stored procedure".
-- **An object created without a schema** is in its creator's default schema, taken as `dbo`, and is bound by a one-part use at the `dbo` step; a use that writes `dbo.X` still does not bind to a created `X`, as before on both sides. On the provider scripts 265 objects are created without a schema; how many two-part uses would then link to them was not counted.
+- **An object created without a schema** is in its creator's default schema, taken as `dbo`, and is bound by a one-part use at the `dbo` step; a use that writes `dbo.X` still does not bind to a created `X`, as before on both sides. On the provider scripts 265 objects are created without a schema; how many two-part uses would then link to them was not counted. (Changed in the second round: one presumption for both, 103 lines.)
 - **The grader's link line marks a linked server**, `(linked)`, against the adapter's contract basis, so that the class of an edge, not only its ends, can fail.
 
 ## Part two: the readers against their oracles on the sample programs
@@ -117,9 +117,9 @@ The same three the root found on the day branch; this branch finds none of them 
 
 `tests/integration/programs/csharp/estate/expected/hand-verified-misses.json` lists the three with those causes. `compare.ts` reads it (`readHandVerifiedMisses`), holds the missed edges to it (`heldToLedger`: those it does not list, and its entries no longer missed) and prints each missed edge's cause. `oracle.test.ts` fails on either, for every program with hand-verified edges, and on a ledger kept by a program with none. A case of its own holds the function to failing both ways, and on the estate it was seen to fail: with the ledger's designer entry swapped for an edge the readers draw, the test named the designer edge as unlisted and the swapped one as gone.
 
-### Proposed, not built: the compiler's edges
+### Proposed in the first round: the compiler's edges
 
-Fifty-four entries written one by one would be a ledger nobody reads, so here is a plainer form that still fails on a regression: **a ledger by cause.** Each entry is a cause in a sentence, with the list of edges it explains; the test fails on a missing or extra edge that no cause lists, and on a listed edge now found. Exactness is the same as an edge-by-edge ledger, a regression in any program still fails, and the causes are written once. Read from the symbols the compiler records, the 54 fall into some seven causes, which still need confirming by reading each reader:
+The root ruled for it, and it was built in [the second round](#the-second-round-the-ledger-by-cause-dbo-for-a-schema-less-object-and-the-projects-manifests), where reading the readers corrected two of the apparent causes below. Fifty-four entries written one by one would be a ledger nobody reads, so here is a plainer form that still fails on a regression: **a ledger by cause.** Each entry is a cause in a sentence, with the list of edges it explains; the test fails on a missing or extra edge that no cause lists, and on a listed edge now found. Exactness is the same as an edge-by-edge ledger, a regression in any program still fails, and the causes are written once. Read from the symbols the compiler records, the 54 fall into some seven causes, which still need confirming by reading each reader:
 
 | Programs | Edges | Apparent cause |
 | --- | ---: | --- |
@@ -135,17 +135,72 @@ A simpler form was considered and refused: committing each program's three count
 
 ### A fault in the comparison's own bookkeeping
 
-`rust/stockroom`'s two missing project references are not real references: `compare.ts` builds every compiler project's file as `<directory>/<name>.csproj`, and rust-analyzer's Cargo targets come out as `src/stockroom src/main.rs.csproj → src/stockroom.csproj`. The project bucket is .NET's alone and should be read only for .NET projects, or name the manifest the compiler read. Not mended here: the projects' shape is written by `scip-edges.ts`, which is not this piece's.
+`rust/stockroom`'s two missing project references are not real references: `compare.ts` builds every compiler project's file as `<directory>/<name>.csproj`, and rust-analyzer's Cargo targets come out as `src/stockroom src/main.rs.csproj → src/stockroom.csproj`. Mended in the second round, below.
 
-## Verification
+## Verification of the first round
 
 `npm run safe:commit`, without the browser, at the part-two commits: Live Docs generated and validated (1,227 files), lint and build, unit tests 3,000 in 222 files, integration tests 480 in 36 files, the documentation link enforcement and the three SlopCop audits, all passing.
 
 The harness refused three shell commands of this builder's, none of them reached another way: a heredoc writing a scratch script (written with the file tool instead), a generation run chained with `git status` (run apart), and a copy of utPLSQL's `source/` folder, whose name the harness read as the shell's `source` command; utPLSQL was graded whole instead of by its two folders.
 
+## The second round: the ledger by cause, dbo for a schema-less object, and the projects' manifests
+
+The root accepted the first round, ruled for the ledger by cause, asked for the default schema to be one presumption or none, and for the comparison's project names to be mended inside `compare.ts`. Three things went to others: the C# reader's SQL strings adopting `bindSqlName` (the .NET builder, at the merge), and a three-part name naming another database (the work item, beside the linked server's task).
+
+### dbo for an object created without a schema
+
+The reader and the grader took an object created as plain `X` for `dbo`'s when a one-part name used it and for nobody's when `dbo.X` did. Both now take it for `dbo`'s whatever names it: `sqlNameMatches` lets `dbo.X` name a declared `X`, and an `ALTER` of `dbo.X` stands for a `CREATE` of `X` in the same script (the grader's `bindName` the same).
+
+| Corpus | Lines added | Removed | Graded after, both sides presuming |
+| --- | ---: | ---: | --- |
+| tSQLt | 0 | 0 | 969 of 969 |
+| DNN `.sql` | 0 | 0 | 29 of 29 |
+| DNN provider scripts | 103 | 0 | 7,064 of 7,065, the same one missing |
+| dbatools `.sql` | 0 | 0 | 199 of 199 |
+
+Every one of the 103 is drawn to one of DNN's oldest upgrade scripts, `01.00.00` to `01.00.07`, which create procedures without a schema (`create procedure AddTab`), from a later script that writes `dbo.` through `{databaseOwner}`. Ten drawn at random (seed 1121), each read in both files:
+
+| Using script | Its use | The script that creates it | Its CREATE | True? |
+| --- | --- | --- | --- | --- |
+| `02.02.00.sql` | `alter procedure dbo.GetUsers` (line 2069) | `01.00.02.sql` | `create procedure GetUsers` (486) | yes |
+| `02.02.02.sql` | `ALTER procedure dbo.GetPortalByAlias` (3930) | `01.00.05.sql` | `create procedure GetPortalByAlias` (2065) | yes |
+| `02.02.02.sql` | `ALTER procedure dbo.AddPortalInfo` (4020) | `01.00.06.sql` | `create procedure AddPortalInfo` (756) | yes |
+| `07.00.06.sql` | `dbo.AddTab`, which the script drops and creates again | `01.00.04.sql` | `create procedure AddTab` (93) | yes |
+| `07.00.06.sql` | the same | `01.00.05.sql` | `create procedure AddTab` (1034) | yes |
+| `07.03.00.sql` | `EXECUTE @TabId = dbo.AddTab` (564) | `01.00.01.sql` | `create procedure AddTab` (145) | yes |
+| `07.03.00.sql` | the same | `01.00.04.sql` | (93) | yes |
+| `07.03.00.sql` | the same | `01.00.06.sql` | `create procedure AddTab` (1145) | yes |
+| `07.03.03.sql` | `EXECUTE @TabId = dbo.AddTab` (4858) | `01.00.06.sql` | (1145) | yes |
+| `09.00.00.01.sql` | `EXEC dbo.[UpdateHostSetting]` (261) | `01.00.05.sql` | `create procedure UpdateHostSetting` (2283) | yes |
+
+Each is the same procedure the later scripts' own `dbo.X` names already linked to, created by an earlier version: DNN runs every upgrade script as the same user, whose default schema the early scripts wrote into and `{databaseOwner}` names later. That several versions create one procedure is the presumption of several declaring files, kept from the first leg. The provider copies fill `{databaseOwner}` as `dbo.`, as the record measured them. Built red first: the schemas fixture's `legacy.sql` (created as `ListLegacy`, altered as `dbo.ListLegacy`, executed as `dbo.ListLegacy` by `report.sql`) failed the reader on a wrong line, a missing link and two invented kept names, and three tests were red; the reader's commit made them green. No C# or estate doc of this repository changed.
+
+### The projects' manifests
+
+A project reference is now graded between the manifests standing in the two projects' folders, the project file named for the project or the folder's one manifest. A reference between projects with no manifest of their own is listed apart, by the projects' names, and graded neither found nor missing. Cargo's targets are such: `stockroom src/main.rs` and `stockroom tests/report.rs` each use `stockroom`, and their folders, `src/` and `tests/`, hold no manifest. The estate's three are found as before. Nothing of `scip-edges.ts` was needed for this. To grade the Cargo references as file edges too, one field would be: each project's root file (for a Cargo target its crate root, `src/main.rs`, `tests/report.rs`, `src/lib.rs`); the two would then be found as `src/main.rs → src/lib.rs` and `tests/report.rs → src/lib.rs`, which the readers draw and the ledger now lists as extra.
+
+### The ledger by cause
+
+`tests/integration/programs/compiler-differences.json`, kept once at the programs' root because one cause explains edges of several programs. `compare.ts` finds it there, holds each program's missing and extra edges to it (an edge told by its side as well as its ends) and prints each one's cause and kind; `oracle.test.ts` fails on an edge no cause lists and on a listed one no longer found, and two more cases hold the side of an edge and the ledger's naming only measured programs, each difference once. It was seen to fail both ways on `go/depot`, with one listed edge dropped and an extra one invented.
+
+Every cause was confirmed by reading its reader and the files its edges join. Two of the first round's apparent causes were wrong: Go's seven are no names used across a package's files, which the Go reader resolves, but the indexer's package symbol; and Python's extra is the package's `__init__.py`, which the reader links because the import runs it.
+
+| Cause | Kind proposed | Edges | Why that kind |
+| --- | --- | ---: | --- |
+| C and C++: a call, and a header's prototype, to the `.c` that defines the function. The reader draws the `#include` the file writes, with the names it uses; scip-clang records every use as a reference to the definition the build compiled. | grain, keep | 33 missing | which file defines a declared function is the build's choice of what it compiles and links, not any file's text; the header is what the source names. Drawing header to implementation by name is possible, and the root's to decide |
+| C and C++: a name declared in a header reached only through another header. The reader gives an include the names the file uses that it declares itself; the compiler records the use against the declaring header however it was reached. | gap | 6 missing | the include chain is text the reader already resolves |
+| Go: a file to the one file scip-go makes its package's, or an imported package's, defining file, the first of its files by name. The reader draws nothing for a package clause or an import by itself; scip-go records each as a reference to that file. | grain, keep | 7 missing | the edge names nothing that file declares |
+| A method on a value whose type the code does not write: Go's `inventory.Listen` promoted from an embedded `store.Base`, Python's `account.balance()`, Rust's `item.describe(…)`. The readers follow no inferred type; the compiler knows every value's. | gap | 3 missing | closing it takes type inference |
+| Python: `from ..util import money` to `util/__init__.py`. The reader depends on the module imported from as well as on where the name is defined; scip-python records only the name's module. | grain, keep | 1 extra | the import does run that file |
+| Rust: the crate root `src/lib.rs`. The reader draws a binary's and a test's `use stockroom::…` to it, the compiler's crate references in file form; the compiler records `pub(crate)` in `quantity.rs` as a reference to the crate root, which names nothing. | grain, keep | 2 extra, 1 missing | both are true of the crate and name no declaration of `lib.rs` |
+| The estate's HTTP call from `Portal/Services/GatewayClient.cs` to the gateway's `PaymentsController.cs`. | beyond the compiler | 1 extra | a person asserted it, in `hand-verified-edges.json` (remote), where it is found: that list is its home. It is counted extra only because the comparison counts every drawn edge between two indexed files the compiler did not link; leaving out of the extras an edge the hand-verified list asserts would be the plainer mend, left for the root |
+
+## Verification of the second round
+
+`npm run safe:commit`, without the browser, at the last commit of the round; figures in the handback.
+
 ## Open
 
-- **The C# adapter's SQL strings** still match a one-part name to every schema; `bindSqlName` is one call away for its owner.
-- **A three-part name to another database** links to the folder's object of the same schema and name, from source, as before. Whether it should is the linked server's question asked of a sister database.
-- **`dbo.X` against an object created as `X`**, without a schema: no line on either side, as before; not counted.
-- **The compiler's edges**: the ledger by cause above, for the root to rule on.
+- **A three-part name to another database**: on the work item, beside the linked server's task.
+- **The C# adapter's SQL strings**: `bindSqlName` goes to the .NET builder at the merge. `sqlNameMatches`, which C# shares, already takes a schema-less object for `dbo`'s.
+- **The ledger's kinds** are proposals: the C header against its implementation above all, and whether the estate's HTTP extra should leave the comparison's extras.
