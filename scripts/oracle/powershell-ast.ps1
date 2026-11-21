@@ -542,11 +542,36 @@ function Get-FixedLoads {
 
 <#
 .SYNOPSIS
+Whether a loop's body sets its item under any of the names it stands by: an assignment by any operator, ++ or --, or a loop nested in it over the same name. Its loads then hold what the body set, which only a run can say (pwsh 7.7.0, 2026-11-21: `$m = "$m.Extra"` looked for ModE.Extra; `$PSItem = ...` changed what `$_` held), so the loop is not read.
+#>
+function Test-SetsItem {
+    param([Parameter(Mandatory)]$Ast, [Parameter(Mandatory)][string[]]$Names)
+    $named = { param($node) $node -is [System.Management.Automation.Language.VariableExpressionAst] -and ($node.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', '') -in $Names }
+    $sets = $Ast.Find({
+        param($node)
+        $target = $null
+        if ($node -is [System.Management.Automation.Language.AssignmentStatementAst]) {
+            $target = $node.Left
+            while ($target.GetType() -eq [System.Management.Automation.Language.AttributedExpressionAst]) { $target = $target.Child }
+        }
+        elseif ($node -is [System.Management.Automation.Language.UnaryExpressionAst] -and $node.TokenKind -in 'PlusPlus', 'MinusMinus', 'PostfixPlusPlus', 'PostfixMinusMinus') {
+            $target = $node.Child
+        }
+        elseif ($node -is [System.Management.Automation.Language.ForEachStatementAst]) {
+            $target = $node.Variable
+        }
+        $null -ne $target -and (& $named $target)
+    }, $true)
+    return $null -ne $sets
+}
+
+<#
+.SYNOPSIS
 Records the loads of a loop over names the text writes out, read once for each name with the loop's item standing for it.
 #>
 function Add-ItemLoads {
     param($Items, [Parameter(Mandatory)][string[]]$Names, [Parameter(Mandatory)]$Body, [Parameter(Mandatory)]$Loads, [string]$Directory, [hashtable]$Variables)
-    if ($null -eq $Items) {
+    if ($null -eq $Items -or (Test-SetsItem -Ast $Body -Names $Names)) {
         return
     }
     foreach ($item in $Items) {
@@ -1077,7 +1102,7 @@ function Read-Script {
     foreach ($loop in $ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.ForEachStatementAst] }, $true)) {
         $item = $loop.Variable.VariablePath.UserPath.ToLowerInvariant() -replace '^(script|global|local|private):', ''
         Add-ItemLoads -Items (Get-LiteralItems -Ast $loop.Condition -Variables $variables) -Names @($item) -Body $loop.Body -Loads $loads -Directory $directory -Variables $variables
-        if (Test-DotSourcesItem -Ast $loop.Body -Names @($item)) {
+        if ((Test-DotSourcesItem -Ast $loop.Body -Names @($item)) -and -not (Test-SetsItem -Ast $loop.Body -Names @($item))) {
             Add-ListingLoads -Listings (Get-Listings -Ast $loop.Condition -Variables $variables) -Loads $loads -Line $loop.Extent.StartLineNumber -Text $loop.Extent.Text -Directory $directory -Variables $variables
         }
     }
@@ -1092,7 +1117,7 @@ function Read-Script {
             if ($blocks.Count -eq 1 -and $previous -isnot [System.Management.Automation.Language.CommandAst]) {
                 Add-ItemLoads -Items (Get-LiteralItems -Ast $previous -Variables $variables) -Names @('_', 'psitem') -Body $blocks[0] -Loads $loads -Directory $directory -Variables $variables
             }
-            if ($blocks.Count -eq 1 -and (Test-DotSourcesItem -Ast $blocks[0] -Names @('_', 'psitem'))) {
+            if ($blocks.Count -eq 1 -and (Test-DotSourcesItem -Ast $blocks[0] -Names @('_', 'psitem')) -and -not (Test-SetsItem -Ast $blocks[0] -Names @('_', 'psitem'))) {
                 Add-ListingLoads -Listings (Get-Listings -Ast $pipeline.PipelineElements[$index - 1] -Variables $variables) -Loads $loads -Line $pipeline.Extent.StartLineNumber -Text $pipeline.Extent.Text -Directory $directory -Variables $variables
             }
         }

@@ -891,7 +891,7 @@ function loopListings(root: SyntaxNode, scope: PathScope, looped: Set<number>): 
       const item       = node.namedChildren.find((child) => child.type === "variable");
       const collection = node.namedChildren.find((child) => child.type === "pipeline");
       const body       = node.namedChildren.find((child) => child.type === "statement_block");
-      const dotSources = item && body ? itemDotSources(body, variableName(item.text)) : [];
+      const dotSources = item && body && !setsItem(body, [variableName(item.text)]) ? itemDotSources(body, variableName(item.text)) : [];
       if (collection && dotSources.length > 0) read(listingsOf(collection, scope), dotSources);
     }
     if (node.type === "pipeline_chain") {
@@ -900,7 +900,7 @@ function loopListings(root: SyntaxNode, scope: PathScope, looped: Set<number>): 
         const name = commandName(stage);
         if (index === 0 || !name || !FOREACH_OBJECT_NAMES.has(name)) return;
         const blocks = (stage.childForFieldName("command_elements")?.namedChildren ?? []).map(unwrapValue).filter((child) => child.type === "script_block_expression");
-        if (blocks.length !== 1) return;
+        if (blocks.length !== 1 || setsItem(blocks[0], ["_", "psitem"])) return;
         const dotSources = [...itemDotSources(blocks[0], "_"), ...itemDotSources(blocks[0], "psitem")];
         if (dotSources.length === 0) return;
         read(listingsOf(stages[index - 1], scope), dotSources);
@@ -984,6 +984,28 @@ function commandsIn(node: SyntaxNode): SyntaxNode[] {
 }
 
 /**
+ * Whether a loop's body sets its item, under any of the names it stands by: an assignment by any operator, `++` or
+ * `--`, or a loop nested in it over the same name. The body then loads what it set, not the item (pwsh 7.7.0,
+ * 2026-11-21: `$m = "$m.Extra"` looked for ModE.Extra, `$m += '.Plus'` for ModH.Plus, a nested `foreach ($m in
+ * 'Inner')` for Inner, `$PSItem = …` in ForEach-Object for what `$_` then held), and the item is not read, even where
+ * the body sets it after the load, as a variable assigned more than once is not.
+ */
+function setsItem(body: SyntaxNode, names: string[]): boolean {
+  const wanted = new Set(names);
+  const named = (node: SyntaxNode | null | undefined): boolean => node?.type === "variable" && wanted.has(variableName(node.text));
+  const visit = (node: SyntaxNode): boolean => {
+    if (node.type === "assignment_expression") {
+      const left = node.namedChildren.find((child) => child.type === "left_assignment_expression");
+      if (left && named(attributedTarget(unwrapValue(left.namedChildren[0] ?? left)))) return true;
+    }
+    if (/^(?:pre|post)_(?:in|de)crement_expression$/u.test(node.type) && node.namedChildren[0] && named(unwrapValue(node.namedChildren[0]))) return true;
+    if (node.type === "foreach_statement" && named(node.namedChildren.find((child) => child.type === "variable"))) return true;
+    return node.namedChildren.some(visit);
+  };
+  return visit(body);
+}
+
+/**
  * The loads of a loop over names the text writes out, read once for each
  * name with the loop's item standing for it: `foreach ($s in @('a.ps1',
  * 'b.ps1')) { . (Join-Path $PSScriptRoot $s) }`, or `'a.ps1', 'b.ps1' |
@@ -992,6 +1014,7 @@ function commandsIn(node: SyntaxNode): SyntaxNode[] {
 function listLoads(root: SyntaxNode, scope: PathScope, looped: Set<number>): ComputedLoad[] {
   const loads: ComputedLoad[] = [];
   const readEach = (items: string[], names: string[], body: SyntaxNode): void => {
+    if (setsItem(body, names)) return;
     for (const item of items) {
       for (const name of names) scope.items.set(name, item);
       for (const command of commandsIn(body)) {

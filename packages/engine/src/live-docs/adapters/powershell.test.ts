@@ -877,6 +877,33 @@ describe("what a load draws nothing for, said as a notice", () => {
     expect(analysis?.notices).toEqual([{ reason: "dot-sources and imports whose path the text does not fix, left unlinked", subject: "line 3: Import-Module $m" }]);
   });
 
+  it("reads no name of a loop whose body sets its item, which only a run can read, and keeps the plain loops' names", async () => {
+    // PowerShell's own answers (`pwsh -NoProfile -NonInteractive -File run.ps1`, pwsh 7.7.0, each module missing, so its
+    // error names what was looked for): `$m = "$m.Extra"` before the load looked for ModE.Extra and ModF.Extra;
+    // `$m += '.Plus'` for ModH.Plus; a nested `foreach ($m in 'Inner')` for Inner; `$_ = …` and `$PSItem = …` in
+    // ForEach-Object for what they set; and `$m = 'Other'` after the load, ModG and ModG2. The plain loops looked for
+    // ModA, ModB, ModC and ModD. A body that sets its item is not read as a loop, after the load too; what is left is
+    // read as any variable is: `$_` assigned once, before its one use, holds 'ModJ.Changed', as pwsh says, and the rest
+    // are notices.
+    await write({
+      "Run.ps1": [
+        "foreach ($m in 'ModE', 'ModF') { $m = \"$m.Extra\"; Import-Module $m }",
+        "foreach ($m in 'ModH') { $m += '.Plus'; Import-Module $m }",
+        "foreach ($m in 'ModI') { foreach ($m in 'Inner') { }; Import-Module $m }",
+        "'ModJ' | ForEach-Object { $_ = 'ModJ.Changed'; Import-Module $_ }",
+        "'ModK' | ForEach-Object { $PSItem = 'ModK.Changed'; Import-Module $_ }",
+        "foreach ($n in 'ModG', 'ModG2') { Import-Module $n; $n = 'Other' }",
+        "'ModA', 'ModB' | ForEach-Object { Import-Module $_ }",
+        "foreach ($p in 'ModC', 'ModD') { Import-Module $p }"
+      ].join("\n")
+    });
+    const analysis = await analyzeFile("Run.ps1");
+    expect(analysis?.dependencies.map((dependency) => dependency.specifier)).toEqual(["ModJ.Changed", "ModA", "ModB", "ModC", "ModD"]);
+    expect(analysis?.notices?.map((notice) => notice.subject)).toEqual([
+      "line 1: Import-Module $m", "line 2: Import-Module $m", "line 3: Import-Module $m", "line 5: Import-Module $_", "line 6: Import-Module $n"
+    ]);
+  });
+
   it("takes a command qualified by its module for a command, not a script's path, unless the workspace holds that script", async () => {
     // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1` from a folder holding
     // `Microsoft.PowerShell.Utility/New-Object.ps1`, and a function `New-Object` defined first): the qualified name runs
