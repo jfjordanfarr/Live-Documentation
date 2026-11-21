@@ -1,0 +1,279 @@
+diff --git a/packages/explorer/src/client/layout-presets.ts b/packages/explorer/src/client/layout-presets.ts
+index 98fa2bcf0..b1af8ec44 100644
+--- a/packages/explorer/src/client/layout-presets.ts
++++ b/packages/explorer/src/client/layout-presets.ts
+@@ -1,4 +1,4 @@
+-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
++import { ARRIVAL_WAITS, ARRIVALS, UNSEEN_CARDS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+ 
+ /** One packing preference interpreted by both Local Map representations. */
+ export type LayoutPreset = "compact" | "relaxed";
+@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
+ 
+ /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
+ export interface LayoutSettings {
+-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
++  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "unseenCards" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
+   forceGraph?: Partial<ForceGraphTuning>;
+ }
+ 
+@@ -88,6 +88,7 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
+       const hiddenFiles = HIDDEN_FILES_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).hiddenFiles);
+       const arrival = ARRIVALS.slice(1).find(choice => choice === (input as Record<string, unknown>).arrival);
+       const arrivalWaits = ARRIVAL_WAITS.slice(1).find(choice => choice === (input as Record<string, unknown>).arrivalWaits);
++      const unseenCards = UNSEEN_CARDS.slice(1).find(choice => choice === (input as Record<string, unknown>).unseenCards);
+       const framing = FRAMINGS.slice(1).find(choice => choice === (input as Record<string, unknown>).framing);
+       const step = STEPS.slice(1).find(choice => choice === (input as Record<string, unknown>).step);
+       const cutCounted = CUT_COUNTED.slice(1).find(choice => choice === (input as Record<string, unknown>).cutCounted);
+@@ -95,10 +96,10 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
+       const directionMarks = DIRECTION_MARKS.slice(1).find(choice => choice === (input as Record<string, unknown>).directionMarks);
+       const overviewFiles = OVERVIEW_FILES.slice(1).find(choice => choice === (input as Record<string, unknown>).overviewFiles);
+       const descriptionsZoomedOut = DESCRIPTIONS_ZOOMED_OUT.slice(1).find(choice => choice === (input as Record<string, unknown>).descriptionsZoomedOut);
+-      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || arrivalWaits || framing || step || cutCounted || wireAnswers || directionMarks || overviewFiles || descriptionsZoomedOut) {
++      if (Object.keys(numbers).length || zoomLooks || directoryLayout || closedDirectory || closedShape || closedCells || hiddenFiles || arrival || arrivalWaits || unseenCards || framing || step || cutCounted || wireAnswers || directionMarks || overviewFiles || descriptionsZoomedOut) {
+         result.localMap = { ...numbers, ...(zoomLooks ? { zoomLooks } : null), ...(directoryLayout ? { directoryLayout } : null),
+           ...(closedDirectory ? { closedDirectory } : null), ...(closedShape ? { closedShape } : null), ...(closedCells ? { closedCells } : null),
+-          ...(hiddenFiles ? { hiddenFiles } : null), ...(arrival ? { arrival } : null), ...(arrivalWaits ? { arrivalWaits } : null), ...(framing ? { framing } : null), ...(step ? { step } : null), ...(cutCounted ? { cutCounted } : null),
++          ...(hiddenFiles ? { hiddenFiles } : null), ...(arrival ? { arrival } : null), ...(arrivalWaits ? { arrivalWaits } : null), ...(unseenCards ? { unseenCards } : null), ...(framing ? { framing } : null), ...(step ? { step } : null), ...(cutCounted ? { cutCounted } : null),
+           ...(wireAnswers ? { wireAnswers } : null), ...(directionMarks ? { directionMarks } : null),
+           ...(overviewFiles ? { overviewFiles } : null), ...(descriptionsZoomedOut ? { descriptionsZoomedOut } : null) };
+       }
+@@ -132,7 +133,7 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
+ export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
+   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
+   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
+-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0] } : null;
++  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], unseenCards: UNSEEN_CARDS[0], framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0] } : null;
+   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
+   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
+   // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.
+diff --git a/packages/explorer/src/client/panels/tuning-levers.test.ts b/packages/explorer/src/client/panels/tuning-levers.test.ts
+index 1302c270a..b28ff0415 100644
+--- a/packages/explorer/src/client/panels/tuning-levers.test.ts
++++ b/packages/explorer/src/client/panels/tuning-levers.test.ts
+@@ -23,8 +23,9 @@ describe("tuning help", () => {
+     // Frame the same day, in a group of its own, Page (the trial of a page without its sidebar); Step on 2026-11-21, what the
+     // 2D camera frames after a step (a trial beside the least pan), and Cut Counted beside it the same day; Wire Answers and
+     // Direction Marks the same day in the 2D wires group, the trials of a wire that says who uses what, and of its way;
+-    // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at.
+-    expect(ids.length).toBe(77);
++    // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at;
++    // Unseen Cards beside it, the trial of cards outside the window skipped until they near it.
++    expect(ids.length).toBe(78);
+     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
+   });
+ 
+@@ -80,7 +81,7 @@ describe("the template's initial tuning values", () => {
+   it("equal the defaults in getDefaultTuning for every control", () => {
+     const defaults = getDefaultTuning();
+     const ids = templateControlIds();
+-    expect(ids.length).toBe(77);
++    expect(ids.length).toBe(78);
+     for (const id of ids) {
+       const { group, key } = settingOf(id, defaults);
+       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];
+diff --git a/packages/explorer/src/client/panels/tuning-levers.ts b/packages/explorer/src/client/panels/tuning-levers.ts
+index f5f58f868..daf4c829c 100644
+--- a/packages/explorer/src/client/panels/tuning-levers.ts
++++ b/packages/explorer/src/client/panels/tuning-levers.ts
+@@ -54,6 +54,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
+   "tuning-direction-marks":           "Arrows on each 2D wire: along, from what is offered to what uses it; against, the other way, a trial, not our rule.",
+   "tuning-cut-counted":               "Whether, after a step, an arrow at each edge counts the cards of what it opened beyond that edge, and takes you to them.",
+   "tuning-arrival-waits":             "Whether easing out to the neighbours waits while your pointer rests on the card you arrived at.",
++  "tuning-unseen-cards":              "Whether cards outside the window skip their styling and drawing until they near it, which speeds a change of look.",
+   "tuning-step":                      "What a step inside the map frames: the start of what it opened, all of it, or all of it with what its lines reach.",
+   "tuning-framing":                   "Who frames the camera: you, or the camera following the pins, newest first, until you pan or zoom; Fit resumes it.",
+   "tuning-overview-files":            "What the farthest zoom draws: every card at its size, or files only with one line for each pair, as in Flow.",
+diff --git a/packages/explorer/src/client/panels/tuning.ts b/packages/explorer/src/client/panels/tuning.ts
+index 104d62469..b4bd8da54 100644
+--- a/packages/explorer/src/client/panels/tuning.ts
++++ b/packages/explorer/src/client/panels/tuning.ts
+@@ -8,7 +8,7 @@
+ import { applyMarbles, applyPalette } from "../dom";
+ import { layoutSettingsOf } from "../layout-presets";
+ import { DEFAULT_PALETTE, isPaletteName } from "../palette";
+-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
++import { ARRIVAL_WAITS, ARRIVALS, UNSEEN_CARDS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+ import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
+ import { initTuningReset } from "./tuning-reset";
+ 
+@@ -84,6 +84,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
+   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
+   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
+   const arrivalWaitsSelect = document.getElementById("tuning-arrival-waits") as HTMLSelectElement | null;
++  const unseenCardsSelect = document.getElementById("tuning-unseen-cards") as HTMLSelectElement | null;
+   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
+   const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
+   const cutCountedSelect = document.getElementById("tuning-cut-counted") as HTMLSelectElement | null;
+@@ -213,6 +214,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
+     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
+     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
+     if (arrivalWaitsSelect) arrivalWaitsSelect.value = state.tuning.localMap.arrivalWaits;
++    if (unseenCardsSelect) unseenCardsSelect.value = state.tuning.localMap.unseenCards;
+     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
+     if (stepSelect) stepSelect.value = state.tuning.localMap.step;
+     if (cutCountedSelect) cutCountedSelect.value = state.tuning.localMap.cutCounted;
+@@ -348,6 +350,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
+       onTuningChange();
+     });
+   }
++  // Whether unseen cards are skipped changes how the page draws, not what: the map is drawn again.
++  if (unseenCardsSelect) {
++    unseenCardsSelect.addEventListener("change", () => {
++      state.tuning.localMap.unseenCards = UNSEEN_CARDS.find(choice => choice === unseenCardsSelect.value) ?? UNSEEN_CARDS[0];
++      onTuningChange();
++      if (state.view === "map" && state.perspective === "2d") onRender();
++    });
++  }
+   // Who frames the camera changes no picture: the next re-frame or Fit reads it, and Fit's state says it at once.
+   if (framingSelect) {
+     framingSelect.addEventListener("change", () => {
+diff --git a/packages/explorer/src/client/persistence/local-storage.ts b/packages/explorer/src/client/persistence/local-storage.ts
+index 60ca5e79a..3973cdd50 100644
+--- a/packages/explorer/src/client/persistence/local-storage.ts
++++ b/packages/explorer/src/client/persistence/local-storage.ts
+@@ -8,7 +8,7 @@
+ import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
+ import { DEFAULT_PALETTE, isPaletteName } from "../palette";
+ import { readReadingChoices, type ReadingChoice } from "../reading-state";
+-import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
++import { ARRIVAL_WAITS, ARRIVALS, UNSEEN_CARDS, CUT_COUNTED, DIRECTION_MARKS, WIRE_ANSWERS, FRAMINGS, STEPS, CHANGE_EMPHASES, HIDDEN_FILES_LOOKS, FRAME_CHOICES, HISTORY_GRANULARITIES, MARBLE_CHOICES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+ import { DEFAULT_RETURN_COST } from "../views/localView/cycle-order";
+ import { readPerspective, readSpatialLayout, readView } from "./navigation";
+ 
+@@ -76,6 +76,7 @@ export const getDefaultTuning = (): TuningConfig => ({
+     hiddenFiles: HIDDEN_FILES_LOOKS[0],
+     arrival: ARRIVALS[0],
+     arrivalWaits: ARRIVAL_WAITS[0],
++    unseenCards: UNSEEN_CARDS[0],
+     framing: FRAMINGS[0],
+     step: STEPS[0],
+     cutCounted: CUT_COUNTED[0],
+diff --git a/packages/explorer/src/client/styles/local.css b/packages/explorer/src/client/styles/local.css
+index baee43870..95d0cb235 100644
+--- a/packages/explorer/src/client/styles/local.css
++++ b/packages/explorer/src/client/styles/local.css
+@@ -596,6 +596,16 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
+ .connections-lit.symbol-hover-active .local-directory-closed { opacity: var(--hover-dim-symbols, 0.5); }
+ #map-connections .connection-path.returning:focus { outline: none; }
+ #map-connections .connection-path.returning:focus-visible { outline: 2px solid var(--state-selected); outline-offset: 2px; }
++/* Unseen Cards, a trial (2026-11-21): with Skipped, a card's wrapper is drawn and styled only near the window
++   (content-visibility: auto), at the size it was last drawn, or else its measured size (--card-w, --card-h, written by the
++   controller), so that a change of look restyles the cards in view and the others as they come near. */
++.local-map-host[data-unseen="skipped"] .local-column:not(.local-closed-directory) {
++    content-visibility: auto;
++    contain-intrinsic-size: auto var(--card-w, 320px) auto var(--card-h, 240px);
++    /* A skipped card's wrapper contains its paint, which would clip what a card draws past its box: the pins on its
++       edges, the test-backed halo and the subject's glow; they are given room. */
++    overflow-clip-margin: 48px;
++}
+ /* The Wire Answers trial (2026-11-21): a wire's band, an undrawn stroke along its route, twelve of the screen's pixels
+    wide or the wire's own width and a little, takes the pointer and the keyboard's focus for the wire (wire-answers.ts).
+    It draws nothing: its stroke is transparent, and the wire itself shows that it is asked about only by the others'
+diff --git a/packages/explorer/src/client/types.ts b/packages/explorer/src/client/types.ts
+index 67141aa0d..a22331afc 100644
+--- a/packages/explorer/src/client/types.ts
++++ b/packages/explorer/src/client/types.ts
+@@ -137,6 +137,13 @@ export interface LocalMapTuning {
+    * arrival began, stands on the card, so that a person reading it with the pointer on it is not pulled off its words.
+    */
+   arrivalWaits: ArrivalWait;
++  /**
++   * Whether a card outside the window skips its style and its drawing until it nears the window (a trial of 2026-11-21,
++   * default "drawn"): "skipped" gives each card's wrapper `content-visibility: auto` at its known size, so that a change
++   * of the zoom looks restyles the cards in view and the rest as they come near, where the whole map was restyled in one
++   * frame (about 78 % of it cards nobody saw, the day's Probes/arrival-pull-back).
++   */
++  unseenCards: UnseenCards;
+   /**
+    * Who frames the camera after an arrival (a trial for the owner's eye, 2026-11-19, Turn 37 of the November 18 record):
+    * "hand", the default, the person, with Arrival and the step as they are; "follows", the camera follows the pinned set,
+@@ -430,6 +437,12 @@ export type ArrivalFraming = "reading" | "then-neighbours" | "then-neighbours-af
+ /** Whether an arrival's pull-back waits while the pointer rests on the subject's card: never, the default, or while pointed at. */
+ export type ArrivalWait = "never" | "pointed";
+ 
++/** Whether cards outside the window skip their style and drawing until they near it: drawn, the default, or skipped. */
++export type UnseenCards = "drawn" | "skipped";
++
++/** Every Unseen Cards choice, in the order the control offers them; the first, drawn, is the default. */
++export const UNSEEN_CARDS: readonly UnseenCards[] = ["drawn", "skipped"];
++
+ /** Every Arrival Waits choice, in the order the control offers them; the first, never, is the default. */
+ export const ARRIVAL_WAITS: readonly ArrivalWait[] = ["never", "pointed"];
+ 
+diff --git a/packages/explorer/src/client/views/localView/controller.ts b/packages/explorer/src/client/views/localView/controller.ts
+index 8bee135a1..d3010d18c 100644
+--- a/packages/explorer/src/client/views/localView/controller.ts
++++ b/packages/explorer/src/client/views/localView/controller.ts
+@@ -793,6 +793,7 @@ export class LocalViewController implements LocalViewApi {
+     this.reading?.updatePresentation(this.readingVisible);
+     const stage = this.stage ?? (this.stage = createStage(root));
+     renderBranches(this, stage);
++    this.sizeUnseenCards();
+     this.applyHistoryEmphasis();
+     if (path) this.fitMapToPath();
+     else if (!this.mapHasInitialFit) this.fitMapToContent();
+@@ -1773,6 +1774,29 @@ export class LocalViewController implements LocalViewApi {
+     this.wireAnswers.follow();
+   }
+ 
++  /**
++   * Unseen Cards (a trial, 2026-11-21): the lever written on the map for the stylesheet, and with Skipped, each card's
++   * wrapper given its measured size, read once while the card is drawn, which a skipped card keeps; a card's box never
++   * changes with zoom (the owner, 2026-11-05), and a card drawn since is held at the size it was last drawn (`auto`).
++   */
++  private sizeUnseenCards(): void {
++    const skipped = this.options.state.tuning.localMap.unseenCards === "skipped";
++    if (!skipped) { delete this.container.dataset.unseen; return; }
++    const unsized = [...(this.stage?.wrappers.values() ?? [])].filter(wrapper => !wrapper.classList.contains("local-closed-directory") && !wrapper.style.getPropertyValue("--card-w"));
++    // Every size read before any is written, so that the page lays itself out once; read from the card, which the page
++    // lays out when asked even inside a wrapper skipped already, where the wrapper's own box would be the fallback size.
++    // The size to the fraction of a pixel, in the map's own units: a whole pixel's rounding moved the column extents the
++    // wires are routed by, and the wires with them (found 2026-11-21 on the stills compared with the lever off).
++    const k = this.mapTransform.k || 1;
++    const sizes = unsized.map(wrapper => { const box = (wrapper.firstElementChild as HTMLElement | null)?.getBoundingClientRect(); return [wrapper, (box?.width ?? 0) / k, (box?.height ?? 0) / k] as const; });
++    for (const [wrapper, width, height] of sizes) {
++      if (!width || !height) continue;
++      wrapper.style.setProperty("--card-w", `${width.toFixed(3)}px`);
++      wrapper.style.setProperty("--card-h", `${height.toFixed(3)}px`);
++    }
++    this.container.dataset.unseen = "skipped";
++  }
++
+   /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */
+   updateMapTransform(): void {
+     // Apply transform to the viewport wrapper so container and overlay share the same stacking context
+diff --git a/packages/explorer/src/shared/template.html b/packages/explorer/src/shared/template.html
+index 7f2220e3f..95e0b5d90 100644
+--- a/packages/explorer/src/shared/template.html
++++ b/packages/explorer/src/shared/template.html
+@@ -305,6 +305,13 @@
+               <option value="pointed">While Pointed At</option>
+             </select>
+           </label>
++          <label class="tuning-slider">
++            <span>Unseen Cards</span>
++            <select id="tuning-unseen-cards">
++              <option value="drawn" selected>Drawn</option>
++              <option value="skipped">Skipped</option>
++            </select>
++          </label>
+           <label class="tuning-slider">
+             <span>Framing</span>
+             <select id="tuning-framing">
+diff --git a/tests/e2e/tuning.spec.ts b/tests/e2e/tuning.spec.ts
+index c8a924f2e..2cbbf6d72 100644
+--- a/tests/e2e/tuning.spec.ts
++++ b/tests/e2e/tuning.spec.ts
+@@ -37,8 +37,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
+   // of its own, Page (the trial of a page without its sidebar beside today's). Step joined the 2D layout group on
+   // 2026-11-21 (what the camera frames after a step, a trial beside the least pan), and Cut Counted beside it the same day.
+   // Wire Answers and Direction Marks joined the 2D wires group the same day (a wire that says who uses what, and its way),
+-  // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at).
+-  await expect(controls).toHaveCount(77);
++  // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at),
++  // and Unseen Cards beside it (cards outside the window skipped until they near it).
++  await expect(controls).toHaveCount(78);
+   const facts = await controls.evaluateAll(elements => elements.map(element => {
+     const describedBy = element.getAttribute("aria-describedby") ?? "";
+     const description = document.getElementById(describedBy);

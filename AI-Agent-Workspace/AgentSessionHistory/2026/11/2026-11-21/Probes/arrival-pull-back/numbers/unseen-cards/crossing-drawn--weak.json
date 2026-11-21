@@ -1,0 +1,2343 @@
+[
+ {
+  "subject": "estate",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {
+   "unseenCards": "drawn"
+  },
+  "elements": {
+   "map": 1197,
+   "cards": 8,
+   "bands": 4,
+   "wires": 23
+  },
+  "restBeforeEase": 3433,
+  "ease": {
+   "ms": 1100,
+   "frames": 15,
+   "fromK": 1.45,
+   "toK": 0.576,
+   "median": 33.3,
+   "p90": 183.3,
+   "worst": 466.7,
+   "whole": {
+    "script": 222.1,
+    "style": 411.8,
+    "layout": 41.2,
+    "paint": 199.9,
+    "other": 109.9,
+    "styles": [
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 12.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 4.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 4.1,
+      "elements": 17,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 254.6,
+      "elements": 624,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 21.1,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 6.7,
+      "elements": 2,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "VG:5176:33204",
+       "YG:5176:37599",
+       "kk:5176:31523",
+       "drawConnections:5177:57036",
+       ":5177:78771"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "YG:5176:37671",
+       "kk:5176:31523"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 24,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "sayCut:5177:63191",
+       "updateMapTransform:5177:76560",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 76.1,
+      "elements": 231,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 917,
+   "ms": 466.7,
+   "k": 0.661,
+   "state": "connections|far||true|moving",
+   "script": 18.5,
+   "style": 276.3,
+   "layout": 35.8,
+   "paint": 72.3,
+   "other": 55.7,
+   "styles": [
+    {
+     "ms": 254.6,
+     "elements": 624,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 21.1,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 200,
+    "ms": 50.1,
+    "k": 1.38,
+    "state": "reading|reading|0|false|moving",
+    "script": 10.3,
+    "style": 13,
+    "layout": 0,
+    "paint": 1.9,
+    "other": 1.3,
+    "styles": [
+     {
+      "ms": 12.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 450,
+    "ms": 100,
+    "k": 0.859,
+    "state": "reading|reading|0|false|moving",
+    "script": 31.3,
+    "style": 7.1,
+    "layout": 0,
+    "paint": 31.4,
+    "other": 6.4,
+    "styles": [
+     {
+      "ms": 4.1,
+      "elements": 17,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 917,
+    "ms": 466.7,
+    "k": 0.661,
+    "state": "connections|far||true|moving",
+    "script": 18.5,
+    "style": 276.3,
+    "layout": 35.8,
+    "paint": 72.3,
+    "other": 55.7,
+    "styles": [
+     {
+      "ms": 254.6,
+      "elements": 624,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 21.1,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1100,
+    "ms": 183.3,
+    "k": 0.576,
+    "state": "connections|far||false|",
+    "script": 56.6,
+    "style": 89.2,
+    "layout": 5.3,
+    "paint": 25.5,
+    "other": 18.1,
+    "styles": [
+     {
+      "ms": 6.7,
+      "elements": 2,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "VG:5176:33204",
+       "YG:5176:37599",
+       "kk:5176:31523",
+       "drawConnections:5177:57036",
+       ":5177:78771"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "YG:5176:37671",
+       "kk:5176:31523"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 24,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "sayCut:5177:63191",
+       "updateMapTransform:5177:76560",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 76.1,
+      "elements": 231,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1.45,
+    "look": "reading",
+    "style": 2.7,
+    "paint": 1.4,
+    "restyled": 9
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1.449,
+    "look": "reading",
+    "style": 3.7,
+    "paint": 5.1,
+    "restyled": 2
+   },
+   {
+    "at": 67,
+    "ms": 33.4,
+    "k": 1.448,
+    "look": "reading",
+    "style": 3,
+    "paint": 5,
+    "restyled": 6
+   },
+   {
+    "at": 100,
+    "ms": 33.3,
+    "k": 1.441,
+    "look": "reading",
+    "style": 2.8,
+    "paint": 10.3,
+    "restyled": 6
+   },
+   {
+    "at": 133,
+    "ms": 33.4,
+    "k": 1.425,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 2.5,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.6,
+    "k": 1.398,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 4.4,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 50.1,
+    "k": 1.38,
+    "look": "reading",
+    "style": 13,
+    "paint": 1.9,
+    "restyled": 1
+   },
+   {
+    "at": 233,
+    "ms": 33.3,
+    "k": 1.3,
+    "look": "reading",
+    "style": 4.5,
+    "paint": 3.7,
+    "restyled": 6
+   },
+   {
+    "at": 250,
+    "ms": 16.7,
+    "k": 1.226,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 5.1,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 33.3,
+    "k": 1.182,
+    "look": "reading",
+    "style": 5.6,
+    "paint": 6.2,
+    "restyled": 5
+   },
+   {
+    "at": 317,
+    "ms": 33.3,
+    "k": 1.085,
+    "look": "reading",
+    "style": 1.4,
+    "paint": 10.6,
+    "restyled": 2
+   },
+   {
+    "at": 350,
+    "ms": 33.3,
+    "k": 0.974,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 14.6,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 100,
+    "k": 0.859,
+    "look": "reading",
+    "style": 7.1,
+    "paint": 31.4,
+    "restyled": 19
+   },
+   {
+    "at": 917,
+    "ms": 466.7,
+    "k": 0.661,
+    "look": "connections",
+    "style": 276.3,
+    "paint": 72.3,
+    "restyled": 699
+   },
+   {
+    "at": 1100,
+    "ms": 183.3,
+    "k": 0.576,
+    "look": "connections",
+    "style": 89.2,
+    "paint": 25.5,
+    "restyled": 266
+   }
+  ],
+  "changes": [
+   {
+    "at": -3433,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 917,
+    "k": 0.661,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 1100,
+    "k": 0.576,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -3433,
+    "ms": 16.7,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1100,
+    "ms": 2333.2,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 917,
+    "ms": 466.7,
+    "k": 0.661,
+    "look": "connections",
+    "script": 18.5,
+    "style": 276.3,
+    "layout": 35.8,
+    "paint": 72.3,
+    "other": 55.7,
+    "styles": [
+     {
+      "ms": 254.6,
+      "elements": 624,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 21.1,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1100,
+    "ms": 183.3,
+    "k": 0.576,
+    "look": "connections",
+    "script": 56.6,
+    "style": 89.2,
+    "layout": 5.3,
+    "paint": 25.5,
+    "other": 18.1,
+    "styles": [
+     {
+      "ms": 6.7,
+      "elements": 2,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "VG:5176:33204",
+       "YG:5176:37599",
+       "kk:5176:31523",
+       "drawConnections:5177:57036",
+       ":5177:78771"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       ":5176:33309",
+       ":5176:37778",
+       ":5176:37760",
+       "YG:5176:37671",
+       "kk:5176:31523"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 24,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "sayCut:5177:63191",
+       "updateMapTransform:5177:76560",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 76.1,
+      "elements": 231,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 917,
+   "ms": 466.7,
+   "k": 0.661,
+   "state": "connections|far||true|moving",
+   "script": 18.5,
+   "style": 276.3,
+   "layout": 35.8,
+   "paint": 72.3,
+   "other": 55.7,
+   "styles": [
+    {
+     "ms": 254.6,
+     "elements": 624,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 21.1,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 29,
+   "gaps": [
+    57,
+    502,
+    24,
+    33,
+    27,
+    29,
+    40,
+    27,
+    34,
+    36,
+    29,
+    30,
+    23,
+    23,
+    22,
+    31,
+    34,
+    49,
+    51,
+    621,
+    51,
+    52,
+    40,
+    32,
+    25,
+    29,
+    28,
+    24
+   ]
+  }
+ },
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {
+   "unseenCards": "drawn"
+  },
+  "elements": {
+   "map": 5912,
+   "cards": 16,
+   "bands": 12,
+   "wires": 151
+  },
+  "restBeforeEase": 9300,
+  "ease": {
+   "ms": 2783,
+   "frames": 9,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 66.7,
+   "p90": 1583.2,
+   "worst": 1583.2,
+   "whole": {
+    "script": 444.8,
+    "style": 1299.7,
+    "layout": 88.5,
+    "paint": 508.9,
+    "other": 191.7,
+    "styles": [
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "s:5177:86786"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "s:5177:86863"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 12.5,
+      "elements": 59,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 932.6,
+      "elements": 2596,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 45.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 69.7,
+      "elements": 650,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 120,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 5,
+      "elements": 120,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 212,
+      "elements": 1044,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1967,
+   "ms": 1583.2,
+   "k": 0.473,
+   "state": "connections|far||true|moving",
+   "script": 103,
+   "style": 1062.6,
+   "layout": 72.6,
+   "paint": 238.1,
+   "other": 100.4,
+   "styles": [
+    {
+     "ms": 12.5,
+     "elements": 59,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "frameRect:5177:81615",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:81452",
+      "frameRect:5177:81760",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 932.6,
+     "elements": 2596,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 45.4,
+     "elements": 163,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 69.7,
+     "elements": 650,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 67,
+    "ms": 66.7,
+    "k": 1,
+    "state": "reading|reading|0|false|moving",
+    "script": 49.8,
+    "style": 6.1,
+    "layout": 0,
+    "paint": 6.5,
+    "other": 2.8,
+    "styles": [
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "s:5177:86786"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "s:5177:86863"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 267,
+    "ms": 83.2,
+    "k": 0.903,
+    "state": "reading|reading|0|false|moving",
+    "script": 19.1,
+    "style": 1.4,
+    "layout": 0,
+    "paint": 45.9,
+    "other": 11.5,
+    "styles": [
+     {
+      "ms": 1,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 317,
+    "ms": 50.1,
+    "k": 0.748,
+    "state": "reading|reading|0|false|moving",
+    "script": 10.6,
+    "style": 0.4,
+    "layout": 0,
+    "paint": 31.7,
+    "other": 7.3,
+    "styles": []
+   },
+   {
+    "at": 383,
+    "ms": 66.7,
+    "k": 0.624,
+    "state": "reading|reading|0|false|moving",
+    "script": 4.4,
+    "style": 0.4,
+    "layout": 0,
+    "paint": 55.8,
+    "other": 10.4,
+    "styles": []
+   },
+   {
+    "at": 1967,
+    "ms": 1583.2,
+    "k": 0.473,
+    "state": "connections|far||true|moving",
+    "script": 103,
+    "style": 1062.6,
+    "layout": 72.6,
+    "paint": 238.1,
+    "other": 100.4,
+    "styles": [
+     {
+      "ms": 12.5,
+      "elements": 59,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 932.6,
+      "elements": 2596,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 45.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 69.7,
+      "elements": 650,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2783,
+    "ms": 816.6,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 208.5,
+    "style": 223,
+    "layout": 15.9,
+    "paint": 76.5,
+    "other": 49.3,
+    "styles": [
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 120,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 5,
+      "elements": 120,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 212,
+      "elements": 1044,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 67,
+    "ms": 66.7,
+    "k": 1,
+    "look": "reading",
+    "style": 6.1,
+    "paint": 6.5,
+    "restyled": 9
+   },
+   {
+    "at": 100,
+    "ms": 33.3,
+    "k": 0.993,
+    "look": "reading",
+    "style": 3.7,
+    "paint": 11.6,
+    "restyled": 2
+   },
+   {
+    "at": 133,
+    "ms": 33.4,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 22.2,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 50,
+    "k": 0.958,
+    "look": "reading",
+    "style": 1.4,
+    "paint": 20.7,
+    "restyled": 1
+   },
+   {
+    "at": 267,
+    "ms": 83.2,
+    "k": 0.903,
+    "look": "reading",
+    "style": 1.4,
+    "paint": 45.9,
+    "restyled": 4
+   },
+   {
+    "at": 317,
+    "ms": 50.1,
+    "k": 0.748,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 31.7,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 66.7,
+    "k": 0.624,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 55.8,
+    "restyled": 0
+   },
+   {
+    "at": 1967,
+    "ms": 1583.2,
+    "k": 0.473,
+    "look": "connections",
+    "style": 1062.6,
+    "paint": 238.1,
+    "restyled": 3469
+   },
+   {
+    "at": 2783,
+    "ms": 816.6,
+    "k": 0.335,
+    "look": "connections",
+    "style": 223,
+    "paint": 76.5,
+    "restyled": 1287
+   }
+  ],
+  "changes": [
+   {
+    "at": -9300,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1967,
+    "k": 0.473,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 2783,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -9300,
+    "ms": 916.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1217,
+    "ms": 8083,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1967,
+    "ms": 1583.2,
+    "k": 0.473,
+    "look": "connections",
+    "script": 103,
+    "style": 1062.6,
+    "layout": 72.6,
+    "paint": 238.1,
+    "other": 100.4,
+    "styles": [
+     {
+      "ms": 12.5,
+      "elements": 59,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 2.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 932.6,
+      "elements": 2596,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 45.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 69.7,
+      "elements": 650,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2783,
+    "ms": 816.6,
+    "k": 0.335,
+    "look": "connections",
+    "script": 208.5,
+    "style": 223,
+    "layout": 15.9,
+    "paint": 76.5,
+    "other": 49.3,
+    "styles": [
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 120,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "framePlace:5177:80947",
+       "updateMapTransform:5177:76541",
+       "s:5177:87535"
+      ]
+     },
+     {
+      "ms": 5,
+      "elements": 120,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 212,
+      "elements": 1044,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1967,
+   "ms": 1583.2,
+   "k": 0.473,
+   "state": "connections|far||true|moving",
+   "script": 103,
+   "style": 1062.6,
+   "layout": 72.6,
+   "paint": 238.1,
+   "other": 100.4,
+   "styles": [
+    {
+     "ms": 12.5,
+     "elements": 59,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      "$r:5177:24868",
+      "frameRect:5177:81615",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 2.3,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:86189",
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:81452",
+      "frameRect:5177:81760",
+      "s:5177:86470"
+     ]
+    },
+    {
+     "ms": 932.6,
+     "elements": 2596,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 45.4,
+     "elements": 163,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 69.7,
+     "elements": 650,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 13,
+   "gaps": [
+    86,
+    53,
+    385,
+    41,
+    33,
+    54,
+    73,
+    53,
+    54,
+    1691,
+    913,
+    158
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours",
+  "extra": {
+   "unseenCards": "drawn"
+  },
+  "elements": {
+   "map": 11859,
+   "cards": 80,
+   "bands": 20,
+   "wires": 220
+  },
+  "restBeforeEase": 12433,
+  "ease": {
+   "ms": 3200,
+   "frames": 5,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 166.6,
+   "p90": 1999.9,
+   "worst": 1999.9,
+   "whole": {
+    "script": 438.8,
+    "style": 1747,
+    "layout": 120.5,
+    "paint": 646.8,
+    "other": 300.7,
+    "styles": [
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1240.5,
+      "elements": 6478,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 85.4,
+      "elements": 982,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 20.3,
+      "elements": 323,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 213,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 448.5,
+      "elements": 2384,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 2333,
+   "ms": 1999.9,
+   "k": 0.502,
+   "state": "connections|far||true|moving",
+   "script": 58.7,
+   "style": 1326.2,
+   "layout": 114.9,
+   "paint": 301.6,
+   "other": 193.1,
+   "styles": [
+    {
+     "ms": 1240.5,
+     "elements": 6478,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 85.4,
+     "elements": 982,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 67,
+    "ms": 66.7,
+    "k": 0.998,
+    "state": "reading|reading|0|false|moving",
+    "script": 30.2,
+    "style": 2.9,
+    "layout": 0,
+    "paint": 27.3,
+    "other": 4.1,
+    "styles": [
+     {
+      "ms": 0.8,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:81452",
+       "frameRect:5177:81760",
+       "s:5177:86470"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 167,
+    "ms": 100,
+    "k": 0.98,
+    "state": "reading|reading|0|false|moving",
+    "script": 32,
+    "style": 1,
+    "layout": 0,
+    "paint": 61.8,
+    "other": 4.6,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 333,
+    "ms": 166.6,
+    "k": 0.878,
+    "state": "reading|reading|0|false|moving",
+    "script": 24.3,
+    "style": 0.8,
+    "layout": 0,
+    "paint": 126.4,
+    "other": 16.3,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   },
+   {
+    "at": 2333,
+    "ms": 1999.9,
+    "k": 0.502,
+    "state": "connections|far||true|moving",
+    "script": 58.7,
+    "style": 1326.2,
+    "layout": 114.9,
+    "paint": 301.6,
+    "other": 193.1,
+    "styles": [
+     {
+      "ms": 1240.5,
+      "elements": 6478,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 85.4,
+      "elements": 982,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 3200,
+    "ms": 866.7,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 293.6,
+    "style": 416.1,
+    "layout": 5.6,
+    "paint": 129.8,
+    "other": 82.6,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 20.3,
+      "elements": 323,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 213,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 448.5,
+      "elements": 2384,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 67,
+    "ms": 66.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 2.9,
+    "paint": 27.3,
+    "restyled": 6
+   },
+   {
+    "at": 167,
+    "ms": 100,
+    "k": 0.98,
+    "look": "reading",
+    "style": 1,
+    "paint": 61.8,
+    "restyled": 4
+   },
+   {
+    "at": 333,
+    "ms": 166.6,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 126.4,
+    "restyled": 4
+   },
+   {
+    "at": 2333,
+    "ms": 1999.9,
+    "k": 0.502,
+    "look": "connections",
+    "style": 1326.2,
+    "paint": 301.6,
+    "restyled": 7460
+   },
+   {
+    "at": 3200,
+    "ms": 866.7,
+    "k": 0.335,
+    "look": "connections",
+    "style": 416.1,
+    "paint": 129.8,
+    "restyled": 2926
+   }
+  ],
+  "changes": [
+   {
+    "at": -12433,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 2333,
+    "k": 0.502,
+    "state": "connections|far||true|moving"
+   },
+   {
+    "at": 3200,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -12433,
+    "ms": 850,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1233,
+    "ms": 11199.5,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 2333,
+    "ms": 1999.9,
+    "k": 0.502,
+    "look": "connections",
+    "script": 58.7,
+    "style": 1326.2,
+    "layout": 114.9,
+    "paint": 301.6,
+    "other": 193.1,
+    "styles": [
+     {
+      "ms": 1240.5,
+      "elements": 6478,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 85.4,
+      "elements": 982,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 3200,
+    "ms": 866.7,
+    "k": 0.335,
+    "look": "connections",
+    "script": 293.6,
+    "style": 416.1,
+    "layout": 5.6,
+    "paint": 129.8,
+    "other": 82.6,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:78713",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 20.3,
+      "elements": 323,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "frameRect:5177:81615",
+       "s:5177:86470"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 5,
+      "script": "FunctionCall s@index.js:5177:86189",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     },
+     {
+      "ms": 2.5,
+      "elements": 213,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 448.5,
+      "elements": 2384,
+      "script": "FunctionCall @index.js:5177:79458",
+      "stack": [
+       "$r:5177:24868",
+       "aP:5177:24964",
+       "measureLayoutExtents:5177:74449",
+       "measureLayoutExtents:5177:57192",
+       "YG:5176:37481"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 2333,
+   "ms": 1999.9,
+   "k": 0.502,
+   "state": "connections|far||true|moving",
+   "script": 58.7,
+   "style": 1326.2,
+   "layout": 114.9,
+   "paint": 301.6,
+   "other": 193.1,
+   "styles": [
+    {
+     "ms": 1240.5,
+     "elements": 6478,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 85.4,
+     "elements": 982,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 18,
+   "gaps": [
+    21,
+    21,
+    22,
+    47,
+    28,
+    21,
+    117,
+    26,
+    582,
+    98,
+    162,
+    2063,
+    538,
+    52,
+    61,
+    86,
+    113
+   ]
+  }
+ }
+]

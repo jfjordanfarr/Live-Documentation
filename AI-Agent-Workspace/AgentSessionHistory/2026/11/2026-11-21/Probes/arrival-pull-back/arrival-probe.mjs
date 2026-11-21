@@ -40,7 +40,7 @@ const all = {
   heavy: `${base}/?view=local&mode=2d&node=${encodeURIComponent(HEAVY)}`
 };
 const subjects = (process.env.SUBJECTS ?? 'estate,pathfind,heavy').split(',');
-const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink.user_timing', 'v8.execute'];
+const CATEGORIES = ['devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.stack', 'blink.user_timing', 'v8.execute'];
 const LONG = 50;
 
 /** The renderer main thread's complete events, nested, each with its self time. */
@@ -72,8 +72,13 @@ function breakdown(list, from, to) {
     // Self time inside the window, in proportion where an event straddles its edge.
     groups[GROUP(e.name)] += e.self * (end - start) / e.dur / 1000;
   }
-  const styles = list.filter(e => e.name === 'UpdateLayoutTree' && e.ts >= from && e.ts < to && e.dur > 2000)
-    .map(e => ({ ms: +(e.dur / 1000).toFixed(1), elements: e.args?.elementCount ?? e.args?.data?.elementCount ?? null }));
+  const styles = list.filter(e => e.name === 'UpdateLayoutTree' && e.ts >= from && e.ts < to && e.dur > 500)
+    .map(e => {
+      let script = null;
+      for (let p = e.parent; p; p = p.parent) if (['FunctionCall', 'TimerFire', 'FireAnimationFrame', 'EventDispatch', 'v8.callFunction'].includes(p.name)) { const d = p.args?.data ?? {}; script = `${p.name} ${d.functionName ?? ''}@${(d.url ?? '').split('/').pop()}:${d.lineNumber ?? ''}:${d.columnNumber ?? ''}`; break; }
+      const stack = (e.args?.beginData?.stackTrace ?? []).slice(0, 5).map(f => `${f.functionName}:${f.lineNumber}:${f.columnNumber}`);
+      return { ms: +(e.dur / 1000).toFixed(1), elements: e.args?.elementCount ?? e.args?.data?.elementCount ?? null, script, stack };
+    });
   return { ...Object.fromEntries(Object.entries(groups).map(([k, v]) => [k, +v.toFixed(1)])), styles };
 }
 
@@ -101,6 +106,7 @@ for (const name of subjects) for (let run = 1; run <= runs; run++) {
     };
     requestAnimationFrame(tick);
   });
+  if (process.env.FLOOR) await context.addInitScript(() => { window.__liveDocsFloor = true; });
   const page = await context.newPage();
   const errors = []; page.on('pageerror', e => errors.push(String(e.message).slice(0, 160)));
   const cdp = await context.newCDPSession(page);
@@ -110,11 +116,21 @@ for (const name of subjects) for (let run = 1; run <= runs; run++) {
   await page.goto(all[name], { waitUntil: 'domcontentloaded', timeout: 120_000 });
   // The arrival's hold begins once the map has settled at reading size; the trace starts as soon as the map is placed.
   await page.waitForSelector('#map-container .local-placed', { timeout: 120_000 });
+  const wheel = process.env.JOURNEY === 'wheel';
+  if (wheel) {
+    // A zoom by hand across the looks' edge: the picture at rest at reading size first.
+    await page.waitForFunction(() => { const m = document.querySelector('#map-container'); const p = m?.querySelector('.local-placed'); return p && !m.dataset.camera && p.dataset.moving !== 'true'; }, undefined, { timeout: 120_000 });
+    await page.waitForTimeout(1500);
+  }
   const events = [];
   cdp.on('Tracing.dataCollected', ({ value }) => events.push(...value));
   await cdp.send('Tracing.start', { categories: CATEGORIES.join(','), transferMode: 'ReportEvents' });
   await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 70, maxWidth: 640, maxHeight: 400, everyNthFrame: 1 });
   const sync = await page.evaluate(() => { performance.mark('probe-sync'); return { now: performance.now(), wall: Date.now() }; });
+  if (wheel) {
+    await page.mouse.move(760, 400);
+    for (let i = 0; i < Number(process.env.NOTCHES ?? 8); i++) { await page.mouse.wheel(0, 100); await page.waitForTimeout(80); }
+  }
   // Until the camera has been still for 1.5 s (the arrival's hold and ease say it moves), or a minute.
   await page.waitForFunction(() => {
     const map = document.querySelector('#map-container');
@@ -142,11 +158,13 @@ for (const name of subjects) for (let run = 1; run <= runs; run++) {
   let easeStart = -1, easeEnd = -1;
   for (let i = Math.max(1, moving); i < marked.length; i++) if (ks[i] !== ks[i - 1] && ks[i - 1] !== null) easeEnd = i;
   // The ease is the run of frames, each at a new scale, that ends at the last change; the rest before it holds one scale.
-  if (easeEnd > 0) { easeStart = easeEnd - 1; while (easeStart > 0 && ks[easeStart] !== ks[easeStart - 1] && ks[easeStart - 1] !== null) easeStart--; }
+  if (wheel && easeEnd > 0) { easeStart = marked.findIndex((f, i) => i > Math.max(0, moving) && ks[i] !== ks[i - 1] && ks[i - 1] !== null) - 1; }
+  else if (easeEnd > 0) { easeStart = easeEnd - 1; while (easeStart > 0 && ks[easeStart] !== ks[easeStart - 1] && ks[easeStart - 1] !== null) easeStart--; }
   const window_ = easeStart >= 0 ? marked.slice(easeStart, easeEnd + 1) : [];
   const intervals = window_.slice(1).map((f, i) => ({ at: +(f.t - window_[0].t).toFixed(0), ms: +(f.t - window_[i].t).toFixed(1), k: +f.k.toFixed(3), state: f.state, prevT: window_[i].t, t: f.t }));
   const sorted = intervals.map(i => i.ms).sort((a, b) => a - b);
   const q = p => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] : null;
+  const everyFrame = intervals.map(i => { const b = breakdown(list, (i.prevT + offset) * 1000, (i.t + offset) * 1000); return { at: i.at, ms: i.ms, k: i.k, look: i.state.split('|')[0], style: b.style, paint: b.paint, restyled: b.styles.reduce((s, x) => s + (x.elements ?? 0), 0) }; });
   const longFrames = intervals.filter(i => i.ms > LONG).map(i => ({ at: i.at, ms: i.ms, k: i.k, state: i.state,
     ...breakdown(list, (i.prevT + offset) * 1000, (i.t + offset) * 1000) }));
   const changes = marked.filter((f, i) => i > 0 && f.state !== marked[i - 1].state).map(f => ({ at: easeStart >= 0 ? +(f.t - marked[easeStart].t).toFixed(0) : null, k: f.k === null ? null : +f.k.toFixed(3), state: f.state }));
@@ -164,7 +182,7 @@ for (const name of subjects) for (let run = 1; run <= runs; run++) {
   const longest = span.sort((a, b) => (b.f.t - b.prev.t) - (a.f.t - a.prev.t))[0];
   const row = { subject: name, run, condition, arrival, extra, elements, restBeforeEase: restAt, ease: window_.length ? { ms: +(window_.at(-1).t - window_[0].t).toFixed(0), frames: intervals.length,
     fromK: +window_[0].k.toFixed(3), toK: +window_.at(-1).k.toFixed(3), median: q(0.5), p90: q(0.9), worst: sorted.at(-1) ?? null, whole } : null,
-    worstFrame: [...longFrames].sort((a, b) => b.ms - a.ms)[0] ?? null, longFrames, changes, lookFrames,
+    worstFrame: [...longFrames].sort((a, b) => b.ms - a.ms)[0] ?? null, longFrames, everyFrame, changes, lookFrames,
     longestAround: longest ? { at: +(longest.f.t - marked[easeStart].t).toFixed(0), ms: +(longest.f.t - longest.prev.t).toFixed(1), k: +longest.f.k.toFixed(3), state: longest.f.state,
       ...breakdown(list, (longest.prev.t + offset) * 1000, (longest.f.t + offset) * 1000) } : null, errors };
   results.push(row);

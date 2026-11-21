@@ -1,0 +1,299 @@
+[
+ {
+  "name": "estate",
+  "look": "reading",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "connections",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "overview",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "reading",
+  "unseenCards": "again",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "connections",
+  "unseenCards": "again",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "overview",
+  "unseenCards": "again",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "estate",
+  "look": "reading",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "reading",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "estate",
+  "look": "connections",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "connections",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "estate",
+  "look": "overview",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "overview",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "estate",
+  "look": "reading",
+  "drawnTwice": "15",
+  "drawnSkipped": "130"
+ },
+ {
+  "name": "estate",
+  "look": "connections",
+  "drawnTwice": "0",
+  "drawnSkipped": "0"
+ },
+ {
+  "name": "estate",
+  "look": "overview",
+  "drawnTwice": "0",
+  "drawnSkipped": "0"
+ },
+ {
+  "name": "pathfind",
+  "look": "reading",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "connections",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "overview",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "reading",
+  "unseenCards": "again",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "connections",
+  "unseenCards": "again",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "overview",
+  "unseenCards": "again",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "reading",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "reading",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "connections",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "connections",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "overview",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "overview",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "pathfind",
+  "look": "reading",
+  "drawnTwice": "0",
+  "drawnSkipped": "673"
+ },
+ {
+  "name": "pathfind",
+  "look": "connections",
+  "drawnTwice": "0",
+  "drawnSkipped": "602"
+ },
+ {
+  "name": "pathfind",
+  "look": "overview",
+  "drawnTwice": "5",
+  "drawnSkipped": "489"
+ },
+ {
+  "name": "heavy",
+  "look": "reading",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "connections",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "overview",
+  "unseenCards": "drawn",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "reading",
+  "unseenCards": "again",
+  "said": {
+   "look": "reading",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "connections",
+  "unseenCards": "again",
+  "said": {
+   "look": "connections",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "overview",
+  "unseenCards": "again",
+  "said": {
+   "look": "overview",
+   "unseen": null
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "reading",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "reading",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "connections",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "connections",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "overview",
+  "unseenCards": "skipped",
+  "said": {
+   "look": "overview",
+   "unseen": "skipped"
+  }
+ },
+ {
+  "name": "heavy",
+  "look": "reading",
+  "drawnTwice": "0",
+  "drawnSkipped": "649"
+ },
+ {
+  "name": "heavy",
+  "look": "connections",
+  "drawnTwice": "0",
+  "drawnSkipped": "461"
+ },
+ {
+  "name": "heavy",
+  "look": "overview",
+  "drawnTwice": "134",
+  "drawnSkipped": "4114"
+ }
+]

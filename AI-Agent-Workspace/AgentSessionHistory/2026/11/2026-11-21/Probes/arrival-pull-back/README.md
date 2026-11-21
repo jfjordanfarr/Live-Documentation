@@ -209,3 +209,163 @@ Look After's change at rest falls outside the ease where its frame stood before 
 - The motion as felt. Strips are the screencast's frames; the owner's eye on their preview decides.
 - The per-card look, which was measured as a share and not built (above).
 - The restyle of 665 to 1,396 elements inside Look Before's ease on the weak machine, which is not traced to its source.
+
+## 5. Second round: the unseen cards' restyle skipped (`content-visibility: auto`)
+
+_Taken 19:29 to 20:09 UTC the same evening on the day branch at `a90c583c6`, merged into the builder's worktree. The machine's load average was 3 to 13: other builders shared it, and at 11 to 13 a frame's time swings by half. The elements restyled, which do not depend on the load, are the firm numbers._
+
+**What was tried.** A trial lever, Tuning → 2D Layout → **Unseen Cards** (*Drawn*, the default; *Skipped*). Under Skipped each card's wrapper gets three properties:
+
+- `content-visibility: auto`;
+- its measured size as `contain-intrinsic-size: auto <w> auto <h>`, to the fraction of a pixel;
+- `overflow-clip-margin: 48px`.
+
+It is **not landed**: the stills at rest are not equal to the Drawn ones (below). The whole change is kept as [`unseen-cards.patch`](unseen-cards.patch), which applies to the day branch at `a90c583c6`.
+
+### The stills at rest, Drawn against Skipped
+
+[`stills-probe.mjs`](stills-probe.mjs) takes the three subjects at rest in the three looks: the arrival at reading size, three Zoom Out presses for connections, then four more for overview. It takes them twice with Drawn and once with Skipped, and compares the map's room pixel for pixel with a fuzz of 2 %. The sidebar's Tuning badge counts a lever moved from its default, as it should.
+
+| Subject | Look | Drawn against Drawn | Drawn against Skipped |
+| --- | --- | ---: | ---: |
+| estate | reading | 15 | 130 |
+| estate | connections | 0 | 0 |
+| estate | overview | 0 | 0 |
+| `pathfind.ts` | reading | 0 | 673 |
+| `pathfind.ts` | connections | 0 | 602 |
+| `pathfind.ts` | overview | 5 | 489 |
+| heavy | reading | 0 | 649 |
+| heavy | connections | 0 | 461 |
+| heavy | overview | 134 | 4,114 |
+
+The first build, without `overflow-clip-margin` and with whole-pixel sizes, differed by 25,800 to 94,598 pixels a still. The paint containment that `content-visibility` brings clipped three things: the subject's glow, the test-backed halo, and the pins that stand on a card's edge. Clip room and fractional sizes brought it to the table above. The two faults left:
+
+1. **A stacking context for every card.** An opened directory's membrane outline, which passes behind a card's glow, is drawn under the skipped wrapper where it was drawn over the glow ([the picture](../../Screenshots/arrival-pull-back/unseen-cards/stills--pathfind-reading--drawn-skipped-difference.png): the faint rounded line above the cards at the left is gone under Skipped). That accounts for the 461 to 673 pixels at reading and connections.
+2. **A card's box at the overview.** At the overview under Files Only every card takes a compact form, so a card's box does change between looks there. A skipped card off the window keeps the size it was last drawn at, in another look. The column extents the wires are routed by move by a fraction, and the vertical runs of the wires and one card edge shift by a pixel ([the picture](../../Screenshots/arrival-pull-back/unseen-cards/stills--heavy-overview--drawn-skipped-difference.png)). That accounts for 4,114 pixels on the heavy subject.
+
+Both change a still at rest, so the trial is not clean. Making it clean would need two things: the membranes drawn above every card's own layer, and each card's size written again whenever the look changes its form. Neither is small.
+
+### What Skipped does to the motion
+
+Every run is in [`numbers/unseen-cards/`](numbers/unseen-cards/), and [`summarize2.mjs`](summarize2.mjs) gives the table at the end of this section. On the heavy subject:
+
+| Journey | Condition | Drawn: worst frame, elements restyled at the look's change | Skipped: the same |
+| --- | --- | --- | --- |
+| the crossing pull-back (today's form) | full | 950–1,017 ms, 7,460–7,850 (at load 11–13) | 267 ms, 4,597–4,757, and a second frame of 233–267 ms restyling 3,001 |
+| the crossing pull-back | weak | 2,000 ms, 7,460 | 883–967 ms, 3,957, and a second frame restyling 3,908 |
+| a wheel across the edge (8 notches) | full | 550–600 ms, 7,460–7,739 | 217–250 ms, 4,697 |
+| a wheel across the edge | weak | 2,333 ms, 7,461 | 1,033 ms, 4,807 |
+| Look After, the change at rest | full | 450–467 ms, 6,421 (first round) | 417 ms, 7,866 |
+| Look Before, the change at rest | full | 517–617 ms, 6,420 (first round) | 167 ms, 3,741, and a frame restyling 3,883 |
+
+**Halved, not removed.** At reading size 78 % of the restyle belonged to cards outside the window. Where the crossing falls, though, the camera is already at about 0.55 of reading scale and many more cards are in view: about 4,600 elements are styled there under Skipped.
+
+A second frame of about 3,000 elements follows, forced from script. The wires' drawing measures every anchor (`measureLayoutExtents` → `withTransformReset`, `layout-measure.ts:111`), and that reaches into the skipped cards. The arrival's tick does the same each frame through `frameRect` (`controller.ts`), which also goes through `withTransformReset`.
+
+**The cards that enter the window late.** Under Skipped, one or two frames in the motion restyle 1,000 to 4,300 elements outside the look's change. They are the cards the camera brings near, arriving together rather than a few at a time, and on the heavy subject at full speed they fall in the second long frame above. In the strips ([crossing, Skipped, full](../../Screenshots/arrival-pull-back/unseen-cards/crossing-skipped--full--heavy--strip.png)) no card shows unstyled or jumps: a skipped card's box keeps its size, and its contents are drawn in the frame it is styled in. The gap that remains is the 577 ms between the sixth and seventh frames, where the Drawn strip had 749.
+
+### The floor: Skipped, with neither forced restyle in the motion
+
+This was a probe build only, not landed. Behind a flag set by the probe, two things were taken out of the motion:
+
+- the legend did not ask the cells at the look's change;
+- the wires were not drawn while the camera moved, only once it rested.
+
+| Journey | Condition | Drawn, floor | Skipped, floor |
+| --- | --- | --- | --- |
+| crossing, heavy | full | 400–417 ms, 7,460 | 300–400 ms, 4,597 (the look's own pass, 3,734 elements, 173–231 ms of style) |
+| crossing, heavy | weak | 2,300 ms | 1,067–1,567 ms |
+| wheel, heavy | full | 483–533 ms | 250–267 ms |
+| wheel, heavy | weak | 1,900 ms | 1,417 ms |
+
+**The floor is still hundreds of milliseconds.** What is left in the frame is the look's own style pass over what stands in view at the crossing, about 3,700 elements in 173 to 231 ms, which is about 50 µs an element at full speed. Paint adds 50 to 70 ms. Neither forced restyle adds cost of its own: each forces earlier a restyle the frame would make anyway, and with them gone the frame makes it itself (Drawn 400–417 ms with the floor, 417–433 ms without it in the first round).
+
+- **The legend's query** (`watchLocalKinds` → `checkVisibility` over every closed directory's cell, `spatial-legend.ts:130`) is safe to remove for real. What it shows could be read from the map's own state, the look and the kinds of the cells drawn. But it buys no frame time.
+- **The wires' anchors** would cost a rework of the router's input to do honestly: anchors from the layout's own numbers, the cards' places and each row's offset in its card, which the branch renderer already holds, in place of the page's boxes. That buys nothing while every card in view is restyled anyway. It matters only once the look's change itself is cheap.
+
+### Item 5: the restyle inside Look Before's ease
+
+On the weak machine, Look Before restyled 666 elements (`pathfind.ts`) and 1,621 (heavy) in one frame of its ease. The trace says it is forced from script by the arrival's own tick: `beginArrival`'s `tick` calls `frameRect()` every frame (`controller.ts`), which resets the map layer's transform to read its box (`withTransformReset`), forcing whatever style is owed at that moment.
+
+The forcing site is certain. What it was owed, I take to be the prose's hiding (`updatePresentation(false)`, scheduled a frame after the look is changed): 665 elements is the prose and row parts of `pathfind.ts`'s cards. That attribution is unconfirmed. Two ways to confirm it or rule it out: read `frameRect` once when the ease begins, rather than every frame; or write the prose's state in the same frame as the look.
+
+### My recommendation
+
+**The cause is the cost of each element's style, not their number alone.**
+
+- The cards carry dozens of custom properties inherited from the map (`--text-scale`, `--control-scale`, `--look-*`, every held scale) and formulas over them. A look's change computes all of it again for every element under the map.
+- Skipping the unseen cards halves the stall on this repository's heaviest neighbourhood and does not end it. The camera crosses the edge where much of the picture is already in view.
+- The per-card look I estimated before (about 150 rules re-keyed, the cross-fade made per card, the wires drawn between looks) would buy the same half, without containment's faults but at a far larger cost. I no longer recommend it.
+
+What I would do first is the look-change freeze round's own second option, **cheaper elements**:
+
+1. Measure the style cost of one card at the change, by its custom properties and `calc()`s. Chromium's selector statistics and a card with its properties removed one by one would show which dominate.
+2. Move the held sizes from inherited custom properties to a few container-level values read by the few elements that draw text, so that a look's change restyles names and dots rather than every element of every card.
+
+The aim is the same 7,460-element pass at a fifth of its cost. Combined with Skipped, or without it, that is the route to the owner's arrival without a stall. It is a measurement before a design, and I have not started it.
+
+### Every run of the second round
+
+TN is *Reading, Then Neighbours*. "Look change" gives the frame of the look's change and the next one, each with the elements restyled. "Other frames" gives the most restyled in any other frame of the motion, and how many such frames restyled over 200.
+
+| Run | Subject | # | Ease (ms) | Frames | Median | 90th | Worst (ms) | Worst at (scale) | Look change: frame (ms), elements restyled | Other frames: most restyled in one, frames restyling over 200 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| after-skipped--full | pathfind | 1 | 850 | 42 | 16.7 | 16.7 | 166.6 | 0.335 | 166.6 ms, 3366; 33.3 ms, 177 | 0, 0 |
+| after-skipped--full | heavy | 1 | 700 | 39 | 16.7 | 16.8 | 33.4 |  | 416.7 ms, 7866; 33.3 ms, 290 | 0, 0 |
+| after-skipped--weak | pathfind | 1 | 750 | 22 | 33.3 | 50 | 66.7 | 0.335 | 683.2 ms, 3368; 266.7 ms, 1226 | 8, 0 |
+| after-skipped--weak | heavy | 1 | 2400 | 13 | 50 | 116.6 | 1733.3 | 0.335 | 1733.3 ms, 7871; 283.3 ms, 2083 | 13, 0 |
+| before-drawn--weak | pathfind | 1 | 483 | 9 | 50 | 150 | 150 | 0.819 | 616.7 ms, 3248; 133.3 ms, 1222 | 666, 1 |
+| before-drawn--weak | heavy | 1 | 783 | 3 | 116.6 | 566.7 | 566.7 | 1 | 1599.9 ms, 7462; 283.3 ms, 2709 | 1621, 1 |
+| before-skipped--full | pathfind | 1 | 700 | 41 | 16.7 | 16.7 | 33.4 |  | 116.7 ms, 3246; 33.3 ms, 178 | 665, 1 |
+| before-skipped--full | heavy | 1 | 717 | 23 | 33.3 | 33.4 | 133.4 | 1 | 166.7 ms, 3741; 216.6 ms, 3883 | 2767, 1 |
+| before-skipped--weak | pathfind | 1 | 850 | 11 | 49.9 | 150.1 | 233.3 | 1 | 666.6 ms, 3248; 216.7 ms, 1224 | 670, 2 |
+| before-skipped--weak | heavy | 1 | 917 | 3 | 216.6 | 500 | 500 | 1 | 883.2 ms, 3884; 916.7 ms, 3886 | 3267, 2 |
+| crossing-drawn--full | estate | 1 | 750 | 14 | 33.4 | 149.9 | 166.7 | 0.598 | 149.9 ms, 759; 16.7 ms, 2 | 322, 2 |
+| crossing-drawn--full | estate | 2 | 817 | 17 | 33.3 | 116.7 | 133.3 | 0.771 | 133.3 ms, 699; 33.3 ms, 26 | 333, 1 |
+| crossing-drawn--full | pathfind | 1 | 900 | 11 | 50 | 100 | 433.3 | 0.502 | 433.3 ms, 3409; 100 ms, 242 | 59, 0 |
+| crossing-drawn--full | pathfind | 2 | 883 | 12 | 33.4 | 116.7 | 416.6 | 0.537 | 416.6 ms, 3305; 116.7 ms, 242 | 1, 0 |
+| crossing-drawn--full | heavy | 1 | 1550 | 10 | 49.9 | 1016.7 | 1016.7 | 0.537 | 1016.7 ms, 7850; 183.3 ms, 2810 | 0, 0 |
+| crossing-drawn--full | heavy | 2 | 1567 | 11 | 50 | 233.3 | 950.1 | 0.473 | 950.1 ms, 7571; 233.3 ms, 427 | 0, 0 |
+| crossing-drawn--weak | estate | 1 | 1100 | 15 | 33.3 | 183.3 | 466.7 | 0.661 | 466.7 ms, 699; 183.3 ms, 266 | 19, 0 |
+| crossing-drawn--weak | pathfind | 1 | 2783 | 9 | 66.7 | 1583.2 | 1583.2 | 0.473 | 1583.2 ms, 3469; 816.6 ms, 1287 | 9, 0 |
+| crossing-drawn--weak | heavy | 1 | 3200 | 5 | 166.6 | 1999.9 | 1999.9 | 0.502 | 1999.9 ms, 7460; 866.7 ms, 2926 | 6, 0 |
+| crossing-skipped--full | estate | 1 | 700 | 35 | 16.7 | 33.3 | 50 |  | 50 ms, 699 | 378, 1 |
+| crossing-skipped--full | estate | 2 | 700 | 38 | 16.7 | 33.3 | 33.4 |  | 33.3 ms, 624; 16.7 ms, 75 | 334, 1 |
+| crossing-skipped--full | pathfind | 1 | 950 | 24 | 16.7 | 150.1 | 233.3 | 0.342 | 200.1 ms, 3409; 33.3 ms, 120 | 1337, 2 |
+| crossing-skipped--full | pathfind | 2 | 917 | 24 | 16.7 | 166.8 | 200 | 0.335 | 166.8 ms, 3246; 33.3 ms, 120 | 1164, 2 |
+| crossing-skipped--full | heavy | 1 | 1100 | 23 | 16.7 | 233.3 | 266.7 | 0.537 | 266.7 ms, 4757; 233.3 ms, 3001 | 3825, 1 |
+| crossing-skipped--full | heavy | 2 | 1117 | 22 | 16.7 | 250.1 | 266.7 | 0.579 | 266.7 ms, 4597; 266.6 ms, 3001 | 3597, 1 |
+| crossing-skipped--weak | estate | 1 | 783 | 20 | 16.7 | 100 | 233.2 | 0.811 | 233.2 ms, 703; 83.4 ms, 260 | 8, 0 |
+| crossing-skipped--weak | pathfind | 1 | 1667 | 12 | 33.4 | 433.2 | 883.4 | 0.537 | 883.4 ms, 3468; 433.2 ms, 1289 | 5, 0 |
+| crossing-skipped--weak | heavy | 1 | 2167 | 9 | 33.4 | 966.5 | 966.5 | 0.335 | 883.4 ms, 3957; 966.5 ms, 3908 | 4, 0 |
+| wheel-drawn--full | heavy | 1 | 2417 | 60 | 16.7 | 83.3 | 550 | 0.587 | 550 ms, 7460; 83.3 ms, 212 | 2596, 4 |
+| wheel-drawn--full | heavy | 2 | 2383 | 54 | 16.8 | 50.1 | 599.9 | 0.589 | 599.9 ms, 7739; 83.3 ms, 213 | 2886, 3 |
+| wheel-drawn--weak | heavy | 1 | 6183 | 32 | 83.3 | 250.1 | 2333.3 | 0.577 | 2333.3 ms, 7461; 500 ms, 216 | 4007, 2 |
+| wheel-skipped--full | heavy | 1 | 1983 | 52 | 16.8 | 50.1 | 216.7 | 0.566 | 216.7 ms, 4697; 200 ms, 2957 | 2959, 5 |
+| wheel-skipped--full | heavy | 2 | 2000 | 59 | 16.7 | 50 | 250 | 0.58 | 250 ms, 4697; 216.6 ms, 2957 | 3415, 4 |
+| wheel-skipped--weak | heavy | 1 | 4833 | 28 | 99.9 | 633.3 | 1033.3 | 0.58 | 1033.3 ms, 4807; 833.3 ms, 3015 | 3602, 3 |
+
+The floor's runs (probe build, not landed):
+
+| Run | Subject | # | Ease (ms) | Frames | Median | 90th | Worst (ms) | Worst at (scale) | Look change: frame (ms), elements restyled | Other frames: most restyled in one, frames restyling over 200 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| floor-crossing-drawn--full | pathfind | 1 | 867 | 24 | 16.7 | 133.3 | 233.3 | 0.362 | 150.1 ms, 3246 | 1313, 1 |
+| floor-crossing-drawn--full | pathfind | 2 | 900 | 24 | 16.7 | 166.6 | 200 | 0.355 | 166.6 ms, 3246 | 1313, 1 |
+| floor-crossing-drawn--full | heavy | 1 | 917 | 20 | 16.7 | 183.3 | 400 | 0.579 | 400 ms, 7460; 183.3 ms, 2602 | 111, 0 |
+| floor-crossing-drawn--full | heavy | 2 | 917 | 18 | 16.7 | 166.7 | 416.6 | 0.578 | 416.6 ms, 7460; 166.7 ms, 2602 | 111, 0 |
+| floor-crossing-drawn--weak | pathfind | 1 | 1533 | 12 | 33.4 | 400 | 800 | 0.579 | 800 ms, 3305; 400 ms, 1174 | 2, 0 |
+| floor-crossing-drawn--weak | heavy | 1 | 3083 | 4 | 500 | 2299.9 | 2299.9 | 0.473 | 2299.9 ms, 7460; 500 ms, 2714 | 11, 0 |
+| floor-crossing-skipped--full | pathfind | 1 | 967 | 22 | 16.7 | 166.7 | 233.3 | 0.342 | 200 ms, 3246 | 1044, 2 |
+| floor-crossing-skipped--full | pathfind | 2 | 967 | 22 | 16.7 | 166.5 | 250 | 0.335 | 183.2 ms, 3246 | 1645, 1 |
+| floor-crossing-skipped--full | heavy | 1 | 1017 | 12 | 33.3 | 333.4 | 399.9 | 0.537 | 399.9 ms, 4597; 333.4 ms, 4452 | 121, 0 |
+| floor-crossing-skipped--full | heavy | 2 | 967 | 19 | 16.7 | 300.1 | 333.2 | 0.335 | 300.1 ms, 4597; 50 ms, 220 | 4307, 1 |
+| floor-crossing-skipped--weak | pathfind | 1 | 2300 | 12 | 33.4 | 949.9 | 966.6 | 0.335 | 949.9 ms, 3305; 966.6 ms, 1175 | 5, 0 |
+| floor-crossing-skipped--weak | heavy | 1 | 3033 | 3 | 1066.6 | 1566.6 | 1566.6 | 0.335 | 1066.6 ms, 3743; 1566.6 ms, 3909 | 3214, 1 |
+| floor-wheel-drawn--full | heavy | 1 | 2383 | 53 | 16.7 | 83.3 | 483.4 | 0.582 | 483.4 ms, 7460 | 2384, 5 |
+| floor-wheel-drawn--full | heavy | 2 | 2283 | 54 | 33.3 | 50 | 533.3 | 0.587 | 533.3 ms, 7460 | 2384, 5 |
+| floor-wheel-drawn--weak | heavy | 1 | 5066 | 34 | 66.6 | 216.6 | 1900 | 0.574 | 1900 ms, 7460 | 2801, 3 |
+| floor-wheel-skipped--full | heavy | 1 | 2117 | 54 | 33.3 | 83.2 | 266.7 | 0.585 | 266.7 ms, 4735; 33.3 ms, 48 | 2167, 10 |
+| floor-wheel-skipped--full | heavy | 2 | 1900 | 57 | 16.7 | 66.7 | 250 | 0.58 | 250 ms, 4697; 50 ms, 49 | 1593, 8 |
+| floor-wheel-skipped--weak | heavy | 1 | 6367 | 27 | 116.7 | 949.9 | 1416.6 | 0.549 | 1200 ms, 4676; 1416.6 ms, 3016 | 3425, 3 |
+
+The second round's files: [`stills-probe.mjs`](stills-probe.mjs) (the stills compared), [`where.cjs`](where.cjs) (a trace's bundle positions mapped to the source through the source map), [`summarize2.mjs`](summarize2.mjs) (the tables above), [`unseen-cards.patch`](unseen-cards.patch) (the lever, not landed), [`numbers/unseen-cards/`](numbers/unseen-cards/) (every run and the stills' counts), and the strips and stills under [`Screenshots/arrival-pull-back/unseen-cards/`](../../Screenshots/arrival-pull-back/unseen-cards/). [`arrival-probe.mjs`](arrival-probe.mjs) now also takes a wheel journey (`JOURNEY=wheel`), every frame's restyle, each style pass's cause, and the floor's flag (`FLOOR=1`).
