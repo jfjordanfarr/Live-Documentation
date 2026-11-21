@@ -44,9 +44,13 @@ const pause = () => new Promise((resolve) => setTimeout(resolve, 0));
  * listed only when asked (a directory handle) and false where everything was listed before (a folder input), so that a
  * folder left out whole can be counted there and is "not looked inside" here. Listings are kept on the source, so that
  * a walk again after a change asks only for what it had not listed. `progress(folders)` is told as it goes, and the
- * walk hands the thread back between folders, so that a page keeps drawing.
+ * walk hands the thread back between folders, so that a page keeps drawing. `person` is the person's choices, each a
+ * pattern or `{ patterns, label }`, the patterns one action wrote; what one choice leaves out is one reason, and its
+ * group says which choice (`entry`), so that its Keep takes the choice back.
  */
-export async function walk(source, { evidenceApplied, person }, progress = () => undefined) {
+export async function walk(source, { evidenceApplied = true, person = [] }, progress = () => undefined) {
+  const choices = person.map((each) => (typeof each === "string" ? { patterns: [each] } : each));
+  const choiceOf = choices.flatMap((each, index) => each.patterns.map(() => index));
   source.listed ??= new Map();
   source.texts ??= new Map();
   let listMs = 0;
@@ -78,7 +82,7 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
     const config = await source.text(".git/config");
     gitIgnoreCase = /^\s*ignorecase\s*=\s*true\s*$/imu.test(config ?? "");
   }
-  const decide = leaveOut({ ignoreFiles, gitIgnoreCase, ownOutput: [OWN_OUTPUT], person, evidence: { names, apply: evidenceApplied } });
+  const decide = leaveOut({ ignoreFiles, gitIgnoreCase, ownOutput: [OWN_OUTPUT], person: choices.flatMap((each) => each.patterns), evidence: { names, apply: evidenceApplied } });
 
   // Beside what is kept and left out beneath a folder: the files at its own level (`loose…`), the folders left out
   // beneath it, and of what is left out, what the person or their ignore files chose (`…ByChoice`) apart from what the
@@ -88,6 +92,13 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
   const groups = new Map();
   const kept = [];
   const notes = new Map();
+  /** The group of one reason; a person's own reason is one per choice, said by its label or its pattern. */
+  const groupFor = (rule) => {
+    const entry = rule.kind === "person" ? choiceOf[rule.index] : undefined;
+    const key = entry === undefined ? groupKey(rule) : `person ${entry}`;
+    const reason = entry === undefined ? reasonOf(rule) : choices[entry].label ? `Left out by you: ${choices[entry].label}` : `Your pattern: ${choices[entry].patterns.join("  ")}`;
+    return groups.get(key) ?? groups.set(key, { reason, rule, entry, folders: [], files: [], also: new Map() }).get(key);
+  };
   const leftOutFolder = (path, verdict) => {
     // A folder an ignore file leaves out that the evidence rules also recognise is shown once, under what it is, with
     // the ignore file as a second fact; while the evidence rules are applied, since with them off the ignore file alone
@@ -98,12 +109,11 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
       const name = path.slice(path.lastIndexOf("/") + 1).toLowerCase();
       const index = EVIDENCE.findIndex((each) => each.name === name && each.holds(path, names));
       if (index !== -1) {
-        also = { file: `.${rule.kind}`, pattern: rule.pattern };
+        also = { file: `.${rule.kind}`, path: rule.file, line: rule.line, pattern: rule.pattern };
         rule = { kind: "evidence", index, pattern: EVIDENCE[index].pattern };
       }
     }
-    const key = groupKey(rule);
-    const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(rule), rule, folders: [], files: [], also: new Map() }).get(key);
+    const group = groupFor(rule);
     group.folders.push({ path, files: source.lazy ? null : countBeneath(source, path), also });
     // By the kind of ignore file alone, its patterns kept for whoever asks: DNN's nested files name `bin` eight ways.
     if (also) {
@@ -169,9 +179,7 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
           node.filesKept += 1;
           node.looseKept += 1;
         } else {
-          const key = groupKey(verdict.rule);
-          const group = groups.get(key) ?? groups.set(key, { reason: reasonOf(verdict.rule), rule: verdict.rule, folders: [], files: [], also: new Map() }).get(key);
-          group.files.push(path);
+          groupFor(verdict.rule).files.push(path);
           node.filesLeftOut += 1;
           node.looseLeftOut += 1;
           node.byChoice += 1;
@@ -183,12 +191,6 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
   const started = performance.now();
   await visit(root);
   progress(folders);
-  const offered = [];
-  const gather = (node) => {
-    if (node.evidence) offered.push({ path: node.path, reason: reasonOf(node.evidence) });
-    node.folders.forEach(gather);
-  };
-  gather(root);
   return {
     root,
     kept,
@@ -199,7 +201,6 @@ export async function walk(source, { evidenceApplied, person }, progress = () =>
       // Said as a person is told it: the pattern, whose it is, and the folder it cannot reach into.
       text: `${source.startsWith("the person") ? `Your pattern ${pattern}` : `${pattern} (${source.replace(/^(.*) line (\d+)$/u, "line $2 of $1")})`} cannot keep anything in ${folders[0]}/${folders.length > 1 ? ` or ${folders.length - 1} more folders` : ""}, which ${folders.length > 1 ? "are" : "is"} left out whole.`
     })),
-    offered,
     gitIgnoreCase,
     timings: { totalMs: performance.now() - started, listMs, decideMs, listings, folders }
   };

@@ -2,6 +2,87 @@
 
 Historical evidence, taken on November 21, 2026 by a builder for the root, on branch `page-check`. It records the first leg of building the one function that decides what a scan leaves out, which [the design of one engine with two hosts](../../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names. The function is `packages/engine/src/tooling/leaveOut.ts`. It is standalone: nothing in discovery calls it yet. **This leg is unfinished**; what is not done is listed at the end.
 
+## Sixth leg, later on 2026-11-21: one layout, symmetric
+
+Forty blind runs on the fifth leg's page settled which layout serves ([the strangers' record](../blind-playtests/README.md#the-choice-before-a-scan-tried-on-strangers)). By reason got 16 of 16 right. "What is left out and why" was answered from the first picture, and the quiet plus was found by four of four. The tree's read tasks all fell short, because its rows count folders, never files.
+
+They also misread two things:
+- Every tester took "Leave out build output and packages" for *the* reason things are left out. One unticked it to keep one folder and got the wrong count.
+- "Also ignored by .gitignore: 28 of 162" told no one which line names a folder.
+
+By reason had one gap: to leave something out, every tester typed its path. The root's design for this leg: By reason is the screen, and the tree's one advantage, leaving something out by pointing at it, moves into its right column. The function is not touched in this leg.
+
+### Link parameters, now
+
+| Parameter | Effect |
+| --- | --- |
+| none | The screen: By reason, with no layout switch. |
+| `?layout=folders` | The folder tree, kept unchanged for the owner's eye. |
+| `&switch=on` | Draws the switch between the two layouts. `&switch=off`, which the strangers' tasks name, is still accepted and changes nothing. |
+| `&boxes=choice` or `&boxes=mixed` | The tree's two kinds of box, as before. |
+
+### What changed
+
+1. **"Will be read" answers as "Left out" does.**
+   - *By folder:* each folder opens on demand to its own folders and a row for the files at its level, 50 at a time, with the rest counted. Each row has a quiet control to leave it out, an icon (a minus, the plus's opposite) with the accessible name and tooltip "Leave out <path>". A folder's control writes `/a/b/`, as the tree's box did. The files at a level are left out as one choice, with one pattern per file (git's patterns cannot name a level's files without its folders).
+   - *By kind:* each kind has the same control, which writes `*.png`. It shows twelve kinds at first, then "60 more not shown: show 50".
+   - What a person leaves out this way appears on the left as a reason of its own ("Your pattern: /DNN Platform/Tests/", "Left out by you: the 29 files in the top folder"). The Keep on that reason takes the choice back, rather than adding a `!`.
+2. **The switch is gone.** The page always applies the evidence rules, the function's `evidence.apply` setting, held at true by the page; the person has no control over it. A person keeps build output or packages back with the worded Keep on "Build output beside a project" or "NuGet packages". That Keep writes one `!` per folder and is listed as one choice. The terminal twin lost `--offered` and its "Would also leave out" list for the same reason.
+3. **An ignore file's line, where the folder is.** On an opened reason, a folder that an ignore file also names shows the file, line and words beneath its path, in the quiet colour: "Also Dnn.AdminExperience/.gitignore, line 53: [Bb]in". The count on the reason ("Also ignored by .gitignore: 28 of 128") stays, now without the tooltip.
+4. **From the fifth leg's list of what was still wrong:**
+   - "Your patterns" lists one row per choice. A choice of many patterns says what it named ("the 29 files in the top folder", "Build output beside a project, 162 folders"), with its patterns in a tooltip, and is removed as one.
+   - A project's `bin` and `obj` are one row, "Dnn.AuthServices.Jwt/ obj/ bin/", with one Keep that writes both patterns.
+   - The notes sit under "Your patterns", next to the patterns they are about, and no longer push the lists down.
+5. **The tree** is unchanged and reached by `?layout=folders`. Its box and its files row write the same kind of choices, so "Your patterns" lists them the same way.
+6. **The terminal twin** prints, under a folder alone under its top folder, the ignore file's line that also names it. Its help line says how to leave out a folder or a kind.
+
+### The pictures
+
+These are in `choice/screenshots/`, at 1,280 by 800, taken through the folder input on `nested`. That folder is made by the strangers' recipe (`../blind-playtests/make-leave-out-folder.mjs`) from the same DNN corpus as the made folder: 17,245 files, with DNN's nested `.gitignore` files and fifteen `.tfignore` files. It holds one file more than the strangers' `Source`, so it reads 10,946 where they read 10,945.
+
+**What was not pictured.**
+- **The made folder (103,329 files).** Its run and a second run on `nested` queued in the browser lane at 09:01 and were still waiting behind two other holders at 09:28. I stopped them so that I could hand back within the hour.
+- **The last four changes.** The pictures are from the build of 08:58, which came before them:
+  - By folder now comes before By kind;
+  - an ignore file in the row's own folder is called "this folder's .gitignore" rather than by its full path, and its lines are given once;
+  - a project's folders are sorted ("bin/ obj/");
+  - a labelled choice says "left out".
+- **The counts.** The pictures' counts are the same on the present build, because those changes touch only wording and order.
+
+| Step | Picture |
+| --- | --- |
+| The first screen | `nested-6-1-first.png` |
+| `DNN Platform` opened under "Will be read" | `nested-6-2-read-folder-opened.png` |
+| `DNN Platform/Tests/` left out by its control, and the left column after | `nested-6-3-folder-left-out.png` |
+| `.png` left out, and the left column after | `nested-6-4-kind-left-out.png` |
+| An opened folder with its ignore file's lines | `nested-6-5-ignore-line.png` |
+| Three choices, the files at the top as one entry | `nested-6-6-three-choices.png` |
+
+**What was counted:** 10,946 read and 6,299 left out at first, under four reasons, with no switch drawn. Each step below starts from the one before:
+
+| Step | Read |
+| --- | --- |
+| Leave out `DNN Platform/Tests/` by its control | 10,403 (543 fewer; the strangers' `drop` answer). "Your pattern: /DNN Platform/Tests/ · 1 folder · 900 files" appears on the left, and build output drops from 162 to 128 folders |
+| Leave out `.png` | 9,079 (1,324 fewer) |
+| Leave out the 28 files at the top | 9,051, listed as one entry, "the 28 files in the top folder" |
+| Keep on "Your pattern: *.png" | 10,375, the choice taken back; two entries remain |
+
+**What my eye says:**
+
+- **The first screen answers both questions side by side.**
+  - On the left are four reasons: build output, NuGet packages, and two of DNN's own lines.
+  - On the right, every kind and every folder has a minus beside its count, as quiet as the plus on the left.
+  - No switch is drawn above, only the totals and Scan.
+- **Leaving a folder out is pointing at it,** as it was in the tree. `DNN Platform` opens to its folders, largest first, each with the count of files that will be read. The minus on `Tests/` drops the total by 543. The left column gains "Your pattern: /DNN Platform/Tests/" with its Keep, and build output drops to 128 folders, since 34 of them were inside `Tests`.
+- **A kind is one press.** `.png` leaves the kinds list and stands on the left with its 1,324 files. Its Keep takes the choice back: the total returns and the entry leaves "Your patterns".
+- **An ignore file's lines are on the folder's row.** Under "Modules/Samples/Dnn.ContactList.Spa/ obj/ bin/", one row for the project's two folders, stands the file and its two lines. In the picture they read "Also DNN Platform/Modules/Samples/Dnn.ContactList.Spa/.gitignore, line 2: obj/ · Also … line 1: bin/". That wraps to three lines and repeats the row's path, which is what the last build shortens to "Also this folder's .gitignore, line 1: bin/ · line 2: obj/".
+- **"Your patterns"** lists the three choices as three rows; the 28 files at the top are one of them.
+- **Still wrong or heavy:**
+  - In the pictures, By kind fills the first screen and By folder starts below the fold. The last build puts By folder first, but an opened folder still makes the right column long.
+  - The minus appears on every row, a column of identical glyphs: quiet, but it repeats down the whole list.
+  - The tree behind `?layout=folders` was not looked at in this leg.
+
+
 ## Fifth leg, later on 2026-11-21: the trial page's drawing mended before strangers see it
 
 The root's brief listed eight faults in the fourth leg's page; two more came from a stranger's pilot runs on the playtests' builder's own folder. Each mend below has a picture before and after, at 1,280 by 800, through the folder input (`choice/screenshots/`). Two faults in `leaveOut` came to light in the pictures; each was mended after a failing test.

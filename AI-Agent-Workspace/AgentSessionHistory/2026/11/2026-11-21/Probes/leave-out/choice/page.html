@@ -35,7 +35,6 @@
   .segmented { display: inline-flex; border: 1px solid var(--line-interactive); border-radius: 4px; overflow: hidden; }
   .segmented button { border: 0; border-radius: 0; background: transparent; }
   .segmented button[aria-pressed="true"] { background: rgba(0, 145, 255, 0.16); color: var(--text-strong); }
-  .switch { display: inline-flex; gap: 6px; align-items: center; color: var(--text-secondary); }
   #folder-name { color: var(--text-strong); font-weight: 600; }
   #totals { font-size: 14px; color: var(--text-strong); margin: 4px 0 0; }
   .quiet, .counts { color: var(--text-muted); }
@@ -50,14 +49,18 @@
   .twisty, .icon-button { padding: 2px; background: transparent; border-color: transparent; }
   .twisty-space { width: 22px; flex: none; }
   .keep { color: var(--offers); border-color: var(--line-interactive); background: transparent; }
-  /* A folder's own Keep is an icon alone, quiet until the row is pointed at or the button has the focus. */
-  .quiet-keep { color: var(--text-muted); }
-  .row:hover .quiet-keep, .quiet-keep:focus-visible { color: var(--offers); }
+  /* A row's own Keep or Leave out is an icon alone, quiet until the row is pointed at or the button has the focus. */
+  .quiet-act { color: var(--text-muted); }
+  .row:hover .quiet-act, .quiet-act:focus-visible { color: var(--offers); }
+  .icon-space { width: 22px; flex: none; }
+  /* The ignore file's line that also names a folder, on the folder's own row, under its name. */
+  .path .also-line { display: block; font-family: system-ui, "Segoe UI", sans-serif; color: var(--text-muted); }
+  .counts-list .row { min-height: 28px; padding: 0; }
+  .counts-list .row .path { font-family: inherit; font-size: inherit; }
   .also { color: var(--text-muted); padding: 0 4px 6px 36px; }
   .start { color: var(--text-muted); white-space: nowrap; }
   .text-button { background: transparent; border: 0; color: var(--offers); padding: 4px 0; }
   .columns { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 28px; }
-  .counts-list li { display: flex; justify-content: space-between; gap: 12px; padding: 1px 0; }
   #tree { border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-surface); padding: 4px 0; }
   [role="treeitem"] { display: flex; gap: 8px; align-items: center; min-height: 28px; padding: 0 10px; cursor: default; }
   [role="treeitem"]:hover { background: var(--ground-hover); }
@@ -71,6 +74,7 @@
   form { display: flex; gap: 8px; margin: 6px 0; }
   input[type="text"] { font: inherit; color: var(--text-normal); background: var(--ground-deep); border: 1px solid var(--line-interactive); border-radius: 4px; padding: 4px 8px; width: 320px; }
   #patterns li { display: flex; gap: 10px; align-items: center; }
+  #notes { margin-top: 10px; }
   #notes li { color: var(--text-secondary); padding: 2px 0; }
   .bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
   #scan { border-color: var(--offers); color: var(--offers); }
@@ -95,12 +99,10 @@
         <button type="button" data-layout="reason" aria-pressed="true">By reason</button>
         <button type="button" data-layout="tree" aria-pressed="false">Folders</button>
       </span>
-      <label class="switch"><input id="evidence" type="checkbox" checked> Leave out build output and packages</label>
       <button id="scan" type="button" data-icon="scan" aria-label="Scan what is kept">Scan</button>
       <span id="scan-result" role="status"></span>
     </div>
     </div>
-    <ul id="notes" hidden></ul>
     <div id="by-reason" class="columns">
       <div><h2>Left out</h2><ul id="reasons"></ul></div>
       <div><h2>Will be read</h2><div id="read"></div></div>
@@ -109,6 +111,7 @@
     <h2>Your patterns</h2>
     <form id="pattern-form"><input id="pattern" type="text" aria-label="A pattern: a name to leave out, or ! and a name to keep" placeholder="bin/  or  !packages/keep/"><button type="submit" class="offered">Add</button></form>
     <ul id="patterns"></ul>
+    <ul id="notes" hidden></ul>
   </section>
 </main>
 <footer id="timings"></footer>
