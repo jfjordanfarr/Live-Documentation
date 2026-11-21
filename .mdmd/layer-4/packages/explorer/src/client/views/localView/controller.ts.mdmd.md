@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-21T06:36:57.094Z
+- Generated At: 2026-11-21T07:10:14.648Z
 
 ## Authored
 ### Purpose
@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L87)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -104,6 +104,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`camera-intent.STEP_MARK_MS`](./camera-intent.ts.mdmd.md#symbol-step_mark_ms)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
+- [`camera-intent.cutPan`](./camera-intent.ts.mdmd.md#symbol-cutpan)
 - [`camera-intent.easeInOutCubic`](./camera-intent.ts.mdmd.md#symbol-easeinoutcubic)
 - [`camera-intent.framingEaseMs`](./camera-intent.ts.mdmd.md#symbol-framingeasems)
 - [`camera-intent.framingTravel`](./camera-intent.ts.mdmd.md#symbol-framingtravel)
@@ -121,6 +122,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`card-reading.ReadingTarget`](./card-reading.ts.mdmd.md#symbol-readingtarget)
 - [`connections.clearConnections`](./connections.ts.mdmd.md#symbol-clearconnections)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
+- [`cut-signs.CutCard`](./cut-signs.ts.mdmd.md#symbol-cutcard)
+- [`cut-signs.CutSigns`](./cut-signs.ts.mdmd.md#symbol-cutsigns)
+- [`cut-signs.createCutSigns`](./cut-signs.ts.mdmd.md#symbol-createcutsigns)
 - [`directory-flow.flowNeighbours`](./directory-flow.ts.mdmd.md#symbol-flowneighbours)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/camera-intent.spec.ts`
-- Generated At: 2026-11-21T05:33:05.709Z
+- Generated At: 2026-11-21T07:10:17.225Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.ArrivalFraming`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-arrivalframing) (type-only)
 - [`types.CameraFraming`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-cameraframing) (type-only)
+- [`types.CutCounted`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-cutcounted) (type-only)
 - [`types.StepFraming`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-stepframing) (type-only)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](../../packages/explorer/src/client/views/localView/camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)

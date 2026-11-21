@@ -355,15 +355,28 @@ export function cutByEdge<K>(cards: readonly { key: K; bounds: Bounds }[], camer
 }
 
 /**
- * Where a sign at an edge takes the camera when pressed: along that edge's axis alone, the least pan that brings the cards
- * cut there inside the frame's padding, entered at their start where together they are larger than the room; the scale
- * and the other axis are kept.
+ * Where a sign at an edge takes the camera when pressed: the least pan, the scale kept, that brings the nearest of the
+ * cards cut there wholly inside the frame's padding (a card taller or wider than the room entered at its start), the
+ * nearest being the one that reaches least far past that edge, then the one nearest the frame's middle across it. One
+ * card at a time, so that a press always lands on one of them whole and the next press goes on to the next; a pan along
+ * the edge's axis alone to all of them at once was tried first (2026-11-21) and, where they lay up and to the right of
+ * the view, landed on other cards with none of them whole.
  */
 export function cutPan(cards: readonly Bounds[], edge: ViewEdge, camera: MapTransform, frame: Frame): MapTransform {
-  const box = unionOf(cards);
-  if (!box) return camera;
-  const pan = revealPan(box, camera, frame);
-  return edge === "left" || edge === "right" ? { ...camera, x: camera.x + pan.x } : { ...camera, y: camera.y + pan.y };
+  if (!cards.length) return camera;
+  const onScreen = (card: Bounds) => ({ left: camera.x + card.left * camera.k, right: camera.x + card.right * camera.k,
+    top: camera.y + card.top * camera.k, bottom: camera.y + card.bottom * camera.k });
+  const past = (card: Bounds): number => {
+    const drawn = onScreen(card);
+    return edge === "left" ? -drawn.left : edge === "right" ? drawn.right - frame.width : edge === "top" ? -drawn.top : drawn.bottom - frame.height;
+  };
+  const across = (card: Bounds): number => {
+    const drawn = onScreen(card);
+    return edge === "left" || edge === "right" ? Math.abs((drawn.top + drawn.bottom) / 2 - frame.height / 2) : Math.abs((drawn.left + drawn.right) / 2 - frame.width / 2);
+  };
+  const nearest = [...cards].sort((a, b) => past(a) - past(b) || across(a) - across(b))[0];
+  const pan = revealPan(nearest, camera, frame);
+  return { x: camera.x + pan.x, y: camera.y + pan.y, k: camera.k };
 }
 
 /** Every box given as one, in the same units; null for none. */

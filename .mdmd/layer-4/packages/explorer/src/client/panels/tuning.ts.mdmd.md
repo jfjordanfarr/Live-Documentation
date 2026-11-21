@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-21T05:32:49.471Z
+- Generated At: 2026-11-21T07:10:12.702Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L535)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L544)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -115,6 +115,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.CLOSED_CELL_COLOURS`](../types.ts.mdmd.md#symbol-closed_cell_colours)
 - [`types.CLOSED_DIRECTORY_LOOKS`](../types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.CLOSED_DIRECTORY_SHAPES`](../types.ts.mdmd.md#symbol-closed_directory_shapes)
+- [`types.CUT_COUNTED`](../types.ts.mdmd.md#symbol-cut_counted)
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](../types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
@@ -135,6 +136,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-closed-shape`](../../shared/template.html.mdmd.md#symbol-tuning-closed-shape)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
+- [`template.tuning-cut-counted`](../../shared/template.html.mdmd.md#symbol-tuning-cut-counted)
 - [`template.tuning-descriptions-zoomed-out`](../../shared/template.html.mdmd.md#symbol-tuning-descriptions-zoomed-out)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)

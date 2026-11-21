@@ -47,9 +47,22 @@ The root asked to try a nearer bound for a step's ease, two thirds of reading sc
 - I tried two middling folders of this repository, opened from the `client` folder chosen in the search: `packages/explorer/src/client/panels` and `.../persistence`. Neither eased under Whole or With Its Lines with the Arrival floor, so they would not differ under the nearer bound either.
 - A folder whose whole needs between a third and two thirds of reading scale is still to be found before the comparison can be shown. The constant `STEP_FLOOR_RATIO` in `camera-intent.ts` holds the bound, so the comparison is one build away.
 
-## Not finished: the cut said at the edges
+## The cut counted at the edges
 
-A lever of its own beside Step, Tuning → 2D Layout → **Cut Counted**, default off, is built in the working tree but not committed (`views/localView/cut-signs.ts` and its wiring). At each edge past which what the last step opened goes on, it draws an arrow and the count of its cards, a focus stop that pans to them.
+A lever of its own beside Step, Tuning → 2D Layout → **Cut Counted**, default off. At each edge past which what the last step opened goes on, it draws an arrow and the count of its cards there, a focus stop whose name and tooltip say what it counts. A press pans, the scale kept, to the nearest of those cards, whole. The pictures were taken with Least Pan and the lever on, by [`cut-probe.mjs`](cut-probe.mjs), which also reads what the controls watch (`data-cut-of`, `data-cut-cards`) and their boxes.
 
-- **What the first look showed.** On the estate step it counted 31, 27 and 4 cards at three edges, where `Data` holds three files. None of the controls could be seen in the picture, and on `history` it drew none.
-- The cards it reads, or the place it draws them, are wrong. This is not yet found, and no picture of it is kept.
+| Picture | What it is |
+| --- | --- |
+| [`cut-counted--history--rest.png`](cut-counted--history--rest.png) | `live-docs/history` opened by its handle from `pathfind.ts`, at rest |
+| [`cut-counted--history--after-press.png`](cut-counted--history--after-press.png) | The same after one press of the right-hand control |
+| [`cut-counted--estate--nothing-cut.png`](cut-counted--estate--nothing-cut.png) | The estate's `Data` opened inside `PaymentService`, nothing of it cut |
+
+- **`history` at rest.** The label and `summary.ts` stand at the right at reading size, as without the lever. Three controls say the rest: ↑ 27 at the top's middle, → 31 at the right's middle, ↓ 4 at the bottom's middle. `history` holds 32 cards, and most of them stand up and to the right in the L of its membrane, so most count at two edges.
+  - The controls sit over the map in the toolbar's look and read at a glance.
+  - The right-hand one stands over the right end of `summary.ts`'s label row at the frame's edge, where a card meets the edge. On a picture where a card's control sits at the middle of that edge it would cover the control.
+- **After one press of → 31.** The camera pans, at the same scale, to the nearest of those cards: `format.ts` stands whole at the lower right, `summary.ts` and `history`'s label still in view. The controls now say ↑ 27, → 27, ↓ 3.
+  - The first build panned along the edge's axis alone to all of them at once. Because these cards lie up and to the right, that landed on `pathfind.test.ts` with none of `history`'s cards whole. A press now goes to one card whole and the next press to the next.
+  - Reaching the 27 up and to the right takes many presses. Whether a press should go to the nearest card or to the nearest group is a question for the eye.
+- **The estate's `Data`.** No control: `Data` stands whole after the step, so nothing of what it opened is cut. `PaymentService.cs`, cut at the right, is not part of what the step opened, so it is not counted.
+- **The counts are what the page shows.** The browser case reads each control's count against the directory's cards past each edge, before and after a press. The unit cases are written from the boxes the page drew on `history`.
+- **On the first round's report.** It said the controls counted 31, 27 and 4 on the estate's three-file step and drew nothing on `history`. That was a misread log: the counts printed were `history`'s, and the picture looked at was the estate's, where nothing should be drawn.

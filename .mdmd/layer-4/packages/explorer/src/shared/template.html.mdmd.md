@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-21T05:33:01.570Z
+- Generated At: 2026-11-21T07:10:15.562Z
 
 ## Authored
 ### Purpose
@@ -247,6 +247,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-control-resistance-value` {#symbol-tuning-control-resistance-value}
+- Type: variable
+
+#### `tuning-cut-counted` {#symbol-tuning-cut-counted}
 - Type: variable
 
 #### `tuning-descriptions-zoomed-out` {#symbol-tuning-descriptions-zoomed-out}

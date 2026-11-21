@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { ArrivalFraming, CameraFraming, StepFraming } from "../../packages/explorer/src/client/types";
+import type { ArrivalFraming, CameraFraming, CutCounted, StepFraming } from "../../packages/explorer/src/client/types";
 import { ARRIVAL_FLOOR_RATIO } from "../../packages/explorer/src/client/views/localView/camera-intent";
 import { choose } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
@@ -344,10 +344,10 @@ test("following, pins that cannot all be framed leave the oldest out, always fra
  * from a cut-off view). Opening `live-docs/history` from pathfind.ts at reading size, a directory too large to stand
  * whole at that scale. Least Pan, the default, is the case above; these are the trial's other camera values.
  */
-async function visitStep(browser: Browser, step: StepFraming) {
+async function visitStep(browser: Browser, step: StepFraming, cutCounted: CutCounted = "off") {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step, cutCounted } } })
   });
   const page = await context.newPage();
   await page.goto(`/?view=local&node=${encodeURIComponent(SUBJECT)}`);
@@ -425,6 +425,56 @@ test("Step, With Its Lines: Data opened inside the estate's PaymentService is fr
     expect(inside(await boxOf(page, card(id)), frame), `${id} whole in view`).toBe(true);
   }
   await context.close();
+});
+
+/**
+ * The cut said at the edges (Tuning → 2D Layout → Cut Counted, a trial of 2026-11-21): after a step, at each edge past
+ * which what it opened goes on, an arrow and the count of its cards there, a control that pans to them. Read on
+ * live-docs/history opened by its handle, which no frame holds whole at reading scale; off, nothing is said.
+ */
+test("Cut Counted: the edges past which an opened directory goes on each say how many of its cards lie there, and a press pans to them", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const signs = (page: Page) => page.locator(".map-cut-sign:not([hidden])");
+  for (const cutCounted of ["off", "on"] as const) {
+    const { context, page } = await visitStep(browser, "least", cutCounted);
+    await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
+    await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+    await still(page);
+    if (cutCounted === "off") {
+      await expect(signs(page), "off, nothing is said").toHaveCount(0);
+      await context.close();
+      continue;
+    }
+    // What the page says is what the page shows: each sign's count is the number of the directory's cards past its edge.
+    const read = () => page.evaluate(directory => {
+      const label = document.querySelector(`.local-directory-label[data-directory="${directory}"]`)!;
+      const band = label.closest(".local-directory-band")!;
+      const frame = document.querySelector(".map-cut-signs")!.getBoundingClientRect();
+      const cards = [...band.querySelectorAll<HTMLElement>(".node-card[data-id], .local-directory-closed[data-directory]")].map(card => card.getBoundingClientRect());
+      const past = {
+        left: cards.filter(rect => rect.left < frame.left - 0.5).length, right: cards.filter(rect => rect.right > frame.right + 0.5).length,
+        top: cards.filter(rect => rect.top < frame.top - 0.5).length, bottom: cards.filter(rect => rect.bottom > frame.bottom + 0.5).length
+      };
+      const said = Object.fromEntries([...document.querySelectorAll<HTMLElement>(".map-cut-sign:not([hidden])")].map(sign => [sign.dataset.edge, Number(sign.textContent)]));
+      return { past: Object.fromEntries(Object.entries(past).filter(([, count]) => count > 0)), said };
+    }, HISTORY);
+    const first = await read();
+    expect(Object.keys(first.said).length, "the opened directory goes on past at least one edge, and that is said").toBeGreaterThan(0);
+    expect(first.said).toEqual(first.past);
+    const edge = Object.keys(first.said)[0];
+    const sign = page.locator(`.map-cut-sign[data-edge="${edge}"]`);
+    await expect(sign).toHaveAccessibleName(new RegExp(`^${first.said[edge]} cards? of what you opened`));
+    await expect(sign).toHaveAttribute("title", new RegExp(`^${first.said[edge]} cards? of what you opened`));
+    const before = await scaleOf(page);
+    await sign.focus();
+    await page.keyboard.press("Enter");
+    await still(page);
+    expect(await scaleOf(page), "a sign pans; it does not zoom").toBeCloseTo(before, 6);
+    const second = await read();
+    expect(second.said).toEqual(second.past);
+    expect(second.said[edge] ?? 0, `fewer of its cards past the ${edge} edge after its sign was pressed`).toBeLessThan(first.said[edge]);
+    await context.close();
+  }
 });
 
 test("a link carries Step: a fresh browser opens the link's choice", async ({ browser }) => {
