@@ -12,7 +12,7 @@ import {
 } from "../symbolAnchors";
 import { createStage, dropStage, refreshReadingGeometry, refreshReadingPresentation, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
-import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
+import { ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, FILES_FLOOR_RATIO, framingTravel, keepFrame, smoothZoom, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, framingEaseMs, pinsFrame, poseBetween, revealPan, sameCamera, STEP_FLOOR_RATIO, stepLinesFrame, stepWholeFrame, STEP_MARK_MS, unionOf, type FramingTarget, type PinsFraming } from "./camera-intent";
 import type { CardContext } from "./card-factory";
 import { CardReading, type ReadingTarget } from "./card-reading";
 import { clearConnections, drawConnections } from "./connections";
@@ -1988,12 +1988,15 @@ export class LocalViewController implements LocalViewApi {
       // Tuning's Step, a trial (2026-11-21): the whole newcomer, eased out only as far as it needs; or the newcomer with
       // the cards its lines reach, as Fit would frame them; never past the connections look's farthest press. The ease is
       // the following camera's, so that any input of the person's ends it where it stands and reduced motion makes it a cut.
-      const floor = this.readingReferenceScale * ARRIVAL_FLOOR_RATIO;
-      const end = lever === "whole" ? stepWholeFrame(whole.bounds, newcomer.bounds, next, frame, floor)
-        : stepLinesFrame(unionOf([whole.bounds, ...this.reachedBy(whole.ids)])!, whole.bounds, newcomer.bounds, frame, this.readingReferenceScale, floor);
-      this.markNewcomer(newcomer.mark);
-      this.easeFollowing(end, frame);
-      return;
+      const floor = this.readingReferenceScale * STEP_FLOOR_RATIO;
+      const end = lever === "whole" ? stepWholeFrame(whole.bounds, next, frame, floor)
+        : stepLinesFrame(unionOf([whole.bounds, ...this.reachedBy(whole.ids)])!, whole.bounds, next, frame, this.readingReferenceScale, floor);
+      // Where no scale at or above the floor holds it whole, the step does what Least Pan does, below.
+      if (end) {
+        this.markNewcomer(newcomer.mark);
+        this.easeFollowing(end, frame);
+        return;
+      }
     }
     if (newcomer) {
       const pan = revealPan(newcomer.bounds, next, frame);

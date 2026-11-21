@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.ts`
-- Generated At: 2026-11-21T06:09:16.936Z
+- Generated At: 2026-11-21T06:36:56.898Z
 
 ## Authored
 ### Purpose
@@ -228,52 +228,60 @@ page is entered at its top left: a card taller than the view is entered at its n
 the view holds, and an opened directory at its label. A newcomer already inside does not move the camera. The
 newcomer is in the picture's own units.
 
+#### `STEP_FLOOR_RATIO` {#symbol-step_floor_ratio}
+- Type: const
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L298)
+
+##### `STEP_FLOOR_RATIO` — Summary
+The farthest a step's ease goes, as a ratio of reading scale (Tuning's Step, 2026-11-21): for now the arrival's floor,
+the connections look's farthest press. Whether a step, which the person did not ask to change scale, should stop nearer
+(two thirds of reading scale was tried beside it) is the owner's to decide by eye.
+
 #### `stepWholeFrame` {#symbol-stepwholeframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L303)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L310)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
-- Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `start`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+- Parameters: `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `stepWholeFrame` — Summary
 Tuning → 2D Layout → Step "Whole" (a trial, root's brief of 2026-11-21): after a step, the whole newcomer (the opened
 directory's box, or the new card) inside the frame's padding. Where it fits at the camera's scale, the scale is kept and
 the least pan brings it in (*object constancy*: what was pressed keeps its size); where it does not, the camera eases out
-just far enough to hold it, never past `floor` (the connections look's farthest press, where every card's names still
-read) and never in; where even the floor cannot hold it, its `start` (what the least pan brings in: a directory's label
-with the first row it holds, a card) is brought in there by the least pan, as Least Pan does at its own scale; the start
-is named apart because an opened directory's membrane is not a rectangle, and its box's top left can lie far from its
-label. Scaled about the frame's middle, then the least pan, as the following camera's re-frame is. In the picture's units.
+just far enough to hold it, never in, and only where some scale at or above `floor` holds it whole: an ease costs the
+person their place and their reading size, and is worth it only when it delivers the whole (the root's ruling on the
+first pictures, 2026-11-21, where a folder eased out to the floor still did not show). Null where the floor cannot hold
+it: the step then does what Least Pan does. Scaled about the frame's middle, then the least pan, as the following
+camera's re-frame is. In the picture's units.
 
 #### `stepLinesFrame` {#symbol-steplinesframe}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L319)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L326)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
-- Parameters: `reach`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `start`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+- Parameters: `reach`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `newcomer`: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `stepLinesFrame` — Summary
 Tuning → 2D Layout → Step "With Its Lines" (a trial, 2026-11-21): after a step, the frame Fit would give the newcomer
 and the cards its lines reach (`reach`, which holds the newcomer): centred, at the largest scale that holds it, never
-closer than `ceiling` (reading scale) and never farther than `floor`. Where even the floor cannot hold them, the
-newcomer alone is framed so, centred where it fits; where it does not fit even at the floor, its `start` stands at the
-room's top left there.
+closer than `ceiling` (reading scale), where some scale at or above `floor` holds it; else Whole's frame of the newcomer
+alone; else null, and the step does what Least Pan does.
 
 #### `ViewEdge` {#symbol-viewedge}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L329)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L333)
 
 ##### `ViewEdge` — Summary
 An edge of the view.
 
 #### `VIEW_EDGES` {#symbol-view_edges}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L332)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L336)
 
 ##### `VIEW_EDGES` — Summary
 Every edge, in the order the signs are drawn and read: left, right, top, bottom.
 
 #### `cutByEdge` {#symbol-cutbyedge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L339)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L343)
 - Parameters: `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
 ##### `cutByEdge` — Summary
@@ -283,7 +291,7 @@ of its edges. An edge past which nothing goes is absent.
 
 #### `cutPan` {#symbol-cutpan}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L358)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L362)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `edge`: [`ViewEdge`](#symbol-viewedge); `camera`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 
@@ -294,7 +302,7 @@ and the other axis are kept.
 
 #### `unionOf` {#symbol-unionof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L366)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/camera-intent.ts#L370)
 - Returns: [`Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 
 ##### `unionOf` — Summary

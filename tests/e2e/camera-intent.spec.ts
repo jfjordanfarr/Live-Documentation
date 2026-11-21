@@ -358,51 +358,56 @@ async function visitStep(browser: Browser, step: StepFraming) {
 
 const band = (directory: string): string => `.local-directory-band:has(> .local-directory-label[data-directory="${directory}"])`;
 
-test("Step, Whole: an opened directory too large at the scale is eased out just far enough to stand whole, never past the floor", async ({ browser }) => {
-  test.setTimeout(120_000);
-  const { context, page } = await visitStep(browser, "whole");
-  const before = await scaleOf(page);
-  await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
-  await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
-  await still(page);
-  const after = await scaleOf(page), floor = before * ARRIVAL_FLOOR_RATIO;
-  expect(after, "eased out, never in").toBeLessThan(before);
-  expect(after, "never past the floor, where every card's names still read").toBeGreaterThanOrEqual(floor * 0.999);
-  const frame = await frameOf(page), drawn = (await boxOf(page, band(HISTORY)))!;
-  if (after > floor * 1.001) expect(inside(drawn, frame), `the opened directory ${JSON.stringify(drawn)} whole inside ${JSON.stringify(frame)}`).toBe(true);
-  else {
-    // Where the floor stops it short, its start, the label with the first row it holds, is in view: an opened
-    // directory's membrane is not a rectangle, so its box's top says nothing of where its label stands.
-    const label = await boxOf(page, `.local-directory-label[data-directory="${HISTORY}"]`);
-    expect(inside(label, frame), `the opened directory's label ${JSON.stringify(label)} inside ${JSON.stringify(frame)}`).toBe(true);
-  }
-  await context.close();
-});
+/** The label of an opened directory and the first row it holds under the label, on screen. */
+const labelAndFirstRow = (page: Page, directory: string): Promise<{ label: Box; row: Box[] }> => page.evaluate(directory => {
+  const box = (rect: DOMRect) => ({ left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom });
+  const label = document.querySelector(`.local-directory-label[data-directory="${directory}"]`)!;
+  const band = label.closest(".local-directory-band")!, head = label.getBoundingClientRect();
+  const held = [...band.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed, .local-directory-band")]
+    .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(element => element.getBoundingClientRect())
+    .filter(rect => rect.top >= head.top);
+  const top = Math.min(...held.map(rect => rect.top));
+  return { label: box(head), row: held.filter(rect => rect.top <= top + 8).map(box) };
+}, directory);
 
-test("Step, With Its Lines: an opened directory is framed with the cards its lines reach, between the floor and reading scale", async ({ browser }) => {
+for (const step of ["whole", "lines"] as const) {
+  test(`Step, ${step}: a directory no scale at or above the floor holds whole is not eased out; the step is Least Pan's`, async ({ browser }) => {
+    test.setTimeout(120_000);
+    const { context, page } = await visitStep(browser, step);
+    const before = await scaleOf(page);
+    await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
+    await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+    await still(page);
+    expect(await scaleOf(page), "the scale kept: an ease out that cannot deliver the whole is not taken").toBeCloseTo(before, 6);
+    const frame = await frameOf(page), { label, row } = await labelAndFirstRow(page, HISTORY);
+    expect(inside(label, frame), `the opened directory's label ${JSON.stringify(label)} inside ${JSON.stringify(frame)}`).toBe(true);
+    for (const box of row) expect(inside(box, frame), `its first row ${JSON.stringify(box)} inside ${JSON.stringify(frame)}`).toBe(true);
+    await context.close();
+  });
+}
+
+test("Step, With Its Lines: Data opened inside the estate's PaymentService is framed whole with every card its lines reach", async ({ browser }) => {
   test.setTimeout(120_000);
-  const { context, page } = await visitStep(browser, "lines");
-  const before = await scaleOf(page);
-  await page.getByRole("button", { name: `Open ${HISTORY}`, exact: true }).click();
-  await expect(page.locator(`${band(HISTORY)}`)).toHaveCount(1, { timeout: 15_000 });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step: "lines" } } })
+  });
+  const page = await context.newPage();
+  await page.goto(ESTATE);
+  await page.waitForSelector("#view-world.active", { timeout: 20_000 });
+  await choose(page, "subject", "PaymentService", { directory: "PaymentService" });
+  await expect(page.locator(band("PaymentService"))).toHaveCount(1, { timeout: 15_000 });
   await still(page);
-  const after = await scaleOf(page), floor = before * ARRIVAL_FLOOR_RATIO;
-  expect(after).toBeLessThanOrEqual(before * 1.001);
-  expect(after).toBeGreaterThanOrEqual(floor * 0.999);
-  const reached = await page.evaluate(({ directory }) => {
-    const held = new Set([...document.querySelectorAll<HTMLElement>(`.local-directory-band:has(> .local-directory-label[data-directory="${directory}"]) .node-card[data-id]`)].map(card => card.dataset.id!));
-    const far = new Set<string>();
-    for (const path of document.querySelectorAll<SVGElement>("#map-connections [data-source-id][data-target-id]")) {
-      const { sourceId, targetId } = path.dataset;
-      if (held.has(sourceId!) && !held.has(targetId!)) far.add(targetId!);
-      if (held.has(targetId!) && !held.has(sourceId!)) far.add(sourceId!);
-    }
-    return [...far];
-  }, { directory: HISTORY });
+  const before = await scaleOf(page);
+  await page.getByRole("button", { name: "Open PaymentService/Data", exact: true }).click();
+  await expect(page.locator(band("PaymentService/Data"))).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  const after = await scaleOf(page);
+  expect(after, "eased out, never past the floor").toBeLessThan(before);
+  expect(after).toBeGreaterThanOrEqual(before * ARRIVAL_FLOOR_RATIO * 0.999);
   const frame = await frameOf(page);
-  if (after > floor * 1.001) {
-    expect(inside(await boxOf(page, band(HISTORY)), frame), "the opened directory whole").toBe(true);
-    for (const id of reached) expect(inside(await boxOf(page, card(id)), frame), `${id}, which its lines reach, in view`).toBe(true);
+  for (const id of ["PaymentService/Data/PostPaymentRow.cs", "PaymentService/Data/Payment.cs", "PaymentService/Data/PaymentsContext.cs", "PaymentService/PaymentService.cs", "PaymentService/App.config"]) {
+    expect(inside(await boxOf(page, card(id)), frame), `${id} whole in view`).toBe(true);
   }
   await context.close();
 });

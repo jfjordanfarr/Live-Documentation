@@ -310,48 +310,39 @@ describe("a step's frame under Step, Whole", () => {
 
   it("keeps the scale and pans the least where the whole newcomer fits at it", () => {
     const newcomer = box(1000, 600, 400, 300);
-    const end = stepWholeFrame(newcomer, newcomer, camera, frame, 0.5);
-    expect(end.k).toBe(1);
-    expect(inside(newcomer, end)).toBe(true);
+    const end = stepWholeFrame(newcomer, camera, frame, 0.5)!;
     const pan = revealPan(newcomer, camera, frame);
     expect(end).toEqual({ x: pan.x, y: pan.y, k: 1 });
+    expect(inside(newcomer, end)).toBe(true);
   });
 
   it("does not move a newcomer already whole in view", () => {
-    expect(stepWholeFrame(box(100, 100, 300, 200), box(100, 100, 300, 60), camera, frame, 0.5)).toEqual(camera);
+    expect(stepWholeFrame(box(100, 100, 300, 200), camera, frame, 0.5)).toEqual(camera);
   });
 
-  it("eases out just far enough to hold a newcomer that does not fit, and holds it whole", () => {
+  it("eases out just far enough to hold a newcomer that does not fit at the scale but does above the floor, and holds it whole", () => {
     const newcomer = box(200, 100, 1600, 900);
-    const end = stepWholeFrame(newcomer, box(200, 100, 600, 80), camera, frame, 0.3);
+    const end = stepWholeFrame(newcomer, camera, frame, 0.3)!;
     const { horizontal, vertical } = framePadding(frame);
     expect(end.k).toBeCloseTo(Math.min((frame.width - 2 * horizontal) / 1600, (frame.height - 2 * vertical) / 900), 9);
     expect(inside(newcomer, end)).toBe(true);
   });
 
-  it("stops at the floor, and brings in there the start of a newcomer too large even for it, not its box's corner", () => {
-    // An L-shaped membrane: its box's top left is far above and left of its label, which with its first row is its start.
-    const newcomer = box(-3000, -2000, 8000, 6000), start = box(1600, 900, 600, 80);
-    const end = stepWholeFrame(newcomer, start, camera, frame, 0.5);
-    expect(end.k).toBe(0.5);
-    // Scaled about the frame's middle (600, 400) from the camera at the origin, then the least pan that brings the start in.
-    const scaled = { x: 300, y: 200, k: 0.5 }, pan = revealPan(start, scaled, frame);
-    expect(end).toEqual({ x: scaled.x + pan.x, y: scaled.y + pan.y, k: 0.5 });
-    const drawn = onScreen(start, end), { horizontal, vertical } = framePadding(frame);
-    expect(drawn.left).toBeGreaterThanOrEqual(horizontal - 1e-6);
-    expect(drawn.bottom).toBeLessThanOrEqual(frame.height - vertical + 1e-6);
+  it("does not ease out at all for a newcomer the floor cannot hold whole: the step is then Least Pan's", () => {
+    expect(stepWholeFrame(box(200, 100, 5000, 4000), camera, frame, 0.5)).toBeNull();
   });
 
   it("never zooms in: a camera already farther than the newcomer needs keeps its scale", () => {
-    const far = { x: 0, y: 0, k: 0.4 };
-    expect(stepWholeFrame(box(100, 100, 300, 200), box(100, 100, 300, 60), far, frame, 0.3).k).toBe(0.4);
+    expect(stepWholeFrame(box(100, 100, 300, 200), { x: 0, y: 0, k: 0.4 }, frame, 0.3)!.k).toBe(0.4);
   });
 });
 
 describe("a step's frame under Step, With Its Lines", () => {
+  const camera = { x: 0, y: 0, k: 1 };
+
   it("frames the newcomer and what its lines reach as Fit would, centred, between the floor and reading scale", () => {
     const newcomer = box(1000, 500, 400, 300), reach = box(0, 0, 2000, 1000);
-    const end = stepLinesFrame(reach, newcomer, newcomer, frame, 1.2, 0.3);
+    const end = stepLinesFrame(reach, newcomer, camera, frame, 1.2, 0.3)!;
     const { horizontal } = framePadding(frame);
     expect(end.k).toBeCloseTo((frame.width - 2 * horizontal) / 2000, 9);
     const drawn = onScreen(reach, end);
@@ -361,24 +352,16 @@ describe("a step's frame under Step, With Its Lines", () => {
 
   it("never enlarges past reading scale", () => {
     const small = box(100, 100, 300, 200);
-    expect(stepLinesFrame(small, small, small, frame, 1.2, 0.3).k).toBe(1.2);
+    expect(stepLinesFrame(small, small, camera, frame, 1.2, 0.3)!.k).toBe(1.2);
   });
 
-  it("where even the floor cannot hold what the lines reach, frames the newcomer alone, centred", () => {
-    const newcomer = box(2000, 3000, 3000, 300), reach = box(0, 0, 9000, 9000);
-    const end = stepLinesFrame(reach, newcomer, box(2000, 3000, 600, 80), frame, 1.2, 0.25);
-    expect(end.k).toBeCloseTo((frame.width - 2 * framePadding(frame).horizontal) / 3000, 9);
-    const drawn = onScreen(newcomer, end);
-    expect((drawn.left + drawn.right) / 2).toBeCloseTo(frame.width / 2, 6);
+  it("where the floor cannot hold what the lines reach, takes Whole's frame of the newcomer alone", () => {
+    const newcomer = box(200, 100, 1600, 900), reach = box(-9000, 0, 20000, 9000);
+    expect(stepLinesFrame(reach, newcomer, camera, frame, 1.2, 0.3)).toEqual(stepWholeFrame(newcomer, camera, frame, 0.3));
   });
 
-  it("where the newcomer alone does not fit even at the floor, stands its start at the room's top left there", () => {
-    const newcomer = box(-2000, 3000, 9000, 300), reach = box(-9000, 0, 20000, 9000), start = box(1000, 3000, 600, 80);
-    const end = stepLinesFrame(reach, newcomer, start, frame, 1.2, 0.25);
-    expect(end.k).toBe(0.25);
-    const drawn = onScreen(start, end), { horizontal, vertical } = framePadding(frame);
-    expect(drawn.left).toBeCloseTo(horizontal, 9);
-    expect(drawn.top).toBeCloseTo(vertical, 9);
+  it("where the floor cannot hold even the newcomer whole, does not ease at all: the step is then Least Pan's", () => {
+    expect(stepLinesFrame(box(-9000, 0, 20000, 9000), box(0, 0, 9000, 300), camera, frame, 1.2, 0.25)).toBeNull();
   });
 });
 
