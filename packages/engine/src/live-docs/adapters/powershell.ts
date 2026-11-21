@@ -36,7 +36,8 @@
  * file a `Get-ChildItem` of such a folder lists. A module path may name a
  * `.psm1`, a `.psd1`, or a directory holding the module of its name; a script
  * dot-sourced or run by a path no file is so named by is the path's `.ps1`, as
- * PowerShell tries it. Each name
+ * PowerShell tries it, and a relative path beside both, `./build` with `build`
+ * and `build.ps1`, is the `.ps1`, as Windows runs it. Each name
  * in a path is found among the workspace's files as Windows finds it, without
  * regard to case. A module named rather than pathed, a path a string writes
  * with a variable no assignment fixes, and a path outside the workspace keep
@@ -1531,16 +1532,24 @@ function resolvePath(written: string, directory: string, files: WorkspaceFileInd
   return findFile(files, `${relative}/${leaf}.psd1`) ?? findFile(files, `${relative}/${leaf}.psm1`);
 }
 
+/** A path written from `$PSScriptRoot`, which PowerShell holds as the script's own folder, so rooted. */
+const ROOTED_BY_SCRIPT_ROOT = /^(?:\$\{PSScriptRoot\}|\$PSScriptRoot(?!\w))/i;
+
 /**
  * The script a path names as PowerShell runs or dot-sources it: the file so named, else the path with `.ps1` added,
  * which PowerShell tries when no file is so named, whatever the name ends in (`a/build` and `f/Get-Thing.Tests` ran
- * their `.ps1`, and a file `b/build` beside `b/build.ps1` was the one found); no other extension is tried (`d/build`
- * beside only `d/build.psm1` was not found). pwsh 7.7.0, measured 2026-11-21. Only a path is so read: a name without
- * a folder, `. Stop-Function`, is a command PowerShell looks up, never a script beside the file.
+ * their `.ps1`); no other extension is tried (`d/build` beside only `d/build.psm1` was not found). pwsh 7.7.0,
+ * measured 2026-11-21. Where both stand, `build` and `build.ps1`, the platforms differ, and the reader follows
+ * Windows, PowerShell's home: a relative path (`./build`, `tools/build`) is `build.ps1`, as the owner's run on their
+ * Windows machine showed on 2026-11-21 and PowerShell's source says (Windows searches the folder for `build.ps1`
+ * first; Unix tries `build` first); a rooted one (`$PSScriptRoot/build`) is `build` on both, its literal tried first.
+ * Only a path is so read: a name without a folder, `. Stop-Function`, is a command PowerShell looks up, never a script
+ * beside the file.
  */
 function resolveScript(written: string, directory: string, files: WorkspaceFileIndex | undefined): string | undefined {
-  const named = resolvePath(written, directory, files, false);
-  return named ?? (/[\\/]/.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined);
+  const asScript = /[\\/]/.test(written) && !/\.ps1$/i.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined;
+  if (asScript && !ROOTED_BY_SCRIPT_ROOT.test(written)) return asScript;
+  return resolvePath(written, directory, files, false) ?? asScript;
 }
 
 /** A module named by a path rather than by its name: the text holds a directory separator, as `$PSScriptRoot` gives it one. */

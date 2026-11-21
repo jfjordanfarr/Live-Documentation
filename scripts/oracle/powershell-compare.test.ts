@@ -33,7 +33,7 @@ describe("the PowerShell comparison of a folder", () => {
     const report = await comparePowerShell(fixture, ast);
     expect(report.wires.parserOnly).toEqual(["Build/Use-Build.ps1 → Build/build", "Deploy.ps1 → scripts/Clean.ps1"]);
     expect(report.wires.adapterOnly).toEqual(["Build/Use-Build.ps1 → Build/build.ps1"]);
-    expect(report.wires.both).toBe(report.wires.adapter);
+    expect(report.wires.both).toBe(report.wires.adapter - report.wires.adapterOnly.length);
     expect(report.calls.parserOnly).toEqual([]);
     expect(report.calls.adapterOnly).toEqual([]);
     expect(report.calls.both).toBeGreaterThan(0);
