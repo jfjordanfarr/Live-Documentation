@@ -36,6 +36,81 @@ const HTML_RESOURCE_ATTR =
   /\b(?<attr>srcset|src|href|data-src|data-href|poster)\s*=\s*(?:"(?<dq>[^"]+)"|'(?<sq>[^']+)')/gi;
 
 // ============================================================================
+// Comments
+// ============================================================================
+
+/** The elements whose content HTML reads as text, in which `<!--` opens no comment: raw text and escapable raw text. */
+const TEXT_ELEMENTS: ReadonlySet<string> = new Set(["script", "style", "textarea", "title"]);
+
+/** A start tag's opening and its name. */
+const START_TAG = /^<([A-Za-z][^\s/>]*)/u;
+
+/**
+ * The markup with every HTML comment written over in spaces, its line breaks kept, so that positions keep, as HTML
+ * parses a comment: from `<!--` to the first `-->` after it, or at once when it is `<!-->` or `<!--->`, so that the
+ * content a downlevel-revealed conditional comment (`<!--[if !IE]><!--> … <!--<![endif]-->`) leaves outside every
+ * comment is kept; a comment left open runs to the end. `<!--` opens a comment only where a tag may start: never
+ * inside a tag's quoted attribute value, nor in the text of a `<script>`, `<style>`, `<textarea>` or `<title>`, which
+ * runs to that element's end tag. No browser runs a script, loads a style sheet or makes an element that a comment
+ * holds, so the readers of markup read none (the comment guard of 2026-11-21, `commentGuard.test.ts`).
+ */
+export function withoutHtmlComments(text: string): string {
+  let result = "";
+  let at = 0;
+  let index = 0;
+  for (;;) {
+    const open = text.indexOf("<", index);
+    if (open === -1) return result + text.slice(at);
+    if (text.startsWith("<!--", open)) {
+      const rest = text.slice(open + 4, open + 6);
+      const abrupt = rest.startsWith(">") ? open + 5 : rest === "->" ? open + 6 : undefined;
+      const close = text.indexOf("-->", open + 4);
+      const until = abrupt ?? (close === -1 ? text.length : close + 3);
+      result += text.slice(at, open) + text.slice(open, until).replace(/[^\r\n]/gu, " ");
+      at = index = until;
+      continue;
+    }
+    const tag = START_TAG.exec(text.slice(open, open + 64));
+    if (!tag) {
+      index = open + 1;
+      continue;
+    }
+    index = endOfTag(text, open + 1);
+    const name = tag[1].toLowerCase();
+    if (TEXT_ELEMENTS.has(name)) {
+      const end = new RegExp(`</${name}[\\s/>]`, "giu");
+      end.lastIndex = index;
+      index = end.exec(text)?.index ?? text.length;
+    }
+  }
+}
+
+/**
+ * The index just past a tag whose name starts at `start`, its quoted attribute values passed over, a quote opening a
+ * value only where one may start, after `=`; the text's end when it never closes.
+ */
+function endOfTag(text: string, start: number): number {
+  let quote: string | undefined;
+  let afterEquals = false;
+  for (let index = start; index < text.length; index += 1) {
+    const char = text[index];
+    if (quote) {
+      if (char === quote) quote = undefined;
+    } else if ((char === "\"" || char === "'") && afterEquals) {
+      quote = char;
+      afterEquals = false;
+    } else if (char === ">") {
+      return index + 1;
+    } else if (char === "=") {
+      afterEquals = true;
+    } else if (!/\s/u.test(char)) {
+      afterEquals = false;
+    }
+  }
+  return text.length;
+}
+
+// ============================================================================
 // URL Filtering
 // ============================================================================
 
@@ -338,13 +413,13 @@ export function extractElementIds(content: string): string[] {
 // Adapter Export
 // ============================================================================
 
-/** Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. */
+/** Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. Neither is read inside an HTML comment ({@link withoutHtmlComments}). */
 export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],
 
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+    const content = withoutHtmlComments(await readSourceText(absolutePath));
 
     const dependencies = extractHtmlDependencies({
       content,

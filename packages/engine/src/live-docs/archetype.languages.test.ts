@@ -1,167 +1,252 @@
 import { describe, expect, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig, type LiveDocumentationArchetype } from "../config/liveDocumentationConfig";
-import { resolveArchetype } from "./archetype";
+import { resolveArchetype, TEST_RULES } from "./archetype";
+import type { WorkspaceTestIndex } from "./coreTypes";
 
 /**
- * One table of names across every language the engine reads, pinning what `resolveArchetype` answers today, so that a
- * change made for one language cannot move another in silence (2026-11-21: the PowerShell reading of 2026-11-19 had
- * moved `src/test-utils.tsx` and three more, and only a reviewer reading the diff caught it).
+ * One table of names across every language the engine reads, pinning what `resolveArchetype` answers, so that a change
+ * made for one language cannot move another in silence (2026-11-21: the PowerShell reading of 2026-11-19 had moved
+ * `src/test-utils.tsx` and three more, and only a reviewer reading the diff caught it).
  *
- * Each row is a path, today's answer, and what the language's own test runner says of the same file: its default, or
- * where a row names a project, that project's own configuration of it. The runners' rules and the measurement they
- * come from are kept in the record of 2026-11-21,
- * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/test-rules/README.md`. Where today and the runner
- * disagree, the row carries a mark, and the mark does not bless today's answer, it only says why it is pinned:
+ * Each row is a path, the answer, and what the language's own test runner says of the same file: its default, or where
+ * a row names a project, that project's own configuration of it. A test is a file that exists for the tests, whether or
+ * not the runner runs it (the reading decided on 2026-11-21). The runners' rules and the measurement they come from are
+ * kept in the record of that day,
+ * `AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/test-rules/README.md`. Where the answer and the
+ * runner disagree, the row carries a mark, which says why:
  *
- * - `wrong`: believed wrong whatever "test" comes to mean for the map, since the file is neither run by a runner nor
- *   there for the tests (working code, a shipped plugin, a CI workflow).
- * - `fork`: the runner does not run it, but it exists for the tests (a helper, a fixture, a setup file, an expectation):
- *   right if a test is a file there for the tests, wrong if a test is a file the runner runs. Not decided here.
- * - `project`: the answer turns on a project's own runner configuration, which no rule of names can see (AL-Go's
- *   `*.Test.ps1`, a Jest `testMatch`, a project that references a test framework but not the test SDK).
+ * - `for the tests`: the runner does not run it, but it exists for the tests (a helper, a fixture, a setup file, an
+ *   expectation), so it is a test by the decided reading.
+ * - `wrong`: the answer is wrong by the decided reading, and pinned so that its mending shows.
+ * - `project`: the answer turns on a project's own runner configuration, which no rule of names can see (a Jest
+ *   `testMatch`, files named to `Invoke-Pester`, a project that references a test framework but not the test SDK).
  *
- * A row with no mark agrees with its runner. The last case below holds the marks to that, so that a row cannot keep a
- * mark it no longer needs, nor lose one silently.
+ * The rows of .NET, Rust and SQL stand on facts a reader reports and a path does not show, which the first pass
+ * gathers: they are given here as `FACTS`, each named in its row's reason, and how the readers report them is held
+ * by `archetype.facts.test.ts`.
+ *
+ * One more mark stands where the answer and the runner agree: `missed`, a file that exists for the tests which the
+ * rule does not take, since nothing in its path says so (a helper outside every test root). The last cases hold the
+ * marks to these meanings, and hold the table to a block for every language of the rules.
+ *
+ * Rows of 2026-11-21's restructure that moved carry `moved:` in their reason, with the answer of before.
  */
-type Mark = "wrong" | "fork" | "project";
-type Row = readonly [path: string, today: LiveDocumentationArchetype, runner: LiveDocumentationArchetype, mark?: Mark, why?: string];
+type Mark = "for the tests" | "wrong" | "project" | "missed";
+type Row = readonly [path: string, answer: LiveDocumentationArchetype, runner: LiveDocumentationArchetype, mark?: Mark, why?: string];
 
 const T = "test" as const;
 const I = "implementation" as const;
 
+/** The readers' facts the rows stand on, as the first pass gathers them from the projects, modules and scripts named. */
+const FACTS: WorkspaceTestIndex = {
+  projects: new Map([
+    ["src/Estate", true],                                        // references Microsoft.NET.Test.Sdk
+    ["src/FluentValidation.Tests", true],                        // references Microsoft.NET.Test.Sdk
+    ["src/FluentValidation.Tests.Benchmarks", false],            // a benchmark program
+    ["DNN Platform/Tests/DNN.Integration.Test.Framework", true], // references Microsoft.NET.Test.Sdk
+    ["DNN Platform/Library", false],
+    ["Web", false]
+  ]),
+  files: new Set([
+    "src/helpers_test.rs",                           // `#[cfg(test)] mod helpers_test;` in the rosetta sample's main.rs
+    "crates/searcher/src/testutil.rs",               // `#[cfg(test)] mod testutil;` in ripgrep's searcher
+    "Tests/tSQLt.AssertEqualsTable.class.sql",       // creates test procedures of a NewTestClass schema
+    "Examples/Tests.sql",
+    "TestUtilTests/tSQLt_testutil_test.class.sql",
+    "Examples/TestThatExamplesAreDeployed.sql"
+  ])
+};
+
 const LANGUAGES: Record<string, readonly Row[]> = {
   // Vitest's default include `**/*.{test,spec}.?(c|m)[jt]s?(x)`; Jest's default testMatch adds `**/__tests__/**` and a
-  // file named `test.js`. Read by the TypeScript compiler's reader, not an adapter.
+  // file named `test.js`; Jest's `__mocks__` and `__snapshots__`. Read by the TypeScript compiler's reader.
   "TypeScript and JavaScript": [
     ["src/main.test.ts", T, T],
     ["src/main.spec.tsx", T, T],
     ["src/contest.ts", I, I],
+    ["src/attestation.ts", I, I],
     ["vitest.config.ts", I, I],
-    ["src/__tests__/helpers.ts", T, T, undefined, "Jest's default takes any file under __tests__; Vitest's would not"],
-    ["src/test-utils.tsx", T, I, "fork", "a helper the tests import; no runner runs it (the reviewer's case of 2026-11-21)"],
-    ["tests/setup-env.js", T, I, "fork", "Jest loads it as setupFilesAfterEnv; it holds no test (dom-testing-library)"],
-    ["src/__tests__/__snapshots__/get-by-errors.js.snap", T, I, "fork", "Jest's own snapshot, read by the tests"],
-    ["tests/e2e/playwright.config.ts", T, I, "fork", "the runner's configuration (this repository)"],
-    ["src/queries/test-id.ts", T, I, "wrong", "dom-testing-library's getByTestId query: working code, named for the attribute it reads"],
-    ["scripts/runTests.ts", T, I, "wrong", "C#'s NameTests rule read on a TypeScript file that runs tests"],
     ["mode/css/test.js", T, T, undefined, "Jest's default names test.js; Vitest's would not"],
+    ["src/__tests__/helpers.ts", T, T, undefined, "Jest's default takes any file under __tests__; Vitest's would not"],
+    ["tests/setup-env.js", T, I, "for the tests", "Jest loads it as setupFilesAfterEnv; it holds no test (dom-testing-library)"],
+    ["src/__tests__/__snapshots__/get-by-errors.js.snap", T, I, "for the tests", "Jest's own snapshot, read by the tests"],
+    ["tests/e2e/playwright.config.ts", T, I, "for the tests", "the runner's configuration (this repository)"],
+    ["tests/page-scan/fixtures.ts", T, I, "for the tests", "moved: implementation before, since the word fixtures read it as a sample's; a helper in a test folder (this repository)"],
+    ["src/__mocks__/helpers.js", T, I, "for the tests", "moved: implementation before; Jest's manual mock (DNN's Prompt.Web)"],
     ["src/__node_tests__/screen.js", I, T, "project", "dom-testing-library's Jest project names **/__node_tests__/**.js"],
-    ["tests/page-scan/fixtures.ts", I, I, undefined, "the word fixtures in the name takes it for a fixture's file; in a test folder, with its tests"]
+    ["src/queries/test-id.ts", I, I, undefined, "moved: a test before, by the word; dom-testing-library's getByTestId query, working code"],
+    ["scripts/runTests.ts", I, I, undefined, "moved: a test before, by C#'s NameTests rule; a script that runs tests is working code"],
+    ["src/test-utils.tsx", I, I, "missed", "moved: a test before, by the word; a helper the tests import, outside every test root (the reviewer's case)"],
+    ["src/test-helpers.ts", I, I, "missed", "moved: a test before, by the word; a helper outside every test root"],
+    ["lib/test-setup.js", I, I, "missed", "moved: a test before, by the word; a setup file outside every test root"],
+    ["mode/css/less_test.js", I, I, "missed", "moved: a test before, by Go's _test rule; CodeMirror's own test of the mode, vendored by DNN, which no JS runner's default names"],
+    ["scripts/dnn.DataStructures.Tests.js", I, I, "missed", "moved: a test before, by C#'s NameTests rule; DNN's QUnit test, which runs what its page loads"]
   ],
   // pytest's python_files default `test_*.py *_test.py`, read from pytest 9.2.0's own source; conftest.py is a plugin.
   Python: [
     ["tests/test_basic.py", T, T],
     ["src/money_test.py", T, T],
     ["src/testing.py", I, I],
-    ["tests/conftest.py", T, I, "fork", "pytest loads it as a plugin and collects no test from it (click)"],
-    ["tests/__init__.py", T, I, "fork", "a package marker of the test folder (click)"],
-    ["tests/typing/typing_path.py", T, I, "fork", "checked by a type checker, not run by pytest (click)"],
-    ["polls/tests.py", T, T, undefined, "unittest's and Django's default pattern test*.py; pytest's default would not take it"]
+    ["polls/tests.py", T, T, undefined, "unittest's and Django's default pattern test*.py; pytest's default would not take it"],
+    ["tests/conftest.py", T, I, "for the tests", "pytest loads it as a plugin and collects no test from it (click)"],
+    ["src/conftest.py", T, I, "for the tests", "moved: implementation before; pytest's plugin of the tests wherever it lies"],
+    ["tests/__init__.py", T, I, "for the tests", "a package marker of the test folder (click)"],
+    ["tests/typing/typing_path.py", T, I, "for the tests", "checked by a type checker, not run by pytest (click)"]
   ],
   // `go test` compiles `*_test.go`, and ignores a folder named testdata (go help test, go list).
   Go: [
     ["stock/item_test.go", T, T],
     ["go.mod", I, I],
-    ["stock/testdata/input.json", I, I, undefined, "the go tool ignores testdata; it is there for the tests"],
-    ["cmd/test/main.go", T, I, "wrong", "a package named test is a package; only _test.go is a test"]
-  ],
-  // Cargo's test targets (tests/*.rs, as cargo metadata lists them) and what they declare; #[cfg(test)] modules.
-  Rust: [
-    ["tests/report.rs", T, T],
-    ["tests/util.rs", T, T, undefined, "a module of ripgrep's tests/tests.rs target, compiled into it alone"],
-    ["src/helpers_test.rs", T, T, undefined, "declared under #[cfg(test)] in the rosetta sample's main.rs"],
-    ["Cargo.toml", I, I],
-    ["crates/searcher/src/testutil.rs", I, T, "wrong", "ripgrep declares it #[cfg(test)] mod testutil: compiled for the tests only"]
+    ["stock/testdata/input.json", T, I, "for the tests", "moved: implementation before; the go tool's testdata"],
+    ["cmd/test/main.go", T, I, "wrong", "a package named test is a package; only _test.go is a test, but test/ is every language's test root"]
   ],
   // Maven: Surefire's default includes Test*, *Test, *Tests, *TestCase under the test source folder, src/test/java.
   Java: [
     ["src/test/java/com/acme/StoreTest.java", T, T],
     ["src/main/java/com/acme/Contest.java", I, I],
+    ["src/main/java/com/acme/TestExecutor.java", I, I],
     ["pom.xml", I, I],
-    ["src/test/java/com/acme/support/Fixtures.java", T, I, "fork", "test source Surefire does not select"],
-    ["test-shrinker/src/main/java/com/example/Main.java", T, I, "fork", "gson's module of code for the shrinker's tests, as main source"],
-    ["src/com/rosetta/app/PipelineTest.java", T, I, "project", "the rosetta sample's pom sets sourceDirectory src and no test source"]
-  ],
-  // .NET: no name makes a test; `dotnet test` runs a project that sets IsTestProject (Microsoft.NET.Test.Sdk's props
-  // do), and the framework finds the tests in it by their attributes. The .NET readers read .cs, project files,
-  // solutions, .config and ASP.NET markup.
-  ".NET": [
-    ["src/Estate/ParcelTests.cs", T, T, undefined, "a file of a test project holding tests"],
-    ["src/App/LatestTests.cs", T, T, undefined, "the reviewer's case: named Tests, in a test project"],
-    ["src/App/Contest.cs", I, I, undefined, "the reviewer's case beside it: the word inside a name is no test"],
-    ["Views/Home/Index.cshtml", I, I],
-    ["Estate.sln", I, I],
-    ["src/FluentValidation.Tests/Person.cs", T, I, "fork", "a model the tests use, in the test project"],
-    ["src/FluentValidation.Tests/FluentValidation.Tests.csproj", T, I, "fork", "the test project's own file"],
-    ["DNN Platform/Tests/DNN.Integration.Test.Framework/Helpers/FileHelper.cs", T, I, "fork", "DNN's helper library for its integration tests"],
-    ["src/FluentValidation.Tests.Benchmarks/Program.cs", T, I, "wrong", "a benchmark program, not a test project"],
-    ["Web/Data/test.config", T, I, "wrong", "mojoPortal's configuration file of that name"],
-    ["Pages/Test.razor", T, I, "wrong", "a page named Test is a page"]
+    ["src/test/java/com/acme/support/Fixtures.java", T, I, "for the tests", "test source Surefire does not select"],
+    ["src/com/rosetta/app/PipelineTest.java", T, I, "project", "the rosetta sample's pom sets sourceDirectory src and no test source"],
+    ["test-shrinker/src/main/java/com/example/Main.java", I, I, "missed", "moved: a test before, by the word in test-shrinker; gson's module of code for its shrinker's tests"]
   ],
   // RSpec's default pattern spec/**/*_spec.rb; Minitest's TestTask test/**/test_*.rb and test/**/*_test.rb.
   Ruby: [
     ["spec/models/user_spec.rb", T, T],
     ["test/routing_test.rb", T, T],
-    ["spec/support/matchers/trait.rb", T, I, "fork", "a matcher the specs load (factory_bot)"],
-    ["spec/spec_helper.rb", T, I, "fork", "loaded by .rspec's --require"],
-    ["test/integration_helper.rb", T, I, "fork", "required by sinatra's tests"],
-    ["sinatra-contrib/lib/sinatra/test_helpers.rb", T, I, "wrong", "Sinatra::TestHelpers, shipped in the gem's lib for its users"],
-    ["sinatra-contrib/spec/content_for/layout.erb", I, I, undefined, "a template the specs render: spec/ counts only for .rb, where tests/ counts for every file"]
+    ["lib/rspec/core/example.rb", I, I],
+    ["spec/support/matchers/trait.rb", T, I, "for the tests", "a matcher the specs load (factory_bot)"],
+    ["spec/spec_helper.rb", T, I, "for the tests", "loaded by .rspec's --require"],
+    ["test/integration_helper.rb", T, I, "for the tests", "required by sinatra's tests"],
+    ["sinatra-contrib/lib/sinatra/test_helpers.rb", I, I, undefined, "moved: a test before, by the test_ prefix; Sinatra::TestHelpers, shipped in the gem's lib"],
+    ["sinatra-contrib/spec/content_for/layout.erb", I, I, "missed", "a template the specs render: spec/ is Ruby's own root, since elsewhere spec/ names specifications"]
   ],
   // Pester's Run.TestExtension `.Tests.ps1` (Pester 5.9.1 and 6.2.0); a project may name files or another filter.
   PowerShell: [
     ["public/Get-Thing.Tests.ps1", T, T],
+    ["src/Get-Thing.tests.ps1", T, T, undefined, "Pester's filter, without regard to case as on Windows"],
     ["public/Test-DbaPath.ps1", I, I, undefined, "named for its approved verb (dbatools)"],
+    ["private/functions/flowcontrol/Test-Bound.ps1", I, I],
+    ["Modules/Test-Module.psm1", I, I],
+    ["Modules/Test-Data.psd1", I, I],
     ["Actions/RunTests/RunTests.psm1", I, I, undefined, "AL-Go's module that runs tests"],
+    ["Actions/AnalyzeTests/AnalyzeTests.ps1", I, I],
+    ["Build/tSQLt_BuildTests.ps1", I, I],
     ["Build/Pester.Tests.psd1", I, I, undefined, "Pester takes .ps1 files only"],
-    ["Tests/RunTests.Test.ps1", T, T, undefined, "AL-Go's own runtests.ps1 gives Pester *.Test.ps1"],
-    ["src/Get-Thing.Test.ps1", T, I, "project", "AL-Go's filter, applied to every project; Pester's default would not take it"],
+    ["Tests/RunTests.Test.ps1", T, T, undefined, "AL-Go's Tests/ folder; AL-Go's own runtests.ps1 gives Pester *.Test.ps1"],
+    ["src/Get-Thing.Test.ps1", I, I, undefined, "moved: a test before, by AL-Go's filter applied to every project; Pester's default does not take it"],
     [".github/scripts/gh-actions.ps1", I, T, "project", "dbatools' workflow gives this file to Invoke-Pester by name"],
-    ["tests/appveyor.pester.ps1", T, I, "fork", "dbatools' script that starts the runner"],
-    ["tests/Get-Thing.ps1", T, I, "fork", "a script in the test folder"],
-    ["Tests/TestActionsHelper.psm1", T, I, "fork", "AL-Go's helper module for its tests"]
+    ["tests/appveyor.pester.ps1", T, I, "for the tests", "dbatools' script that starts the runner"],
+    ["tests/Get-Thing.ps1", T, I, "for the tests", "a script in the test folder"],
+    ["Tests/TestActionsHelper.psm1", T, I, "for the tests", "AL-Go's helper module for its tests"]
   ],
-  // tSQLt: a test is a procedure named test* in a schema made a test class by tSQLt.NewTestClass; no file name counts.
-  SQL: [
-    ["Tests/tSQLt.AssertEqualsTable.class.sql", T, T],
-    ["TestUtilTests/tSQLt_testutil_test.class.sql", I, T, "wrong", "creates a test class and its test procedures"],
-    ["Examples/TestThatExamplesAreDeployed.sql", I, T, "wrong", "creates a test class and its test procedures"],
-    ["Source/tSQLt.Tests.view.sql", T, I, "wrong", "tSQLt's own view that lists tests: the framework's source"]
-  ],
-  // C and C++: no runner names files; CTest runs what add_test registers (cJSON's tests/CMakeLists.txt).
+  // C and C++: no runner names files; CTest runs what add_test registers (cJSON's CMakeLists.txt files).
   "C and C++": [
     ["tests/parse_number.c", T, T, undefined, "registered by cJSON's add_test"],
+    ["test.c", T, T, undefined, "registered by cJSON's top CMakeLists.txt as cJSON_test"],
     ["cJSON.c", I, I],
-    ["tests/unity/src/unity.c", T, I, "fork", "the test framework cJSON vendors"],
-    ["tests/common.h", T, I, "fork", "a header cJSON's tests include"],
+    ["tests/unity/src/unity.c", T, I, "for the tests", "the test framework cJSON vendors"],
+    ["tests/common.h", T, I, "for the tests", "a header cJSON's tests include"],
     ["src/test_helpers.c", T, I, "project", "the rosetta sample: nothing registers it; it was written to stand for a test"]
   ],
-  // Files no reader reads, and the format readers (JSON, CSS, HTML): no runner runs them as tests.
+  // .NET: `dotnet test` runs a project that sets IsTestProject (Microsoft.NET.Test.Sdk's props do), or of MSTest.Sdk,
+  // and the framework finds the tests in it by their attributes; its folder's files are there for the tests. Outside
+  // one, the name the frameworks' projects give a class of tests.
+  ".NET": [
+    ["src/Estate/ParcelTests.cs", T, T, undefined, "a file of a test project (src/Estate) holding tests"],
+    ["src/Estate/Parcel.cs", T, I, "for the tests", "moved: implementation before; a file of the test project src/Estate"],
+    ["src/App/Contest.cs", I, I, undefined, "the reviewer's case: the word inside a name is no test"],
+    ["src/App/LatestTests.cs", T, I, "project", "the reviewer's case beside it: named as the frameworks name a class of tests, in no test project"],
+    ["Views/Home/Index.cshtml", I, I],
+    ["Estate.sln", I, I],
+    ["src/FluentValidation.Tests/Person.cs", T, I, "for the tests", "a model the tests use, in the test project"],
+    ["src/FluentValidation.Tests/FluentValidation.Tests.csproj", T, I, "for the tests", "the test project's own file"],
+    ["DNN Platform/Tests/DNN.Integration.Test.Framework/Helpers/FileHelper.cs", T, I, "for the tests", "DNN's helper library for its integration tests"],
+    ["Test/Helpers/Fake.cs", T, I, "for the tests", "a fake in a test folder"],
+    ["src/FluentValidation.Tests.Benchmarks/Program.cs", I, I, undefined, "moved: a test before, by the word; a benchmark program, not a test project"],
+    ["Web/Data/test.config", I, I, undefined, "moved: a test before, by the word; mojoPortal's configuration file of that name"],
+    ["Pages/Test.razor", I, I, undefined, "moved: a test before, by C#'s name read on markup; a page named Test is a page"],
+    ["src/Test-Thing.cs", I, I, undefined, "moved: a test before, by the word"],
+    ["Build/Tasks/RunUnitTests.cs", T, I, "wrong", "DNN's build task that runs tests, named as the frameworks name a class of tests"],
+    ["DNN Platform/Library/Common/Tests.cs", T, I, "wrong", "a class named Tests in a project that is no test project"]
+  ],
+  // Cargo's test targets (tests/*.rs, as cargo metadata lists them) and the modules they declare, under the shared root;
+  // a module declared under #[cfg(test)], and every module beneath it, by the Rust reader. No name counts.
+  Rust: [
+    ["tests/report.rs", T, T],
+    ["tests/util.rs", T, T, undefined, "a module of ripgrep's tests/tests.rs target, compiled into it alone"],
+    ["src/helpers_test.rs", T, T, undefined, "declared under #[cfg(test)] in the rosetta sample's main.rs"],
+    ["Cargo.toml", I, I],
+    ["src/report.rs", I, I],
+    ["crates/searcher/src/testutil.rs", T, T, undefined, "moved: implementation before; ripgrep declares it #[cfg(test)] mod testutil"],
+    ["src/legacy_test.rs", I, I, undefined, "moved: a test before, by Go's _test rule; a module declared without #[cfg(test)] is built with its crate"]
+  ],
+  // tSQLt: a test is a procedure named test* in a schema made a test class by tSQLt.NewTestClass, by the SQL reader;
+  // no file name counts.
+  SQL: [
+    ["Tests/tSQLt.AssertEqualsTable.class.sql", T, T],
+    ["Examples/Tests.sql", T, T, undefined, "tSQLt's example test class"],
+    ["TestUtilTests/tSQLt_testutil_test.class.sql", T, T, undefined, "moved: implementation before; creates a test class and its test procedures"],
+    ["Examples/TestThatExamplesAreDeployed.sql", T, T, undefined, "moved: implementation before; creates a test class and its test procedures"],
+    ["Source/tSQLt.Tests.view.sql", I, I, undefined, "moved: a test before, by C#'s name; tSQLt's own view that lists tests, the framework's source"],
+    ["Experiments/CollationTests.sql", I, I, undefined, "moved: a test before, by C#'s name; an experiment that makes no test class"]
+  ],
+  // Files of no runner's language (data, configuration, markup, the JSON, CSS and HTML readers' files): a test only in
+  // a test root, never by its own name.
   "Files no runner runs": [
     ["styles/site.css", I, I],
-    ["tests/fixtures/page.html", I, I, undefined, "a folder named fixtures is read as a sample's, in any repository: under tests/, for the tests"],
-    ["tests/data/sherlock.txt", T, I, "fork", "ripgrep's test data"],
-    ["tests/tsconfig.json", T, I, "fork", "the tests' compiler configuration (this repository)"],
-    ["src/__tests__/.eslintrc", T, I, "fork", "the tests' lint configuration"],
-    ["tests/integration/live-docs/expected/repository-entries.json", T, I, "fork", "an expectation the tests read (this repository)"],
-    [".github/workflows/test.yml", T, I, "wrong", "a CI workflow that runs tests: what RunTests.psm1 is to PowerShell"],
-    ["ci/test-complete", T, I, "wrong", "ripgrep's CI script"],
-    ["plugins/test/css/test.css", T, I, "wrong", "mojoPortal's editor ships a plugin named test"]
+    ["docs/testing.md", I, I],
+    ["src/__fixtures__/data.json", I, I, undefined, "a folder named __fixtures__ is no root, nor a sample's unless the configuration names it"],
+    ["spec/openapi.yaml", I, I, undefined, "spec/ is Ruby's own root, and holds specifications elsewhere"],
+    ["tests/data/sherlock.txt", T, I, "for the tests", "ripgrep's test data"],
+    ["tests/tsconfig.json", T, I, "for the tests", "the tests' compiler configuration (this repository)"],
+    ["src/__tests__/.eslintrc", T, I, "for the tests", "the tests' lint configuration"],
+    ["tests/integration/live-docs/expected/repository-entries.json", T, I, "for the tests", "an expectation the tests read (this repository)"],
+    ["src/test/resources/fixture.json", T, I, "for the tests", "Maven's test resources"],
+    ["tests/fixtures/page.html", T, I, "for the tests", "moved: implementation before, since the word fixtures read it as a sample's"],
+    ["Tests/ReviewAgent/fixtures/findings.json", T, I, "for the tests", "moved: implementation before, by the same rule (AL-Go)"],
+    ["src/FluentValidation.Tests/xunit.runner.json", T, I, "for the tests", "the runner's configuration, in the test project's folder"],
+    ["src/FluentValidation.Tests/tools/check.ps1", I, I, undefined, "a PowerShell file in a test project's folder follows PowerShell's rule"],
+    ["Tests.SA/Tests.SA.sqlproj", I, I, "missed", "moved: a test before, by the word; tSQLt's database project of its SA tests, which no reader reads"],
+    ["e2eTests/pte/My App.Test/app.json", I, I, "missed", "moved: a test before, by the word; AL-Go's test app for its end-to-end tests, in a language no reader reads"],
+    [".github/workflows/test.yml", I, I, undefined, "moved: a test before, by the word; a CI workflow that runs tests, as RunTests.psm1 is to PowerShell"],
+    ["ci/test-complete", I, I, undefined, "moved: a test before, by the word; ripgrep's CI script"],
+    ["plugins/test/css/test.css", T, I, "wrong", "mojoPortal's editor ships a plugin named test, in a folder that every language's root names"]
   ]
 };
 
 describe("what counts as a test, in every language the engine reads", () => {
   const config = normalizeLiveDocumentationConfig({});
   for (const [language, rows] of Object.entries(LANGUAGES)) {
-    it.each(rows.map(row => [row[0], row[1], row[3] ?? "agrees with its runner"] as const))(`${language}: %s is %s today (%s)`, (file, today) => {
-      expect(resolveArchetype(file, config)).toBe(today);
+    it.each(rows.map(row => [row[0], row[1], row[3] ?? "agrees with its runner"] as const))(`${language}: %s is %s (%s)`, (file, answer) => {
+      expect(resolveArchetype(file, config, false, FACTS)).toBe(answer);
     });
   }
 
-  it("keeps each mark honest: a row is marked exactly where today and its runner disagree", () => {
-    const misplaced = Object.values(LANGUAGES).flat().filter(([, today, runner, mark]) => (mark !== undefined) !== (today !== runner));
+  it("reads the facts only where a reader reported them: without the index a test project's file is read by its name", () => {
+    expect(resolveArchetype("src/Estate/Parcel.cs", config)).toBe(I);
+    expect(resolveArchetype("crates/searcher/src/testutil.rs", config)).toBe(I);
+    expect(resolveArchetype("Examples/TestThatExamplesAreDeployed.sql", config)).toBe(I);
+    // The nearest project decides: a project of its own inside a test project's folder is no test project.
+    const nested: WorkspaceTestIndex = { projects: new Map([["src/App.Tests", true], ["src/App.Tests/Sample", false]]), files: new Set() };
+    expect(resolveArchetype("src/App.Tests/Helper.cs", config, false, nested)).toBe(T);
+    expect(resolveArchetype("src/App.Tests/Sample/Program.cs", config, false, nested)).toBe(I);
+    // A test project at the workspace's own folder makes its .NET files and data tests, and no other language's file.
+    const root: WorkspaceTestIndex = { projects: new Map([["", true]]), files: new Set() };
+    expect(resolveArchetype("Helper.cs", config, false, root)).toBe(T);
+    expect(resolveArchetype("data/case.json", config, false, root)).toBe(T);
+    expect(resolveArchetype("scripts/build.ts", config, false, root)).toBe(I);
+  });
+
+  it("keeps each mark honest: a reason where the answer and the runner disagree, missed only where they agree", () => {
+    const misplaced = Object.values(LANGUAGES).flat().filter(([, answer, runner, mark]) =>
+      mark === "missed" ? answer !== runner : (mark !== undefined) !== (answer !== runner));
     expect(misplaced).toEqual([]);
+  });
+
+  it("holds a block for every language of the rules", () => {
+    expect(Object.keys(LANGUAGES).filter(block => block !== "Files no runner runs").sort()).toEqual(Object.keys(TEST_RULES).sort());
   });
 });
 
@@ -173,14 +258,16 @@ describe("a sample root is read as it would be outside one", () => {
     ["tests/integration/programs/python/ledger/tests/test_money.py", T],
     ["tests/integration/programs/python/ledger/ledger/money.py", I],
     ["tests/integration/programs/go/depot/stock/item_test.go", T],
+    ["tests/integration/programs/ruby/rosetta/spec/helpers_spec.rb", T],
     ["tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1", I],
     ["tests/integration/programs/rosetta-manifest.json", I],
-    // A row where today and the runner disagree, pinned as above: tidepool's helper, which Vitest does not run.
+    // tidepool's helper, which Vitest does not run: there for the tests.
     ["tests/integration/programs/typescript/tidepool/tests/helpers.ts", T],
-    // The rosetta sample's project references xunit but not the test SDK, so `dotnet test` skips it.
+    // The rosetta sample's project references xunit but not the test SDK, so `dotnet test` skips it: a `project` row,
+    // a test by the name the frameworks' projects give a class of tests.
     ["tests/integration/programs/csharp/rosetta/src/App/PipelineTests.cs", T]
-  ] as const)("%s is %s", (file, today) => {
-    expect(resolveArchetype(file, config)).toBe(today);
+  ] as const)("%s is %s", (file, answer) => {
+    expect(resolveArchetype(file, config)).toBe(answer);
   });
 
   it("reads the same paths otherwise without the sample root, as any other repository's tests/ folder", () => {
@@ -192,8 +279,8 @@ describe("a sample root is read as it would be outside one", () => {
 
 describe("a configuration override wins over every language's rule", () => {
   it("names a file's role ahead of its name and its folder", () => {
-    const config = normalizeLiveDocumentationConfig({ archetypeOverrides: { "scripts/runTests.ts": "implementation", "tools/**": "test" } });
-    expect(resolveArchetype("scripts/runTests.ts", config)).toBe(I);
+    const config = normalizeLiveDocumentationConfig({ archetypeOverrides: { "tests/runTests.ts": "implementation", "tools/**": "test" } });
+    expect(resolveArchetype("tests/runTests.ts", config)).toBe(I);
     expect(resolveArchetype("tools/Get-Thing.ps1", config)).toBe(T);
   });
 });

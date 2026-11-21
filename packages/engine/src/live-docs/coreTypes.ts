@@ -30,6 +30,31 @@ export interface SourceAnalysisResult {
    * run; they are said, never written into a Live Doc (2026-11-19).
    */
   notices?: SourceNotice[];
+  /** What the file says of which files exist for the tests, where their paths cannot show it ({@link TestFacts}). */
+  tests?: TestFacts;
+}
+
+/**
+ * What a reader learns of which files exist for the tests that no path shows, gathered by the first pass into the
+ * {@link WorkspaceTestIndex} and read by the rules of tests of `archetype.ts` (2026-11-21).
+ */
+export interface TestFacts {
+  /** A .NET project's folder, `""` for the workspace's own, and whether the project is a test project. */
+  project?: { folder: string; test: boolean };
+  /** Files compiled for the tests alone: a Rust module declared under `#[cfg(test)]`, and the modules beneath it. */
+  files?: string[];
+  /** The schemas the script makes tSQLt test classes, case folded. */
+  testClasses?: string[];
+  /** The schemas, case folded, in which the script creates a procedure whose name begins with `test`. */
+  testProcedureSchemas?: string[];
+}
+
+/** The workspace's {@link TestFacts}, by the first pass beside the symbol and entry indexes. */
+export interface WorkspaceTestIndex {
+  /** Every .NET project's folder (`""` for the workspace's own), and whether its project is a test project. */
+  projects: Map<string, boolean>;
+  /** The files that exist for the tests by a reader's fact: Rust's test-only modules, the scripts of tSQLt's test classes. */
+  files: Set<string>;
 }
 
 /** One thing a reader leaves undrawn, and why: as `{ reason: "paths several projects hold, left unlinked", subject: "~/Site.master" }`. */

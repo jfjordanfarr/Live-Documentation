@@ -33,6 +33,7 @@ import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText"
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { readToml, stringOf, tableOf } from "./manifest";
 import { parseRustDocumentation } from "./rust.rustdoc";
 import { readTree, type SyntaxNode } from "./treeSitter";
 
@@ -53,6 +54,8 @@ interface ModuleFacts {
   items:        Map<string, string>;
   /** `mod x;` declarations, whose bodies live in other files. */
   declared:     string[];
+  /** The `mod x;` declarations under `#[cfg(test)]`: their files are compiled for the tests alone. */
+  testDeclared: string[];
   inline:       ModuleFacts[];
   uses:         UseBinding[];
   globs:        string[][];
@@ -102,7 +105,7 @@ const STANDARD_TRAITS = new Set([
 ]);
 
 function newModule(name?: string): ModuleFacts {
-  return { name, items: new Map(), declared: [], inline: [], uses: [], globs: [], paths: [], identifiers: new Set(), imported: new Set() };
+  return { name, items: new Map(), declared: [], testDeclared: [], inline: [], uses: [], globs: [], paths: [], identifiers: new Set(), imported: new Set() };
 }
 
 function position(node: SyntaxNode): { line: number; character: number } {
@@ -111,6 +114,14 @@ function position(node: SyntaxNode): { line: number; character: number } {
 
 function isPublic(node: SyntaxNode): boolean {
   return node.namedChildren.some((child) => child.type === "visibility_modifier");
+}
+
+/** True for an item among whose outer attributes `#[cfg(test)]` stands: the compiler builds it for the tests alone. */
+function underCfgTest(node: SyntaxNode): boolean {
+  for (let sibling = node.previousNamedSibling; sibling && /^(?:attribute_item|line_comment|block_comment)$/u.test(sibling.type); sibling = sibling.previousNamedSibling) {
+    if (sibling.type === "attribute_item" && /^#\[\s*cfg\s*\(\s*test\s*\)\s*\]$/u.test(sibling.text)) return true;
+  }
+  return false;
 }
 
 /** The segments of a path node: `scoped_identifier`, `scoped_type_identifier`, `generic_type`, `crate`, `super`, `self` or a lone identifier. */
@@ -181,6 +192,7 @@ class FileExtractor {
             this.readModule(inner, inline, [...scope, name], published && isPublic(node));
           } else {
             module.declared.push(name);
+            if (underCfgTest(node)) module.testDeclared.push(name);
             module.items.set(name, "module");
             this.declare(node, name, "module", scope, published && isPublic(node));
           }
@@ -643,8 +655,9 @@ async function crateRoots(workspaceRoot: string, rustFiles: string[]): Promise<C
     }
     let name = names.get(packageDir);
     if (!name) {
-      const manifest = await readSourceText(path.join(packageDir, "Cargo.toml"));
-      name = (/^\[package\][^[]*?^\s*name\s*=\s*"([^"]+)"/msu.exec(manifest)?.[1] ?? path.basename(packageDir)).replace(/-/g, "_");
+      // Read by the TOML parser, so that a comment, or any `[` before the name, neither hides it nor is read as it (until 2026-11-21 a pattern over the text).
+      const manifest = await readToml(path.join(packageDir, "Cargo.toml"));
+      name = (stringOf(tableOf(manifest?.package)?.name) ?? path.basename(packageDir)).replace(/-/g, "_");
       names.set(packageDir, name);
     }
     const relative = normalizeWorkspacePath(path.relative(packageDir, path.join(workspaceRoot, file)));
@@ -913,6 +926,24 @@ export const rustAdapter: LanguageAdapter = {
     };
     const program = await toProgram(facts, absolutePath, workspaceRoot);
     if (program) result.program = program;
+    const testOnly = testOnlyFiles(thisFile, table);
+    if (testOnly.length > 0) result.tests = { files: testOnly };
     return result;
   }
 };
+
+/** The files of the modules this file declares under `#[cfg(test)]`, and of every module beneath them: built for the tests alone. */
+function testOnlyFiles(file: string, table: ModuleTable): string[] {
+  const files = new Set<string>();
+  const collect = (module: Module): void => {
+    files.add(module.file);
+    for (const child of module.children.values()) collect(child);
+  };
+  for (const module of table.byFile.get(file) ?? []) {
+    for (const name of module.facts.testDeclared) {
+      const child = module.children.get(name);
+      if (child) collect(child);
+    }
+  }
+  return [...files].sort();
+}

@@ -133,3 +133,49 @@ function beyondDepth(tree: Tree): boolean {
     cursor.delete();
   }
 }
+
+/** The node a grammar gives a comment: C#'s, Ruby's (`#` and `=begin` … `=end` alike) and most others'. */
+export const COMMENT_NODES: ReadonlySet<string> = new Set(["comment"]);
+
+/**
+ * Where a tree holds nodes of the given types, a comment by default: each one's start and end in the text, in its
+ * UTF-16 units, in order, as a flat list of pairs; what lies inside such a node is not visited. Walked by a cursor,
+ * like the depth's measure, so that it needs no stack of its own. With {@link writtenOver}, the shared step by which a
+ * reader that finds a construct by a pattern over a language's text reads nothing a comment holds, the grammar
+ * telling a comment from a string as the language does (the guard of 2026-11-21, `commentGuard.test.ts`).
+ */
+export function rangesOf(root: SyntaxNode, types: ReadonlySet<string> = COMMENT_NODES): number[] {
+  const ranges: number[] = [];
+  const cursor = root.walk();
+  try {
+    for (;;) {
+      if (types.has(cursor.nodeType)) {
+        ranges.push(cursor.startIndex, cursor.endIndex);
+      } else if (cursor.gotoFirstChild()) {
+        continue;
+      }
+      while (!cursor.gotoNextSibling()) {
+        if (!cursor.gotoParent()) return ranges;
+      }
+    }
+  } finally {
+    cursor.delete();
+  }
+}
+
+/**
+ * The text with each range of `ranges` (pairs of start and end, as {@link rangesOf} gives them) written over in
+ * spaces, its line breaks kept, so that a position or a line found in the result is the same in the text.
+ */
+export function writtenOver(text: string, ranges: readonly number[]): string {
+  let result = "";
+  let at = 0;
+  for (let index = 0; index + 1 < ranges.length; index += 2) {
+    const start = Math.max(ranges[index], at);
+    const end = ranges[index + 1];
+    if (end <= start) continue;
+    result += text.slice(at, start) + text.slice(start, end).replace(/[^\r\n]/gu, " ");
+    at = end;
+  }
+  return result + text.slice(at);
+}

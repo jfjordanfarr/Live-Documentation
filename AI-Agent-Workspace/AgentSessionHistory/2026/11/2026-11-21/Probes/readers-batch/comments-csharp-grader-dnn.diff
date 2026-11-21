@@ -1,0 +1,159 @@
+7,9c7,9
+< Edges (C# file pairs): the compiler's 24837, the adapter's 20971, both 20392
+<   the adapter's only: 579: a namesake 2, resting on a reference under a condition the default configuration does not meet 0, other 577
+<   the compiler's only: 4445
+---
+> Edges (C# file pairs): the compiler's 24837, the adapter's 20885, both 20376
+>   the adapter's only: 509: a namesake 1, resting on a reference under a condition the default configuration does not meet 0, other 508
+>   the compiler's only: 4461
+47,48c47
+< Edges the adapter draws on a namesake (2):
+<   DNN Platform/Library/Services/Cryptography/CryptographyProvider.cs → DNN Platform/DotNetNuke.Abstractions/Security/ICryptographyProvider.cs
+---
+> Edges the adapter draws on a namesake (1):
+51c50
+< Other edges the adapter draws and the compiler does not (577):
+---
+> Other edges the adapter draws and the compiler does not (508):
+58,59d56
+<   DNN Platform/Controls/CountryListBox/SeekCountryException.cs → DNN Platform/Controls/CountryListBox/CountryLookup.cs
+<   DNN Platform/DotNetNuke.Abstractions/Pages/PageTag.cs → DNN Platform/DotNetNuke.Abstractions/Pages/PagePriority.cs
+97d93
+<   DNN Platform/DotNetNuke.Log4net/log4net/Core/IFixingRequired.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggingEvent.cs
+99,101d94
+<   DNN Platform/DotNetNuke.Log4net/log4net/Core/LoggerManager.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+<   DNN Platform/DotNetNuke.Log4net/log4net/Filter/FilterDecision.cs → DNN Platform/DotNetNuke.Log4net/log4net/Filter/IFilter.cs
+<   DNN Platform/DotNetNuke.Log4net/log4net/ILog.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+117d109
+<   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTraceDetailPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+122d113
+<   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/StackTracePatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+129d119
+<   DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs → DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs
+136,137d125
+<   DNN Platform/DotNetNuke.Log4net/log4net/Layout/PatternLayout.cs → DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs
+<   DNN Platform/DotNetNuke.Log4net/log4net/LogManager.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+143,144d130
+<   DNN Platform/DotNetNuke.Log4net/log4net/Repository/Hierarchy/Hierarchy.cs → DNN Platform/DotNetNuke.Log4net/log4net/Repository/ILoggerRepository.cs
+<   DNN Platform/DotNetNuke.Log4net/log4net/Util/ILogExtensions.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+147,148d132
+<   DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs → DNN Platform/DotNetNuke.Log4net/log4net/GlobalContext.cs
+<   DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternString.cs → DNN Platform/DotNetNuke.Log4net/log4net/ThreadContext.cs
+166d149
+<   DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/RequiredAttribute.cs → DNN Platform/DotNetNuke.Maintenance/Telerik/Removal/Steps/IStep.cs
+211d193
+<   DNN Platform/DotNetNuke.Web.Client/Controls/DnnCssInclude.cs → DNN Platform/DotNetNuke.Abstractions/ClientResources/ILinkResource.cs
+214d195
+<   DNN Platform/DotNetNuke.Web.Mvc/MvcHostControl.cs → DNN Platform/Library/UI/Modules/ISettingsControl.cs
+228d208
+<   DNN Platform/DotNetNuke.Web/Api/ITabAndModuleInfoProvider.cs → DNN Platform/Library/Common/Utilities/Null.cs
+230d209
+<   DNN Platform/DotNetNuke.Web/Api/Internal/Auth/DigestAuthentication.cs → DNN Platform/DotNetNuke.Web/Api/Auth/AuthMessageHandlerBase.cs
+284d262
+<   DNN Platform/DotNetNuke.Web/UI/WebControls/ItemListServicesOptions.cs → DNN Platform/Library/Common/Utilities/Null.cs
+288,289d265
+<   DNN Platform/Library/Application/DotNetNukeContext.cs → DNN Platform/Library/UI/Containers/Container.cs
+<   DNN Platform/Library/Application/DotNetNukeContext.cs → DNN Platform/Library/UI/Skins/Skin.cs
+291d266
+<   DNN Platform/Library/Common/Utilities/CacheItemArgs.cs → DNN Platform/Library/Entities/Host/Host.cs
+301d275
+<   DNN Platform/Library/ComponentModel/DataAnnotations/CacheableAttribute.cs → DNN Platform/DotNetNuke.Abstractions/Application/IHostSettings.cs
+304,311d277
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowConcurrencyException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowEngine.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowSecurityException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowManager.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowNameAlreadyExistsException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowDoesNotExistException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowInvalidOperationException.cs
+<   DNN Platform/Library/Entities/Content/Workflow/IWorkflowStateManager.cs → DNN Platform/Library/Entities/Content/Workflow/Exceptions/WorkflowStateNameAlreadyExistsException.cs
+318d283
+<   DNN Platform/Library/Entities/Modules/IModuleController.cs → DNN Platform/Library/Entities/Modules/Definitions/ModuleDefinitionInfo.cs
+333d297
+<   DNN Platform/Library/Entities/Portals/Templates/PortalTemplateModuleAction.cs → DNN Platform/DotNetNuke.Abstractions/Portals/Templates/PortalTemplateModuleAction.cs
+335d298
+<   DNN Platform/Library/Entities/Urls/BrowserTypes.cs → DNN Platform/DotNetNuke.Abstractions/Urls/BrowserTypes.cs
+339,341d301
+<   DNN Platform/Library/Entities/Users/IUserController.cs → DNN Platform/DotNetNuke.Abstractions/Users/IUserInfo.cs
+<   DNN Platform/Library/Entities/Users/IUserController.cs → DNN Platform/Library/Common/Globals.cs
+<   DNN Platform/Library/Entities/Users/IUserController.cs → DNN Platform/Library/Common/Utilities/Null.cs
+344d303
+<   DNN Platform/Library/Framework/JavaScriptLibraries/CommonJS.cs → DNN Platform/Library/Framework/JavaScriptLibraries/JavaScriptLibrary.cs
+354d312
+<   DNN Platform/Library/Security/Membership/MembershipProvider.cs → DNN Platform/Library/Entities/Users/IUserController.cs
+371d328
+<   DNN Platform/Library/Services/FileSystem/Internal/Wrappers/IIconController.cs → DNN Platform/Library/Entities/Icons/IconController.cs
+386d342
+<   DNN Platform/Library/Services/Mail/OAuth/ISmtpOAuthProvider.cs → DNN Platform/Library/Common/Utilities/Null.cs
+389d344
+<   DNN Platform/Library/Services/Scheduling/SchedulingProvider.cs → DNN Platform/DotNetNuke.Abstractions/Application/SchedulerMode.cs
+400d354
+<   DNN Platform/Library/UI/Modules/ModuleControlFactory.cs → DNN Platform/Library/UI/Modules/IModuleControlPipeline.cs
+407,412d360
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/GroupByMode.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/LabelMode.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/ListBoundField.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorMode.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyAttributes/SortOrderAttribute.cs
+<   DNN Platform/Library/UI/WebControls/PropertyEditor/PropertySortType.cs → DNN Platform/Library/UI/WebControls/PropertyEditor/PropertyEditorControl.cs
+430,431d377
+<   DNN Platform/Modules/Journal/Components/FeatureController.cs → DNN Platform/Library/Entities/Modules/IPortable.cs
+<   DNN Platform/Modules/Journal/Components/FeatureController.cs → DNN Platform/Library/Entities/Modules/IUpgradeable.cs
+493,494d438
+<   DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapability.cs → DNN Platform/Library/Services/ClientCapability/IClientCapability.cs
+<   DNN Platform/Providers/ClientCapabilityProviders/Provider.AspNetCCP/AspNetClientCapabilityProvider.cs → DNN Platform/Library/Services/ClientCapability/IClientCapabilityProvider.cs
+526,527d469
+<   DNN Platform/Website/admin/Skins/DnnJsInclude.ascx.cs → DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs
+<   DNN Platform/Website/admin/Skins/Meta.ascx.cs → DNN Platform/Website/admin/Skins/Meta.ascx.designer.cs
+558d499
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/IModulesController.cs → Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/IModulesController.cs
+560d500
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/Command.cs → DNN Platform/Library/Prompt/Command.cs
+562d501
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandHelp.cs → DNN Platform/Library/Prompt/Output/CommandHelp.cs
+564d502
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Models/CommandOption.cs → DNN Platform/Library/Prompt/Output/CommandOption.cs
+566d503
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/ModulesController.cs → Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Controllers/ModulesController.cs
+568d504
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/CommandRepository.cs → DNN Platform/Library/Prompt/CommandRepository.cs
+570d505
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Prompt/Repositories/ICommandRepository.cs → DNN Platform/DotNetNuke.Abstractions/Prompt/ICommandRepository.cs
+583d517
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/SiteSettings/AllowedExtensionsHelper.cs → DNN Platform/Library/Common/Globals.cs
+589d522
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Themes/ParseType.cs → DNN Platform/Library/UI/Skins/SkinFileProcessor.cs
+601d533
+<   Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/Prompt/Utilities.cs → Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Users/IUserValidator.cs
+617d548
+<   Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/PortalHelper.cs → Dnn.AdminExperience/Library/Dnn.PersonaBar.Library/Helper/IContentVerifier.cs
+626d556
+<   Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/Services/TabsController.cs → DNN Platform/Library/Entities/Tabs/TabInfo.cs
+630c560
+< Edges the compiler binds and the adapter does not draw (4445):
+---
+> Edges the compiler binds and the adapter does not draw (4461):
+719a650
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/DatePatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+720a652,657
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FileLocationPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/FullLocationPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LevelPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/Level.cs
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/LineLocationPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/MethodLocationPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/NamedPatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+722a660
+>   DNN Platform/DotNetNuke.Log4net/log4net/Layout/Pattern/TypeNamePatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Core/LocationInfo.cs
+754a693
+>   DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternStringConverters/NewLinePatternConverter.cs → DNN Platform/DotNetNuke.Log4net/log4net/Util/PatternConverter.cs
+790a730
+>   DNN Platform/DotNetNuke.Web.Client/Controls/DnnJsInclude.cs → DNN Platform/DotNetNuke.Abstractions/ClientResources/IScriptResource.cs
+1855a1796,1798
+>   DNN Platform/Library/Obsolete/EventLogController.cs → DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogConfigService.cs
+>   DNN Platform/Library/Obsolete/EventLogController.cs → DNN Platform/DotNetNuke.Abstractions/Logging/IEventLogService.cs
+>   DNN Platform/Library/Obsolete/EventLogController.cs → DNN Platform/Library/Services/Log/EventLog/ILogController.cs
+2973a2917,2918
+>   DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs → DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageBoxView.cs
+>   DNN Platform/Modules/CoreMessaging/Services/MessagingServiceController.cs → DNN Platform/Library/Services/Social/Messaging/Internal/Views/MessageThreadsView.cs
+3599a3545
+>   DNN Platform/Syndication/RSS/GenericRssChannel.cs → DNN Platform/Syndication/RSS/RssElementBase.cs

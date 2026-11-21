@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/treeSitter.ts`
-- Generated At: 2026-11-20T16:58:04.420Z
+- Generated At: 2026-11-21T18:54:37.384Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Loads the tree-sitter grammars the adapters parse with: one `web-tree-sitter` pa
 - A `SyntaxTree` alias that nothing used was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-08/Probes/dead-code-sweep.md); the runtime's `Tree` was the return type of `parseSource` until 2026-11-20.
 - Since 2026-11-20 ([the record of the workers' review](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-19/Probes/history-rebuild-fast/README.md), its fourth round) the adapters take, walk and release a tree only through `readTree`, and any throw there marks the process, whatever its class: the runtime's one WebAssembly module, which every grammar's parser shares, restores none of its state when a call into it throws, and whether a throw was a trap, an abort, an exit of the module, a stack overflow or the adapter's own cannot be told from the error. The history's worker, which lives across commits, then writes nothing of that commit unless it was its first, and the command gives the commit to a fresh worker. Before, `parseSource` handed the tree to the adapter, and only a `RuntimeError` thrown inside `parse` marked the process, after the commit's summary was written. What it cannot see: a module whose state went wrong without anything thrown, and a node an adapter keeps and reads after the release.
 - Since 2026-11-20 `grammarFile` probes the engine's own grammar with `statSync` and `throwIfNoEntry: false`, a failure of the machine's thrown by `throwIfMachineFailure` ([sourceText.ts](../../tooling/sourceText.ts.mdmd.md)), so that the load fails and is dropped and the next ask loads the engine's own. Before, `existsSync` read such a failure as no build of the engine's: the bundled, unpatched grammar was loaded and kept for the process's life, and every later file of that language in that worker read by it. The structural case `sourceText.boundary.test.ts` found it; `treeSitter.test.ts` holds it.
+- Since 2026-11-21 `rangesOf` and `writtenOver` are the shared step by which a reader that finds a construct by a pattern over a language's text reads nothing a comment holds, the grammar telling a comment from a string ([the comment guard](./commentGuard.test.ts.mdmd.md)): C#'s patterns and Ruby's use it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -60,6 +61,34 @@ recursion, and a tree deeper than `TREE_DEPTH` marks the process too (`deep`): a
 stack in the adapter's walk where this one does not, or the other way round. Until 2026-11-20 only a `RuntimeError`
 thrown inside `parse` marked it, and the adapters walked and released their trees themselves (`parseSource`); the
 depth is measured since a later review of that day.
+
+#### `COMMENT_NODES` {#symbol-comment_nodes}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L138)
+- Returns: `ReadonlySet`
+
+##### `COMMENT_NODES` — Summary
+The node a grammar gives a comment: C#'s, Ruby's (`#` and `=begin` … `=end` alike) and most others'.
+
+#### `rangesOf` {#symbol-rangesof}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L147)
+- Parameters: `root`: [`SyntaxNode`](#symbol-syntaxnode); `types`: `ReadonlySet`
+
+##### `rangesOf` — Summary
+Where a tree holds nodes of the given types, a comment by default: each one's start and end in the text, in its
+UTF-16 units, in order, as a flat list of pairs; what lies inside such a node is not visited. Walked by a cursor,
+like the depth's measure, so that it needs no stack of its own. With {@link writtenOver}, the shared step by which a
+reader that finds a construct by a pattern over a language's text reads nothing a comment holds, the grammar
+telling a comment from a string as the language does (the guard of 2026-11-21, `commentGuard.test.ts`).
+
+#### `writtenOver` {#symbol-writtenover}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/treeSitter.ts#L170)
+
+##### `writtenOver` — Summary
+The text with each range of `ranges` (pairs of start and end, as {@link rangesOf} gives them) written over in
+spaces, its line breaks kept, so that a position or a line found in the result is the same in the text.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

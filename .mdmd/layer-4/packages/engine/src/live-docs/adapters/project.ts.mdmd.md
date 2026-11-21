@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/project.ts`
-- Generated At: 2026-11-21T07:38:05.419Z
+- Generated At: 2026-11-21T20:21:42.397Z
 
 ## Authored
 ### Purpose
@@ -21,21 +21,21 @@ The adapter for .NET project files: what a project stands on. The project is the
 ### Public Symbols
 #### `projectSdk` {#symbol-projectsdk}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L42)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L45)
 
 ##### `projectSdk` — Summary
 The SDK a project file's `Project` element names, or `""` for a project of the classic format, which names none.
 
 #### `projectKind` {#symbol-projectkind}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L47)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L50)
 
 ##### `projectKind` — Summary
 What the project builds, read from a project file's text, what its comments hold set aside.
 
 #### `projectAdapter` {#symbol-projectadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L63)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L66)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `projectAdapter` — Summary
@@ -43,14 +43,14 @@ Language adapter for .NET project files: the project as a symbol, and what it re
 
 #### `projectStem` {#symbol-projectstem}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L102)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L119)
 
 ##### `projectStem` — Summary
 The name a project reference stands for when its file cannot be found: the file's stem.
 
 #### `referencedProjectName` {#symbol-referencedprojectname}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L107)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/project.ts#L124)
 - Parameters: `symbolIndex`: [`WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `referencedProjectName` — Summary

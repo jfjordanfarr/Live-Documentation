@@ -1,21 +1,22 @@
 import type { Dirent } from "node:fs";
 import * as fs from "node:fs/promises";
 import path from "node:path";
+import ts from "typescript";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { markupWithoutComments } from "../adapters/aspnet";
 import type { DependencyEntry } from "../core";
 
 interface DomDependencyParams {
   absolutePath: string;
   workspaceRoot: string;
-  content: string;
+  /** The parsed script, from which the calls are read, so that none a comment holds is. */
+  sourceFile: ts.SourceFile;
   /** The files selected for this scan; absent for standalone source analysis. */
   fileIndex?: ReadonlySet<string>;
 }
 
-const DOM_ID_PATTERN = /document\.getElementById\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
-const QUERY_SELECTOR_ID_PATTERN = /document\.querySelector\s*\(\s*["'`]#([^"'`]+)["'`]\s*\)/g;
 const CANDIDATE_EXTENSIONS = [".aspx", ".ascx", ".cshtml", ".razor", ".html"] as const;
 const MAX_PARENT_ASCENT = 3;
 const MAX_DIRECTORY_SCAN_DEPTH = 2;
@@ -38,10 +39,14 @@ type FileContentCache = Map<string, string | null>;
  * calls and attempts to locate nearby markup files (`.html`, `.cshtml`, etc.)
  * that define those DOM IDs, returning dependency entries. With a workspace
  * file index, only selected markup can become a dependency; without one,
- * standalone analysis keeps the nearby-file search.
+ * standalone analysis keeps the nearby-file search. The calls are read from
+ * the script's syntax tree and the ids from the markup with its comments
+ * written over, so that neither is read inside a comment (the comment guard
+ * of 2026-11-21, `commentGuard.test.ts`; until then both were patterns over
+ * the raw text).
  */
 export async function inferDomDependencies(params: DomDependencyParams): Promise<DependencyEntry[]> {
-  const ids = collectSelectors(params.content);
+  const ids = collectSelectors(params.sourceFile);
   if (ids.size === 0) {
     return [];
   }
@@ -92,29 +97,34 @@ export async function inferDomDependencies(params: DomDependencyParams): Promise
   return dependencies;
 }
 
-function collectSelectors(content: string): Set<string> {
+/**
+ * The ids the script asks the document for: the argument of each `document.getElementById(…)`, and of each
+ * `document.querySelector("#…")` after its `#`, where the argument is a string written out (a literal, or a template
+ * with no substitution), `document` being the name itself or a property of that name (`window.document`).
+ */
+function collectSelectors(sourceFile: ts.SourceFile): Set<string> {
   const ids = new Set<string>();
-  let match: RegExpExecArray | null;
-
-  while ((match = DOM_ID_PATTERN.exec(content)) !== null) {
-    const candidate = sanitiseId(match[1]);
-    if (candidate) {
-      ids.add(candidate);
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression) && isDocument(node.expression.expression)) {
+      const method = node.expression.name.text;
+      const [argument] = node.arguments;
+      const written = argument && ts.isStringLiteralLike(argument) ? argument.text : undefined;
+      const candidate = written === undefined ? undefined
+        : method === "getElementById" ? sanitiseId(written)
+        : method === "querySelector" && written.startsWith("#") ? sanitiseId(written.slice(1))
+        : undefined;
+      if (candidate) {
+        ids.add(candidate);
+      }
     }
-  }
-
-  DOM_ID_PATTERN.lastIndex = 0;
-
-  while ((match = QUERY_SELECTOR_ID_PATTERN.exec(content)) !== null) {
-    const candidate = sanitiseId(match[1]);
-    if (candidate) {
-      ids.add(candidate);
-    }
-  }
-
-  QUERY_SELECTOR_ID_PATTERN.lastIndex = 0;
-
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
   return ids;
+}
+
+function isDocument(node: ts.Expression): boolean {
+  return (ts.isIdentifier(node) && node.text === "document") || (ts.isPropertyAccessExpression(node) && node.name.text === "document");
 }
 
 function sanitiseId(raw: string | undefined): string | undefined {
@@ -262,6 +272,7 @@ async function readDirectoryEntries(dir: string): Promise<Dirent[] | null> {
   }
 }
 
+/** A markup file's text with its comments written over, so that an element a comment holds is no element; null when it cannot be read. */
 async function readFileCached(filePath: string, cache: FileContentCache): Promise<string | null> {
   if (cache.has(filePath)) {
     const cached = cache.get(filePath);
@@ -269,7 +280,7 @@ async function readFileCached(filePath: string, cache: FileContentCache): Promis
   }
 
   try {
-    const content = await readSourceText(filePath);
+    const content = markupWithoutComments(filePath, await readSourceText(filePath));
     cache.set(filePath, content);
     return content;
   } catch (error) {

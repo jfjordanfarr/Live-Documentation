@@ -1,0 +1,77 @@
+{
+  "tool": "SQLite 3.54.1, as node:sqlite carries it",
+  "files": {
+    "dialect.sql": {
+      "objects": [
+        {
+          "kind": "table",
+          "name": "shop order lines"
+        },
+        {
+          "kind": "table",
+          "name": "shop_after_the_trigger"
+        },
+        {
+          "kind": "table",
+          "name": "shop_audit"
+        },
+        {
+          "kind": "view",
+          "name": "shop_customer_names"
+        },
+        {
+          "kind": "table",
+          "name": "shop_customers"
+        },
+        {
+          "kind": "table",
+          "name": "shop_customers_archive"
+        },
+        {
+          "kind": "table",
+          "name": "shop_legacy"
+        },
+        {
+          "kind": "table",
+          "name": "shop_notes"
+        },
+        {
+          "kind": "table",
+          "name": "shop_tick`ed"
+        }
+      ]
+    },
+    "migrations/001_init.sql": {
+      "objects": [
+        {
+          "kind": "table",
+          "name": "acknowledgements"
+        },
+        {
+          "kind": "table",
+          "name": "artifacts"
+        },
+        {
+          "kind": "table",
+          "name": "change_events"
+        },
+        {
+          "kind": "table",
+          "name": "diagnostics"
+        },
+        {
+          "kind": "table",
+          "name": "links"
+        },
+        {
+          "kind": "table",
+          "name": "snapshots"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "dialect.sql": "70d084e5115792bebae9d2b160bd3916ebc536ed586512d432830bc44f14500d",
+    "migrations/001_init.sql": "dd6a726f44e209b569726fde31d3056a00e6e8e914c210bb0933c3102bb6e675"
+  }
+}

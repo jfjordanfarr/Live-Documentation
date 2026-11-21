@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/expected/repository-entries.json`
-- Generated At: 2026-11-21T05:53:36.328Z
+- Generated At: 2026-11-21T19:48:49.269Z
 
 ## Authored
 ### Purpose
@@ -149,6 +149,9 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/oracle/sql-scriptdom.cs` {#symbol-entriesscriptsoraclesql-scriptdomcs}
+- Type: key
+
+#### `entries:scripts/oracle/sql-sqlite.ts` {#symbol-entriesscriptsoraclesql-sqlitets}
 - Type: key
 
 #### `entries:scripts/safe-to-commit.mjs` {#symbol-entriesscriptssafe-to-commitmjs}

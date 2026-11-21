@@ -1,0 +1,14 @@
+{
+  "provenance": "Run by the owner on their own Windows machine on 2026-11-21 and pasted into the session as it stood; the version of PowerShell was not shown. Kept as the answer Windows gives where pwsh on this Linux answers otherwise.",
+  "console": [
+    "(base) PS C:\\Users\\User> mkdir t; cd t; 'x' > build; 'x' > build.ps1",
+    "(base) PS C:\\Users\\User\\t> Get-Command ./build | Format-List Name, CommandType, Source",
+    "",
+    "Name        : build.ps1",
+    "CommandType : ExternalScript",
+    "Source      : C:\\Users\\User\\t\\build.ps1"
+  ],
+  "runs": [
+    { "beside": ["build", "build.ps1"], "path": "./build", "runs": "build.ps1" }
+  ]
+}

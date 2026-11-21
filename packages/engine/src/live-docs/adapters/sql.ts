@@ -19,7 +19,7 @@ import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
-import { bindSqlName, matchSqlObject, readSql, sqlNameMatches, sqlObjectName } from "../openings";
+import { bindSqlName, matchSqlObject, readSql, sqlNameMatches, sqlObjectName, tsqltTestClasses } from "../openings";
 import type { LanguageAdapter } from "./index";
 
 /** Language adapter for SQL scripts: created objects as symbols, named objects as dependencies. */
@@ -63,6 +63,17 @@ export const sqlAdapter: LanguageAdapter = {
         .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const, ...(basis ? { basis } : {}) }));
 
     const named = Array.from(unresolved).sort().map((specifier): DependencyEntry => ({ specifier, symbols: [], kind: "import", basis: "contract" }));
-    return { symbols, dependencies: [...entries(source), ...entries(contract, "contract"), ...named] };
+    const result: SourceAnalysisResult = { symbols, dependencies: [...entries(source), ...entries(contract, "contract"), ...named] };
+    // tSQLt's tests: the schemas this script makes test classes, and those in which it creates a `test…` procedure; the
+    // first pass puts the two together across scripts, since a class may be made in another script than its tests.
+    const testClasses = tsqltTestClasses(content);
+    const testProcedureSchemas = [...new Set(declarations.filter((declaration) => declaration.kind === "procedure" && !declaration.inBody)
+      .map((declaration) => sqlObjectName(declaration.name).parts)
+      .filter((parts) => parts.length >= 2 && /^test/iu.test(parts[parts.length - 1]))
+      .map((parts) => parts[parts.length - 2].toLowerCase()))];
+    if (testClasses.length > 0 || testProcedureSchemas.length > 0) {
+      result.tests = { ...(testClasses.length > 0 ? { testClasses } : {}), ...(testProcedureSchemas.length > 0 ? { testProcedureSchemas } : {}) };
+    }
+    return result;
   }
 };

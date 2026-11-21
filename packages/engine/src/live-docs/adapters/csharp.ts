@@ -68,7 +68,7 @@ import { extractDynamicDependencies, type ConfigReference, type ResolvedTypeTarg
 import { buildDocumentationFromLines } from "./csharp.xmldoc";
 import { projectReach, type ProjectReach } from "./dotnetProjects";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-import { readTree, type SyntaxNode } from "./treeSitter";
+import { rangesOf, readTree, writtenOver, type SyntaxNode } from "./treeSitter";
 
 // ---------------------------------------------------------------------------
 // What one file declares and names
@@ -171,6 +171,8 @@ interface FileFacts {
   tableUses:      StringUse[];
   /** The program's entry point: top-level statements, or a static `Main`. Top-level statements are the entry even beside a `Main`, as they are to the compiler. */
   program?:       ProgramEntry;
+  /** Where the file's comments lie (`rangesOf`), so that the patterns of `csharp.dependencies` read the text with them written over. */
+  comments:       number[];
 }
 
 const HTTP_VERB_ATTRIBUTES: Record<string, string> = {
@@ -337,10 +339,29 @@ function stringLiteralValue(node: SyntaxNode | null | undefined): string | undef
     return stringLiteralValue(node.namedChildren[0]);
   }
   if (node.type === "string_literal" || node.type === "verbatim_string_literal") {
-    const match = /^@?"([\s\S]*)"$/u.exec(node.text);
-    return match ? match[1] : undefined;
+    const match = /^(@?)"([\s\S]*)"$/u.exec(node.text);
+    return match ? stringValue(match[2], match[1] === "@") : undefined;
   }
   return undefined;
+}
+
+const SIMPLE_ESCAPES: Readonly<Record<string, string>> = { "'": "'", "\"": "\"", "\\": "\\", "0": "\0", a: "\x07", b: "\b", e: "\x1b", f: "\f", n: "\n", r: "\r", t: "\t", v: "\v" };
+
+/**
+ * A string's text as the program holds it, from what the source writes between its quotes (C#'s "String literals"):
+ * in a regular string each escape sequence is the character it stands for, so that `"-- note\nSELECT …"` holds a line
+ * break, which ends SQL's line comment; in a verbatim string (`@"…"`) only a doubled quote stands for one.
+ */
+function stringValue(written: string, verbatim: boolean): string {
+  if (verbatim) return written.replace(/""/gu, "\"");
+  return written.replace(/\\(?:u([0-9A-Fa-f]{4})|U([0-9A-Fa-f]{8})|x([0-9A-Fa-f]{1,4})|([\s\S]))/gu, (whole: string, four?: string, eight?: string, hex?: string, simple?: string) => {
+    const code = four ?? eight ?? hex;
+    if (code !== undefined) {
+      const point = Number.parseInt(code, 16);
+      return point <= 0x10ffff ? String.fromCodePoint(point) : whole;
+    }
+    return simple !== undefined && simple in SIMPLE_ESCAPES ? SIMPLE_ESCAPES[simple] : whole;
+  });
 }
 
 /** One attribute on a declaration: its name without the `Attribute` suffix, its positional arguments and its named ones. */
@@ -390,9 +411,10 @@ function stringParts(node: SyntaxNode | null | undefined): StringPart[] | null {
     }
     case "interpolated_string_expression": {
       const parts: StringPart[] = [];
+      const verbatim = /^(?:\$@|@\$)/u.test(node.text);
       for (const child of node.namedChildren) {
         if (child.type === "string_content" || child.type === "interpolated_string_text") {
-          parts.push({ literal: child.text });
+          parts.push({ literal: stringValue(child.text, verbatim) });
         } else if (child.type === "interpolation") {
           const inner = child.namedChildren.find((candidate) => candidate.type !== "interpolation_brace");
           parts.push({ chain: identifierChain(inner ?? null) ?? [] });
@@ -535,7 +557,8 @@ class FileExtractor {
     configUses:     [],
     routeUses:      [],
     sqlUses:        [],
-    tableUses:      []
+    tableUses:      [],
+    comments:       []
   };
 
   extract(root: SyntaxNode): FileFacts {
@@ -1011,7 +1034,7 @@ async function fileFacts(absolutePath: string): Promise<FileFacts> {
     return cached.facts;
   }
   const content = await readSourceText(absolutePath);
-  const facts   = await readTree("c-sharp", content, (root) => new FileExtractor().extract(root));
+  const facts   = await readTree("c-sharp", content, (root) => ({ ...new FileExtractor().extract(root), comments: rangesOf(root) }));
   factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
   return facts;
 }
@@ -1475,7 +1498,8 @@ function toDependencies(
     return Array.from(targets.values());
   };
 
-  const dynamic = extractDynamicDependencies({ content, thisFile, fileIndex, configReferences, resolveType });
+  // The patterns run over the text with its comments written over, so that a commented-out key, type or job is not read.
+  const dynamic = extractDynamicDependencies({ content: writtenOver(content, facts.comments), thisFile, fileIndex, configReferences, resolveType });
   for (const entry of dynamic) {
     if (!entry.resolvedPath) continue;
     link(entry.resolvedPath);

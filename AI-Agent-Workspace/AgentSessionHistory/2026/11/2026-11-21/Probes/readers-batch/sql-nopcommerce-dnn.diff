@@ -1,0 +1,10 @@
++ upgradescripts/4.50-4.60/mysql_customer_data_migrate.sql	to	Country
++ upgradescripts/4.50-4.60/mysql_customer_data_migrate.sql	to	Customer
++ upgradescripts/4.50-4.60/mysql_customer_data_migrate.sql	to	Language
++ upgradescripts/4.50-4.60/mysql_customer_data_migrate.sql	to	upgradescripts/2.50-2.60/upgrade.sql
++ upgradescripts/4.50-4.60/mysql_customer_data_migrate.sql	use	upgradescripts/2.50-2.60/upgrade.sql#dbo.GenericAttribute
+totals: {('gained', 'to'): 4, ('gained', 'use'): 1} files: 31 31
+- DNN Platform/Library/UI/Modules/ModuleInstanceContext.cs	to	Page.ExecuteRegisteredAsyncTasks
+- DNN Platform/Library/UI/Modules/ModuleInstanceContext.cs	to	Page.RegisterAsyncTask
++ DNN Platform/Library/UI/Modules/ModuleInstanceContext.cs	to	[Page.RegisterAsyncTask()]
+totals: {('gained', 'to'): 1, ('lost', 'to'): 2} files: 6545 6545
