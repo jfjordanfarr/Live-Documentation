@@ -4,6 +4,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ArrivalFraming, CameraFraming } from "../../packages/explorer/src/client/types";
 import { ARRIVAL_FLOOR_RATIO } from "../../packages/explorer/src/client/views/localView/camera-intent";
+import { choose } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
 
 /**
@@ -336,4 +337,25 @@ test("following, pins that cannot all be framed leave the oldest out, always fra
     else await expect(oldest).not.toHaveAttribute("aria-label", /outside the frame/);
     await context.close();
   }
+});
+
+const band = (directory: string): string => `.local-directory-band:has(> .local-directory-label[data-directory="${directory}"])`;
+
+test("a folder chosen in the search stands whole in the frame, not centred on its name with the window's upper half empty", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+  });
+  const page = await context.newPage();
+  await page.goto(ESTATE);
+  await page.waitForSelector("#view-world.active", { timeout: 20_000 });
+  await choose(page, "subject", "PaymentService", { directory: "PaymentService" });
+  await expect(page.locator(band("PaymentService"))).toHaveCount(1, { timeout: 15_000 });
+  await still(page);
+  const frame = await frameOf(page), drawn = (await boxOf(page, band("PaymentService")))!;
+  expect(drawn.bottom - drawn.top, "the estate's PaymentService fits the frame at its scale").toBeLessThan(frame.bottom - frame.top);
+  expect(inside(drawn, frame), `the folder ${JSON.stringify(drawn)} whole inside ${JSON.stringify(frame)}`).toBe(true);
+  const above = drawn.top - frame.top, below = frame.bottom - drawn.bottom;
+  expect(Math.abs(above - below), `centred: ${above} px above it, ${below} px below`).toBeLessThan(24);
+  await context.close();
 });

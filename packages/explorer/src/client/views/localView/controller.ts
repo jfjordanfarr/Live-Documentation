@@ -1043,6 +1043,10 @@ export class LocalViewController implements LocalViewApi {
     if (this.focusRequest) {
       const element = this.container.querySelector<HTMLElement>(this.focusRequest);
       this.focusRequest = null;
+      // A focus asked for frames the thing itself; a newcomer the same change made is framed by it, not kept for the next
+      // step, which it would otherwise stand in for (found 2026-11-21: the folder a search opened was framed again when
+      // a directory was next opened inside it).
+      this.stepNewcomer = null;
       this.directoryArrivalPending = false;
       if (element) this.focusElement(element);
       this.readingCalibrationPending = false;
@@ -1361,8 +1365,12 @@ export class LocalViewController implements LocalViewApi {
     const frame = this.frameRect();
     const target = withTransformReset(this.container, origin => {
       const card = element.closest<HTMLElement>(".node-card");
-      const across = (card ?? element).getBoundingClientRect();
-      const whole = element.getBoundingClientRect();
+      // An opened directory is framed by its whole box, centred where it fits and entered at its label where it does not;
+      // framed by its label alone, a folder chosen in the search stood centred on its name with the half of the window
+      // above it empty (blind playtest of 2026-11-21, `estate-directory-sonnet-medium-look-only`, shot 005).
+      const band = element.classList.contains("local-directory-label") ? element.closest<HTMLElement>(".local-directory-band") : null;
+      const across = (card ?? band ?? element).getBoundingClientRect();
+      const whole = (band ?? element).getBoundingClientRect();
       // A tall file is entered at its name; a symbol is entered at its own row, however far down the file it lies.
       const vertical = !this.reading && element === card && whole.height > frame.height
         ? card.querySelector<HTMLElement>(".node-title")!.getBoundingClientRect() : whole;
@@ -2010,8 +2018,12 @@ export class LocalViewController implements LocalViewApi {
       const band = label?.closest<HTMLElement>(".local-directory-band");
       if (!label || !band) return null;
       // What the directory holds directly, its cards, closed boxes and inner membranes, and of those the first row.
+      // The first row under the label: an opened directory's membrane need not be a rectangle, and what it holds can stand
+      // above its label beside the columns of the directory that encloses it (found 2026-11-21 on live-docs/history, where
+      // the first row read from the whole held set lay above the label and the pan entered there, the label below the view).
+      const head = local(label);
       const held = [...band.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed, .local-directory-band")]
-        .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(local);
+        .filter(element => element.parentElement?.closest(".local-directory-band") === band).map(local).filter(box => box.top >= head.top);
       const top = Math.min(...held.map(box => box.top));
       const firstRow = held.filter(box => box.top <= top + 8);
       const shape = this.container.querySelector(`.local-membrane-shape[data-directory="${key}"]`) ?? label;
