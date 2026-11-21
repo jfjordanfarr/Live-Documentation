@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.test.ts`
-- Generated At: 2026-11-21T05:32:55.976Z
+- Generated At: 2026-11-21T19:01:35.527Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - [`camera-intent.FRAMING_EASE_MIN_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_min_ms)
 - [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
+- [`camera-intent.arrivalLookChange`](./camera-intent.ts.mdmd.md#symbol-arrivallookchange-function)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
 - [`camera-intent.cutByEdge`](./camera-intent.ts.mdmd.md#symbol-cutbyedge)
 - [`camera-intent.cutPan`](./camera-intent.ts.mdmd.md#symbol-cutpan)

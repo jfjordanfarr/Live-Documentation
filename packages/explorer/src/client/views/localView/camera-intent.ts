@@ -12,6 +12,7 @@
  *
  * @module camera-intent
  */
+import type { ArrivalFraming } from "../../types";
 import { farthestRatioOf, STEP_RATIO } from "./ladder-steps";
 import { clamp, framePadding, type Bounds, type Frame } from "./layout-measure";
 import type { MapTransform } from "./types";
@@ -20,6 +21,28 @@ import type { MapTransform } from "./types";
 export const ARRIVAL_HOLD_MS = 900;
 /** How long the ease from reading size to the neighbours takes. */
 export const ARRIVAL_EASE_MS = 700;
+/**
+ * Where an arrival's pull-back changes the cards' look (trials of 2026-11-21, after the owner's "the stutter of
+ * performance as the stylesheet breakpoints were hit was jarring", the November 18 record's Turn 37): "crossing", where
+ * the zoom crosses the look's edge, as since 2026-11-19, which restyles the whole map in the middle of the motion; "after",
+ * the look held through the ease and changed once at rest at its end; "before", changed at rest at reading size, after the
+ * hold and before the ease, which then runs in the look it ends in. Null for an arrival that does not pull back.
+ */
+export type ArrivalLookChange = "crossing" | "after" | "before";
+
+/** Where the pull-back of an Arrival choice changes the look; null where the choice does not pull back. */
+export function arrivalLookChange(arrival: ArrivalFraming): ArrivalLookChange | null {
+  return arrival === "then-neighbours" ? "crossing" : arrival === "then-neighbours-after" ? "after" : arrival === "then-neighbours-before" ? "before" : null;
+}
+
+/**
+ * How long a look changed before the ease stands still before the camera moves: past the end of the look's cross-fade,
+ * which the controller takes off 200 ms after the change and which restyles the cards again (`morphLook`), and a few
+ * frames more, so that the change's restyle and its fade's end both fall while nothing moves. At 200 ms the fade's end
+ * fell on the ease's first frames (measured 2026-11-21: a frame of 1,017 ms restyling 2,366 elements on two slowed cores).
+ */
+export const ARRIVAL_LOOK_LEAD_MS = 350;
+
 /** How long a newcomer's outline is drawn emphasised, fading to its usual look. */
 export const STEP_MARK_MS = 1000;
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-21T09:00:46.296Z
+- Generated At: 2026-11-21T19:01:36.229Z
 
 ## Authored
 ### Purpose
@@ -97,12 +97,14 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`camera-intent.ARRIVAL_ENDING_INPUTS`](./camera-intent.ts.mdmd.md#symbol-arrival_ending_inputs)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)
 - [`camera-intent.ARRIVAL_HOLD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_hold_ms)
+- [`camera-intent.ARRIVAL_LOOK_LEAD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_look_lead_ms)
 - [`camera-intent.FILES_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-files_floor_ratio)
 - [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
 - [`camera-intent.PinsFraming`](./camera-intent.ts.mdmd.md#symbol-pinsframing)
 - [`camera-intent.STEP_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-step_floor_ratio)
 - [`camera-intent.STEP_MARK_MS`](./camera-intent.ts.mdmd.md#symbol-step_mark_ms)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
+- [`camera-intent.arrivalLookChange`](./camera-intent.ts.mdmd.md#symbol-arrivallookchange-function)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
 - [`camera-intent.cutPan`](./camera-intent.ts.mdmd.md#symbol-cutpan)
 - [`camera-intent.easeInOutCubic`](./camera-intent.ts.mdmd.md#symbol-easeinoutcubic)
