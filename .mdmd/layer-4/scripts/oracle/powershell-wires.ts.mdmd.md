@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-wires.ts`
-- Generated At: 2026-11-21T05:16:10.431Z
+- Generated At: 2026-11-21T05:36:10.228Z
 
 ## Authored
 ### Purpose
@@ -112,7 +112,6 @@ The workspace the parser's record describes, with what loading reaches worked ou
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `spawnSync`
-- `node:fs`
 - `node:path` - `path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`archetype.resolveArchetype`](../../packages/engine/src/live-docs/archetype.ts.mdmd.md#symbol-resolvearchetype)
@@ -120,4 +119,5 @@ The workspace the parser's record describes, with what loading reaches worked ou
 - [`powershell-edges.PowerShellDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts)
 - [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
+- [`powershell-shipped.recorded`](./powershell-shipped.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

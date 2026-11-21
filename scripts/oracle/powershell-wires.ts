@@ -26,13 +26,13 @@
  * 5.1 half, which nothing on this machine can grade.
  */
 import { spawnSync } from "node:child_process";
-import * as fs from "node:fs";
 import path from "node:path";
 
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { resolveArchetype } from "@live-documentation/engine/live-docs/archetype";
 
 import { isDataFileFacts, type PowerShellAst, type PowerShellDataFileFacts, type PowerShellScriptFacts } from "./powershell-edges";
+import recorded from "./powershell-shipped.json";
 
 /** The names a clean PowerShell session answers by itself, as `powershell-shipped.ps1` prints them. */
 export interface ShippedNames {
@@ -59,7 +59,7 @@ export function askShippedNames(): ShippedNames {
  * for readings of a committed record, which run no pwsh. Write it again when the parser's records are.
  */
 export function recordedShippedNames(): ShippedNames {
-  return JSON.parse(fs.readFileSync(path.join(__dirname, "powershell-shipped.json"), "utf8")) as ShippedNames;
+  return recorded;
 }
 
 /** A load of one file by another, by kind: what a manifest names loads with the manifest's module. */
