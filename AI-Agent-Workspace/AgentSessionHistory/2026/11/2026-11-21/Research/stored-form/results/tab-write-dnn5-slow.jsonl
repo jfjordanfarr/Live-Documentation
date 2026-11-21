@@ -1,0 +1,13 @@
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 238.5 s, cap 300 s)
+{"kind":"write","page":"write-press-stream.html","mode":"stream","rate":4,"cores":2,"loadBefore":12.5,"pageReadyMs":196,"scriptStartedMs":57,"files":53880,"writeMs":45904.8,"bytes":6813331,"sha256":"440f4b9360c3954d5f1cb972331cb1189380edb0b3d0d72be136e1b32f51073a","heapMb":100,"rendererPeakMbAtWrite":305,"errors":[],"rendererPeakMb":305,"loadAfter":9.6}
+{"kind":"write","page":"write-ledger.html","mode":"stream","rate":4,"cores":2,"loadBefore":9.6,"pageReadyMs":196,"scriptStartedMs":51,"files":53880,"writeMs":59470.7,"bytes":14079732,"sha256":"9f53c5e9e68198126fe2c4a460d83cd7da85de58c77b083debd57a9a4053e9b2","heapMb":114,"rendererPeakMbAtWrite":314,"errors":[],"rendererPeakMb":314,"loadAfter":9.1}
+browser-lane: released after 108.3 s, exit 0
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 46.9 s, cap 300 s)
+{"kind":"write","page":"write-sqlite.html","mode":"stream","rate":4,"cores":2,"loadBefore":7.7,"pageReadyMs":576,"scriptStartedMs":386,"files":53880,"writeMs":131798.1,"bytes":19995893,"sha256":"8e227817870d5b139183bd94ccf4327e2e8fc6c6ff34dd35ce8e5fd94979eceb","heapMb":285,"rendererPeakMbAtWrite":854,"errors":[],"rendererPeakMb":854,"loadAfter":14.5}
+
+browser-lane: the 300 s cap is reached; ending the command (0 of 0 cases had finished)
+{"kind":"write","page":"write-parts.html","mode":"stream","rate":4,"cores":2,"loadBefore":14.5,"pageReadyMs":286,"scriptStartedMs":95,"failed":"Error: page.evaluate: Target page, context or browser has been closed","rendererPeakMb":0,"loadAfter":12.8}
+browser-lane: CUT by the 300 s cap. The command was ended before it finished; nothing after the cut says anything about the product.
+browser-lane: waiting behind stored-form, stored-form, stored-form

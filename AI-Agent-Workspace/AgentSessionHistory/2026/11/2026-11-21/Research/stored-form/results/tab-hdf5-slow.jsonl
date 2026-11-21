@@ -1,0 +1,10 @@
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 331.5 s, cap 300 s)
+{"kind":"read","page":"read-hdf5-dnn.html","rate":4,"cores":2,"loadBefore":12.8,"pageReadyMs":6654,"scriptStartedMs":5724,"base64Ms":51.5,"carriedBytes":2410526,"openMs":343.6,"inboundOfHub":632,"inboundMs":419.7,"firstAnswerMs":815,"reachable":1208,"reachableMs":20,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":341.2,"hubNeighbourhood":661,"hubNeighbourhoodMs":2747.2,"allMs":2604.9,"files":10776,"totalMs":6536.6,"heapMb":55,"errors":[],"rendererPeakMb":231,"loadAfter":13.6}
+{"kind":"write","page":"write-hdf5.html","mode":"gather","rate":4,"cores":2,"loadBefore":13.6,"pageReadyMs":6061,"scriptStartedMs":5282,"files":10776,"writeMs":19953.9,"bytes":2410526,"sha256":"67f0509622ce5523b317186af1f549f4b8a2ab196ea96e373a20f9ed5614a897","heapMb":146,"rendererPeakMbAtWrite":384,"errors":[],"rendererPeakMb":384,"loadAfter":13}
+{"kind":"read","page":"read-hdf5-dnn5.html","rate":4,"cores":2,"loadBefore":13,"pageReadyMs":7397,"scriptStartedMs":6690,"base64Ms":104.8,"carriedBytes":7455053,"openMs":274.3,"inboundOfHub":632,"inboundMs":1159.8,"firstAnswerMs":1538.9,"reachable":1283,"reachableMs":13.2,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":1096.7,"hubNeighbourhood":661,"hubNeighbourhoodMs":1898.1,"allMs":13012.2,"files":53880,"totalMs":17631.2,"heapMb":172,"errors":[],"rendererPeakMb":395,"loadAfter":12.1}
+browser-lane: released after 67.7 s, exit 0
+browser-lane: waiting behind stored-form, stored-form
+browser-lane: stored-form holds the lane (waited 252.6 s, cap 300 s)
+{"kind":"write","page":"write-hdf5.html","mode":"gather","rate":4,"cores":2,"loadBefore":61.5,"pageReadyMs":13960,"scriptStartedMs":11725,"files":53880,"writeMs":137807.8,"bytes":7455053,"sha256":"6ba818af7fa65490cc5818a2d6d98edf3b548dfaba53de0785c369483c53eafe","heapMb":336,"rendererPeakMbAtWrite":741,"errors":[],"rendererPeakMb":741,"loadAfter":55.5}
+browser-lane: released after 159.4 s, exit 0
