@@ -7,7 +7,8 @@
  *
  * - scip-dotnet names a type by its innermost namespace only, so two projects that both
  *   declare `Controllers.PaymentsController` produce the same symbol. The solution's
- *   project references decide which definitions a document can see; when more than one
+ *   project references, as MSBuild evaluates them ({@link msbuildProjectReferences}),
+ *   decide which definitions a document can see; when more than one
  *   visible definition remains, every candidate becomes an edge and the case is listed
  *   under `ambiguous`, so the reader sees it instead of a guess.
  * - scip-go also indexes the test binaries it generates outside the module, under the
@@ -18,8 +19,10 @@
  *   referencing file's own crate, so that one symbol is narrowed to the root of the crate
  *   the file belongs to, with crates read from Cargo's conventional layout.
  */
+import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import path from "node:path";
+import process from "node:process";
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { scip } = require("@sourcegraph/scip-typescript/dist/src/scip") as {
@@ -139,9 +142,8 @@ export function readProjects(projectFile: string): OracleProject[] {
   }
 
   for (const [projectPath, project] of byPath) {
-    const csproj = fs.readFileSync(projectPath, "utf8");
-    for (const match of csproj.matchAll(/<ProjectReference\s+Include="([^"]+)"/gu)) {
-      const target = byPath.get(path.resolve(path.dirname(projectPath), toPosix(match[1])));
+    for (const reference of msbuildProjectReferences(projectPath)) {
+      const target = byPath.get(reference);
       if (target) {
         project.references.push(target.name);
       }
@@ -150,6 +152,34 @@ export function readProjects(projectFile: string): OracleProject[] {
   }
 
   return Array.from(byPath.values()).sort((left, right) => left.name.localeCompare(right.name));
+}
+
+/**
+ * The full paths of the projects a project file references, as MSBuild's own evaluation of it gives them
+ * (`dotnet msbuild -getItem:ProjectReference`): conditions, imports and properties applied, and an XML comment no
+ * element. Until 2026-11-21 the references were read from the file's text by a pattern, which took a commented-out
+ * `<ProjectReference>` for a real one, so that the oracle agreed with the reader's own blindness. A project MSBuild
+ * cannot evaluate stops the oracle, naming the project and MSBuild's first words of why: it never falls back to a
+ * pattern.
+ */
+export function msbuildProjectReferences(projectPath: string): string[] {
+  const run = spawnSync("dotnet", ["msbuild", projectPath, "-getItem:ProjectReference", "-nologo"], {
+    encoding:  "utf8",
+    env:       { ...process.env, DOTNET_CLI_TELEMETRY_OPTOUT: "1", DOTNET_NOLOGO: "1" },
+    maxBuffer: 64 * 1024 * 1024
+  });
+  if (run.error) throw new Error(`dotnet could not be run to evaluate ${projectPath}: ${run.error.message}`);
+  let items: { Items?: { ProjectReference?: Array<{ FullPath?: string }> } } | undefined;
+  try {
+    items = run.status === 0 ? (JSON.parse(run.stdout) as typeof items) : undefined;
+  } catch {
+    items = undefined;
+  }
+  if (items === undefined) {
+    const why = `${run.stdout}\n${run.stderr}`.split(/\r?\n/u).map((line) => line.trim()).find((line) => /error/iu.test(line)) ?? `exit ${run.status}`;
+    throw new Error(`MSBuild could not evaluate ${projectPath}: ${why}`);
+  }
+  return (items.Items?.ProjectReference ?? []).flatMap((reference) => (reference.FullPath ? [path.resolve(reference.FullPath)] : []));
 }
 
 /** Project references are transitive in SDK-style projects: a project sees everything its references see. */

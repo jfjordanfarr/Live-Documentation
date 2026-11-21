@@ -265,6 +265,37 @@ describe("readProjects", () => {
     }
   });
 
+  // MSBuild's evaluation is the truth for a project's references since 2026-11-21: until then a pattern over the file's
+  // text read a commented-out reference as real, agreeing with the reader it was meant to grade.
+  it("reads a project's references as MSBuild evaluates them, a commented-out one none, and names a project MSBuild cannot evaluate", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-msbuild-"));
+    try {
+      fs.mkdirSync(path.join(root, "A"));
+      fs.mkdirSync(path.join(root, "B"));
+      fs.writeFileSync(path.join(root, "A", "A.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"><ItemGroup><!-- <ProjectReference Include=\"../B/B.csproj\" /> --></ItemGroup></Project>\n");
+      fs.writeFileSync(path.join(root, "B", "B.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>\n");
+      fs.writeFileSync(
+        path.join(root, "Pair.sln"),
+        [
+          "Microsoft Visual Studio Solution File, Format Version 12.00",
+          "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"A\", \"A\\A.csproj\", \"{11111111-1111-1111-1111-111111111111}\"",
+          "EndProject",
+          "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"B\", \"B\\B.csproj\", \"{22222222-2222-2222-2222-222222222222}\"",
+          "EndProject",
+          ""
+        ].join("\n")
+      );
+      expect(readProjects(path.join(root, "Pair.sln"))).toEqual([
+        { name: "A", directory: "A", references: [] },
+        { name: "B", directory: "B", references: [] }
+      ]);
+      fs.writeFileSync(path.join(root, "B", "B.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"><Import Project=\"nowhere.targets\" /></Project>\n");
+      expect(() => readProjects(path.join(root, "Pair.sln"))).toThrow(/MSBuild could not evaluate .*B\.csproj/u);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("treats a lone project file as one project at the root", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-csproj-"));
     try {
