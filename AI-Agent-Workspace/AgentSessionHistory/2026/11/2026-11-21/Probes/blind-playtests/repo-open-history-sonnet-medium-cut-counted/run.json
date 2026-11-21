@@ -1,0 +1,143 @@
+{
+  "task": "repo-open-history",
+  "start": "http://127.0.0.1:8792/?view=local&node=packages/engine/src/live-docs/pathfind.ts",
+  "words": "A colleague sent me this link to one of our files. What is in the `history` folder that sits beside it? List every file in it.",
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "variant": "look-only",
+  "settings": [
+    "localMap.step=least",
+    "localMap.cutCounted=on"
+  ],
+  "maxActions": 60,
+  "site": "/workspaces/Live-Documentation/dist/explorer",
+  "siteAtStart": {
+    "index.html": "2026-11-21T07:44:55.853Z",
+    "explorer-data.json": "2026-11-21T07:44:55.347Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:44:58.022Z"
+  },
+  "systemPrompt": "You are at a web browser window. Through your tools you can see the window and use its mouse and keyboard, and nothing else. Someone has sent you a link, already open in the window, and a message. Do what they ask as a visitor to the page would, then reply to them in plain words. Your reply is all they will read. If you copied something to the clipboard, say so: what you copied reaches them with your reply.",
+  "prompt": "A colleague sent me this link to one of our files. What is in the `history` folder that sits beside it? List every file in it.\n\nhttp://127.0.0.1:8792/?view=local&node=packages/engine/src/live-docs/pathfind.ts",
+  "startedAt": "2026-11-21T08:02:29.875Z",
+  "finishedAt": "2026-11-21T08:04:17.151Z",
+  "siteAtEnd": {
+    "index.html": "2026-11-21T07:44:55.853Z",
+    "explorer-data.json": "2026-11-21T07:44:55.347Z",
+    "samples/estate/explorer-data.json": "2026-11-21T07:44:58.022Z"
+  },
+  "setup": {
+    "settings": [
+      {
+        "setting": "localMap.step",
+        "wanted": "least",
+        "shown": "least"
+      },
+      {
+        "setting": "localMap.cutCounted",
+        "wanted": "on",
+        "shown": "on"
+      }
+    ],
+    "ok": true
+  },
+  "siteChanged": false,
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 73175,
+  "lockWaitMs": 34100,
+  "apiMs": 40417,
+  "turns": 48,
+  "assistantMessages": 65,
+  "toolCalls": 47,
+  "actions": 46,
+  "actionsByTool": {
+    "look": 17,
+    "point": 0,
+    "click": 1,
+    "drag": 0,
+    "scroll": 1,
+    "type": 14,
+    "press": 13
+  },
+  "usage": {
+    "input": 42,
+    "cacheWrite": 39468,
+    "cacheRead": 380458,
+    "output": 3965
+  },
+  "costUsd": 0.23565180000000005,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 42,
+      "outputTokens": 3965,
+      "cacheReadInputTokens": 380458,
+      "cacheCreationInputTokens": 39468,
+      "webSearchRequests": 0,
+      "costUSD": 0.23565180000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1226,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 39468,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "clipboard": [],
+  "finalAddress": "http://127.0.0.1:8792/?s=N4IgbiBcDMA0IBsqgQewMYEMEFlMAdkR1UEBXAWwDsBxAqARgAYn4BLAFwFMK7DIATABZ4AI0xUAJnygCAHPAAWXNgHNFHAMKoAzhygBWeAHc2kjou17D8Cj1EAnCVwCiYLlSpcdO2bftOXgDKbBT4CGzonACesizwDqjGADJc7ghePn4gDlwcZA5UVvqQDAbxxGRaqGRU3JJQIKhUIAC%2B8ABmqA7oXDRO%2BIpEEVQA1jKQAGysxIqYDqpcUNPwJAgROmzNE0bENeFsVKqM8FSoklwhAF5LkCIgOtEUoqRBWAi3DPCqTmAxUEwAHRMAS7EhhZoeDhBLj4eaYDhbFqQIECVZzBZcABKEkWAPgBHwiQAHqEEUiAYC4IhDqMghxckcLJTdmR8JIEa4vAtYqV4NwLFwHJSQfAdHkOB8ABKkBoo1acLiSABC0QACmR1icaWMAOpmZl8kBnC4ALVQqAoWO8bD0El6lOpply5st1s2dqoDpRgIAnKdMHYAIIlBgKECKVD4XxG3LubAAMScdhjKweynWABFYYa0SAfvtdQN8EKYw9Roc2u0clAOthxfAAFa1%2BtcU6NOHoUaYRY6AD0HlUhy4fZ0PT7EXcAFpJBh%2B3CLB1DpJARxfK0gA",
+  "init": {
+    "cwd": "/tmp/session-FzEXgW",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "mcp__window__click",
+      "mcp__window__drag",
+      "mcp__window__look",
+      "mcp__window__point",
+      "mcp__window__press",
+      "mcp__window__scroll",
+      "mcp__window__type"
+    ],
+    "mcp_servers": [
+      {
+        "name": "window",
+        "status": "connected",
+        "source": "dynamic"
+      }
+    ],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ],
+    "output_style": "default"
+  }
+}

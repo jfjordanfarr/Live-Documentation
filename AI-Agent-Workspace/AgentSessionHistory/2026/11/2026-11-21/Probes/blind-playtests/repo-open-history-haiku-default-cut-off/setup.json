@@ -1,0 +1,15 @@
+{
+  "settings": [
+    {
+      "setting": "localMap.step",
+      "wanted": "least",
+      "shown": "least"
+    },
+    {
+      "setting": "localMap.cutCounted",
+      "wanted": "off",
+      "shown": "off"
+    }
+  ],
+  "ok": true
+}
