@@ -34,7 +34,9 @@
  * script ran from where it lies; a `Join-Path` of such; a variable the file
  * assigns once, at its own level, from such; or a loop that dot-sources each
  * file a `Get-ChildItem` of such a folder lists. A module path may name a
- * `.psm1`, a `.psd1`, or a directory holding the module of its name. Each name
+ * `.psm1`, a `.psd1`, or a directory holding the module of its name; a script
+ * dot-sourced or run by a path no file is so named by is the path's `.ps1`, as
+ * PowerShell tries it. Each name
  * in a path is found among the workspace's files as Windows finds it, without
  * regard to case. A module named rather than pathed, a path a string writes
  * with a variable no assignment fixes, and a path outside the workspace keep
@@ -1502,6 +1504,18 @@ function resolvePath(written: string, directory: string, files: WorkspaceFileInd
   return findFile(files, `${relative}/${leaf}.psd1`) ?? findFile(files, `${relative}/${leaf}.psm1`);
 }
 
+/**
+ * The script a path names as PowerShell runs or dot-sources it: the file so named, else the path with `.ps1` added,
+ * which PowerShell tries when no file is so named, whatever the name ends in (`a/build` and `f/Get-Thing.Tests` ran
+ * their `.ps1`, and a file `b/build` beside `b/build.ps1` was the one found); no other extension is tried (`d/build`
+ * beside only `d/build.psm1` was not found). pwsh 7.7.0, measured 2026-11-21. Only a path is so read: a name without
+ * a folder, `. Stop-Function`, is a command PowerShell looks up, never a script beside the file.
+ */
+function resolveScript(written: string, directory: string, files: WorkspaceFileIndex | undefined): string | undefined {
+  const named = resolvePath(written, directory, files, false);
+  return named ?? (/[\\/]/.test(written) ? resolvePath(`${written}.ps1`, directory, files, false) : undefined);
+}
+
 /** A module named by a path rather than by its name: the text holds a directory separator, as `$PSScriptRoot` gives it one. */
 function isModulePath(written: string): boolean {
   return /[\\/]|\$\{PSScriptRoot\}|\$PSScriptRoot(?!\w)/i.test(written);
@@ -1598,9 +1612,9 @@ function scriptLoads(facts: FileFacts, directory: string, files: WorkspaceFileIn
   facts.moduleImports.forEach(module);
   facts.usingModules.forEach(module);
   facts.requires.forEach(module);
-  for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolvePath(written, directory, files, false) });
+  for (const written of facts.dotSources) loads.push({ kind: "dot", written, to: written === undefined ? undefined : resolveScript(written, directory, files) });
   for (const load of facts.computed) {
-    const to = resolvePath(load.path, directory, files, load.kind === "import") ?? (load.qualified ? resolvePath(`${load.path}.ps1`, directory, files, false) : undefined);
+    const to = load.kind === "import" ? resolvePath(load.path, directory, files, true) : resolveScript(load.path, directory, files);
     if (load.qualified && !to) continue;
     loads.push({ kind: load.kind, written: load.written, computed: load.path, to });
   }

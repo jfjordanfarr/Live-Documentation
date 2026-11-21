@@ -744,6 +744,25 @@ describe("loads the text fixes", () => {
     });
     expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["scripts/Other.ps1", "scripts/Run-Step.ps1", "scripts/Third.ps1"]);
   });
+
+  it("read a script run or dot-sourced by a path without its extension as PowerShell finds it: the file so named, else its .ps1", async () => {
+    // PowerShell's own answers (pwsh 7.7.0, `pwsh -NoProfile -NonInteractive -File run.ps1`, run from the folder): with
+    // only `a/build.ps1`, `a/build`, `& a/build`, `& "$PSScriptRoot/a/build"` and `. a/build` each "a/build.ps1 ran";
+    // with `b/build` and `b/build.ps1` both, `Get-Command b/build` is `b/build`, the file so named; with only
+    // `d/build.psm1`, `d/build` is `CommandNotFoundException`: no other extension is tried. And a name without a folder
+    // is a command: from `g/Use.ps1`, `. Stop-It` and `& Stop-It` beside `g/Stop-It.ps1` are `CommandNotFoundException`.
+    await write({
+      "a/build.ps1": "", "b/build": "", "b/build.ps1": "", "d/build.psm1": "", "g/Stop-It.ps1": "",
+      "Deploy.ps1": ["a/build", "& \"$PSScriptRoot/a/build\" -Step publish", "b/build", "d/build"].join("\n"),
+      "Library.ps1": ". \"$PSScriptRoot/a/build\"\nfunction Get-Thing { }\n",
+      "g/Use.ps1": ". Stop-It\n"
+    });
+    const analysis = await analyzeFile("Deploy.ps1");
+    expect(Object.keys(await wires("Deploy.ps1")).sort()).toEqual(["a/build.ps1", "b/build"]);
+    expect(analysis?.notices).toEqual([{ reason: "loads whose path the text fixes but no file of the workspace holds, left unlinked", subject: "d/build" }]);
+    expect(Object.keys(await wires("Library.ps1"))).toEqual(["a/build.ps1"]);
+    expect(await wires("g/Use.ps1")).toEqual({});
+  });
 });
 
 describe("programs and libraries", () => {

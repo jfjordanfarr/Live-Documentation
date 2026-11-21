@@ -24,7 +24,8 @@ expandable string whose only variable is $PSScriptRoot, which stands for the fil
 dot-source or Import-Module path is resolved against the file's directory, as if the script ran from where
 it lies; PowerShell itself resolves it against the caller's location at run time, which no reading of the
 text can know. A using module path, and a manifest's module and script entries, are resolved against the
-file's directory, as PowerShell resolves them. A directory names the module of the same name inside it.
+file's directory, as PowerShell resolves them. A directory names the module of the same name inside it. A script
+dot-sourced or run by a path that no file is named by is the path with .ps1 added, which PowerShell tries.
 Each name in a path is found as Windows finds it, without regard to case, so that the record says what an
 estate's Windows PowerShell would load, whatever file system the fixture is copied to.
 
@@ -69,8 +70,20 @@ function Resolve-FixtureFile {
     param(
         [Parameter(Mandatory)][string]$Value,
         [Parameter(Mandatory)][string]$BaseDirectory,
-        [switch]$ModuleDirectory
+        [switch]$ModuleDirectory,
+        # A script dot-sourced or run by its path: the file so named, else the path with .ps1 added, which PowerShell
+        # tries when no file is so named, whatever the name ends in, and no other extension (pwsh 7.7.0, 2026-11-21:
+        # `a/build` ran a/build.ps1; `b/build` beside b/build.ps1 was b/build; `d/build` beside d/build.psm1 was not found).
+        # A name without a folder is a command PowerShell looks up, never a script beside the file, and gains nothing.
+        [switch]$Script
     )
+    if ($Script) {
+        $named = Resolve-FixtureFile -Value $Value -BaseDirectory $BaseDirectory
+        if ($null -ne $named -or $Value -notmatch '[\\/]') {
+            return $named
+        }
+        return Resolve-FixtureFile -Value "$Value.ps1" -BaseDirectory $BaseDirectory
+    }
     $normalized = $Value -replace '\\', '/'
     $candidate = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($BaseDirectory, $normalized))
     $relative = [System.IO.Path]::GetRelativePath($RootPath, $candidate) -replace '\\', '/'
@@ -497,7 +510,7 @@ function Get-FixedLoads {
     if ($Command.InvocationOperator -eq [System.Management.Automation.Language.TokenKind]::Dot) {
         $value = Get-PathValue -Ast $nameAst -Directory $Directory -Variables $Variables
         if ($null -ne $value) {
-            $file = Resolve-FixtureFile -Value $value -BaseDirectory $Directory
+            $file = Resolve-FixtureFile -Value $value -BaseDirectory $Directory -Script
             $found.Add([ordered]@{ kind = 'dot'; file = $file })
         }
         return , $found
@@ -506,7 +519,7 @@ function Get-FixedLoads {
     if (-not $isPlainName) {
         $value = Get-PathValue -Ast $nameAst -Directory $Directory -Variables $Variables
         if ($null -ne $value -and $value -match '[\\/]|\.ps1$') {
-            $found.Add([ordered]@{ kind = 'run'; file = (Resolve-FixtureFile -Value $value -BaseDirectory $Directory) })
+            $found.Add([ordered]@{ kind = 'run'; file = (Resolve-FixtureFile -Value $value -BaseDirectory $Directory -Script) })
         }
         return , $found
     }
@@ -902,7 +915,7 @@ function Read-Script {
             name     = $command.GetCommandName()
             operator = $operator
             text     = if ($nameText.Length -gt 200) { $nameText.Substring(0, 200) } else { $nameText }
-            resolved = if ($isPath) { Resolve-FixtureFile -Value $staticName -BaseDirectory $directory } else { $null }
+            resolved = if ($isPath) { Resolve-FixtureFile -Value $staticName -BaseDirectory $directory -Script } else { $null }
             function = Get-EnclosingFunction -Node $command
             blocks   = Get-EnclosingBlocks -Node $command
         })
@@ -917,7 +930,7 @@ function Read-Script {
                 column   = $command.Extent.StartColumnNumber
                 text     = $command.Extent.Text
                 target   = $target
-                resolved = if ($null -ne $static) { Resolve-FixtureFile -Value $static -BaseDirectory $directory } else { $null }
+                resolved = if ($null -ne $static) { Resolve-FixtureFile -Value $static -BaseDirectory $directory -Script } else { $null }
             })
             continue
         }
@@ -927,7 +940,7 @@ function Read-Script {
         if (-not $isPlainName) {
             $runPath = Get-PathValue -Ast $nameAst -Directory $directory -Variables $variables
             if ($null -ne $runPath -and $runPath -match '[\\/]|\.ps1$') {
-                $runFile = Resolve-FixtureFile -Value $runPath -BaseDirectory $directory
+                $runFile = Resolve-FixtureFile -Value $runPath -BaseDirectory $directory -Script
                 $loads.Add([ordered]@{
                     line     = $command.Extent.StartLineNumber
                     kind     = 'run'
