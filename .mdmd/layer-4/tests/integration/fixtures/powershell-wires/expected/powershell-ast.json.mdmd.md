@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-wires/expected/powershell-ast.json`
-- Generated At: 2026-11-21T07:29:14.992Z
+- Generated At: 2026-11-21T07:51:41.129Z
 
 ## Authored
 ### Purpose
@@ -1259,6 +1259,93 @@ Everything PowerShell's own parser says about each file of the wires fixture, wr
 - Type: key
 
 #### `files:../Tools/Tools.psm1:statements` {#symbol-filestoolstoolspsm1statements}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../Aliases/Helpers.ps1` {#symbol-sourcesaliaseshelpersps1}
+- Type: key
+
+#### `sources:../Aliases/Use-Aliases.ps1` {#symbol-sourcesaliasesuse-aliasesps1}
+- Type: key
+
+#### `sources:../Backport/Expand-Archive.ps1` {#symbol-sourcesbackportexpand-archiveps1}
+- Type: key
+
+#### `sources:../Backport/Use-Archive.ps1` {#symbol-sourcesbackportuse-archiveps1}
+- Type: key
+
+#### `sources:../Backport/Use-Backport.ps1` {#symbol-sourcesbackportuse-backportps1}
+- Type: key
+
+#### `sources:../Copies/Alpha.psm1` {#symbol-sourcescopiesalphapsm1}
+- Type: key
+
+#### `sources:../Copies/Beta.psm1` {#symbol-sourcescopiesbetapsm1}
+- Type: key
+
+#### `sources:../Copies/Use-Alpha.ps1` {#symbol-sourcescopiesuse-alphaps1}
+- Type: key
+
+#### `sources:../Copies/Use-Both.ps1` {#symbol-sourcescopiesuse-bothps1}
+- Type: key
+
+#### `sources:../Copies/Use-Neither.ps1` {#symbol-sourcescopiesuse-neitherps1}
+- Type: key
+
+#### `sources:../Deploy.ps1` {#symbol-sourcesdeployps1}
+- Type: key
+
+#### `sources:../Extras/Extras.psm1` {#symbol-sourcesextrasextraspsm1}
+- Type: key
+
+#### `sources:../Extras/One.ps1` {#symbol-sourcesextrasoneps1}
+- Type: key
+
+#### `sources:../Extras/Two.ps1` {#symbol-sourcesextrastwops1}
+- Type: key
+
+#### `sources:../Neighbour.ps1` {#symbol-sourcesneighbourps1}
+- Type: key
+
+#### `sources:../Own.ps1` {#symbol-sourcesownps1}
+- Type: key
+
+#### `sources:../Tools/Private/Format-Tool.ps1` {#symbol-sourcestoolsprivateformat-toolps1}
+- Type: key
+
+#### `sources:../Tools/Public/Get-Tool.ps1` {#symbol-sourcestoolspublicget-toolps1}
+- Type: key
+
+#### `sources:../Tools/Public/Set-Tool.ps1` {#symbol-sourcestoolspublicset-toolps1}
+- Type: key
+
+#### `sources:../Tools/Tools.psd1` {#symbol-sourcestoolstoolspsd1}
+- Type: key
+
+#### `sources:../Tools/Tools.psm1` {#symbol-sourcestoolstoolspsm1}
+- Type: key
+
+#### `sources:../lib/Common.ps1` {#symbol-sourceslibcommonps1}
+- Type: key
+
+#### `sources:../lib/Helper.ps1` {#symbol-sourceslibhelperps1}
+- Type: key
+
+#### `sources:../lib/Paths.ps1` {#symbol-sourceslibpathsps1}
+- Type: key
+
+#### `sources:../lib/Settings.inc.ps1` {#symbol-sourceslibsettingsincps1}
+- Type: key
+
+#### `sources:../scripts/Clean.ps1` {#symbol-sourcesscriptscleanps1}
+- Type: key
+
+#### `sources:../scripts/Run-Step.ps1` {#symbol-sourcesscriptsrun-stepps1}
+- Type: key
+
+#### `sources:../tests/Tools.Tests.ps1` {#symbol-sourcesteststoolstestsps1}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

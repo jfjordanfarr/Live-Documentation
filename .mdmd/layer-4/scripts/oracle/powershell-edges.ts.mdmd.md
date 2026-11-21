@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-edges.ts`
-- Generated At: 2026-11-21T05:16:10.410Z
+- Generated At: 2026-11-21T07:51:38.382Z
 
 ## Authored
 ### Purpose
@@ -161,14 +161,14 @@ The parser's record of a fixture, file by file, in fixture-relative coordinates.
 
 #### `POWERSHELL_EXTENSIONS` {#symbol-powershell_extensions}
 - Type: const
-- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L219)
+- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L221)
 
 ##### `POWERSHELL_EXTENSIONS` — Summary
 The extensions PowerShell reads: scripts, modules and data files.
 
 #### `isDataFileFacts` {#symbol-isdatafilefacts}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L224)
+- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L226)
 - Parameters: `facts`: [`PowerShellFileFacts`](#symbol-powershellfilefacts)
 
 ##### `isDataFileFacts` — Summary
@@ -176,7 +176,7 @@ Whether the facts are a `.psd1`'s, which carry its table rather than a script's 
 
 #### `parsePowerShellFixture` {#symbol-parsepowershellfixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L229)
+- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L231)
 - Returns: [`PowerShellAst`](#symbol-powershellast)
 
 ##### `parsePowerShellFixture` — Summary
@@ -184,7 +184,7 @@ Runs the parser over the named files of a working copy; `pwsh` must be on the pa
 
 #### `edgesFromPowerShellAst` {#symbol-edgesfrompowershellast}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L265)
+- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L267)
 - Returns: [`OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges)
 - Parameters: `ast`: [`PowerShellAst`](#symbol-powershellast); `projects`: [`OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject)[]
 
@@ -195,7 +195,7 @@ file that names itself makes no edge.
 
 #### `rebasePowerShellAst` {#symbol-rebasepowershellast}
 - Type: function
-- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L289)
+- Source: [source](../../../../scripts/oracle/powershell-edges.ts#L291)
 - Returns: [`PowerShellAst`](#symbol-powershellast)
 - Parameters: `ast`: [`PowerShellAst`](#symbol-powershellast)
 

@@ -644,5 +644,14 @@
         }
       ]
     }
+  },
+  "sources": {
+    "../common/logging.ps1": "7b6f5b339d9d3e574f7c9892049c909ee8671c7d46f0365495bc7f2f6b92faca",
+    "../config/settings.psd1": "d5b7056099448698f7cc26b4c72f8da8811bfc2a38644dce52aea5315314d30f",
+    "../modules/Inventory.psm1": "56520e32de10daeb7efa1e972efde37d9c3690bd47ead978c7ce52a7736e090a",
+    "../scripts/deploy.ps1": "411ef7a35705c6498bc37bfb066125af5e00717383b6bcd661ba5222fdfbdcf8",
+    "../workspace/scripts/common/logging.ps1": "5cd38f83ed0f692e697ff450fe9c8e177a209bb435d12a3da3c5986b40271850",
+    "../workspace/scripts/deploy.ps1": "2afc4b2ed009f0e211229096e4d58fa321c79f5c1e4ab16469345917671e12eb",
+    "../workspace/scripts/modules/Inventory.psm1": "2464ae58ecb6666b0f26c5a430b4bbf1cee4116f3c10ba8a3ee543886bcd6b1e"
   }
 }

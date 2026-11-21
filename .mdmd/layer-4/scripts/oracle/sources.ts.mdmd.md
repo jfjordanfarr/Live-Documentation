@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Ties an oracle's kept record to the files it was made from: `sourceDigests` names each file with a SHA-256 digest of its text, line endings read as `\n`, and `sourcesDiffer` says, file by file, which of a fixture's present files are new, gone or changed since the record was written. The C# grader ([`csharp-compare.ts`](./csharp-compare.ts.mdmd.md)) and the T-SQL grader ([`sql-compare.ts`](./sql-compare.ts.mdmd.md)) write the digests with `--write` and refuse a kept record that differs; `csharp-oracle.test.ts` and `sql-oracle.test.ts` fail on one.
+Ties an oracle's kept record to the files it was made from: `sourceDigests` names each file with a SHA-256 digest of its text, line endings read as `\n`, and `sourcesDiffer` says, file by file, which of a fixture's present files are new, gone or changed since the record was written. The C# grader ([`csharp-compare.ts`](./csharp-compare.ts.mdmd.md)) and the T-SQL grader ([`sql-compare.ts`](./sql-compare.ts.mdmd.md)) write the digests with `--write` and refuse a kept record that differs, and [`index-fixture.ts`](./index-fixture.ts.mdmd.md) writes them into PowerShell's parser record; `csharp-oracle.test.ts`, `sql-oracle.test.ts` and `powershell-oracle.test.ts` fail on one.
 
 ### Notes
 - Written on 2026-11-21 after an independent review's second pass found the C# grader unable to fail for a file added to a fixture: it graded only the files its kept record listed, and nothing tied that list to the fixture's present sources ([the work item](../../../../AI-Agent-Workspace/Work/readers-on-main.md)). The digests are of text, not bytes, so that a checkout's own line endings change nothing.

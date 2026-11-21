@@ -2289,5 +2289,35 @@
         }
       ]
     }
+  },
+  "sources": {
+    "../Aliases/Helpers.ps1": "4b9b44ba222a5f47150ffa9f0253e134b65e52244869b4a94a936a8c5fb0663f",
+    "../Aliases/Use-Aliases.ps1": "5aeb156ca22c23bb5ccd71f9304bfe56c10f2e93ad3012b30718c66a4f071885",
+    "../Backport/Expand-Archive.ps1": "db29aca8b65c3b422628d6aeaa6d06ec2b0595c10fcf9a6b7d30d8e51e126563",
+    "../Backport/Use-Archive.ps1": "805b14e27c0b4955f3415547ddd2681888a9c038e6fb851869d0f6b3db26fb76",
+    "../Backport/Use-Backport.ps1": "6974fedc94e3fc2303251343cf4888af6e423ce49eb3ad807a4d16001c2c0f0a",
+    "../Copies/Alpha.psm1": "d8f51f5544055e4b70e43d473c7721eb11ca2623cc07df17e81b2d9d5b8da81f",
+    "../Copies/Beta.psm1": "7a0fd864ba2a924a74ee86d30ac6df3b17f4735444889c2c5e763aec04c7665b",
+    "../Copies/Use-Alpha.ps1": "f0e54e8ac743848315b4aff315658e6abb1ab945fb3e212775ca0b9fa8f2d2e4",
+    "../Copies/Use-Both.ps1": "adc1dbd19f1c27086ecd1aeb23f22e949d2edf048c1e39b5dbd53377a8f2b5d3",
+    "../Copies/Use-Neither.ps1": "ba7135ed1a760d0928040519bf28bda2b41c3a32e73be9f7d6df898df462a6e6",
+    "../Deploy.ps1": "5df444ac45e148714bddf6d8ceb7124b561312f4528b4315594303873b126335",
+    "../Extras/Extras.psm1": "f9ecf6a409784867c86c5d697310005462ae534d6ab5b9daee56bff3d8fe70ae",
+    "../Extras/One.ps1": "41e0f0bc36e2bb7b301219d7bb73746eda738447bc189971aeadcabfe1e77841",
+    "../Extras/Two.ps1": "628c7bfa6039e0720a22c728a81e4bbd028c48b3c256b03cbd5c8046e208e2b2",
+    "../Neighbour.ps1": "5a9a3d396cb61a5dfbb3a6c6bfbc0474ee88400519b96770fc7f4548767d69d6",
+    "../Own.ps1": "c138707b86439bda8e965d56b1c2bc26a45733de736a0935fc8d1b899e6d8a8f",
+    "../Tools/Private/Format-Tool.ps1": "0a8766f97f333a3132a97cc36498b06c3e7ba0ae37dcbeab405240e41ca65ea6",
+    "../Tools/Public/Get-Tool.ps1": "cc18d72ac147f764df75f59782a86967a2fb72e08a644f54ceb5671216fab727",
+    "../Tools/Public/Set-Tool.ps1": "8d441a81d679cb35985e84acfbb0777e5dcb2ffed7c50c9e480e83bc7962be2b",
+    "../Tools/Tools.psd1": "b558abeb6e0180ae7cca43cf7db4feff35e94feab0d0643d0f123f5c65956dbf",
+    "../Tools/Tools.psm1": "08fc9250705396ba6197a8673f1da76a00b386d6810fa34f7ab8a4407939ce82",
+    "../lib/Common.ps1": "4991a0882608d01ec633d2e01b560358edf661846e5cbfc6b2fd24aecb343881",
+    "../lib/Helper.ps1": "60558b03b0b80a5e0ec4b2c326b5a8702c397dea558fb0a9ec66fdd0d105be36",
+    "../lib/Paths.ps1": "374b319b71962274fc960366815e3c02a5bb1e2827b20f4e27499dd8c45ec71c",
+    "../lib/Settings.inc.ps1": "6c76c3511fd5044168bc3d8e8c8c45d621eb404b30ecf49a42c077a5bbd08bd4",
+    "../scripts/Clean.ps1": "02e7c0daeffd92ffade42a23f044415db0ccb534118eb9921ca010302f313106",
+    "../scripts/Run-Step.ps1": "cb5de10f8f6afa3bb5cccc90d9d1c3c91fa5e598cbc331475fa53b9e49149a43",
+    "../tests/Tools.Tests.ps1": "5009f272d20125c272603c59807323335250f4b17184215fa6d7389bbb85d746"
   }
 }

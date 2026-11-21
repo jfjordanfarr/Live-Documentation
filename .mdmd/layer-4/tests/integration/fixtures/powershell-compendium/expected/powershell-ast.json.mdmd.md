@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-compendium/expected/powershell-ast.json`
-- Generated At: 2026-11-21T02:25:26.109Z
+- Generated At: 2026-11-21T07:51:41.076Z
 
 ## Authored
 ### Purpose
@@ -311,6 +311,30 @@ Everything PowerShell's own parser says about each file of the PowerShell compen
 - Type: key
 
 #### `files:../workspace/scripts/modules/Inventory.psm1:statements` {#symbol-filesworkspacescriptsmodulesinventorypsm1statements}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../common/logging.ps1` {#symbol-sourcescommonloggingps1}
+- Type: key
+
+#### `sources:../config/settings.psd1` {#symbol-sourcesconfigsettingspsd1}
+- Type: key
+
+#### `sources:../modules/Inventory.psm1` {#symbol-sourcesmodulesinventorypsm1}
+- Type: key
+
+#### `sources:../scripts/deploy.ps1` {#symbol-sourcesscriptsdeployps1}
+- Type: key
+
+#### `sources:../workspace/scripts/common/logging.ps1` {#symbol-sourcesworkspacescriptscommonloggingps1}
+- Type: key
+
+#### `sources:../workspace/scripts/deploy.ps1` {#symbol-sourcesworkspacescriptsdeployps1}
+- Type: key
+
+#### `sources:../workspace/scripts/modules/Inventory.psm1` {#symbol-sourcesworkspacescriptsmodulesinventorypsm1}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

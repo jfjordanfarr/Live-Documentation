@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/powershell/rollout/expected/powershell-ast.json`
-- Generated At: 2026-11-21T02:25:26.922Z
+- Generated At: 2026-11-21T07:51:41.983Z
 
 ## Authored
 ### Purpose
@@ -398,6 +398,36 @@ Everything PowerShell's own parser says about each file of the rollout program, 
 - Type: key
 
 #### `files:../scripts/Show-RolloutPlan.ps1:statements` {#symbol-filesscriptsshow-rolloutplanps1statements}
+- Type: key
+
+#### `sources` {#symbol-sources}
+- Type: key
+
+#### `sources:../Invoke-Rollout.ps1` {#symbol-sourcesinvoke-rolloutps1}
+- Type: key
+
+#### `sources:../config/targets.psd1` {#symbol-sourcesconfigtargetspsd1}
+- Type: key
+
+#### `sources:../lib/Logging.ps1` {#symbol-sourceslibloggingps1}
+- Type: key
+
+#### `sources:../lib/Settings.ps1` {#symbol-sourceslibsettingsps1}
+- Type: key
+
+#### `sources:../modules/Rollout.Notify/Rollout.Notify.psm1` {#symbol-sourcesmodulesrolloutnotifyrolloutnotifypsm1}
+- Type: key
+
+#### `sources:../modules/Rollout.Steps/Rollout.Steps.psd1` {#symbol-sourcesmodulesrolloutstepsrolloutstepspsd1}
+- Type: key
+
+#### `sources:../modules/Rollout.Steps/Rollout.Steps.psm1` {#symbol-sourcesmodulesrolloutstepsrolloutstepspsm1}
+- Type: key
+
+#### `sources:../modules/Rollout.Targets/Rollout.Targets.psm1` {#symbol-sourcesmodulesrollouttargetsrollouttargetspsm1}
+- Type: key
+
+#### `sources:../scripts/Show-RolloutPlan.ps1` {#symbol-sourcesscriptsshow-rolloutplanps1}
 - Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 

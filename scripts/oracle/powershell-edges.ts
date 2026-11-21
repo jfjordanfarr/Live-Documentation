@@ -213,6 +213,8 @@ export type PowerShellFileFacts = PowerShellScriptFacts | PowerShellDataFileFact
 export interface PowerShellAst {
   tool:  string;
   files: Record<string, PowerShellFileFacts>;
+  /** The files the parser read, each with its digest (`sources.ts`), so that a kept record is tied to the files it was made from. */
+  sources?: Record<string, string>;
 }
 
 /** The extensions PowerShell reads: scripts, modules and data files. */
@@ -302,5 +304,6 @@ export function rebasePowerShellAst(ast: PowerShellAst, move: (value: string) =>
           loads:           facts.loads.map((load) => ({ ...load, resolved: load.resolved.map(move) }))
         };
   }
-  return { ...ast, files };
+  if (!ast.sources) return { ...ast, files };
+  return { ...ast, files, sources: Object.fromEntries(Object.entries(ast.sources).map(([file, digest]) => [move(file), digest])) };
 }

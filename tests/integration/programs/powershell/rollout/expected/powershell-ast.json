@@ -1602,5 +1602,16 @@
         }
       ]
     }
+  },
+  "sources": {
+    "../Invoke-Rollout.ps1": "f01084a37bea12e948509e14c9bb606857db63a16a0a5d68fe32a7ed846e3e18",
+    "../config/targets.psd1": "978ec54ce5ae19ca64c777a7c92f60433628c0f4462e091f68fc751aae8d4d4f",
+    "../lib/Logging.ps1": "b97d708b3808948a233d86ab1d04627d5ca29bdccf701f63c363e92370c7b955",
+    "../lib/Settings.ps1": "0d098c602cbf546970f24301f8a58ad64840edb65d48fe1b3e897d3966f895d0",
+    "../modules/Rollout.Notify/Rollout.Notify.psm1": "e7fc03bc70642d2c8e62f7b1ce287937353cc5042cbc5fe68327fd05f49f49d4",
+    "../modules/Rollout.Steps/Rollout.Steps.psd1": "fc246d45806a808ffdb3f71a2ca066c73838fe5cd5e04ce7e81fda85f3b0e65c",
+    "../modules/Rollout.Steps/Rollout.Steps.psm1": "af653271f242d69c24caf92d5a5418106440140bb383506a2ff428d7033a59d6",
+    "../modules/Rollout.Targets/Rollout.Targets.psm1": "b96eb244a9af6cb70ecf87c9abbe882c79e334141b8392e7cfe1459629b04365",
+    "../scripts/Show-RolloutPlan.ps1": "a72e7950b1019bf55bcdae7b31d0c85d8c5977af221ec422418e92944e5abe48"
   }
 }

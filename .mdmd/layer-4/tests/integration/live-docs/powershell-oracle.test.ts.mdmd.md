@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/powershell-oracle.test.ts`
-- Generated At: 2026-11-21T05:16:14.082Z
+- Generated At: 2026-11-21T07:51:41.448Z
 
 ## Authored
 ### Purpose
@@ -33,6 +33,8 @@ _No public symbols detected_
 - [`core.SourceAnalysisResult`](../../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`files.readPowerShellAst`](../../../scripts/oracle/files.ts.mdmd.md#symbol-readpowershellast)
+- [`fixture.listFixtureFiles`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-listfixturefiles)
+- [`powershell-edges.POWERSHELL_EXTENSIONS`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershell_extensions)
 - [`powershell-edges.PowerShellDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts)
 - [`powershell-edges.PowerShellHelp`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellhelp)
 - [`powershell-edges.PowerShellScriptFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
@@ -40,6 +42,8 @@ _No public symbols detected_
 - [`powershell-wires.ParserWorkspace`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-parserworkspace)
 - [`powershell-wires.isLibraryByParser`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)
 - [`powershell-wires.recordedShippedNames`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-recordedshippednames)
+- [`sources.sourceDigests`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcedigests)
+- [`sources.sourcesDiffer`](../../../scripts/oracle/sources.ts.mdmd.md#symbol-sourcesdiffer)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

@@ -30,8 +30,10 @@ import { powershellAdapter } from "@live-documentation/engine/live-docs/adapters
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation } from "@live-documentation/engine/live-docs/core";
 
 import { readPowerShellAst } from "../../../scripts/oracle/files";
-import { isDataFileFacts, type PowerShellDataFileFacts, type PowerShellHelp, type PowerShellScriptFacts } from "../../../scripts/oracle/powershell-edges";
+import { listFixtureFiles } from "../../../scripts/oracle/fixture";
+import { isDataFileFacts, POWERSHELL_EXTENSIONS, type PowerShellDataFileFacts, type PowerShellHelp, type PowerShellScriptFacts } from "../../../scripts/oracle/powershell-edges";
 import { isLibraryByParser, ParserWorkspace, recordedShippedNames } from "../../../scripts/oracle/powershell-wires";
+import { sourceDigests, sourcesDiffer } from "../../../scripts/oracle/sources";
 
 const INTEGRATION_ROOT = path.resolve(__dirname, "..");
 
@@ -232,9 +234,11 @@ describe("the PowerShell adapter against PowerShell's parser", () => {
   });
 
   for (const fixture of measuredFixtures()) {
-    it(`agrees with the parser on ${fixture}, but for its measured misses`, async () => {
+    it(`agrees with the parser on ${fixture}, but for its measured misses, its record parsed from its files as they stand`, async () => {
       const fixtureDir = path.join(INTEGRATION_ROOT, fixture);
       const ast        = readPowerShellAst(path.join(fixtureDir, "expected", "powershell-ast.json"), fixtureDir)!;
+      const read       = listFixtureFiles(fixtureDir).filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase()));
+      expect(sourcesDiffer(sourceDigests(fixtureDir, read), ast.sources), `write the record again: npm run oracle:index -- tests/integration/${fixture}`).toEqual([]);
       const files      = fileIndex(fixtureDir);
       const workspace  = new ParserWorkspace(ast, recordedShippedNames());
       const found: string[] = [];

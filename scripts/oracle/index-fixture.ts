@@ -43,6 +43,7 @@ import { writeOracleEdges, writePowerShellAst } from "./files";
 import { copyFixture, listFixtureFiles } from "./fixture";
 import { edgesFromPowerShellAst, parsePowerShellFixture, POWERSHELL_EXTENSIONS } from "./powershell-edges";
 import { cargoProjects, convertScipIndex, readProjects, type OracleEdges, type OracleProject } from "./scip-edges";
+import { sourceDigests } from "./sources";
 
 interface Detected {
   projectFile?: string;
@@ -153,7 +154,9 @@ const INDEXERS: Indexer[] = [
     name:   "pwsh",
     detect: (files) => (files.some((file) => /\.(ps1|psm1)$/iu.test(file)) ? {} : undefined),
     read(workDir, files, projects) {
-      const ast = parsePowerShellFixture(workDir, files.filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase())));
+      const read = files.filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase()));
+      // The record names the files the parser read with their digests, so that a file added later is not passed over.
+      const ast = { ...parsePowerShellFixture(workDir, read), sources: sourceDigests(workDir, read) };
       return {
         edges: edgesFromPowerShellAst(ast, projects),
         writeBeside(outputDir, fixtureDir) {
