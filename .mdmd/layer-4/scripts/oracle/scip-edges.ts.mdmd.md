@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/oracle/scip-edges.ts`
-- Generated At: 2026-11-21T04:48:49.767Z
+- Generated At: 2026-11-21T05:21:45.496Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Turns a SCIP index into the file-to-file edges a fixture's `expected/compiler-ed
 ### Notes
 - Nothing is filtered to fit an analyzer. The indexer quirks it handles are recorded in the output instead of hidden: scip-dotnet's namespace-only type names are disambiguated by project visibility with the leftovers listed under `ambiguous`, scip-go's generated test binaries are listed under `outside` with no edges, and rust-analyzer's one `crate/` symbol for every crate root of a package is narrowed to the referencing file's own crate, with crates read from Cargo's layout by `cargoProjects`.
 - Symbols are shown by their descriptors alone, with the scheme, package manager, package name and version stripped, so one converter reads every indexer's output.
-- A C# project's references are taken from MSBuild's own evaluation of it (`dotnet msbuild -getItem:ProjectReference`) since 2026-11-21, in the joining of the readers ([the work item](../../../../AI-Agent-Workspace/Work/readers-on-main.md)): an independent review found the reader taking a commented-out `<ProjectReference>` for a real one, and this oracle read the references by a pattern with the same blindness, so it agreed with the bug. A project MSBuild cannot evaluate stops the oracle with the project's name; it never falls back to a pattern. Every committed C# fixture's references read the same by MSBuild as they did by the pattern.
+- A C# project's references are taken from MSBuild's own evaluation of it (`dotnet msbuild -getItem:ProjectReference`) since 2026-11-21, in the joining of the readers ([the work item](../../../../AI-Agent-Workspace/Work/readers-on-main.md)): an independent review found the reader taking a commented-out `<ProjectReference>` for a real one, and this oracle read the references by a pattern with the same blindness, so it agreed with the bug. A project MSBuild cannot evaluate stops the oracle with the project's name; it never falls back to a pattern. Every committed C# fixture's references read the same by MSBuild as they did by the pattern. `readProjects` takes the evaluation as something it is handed, MSBuild by default, so that its tests run without `dotnet` as the repository's tests do: they hand it a stand-in, and the reading of MSBuild's answer (`projectReferencesFrom`) is held to two answers of MSBuild's kept as text, one evaluation and one MSB4019.
 - A namespace or package symbol that several files define (C++'s `namespace rosetta`, reopened in every translation unit) makes no edge and no ambiguity, since it names no file; a crate root is the exception, narrowed to the referencing file's own crate; a file's own symbol, which scip-clang writes for every `#include` it resolves and which also ends in a slash, is kept, as it is the include edge the measurement of the include rule reads (2026-10-16).
 
 ## Generated
@@ -68,17 +68,26 @@ Compiler observations in fixture-relative coordinates. Persistence converts loca
 ##### `IndexContext` — Summary
 What the caller knows about the fixture that the index does not.
 
+#### `ProjectEvaluation` {#symbol-projectevaluation}
+- Type: type
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L122)
+
+##### `ProjectEvaluation` — Summary
+What gives a project file's direct references, as the full paths of the projects they name.
+
 #### `readProjects` {#symbol-readprojects}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L122)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L128)
 - Returns: [`OracleProject`](#symbol-oracleproject)[]
+- Parameters: `evaluate`: [`ProjectEvaluation`](#symbol-projectevaluation)
 
 ##### `readProjects` — Summary
-Reads the projects of a .sln, or the one project of a .csproj, with their direct project references.
+Reads the projects of a .sln, or the one project of a .csproj, with their direct project references as `evaluate`
+gives them: MSBuild's own evaluation ({@link msbuildProjectReferences}) unless a test hands a stand-in.
 
 #### `msbuildProjectReferences` {#symbol-msbuildprojectreferences}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L165)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L171)
 
 ##### `msbuildProjectReferences` — Summary
 The full paths of the projects a project file references, as MSBuild's own evaluation of it gives them
@@ -88,9 +97,25 @@ element. Until 2026-11-21 the references were read from the file's text by a pat
 cannot evaluate stops the oracle, naming the project and MSBuild's first words of why: it never falls back to a
 pattern.
 
+#### `MsbuildAnswer` {#symbol-msbuildanswer}
+- Type: interface
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L182)
+
+##### `MsbuildAnswer` — Summary
+What `dotnet msbuild -getItem:ProjectReference` answered for one project: its exit status and what it wrote.
+
+#### `projectReferencesFrom` {#symbol-projectreferencesfrom}
+- Type: function
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L192)
+- Parameters: `answer`: [`MsbuildAnswer`](#symbol-msbuildanswer)
+
+##### `projectReferencesFrom` — Summary
+The full paths of the projects MSBuild's answer names, read from its JSON; an answer that is no evaluation (a
+non-zero status, or output that is not its JSON) throws, naming the project and MSBuild's first error line.
+
 #### `cargoProjects` {#symbol-cargoprojects}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L214)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L235)
 - Returns: [`OracleProject`](#symbol-oracleproject)[]
 
 ##### `cargoProjects` — Summary
@@ -98,7 +123,7 @@ Cargo's conventional targets of the package at `packageDir`: the library owns ev
 
 #### `edgesFromIndex` {#symbol-edgesfromindex}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L234)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L255)
 - Returns: [`OracleEdges`](#symbol-oracleedges)
 - Parameters: `index`: [`ScipIndex`](#symbol-scipindex); `context`: [`IndexContext`](#symbol-indexcontext)
 
@@ -107,7 +132,7 @@ Derives the edges from an already-decoded index. Pure; the unit test drives it w
 
 #### `convertScipIndex` {#symbol-convertscipindex}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L320)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L341)
 - Returns: [`OracleEdges`](#symbol-oracleedges)
 - Parameters: `context`: [`IndexContext`](#symbol-indexcontext)
 

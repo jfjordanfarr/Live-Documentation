@@ -118,8 +118,14 @@ function isOutside(documentPath: string): boolean {
   return documentPath.startsWith("../") || path.posix.isAbsolute(documentPath);
 }
 
-/** Reads the projects of a .sln, or the one project of a .csproj, with their direct project references. */
-export function readProjects(projectFile: string): OracleProject[] {
+/** What gives a project file's direct references, as the full paths of the projects they name. */
+export type ProjectEvaluation = (projectPath: string) => string[];
+
+/**
+ * Reads the projects of a .sln, or the one project of a .csproj, with their direct project references as `evaluate`
+ * gives them: MSBuild's own evaluation ({@link msbuildProjectReferences}) unless a test hands a stand-in.
+ */
+export function readProjects(projectFile: string, evaluate: ProjectEvaluation = msbuildProjectReferences): OracleProject[] {
   const projectFileDir = path.dirname(projectFile);
   const projectPaths: string[] = [];
 
@@ -142,7 +148,7 @@ export function readProjects(projectFile: string): OracleProject[] {
   }
 
   for (const [projectPath, project] of byPath) {
-    for (const reference of msbuildProjectReferences(projectPath)) {
+    for (const reference of evaluate(projectPath)) {
       const target = byPath.get(reference);
       if (target) {
         project.references.push(target.name);
@@ -169,14 +175,29 @@ export function msbuildProjectReferences(projectPath: string): string[] {
     maxBuffer: 64 * 1024 * 1024
   });
   if (run.error) throw new Error(`dotnet could not be run to evaluate ${projectPath}: ${run.error.message}`);
+  return projectReferencesFrom(projectPath, { status: run.status, stdout: run.stdout, stderr: run.stderr });
+}
+
+/** What `dotnet msbuild -getItem:ProjectReference` answered for one project: its exit status and what it wrote. */
+export interface MsbuildAnswer {
+  status: number | null;
+  stdout: string;
+  stderr: string;
+}
+
+/**
+ * The full paths of the projects MSBuild's answer names, read from its JSON; an answer that is no evaluation (a
+ * non-zero status, or output that is not its JSON) throws, naming the project and MSBuild's first error line.
+ */
+export function projectReferencesFrom(projectPath: string, answer: MsbuildAnswer): string[] {
   let items: { Items?: { ProjectReference?: Array<{ FullPath?: string }> } } | undefined;
   try {
-    items = run.status === 0 ? (JSON.parse(run.stdout) as typeof items) : undefined;
+    items = answer.status === 0 ? (JSON.parse(answer.stdout) as typeof items) : undefined;
   } catch {
     items = undefined;
   }
   if (items === undefined) {
-    const why = `${run.stdout}\n${run.stderr}`.split(/\r?\n/u).map((line) => line.trim()).find((line) => /error/iu.test(line)) ?? `exit ${run.status}`;
+    const why = `${answer.stdout}\n${answer.stderr}`.split(/\r?\n/u).map((line) => line.trim()).find((line) => /error/iu.test(line)) ?? `exit ${answer.status}`;
     throw new Error(`MSBuild could not evaluate ${projectPath}: ${why}`);
   }
   return (items.Items?.ProjectReference ?? []).flatMap((reference) => (reference.FullPath ? [path.resolve(reference.FullPath)] : []));
