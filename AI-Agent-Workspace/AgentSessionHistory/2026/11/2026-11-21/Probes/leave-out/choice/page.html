@@ -61,6 +61,10 @@
   .start { color: var(--text-muted); white-space: nowrap; }
   .text-button { background: transparent; border: 0; color: var(--offers); padding: 4px 0; }
   .columns { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 28px; }
+  /* What is left out stays in view below the totals while a long "Will be read" scrolls the page, so that a folder or
+     a kind left out on the right is seen to arrive on the left; when the left is itself longer than the window, it
+     scrolls on its own. */
+  #by-reason > div:first-child { position: sticky; top: 100px; align-self: start; max-height: calc(100vh - 210px); overflow: auto; padding-right: 4px; }
   #tree { border: 1px solid var(--line-border); border-radius: 6px; background: var(--ground-surface); padding: 4px 0; }
   [role="treeitem"] { display: flex; gap: 8px; align-items: center; min-height: 28px; padding: 0 10px; cursor: default; }
   [role="treeitem"]:hover { background: var(--ground-hover); }

@@ -185,14 +185,16 @@ function paged(list, key, rows, redraw, first = PAGE) {
 
 /**
  * Where an ignore file also names a folder: the file, its lines and their words, said on the folder's own row; a file
- * in the folder the row names is "this folder's", since its path would repeat the row's.
+ * in the folder the row names is "this folder's", and one in the folder that holds it "the … beside it", since its
+ * path would repeat the row's.
  */
 function alsoText(alsos, folder) {
   const byFile = new Map();
   for (const also of alsos.filter(Boolean)) byFile.set(also.path, new Map([...(byFile.get(also.path) ?? []), [also.line, also.pattern]]));
   return [...byFile].map(([file, lines]) => {
     const name = file.slice(file.lastIndexOf("/") + 1);
-    const where = file === `${folder}/${name}` ? `this folder's ${name}` : file;
+    const parent = folder.includes("/") ? folder.slice(0, folder.lastIndexOf("/")) : "";
+    const where = file === `${folder}/${name}` ? `this folder's ${name}` : file === (parent ? `${parent}/${name}` : name) ? `the ${name} beside it` : file;
     return `Also ${where}, ${[...lines].sort((a, b) => a[0] - b[0]).map(([line, pattern]) => `line ${line}: ${pattern}`).join(" · ")}`;
   }).join(" · ");
 }

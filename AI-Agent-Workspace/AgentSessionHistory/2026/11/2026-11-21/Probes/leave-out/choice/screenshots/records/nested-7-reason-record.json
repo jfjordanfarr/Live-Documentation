@@ -1,0 +1,99 @@
+{
+ "label": "nested-7",
+ "page": "choice.html",
+ "absent": [],
+ "handedAndDecidedMs": 33543,
+ "totals": "10,946 files will be read · 6,299 files left out",
+ "switchShown": false,
+ "evidenceSwitch": 0,
+ "reasons": [
+  "Build output beside a project 162 folders · 1,714 files Keep Also ignored by .gitignore: 28 of 162",
+  "NuGet packages 45 folders · 4,577 files Keep Also ignored by .tfignore: 15 of 45",
+  "Ignored by .gitignore: /*/css/*.css 6 files Keep",
+  "Ignored by .gitignore: /*/scripts/bundles/*.svg 2 files Keep"
+ ],
+ "read": [
+  "DNN Platform 7,850",
+  "Dnn.AdminExperience 2,901",
+  "Build 96",
+  "DotNetNuke.BulkInstall 45",
+  ".github 21",
+  "DotNetNuke.Internal.SourceGenerators 3",
+  "expected 1",
+  "At the top 29",
+  ".cs 3,973",
+  ".js 1,330",
+  ".png 1,325",
+  ".gif 671",
+  ".jsx 482",
+  ".less 305"
+ ],
+ "timings": "listed by the browser first · 2,299 folder listings · listing 1124 ms · deciding 472 ms · in all 2937 ms",
+ "readOpened": "Open DNN Platform",
+ "lengthAfterOpen": {
+  "scrollHeight": 1701,
+  "shown": 720,
+  "leftEnds": 389,
+  "rightEnds": 1650
+ },
+ "totalsAfterFolder": "10,403 files will be read · 6,842 files left out",
+ "reasonsAfterFolder": [
+  "Build output beside a project 128 folders · 1,357 files Keep Also ignored by .gitignore: 28 of 128",
+  "NuGet packages 45 folders · 4,577 files Keep Also ignored by .tfignore: 15 of 45",
+  "Your pattern: /DNN Platform/Tests/ 1 folder · 900 files Keep",
+  "Ignored by .gitignore: /*/css/*.css 6 files Keep",
+  "Ignored by .gitignore: /*/scripts/bundles/*.svg 2 files Keep"
+ ],
+ "totalsAfterKind": "9,079 files will be read · 8,166 files left out",
+ "reasonsAfterKind": [
+  "Build output beside a project 128 folders · 1,357 files Keep Also ignored by .gitignore: 28 of 128",
+  "NuGet packages 45 folders · 4,577 files Keep Also ignored by .tfignore: 15 of 45",
+  "Your pattern: *.png 1,324 files Keep",
+  "Your pattern: /DNN Platform/Tests/ 1 folder · 900 files Keep",
+  "Ignored by .gitignore: /*/css/*.css 6 files Keep",
+  "Ignored by .gitignore: /*/scripts/bundles/*.svg 2 files Keep"
+ ],
+ "readAfterKind": [
+  "DNN Platform 6,258 Website/ 2,093 Library/ 1,413 Modules/ 805 Providers/ 659 DotNetNuke.Web/ 245 DotNetNuke.Log4net/ 232 Controls/ 89 DotNetNuke.Web.Mvc/ 84 Skins/ 83 DotNetNuke.Abstractions/ 78 DotNetNuke.Maintenance/ 56 Connectors/ 55 JavaScript Libraries/ 52 Dnn.ClientSide/ 46 DotNetNuke.WebUtility/ 38 HttpModules/ 36 DotNetNuke.Web.Client/ 28 Components/ 26 Dnn.AuthServices.Jwt/ 22 Syndication/ 22 Admin Modules/ 20 DotNetNuke.ContentSecurityPolicy/ 20 DotNetNuke.Instrumentation/ 15 DotNetNuke.Web.Client.ResourceManager/ 14 DotNetNuke.Web.Razor/ 13 DotNetNuke.DependencyInjection/ 9 DotNetNuke.ModulePipeline/ 5",
+  "Dnn.AdminExperience 2,629",
+  "Build 95",
+  "DotNetNuke.BulkInstall 45",
+  ".github 20",
+  "DotNetNuke.Internal.SourceGenerators 3",
+  "expected 1",
+  "At the top 28",
+  ".cs 3,638",
+  ".js 1,330",
+  ".gif 671",
+  ".jsx 482",
+  ".less 305",
+  ".sqldataprovider 299"
+ ],
+ "ignoreLineOpened": "Open DNN Platform",
+ "ignoreLine": "Also this folder's .gitignore, line 13: bin/ · line 14: obj/",
+ "ignoreLineRow": "Modules/Samples/Dnn.ContactList.SpaReact/ bin/ obj/ Also this folder's .gitignore, line 13: bin/ · line 14: obj/ 21 files",
+ "topFilesControl": "Leave out the 28 files in the top folder",
+ "totalsAfterTopFiles": "9,051 files will be read · 8,194 files left out",
+ "patterns": [
+  "/DNN Platform/Tests/ leaves out",
+  "*.png leaves out",
+  "the 28 files in the top folder left out"
+ ],
+ "reasonsAfterAll": [
+  "Build output beside a project 128 folders · 1,357 files Keep Also ignored by .gitignore: 28 of 128",
+  "NuGet packages 45 folders · 4,577 files Keep Also ignored by .tfignore: 15 of 45",
+  "Your pattern: *.png 1,324 files Keep",
+  "Your pattern: /DNN Platform/Tests/ 1 folder · 900 files Keep",
+  "Left out by you: the 28 files in the top folder 28 files Keep",
+  "Ignored by .gitignore: /*/css/*.css 6 files Keep",
+  "Ignored by .gitignore: /*/scripts/bundles/*.svg 2 files Keep"
+ ],
+ "lastPatternClearsFooter": {
+  "lastBottom": 750,
+  "footerTop": 775,
+  "clear": true
+ },
+ "totalsAfterPngKept": "10,375 files will be read · 6,870 files left out",
+ "patternsAfterPngKept": 2,
+ "errors": []
+}
