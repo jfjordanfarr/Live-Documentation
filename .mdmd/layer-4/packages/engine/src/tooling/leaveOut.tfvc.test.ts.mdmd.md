@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Holds the `.tfignore` half of `leaveOut` to Microsoft's own TFVC code, through the verdicts recorded in `__fixtures__/tfignore-oracle.json`: for every file of 52 trees, whether TFVC's change scanner leaves it out and which `.tfignore` and line decided. The one deliberate difference, the case of a pattern's folder part, is stated in the test.
+Holds the `.tfignore` half of `leaveOut` to Microsoft's own TFVC code, through the verdicts recorded in `__fixtures__/tfignore-oracle.json`: for every file of 52 trees, whether TFVC's change scanner leaves it out and which `.tfignore` and line decided. The one deliberate difference, the case of a pattern's folder part, is stated in the test. Since the root's ruling of 2026-11-21 that a folder left out is left out whole, a file under a folder `tf add /recursive` does not enter is held to `tf add`'s verdict, recorded beside the scanner's, and marked so: 3 of 468 files, where the note must name the `!` line the scanner kept them by when that line stands at or above the folder.
 
 ### Notes
 - Written on 2026-11-21 at the owner's ask ([Turn 3](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-3)) for "a good solid way to create ignore patterns on what they scan, before they scan it", as the one function [the design of one engine with two hosts](../../../../../../.mdmd/layer-3/engine-and-hosts.mdmd.md) names; built standalone and not yet wired into discovery. What it was measured against is [the leave-out probe](../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/README.md).

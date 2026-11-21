@@ -9,8 +9,9 @@ import { leaveOut, type IgnoreFileText } from "./leaveOut";
 /**
  * `leaveOut`'s `.gitignore` half held to git's own answer, rule for rule: for every file and folder of a tree, whether
  * git ignores it and which file and line decided (`git check-ignore -v -n --no-index`, which names a negation that
- * matched too). Each tree is made in a fresh repository with nothing tracked, git's global and system configuration
- * kept out, and names matched as written (`core.ignorecase=false`).
+ * matched too). Each tree is made in a fresh repository with nothing tracked and git's global and system configuration
+ * kept out, and asked twice: with names matched as written (`core.ignorecase=false`, as on Linux) and without regard to
+ * case (`core.ignorecase=true`, as in every repository made on Windows).
  */
 
 const made: string[] = [];
@@ -24,7 +25,7 @@ interface Tree {
   ignores: Record<string, string>;
 }
 
-const git = (cwd: string, args: string[], input?: string) => spawnSync("git", ["-c", "core.excludesFile=", "-c", "core.ignorecase=false", ...args], {
+const git = (cwd: string, args: string[], input?: string, ignoreCase = false) => spawnSync("git", ["-c", "core.excludesFile=", "-c", `core.ignorecase=${ignoreCase}`, ...args], {
   cwd, input, encoding: "utf8", env: { ...process.env, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: "/dev/null", HOME: cwd }
 });
 
@@ -44,7 +45,7 @@ function listing(root: string): Array<{ path: string; folder: boolean }> {
 }
 
 /** Git's word and the function's on each path of a tree, in one comparable line each: `path  ignored|kept  file:line`. */
-function bothWords(tree: Tree): { git: string[]; ours: string[] } {
+function bothWords(tree: Tree, ignoreCase: boolean): { git: string[]; ours: string[] } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "leave-out-git-"));
   made.push(root);
   expect(git(root, ["init", "-q", "."]).status).toBe(0);
@@ -61,7 +62,7 @@ function bothWords(tree: Tree): { git: string[]; ours: string[] } {
     fs.writeFileSync(path.join(root, file), text);
   }
   const entries = listing(root);
-  const asked = git(root, ["check-ignore", "-v", "-n", "-z", "--no-index", "--stdin"], entries.map((entry) => entry.path).join("\0") + "\0");
+  const asked = git(root, ["check-ignore", "-v", "-n", "-z", "--no-index", "--stdin"], entries.map((entry) => entry.path).join("\0") + "\0", ignoreCase);
   expect(asked.status === 0 || asked.status === 1, asked.stderr).toBe(true);
   const fields = asked.stdout.split("\0");
   const gitWords: string[] = [];
@@ -72,7 +73,7 @@ function bothWords(tree: Tree): { git: string[]; ours: string[] } {
   }
   const ignoreFiles: IgnoreFileText[] = entries.filter((entry) => !entry.folder && path.posix.basename(entry.path) === ".gitignore")
     .map((entry) => ({ path: entry.path, text: fs.readFileSync(path.join(root, entry.path), "utf8") }));
-  const decide = leaveOut({ ignoreFiles });
+  const decide = leaveOut({ ignoreFiles, gitIgnoreCase: ignoreCase });
   const ours = entries.map((entry) => {
     const verdict = entry.folder ? decide.folder(entry.path) : decide.file(entry.path);
     const rule = verdict.rule?.kind === "gitignore" ? `${verdict.rule.file}:${verdict.rule.line}` : "-";
@@ -139,6 +140,10 @@ const CASES: Record<string, Tree> = {
     files: ["Build/x", "build2/y", "README.MD", "readme.md"],
     ignores: { ".gitignore": "build/\nBUILD2\n*.md\n" }
   },
+  "case folded as git folds it, an escaped letter and a class's members compared as written": {
+    files: ["A.txt", "a.txt", "Bq", "bq", "Cx", "cx", "Dy", "dy", "Ez", "ez", "Logs/one", "src/Logs/two", "F/g/H"],
+    ignores: { ".gitignore": "[A].txt\n\\Bq\n[A-C]x\n[[:upper:]]y\n[[:lower:]]z\nlogs/\nf/G/h\n" }
+  },
   "a pattern with a dot folder and dot files": {
     files: [".env", ".config/a", "x/.cache/b", ".gitkeep"],
     ignores: { ".gitignore": ".*\n!.gitkeep\n!.gitignore\n" }
@@ -147,10 +152,12 @@ const CASES: Record<string, Tree> = {
 
 describe("leaveOut's .gitignore half against git's own answer", () => {
   for (const [name, tree] of Object.entries(CASES)) {
-    it(name, () => {
-      const words = bothWords(tree);
-      expect(words.ours).toEqual(words.git);
-    }, 30_000);
+    for (const ignoreCase of [false, true]) {
+      it(`${name}, core.ignorecase=${ignoreCase}`, () => {
+        const words = bothWords(tree, ignoreCase);
+        expect(words.ours).toEqual(words.git);
+      }, 30_000);
+    }
   }
 
   // A generator of trees and patterns with a fixed seed: each case it finds that differs comes back as a named case.
@@ -160,8 +167,8 @@ describe("leaveOut's .gitignore half against git's own answer", () => {
       seed = (seed * 1103515245 + 12345) % 2147483648;
       return seed % n;
     };
-    const names = ["a", "b", "ab", "x.c", "y.h", "log", "Log", "build", ".hid", "k.txt", "1"];
-    const tokens = ["a", "b", "x", "*", "?", "**", "/", ".c", ".h", "[ab]", "[!a]", "build", "log", ".txt", "k", "!"];
+    const names = ["a", "b", "ab", "x.c", "y.h", "log", "Log", "build", "Build", ".hid", "k.txt", "K.TXT", "1"];
+    const tokens = ["a", "b", "x", "*", "?", "**", "/", ".c", ".h", "[ab]", "[!a]", "build", "BUILD", "log", ".txt", "k", "K", "!", "[A-Z]"];
     const disagreements: string[] = [];
     for (let round = 0; round < 60; round++) {
       const files = new Set<string>();
@@ -177,8 +184,10 @@ describe("leaveOut's .gitignore half against git's own answer", () => {
       const ignores: Record<string, string> = { ".gitignore": `${lines.join("\n")}\n` };
       const folder = kept.find((file) => file.includes("/"))?.split("/")[0];
       if (folder && random(2) === 0) ignores[`${folder}/.gitignore`] = `${pattern()}\n${pattern()}\n`;
-      const words = bothWords({ files: kept, ignores });
-      if (JSON.stringify(words.ours) !== JSON.stringify(words.git)) disagreements.push(JSON.stringify({ files: kept, ignores, git: words.git, ours: words.ours }));
+      for (const ignoreCase of [false, true]) {
+        const words = bothWords({ files: kept, ignores }, ignoreCase);
+        if (JSON.stringify(words.ours) !== JSON.stringify(words.git)) disagreements.push(JSON.stringify({ ignoreCase, files: kept, ignores, git: words.git, ours: words.ours }));
+      }
     }
     expect(disagreements).toEqual([]);
   }, 120_000);

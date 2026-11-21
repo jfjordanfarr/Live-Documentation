@@ -4,7 +4,7 @@
 // (`packages/engine/src/tooling/leaveOut.tfvc.test.ts`). The oracle is Team Explorer Everywhere's matcher
 // (`IgnoreFile`, `IgnoreEntry`, `LocalItemExclusionEvaluator`, MIT, commit 21e0e598), compiled unchanged with a small
 // driver that walks a tree and prints, for each file, TFVC's change scanner's verdict and the `.tfignore` and line
-// that decided it; it was built for this probe in a scratch folder and is described in this folder's README.
+// that decided it, and `tf add /recursive`'s, which does not enter an excluded folder; it was built for this probe in a scratch folder and is described in this folder's README.
 //
 //   node record-tfvc-oracle.mjs <oracle folder> <fixtures folder of trees> <out.json>
 //
@@ -36,9 +36,10 @@ function ask(root) {
   if (run.status !== 0) throw new Error(run.stderr);
   const verdicts = [];
   for (const line of run.stdout.trim().split("\n").slice(1)) {
-    const [kind, file, scan, , source, number] = line.split("\t");
+    const [kind, file, scan, add, source, number] = line.split("\t");
     if (kind !== "file") continue;
-    verdicts.push({ path: file, excluded: scan === "excluded", source: source === "-" ? null : source, line: number === "-" ? null : Number(number) });
+    // The scanner's verdict, with its deciding file and line, and `tf add`'s: added, excluded, or never reached, under a folder it did not enter.
+    verdicts.push({ path: file, excluded: scan === "excluded", source: source === "-" ? null : source, line: number === "-" ? null : Number(number), add });
   }
   return verdicts;
 }
@@ -79,5 +80,5 @@ for (let round = 0; round < 40; round++) {
   trees.push(record(`random-${round}`, root));
 }
 fs.rmSync(scratch, { recursive: true, force: true });
-fs.writeFileSync(out, `${JSON.stringify({ oracle: "Team Explorer Everywhere 21e0e598, LocalItemExclusionEvaluator, scanner's verdict, no global list", trees }, null, 1)}\n`);
+fs.writeFileSync(out, `${JSON.stringify({ oracle: "Team Explorer Everywhere 21e0e598, LocalItemExclusionEvaluator: the change scanner's verdict and tf add's, no global list", trees }, null, 1)}\n`);
 console.log(`recorded ${trees.length} trees, ${trees.reduce((sum, tree) => sum + tree.verdicts.length, 0)} verdicts`);

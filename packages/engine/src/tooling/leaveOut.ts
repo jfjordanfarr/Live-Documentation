@@ -4,26 +4,37 @@
  * page over a folder a person picked, so that the choice can be shown to a
  * person and changed before the scan. It reads nothing and imports nothing of
  * Node: it is given the listing's paths (relative, forward slashes, as
- * written), the texts of the ignore files the listing names, a starting list
- * and a person's own patterns, and answers for each path whether it is kept,
- * or left out and by which rule, file and line.
+ * written), the texts of the ignore files the listing names, a starting list,
+ * a person's own patterns and the folders the tool itself writes to, and
+ * answers for each path whether it is kept, or left out and by which rule,
+ * file and line.
  *
  * @remarks
+ * **A folder left out is left out whole**, whichever rule leaves it out: it
+ * is not entered, nothing beneath it is looked for, and a `!` line keeps a
+ * file or folder only where the folder it lies in is kept. That is git's rule
+ * ("It is not possible to re-include a file if a parent directory of that file
+ * is excluded") and TFVC's in `tf add /recursive` (`FileSystemWalker.java`,
+ * which skips an excluded folder unseen); TFVC's change scanner, which fills
+ * Pending Changes, looks inside and lets a `!` line keep a file there, and that
+ * reading is given up, by the root's ruling of 2026-11-21, so that a folder of
+ * packages is never listed at all and the rule can be said in a sentence. What
+ * is owed for it is said: where a `!` line could have named something inside a
+ * folder left out whole, the folder's answer carries a note with the line.
+ *
  * **`.gitignore`, by git's own rules**, ported from git's `dir.c` and
- * `wildmatch.c` (git 2.56) and held to `git check-ignore` rule for rule by the
- * tests beside this module: a comment begins with `#`; trailing spaces are
- * dropped unless escaped; `!` negates; a trailing `/` matches folders only; a
- * pattern with no slash but a trailing one matches a name at any depth, any
- * other is anchored at its file's folder; `*` and `?` stop at `/`, `**` crosses
- * it at a segment's edge, `[...]` is a class; the last matching line of a file
- * wins and a deeper file's opinion beats a shallower one's; and a path beneath
- * an ignored folder is ignored whatever follows, since git never looks inside
- * one ("It is not possible to re-include a file if a parent directory of that
- * file is excluded"), nor reads the `.gitignore` files there. Names are matched
- * as written, as git does where `core.ignorecase` is false. What a listing
- * cannot tell, and this function therefore cannot know: `.git/info/exclude`,
- * the person's global excludes file, and git's keeping of a file it tracks
- * beneath an ignored folder.
+ * `wildmatch.c` (git 2.56) and held to `git check-ignore` rule for rule, with
+ * `core.ignorecase` false and true, by `leaveOut.oracle.test.ts`: `#` begins a
+ * comment; trailing spaces are dropped unless escaped; `!` negates; a trailing
+ * `/` matches folders only; a pattern with no other slash matches a name at
+ * any depth, any other is anchored at its file's folder; `*` and `?` stop at
+ * `/`, `**` crosses it at a segment's edge, `[...]` is a class; the last
+ * matching line of a file wins and a deeper file's opinion beats a
+ * shallower's. Whether names match without regard to case is the
+ * repository's own `core.ignorecase`, handed in (`gitIgnoreCase`), as git
+ * itself matches; it is true in every repository made on Windows. What a
+ * listing cannot tell: `.git/info/exclude`, the person's global excludes file,
+ * and git's keeping of a file it tracks beneath an ignored folder.
  *
  * **`.tfignore`, by TFVC's own rules** as Microsoft's open-source TFVC client
  * implements them (Team Explorer Everywhere, `IgnoreFile.java`,
@@ -39,20 +50,24 @@
  * names last. Within a file the last matching line wins; the deepest file with
  * an opinion decides, so a subfolder's file adds to its parent's rather than
  * replacing them. The folder part of a pattern is compared without regard to
- * case, as TEE compares it on Windows (on Linux it respects case). Two things
- * TEE does that this function does not: TFVC's global list of exclusions, which
- * a collection's server sends, and the skipping of TFVC's own `$tf` folders,
- * both left to the starting list.
+ * case, as TEE compares it on Windows (on Linux it respects case). TFVC's global
+ * list of exclusions, which a collection's server sends, and its skipping of
+ * its own `$tf` folders are not applied here; the first is a candidate starting
+ * list.
  *
- * **Which rule wins:** a person's own patterns first, then the ignore files
- * (left out when either kind leaves a path out), then the starting list, which
- * applies only where no ignore file lies at or above a path's folder: it is
- * offered for a folder that has none. The person's patterns and the starting
- * list are read by git's rules, as if one `.gitignore` stood at the folder's
- * top. Whether everything under a folder is left out, so that a walk need not
- * go in, is reported by {@link LeaveOut.folder}, never assumed: git's rule
- * allows it, TFVC's change scanner does not (it judges every file beneath an
- * excluded folder, and a `!` line can keep one), though `tf add` does.
+ * **Which rule wins:** the tool's own output first, which is never scanned
+ * whatever the ignore files say; then a person's own patterns; then the ignore
+ * files (left out when either kind leaves a path out); then the starting list,
+ * which applies only where no ignore file lies at or above a path's folder: it
+ * is offered for a folder that has none. The person's patterns and a starting
+ * list of patterns are read by git's rules without regard to case, since the
+ * folders they will meet are Windows's. A starting list may instead be the
+ * evidence rules ({@link EVIDENCE}), which look one level into a folder, by
+ * the names it holds, before leaving it out.
+ *
+ * The decider keeps each folder's state, derived once from its parent's and the
+ * ignore files in it, so that a walk asks of each folder once, before going in,
+ * and of each file once.
  *
  * Origin: the owner's ask of 2026-11-21 for "a good solid way to create ignore
  * patterns on what they scan, before they scan it", and the design of one
@@ -67,16 +82,21 @@ export interface IgnoreFileText {
   text: string;
 }
 
-/** The rule that decided a path: which file and line, which entry of the starting list, or which of the person's patterns. */
+/** The rule that decided a path. */
 export type LeaveOutRule =
+  | { kind: "own output"; folder: string }
   | { kind: "gitignore" | "tfignore"; file: string; line: number; pattern: string }
   | { kind: "starting list"; index: number; pattern: string }
   | { kind: "person"; index: number; pattern: string };
 
-/** The answer for one path: kept or left out, and the rule that decided, if any did (a kept path's rule is one that re-included it). */
+/**
+ * The answer for one path: kept or left out, and the rule that decided, if any did (a kept path's rule is one that
+ * re-included it); and, for a path left out with its folder, the `!` lines that could have named it.
+ */
 export interface LeaveOutVerdict {
   kept: boolean;
   rule?: LeaveOutRule;
+  notes?: string[];
 }
 
 /** The answer for a folder, and whether nothing beneath it can be kept, so that a walk need not go in. */
@@ -86,11 +106,22 @@ export interface FolderVerdict extends LeaveOutVerdict {
   why: string;
 }
 
-/** What decides a scan's leaving out: the ignore files the listing names, a starting list and a person's patterns. */
+/**
+ * A starting list: patterns, read by git's rules without regard to case; or the evidence rules, given the names a
+ * folder holds (a folder's with a trailing `/`), which a lazy walk answers by listing one level further.
+ */
+export type StartingList = readonly string[] | { evidence: (folder: string) => readonly string[] };
+
+/** What decides a scan's leaving out. */
 export interface LeaveOutInput {
-  ignoreFiles: readonly IgnoreFileText[];
-  startingList?: readonly string[];
+  /** The ignore files the listing names; or, for a walk that reads them as it goes, a folder's own. */
+  ignoreFiles: readonly IgnoreFileText[] | ((folder: string) => readonly IgnoreFileText[]);
+  /** The repository's `core.ignorecase`: whether `.gitignore` patterns match names without regard to case. */
+  gitIgnoreCase?: boolean;
+  startingList?: StartingList;
   person?: readonly string[];
+  /** The folders the tool writes to, relative: never scanned. */
+  ownOutput?: readonly string[];
 }
 
 /** The decider of one listing: a file's verdict and a folder's, the folder's with whether a walk may leave it unlisted. */
@@ -127,13 +158,22 @@ const CLASSES: Record<string, (c: string) => boolean> = {
 
 const isGlobSpecial = (c: string | undefined): boolean => c === "*" || c === "?" || c === "[" || c === "\\";
 
-/** Git's `dowild`: whether `text` from `t` matches `pattern` from `p`, with or without `WM_PATHNAME`. */
-function dowild(pattern: string, p: number, text: string, t: number, pathname: boolean): number {
+const isUpper = (c: string | undefined): boolean => c !== undefined && c >= "A" && c <= "Z";
+const isLower = (c: string | undefined): boolean => c !== undefined && c >= "a" && c <= "z";
+
+/**
+ * Git's `dowild`: whether `text` from `t` matches `pattern` from `p`, with or without `WM_PATHNAME` and `WM_CASEFOLD`.
+ * Folding is git's own, quirks included: the text and the pattern's character in hand are folded to lower case, but an
+ * escaped character and a class's members are compared as written.
+ */
+function dowild(pattern: string, p: number, text: string, t: number, pathname: boolean, fold: boolean): number {
   const start = p;
   for (; p < pattern.length; t++, p++) {
     let pc: string | undefined = pattern[p];
     let tc: string | undefined = text[t];
     if (tc === undefined && pc !== "*") return ABORT_ALL;
+    if (fold && isUpper(tc)) tc = tc.toLowerCase();
+    if (fold && isUpper(pc)) pc = pc.toLowerCase();
     switch (pc) {
       case "\\":
         p++;
@@ -149,7 +189,7 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
           const prev = p - 2;
           while (pattern[++p] === "*") { /* a run of stars is one */ }
           if ((prev < start || pattern[prev] === "/") && (p >= pattern.length || pattern[p] === "/" || (pattern[p] === "\\" && pattern[p + 1] === "/"))) {
-            if (pattern[p] === "/" && dowild(pattern, p + 1, text, t, pathname) === MATCH) return MATCH;
+            if (pattern[p] === "/" && dowild(pattern, p + 1, text, t, pathname, fold) === MATCH) return MATCH;
             matchSlash = true;
           } else {
             matchSlash = !pathname;
@@ -170,8 +210,9 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
         for (;;) {
           if (tc === undefined) break;
           if (!isGlobSpecial(pattern[p])) {
-            const literal = pattern[p];
+            const literal = fold && isUpper(pattern[p]) ? pattern[p].toLowerCase() : pattern[p];
             while ((tc = text[t]) !== undefined && (matchSlash || tc !== "/")) {
+              if (fold && isUpper(tc)) tc = tc.toLowerCase();
               if (tc === literal) break;
               t++;
             }
@@ -180,13 +221,14 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
               break;
             }
           }
-          const matched = dowild(pattern, p, text, t, pathname);
+          const matched = dowild(pattern, p, text, t, pathname, fold);
           if (matched !== NOMATCH) {
             if (!matchSlash || matched !== ABORT_TO_STARSTAR) return matched;
           } else if (!matchSlash && tc === "/") {
             return ABORT_TO_STARSTAR;
           }
           tc = text[++t];
+          if (fold && isUpper(tc)) tc = tc.toLowerCase();
         }
         return ABORT_ALL;
       }
@@ -210,6 +252,10 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
               if (pc === undefined) return ABORT_ALL;
             }
             if (tc !== undefined && tc <= pc && tc >= prev) matched = true;
+            else if (fold && isLower(tc)) {
+              const upper = tc.toUpperCase();
+              if (upper <= pc && upper >= prev) matched = true;
+            }
             pc = undefined;
           } else if (pc === "[" && pattern[p + 1] === ":") {
             const s = p + 2;
@@ -220,9 +266,11 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
               // No ":]": a plain `[` in the set.
               if (tc === "[") matched = true;
             } else {
-              const test = CLASSES[pattern.slice(s, q - 1)];
+              const name = pattern.slice(s, q - 1);
+              const test = CLASSES[name];
               if (!test) return ABORT_ALL;
               if (tc !== undefined && test(tc)) matched = true;
+              else if (name === "upper" && fold && isLower(tc)) matched = true;
               p = q;
               pc = undefined;
             }
@@ -243,7 +291,7 @@ function dowild(pattern: string, p: number, text: string, t: number, pathname: b
   return t < text.length ? NOMATCH : MATCH;
 }
 
-const wildmatch = (pattern: string, text: string, pathname: boolean): boolean => dowild(pattern, 0, text, 0, pathname) === MATCH;
+const wildmatch = (pattern: string, text: string, pathname: boolean, fold: boolean): boolean => dowild(pattern, 0, text, 0, pathname, fold) === MATCH;
 
 // ---------------------------------------------------------------------------
 // .gitignore
@@ -258,6 +306,40 @@ interface GitPattern {
   noDir: boolean;
   line: number;
   original: string;
+  /** The longest run of plain characters the pattern holds, lower-cased: a text without it cannot match, which spares most calls of the matcher. */
+  literal: string;
+}
+
+/** The longest run of characters outside any wildcard, class, escape or slash, lower-cased; a class read as wildmatch reads it. */
+function longestLiteral(pattern: string): string {
+  let best = "";
+  let run = "";
+  const end = (): void => {
+    if (run.length > best.length) best = run;
+    run = "";
+  };
+  for (let i = 0; i < pattern.length; i++) {
+    const c = pattern[i];
+    // A slash ends a run too: `**/` matches no folder at all, and takes its slash with it.
+    if (c === "*" || c === "?" || c === "/") end();
+    else if (c === "\\") {
+      end();
+      i++;
+    } else if (c === "[") {
+      end();
+      let j = i + 1;
+      if (pattern[j] === "!" || pattern[j] === "^") j++;
+      if (pattern[j] === "]") j++;
+      while (j < pattern.length && pattern[j] !== "]") {
+        // A `[:name:]` inside the class ends at its own `:]`, and an escape takes the character after it.
+        const close = pattern[j] === "[" && pattern[j + 1] === ":" ? pattern.indexOf(":]", j + 2) : -1;
+        j = close !== -1 ? close + 2 : pattern[j] === "\\" ? j + 2 : j + 1;
+      }
+      i = j;
+    } else run += c;
+  }
+  end();
+  return best.toLowerCase();
 }
 
 /** Git's `trim_trailing_spaces`: unescaped trailing spaces dropped. */
@@ -300,72 +382,29 @@ function gitPatterns(text: string, base: string): GitPattern[] {
       entry = entry.slice(0, -1);
     }
     const noDir = !entry.includes("/");
-    patterns.push({ base, pattern: entry, negative, mustBeDir, noDir, line: index + 1, original });
+    patterns.push({ base, pattern: entry, negative, mustBeDir, noDir, line: index + 1, original, literal: longestLiteral(entry.replace(/^\//u, "")) });
   });
   return patterns;
 }
 
 /** Whether a git pattern matches a path (relative to the scanned folder), as git's `match_basename` and `match_pathname` do. */
-function gitMatches(pattern: GitPattern, path: string, isDir: boolean): boolean {
+function gitMatches(pattern: GitPattern, path: string, isDir: boolean, ignoreCase: boolean): boolean {
   if (pattern.mustBeDir && !isDir) return false;
-  if (pattern.base !== "" && !path.startsWith(`${pattern.base}/`)) return false;
-  const relative = pattern.base === "" ? path : path.slice(pattern.base.length + 1);
-  if (pattern.noDir) {
-    const slash = relative.lastIndexOf("/");
-    return wildmatch(pattern.pattern, slash === -1 ? relative : relative.slice(slash + 1), false);
+  if (pattern.base !== "") {
+    const head = path.slice(0, pattern.base.length + 1);
+    if (ignoreCase ? head.toLowerCase() !== `${pattern.base}/`.toLowerCase() : head !== `${pattern.base}/`) return false;
   }
-  const anchored = pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern;
-  return wildmatch(anchored, relative, true);
+  const relative = pattern.base === "" ? path : path.slice(pattern.base.length + 1);
+  const text = pattern.noDir ? relative.slice(relative.lastIndexOf("/") + 1) : relative;
+  if (pattern.literal !== "" && !text.toLowerCase().includes(pattern.literal)) return false;
+  if (pattern.noDir) return wildmatch(pattern.pattern, text, false, ignoreCase);
+  return wildmatch(pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern, relative, true, ignoreCase);
 }
 
 const folderOf = (path: string): string => {
   const slash = path.lastIndexOf("/");
   return slash === -1 ? "" : path.slice(0, slash);
 };
-
-/** Every folder above a path, the top (`""`) first. */
-function foldersAbove(path: string): string[] {
-  const parts = path.split("/");
-  const folders = [""];
-  for (let i = 1; i < parts.length; i++) folders.push(parts.slice(0, i).join("/"));
-  return folders;
-}
-
-type Opinion = { excluded: boolean; rule: LeaveOutRule } | undefined;
-
-/** The rule sets of one kind, by the folder their file stands in. */
-type ByFolder<T> = Map<string, T[]>;
-
-/** Git's opinion of one path, its own folder's files deepest first, the last matching line of a file winning. */
-function gitOpinionOf(path: string, isDir: boolean, byFolder: ByFolder<GitPattern>, kind: "gitignore" | "starting list" | "person", fileOf: (folder: string) => string): Opinion {
-  const folders = foldersAbove(path).reverse();
-  for (const folder of folders) {
-    const patterns = byFolder.get(folder);
-    if (!patterns) continue;
-    for (let i = patterns.length - 1; i >= 0; i--) {
-      const pattern = patterns[i];
-      if (!gitMatches(pattern, path, isDir)) continue;
-      const rule: LeaveOutRule = kind === "gitignore"
-        ? { kind, file: fileOf(folder), line: pattern.line, pattern: pattern.original }
-        : { kind, index: pattern.line - 1, pattern: pattern.original };
-      return { excluded: !pattern.negative, rule };
-    }
-  }
-  return undefined;
-}
-
-/**
- * Git's word on a path: a folder above it that is ignored decides for it, the top first, as git never enters an
- * ignored folder; otherwise its own opinion.
- */
-function gitJudge(path: string, isDir: boolean, byFolder: ByFolder<GitPattern>, kind: "gitignore" | "starting list" | "person", fileOf: (folder: string) => string): Opinion {
-  const parts = path.split("/");
-  for (let i = 1; i < parts.length; i++) {
-    const above = gitOpinionOf(parts.slice(0, i).join("/"), true, byFolder, kind, fileOf);
-    if (above?.excluded) return above;
-  }
-  return gitOpinionOf(path, isDir, byFolder, kind, fileOf);
-}
 
 // ---------------------------------------------------------------------------
 // .tfignore, as Team Explorer Everywhere reads and applies it
@@ -503,99 +542,183 @@ function tfFileOpinion(entries: readonly TfEntry[], path: string, isFolder: bool
   return decided;
 }
 
-/** TFVC's word on a path: the `.tfignore` files from its parent folder up to the top, deepest first, the first with an opinion deciding. */
-function tfJudge(path: string, isFolder: boolean, byFolder: ByFolder<TfEntry>, fileOf: (folder: string) => string): Opinion {
-  for (const folder of foldersAbove(path).reverse()) {
-    const entries = byFolder.get(folder);
-    if (!entries) continue;
-    const entry = tfFileOpinion(entries, path, isFolder);
-    if (entry) return { excluded: entry.excluded, rule: { kind: "tfignore", file: fileOf(folder), line: entry.line, pattern: entry.original } };
+// ---------------------------------------------------------------------------
+// The evidence rules, a starting list that looks before it leaves out
+// ---------------------------------------------------------------------------
+
+const PROJECT_FILE = /\.(?:cs|vb|fs|vcx|sql|wix|nj)proj$/iu;
+const NUGET_PACKAGE = /^[A-Za-z0-9_][A-Za-z0-9_.-]*?\.\d+(?:\.\d+){1,3}(?:-[0-9A-Za-z.-]+)?\/$/u;
+
+/**
+ * The evidence rules: each leaves a folder out only where what the folder holds, or what stands beside it, shows it
+ * to be a build's output or a package manager's, by the names alone. `bin` and `obj` beside a project file; `packages`
+ * holding NuGet's `<Id>.<Version>` folders or a `repositories.config`; `node_modules` holding a package's
+ * `package.json` in one of its first three folders.
+ */
+export const EVIDENCE: ReadonlyArray<{ name: string; pattern: string; holds: (folder: string, names: (folder: string) => readonly string[]) => boolean }> = [
+  { name: "bin", pattern: "bin/ beside a project file", holds: (folder, names) => names(folderOf(folder)).some((name) => PROJECT_FILE.test(name)) },
+  { name: "obj", pattern: "obj/ beside a project file", holds: (folder, names) => names(folderOf(folder)).some((name) => PROJECT_FILE.test(name)) },
+  { name: "packages", pattern: "packages/ holding NuGet's <Id>.<Version> folders or a repositories.config", holds: (folder, names) => names(folder).some((name) => name.toLowerCase() === "repositories.config" || NUGET_PACKAGE.test(name)) },
+  {
+    name: "node_modules",
+    pattern: "node_modules/ holding packages with a package.json",
+    holds: (folder, names) => names(folder).filter((name) => name.endsWith("/")).slice(0, 3).some((child) => names(`${folder}/${child.slice(0, -1)}`).includes("package.json"))
   }
-  return undefined;
-}
+];
 
 // ---------------------------------------------------------------------------
-// The one function
+// The decider, one folder's state at a time
 // ---------------------------------------------------------------------------
 
 const nameOf = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
 
-/** The decider for one listing's ignore files, starting list and person's patterns. */
+type Opinion = { excluded: boolean; rule: LeaveOutRule; negations?: string[] } | undefined;
+
+/** A folder's state, derived once from its parent's: left out whole, or the ignore files that speak for what it holds. */
+interface FolderState {
+  verdict: LeaveOutVerdict;
+  /** The verdict that leaves this folder, or one above it, out whole. */
+  whole?: LeaveOutVerdict;
+  /** The `.gitignore` files at and above this folder, the deepest last. */
+  git: Array<{ file: string; patterns: GitPattern[] }>;
+  /** The `.tfignore` files at and above this folder, the deepest last. */
+  tf: Array<{ file: string; entries: TfEntry[] }>;
+  /** Whether an ignore file stands at or above this folder, which turns the starting list off for what it holds. */
+  ruled: boolean;
+}
+
+/** The last matching pattern of one list, as git's `last_matching_pattern_from_list`. */
+function lastMatching(patterns: readonly GitPattern[], path: string, isDir: boolean, ignoreCase: boolean): GitPattern | undefined {
+  for (let i = patterns.length - 1; i >= 0; i--) if (gitMatches(patterns[i], path, isDir, ignoreCase)) return patterns[i];
+  return undefined;
+}
+
+/** Whether a negation could name something inside `folder`, by what its pattern fixes of a path. */
+function couldNameInside(pattern: GitPattern, folder: string, ignoreCase: boolean): boolean {
+  if (pattern.noDir) return true;
+  const full = (pattern.base === "" ? "" : `${pattern.base}/`) + (pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern);
+  const special = full.search(/[*?[\\]/u);
+  const literal = special === -1 ? full : full.slice(0, special);
+  const fold = (text: string): string => (ignoreCase ? text.toLowerCase() : text);
+  const inside = `${fold(folder)}/`;
+  return fold(literal).startsWith(inside) || (special !== -1 && inside.startsWith(fold(literal)));
+}
+
+/** The decider for one listing's ignore files, starting list, person's patterns and the tool's own output. */
 export function leaveOut(input: LeaveOutInput): LeaveOut {
-  const git: ByFolder<GitPattern> = new Map();
-  const tf: ByFolder<TfEntry> = new Map();
-  const gitFiles = new Map<string, string>();
-  const tfFiles = new Map<string, string>();
-  const ruled = new Set<string>();
-  for (const file of input.ignoreFiles) {
-    const folder = folderOf(file.path);
-    const name = nameOf(file.path);
-    if (name === ".gitignore") {
-      git.set(folder, gitPatterns(file.text, folder));
-      gitFiles.set(folder, file.path);
-      ruled.add(folder);
-    } else if (lower(name) === ".tfignore") {
-      tf.set(folder, tfEntries(file.text, folder));
-      tfFiles.set(folder, file.path);
-      ruled.add(folder);
+  const ignoreCase = input.gitIgnoreCase === true;
+  const byFolder = new Map<string, IgnoreFileText[]>();
+  if (Array.isArray(input.ignoreFiles)) {
+    for (const file of input.ignoreFiles as readonly IgnoreFileText[]) {
+      const folder = folderOf(file.path);
+      byFolder.set(folder, [...(byFolder.get(folder) ?? []), file]);
     }
   }
-  const asOneFile = (patterns: readonly string[] | undefined): ByFolder<GitPattern> => new Map([["", gitPatterns((patterns ?? []).join("\n"), "")]]);
-  const person = asOneFile(input.person);
-  const starting = asOneFile(input.startingList);
-  const fileOf = (files: Map<string, string>) => (folder: string): string => files.get(folder) ?? folder;
+  const ignoreFilesIn = typeof input.ignoreFiles === "function" ? input.ignoreFiles : (folder: string) => byFolder.get(folder) ?? [];
+  const person = gitPatterns((input.person ?? []).join("\n"), "");
+  const starting = input.startingList;
+  const startingPatterns = Array.isArray(starting) ? gitPatterns((starting as readonly string[]).join("\n"), "") : [];
+  const evidence = !Array.isArray(starting) && starting ? (starting as { evidence: (folder: string) => readonly string[] }).evidence : undefined;
+  const ownOutput = new Set((input.ownOutput ?? []).map((folder) => folder.toLowerCase()));
+  const states = new Map<string, FolderState>();
 
-  /**
-   * The starting list's word, from the top down: it speaks for a path or a folder above it only while no ignore file
-   * stands at or above that level, and a folder it leaves out decides for everything beneath, ignore files inside
-   * among them, as git's rule has it; so a walk may leave such a folder unlisted.
-   */
-  const byStartingList = (path: string, isFolder: boolean): (Opinion & { above: boolean }) | undefined => {
-    const parts = path.split("/");
-    for (let i = 1; i <= parts.length; i++) {
-      const prefix = parts.slice(0, i).join("/");
-      if (foldersAbove(prefix).some((folder) => ruled.has(folder))) return undefined;
-      const own = i === parts.length;
-      const opinion = gitOpinionOf(prefix, own ? isFolder : true, starting, "starting list", () => "");
-      if (own) return opinion && { ...opinion, above: false };
-      if (opinion?.excluded) return { ...opinion, above: true };
+  /** One path's verdict, its folder's state in hand. */
+  const judge = (path: string, isDir: boolean, parent: FolderState): LeaveOutVerdict => {
+    if (isDir && ownOutput.has(path.toLowerCase())) return { kept: false, rule: { kind: "own output", folder: path } };
+    const own = lastMatching(person, path, isDir, true);
+    if (own) return { kept: own.negative, rule: { kind: "person", index: own.line - 1, pattern: own.original } };
+    let byGit: Opinion;
+    for (let i = parent.git.length - 1; i >= 0 && !byGit; i--) {
+      const pattern = lastMatching(parent.git[i].patterns, path, isDir, ignoreCase);
+      if (pattern) byGit = { excluded: !pattern.negative, rule: { kind: "gitignore", file: parent.git[i].file, line: pattern.line, pattern: pattern.original } };
     }
-    return undefined;
-  };
-
-  const judge = (path: string, isFolder: boolean): LeaveOutVerdict => {
-    const own = gitJudge(path, isFolder, person, "person", () => "");
-    if (own) return { kept: !own.excluded, rule: own.rule };
-    const start = byStartingList(path, isFolder);
-    if (start?.above) return { kept: false, rule: start.rule };
-    // A `.gitignore` inside a folder git ignores is never read, which `gitJudge` keeps by deciding at that folder.
-    const byGit = gitJudge(path, isFolder, git, "gitignore", fileOf(gitFiles));
-    const byTf = tfJudge(path, isFolder, tf, fileOf(tfFiles));
+    let byTf: Opinion;
+    for (let i = parent.tf.length - 1; i >= 0 && !byTf; i--) {
+      const entry = tfFileOpinion(parent.tf[i].entries, path, isDir);
+      if (entry) byTf = { excluded: entry.excluded, rule: { kind: "tfignore", file: parent.tf[i].file, line: entry.line, pattern: entry.original } };
+    }
     if (byGit?.excluded) return { kept: false, rule: byGit.rule };
     if (byTf?.excluded) return { kept: false, rule: byTf.rule };
     if (byGit || byTf) return { kept: true, rule: (byGit ?? byTf)!.rule };
-    if (start) return { kept: !start.excluded, rule: start.rule };
+    if (parent.ruled) return { kept: true };
+    const start = lastMatching(startingPatterns, path, isDir, true);
+    if (start) return { kept: start.negative, rule: { kind: "starting list", index: start.line - 1, pattern: start.original } };
+    if (evidence && isDir) {
+      const index = EVIDENCE.findIndex((rule) => rule.name === nameOf(path).toLowerCase() && rule.holds(path, evidence));
+      if (index !== -1) return { kept: false, rule: { kind: "starting list", index, pattern: EVIDENCE[index].pattern } };
+    }
     return { kept: true };
   };
 
-  const personNegates = gitPatterns((input.person ?? []).join("\n"), "").some((pattern) => pattern.negative);
+  /** The `!` lines at or above a folder left out whole that could have named something inside it. */
+  const notesFor = (folder: string, parent: FolderState): string[] => {
+    const notes: string[] = [];
+    const say = (where: string, pattern: string) => notes.push(`${where}, \`${pattern}\`, may name files inside folders left out whole; they are not looked for`);
+    for (const pattern of person) if (pattern.negative && couldNameInside(pattern, folder, true)) say(`the person's pattern ${pattern.line}`, pattern.original);
+    for (const { file, patterns } of parent.git) for (const pattern of patterns) if (pattern.negative && couldNameInside(pattern, folder, ignoreCase)) say(`${file} line ${pattern.line}`, pattern.original);
+    for (const { file, entries } of parent.tf) {
+      for (const entry of entries) {
+        if (entry.excluded) continue;
+        const under = entry.folder === "" ? "" : `${entry.folder.toLowerCase()}/`;
+        const at = `${folder.toLowerCase()}/`;
+        if (under.startsWith(at) || (entry.recursive && at.startsWith(under))) say(`${file} line ${entry.line}`, entry.original);
+      }
+    }
+    for (const pattern of startingPatterns) if (pattern.negative && couldNameInside(pattern, folder, true)) say(`the starting list's pattern ${pattern.line}`, pattern.original);
+    return notes;
+  };
+
+  /** A folder's own ignore files added to what it inherits. */
+  const withOwnFiles = (folder: string, inherited: FolderState, verdict: LeaveOutVerdict): FolderState => {
+    const git = [...inherited.git];
+    const tf = [...inherited.tf];
+    let ruled = inherited.ruled;
+    for (const file of ignoreFilesIn(folder)) {
+      const name = nameOf(file.path);
+      if (name === ".gitignore") {
+        git.push({ file: file.path, patterns: gitPatterns(file.text, folder) });
+        ruled = true;
+      } else if (name.toLowerCase() === ".tfignore") {
+        tf.push({ file: file.path, entries: tfEntries(file.text, folder) });
+        ruled = true;
+      }
+    }
+    return { verdict, git, tf, ruled };
+  };
+
+  const stateOf = (folder: string): FolderState => {
+    const known = states.get(folder);
+    if (known) return known;
+    let state: FolderState;
+    if (folder === "") {
+      state = withOwnFiles("", { verdict: { kept: true }, git: [], tf: [], ruled: false }, { kept: true });
+    } else {
+      const parent = stateOf(folderOf(folder));
+      if (parent.whole) {
+        state = { ...parent, verdict: parent.whole };
+      } else {
+        const verdict = judge(folder, true, parent);
+        if (verdict.kept) state = withOwnFiles(folder, parent, verdict);
+        else {
+          const notes = notesFor(folder, parent);
+          const whole = notes.length > 0 ? { ...verdict, notes } : verdict;
+          state = { ...parent, verdict: whole, whole };
+        }
+      }
+    }
+    states.set(folder, state);
+    return state;
+  };
 
   return {
-    file: (path) => judge(path, false),
+    file: (path) => {
+      const parent = stateOf(folderOf(path));
+      return parent.whole ?? judge(path, false, parent);
+    },
     folder: (path) => {
-      const verdict = judge(path, true);
-      if (verdict.kept) return { ...verdict, prunable: false, why: "the folder is kept" };
-      const rule = verdict.rule!;
-      if (rule.kind === "tfignore") {
-        return { ...verdict, prunable: false, why: "TFVC's change scanner judges every file beneath an excluded folder, and a later `!` line or a .tfignore inside may keep one (tf add would not go in)" };
-      }
-      if (rule.kind !== "person" && personNegates) {
-        return { ...verdict, prunable: false, why: "a person's pattern re-includes something, and may name a file beneath" };
-      }
-      if (rule.kind === "gitignore" && tf.size > 0) {
-        return { ...verdict, prunable: true, why: "git never looks inside an ignored folder; a .tfignore cannot keep what a .gitignore leaves out" };
-      }
-      return { ...verdict, prunable: true, why: rule.kind === "gitignore" ? "git never looks inside an ignored folder" : "by git's rule, which the person's patterns and the starting list follow, nothing beneath an excluded folder is re-included" };
+      const state = stateOf(path);
+      if (state.whole) return { ...state.verdict, prunable: true, why: "a folder left out is left out whole: it is not entered, and nothing beneath it is looked for" };
+      return { ...state.verdict, prunable: false, why: "the folder is kept" };
     }
   };
 }
