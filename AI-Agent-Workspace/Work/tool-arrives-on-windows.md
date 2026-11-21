@@ -32,8 +32,8 @@ All 45 sample folders, which between them reach every one of the 19 readers, are
 List once, read a file's bytes, is-a-file answered from the listing, write. It carries with it the task of reading each file once (today a file is read about four times in a scan, and each of nine walks lists the folder again). The check above is its oracle: a stand-in is deleted each time the engine stops needing it, and the interface is whole when none is left.
 
 ### What a scan leaves out is chosen on the listing, before anything is read
-- state: open
-- holds: not begun; designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
+- state: active
+- holds: the function itself with a builder since 04:39 UTC on 2026-11-21, on the branch `page-check`: new files only, nothing of Node, git's own answer its oracle for `.gitignore`, `.tfignore`'s unsaid rules sought in Microsoft's open-source client; its record to come at `AgentSessionHistory/2026/11/2026-11-21/Probes/leave-out/`. Wiring it into discovery waits for the interface above. How a person sees and changes the choice is designed with [the scan that leaves no trace](scan-leaves-no-trace.md#choosing-what-a-scan-leaves-out-before-it-scans-on-either-surface)
 - evidence:
 
 ### A scan's facts in one stored form, written by either host
@@ -73,5 +73,7 @@ The command line without this checkout: its size on disk measured against a smal
 - state: open
 - holds: not begun
 - evidence:
+
+Since 2026-11-21 it has a second reason: this Linux's MSBuild cannot evaluate the owner's kind of project. Asked for each project's references, it answers for 50 of DNN's 84 project files and 21 of mojoPortal's 25; every one it stops on is an old-style web project importing Visual Studio's `Microsoft.WebApplication.targets`, which the SDK on Linux does not ship, or an import Windows finds only because it ignores case. So the C# graders can hold the reader to MSBuild's own reading of those projects only on Windows.
 
 Under Windows PowerShell 5.1 and Node 26: a checkout with CRLF line endings, a script saved as UTF-16, a path with a space, a long path, names that differ by case alone refused. It makes real the nine checks [the Windows record](../AgentSessionHistory/2026/11/2026-11-19/Probes/windows-and-cli/README.md) says only a Windows machine can make.
