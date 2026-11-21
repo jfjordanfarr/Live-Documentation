@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/expected/sql-scriptdom.json`
-- Generated At: 2026-11-21T02:15:35.643Z
+- Generated At: 2026-11-21T04:55:46.529Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,21 @@ What Microsoft's T-SQL parser says about the estate's SQL Server scripts, writte
 - Type: key
 
 #### `files` {#symbol-files}
+- Type: key
+
+#### `files:../Database/Oracle/CENTRAL.ACCOUNT.sql` {#symbol-filesdatabaseoraclecentralaccountsql}
+- Type: key
+
+#### `files:../Database/Oracle/CENTRAL.ACCOUNT.sql:parseErrors` {#symbol-filesdatabaseoraclecentralaccountsqlparseerrors}
+- Type: key
+
+#### `files:../Database/Oracle/CENTRAL.ACCOUNT.sql:creates` {#symbol-filesdatabaseoraclecentralaccountsqlcreates}
+- Type: key
+
+#### `files:../Database/Oracle/CENTRAL.ACCOUNT.sql:references` {#symbol-filesdatabaseoraclecentralaccountsqlreferences}
+- Type: key
+
+#### `files:../Database/Oracle/CENTRAL.ACCOUNT.sql:dynamic` {#symbol-filesdatabaseoraclecentralaccountsqldynamic}
 - Type: key
 
 #### `files:../Database/SqlServer/dbo.Payment.sql` {#symbol-filesdatabasesqlserverdbopaymentsql}

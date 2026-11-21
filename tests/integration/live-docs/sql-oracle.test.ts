@@ -28,8 +28,15 @@ const INTEGRATION_ROOT = path.resolve(__dirname, "..");
  * brought five more (a procedure created as a stub and then altered, and
  * what the strings and an ALTER use), and the reader's reading of those
  * strings left none again.
+ *
+ * `fixtures/sql-schemas`, of 2026-11-21, holds the same table name in two
+ * schemas and names it by one part from modules of either, from a module's
+ * DDL and executed string, from a trigger and a loose script, and by
+ * `database..name`, each bound by the order Microsoft documents. Its one
+ * register entry is a kind of object the reader gives no symbol, a trigger.
  */
 const MEASURED_MISSES: Record<string, string[]> = {
+  "fixtures/sql-schemas": ["object missing: archive.OrdersKept.sql:2 trigger OrdersKept"],
   "fixtures/sql-server": [],
   "programs/csharp/estate": []
 };
