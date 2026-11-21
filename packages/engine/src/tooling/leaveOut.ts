@@ -351,18 +351,25 @@ function gitPatterns(text: string, base: string): GitPattern[] {
   return patterns;
 }
 
-/** Whether a git pattern matches a path (relative to the scanned folder), as git's `match_basename` and `match_pathname` do. */
-function gitMatches(pattern: GitPattern, path: string, isDir: boolean, ignoreCase: boolean): boolean {
-  if (pattern.mustBeDir && !isDir) return false;
-  if (pattern.base !== "") {
-    const head = path.slice(0, pattern.base.length + 1);
-    if (ignoreCase ? head.toLowerCase() !== `${pattern.base}/`.toLowerCase() : head !== `${pattern.base}/`) return false;
-  }
-  const relative = pattern.base === "" ? path : path.slice(pattern.base.length + 1);
-  const text = pattern.noDir ? relative.slice(relative.lastIndexOf("/") + 1) : relative;
-  if (pattern.literal !== "" && !text.toLowerCase().includes(pattern.literal)) return false;
-  if (pattern.noDir) return wildmatch(pattern.pattern, text, false, ignoreCase);
-  return wildmatch(pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern, relative, true, ignoreCase);
+/** One path asked of the list: itself, its last part, and their lower-cased forms, made once a path, not once a line. */
+interface Asked {
+  path: string;
+  name: string;
+  lowerPath: string;
+  lowerName: string;
+  isDir: boolean;
+}
+
+/**
+ * Whether a line of the one list (its folder the top) matches a path, as git's `match_basename` and `match_pathname`
+ * do: a line with no slash against the path's last part, any other against the whole path, after the literal run of
+ * the line is looked for in the lower-cased text, which spares most lines the matcher.
+ */
+function gitMatches(pattern: GitPattern, asked: Asked, ignoreCase: boolean): boolean {
+  if (pattern.mustBeDir && !asked.isDir) return false;
+  if (pattern.literal !== "" && !(pattern.noDir ? asked.lowerName : asked.lowerPath).includes(pattern.literal)) return false;
+  if (pattern.noDir) return wildmatch(pattern.pattern, asked.name, false, ignoreCase);
+  return wildmatch(pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern, asked.path, true, ignoreCase);
 }
 
 const folderOf = (path: string): string => {
@@ -483,10 +490,82 @@ export const EVIDENCE: ReadonlyArray<{ name: string; pattern: string; holds: (fo
 
 const nameOf = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
 
-/** The last matching pattern of one list, as git's `last_matching_pattern_from_list`. */
-function lastMatching(patterns: readonly GitPattern[], path: string, isDir: boolean, ignoreCase: boolean): GitPattern | undefined {
-  for (let i = patterns.length - 1; i >= 0; i--) if (gitMatches(patterns[i], path, isDir, ignoreCase)) return patterns[i];
-  return undefined;
+/** Folding as git's matcher folds: ASCII letters only. */
+const foldAscii = (text: string): string => text.replace(/[A-Z]/gu, (letter) => letter.toLowerCase());
+
+const hasGlob = (text: string): boolean => /[*?[\\]/u.test(text);
+
+/**
+ * The list made ready to be asked, as git readies its own (`PATTERN_FLAG_NODIR`, `PATTERN_FLAG_ENDSWITH`, the literal
+ * prefix): a name with no wildcard looked up by the path's last part, a whole path with no wildcard looked up by the
+ * path, `*` and a plain ending compared with the last part's end, and only the rest given to the matcher, from the
+ * last line back and no further than a line already found. The last matching line wins, as in git's
+ * `last_matching_pattern_from_list`.
+ */
+function compile(patterns: readonly GitPattern[], ignoreCase: boolean): (asked: Asked) => GitPattern | undefined {
+  const key = (text: string): string => (ignoreCase ? foldAscii(text) : text);
+  // A line asked only beneath its plain folders is prefiltered by the literal run of what follows them.
+  const matching = [...patterns];
+  const byName = new Map<string, number[]>();
+  const byPath = new Map<string, number[]>();
+  const endsWith: Array<{ ending: string; index: number }> = [];
+  // A line that begins with folders written plainly (`Dnn.AdminExperience/**/*.suo`, as a nested file taken in reads)
+  // can match only beneath them: it is asked only of paths that lie there, as git asks a nested file only of its own.
+  const byHead = new Map<string, number[]>();
+  // A line with no slash depends on the last part alone, and its answer for a name is kept: names repeat (`bin`,
+  // `AssemblyInfo.cs`) where paths do not.
+  const byNameGlob: number[] = [];
+  const nameAnswers = new Map<string, number>();
+  const general: number[] = [];
+  patterns.forEach((pattern, index) => {
+    const body = pattern.pattern.startsWith("/") ? pattern.pattern.slice(1) : pattern.pattern;
+    if (pattern.noDir && !hasGlob(pattern.pattern)) byName.set(key(pattern.pattern), [...(byName.get(key(pattern.pattern)) ?? []), index]);
+    else if (!pattern.noDir && !hasGlob(body)) byPath.set(key(body), [...(byPath.get(key(body)) ?? []), index]);
+    else if (pattern.noDir && pattern.pattern.startsWith("*") && !hasGlob(pattern.pattern.slice(1))) endsWith.push({ ending: key(pattern.pattern.slice(1)), index });
+    else if (pattern.noDir) byNameGlob.push(index);
+    else {
+      const parts = body.split("/");
+      let plain = 0;
+      while (plain < parts.length - 1 && parts[plain] !== "" && !hasGlob(parts[plain])) plain++;
+      if (plain === 0) general.push(index);
+      else {
+        const head = key(parts.slice(0, plain).join("/"));
+        matching[index] = { ...pattern, literal: longestLiteral(parts.slice(plain).join("/")) };
+        byHead.set(head, [...(byHead.get(head) ?? []), index]);
+      }
+    }
+  });
+  /** The last of `indexes` (ascending) above `above` that matches, or -1. */
+  const lastOf = (indexes: readonly number[], above: number, asked: Asked): number => {
+    for (let i = indexes.length - 1; i >= 0 && indexes[i] > above; i--) if (gitMatches(matching[indexes[i]], asked, ignoreCase)) return indexes[i];
+    return -1;
+  };
+  return (asked) => {
+    let best = -1;
+    const fits = (index: number): boolean => index > best && (!patterns[index].mustBeDir || asked.isDir);
+    const name = key(asked.name);
+    const path = key(asked.path);
+    for (const index of byName.get(name) ?? []) if (fits(index)) best = index;
+    for (const index of byPath.get(path) ?? []) if (fits(index)) best = index;
+    if (endsWith.length > 0) {
+      for (const { ending, index } of endsWith) if (fits(index) && name.endsWith(ending)) best = index;
+    }
+    if (byNameGlob.length > 0) {
+      const said = `${asked.isDir ? "/" : ""}${asked.name}`;
+      let answer = nameAnswers.get(said);
+      if (answer === undefined) nameAnswers.set(said, (answer = lastOf(byNameGlob, -1, asked)));
+      if (answer > best) best = answer;
+    }
+    best = Math.max(best, lastOf(general, best, asked));
+    if (byHead.size > 0) {
+      const beneath: number[] = [];
+      for (let slash = path.indexOf("/"); slash !== -1; slash = path.indexOf("/", slash + 1)) {
+        for (const index of byHead.get(path.slice(0, slash)) ?? []) if (index > best) beneath.push(index);
+      }
+      if (beneath.length > 0) best = Math.max(best, lastOf(beneath.sort((a, b) => a - b), best, asked));
+    }
+    return best === -1 ? undefined : patterns[best];
+  };
 }
 
 /** Whether a negation could name something inside `folder`, part by part as git would match it. */
@@ -511,12 +590,14 @@ export function leaveOut(input: LeaveOutInput): LeaveOut {
   const ignoreCase = input.ignoreCase;
   const ownOutput = new Set((input.ownOutput ?? []).map((folder) => folder.toLowerCase()));
   const states = new Map<string, { verdict: LeaveOutVerdict; whole: boolean }>();
+  const lastMatching = compile(patterns, ignoreCase);
 
   const judge = (path: string, isDir: boolean): LeaveOutVerdict => {
+    const name = nameOf(path);
     // A `.git` that is a file points a worktree or a submodule at its repository, and is the version control's too.
-    if (VERSION_CONTROL.test(nameOf(path))) return { kept: false, fixed: "version control" };
+    if (VERSION_CONTROL.test(name)) return { kept: false, fixed: "version control" };
     if (isDir && ownOutput.has(path.toLowerCase())) return { kept: false, fixed: "own output" };
-    const pattern = lastMatching(patterns, path, isDir, ignoreCase);
+    const pattern = lastMatching({ path, name, lowerPath: path.toLowerCase(), lowerName: name.toLowerCase(), isDir });
     return pattern ? { kept: pattern.negative, line: { number: pattern.line, text: pattern.original } } : { kept: true };
   };
 
