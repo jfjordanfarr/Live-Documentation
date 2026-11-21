@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/controller.ts`
-- Generated At: 2026-11-19T21:10:16.552Z
+- Generated At: 2026-11-21T05:32:57.213Z
 
 ## Authored
 ### Purpose
@@ -112,6 +112,8 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`camera-intent.revealPan`](./camera-intent.ts.mdmd.md#symbol-revealpan)
 - [`camera-intent.sameCamera`](./camera-intent.ts.mdmd.md#symbol-samecamera)
 - [`camera-intent.smoothZoom`](./camera-intent.ts.mdmd.md#symbol-smoothzoom)
+- [`camera-intent.stepLinesFrame`](./camera-intent.ts.mdmd.md#symbol-steplinesframe)
+- [`camera-intent.stepWholeFrame`](./camera-intent.ts.mdmd.md#symbol-stepwholeframe)
 - [`camera-intent.unionOf`](./camera-intent.ts.mdmd.md#symbol-unionof)
 - [`card-factory.CardContext`](./card-factory.ts.mdmd.md#symbol-cardcontext) (type-only)
 - [`card-reading.CardReading`](./card-reading.ts.mdmd.md#symbol-cardreading)

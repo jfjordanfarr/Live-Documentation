@@ -1,0 +1,371 @@
+{
+  "graph": "dnn.json",
+  "wholeCompactJsonBytes": 39036282,
+  "counts": {
+    "files": 10776,
+    "symbols": 41618,
+    "sections": 44183,
+    "sectionLines": 64887,
+    "dependencies": 31071,
+    "dependenciesLinked": 24488,
+    "edges": 44598,
+    "edgesResolved": 38015,
+    "typeRefEdges": 13527,
+    "entries": 374,
+    "citedBy": 2,
+    "reExports": 0,
+    "filesWithSymbols": 5460,
+    "filesWithAuthored": 0,
+    "inboundPairs": 24948
+  },
+  "byteShares": {
+    "edges (the lines and type references, resolved)": {
+      "bytes": 9768587,
+      "percentOfWhole": 25
+    },
+    "symbols: name, slug, kind, flags, source line": {
+      "bytes": 6827076,
+      "percentOfWhole": 17.5
+    },
+    "symbols: documentation sections (docstrings)": {
+      "bytes": 4371689,
+      "percentOfWhole": 11.2
+    },
+    "outbound + inbound (adjacency)": {
+      "bytes": 3516272,
+      "percentOfWhole": 9
+    },
+    "dependencies (the lines as written)": {
+      "bytes": 3382771,
+      "percentOfWhole": 8.7
+    },
+    "symbols: type references (Returns, Parameters, ...)": {
+      "bytes": 2392555,
+      "percentOfWhole": 6.1
+    },
+    "docPath": {
+      "bytes": 1131710,
+      "percentOfWhole": 2.9
+    },
+    "authored (the written words)": {
+      "bytes": 1041481,
+      "percentOfWhole": 2.7
+    },
+    "key (the path as the files map's key)": {
+      "bytes": 819206,
+      "percentOfWhole": 2.1
+    },
+    "codePath": {
+      "bytes": 808430,
+      "percentOfWhole": 2.1
+    },
+    "layer, archetype, generatedAt": {
+      "bytes": 438522,
+      "percentOfWhole": 1.1
+    },
+    "entries": {
+      "bytes": 40476,
+      "percentOfWhole": 0.1
+    },
+    "citedBy": {
+      "bytes": 102,
+      "percentOfWhole": 0
+    },
+    "reExports": {
+      "bytes": 0,
+      "percentOfWhole": 0
+    }
+  },
+  "sumOfSharesBytes": 33730447,
+  "strings": {
+    "path": {
+      "count": 10776,
+      "distinct": 10776,
+      "totalBytes": 786878,
+      "distinctBytes": 786878,
+      "medianBytes": 72,
+      "p90Bytes": 100,
+      "maxBytes": 162
+    },
+    "docPath": {
+      "count": 10776,
+      "distinct": 10776,
+      "totalBytes": 1110158,
+      "distinctBytes": 1110158,
+      "medianBytes": 102,
+      "p90Bytes": 130,
+      "maxBytes": 192
+    },
+    "archetype": {
+      "count": 10776,
+      "distinct": 3,
+      "totalBytes": 126018,
+      "distinctBytes": 23,
+      "medianBytes": 14,
+      "p90Bytes": 14,
+      "maxBytes": 14
+    },
+    "authored": {
+      "count": 10776,
+      "distinct": 2,
+      "totalBytes": 976825,
+      "distinctBytes": 297,
+      "medianBytes": 65,
+      "p90Bytes": 232,
+      "maxBytes": 232
+    },
+    "symbol name": {
+      "count": 41618,
+      "distinct": 24296,
+      "totalBytes": 842079,
+      "distinctBytes": 609379,
+      "medianBytes": 16,
+      "p90Bytes": 39,
+      "maxBytes": 135
+    },
+    "symbol slug": {
+      "count": 41618,
+      "distinct": 23924,
+      "totalBytes": 1117161,
+      "distinctBytes": 759634,
+      "medianBytes": 23,
+      "p90Bytes": 45,
+      "maxBytes": 142
+    },
+    "symbol kind": {
+      "count": 41618,
+      "distinct": 28,
+      "totalBytes": 280793,
+      "distinctBytes": 191,
+      "medianBytes": 6,
+      "p90Bytes": 8,
+      "maxBytes": 17
+    },
+    "dependency label": {
+      "count": 31071,
+      "distinct": 4802,
+      "totalBytes": 496517,
+      "distinctBytes": 92569,
+      "medianBytes": 14,
+      "p90Bytes": 27,
+      "maxBytes": 112
+    },
+    "edge kind": {
+      "count": 44598,
+      "distinct": 7,
+      "totalBytes": 301593,
+      "distinctBytes": 58,
+      "medianBytes": 6,
+      "p90Bytes": 9,
+      "maxBytes": 10
+    },
+    "section title": {
+      "count": 44183,
+      "distinct": 11,
+      "totalBytes": 408152,
+      "distinctBytes": 118,
+      "medianBytes": 7,
+      "p90Bytes": 24,
+      "maxBytes": 24
+    },
+    "section body (joined)": {
+      "count": 44183,
+      "distinct": 25776,
+      "totalBytes": 2754655,
+      "distinctBytes": 1900518,
+      "medianBytes": 42,
+      "p90Bytes": 111,
+      "maxBytes": 19134
+    },
+    "type name": {
+      "count": 18569,
+      "distinct": 1822,
+      "totalBytes": 245432,
+      "distinctBytes": 29085,
+      "medianBytes": 13,
+      "p90Bytes": 21,
+      "maxBytes": 41
+    },
+    "parameter name": {
+      "count": 11301,
+      "distinct": 1075,
+      "totalBytes": 109355,
+      "distinctBytes": 12120,
+      "medianBytes": 9,
+      "p90Bytes": 17,
+      "maxBytes": 36
+    },
+    "link": {
+      "count": 38015,
+      "distinct": 9198,
+      "totalBytes": 2511571,
+      "distinctBytes": 598515,
+      "medianBytes": 63,
+      "p90Bytes": 100,
+      "maxBytes": 168
+    },
+    "edge to (path)": {
+      "count": 38015,
+      "distinct": 4240,
+      "totalBytes": 2397003,
+      "distinctBytes": 311481,
+      "medianBytes": 60,
+      "p90Bytes": 81,
+      "maxBytes": 161
+    },
+    "edge toSymbol": {
+      "count": 36299,
+      "distinct": 3352,
+      "totalBytes": 837829,
+      "distinctBytes": 86489,
+      "medianBytes": 22,
+      "p90Bytes": 32,
+      "maxBytes": 61
+    },
+    "qualifier": {
+      "count": 173,
+      "distinct": 3,
+      "totalBytes": 1392,
+      "distinctBytes": 26,
+      "medianBytes": 8,
+      "p90Bytes": 8,
+      "maxBytes": 9
+    },
+    "symbol flag": {
+      "count": 931,
+      "distinct": 1,
+      "totalBytes": 6517,
+      "distinctBytes": 7,
+      "medianBytes": 7,
+      "p90Bytes": 7,
+      "maxBytes": 7
+    }
+  },
+  "allStrings": {
+    "count": 475296,
+    "distinct": 109035,
+    "totalBytes": 15309928,
+    "distinctBytes": 5843105
+  },
+  "pathsFrontCoded": {
+    "pathBytes": 786878,
+    "sharedWithPrevious": 608512,
+    "percentShared": 77.3,
+    "directories": 2087
+  },
+  "vocabularies": {
+    "archetype": {
+      "implementation": 8085,
+      "asset": 2064,
+      "test": 627
+    },
+    "symbol kind": {
+      "method": 16937,
+      "property": 10049,
+      "class": 3651,
+      "field": 3353,
+      "constructor": 2447,
+      "variable": 2186,
+      "default": 771,
+      "interface": 488,
+      "key": 355,
+      "unknown": 344,
+      "enum": 246,
+      "function": 183,
+      "route": 135,
+      "event": 99,
+      "const": 90,
+      "library": 62,
+      "setting": 53,
+      "delegate": 43,
+      "procedure": 31,
+      "package": 29,
+      "struct": 23,
+      "web": 20,
+      "table": 7,
+      "record": 5,
+      "connection-string": 5
+    },
+    "edge kind": {
+      "import": 31066,
+      "parameter": 9183,
+      "returns": 2344,
+      "extends": 1301,
+      "implements": 681,
+      "constraint": 18,
+      "re-export": 5
+    },
+    "section title": {
+      "Summary": 17635,
+      "Parameters": 7114,
+      "Links": 4922,
+      "Additional Documentation": 4829,
+      "Returns": 4107,
+      "Remarks": 3582,
+      "Value": 1033,
+      "Unsupported Doc Tags": 346,
+      "Exceptions": 301,
+      "Type Parameters": 233,
+      "Examples": 81
+    },
+    "qualifier": {
+      "contract": 165,
+      "re-export": 5,
+      "type-only": 3
+    }
+  },
+  "degrees": {
+    "inbound": {
+      "median": 0,
+      "p90": 4,
+      "p99": 37,
+      "max": 632,
+      "zero": 6563
+    },
+    "outbound": {
+      "median": 0,
+      "p90": 7,
+      "p99": 28,
+      "max": 178,
+      "zero": 6647
+    },
+    "symbolsPerFile": {
+      "median": 1,
+      "p90": 10,
+      "p99": 42,
+      "max": 524
+    }
+  },
+  "questions": {
+    "subjects": {
+      "hub": "DNN Platform/Library/Common/Globals.cs",
+      "hubInbound": 632,
+      "reachableFrom": "DNN Platform/Modules/DnnExportImport/Components/Controllers/ImportController.cs",
+      "reachableCount": 1208,
+      "neighbourhoodOfHub": 661,
+      "typical": "DNN Platform/Website/Resources/Shared/stylesheets/dnnicons/css/dnnicon.css",
+      "neighbourhoodOfTypical": 5
+    },
+    "what depends on this file (inbound)": {
+      "reads": "the file's inbound list, and the paths it names; without a stored inbound list, every file's edges",
+      "bytesWithStoredInbound": 43620,
+      "bytesWithoutStoredInbound": 3292239,
+      "percentOfWholeWithout": 8.4
+    },
+    "what is reachable from here (outbound closure)": {
+      "reads": "the outbound list of every file the walk reaches, and their paths",
+      "bytes": 493532,
+      "allAdjacencyBytes": 3516272,
+      "percentOfWhole": 1.26
+    },
+    "the Local Map of one file (the file and its neighbours, whole records)": {
+      "reads": "the full record of the file and of each file it is wired to either way",
+      "bytes": 12549616,
+      "percentOfWhole": 32.15,
+      "medianFileBytes": 821
+    },
+    "what changed between two commits": {
+      "reads": "two scans; per file, whether its facts differ, then the facts of those that do (measured in compare.mjs over two moments)"
+    }
+  }
+}

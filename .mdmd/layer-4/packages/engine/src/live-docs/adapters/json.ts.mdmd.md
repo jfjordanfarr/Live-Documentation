@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/json.ts`
-- Generated At: 2026-11-20T15:53:16.263Z
+- Generated At: 2026-11-21T04:08:23.445Z
 
 ## Authored
 ### Purpose
@@ -33,13 +33,14 @@ Polyglot language adapter for JSON files: file-path references in configuration 
   - Reading a command after a bare `--` gave the same answers on every real script. Its gains and its one false entry came only from constructed cases.
 
   `filesRunBy`'s remarks list the answers still known to be wrong, and a test pins each one.
+- Since 2026-11-21 the tsconfig beside a manifest is read with names taken as written (`useCaseSensitiveFileNames: true` in `compilerPaths`), where before the setting was asked of TypeScript's host on Node, `ts.sys`. Its answer differed between Windows and Linux for the same folder, and in a browser page, where TypeScript has no host, the read threw and the manifest was not mapped: the only difference [the check that the engine runs in a page](../../../../../tests/page-scan/differences.json.mdmd.md) found over every fixture ([the November 21 record, Turn 2](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-2)). The parse of every tsconfig in this repository and its fixtures gives the same `outDir` and `rootDir` under either setting, and so does a constructed one with capitals in its paths and its `extends`; a test holds the reader to one result with the host as it is, answering that names fold, and absent.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L575)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L578)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -47,7 +48,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L589)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L592)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary

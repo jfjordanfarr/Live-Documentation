@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, unionOf, type FramingTarget } from "./camera-intent";
+import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalPose, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -298,5 +298,115 @@ describe("the smooth zoom's path for a long re-frame (van Wijk and Nuij)", () =>
     const half = pose(0.5);
     expect((600 - half.x) / half.k).toBeCloseTo(100, 6);
     expect(half.k).toBeCloseTo(Math.sqrt(1.2 * 0.6), 6);
+  });
+});
+
+describe("a step's frame under Step, Whole", () => {
+  const camera = { x: 0, y: 0, k: 1 };
+  const inside = (bounds: Bounds, at: { x: number; y: number; k: number }) => {
+    const { horizontal, vertical } = framePadding(frame), drawn = onScreen(bounds, at);
+    return drawn.left >= horizontal - 1e-6 && drawn.right <= frame.width - horizontal + 1e-6 && drawn.top >= vertical - 1e-6 && drawn.bottom <= frame.height - vertical + 1e-6;
+  };
+
+  it("keeps the scale and pans the least where the whole newcomer fits at it", () => {
+    const newcomer = box(1000, 600, 400, 300);
+    const end = stepWholeFrame(newcomer, newcomer, camera, frame, 0.5);
+    expect(end.k).toBe(1);
+    expect(inside(newcomer, end)).toBe(true);
+    const pan = revealPan(newcomer, camera, frame);
+    expect(end).toEqual({ x: pan.x, y: pan.y, k: 1 });
+  });
+
+  it("does not move a newcomer already whole in view", () => {
+    expect(stepWholeFrame(box(100, 100, 300, 200), box(100, 100, 300, 60), camera, frame, 0.5)).toEqual(camera);
+  });
+
+  it("eases out just far enough to hold a newcomer that does not fit, and holds it whole", () => {
+    const newcomer = box(200, 100, 1600, 900);
+    const end = stepWholeFrame(newcomer, box(200, 100, 600, 80), camera, frame, 0.3);
+    const { horizontal, vertical } = framePadding(frame);
+    expect(end.k).toBeCloseTo(Math.min((frame.width - 2 * horizontal) / 1600, (frame.height - 2 * vertical) / 900), 9);
+    expect(inside(newcomer, end)).toBe(true);
+  });
+
+  it("stops at the floor, and brings in there the start of a newcomer too large even for it, not its box's corner", () => {
+    // An L-shaped membrane: its box's top left is far above and left of its label, which with its first row is its start.
+    const newcomer = box(-3000, -2000, 8000, 6000), start = box(1600, 900, 600, 80);
+    const end = stepWholeFrame(newcomer, start, camera, frame, 0.5);
+    expect(end.k).toBe(0.5);
+    // Scaled about the frame's middle (600, 400) from the camera at the origin, then the least pan that brings the start in.
+    const scaled = { x: 300, y: 200, k: 0.5 }, pan = revealPan(start, scaled, frame);
+    expect(end).toEqual({ x: scaled.x + pan.x, y: scaled.y + pan.y, k: 0.5 });
+    const drawn = onScreen(start, end), { horizontal, vertical } = framePadding(frame);
+    expect(drawn.left).toBeGreaterThanOrEqual(horizontal - 1e-6);
+    expect(drawn.bottom).toBeLessThanOrEqual(frame.height - vertical + 1e-6);
+  });
+
+  it("never zooms in: a camera already farther than the newcomer needs keeps its scale", () => {
+    const far = { x: 0, y: 0, k: 0.4 };
+    expect(stepWholeFrame(box(100, 100, 300, 200), box(100, 100, 300, 60), far, frame, 0.3).k).toBe(0.4);
+  });
+});
+
+describe("a step's frame under Step, With Its Lines", () => {
+  it("frames the newcomer and what its lines reach as Fit would, centred, between the floor and reading scale", () => {
+    const newcomer = box(1000, 500, 400, 300), reach = box(0, 0, 2000, 1000);
+    const end = stepLinesFrame(reach, newcomer, newcomer, frame, 1.2, 0.3);
+    const { horizontal } = framePadding(frame);
+    expect(end.k).toBeCloseTo((frame.width - 2 * horizontal) / 2000, 9);
+    const drawn = onScreen(reach, end);
+    expect((drawn.left + drawn.right) / 2).toBeCloseTo(frame.width / 2, 6);
+    expect((drawn.top + drawn.bottom) / 2).toBeCloseTo(frame.height / 2, 6);
+  });
+
+  it("never enlarges past reading scale", () => {
+    const small = box(100, 100, 300, 200);
+    expect(stepLinesFrame(small, small, small, frame, 1.2, 0.3).k).toBe(1.2);
+  });
+
+  it("where even the floor cannot hold what the lines reach, frames the newcomer alone, centred", () => {
+    const newcomer = box(2000, 3000, 3000, 300), reach = box(0, 0, 9000, 9000);
+    const end = stepLinesFrame(reach, newcomer, box(2000, 3000, 600, 80), frame, 1.2, 0.25);
+    expect(end.k).toBeCloseTo((frame.width - 2 * framePadding(frame).horizontal) / 3000, 9);
+    const drawn = onScreen(newcomer, end);
+    expect((drawn.left + drawn.right) / 2).toBeCloseTo(frame.width / 2, 6);
+  });
+
+  it("where the newcomer alone does not fit even at the floor, stands its start at the room's top left there", () => {
+    const newcomer = box(-2000, 3000, 9000, 300), reach = box(-9000, 0, 20000, 9000), start = box(1000, 3000, 600, 80);
+    const end = stepLinesFrame(reach, newcomer, start, frame, 1.2, 0.25);
+    expect(end.k).toBe(0.25);
+    const drawn = onScreen(start, end), { horizontal, vertical } = framePadding(frame);
+    expect(drawn.left).toBeCloseTo(horizontal, 9);
+    expect(drawn.top).toBeCloseTo(vertical, 9);
+  });
+});
+
+describe("the cut counted under Step, Least Pan, Cut Counted", () => {
+  const camera = { x: 0, y: 0, k: 1 };
+
+  it("counts the newcomer's cards past each edge, a card cut at a corner at both its edges, and names no edge past which nothing goes", () => {
+    const cards = [
+      { key: "inside", bounds: box(100, 100, 200, 150) },
+      { key: "east", bounds: box(1100, 100, 200, 150) },
+      { key: "south", bounds: box(100, 700, 200, 150) },
+      { key: "corner", bounds: box(1100, 700, 200, 150) }
+    ];
+    expect(cutByEdge(cards, camera, frame)).toEqual({ right: ["east", "corner"], bottom: ["south", "corner"] });
+  });
+
+  it("reads the cards on screen at the camera's scale and place", () => {
+    const cards = [{ key: "a", bounds: box(100, 100, 200, 150) }];
+    expect(cutByEdge(cards, { x: -150, y: 0, k: 1 }, frame)).toEqual({ left: ["a"] });
+    expect(cutByEdge(cards, { x: 0, y: 0, k: 0.5 }, frame)).toEqual({});
+  });
+
+  it("a sign pans along its own axis alone, the least that brings the cards cut there in", () => {
+    const cut = [box(1100, 100, 200, 150), box(1150, 300, 200, 150)];
+    const end = cutPan(cut, "right", camera, frame);
+    const { horizontal } = framePadding(frame);
+    expect(end.y).toBe(0);
+    expect(end.k).toBe(1);
+    expect(end.x + 1350).toBeCloseTo(frame.width - horizontal, 9);
   });
 });

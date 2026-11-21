@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-19T21:10:13.573Z
+- Generated At: 2026-11-21T04:32:48.755Z
 
 ## Authored
 ### Purpose
@@ -106,6 +106,7 @@ _No public symbols detected_
 - [`spatial-legend.watchLocalKinds`](./panels/spatial-legend.ts.mdmd.md#symbol-watchlocalkinds)
 - [`stats-line.statsLineOf`](./panels/stats-line.ts.mdmd.md#symbol-statslineof)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
+- [`tuning.withholdThreeDLayout`](./panels/tuning.ts.mdmd.md#symbol-withholdthreedlayout)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
 - [`pathfind.Reach`](./pathfind.ts.mdmd.md#symbol-reach)
 - [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
@@ -178,6 +179,12 @@ _No public symbols detected_
 - [`retained-state.releaseRetained`](./views/retained-state.ts.mdmd.md#symbol-releaseretained)
 - [`retained-state.retainedKey`](./views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`retained-state.subjectAfterRelease`](./views/retained-state.ts.mdmd.md#symbol-subjectafterrelease)
+- [`webgl-support.WEBGL_REFUSED`](./views/webgl-support.ts.mdmd.md#symbol-webgl_refused)
+- [`webgl-support.perspectiveRemembered`](./views/webgl-support.ts.mdmd.md#symbol-perspectiveremembered)
+- [`webgl-support.perspectiveShown`](./views/webgl-support.ts.mdmd.md#symbol-perspectiveshown)
+- [`webgl-support.webglKnown`](./views/webgl-support.ts.mdmd.md#symbol-webglknown)
+- [`webgl-support.webglOffered`](./views/webgl-support.ts.mdmd.md#symbol-webgloffered)
+- [`webgl-support.whenIdle`](./views/webgl-support.ts.mdmd.md#symbol-whenidle)
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)

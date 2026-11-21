@@ -138,6 +138,14 @@ export interface LocalMapTuning {
    */
   framing: CameraFraming;
   /**
+   * What the camera frames after a step opens something inside the map (a cell pressed, a directory opened, a neighbour
+   * pinned from a card), a trial for the owner's eye (root's brief, 2026-11-21): "least", the default, the scale kept and
+   * the least pan that brings the newcomer's start into view, as since 2026-11-19; "whole", the scale kept where the whole
+   * newcomer fits, else eased out just far enough to hold it, never past the connections look's farthest press; "lines",
+   * the frame Fit would give the newcomer and the cards its lines reach, under the same floor (camera-intent.ts).
+   */
+  step: StepFraming;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -402,6 +410,16 @@ export type CameraFraming = "hand" | "follows" | "follows-files";
 
 /** Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other. */
 export const FRAMINGS: readonly CameraFraming[] = ["hand", "follows", "follows-files"];
+
+/**
+ * What the 2D camera frames after a step: the newcomer's start by the least pan, the newcomer whole, or the newcomer
+ * with what its lines reach (a trial, 2026-11-21; a fourth value, the least pan with the cut counted at the edges, is to
+ * follow).
+ */
+export type StepFraming = "least" | "whole" | "lines";
+
+/** Every Step choice, in the order the control offers them; the first, the least pan, is the default until the owner has seen the others. */
+export const STEPS: readonly StepFraming[] = ["least", "whole", "lines"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

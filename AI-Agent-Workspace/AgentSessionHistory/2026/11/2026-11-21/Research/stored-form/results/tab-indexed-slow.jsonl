@@ -1,0 +1,5 @@
+browser-lane: waiting behind stored-form, stored-form, step-framing
+browser-lane: stored-form holds the lane (waited 721.6 s, cap 300 s)
+{"kind":"read","page":"read-ledger-indexed-dnn.html","rate":4,"cores":2,"loadBefore":10.9,"pageReadyMs":919,"scriptStartedMs":689,"base64Ms":26.1,"carriedBytes":2978919,"openMs":4.1,"inboundOfHub":632,"inboundMs":47.9,"firstAnswerMs":78.1,"reachable":1208,"reachableMs":2931.9,"typicalNeighbourhood":5,"typicalNeighbourhoodMs":69.1,"hubNeighbourhood":661,"hubNeighbourhoodMs":17821.6,"allMs":15749,"files":10776,"totalMs":36685.4,"heapMb":99,"errors":[],"rendererPeakMb":521,"loadAfter":27.9}
+{"kind":"write","page":"write-ledger-indexed.html","mode":"stream","rate":4,"cores":2,"loadBefore":27.9,"pageReadyMs":946,"scriptStartedMs":386,"files":10776,"writeMs":26807.3,"bytes":2978919,"sha256":"e7437006d10c318a89c13a3342f02212f65513c72089c991e8d8dbc0ca522707","heapMb":28,"rendererPeakMbAtWrite":243,"errors":[],"rendererPeakMb":243,"loadAfter":36.3}
+browser-lane: released after 68.6 s, exit 0

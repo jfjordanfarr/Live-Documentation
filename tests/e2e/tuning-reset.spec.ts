@@ -58,6 +58,12 @@ test("the count beside Tuning says how many settings differ, a dot marks each ch
   await expect(reset(page)).toHaveAttribute("aria-pressed", "false");
   // Search Starts, which the suite turns off, is the fourth, in the 2D layout group beside Column Gap.
   expect((await marked(page)).sort()).toEqual(["2D Layout", "2D Wires", "Colour", "Column Gap", "Marbles", "Search Starts", "Stub Min"].sort());
+  // The dot is read where a person sees it: Stub Min stands in the 2D wires' group, folded by default, and the box of
+  // something inside a folded group is not drawn, so its reading is whatever the browser last laid out. Read folded,
+  // it gave 5px on 2026-11-20 and 0px on 2026-11-21, with the same code and the same browser; opened, the group's levers
+  // are drawn and the dot's box is the one on the screen.
+  await page.locator(".sidebar-details summary", { hasText: "2D Wires" }).click();
+  await expect(page.locator("#tuning-stub-min")).toBeVisible();
   const dot = await page.locator("#tuning-stub-min").evaluate(input => {
     const style = getComputedStyle(input.closest(".tuning-slider")!.querySelector("span")!, "::after");
     return { content: style.content, width: style.width, colour: style.backgroundColor, text: getComputedStyle(document.body).color };

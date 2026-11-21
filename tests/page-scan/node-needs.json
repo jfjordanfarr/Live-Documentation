@@ -135,9 +135,6 @@
         "join",
         "relative",
         "resolve"
-      ],
-      "typescript": [
-        "sys.useCaseSensitiveFileNames"
       ]
     },
     "packages/engine/src/live-docs/adapters/manifest.ts": {
@@ -460,11 +457,7 @@
       "pathToFileURL"
     ]
   },
-  "hostedByNode": {
-    "typescript": [
-      "sys.useCaseSensitiveFileNames"
-    ]
-  },
+  "hostedByNode": {},
   "globals": {
     "__dirname": "a constant the build defines for adapters/treeSitter.ts",
     "process": "nothing: a page has no global process, and a call throws",

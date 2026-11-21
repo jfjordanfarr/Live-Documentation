@@ -8,7 +8,7 @@
 import { applyMarbles, applyPalette } from "../dom";
 import { layoutSettingsOf } from "../layout-presets";
 import { DEFAULT_PALETTE, isPaletteName } from "../palette";
-import { ARRIVALS, FRAMINGS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
+import { ARRIVALS, FRAMINGS, STEPS, CHANGE_EMPHASES, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, BEYOND_HOPS, FRAME_CHOICES, HIDDEN_FILES_LOOKS, MARBLE_CHOICES, OVERVIEW_FILES, type ExplorerState, type FrameChoice } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 import { initTuningReset } from "./tuning-reset";
 
@@ -84,6 +84,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const hiddenFilesSelect = document.getElementById("tuning-hidden-files") as HTMLSelectElement | null;
   const arrivalSelect = document.getElementById("tuning-arrival") as HTMLSelectElement | null;
   const framingSelect = document.getElementById("tuning-framing") as HTMLSelectElement | null;
+  const stepSelect = document.getElementById("tuning-step") as HTMLSelectElement | null;
   const paletteSelect = document.getElementById("tuning-palette") as HTMLSelectElement | null;
   const marblesSelect = document.getElementById("tuning-marbles") as HTMLSelectElement | null;
   const frameSelect = document.getElementById("tuning-frame") as HTMLSelectElement | null;
@@ -208,6 +209,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (hiddenFilesSelect) hiddenFilesSelect.value = state.tuning.localMap.hiddenFiles;
     if (arrivalSelect) arrivalSelect.value = state.tuning.localMap.arrival;
     if (framingSelect) framingSelect.value = state.tuning.localMap.framing;
+    if (stepSelect) stepSelect.value = state.tuning.localMap.step;
     if (paletteSelect) paletteSelect.value = state.tuning.appearance.palette;
     if (marblesSelect) marblesSelect.value = state.tuning.appearance.marbles;
     if (frameSelect) frameSelect.value = state.tuning.appearance.frame;
@@ -336,6 +338,13 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   if (framingSelect) {
     framingSelect.addEventListener("change", () => {
       state.tuning.localMap.framing = FRAMINGS.find(choice => choice === framingSelect.value) ?? FRAMINGS[0];
+      onTuningChange();
+    });
+  }
+  // What a step frames changes no picture: the next step reads it.
+  if (stepSelect) {
+    stepSelect.addEventListener("change", () => {
+      state.tuning.localMap.step = STEPS.find(choice => choice === stepSelect.value) ?? STEPS[0];
       onTuningChange();
     });
   }
@@ -513,4 +522,23 @@ function describeTuningControls(): void {
     if (label) label.title = sentence;
     control.setAttribute("aria-describedby", helpId);
   }
+}
+
+/**
+ * Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
+ * levers would change a picture this browser never shows. The group stays where it stands, closed, its heading a focus
+ * stop marked `aria-disabled` whose tooltip and description say why, and a press on it opens nothing. Its stored values
+ * are left as they are, for the browser that draws 3D. The History group, also kept for 3D before 2026-11-19, drives the
+ * scrubber both maps share and stays offered. The group is found by the lever it holds, the 3D map's Hops Shown. Called
+ * once, when the browser is known to refuse WebGL, which may be after the page's first picture (`index.ts`).
+ */
+export function withholdThreeDLayout(why: string): void {
+  const group = document.getElementById("tuning-force-hops")?.closest<HTMLDetailsElement>('details[data-tuning-perspective="3d"]');
+  const heading = group?.querySelector<HTMLElement>(":scope > summary");
+  if (!group || !heading) return;
+  group.open = false;
+  heading.setAttribute("aria-disabled", "true");
+  heading.title = why;
+  heading.addEventListener("click", event => event.preventDefault());
+  group.addEventListener("toggle", () => { if (group.open) group.open = false; });
 }

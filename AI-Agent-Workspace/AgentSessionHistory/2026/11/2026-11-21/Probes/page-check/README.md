@@ -91,6 +91,8 @@ TypeScript and JavaScript, which the compiler reads rather than a registered rea
 
 ## The differences, and their one cause
 
+**Later on 2026-11-21, mended in the engine.** At the root's ruling, `compilerPaths` reads names as they are written on every machine (`useCaseSensitiveFileNames: true`) and no longer asks `ts.sys`. Every tsconfig in this repository and its fixtures parses to the same `outDir` and `rootDir` under either setting. A Vitest case of the JSON reader failed on the host being absent before the mend and passes after it. The spec then failed on all six entries as gone, they were taken out, and all 45 folders map identically in the page and under Node (141.4 s held). `hostedByNode` in the needs list is empty. What follows is the state of the first runs.
+
 Six, in two fixtures, all in the ledger, all of one cause in the engine:
 
 | Fixture | File | What differs |
