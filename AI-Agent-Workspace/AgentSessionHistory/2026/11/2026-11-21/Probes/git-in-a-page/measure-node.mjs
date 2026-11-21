@@ -5,7 +5,7 @@ import { nodeHost } from "./node-host.mjs";
 import { describe, measure } from "./workload.mjs";
 
 const [folder, task = "all"] = process.argv.slice(2);
-const tasks = { all: {}, commits: { blobs: false }, newest100: { limit: 100, headTree: true } };
+const tasks = { all: {}, commits: { blobs: false }, newest100: { limit: 100, headTree: true }, renames: { blobs: false, renames: true }, commitsStream: { blobs: false, inflate: "stream" } };
 const host = nodeHost(folder);
 const t0 = performance.now();
 const described = await describe(host);

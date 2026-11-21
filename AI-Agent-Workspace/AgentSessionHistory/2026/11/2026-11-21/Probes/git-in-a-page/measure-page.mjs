@@ -3,7 +3,8 @@
 // processor slowed by the browser's own throttle where asked. Prints one JSON line. Run only through the browser lane:
 //   node scripts/browser-lane.mjs --label git-probe -- node <this file> <folder> <rate> <task>
 // and, for two cores, under `taskset -c 0,1`. Tasks: all (every commit, every changed file's bytes), newest100 (the
-// newest hundred commits, their changed files, and every file of the head), commits (every commit, no bytes).
+// newest hundred commits, their changed files, and every file of the head), commits (every commit, no bytes), renames
+// (every commit with git's renames, as the history asks them), commitsStream (commits, inflated by DecompressionStream).
 import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import os from "node:os";
@@ -13,7 +14,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const [folder, rateText = "1", task = "all"] = process.argv.slice(2);
 const rate = Number(rateText);
-const tasks = { all: {}, commits: { blobs: false }, newest100: { limit: 100, headTree: true } };
+const tasks = { all: {}, commits: { blobs: false }, newest100: { limit: 100, headTree: true }, renames: { blobs: false, renames: true }, commitsStream: { blobs: false, inflate: "stream" } };
 
 function rendererPeakMB() {
   let peak = 0;

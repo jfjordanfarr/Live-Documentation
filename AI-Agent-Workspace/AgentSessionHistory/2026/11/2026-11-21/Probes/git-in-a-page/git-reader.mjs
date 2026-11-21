@@ -425,6 +425,51 @@ class Repository {
     return object;
   }
 
+  /**
+   * An object's size without its bytes, as git's `check_size_only` reads it: from a packed object's header, or for a
+   * delta from the size its delta names, inflating only the delta; a loose object is read whole.
+   */
+  async size(id) {
+    const bytes = fromHex(id);
+    for (let p = 0; p < this.packs.length; p += 1) {
+      const offset = this.packs[p].find(bytes);
+      if (offset < 0) continue;
+      const cached = this.cache.get(p * 2 ** 40 + offset);
+      if (cached !== undefined) return cached.data.length;
+      const pack = this.packs[p];
+      const end = pack.endOf(offset);
+      let raw = await pack.bytes(offset, Math.min(end, offset + 32));
+      let c = raw[0];
+      const type = (c >> 4) & 7;
+      let size = c & 15;
+      let i = 1;
+      for (let shift = 4; c & 0x80; shift += 7) {
+        c = raw[i++];
+        size += (c & 0x7f) * 2 ** shift;
+      }
+      if (type !== 6 && type !== 7) return size;
+      if (type === 6) while (raw[i++] & 0x80);
+      else i += 20;
+      raw = await pack.bytes(offset, end);
+      const delta = await this.inflate(raw.subarray(i), size);
+      let at = 0;
+      const varint = () => {
+        let value = 0;
+        let shift = 0;
+        let d;
+        do {
+          d = delta[at++];
+          value += (d & 0x7f) * 2 ** shift;
+          shift += 7;
+        } while (d & 0x80);
+        return value;
+      };
+      varint();
+      return varint();
+    }
+    return (await this.object(id)).data.length;
+  }
+
   async commit(id) {
     const { type, data } = await this.object(id);
     if (type !== "commit") throw new Error(`${id} is a ${type}, not a commit`);

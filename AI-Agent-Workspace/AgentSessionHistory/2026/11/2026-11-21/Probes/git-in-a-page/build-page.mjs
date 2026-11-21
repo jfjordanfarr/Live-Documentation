@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const modules = ["inflate.mjs", "git-reader.mjs", "workload.mjs", "page-main.mjs"];
+const modules = ["inflate.mjs", "git-reader.mjs", "renames.mjs", "workload.mjs", "page-main.mjs"];
 const script = modules
   .map((name) =>
     fs
