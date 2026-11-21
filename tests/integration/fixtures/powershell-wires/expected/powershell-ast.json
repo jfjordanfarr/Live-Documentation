@@ -1,6 +1,140 @@
 {
   "tool": "pwsh 7.7.0",
   "files": {
+    "../Aliases/Helpers.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "select",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 1,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        },
+        {
+          "name": "Get-ChildItem",
+          "keyword": "function",
+          "member": false,
+          "fileScope": true,
+          "aliases": [],
+          "line": 2,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "select",
+        "Get-ChildItem"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function select { \"the fixture's select\" }"
+        },
+        {
+          "line": 2,
+          "kind": "function",
+          "command": null,
+          "invokes": false,
+          "text": "function Get-ChildItem { \"the fixture's Get-ChildItem\" }"
+        }
+      ]
+    },
+    "../Aliases/Use-Aliases.ps1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 1,
+          "column": 1,
+          "text": ". \"$PSScriptRoot/Helpers.ps1\"",
+          "target": "$PSScriptRoot/Helpers.ps1",
+          "resolved": "../Aliases/Helpers.ps1"
+        }
+      ],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": [],
+      "invocations": [
+        {
+          "line": 1,
+          "column": 1,
+          "name": null,
+          "operator": ".",
+          "text": "\"$PSScriptRoot/Helpers.ps1\"",
+          "resolved": "../Aliases/Helpers.ps1",
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 2,
+          "column": 7,
+          "name": "select",
+          "operator": "",
+          "text": "select",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        },
+        {
+          "line": 3,
+          "column": 1,
+          "name": "gci",
+          "operator": "",
+          "text": "gci",
+          "resolved": null,
+          "function": null,
+          "blocks": []
+        }
+      ],
+      "loads": [],
+      "aliasCommands": [],
+      "paramBlock": false,
+      "statements": [
+        {
+          "line": 1,
+          "kind": "dotSource",
+          "command": null,
+          "invokes": true,
+          "text": ". \"$PSScriptRoot/Helpers.ps1\""
+        },
+        {
+          "line": 2,
+          "kind": "expression",
+          "command": null,
+          "invokes": true,
+          "text": "'x' | select"
+        },
+        {
+          "line": 3,
+          "kind": "command",
+          "command": "gci",
+          "invokes": true,
+          "text": "gci"
+        }
+      ]
+    },
     "../Backport/Expand-Archive.ps1": {
       "parseErrors": [],
       "functions": [

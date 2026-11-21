@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/powershell-wires/expected/compiler-edges.json`
-- Generated At: 2026-11-21T02:25:26.163Z
+- Generated At: 2026-11-21T07:29:14.982Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,8 @@ The file-to-file edges of the wires fixture as the rules of `scripts/oracle/powe
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Helpers`](../Aliases/Helpers.ps1.mdmd.md)
+- [`Use-Aliases`](../Aliases/Use-Aliases.ps1.mdmd.md)
 - [`Expand-Archive`](../Backport/Expand-Archive.ps1.mdmd.md)
 - [`Use-Archive`](../Backport/Use-Archive.ps1.mdmd.md)
 - [`Use-Backport`](../Backport/Use-Backport.ps1.mdmd.md)
