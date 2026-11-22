@@ -56,7 +56,7 @@ import { isMediaAsset, type LiveDocumentationConfig } from "@live-documentation/
 import { matchesPathPattern } from "@live-documentation/engine/live-docs/archetype";
 import { docsRootWithin } from "@live-documentation/engine/live-docs/discovery";
 import { execFileAsync } from "@live-documentation/engine/live-docs/gitUtils";
-import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { graphFilesByPath, type LiveDocGraph, withFilesByPath } from "@live-documentation/engine/live-docs/graph";
 import { openGitStore } from "@live-documentation/engine/live-docs/history/git";
 import { summarizeGraph, type AuthoredReading } from "@live-documentation/engine/live-docs/history/summary";
 import { putTexts } from "@live-documentation/engine/live-docs/history/textStore";
@@ -122,9 +122,11 @@ export async function summarizeChange(task: SummaryTask, warn: (line: string) =>
   if (!publishable()) return { published: false, unmapped };
   // A change with no file the globs match has no docs and no index: its shape is empty.
   const indexText = result.index ? await fs.readFile(path.join(tree, result.index), "utf8") : undefined;
+  // Read back into a table that holds its files' paths alone, so that a file named as a plain object's member
+  // (`constructor`, `toString`) is no file that is not there (`withFilesByPath`, 2026-11-22).
   const graph: LiveDocGraph = indexText
-    ? (JSON.parse(indexText) as LiveDocGraph)
-    : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: {} };
+    ? withFilesByPath(JSON.parse(indexText) as LiveDocGraph)
+    : { root: configuration.root, baseLayer: configuration.baseLayer, extension: configuration.extension, files: graphFilesByPath() };
   const standing = await standingFiles(tree, task.unwritten ?? []);
   const { summary, texts } = summarizeGraph(graph, task.lens, task.commit, standingRelatedDocs(graph, standing, configuration), authored);
   if (task.unwritten && task.unwritten.length > 0) {

@@ -14,7 +14,7 @@
 
 import { noReaderHandles } from "../config/liveDocumentationConfig";
 import type { Entry } from "./document";
-import type { GraphFile, LiveDocGraph } from "./graph";
+import { fileAt, type GraphFile, type LiveDocGraph } from "./graph";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";
@@ -191,7 +191,7 @@ export function reachability(
   entry: (file: GraphFile) => boolean = isEntry
 ): Reachability {
   const files = Object.keys(graph.files).sort(compare);
-  const startPaths = asked ? [...new Set(asked)].filter((id) => graph.files[id]).sort(compare) : files.filter((id) => entry(graph.files[id]));
+  const startPaths = asked ? [...new Set(asked)].filter((id) => fileAt(graph.files, id)).sort(compare) : files.filter((id) => entry(graph.files[id]));
   const starts: Start[] = startPaths.map((codePath) => ({ codePath, entries: graph.files[codePath].entries, test: graph.files[codePath].archetype === "test" }));
   const neighbours = (id: string): readonly string[] => getNeighbors(graph, id, "outbound");
   const fromAll = reachFrom(startPaths, neighbours, maxDepth);
