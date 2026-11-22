@@ -1,0 +1,528 @@
+{
+ "wireAnswers": "on",
+ "picture": {
+  "wires": 247,
+  "bands": 233,
+  "cards": 52,
+  "elements": 14810
+ },
+ "returned": 1177.1,
+ "measures": [
+  "live-docs:switch-capture 64.5",
+  "live-docs:switch-press 1177.0",
+  "live-docs:switch-hold 16.4",
+  "live-docs:switch-render 998.7"
+ ],
+ "reads": [
+  {
+   "at": 16532,
+   "took": 0,
+   "read": "getClientRects of div.node-title",
+   "writesSinceTheLastRead": 49,
+   "writes": [
+    "11 x attribute disabled on button.",
+    "7 x attribute aria-pressed on button.",
+    "4 x attribute title on button.",
+    "3 x attribute hidden on button.",
+    "2 x attribute style on div#view-map.view-container.active (is \"cursor: grab; height: 600px; border-bottom: 1px solid rgb(47, 47, 52);\")",
+    "1 x attribute class on div#view-map.view-container.active (was \"view-container active\", is \"view-container active perspective-held\")",
+    "1 x children of body.local-map-active.zoom-controls-active: +div.perspective-hold-cover -",
+    "1 x children of span#context-name.: +#text -#text",
+    "1 x attribute aria-label on button.",
+    "1 x attribute hidden on select.",
+    "1 x attribute disabled on select.",
+    "1 x attribute hidden on section.history-scrubber",
+    "1 x attribute hidden on div.history-finder",
+    "1 x attribute aria-expanded on button.history-readout"
+   ],
+   "by": "Ky.getSubjectAnchor (static/index.js:5177:41384) < Object.getSubjectAnchor (static/index.js:5177:95115) < Qn (static/index.js:5202:33546) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 17567,
+   "took": 0.1,
+   "read": "getBoundingClientRect of div#view-graph.view-container.active",
+   "writesSinceTheLastRead": 227,
+   "writes": [
+    "33 x attribute disabled on button.",
+    "21 x attribute aria-pressed on button.",
+    "13 x attribute title on button.",
+    "9 x attribute hidden on button.",
+    "4 x attribute aria-label on button.",
+    "3 x children of span#context-name.: +#text -#text",
+    "3 x attribute disabled on select.",
+    "3 x attribute hidden on section.history-scrubber",
+    "3 x attribute hidden on div.history-finder",
+    "3 x attribute aria-expanded on button.history-readout",
+    "3 x attribute hidden on section.history-step-panel",
+    "3 x children of span#pin-tray-count.: +#text -#text",
+    "3 x attribute hidden on section#path-report.path-report",
+    "3 x attribute title on input#search-subject.search-input"
+   ],
+   "by": "Qn (static/index.js:5202:33850) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  }
+ ],
+ "writes": [
+  {
+   "at": 16473,
+   "took": 14.1,
+   "write": "append(div.perspective-hold-cover) on body.local-map-active.zoom-controls-active",
+   "by": "iD (static/index.js:5177:104766) < Qn (static/index.js:5202:33353) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  },
+  {
+   "at": 16489,
+   "took": 14.8,
+   "write": "textContent = packages/engine/src/live-docs/graph.ts on span#context-name.",
+   "by": "Ot (static/index.js:5202:28926) < Qn (static/index.js:5202:33449) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  },
+  {
+   "at": 16506,
+   "took": 2.8,
+   "write": "hidden = true on section.history-scrubber",
+   "by": "Object.hide (static/index.js:101:42504) < U (static/index.js:101:55206) < Object.sync (static/index.js:101:57920) < Ot (static/index.js:5202:31366) < Qn (static/index.js:5202:33449)"
+  },
+  {
+   "at": 16511,
+   "took": 20.2,
+   "write": "textContent = 0 pins on span#pin-tray-count.",
+   "by": "Object.sync (static/index.js:101:93290) < vi (static/index.js:5202:31894) < Ot (static/index.js:5202:31590) < Qn (static/index.js:5202:33449) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 16534,
+   "took": 194.1,
+   "write": "inert = true on div#view-map.view-container.active",
+   "by": "static/index.js:13:24114 < NodeList.forEach (<anonymous>) < nl (static/index.js:13:24042) < Qn (static/index.js:5202:33647) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 16731,
+   "took": 2.5,
+   "write": "classList.add(force-graph-active) on body.local-map-active.zoom-controls-active",
+   "by": "nl (static/index.js:13:24412) < Qn (static/index.js:5202:33647) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  },
+  {
+   "at": 16734,
+   "took": 3.4,
+   "write": "classList.remove(zoom-controls-active) on body.local-map-active.force-graph-active",
+   "by": "nl (static/index.js:13:24707) < Qn (static/index.js:5202:33647) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  },
+  {
+   "at": 16738,
+   "took": 10.8,
+   "write": "textContent = packages/engine/src/live-docs/graph.ts on span#context-name.",
+   "by": "Ot (static/index.js:5202:28926) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 16749,
+   "took": 11.6,
+   "write": "hidden = false on button.",
+   "by": "Ot (static/index.js:5202:29147) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 16761,
+   "took": 11.6,
+   "write": "hidden = false on button.",
+   "by": "Ot (static/index.js:5202:29137) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 16772,
+   "took": 11.4,
+   "write": "hidden = true on button.",
+   "by": "Ot (static/index.js:5202:29228) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 16784,
+   "took": 12.3,
+   "write": "hidden = false on select.",
+   "by": "Ot (static/index.js:5202:30101) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 16797,
+   "took": 2.4,
+   "write": "hidden = true on section.history-scrubber",
+   "by": "Object.hide (static/index.js:101:42504) < U (static/index.js:101:55206) < Object.sync (static/index.js:101:57920) < Ot (static/index.js:5202:31366) < hi (static/index.js:5202:48228)"
+  },
+  {
+   "at": 16800,
+   "took": 11.4,
+   "write": "textContent = 0 pins on span#pin-tray-count.",
+   "by": "Object.sync (static/index.js:101:93290) < vi (static/index.js:5202:31894) < Ot (static/index.js:5202:31590) < hi (static/index.js:5202:48228) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16812,
+   "took": 11,
+   "write": "textContent = 24 on output#tuning-item-gap-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16824,
+   "took": 10.9,
+   "write": "textContent = 28 on output#tuning-band-gap-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16835,
+   "took": 10.7,
+   "write": "textContent = 5 on output#tuning-height-cost-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16846,
+   "took": 10.6,
+   "write": "textContent = 5 on output#tuning-width-cost-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16857,
+   "took": 9.2,
+   "write": "textContent = 60 on output#tuning-force-link-gap-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16867,
+   "took": 8.9,
+   "write": "textContent = 60 on output#tuning-force-charge-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16876,
+   "took": 9.2,
+   "write": "textContent = 5 on output#tuning-force-collision-gap-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16885,
+   "took": 8.6,
+   "write": "textContent = 1 on output#tuning-force-coupling-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16894,
+   "took": 9.8,
+   "write": "textContent = 4 on output#tuning-force-node-size-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16904,
+   "took": 10.1,
+   "write": "textContent = 1 on output#tuning-force-symbol-scale-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16915,
+   "took": 10.3,
+   "write": "textContent = 1 on output#tuning-force-link-width-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16925,
+   "took": 10.7,
+   "write": "textContent = 0.3 on output#tuning-force-node-zoom-resistance-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16936,
+   "took": 10.5,
+   "write": "textContent = 0.9 on output#tuning-force-wire-zoom-resistance-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16947,
+   "took": 10.2,
+   "write": "textContent = 0.025 on output#tuning-force-gravity-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16957,
+   "took": 10.2,
+   "write": "textContent = 0.2 on output#tuning-force-component-separation-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16968,
+   "took": 10.5,
+   "write": "textContent = 0 on output#tuning-force-charge-range-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16978,
+   "took": 10.6,
+   "write": "textContent = 0.3 on output#tuning-force-approximation-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 16989,
+   "took": 10.8,
+   "write": "textContent = 0.5 on output#tuning-force-link-strength-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17000,
+   "took": 10.5,
+   "write": "textContent = 1 on output#tuning-force-update-energy-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17011,
+   "took": 10.7,
+   "write": "textContent = 0.02 on output#tuning-force-tether-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17022,
+   "took": 11,
+   "write": "textContent = 0 on output#tuning-force-settle-hold-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17033,
+   "took": 10.9,
+   "write": "textContent = 1 on output#tuning-force-cited-by-pull-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17044,
+   "took": 10.5,
+   "write": "textContent = 1 on output#tuning-force-hops-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17055,
+   "took": 10.6,
+   "write": "textContent = 2 on output#tuning-force-shell-depth-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17066,
+   "took": 10.9,
+   "write": "textContent = 60 on output#tuning-force-reveal-frames-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17077,
+   "took": 10.7,
+   "write": "textContent = 18 on output#tuning-force-name-at-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33582) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17088,
+   "took": 11,
+   "write": "textContent = 0.8 on output#tuning-stub-factor-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33671) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17099,
+   "took": 10.8,
+   "write": "textContent = 8 on output#tuning-stub-min-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33755) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17110,
+   "took": 10.5,
+   "write": "textContent = 40 on output#tuning-stub-max-offset-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33839) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17121,
+   "took": 11.3,
+   "write": "textContent = 0 on output#tuning-vertical-offset-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:33937) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17133,
+   "took": 10.7,
+   "write": "textContent = 100 on output#tuning-column-gap-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34033) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17143,
+   "took": 10.7,
+   "write": "textContent = 0.5 on output#tuning-hover-dim-symbols-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34142) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17154,
+   "took": 10.5,
+   "write": "textContent = 0.1 on output#tuning-hover-dim-connections-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34253) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17165,
+   "took": 10.6,
+   "write": "textContent = 0.5 on output#tuning-self-loop-taper-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34366) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17176,
+   "took": 11.1,
+   "write": "textContent = 18 on output#tuning-lace-reach-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34463) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17188,
+   "took": 10.1,
+   "write": "textContent = 12 on output#tuning-lace-curl-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34550) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17198,
+   "took": 9.9,
+   "write": "textContent = 2.5 on output#tuning-lace-width-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34636) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17208,
+   "took": 10.1,
+   "write": "textContent = 450 on output#tuning-move-ms-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:34764) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17219,
+   "took": 10.3,
+   "write": "textContent = 1.5 on output#tuning-arrival-rest-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:35291) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17230,
+   "took": 10,
+   "write": "textContent = 2 on output#tuning-slot-lines-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:35923) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17240,
+   "took": 10.1,
+   "write": "textContent = 1 on output#tuning-text-resistance-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36031) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17250,
+   "took": 10,
+   "write": "textContent = 1 on output#tuning-control-resistance-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36153) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17261,
+   "took": 10.1,
+   "write": "textContent = 1 on output#tuning-name-growth-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36274) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17271,
+   "took": 9.9,
+   "write": "textContent = 2 on output#tuning-order-starts-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36381) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17281,
+   "took": 10.9,
+   "write": "textContent = 0 on output#tuning-search-starts-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36491) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17292,
+   "took": 10.5,
+   "write": "textContent = 8 on output#tuning-search-patience-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36605) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17303,
+   "took": 11.1,
+   "write": "textContent = 100 on output#tuning-churn-cost-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36718) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17314,
+   "took": 12.8,
+   "write": "textContent = 2 on output#tuning-membrane-evenness-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36829) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17327,
+   "took": 13.2,
+   "write": "textContent = 200 on output#tuning-membrane-simplicity-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:36956) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17341,
+   "took": 13.8,
+   "write": "textContent = 2 on output#tuning-row-levelness-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:37080) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17355,
+   "took": 12.4,
+   "write": "textContent = 1500 on output#tuning-return-cost-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:37191) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17368,
+   "took": 13,
+   "write": "textContent = 2 on output#tuning-history-play-rate-value.",
+   "by": "Ue (static/index.js:293:33359) < Ye (static/index.js:293:37375) < static/index.js:294:174 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17381,
+   "took": 12.2,
+   "write": "textContent = 1 on span#tuning-changed-count.",
+   "by": "c (static/index.js:293:27250) < static/index.js:294:179 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 17394,
+   "took": 12.5,
+   "write": "textContent = 1 setting changed from its default on span#tuning-changed-words.visually-hidden",
+   "by": "c (static/index.js:293:27281) < static/index.js:294:179 < hi (static/index.js:5202:48233) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435)"
+  },
+  {
+   "at": 17451,
+   "took": 13.1,
+   "write": "textContent = No files from this selection are present here. on span.",
+   "by": "Object.Yr [as render] (static/index.js:5168:97876) < hi (static/index.js:5202:48526) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 17468,
+   "took": 12.7,
+   "write": "textContent = Open Scan root on button.",
+   "by": "Object.Yr [as render] (static/index.js:5168:98213) < hi (static/index.js:5202:48526) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 17487,
+   "took": 13.6,
+   "write": "textContent = packages/engine/src/live-docs/graph.ts on span#context-name.",
+   "by": "Ot (static/index.js:5202:28926) < hi (static/index.js:5202:48535) < Qn (static/index.js:5202:33661) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 17502,
+   "took": 2.9,
+   "write": "hidden = true on section.history-scrubber",
+   "by": "Object.hide (static/index.js:101:42504) < U (static/index.js:101:55206) < Object.sync (static/index.js:101:57920) < Ot (static/index.js:5202:31366) < hi (static/index.js:5202:48535)"
+  },
+  {
+   "at": 17505,
+   "took": 23.1,
+   "write": "textContent = 0 pins on span#pin-tray-count.",
+   "by": "Object.sync (static/index.js:101:93290) < vi (static/index.js:5202:31894) < Ot (static/index.js:5202:31590) < hi (static/index.js:5202:48535) < Qn (static/index.js:5202:33661)"
+  },
+  {
+   "at": 17532,
+   "took": 13,
+   "write": "textContent = packages/engine/src/live-docs/graph.ts on span#context-name.",
+   "by": "Ot (static/index.js:5202:28926) < An (static/index.js:5202:48090) < Qn (static/index.js:5202:33814) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12)"
+  },
+  {
+   "at": 17546,
+   "took": 2.4,
+   "write": "hidden = true on section.history-scrubber",
+   "by": "Object.hide (static/index.js:101:42504) < U (static/index.js:101:55206) < Object.sync (static/index.js:101:57920) < Ot (static/index.js:5202:31366) < An (static/index.js:5202:48090)"
+  },
+  {
+   "at": 17549,
+   "took": 12.4,
+   "write": "textContent = 0 pins on span#pin-tray-count.",
+   "by": "Object.sync (static/index.js:101:93290) < vi (static/index.js:5202:31894) < Ot (static/index.js:5202:31590) < An (static/index.js:5202:48090) < Qn (static/index.js:5202:33814)"
+  },
+  {
+   "at": 17569,
+   "took": 13.1,
+   "write": "textContent = graph.ts on button.force-graph-focus",
+   "by": "Object.rd [as placeSubjectAnchor] (static/index.js:5168:73399) < Qn (static/index.js:5202:33975) < HTMLButtonElement.<anonymous> (static/index.js:5202:17435) < eval (eval at evaluate (:303:30), <anonymous>:8:12) < UtilityScript.evaluate (<anonymous>:305:16)"
+  }
+ ]
+}
