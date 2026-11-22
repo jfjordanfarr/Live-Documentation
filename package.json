@@ -30,10 +30,11 @@
   "workspaces": [
     "packages/engine",
     "packages/generator",
-    "packages/explorer"
+    "packages/explorer",
+    "packages/stored-form"
   ],
   "scripts": {
-    "build": "npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",
+    "build": "npm run build -w packages/stored-form && npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",
     "lint": "eslint .",
     "test:unit": "vitest run --project unit --project unit-serial",
     "test:integration": "vitest run --project integration",
