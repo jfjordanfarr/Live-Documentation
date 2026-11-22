@@ -55,7 +55,7 @@ In the Explorer:
 - **How does this reach that?** Search for a file, then choose **Path to** another, and the map shows the shortest route between them.
 - **Which files matter most?** Knowledge Sources lists the most used files, the files that use the most, where the program starts and what nothing reaches.
 - **How do our systems talk to each other?** The World Map shows several systems as pieces on a board, with a door wherever one offers or uses an address, and wires between the doors. You describe the board in one markdown file; the doors and wires come from the code.
-- **How did it get this way?** Run `npm run live-docs:history` before building, and the 3D map can play the repository's commits as changes to the picture.
+- **How did it get this way?** Run `npm run live-docs:history` before building, and the Local Map, in 2D or in 3D, can step through the repository's commits as changes to the picture.
 
 Whatever you are looking at is in the address bar. Send the link, and a colleague with the same build sees the same thing.
 
@@ -89,7 +89,7 @@ What the Explorer says when it cannot start, or stops.
 ### Public Symbols
 #### `reportFatalExplorerError`
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/errors.ts#L56)
+- Source: [source](../../../../../../packages/explorer/src/client/errors.ts#L59)
 
 ### Dependencies
 - [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
@@ -105,7 +105,7 @@ The generated sections are rewritten on every run. The authored section is yours
 - **Ruby**, for symbols and requires.
 - **ASP.NET markup** (`.aspx`, `.ascx`, `.cshtml`, `.razor`), connected to its code-behind.
 - **.NET configuration and SQL**: the addresses and connection strings in `web.config` and `app.config`, and the procedures, tables and views in `.sql` files.
-- **Project manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and `.psd1`.
+- **Solutions and project manifests**: `.sln` and `.slnx`, `.csproj`, `.vbproj` and `.fsproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and `.psd1`.
 - **HTML, CSS and JSON**, for the files they reference.
 
 Support is deeper in some languages than in others; every one of them lands in the same markdown.
@@ -130,7 +130,7 @@ None is required. To change where the Live Docs go, what is left out or which bo
 
 - The generator, the commands and the Explorer build make no network request and send no telemetry.
 - The Explorer page reads only the site that serves it, and its content security policy refuses anything else.
-- Live Documentation's own packages run nothing at install time. One dependency does: `esbuild`'s `postinstall` checks that its binary for your platform is present, and fetches it from the npm registry if not. `npm ci --ignore-scripts` skips it.
+- Live Documentation's own packages run nothing at install time. Three of the packages they depend on do, when you install from a clone as above. `esbuild`, the one the product itself needs, checks in its `postinstall` that its binary for your platform is present, and fetches it from the npm registry if not. Two are development tools that a clone brings with it: `tree-sitter-cli` downloads its binary from the tree-sitter project's releases on GitHub, and is used only to rebuild the PowerShell grammar this repository commits; `unrs-resolver`, part of the linter, checks that its native binding is present. `npm ci --ignore-scripts` skips all three.
 
 [SECURITY.md](SECURITY.md) says how to check each of these yourself.
 
