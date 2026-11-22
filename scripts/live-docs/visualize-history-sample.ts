@@ -25,8 +25,9 @@ import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/con
 import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
+import { DRAWN_FILES } from "../../packages/explorer/src/client/views/forceGraphShells";
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
-import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, GROWTH_CONFIG, GROWTH_SCRIPT, SCRIPT, SCRIPTED_CONFIG, VEIL_CONFIG, VEIL_SCRIPT, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
+import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, GROWTH_CONFIG, GROWTH_SCRIPT, SCRIPT, SCRIPTED_CONFIG, VEIL_CONFIG, veilScript, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
 import { optionValue, runCommand, UsageError } from "./cli";
 
 interface CliOptions {
@@ -38,7 +39,7 @@ interface CliOptions {
     collisionOutputDir?: string;
     /** A separate history growing one to 64 TypeScript files plus its configuration. */
     growthOutputDir?: string;
-    /** A history whose 3D picture veils, past the 1,024 files it draws within skins (2026-11-11). */
+    /** A history whose 3D picture veils, past the files it draws within skins, `DRAWN_FILES` (2026-11-11). */
     veilOutputDir?: string;
 }
 
@@ -127,7 +128,8 @@ async function main(): Promise<void> {
         await buildSample(GROWTH_SCRIPT, GROWTH_CONFIG, [{ dir: options.growthOutputDir, history: { rule: "all" } as const, label: "the two-to-sixty-five-document growth" }]);
     }
     if (options.veilOutputDir) {
-        await buildSample(VEIL_SCRIPT, VEIL_CONFIG, [{ dir: options.veilOutputDir, history: { rule: "all" } as const, label: "the picture that veils" }]);
+        // Sized from the product's own budget of files drawn within skins, so that it veils whatever that becomes.
+        await buildSample(veilScript(DRAWN_FILES), VEIL_CONFIG, [{ dir: options.veilOutputDir, history: { rule: "all" } as const, label: "the picture that veils" }]);
     }
 }
 

@@ -363,11 +363,42 @@ export const GROWTH_SCRIPT: ScriptedCommit[] = [
 /** A file of the veiling sample: one function, named by its path, and what is added to it. */
 const VEIL_FILE = (path: string, added = ""): string => `/** ${path}. */\nexport function ${path.replace(/\W/g, "_")}(): number { return 1; }\n${added}`;
 const VEIL_ADDED = "/** Added. */\nexport function more(): number { return 2; }\n";
-/** The big tree: 21 directories of 5 of 10 files, 1,050 files, more than the 1,024 files a 3D picture draws within skins. */
-const VEIL_BIG = Object.fromEntries(Array.from({ length: 21 * 5 * 10 }, (_, index) => {
-  const path = `big/d${String(Math.floor(index / 50)).padStart(2, "0")}/e${Math.floor(index / 10) % 5}/f${String(index % 10).padStart(2, "0")}.ts`;
-  return [path, VEIL_FILE(path)];
-}));
+/** The big tree's shape: directories of five directories of ten files. */
+const VEIL_INNER = 5, VEIL_LEAVES = 10;
+
+/**
+ * Where the veiling sample veils, for a picture that draws at most `limit` files within its skins: the big tree's
+ * directories, the three innermost directories that stay veiled once the small tree is gone, and the files its steps
+ * touch and delete. The tree is sized from the limit and never from a number written here (2026-11-22): written for a
+ * limit of 1,024 as 1,050 files, it veiled nothing once the product drew 2,048, and the cases over it failed on a
+ * premise that no longer held.
+ *
+ * A skin opens its innermost directories ten files at a time while the files shown stay within the limit, so
+ * `floor(limit / 10)` of them open; the tree holds three more than that, which stay veiled. The directories are five
+ * to a directory, and the one that is short of five, when the count does not divide, is the first: a skin opens the
+ * smaller directory first, so the three left veiled are always the last three of the last directory, side by side.
+ */
+export function veilShape(limit: number): { directories: number; short: number; corner: [string, string, string]; touchedWhole: string; touchedCorner: string; deleted: string } {
+  const innermost = Math.floor(limit / VEIL_LEAVES) + 3, short = innermost % VEIL_INNER, directories = Math.ceil(innermost / VEIL_INNER);
+  if (directories < 9) throw new Error("The veiling sample needs a limit of some hundreds of files.");
+  const last = `big/d${String(directories - 1).padStart(2, "0")}`;
+  return { directories, short, corner: [`${last}/e2`, `${last}/e3`, `${last}/e4`], touchedWhole: "big/d07/e1/f03.ts", touchedCorner: `${last}/e3/f04.ts`, deleted: `${last}/e2/f05.ts` };
+}
+
+/** The big tree for a limit: every directory of five of ten files, the first short when the count does not divide. */
+function veilBig(limit: number): Record<string, string> {
+  const { directories, short } = veilShape(limit);
+  const files: Array<[string, string]> = [];
+  for (let d = 0; d < directories; d++) {
+    for (let e = 0; e < (d === 0 && short ? short : VEIL_INNER); e++) {
+      for (let f = 0; f < VEIL_LEAVES; f++) {
+        const path = `big/d${String(d).padStart(2, "0")}/e${e}/f${String(f).padStart(2, "0")}.ts`;
+        files.push([path, VEIL_FILE(path)]);
+      }
+    }
+  }
+  return Object.fromEntries(files);
+}
 /** A small second tree, which brings the picture past the limit while it stands. */
 const VEIL_WIDE = Object.fromEntries(Array.from({ length: 10 }, (_, index) => {
   const path = `wide/h${String(index).padStart(2, "0")}.ts`;
@@ -376,26 +407,29 @@ const VEIL_WIDE = Object.fromEntries(Array.from({ length: 10 }, (_, index) => {
 
 /**
  * A separate history large enough that the 3D Structure picture veils what it cannot draw (2026-11-11), so that the
- * history's emphasis can be checked inside veils. While `wide` stands, the picture's files pass 1,024 and the `big`
- * bubble is veiled whole; once `wide` is gone, `big` is open and its last three directories of ten files,
- * `big/d20/e2` to `e4`, are veiled bubbles within it. Each step touches one file of a veiled part, and the last
- * deletes one.
+ * history's emphasis can be checked inside veils, for a picture that draws at most `limit` files within its skins
+ * (`veilShape`). While `wide` stands, the picture's files pass the limit and the `big` bubble is veiled whole; once
+ * `wide` is gone, `big` is open and the last three innermost directories of its last directory are veiled bubbles
+ * within it. Each step touches one file of a veiled part, and the last deletes one.
  */
-export const VEIL_SCRIPT: ScriptedCommit[] = [
-  {
-    message: "Begin with a big tree, a small one and an entry",
-    date: "2026-02-01T10:00:00+00:00",
-    write: { ".live-docs.config.json": `${JSON.stringify(VEIL_CONFIG, null, 2)}\n`, "src/main.ts": VEIL_FILE("src/main.ts"), ...VEIL_BIG, ...VEIL_WIDE }
-  },
-  { message: "Touch a corner of the big tree", date: "2026-02-02T10:00:00+00:00", write: { "big/d07/e1/f03.ts": VEIL_FILE("big/d07/e1/f03.ts", VEIL_ADDED) } },
-  {
-    message: "Retire the small tree and touch a veiled corner",
-    date: "2026-02-03T10:00:00+00:00",
-    remove: Object.keys(VEIL_WIDE),
-    write: { "big/d20/e3/f04.ts": VEIL_FILE("big/d20/e3/f04.ts", VEIL_ADDED) }
-  },
-  { message: "Delete a file in the veiled corner", date: "2026-02-04T10:00:00+00:00", remove: ["big/d20/e2/f05.ts"] }
-];
+export function veilScript(limit: number): ScriptedCommit[] {
+  const shape = veilShape(limit);
+  return [
+    {
+      message: "Begin with a big tree, a small one and an entry",
+      date: "2026-02-01T10:00:00+00:00",
+      write: { ".live-docs.config.json": `${JSON.stringify(VEIL_CONFIG, null, 2)}\n`, "src/main.ts": VEIL_FILE("src/main.ts"), ...veilBig(limit), ...VEIL_WIDE }
+    },
+    { message: "Touch a corner of the big tree", date: "2026-02-02T10:00:00+00:00", write: { [shape.touchedWhole]: VEIL_FILE(shape.touchedWhole, VEIL_ADDED) } },
+    {
+      message: "Retire the small tree and touch a veiled corner",
+      date: "2026-02-03T10:00:00+00:00",
+      remove: Object.keys(VEIL_WIDE),
+      write: { [shape.touchedCorner]: VEIL_FILE(shape.touchedCorner, VEIL_ADDED) }
+    },
+    { message: "Delete a file in the veiled corner", date: "2026-02-04T10:00:00+00:00", remove: [shape.deleted] }
+  ];
+}
 
 /** The lens of the checked sample, whose main file is its entry. */
 export const CHECKED_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/main.ts"] };
