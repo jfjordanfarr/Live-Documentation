@@ -2,7 +2,7 @@
 
 _A proposal of 2026-11-22. Built as one module, `packages/stored-form/src/storedForm.ts`, which nothing in the product uses yet. Every name, the file's leading bytes, its extension and the text form's first line are provisional: doors that close at a first release, and the owner's to settle._
 
-_Written so that a second reader can be written from this text alone, and tested so on 2026-11-22: two readers written blind from it, in Python and in Go, agreed with the module on every sample but one kind of file, and this text was mended by [their findings](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/stored-form-second-reader/README.md). Where the module and this text disagree, this text is meant and the module is wrong. A sentence marked **Provenance** names the module's code, its tests or a platform, for the reader who has them. No rule rests on such a sentence. The research it rests on is [the stored-form research of 2026-11-21](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Research/stored-form/README.md); the module's measurements are in [its record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/stored-form-module/README.md)._
+_Written so that a second reader can be written from this text alone. **What was read blind, and when:** the text as it stood at 02:56 UTC on 2026-11-22 was read by two readers written blind from it, in Python and in Go. They agreed with the module on every sample but one kind of file, and the text was mended by [their findings](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/stored-form-second-reader/README.md). Everything since has not been read blind: the documentation references (sections 4.3, 5 and 8), the extension's rule, and this day's later mends. A second blind reading runs on the text of 04:40 UTC, and a third follows once the format rests. Where the module and this text disagree, this text is meant and the module is wrong. A sentence marked **Provenance** names the module's code, its tests or a platform, for the reader who has them. No rule rests on such a sentence. The research it rests on is [the stored-form research of 2026-11-21](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-21/Research/stored-form/README.md); the module's measurements are in [its record](../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/stored-form-module/README.md)._
 
 ## 1. What it is
 
@@ -20,7 +20,11 @@ The owner's words that govern it (2026-11-21): of binary stored and text exporte
 - **varint** is an unsigned number from 0 to 2^32 − 1, seven bits a byte, least significant group first, the high bit set on every byte but the last (LEB128). It is at most five bytes, and it is written in its shortest form: a last byte of 0 after any earlier byte is refused, as is a value above 2^32 − 1 and a sixth byte.
 - A **count** is a varint that says how many items follow. Every item takes at least one byte, so a count larger than the bytes left in its section is refused before anything is made for it.
   - A reader may refuse sooner where it knows an item takes more: a left-out entry takes at least 3 bytes, and a path in the paths section at least 2.
-  - A frame's `count` may likewise be refused when it exceeds its section's raw length: strings, records and wires take at least 1 byte each, paths 2.
+  - A frame's `count` may likewise be refused from its header alone, before anything is inflated, when it exceeds what its section's raw length can hold:
+    - a string takes at least 1 byte;
+    - a record 7 (its path, layer and mark, its authored words, and its three counts of entries, symbols and dependencies);
+    - a path 2;
+    - a file's wires 1.
   - None of these changes which files are accepted. Each refuses only what would run out of bytes anyway.
 - A **mark** is a varint whose bits say which optional fields follow. A bit the layout does not define for that mark is refused.
 
@@ -134,12 +138,13 @@ A mebibyte (MiB) is 1,048,576 bytes.
   - No reader's verdict on a given file depends on who wrote it: a reader judges the bytes it holds.
   - A bound that a compressor does not change, one reckoned from the uncompressed facts, would not bound what a reader of a given small file must inflate. That bound is what this one is for, so it is kept, and this is its price.
   - Real scans sit far from it (three to five times against 64).
-- **The text export's bound.** A string is held once and may be named many times. Its text form writes it out each time it is named, so a small valid file can have a very long text: 7 KB naming one 32 KiB string 9,000 times has a text of 300 MB.
-  - A reader that writes the text may refuse to, when the names it would write exceed the same bound, `64 × (file length in bytes) + 1,048,576`. The names are counted in UTF-8 bytes: each string, once for every time a record names it.
+- **The text export's bound.** A string is held once and may be named many times. Its text form writes it out each time it is named, and writes a file's path on every one of that file's lines. So a small valid file can have a very long text: 7 KB naming one 32 KiB string 9,000 times has a text of 300 MB, and 588 bytes holding one path of 1,024 letters on 20,000 lines has a text of 22 MB.
+  - A reader that writes the text may refuse to when the **text** would be longer than the same bound, `64 × (file length in bytes) + 1,048,576`, counted in UTF-8 bytes, line breaks included.
+  - It counts what it writes, as it writes. It may also refuse before building a line whose path and names alone, counted in UTF-8 bytes, would carry the text past the bound, since the line can only be longer.
   - It must say that it refuses the text, not the file. Such a file is valid: a reader reads it, answers from it, gives its graph and its content's name. Only its text is not offered.
   - A reader that writes the text anyway is right too, and writes the same text.
-  - So the text requires that a file within the bound be written as text. Past it, writing and refusing are both correct.
-  - (**Provenance:** the module's `textOf` refuses past the bound. Both blind readers stream the text and write it.)
+  - So the text requires that a file whose text is within the bound be written as text. Past it, writing and refusing are both correct.
+  - (**Provenance:** the module's `textOf` writes line by line, counted as written, and refuses past the bound. Both blind readers stream the text and write it.)
 - `storedLength` must not run past the file's end. A header that does is a cut, not a refusal, while reading an unfinished file.
 - Inflation stops the moment it would give more than `rawLength`, and refuses.
 
@@ -267,7 +272,10 @@ The content's name, 32 bytes (section 3.4).
 The graph is what the facts say about connection. A reader that gives one gives it by the rules below. (**Provenance:** they are the rules of `deriveLiveDocGraph` in this repository's engine, but this text is the authority.)
 
 - **Each file's document** is at its document path (section 4.1).
-- **The links that make edges**, in order: each dependency with a link, then, for each symbol in order, each reference in order. For a Parameters reference, each parameter's types; otherwise its types. A type makes an edge only when it has a link.
+- **What makes edges**, in order:
+  - first **every dependency**, with a link or not. A dependency without a link names something outside the scan (an external module, for example), and its edge has no `link` and no `to`;
+  - then, for each symbol in order, each reference in order: for a Parameters reference, each parameter's types; otherwise its types. A type makes an edge only when it has a link.
+  - (A text of 04:40 UTC said "each dependency with a link". A reader written from it gave 6,576 fewer edges on DNN than this repository's engine, which makes an edge of every dependency, as the module does.)
 - **An edge** carries:
   - `kind`: `re-export` for a dependency whose qualifiers hold `re-export`, otherwise `import`. For a type, its role: `returns`, `extends`, `implements`, `constraint`, or `parameter`.
   - `label`: the dependency's label or the type's name.
@@ -295,7 +303,22 @@ The order of an object's members is not a fact. (**Provenance:** the module's `g
 
 ## 6. Reading
 
-A reader takes any bytes at all and returns facts or a refusal that says why. It never hangs and never fails in any other way. Its time and memory are bounded by the file's size: every loop is bounded by bytes already checked to be there, every count by the bytes left, and every inflation by section 3.5. There is no expression, no filter, no plugin, and no reference to anything outside the file. A reader does, in this order:
+A reader takes any bytes at all and returns facts or a refusal that says why. It never hangs and never fails in any other way. There is no expression, no filter, no plugin, and no reference to anything outside the file.
+
+**Not holding, and under redesign (2026-11-22).** This text said a reader's time and memory are bounded by the file's size, by keeping every loop bounded by bytes already checked to be there. An independent review broke that five ways, each with its own cause:
+- a text that wrote a path on every line;
+- a spread call of one argument a line;
+- sorts that walked long shared paths;
+- a whole read that inflated every frame before checking any;
+- and about 2,000 bytes of a reader's objects for each byte of the file, against the 64 the bound reckons.
+
+The first four are mended. The fifth is not a fault of a loop: the bound counts bytes inflated, while what a reader builds from them costs some thirty times more. By the rule that a guarantee broken twice by different means is not mended again, two designs are being measured in its place:
+- the facts never built whole, answered from the inflated sections as asked;
+- a reader run inside a worker with a memory ceiling.
+
+Until one is chosen, a reader's cost is bounded by the file's size only for the inflation (section 3.5), not for what it builds.
+
+A reader does, in this order:
 
 1. Check the signature.
 2. Hop the frame headers from the first. For each header, check the kind and the limits of section 3.5 before reading on. Stop at the end frame.
@@ -435,7 +458,8 @@ The enumerations are written as section 4.3's words.
 - every enumeration's word;
 - numbers from 0 to 2^32 − 1;
 - the marks' constraints: a target only with a link, and an anchor only with a target;
-- an end count equal to the number of files.
+- an end count equal to the number of files;
+- every section the layout would set down for these facts within `MAX_SECTION`: the strings first met in each group of 256 files, the group's records, the paths and the wires, each sized as section 4 lays it out. Their sizes depend on the facts alone, not on any compressor.
 
 Equivalently, a valid text is exactly the text a reader writes for some valid file. The inflation bound of section 3.5 is not among these checks, since whether it holds depends on the writer's compression.
 

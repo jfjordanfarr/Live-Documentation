@@ -499,3 +499,105 @@ All of these passed:
 ### Commands the harness refused in the fourth milestone
 
 None.
+
+## Fifth milestone, 2026-11-22, first leg: the review's plain faults mended, the text against the module, and the links measured
+
+I merged the day's tip (`46e13bf60`), then the reviewer's branch (`418c0b821`), both without conflict. [The review's record](../stored-form-review/README.md) and its test file were read whole first. The review's own words and cases were left as they were.
+
+### B. The plain faults, mended
+
+Each mend was checked against the reviewer's case, and no case was touched.
+- **1 and 2, the text export.** The text is now written line by line and counted as it is written, in UTF-8 bytes, line breaks included. Before each line is built, the bytes its path and names will take are counted, so no line is built past the bound. There is no spread call. The text's bound is now on the text itself (section 3.5), which ends both breaks.
+- **3, the graph's sorts.** Wires, inbound and documented-by are now file numbers sorted as numbers. Each target is looked up once by its path, so no path is compared twice.
+- **4, the whole read.** It now inflates each section only when it reads it, after the checks on every section before it. Each frame's count is also checked against what its raw length can hold, from the header alone and before anything is inflated: a string takes 1 byte, a record 7, a path 2, a file's wires 1. Section 2.1 lists these.
+- **6, the end line.** It is now written again and compared, as every other line is.
+- **7, names an object's prototype answers.** The graph's files are keyed in an object without a prototype. A new case holds that `__proto__`, `constructor`, `toString` and `hasOwnProperty` are files like any other, each wired, and that a path no file has answers nothing. It failed against the module before this mend and passes now.
+- **8, the section limit.** A text's facts are now sized into the sections the layout would hold, by its own grammar and compressed by nobody. Section 8's list of what makes a valid text names this.
+
+**The review's cases:** 13 of its 15 that failed now pass. The two still failing are A's:
+- the memory a byte of the file costs once its facts are built (finding 5);
+- the fuzzer reaching a section's grammar (finding 12, which is F).
+
+The three corpora were checked again after B. On each, the graph read back prints byte for byte as its `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored | `index.json` gzipped |
+| --- | ---: | ---: | ---: |
+| This repository | 1,336 | 1,125,106 B | 1,424,603 B |
+| Estate | 41 | 7,841 B | 10,526 B |
+| DNN | 10,777 | 2,238,231 B | 3,790,747 B |
+
+**What B4 costs.** At a load of 20, interleaved, DNN's facts took 3.2 to 3.3 s against JSON's 2.2 to 2.7 s. The last milestone's concurrent inflation had made them 553 to 595 ms against 600 to 664 ms on a quiet machine. Inflating strictly in order, as B4 asks, gives that lead back.
+- **Not yet measured:** the same on a quiet machine.
+- **A fork for the root:** a window of a few sections inflated ahead would bound the wasted work by a constant number of sections, and keep most of the concurrency.
+
+### E. The text against the module
+
+Section 5 now says **every dependency makes an edge**, with a link or not. One without a link has no `link` and no `to`. The section keeps a note of the earlier sentence and its cost: a reader built from it gave 6,576 fewer edges on DNN.
+
+The two text refusals that named the wrong line now name the right one:
+- a line not written as the text form writes it is named by its own number, not by the line after its block;
+- a line after the end line is named by its own number.
+
+### H. What was read blind
+
+The specification's opening paragraph now says which text was read blind, and when:
+- the text as it stood at 02:56 UTC;
+- not what came after: the documentation references, the extension's rule, and this day's later mends;
+- a second reading runs on the text of 04:40, and a third follows once the format rests.
+
+### A. The cost guarantee
+
+Section 6's sentence on cost is now marked in the text as not holding and under redesign. The marking names the review's five breaks, the four now mended, and the two designs to be measured. **Neither design is measured yet.**
+
+### C. A link and what it names: measured
+
+[`link-facts.ts`](link-facts.ts) measured every link field of the three corpora against the engine's rule, `linkTarget`, given the head's location:
+
+| Corpus | Links that carry a target | Stored equals the engine's rule | Given no target | Deriving every target | File with targets → without |
+| --- | ---: | ---: | ---: | ---: | --- |
+| This repository | 9,153 | 9,153 | 0 | 43 ms | 1,125,085 → 1,105,803 B (−1.7 %) |
+| Estate | 177 | 177 | 0 | 1 ms | 7,840 → 7,528 B (−4.0 %) |
+| DNN | 48,689 | 48,689 | 0 | 269 ms | 2,238,226 → 2,124,866 B (−5.1 %) |
+
+**What the agreement means:** the probe's sink makes its targets with that same rule, so the agreement holds by construction. What the numbers show is that every link derives. A real sink's agreement can be measured only once the two are wired.
+
+**What deriving costs.** 269 ms on DNN with the engine's functions as written, which build a document path for each link. Links repeat within a folder, so a cache by folder and link would cut it; that was not measured.
+
+**The fork, with its numbers:**
+- **Derive.** One fact in one place, and the file 1.7 to 5.1 % smaller. The rule (the markdown link rule's fragment, query and percent-decoding, the folding of `.` and `..`, the docs' prefix and the case-folded extension) goes into the module and the specification in full.
+- **Store both, and refuse a file where they differ.** The reader carries the same rule, and the file keeps the extra 1.7 to 5.1 %.
+
+Both need the rule in the reader, so the numbers favour deriving, as the root leans. It is not built yet: it changes the format, and is the next leg's first work.
+
+### D. What the link fields hold
+
+On the three corpora, the fields that carry a target hold only relative paths (8,142, 177, 45,122) and fragments of the document itself (1,011, 0, 3,567).
+- **No link field holds a scheme**, so every web link is in documentation lines, which are words. That confirms the root's expectation.
+- **The fields that carry no target hold relative paths and fragments too:** sources (3,917, 105, 39,086), cited-by, entries' declarers and symbols, and re-exports' origins.
+
+**The brief's rule cannot be taken as written.** "Nothing climbing above the docs' root" would refuse every source link and every cited-by link, since those climb out of the documents to the scanned folder's own files. The rule to state and measure is **nothing climbing above the scanned folder**, along with no scheme and no NUL. It has not yet been measured, nor refused anything.
+
+The page's handling of bidirectional controls in a name has not yet been looked at.
+
+### What held in this leg
+
+All of these passed:
+- `npm run lint` and `npm run build`;
+- the three audits and `docs:links:enforce`;
+- `live-docs:generate` and its `--check`.
+
+The whole unit project, run once: 3,737 cases passed and 4 were skipped. Two failed, both the review's, and both are expected:
+- finding 5, which waits on A;
+- finding 12, which is F.
+
+### Not reached in this leg
+
+- **C and D built:** the format's change.
+- **A's two designs, measured.**
+- **F:** the reviewer's raw fuzzer as the fuzzer's second stage, and cases for the 56 refusals that have none.
+- **G:** the Windows hazards.
+- **The review's finding 5**, which waits on A.
+
+### Commands the harness refused in this leg
+
+None.
