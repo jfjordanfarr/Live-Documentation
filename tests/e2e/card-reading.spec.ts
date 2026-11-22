@@ -64,6 +64,10 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
       value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, holdStill, cardText: "grow" } } })
     });
     const pins = { entries: fixture.selected ? [] : fixture.names.map(symbol => ({ nodeId: fixture.id, symbol })) };
+    // pathfind.ts's two descriptions, opened together, stand some 460 px taller than the names alone (measured 2026-11-22,
+    // the day the file's documentation grew): at 960 px the second name went to y 956, below the frame's bottom at 891,
+    // and the tap this case makes without the camera's help had nothing to land on. The window is taller for that file.
+    if (!fixture.selected) await page.setViewportSize({ width: 1440, height: 1500 });
     await page.goto(url({ ...(fixture.selected ? { selectedNodeId: fixture.id } : {}), pinSet: pins, reading: [{ nodeId: fixture.id, open: false }] }));
     const subject = card(page, fixture.id);
     await subject.waitFor();
@@ -226,6 +230,12 @@ test("reversing zoom during disclosure keeps the same reachable frame as settled
 
 test("tapping Walk and walk opens each, folding both restores the same picture, and the file's name opens and folds everything", async ({ page }) => {
   const pins = { entries: [{ nodeId: pathfind, symbol: "Walk (interface)" }, { nodeId: pathfind, symbol: "walk (function)" }] };
+  // A window tall enough for both descriptions open at once: see the tap case above (2026-11-22).
+  await page.setViewportSize({ width: 1440, height: 1500 });
+  // The reading of a card at reading size is the subject, not the arrival, which would have pulled back (2026-11-22).
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
+  });
   await page.goto(url({ pinSet: pins, reading: [{ nodeId: pathfind, open: false }] }));
   const subject = card(page, pathfind);
   await subject.waitFor();
@@ -265,6 +275,11 @@ test("tapping Walk and walk opens each, folding both restores the same picture, 
 });
 
 test("the portrait reading frame returns from overview and follows a phone resize without shrinking text", async ({ page }) => {
+  // The reading frame is the subject, so the picture it is compared with is the one at reading size, not the one the
+  // arrival that ships (2026-11-22) has pulled back to.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "grow" } } })
+  });
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment);
   await subject.waitFor();

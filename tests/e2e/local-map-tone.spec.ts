@@ -53,6 +53,11 @@ const wires = (page: Page) => page.locator("#map-connections .connection-path").
   }));
 
 test("a card's text stands in three tones, names leading the prose, each legible against the card", async ({ page }) => {
+  // Its subject is the tones at reading size and three presses out, not the arrival: it begins at reading size, where
+  // the arrival that ships (2026-11-22) would have pulled back already and three presses would be the overview.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
   await open(page, estate(), payment);
   const card = `.node-card[data-id="${payment}"]`;
   const tones = {
