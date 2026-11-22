@@ -190,7 +190,11 @@
     --name-room: calc(var(--row-room-w, 0) - var(--row-badges-w, 0) - var(--row-controls-w, 0) * var(--row-control-scale));
     --name-scale: max(1, min(var(--row-fill-h, 1), var(--text-scale, 1)));
 }
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale)); }
+/* In the far looks the name has the room More leaves, and no more than its own button's width as laid out (2026-11-22):
+   the button is still narrowed by the Read, the Pin and the type marks those looks do not draw, and a name given the
+   wider room ran past its button, outside what a pointer on the name presses. A name wider than that takes its second
+   line (card-reading.ts). */
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: min(var(--row-label-w, 100000), calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale))); }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-held-fill, var(--row-fill-h, 1)), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
 /* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled
    (2026-11-06), about the row's top edge, so that the name, its buttons and its dots keep their reading alignment. */

@@ -502,8 +502,34 @@ const link = (base: string, pins: Array<{ nodeId: string; symbol: string }>, sel
 const scaleOf = (page: Page): Promise<number> => page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a);
 
 const row = (id: string, symbol: string): string => `${card(id)} .symbol-row[data-symbol="${symbol}"]`;
-const cell = (page: Page) => page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field .local-directory-cell--file:not([hidden])`).first();
 const follow = (page: Page) => page.locator(".perspective-controls button[aria-label='Follow pins']");
+const cells = (page: Page) => page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field .local-directory-cell--file:not([hidden])`);
+
+/**
+ * The first of `history`'s cells whose card, once pinned, cannot be framed with the subject's name at the scale the
+ * following camera may hold: found by measure on the picture as it is today, by hand, one fresh visit a cell. The box
+ * that holds the subject's name line and the new card, in the map's own units, against the whole frame at the floor
+ * (the arrival's, a twentieth under it, so that no padding decides it). This repository's own map moves under these
+ * cases: until 2026-11-22 the first cell was far enough, and that day `history` gained a file that sorts first and
+ * lands near enough to be framed beside `pathfind.ts`, so the cases that pressed "the first cell" lost their premise.
+ */
+let farCell: Promise<number> | undefined;
+const farCellIndex = (browser: Browser): Promise<number> => farCell ??= (async () => {
+  for (let index = 0; index < 8; index += 1) {
+    const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "hand");
+    const readingK = await scaleOf(page), target = cells(page).nth(index);
+    const path = (await target.getAttribute("data-path"))!;
+    await target.click();
+    await expect(page.locator(card(path))).toHaveCount(1);
+    await still(page);
+    const k = await scaleOf(page), frame = await frameOf(page);
+    const name = (await boxOf(page, `${card(SUBJECT)} .node-title`))!, drawn = (await boxOf(page, card(path)))!;
+    await context.close();
+    const across = (Math.max(name.right, drawn.right) - Math.min(name.left, drawn.left)) / k, down = (Math.max(name.bottom, drawn.bottom) - Math.min(name.top, drawn.top)) / k;
+    if (Math.min((frame.right - frame.left) / across, (frame.bottom - frame.top) / down) < readingK * ARRIVAL_FLOOR_RATIO * 0.95) return index;
+  }
+  throw new Error("none of history's first eight cells lands too far from pathfind.ts to be framed with it");
+})();
 
 test("following, the owner's two pinned symbols are framed with their cards' names; by hand they are not", async ({ browser }) => {
   test.setTimeout(90_000);
@@ -523,14 +549,16 @@ test("following, the owner's two pinned symbols are framed with their cards' nam
 
 test("following, a cell's press far from the subject frames the new card and says the subject is left out; by hand it pans at its scale and says nothing", async ({ browser }) => {
   test.setTimeout(120_000);
-  // The owner's case: the first history cell's card lands about 2,700 map px below pathfind.ts's name, farther than the
-  // floor can hold beside it in a 900 px window, so the newest is framed alone and the subject said left out. After the hold
+  // The owner's case: a history cell whose card lands farther from pathfind.ts's name than the floor can hold beside it
+  // in a 900 px window (about 2,700 map px below it, when this was written, for the first cell), so the newest is framed
+  // alone and the subject said left out. Which cell that is today is found by measure (farCellIndex). After the hold
   // of the pressed handle the rest of the move is under a frame's diagonal at this size, so it eases flat; at 390 px it
   // takes the smooth zoom's path (the evidence's README), which camera-intent.test.ts holds to its shape.
+  const far = await farCellIndex(browser);
   for (const framing of ["hand", "follows"] as const) {
     const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, framing);
     const before = await scaleOf(page);
-    const target = cell(page);
+    const target = cells(page).nth(far);
     const path = (await target.getAttribute("data-path"))!;
     await target.click();
     await expect(page.locator(card(path))).toHaveCount(1);
@@ -550,6 +578,7 @@ test("following, a cell's press far from the subject frames the new card and say
 
 test("the person's wheel takes the camera: a new pin then only pans at the same scale, and Fit gives the following back", async ({ browser }) => {
   test.setTimeout(120_000);
+  const far = await farCellIndex(browser);
   const { context, page } = await visitFraming(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "follows");
   await expect(follow(page)).toHaveAttribute("aria-pressed", "true");
   const frame = await frameOf(page), map = page.locator("#map-container");
@@ -558,7 +587,8 @@ test("the person's wheel takes the camera: a new pin then only pans at the same 
   await still(page);
   await expect(follow(page)).toHaveAttribute("aria-pressed", "false");
   const before = await scaleOf(page);
-  const target = cell(page);
+  // A cell too far to be framed with the subject, found by measure: Fit then says the subject is left out.
+  const target = cells(page).nth(far);
   const path = (await target.getAttribute("data-path"))!;
   await target.click();
   await expect(page.locator(card(path))).toHaveCount(1);

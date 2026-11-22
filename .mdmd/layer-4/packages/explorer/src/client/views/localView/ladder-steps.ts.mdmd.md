@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/ladder-steps.ts`
-- Generated At: 2026-11-19T21:10:16.856Z
+- Generated At: 2026-11-22T06:44:47.228Z
 
 ## Authored
 ### Purpose
@@ -87,24 +87,32 @@ row, the file's name and its More) and overview the overview band's, each at one
 
 #### `farthestRatioOf` {#symbol-farthestratioof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L91)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L99)
 
 ##### `farthestRatioOf` — Summary
 The zoom ratio of a look's last press out, the farthest the camera may stand and still draw that look: the reading
 look's second press, the connections look's sixth, beyond which the overview strips a card to its file's name. An
-arrival that frames the neighbours stops here, at the connections look, so that every name on the map still reads
-(camera-intent.ts, 2026-11-19).
+arrival that frames the neighbours stops here, at the connections look (camera-intent.ts, 2026-11-19).
+
+It is a constant of the ladder and measures nothing of the picture, and it stays one (the root's ruling of
+2026-11-22). It was described as the farthest zoom "at which every card's names still read". That was not true of
+every name: on one picture six names ran up to 28 units past their own buttons, and at every press of the connections
+look, not at this one alone, since the look holds a name at one scale in the map's own units throughout. The fault was
+the look's room for a name, mended that day (card-reading.ts: the name's room across is no wider than its button, and
+a name wider than that takes its second line). What is true here now: every row's name in the frame is drawn at the
+look's held size inside its own button, whole, or cut with an ellipsis and its whole name in the button's title where
+its lines cannot hold it.
 
 #### `LOOK_BANDS` {#symbol-look_bands}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L96)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L104)
 
 ##### `LOOK_BANDS` — Summary
 The ladder's band each look draws with: the stylesheet's rules for that band say what has left.
 
 #### `LOOK_SCALES` {#symbol-look_scales}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L108)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L116)
 
 ##### `LOOK_SCALES` — Summary
 Each look's one held scale for names, controls and dots, in the map's own units. Inside a look a name on screen is its
@@ -118,7 +126,7 @@ holds nothing.
 
 #### `zoomLook (function)` {#symbol-zoomlook-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L114)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L122)
 - Returns: [`ZoomLook`](#symbol-zoomlook-type)
 - Parameters: `previous`: [`ZoomLook`](#symbol-zoomlook-type)
 
@@ -128,7 +136,7 @@ show the same look and a camera resting on a press does not chatter. A ratio tha
 
 #### `ladderStep` {#symbol-ladderstep}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L126)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L134)
 
 ##### `ladderStep` — Summary
 The step of a zoom ratio, given the step shown (null before any): step n is centred on STEP_RATIO^-n, covering half a
@@ -140,21 +148,21 @@ not a positive number keeps the step.
 
 #### `LadderResistances` {#symbol-ladderresistances}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L141)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L149)
 
 ##### `LadderResistances` — Summary
 The resistances of Tuning → 2D Layout: 0 follows the map, 1 holds the screen size the step began with.
 
 #### `LadderScales (interface)` {#symbol-ladderscales-interface}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L147)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L155)
 
 ##### `LadderScales (interface)` — Summary
 A step's held scales, in the map's own units: what a name and a control are multiplied by while the step holds.
 
 #### `ladderScales (function)` {#symbol-ladderscales-function}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L160)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/ladder-steps.ts#L168)
 - Returns: [`LadderScales`](#symbol-ladderscales-interface)
 - Parameters: `resistances`: [`LadderResistances`](#symbol-ladderresistances)
 

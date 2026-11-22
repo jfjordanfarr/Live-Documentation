@@ -340,6 +340,57 @@ const cutBesideRoom = (page: Page) => page.evaluate(() => {
   return { look: map.dataset.look ?? null, cut, whole, wrapped };
 });
 
+/**
+ * Every row's name drawn in the map, against its own button: how far its drawn text runs past the button's box across,
+ * and whether it is whole or cut, and if cut whether the button's title says it whole.
+ */
+const namesInButtons = (page: Page) => page.evaluate(() => {
+  const found: Array<{ name: string; past: number; cut: boolean; titled: boolean; lines: number }> = [];
+  for (const row of document.querySelectorAll<HTMLElement>("#map-container .local-slot-card .symbol-row")) {
+    const label = row.querySelector<HTMLElement>(".symbol-label"), text = row.querySelector<HTMLElement>(".symbol-label-text");
+    if (!label || !text || !text.checkVisibility({ visibilityProperty: true }) || !label.offsetWidth) continue;
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const drawn = [...range.getClientRects()].filter(rect => rect.width > 0 && rect.height > 0), box = label.getBoundingClientRect();
+    if (!drawn.length) continue;
+    const past = Math.max(...drawn.map(rect => Math.max(rect.right - box.right, box.left - rect.left)));
+    const cut = row.classList.contains("local-name-cut") || text.scrollWidth > text.clientWidth + 1 || text.scrollHeight > text.clientHeight + 1;
+    found.push({ name: row.dataset.symbol ?? "", past: Math.round(past * 10) / 10, cut, titled: label.title === (row.dataset.symbol ?? ""), lines: new Set(drawn.map(rect => Math.round(rect.top))).size });
+  }
+  return found;
+});
+
+test("in the connections look every row's name stands inside its own button: whole, on one line or two, or cut with its ellipsis and its whole name in the title", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The five-file picture of this repository, where the still picture's instrument found six names running past their
+  // buttons once the default arrival had pulled back (2026-11-22): the look gave a name the room up to More, and its
+  // button, still narrowed by the Read, the Pin and the type marks that look does not draw, was 22 units short of it.
+  const six = ["committedLiveDocGraph", "sourcesFacts (function)", "resolveSymbolReference", "emitNeighbourResult", "emitReachableResult", "emitSymbolPathResult"];
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
+  await page.goto(`/?view=local&node=${encodeURIComponent("packages/engine/src/live-docs/graph.ts")}`);
+  await page.locator(".local-placed").waitFor();
+  await still(page);
+  // The connections look's first press out and its last: the same rooms in the map's own units at both.
+  let pressed = 0;
+  for (const press of [3, 6]) {
+    for (; pressed < press; pressed += 1) {
+      const before = await page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform);
+      await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+      await expect.poll(() => page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform)).not.toBe(before);
+      await still(page);
+    }
+    expect(await page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.look), `press ${press}`).toBe("connections");
+    const names = await namesInButtons(page);
+    expect(names.length, "names drawn").toBeGreaterThan(20);
+    for (const wanted of six) expect(names.some(row => row.name === wanted), `${wanted} is drawn`).toBe(true);
+    expect(names.filter(row => row.past > 0.5).map(row => `${row.name} runs ${row.past} px past its button`), `press ${press}: no name runs past its own button`).toEqual([]);
+    expect(names.filter(row => row.cut && !row.titled).map(row => row.name), `press ${press}: a name that is cut says itself whole in its title`).toEqual([]);
+  }
+});
+
 test("in the connections and overview looks a symbol's name is cut only where its row holds no further line of it", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto(estate("three"));

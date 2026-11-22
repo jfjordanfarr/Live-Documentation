@@ -116,6 +116,10 @@ export function arrivalEndFrame(content: Bounds, subject: Bounds, frame: Frame, 
  * where it fits together, and where it does not, the more particular of it, the things asked dropped from the first (a
  * row asked for is kept before the name of the file it is in). What is already inside moves nothing. In the picture's
  * units.
+ *
+ * Why the row and not the name, where a card is too tall for both (the root's ruling of 2026-11-22 on the builder's
+ * choice): the row is what was asked for, and the file is still said on the page without its card's name in the frame,
+ * by the search bar and by the context line under the sidebar.
  */
 export function holdAsked(camera: MapTransform, asked: readonly Bounds[], frame: Frame): MapTransform {
   if (!asked.length) return camera;

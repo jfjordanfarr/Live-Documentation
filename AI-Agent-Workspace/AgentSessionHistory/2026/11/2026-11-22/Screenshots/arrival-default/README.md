@@ -163,6 +163,48 @@ The band's part was mine, a tenth to a seventh of the frame at full speed and th
 - The rest's case counted the rest between two frames of its log and once read 1,439 ms for a rest of 1,500, a late frame after the picture settled. It now reads the frame in which the map says each word, by an observer and the frames' own clock, and asks for the whole rest with no allowance.
 - Two cases of the following camera (Framing, Follows Pins) expect the map to say that `pathfind.ts` is left out of the frame after a far cell is pinned, and it no longer says so. The arrival is not in them (they hold reading size, and Follows Pins frames its own arrival). `pathfind.ts` lost a function that day, and a shorter card may now fit the frame with the new one; not looked into.
 
+## Fifth milestone, from 06:12 UTC: the names looked at and mended; the following camera's far cell
+
+**A correction to the fourth milestone's account of the six names.** I wrote that they were clipped across with no ellipsis. I had not looked: I read "is cut off by" in the audit's message and an `overflow-x: clip` in the stylesheet and put the two together. Looked at with the eye's probe (press 3, 1,600 by 1,000; positions in screen pixels):
+
+| Name | Its text ends at | Its button ends at | More begins at |
+| --- | ---: | ---: | ---: |
+| `committedLiveDocGraph` | 2,085 | 2,072 | 2,096 |
+| `sourcesFacts (function)` | 1,737 | 1,727 | 1,763 |
+| `resolveSymbolReference` | 1,741 | 1,738 | 1,771 |
+| `emitNeighbourResult` | 2,069 | 2,064 | 2,089 |
+| `emitReachableResult` | 2,071 | 2,064 | 2,089 |
+| `emitSymbolPathResult` | 2,080 | 2,064 | 2,089 |
+
+Every name was drawn whole, 9 to 30 px clear of More, and nothing clipped it (the text's own width limit was wider than the text). What the audit counts is its oldest check: a text that runs past the box of its own element. The name's button was the shorter thing: in the row's layout the Read, the Pin and the type marks keep their room though the connections look hides them, so the button ends where they begin, while the look's stylesheet gave the name the room up to More. So the fault was real but smaller than I said: the end of the name stood outside its button, where a press or a pointer's rest on it does not reach the name. The design system's fifth principle was not broken by it.
+
+**The mend, as ruled:** in the far looks the name's room across is no wider than its button as laid out (`card-reading.ts`, `--row-label-w`; `reading.css`, `--name-room`). A name wider than that takes the second line its slot already has; one its lines cannot hold is cut by the stylesheet's ellipsis and its button's title says it whole. [`names--after--headCheck-card.png`](names--after--headCheck-card.png): `committedLiveDocGraph` on two lines, "committedLiveDoc" and "Graph", inside its button and clear of More. My eye: it reads as well as it did on one line and costs a line the row had spare; the one-line form was not wrong to look at, so this mend buys the button's truth and not legibility. The other way to the same end, widening the button over the hidden controls' room, would have kept the one line; it changes what a card's content measures when a render is made in that look, which the stylesheet's own note on names forbids, so I did not take it.
+
+The case, `zoom-looks.spec.ts`, "in the connections look every row's name stands inside its own button…", failed on the build before the mend with exactly these six (12.9, 10.2, 2.6, 4.6, 7 and 15.5 px past their buttons at press 3) and passes after it; the audit's count of cut names on that picture is then 0.
+
+**What the mend turned red, not resolved.** `zoom-looks.spec.ts`, "what the connections look shows does not depend on the platform font's line", fails after it on one name: under Segoe UI's line metrics, `formatDocumentationLinkComment` in `documentationLinks.ts` is cut on one line "with 15.4 px below it, a line being 14.0 px". With the narrower room that name now needs a second line, which this machine's lines give it and Segoe UI's do not, the card reading's budget of lines falling one short there. The case counts a line as the name's font size at the scale drawn (14.0 px); the line the look draws is its line height, 12.65 at that scale, 16.1 px, more than the 15.4 px free. So by the line as drawn the row does not hold another, and by the case's measure it does. I changed neither: which measure of a line is the standard is the same question as the still picture's, and it is the root's.
+
+**Two more of `zoom-looks.spec.ts` red on that run, neither mended.** "stepped, chosen by a link, still reports the card ladder's bands and steps at every press" waits two minutes on a Zoom Out that is disabled; "a change of look moves the held parts where motion is welcome…" counts no moving part at one of its four changes of look. Both open the estate by a link that carries a Local Map setting (`zoomLooks`). A link that carries any such setting says the whole of Tuning, each lever it does not name at its default, so it puts the arrival back to Reading, Then Neighbours, Look After over the reading size these cases stored: the page pulls back to the floor and the first has no ten presses outward left. That is the cause of the first by its own evidence (the disabled button) and a likely cause of the second, not shown. The mend belongs in the cases, the link carrying `arrival: "reading"` beside its other setting, and is not made here because no hold was left to see it pass. The other specs that open such links (`descriptions-zoomed-out`, `local-map-directories`, `return-cost`, `tuning-reset`) were not looked at for the same thing.
+
+**The rest's exact measure against a rest of nothing:** failed, as it should ("the map said it rested at reading size": undefined).
+
+**The two cases of the following camera that lost "left out".** The product's meaning has not moved; the map has. Ten of `history`'s 31 cells, each pressed on a fresh visit under Follows Pins at 1,440 by 900 (floor 0.335):
+
+| Cell | File | Box of the subject's name and the new card | Fits the frame at about | Said left out |
+| ---: | --- | --- | ---: | --- |
+| 0 | `bundled.test.ts` | 1,287 by 1,981 | 0.354 | no |
+| 1 | `bundled.ts` | 822 by 2,688 | 0.261 | yes |
+| 2 | `codec.ts` | 1,993 by 2,593 | 0.271 | yes |
+| 3 | `derive.test.ts` | 1,272 by 2,374 | 0.296 | yes |
+| 5 | `directories.test.ts` | 1,765 by 688 | 0.601 | no |
+| 8 | `git.test.ts` | 870 by 449 | 1.22 | no |
+| 12 | `queries.ts` | 1,417 by 2,578 | 0.272 | yes |
+| 15 | `sampling.test.ts` | 1,288 by 1,981 | 0.354 | no |
+| 20 | `summary.test.ts` | 1,352 by 1,710 | 0.411 | no |
+| 30 | `words.ts` | 1,391 by 2,480 | 0.283 | yes |
+
+The subject is said left out exactly where the box does not fit at the floor, in all ten. The cases pressed "the first cell", which was far enough when they were written and is now `bundled.test.ts`, a small card that lands near enough to be framed beside `pathfind.ts`. They now find their far cell by measure (`farCellIndex` in `camera-intent.spec.ts`).
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

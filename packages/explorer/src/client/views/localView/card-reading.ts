@@ -539,12 +539,16 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
       const segments = rowSegments(row.dataset.symbol === "__internals__" ? "Internals" : row.dataset.symbol ?? "");
       // One line of the name as the layout draws it, its box over its lines, with its own scale undone.
       const line = inner.getBoundingClientRect().height / (k * (new DOMMatrix(getComputedStyle(inner).transform).d || 1)) / Math.max(1, text.lines);
-      writes.push([row, "--row-line", line.toFixed(3)], [row, "--row-label-x", ((labelRect.left - wrapperRect.left) / k).toFixed(2)]);
+      // The name's button as laid out: in the far looks the name's room across is no wider than it (2026-11-22). The look
+      // gave the name the room up to More, and the button, still narrowed by the Read, the Pin and the type marks that
+      // those looks do not draw, was shorter: six names of one picture ran up to 28 units past their own buttons.
+      const labelWidth = label.clientWidth;
+      writes.push([row, "--row-line", line.toFixed(3)], [row, "--row-label-x", ((labelRect.left - wrapperRect.left) / k).toFixed(2)], [row, "--row-label-w", String(labelWidth)]);
       // A description shown at reading size, written and not folded, whose first line the connections look may keep.
       const described = !row.classList.contains("local-row-short") && !!row.querySelector(".local-row-kept")?.textContent;
       heads.push({ row, label, text: inner, name: row.dataset.symbol ?? "", top: (rowRect.top - cardRect.top) / k, height: row.clientHeight, room: rowHeight, internals: row.classList.contains("internals-row"), described,
         nameTop, nameHeight, line, moreTop, moreHeight: moreButton?.offsetHeight || 17, segments, measure: measureName,
-        across: (control: number) => roomWidth - (more ? gap + more : 0) * control });
+        across: (control: number) => Math.min(labelWidth, roomWidth - (more ? gap + more : 0) * control) });
     }
     writes.push(
       [row, "--row-h", String(rowHeight)],
@@ -753,7 +757,10 @@ function lookHeadWrites(heads: readonly LookHead[], slotLines: number, gap: numb
       if (look === "connections") {
         const shown = always && kept?.kept ? oneLineName(head.name, head.segments, across(wantedScale) / scale, head.measure, keep === "line-middle" ? "middle" : "end") : head.name;
         const cut = shown !== head.name;
-        writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut ? head.name : ""]);
+        // A name its lines cannot hold whole is cut by the stylesheet, with an ellipsis at the end of its last line; its
+        // button says it whole then too.
+        const short = heldLineCount(head.segments, across(wantedScale) / scale, Number.MAX_SAFE_INTEGER, head.measure) > count;
+        writes.push([head.row, "local-name-cut", cut], [head.text, "data-name-cut", cut ? shown : ""], [head.label, "title", cut || short ? head.name : ""]);
       }
     }
   });
