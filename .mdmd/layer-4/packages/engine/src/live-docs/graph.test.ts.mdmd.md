@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/graph.test.ts`
-- Generated At: 2026-11-19T22:40:10.455Z
+- Generated At: 2026-11-22T07:12:52.923Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ _No public symbols detected_
 - [`compose.composeSymbolBlocks`](./compose.ts.mdmd.md#symbol-composesymbolblocks)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes)
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)

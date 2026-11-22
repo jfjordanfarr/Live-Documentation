@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/connection-geometry.test.ts`
-- Generated At: 2026-11-19T21:10:14.598Z
+- Generated At: 2026-11-22T07:12:54.456Z
 
 ## Authored
 ### Purpose
@@ -28,13 +28,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`connection-geometry.BezierTuningParams`](./connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
+- [`connection-geometry.BezierTuningParams`](./connection-geometry.ts.mdmd.md#symbol-beziertuningparams) (type-only)
 - [`connection-geometry.DEFAULT_BEZIER_TUNING`](./connection-geometry.ts.mdmd.md#symbol-default_bezier_tuning)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](./connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
 - [`connection-geometry.LACE_PITCH`](./connection-geometry.ts.mdmd.md#symbol-lace_pitch)
-- [`connection-geometry.PathResult`](./connection-geometry.ts.mdmd.md#symbol-pathresult)
-- [`connection-geometry.Point`](./connection-geometry.ts.mdmd.md#symbol-point)
-- [`connection-geometry.Rect`](./connection-geometry.ts.mdmd.md#symbol-rect)
+- [`connection-geometry.PathResult`](./connection-geometry.ts.mdmd.md#symbol-pathresult) (type-only)
+- [`connection-geometry.Point`](./connection-geometry.ts.mdmd.md#symbol-point) (type-only)
+- [`connection-geometry.Rect`](./connection-geometry.ts.mdmd.md#symbol-rect) (type-only)
 - [`connection-geometry.boundingBoxFromPoints`](./connection-geometry.ts.mdmd.md#symbol-boundingboxfrompoints)
 - [`connection-geometry.computeBezierPath`](./connection-geometry.ts.mdmd.md#symbol-computebezierpath)
 - [`connection-geometry.computeSelfLoopStubs`](./connection-geometry.ts.mdmd.md#symbol-computeselfloopstubs)

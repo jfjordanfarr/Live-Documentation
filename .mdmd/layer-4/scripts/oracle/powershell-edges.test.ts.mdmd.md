@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/oracle/powershell-edges.test.ts`
-- Generated At: 2026-11-19T21:10:19.451Z
+- Generated At: 2026-11-22T07:12:57.964Z
 
 ## Authored
 ### Purpose
@@ -26,8 +26,8 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`files.readPowerShellAst`](./files.ts.mdmd.md#symbol-readpowershellast)
 - [`files.writePowerShellAst`](./files.ts.mdmd.md#symbol-writepowershellast)
-- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
-- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
+- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
+- [`powershell-edges.PowerShellScriptFacts`](./powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts) (type-only)
 - [`powershell-edges.edgesFromPowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-edgesfrompowershellast)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

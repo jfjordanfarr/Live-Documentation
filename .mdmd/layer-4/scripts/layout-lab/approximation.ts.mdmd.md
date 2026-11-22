@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/approximation.ts`
-- Generated At: 2026-11-19T21:10:18.375Z
+- Generated At: 2026-11-22T07:12:57.423Z
 
 ## Authored
 ### Purpose
@@ -157,10 +157,10 @@ The subject a scope's rows of error are reported under: its bundle's picture in 
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout) (type-only)
-- [`forceGraphData.SpatialGraphNode`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
+- [`forceGraphData.SpatialGraphNode`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphnode) (type-only)
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
-- [`forceGraphLayout.SpatialLink`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
-- [`forceGraphLayout.SpatialNode`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.SpatialLink`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
+- [`forceGraphLayout.SpatialNode`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphLayout.easeSpatialLayout`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)
 - [`forceGraphLayout.spatialFieldOf`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialfieldof)
 - [`forceGraphPhysics.SpatialField`](../../packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
@@ -170,7 +170,7 @@ The subject a scope's rows of error are reported under: its bundle's picture in 
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`evaluate.includeNode`](./evaluate.ts.mdmd.md#symbol-includenode)
 - [`evaluate.scopePins`](./evaluate.ts.mdmd.md#symbol-scopepins)
-- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`scopes.retainedSubject`](./scopes.ts.mdmd.md#symbol-retainedsubject)
 - [`spatial.spatialReport`](./spatial.ts.mdmd.md#symbol-spatialreport)
 <!-- LIVE-DOC:END Dependencies -->

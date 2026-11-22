@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/closed-directory-looks.spec.ts`
-- Generated At: 2026-11-22T02:10:43.448Z
+- Generated At: 2026-11-22T07:12:58.378Z
 
 ## Authored
 ### Purpose
@@ -31,10 +31,10 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.CLOSED_DIRECTORY_LOOKS`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closed_directory_looks)
 - [`types.CLOSED_DIRECTORY_SHAPES`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closed_directory_shapes)
-- [`types.ClosedCellColour`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closedcellcolour)
-- [`types.ClosedDirectoryLook`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectorylook)
-- [`types.ClosedDirectoryShape`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectoryshape)
-- [`types.MarbleChoice`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-marblechoice)
+- [`types.ClosedCellColour`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closedcellcolour) (type-only)
+- [`types.ClosedDirectoryLook`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectorylook) (type-only)
+- [`types.ClosedDirectoryShape`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-closeddirectoryshape) (type-only)
+- [`types.MarbleChoice`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-marblechoice) (type-only)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)

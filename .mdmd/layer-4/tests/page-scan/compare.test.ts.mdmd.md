@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/compare.test.ts`
-- Generated At: 2026-11-22T02:30:00.399Z
+- Generated At: 2026-11-22T07:13:00.714Z
 
 ## Authored
 ### Purpose
@@ -21,8 +21,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`compare.LedgerEntry`](./compare.ts.mdmd.md#symbol-ledgerentry)
-- [`compare.MultipleReadEntry`](./compare.ts.mdmd.md#symbol-multiplereadentry)
+- [`compare.LedgerEntry`](./compare.ts.mdmd.md#symbol-ledgerentry) (type-only)
+- [`compare.MultipleReadEntry`](./compare.ts.mdmd.md#symbol-multiplereadentry) (type-only)
 - [`compare.differencesBetween`](./compare.ts.mdmd.md#symbol-differencesbetween)
 - [`compare.heldToLedger`](./compare.ts.mdmd.md#symbol-heldtoledger)
 - [`compare.readMoreThanOnce`](./compare.ts.mdmd.md#symbol-readmorethanonce)

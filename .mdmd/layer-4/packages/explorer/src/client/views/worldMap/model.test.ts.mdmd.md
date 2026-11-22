@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/worldMap/model.test.ts`
-- Generated At: 2026-11-19T21:10:17.651Z
+- Generated At: 2026-11-22T07:12:56.843Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board) (type-only)
 - [`boardGraph.deriveBoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
-- [`document.LiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc) (type-only)
 - [`document.parseLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)

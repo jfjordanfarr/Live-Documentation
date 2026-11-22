@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/wire-answers.ts`
-- Generated At: 2026-11-22T05:00:50.850Z
+- Generated At: 2026-11-22T14:29:55.492Z
 
 ## Authored
 ### Purpose
@@ -68,23 +68,23 @@ The wires' answers on one 2D map: the panel, and the pointer, the press and the 
 ### Dependencies
 - [`icon-button.CLOSE_ICON`](../../panels/icon-button.ts.mdmd.md#symbol-close_icon)
 - [`icon-button.iconButton`](../../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
-- [`reading-direction.LayoutEnd`](./reading-direction.ts.mdmd.md#symbol-layoutend)
+- [`reading-direction.LayoutEnd`](./reading-direction.ts.mdmd.md#symbol-layoutend) (type-only)
 - [`reading-direction.READS_ATTRIBUTE`](./reading-direction.ts.mdmd.md#symbol-reads_attribute)
 - [`reading-direction.layoutEndAt`](./reading-direction.ts.mdmd.md#symbol-layoutendat)
 - [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
 - [`symbol-highlight.lightConnections`](./symbol-highlight.ts.mdmd.md#symbol-lightconnections)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
-- [`wire-words.WireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-interface)
+- [`wire-words.WireWords`](./wire-words.ts.mdmd.md#symbol-wirewords-interface) (type-only)
 - [`wire-words.headText`](./wire-words.ts.mdmd.md#symbol-headtext)
 - [`wire-words.listText`](./wire-words.ts.mdmd.md#symbol-listtext)
 - [`wire-words.referencesText`](./wire-words.ts.mdmd.md#symbol-referencestext)
 - [`wire-words.sentence`](./wire-words.ts.mdmd.md#symbol-sentence)
 - [`pointerRest.NO_REST`](../pointerRest.ts.mdmd.md#symbol-no_rest)
-- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`PointerRest`](../pointerRest.ts.mdmd.md#symbol-pointerrest) (type-only)
 - [`pointerRest.onTheWay`](../pointerRest.ts.mdmd.md#symbol-ontheway)
 - [`pointerRest.restAt`](../pointerRest.ts.mdmd.md#symbol-restat)
 - [`pointerRest.restedOn`](../pointerRest.ts.mdmd.md#symbol-restedon)
 - [`pointerRest.restsAt`](../pointerRest.ts.mdmd.md#symbol-restsat)
-- [`layout.Avoid`](../worldMap/layout.ts.mdmd.md#symbol-avoid)
+- [`layout.Avoid`](../worldMap/layout.ts.mdmd.md#symbol-avoid) (type-only)
 - [`layout.panelBeside`](../worldMap/layout.ts.mdmd.md#symbol-panelbeside)
 <!-- LIVE-DOC:END Dependencies -->

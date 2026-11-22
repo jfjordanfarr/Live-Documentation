@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/step-panel.ts`
-- Generated At: 2026-11-19T21:10:13.328Z
+- Generated At: 2026-11-22T07:12:53.806Z
 
 ## Authored
 ### Purpose
@@ -59,10 +59,10 @@ Make the panel and its dialog under their parent, hidden until synced.
 ### Dependencies
 - [`format.CommitInfo`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`graph-helpers.escapeHtml`](../graph-helpers.ts.mdmd.md#symbol-escapehtml)
-- [`step-summary.StepSummary`](./step-summary.ts.mdmd.md#symbol-stepsummary-interface)
-- [`step-summary.SummaryDocLink`](./step-summary.ts.mdmd.md#symbol-summarydoclink)
-- [`step-summary.SummaryEdge`](./step-summary.ts.mdmd.md#symbol-summaryedge)
-- [`step-summary.SummaryFile`](./step-summary.ts.mdmd.md#symbol-summaryfile)
+- [`step-summary.StepSummary`](./step-summary.ts.mdmd.md#symbol-stepsummary-interface) (type-only)
+- [`step-summary.SummaryDocLink`](./step-summary.ts.mdmd.md#symbol-summarydoclink) (type-only)
+- [`step-summary.SummaryEdge`](./step-summary.ts.mdmd.md#symbol-summaryedge) (type-only)
+- [`step-summary.SummaryFile`](./step-summary.ts.mdmd.md#symbol-summaryfile) (type-only)
 - [`step-summary.changeCount`](./step-summary.ts.mdmd.md#symbol-changecount)
 - [`step-summary.countWords`](./step-summary.ts.mdmd.md#symbol-countwords)
 - [`step-summary.stepCounts`](./step-summary.ts.mdmd.md#symbol-stepcounts-function)

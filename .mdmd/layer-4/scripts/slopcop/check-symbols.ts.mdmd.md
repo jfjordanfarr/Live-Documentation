@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/slopcop/check-symbols.ts`
 - Entry: command `slopcop:symbols` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-20T06:46:52.296Z
+- Generated At: 2026-11-22T07:12:58.145Z
 
 ## Authored
 ### Purpose
@@ -30,13 +30,13 @@ _No public symbols detected_
 - `node:path` - `path`
 - `node:process` - `process`
 - [`auditedFiles`](./auditedFiles.ts.mdmd.md#symbol-auditedfiles)
-- [`config.SlopcopSymbolConfig`](./config.ts.mdmd.md#symbol-slopcopsymbolconfig)
+- [`config.SlopcopSymbolConfig`](./config.ts.mdmd.md#symbol-slopcopsymbolconfig) (type-only)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)
 - [`config.resolveIgnoreGlobs`](./config.ts.mdmd.md#symbol-resolveignoreglobs)
 - [`config.resolveIncludeGlobs`](./config.ts.mdmd.md#symbol-resolveincludeglobs)
-- [`symbolReferences.SymbolReferenceIssue`](./symbolReferences.ts.mdmd.md#symbol-symbolreferenceissue)
-- [`symbolReferences.SymbolRuleSetting`](./symbolReferences.ts.mdmd.md#symbol-symbolrulesetting)
+- [`symbolReferences.SymbolReferenceIssue`](./symbolReferences.ts.mdmd.md#symbol-symbolreferenceissue) (type-only)
+- [`symbolReferences.SymbolRuleSetting`](./symbolReferences.ts.mdmd.md#symbol-symbolrulesetting) (type-only)
 - [`symbolReferences.findSymbolReferenceAnomalies`](./symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 <!-- LIVE-DOC:END Dependencies -->
 

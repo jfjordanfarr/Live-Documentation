@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/history/snapshot.test.ts`
-- Generated At: 2026-11-19T21:10:13.294Z
+- Generated At: 2026-11-22T07:12:53.792Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeKey`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgekey)
 - [`snapshot.relatedDocLinksOf`](./snapshot.ts.mdmd.md#symbol-relateddoclinksof)
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)

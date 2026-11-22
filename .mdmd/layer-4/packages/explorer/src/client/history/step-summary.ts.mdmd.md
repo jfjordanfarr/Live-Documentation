@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/step-summary.ts`
-- Generated At: 2026-11-19T21:10:13.373Z
+- Generated At: 2026-11-22T07:12:53.824Z
 
 ## Authored
 ### Purpose
@@ -104,8 +104,8 @@ cursor is not seeked again) and whether a path stands in today's bundle.
 - [`sequence.changeAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.seek`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`shape.FileShape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-fileshape)
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`shape.FileShape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-fileshape) (type-only)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeKey`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgekey)
 - [`ticks.followPath`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followpath)
 <!-- LIVE-DOC:END Dependencies -->

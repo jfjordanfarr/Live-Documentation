@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/still-picture.ts`
-- Generated At: 2026-11-22T05:54:30.489Z
+- Generated At: 2026-11-22T07:12:59.387Z
 
 ## Authored
 ### Purpose
@@ -484,12 +484,12 @@ The chain journeys of one bundle as a table.
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
-- [`still-picture-geometry.AdjacencyScore`](./still-picture-geometry.ts.mdmd.md#symbol-adjacencyscore)
-- [`still-picture-geometry.ChannelScore`](./still-picture-geometry.ts.mdmd.md#symbol-channelscore)
-- [`still-picture-geometry.CrossingScore`](./still-picture-geometry.ts.mdmd.md#symbol-crossingscore)
-- [`still-picture-geometry.Polyline`](./still-picture-geometry.ts.mdmd.md#symbol-polyline)
-- [`still-picture-geometry.TourFact`](./still-picture-geometry.ts.mdmd.md#symbol-tourfact)
-- [`still-picture-geometry.TourPan`](./still-picture-geometry.ts.mdmd.md#symbol-tourpan)
+- [`still-picture-geometry.AdjacencyScore`](./still-picture-geometry.ts.mdmd.md#symbol-adjacencyscore) (type-only)
+- [`still-picture-geometry.ChannelScore`](./still-picture-geometry.ts.mdmd.md#symbol-channelscore) (type-only)
+- [`still-picture-geometry.CrossingScore`](./still-picture-geometry.ts.mdmd.md#symbol-crossingscore) (type-only)
+- [`still-picture-geometry.Polyline`](./still-picture-geometry.ts.mdmd.md#symbol-polyline) (type-only)
+- [`still-picture-geometry.TourFact`](./still-picture-geometry.ts.mdmd.md#symbol-tourfact) (type-only)
+- [`still-picture-geometry.TourPan`](./still-picture-geometry.ts.mdmd.md#symbol-tourpan) (type-only)
 - [`still-picture-geometry.crossings`](./still-picture-geometry.ts.mdmd.md#symbol-crossings)
 - [`still-picture-geometry.flowOf`](./still-picture-geometry.ts.mdmd.md#symbol-flowof)
 - [`still-picture-geometry.folderAdjacency`](./still-picture-geometry.ts.mdmd.md#symbol-folderadjacency)

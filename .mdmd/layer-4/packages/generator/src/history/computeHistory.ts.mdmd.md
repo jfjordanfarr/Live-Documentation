@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/generator/src/history/computeHistory.ts`
-- Generated At: 2026-11-21T04:43:24.991Z
+- Generated At: 2026-11-22T07:12:57.044Z
 
 ## Authored
 ### Purpose
@@ -165,19 +165,19 @@ A size in the units a person reads it in.
 - `node:path` - `path`
 - `node:zlib` - `gunzipSync`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`LiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`bundled.bundledSummary`](../../../engine/src/live-docs/history/bundled.ts.mdmd.md#symbol-bundledsummary)
 - [`codec.Interner`](../../../engine/src/live-docs/history/codec.ts.mdmd.md#symbol-interner)
-- [`format.CommitInfo`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo)
+- [`format.CommitInfo`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
 - [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
 - [`format.HISTORY_FILE`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_file)
-- [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens)
-- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
-- [`format.Sampling`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling)
+- [`format.HistoryLens`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historylens) (type-only)
+- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
+- [`format.Sampling`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-sampling) (type-only)
 - [`git.openGitRepository`](../../../engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
 - [`lens.canonicalJson`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-canonicaljson)
 - [`lens.lensOf`](../../../engine/src/live-docs/history/lens.ts.mdmd.md#symbol-lensof)
@@ -187,7 +187,7 @@ A size in the units a person reads it in.
 - [`sequence.SequenceBuilder`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`sequence.momentAt`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-momentat)
 - [`shape.shapeOfSummary`](../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapeofsummary)
-- [`summary.CommitSummary`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary)
+- [`summary.CommitSummary`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-commitsummary) (type-only)
 - [`summary.HISTORY_SUMMARY_FORMAT`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-history_summary_format)
 - [`summary.textHash`](../../../engine/src/live-docs/history/summary.ts.mdmd.md#symbol-texthash)
 - [`textStore.TEXT_STORE_DIRECTORY`](../../../engine/src/live-docs/history/textStore.ts.mdmd.md#symbol-text_store_directory)
@@ -195,7 +195,7 @@ A size in the units a person reads it in.
 - [`versionControl.MainlineChange`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 - [`VersionControl`](../../../engine/src/live-docs/history/versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
 - [`words.WORDS_DIRECTORY`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-words_directory)
-- [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead)
+- [`words.WordsHead`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordshead) (type-only)
 - [`words.wordsStore`](../../../engine/src/live-docs/history/words.ts.mdmd.md#symbol-wordsstore)
 - [`sourceText.throwIfMachineFailure`](../../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)

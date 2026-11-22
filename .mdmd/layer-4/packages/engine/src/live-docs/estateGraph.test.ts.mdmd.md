@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/estateGraph.test.ts`
-- Generated At: 2026-11-19T21:10:11.605Z
+- Generated At: 2026-11-22T07:12:52.898Z
 
 ## Authored
 ### Purpose
@@ -21,13 +21,13 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
-- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
+- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - [`estateGraph.contains`](./estateGraph.ts.mdmd.md#symbol-contains)
 - [`estateGraph.deriveEstateGraph`](./estateGraph.ts.mdmd.md#symbol-deriveestategraph)
-- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

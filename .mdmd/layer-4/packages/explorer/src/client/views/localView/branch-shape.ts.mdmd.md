@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/branch-shape.ts`
-- Generated At: 2026-11-19T21:10:16.112Z
+- Generated At: 2026-11-22T07:12:55.428Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,7 @@ price. Rows pair cards in their column order only within their own membrane, wit
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene)
+- [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
 - [`branch-scene.rowItemsOf`](./branch-scene.ts.mdmd.md#symbol-rowitemsof)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

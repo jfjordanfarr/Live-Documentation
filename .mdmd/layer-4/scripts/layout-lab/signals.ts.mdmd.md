@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/signals.ts`
-- Generated At: 2026-11-19T21:10:18.923Z
+- Generated At: 2026-11-22T07:12:57.639Z
 
 ## Authored
 ### Purpose
@@ -57,13 +57,13 @@ Every signal of a laid-out scene and its routes.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-scene.Scene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scene) (type-only)
-- [`branch-shape.ShapeSignals`](../../packages/explorer/src/client/views/localView/branch-shape.ts.mdmd.md#symbol-shapesignals)
+- [`branch-shape.ShapeSignals`](../../packages/explorer/src/client/views/localView/branch-shape.ts.mdmd.md#symbol-shapesignals) (type-only)
 - [`branch-shape.shapeSignalsOf`](../../packages/explorer/src/client/views/localView/branch-shape.ts.mdmd.md#symbol-shapesignalsof)
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`directory-bands.parentDirectory`](../../packages/explorer/src/client/views/localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`membrane-outline.membraneOutline`](../../packages/explorer/src/client/views/localView/membrane-outline.ts.mdmd.md#symbol-membraneoutline)
 - [`routes.Route`](./routes.ts.mdmd.md#symbol-route) (type-only)
-- [`still-picture-geometry.CrossingScore`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-crossingscore)
-- [`still-picture-geometry.Polyline`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-polyline)
+- [`still-picture-geometry.CrossingScore`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-crossingscore) (type-only)
+- [`still-picture-geometry.Polyline`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-polyline) (type-only)
 - [`still-picture-geometry.crossings`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-crossings)
 <!-- LIVE-DOC:END Dependencies -->

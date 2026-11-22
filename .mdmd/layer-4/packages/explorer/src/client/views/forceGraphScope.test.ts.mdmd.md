@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphScope.test.ts`
-- Generated At: 2026-11-19T21:10:15.288Z
+- Generated At: 2026-11-22T07:12:54.873Z
 
 ## Authored
 ### Purpose
@@ -24,9 +24,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
-- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
+- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink) (type-only)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
-- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode)
+- [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode) (type-only)
 - [`forceGraphScope.componentLandmarks`](./forceGraphScope.ts.mdmd.md#symbol-componentlandmarks)
 - [`forceGraphScope.componentMembers`](./forceGraphScope.ts.mdmd.md#symbol-componentmembers)
 - [`forceGraphScope.connectedNeighbours`](./forceGraphScope.ts.mdmd.md#symbol-connectedneighbours)

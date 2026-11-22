@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/file-identity.ts`
-- Generated At: 2026-11-19T21:10:13.051Z
+- Generated At: 2026-11-22T07:12:53.711Z
 
 ## Authored
 ### Purpose
@@ -65,7 +65,7 @@ Directory names actually containing source files somewhere in the sequence; cita
 - [`sequence.changeAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.seek`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`ticks.FollowedPath`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followedpath)
+- [`ticks.FollowedPath`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followedpath) (type-only)
 - [`ticks.followPath`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followpath)
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)
 - [`graph-search.directoriesOf`](../search/graph-search.ts.mdmd.md#symbol-directoriesof)

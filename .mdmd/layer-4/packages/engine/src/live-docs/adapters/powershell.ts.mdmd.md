@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/powershell.ts`
-- Generated At: 2026-11-21T21:13:43.427Z
+- Generated At: 2026-11-22T07:12:52.295Z
 
 ## Authored
 ### Purpose
@@ -64,7 +64,7 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`): published functions 
 - [`powershell.builtins.SHIPPED_ALIASES`](./powershell.builtins.ts.mdmd.md#symbol-shipped_aliases)
 - [`powershell.builtins.SHIPPED_COMMANDS`](./powershell.builtins.ts.mdmd.md#symbol-shipped_commands)
 - [`powershell.builtins.SHIPPED_MODULES`](./powershell.builtins.ts.mdmd.md#symbol-shipped_modules)
-- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode) (type-only)
 - [`treeSitter.readTree`](./treeSitter.ts.mdmd.md#symbol-readtree)
 - [`archetype.resolveArchetype`](../archetype.ts.mdmd.md#symbol-resolvearchetype)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)

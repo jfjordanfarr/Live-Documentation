@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/history/cursor.test.ts`
-- Generated At: 2026-11-19T21:10:12.979Z
+- Generated At: 2026-11-22T07:12:53.697Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - [`format.HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`sequence.SequenceBuilder`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`sequence.seek`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.shapeDifferences`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shapedifferences)
 - [`cursor.HistoryCursor`](./cursor.ts.mdmd.md#symbol-historycursor)
 - `vitest` - `describe`, `expect`, `it`

@@ -86,11 +86,13 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
       if (exportClause && ts.isNamedExports(exportClause)) {
         for (const specifier of exportClause.elements) {
           const exportedName = specifier.name.text;
-          const declarationKind = specifier.isTypeOnly ? "type" : "unknown";
+          // Its own `type` or its statement's, `export type { A }` (2026-11-22; before, only its own was read).
+          const typeOnly = specifier.isTypeOnly || statement.isTypeOnly;
+          const declarationKind = typeOnly ? "type" : "unknown";
           record({
             name: exportedName,
             kind: declarationKind,
-            isTypeOnly: specifier.isTypeOnly,
+            isTypeOnly: typeOnly,
             isReExport: true,
             ...(exportedName === "default" ? { isDefault: true } : {}),
             location: getNodeLocation(specifier.name, sourceFile)

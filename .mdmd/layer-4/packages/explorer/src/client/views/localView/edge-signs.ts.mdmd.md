@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/edge-signs.ts`
-- Generated At: 2026-11-19T21:10:16.753Z
+- Generated At: 2026-11-22T07:12:55.960Z
 
 ## Authored
 ### Purpose
@@ -44,8 +44,8 @@ Makes the signs inside the view, after its layers so that they paint above the m
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
-- [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
+- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds) (type-only)
+- [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame) (type-only)
 - [`layout-measure.hiddenEdges`](./layout-measure.ts.mdmd.md#symbol-hiddenedges)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

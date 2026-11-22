@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graph.ts`
-- Generated At: 2026-11-22T05:46:12.268Z
+- Generated At: 2026-11-22T07:12:52.934Z
 
 ## Authored
 ### Purpose
@@ -162,9 +162,9 @@ before that the query, and the path before them is percent-decoded, so that `pla
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.LINKS_SECTION`](./document.ts.mdmd.md#symbol-links_section)
-- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
-- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
-- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
+- [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc) (type-only)
+- [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
+- [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
 - [`document.readDocumentationReference`](./document.ts.mdmd.md#symbol-readdocumentationreference)
 - [`markdownLinks.linkPath`](../tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 <!-- LIVE-DOC:END Dependencies -->

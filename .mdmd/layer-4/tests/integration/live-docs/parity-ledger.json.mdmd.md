@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/parity-ledger.json`
-- Generated At: 2026-11-22T02:04:57.589Z
+- Generated At: 2026-11-22T13:53:12.949Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ The parity ledger: one entry for each thing a person can learn or do in the Expl
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`pathfind`](../../../packages/explorer/src/client/pathfind.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

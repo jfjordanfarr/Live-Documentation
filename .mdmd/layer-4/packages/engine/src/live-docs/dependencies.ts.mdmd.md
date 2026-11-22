@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/dependencies.ts`
-- Generated At: 2026-11-22T06:30:47.866Z
+- Generated At: 2026-11-22T07:12:52.710Z
 
 ## Authored
 ### Purpose
@@ -49,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L184)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L197)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -65,7 +65,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L277)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L294)
 - Parameters: `files`: [`ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
 
 ##### `resolveDependency` — Summary
@@ -84,14 +84,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L421)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L438)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L445)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L462)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.
@@ -124,10 +124,10 @@ Object containing augmented symbols and re-export info
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`sourceText.SourceReads`](../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
+- [`sourceText.SourceReads`](../tooling/sourceText.ts.mdmd.md#symbol-sourcereads) (type-only)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
-- [`workspaceProbes.ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.ListedFiles`](../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

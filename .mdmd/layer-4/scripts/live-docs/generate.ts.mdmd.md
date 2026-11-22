@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/generate.ts`
 - Entry: command `live-docs:generate` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-20T16:43:08.260Z
+- Generated At: 2026-11-22T07:12:57.722Z
 
 ## Authored
 ### Purpose
@@ -31,8 +31,8 @@ _No public symbols detected_
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
 - [`liveDocumentationConfig.noReaderHandles`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-noreaderhandles)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`processMark.machineFailure`](../../packages/engine/src/live-docs/processMark.ts.mdmd.md#symbol-machinefailure)

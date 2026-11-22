@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/bundled.test.ts`
-- Generated At: 2026-11-19T22:40:10.497Z
+- Generated At: 2026-11-22T07:12:52.971Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`bundled.bundledSummary`](./bundled.ts.mdmd.md#symbol-bundledsummary)
-- [`summary.CommitSummary`](./summary.ts.mdmd.md#symbol-commitsummary)
+- [`summary.CommitSummary`](./summary.ts.mdmd.md#symbol-commitsummary) (type-only)
 - [`summary.HISTORY_SUMMARY_FORMAT`](./summary.ts.mdmd.md#symbol-history_summary_format)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

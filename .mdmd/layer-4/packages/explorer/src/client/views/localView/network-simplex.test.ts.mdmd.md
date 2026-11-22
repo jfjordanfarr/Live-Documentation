@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/network-simplex.test.ts`
-- Generated At: 2026-11-19T21:10:16.953Z
+- Generated At: 2026-11-22T07:12:56.142Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint)
+- [`network-simplex.Constraint`](./network-simplex.ts.mdmd.md#symbol-constraint) (type-only)
 - [`network-simplex.rankByNetworkSimplex`](./network-simplex.ts.mdmd.md#symbol-rankbynetworksimplex)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

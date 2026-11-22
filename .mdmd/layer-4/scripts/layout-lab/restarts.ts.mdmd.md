@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/restarts.ts`
-- Generated At: 2026-11-19T21:10:18.830Z
+- Generated At: 2026-11-22T07:12:57.605Z
 
 ## Authored
 ### Purpose
@@ -150,21 +150,21 @@ The wider space as a person reads it: every setting on one line, then the settin
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branch-restarts.StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
-- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals)
+- [`branch-restarts.StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts) (type-only)
+- [`branch-restarts.StartSignals`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startsignals) (type-only)
 - [`branch-restarts.churnOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-churnof)
 - [`branch-restarts.scoreOf`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-scoreof)
 - [`branch-search.beginSearch`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-beginsearch)
 - [`branch-search.judgeStart`](../../packages/explorer/src/client/views/localView/branch-search.ts.mdmd.md#symbol-judgestart)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
-- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
+- [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig) (type-only)
 - [`evaluate`](./evaluate.ts.mdmd.md#symbol-evaluate)
 - [`report.differences`](./report.ts.mdmd.md#symbol-differences)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun) (type-only)
 - [`Signals`](./signals.ts.mdmd.md#symbol-signals) (type-only)
-- [`sweep.LeverValues`](./sweep.ts.mdmd.md#symbol-levervalues)
-- [`sweep.Weights`](./sweep.ts.mdmd.md#symbol-weights)
+- [`sweep.LeverValues`](./sweep.ts.mdmd.md#symbol-levervalues) (type-only)
+- [`sweep.Weights`](./sweep.ts.mdmd.md#symbol-weights) (type-only)
 - [`sweep.configurations`](./sweep.ts.mdmd.md#symbol-configurations)
 - [`sweep.scoreOf`](./sweep.ts.mdmd.md#symbol-scoreof)
 <!-- LIVE-DOC:END Dependencies -->

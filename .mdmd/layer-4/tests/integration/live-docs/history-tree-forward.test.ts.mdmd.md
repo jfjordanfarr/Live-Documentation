@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/history-tree-forward.test.ts`
-- Generated At: 2026-11-20T09:35:04.704Z
+- Generated At: 2026-11-22T07:12:59.834Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,7 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`liveDocumentationConfig.parseLiveDocumentationConfigBytes`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-parselivedocumentationconfigbytes)
 - [`git.openGitRepository`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)

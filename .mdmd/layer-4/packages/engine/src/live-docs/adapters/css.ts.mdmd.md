@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/css.ts`
-- Generated At: 2026-11-22T04:54:28.393Z
+- Generated At: 2026-11-22T07:12:51.936Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,7 @@ Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, 
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles) (type-only)
 - [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 

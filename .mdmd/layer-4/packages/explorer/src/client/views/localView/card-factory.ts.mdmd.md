@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-factory.ts`
-- Generated At: 2026-11-19T21:10:16.304Z
+- Generated At: 2026-11-22T07:12:55.595Z
 
 ## Authored
 ### Purpose
@@ -200,16 +200,16 @@ reading look and the line's marks from the connections look out.
 - [`types.ClosedDirectoryShape`](../../types.ts.mdmd.md#symbol-closeddirectoryshape) (type-only)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`forceGraphAppearance.spatialKindOf`](../forceGraphAppearance.ts.mdmd.md#symbol-spatialkindof)
-- [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
-- [`branches.HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents)
+- [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory) (type-only)
+- [`branches.HiddenContents`](./branches.ts.mdmd.md#symbol-hiddencontents) (type-only)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
-- [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell)
-- [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface)
-- [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents)
-- [`closed-looks.Rect`](./closed-looks.ts.mdmd.md#symbol-rect)
+- [`closed-looks.Cell`](./closed-looks.ts.mdmd.md#symbol-cell) (type-only)
+- [`closed-looks.CellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-interface) (type-only)
+- [`closed-looks.ClosedContents`](./closed-looks.ts.mdmd.md#symbol-closedcontents) (type-only)
+- [`closed-looks.Rect`](./closed-looks.ts.mdmd.md#symbol-rect) (type-only)
 - [`closed-looks.SHAPE_CORNER`](./closed-looks.ts.mdmd.md#symbol-shape_corner)
-- [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin)
+- [`closed-looks.Skin`](./closed-looks.ts.mdmd.md#symbol-skin) (type-only)
 - [`closed-looks.cellField`](./closed-looks.ts.mdmd.md#symbol-cellfield-function)
 - [`closed-looks.fieldBands`](./closed-looks.ts.mdmd.md#symbol-fieldbands)
 - [`closed-looks.lineMarks`](./closed-looks.ts.mdmd.md#symbol-linemarks)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphData.test.ts`
-- Generated At: 2026-11-19T21:10:14.867Z
+- Generated At: 2026-11-22T07:12:54.626Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`forceGraphData.LabelledNode`](./forceGraphData.ts.mdmd.md#symbol-labellednode)
+- [`forceGraphData.LabelledNode`](./forceGraphData.ts.mdmd.md#symbol-labellednode) (type-only)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`forceGraphData.labelNamesOf`](./forceGraphData.ts.mdmd.md#symbol-labelnamesof)
 - [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)

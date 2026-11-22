@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/adapters/c.test.ts`
-- Generated At: 2026-11-19T21:10:09.065Z
+- Generated At: 2026-11-22T07:12:51.717Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 - [`c.DEFAULT_INCLUDE_STRATEGY`](./c.ts.mdmd.md#symbol-default_include_strategy)
-- [`c.IncludeStrategy`](./c.ts.mdmd.md#symbol-includestrategy)
+- [`c.IncludeStrategy`](./c.ts.mdmd.md#symbol-includestrategy) (type-only)
 - [`c.analyzeCSource`](./c.ts.mdmd.md#symbol-analyzecsource)
 - [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
 - [`c.resolveInclude`](./c.ts.mdmd.md#symbol-resolveinclude)

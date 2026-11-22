@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/history/summary.test.ts`
-- Generated At: 2026-11-19T21:10:12.306Z
+- Generated At: 2026-11-22T07:12:53.214Z
 
 ## Authored
 ### Purpose
@@ -22,8 +22,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.DEFAULT_AUTHORED_BLOCK`](../document.ts.mdmd.md#symbol-default_authored_block)
-- [`document.LiveDoc`](../document.ts.mdmd.md#symbol-livedoc)
-- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
+- [`document.LiveDoc`](../document.ts.mdmd.md#symbol-livedoc) (type-only)
+- [`graph.LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.deriveLiveDocGraph`](../graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`shape.shapeOfSummary`](./shape.ts.mdmd.md#symbol-shapeofsummary)
 - [`summary.descriptionText`](./summary.ts.mdmd.md#symbol-descriptiontext)

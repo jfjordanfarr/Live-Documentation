@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/estateGraph.ts`
-- Generated At: 2026-11-22T05:46:12.244Z
+- Generated At: 2026-11-22T07:12:52.906Z
 
 ## Authored
 ### Purpose
@@ -54,10 +54,10 @@ True when `inner` is the same folder as `outer` or lies inside it; the empty fol
 ### Dependencies
 - [`board.DOOR_KINDS`](./board.ts.mdmd.md#symbol-door_kinds)
 - [`document.symbolName`](./document.ts.mdmd.md#symbol-symbolname)
-- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation)
-- [`graph.GraphEdge`](./graph.ts.mdmd.md#symbol-graphedge)
-- [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
-- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.DocLocation`](./graph.ts.mdmd.md#symbol-doclocation) (type-only)
+- [`graph.GraphEdge`](./graph.ts.mdmd.md#symbol-graphedge) (type-only)
+- [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.graphFilesByPath`](./graph.ts.mdmd.md#symbol-graphfilesbypath)
 - [`openings.ADDRESS_KIND`](./openings.ts.mdmd.md#symbol-address_kind)
 - [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/moment-files.ts`
-- Generated At: 2026-11-19T21:10:13.128Z
+- Generated At: 2026-11-22T07:12:53.742Z
 
 ## Authored
 ### Purpose
@@ -35,7 +35,7 @@ The file-level picture of a moment's shape.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape)
+- [`Shape`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-shape) (type-only)
 - [`shape.edgeEnds`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgeends)
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)
 - [`branches.directoryIndex`](../views/localView/branches.ts.mdmd.md#symbol-directoryindex)

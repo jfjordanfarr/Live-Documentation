@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/perspectiveTransition.ts`
-- Generated At: 2026-11-21T12:03:24.286Z
+- Generated At: 2026-11-22T07:12:56.506Z
 
 ## Authored
 ### Purpose
@@ -106,7 +106,7 @@ zoom controls kept below it, which would otherwise grow the held map into that r
 - [`palette.mix`](../palette.ts.mdmd.md#symbol-mix)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`perspectiveBodies.SceneBody`](./perspectiveBodies.ts.mdmd.md#symbol-scenebody) (type-only)
-- [`perspectiveGeometry.TransitionPoint`](./perspectiveGeometry.ts.mdmd.md#symbol-transitionpoint)
+- [`perspectiveGeometry.TransitionPoint`](./perspectiveGeometry.ts.mdmd.md#symbol-transitionpoint) (type-only)
 - [`perspectiveGeometry.directoryOpacity`](./perspectiveGeometry.ts.mdmd.md#symbol-directoryopacity)
 - [`perspectiveGeometry.gatherWire`](./perspectiveGeometry.ts.mdmd.md#symbol-gatherwire)
 - [`perspectiveGeometry.outlineLength`](./perspectiveGeometry.ts.mdmd.md#symbol-outlinelength)

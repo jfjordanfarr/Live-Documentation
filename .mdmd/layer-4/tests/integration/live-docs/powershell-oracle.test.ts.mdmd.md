@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/powershell-oracle.test.ts`
-- Generated At: 2026-11-21T07:51:41.448Z
+- Generated At: 2026-11-22T07:12:59.985Z
 
 ## Authored
 ### Purpose
@@ -35,9 +35,9 @@ _No public symbols detected_
 - [`files.readPowerShellAst`](../../../scripts/oracle/files.ts.mdmd.md#symbol-readpowershellast)
 - [`fixture.listFixtureFiles`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-listfixturefiles)
 - [`powershell-edges.POWERSHELL_EXTENSIONS`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershell_extensions)
-- [`powershell-edges.PowerShellDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts)
-- [`powershell-edges.PowerShellHelp`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellhelp)
-- [`powershell-edges.PowerShellScriptFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts)
+- [`powershell-edges.PowerShellDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershelldatafilefacts) (type-only)
+- [`powershell-edges.PowerShellHelp`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellhelp) (type-only)
+- [`powershell-edges.PowerShellScriptFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-powershellscriptfacts) (type-only)
 - [`powershell-edges.isDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-wires.ParserWorkspace`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-parserworkspace)
 - [`powershell-wires.isLibraryByParser`](../../../scripts/oracle/powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/card-reading.ts`
-- Generated At: 2026-11-22T06:44:46.519Z
+- Generated At: 2026-11-22T07:12:55.641Z
 
 ## Authored
 ### Purpose
@@ -112,25 +112,25 @@ room they bound, from the card's last reading: no layout is read.
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`markdown.renderMarkdown`](../../markdown.ts.mdmd.md#symbol-rendermarkdown)
 - [`item-menu.createItemMenu`](../../panels/item-menu.ts.mdmd.md#symbol-createitemmenu)
-- [`reader-links.ReaderLinkContext`](../../reader-links.ts.mdmd.md#symbol-readerlinkcontext)
+- [`reader-links.ReaderLinkContext`](../../reader-links.ts.mdmd.md#symbol-readerlinkcontext) (type-only)
 - [`reader-links.createReaderLinkHandler`](../../reader-links.ts.mdmd.md#symbol-createreaderlinkhandler)
 - [`reader-sections.authoredSections`](../../reader-sections.ts.mdmd.md#symbol-authoredsections)
-- [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
+- [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.DescriptionsZoomedOut`](../../types.ts.mdmd.md#symbol-descriptionszoomedout) (type-only)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`card-factory.drawHeldLooks`](./card-factory.ts.mdmd.md#symbol-drawheldlooks)
 - [`closed-looks.CELLS`](./closed-looks.ts.mdmd.md#symbol-cells)
 - [`directory-handle.CLOSED_FOOT`](./directory-handle.ts.mdmd.md#symbol-closed_foot)
-- [`directory-handle.ClosedSibling`](./directory-handle.ts.mdmd.md#symbol-closedsibling)
+- [`directory-handle.ClosedSibling`](./directory-handle.ts.mdmd.md#symbol-closedsibling) (type-only)
 - [`directory-handle.HANDLE_FLOOR`](./directory-handle.ts.mdmd.md#symbol-handle_floor)
 - [`directory-handle.HANDLE_INDENT`](./directory-handle.ts.mdmd.md#symbol-handle_indent)
 - [`directory-handle.closedFamily`](./directory-handle.ts.mdmd.md#symbol-closedfamily-function)
 - [`directory-handle.handleParts`](./directory-handle.ts.mdmd.md#symbol-handleparts)
 - [`held-lines.CONTROLS_GAP`](./held-lines.ts.mdmd.md#symbol-controls_gap)
 - [`held-lines.HELD_BANDS`](./held-lines.ts.mdmd.md#symbol-held_bands)
-- [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband)
-- [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms)
+- [`held-lines.HeldBand`](./held-lines.ts.mdmd.md#symbol-heldband) (type-only)
+- [`held-lines.TitleRooms`](./held-lines.ts.mdmd.md#symbol-titlerooms) (type-only)
 - [`held-lines.chooseHeldHeader`](./held-lines.ts.mdmd.md#symbol-chooseheldheader)
 - [`held-lines.chooseNameHeader`](./held-lines.ts.mdmd.md#symbol-choosenameheader)
 - [`held-lines.heldLineCount`](./held-lines.ts.mdmd.md#symbol-heldlinecount)
@@ -138,7 +138,7 @@ room they bound, from the card's last reading: no layout is read.
 - [`held-lines.heldTitle`](./held-lines.ts.mdmd.md#symbol-heldtitle)
 - [`held-lines.rowSegments`](./held-lines.ts.mdmd.md#symbol-rowsegments)
 - [`ladder-rooms.FILE_KEPT_AIR`](./ladder-rooms.ts.mdmd.md#symbol-file_kept_air)
-- [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount)
+- [`ladder-rooms.FootCount`](./ladder-rooms.ts.mdmd.md#symbol-footcount) (type-only)
 - [`ladder-rooms.HEAD_SPACE`](./ladder-rooms.ts.mdmd.md#symbol-head_space)
 - [`ladder-rooms.HIGHLIGHT_BELOW`](./ladder-rooms.ts.mdmd.md#symbol-highlight_below)
 - [`ladder-rooms.dotRoom`](./ladder-rooms.ts.mdmd.md#symbol-dotroom)
@@ -158,8 +158,8 @@ room they bound, from the card's last reading: no layout is read.
 - [`ladder-steps.LAST_STEP`](./ladder-steps.ts.mdmd.md#symbol-last_step)
 - [`ladder-steps.LOOK_BANDS`](./ladder-steps.ts.mdmd.md#symbol-look_bands)
 - [`ladder-steps.LOOK_SCALES`](./ladder-steps.ts.mdmd.md#symbol-look_scales)
-- [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances)
-- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type)
+- [`ladder-steps.LadderResistances`](./ladder-steps.ts.mdmd.md#symbol-ladderresistances) (type-only)
+- [`ladder-steps.ZoomLook`](./ladder-steps.ts.mdmd.md#symbol-zoomlook-type) (type-only)
 - [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
 - [`name-cut.oneLineName`](./name-cut.ts.mdmd.md#symbol-onelinename)
 - [`overview-files.COMPACT_AIR`](./overview-files.ts.mdmd.md#symbol-compact_air)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/search-bar.ts`
-- Generated At: 2026-11-19T21:10:24.126Z
+- Generated At: 2026-11-22T07:12:59.273Z
 
 ## Authored
 ### Purpose
@@ -67,7 +67,7 @@ The key of the newest retained item in a snapshot, or null.
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
-- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
+- [`compressed-url-state.UrlStateSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`types.PathDestination`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-pathdestination) (type-only)

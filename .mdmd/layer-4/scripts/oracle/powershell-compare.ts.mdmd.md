@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/oracle/powershell-compare.ts`
 - Entry: command `oracle:powershell` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-21T05:53:29.077Z
+- Generated At: 2026-11-22T07:12:57.955Z
 
 ## Authored
 ### Purpose
@@ -75,15 +75,15 @@ Given the hand reading, its rows of the folder's corpus are scored against both 
 - `node:process` - `process`
 - [`powershell.powershellAdapter`](../../packages/engine/src/live-docs/adapters/powershell.ts.mdmd.md#symbol-powershelladapter)
 - [`core.SourceAnalysisResult`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
-- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast)
+- [`powershell-edges.PowerShellAst`](./powershell-edges.ts.mdmd.md#symbol-powershellast) (type-only)
 - [`powershell-edges.isDataFileFacts`](./powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - [`powershell-edges.parsePowerShellFixture`](./powershell-edges.ts.mdmd.md#symbol-parsepowershellfixture)
-- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict)
-- [`powershell-verdicts.VerdictScore`](./powershell-verdicts.ts.mdmd.md#symbol-verdictscore)
+- [`powershell-verdicts.HandVerdict`](./powershell-verdicts.ts.mdmd.md#symbol-handverdict) (type-only)
+- [`powershell-verdicts.VerdictScore`](./powershell-verdicts.ts.mdmd.md#symbol-verdictscore) (type-only)
 - [`powershell-verdicts.readVerdicts`](./powershell-verdicts.ts.mdmd.md#symbol-readverdicts)
 - [`powershell-verdicts.scoreVerdicts`](./powershell-verdicts.ts.mdmd.md#symbol-scoreverdicts)
 - [`powershell-wires.ParserWorkspace`](./powershell-wires.ts.mdmd.md#symbol-parserworkspace)
-- [`powershell-wires.ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames)
+- [`powershell-wires.ShippedNames`](./powershell-wires.ts.mdmd.md#symbol-shippednames) (type-only)
 - [`powershell-wires.askShippedNames`](./powershell-wires.ts.mdmd.md#symbol-askshippednames)
 - [`powershell-wires.isLibraryByParser`](./powershell-wires.ts.mdmd.md#symbol-islibrarybyparser)
 - [`powershell-wires.parserLoads`](./powershell-wires.ts.mdmd.md#symbol-parserloads)

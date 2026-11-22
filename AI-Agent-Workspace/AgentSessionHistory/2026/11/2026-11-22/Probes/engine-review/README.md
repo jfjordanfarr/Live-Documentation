@@ -223,3 +223,150 @@ Every malformed one exits 1 with a message. None reads standard input: each was 
 - **Item 5.** What the merges between branches may have broken was not examined.
 - **The registers.** Only the C# oracle's documentation comparison and the parity ledger were read for this. The PowerShell and SQL ledgers and the page check's `differences.json` were not.
 - **Stated bounds.** Each answer was not checked against its stated bound.
+
+## 2026-11-22, last: the third pass
+
+This pass reviews `3cd947724`, the day's tip, merged in with a plain merge and no conflict. Every finding of the first two passes had been mended and merged by then. The pass gated one rebuild of the history and the day's landing on `main`.
+
+**Nothing found stops either of them.**
+
+- **The history.** The history and a checkout agree on a made repository whose files carry a plain object's member names. No import resolved by a kept file was lost for a reason other than "left out".
+- **The two new findings.** Both are in the C# reader's resolution of an author's documentation reference. That relation is held apart from the edges, so neither moves a use, a path or a reachability answer. Each does show a person a wrong link, or a missing one, in a symbol's Links list.
+
+### Findings of the third pass, in rank order
+
+#### A wrong fact shown: a member named through a type that only inherits it is linked; the compiler finds nothing
+
+- **Input.** Two projects. In `Lib`, `Derived : Base`. `Derived` declares `Grow(Calc[])`, and `Base` declares `Grow(Calc)`, `Shrink(Calc)` and a property `Layout`. `App` names the members through `Derived`.
+- **The C# compiler's answer.** It resolves none of these references:
+  - `Lib.Derived.Grow(Lib.Calc)`;
+  - `Lib.Derived.Shrink(Lib.Calc)`;
+  - `Lib.Derived.Shrink`;
+  - `Lib.Derived.Layout`.
+
+  Two runs agree on this. `scripts/oracle/csharp-compiler.cs` (Roslyn 4.12, without framework references) gives it, with the same references inside `Lib` too. So does `dotnet build` with the framework and `GenerateDocumentationFile`, which warns CS1574 "could not be resolved" for each.
+- **The reader's answer.** It links each one to `Base`'s declaration.
+- **Why.** The reader's stated rule says the opposite of the compiler: "A member named through its type (`Base.Gadget`) is found where the type inherits it too". So does its own case in `csharp.test.ts` ("Named through its type, an inherited member is found": `Derived.Layout`), and so does the day's new fall-back to the base types' overloads. None of the three was held to the compiler on such a reference. The mended oracle reports these as "the compiler resolves the reference to nothing, and the reader links it".
+- **Test.** `packages/engine/src/live-docs/adapters/csharp.cref-inherited-member.test.ts`, 4 red. Two controls are green: `Derived`'s own `Grow(Lib.Calc[])`, and `Shrink` through `Base`. The existing case in `csharp.test.ts` will need to change with the mend.
+
+#### A link the author made is missing: a reference that renames a generic's type parameter is left as text
+
+- **Input.** `Lib.Calc.Echo{U}(U)` for `Echo<T>(T)`, and `Lib.Box{X}.Put(X)` for `Box<T>.Put(T)`.
+- **The compiler's answer.** It binds both, by the type parameter's position. The oracle gives this, and `dotnet build` raises no warning.
+- **The reader's answer.** It links nothing.
+- **Why.** `parameterShape` compares the written name, so `X` is not `T` to it.
+- **Test.** `packages/engine/src/live-docs/adapters/csharp.cref-renamed-type-parameters.test.ts`, 2 red. The spellings as declared are green.
+
+### Attacked and held in the third pass
+
+**What a scan leaves out is never read.** A made workspace held excluded `generated/api.ts` and `generated/types.ts`. Five kept files imported them in every form the reader takes:
+- `import` with and without `.js`;
+- a dynamic `import()`;
+- `export *`;
+- a re-export chain through a kept barrel;
+- an absent `./gone` and `./missing`.
+
+The docs label each as written. The run's notices count five imports and two re-exports-of-all, by file and specifier, which is what I counted by hand.
+
+For a kept file, the resolver's candidates are the same strings on the listing as on the disk: a `.js` specifier naming its `.ts` source, an `index` file, the `@/` and `~/` aliases. The listing and the disk differ only for:
+- a path the scan does not keep;
+- a path reached through a symbolic link to a folder (the walk does not follow one);
+- a path outside the workspace.
+
+The second pass recorded each of these as a broken link at the base, not a resolved import. One older gap was seen, not new: `require("./nothere")` in a TypeScript file is read as no dependency at all.
+
+**The graph's files keyed with no prototype.** A made git repository of two commits had files named `__proto__`, `constructor`, `toString`, `hasOwnProperty` and `valueOf`, `src/__proto__.ts` and `src/constructor.ts`, with a configuration naming the root-level ones.
+- The history's paths, and its last step's files with their dependencies, equal a checkout's index file for file.
+- `inspect` answers to and from them: `--reachable`, `--to`, `--direction both --json` and `--groups --json`.
+- `lint` validates all eleven.
+- The board was not exercised: the made board was not in its format.
+- The Explorer's built bundle was not tried.
+
+**The author's reference as mended.** Each of these agrees with the compiler, declaration by declaration:
+- overloads told apart by `in`, by `ref readonly`, by `ref`, by array and by `params`;
+- `out` written where the overload takes `ref`: nothing on both sides;
+- a nullable annotation `Lib.Calc?` on a reference type;
+- an extension method, named with its `this` parameter left off;
+- a method of a generic type named through its own type parameter;
+- `Box{X}.Put(Lib.Calc)`.
+
+**The oracle's register.** `csharp-oracle.test.ts` now holds each documentation difference by cause and entry, so a new one fails. `framework` is filed only where a parameter writes a framework keyword or a type the folder does not declare. Nothing was found that would accept a new miss silently.
+
+### Not reached in the third pass
+
+- **The manifest reader as rewritten** (item 3).
+- **The path's new rule** (item 5): three nested ends, the scan root as an end, a directory whose only file is the other end, and the JSON against the text.
+- **Item 6:** the merges between branches, the PowerShell and SQL ledgers, the page check's `differences.json`, and each answer against its stated bound.
+- **The Explorer's lookups and the page's built bundle** with a file named `__proto__`.
+
+## 2026-11-22, at the close: the fourth pass
+
+This pass runs on the branch as it stood after the third pass: `7449cfea8`, which is `3cd947724` with the third pass's tests.
+
+**Nothing found here should stop the history rebuild or the landing on `main`.** The one finding is a sentence of the command line's that denies a path in words that are false for nested ends. It moves no fact of the graph, the history or the page.
+
+### Findings of the fourth pass, in rank order
+
+#### A wrong fact shown: between nested ends, the denial of a path is written from the ends as asked
+
+- **Input.** `src/lone/w.ts` uses `src/lone/z.ts`, and `src/a.ts` stands beside them.
+- **Commands and answers.**
+  - `inspect --from src/lone --to src --direction both` says `src/ taken without src/lone/` once at the top. It then prints `No file of src/lone/ uses a file of src/, directly or through other files.` and `No file of src/ uses a file of src/lone/, directly or through other files.`
+  - `inspect --from src --to src/lone --direction outbound` prints `No path runs from src/ to src/lone/ (outbound), nor the other way.`, with no word of the narrowing.
+- **Why it is wrong.** `w.ts` is a file of both ends and uses `z.ts`, so each sentence is false as printed. `emitDualDirectionResult` and the one-way answer that finds nothing write their denials from the ends as typed, not from the ends `endsApart` walked.
+- **Where it came from.** Two of the day's mends meet here: the second pass's sentence for the search both ways, and the rule of nested ends.
+- **Elsewhere.** The default answer (`No path runs between src/ and src/lone/, either way; src/ taken without src/lone/.`) carries the clause and is true.
+- **Test.** `scripts/live-docs/inspect.narrowed-end-denials.test.ts`, red. It first checks, through the command line's own neighbours, the fact it relies on.
+
+### A fork for the root: the two surfaces prefer opposite directions when both run
+
+The page and the command line walk through the same `walkBetween`, with the same `endsApart`, and agree on whether a path exists in every case below. Where paths run both ways, though, each tells a different one:
+
+- The command line, with no `--direction`, tells first the path along what `--from` uses.
+- The page's `findPath` tells first the path along what uses `--from`, the direction the map draws (its own case: "prefers the drawable direction when the files depend on each other").
+
+So `--from src/a.ts --to src` answers `src/a.ts uses src/b.ts`, while the page answers `src/a.ts > src/sub/c.ts`, that is, `c.ts` uses `a.ts`. Both are true. Whether one question should get one answer on both surfaces is the root's to rule; no test is added.
+
+### A gap between the surfaces: the scan root as an end
+
+The engine's `under` says "the scan root, "", holds everything", and the page's path ends take a directory of `""` as every file. There `findPath` from the root to `src/b.ts` answers `src/a.ts` uses `src/b.ts`.
+
+The command line refuses the root as an end:
+- `--from .` answers "Unable to resolve --from '.'.";
+- `--from ""` answers that `--from` is required.
+
+The refusal is the command line's honest limit or a gap to close, and that is the root's to rule; no test is added.
+
+### Attacked and held in the fourth pass
+
+**The path's rule.** I built a workspace with `src/b.ts`, `src/a.ts`, `src/sub/c.ts`, `src/sub/deep/d.ts`, `src/only/x.ts`, `src/lone/` and `lib/y.ts`. Each case below was asked by text and by `--json`, and of the page's `findPath` over the same graph. Text and JSON agree throughout, and the page finds a path exactly when the command line does.
+
+- **Three levels of nesting, both ways:** `src` and `src/sub`, `src` and `src/sub/deep`, `src/sub` and `src/sub/deep`, and `src/sub/deep` to `src`. Each path runs between the inner end and the rest of the outer, and the answer says which end was taken without which.
+- **A directory whose only file is the other end:** `src/only` and `src/only/x.ts`, both ways. "the two ends are the same", exit 1, `narrowed: "same"`.
+- **A file and its own directory, both ways:** a path to the rest of the directory.
+- **One directory in two spellings:** `src` and `src/`, and `src` and `SRC`. "the two ends are the same".
+- **`--direction both` between nested ends with a path:** the paths are right; the denials are the finding above.
+
+**A path at a moment of the history.** The parity ledger registers this as a gap: `--at --from A --to B` gives the links between the two files, not a path, and is held by its symptom. Not re-measured.
+
+**The registers.** Each would fail on a made change, by its own check:
+- the PowerShell hand reading (`powershell-judged.test.ts`): differences, arguable rows and unscored rows each held by exact equality, and the agreeing count derived from them;
+- the SQL oracle (`sql-oracle.test.ts`): `disagreements(report)` equal to `MEASURED_MISSES` for each fixture;
+- the page check: `readsHeldToLedger` and `heldToLedger` report both unlisted and gone entries;
+- the package register: its counts are compared whole.
+
+This was found by reading these checks; the registers were not mutated and run.
+
+**Stated bounds.** A file using 205 others and used by 250:
+- `inspect --from hub.ts --direction both` lists 200 each way and says `… and N more, not listed`;
+- its JSON gives `count` 205 and 250, 200 files each, and `cut` 5 and 50.
+
+`--reachable` and `--groups` list everything they reach, and claim no bound.
+
+**Cases made vacuous by the merges.** I read the path finder's cases in `pathfind.test.ts` and the Explorer's `pathfind.test.ts`. Each holds for the reason its name gives under `endsApart`. A file alone in both sets now fails at `narrowed: "same"`, before any walk, which is still the rule its name states. The graph's and the C# reader's cases were not read for this.
+
+### Not reached in the fourth pass
+
+- **The board's bound of 20.** My made board was not in the board's format.
+- **The graph's and the C# reader's cases**, read for a case made vacuous.
+- **The manifest reader as rewritten.**

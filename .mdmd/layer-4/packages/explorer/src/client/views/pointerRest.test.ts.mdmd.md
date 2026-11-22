@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/pointerRest.test.ts`
-- Generated At: 2026-11-22T02:10:39.499Z
+- Generated At: 2026-11-22T14:29:55.726Z
 
 ## Authored
 ### Purpose
@@ -22,10 +22,10 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`pointerRest.NO_REST`](./pointerRest.ts.mdmd.md#symbol-no_rest)
-- [`PointerRest`](./pointerRest.ts.mdmd.md#symbol-pointerrest)
+- [`PointerRest`](./pointerRest.ts.mdmd.md#symbol-pointerrest) (type-only)
 - [`pointerRest.REST_DWELL`](./pointerRest.ts.mdmd.md#symbol-rest_dwell)
 - [`pointerRest.REST_TOLERANCE`](./pointerRest.ts.mdmd.md#symbol-rest_tolerance)
-- [`pointerRest.RestPoint`](./pointerRest.ts.mdmd.md#symbol-restpoint)
+- [`pointerRest.RestPoint`](./pointerRest.ts.mdmd.md#symbol-restpoint) (type-only)
 - [`pointerRest.WAY_SLACK`](./pointerRest.ts.mdmd.md#symbol-way_slack)
 - [`pointerRest.onTheWay`](./pointerRest.ts.mdmd.md#symbol-ontheway)
 - [`pointerRest.restAt`](./pointerRest.ts.mdmd.md#symbol-restat)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/doc-tools/documentationLinks.test.ts`
-- Generated At: 2026-11-19T21:10:18.238Z
+- Generated At: 2026-11-22T07:12:57.345Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 - [`documentationLinks.DEFAULT_RULES`](./documentationLinks.ts.mdmd.md#symbol-default_rules)
-- [`documentationLinks.DocumentationDocumentAnchors`](./documentationLinks.ts.mdmd.md#symbol-documentationdocumentanchors)
+- [`documentationLinks.DocumentationDocumentAnchors`](./documentationLinks.ts.mdmd.md#symbol-documentationdocumentanchors) (type-only)
 - [`documentationLinks.formatDocumentationLinkComment`](./documentationLinks.ts.mdmd.md#symbol-formatdocumentationlinkcomment)
 - [`documentationLinks.parseDocumentationAnchors`](./documentationLinks.ts.mdmd.md#symbol-parsedocumentationanchors)
 - [`documentationLinks.resolveCodeToDocumentationMap`](./documentationLinks.ts.mdmd.md#symbol-resolvecodetodocumentationmap)

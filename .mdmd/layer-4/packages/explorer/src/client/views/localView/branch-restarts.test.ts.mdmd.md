@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/branch-restarts.test.ts`
-- Generated At: 2026-11-19T21:10:15.957Z
+- Generated At: 2026-11-22T07:12:55.319Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ _No public symbols detected_
 - [`branch-restarts.startOrder`](./branch-restarts.ts.mdmd.md#symbol-startorder)
 - [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
 - [`branch-scene.SceneBox`](./branch-scene.ts.mdmd.md#symbol-scenebox) (type-only)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - `vitest` - `describe`, `expect`, `it`

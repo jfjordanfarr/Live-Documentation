@@ -321,8 +321,10 @@ function resolveEnd(typed: string, workspaceRoot: string, config: LiveDocumentat
     return { label: file, files: [file] };
   }
   const directory = typed.replace(/\\/g, "/").replace(/^\.\//, "").replace(/\/+$/, "");
+  // The scan root, typed as "." or "./", is an end like any directory: every file (the page takes it so).
   if (directory === "" || directory === ".") {
-    return undefined;
+    const all = Object.keys(graph.files).sort();
+    return all.length > 0 ? { label: "./", files: all, directory: "" } : undefined;
   }
   const ids = Object.keys(graph.files).sort();
   let files = ids.filter((id) => under(id, directory));

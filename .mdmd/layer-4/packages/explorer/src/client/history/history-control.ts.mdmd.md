@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/history/history-control.ts`
-- Generated At: 2026-11-19T21:10:13.094Z
+- Generated At: 2026-11-22T07:12:53.730Z
 
 ## Authored
 ### Purpose
@@ -76,13 +76,13 @@ Make the control under the 3D view, its scrubber and panel hidden until opened.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`format.HISTORY_FORMAT`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_format)
-- [`format.HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+- [`format.HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`queries.stepsMatching`](../../../../engine/src/live-docs/history/queries.ts.mdmd.md#symbol-stepsmatching)
 - [`sequence.changeAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`sequence.seek`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
-- [`ticks.Pins`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-pins)
-- [`Ticks`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-ticks)
+- [`ticks.Pins`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-pins) (type-only)
+- [`Ticks`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-ticks) (type-only)
 - [`ticks.followPath`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followpath)
 - [`ticks.followPins`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-followpins)
 - [`ticks.ticksFor`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-ticksfor)
@@ -94,16 +94,16 @@ Make the control under the 3D view, its scrubber and panel hidden until opened.
 - [`file-identity.referenceFor`](./file-identity.ts.mdmd.md#symbol-referencefor)
 - [`moment.HistoryChanges`](./moment.ts.mdmd.md#symbol-historychanges) (type-only)
 - [`moment.HistoryMoment`](./moment.ts.mdmd.md#symbol-historymoment) (type-only)
-- [`navigation.HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
+- [`navigation.HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange) (type-only)
 - [`navigation.rangedTickModel`](./navigation.ts.mdmd.md#symbol-rangedtickmodel)
 - [`rekey.NO_RENAMES`](./rekey.ts.mdmd.md#symbol-no_renames)
-- [`rekey.Renames`](./rekey.ts.mdmd.md#symbol-renames)
+- [`rekey.Renames`](./rekey.ts.mdmd.md#symbol-renames) (type-only)
 - [`scrubber.createScrubber`](./scrubber.ts.mdmd.md#symbol-createscrubber)
 - [`snapshot.relatedDocLinksOf`](./snapshot.ts.mdmd.md#symbol-relateddoclinksof)
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)
 - [`step-panel.createStepPanel`](./step-panel.ts.mdmd.md#symbol-createsteppanel)
 - [`step-summary.stepSummary`](./step-summary.ts.mdmd.md#symbol-stepsummary-function)
-- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface)
+- [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface) (type-only)
 - [`tick-model.nextStop`](./tick-model.ts.mdmd.md#symbol-nextstop)
 - [`zoom.slideToHold`](./zoom.ts.mdmd.md#symbol-slidetohold)
 - [`types.HistoryTuning`](../types.ts.mdmd.md#symbol-historytuning) (type-only)

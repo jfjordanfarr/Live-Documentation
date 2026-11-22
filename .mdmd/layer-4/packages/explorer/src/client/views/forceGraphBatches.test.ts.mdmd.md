@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphBatches.test.ts`
-- Generated At: 2026-11-19T21:10:14.725Z
+- Generated At: 2026-11-22T07:12:54.530Z
 
 ## Authored
 ### Purpose
@@ -33,11 +33,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
+- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit) (type-only)
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphBatches.screenWireIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-screenwireintersectsfrustum)
-- [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
+- [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape) (type-only)
 - [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
 - `three` - `Color`, `InstancedMesh`, `Matrix4`, `NoToneMapping`, `PerspectiveCamera`, `Quaternion`, `Raycaster`, `SRGBColorSpace`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `vitest` - `describe`, `expect`, `it`

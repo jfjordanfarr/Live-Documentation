@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphShells.ts`
-- Generated At: 2026-11-22T03:38:00.244Z
+- Generated At: 2026-11-22T07:12:54.960Z
 
 ## Authored
 ### Purpose
@@ -347,8 +347,8 @@ repulsion between them, and the headless twin of this repository's start at two 
 - [`types.BeyondHops`](../types.ts.mdmd.md#symbol-beyondhops) (type-only)
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
-- [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
-- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
+- [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphLayout.seededDirection`](./forceGraphLayout.ts.mdmd.md#symbol-seededdirection)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`forceGraphWrappers.BodyUnit`](./forceGraphWrappers.ts.mdmd.md#symbol-bodyunit) (type-only)

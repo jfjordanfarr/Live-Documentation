@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/localView/cycle-trials.ts`
-- Generated At: 2026-11-19T21:10:16.616Z
+- Generated At: 2026-11-22T07:12:55.858Z
 
 ## Authored
 ### Purpose
@@ -94,8 +94,8 @@ standing picture's own, as the search judges any trial.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
-- [`branches.CycleOffer`](./branches.ts.mdmd.md#symbol-cycleoffer)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`branches.CycleOffer`](./branches.ts.mdmd.md#symbol-cycleoffer) (type-only)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`directory-flow.linksOf`](./directory-flow.ts.mdmd.md#symbol-linksof)
 <!-- LIVE-DOC:END Dependencies -->

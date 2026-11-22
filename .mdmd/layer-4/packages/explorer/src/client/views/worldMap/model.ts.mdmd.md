@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/worldMap/model.ts`
-- Generated At: 2026-11-22T06:30:52.809Z
+- Generated At: 2026-11-22T07:12:56.850Z
 
 ## Authored
 ### Purpose
@@ -89,7 +89,7 @@ The region a piece is in, at every depth, nearest first.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
+- [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board) (type-only)
 - [`board.SHAPES`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-shapes)
 - [`board.TINTS`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-tints)
 - [`board.legendFor`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-legendfor)
@@ -100,7 +100,7 @@ The region a piece is in, at every depth, nearest first.
 - [`boardGraph.WireBasis`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wirebasis) (type-only)
 - [`boardGraph.WireDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wiredoor) (type-only)
 - [`boardGraph.WireLine`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wireline) (type-only)
-- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph.fileAt`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-fileat)
 - [`layout.Shape`](./layout.ts.mdmd.md#symbol-shape) (type-only)
 - [`projection.Point2`](./projection.ts.mdmd.md#symbol-point2) (type-only)

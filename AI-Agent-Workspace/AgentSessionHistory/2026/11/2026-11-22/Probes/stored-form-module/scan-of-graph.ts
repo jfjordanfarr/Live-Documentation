@@ -1,25 +1,19 @@
 // Probe of 2026-11-22 (not product code): a scan for the stored form made from today's graph index, as the engine's sink
-// would hand it over. Each link is given what it names by the engine's own link rule (`linkTarget`), so that the
-// stored form's graph can be held against the engine's graph, which resolved the same links itself.
+// would hand it over. Since the stored form derives what a link names by its own link rule (2026-11-22), a link is
+// handed over as written, and the stored form's graph is held against the engine's, which resolved the same links itself.
 import { LINKS_SECTION, readDocumentationReference } from "@live-documentation/engine/live-docs/document";
-import { linkTarget, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { comparePaths, type Scan, type StoredDocumentation, type StoredFile, type StoredType } from "../../../../../../../packages/stored-form/src/storedForm";
 
-/** The scan a graph's files describe, each link given the path and anchor it names. */
+/** The scan a graph's files describe, as the engine's sink would hand it over. */
 export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
   const location = { root: graph.root, baseLayer: graph.baseLayer, extension: graph.extension };
   const files: StoredFile[] = [];
   for (const file of Object.values(graph.files)) {
-    const named = (link: string | undefined): { target?: string; anchor?: string } => {
-      if (link === undefined) return {};
-      const t = linkTarget(file.docPath, link, location);
-      if (!t) return {};
-      return t.anchor === undefined ? { target: t.codePath } : { target: t.codePath, anchor: t.anchor };
-    };
     const type = (t: { name: string; link?: string; array?: boolean; promise?: boolean }): StoredType => {
       const out: StoredType = { name: t.name };
-      if (t.link !== undefined) Object.assign(out, { link: t.link }, named(t.link));
+      if (t.link !== undefined) out.link = t.link;
       if (t.array) out.array = true;
       if (t.promise) out.promise = true;
       return out;
@@ -43,11 +37,11 @@ export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
           .map((r): StoredDocumentation => {
             const out: StoredDocumentation = { name: r.name };
             if (r.element !== undefined) out.element = r.element;
-            if (r.link !== undefined) Object.assign(out, { link: r.link }, named(r.link));
+            if (r.link !== undefined) out.link = r.link;
             return out;
           })
       })),
-      dependencies: file.dependencies.map((d) => ({ ...d, ...named(d.link) })),
+      dependencies: file.dependencies,
       ...(file.citedBy !== undefined ? { citedBy: file.citedBy } : {}),
       ...(file.reExports !== undefined ? { reExports: file.reExports } : {})
     });

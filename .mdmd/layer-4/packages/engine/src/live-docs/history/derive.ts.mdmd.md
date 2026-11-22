@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/history/derive.ts`
-- Generated At: 2026-11-19T21:10:11.910Z
+- Generated At: 2026-11-22T07:12:53.010Z
 
 ## Authored
 ### Purpose
@@ -38,8 +38,8 @@ The change from one shape to the next, every list sorted. Applying it to
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`directories.directoryRenames`](./directories.ts.mdmd.md#symbol-directoryrenames)
-- [`Shape`](./shape.ts.mdmd.md#symbol-shape)
-- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
+- [`Shape`](./shape.ts.mdmd.md#symbol-shape) (type-only)
+- [`shape.ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange) (type-only)
 - [`shape.edgeEnds`](./shape.ts.mdmd.md#symbol-edgeends)
 - [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)
 - [`shape.renameShape`](./shape.ts.mdmd.md#symbol-renameshape)

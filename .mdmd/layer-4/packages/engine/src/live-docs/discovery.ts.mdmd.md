@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/discovery.ts`
-- Generated At: 2026-11-21T20:21:42.768Z
+- Generated At: 2026-11-22T07:12:52.795Z
 
 ## Authored
 ### Purpose
@@ -176,7 +176,7 @@ re-exports it, with no mark and no warning.
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
+- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`archetype.matchesPathPattern`](./archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`compose.anchorReExports`](./compose.ts.mdmd.md#symbol-anchorreexports)
@@ -197,9 +197,9 @@ re-exports it, with no mark and no warning.
 - [`processMark.machineFailure`](./processMark.ts.mdmd.md#symbol-machinefailure)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
-- [`gitIgnored.GitIgnoreAnswer`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignoreanswer)
-- [`gitIgnored.GitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-interface)
-- [`gitIgnored.GitUnanswered`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered)
+- [`gitIgnored.GitIgnoreAnswer`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignoreanswer) (type-only)
+- [`gitIgnored.GitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-interface) (type-only)
+- [`gitIgnored.GitUnanswered`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitunanswered) (type-only)
 - [`gitIgnored.foldersReadAsEmpty`](../tooling/gitIgnored.ts.mdmd.md#symbol-foldersreadasempty)
 - [`gitIgnored.gitIgnores`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignores-function)
 - [`gitIgnored.gitIgnoresCase`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignorescase)

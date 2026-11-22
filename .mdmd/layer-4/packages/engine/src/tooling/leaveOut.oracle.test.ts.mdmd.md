@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/tooling/leaveOut.oracle.test.ts`
-- Generated At: 2026-11-21T18:33:55.103Z
+- Generated At: 2026-11-22T07:12:53.480Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:os` - `os`
 - `node:path` - `path`
-- [`leaveOut.IgnoreFileText`](./leaveOut.ts.mdmd.md#symbol-ignorefiletext)
+- [`leaveOut.IgnoreFileText`](./leaveOut.ts.mdmd.md#symbol-ignorefiletext) (type-only)
 - [`leaveOut.fromGitignores`](./leaveOut.ts.mdmd.md#symbol-fromgitignores)
 - [`leaveOut`](./leaveOut.ts.mdmd.md#symbol-leaveout-function)
 - `vitest` - `afterAll`, `describe`, `expect`, `it`

@@ -20,9 +20,9 @@
       "xmlReferences": []
     }
   ],
-  "files": 13,
-  "names": 50,
-  "bound": 46,
+  "files": 14,
+  "names": 59,
+  "bound": 55,
   "edges": [
     {
       "from": "App/Derived.cs",
@@ -42,6 +42,14 @@
       "member": [
         "Base.Gadget"
       ]
+    },
+    {
+      "from": "App/Overloads.cs",
+      "to": "App/Derived.cs",
+      "type": [
+        "Derived"
+      ],
+      "member": []
     },
     {
       "from": "App/Use.cs",
@@ -72,6 +80,12 @@
     "App/HelperOfT.cs": [
       "Helper"
     ],
+    "App/Inheritance.cs": [
+      "Child",
+      "Holder",
+      "InheritanceNotes",
+      "Parent"
+    ],
     "App/MemberOverUsing.cs": [
       "MemberOverUsing"
     ],
@@ -81,6 +95,7 @@
     ],
     "App/Overloads.cs": [
       "Box",
+      "Gatherer",
       "Mixer",
       "MixerNotes"
     ],
@@ -441,6 +456,243 @@
       "written": "Lib.Thing",
       "outcome": "unresolved",
       "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 13,
+      "on": 15,
+      "element": "see",
+      "written": "Shrink(Parent)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 13,
+      "on": 15,
+      "element": "see",
+      "written": "Layout",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 13,
+      "on": 15,
+      "element": "see",
+      "written": "Grow(Parent)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 13,
+      "on": 15,
+      "element": "see",
+      "written": "Grow(Parent[])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Child.Grow(App.Parent[])",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 17
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 29,
+      "on": 34,
+      "element": "see",
+      "written": "Child.Shrink(Parent)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 29,
+      "on": 34,
+      "element": "see",
+      "written": "Child.Shrink",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 29,
+      "on": 34,
+      "element": "see",
+      "written": "Child.Layout",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 29,
+      "on": 34,
+      "element": "see",
+      "written": "Child.Grow(Parent)",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 30,
+      "on": 34,
+      "element": "see",
+      "written": "Parent.Shrink(Parent)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Parent.Shrink(App.Parent)",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 7
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 30,
+      "on": 34,
+      "element": "see",
+      "written": "Child.Grow(Parent[])",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Child.Grow(App.Parent[])",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 17
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 32,
+      "on": 34,
+      "element": "see",
+      "written": "Holder{X}.Put(X)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Holder<T>.Put(T)",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 23
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 32,
+      "on": 34,
+      "element": "see",
+      "written": "Holder{X}.Echo{U}(U)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Holder<T>.Echo<M>(M)",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 24
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Inheritance.cs",
+      "line": 32,
+      "on": 34,
+      "element": "see",
+      "written": "Holder{T}.Put(T)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Holder<T>.Put(T)",
+          "files": [
+            "App/Inheritance.cs"
+          ],
+          "declarations": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 23
+            }
+          ],
+          "holder": [
+            {
+              "file": "App/Inheritance.cs",
+              "line": 21
+            }
+          ]
+        }
+      ]
     },
     {
       "from": "App/Overloads.cs",
@@ -840,9 +1092,10 @@
     "App/Documented.cs": "8f2234b035a6b3bf5967c1c15aaed273f0e870b5ed2e3c1a3d607026aca03769",
     "App/Helper.cs": "ab7076bdb719b087ab73130653a60232897c8e47dcc62df213d2b800acfb0315",
     "App/HelperOfT.cs": "895ed8f11dc55644572d93a4269e2809b4ff2a1138ce02140708cc4f75a82f84",
+    "App/Inheritance.cs": "b595146fa08b0cc6319550ddd5782dce5dd3d813fc4ec4ba17ca677a7386a145",
     "App/MemberOverUsing.cs": "70c97ee8f94b7b14b118e72dfe023e22d519265ac7cf6e2eb28c3c7d1c74d3c7",
     "App/Other.cs": "15a3cc84c25f88b528ae762e702a561c484b8aad21994fcb729982eb1305adf0",
-    "App/Overloads.cs": "144d171d9f5228df7b90e809160e4bda70e55f7906b679795393a7ab60a51a4c",
+    "App/Overloads.cs": "e545f6d33e316db92c014eea57ff83989e10effc8745924436c38befb5a8f6ef",
     "App/Runner.Text.cs": "2ff6daf7b8698e963a3245aa81e8d8005425bb36c7ae259721f0290e77f6ebe7",
     "App/Runner.cs": "e1f77f45ea50b53d9d15ab010958ebc19554543c6beadbbe3b8aadc2ca791582",
     "App/Use.cs": "00a8bc374c736da127447737934b62d91e6b49d5f9f3554c4ff2678c0ed1c46c",

@@ -821,3 +821,133 @@ Run alone at a load of 12, the discovery oracle passed 60 of 60 and the package'
 ### Commands the harness refused in the fourth leg
 
 One: an empty heredoc left by mistake before a `grep`, refused as too complex to verify. It did not name git. The `grep` was run alone.
+
+## Sixth milestone, first leg, 2026-11-22: a file's own lists as a view, the graph's index from the walk, and the window
+
+The fifth milestone's state, `3cd947724`, was merged in first.
+
+### 1. A file's own lists, decoded as they are read
+
+Decoded after the walk, a file's entries, symbols and dependencies are now lazy lists:
+- Decoding the file walks each item once, to learn where each begins, and keeps nothing of it but four bytes an item.
+- An item is decoded from where it begins when it is read.
+- They go through one method of the codec, `items`. Its decoding after the walk is lazy, and the writer and the counter walk such a list as any list.
+
+**The case:** a file of 300,000 symbols, read back.
+- Its symbols' count must keep under 4 MiB, and symbol 123,456 must read as it was written.
+- Against the module before this change it failed, holding 63,037,408 bytes. It passes now.
+
+**What remains true and is said:** finding where the lists end still walks each item once, transiently. A skip that allocates nothing would need a second walk of the grammar in the module, which it should not hold.
+
+### 2. The graph's index from the walk
+
+The walk now gathers documented-by, as file numbers, beside the wires it already checks. The inbound comes from the wires section. A scan read back carries both, kept apart in a `WeakMap` keyed by its view of files, and `graphViewOf` uses them rather than reading every file again.
+
+**A fault found and mended on the way:** `graphViewOf` had kept every file it decoded, in a map by path, which undid the view. It now looks files up by number and builds only what is asked.
+
+**Measured at a load of about 7, interleaved** (the graph as asked, the hub's Local Map):
+
+| | Before | After | Peak, before → after |
+| --- | ---: | ---: | --- |
+| DNN | 1.86 to 2.55 s | **1.04 to 1.32 s** | 360 → 234 MB |
+| Five times DNN | 5.39 to 6.94 s | **1.72 to 2.08 s** | 433 to 535 → 311 MB |
+
+The graph as asked now costs about 30 ms past the walk.
+
+### 3. The window, at 8 MiB, with its case
+
+- **The whole read inflates sections in order**, and ahead of the one it checks only within `READ_AHEAD`, 8 MiB of raw bytes. Only sections whose headers have passed every header-only check are inflated ahead. The window runs over the strings and records sections, which are read after the head, the paths and the wires.
+- **Its case:** 24 incompressible records sections of 2 MiB each, after valid paths, wires and strings, the first section refused at its first byte. The memory held past the file during the read, sampled every millisecond, must stay under `READ_AHEAD` and 8 MiB.
+  - With the window made unbounded, the case failed, holding 120.5 MiB.
+  - At 8 MiB it passes.
+
+### Checked again
+
+- On this repository (1,349 files), the estate (41) and DNN (10,777), the graph read back prints byte for byte as each `index.json`, and both round trips are exact.
+- The package's 73 cases pass, with 4 skipped.
+- Section 6 now states the lists, the index from the walk and the window, and its caveat on lists is gone.
+- **The whole unit project, run once:** 3,776 cases passed and 4 were skipped. One failed: the history's identity case "names as roots every package…", a five-second timeout.
+  - Run alone at a load of 41, it took 8.6 s.
+  - It reads only the engine's and the generator's sources, which this work does not touch.
+  - It is the same load-bound case recorded in the second milestone (8.2 s alone at a load of 15).
+
+  Lint, the docs, `docs:links:enforce` and the audits are clean.
+
+### Not reached in the sixth milestone's first leg
+
+- **C and D**, which change the format.
+- **The thirty-five questions**, answered in the text.
+- **G.**
+- **The page and bidirectional controls.**
+
+### Commands the harness refused in the sixth milestone's first leg
+
+None.
+
+## Sixth milestone, second leg, 2026-11-22: a link and what it names, held once
+
+The day's tip, `d555bd4a9`, was merged in first.
+
+### C. What a link names, derived, and stored nowhere
+
+**The change:**
+- The layout and the text no longer hold a link's target or anchor. `linked` is the link alone, so the marks' bits 1 and 2 are now undefined, and refused.
+- What a link names is derived from the link, the document path of the file that holds it and the head's location, by the link rule, now `linkNames` in the module. This covers a dependency's, a type's and a documentation reference's links.
+- The wires, the edges' `to` and `toSymbol`, and the documentation relation all come from the rule.
+- **The rule is written in full in section 4.3.1**, step by step, for a reader in any language:
+  - the fragment as written, after the first `#` and up to a second;
+  - the path before the `#` and the `?`;
+  - percent-decoding, with the path kept as written where an escape is not one or the bytes are not UTF-8;
+  - a path beginning with `letters://` names nothing;
+  - the folding of `.` and `..` against the document's folder;
+  - nothing above the scanned folder;
+  - the docs' prefix, and the extension compared in Unicode's default lower case.
+- **A reader caches the rule** by a document's folder and the link, since links repeat within a folder. For a link of only a fragment it caches by the document itself.
+
+**The same at the sink.** The probe's `scan-of-graph.ts` now hands links over as written, as the engine's sink will.
+
+**The tests:**
+- The made scans no longer hand over targets and anchors.
+- The seeded scan's links are now made relative to its one-folder-deep files (`../<path>.mdmd.md`), so that most land and its wires mean something.
+- The review's test file still hands a `target` over in some cases. The writer reads only what the model holds, so those cases run untouched, and they pass.
+
+**On the three corpora**, the graph derived by the module's rule prints byte for byte as the engine's `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored before C | Stored after |
+| --- | ---: | ---: | ---: |
+| This repository | 1,349 | 1,137,321 B | 1,121,919 B (−1.4 %) |
+| Estate | 41 | 7,839 B | 7,640 B (−2.5 %) |
+| DNN | 10,777 | 2,238,358 B | 2,154,945 B (−3.7 %) |
+
+**What deriving costs the read is not measured.** The machine stood at a load of 54 to 66 when I tried, and DNN's whole read took ten seconds. A file written before C cannot be read by the module after it, so a fair pair needs its own two files.
+
+The first leg's probe measured the uncached rule at 269 ms over DNN's 48,689 links, with the engine's functions. What the folder cache buys is not measured either.
+
+**The package's cases** pass: 71, with 4 skipped. The resume case once timed out at a load of 38 beside the other suites, and passed alone.
+
+### D. What a link field holds: measured, not yet refused
+
+[`link-fields.ts`](link-fields.ts) measured every link field of the three corpora: dependencies', types', sources', entries' symbols and declarers', cited-by lines' and re-exports' origins'. For each it asked whether the field begins with a scheme, holds a NUL, or, resolved against its document's folder, climbs above the scanned folder.
+
+| Corpus | Link fields | A scheme | A NUL | Climbing above the scanned folder |
+| --- | ---: | ---: | ---: | ---: |
+| This repository | 13,730 | 0 | 0 | 0 |
+| Estate | 290 | 0 | 0 | 0 |
+| DNN | 82,335 | 0 | 0 | 0 |
+
+So the root's rule, as I proposed it, refuses nothing an honest scan holds: no scheme, no NUL, nothing above the scanned folder. **It is not built yet.**
+- Its climbing check depends on the file's folder, not on the string alone. So it cannot ride the per-string cache the other link checks use; it needs a check per file, by folder and link.
+- A documentation reference's link was not counted, since those come from documentation lines.
+
+### Not reached in the sixth milestone's second leg
+
+- **D built**, with its cases.
+- **The cost of deriving, and of the folder cache**, measured on a quiet machine.
+- **The thirty-five questions.**
+- **G.**
+- **The page and bidirectional controls.**
+- **The whole unit project:** not run at this load.
+
+### Commands the harness refused in the sixth milestone's second leg
+
+None.

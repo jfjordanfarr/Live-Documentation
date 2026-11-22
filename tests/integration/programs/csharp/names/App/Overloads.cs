@@ -34,4 +34,10 @@ namespace App
     /// <see cref="Mixer.Mixer(Box{Mixer})"/>; and an alias-qualified name the compiler's grammar does not take, <see cref="M::Mixer"/>.
     /// </summary>
     public class MixerNotes { }
+
+    /// <summary>Uses another file's type only as the type of a <c>params</c> parameter.</summary>
+    public class Gatherer
+    {
+        public int Gather(params Derived[] parts) => 0;
+    }
 }

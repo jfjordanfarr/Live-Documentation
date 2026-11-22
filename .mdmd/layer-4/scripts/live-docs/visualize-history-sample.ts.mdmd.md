@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/visualize-history-sample.ts`
 - Entry: command `live-docs:visualize:history-sample` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T21:10:19.272Z
+- Generated At: 2026-11-22T07:12:57.839Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ _No public symbols detected_
 - [`scripted-repository.GROWTH_SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-growth_script)
 - [`scripted-repository.SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-script)
 - [`scripted-repository.SCRIPTED_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scripted_config)
-- [`scripted-repository.ScriptedCommit`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scriptedcommit)
+- [`scripted-repository.ScriptedCommit`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scriptedcommit) (type-only)
 - [`scripted-repository.VEIL_CONFIG`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-veil_config)
 - [`scripted-repository.VEIL_SCRIPT`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-veil_script)
 - [`scripted-repository.buildRepository`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-buildrepository)

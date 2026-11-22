@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/scopes.ts`
-- Generated At: 2026-11-19T21:10:18.896Z
+- Generated At: 2026-11-22T07:12:57.629Z
 
 ## Authored
 ### Purpose
@@ -108,5 +108,5 @@ The complete static bundle, including the related-documentation links available 
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`scopes.DECK_SCOPES`](../../tests/e2e/scopes.ts.mdmd.md#symbol-deck_scopes)
-- [`scopes.DeckScope`](../../tests/e2e/scopes.ts.mdmd.md#symbol-deckscope)
+- [`scopes.DeckScope`](../../tests/e2e/scopes.ts.mdmd.md#symbol-deckscope) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

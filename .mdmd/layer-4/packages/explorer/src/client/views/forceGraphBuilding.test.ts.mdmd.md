@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphBuilding.test.ts`
-- Generated At: 2026-11-19T21:10:14.808Z
+- Generated At: 2026-11-22T07:12:54.594Z
 
 ## Authored
 ### Purpose
@@ -23,8 +23,8 @@ _No public symbols detected_
 ### Dependencies
 - [`forceGraphBuilding.BUILDING_HOLD`](./forceGraphBuilding.ts.mdmd.md#symbol-building_hold)
 - [`forceGraphBuilding.BUILDING_SIGN_DELAY`](./forceGraphBuilding.ts.mdmd.md#symbol-building_sign_delay)
-- [`forceGraphBuilding.Building`](./forceGraphBuilding.ts.mdmd.md#symbol-building)
-- [`forceGraphBuilding.BuildingWork`](./forceGraphBuilding.ts.mdmd.md#symbol-buildingwork)
+- [`forceGraphBuilding.Building`](./forceGraphBuilding.ts.mdmd.md#symbol-building) (type-only)
+- [`forceGraphBuilding.BuildingWork`](./forceGraphBuilding.ts.mdmd.md#symbol-buildingwork) (type-only)
 - [`forceGraphBuilding.NOT_BUILDING`](./forceGraphBuilding.ts.mdmd.md#symbol-not_building)
 - [`forceGraphBuilding.buildingPhase`](./forceGraphBuilding.ts.mdmd.md#symbol-buildingphase)
 - [`forceGraphBuilding.nextBuilding`](./forceGraphBuilding.ts.mdmd.md#symbol-nextbuilding)
