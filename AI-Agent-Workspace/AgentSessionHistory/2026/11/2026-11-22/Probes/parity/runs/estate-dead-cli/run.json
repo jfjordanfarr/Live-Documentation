@@ -1,0 +1,88 @@
+{
+  "task": "estate-dead",
+  "arm": "cli",
+  "source": "estate",
+  "base": "/tmp/claude-1000/-workspaces-Live-Documentation/8edd198a-ddfc-4db4-98d3-afb50c64b8a7/scratchpad/parity/base/estate-cli",
+  "words": "Nothing in our C# code ever creates a PaymentHub (the class in Hub/PaymentHub.cs). Is it dead code that we can delete?",
+  "model": "claude-sonnet-5-5",
+  "effort": "default",
+  "maxTurns": 80,
+  "maxMinutes": 20,
+  "systemPrompt": "You are at a shell, in a folder that holds a copy of someone's code. Through your one tool you can run commands. The command `live-docs` is installed. They have sent you a message about the code. Do what they ask, then reply to them in plain words. Your reply is all they will read.",
+  "startedAt": "2026-11-22T01:42:56.894Z",
+  "finishedAt": "2026-11-22T01:43:06.782Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 9883,
+  "apiMs": 8029,
+  "turns": 4,
+  "commands": 3,
+  "commandsNamingLiveDocs": 1,
+  "commandsOutsideFolder": [],
+  "usage": {
+    "input": 6,
+    "cacheWrite": 5363,
+    "cacheRead": 9669,
+    "output": 828
+  },
+  "costUsd": 0.0307109,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 828,
+      "cacheReadInputTokens": 9669,
+      "cacheCreationInputTokens": 5363,
+      "webSearchRequests": 0,
+      "costUSD": 0.0307109,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 5363,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "init": {
+    "cwd": "/tmp/session-jHWbAr/code",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "Bash"
+    ],
+    "mcp_servers": [],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ]
+  }
+}

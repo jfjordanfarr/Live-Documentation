@@ -1,0 +1,88 @@
+{
+  "task": "estate-trace",
+  "arm": "files",
+  "source": "estate",
+  "base": "/tmp/claude-1000/-workspaces-Live-Documentation/8edd198a-ddfc-4db4-98d3-afb50c64b8a7/scratchpad/parity/base/estate-files",
+  "words": "This folder holds our payments system. When someone submits a payment on the web page, what happens to it? Name each piece of the system it passes through, in order, until it is stored.",
+  "model": "claude-sonnet-5-5",
+  "effort": "default",
+  "maxTurns": 80,
+  "maxMinutes": 20,
+  "systemPrompt": "You are at a shell, in a folder that holds a copy of someone's code. Through your one tool you can run commands. They have sent you a message about the code. Do what they ask, then reply to them in plain words. Your reply is all they will read.",
+  "startedAt": "2026-11-22T01:42:49.536Z",
+  "finishedAt": "2026-11-22T01:43:00.106Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 10566,
+  "apiMs": 8836,
+  "turns": 3,
+  "commands": 2,
+  "commandsNamingLiveDocs": 0,
+  "commandsOutsideFolder": [],
+  "usage": {
+    "input": 6,
+    "cacheWrite": 7493,
+    "cacheRead": 7855,
+    "output": 1235
+  },
+  "costUsd": 0.043119500000000005,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1235,
+      "cacheReadInputTokens": 7855,
+      "cacheCreationInputTokens": 7493,
+      "webSearchRequests": 0,
+      "costUSD": 0.043119500000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 36,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 7493,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "init": {
+    "cwd": "/tmp/session-LwMrOm/code",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "Bash"
+    ],
+    "mcp_servers": [],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ]
+  }
+}

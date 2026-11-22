@@ -1,0 +1,2 @@
+## 1
+grep -rn "PaymentHub" . --exclude-dir=bin --exclude-dir=obj --exclude-dir=node_modules | head -50; echo ---; cat Hub/PaymentHub.cs 2>/dev/null | head -60

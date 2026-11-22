@@ -1,0 +1,5 @@
+## 1
+ls packages/explorer/src/client/pathfind* ; grep -rnE "pathfind" --include=* -I . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist | grep -v "^./packages/explorer/src/client/pathfind.ts:" | head -50
+
+## 2
+grep -rnI "pathfind" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist | grep -v "^./packages/explorer/src/client/pathfind.ts:" | head -50; echo ---; grep -nE "^export" packages/explorer/src/client/pathfind.ts

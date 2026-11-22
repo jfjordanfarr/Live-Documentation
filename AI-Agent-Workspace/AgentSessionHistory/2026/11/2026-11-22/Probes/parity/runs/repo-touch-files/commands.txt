@@ -1,0 +1,11 @@
+## 1
+ls packages/explorer/src/client/ | head -50; grep -rnE "markdown(\.ts|\.js|['\"])" --include=*.ts --include=*.tsx --include=*.js --include=*.jsx --include=*.json --include=*.mjs --exclude-dir=node_modules --exclude-dir=dist . | grep -E "from|import|require|include|files" | head -50
+
+## 2
+grep -rnE "/markdown(\.js|\.ts)?['\"]" packages --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' --exclude-dir=node_modules --exclude-dir=dist; echo ---; grep -nE "^export" packages/explorer/src/client/markdown.ts
+
+## 3
+grep -rnE "/(detailPanel|reader-sections|card-reading)['\"]" packages --include='*.ts' --exclude-dir=node_modules --exclude-dir=dist
+
+## 4
+grep -rn "renderingSteps" packages --include='*.ts' --exclude-dir=node_modules --exclude-dir=dist | grep -v "client/markdown"

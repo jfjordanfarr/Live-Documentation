@@ -1,0 +1,8 @@
+## 1
+cd <folder>/packages/explorer/src/client/search && find . -type f | head -100 && wc -l $(find . -type f) | tail -50
+
+## 2
+grep -nE "^\s*(import|export)|from '" *.ts; grep -rnE "client/search|from '\.\./search|from '\./search" <folder>/packages --include=*.ts -l | grep -v node_modules | head
+
+## 3
+cd <folder>/packages/explorer/src/client && grep -rnE "search/(search-bar|search-field|graph-search)" . | grep -v "^./search/"; sed -n 1,12p search/search-bar.ts; sed -n 1,8p search/search-field.ts
