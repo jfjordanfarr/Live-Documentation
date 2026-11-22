@@ -1,6 +1,8 @@
 /**
  * The still-picture instrument's reading as it stood until 2026-11-22, kept word for word as the oracle its faster
  * successor is held to: `readPicture` in `still-picture.ts` must give this reading to the number on the same page.
+ * One thing was changed in both alike that evening, because it was a fault of both: what the hit test meets at a
+ * point (`drawnAt`), held by a made fault in `still-picture-reference.spec.ts` that both must see.
  * Nothing but the comparison calls it; it costs what the old reading cost, so it is run on small pictures in the suite
  * and on the large one only by the probe that measured the change
  * (`AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/instrument-and-look-cost/`).
@@ -19,9 +21,14 @@ export async function readPictureReference(page: Page, view: ViewReading, names:
       const frame = document.querySelector(frameSelector)!.getBoundingClientRect();
       const inside = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.left >= frame.left - 0.5 && r.right <= frame.right + 0.5 && r.top >= frame.top - 0.5 && r.bottom <= frame.bottom + 0.5;
       const meets = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.right > frame.left && r.left < frame.right && r.bottom > frame.top && r.top < frame.bottom;
+      // The one change since: the hit test looks past what stands in the wires' own drawing and is no part of a card,
+      // as `readPicture` does and for its reason (a wire's band, or a lace, took every hit along it, and no card across a wire could be seen).
+      const wireDrawings = new Set([...document.querySelectorAll<SVGElement>(view.wires)].map(wire => wire.ownerSVGElement).filter(Boolean));
+      const drawnAt = (x: number, y: number): Element | null =>
+        document.elementsFromPoint(x, y).find(element => !(element instanceof SVGElement && wireDrawings.has(element.ownerSVGElement) && !element.closest(view.card))) ?? null;
       const uncovered = (el: Element): boolean => {
         const r = el.getBoundingClientRect();
-        const top = document.elementFromPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2);
+        const top = drawnAt((r.left + r.right) / 2, (r.top + r.bottom) / 2);
         return !!top && (top === el || el.contains(top) || top.contains(el));
       };
       const fontPx = (el: Element): number => {
@@ -184,7 +191,7 @@ export async function readPictureReference(page: Page, view: ViewReading, names:
             // Occluded where the page's topmost element at the sample belongs to a card other than the wire's ends; the
             // hit test, the costly reading, is asked only within such a card's hull, where alone it can say so.
             if (hulls.some(hull => hull.id !== consumer && hull.id !== provider && within(hull.bounds, point.x, point.y))) {
-              const top = document.elementFromPoint(point.x, point.y);
+              const top = drawnAt(point.x, point.y);
               const card = top?.closest<HTMLElement>(view.card);
               if (card && card.dataset.id !== consumer && card.dataset.id !== provider) occludedSamples += 1;
             }

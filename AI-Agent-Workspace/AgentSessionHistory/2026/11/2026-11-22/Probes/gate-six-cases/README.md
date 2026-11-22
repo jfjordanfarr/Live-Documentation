@@ -24,6 +24,47 @@ Not settled. Alone on one worker, the machine shared with two other builders, th
 
 The case was behind the page: in 2D the first group holds the fit and, since the mirror's first merge, the mirror beside it. It now names both.
 
-## Found and not mended: a card across a wire is no longer seen
+## Found: a card across a wire was no longer seen (mended that evening, below)
 
 The instrument counts a wire's sample as covered where the page's topmost element there belongs to a card that is not one of its ends. Since the bands, the topmost element along a wire is its own band: at 5,914 of 5,976 samples of the estate's 56 drawn routes ([the numbers](numbers/hit-test.json)). With a card that is neither end of a wire stood across that wire's middle, the topmost element is still the band; the first element that is not a band is that card. So `occludedSamples` cannot rise above zero where a band runs, and "no wire crosses a card it does not end at" cannot fail, in the lanes case, the deck, the scenario suite and the path's and mirror's specs. The reference reading shares it. The mend is to ask for the topmost element that is not a wire's band, in both readings alike, held by a case that stands a card across a wire and is seen failing first.
+
+## The reading's sight, mended (19:00 to 19:45 UTC)
+
+**The rule.** At a point, the reading takes the page's topmost element that is not in the wires' own drawing, a part of a card excepted (`drawnAt`, in `readPicture` and in the reference alike). It names what it looks past by where it stands: no caller's selector, and nothing about how the page stacks wires over cards. A band is in the wires' drawing; so is a returning connection's lace, a wire that takes the pointer itself.
+
+**The case, seen failing first.** `still-picture-reference.spec.ts` stands a card that is neither end of a route across that route, at reading size, and both readings must count covered samples on it. On the reading as it was, with a band running there: "the instrument sees `Portal/Controllers/PaymentsController.cs` across the wire: expected more than 0, received 0". A second case does the same across a returning connection's lace.
+
+**The laces, measured before the rule was extended to them.** The same probe, rewritten to walk every wire of a picture and ask the page's whole stack at each sample in the frame ([the first three pictures](numbers/laces-first-three.json), [the other six](numbers/laces.json); the first run was cut by the lane's five minutes and the second asks the whole stack only within a card that is neither end or within a lace's box). At reading size, 1,600 by 1,000:
+
+| Picture | Cards | Wires read | Samples in the frame | On a band | Laces | Samples on a lace | Crossings: topmost, past bands, past the whole drawing |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Repository, five files, Local Map | 52 | 210 | 12,676 | 10,866 | 0 | 0 | 0, 0, 0 |
+| Repository, five files, retained | 114 | 518 | 11,321 | 8,550 | 0 | 0 | 0, 0, 0 |
+| Repository, chain, Local Map | 52 | 154 | 7,710 | 7,267 | 0 | 0 | 0, 0, 0 |
+| Repository, chain, retained | 132 | 521 | 7,837 | 7,202 | 0 | 0 | 0, 0, 0 |
+| Estate, five files, Local Map | 9 | 15 | 560 | 539 | 2 | 15 | 0, 0, 0 |
+| Estate, five files, retained | 20 | 58 | 2,923 | 2,681 | 2 | 0 | 0, 0, 0 |
+| Estate, chain, Local Map | 5 | 10 | 467 | 418 | 0 | 0 | 0, 0, 0 |
+| Estate, chain, retained | 14 | 39 | 470 | 332 | 0 | 0 | 0, 0, 0 |
+| The lanes case's (the repository's five files retained, growing composition) | 114 | 518 | 9,628 | 7,086 | 0 | 0 | 0, 0, 0 |
+
+Only the estate's five files draw laces, and 15 samples of one picture lie on one. A reading that sees through laces reports no crossing in any of the nine, and neither does one that sees through bands only: the seeing reading finds no wire across a card in these pictures. So the rule was extended to laces in the same piece.
+
+## The ladder audit's `shown`, mended
+
+`card-ladder-boxes.spec.ts` sets against a card what is drawn of each part: its box within every ancestor that clips, up to its card; a part with nothing left is not drawn (`drawn`). Its own case stands three made parts in one card of the estate's picture: one far below the lines a description's slot shows, one out of the card's side, and one inside a clipping box that itself stands out of the card. On the audit as it was the first was reported ("`made-unseen` 213.5 px outside its card"); now it is not, and the other two and the clipping box still are.
+
+`zoom-looks.spec.ts` holds a twin of the check for the parts of a row's head at the other looks, with a `shown` of its own that also does not ask about clipping. It reads five named parts, none of which stands in a slot's prose, and was left as it is; the two do not yet share one helper.
+
+## The lab's half minute, stretch by stretch
+
+[`lab-time-probe.spec.ts.txt`](lab-time-probe.spec.ts.txt) does what the page case does for each of the deck's four scopes, timing each stretch in the test's own process ([the numbers](numbers/lab-time.json)); one worker, the arrival held at reading size, the machine shared (one-minute load about 3):
+
+| Scope | Cards | The page's own layout | Open the address | The capture | Load the bundle's graph | `evaluate` | `evaluate` a second time | Compare |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Repository, five files | 114 | 3.8 s | 0.3 s | 22.6 s | 0.2 s | 8.5 s | 7.2 s | 1 ms |
+| Repository, chain | 132 | 3.5 s | 0.3 s | 26.6 s | 0.2 s | 9.6 s | 9.1 s | 1 ms |
+| Estate, five files | 20 | 0.5 s | 0.4 s | 2.1 s | 2 ms | 0.1 s | 0.1 s | 0 |
+| Estate, chain | 14 | 0.3 s | 0.1 s | 1.5 s | 2 ms | 0.05 s | 0.05 s | 0 |
+
+The capture here includes the wait for the page to draw its picture. The repository's two scopes are not small pictures: the five files retained whole stand among 114 cards and the chain among 132, and the page itself takes three and a half seconds to lay each out. Their cases' work is 32 and 37 s by these stretches, which is the half minute and over it: the chain's three run-outs alone are its own work, not the machine's load. Seven tenths of it is the capture and a quarter the lab's layout in the test's process, which costs twice the page's own and is not quicker the second time. Loading and deriving the graph and the comparison cost nothing.

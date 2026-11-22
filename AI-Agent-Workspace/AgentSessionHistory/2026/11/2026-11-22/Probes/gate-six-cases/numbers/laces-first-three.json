@@ -1,0 +1,62 @@
+[
+ {
+  "picture": "repository, five files: Local Map",
+  "look": "reading",
+  "cards": 52,
+  "laces": 0,
+  "wires": 210,
+  "samples": 12676,
+  "onBand": 10866,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "repository, five files: Local Map, retained",
+  "look": "reading",
+  "cards": 114,
+  "laces": 0,
+  "wires": 518,
+  "samples": 11321,
+  "onBand": 8550,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ },
+ {
+  "picture": "repository, chain: Local Map",
+  "look": "reading",
+  "cards": 52,
+  "laces": 0,
+  "wires": 154,
+  "samples": 7710,
+  "onBand": 7267,
+  "onLace": 0,
+  "topmost": 0,
+  "pastBands": 0,
+  "pastTheDrawing": 0,
+  "wiresCrossed": {
+   "topmost": 0,
+   "pastBands": 0,
+   "pastTheDrawing": 0
+  },
+  "crossingsPastBands": [],
+  "crossingsOnlyPastLaces": {}
+ }
+]

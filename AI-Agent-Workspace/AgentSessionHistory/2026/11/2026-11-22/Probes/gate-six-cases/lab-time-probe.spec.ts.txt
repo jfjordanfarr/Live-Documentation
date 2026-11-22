@@ -1,0 +1,41 @@
+// Temporary probe, never committed here: where the layout lab's page case spends its time, stretch by stretch, in the
+// test's own process.
+import { test } from "@playwright/test";
+import fs from "node:fs";
+
+import { captureFromPage } from "../../scripts/layout-lab/capture";
+import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/evaluate";
+import { loadBundleGraph } from "../../scripts/layout-lab/scopes";
+import { DECK_SCOPES } from "./scopes";
+import { arriveAtReadingSize, localRetainUrl } from "./still-picture";
+
+const OUT = process.env.GATE_PROBE_OUT ?? "/tmp";
+
+test("probe: the layout lab's page case, stretch by stretch", async ({ page }) => {
+  test.setTimeout(280_000);
+  await arriveAtReadingSize(page);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const found: unknown[] = [];
+  for (const run of DECK_SCOPES) {
+    const stretches: Record<string, number> = {};
+    const timed = async <T,>(name: string, work: () => T | Promise<T>): Promise<T> => {
+      const start = performance.now();
+      const result = await work();
+      stretches[name] = Math.round(performance.now() - start);
+      return result;
+    };
+    await timed("goto", () => page.goto(localRetainUrl(run.base, run.scope)));
+    await timed("the page draws its picture", async () => {
+      await page.waitForSelector("#map-container .branch-mode", { timeout: 60_000 });
+      await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 60_000 });
+    });
+    const capture = await timed("capture, the picture drawn", () => captureFromPage(page, run));
+    const graph = await timed("loadBundleGraph", () => loadBundleGraph(run));
+    const baseline = await timed("evaluate", () => evaluate(capture, graph, run, baselineConfig()));
+    const drift = await timed("driftOf", () => driftOf(capture, baseline));
+    const again = await timed("evaluate again", () => evaluate(capture, graph, run, baselineConfig()));
+    found.push({ scope: `${run.bundle}, ${run.scopeName}`, stretches, cards: Object.keys(capture.cards).length, drift: drift.length, same: again.signals.placementCost === baseline.signals.placementCost,
+      pageLayoutMs: await page.evaluate(() => document.querySelector<HTMLElement>("#map-container .local-placed")?.dataset.layoutMs ?? null) });
+    fs.writeFileSync(`${OUT}/lab-time.json`, JSON.stringify(found, null, 1));
+  }
+});
