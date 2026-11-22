@@ -215,8 +215,14 @@ reExport   = name:sid  reMark  [slug:sid]  [fromLabel:sid fromLink:sid]  list(fl
   - a reference's `role`: 0 `Returns`, 1 `Extends`, 2 `Implements`, 3 `Constraints`, 4 `Parameters`, with their capital letters.
   - These are not the graph's edge kinds (section 5), which are other words.
 - **A symbol's documentation references** (`docReference`) are the references its documentation comment makes to declarations, as the scanner read them from its documentation: the name as the author wrote it, the element that carries it where that is not a plain reference (for example `exception` or `inheritdoc`), and, where the scanner resolved it, its link and what the link names.
-  - The scanner also keeps the documentation's own lines among the symbol's sections, verbatim.
-  - The layout does not read those lines. It carries the scanner's reading of them beside them, as it carries what a link names, and does not check that the two agree.
+  - The scanner also keeps the documentation's own lines among the symbol's sections, verbatim. The layout does not read those lines. It carries the scanner's reading of them beside them, as it carries what a link names, and does not check that the two agree.
+  - **Why the fact is held twice.** The lines are not only references. Measured on 2026-11-22 on this repository's scan, the estate sample's and DNN's:
+    - Of 7,886 lines in the sections the scanner reads references from, 7,848 are exactly the line the scanner's composer writes for a reference.
+    - The other 38 are other kinds of line the composer writes into the same section: 35 web links (`- [url](url)`) and 3 plain names or paths (`- CreateValidID`, `- ../../docs/registry.md — Widget architecture`).
+    - 46 reference lines also carry the author's words after the name. The reading does not hold them.
+    - So the reading cannot stand for the lines.
+  - **Which a consumer uses:** a viewer shows the lines, among the symbol's sections, as the author's documentation. The graph reads only the references (section 5).
+  - **If the two disagree,** it is the scanner's fault, and a reader cannot see it: a reader would have to read the lines by the scanner's own grammar to compare them, and the layout keeps no copy of that grammar. A check of agreement costs little time (DNN has 7,842 such lines) but a second implementation of the scanner's documentation grammar in every reader. That is why it is not made.
   - (**Provenance:** this repository's scanner reads them from a section titled `Links`.)
 - **What a link names.** `target` is the path of the file the link's document mirrors, and `anchor` is the fragment, as the scanner read the link. The target need not be a scanned file. A link to a file outside the scan keeps its target, and the graph (section 5) shows it landing nowhere. The layout does not resolve links itself, since that would be a second implementation of the scanner's rule. It carries the scanner's reading, and says so.
 - Field values the layout keeps but does not judge: the `layer` number; the archetype; the kinds, flags and qualifiers, which are words a scanner chooses; and a section's lines, which may be any strings.
@@ -282,6 +288,8 @@ The graph is what the facts say about connection. A reader that gives one gives 
   - A reference with no link, or whose target is not a scanned file, gives nothing. A reference to the file's own declarations gives an item like any other.
   - A file's `documentation` is present only when it has at least one item.
 - **Documented by**: for each file, the files other than itself whose documentation has an item with `to` equal to its path, each once, in path order. It is present only when there is one.
+
+**A file's part of the graph needs two things of the other files:** which of them land on it (its inbound), and which of them name it in their documentation (its documented-by). Both come from the targets alone. A reader may gather those in one pass and build each file's part only when it is asked for. A Local Map, for example, asks for a few files' parts out of thousands. (**Provenance:** the module's `graphViewOf` does this, and its `graphOf` asks it for every file.)
 
 The order of an object's members is not a fact. (**Provenance:** the module's `graphOf` gives them in the order this repository's `index.json` prints them, so that the two can be compared byte for byte. On this repository's own graph, the estate sample's and DNN's, the graph read back from the layout prints byte for byte as the `index.json` it was made from, `documentation` and `documentedBy` included; section 11.)
 

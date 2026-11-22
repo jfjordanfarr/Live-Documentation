@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/stored-form/src/storedForm.ts`
-- Generated At: 2026-11-22T03:32:53.449Z
+- Generated At: 2026-11-22T04:01:24.445Z
 
 ## Authored
 ### Purpose
@@ -324,16 +324,34 @@ The graph of a scan: its location and every file keyed by path, in path order.
 ##### `docPathOf` — Summary
 Where a file's document is: the location's root, its base layer, and the path with the extension.
 
+#### `GraphView` {#symbol-graphview}
+- Type: interface
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1655)
+- Extends: [`Location`](#symbol-location)
+
+##### `GraphView` — Summary
+The graph of a scan, each file's part built only when it is asked for.
+
+#### `graphViewOf` {#symbol-graphviewof}
+- Type: function
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1668)
+- Returns: [`GraphView`](#symbol-graphview)
+- Parameters: `scan`: [`Scan`](#symbol-scan)
+
+##### `graphViewOf` — Summary
+The graph the facts describe, by section 5 of the specification, each file's part built only when a consumer asks
+for it. What every file's part needs of the others, the files that land on it and the files whose documentation
+names it, is gathered first, in one pass over the targets alone; a file's edges, its symbols written plainly and the
+rest wait until it is asked for. A link lands on a file when what it names was scanned.
+
 #### `graphOf` {#symbol-graphof}
 - Type: function
-- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1659)
+- Source: [source](../../../../../packages/stored-form/src/storedForm.ts#L1781)
 - Returns: [`Graph`](#symbol-graph)
 - Parameters: `scan`: [`Scan`](#symbol-scan)
 
 ##### `graphOf` — Summary
-The graph the facts describe. A link lands on a file when what it names was scanned: the edge then carries that
-path and the anchor; a file's outbound wires are the scanned files its links land on, other than itself, and its
-inbound wires the files whose links land on it.
+The whole graph the facts describe, every file's part built: {@link graphViewOf} asked for each file in turn.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
