@@ -6,6 +6,7 @@ import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/ty
 import { DECK_SCOPES, type DeckScope } from "./scopes";
 import {
   LOCAL_MAP,
+  arriveAtReadingSize,
   backEnabled,
   boxOf,
   cardBoxes,
@@ -19,6 +20,7 @@ import {
   gesture,
   legibleNames,
   loadGraph,
+  localMapSettled,
   localMapUrl,
   localRetainUrl,
   readPicture,
@@ -122,12 +124,15 @@ const shot = async (page: Page, run: Run, view: string, moment: string): Promise
 const settleLocalMap = async (page: Page, file: string): Promise<void> => {
   await page.waitForSelector(`#map-container .node-card.local-focus[data-id="${file}"]`, { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
+  await localMapSettled(page);
   await page.waitForTimeout(700);
 };
 
 const settleLocalBranches = async (page: Page): Promise<void> => {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
+  // At rest by the page's own word, and not by a guess at how long its camera takes.
+  await localMapSettled(page);
   await page.waitForTimeout(900);
 };
 
@@ -326,6 +331,14 @@ for (const run of RUNS) {
     test.use({ viewport: { width: 1600, height: 1000 } });
     // One test takes every measure of one view: a tour, six pans and a journey, so it needs more than the suite's half minute.
     test.describe.configure({ timeout: 180_000 });
+    // The deck's subject is the picture at reading size, where its measures are taken: facts legible at their reading
+    // size, the tour's pans that bring them into the frame, routes that hold their shape under a pan. The arrival that
+    // ships rests there and then eases back to the neighbours' frame, in another look on a large picture (2026-11-22);
+    // the deck waited seven or nine tenths of a second and read, so its measures fell before, during or after that
+    // motion as the machine ran, and that day's gate saw the estate's retained routes "change" under a pan: 65 of 77
+    // differed between a picture read during the rest and one read after the easing, where no pan changes any (the
+    // same pans, begun before the easing, changed none of 77). So the deck holds its arrival at reading size and says so.
+    test.beforeEach(async ({ page }) => { await arriveAtReadingSize(page); });
 
     test("Local Map", async ({ page }) => {
       const graph = await loadGraph(page, run.base);

@@ -1,0 +1,73 @@
+{
+ "card": [
+  1129,
+  3662,
+  1542,
+  3857.1
+ ],
+ "cardClass": "node-card local-slot-card focus-node",
+ "lod": "reading",
+ "codes": [
+  {
+   "text": "Portal/Pages/Default.aspx",
+   "box": [
+    1169.3,
+    3877.5,
+    1331.9,
+    3890.5
+   ],
+   "rects": [
+    [
+     1169.3,
+     3877.5,
+     1331.9,
+     3890.5
+    ]
+   ],
+   "chain": [
+    "CODE. display=inline overflow=visible clamp=none visibility=visible ws=normal wrap=anywhere box=1169.3,3877.5,1331.9,3890.5",
+    "P. display=block overflow=visible clamp=none visibility=visible ws=normal wrap=anywhere box=1142,3722.5,1529,3756.5",
+    "DIV.local-reading-prose display=flow-root overflow=clip clamp=2 visibility=visible ws=normal wrap=anywhere box=1142,3722.5,1529,3756.5",
+    "DIV.local-reading-block local-reading-slot local-reading-purpose display=block overflow=visible clamp=none visibility=visible ws=normal wrap=normal box=1142,3716.5,1529,3765.5",
+    "DIV.node-card local-slot-card focus-node display=block overflow=visible clamp=none visibility=visible ws=normal wrap=normal box=1129,3662,1542,3857.1"
+   ]
+  },
+  {
+   "text": "Database/SqlServer/dbo.Payment.sql",
+   "box": [
+    1142,
+    3894.5,
+    1363,
+    3907.5
+   ],
+   "rects": [
+    [
+     1142,
+     3894.5,
+     1363,
+     3907.5
+    ]
+   ],
+   "chain": [
+    "CODE. display=inline overflow=visible clamp=none visibility=visible ws=normal wrap=anywhere box=1142,3894.5,1363,3907.5",
+    "P. display=block overflow=visible clamp=none visibility=visible ws=normal wrap=anywhere box=1142,3722.5,1529,3756.5",
+    "DIV.local-reading-prose display=flow-root overflow=clip clamp=2 visibility=visible ws=normal wrap=anywhere box=1142,3722.5,1529,3756.5",
+    "DIV.local-reading-block local-reading-slot local-reading-purpose display=block overflow=visible clamp=none visibility=visible ws=normal wrap=normal box=1142,3716.5,1529,3765.5",
+    "DIV.node-card local-slot-card focus-node display=block overflow=visible clamp=none visibility=visible ws=normal wrap=normal box=1129,3662,1542,3857.1"
+   ]
+  }
+ ],
+ "prose": [
+  {
+   "html": "<p>Exercises path questions through search and shared addresses in both Local Map representations. The estate's known dependency chain supplies independent expected order and direction: a path is answered whichever end it is asked from, drawn with what offers first and told from the end asked from, and Clear returns to retained exploration. Until 2026-11-22 a path asked from the file that depends was refused with the reverse question as a link; four cases held that and now hold the owner's word of that day (<span class=\"unavailable-link\" title=\"Not included in this bundle\">Turn 5 of the day's record</span>), each saying in a comment what it asserted before, and a fifth asks the estate's route page first, from <code>Portal/Pages/Default.aspx</code> to <code>Database/SqlServer/dbo.Payment.sql</code>, which was seen refused before the change. Checks rendered feedback, keyboard recovery, hop inspection, representation changes, reload and navigation beside the 2D wire, camera and retention assertions.</p>",
+   "box": [
+    1142,
+    3722.5,
+    1529,
+    3756.5
+   ],
+   "scrollHeight": 238,
+   "clientHeight": 34
+  }
+ ]
+}
