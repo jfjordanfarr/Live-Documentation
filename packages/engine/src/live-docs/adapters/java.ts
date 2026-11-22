@@ -25,7 +25,7 @@ import path from "node:path";
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -504,11 +504,11 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   factsRun = fileIndex;
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const stats  = await fs.stat(absolutePath);
   const cached = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await readSourceText(absolutePath);
+  const content = await readSourceText(absolutePath, reads);
   const facts   = await readTree("java", content, (root) => new FileExtractor().extract(root));
   factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
   return facts;
@@ -560,7 +560,7 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
   for (const file of await listJavaFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
-      facts = await fileFacts(path.join(workspaceRoot, file));
+      facts = await fileFacts(path.join(workspaceRoot, file), fileIndex);
     } catch (error) {
       throwIfMachineFailure(error);
       continue;
@@ -700,7 +700,7 @@ export const javaAdapter: LanguageAdapter = {
   extensions: [".java"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts    = await fileFacts(absolutePath);
+    const facts    = await fileFacts(absolutePath, fileIndex);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const result: SourceAnalysisResult = {

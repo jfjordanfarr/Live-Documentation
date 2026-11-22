@@ -339,8 +339,8 @@ export const cssAdapter: LanguageAdapter = {
   id: "css",
   extensions: [".css"],
 
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await readSourceText(absolutePath);
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    const content = await readSourceText(absolutePath, fileIndex);
 
     const dependencies = extractCssDependencies({
       content: withoutCssComments(content),

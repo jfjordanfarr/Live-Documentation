@@ -32,7 +32,7 @@ import path from "node:path";
 import { pythonSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseDocstring } from "./python.docstring";
@@ -402,11 +402,11 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   factsRun = fileIndex;
 }
 
-async function moduleFacts(absolutePath: string): Promise<ModuleFacts> {
+async function moduleFacts(absolutePath: string, reads: SourceReads | undefined): Promise<ModuleFacts> {
   const mtimeMs = statSync(absolutePath).mtimeMs;
   const cached  = factsCache.get(absolutePath);
   if (cached && cached.mtimeMs === mtimeMs) return cached.facts;
-  const facts = readSourceText(absolutePath).then(extractFacts);
+  const facts = readSourceText(absolutePath, reads).then(extractFacts);
   factsCache.set(absolutePath, { mtimeMs, facts });
   return facts;
 }
@@ -490,18 +490,18 @@ interface Origin {
 }
 
 /** The public names of a module: `__all__` when it says, else every bound name without a leading underscore. */
-async function publicNames(moduleFile: string): Promise<Set<string>> {
-  const facts = await moduleFacts(moduleFile);
+async function publicNames(moduleFile: string, reads: SourceReads | undefined): Promise<Set<string>> {
+  const facts = await moduleFacts(moduleFile, reads);
   return new Set(facts.all ?? Array.from(facts.boundNames).filter((name) => !name.startsWith("_")));
 }
 
 /** Where `name`, as exported by `moduleFile`, is defined: the module itself, a submodule, or the file a re-export leads to. */
-async function originOf(moduleFile: string, name: string, workspaceRoot: string, seen = new Set<string>()): Promise<Origin | undefined> {
+async function originOf(moduleFile: string, name: string, workspaceRoot: string, reads: SourceReads | undefined, seen = new Set<string>()): Promise<Origin | undefined> {
   const key = `${moduleFile}|${name}`;
   if (seen.has(key)) return undefined;
   seen.add(key);
 
-  const facts = await moduleFacts(moduleFile);
+  const facts = await moduleFacts(moduleFile, reads);
   if (facts.boundNames.has(name) && facts.declarations.some((declared) => declared.name === name)) {
     return { file: moduleFile, name };
   }
@@ -513,7 +513,7 @@ async function originOf(moduleFile: string, name: string, workspaceRoot: string,
       const target = resolveModule(entry, moduleFile, workspaceRoot);
       if (!target) return undefined;
       const submodule = submoduleOf(target, imported.name);
-      return submodule ? { file: submodule } : originOf(target, imported.name, workspaceRoot, seen);
+      return submodule ? { file: submodule } : originOf(target, imported.name, workspaceRoot, reads, seen);
     }
     if ((entry.alias ?? entry.module[0]) === name) {
       const target = resolveModule(entry, moduleFile, workspaceRoot);
@@ -527,8 +527,8 @@ async function originOf(moduleFile: string, name: string, workspaceRoot: string,
   for (const entry of facts.imports) {
     if (!entry.wildcard) continue;
     const target = resolveModule(entry, moduleFile, workspaceRoot);
-    if (!target || !(await publicNames(target)).has(name)) continue;
-    const origin = await originOf(target, name, workspaceRoot, seen);
+    if (!target || !(await publicNames(target, reads)).has(name)) continue;
+    const origin = await originOf(target, name, workspaceRoot, reads, seen);
     if (origin) return origin;
   }
   return undefined;
@@ -591,7 +591,8 @@ function specifierOf(entry: ModuleImport): string {
 async function toDependencies(
   facts: ModuleFacts,
   absolutePath: string,
-  workspaceRoot: string
+  workspaceRoot: string,
+  reads: SourceReads | undefined
 ): Promise<{ dependencies: DependencyEntry[]; bindings: Map<string, ModuleBinding> }> {
   const byFile   = new Map<string, { specifier?: string; symbols: Set<string> }>();
   const external = new Map<string, Set<string>>();
@@ -630,12 +631,12 @@ async function toDependencies(
         link(submodule, undefined, `${specifier}.${imported.name}`);
         bindings.set(imported.alias, { module: [...entry.module, imported.name], file: submodule, alias: true });
       } else {
-        linkOrigin(await originOf(moduleFile, imported.name, workspaceRoot));
+        linkOrigin(await originOf(moduleFile, imported.name, workspaceRoot, reads));
       }
     }
     if (entry.wildcard) {
-      for (const name of await publicNames(moduleFile)) {
-        if (facts.identifiers.has(name)) linkOrigin(await originOf(moduleFile, name, workspaceRoot));
+      for (const name of await publicNames(moduleFile, reads)) {
+        if (facts.identifiers.has(name)) linkOrigin(await originOf(moduleFile, name, workspaceRoot, reads));
       }
     }
   }
@@ -649,7 +650,7 @@ async function toDependencies(
     } else if (binding.module.every((part, index) => chain[index] === part)) {
       symbol = chain[binding.module.length];
     }
-    if (symbol) linkOrigin(await originOf(binding.file, symbol, workspaceRoot));
+    if (symbol) linkOrigin(await originOf(binding.file, symbol, workspaceRoot, reads));
   }
 
   const dependencies: DependencyEntry[] = Array.from(byFile.entries())
@@ -671,8 +672,8 @@ export const pythonAdapter: LanguageAdapter = {
   extensions: [".py"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts = await moduleFacts(absolutePath);
-    const { dependencies, bindings } = await toDependencies(facts, absolutePath, workspaceRoot);
+    const facts = await moduleFacts(absolutePath, fileIndex);
+    const { dependencies, bindings } = await toDependencies(facts, absolutePath, workspaceRoot, fileIndex);
     const symbols = toSymbols(facts, bindings);
     return facts.mainGuard ? { symbols, dependencies, program: {} } : { symbols, dependencies };
   }

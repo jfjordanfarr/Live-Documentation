@@ -26,8 +26,8 @@ import type { LanguageAdapter } from "./index";
 export const sqlAdapter: LanguageAdapter = {
   id:         "sql",
   extensions: [".sql"],
-  async analyze({ absolutePath, workspaceRoot, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await readSourceText(absolutePath);
+  async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
+    const content  = await readSourceText(absolutePath, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
 
     const { declarations, references } = readSql(content);

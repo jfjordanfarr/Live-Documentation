@@ -74,7 +74,7 @@ export const pyprojectAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [PYPROJECT_TOML],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const manifest = await readToml(input.absolutePath);
+    const manifest = await readToml(input.absolutePath, input.fileIndex);
     if (!manifest) return { symbols: [], dependencies: [] };
     const context = manifestContext(input);
     const directory = path.dirname(input.absolutePath);

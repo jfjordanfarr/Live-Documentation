@@ -529,7 +529,7 @@ export async function buildWorkspaceIndexes(options: {
 
       // Process JavaScript/TypeScript files with the built-in TypeScript parser
       if (SUPPORTED_SCRIPT_EXTENSIONS.has(ext)) {
-        const content = await readSourceText(absolutePath);
+        const content = await readSourceText(absolutePath, options.fileIndex);
         const scriptKind = inferScriptKind(ext);
         const sourceFile = ts.createSourceFile(
           absolutePath,
@@ -548,7 +548,8 @@ export async function buildWorkspaceIndexes(options: {
               sourceAbsolute: absolutePath,
               workspaceRoot: options.workspaceRoot,
               dependencies: exportDependencies,
-              existingSymbols: symbols
+              existingSymbols: symbols,
+              reads: options.fileIndex
             }));
           }
         }

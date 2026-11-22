@@ -17,9 +17,15 @@ const repoRoot = path.resolve(__dirname, "..", "..", "..", "..");
 const ROOTS = [path.join(repoRoot, "packages", "engine", "src"), path.join(repoRoot, "packages", "generator", "src")];
 const SOURCE = /\.(?:[cm]?ts|tsx)$/u;
 
-/** The calls that read or probe a file or a folder, in their callback, sync and promise forms alike. */
+/**
+ * The calls that read or probe a file or a folder, in their callback, sync and promise forms alike; and the run's reads
+ * of its files through the host (`readingOf`, `headOf`: `workspaceFiles.ts`, since 2026-11-22), which a reader may ask
+ * of the file index it is handed.
+ */
 const READS = new Set([
   "readSourceText",
+  "readingOf",
+  "headOf",
   "readFile",
   "readFileSync",
   "stat",

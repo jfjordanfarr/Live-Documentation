@@ -62,13 +62,16 @@ describe("JSON Adapter", () => {
   it("throws a failure of the machine's in reading the tsconfig beside a manifest, and reads one of the file's as no tsconfig", async () => {
     vi.resetModules();
     const failing = path.join(tempDir, "tsconfig.json");
+    // The tsconfig is read ahead through the run's reads, from the disk by the Node host (`tooling/nodeHost.ts`), since
+    // 2026-11-22; before, TypeScript's host read it with `readFileSync`, which this stood in for until then.
     vi.doMock("node:fs", async (importOriginal) => {
       const actual = await importOriginal<typeof import("node:fs")>();
-      const readFileSync = ((file: fs.PathOrFileDescriptor, ...rest: unknown[]) =>
+      const readFile = ((file: fs.PathLike, ...rest: unknown[]) =>
         file === failing && fs.existsSync(`${failing}.fail`)
-          ? (() => { throw Object.assign(new Error(`EMFILE: too many open files, open '${failing}'`), { code: "EMFILE", syscall: "open", errno: -24 }); })()
-          : (actual.readFileSync as (...given: unknown[]) => unknown)(file, ...rest)) as typeof actual.readFileSync;
-      return { ...actual, default: { ...actual, readFileSync }, readFileSync };
+          ? Promise.reject(Object.assign(new Error(`EMFILE: too many open files, open '${failing}'`), { code: "EMFILE", syscall: "open", errno: -24 }))
+          : (actual.promises.readFile as (...given: unknown[]) => unknown)(file, ...rest)) as typeof actual.promises.readFile;
+      const promises = { ...actual.promises, readFile };
+      return { ...actual, default: { ...actual, promises }, promises };
     });
     try {
       const { jsonAdapter: own } = await vi.importActual<typeof import("./json")>("./json");

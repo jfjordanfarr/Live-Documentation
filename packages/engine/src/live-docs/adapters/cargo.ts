@@ -53,7 +53,7 @@ export const cargoAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [CARGO_TOML],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const manifest = await readToml(input.absolutePath);
+    const manifest = await readToml(input.absolutePath, input.fileIndex);
     if (!manifest) return { symbols: [], dependencies: [] };
     const context = manifestContext(input);
     const directory = path.dirname(input.absolutePath);
@@ -127,7 +127,7 @@ async function workspaceDependencies(directory: string, crate: Record<string, un
   for (const folder of candidates) {
     const manifestPath = path.join(folder, CARGO_TOML);
     if (manifestPath !== context.absolutePath && !workspaceFile(manifestPath, context)) continue;
-    const root = tableOf((await readToml(manifestPath))?.workspace);
+    const root = tableOf((await readToml(manifestPath, context.fileIndex))?.workspace);
     if (root) {
       return Object.entries(tableOf(root.dependencies) ?? {}).map(([key, spec]) => ({ key, spec, directory: folder }));
     }

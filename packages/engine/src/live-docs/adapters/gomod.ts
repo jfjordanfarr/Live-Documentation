@@ -103,7 +103,7 @@ export const goModAdapter: LanguageAdapter = {
   extensions: [],
   fileNames:  [GO_MOD],
   async analyze(input): Promise<SourceAnalysisResult | null> {
-    const goMod = readGoMod(await readSourceText(input.absolutePath));
+    const goMod = readGoMod(await readSourceText(input.absolutePath, input.fileIndex));
     const context = manifestContext(input);
     const directory = path.dirname(input.absolutePath);
     const dependencies = new ManifestDependencies();

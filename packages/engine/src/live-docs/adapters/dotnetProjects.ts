@@ -81,7 +81,7 @@ async function buildReach(workspaceRoot: string, fileIndex: WorkspaceFileIndex):
   for (const projectFile of Array.from(fileIndex).filter(isProjectFile).sort()) {
     let content: string;
     try {
-      content = await readSourceText(path.join(workspaceRoot, projectFile));
+      content = await readSourceText(path.join(workspaceRoot, projectFile), fileIndex);
     } catch (error) {
       // A failure of the machine's is thrown on, to the generator's catch, which names it; a project file that cannot
       // be read for a cause of its own references nothing here.

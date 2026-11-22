@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/index.ts`
-- Generated At: 2026-11-21T02:51:58.904Z
+- Generated At: 2026-11-22T01:36:19.495Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L37)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L43)
 - Returns: [`LiveDocumentationArchetype`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 
 ##### `WorkspaceFileIndex` — Summary
@@ -33,11 +33,16 @@ without filesystem crawling. The index is built by the discovery phase before
 analysis begins. Built by the generator, it also answers each path's
 archetype under the workspace's own configuration (`archetypeOf`), so that a
 reader telling a test from working code reads the workspace's overrides and
-sample roots; an index made otherwise, as a test's, has none.
+sample roots, and carries the run's reads of its files (`readingOf`,
+`headOf`; `workspaceFiles.ts`), so that every reader, and every table a
+reader builds from many files, takes a file's text from the one read of the
+run, by handing this index to `readSourceText`. An index made otherwise, as a
+test's, has neither, and its reader reads the disk. It is the run's own
+object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L49)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L55)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -51,14 +56,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L79)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L85)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L111)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L117)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -98,6 +103,7 @@ Analyzer output when an adapter reads the file by its name or its extension, oth
 - [`sql.sqlAdapter`](./sql.ts.mdmd.md#symbol-sqladapter)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`workspaceFiles.WorkspaceReads`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

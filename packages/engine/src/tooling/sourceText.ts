@@ -32,9 +32,8 @@
  *
  * @module
  */
-import { promises as fs } from "node:fs";
-
 import { failedCall, machineFailure } from "../live-docs/processMark";
+import { readFileBytes } from "./nodeHost";
 
 /** How a file's bytes became text, or why they did not. */
 export type SourceTextReading =
@@ -95,11 +94,30 @@ export function unmarkedUtf16(bytes: Uint8Array): "utf-16le" | "utf-16be" | unde
 }
 
 /**
+ * The run's reads of its files, where a run hands them: the file index the generator hands every reader carries them
+ * (`WorkspaceFileIndex`, `workspaceReads` in `workspaceFiles.ts`), so that each file is read once per run and decoded
+ * once, through the host that runs the engine. An index made otherwise, as a reader's own tests make one, has none.
+ */
+export interface SourceReads {
+  readingOf?: (absolutePath: string) => Promise<SourceTextReading>;
+}
+
+/**
+ * A source file's reading by {@link decodeSourceText}: from the run's reads where they are handed, else from the disk
+ * by the Node host (`nodeHost.ts`), as for a reader called with no run.
+ */
+export async function readSourceReading(absolutePath: string, reads?: SourceReads): Promise<SourceTextReading> {
+  if (reads?.readingOf) return reads.readingOf(absolutePath);
+  return decodeSourceText(await readFileBytes(absolutePath));
+}
+
+/**
  * A source file's text, for a language reader: read by {@link decodeSourceText}, and empty when the bytes are not
  * text this step knows, so that such a file is read as holding nothing and the run goes on; the generator names it.
+ * Every reader hands the run's reads it was handed (`fileIndex`), so that the file is read once in the run.
  */
-export async function readSourceText(absolutePath: string): Promise<string> {
-  const reading = decodeSourceText(await fs.readFile(absolutePath));
+export async function readSourceText(absolutePath: string, reads?: SourceReads): Promise<string> {
+  const reading = await readSourceReading(absolutePath, reads);
   return reading.encoding === "unread" ? "" : reading.text;
 }
 
