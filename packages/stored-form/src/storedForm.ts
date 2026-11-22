@@ -59,14 +59,12 @@ export interface StoredEntry {
 }
 
 /**
- * One type named on a symbol. A type with a link carries what the link names: the scanned path (`target`) and the
- * symbol's anchor on it (`anchor`), as the scanner read the link. Whether that path was scanned is the graph's to say.
+ * One type named on a symbol, with the link to the document that declares it where the scanner resolved one. What the
+ * link names is derived from it by the link rule ({@link linkNames}), and is stored nowhere.
  */
 export interface StoredType {
   name: string;
   link?: string;
-  target?: string;
-  anchor?: string;
   array?: true;
   promise?: true;
 }
@@ -101,16 +99,12 @@ export interface StoredDocumentation {
   name: string;
   element?: string;
   link?: string;
-  target?: string;
-  anchor?: string;
 }
 
 /** One dependency line: a label, and for a workspace file the link and what it names. */
 export interface StoredDependency {
   label: string;
   link?: string;
-  target?: string;
-  anchor?: string;
   symbols?: string[];
   qualifiers: string[];
 }
@@ -574,22 +568,18 @@ function walkEntry(c: Codec, e: StoredEntry | undefined): StoredEntry {
   return entry;
 }
 
-/** A link, and what it names: present together in this order, `target` only with a link and `anchor` only with a target. */
-function walkLinked(c: Codec, bits: number, v: { link?: string; target?: string; anchor?: string } | undefined, into: { link?: string; target?: string; anchor?: string }): void {
-  if ((bits & 2) && !(bits & 1)) refuse(`a target without a link`);
-  if ((bits & 4) && !(bits & 2)) refuse(`an anchor without a target`);
+/** A link, where the mark's bit 0 says there is one. What it names is derived (section 4.3), never stored. */
+function walkLinked(c: Codec, bits: number, v: { link?: string } | undefined, into: { link?: string }): void {
   if (bits & 1) into.link = c.link(v?.link, `a link`);
-  if (bits & 2) into.target = c.path(v?.target, `a target`);
-  if (bits & 4) into.anchor = c.str(v?.anchor, `an anchor`);
 }
 
-function linkedBits(v: { link?: string; target?: string; anchor?: string }): number {
-  return +(v.link !== undefined) | (+(v.target !== undefined) << 1) | (+(v.anchor !== undefined) << 2);
+function linkedBits(v: { link?: string }): number {
+  return +(v.link !== undefined);
 }
 
 function walkType(c: Codec, t: StoredType | undefined): StoredType {
   const type: StoredType = { name: c.str(t?.name, `a type`) };
-  const bits = c.bits(t && (linkedBits(t) | (+(t.array === true) << 3) | (+(t.promise === true) << 4)), 0b11111, `a type`);
+  const bits = c.bits(t && (linkedBits(t) | (+(t.array === true) << 3) | (+(t.promise === true) << 4)), 0b11001, `a type`);
   walkLinked(c, bits, t, type);
   if (bits & 8) type.array = true;
   if (bits & 16) type.promise = true;
@@ -622,7 +612,7 @@ function walkSymbol(c: Codec, s: StoredSymbol | undefined): StoredSymbol {
   }));
   symbol.documentation = c.list(s?.documentation, `a symbol's documentation`, (d) => {
     const reference = { name: c.str(d?.name, `a documentation reference`) } as StoredDocumentation;
-    const bits = c.bits(d && (linkedBits(d) | (+(d.element !== undefined) << 3)), 0b1111, `a documentation reference`);
+    const bits = c.bits(d && (linkedBits(d) | (+(d.element !== undefined) << 3)), 0b1001, `a documentation reference`);
     if (bits & 8) reference.element = c.str(d?.element, `a documentation reference's element`);
     walkLinked(c, bits, d, reference);
     return reference;
@@ -632,7 +622,7 @@ function walkSymbol(c: Codec, s: StoredSymbol | undefined): StoredSymbol {
 
 function walkDependency(c: Codec, d: StoredDependency | undefined): StoredDependency {
   const dependency: StoredDependency = { label: c.str(d?.label, `a dependency`), qualifiers: [] };
-  const bits = c.bits(d && (linkedBits(d) | (+(d.symbols !== undefined) << 3)), 0b1111, `a dependency`);
+  const bits = c.bits(d && (linkedBits(d) | (+(d.symbols !== undefined) << 3)), 0b1001, `a dependency`);
   walkLinked(c, bits, d, dependency);
   if (bits & 8) dependency.symbols = c.list(d?.symbols, `a dependency's symbols`, (x) => c.str(x, `a dependency's symbol`));
   dependency.qualifiers = c.list(d?.qualifiers, `a dependency's qualifiers`, (x) => c.str(x, `a qualifier`));
@@ -838,16 +828,83 @@ class Decoding implements Codec {
   }
 }
 
-/** The links of a file that make edges, in the order the graph lists its edges: its dependencies, then its symbols' types. */
-function linkedTargets(file: StoredFile): (string | undefined)[] {
+/**
+ * The path and anchor a link names, by the link rule of section 4.3, or undefined where it names no document of the
+ * scan's location. Stated in full there, for a reader in any language; this is the rule of this repository's engine
+ * (`linkTarget`), written again here so that the stored form holds a link and never a second copy of what it names.
+ */
+export function linkNames(location: Location, codePath: string, link: string): { target: string; anchor?: string } | undefined {
+  const docPath = docPathOf(location, codePath);
+  // The fragment is the link's text after its first `#`, up to a second `#` or the end, as written.
+  const fragment = link.split("#", 2)[1];
+  const hash = link.indexOf("#");
+  const beforeFragment = hash === -1 ? link : link.slice(0, hash);
+  const query = beforeFragment.indexOf("?");
+  const path = percentDecoded(query === -1 ? beforeFragment : beforeFragment.slice(0, query));
+  if (/^[a-z]+:\/\//iu.test(path)) return undefined;
+  const slash = docPath.lastIndexOf("/");
+  const resolved = path ? normalizedPath(`${slash === -1 ? "." : docPath.slice(0, slash)}/${path}`) : docPath;
+  if (resolved.startsWith("../") || resolved.startsWith("/")) return undefined;
+  const prefix = `${normalizedPath(location.root)}/${normalizedPath(location.baseLayer)}/`;
+  if (!resolved.startsWith(prefix)) return undefined;
+  const rest = resolved.slice(prefix.length);
+  if (!rest.toLowerCase().endsWith(location.extension.toLowerCase())) return undefined;
+  const target = rest.slice(0, rest.length - location.extension.length);
+  return fragment ? { target, anchor: fragment } : { target };
+}
+
+/** A path percent-decoded as UTF-8; kept as written where a `%` begins no escape or the bytes are not UTF-8. */
+function percentDecoded(path: string): string {
+  try {
+    return decodeURIComponent(path);
+  } catch {
+    return path;
+  }
+}
+
+/** A path's `.` segments and empty segments dropped, and each `..` taking off the segment before it where there is one. */
+function normalizedPath(path: string): string {
+  const segments: string[] = [];
+  for (const segment of path.split("/")) {
+    if (segment === "" || segment === ".") continue;
+    if (segment === ".." && segments.length > 0 && segments[segments.length - 1] !== "..") segments.pop();
+    else segments.push(segment);
+  }
+  return `${path.startsWith("/") ? "/" : ""}${segments.join("/")}`;
+}
+
+/**
+ * The link rule with what it gives kept, by the document's folder and the link (by the document itself, for a link
+ * of only a fragment): a scan's links repeat within a folder.
+ */
+function namer(location: Location): (codePath: string, link: string) => { target: string; anchor?: string } | undefined {
+  const given = new Map<string, { target: string; anchor?: string } | undefined>();
+  return (codePath, link) => {
+    const docPath = docPathOf(location, codePath);
+    const own = link.startsWith("#") || link.startsWith("?") || link === "";
+    const key = `${own ? docPath : docPath.slice(0, Math.max(0, docPath.lastIndexOf("/")))}\u0000${link}`;
+    if (given.has(key)) return given.get(key);
+    const named = linkNames(location, codePath, link);
+    given.set(key, named);
+    return named;
+  };
+}
+
+type Names = (codePath: string, link: string) => { target: string; anchor?: string } | undefined;
+
+/** The paths a file's edges' links name, in the order the graph lists its edges: its dependencies, then its symbols' types. */
+function linkedTargets(file: StoredFile, names: Names): (string | undefined)[] {
   const out: (string | undefined)[] = [];
-  for (const d of file.dependencies) if (d.link !== undefined) out.push(d.target);
+  const name = (link: string | undefined): void => {
+    if (link !== undefined) out.push(names(file.codePath, link)?.target);
+  };
+  for (const d of file.dependencies) name(d.link);
   for (const s of file.symbols) {
     for (const r of s.references) {
       if (r.role === "Parameters") {
-        for (const p of r.parameters) for (const t of p.types) if (t.link !== undefined) out.push(t.target);
+        for (const p of r.parameters) for (const t of p.types) name(t.link);
       } else {
-        for (const t of r.types) if (t.link !== undefined) out.push(t.target);
+        for (const t of r.types) name(t.link);
       }
     }
   }
@@ -855,10 +912,10 @@ function linkedTargets(file: StoredFile): (string | undefined)[] {
 }
 
 /** The scanned files a file's links name, other than itself, in path order: its outbound wires. */
-function outboundOf(file: StoredFile, index: Map<string, number>): number[] {
+function outboundOf(file: StoredFile, index: Map<string, number>, names: Names): number[] {
   const self = index.get(file.codePath);
   const set = new Set<number>();
-  for (const target of linkedTargets(file)) {
+  for (const target of linkedTargets(file, names)) {
     const j = target === undefined ? undefined : index.get(target);
     if (j !== undefined && j !== self) set.add(j);
   }
@@ -1148,6 +1205,7 @@ export function createWriter(head: ScanHead, options: { onBytes?: (bytes: Uint8A
   (resume?.strings ?? []).forEach((s, i) => ids.set(s, i));
   const paths: string[] = resume ? [...resume.paths] : [];
   const targets: (string | undefined)[][] = resume ? [...resume.targets] : [];
+  const names = namer(theHead.location);
   let chunk: Uint8Array[] = [];
   let fresh: string[] = [];
   let finished = false;
@@ -1200,7 +1258,7 @@ export function createWriter(head: ScanHead, options: { onBytes?: (bytes: Uint8A
           throw error;
         }
         paths.push(path);
-        targets.push(linkedTargets(stored));
+        targets.push(linkedTargets(stored, names));
         chunk.push(encoding.out.done());
         if (chunk.length === CHUNK) await flush();
       }),
@@ -1258,6 +1316,7 @@ export async function resumeFrom(bytes: Uint8Array): Promise<Result<ResumeState 
     const seen = new Set<string>();
     const paths: string[] = [];
     const targets: (string | undefined)[][] = [];
+    const names = namer(head.location);
     const checked: number[] = [];
     let met = 0;
     for (const f of kept.slice(1)) {
@@ -1269,7 +1328,7 @@ export async function resumeFrom(bytes: Uint8Array): Promise<Result<ResumeState 
         met = files.met;
         for (const file of files.files) {
           paths.push(file.codePath);
-          targets.push(linkedTargets(file));
+          targets.push(linkedTargets(file, names));
         }
       }
     }
@@ -1417,6 +1476,7 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
     const outbound = readWires(await rawOf_(frames[frames.length - 2], "the wires"), count);
     const inboundLists: number[][] = paths.map(() => []);
     const documentedBy = new Map<number, number[]>();
+    const names = namer(head.location);
     outbound.forEach((list, i) => list.forEach((j) => inboundLists[j].push(i)));
     const index = new Map(paths.map((p, i) => [p, i]));
     const chunkFrames = frames.filter((f) => f.kind === RECORDS);
@@ -1454,8 +1514,8 @@ async function opening(bytes: Uint8Array): Promise<OpenedScan & { chunks: number
         met = decoded.met;
         decoded.files.forEach((file, i) => {
           if (file.codePath !== paths[first + i]) refuse(`the paths name ${JSON.stringify(paths[first + i])} where the records hold ${JSON.stringify(file.codePath)}`);
-          const wires = outboundOf(file, index);
-          for (const to of numbered(documentedTargets(file), file.codePath, index)) pushTo(documentedBy, to, first + i);
+          const wires = outboundOf(file, index, names);
+          for (const to of numbered(documentedTargets(file, names), file.codePath, index)) pushTo(documentedBy, to, first + i);
           if (!equalLists(wires, outbound[first + i])) refuse(`the wires of ${JSON.stringify(file.codePath)} are not those its links name`);
         });
         kept.push(raw);
@@ -1543,7 +1603,7 @@ function line(values: unknown[]): string {
 
 /** A type in the text form: its keys in the layout's order. */
 function typeText(t: StoredType): unknown {
-  return { name: t.name, link: t.link, target: t.target, anchor: t.anchor, array: t.array, promise: t.promise };
+  return { name: t.name, link: t.link, array: t.array, promise: t.promise };
 }
 
 function entryText(e: StoredEntry): unknown {
@@ -1559,7 +1619,7 @@ function symbolText(s: StoredSymbol): unknown {
     source: s.source && { path: s.source.path, line: s.source.line },
     references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((x) => ({ name: x.name, types: x.types.map(typeText) })) } : { role: r.role, types: r.types.map(typeText) })),
     sections: s.sections.map((x) => ({ title: x.title, body: x.body })),
-    documentation: s.documentation.map((d) => ({ name: d.name, element: d.element, link: d.link, target: d.target, anchor: d.anchor }))
+    documentation: s.documentation.map((d) => ({ name: d.name, element: d.element, link: d.link }))
   };
 }
 
@@ -1580,7 +1640,7 @@ function* fileLineMakers(f: StoredFile): Generator<{ least: number; make: () => 
   yield { least: pathBytes + utf8Length(f.authored), make: () => line([p, "authored", f.authored]) };
   for (const e of f.entries) yield { least: names((c) => walkEntry(c, e)), make: () => line([p, "entry", entryText(e)]) };
   for (const sym of f.symbols) yield { least: names((c) => walkSymbol(c, sym)), make: () => line([p, "symbol", symbolText(sym)]) };
-  for (const d of f.dependencies) yield { least: names((c) => walkDependency(c, d)), make: () => line([p, "dependency", { label: d.label, link: d.link, target: d.target, anchor: d.anchor, symbols: d.symbols, qualifiers: d.qualifiers }]) };
+  for (const d of f.dependencies) yield { least: names((c) => walkDependency(c, d)), make: () => line([p, "dependency", { label: d.label, link: d.link, symbols: d.symbols, qualifiers: d.qualifiers }]) };
   const cited = f.citedBy;
   if (cited) yield { least: names((c) => cited.forEach((x) => [c.str(x.label, ""), c.str(x.link, "")])), make: () => line([p, "cited-by", cited.map((x) => ({ label: x.label, link: x.link }))]) };
   const reExports = f.reExports;
@@ -1754,12 +1814,13 @@ function checkSections(scan: Scan): void {
   let records = 0;
   let files = 0;
   const outbound: number[][] = [];
+  const names = namer(scan.head.location);
   scan.files.forEach((f, i) => {
     const encoding = new Encoding(ids, fresh);
     walkFile(encoding, f);
     records += encoding.out.length;
     files += 1;
-    outbound.push(outboundOf(f, index));
+    outbound.push(outboundOf(f, index, names));
     if (files === CHUNK || i === scan.files.length - 1) {
       tooLarge("a section of strings", stringsBytes(fresh).length);
       tooLarge("a section of records", records);
@@ -1879,6 +1940,7 @@ export function graphViewOf(scan: Scan): GraphView {
   const given = graphIndexes.get(scan.files);
   const paths: readonly string[] = given?.paths ?? scan.files.map((f) => f.codePath);
   const index = new Map(paths.map((path, i) => [path, i]));
+  const names = namer(scan.head.location);
   let inbound: number[][];
   let documentedBy: Map<number, number[]>;
   if (given) {
@@ -1887,8 +1949,8 @@ export function graphViewOf(scan: Scan): GraphView {
     inbound = paths.map(() => []);
     documentedBy = new Map();
     scan.files.forEach((f, i) => {
-      for (const to of numbered(linkedTargets(f), f.codePath, index)) inbound[to].push(i);
-      for (const to of numbered(documentedTargets(f), f.codePath, index)) pushTo(documentedBy, to, i);
+      for (const to of numbered(linkedTargets(f, names), f.codePath, index)) inbound[to].push(i);
+      for (const to of numbered(documentedTargets(f, names), f.codePath, index)) pushTo(documentedBy, to, i);
     });
   }
   const built = new Map<string, GraphFile>();
@@ -1904,7 +1966,7 @@ export function graphViewOf(scan: Scan): GraphView {
       let file = built.get(path);
       if (file === undefined) {
         const named = documentedBy.get(i);
-        file = graphFileOf(scan.files[i], scan.head.location, index, paths, inbound[i].map((j) => paths[j]), named && named.map((j) => paths[j]));
+        file = graphFileOf(scan.files[i], scan.head.location, index, paths, names, inbound[i].map((j) => paths[j]), named && named.map((j) => paths[j]));
         built.set(path, file);
       }
       return file;
@@ -1915,10 +1977,10 @@ export function graphViewOf(scan: Scan): GraphView {
 /** What a scan read back gathered in its walk for its graph, kept apart and found by the scan's list of files. */
 const graphIndexes = new WeakMap<object, { paths: readonly string[]; inbound: number[][]; documentedBy: Map<number, number[]> }>();
 
-/** The targets a file's documentation references name, where they have a link. */
-function documentedTargets(f: StoredFile): (string | undefined)[] {
+/** The paths a file's documentation references' links name, where they have a link. */
+function documentedTargets(f: StoredFile, names: Names): (string | undefined)[] {
   const out: (string | undefined)[] = [];
-  for (const sym of f.symbols) for (const d of sym.documentation) if (d.link !== undefined) out.push(d.target);
+  for (const sym of f.symbols) for (const d of sym.documentation) if (d.link !== undefined) out.push(names(f.codePath, d.link)?.target);
   return out;
 }
 
@@ -1943,13 +2005,14 @@ function numbered(targets: (string | undefined)[], self: string, index: Map<stri
 }
 
 /** One file's part of the graph, given the scan's paths by number and what the other files say of it. */
-function graphFileOf(f: StoredFile, location: Location, index: Map<string, number>, paths: readonly string[], inbound: string[], documentedBy: string[] | undefined): GraphFile {
-  const scanned = index;
-  const landing = (v: { link?: string; target?: string; anchor?: string }): Pick<GraphEdge, "link" | "to" | "toSymbol"> => {
+function graphFileOf(f: StoredFile, location: Location, index: Map<string, number>, paths: readonly string[], names: Names, inbound: string[], documentedBy: string[] | undefined): GraphFile {
+  // A link lands on a file when what it names, by the link rule, is a path of the scan.
+  const landing = (v: { link?: string }): Pick<GraphEdge, "link" | "to" | "toSymbol"> => {
     const out: Pick<GraphEdge, "link" | "to" | "toSymbol"> = { link: v.link };
-    if (v.target !== undefined && scanned.has(v.target)) {
-      out.to = v.target;
-      if (v.anchor !== undefined) out.toSymbol = v.anchor;
+    const named = v.link === undefined ? undefined : names(f.codePath, v.link);
+    if (named !== undefined && index.has(named.target)) {
+      out.to = named.target;
+      if (named.anchor !== undefined) out.toSymbol = named.anchor;
     }
     return out;
   };
@@ -2006,10 +2069,11 @@ function graphFileOf(f: StoredFile, location: Location, index: Map<string, numbe
   const documentation: DocumentationEdge[] = [];
   for (const s of f.symbols) {
     for (const d of s.documentation) {
-      if (d.link === undefined || d.target === undefined || !scanned.has(d.target)) continue;
-      const reference: DocumentationEdge = { label: d.name, link: d.link, to: d.target };
+      const named = d.link === undefined ? undefined : names(f.codePath, d.link);
+      if (d.link === undefined || named === undefined || !index.has(named.target)) continue;
+      const reference: DocumentationEdge = { label: d.name, link: d.link, to: named.target };
       if (d.element !== undefined) reference.element = d.element;
-      if (d.anchor !== undefined) reference.toSymbol = d.anchor;
+      if (named.anchor !== undefined) reference.toSymbol = named.anchor;
       if (s.slug !== undefined) reference.from = s.slug;
       documentation.push(reference);
     }

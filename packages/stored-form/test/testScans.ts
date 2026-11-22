@@ -28,24 +28,24 @@ export function everyFact(): Scan {
           flags: ["default"],
           source: { path: "../../src/a.ts", line: 3 },
           references: [
-            { role: "Returns", types: [{ name: "Widget", link: "b.ts.mdmd.md#widget", target: "src/b.ts", anchor: "widget", promise: true }] },
-            { role: "Parameters", parameters: [{ name: "items", types: [{ name: "Item", link: "b.ts.mdmd.md", target: "src/b.ts", array: true }, { name: "string" }] }] }
+            { role: "Returns", types: [{ name: "Widget", link: "b.ts.mdmd.md#widget", promise: true }] },
+            { role: "Parameters", parameters: [{ name: "items", types: [{ name: "Item", link: "b.ts.mdmd.md", array: true }, { name: "string" }] }] }
           ],
           sections: [
             { title: "Summary", body: ["Starts the program.", "Line two, with a tab\tand ünïcödé 😀."] },
             { title: "Links", body: ["- [`Widget`](b.ts.mdmd.md#widget)", "- [`Gone`](gone.ts.mdmd.md) (exception)", "- [`Self`](#thing) (inheritdoc)", "- `Unlinked`"] }
           ],
           documentation: [
-            { name: "Widget", link: "b.ts.mdmd.md#widget", target: "src/b.ts", anchor: "widget" },
-            { name: "Gone", element: "exception", link: "gone.ts.mdmd.md", target: "src/gone.ts" },
-            { name: "Self", element: "inheritdoc", link: "#thing", target: "src/a.ts", anchor: "thing" },
+            { name: "Widget", link: "b.ts.mdmd.md#widget" },
+            { name: "Gone", element: "exception", link: "gone.ts.mdmd.md" },
+            { name: "Self", element: "inheritdoc", link: "#thing" },
             { name: "Unlinked" }
           ]
         },
-        { name: "Thing (interface)", kind: "interface", flags: [], references: [{ role: "Extends", types: [{ name: "Gone", link: "gone.ts.mdmd.md", target: "src/gone.ts" }] }], sections: [], documentation: [] }
+        { name: "Thing (interface)", kind: "interface", flags: [], references: [{ role: "Extends", types: [{ name: "Gone", link: "gone.ts.mdmd.md" }] }], sections: [], documentation: [] }
       ],
       dependencies: [
-        { label: "src/b.ts", link: "b.ts.mdmd.md", target: "src/b.ts", qualifiers: ["type-only"] },
+        { label: "src/b.ts", link: "b.ts.mdmd.md", qualifiers: ["type-only"] },
         { label: "node:fs", symbols: ["readFileSync"], qualifiers: [] },
         { label: "outside", link: "../../../outside.md", qualifiers: ["configuration"] }
       ],
@@ -56,8 +56,8 @@ export function everyFact(): Scan {
       layer: 4,
       entries: [],
       authored: "### Purpose\n_Pending authored purpose_",
-      symbols: [{ name: "Widget", slug: "widget", kind: "class", flags: [], references: [{ role: "Implements", types: [{ name: "Thing", link: "a.ts.mdmd.md#thing", target: "src/a.ts", anchor: "thing" }] }], sections: [], documentation: [] }],
-      dependencies: [{ label: "src/a.ts", link: "a.ts.mdmd.md", target: "src/a.ts", qualifiers: ["re-export"] }],
+      symbols: [{ name: "Widget", slug: "widget", kind: "class", flags: [], references: [{ role: "Implements", types: [{ name: "Thing", link: "a.ts.mdmd.md#thing" }] }], sections: [], documentation: [] }],
+      dependencies: [{ label: "src/a.ts", link: "a.ts.mdmd.md", qualifiers: ["re-export"] }],
       reExports: [{ name: "Thing", slug: "thing", from: { label: "src/a.ts", link: "a.ts.mdmd.md" }, flags: ["type-only"] }, { name: "Other", flags: [] }]
     },
     { codePath: "src/c.ts", layer: 4, entries: [], authored: "", symbols: [], dependencies: [], citedBy: [], reExports: [] }
@@ -84,15 +84,18 @@ export function seededScan(seed: number, count: number): Scan {
   const words = ["alpha", "beta", "gamma", "delta", "Ωmega", "名前", "a b", "x\ny", "", "#", "../"] as const;
   const kinds = ["method", "class", "property", "function"] as const;
   const paths = Array.from({ length: count }, (_, i) => `dir${i % 7}/file-${String(i).padStart(5, "0")}.ts`).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  // A link to another file's document: every file is one folder deep, so `../<path>.mdmd.md` names it, by the link
+  // rule; or to a file not scanned; or a link of words that names nothing.
+  const link = (): string => {
+    const at = next();
+    const anchor = next() < 0.5 ? `#${pick(words)}` : "";
+    if (at < 0.7) return `../${pick(paths)}.mdmd.md${anchor}`;
+    if (at < 0.8) return `../not/scanned.ts.mdmd.md${anchor}`;
+    return `${pick(words)}.mdmd.md`;
+  };
   const type = (): StoredType => {
     const t: StoredType = { name: pick(words) };
-    if (next() < 0.6) {
-      t.link = `${pick(words)}.mdmd.md`;
-      if (next() < 0.8) {
-        t.target = next() < 0.9 ? pick(paths) : "not/scanned.ts";
-        if (next() < 0.5) t.anchor = pick(words);
-      }
-    }
+    if (next() < 0.6) t.link = link();
     if (next() < 0.2) t.array = true;
     if (next() < 0.1) t.promise = true;
     return t;
@@ -111,11 +114,11 @@ export function seededScan(seed: number, count: number): Scan {
         ...(next() < 0.5 ? { source: { path: `../${codePath}`, line: Math.floor(next() * 500) } } : {}),
         references: next() < 0.5 ? [{ role: "Returns" as const, types: [type()] }, { role: "Parameters" as const, parameters: [{ name: "p", types: [type(), type()] }] }] : [],
         sections: next() < 0.5 ? [{ title: "Summary", body: [`${pick(words)} ${Math.floor(next() * 1e9)}`] }] : [],
-        documentation: next() < 0.2 ? [{ name: pick(words), link: `${pick(words)}.mdmd.md`, target: pick(paths), ...(next() < 0.5 ? { element: "exception" } : {}) }] : []
+        documentation: next() < 0.2 ? [{ name: pick(words), link: link(), ...(next() < 0.5 ? { element: "exception" } : {}) }] : []
       })),
       dependencies: Array.from({ length: Math.floor(next() * 5) }, () => {
         const t = type();
-        return { label: t.name, ...(t.link !== undefined ? { link: t.link } : {}), ...(t.target !== undefined ? { target: t.target } : {}), ...(t.anchor !== undefined ? { anchor: t.anchor } : {}), qualifiers: next() < 0.2 ? ["type-only"] : [] };
+        return { label: t.name, ...(t.link !== undefined ? { link: t.link } : {}), qualifiers: next() < 0.2 ? ["type-only"] : [] };
       })
     };
     if (next() < 0.3) file.archetype = pick(["implementation", "test", "config"]);
