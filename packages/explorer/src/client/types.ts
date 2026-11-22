@@ -177,6 +177,8 @@ export interface LocalMapTuning {
    * with the board's pin kept for the way back (worldMap/way-down.ts).
    */
   wayDown: WayDown;
+  /** How the 2D picture moves when the toolbar's mirror button is pressed (a trial of 2026-11-22, default the turn; mirror-turn.ts). */
+  mirrorTurn: MirrorTurn;
   /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
@@ -524,6 +526,16 @@ export type WayDown = "alone" | "question";
 
 /** Every Way Down choice, in the order the control offers them; the first, the folder alone, is the default until the owner has seen the other. */
 export const WAY_DOWNS: readonly WayDown[] = ["alone", "question"];
+
+/**
+ * How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the turn, its plane
+ * turned half way round about the card that holds still, the owner's idea; the slide, every card straight across to its
+ * mirrored place; or the cut, a fade with no travel, which is also what reduced motion always gets.
+ */
+export type MirrorTurn = "turn" | "slide" | "cut";
+
+/** Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default of the trial, so that the owner meets their own idea first. */
+export const MIRROR_TURNS: readonly MirrorTurn[] = ["turn", "slide", "cut"];
 
 /**
  * Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what

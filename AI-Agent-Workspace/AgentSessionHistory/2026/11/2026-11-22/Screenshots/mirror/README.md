@@ -46,3 +46,45 @@ both badge close-ups; the as-laid-out far looks and Fit were taken and not looke
 | `type-badges-as-laid-out.png`, `type-badges-mirrored.png` | One row's badge close up: the blue arrow points right as laid out and left mirrored. In the full mirrored pictures a row with both shows the green arrow first, pointing right, then the blue pointing left. |
 
 Not looked at mirrored: the cut's signs at the edges (Tuning's Cut Counted), which need a step to show.
+
+## The third round: the motion (Tuning's Mirror Turn)
+
+Taken by [`turn-strips.mjs`](turn-strips.mjs). For a strip the page's clock is taken by hand, the mirror button pressed
+and the motion stepped to 10, 25, 40, 50 (edge-on), 60, 75 and 90 % of its 620 ms, a picture at each, left to right and
+then the second row. Thirteen strips were taken: Turn and Slide on six pictures, Cut once. The builder looked at five,
+named below; the other eight were taken and not looked at. The first strip of the turn, before the fade was added,
+showed the fault the fade answers and was replaced by the one kept here.
+
+| Strip | What the eye judges |
+| --- | --- |
+| `strip-turn-estate-hub-focused.png` | The hub's card never moves and never dims. Its neighbours swing: the right-hand ones recede and shrink a little, the left-hand ones come toward the viewer and pass in front of it as faint ghosts. Edge-on, the hub stands alone at full strength with its pins already exchanged, a faint pile on its line. By 75 % the mirrored picture is recognisable and its wires are back. **A person keeps their place.** For about the middle third nothing but the held card can be read. |
+| `strip-turn-config-heavy-focused.png` | The heavy subject fills most of the view and holds through every frame; its 78 neighbours are ghosts crossing its right half and then gone to the other side. Place kept. Frame by frame it is right; at speed it is not smooth (the cost below). |
+| `strip-turn-doc-tools-none-focused.png` | Nothing holds, so the axis is the middle of the view. The directory's membrane is seen as a tilted sheet at 25 % and 75 %, which says plainly that the picture is turning; from 40 % to 60 % the whole picture is faint ghosts on one line and at edge-on there is almost nothing on screen. **Nobody keeps a place, because there is none to keep**: it reads as a fade with a hint of travel. Not trash, and not better than the cut here. |
+| `strip-slide-pathfind-focused.png` | Flat: the cards keep their size, slide to the axis, pass through one another as a faint pile over the subject and come out on the other side. The subject holds. It explains less than the turn (cards passing through cards is no real movement) and is as unreadable in the middle. |
+| `strip-turn-pathfind-focused.png` (first take, before the fade; replaced) | At edge-on the engine's `pathfind.ts`, swinging nearest the viewer and grown by its nearness, covered the subject whole. This is why everything but the held card is now faded as the plane stands edge-on. |
+
+The wires in every form read only in the first and last quarter: the cards face the viewer while the wires' plane
+turns, so a wire leaves its pin as soon as the motion starts and meets it again as it ends. Redrawing the wires at each
+frame would hold them to their pins and is the cost the arrival's record found too high; it was not tried.
+
+### Cost, on the heavy subject
+
+`liveDocumentationConfig.ts`, 84 cards and 218 wires, 1,280 by 800, headless Chromium with the page composited on the
+processor, the lane held alone; frames the page drew from the press until the picture rested, the time that took, and
+the longest gap between two frames. The numbers as printed are in [`turn-cost.txt`](turn-cost.txt).
+
+| Form | Speed | To mirrored: frames, ms, longest | Back: frames, ms, longest |
+| --- | --- | --- | --- |
+| Turn | full | 5, 1,217, 500 | 6, 1,467, 500 |
+| Slide | full | 6, 1,500, 450 | 6, 1,317, 467 |
+| Cut | full | 25, 1,017, 350 | 27, 733, 183 |
+| Turn | slowed 4× | 4, 5,950, 3,200 | 5, 5,300, 2,500 |
+| Slide | slowed 4× | 4, 3,183, 2,417 | 5, 4,950, 2,567 |
+| Cut | slowed 4× | 22, 3,300, 2,183 | 21, 2,883, 1,867 |
+
+**The turn and the slide stutter on this picture, at full speed as well as slowed**: a 620 ms motion drew five or six
+frames, none of them close to a sixtieth of a second, so what a person would see here is three or four jumps, not a
+turn. The cut's own long frame (183 to 350 ms at full speed) is the picture coming to rest: the pins restyled, the
+picture measured and 218 wires drawn again, which every form pays once. Where the rest of the turn's time goes was not
+taken apart: the suspects are each card becoming a layer of its own in the third dimension and being drawn again at
+every frame as its nearness changes its size. Not measured: a light picture, and a browser compositing on a card.

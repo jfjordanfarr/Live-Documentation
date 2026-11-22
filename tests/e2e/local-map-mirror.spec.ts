@@ -136,3 +136,96 @@ test("the button is offered only where the picture has a left-to-right rule", as
   await expect(page.locator("#world-root")).toBeVisible();
   await expect(button(page)).toBeHidden();
 });
+
+/**
+ * The motion (Tuning's Mirror Turn, a trial of 2026-11-22): while the picture turns or slides the map's layer says
+ * which, and the page is watched for it from before the press, since the motion is over in two thirds of a second.
+ */
+async function watchMotion(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    const layer = document.getElementById("map-viewport")!, seen: string[] = [];
+    (window as unknown as { mirrorMotions: string[] }).mirrorMotions = seen;
+    const note = (): void => {
+      const form = layer.getAttribute("data-turning");
+      // The plane's own turning, as the page computes it, beside the form: a form named and nothing turned is no motion.
+      const turned = getComputedStyle(document.querySelector("#map-container .local-layout")!).rotate;
+      if (form && seen.at(-1) !== `${form}:${turned === "none" ? "flat" : "turned"}`) seen.push(`${form}:${turned === "none" ? "flat" : "turned"}`);
+    };
+    new MutationObserver(note).observe(layer, { attributes: true, attributeFilter: ["data-turning", "style"] });
+  });
+}
+const motions = (page: Page): Promise<string[]> => page.evaluate(() => (window as unknown as { mirrorMotions: string[] }).mirrorMotions);
+const seedTurn = async (page: Page, mirrorTurn: string): Promise<void> => void await page.addInitScript(({ key, value }) => localStorage.setItem(key, value),
+  { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 2, tuning: { localMap: { searchStarts: 0, mirrorTurn } } }) });
+/** The picture at rest in one of its two states: no motion named, the layer and the button agreeing. */
+async function atRest(page: Page, mirrored: boolean): Promise<void> {
+  await expect(layer(page)).not.toHaveAttribute("data-turning", /.*/u);
+  await expect(button(page)).toHaveAttribute("aria-pressed", String(mirrored));
+  if (mirrored) await expect(layer(page)).toHaveAttribute("data-reads", "usesFirst");
+  else await expect(layer(page)).not.toHaveAttribute("data-reads", /.*/u);
+  await localMapStill(page);
+}
+
+test("by default the press turns the picture's plane, and the lever chooses the slide or the cut", async ({ page }) => {
+  await page.goto(ADDRESS);
+  await localMapStill(page);
+  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
+  const before = await middles(page);
+  await watchMotion(page);
+  await button(page).click();
+  await atRest(page, true);
+  expect(await motions(page)).toEqual(["turn:turned"]);
+  // The turn ends where the cut would: the subject where it stood, every other card as far from it on the other side.
+  const after = await middles(page);
+  expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
+  for (const id of Object.keys(before)) expect(Math.abs((after[id].x - after[SUBJECT].x) + (before[id].x - before[SUBJECT].x)), id).toBeLessThan(1);
+
+  for (const [form, seen] of [["slide", ["slide:turned"]], ["cut", []]] as const) {
+    const other = await page.context().browser()!.newContext({ baseURL: new URL(page.url()).origin, viewport: { width: 1280, height: 800 } });
+    const chosen = await other.newPage();
+    await seedTurn(chosen, form);
+    await chosen.goto(ADDRESS);
+    await localMapStill(chosen);
+    await expect(chosen.locator("#tuning-mirror-turn")).toHaveValue(form);
+    await watchMotion(chosen);
+    await button(chosen).click();
+    await atRest(chosen, true);
+    expect(await motions(chosen), form).toEqual(seen);
+    await other.close();
+  }
+});
+
+test("reduced motion takes the cut whatever the lever says", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto(ADDRESS);
+  await localMapStill(page);
+  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
+  await watchMotion(page);
+  await button(page).click();
+  await atRest(page, true);
+  expect(await motions(page)).toEqual([]);
+});
+
+test("a second press before the turn ends leaves the picture in one of its two states, never between", async ({ page }) => {
+  await page.goto(ADDRESS);
+  await localMapStill(page);
+  const before = await middles(page);
+  await watchMotion(page);
+  // Both presses in one task of the page, so that the second falls inside the first's motion whatever the machine's load.
+  await button(page).evaluate((element: HTMLElement) => { element.click(); element.click(); });
+  await atRest(page, false);
+  // Long enough for a motion left running by mistake to end and write its state.
+  await page.waitForTimeout(900);
+  await atRest(page, false);
+  const after = await middles(page);
+  for (const id of Object.keys(before)) expect(Math.abs(after[id].x - before[id].x), id).toBeLessThan(1);
+  // And a press, a pause inside the motion, and a press: the same.
+  await button(page).click();
+  await page.waitForTimeout(150);
+  await button(page).click();
+  await atRest(page, false);
+  await page.waitForTimeout(900);
+  await atRest(page, false);
+  const again = await middles(page);
+  for (const id of Object.keys(before)) expect(Math.abs(again[id].x - before[id].x), id).toBeLessThan(1);
+});

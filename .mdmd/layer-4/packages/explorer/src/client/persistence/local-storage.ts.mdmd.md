@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/persistence/local-storage.ts`
-- Generated At: 2026-11-22T04:50:11.021Z
+- Generated At: 2026-11-22T05:48:55.983Z
 
 ## Authored
 ### Purpose
@@ -108,7 +108,7 @@ Returns the factory-default tuning configuration for bezier curves and the local
 
 #### `readPersistedUi` {#symbol-readpersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L172)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L173)
 
 ##### `readPersistedUi` — Summary
 Reads and validates persisted UI state from localStorage.
@@ -119,7 +119,7 @@ the entries of earlier versions.
 
 #### `applyPersistedUi` {#symbol-applypersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L357)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L358)
 
 ##### `applyPersistedUi` — Summary
 Merges persisted UI state onto factory defaults, producing a complete
@@ -130,28 +130,28 @@ persisted bezier config inherits missing keys from the defaults.
 
 #### `PERSISTED_NAV_KEY` {#symbol-persisted_nav_key}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L405)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L406)
 
 ##### `PERSISTED_NAV_KEY` — Summary
 localStorage key for persisted navigation state (active view + map subject).
 
 #### `PERSISTED_NAV_VERSION` {#symbol-persisted_nav_version}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L407)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L408)
 
 ##### `PERSISTED_NAV_VERSION` — Summary
 Schema version tag embedded in persisted navigation payloads.
 
 #### `PersistedNavV1` {#symbol-persistednavv1}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L410)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L411)
 
 ##### `PersistedNavV1` — Summary
 Shape of the versioned navigation state written to localStorage under {@link PERSISTED_NAV_KEY}.
 
 #### `readPersistedNav` {#symbol-readpersistednav}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L463)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L464)
 
 ##### `readPersistedNav` — Summary
 Reads and validates persisted navigation state from localStorage.
@@ -162,14 +162,14 @@ values are silently discarded.
 
 #### `PersistUiScheduler` {#symbol-persistuischeduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L513)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L514)
 
 ##### `PersistUiScheduler` — Summary
 Debounced persistence with an immediate flush before the page leaves.
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L519)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L520)
 - Returns: [`PersistUiScheduler`](#symbol-persistuischeduler)
 
 ##### `PersistNavScheduler` — Summary
@@ -177,7 +177,7 @@ The same write lifetime for remembered navigation and evidence.
 
 #### `changedFromDefaults` {#symbol-changedfromdefaults}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L555)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L556)
 
 ##### `changedFromDefaults` — Summary
 What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
@@ -185,14 +185,14 @@ else, so that a default changed later reaches every setting they never touched.
 
 #### `changedTuningFromDefaults` {#symbol-changedtuningfromdefaults}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L565)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L566)
 
 ##### `changedTuningFromDefaults` — Summary
 The Tuning settings that differ from the defaults, group by group, or `undefined` when none does.
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L578)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L579)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -200,7 +200,7 @@ Writes what of the filters and tuning differs from the defaults to localStorage 
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L596)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L597)
 
 ##### `createPersistNavScheduler` — Summary
 Coalesce remembered navigation writes for 150ms, with a flush for page exit.
@@ -236,6 +236,7 @@ Inspecting a different file never replaces the remembered subject.
 - [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective)
 - [`types.MAP_READS`](../types.ts.mdmd.md#symbol-map_reads)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
+- [`types.MIRROR_TURNS`](../types.ts.mdmd.md#symbol-mirror_turns)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - [`types.SymbolOrder`](../types.ts.mdmd.md#symbol-symbolorder)
