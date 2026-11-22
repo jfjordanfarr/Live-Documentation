@@ -45,7 +45,7 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | The shortest path between two files, its hops in order | `inspect --from A --to B` | yes |
 | The path between two symbols | `inspect --from A#S --to B#T` | yes |
 | A path to or from a directory | refused: a directory is not a `--to` | no: lacks part |
-| No path this way: the reverse question offered | says no path was found and prints a frontier; offers no reverse | no: lacks part |
+| No path this way: the reverse question offered | says so in one line and gives the command that asks the way back | yes |
 | **The reader** | | |
 | Purpose, symbols, dependencies, Notes | the file's Live Doc | yes, as files |
 | **The history** | | |
@@ -58,17 +58,17 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | **Links** | | |
 | A link that opens the same view for someone else | no command prints an Explorer address | no: no command |
 
-**Totals:** 31 rows; 17 with an equivalent (4 of them only as files or JSON), 14 gaps: 7 with no command, 7 where a command lacks part.
+**Totals:** 31 rows; 18 with an equivalent (4 of them only as files or JSON), 13 gaps: 7 with no command, 6 where a command lacks part.
 
 <!-- end of the parity table -->
 
 ## The gaps by cause
 
 - **No command exists** (7): most used; symbols nothing references; a folder and how its files connect; the pinned set's references; search by words; the authors of a step; an Explorer link for a view.
-- **A command exists and lacks part** (7): a directory as a start; a directory as an end; the totals of links and references; a wire's files; a thing's files; the reverse question; a path at a moment. Beside them, a row counted as having its equivalent in the docs: `inspect --from A --to B` names no symbols, which the 2D map draws.
-- **Output not of a stable or bounded shape** (2, apart from the rows): `lint` prints its warnings in a different order on each run of the same docs; `inspect --from <file> --direction inbound` without `--reachable` prints every terminal path whole (ten paths of up to eleven files for one estate file, limit 200), not the file's users.
+- **A command exists and lacks part** (6): a directory as a start; a directory as an end; the totals of links and references; a wire's files; a thing's files; a path at a moment. The reverse question was the seventh, mended on 2026-11-22: a path that runs only the other way is offered as the command that asks it. Beside them, a row counted as having its equivalent in the docs: `inspect --from A --to B` names no symbols, which the 2D map draws.
+- **Output not of a stable or bounded shape:** none now. Two were mended on 2026-11-22: `lint` printed its warnings in another order each run, and now reports in the order of the docs' paths; `inspect --from <file>` without `--to` or `--reachable` printed every terminal path whole (ten paths of up to eleven files for one estate file, limit 200), and now lists the file's direct neighbours, counted, at most 200 a way.
 - **Asks a question mid-run or needs a network:** none found. Every command finished with its input closed, opened no network connection under `strace`, and gave the same exit in a namespace with no network.
-- **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` reads `.mdmd/layer-4` whatever the folder's configuration says, and fails on any other folder; the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
+- **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` read `.mdmd/layer-4` whatever the folder's configuration said (mended on 2026-11-22: it reads the configuration's); the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
 - **The command line can do what the page cannot** (4): `generate --check`, which fails when the committed docs are stale; `lint`; `--between` any two commits, where the page steps; and `--json` of every answer.
 
 ## What is the page's by nature
@@ -92,7 +92,7 @@ Each command run twice on the same input, with its input closed (2026-11-22, est
 | `generate` | 0 | rerun over existing docs: yes; from nothing: no, every doc's `Generated At` and `index.json`'s `generatedAt` differ | no | no |
 | `generate --check` | 0 current; 1 stale | yes | no | no |
 | `generate --dry-run` | 0, stale or not | yes | no | no |
-| `lint` | 0; 1 on a doc that does not parse | no: warnings in another order each run | no | no |
+| `lint` | 0; 1 on a doc that does not parse | yes, since 2026-11-22 (before, warnings in another order each run) | no | no |
 | `inspect` (any, `--json`) | 0; 1 on an unknown file or option | yes | no | no |
 | `board <file>` | 0; 1 on a missing or malformed board, with the line | yes | no | no |
 | `history` | 0 | yes, resumed and from nothing | no | no |

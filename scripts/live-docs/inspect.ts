@@ -24,7 +24,6 @@ import {
 import { resolveDocLink, type GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
-  enumerateTerminalPaths,
   fileGroups,
   getNeighbors,
   reachFrom,
@@ -40,7 +39,7 @@ import { endQuietlyWhenThePipeCloses, optionValue, packageVersion, readConfigura
 import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
-  emitFanoutResult,
+  emitNeighbourResult,
   emitGroups,
   emitNotFound,
   emitPathResult,
@@ -252,7 +251,8 @@ async function main(): Promise<void> {
       return;
     }
 
-    emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose);
+    const back = searchGraph(graph, toId, fromId, direction, args.maxDepth).path;
+    emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, back ? { hops: back.length - 1 } : undefined);
     process.exit(1);
     return;
   }
@@ -270,14 +270,10 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (direction === "both") {
-    console.error("Terminal paths run one way: give --direction outbound or inbound, or add --reachable to list what a path reaches both ways.");
-    process.exit(1);
-    return;
-  }
-
-  const fanout = enumerateTerminalPaths(graph, fromId, direction, args.maxDepth);
-  emitFanoutResult(fromId, direction, fanout, graph, args.maxDepth, args.json, args.verbose, documentsOf(graph.files[fromId], configInput));
+  // A file alone: its direct neighbours each way asked, counted and bounded (until 2026-11-22, every terminal path whole)
+  const ways: OneWay[] = direction === "both" ? ["outbound", "inbound"] : [direction];
+  const neighbours = ways.map((way) => ({ direction: way, files: [...new Set(getNeighbors(graph, fromId, way))].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)) }));
+  emitNeighbourResult(fromId, neighbours, graph, args.json, args.verbose, documentsOf(graph.files[fromId], configInput));
 }
 
 /** A file's related documents, both ways: what its authored words cite, and what cites it by its doc's `Cited By` section. */
@@ -471,7 +467,7 @@ function usage(): string {
     `Options:\n` +
     `  --from <path>            Starting artefact (code or Live Doc path).\n` +
     `                           Use path#Symbol syntax for symbol-level search, which needs --to.\n` +
-    `  --to <path>              Target artefact. Omit to list terminal paths from a file named by --from.\n` +
+    `  --to <path>              Target artefact. Omit for the direct neighbours of a file named by --from, counted.\n` +
     `                           Use path#Symbol syntax for symbol-level search.\n` +
     `  --reachable              List every file a path reaches from --from, nearest first, with its hops.\n` +
     `                           Without --from: the entry points, what they reach, what nothing reaches,\n` +
@@ -480,7 +476,7 @@ function usage(): string {
     `                           way; each by its seed (its most connected file, ties by path) and its size,\n` +
     `                           largest first; then the files joined to none. Takes no --from, --to or --direction.\n` +
     `                           With --json: { kind: "groups", files, groups: [{ seed, size, members }], alone }.\n` +
-    `  --direction <dir>        Traversal direction: outbound (default) or inbound; both with --to or --reachable.\n` +
+    `  --direction <dir>        Traversal direction: outbound (default), inbound or both.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
     `  --config <file>          The configuration (default: the workspace's .live-docs.config.json when it\n` +
     `                           has one, else the shipped defaults).\n` +

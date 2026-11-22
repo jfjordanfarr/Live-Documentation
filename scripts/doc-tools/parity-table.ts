@@ -26,11 +26,14 @@ export interface ParityRow {
   symptom?: string;
 }
 
+/** The ledger: its rows in the table's order. */
 export interface ParityLedger {
   rows: ParityRow[];
 }
 
+/** The comment line before the printed table. */
 export const BEGIN = "<!-- parity table: printed from tests/integration/live-docs/parity-ledger.json by scripts/doc-tools/parity-table.ts -->";
+/** The comment line after it. */
 export const END = "<!-- end of the parity table -->";
 
 /** The table and its totals, as markdown, the rows in the ledger's order under their sections. */
@@ -62,7 +65,9 @@ export function withTable(document: string, table: string): string {
   return `${document.slice(0, begin + BEGIN.length)}\n\n${table}\n\n${document.slice(end)}`;
 }
 
+/** The ledger, from the repository's root. */
 export const LEDGER_PATH = path.join("tests", "integration", "live-docs", "parity-ledger.json");
+/** The document whose table it prints, from the repository's root. */
 export const DOCUMENT_PATH = path.join(".mdmd", "layer-2", "parity.mdmd.md");
 
 if (process.argv[1]?.endsWith("parity-table.ts")) {

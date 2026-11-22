@@ -1,6 +1,6 @@
 # CLI Reference
 
-_Current as of 2026-11-19._
+_Current as of 2026-11-22._
 
 ## Metadata
 
@@ -87,6 +87,8 @@ npm run live-docs:lint -- --workspace <folder>
 - Authored `Purpose` or `Notes` still holding the placeholder text
 - Files with no dependencies and no dependents, which usually means no adapter understood them
 
+Each doc is reported in the order of its path, so the same docs give the same report every run.
+
 ---
 
 ### Inspection & Pathfinding
@@ -95,6 +97,10 @@ npm run live-docs:lint -- --workspace <folder>
 | --------------------------- | -------------------------------------------- |
 | `npm run live-docs:inspect` | Query dependency paths and artifact metadata |
 | `npm run live-docs:orphans` | Find Live Docs without corresponding sources |
+
+#### `live-docs:orphans`
+
+Lists the Live Docs whose source file no longer exists, reading the docs where the configuration puts them (its `root`, `baseLayer` and `extension`; `--root`, `--base-layer` and `--extension` stand in for them), and exits 1 when there is one. The generator never deletes a doc with authored content, so run it after deleting source files.
 
 #### `live-docs:inspect`
 
@@ -109,10 +115,10 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 # Symbol-level pathfinding (a symbol needs --to)
 npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile
 
-# Reverse lookup (who depends on this?)
+# The files that use this one directly, counted
 npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound
 
-# Fan-out (what does this depend on?)
+# The files this one uses directly, counted
 npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direction outbound
 
 # Bidirectional search between two files
@@ -138,12 +144,14 @@ npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/
 | `--at <commit>` | Inspect the generated historical graph at a commit: with `--from`, the file's symbols, dependency lines and links that day; with `--from` and `--to`, the links between two files or two symbols (`path#Symbol`); with `--reachable`, the walk from that commit's entries. |
 | `--words` | With `--at` and `--from`, the file's words that day: its authored block and each symbol's description, or why they cannot be read. |
 | `--between <a> <b>` | Compare two recorded historical graphs. |
-| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
+| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`) |
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |
 | `--verbose` | Include additional diagnostics |
 | `--workspace <path>` | The folder whose docs to read (default: the nearest folder, from the current directory up, that holds a `.live-docs.config.json`; else the current directory) |
 | `--config <file>` | The configuration (default: the workspace's `.live-docs.config.json` when it has one) |
+
+With `--from` alone, a file's direct neighbours each way asked are listed by path and counted, at most 200 a way with the number left out said (until 2026-11-22 it printed every terminal path whole). When no path runs from `--from` to `--to` the way asked, the answer is one line, and when one runs the other way it gives the command that asks for it (`No path runs from A to B (outbound); one runs the other way, 11 hop(s): npm run live-docs:inspect -- --from B --to A`); either way it exits 1, and `--json` keeps the walk's frontier.
 
 `--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's rows and wires, the links between two files or symbols, a file's words, or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--direction`, and only `--at` takes `--to`. `--between` also takes no `--from` or `--reachable`. A doc that stood at a commit in a form today's reader finds no authored block in, as this repository's mirror before 2026-09-27, prints its words as not readable rather than as the generator's placeholder.
 

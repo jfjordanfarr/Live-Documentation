@@ -169,47 +169,23 @@ describe("Live Docs inspect CLI", () => {
     assert.strictEqual(payload.hops.length, 3);
   });
 
-  it("enumerates terminal outbound paths when no --to target is supplied", () => {
-    const run = runInspectCli(fixtures.webforms, [
-      "--from",
-      "packages/site/Scripts/app-insights.js",
-      "--direction",
-      "outbound",
-      "--json"
-    ]);
-
+  it("lists a file's direct neighbours, counted, when no --to target is supplied", () => {
+    const run = runInspectCli(fixtures.webforms, ["--from", "packages/site/Scripts/app-insights.js", "--direction", "outbound", "--json"]);
     assert.strictEqual(run.exitCode, 0, `inspect exited ${run.exitCode}:\n${run.stderr || run.stdout}`);
     const payload = JSON.parse(run.stdout) as {
       kind: string;
-      direction: string;
-      terminalPaths: Array<{ nodes: InspectNodeDescriptor[] }>;
+      neighbours: Array<{ direction: string; count: number; cut: number; files: InspectNodeDescriptor[] }>;
     };
-
-    assert.strictEqual(payload.kind, "fanout");
-    assert.strictEqual(payload.direction, "outbound");
-    assert.ok(payload.terminalPaths.length > 0);
-
-    const terminalPath = payload.terminalPaths.find(entry =>
-      entry.nodes.some(node => node.codePath === "Web.config")
-    );
-
-    assert.ok(terminalPath, "expected to discover Web.config terminal path");
-    assert.deepStrictEqual(
-      terminalPath!.nodes.map(node => node.codePath),
-      [
-        "packages/site/Scripts/app-insights.js",
-        "packages/site/Default.aspx",
-        "packages/site/Default.aspx.cs",
-        "Web.config"
-      ]
-    );
+    assert.strictEqual(payload.kind, "neighbours");
+    assert.deepStrictEqual(payload.neighbours.map(({ direction, count, cut, files }) => [direction, count, cut, files.map(file => file.codePath)]),
+      [["outbound", 1, 0, ["packages/site/Default.aspx"]]]);
   });
 
-  it("names, with a file's fan-out, the documents it cites and the documents that cite it, as its doc's Cited By section lists them", () => {
+  it("names, with a file's neighbours, the documents it cites and the documents that cite it, as its doc's Cited By section lists them", () => {
     const run = runInspectCli(fixtures.cited, ["--from", "src/component.ts", "--json"]);
     assert.strictEqual(run.exitCode, 0, `inspect exited ${run.exitCode}:\n${run.stderr || run.stdout}`);
     const payload = JSON.parse(run.stdout) as { kind: string; documents?: { cites: string[]; citedBy: string[] } };
-    assert.strictEqual(payload.kind, "fanout");
+    assert.strictEqual(payload.kind, "neighbours");
     assert.deepStrictEqual(payload.documents, { cites: [], citedBy: ["docs/index.md", "docs/overview.md", "docs/symbol-map.md"] });
 
     const text = runInspectCli(fixtures.cited, ["--from", "src/component.ts"]);
@@ -218,7 +194,7 @@ describe("Live Docs inspect CLI", () => {
     assert.doesNotMatch(text.stdout, /^Cites:/mu);
   });
 
-  it("lists every file a path reaches, nearest first, one way or both, and refuses a fan-out both ways", () => {
+  it("lists every file a path reaches, nearest first, one way or both, and a file's neighbours both ways", () => {
     const outbound = runInspectCli(fixtures.webforms, ["--from", "packages/site/Scripts/app-insights.js", "--reachable", "--json"]);
     assert.strictEqual(outbound.exitCode, 0, `inspect exited ${outbound.exitCode}:\n${outbound.stderr || outbound.stdout}`);
     const payload = JSON.parse(outbound.stdout) as {
@@ -249,10 +225,9 @@ describe("Live Docs inspect CLI", () => {
     assert.strictEqual(text.exitCode, 0);
     assert.match(text.stdout, /^Files a path reaches from Web\.config \(max depth 25\), nearest first\.\ninbound \(what depends on it\): \d+ files\n {2}1 hop {2}/u);
 
-    const fanout = runInspectCli(fixtures.webforms, ["--from", "Web.config", "--direction", "both"]);
-    assert.strictEqual(fanout.exitCode, 1);
-    assert.match(fanout.stderr, /Terminal paths run one way/u);
-    assert.strictEqual(fanout.stdout, "");
+    const neighbours = runInspectCli(fixtures.webforms, ["--from", "Web.config", "--direction", "both"]);
+    assert.strictEqual(neighbours.exitCode, 0, neighbours.stderr);
+    assert.match(neighbours.stdout, /^Web\.config uses 0 files directly \(outbound\)\.\nWeb\.config is used by \d+ files? directly \(inbound\)\.\n {2}\S/u);
   });
 
   it("traces Razor telemetry chain back to appsettings", () => {

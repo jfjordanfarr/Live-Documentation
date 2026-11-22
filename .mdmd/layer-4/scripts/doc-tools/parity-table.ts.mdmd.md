@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/doc-tools/parity-table.ts`
-- Generated At: 2026-11-22T02:04:37.438Z
+- Generated At: 2026-11-22T02:30:47.797Z
 
 ## Authored
 ### Purpose
@@ -25,19 +25,28 @@ One row of the ledger: a thing the page offers, what offers it to an agent or a 
 
 #### `ParityLedger` {#symbol-parityledger}
 - Type: interface
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L29)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L30)
+
+##### `ParityLedger` — Summary
+The ledger: its rows in the table's order.
 
 #### `BEGIN` {#symbol-begin}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L33)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L35)
+
+##### `BEGIN` — Summary
+The comment line before the printed table.
 
 #### `END` {#symbol-end}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L34)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L37)
+
+##### `END` — Summary
+The comment line after it.
 
 #### `renderParityTable` {#symbol-renderparitytable}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L37)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L40)
 - Parameters: `ledger`: [`ParityLedger`](#symbol-parityledger)
 
 ##### `renderParityTable` — Summary
@@ -45,18 +54,24 @@ The table and its totals, as markdown, the rows in the ledger's order under thei
 
 #### `withTable` {#symbol-withtable}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L56)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L59)
 
 ##### `withTable` — Summary
 The document's text with its table replaced by the one the ledger prints.
 
 #### `LEDGER_PATH` {#symbol-ledger_path}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L65)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L69)
+
+##### `LEDGER_PATH` — Summary
+The ledger, from the repository's root.
 
 #### `DOCUMENT_PATH` {#symbol-document_path}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L66)
+- Source: [source](../../../../scripts/doc-tools/parity-table.ts#L71)
+
+##### `DOCUMENT_PATH` — Summary
+The document whose table it prints, from the repository's root.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
