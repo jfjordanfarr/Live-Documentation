@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/emit.ts`
-- Generated At: 2026-11-22T07:12:57.778Z
+- Generated At: 2026-11-22T13:53:11.398Z
 
 ## Authored
 ### Purpose
@@ -233,7 +233,7 @@ Reports both paths if found, clearly labeling the direction of each.
 
 #### `emitSymbolPathResult` {#symbol-emitsymbolpathresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L601)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L603)
 - Parameters: `symbolPath`: [`SymbolHop`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolhop)[]; `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitSymbolPathResult` — Summary
@@ -249,7 +249,7 @@ Emits a successful symbol-aware path result.
 
 #### `emitSymbolPathNotFound` {#symbol-emitsymbolpathnotfound}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L644)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L646)
 - Parameters: `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
 
 ##### `emitSymbolPathNotFound` — Summary
@@ -263,7 +263,7 @@ Emits a "symbol path not found" result.
 
 #### `emitDualDirectionSymbolResult` {#symbol-emitdualdirectionsymbolresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L674)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L676)
 - Parameters: `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `outboundResult`: [`SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult); `inboundResult`: [`SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitDualDirectionSymbolResult` — Summary

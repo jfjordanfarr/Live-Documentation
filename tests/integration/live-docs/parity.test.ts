@@ -100,7 +100,9 @@ describe("the parity ledger", () => {
       // error, unless its row says otherwise (a gap shown by an answer that lacks part, as the links between two files).
       let text: string;
       if (row.file) {
-        text = fs.readFileSync(path.join(workspaces[row.file[0]], row.file[1]), "utf8");
+        // `repository` is this checkout, read in place for a row about the product's own code, and never among the
+        // copies the test makes and removes.
+        text = fs.readFileSync(path.join(row.file[0] === "repository" ? repoRoot : workspaces[row.file[0]], row.file[1]), "utf8");
       } else {
         const ran = outputs.get(row)!;
         const stream = row.stream ?? (answers ? "stdout" : "stderr");
