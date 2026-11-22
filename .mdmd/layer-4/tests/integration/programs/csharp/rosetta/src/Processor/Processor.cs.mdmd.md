@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/rosetta/src/Processor/Processor.cs`
-- Generated At: 2026-11-19T21:10:26.954Z
+- Generated At: 2026-11-22T02:42:24.647Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,9 @@ Summary report of processed records
 
 ##### `Run` — Exceptions
 - `ArgumentException`: Thrown when configuration is invalid
+
+##### `Run` — Links
+- `ArgumentException` (exception)
 
 #### `Summarize` {#symbol-summarize}
 - Type: method

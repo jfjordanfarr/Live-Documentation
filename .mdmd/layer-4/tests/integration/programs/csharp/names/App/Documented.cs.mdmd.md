@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/App/Documented.cs`
-- Generated At: 2026-11-22T01:24:27.247Z
+- Generated At: 2026-11-22T02:42:24.620Z
 
 ## Authored
 ### Purpose
@@ -23,23 +23,25 @@ The documentation-reference case: a class whose code uses nothing and whose docu
 ##### `Documented` — Summary
 Uses nothing in its code; its documentation names other files' declarations, one of each kind:
 a type, `Base`; a member, `Base.Gadget`; a nested type, `Base.Options`;
-a generic, `Lib.Helper`, beside the type of the same name without one, `Lib.Helper`;
+a generic, `Lib.Helper<T>`, beside the type of the same name without one, `Lib.Helper`;
 one overload, `Runner.Run(Runner.Count)`, and the other, declared in another file,
-; the overloads' name alone, `Runner.Run`;
+`Runner.Run(Runner.Text)`; the overloads' name alone, `Runner.Run`;
 a namespace, which no other reference here reaches into, `App.Other`; and a name nothing declares,
 `Missing`.
 
 ##### `Documented` — Links
 - `App.Other`
-- `Base`
-- `Base.Gadget`
-- `Base.Options`
-- `Lib.Helper`
-- `Lib.Helper<T>`
+- [`Base`](./Base.cs.mdmd.md#symbol-base)
+- [`Base.Gadget`](./Base.cs.mdmd.md#symbol-gadget)
+- [`Base.Options`](./Base.cs.mdmd.md#symbol-options)
+- [`Derived`](./Derived.cs.mdmd.md#symbol-derived) (permission)
+- [`Lib.Helper`](./Helper.cs.mdmd.md#symbol-helper)
+- [`Lib.Helper<T>`](./HelperOfT.cs.mdmd.md#symbol-helper)
 - `Missing`
-- `Runner.Run`
-- `Runner.Run(Runner.Count)`
-- `Runner.Run(Runner.Text)`
+- [`Runner.Run`](./Runner.Text.cs.mdmd.md#symbol-run)
+- [`Runner.Run`](./Runner.cs.mdmd.md#symbol-run)
+- [`Runner.Run(Runner.Count)`](./Runner.cs.mdmd.md#symbol-run)
+- [`Runner.Run(Runner.Text)`](./Runner.Text.cs.mdmd.md#symbol-run)
 
 ##### `Documented` — Unsupported Doc Tags
 - `permission`
@@ -50,6 +52,10 @@ a namespace, which no other reference here reaches into, `App.Other`; and a name
 
 ##### `Gadget` — Exceptions
 - `Lib.Thing`: A type of a project this one does not reference.
+
+##### `Gadget` — Links
+- [`Base.Gadget`](./Base.cs.mdmd.md#symbol-gadget) (inheritdoc)
+- `Lib.Thing` (exception)
 
 ##### `Gadget` — Additional Documentation
 - <inheritdoc cref="Base.Gadget"/>

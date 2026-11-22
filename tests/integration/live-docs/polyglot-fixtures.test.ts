@@ -57,9 +57,16 @@ describe("Live Docs polyglot fixtures", () => {
         widgetDocContent,
         /##### `WidgetRegistry` — Remarks[\s\S]*Widget registries coordinate cross-module widget discovery\.[\s\S]*Thread-safety is provided by a concurrent dictionary shared by all callers\./
       );
+      // A relative `href` is kept as written, a link of no kind: it is no name the compiler resolves (since 2026-11-22,
+      // when a `cref` the reader resolves became a link), and relative to the source, it would not open from the doc.
       assert.match(
         widgetDocContent,
-        /##### `WidgetRegistry` — Links[\s\S]*- `\.\.\/\.\.\/docs\/registry\.md` — Widget architecture/
+        /##### `WidgetRegistry` — Links\n- \.\.\/\.\.\/docs\/registry\.md — Widget architecture\n/
+      );
+      // The author's references the reader resolves are links, within the doc or to the doc that declares the member.
+      assert.match(
+        widgetDocContent,
+        /##### `TryMerge` — Links\n- `ArgumentNullException` \(exception\)\n- \[`BaseWidget\.TryMerge\(BaseWidget\)`\]\(\.\/BaseWidget\.cs[^)#]*#symbol-trymerge\)\n- \[`Resolve\(string\)`\]\(#symbol-resolve\)\n/
       );
       assert.match(
         widgetDocContent,
@@ -115,7 +122,7 @@ describe("Live Docs polyglot fixtures", () => {
       );
       assert.match(
         widgetDocContent,
-        /##### `TryMerge` — Links[\s\S]*- `Resolve\(string\)`/
+        /##### `TryMerge` — Links[\s\S]*- \[`Resolve\(string\)`\]\(#symbol-resolve\)/
       );
       assert.match(
         widgetDocContent,
@@ -155,7 +162,7 @@ describe("Live Docs polyglot fixtures", () => {
       );
       assert.match(
         widgetDocContent,
-        /##### `TryRegister` — Links[\s\S]*- `WidgetRegistered`/
+        /##### `TryRegister` — Links[\s\S]*- \[`WidgetRegistered`\]\(#symbol-widgetregistered\)/
       );
 
       const extensionsDoc = path.join(

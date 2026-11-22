@@ -58,17 +58,21 @@ const MEASURED_MISSES: Record<string, string[]> = {
  * `estate/Hub/PaymentHub.cs` names an overload in another project, a pair its code binds as well. Rosetta's
  * `ArgumentException` resolves to nothing because the compilation has no framework references.
  *
- * `drawn` is the pairs the adapter draws, by its dependency lines: today only those the code makes too. The owner's
- * word of 2026-11-21 is that an author's documentation reference is to be honoured; when the reader draws it, as a
- * relation of its own kind, this register changes with it.
+ * `drawn` is the pairs the adapter draws by its dependency lines: only those the code makes too, since a reference is
+ * no use by the code. `related` is the pairs the reader's documentation relation makes, the owner's word of 2026-11-21
+ * that an author's reference is to be honoured, drawn as a relation of its own kind (root's ruling of 2026-11-22): set
+ * beside the compiler's pairs, with every pair on which they part in `differences`, by cause (`DOCUMENTATION_CAUSES`),
+ * so that a difference mended in silence, or a new one, fails here. On the five samples there is none.
  */
-const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[] }> = {
-  "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [] },
+const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[]; related: string[]; differences: string[] }> = {
+  "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] },
   "programs/csharp/estate": {
-    references: ["Hub/PaymentHub.cs:12 <seealso> IPaymentService.Post(PaymentRequest): resolved, Method Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest) in Contracts/IPaymentService.cs"],
-    alsoCode:   ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
-    authorOnly: [],
-    drawn:      ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"]
+    references:  ["Hub/PaymentHub.cs:12 <seealso> IPaymentService.Post(PaymentRequest): resolved, Method Estate.Contracts.IPaymentService.Post(Estate.Contracts.PaymentRequest) in Contracts/IPaymentService.cs"],
+    alsoCode:    ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
+    authorOnly:  [],
+    drawn:       ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
+    related:     ["Hub/PaymentHub.cs → Contracts/IPaymentService.cs"],
+    differences: []
   },
   "programs/csharp/names": {
     references: [
@@ -95,11 +99,28 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs → App/Runner.Text.cs",
       "App/Documented.cs → App/Runner.cs"
     ],
-    drawn: []
+    drawn:   [],
+    related: [
+      "App/Documented.cs → App/Base.cs",
+      "App/Documented.cs → App/Derived.cs",
+      "App/Documented.cs → App/Helper.cs",
+      "App/Documented.cs → App/HelperOfT.cs",
+      "App/Documented.cs → App/Runner.Text.cs",
+      "App/Documented.cs → App/Runner.cs"
+    ],
+    differences: []
   },
-  "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [] },
-  "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [] }
+  "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] },
+  "programs/csharp/webforms": { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], differences: [] }
 };
+
+/** Every pair on which the reader's documentation relation and the compiler part, in words, by cause. */
+function documentationDifferences(relation: CSharpReport["documentation"]["relation"]): string[] {
+  return [
+    ...Object.entries(relation.compilerOnly).flatMap(([cause, pairs]) => pairs.map((pair) => `the compiler names ${pair}, and ${cause}`)),
+    ...Object.entries(relation.readerOnly).flatMap(([cause, pairs]) => pairs.map((pair) => `the reader relates ${pair}, and ${cause}`))
+  ];
+}
 
 /** A documentation reference and the compiler's answer for it, in words. */
 function answered(reference: DocumentationReference): string {
@@ -159,7 +180,9 @@ describe("the C# adapter against the C# compiler's binding", () => {
         references: (kept.crefs ?? []).map(answered),
         alsoCode:   documentation.alsoCode,
         authorOnly: documentation.authorOnly,
-        drawn:      documentation.drawn
+        drawn:      documentation.drawn,
+        related:    documentation.relation.pairs,
+        differences: documentationDifferences(documentation.relation)
       }).toEqual(DOCUMENTATION[fixture]);
     });
   }

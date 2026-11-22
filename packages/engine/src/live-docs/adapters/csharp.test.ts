@@ -602,6 +602,83 @@ describe("csharpAdapter", () => {
     });
   });
 
+  describe("documentation references", () => {
+    /** Each reference of a file's symbols' documentation, as `symbol: reference (element) -> file#symbol@line`. */
+    async function references(relativePath: string): Promise<string[]> {
+      const result = await analyze(relativePath);
+      return result.symbols.flatMap((symbol) => (symbol.documentation?.links ?? []).filter((link) => link.kind === "cref").map((link) =>
+        `${symbol.name}: ${link.target}${link.element ? ` (${link.element})` : ""} -> ${(link.targets ?? []).map((target) => `${target.path}#${target.symbol}@${target.line}`).join(", ")}`));
+    }
+
+    it("resolves a reference from the declaration it documents, as the compiler does, through the reader's own resolution of names", async () => {
+      await write("App/App.csproj", ["<Project Sdk=\"Microsoft.NET.Sdk\"></Project>"]);
+      await write("App/Base.cs", [
+        "namespace App",
+        "{",
+        "    public class Base",
+        "    {",
+        "        public int Layout { get; set; }",
+        "        public Base() { }",
+        "        public Base(int size) { }",
+        "    }",
+        "}"
+      ]);
+      await write("App/Layout.cs", ["namespace App", "{", "    public class Layout { }", "}"]);
+      await write("App/Color.cs", ["namespace App", "{", "    public enum Color", "    {", "        Red,", "        Blue", "    }", "}"]);
+      await write("App/Store.cs", [
+        "namespace App",
+        "{",
+        "    public partial class Store",
+        "    {",
+        "        public void Put(int count) { }",
+        "        void Hidden() { }",
+        "    }",
+        "}"
+      ]);
+      await write("App/Store.Text.cs", ["namespace App", "{", "    public partial class Store", "    {", "        public void Put(string text) { }", "    }", "}"]);
+      await write("App/Derived.cs", [
+        "namespace App",
+        "{",
+        "    /// <summary>Names its own <see cref=\"Run\"/>, an inherited <see cref=\"Layout\"/>, and <see cref=\"Base.Layout\"/>.</summary>",
+        "    /// <seealso cref=\"Derived.Layout\"/>",
+        "    public class Derived : Base",
+        "    {",
+        "        /// <summary>A constructor, <see cref=\"Base.#ctor\"/>, and the other, <see cref=\"Base(int)\"/>.</summary>",
+        "        /// <exception cref=\"Color.Red\">An enum's member.</exception>",
+        "#pragma warning disable CS0618",
+        "        public void Run() { }",
+        "",
+        "        /// <summary><see cref=\"Store.Put(string)\"/>, <see cref=\"Store.Put(System.Int32)\"/>, <see cref=\"Store.Hidden\"/>.</summary>",
+        "        /* a comment of its own */",
+        "        public void Other() { }",
+        "",
+        "        /// <summary>A documentation ID, <see cref=\"T:App.Base\"/>, is copied by the compiler unresolved.</summary>",
+        "        public void Third() { }",
+        "    }",
+        "}"
+      ]);
+      expect(await references("App/Derived.cs")).toEqual([
+        // A name alone finds the type's own member, and not one it only inherits: `Layout` is the class of that name.
+        // Named through its type, an inherited member is found.
+        "Derived: Base.Layout -> App/Base.cs#Layout@5",
+        "Derived: Derived.Layout -> App/Base.cs#Layout@5",
+        "Derived: Layout -> App/Layout.cs#Layout@3",
+        "Derived: Run -> App/Derived.cs#Run@10",
+        // Across a `#pragma`: the constructor of one parameter; the constructors' name alone, every one, as the
+        // compiler, which cannot choose, names each; and an enum's member, on the enum, which the file shows.
+        "Run: Base(int) -> App/Base.cs#Base@7",
+        "Run: Base..ctor -> App/Base.cs#Base@6, App/Base.cs#Base@7",
+        "Run: Color.Red (exception) -> App/Color.cs#Color@3",
+        // Across a comment: the overload by its parameters, in the part that declares it; a member that is not public
+        // lands on its type, which the file shows.
+        "Other: Store.Hidden -> App/Store.cs#Store@3",
+        "Other: Store.Put(string) -> App/Store.Text.cs#Put@5",
+        "Other: Store.Put(System.Int32) -> App/Store.cs#Put@5",
+        "Third: T:App.Base -> "
+      ]);
+    });
+  });
+
   describe("openings", () => {
     it("publishes the routes a controller serves, from its prefix and its actions' attributes", async () => {
       await write("Gateway/Controllers/PaymentsController.cs", [

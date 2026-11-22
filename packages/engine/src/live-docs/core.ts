@@ -27,6 +27,7 @@ export type {
   SymbolDocumentationExample,
   SymbolDocumentationLinkKind,
   SymbolDocumentationLink,
+  SymbolDocumentationTarget,
   SymbolDocumentation
 } from "./coreTypes";
 

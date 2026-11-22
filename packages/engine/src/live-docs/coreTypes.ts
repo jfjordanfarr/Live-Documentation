@@ -143,6 +143,9 @@ export interface ResolvedSymbolLocation {
   /** True when the file re-exports the symbol rather than declaring it. */
   isReExport?: boolean;
 
+  /** The line the symbol is declared at, which tells it from a namesake of the same file, an overload. */
+  line?: number;
+
   /** A provider established by this file's re-export syntax, never inferred by name proximity. */
   reExport?: { sourcePath: string; exportedName: string };
 }
@@ -415,11 +418,32 @@ export type SymbolDocumentationLinkKind = "cref" | "href" | "unknown";
 
 /**
  * Link documentation from @see/@link tags.
+ *
+ * @remarks
+ * A `cref` link is the author's word that the symbol is related to the one it names (the owner, 2026-11-21: "If an
+ * author made an effort to tell us in their own words that these two things are related, we should honor their
+ * word"). Where the reader resolves the name to declarations of the workspace, `targets` says where; the Live Doc then
+ * writes the line as a link to each, and the graph holds it as a relation of its own, apart from the edges, so that
+ * no reachability, path or dead-code answer follows it.
  */
 export interface SymbolDocumentationLink {
   kind: SymbolDocumentationLinkKind;
   target: string;
   text?: string;
+  /** The documentation element that carries the reference, when it is not a `see` or a `seealso`: `exception`, `inheritdoc`, `permission`. */
+  element?: string;
+  /** The declarations the reference names, as the reader resolves it: none when it resolves to nothing the workspace declares. */
+  targets?: SymbolDocumentationTarget[];
+}
+
+/** A declaration a documentation reference names: the file that declares it, and the symbol of that file it lands on. */
+export interface SymbolDocumentationTarget {
+  /** Workspace-relative path of the declaring file. */
+  path: string;
+  /** The name of the file's symbol the reference lands on: the member it names, or the type that holds a member the file publishes no symbol for. */
+  symbol: string;
+  /** The symbol's line, which tells it from a namesake of the same file, an overload. */
+  line: number;
 }
 
 /**

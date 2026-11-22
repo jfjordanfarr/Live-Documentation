@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/graph.test.ts`
-- Generated At: 2026-11-19T21:10:25.686Z
+- Generated At: 2026-11-22T02:45:13.933Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,11 @@ _No public symbols detected_
 - `node:fs`
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`document.LINKS_SECTION`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-links_section)
+- [`document.readDocumentationReference`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-readdocumentationreference)
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`pathfind.getNeighbors`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-getneighbors)
+- [`pathfind.reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
+- [`pathfind.searchGraph`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchgraph)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

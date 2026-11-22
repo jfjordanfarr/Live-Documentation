@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/graph.ts`
-- Generated At: 2026-11-19T22:40:10.463Z
+- Generated At: 2026-11-22T02:42:17.811Z
 
 ## Authored
 ### Purpose
@@ -43,37 +43,44 @@ The graph of a workspace: every doc, with its links resolved.
 ##### `GraphFile` — Summary
 One doc of the graph: the parsed doc, and what the corpus adds to it.
 
+#### `DocumentationEdge` {#symbol-documentationedge}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L62)
+
+##### `DocumentationEdge` — Summary
+One reference a symbol's documentation makes to a declaration of the corpus, resolved as an edge's link is.
+
 #### `EdgeKind` {#symbol-edgekind}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L49)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L78)
 
 ##### `EdgeKind` — Summary
 How an edge arose: a dependency line, or a type reference on a symbol.
 
 #### `EdgeBasis` {#symbol-edgebasis}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L52)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L81)
 
 ##### `EdgeBasis` — Summary
 How an edge was observed when not from source: see `DependencyBasis`.
 
 #### `GraphEdge` {#symbol-graphedge}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L55)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L84)
 
 ##### `GraphEdge` — Summary
 One reference a doc makes, resolved against the corpus.
 
 #### `GRAPH_INDEX_FILE` {#symbol-graph_index_file}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L76)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L105)
 
 ##### `GRAPH_INDEX_FILE` — Summary
 The name of the file the generator writes the graph to, under the docs root.
 
 #### `deriveLiveDocGraph` {#symbol-derivelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L117)
 - Returns: [`LiveDocGraph`](#symbol-livedocgraph)
 - Parameters: `docs`: `Iterable`; `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -86,14 +93,14 @@ Derives the graph from parsed docs.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L197)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L257)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L214)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L274)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 - Parameters: `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -110,7 +117,7 @@ The target, or undefined when the link leaves the docs or does not name a Live D
 
 #### `resolveDocLink` {#symbol-resolvedoclink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L238)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L298)
 
 ##### `resolveDocLink` — Summary
 Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
@@ -126,9 +133,11 @@ before that the query, and the path before them is percent-decoded, so that `pla
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.LINKS_SECTION`](./document.ts.mdmd.md#symbol-links_section)
 - [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
+- [`document.readDocumentationReference`](./document.ts.mdmd.md#symbol-readdocumentationreference)
 - [`markdownLinks.linkPath`](../tooling/markdownLinks.ts.mdmd.md#symbol-linkpath)
 <!-- LIVE-DOC:END Dependencies -->
 
