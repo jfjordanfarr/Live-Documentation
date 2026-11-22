@@ -1,0 +1,4652 @@
+{
+ "summary": {
+  "name": "rows in the order of appearance, the search off",
+  "looks": [
+   "reading",
+   "reading"
+  ],
+  "searchAtTheEnd": [
+   "capped",
+   "capped"
+  ],
+  "cards": 79,
+  "sameCards": true,
+  "sameWires": true,
+  "cardsStandingElsewhere": 46,
+  "cardsOfAnotherSize": [],
+  "cardsWhoseRowsAreInAnotherOrder": [],
+  "cardsWithOtherRows": [],
+  "cardsWithOtherPorts": [],
+  "cardsPinnedOtherwise": [],
+  "placesOfTheSubject": [
+   [
+    1260,
+    8061
+   ],
+   [
+    1260,
+    7924
+   ]
+  ]
+ },
+ "near": {
+  "look": "reading",
+  "cards": {
+   "scripts/contact-sheet/contact-sheet.ts": {
+    "place": [
+     1704,
+     146
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "scripts/layout-lab/capture.ts": {
+    "place": [
+     1704,
+     464
+    ],
+    "size": "387x230",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "scripts/layout-lab/verify.ts": {
+    "place": [
+     1704,
+     718
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/types.ts": {
+    "place": [
+     26,
+     4510
+    ],
+    "size": "423x277",
+    "order": [
+     "ExplorerGraphPayload"
+    ],
+    "set": [
+     "ExplorerGraphPayload 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers ExplorerGraphPayload",
+     "uses *",
+     "uses ExplorerGraphPayload"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/graph.ts": {
+    "place": [
+     601,
+     4322
+    ],
+    "size": "520x277",
+    "order": [
+     "explorerGraphOf"
+    ],
+    "set": [
+     "explorerGraphOf 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers explorerGraphOf",
+     "uses *",
+     "uses explorerGraphOf"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/staticExplorerData.ts": {
+    "place": [
+     601,
+     4666
+    ],
+    "size": "520x277",
+    "order": [
+     "StaticExplorerData"
+    ],
+    "set": [
+     "StaticExplorerData 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers StaticExplorerData",
+     "uses *",
+     "uses StaticExplorerData"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/client/persistence/local-storage.ts": {
+    "place": [
+     614,
+     5130
+    ],
+    "size": "494x349",
+    "order": [
+     "PERSISTED_UI_KEY",
+     "PERSISTED_UI_VERSION"
+    ],
+    "set": [
+     "PERSISTED_UI_KEY 66",
+     "PERSISTED_UI_VERSION 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers PERSISTED_UI_KEY",
+     "offers PERSISTED_UI_VERSION",
+     "uses *",
+     "uses PERSISTED_UI_KEY",
+     "uses PERSISTED_UI_VERSION"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/client/views/symbolAnchors.ts": {
+    "place": [
+     614,
+     5593
+    ],
+    "size": "494x277",
+    "order": [
+     "normalizeSymbolIdentifier"
+    ],
+    "set": [
+     "normalizeSymbolIdentifier 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers normalizeSymbolIdentifier",
+     "uses *",
+     "uses normalizeSymbolIdentifier"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/scenarios/instrument.ts": {
+    "place": [
+     1704,
+     15004
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/scenarios/still-pictures.spec.ts": {
+    "place": [
+     2243,
+     14944
+    ],
+    "size": "289x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-geometry.ts": {
+    "place": [
+     588,
+     11579
+    ],
+    "size": "546x861",
+    "order": [
+     "Polyline",
+     "CrossingScore",
+     "crossings",
+     "ChannelScore",
+     "sharedChannels",
+     "flowOf",
+     "AdjacencyScore",
+     "folderAdjacency",
+     "TourFact",
+     "TourPan",
+     "planTour"
+    ],
+    "set": [
+     "AdjacencyScore 44",
+     "ChannelScore 44",
+     "CrossingScore 44",
+     "Polyline 66",
+     "TourFact 44",
+     "TourPan 44",
+     "crossings 66",
+     "flowOf 66",
+     "folderAdjacency 66",
+     "planTour 66",
+     "sharedChannels 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers AdjacencyScore",
+     "offers ChannelScore",
+     "offers CrossingScore",
+     "offers Polyline",
+     "offers TourFact",
+     "offers TourPan",
+     "offers crossings",
+     "offers flowOf",
+     "offers folderAdjacency",
+     "offers planTour",
+     "offers sharedChannels",
+     "uses *",
+     "uses AdjacencyScore",
+     "uses ChannelScore",
+     "uses CrossingScore",
+     "uses Polyline",
+     "uses TourFact",
+     "uses TourPan",
+     "uses crossings",
+     "uses flowOf",
+     "uses folderAdjacency",
+     "uses planTour",
+     "uses sharedChannels"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/design-audit.ts": {
+    "place": [
+     588,
+     12892
+    ],
+    "size": "546x661",
+    "order": [
+     "TruncationCheck",
+     "Truncation",
+     "farLookNames",
+     "textBoxes",
+     "overlapsAmong",
+     "truncations",
+     "describeFaults"
+    ],
+    "set": [
+     "Truncation 44",
+     "TruncationCheck 66",
+     "describeFaults 66",
+     "farLookNames 66",
+     "overlapsAmong 66",
+     "textBoxes 66",
+     "truncations 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers Truncation",
+     "offers TruncationCheck",
+     "offers describeFaults",
+     "offers farLookNames",
+     "offers overlapsAmong",
+     "offers textBoxes",
+     "offers truncations",
+     "uses *",
+     "uses Truncation",
+     "uses TruncationCheck",
+     "uses describeFaults",
+     "uses farLookNames",
+     "uses overlapsAmong",
+     "uses textBoxes",
+     "uses truncations"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture.ts": {
+    "place": [
+     1260,
+     8061
+    ],
+    "size": "305x4067",
+    "order": [
+     "READING_PX",
+     "Fact",
+     "factKey",
+     "loadGraph",
+     "factsInScope",
+     "consumersOf",
+     "displayNames",
+     "symbolCounts",
+     "AT_READING_SIZE",
+     "arriveAtReadingSize",
+     "localMapUrl",
+     "localRetainUrl",
+     "forceGraphUrl",
+     "localMapSettled",
+     "localMapStill",
+     "ViewReading",
+     "LOCAL_MAP",
+     "keepGrowingComposition",
+     "WireReading",
+     "CardReading",
+     "PictureReading",
+     "readPicture",
+     "LegibilityScore",
+     "scoreLegibility",
+     "OcclusionScore",
+     "scoreOcclusion",
+     "ForeignScore",
+     "scoreForeign",
+     "LengthScore",
+     "scoreLength",
+     "wireLegible",
+     "ExpandedScore",
+     "scoreExpanded",
+     "HiddenScore",
+     "scoreHiddenAmongDrawn",
+     "scoreHops",
+     "ChurnScore",
+     "scoreChurn",
+     "cardBoxes",
+     "TextScore",
+     "scoreText",
+     "panIntoView",
+     "dragBy",
+     "RouteScore",
+     "scoreRoutes",
+     "TourScore",
+     "runTour",
+     "Journey",
+     "ChainJourney",
+     "Box",
+     "boxOf",
+     "centerDistance",
+     "Move",
+     "gesture",
+     "legibleNames",
+     "backEnabled",
+     "Scoreboard",
+     "scoreboardTable",
+     "expandedTable",
+     "chainTable",
+     "__internals__"
+    ],
+    "set": [
+     "AT_READING_SIZE 66",
+     "Box 44",
+     "CardReading 66",
+     "ChainJourney 66",
+     "ChurnScore 44",
+     "ExpandedScore 44",
+     "Fact 66",
+     "ForeignScore 44",
+     "HiddenScore 44",
+     "Journey 44",
+     "LOCAL_MAP 44",
+     "LegibilityScore 44",
+     "LengthScore 44",
+     "Move 66",
+     "OcclusionScore 44",
+     "PictureReading 66",
+     "READING_PX 66",
+     "RouteScore 44",
+     "Scoreboard 44",
+     "TextScore 44",
+     "TourScore 44",
+     "ViewReading 66",
+     "WireReading 66",
+     "__internals__ 19",
+     "arriveAtReadingSize 66",
+     "backEnabled 44",
+     "boxOf 66",
+     "cardBoxes 66",
+     "centerDistance 44",
+     "chainTable 66",
+     "consumersOf 66",
+     "displayNames 66",
+     "dragBy 66",
+     "expandedTable 66",
+     "factKey 44",
+     "factsInScope 66",
+     "forceGraphUrl 44",
+     "gesture 66",
+     "keepGrowingComposition 66",
+     "legibleNames 66",
+     "loadGraph 66",
+     "localMapSettled 66",
+     "localMapStill 66",
+     "localMapUrl 44",
+     "localRetainUrl 66",
+     "panIntoView 66",
+     "readPicture 66",
+     "runTour 66",
+     "scoreChurn 66",
+     "scoreExpanded 66",
+     "scoreForeign 66",
+     "scoreHiddenAmongDrawn 66",
+     "scoreHops 66",
+     "scoreLegibility 66",
+     "scoreLength 66",
+     "scoreOcclusion 66",
+     "scoreRoutes 66",
+     "scoreText 66",
+     "scoreboardTable 66",
+     "symbolCounts 66",
+     "wireLegible 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers AT_READING_SIZE",
+     "offers Box",
+     "offers CardReading",
+     "offers ChainJourney",
+     "offers ChurnScore",
+     "offers ExpandedScore",
+     "offers Fact",
+     "offers ForeignScore",
+     "offers HiddenScore",
+     "offers Journey",
+     "offers LOCAL_MAP",
+     "offers LegibilityScore",
+     "offers LengthScore",
+     "offers Move",
+     "offers OcclusionScore",
+     "offers PictureReading",
+     "offers READING_PX",
+     "offers RouteScore",
+     "offers Scoreboard",
+     "offers TextScore",
+     "offers TourScore",
+     "offers ViewReading",
+     "offers WireReading",
+     "offers arriveAtReadingSize",
+     "offers backEnabled",
+     "offers boxOf",
+     "offers cardBoxes",
+     "offers centerDistance",
+     "offers chainTable",
+     "offers consumersOf",
+     "offers displayNames",
+     "offers dragBy",
+     "offers expandedTable",
+     "offers factKey",
+     "offers factsInScope",
+     "offers forceGraphUrl",
+     "offers gesture",
+     "offers keepGrowingComposition",
+     "offers legibleNames",
+     "offers loadGraph",
+     "offers localMapSettled",
+     "offers localMapStill",
+     "offers localMapUrl",
+     "offers localRetainUrl",
+     "offers panIntoView",
+     "offers readPicture",
+     "offers runTour",
+     "offers scoreChurn",
+     "offers scoreExpanded",
+     "offers scoreForeign",
+     "offers scoreHiddenAmongDrawn",
+     "offers scoreHops",
+     "offers scoreLegibility",
+     "offers scoreLength",
+     "offers scoreOcclusion",
+     "offers scoreRoutes",
+     "offers scoreText",
+     "offers scoreboardTable",
+     "offers symbolCounts",
+     "offers wireLegible",
+     "uses *",
+     "uses AT_READING_SIZE",
+     "uses Box",
+     "uses CardReading",
+     "uses ChainJourney",
+     "uses ChurnScore",
+     "uses ExpandedScore",
+     "uses Fact",
+     "uses ForeignScore",
+     "uses HiddenScore",
+     "uses Journey",
+     "uses LOCAL_MAP",
+     "uses LegibilityScore",
+     "uses LengthScore",
+     "uses Move",
+     "uses OcclusionScore",
+     "uses PictureReading",
+     "uses READING_PX",
+     "uses RouteScore",
+     "uses Scoreboard",
+     "uses TextScore",
+     "uses TourScore",
+     "uses ViewReading",
+     "uses WireReading",
+     "uses __internals__",
+     "uses arriveAtReadingSize",
+     "uses backEnabled",
+     "uses boxOf",
+     "uses cardBoxes",
+     "uses centerDistance",
+     "uses chainTable",
+     "uses consumersOf",
+     "uses displayNames",
+     "uses dragBy",
+     "uses expandedTable",
+     "uses factKey",
+     "uses factsInScope",
+     "uses forceGraphUrl",
+     "uses gesture",
+     "uses keepGrowingComposition",
+     "uses legibleNames",
+     "uses loadGraph",
+     "uses localMapSettled",
+     "uses localMapStill",
+     "uses localMapUrl",
+     "uses localRetainUrl",
+     "uses panIntoView",
+     "uses readPicture",
+     "uses runTour",
+     "uses scoreChurn",
+     "uses scoreExpanded",
+     "uses scoreForeign",
+     "uses scoreHiddenAmongDrawn",
+     "uses scoreHops",
+     "uses scoreLegibility",
+     "uses scoreLength",
+     "uses scoreOcclusion",
+     "uses scoreRoutes",
+     "uses scoreText",
+     "uses scoreboardTable",
+     "uses symbolCounts",
+     "uses wireLegible"
+    ],
+    "pinned": true
+   },
+   "tests/e2e/force-graph-structure-cells.spec.ts": {
+    "place": [
+     1691,
+     1046
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-wrappers.spec.ts": {
+    "place": [
+     1691,
+     1265
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-wires.spec.ts": {
+    "place": [
+     1691,
+     1484
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/labels-and-controls.spec.ts": {
+    "place": [
+     1691,
+     1703
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-contained.spec.ts": {
+    "place": [
+     1691,
+     1922
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-defaults.spec.ts": {
+    "place": [
+     1691,
+     2141
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-row-motion.spec.ts": {
+    "place": [
+     1691,
+     2360
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-shells.spec.ts": {
+    "place": [
+     1691,
+     2559
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/webgl-refused.spec.ts": {
+    "place": [
+     1691,
+     2778
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/hidden-file-cells.spec.ts": {
+    "place": [
+     1691,
+     2997
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/return-cost.spec.ts": {
+    "place": [
+     1691,
+     3216
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/backward-cue.spec.ts": {
+    "place": [
+     1691,
+     3435
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-ladder-boxes.spec.ts": {
+    "place": [
+     1691,
+     3654
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-ladder.spec.ts": {
+    "place": [
+     1691,
+     3873
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-overview-names.spec.ts": {
+    "place": [
+     1691,
+     4092
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-overview.spec.ts": {
+    "place": [
+     1691,
+     4311
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-tone.spec.ts": {
+    "place": [
+     1691,
+     4530
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/look-change-cost.spec.ts": {
+    "place": [
+     1691,
+     4749
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/overview-files.spec.ts": {
+    "place": [
+     1691,
+     4968
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/camera-intent.spec.ts": {
+    "place": [
+     1691,
+     5187
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-hidden.spec.ts": {
+    "place": [
+     1691,
+     5406
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-slots.spec.ts": {
+    "place": [
+     1691,
+     5625
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-reveal.spec.ts": {
+    "place": [
+     1691,
+     5844
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-motion.spec.ts": {
+    "place": [
+     1691,
+     6063
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-search.spec.ts": {
+    "place": [
+     1691,
+     6262
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/explorer-navigation.spec.ts": {
+    "place": [
+     1691,
+     6481
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-corset.spec.ts": {
+    "place": [
+     1691,
+     6700
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-learning.spec.ts": {
+    "place": [
+     1691,
+     6919
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/perspective-zoom.spec.ts": {
+    "place": [
+     1691,
+     7138
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/zoom-looks.spec.ts": {
+    "place": [
+     1691,
+     7357
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/descriptions-zoomed-out.spec.ts": {
+    "place": [
+     1691,
+     7576
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/returning-connections.spec.ts": {
+    "place": [
+     1691,
+     7795
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-branches.spec.ts": {
+    "place": [
+     1691,
+     8057
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-building.spec.ts": {
+    "place": [
+     1691,
+     8276
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-discovery.spec.ts": {
+    "place": [
+     1691,
+     8495
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-drag.spec.ts": {
+    "place": [
+     1691,
+     8714
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-exploration.spec.ts": {
+    "place": [
+     1691,
+     8990
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-directories.spec.ts": {
+    "place": [
+     1691,
+     9266
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/history-2d.spec.ts": {
+    "place": [
+     1691,
+     9485
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-keyboard.spec.ts": {
+    "place": [
+     1691,
+     9747
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-reference.ts": {
+    "place": [
+     1691,
+     10016
+    ],
+    "size": "413x235",
+    "order": [
+     "readPictureReference",
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19",
+     "readPictureReference 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers readPictureReference",
+     "uses *",
+     "uses __internals__",
+     "uses readPictureReference"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture.spec.ts": {
+    "place": [
+     1691,
+     10275
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-reading-refresh.spec.ts": {
+    "place": [
+     1691,
+     10544
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-framing.spec.ts": {
+    "place": [
+     1691,
+     10763
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/inspection.spec.ts": {
+    "place": [
+     1691,
+     10982
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/pin-clicks.spec.ts": {
+    "place": [
+     1691,
+     11201
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-path.spec.ts": {
+    "place": [
+     1691,
+     11420
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-reading.spec.ts": {
+    "place": [
+     1691,
+     11682
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/explorer-history.spec.ts": {
+    "place": [
+     1691,
+     11901
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/others.spec.ts": {
+    "place": [
+     1691,
+     12120
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-directories.spec.ts": {
+    "place": [
+     1691,
+     12339
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-packing.spec.ts": {
+    "place": [
+     1691,
+     12558
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/closed-directory-families.spec.ts": {
+    "place": [
+     1691,
+     12777
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/closed-directory-looks.spec.ts": {
+    "place": [
+     1691,
+     12996
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/wire-answers.spec.ts": {
+    "place": [
+     1691,
+     13215
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/spatial-legend.spec.ts": {
+    "place": [
+     1691,
+     13434
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/way-down.spec.ts": {
+    "place": [
+     1691,
+     13653
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/search-bar.spec.ts": {
+    "place": [
+     1691,
+     13872
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-pins.spec.ts": {
+    "place": [
+     1691,
+     14091
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-identity.spec.ts": {
+    "place": [
+     1691,
+     14310
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/world-map-estate.spec.ts": {
+    "place": [
+     1691,
+     14529
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/world-map-design.spec.ts": {
+    "place": [
+     1691,
+     14728
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-simplicity.spec.ts": {
+    "place": [
+     2230,
+     1046
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-mirror.spec.ts": {
+    "place": [
+     2230,
+     7667
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/layout-lab.spec.ts": {
+    "place": [
+     2230,
+     7886
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-reference.spec.ts": {
+    "place": [
+     2230,
+     9095
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   }
+  },
+  "wires": [
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/webgl-refused.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/views/symbolAnchors.ts#normalizeSymbolIdentifier -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/views/symbolAnchors.ts#normalizeSymbolIdentifier -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/graph.ts#explorerGraphOf -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/graph.ts#explorerGraphOf -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> packages/explorer/src/shared/graph.ts#explorerGraphOf",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#consumersOf",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#displayNames",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#symbolCounts",
+   "connection-path.outbound tests/e2e/design-audit.ts#Truncation -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#TruncationCheck -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#farLookNames -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#farLookNames -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#Polyline -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#TourFact -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#TourPan -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#crossings -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#flowOf -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#folderAdjacency -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#planTour -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#sharedChannels -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-reference.ts#readPictureReference -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Box -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#CardReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ChainJourney -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Journey -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#READING_PX -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Scoreboard -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture-reference.ts#readPictureReference",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#WireReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#backEnabled -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#boxOf -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#boxOf -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#cardBoxes -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#centerDistance -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#centerDistance -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#chainTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#consumersOf -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#dragBy -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#dragBy -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#expandedTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#factsInScope -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#forceGraphUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#gesture -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#gesture -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#legibleNames -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-building.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-discovery.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-drag.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-exploration.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-reveal.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/explorer-history.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-exploration.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/history-2d.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/others.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/webgl-refused.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/explorer-navigation.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-keyboard.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/explorer-history.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/others.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#runTour -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreChurn -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreHiddenAmongDrawn -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreHops -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLegibility -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLength -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLength -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreRoutes -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreText -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreText -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreboardTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/design-audit.ts#Truncation -> tests/e2e/design-audit.ts#describeFaults",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture-geometry.ts#folderAdjacency",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture-geometry.ts#sharedChannels",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture-geometry.ts#crossings",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.ts#scoreChurn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ExpandedScore -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ForeignScore -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#HiddenScore -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#LegibilityScore -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#LengthScore -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#OcclusionScore -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#LOCAL_MAP",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#cardBoxes",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#dragBy",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#gesture",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#legibleNames",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#readPicture",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#runTour",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreRoutes",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreText",
+   "connection-path.self-loop.self-loop-provider tests/e2e/design-audit.ts#Truncation -> tests/e2e/design-audit.ts#describeFaults",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture-geometry.ts#folderAdjacency",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture-geometry.ts#sharedChannels",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture-geometry.ts#crossings",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.ts#scoreChurn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ExpandedScore -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ForeignScore -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#HiddenScore -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#LegibilityScore -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#LengthScore -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#OcclusionScore -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#LOCAL_MAP",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#cardBoxes",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#dragBy",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#gesture",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#legibleNames",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#readPicture",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#runTour",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreRoutes",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreText"
+  ],
+  "search": "capped"
+ },
+ "far": {
+  "look": "reading",
+  "cards": {
+   "scripts/contact-sheet/contact-sheet.ts": {
+    "place": [
+     1704,
+     146
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "scripts/layout-lab/capture.ts": {
+    "place": [
+     1704,
+     464
+    ],
+    "size": "387x230",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "scripts/layout-lab/verify.ts": {
+    "place": [
+     1704,
+     718
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/types.ts": {
+    "place": [
+     26,
+     4568
+    ],
+    "size": "423x277",
+    "order": [
+     "ExplorerGraphPayload"
+    ],
+    "set": [
+     "ExplorerGraphPayload 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers ExplorerGraphPayload",
+     "uses *",
+     "uses ExplorerGraphPayload"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/staticExplorerData.ts": {
+    "place": [
+     601,
+     4079
+    ],
+    "size": "520x277",
+    "order": [
+     "StaticExplorerData"
+    ],
+    "set": [
+     "StaticExplorerData 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers StaticExplorerData",
+     "uses *",
+     "uses StaticExplorerData"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/shared/graph.ts": {
+    "place": [
+     601,
+     4380
+    ],
+    "size": "520x277",
+    "order": [
+     "explorerGraphOf"
+    ],
+    "set": [
+     "explorerGraphOf 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers explorerGraphOf",
+     "uses *",
+     "uses explorerGraphOf"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/client/persistence/local-storage.ts": {
+    "place": [
+     614,
+     4887
+    ],
+    "size": "494x349",
+    "order": [
+     "PERSISTED_UI_KEY",
+     "PERSISTED_UI_VERSION"
+    ],
+    "set": [
+     "PERSISTED_UI_KEY 66",
+     "PERSISTED_UI_VERSION 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers PERSISTED_UI_KEY",
+     "offers PERSISTED_UI_VERSION",
+     "uses *",
+     "uses PERSISTED_UI_KEY",
+     "uses PERSISTED_UI_VERSION"
+    ],
+    "pinned": false
+   },
+   "packages/explorer/src/client/views/symbolAnchors.ts": {
+    "place": [
+     614,
+     5350
+    ],
+    "size": "494x277",
+    "order": [
+     "normalizeSymbolIdentifier"
+    ],
+    "set": [
+     "normalizeSymbolIdentifier 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers normalizeSymbolIdentifier",
+     "uses *",
+     "uses normalizeSymbolIdentifier"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/scenarios/instrument.ts": {
+    "place": [
+     1704,
+     15004
+    ],
+    "size": "387x204",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/scenarios/still-pictures.spec.ts": {
+    "place": [
+     2243,
+     14944
+    ],
+    "size": "289x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-geometry.ts": {
+    "place": [
+     588,
+     11442
+    ],
+    "size": "546x861",
+    "order": [
+     "Polyline",
+     "CrossingScore",
+     "crossings",
+     "ChannelScore",
+     "sharedChannels",
+     "flowOf",
+     "AdjacencyScore",
+     "folderAdjacency",
+     "TourFact",
+     "TourPan",
+     "planTour"
+    ],
+    "set": [
+     "AdjacencyScore 44",
+     "ChannelScore 44",
+     "CrossingScore 44",
+     "Polyline 66",
+     "TourFact 44",
+     "TourPan 44",
+     "crossings 66",
+     "flowOf 66",
+     "folderAdjacency 66",
+     "planTour 66",
+     "sharedChannels 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers AdjacencyScore",
+     "offers ChannelScore",
+     "offers CrossingScore",
+     "offers Polyline",
+     "offers TourFact",
+     "offers TourPan",
+     "offers crossings",
+     "offers flowOf",
+     "offers folderAdjacency",
+     "offers planTour",
+     "offers sharedChannels",
+     "uses *",
+     "uses AdjacencyScore",
+     "uses ChannelScore",
+     "uses CrossingScore",
+     "uses Polyline",
+     "uses TourFact",
+     "uses TourPan",
+     "uses crossings",
+     "uses flowOf",
+     "uses folderAdjacency",
+     "uses planTour",
+     "uses sharedChannels"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/design-audit.ts": {
+    "place": [
+     588,
+     12892
+    ],
+    "size": "546x661",
+    "order": [
+     "TruncationCheck",
+     "Truncation",
+     "farLookNames",
+     "textBoxes",
+     "overlapsAmong",
+     "truncations",
+     "describeFaults"
+    ],
+    "set": [
+     "Truncation 44",
+     "TruncationCheck 66",
+     "describeFaults 66",
+     "farLookNames 66",
+     "overlapsAmong 66",
+     "textBoxes 66",
+     "truncations 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers Truncation",
+     "offers TruncationCheck",
+     "offers describeFaults",
+     "offers farLookNames",
+     "offers overlapsAmong",
+     "offers textBoxes",
+     "offers truncations",
+     "uses *",
+     "uses Truncation",
+     "uses TruncationCheck",
+     "uses describeFaults",
+     "uses farLookNames",
+     "uses overlapsAmong",
+     "uses textBoxes",
+     "uses truncations"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture.ts": {
+    "place": [
+     1260,
+     7924
+    ],
+    "size": "305x4067",
+    "order": [
+     "READING_PX",
+     "Fact",
+     "factKey",
+     "loadGraph",
+     "factsInScope",
+     "consumersOf",
+     "displayNames",
+     "symbolCounts",
+     "AT_READING_SIZE",
+     "arriveAtReadingSize",
+     "localMapUrl",
+     "localRetainUrl",
+     "forceGraphUrl",
+     "localMapSettled",
+     "localMapStill",
+     "ViewReading",
+     "LOCAL_MAP",
+     "keepGrowingComposition",
+     "WireReading",
+     "CardReading",
+     "PictureReading",
+     "readPicture",
+     "LegibilityScore",
+     "scoreLegibility",
+     "OcclusionScore",
+     "scoreOcclusion",
+     "ForeignScore",
+     "scoreForeign",
+     "LengthScore",
+     "scoreLength",
+     "wireLegible",
+     "ExpandedScore",
+     "scoreExpanded",
+     "HiddenScore",
+     "scoreHiddenAmongDrawn",
+     "scoreHops",
+     "ChurnScore",
+     "scoreChurn",
+     "cardBoxes",
+     "TextScore",
+     "scoreText",
+     "panIntoView",
+     "dragBy",
+     "RouteScore",
+     "scoreRoutes",
+     "TourScore",
+     "runTour",
+     "Journey",
+     "ChainJourney",
+     "Box",
+     "boxOf",
+     "centerDistance",
+     "Move",
+     "gesture",
+     "legibleNames",
+     "backEnabled",
+     "Scoreboard",
+     "scoreboardTable",
+     "expandedTable",
+     "chainTable",
+     "__internals__"
+    ],
+    "set": [
+     "AT_READING_SIZE 66",
+     "Box 44",
+     "CardReading 66",
+     "ChainJourney 66",
+     "ChurnScore 44",
+     "ExpandedScore 44",
+     "Fact 66",
+     "ForeignScore 44",
+     "HiddenScore 44",
+     "Journey 44",
+     "LOCAL_MAP 44",
+     "LegibilityScore 44",
+     "LengthScore 44",
+     "Move 66",
+     "OcclusionScore 44",
+     "PictureReading 66",
+     "READING_PX 66",
+     "RouteScore 44",
+     "Scoreboard 44",
+     "TextScore 44",
+     "TourScore 44",
+     "ViewReading 66",
+     "WireReading 66",
+     "__internals__ 19",
+     "arriveAtReadingSize 66",
+     "backEnabled 44",
+     "boxOf 66",
+     "cardBoxes 66",
+     "centerDistance 44",
+     "chainTable 66",
+     "consumersOf 66",
+     "displayNames 66",
+     "dragBy 66",
+     "expandedTable 66",
+     "factKey 44",
+     "factsInScope 66",
+     "forceGraphUrl 44",
+     "gesture 66",
+     "keepGrowingComposition 66",
+     "legibleNames 66",
+     "loadGraph 66",
+     "localMapSettled 66",
+     "localMapStill 66",
+     "localMapUrl 44",
+     "localRetainUrl 66",
+     "panIntoView 66",
+     "readPicture 66",
+     "runTour 66",
+     "scoreChurn 66",
+     "scoreExpanded 66",
+     "scoreForeign 66",
+     "scoreHiddenAmongDrawn 66",
+     "scoreHops 66",
+     "scoreLegibility 66",
+     "scoreLength 66",
+     "scoreOcclusion 66",
+     "scoreRoutes 66",
+     "scoreText 66",
+     "scoreboardTable 66",
+     "symbolCounts 66",
+     "wireLegible 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers AT_READING_SIZE",
+     "offers Box",
+     "offers CardReading",
+     "offers ChainJourney",
+     "offers ChurnScore",
+     "offers ExpandedScore",
+     "offers Fact",
+     "offers ForeignScore",
+     "offers HiddenScore",
+     "offers Journey",
+     "offers LOCAL_MAP",
+     "offers LegibilityScore",
+     "offers LengthScore",
+     "offers Move",
+     "offers OcclusionScore",
+     "offers PictureReading",
+     "offers READING_PX",
+     "offers RouteScore",
+     "offers Scoreboard",
+     "offers TextScore",
+     "offers TourScore",
+     "offers ViewReading",
+     "offers WireReading",
+     "offers arriveAtReadingSize",
+     "offers backEnabled",
+     "offers boxOf",
+     "offers cardBoxes",
+     "offers centerDistance",
+     "offers chainTable",
+     "offers consumersOf",
+     "offers displayNames",
+     "offers dragBy",
+     "offers expandedTable",
+     "offers factKey",
+     "offers factsInScope",
+     "offers forceGraphUrl",
+     "offers gesture",
+     "offers keepGrowingComposition",
+     "offers legibleNames",
+     "offers loadGraph",
+     "offers localMapSettled",
+     "offers localMapStill",
+     "offers localMapUrl",
+     "offers localRetainUrl",
+     "offers panIntoView",
+     "offers readPicture",
+     "offers runTour",
+     "offers scoreChurn",
+     "offers scoreExpanded",
+     "offers scoreForeign",
+     "offers scoreHiddenAmongDrawn",
+     "offers scoreHops",
+     "offers scoreLegibility",
+     "offers scoreLength",
+     "offers scoreOcclusion",
+     "offers scoreRoutes",
+     "offers scoreText",
+     "offers scoreboardTable",
+     "offers symbolCounts",
+     "offers wireLegible",
+     "uses *",
+     "uses AT_READING_SIZE",
+     "uses Box",
+     "uses CardReading",
+     "uses ChainJourney",
+     "uses ChurnScore",
+     "uses ExpandedScore",
+     "uses Fact",
+     "uses ForeignScore",
+     "uses HiddenScore",
+     "uses Journey",
+     "uses LOCAL_MAP",
+     "uses LegibilityScore",
+     "uses LengthScore",
+     "uses Move",
+     "uses OcclusionScore",
+     "uses PictureReading",
+     "uses READING_PX",
+     "uses RouteScore",
+     "uses Scoreboard",
+     "uses TextScore",
+     "uses TourScore",
+     "uses ViewReading",
+     "uses WireReading",
+     "uses __internals__",
+     "uses arriveAtReadingSize",
+     "uses backEnabled",
+     "uses boxOf",
+     "uses cardBoxes",
+     "uses centerDistance",
+     "uses chainTable",
+     "uses consumersOf",
+     "uses displayNames",
+     "uses dragBy",
+     "uses expandedTable",
+     "uses factKey",
+     "uses factsInScope",
+     "uses forceGraphUrl",
+     "uses gesture",
+     "uses keepGrowingComposition",
+     "uses legibleNames",
+     "uses loadGraph",
+     "uses localMapSettled",
+     "uses localMapStill",
+     "uses localMapUrl",
+     "uses localRetainUrl",
+     "uses panIntoView",
+     "uses readPicture",
+     "uses runTour",
+     "uses scoreChurn",
+     "uses scoreExpanded",
+     "uses scoreForeign",
+     "uses scoreHiddenAmongDrawn",
+     "uses scoreHops",
+     "uses scoreLegibility",
+     "uses scoreLength",
+     "uses scoreOcclusion",
+     "uses scoreRoutes",
+     "uses scoreText",
+     "uses scoreboardTable",
+     "uses symbolCounts",
+     "uses wireLegible"
+    ],
+    "pinned": true
+   },
+   "tests/e2e/force-graph-wires.spec.ts": {
+    "place": [
+     1691,
+     1046
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/labels-and-controls.spec.ts": {
+    "place": [
+     1691,
+     1265
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-contained.spec.ts": {
+    "place": [
+     1691,
+     1484
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-defaults.spec.ts": {
+    "place": [
+     1691,
+     1703
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-row-motion.spec.ts": {
+    "place": [
+     1691,
+     1922
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-structure-cells.spec.ts": {
+    "place": [
+     1691,
+     2121
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-wrappers.spec.ts": {
+    "place": [
+     1691,
+     2340
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-shells.spec.ts": {
+    "place": [
+     1691,
+     2602
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/hidden-file-cells.spec.ts": {
+    "place": [
+     1691,
+     2821
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/return-cost.spec.ts": {
+    "place": [
+     1691,
+     3040
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/backward-cue.spec.ts": {
+    "place": [
+     1691,
+     3259
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-ladder-boxes.spec.ts": {
+    "place": [
+     1691,
+     3478
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-ladder.spec.ts": {
+    "place": [
+     1691,
+     3697
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-overview-names.spec.ts": {
+    "place": [
+     1691,
+     3916
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-overview.spec.ts": {
+    "place": [
+     1691,
+     4135
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-tone.spec.ts": {
+    "place": [
+     1691,
+     4354
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/look-change-cost.spec.ts": {
+    "place": [
+     1691,
+     4573
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/overview-files.spec.ts": {
+    "place": [
+     1691,
+     4792
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/returning-connections.spec.ts": {
+    "place": [
+     1691,
+     5011
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/webgl-refused.spec.ts": {
+    "place": [
+     1691,
+     5230
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/camera-intent.spec.ts": {
+    "place": [
+     1691,
+     5449
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-hidden.spec.ts": {
+    "place": [
+     1691,
+     5668
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-slots.spec.ts": {
+    "place": [
+     1691,
+     5887
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-motion.spec.ts": {
+    "place": [
+     1691,
+     6106
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-search.spec.ts": {
+    "place": [
+     1691,
+     6305
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-reveal.spec.ts": {
+    "place": [
+     1691,
+     6524
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-learning.spec.ts": {
+    "place": [
+     1691,
+     6743
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/explorer-navigation.spec.ts": {
+    "place": [
+     1691,
+     6962
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-corset.spec.ts": {
+    "place": [
+     1691,
+     7181
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/perspective-zoom.spec.ts": {
+    "place": [
+     1691,
+     7400
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/zoom-looks.spec.ts": {
+    "place": [
+     1691,
+     7619
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/descriptions-zoomed-out.spec.ts": {
+    "place": [
+     1691,
+     7838
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-branches.spec.ts": {
+    "place": [
+     1691,
+     8057
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-building.spec.ts": {
+    "place": [
+     1691,
+     8276
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-discovery.spec.ts": {
+    "place": [
+     1691,
+     8495
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-drag.spec.ts": {
+    "place": [
+     1691,
+     8714
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-exploration.spec.ts": {
+    "place": [
+     1691,
+     8990
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-directories.spec.ts": {
+    "place": [
+     1691,
+     9266
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/history-2d.spec.ts": {
+    "place": [
+     1691,
+     9485
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-keyboard.spec.ts": {
+    "place": [
+     1691,
+     9747
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture.spec.ts": {
+    "place": [
+     1691,
+     10016
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-reference.ts": {
+    "place": [
+     1691,
+     10235
+    ],
+    "size": "413x235",
+    "order": [
+     "readPictureReference",
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19",
+     "readPictureReference 66"
+    ],
+    "ports": [
+     "offers *",
+     "offers readPictureReference",
+     "uses *",
+     "uses __internals__",
+     "uses readPictureReference"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-reading-refresh.spec.ts": {
+    "place": [
+     1691,
+     10544
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-framing.spec.ts": {
+    "place": [
+     1691,
+     10763
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/inspection.spec.ts": {
+    "place": [
+     1691,
+     10982
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/pin-clicks.spec.ts": {
+    "place": [
+     1691,
+     11201
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-path.spec.ts": {
+    "place": [
+     1691,
+     11420
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/explorer-history.spec.ts": {
+    "place": [
+     1691,
+     11682
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/others.spec.ts": {
+    "place": [
+     1691,
+     11901
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/card-reading.spec.ts": {
+    "place": [
+     1691,
+     12120
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-directories.spec.ts": {
+    "place": [
+     1691,
+     12339
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-packing.spec.ts": {
+    "place": [
+     1691,
+     12558
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/closed-directory-families.spec.ts": {
+    "place": [
+     1691,
+     12777
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/closed-directory-looks.spec.ts": {
+    "place": [
+     1691,
+     12996
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/wire-answers.spec.ts": {
+    "place": [
+     1691,
+     13215
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/spatial-legend.spec.ts": {
+    "place": [
+     1691,
+     13434
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/way-down.spec.ts": {
+    "place": [
+     1691,
+     13653
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/search-bar.spec.ts": {
+    "place": [
+     1691,
+     13872
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-pins.spec.ts": {
+    "place": [
+     1691,
+     14091
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/force-graph-identity.spec.ts": {
+    "place": [
+     1691,
+     14310
+    ],
+    "size": "413x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/world-map-estate.spec.ts": {
+    "place": [
+     1691,
+     14529
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/world-map-design.spec.ts": {
+    "place": [
+     1691,
+     14728
+    ],
+    "size": "413x175",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-simplicity.spec.ts": {
+    "place": [
+     2230,
+     1046
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/layout-lab.spec.ts": {
+    "place": [
+     2230,
+     1265
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/local-map-mirror.spec.ts": {
+    "place": [
+     2230,
+     1484
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   },
+   "tests/e2e/still-picture-reference.spec.ts": {
+    "place": [
+     2230,
+     9095
+    ],
+    "size": "315x195",
+    "order": [
+     "__internals__"
+    ],
+    "set": [
+     "__internals__ 19"
+    ],
+    "ports": [
+     "offers *",
+     "uses *",
+     "uses __internals__"
+    ],
+    "pinned": false
+   }
+  },
+  "wires": [
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "bundle-run.connection-path # -> #",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/webgl-refused.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_KEY -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/persistence/local-storage.ts#PERSISTED_UI_VERSION -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/views/symbolAnchors.ts#normalizeSymbolIdentifier -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound packages/explorer/src/client/views/symbolAnchors.ts#normalizeSymbolIdentifier -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/graph.ts#explorerGraphOf -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/graph.ts#explorerGraphOf -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/staticExplorerData.ts#StaticExplorerData -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> packages/explorer/src/shared/graph.ts#explorerGraphOf",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#consumersOf",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#displayNames",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.outbound packages/explorer/src/shared/types.ts#ExplorerGraphPayload -> tests/e2e/still-picture.ts#symbolCounts",
+   "connection-path.outbound tests/e2e/design-audit.ts#Truncation -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#TruncationCheck -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#describeFaults -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#farLookNames -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#farLookNames -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#overlapsAmong -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#textBoxes -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/design-audit.ts#truncations -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#Polyline -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#TourFact -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#TourPan -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#crossings -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#flowOf -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#folderAdjacency -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#planTour -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-geometry.ts#sharedChannels -> tests/e2e/still-picture.ts#",
+   "connection-path.outbound tests/e2e/still-picture-reference.ts#readPictureReference -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/force-graph-wires.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/labels-and-controls.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#AT_READING_SIZE -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Box -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#CardReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ChainJourney -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Journey -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/world-map-design.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/world-map-estate.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#LOCAL_MAP -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#READING_PX -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#Scoreboard -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture-reference.ts#readPictureReference",
+   "connection-path.outbound tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#WireReading -> tests/e2e/still-picture-reference.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#arriveAtReadingSize -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#backEnabled -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#boxOf -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#boxOf -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#cardBoxes -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#centerDistance -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#centerDistance -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#chainTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#consumersOf -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#displayNames -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#dragBy -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#dragBy -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#expandedTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#factsInScope -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#forceGraphUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#gesture -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#gesture -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#keepGrowingComposition -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#legibleNames -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-building.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-discovery.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-drag.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-exploration.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-reveal.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-structure-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/force-graph-wrappers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#loadGraph -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/camera-intent.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/closed-directory-families.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/closed-directory-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/descriptions-zoomed-out.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/explorer-history.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-contained.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-defaults.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-exploration.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-identity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/force-graph-shells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/hidden-file-cells.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/history-2d.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-framing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-row-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/others.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/return-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/search-bar.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/spatial-legend.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/webgl-refused.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapSettled -> tests/e2e/wire-answers.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> scripts/contact-sheet/contact-sheet.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/backward-cue.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-ladder-boxes.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-ladder.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/explorer-navigation.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-keyboard.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-mirror.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-overview-names.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-overview.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/local-map-tone.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/look-change-cost.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/overview-files.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/returning-connections.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/way-down.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapStill -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localMapUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> scripts/layout-lab/capture.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/layout-lab.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-corset.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-directories.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-hidden.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-packing.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/local-map-simplicity.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/scenarios/still-pictures.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#localRetainUrl -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-reading-refresh.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-reading.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/card-slots.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/explorer-history.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/inspection.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-learning.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-motion.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-pins.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/local-map-search.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/others.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/perspective-zoom.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#panIntoView -> tests/e2e/pin-clicks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/scenarios/instrument.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#readPicture -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#runTour -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreChurn -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreExpanded -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreForeign -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreHiddenAmongDrawn -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreHops -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLegibility -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLength -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreLength -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/still-picture-reference.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreOcclusion -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreRoutes -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreText -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreText -> tests/e2e/zoom-looks.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#scoreboardTable -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> scripts/layout-lab/verify.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/local-map-branches.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/local-map-path.spec.ts#",
+   "connection-path.outbound tests/e2e/still-picture.ts#symbolCounts -> tests/e2e/still-picture.spec.ts#",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/design-audit.ts#Truncation -> tests/e2e/design-audit.ts#describeFaults",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture-geometry.ts#folderAdjacency",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture-geometry.ts#sharedChannels",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture-geometry.ts#crossings",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.ts#scoreChurn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ExpandedScore -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ForeignScore -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#HiddenScore -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#LegibilityScore -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#LengthScore -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#OcclusionScore -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#LOCAL_MAP",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#cardBoxes",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#dragBy",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#gesture",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#legibleNames",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#readPicture",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#runTour",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreRoutes",
+   "connection-path.self-loop.self-loop-consumer tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreText",
+   "connection-path.self-loop.self-loop-provider tests/e2e/design-audit.ts#Truncation -> tests/e2e/design-audit.ts#describeFaults",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#AdjacencyScore -> tests/e2e/still-picture-geometry.ts#folderAdjacency",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#ChannelScore -> tests/e2e/still-picture-geometry.ts#sharedChannels",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture-geometry.ts#CrossingScore -> tests/e2e/still-picture-geometry.ts#crossings",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ChurnScore -> tests/e2e/still-picture.ts#scoreChurn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ExpandedScore -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#Fact -> tests/e2e/still-picture.ts#factsInScope",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ForeignScore -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#HiddenScore -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#LegibilityScore -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#LengthScore -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#OcclusionScore -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreExpanded",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreForeign",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHiddenAmongDrawn",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreHops",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLegibility",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreLength",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#PictureReading -> tests/e2e/still-picture.ts#scoreOcclusion",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#LOCAL_MAP",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#cardBoxes",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#dragBy",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#gesture",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#legibleNames",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#readPicture",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#runTour",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreRoutes",
+   "connection-path.self-loop.self-loop-provider tests/e2e/still-picture.ts#ViewReading -> tests/e2e/still-picture.ts#scoreText"
+  ],
+  "search": "capped"
+ }
+}

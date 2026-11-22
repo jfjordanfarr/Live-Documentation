@@ -435,6 +435,37 @@ So it is neither the composition's fault nor touch's hearing in the page, and no
 
 Nothing in the product is changed for it. The case now taps a wire at a point clear of every card by sixteen pixels and says why. Its growing twin is not kept: with that clearance the growing picture on a phone has no such point in view (the run that asked for one found none among 42 wires), so the twin could not be made to say anything the fixed-slots case does not.
 
+## Thirteenth milestone, from 21:54 UTC: the whole-file pin made near and far
+
+The second landing failed `overview-files.spec.ts`, "a pin made while files only is showing gives, back at reading size, the cards, rows, pins and wires the same pin gives made at reading size: a whole-file pin, from the card's More", on the day branch at `a503db4d9`: one card differed, the subject's own, `tests/e2e/still-picture.ts`, 78 lines each way. Nothing was changed. What was measured, on that commit:
+
+**Only the order of the subject's rows differs.** The case's two pictures (the pin made at reading size; the pin made seven presses out under files only, then back) were read again, with each card's rows taken three ways: in order, as a set (name, height, pinned by name), and its ports as a set.
+
+| | Rows in the layout's order (the default) | Rows in the order of appearance |
+| --- | ---: | ---: |
+| Cards | 79 | 79 |
+| The same cards, the same wires | yes | yes |
+| Cards standing elsewhere in the second picture | 48 | 46 |
+| Cards of another size | 0 | 0 |
+| Cards with other rows (name, height, pinned) | 0 | 0 |
+| Cards with other ports | 0 | 0 |
+| Cards pinned otherwise | 0 | 0 |
+| Cards whose rows stand in another order | 1, the subject | 0 |
+
+So which rows a card shows, which are pinned and which carry a port do not depend on where the pin was made. The 78 lines are 26 rows of one card in another order, each with its two ports.
+
+**The order follows the cards' places, by the product's own rule.** Symbol Order's default is the layout's, whose help says it "Orders a card's symbols by where their wires lead". `orderRows` in `branch-order.ts` gives each row a key that is the mean of the places of the cards its wires lead to, and sorts the card's rows by it. The case's own comment says where the cards stand is not held, since 2026-11-17: a picture's order is chosen by its price as it is drawn when it is made, files only in one and rows in the other, and the search that would re-price it afterwards is turned off in this spec. Here 48 of 79 cards stand elsewhere. For the four rows at the head of the difference: `still-picture.spec.ts`, which all four lead to, stands at y 10,016 in the first picture and 9,295 in the second, and `local-map-path.spec.ts` at 11,420 and 11,219; `verify.ts`, `types.ts` and `local-map-branches.spec.ts` stand where they stood. With the rows in the order of appearance, which the layout does not move, no card's rows differ, though 46 cards still stand elsewhere: the difference is the layout's ordering of rows and nothing else.
+
+The two pictures are in [`numbers/pin-near-and-far--layout-order.json`](numbers/pin-near-and-far--layout-order.json) and [`numbers/pin-near-and-far--order-of-appearance.json`](numbers/pin-near-and-far--order-of-appearance.json).
+
+**Why it showed now.** The case holds each row's place inside its card, which holds the order; it has held it since the picture last changed only because the two orders agreed. The subject is this repository's own file, which changed that day, and the files that use it with it.
+
+**The fork, for the root.** Whether a reader should get one order of a card's rows however they came is a question of what the product means.
+
+- *The order is the picture's, like the cards' places.* The case holds what the claim is, the same cards, sizes, rows, pins, ports and wires, and not the order of rows inside a card, as it already does not hold where the cards stand. Nothing in the product changes. A reader who pins far out and comes back sees the same rows in an order that suits the picture they are in.
+- *One order however the reader came.* The order would have to be chosen again when the rows are laid out again at reading size, as for a picture made there. That is the search the product runs after every picture and this spec turns off; whether it brings the two pictures to one order was not measured: with the search left on, the map did not come to its rest within the 30 s the instrument's own wait allows, in three runs on this picture of 79 cards. It moves cards under a reader who has just come back.
+- *A subject that does not change.* The estate's sample would stop this repository's own edits from moving the case, but would not settle the question: the same disagreement can arise there.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.
