@@ -52,6 +52,9 @@
     "packages/stored-form/package.json": [
       "tooling"
     ],
+    "packages/stored-form/src/storedForm.ts": [
+      "module of packages/stored-form/package.json"
+    ],
     "packages/stored-form/tsconfig.json": [
       "tooling"
     ],

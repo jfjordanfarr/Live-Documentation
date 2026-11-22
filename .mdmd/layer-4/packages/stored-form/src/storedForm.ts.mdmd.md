@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/stored-form/src/storedForm.ts`
-- Generated At: 2026-11-22T02:13:56.266Z
+- Entry: module of [`packages/stored-form/package.json`](../package.json.mdmd.md)
+- Generated At: 2026-11-22T03:11:00.298Z
 
 ## Authored
 ### Purpose

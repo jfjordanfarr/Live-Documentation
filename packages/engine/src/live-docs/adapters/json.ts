@@ -95,12 +95,64 @@ async function declaredEntries(manifest: Record<string, unknown>, manifestAbsolu
     if (file && name) declare({ reason: "command", file, name });
   }
 
-  if (typeof manifest.main === "string") {
-    const file = toSource(manifest.main);
+  for (const target of packageModules(manifest)) {
+    const file = toSource(target);
     if (file) declare({ reason: "module", file });
   }
 
   return Array.from(declared.values()).sort((a, b) => compareText(a.file, b.file) || compareText(a.reason, b.reason) || compareText(a.name ?? "", b.name ?? ""));
+}
+
+/**
+ * The conditions Node matches by default when it resolves a package by its name, for a program that imports it and for
+ * one that requires it (Node's "Conditional exports": `node`, `node-addons`, `import` or `require`, `module-sync`, and
+ * `default` always). Not `types`, which is TypeScript's and names declarations, not code; nor a bundler's or a
+ * toolchain's own (`browser`, `development`), which Node never matches.
+ */
+const NODE_CONDITIONS: ReadonlyArray<ReadonlySet<string>> = [
+  new Set(["node", "node-addons", "import", "module-sync", "default"]),
+  new Set(["node", "node-addons", "require", "module-sync", "default"])
+];
+
+/**
+ * The files a package's own name loads, as Node resolves it: from `exports` when the manifest has it, for the subpath
+ * `.` (a string, a list of fall-backs, or conditions, written under `.` or as the whole of `exports`), and then `main`
+ * is not read, as Node does not read it; from `main` otherwise. One file for a program that imports the package and one
+ * for a program that requires it, when the two differ. A manifest whose `exports` names no `.`, only patterns such as
+ * `./*`, has no file its name loads. Until 2026-11-22 only `main` was read, so a package that names its entry in
+ * `exports` alone, as `packages/stored-form` does, had none.
+ */
+function packageModules(manifest: Record<string, unknown>): string[] {
+  const exported = manifest.exports;
+  if (exported === undefined) return typeof manifest.main === "string" ? [manifest.main] : [];
+  const keys = exported && typeof exported === "object" && !Array.isArray(exported) ? Object.keys(exported) : [];
+  const dot = keys.length > 0 && keys.every((key) => key.startsWith(".")) ? (exported as Record<string, unknown>)["."] : exported;
+  const targets = NODE_CONDITIONS.map((conditions) => exportTarget(dot, conditions)).filter((target): target is string => target !== undefined);
+  return Array.from(new Set(targets));
+}
+
+/**
+ * The target Node resolves an export to under a set of conditions (its `PACKAGE_TARGET_RESOLVE`): a string that is a
+ * path within the package; the first of a list that resolves; or, of conditions in the order written, the first that
+ * matches and resolves. A `null` is a subpath the package does not export.
+ */
+function exportTarget(value: unknown, conditions: ReadonlySet<string>): string | undefined {
+  if (typeof value === "string") return value.startsWith("./") ? value : undefined;
+  if (Array.isArray(value)) {
+    for (const each of value) {
+      const target = exportTarget(each, conditions);
+      if (target !== undefined) return target;
+    }
+    return undefined;
+  }
+  if (!value || typeof value !== "object") return undefined;
+  for (const [condition, inner] of Object.entries(value as Record<string, unknown>)) {
+    if (!conditions.has(condition)) continue;
+    if (inner === null) return undefined;
+    const target = exportTarget(inner, conditions);
+    if (target !== undefined) return target;
+  }
+  return undefined;
 }
 
 /**
