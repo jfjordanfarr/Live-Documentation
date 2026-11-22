@@ -1,9 +1,10 @@
 /**
  * The search bar at the top of the Explorer: one field that finds directories, files and symbols, and, once anything
  * is pinned, a second field under a map marker for the end of a path from the newest pin. The second field offers
- * only what a path from the newest pin can reach, each row saying how far and which way, and folds the files the
- * words match but no path connects. The bar also owns the path's report in the Local Map: the status line, with the
- * reverse question as a link when the files connect only the other way, and the strip of the drawn path's hops.
+ * only what a path from the newest pin can reach, each row saying how far, and folds the files the words match but
+ * no path connects. The bar also owns the path's report in the Local Map: the status line, and the strip of the
+ * path's hops, told from the end asked from to the end asked for (until 2026-11-22 the status carried the reverse
+ * question as a link when the files connected only against the drawing; such a path is now answered).
  * While the 3D Local Map shows a moment of the history, a chosen thing that does not stand there is said so, faded,
  * beside its field, in the pin tray's words, and the report names the commit its path was asked at (2026-10-30).
  */
@@ -57,8 +58,12 @@ export interface SearchBar {
    * (Tuning's Way Down, a trial of 2026-11-22). A path's own status takes the line while one is asked.
    */
   setNote(text: string | null): void;
-  /** Draw the strip of a path's hops; an empty path hides it. */
-  showPath(hops: readonly PathHop[]): void;
+  /**
+   * Draw the strip of a path's hops, in the order given, which is from the end asked from to the end asked for; an
+   * empty path hides it. `told` says what joins each hop to the next, and the hops are parted by it in words:
+   * "used-by", the drawing's own order, "is used by"; or "uses", a path told against the drawing (2026-11-22).
+   */
+  showPath(hops: readonly PathHop[], told?: "used-by" | "uses"): void;
   /** Write the status line; `tone` colours it, and `at` names the commit it was asked at when that is not today. Returns the element so that a link can be appended. */
   setStatus(text: string, tone: StatusTone, at?: string | null): HTMLElement;
   /** Hide the status and the strip. */
@@ -158,22 +163,25 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       sayAbsence(destinationInput, destinationAbsence, asked);
     },
 
-    showPath(hops): void {
+    showPath(hops, told = "used-by"): void {
       strip.innerHTML = "";
       if (hops.length === 0) {
         strip.hidden = true;
         localMap.classList.remove("has-path");
         return;
       }
+      strip.setAttribute("aria-label", told === "uses" ? "Path files, each uses the next" : "Path files, each is used by the next");
       hops.forEach((hop, index) => {
         const item = document.createElement("li");
         item.className = "pathfind-path-item";
         if (index > 0) {
-          const arrow = document.createElement("span");
-          arrow.className = "pathfind-path-arrow";
-          arrow.textContent = "→";
-          arrow.setAttribute("aria-hidden", "true");
-          item.append(arrow);
+          // The hops are parted by the relation in words, the product's two phrases for it and the command line's
+          // ("each file uses the next", "each file is used by the next"), read with the names. Until 2026-11-22 a bare
+          // arrow stood here, which in the one order then told meant "is used by" and now would mean either.
+          const relation = document.createElement("span");
+          relation.className = "pathfind-path-relation";
+          relation.textContent = told === "uses" ? "uses" : "is used by";
+          item.append(relation);
         }
         const element = document.createElement("button");
         element.type = "button";

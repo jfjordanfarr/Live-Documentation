@@ -26,7 +26,7 @@ import { renderSourcesView } from "./panels/sources-view";
 import { watchLocalKinds } from "./panels/spatial-legend";
 import { statsLineOf } from "./panels/stats-line";
 import { initTuningPanel, withholdFirstCommitOrder, withholdThreeDLayout } from "./panels/tuning";
-import { adjacencyOf, findPath, reachOf, referencesAgainstPath, type Adjacency, type PathfindResult, type Reach } from "./pathfind";
+import { adjacencyOf, findPath, reachOf, referencesAgainstPath, type Adjacency, type PathHop, type Reach } from "./pathfind";
 import {
   parseInitialState,
   getDefaultFilters,
@@ -51,7 +51,7 @@ import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirec
 import { BACKWARD_STRENGTHS, backwardStrength, type BackwardStrength } from "./views/localView/returning-connections";
 import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
-import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
+import { EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, othersReleasedWords, releaseOthers, type OthersReleased, type OthersStrength, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { birthSteps } from "./views/scanGrowth";
 import { createScanGrowthPlay } from "./views/scanGrowthPlay";
@@ -1038,16 +1038,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     return { ...words, ...(absence ? { absence: { words: absence, moment: moment ? `The picture shows ${moment}` : "The picture shows today's bundle" } } : {}) };
   }
 
-  /** A destination as the retained item it would be once pinned, for its words, its files and the reverse question. */
+  /** A destination as the retained item it would be once pinned, for its words and its files. */
   function itemOf(destination: PathDestination): RetainedItem {
     return destination.kind === "directory" ? { kind: "directory", directory: destination.directory }
       : { kind: "pin", pin: { nodeId: destination.nodeId, symbol: destination.symbol ?? "*" } };
-  }
-
-  /** A retained item as the destination it would be, for the reverse question. */
-  function destinationOfItem(item: RetainedItem): PathDestination {
-    if (item.kind === "directory") return { kind: "directory", directory: item.directory };
-    return item.pin.symbol === "*" ? { kind: "file", nodeId: item.pin.nodeId } : { kind: "file", nodeId: item.pin.nodeId, symbol: item.pin.symbol };
   }
 
   function destinationOfHit(hit: SearchHit): PathDestination {
@@ -1109,26 +1103,19 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   /**
    * A path asked on the World Map from the thing pinned there (Tuning's Way Down, a trial of 2026-11-22): between that
-   * thing's folder and what was chosen, another thing by its board name or anything the bar finds. A question asked on
-   * the board has no direction a person could know, since the board runs from what calls to what serves and the 2D
-   * drawing from what offers to what uses; so where a path runs only from what was chosen to the pinned thing, that is
-   * the path asked, and "no path runs that way" is never the answer. The landing is the Local Map's own path: the start
-   * its one retained thing, the end its destination.
+   * thing's folder and what was chosen, another thing by its board name or anything the bar finds. The landing is the
+   * Local Map's own path, the thing's folder its one retained thing and the end its destination, answered whichever
+   * way it runs and told from the thing asked from, as every path is.
    */
   function askChain(from: { name: string; folder: string }, hit: SearchHit): void {
-    const ground = pathGround();
-    const start: RetainedItem = { kind: "directory", directory: from.folder };
-    const end = itemOf(destinationOfHit(hit));
-    const found = findPath(endFiles(start, ground), endFiles(end, ground), ground.nodesById, ground.links);
-    const [origin, target] = found.path.length === 0 && found.reversePath.length > 0 ? [end, start] : [start, end];
     clearPathResult(false);
     state.discovery = null;
     state.selectedNode = null;
     closeInspection(false);
-    state.pins = origin.kind === "pin" ? (origin.pin.symbol === "*" ? retainFile(EMPTY_PIN_SET, origin.pin.nodeId) : addPin(EMPTY_PIN_SET, origin.pin.nodeId, origin.pin.symbol)) : EMPTY_PIN_SET;
-    state.openDirectories = new Set(origin.kind === "directory" ? [origin.directory] : []);
-    state.retentionOrder = [retainedKey(origin)];
-    state.destination = destinationOfItem(target);
+    state.pins = EMPTY_PIN_SET;
+    state.openDirectories = new Set([from.folder]);
+    state.retentionOrder = [retainedKey({ kind: "directory", directory: from.folder })];
+    state.destination = destinationOfHit(hit);
     wayDownNote = null;
     runPath();
   }
@@ -1171,53 +1158,19 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       return;
     }
     const result = findPath(endFiles(origin, ground), endFiles(target, ground), ground.nodesById, ground.links);
-    const first = result.path[0];
-    const last = result.path.at(-1);
-    if (origin.kind === "pin" && origin.pin.symbol !== "*" && first && first.nodeId === ground.fileAt(origin.pin.nodeId)) first.symbol = origin.pin.symbol;
-    if (destination.kind === "file" && destination.symbol && last && last.nodeId === ground.fileAt(destination.nodeId)) last.symbol = destination.symbol;
+    // A path is answered whichever way it runs (the owner, 2026-11-22). The hops are kept as the map draws them, what
+    // offers first; `against` says that the asking ran the other way, so that the end asked from is the last of them.
+    const against = result.path.length === 0 && result.reversePath.length > 0;
+    const drawn = against ? result.reversePath : result.path;
+    const asked = against ? drawn.at(-1) : drawn[0];
+    const sought = against ? drawn[0] : drawn.at(-1);
+    if (origin.kind === "pin" && origin.pin.symbol !== "*" && asked && asked.nodeId === ground.fileAt(origin.pin.nodeId)) asked.symbol = origin.pin.symbol;
+    if (destination.kind === "file" && destination.symbol && sought && sought.nodeId === ground.fileAt(destination.nodeId)) sought.symbol = destination.symbol;
     // A path between the folders of two things of the board, where the way down carries the question, is said for what
     // it is, by the things' board names; an address opened cold says the same, since both ends are in it.
     const from = carriesQuestion() && origin.kind === "directory" ? thingOfFolder(origin.directory) : undefined;
     const to = from && destination.kind === "directory" ? thingOfFolder(destination.directory) : undefined;
-    showPathResult(result, wordsOf(origin), wordsOf(target), ground, draw, from && to ? { from, to } : null);
-  }
-
-  /** The exploration with the destination pinned as the newest item: the state the reverse question leads to. */
-  function retainedWithDestination(destination: PathDestination): RetainedState {
-    const item = itemOf(destination);
-    const pins = state.pins ?? EMPTY_PIN_SET;
-    return reconcileRetained({
-      pins: item.kind === "pin" ? (item.pin.symbol === "*" ? retainFile(pins, item.pin.nodeId) : addPin(pins, item.pin.nodeId, item.pin.symbol)) : pins,
-      openDirectories: item.kind === "directory" ? new Set([...(state.openDirectories ?? []), item.directory]) : state.openDirectories ?? new Set(),
-      retentionOrder: [...(state.retentionOrder ?? []).filter(key => key !== retainedKey(item)), retainedKey(item)]
-    });
-  }
-
-  /** The address of the reverse question, so that the offered link can be opened elsewhere. */
-  function reverseHref(): string {
-    const origin = newestRetained(retentionState());
-    const destination = state.destination ?? null;
-    if (!origin || !destination) return "#";
-    const retained = retainedWithDestination(destination);
-    const url = new URL(window.location.href);
-    url.searchParams.set("s", compressSnapshot({
-      ...readUrlState(), view: "map", perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet: retained.pins, openDirectories: retained.openDirectories, retentionOrder: retained.retentionOrder, filters: state.filters,
-      layout: layoutSettingsOf(state.tuning), destination: destinationOfItem(origin)
-    }));
-    return `${url.pathname}?${url.searchParams.toString()}`;
-  }
-
-  /** The reverse question: the destination becomes the newest pin, and the path is asked back to where it started. */
-  function swapPath(): void {
-    const origin = newestRetained(retentionState());
-    const destination = state.destination ?? null;
-    if (!origin || !destination) return;
-    const node = destination.kind === "file" ? nodesById.get(destination.nodeId) : undefined;
-    if (destination.kind === "file" && !node) return;
-    state.destination = destinationOfItem(origin);
-    pinHit(destination.kind === "directory" ? { kind: "directory", directory: destination.directory }
-      : destination.symbol ? { kind: "symbol", node: node!, symbol: destination.symbol } : { kind: "file", node: node! });
+    showPathResult({ drawn, against, searchedNodes: result.searchedNodes, maxDepthReached: result.maxDepthReached }, ground, draw, from && to ? { from, to } : null);
   }
 
   /** What the Local Map is about, for the Bare frame's crumbs: the selected file, else the newest pin, else the discovery. */
@@ -1531,16 +1484,25 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   /** What the report's tooltip says of a path between two things of the board: it is a shortest connection, not a request's route. */
   const SHORTEST_CONNECTION_HELP = "The fewest files that join the two folders, one of perhaps several such routes. What runs between them may pass through other files.";
 
-  /**
-   * Shows what the search found. The Local Map draws a path only in its reading
-   * direction, the start offering on the left and the end using on the right. When the
-   * files connect only the other way, nothing is drawn: the status says so and
-   * offers the reverse question as a link, the owner's rule of 2025-12-18.
-   */
-  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords, ground: PathGround, draw: boolean, things: { from: string; to: string } | null = null): void => {
-    const fromName = origin.name;
-    const toName = destination.name;
+  /** What a path's search found, as the page shows it: the hops as the map draws them, and whether it was asked against that order. */
+  interface FoundPath {
+    /** The hops, what offers first; empty when no path runs either way. */
+    drawn: PathHop[];
+    /** Whether the path was asked from the end that uses: the end asked from is then the last hop drawn. */
+    against: boolean;
+    searchedNodes: number;
+    maxDepthReached: boolean;
+  }
 
+  /**
+   * Shows what the search found. Two words of the owner govern it. The drawing is as the rule of 2025-12-18 has it: the
+   * Local Map draws a path only in its reading direction, what offers on the left and what uses on the right, and
+   * nothing reaching backwards. The telling follows the asking (2026-11-22, "Let's go with your recommendation on it"):
+   * a path is answered whichever way it runs, the bar keeps the two ends as given, and the report names the files from
+   * the end asked from, each using the next where that runs against the drawing. Until then a path asked from the end
+   * that uses drew nothing, and the status offered the reverse question as a link.
+   */
+  const showPathResult = (result: FoundPath, ground: PathGround, draw: boolean, things: { from: string; to: string } | null = null): void => {
     // A question asked through the global bar opens the Local Map for every outcome. Restoring a saved place keeps
     // its chosen view, where the question is retained and the report stays hidden until the person returns to the map.
     if (!restoringPath && state.view !== "map") {
@@ -1548,37 +1510,42 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       setActiveView("map", state.perspective);
     }
 
-    if (result.path.length > 0) {
+    if (result.drawn.length > 0) {
+      const { drawn, against } = result;
+      const asked = against ? drawn.at(-1)! : drawn[0];
       // Reading evidence is independent of the path being drawn.
 
-      // Path mode draws over a selected file; when none is selected yet, the
-      // path's first file becomes it. An existing selection is kept, so Clear
-      // returns to the place the person was, address included.
+      // Path mode draws over a selected file; when none is selected yet, the file asked from becomes it. An existing
+      // selection is kept, so Clear returns to the place the person was, address included.
       if (!state.selectedNode) {
-        // The first file as it stands today: at a moment, a hop is named as the moment names it.
-        const today = shownMoment ? shownMoment.fileReference(result.path[0].nodeId) : result.path[0].nodeId;
+        // The file as it stands today: at a moment, a hop is named as the moment names it.
+        const today = shownMoment ? shownMoment.fileReference(asked.nodeId) : asked.nodeId;
         const node = today === null ? undefined : nodesById.get(today);
         if (node && draw) selectNode(node, { suppressDetailPanel: true });
         else if (node) markSelected(node);
       }
 
-      searchBar.showPath(result.path);
+      // Told from the end asked from to the end asked for; drawn what offers first, whichever end that is.
+      searchBar.showPath(against ? [...drawn].reverse() : drawn, against ? "uses" : "used-by");
 
-      const nodeIds = result.path.map(hop => hop.nodeId);
+      const nodeIds = drawn.map(hop => hop.nodeId);
       localView.setActivePath({
         nodeIds,
-        fromSymbol: result.path[0].symbol,
-        toSymbol: result.path[result.path.length - 1].symbol
+        fromSymbol: drawn[0].symbol,
+        toSymbol: drawn[drawn.length - 1].symbol
       });
 
-      const against = referencesAgainstPath(nodeIds, ground.links);
-      const notDrawn = against === 0
+      const backward = referencesAgainstPath(nodeIds, ground.links);
+      const notDrawn = backward === 0
         ? ""
-        : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn in 2D`;
+        : `; ${backward} ${backward === 1 ? "reference" : "references"} between these files ${backward === 1 ? "runs" : "run"} the other way and ${backward === 1 ? "is" : "are"} not drawn in 2D`;
       if (draw) renderCurrentView();
+      // A path asked against the drawing has the file asked from at the drawing's right end, where a path's own
+      // arrival, on its first file at the left, would leave it out of sight: it is framed with the file it uses.
+      if (against && draw && state.view === "map" && state.perspective === "2d") localView.arriveWithLines({ card: asked.nodeId });
       // Between two things of the board (Tuning's Way Down, a trial of 2026-11-22) the report says what the route is, one
       // shortest connection, and its tooltip what it is not; the wording is the owner's to settle.
-      const found = things ? `One shortest connection between ${things.from} and ${things.to}: ${result.path.length} files` : `Path found: ${result.path.length} files`;
+      const found = things ? `One shortest connection between ${things.from} and ${things.to}: ${drawn.length} files` : `Path found: ${drawn.length} files`;
       const report = searchBar.setStatus(`${found}${notDrawn}`, "success", reportAt());
       if (things) report.title = SHORTEST_CONNECTION_HELP;
       return;
@@ -1586,24 +1553,6 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
     // Nothing drawn: a path shown before leaves, and the status says why
     clearPathResult(draw);
-
-    if (result.reversePath.length > 0) {
-      const statusEl = searchBar.setStatus(
-        `No path runs from ${fromName} to ${toName}. ${toName} reaches ${fromName} through ${result.reversePath.length} files: `,
-        "",
-        reportAt()
-      );
-      const reverse = document.createElement("a");
-      reverse.href = reverseHref();
-      reverse.textContent = `show ${toName} to ${fromName}`;
-      reverse.addEventListener("click", event => {
-        event.preventDefault();
-        swapPath();
-      });
-      statusEl.appendChild(reverse);
-      if (draw) renderCurrentView("show");
-      return;
-    }
 
     searchBar.setStatus(
       result.maxDepthReached

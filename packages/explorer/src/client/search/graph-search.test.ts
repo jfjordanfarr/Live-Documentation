@@ -242,14 +242,17 @@ describe("destinationScope", () => {
   const reach = { forward: new Map([["src/map/camera.ts", 2]]), reverse: new Map([["src/util/strings.ts", 3]]) };
   const scope = destinationScope(index, reach);
 
-  it("offers the connected files with their distance, and a directory by its nearest file, the drawable way first", () => {
+  // Until 2026-11-22 a file or directory reached only against the drawing said "3 files, the other way", foretelling
+  // the refusal; a path is answered whichever way it runs now, so the words are its length alone.
+  it("offers the connected files with their distance, whichever way the path runs, and a directory by the file a path would end at", () => {
     expect(scope.index.nodes.map(node => node.id)).toEqual(["src/map/camera.ts", "src/util/strings.ts"]);
     expect(scope.index.directories).toEqual(["", "src", "src/map", "src/util"]);
     expect(scope.badge!({ kind: "file", node: nodes[1] })).toBe("2 files");
-    expect(scope.badge!({ kind: "file", node: nodes[2] })).toBe("3 files, the other way");
+    expect(scope.badge!({ kind: "file", node: nodes[2] })).toBe("3 files");
     expect(scope.badge!({ kind: "symbol", node: nodes[1], symbol: "Camera" })).toBeUndefined();
+    // The path to a directory runs the way the map draws where one does, as the finder looks: src by camera.ts.
     expect(scope.badge!({ kind: "directory", directory: "src" })).toBe("2 files");
-    expect(scope.badge!({ kind: "directory", directory: "src/util" })).toBe("3 files, the other way");
+    expect(scope.badge!({ kind: "directory", directory: "src/util" })).toBe("3 files");
     expect(reachWords(reach, "src/map/camera.ts")).toBe("2 files");
   });
 

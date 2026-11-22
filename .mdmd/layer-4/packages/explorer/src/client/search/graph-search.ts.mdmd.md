@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/graph-search.ts`
-- Generated At: 2026-11-22T02:00:44.051Z
+- Generated At: 2026-11-22T03:29:28.566Z
 
 ## Authored
 ### Purpose
@@ -189,15 +189,17 @@ directories left out.
 
 #### `reachWords` {#symbol-reachwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L320)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L324)
 - Parameters: `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
 
 ##### `reachWords` — Summary
-The words a destination row carries: the files a path to it would show, and whether it runs the other way.
+The words a destination row carries: the files a path to it would show. A path is answered whichever way it runs
+(2026-11-22), the way the map draws where both run, as the finder looks; until then a file reached only along
+dependencies said "N files, the other way", foretelling a refusal.
 
 #### `destinationScope` {#symbol-destinationscope}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L330)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L333)
 - Returns: [`SearchScope`](#symbol-searchscope)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
 

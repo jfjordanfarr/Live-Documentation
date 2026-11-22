@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/search-bar.ts`
-- Generated At: 2026-11-22T02:00:44.064Z
+- Generated At: 2026-11-22T03:29:28.649Z
 
 ## Authored
 ### Purpose
 
-The search bar at the top of the Explorer: the first field shows the newest pin and finds the next thing to pin; the second, shown under a map marker once anything is pinned, is the end of a path from the newest pin, asked at once, and offers only what a path from that pin can reach, each row saying how far and which way, the rest folded. The bar also renders the one path report shared by both Local Map representations: the status, a reverse link when offered, and an ordered strip of file inspection buttons.
+The search bar at the top of the Explorer: the first field shows the newest pin and finds the next thing to pin; the second, shown under a map marker once anything is pinned, is the end of a path from the newest pin, asked at once, and offers only what a path from that pin can reach, each row saying how far, the rest folded. The bar also renders the one path report shared by both Local Map representations: the status, and a strip of file inspection buttons told from the end asked from to the end asked for, with the relation said between them, "is used by" where each file is used by the next and "uses" where each uses the next, the command line's two phrases (since 2026-11-22, the owner's "Let's go with your recommendation on it", [Turn 5 of the day's record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-5); until then a path asked against the drawing was refused and the status carried the reverse question as a link, and a row reached only so said "the other way").
 
 ### Notes
 
@@ -29,26 +29,26 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../../AI-Ag
 ### Public Symbols
 #### `SearchWords` {#symbol-searchwords}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L19)
 
 ##### `SearchWords` — Summary
 The words a field shows for a pinned thing or a destination: its name, and where it stands for the tooltip.
 
 #### `StatusTone` {#symbol-statustone}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L28)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L29)
 
 #### `SearchBarOptions` {#symbol-searchbaroptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L33)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L34)
 
 #### `SearchBar` {#symbol-searchbar}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L48)
 
 #### `createSearchBar` {#symbol-createsearchbar}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L77)
 - Returns: [`SearchBar`](#symbol-searchbar)
 - Parameters: `options`: [`SearchBarOptions`](#symbol-searchbaroptions)
 <!-- LIVE-DOC:END Public Symbols -->

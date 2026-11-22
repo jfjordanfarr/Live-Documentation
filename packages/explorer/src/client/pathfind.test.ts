@@ -23,7 +23,9 @@ describe("findPath", () => {
     expect(result.reversePath).toEqual([]);
   });
 
-  it("draws nothing when only FROM depends on TO, and offers the reverse read provider first", () => {
+  // Until 2026-11-22 the page drew nothing for this and offered the reverse question; it now draws this path, provider
+  // first as given here, and tells it from FROM. The finder's answer is unchanged.
+  it("gives, when only FROM depends on TO, the same files read provider first, apart from a path that runs as asked", () => {
     const result = findPath(["c"], ["a"], nodesById, links);
     expect(result.path).toEqual([]);
     expect(ids(result.reversePath)).toEqual(["a", "b", "c"]);

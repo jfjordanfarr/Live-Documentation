@@ -316,10 +316,13 @@ export function searchRows(result: SearchResult): SearchRow[] {
   return rows;
 }
 
-/** The words a destination row carries: the files a path to it would show, and whether it runs the other way. */
+/**
+ * The words a destination row carries: the files a path to it would show. A path is answered whichever way it runs
+ * (2026-11-22), the way the map draws where both run, as the finder looks; until then a file reached only along
+ * dependencies said "N files, the other way", foretelling a refusal.
+ */
 export function reachWords(reach: Reach, id: string): string {
-  const forward = reach.forward.get(id);
-  return forward !== undefined ? `${forward} files` : `${reach.reverse.get(id)} files, the other way`;
+  return `${reach.forward.get(id) ?? reach.reverse.get(id)} files`;
 }
 
 /**

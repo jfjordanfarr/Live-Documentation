@@ -448,7 +448,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 3.2.6 Consistent Help | A | Partly | Help exists in the World Map only (`?`). |
 | 3.3.1 Error Identification | A | Meets (code) | The path report says what failed; a refusal says why. |
 | 3.3.2 Labels or Instructions | A | Meets (code) | Fields have names and placeholders. |
-| 3.3.3 Error Suggestion | AA | Partly | A failed path offers the reverse question; an empty search suggests nothing. |
+| 3.3.3 Error Suggestion | AA | Partly | A path is answered whichever way it runs (since 2026-11-22; until then one asked against the drawing failed and offered the reverse question), so the only failed path is one that runs neither way, which says so; an empty search suggests nothing. |
 | 3.3.4 Error Prevention (Legal, Financial, Data) | AA | Not applicable | |
 | 3.3.7 Redundant Entry | A | Meets (code) | |
 | 3.3.8 Accessible Authentication (Minimum) | AA | Not applicable | |
