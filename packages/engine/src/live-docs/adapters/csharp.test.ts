@@ -681,9 +681,11 @@ describe("csharpAdapter", () => {
       ]);
       expect(await references("App/Derived.cs")).toEqual([
         // A name alone finds the type's own member, and not one it only inherits: `Layout` is the class of that name.
-        // Named through its type, an inherited member is found.
+        // Named through the type that declares it, a member is found; named through a type that only inherits it, it
+        // is not, as the compiler binds nothing for it (asked on 2026-11-22 by the engine review's third pass, and the
+        // build warns CS1574): the link is what the compiler binds, and this case said the opposite until then.
         "Derived: Base.Layout -> App/Base.cs#Layout@5",
-        "Derived: Derived.Layout -> App/Base.cs#Layout@5",
+        "Derived: Derived.Layout -> ",
         "Derived: Layout -> App/Layout.cs#Layout@3",
         "Derived: Run -> App/Derived.cs#Run@10",
         // Across a `#pragma`: the constructor of one parameter; the constructors' name alone, every one, as the

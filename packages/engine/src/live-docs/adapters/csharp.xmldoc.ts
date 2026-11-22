@@ -324,7 +324,7 @@ export function crefLinkTarget(written: string): string {
 /** A documentation reference's name as C# reads it: its dotted segments, and the parameter list a member's reference writes. */
 export interface CrefName {
   /** The dotted name's segments, each with the number of type parameters it writes: `Lib.Helper{T}` is `Lib` 0 and `Helper` 1. A constructor's segment is `#ctor`. */
-  segments: Array<{ name: string; arity: number }>;
+  segments: Array<{ name: string; arity: number; typeArguments: string[] }>;
   /** The parameters' types as written, `Run(Runner.Count)` one, `Run()` none; undefined where the reference writes no list. */
   parameters?: string[];
 }
@@ -365,11 +365,12 @@ export function crefName(target: string): CrefName | undefined {
     parameters = inner === "" ? [] : splitOutside(inner, ",").map((parameter) => parameter.trim());
     text = text.slice(0, open);
   }
-  const segments: Array<{ name: string; arity: number }> = [];
+  const segments: Array<{ name: string; arity: number; typeArguments: string[] }> = [];
   for (const segment of splitOutside(text, ".")) {
     const generic = /^@?([\p{L}_#][\p{L}\p{N}_]*)\s*(?:<(.*)>)?$/u.exec(segment.trim());
     if (!generic) return undefined;
-    segments.push({ name: generic[1], arity: generic[2] === undefined ? 0 : splitOutside(generic[2], ",").length });
+    const typeArguments = generic[2] === undefined ? [] : splitOutside(generic[2], ",").map((argument) => argument.trim());
+    segments.push({ name: generic[1], arity: typeArguments.length, typeArguments });
   }
   return segments.length > 0 ? { segments, parameters } : undefined;
 }

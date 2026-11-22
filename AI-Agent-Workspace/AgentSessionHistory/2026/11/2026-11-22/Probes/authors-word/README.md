@@ -216,3 +216,32 @@ By the same builder, on a branch at the day's tip `3cd947724`. Root's rulings on
 | `params` parameter types among a method's parameter references | 0 | 8 |
 | documentation references agreeing, of 8,032 | 6,889 | 6,889 |
 | `notRead` / `unkept` | 616 / (not told apart) | 591 / 25 |
+
+### The third pass's two faults: a member through a type that only inherits it, and a renamed type parameter
+
+The engine review's third pass ([its record](../engine-review/README.md), "2026-11-22, last: the third pass") built projects and asked the compiler, by the oracle and by `dotnet build`, which warned CS1574 for each. It found two more faults, each with red cases: `csharp.cref-inherited-member.test.ts` (4) and `csharp.cref-renamed-type-parameters.test.ts` (2). Root's ruling on the first: the compiler's answer is the link. A build tells the author such a reference is broken, and a map that shows it working hides that from them.
+
+**Asked of the compiler first, beyond the review.** A probe in the builder's scratch had `Derived : Base`, with `Base` declaring `Grow(Calc)`, `Shrink(Calc)`, `Spin()` and a property `Layout`, and `Derived` declaring `Grow(Calc[])`. The compiler resolved to nothing every reference to an inherited member, whether written:
+- in `Derived`'s own comment;
+- on a member of `Derived`;
+- through `Derived.` from another class.
+
+That held unqualified (`Shrink(Calc)`, `Shrink`, `Layout`, `Grow(Calc)`, `Spin()`) and qualified. It resolved `Grow(Calc[])`, `Derived`'s own, every time. So a reference finds a member only in the type it names the member through, or in the type its comment stands in. This is what the reader's name-alone rule already measured on DNN ("measured, not assumed", above). The reader's own rule for a qualified name and the overload fall-back of this record's first section said the opposite; both are removed. The old case in `csharp.test.ts` (`Derived.Layout` linked to `Base`) now expects nothing, with its reason written in it.
+
+**A type parameter by its position.** A reader of a reference's parameters now names each type parameter by its position, as the compiler's documentation IDs do: a type's as `!0`, a method's as `!!0`. On the declared side these are the names of the type's and the method's lists. On the reference's side they are the names the reference writes in braces on the type it names the member through and on the method (`Holder{X}.Echo{U}(U)` is `Holder<T>.Echo<M>(M)`), and the declared names where it writes none. A method's written arity must match its type parameters. `crefName` keeps each segment's written type arguments, and the reader keeps each type's and each generic method's type parameters' names.
+
+**Seen in the register first.** `names/App/Inheritance.cs` holds both shapes. The register at the merge, before the mend, held six new differences on it:
+- four `compilerNone`: `Child.Shrink(Parent)`, `Child.Shrink`, `Child.Layout` and `Child.Grow(Parent)`, each linked to `Parent`;
+- two `unresolved`: `Holder{X}.Put(X)` and `Holder{X}.Echo{U}(U)`.
+
+37 of its 43 references agreed. After the mend all 43 agree, in the same commit as the count. The reviewer's six cases are green, and the scratch probe agrees on 14 of 14.
+
+**The corpora.** The table below compares the counts before and after this mend.
+
+| | DNN before | DNN after | mojoPortal before | mojoPortal after |
+| --- | ---: | ---: | ---: | ---: |
+| agreeing, of 8,032 / 35 | 6,889 | 6,889 | 18 | 18 |
+| every cause's count | as in the table above | the same | `holder` 15, `unkept` 2 | the same |
+| file pairs | 24,837 / 20,874 / 20,376 | the same | unchanged | unchanged |
+
+DNN and mojoPortal gain nothing and lose nothing. Neither holds a reference to an inherited member through a deriving type, nor one that renames a type parameter, that the reader resolved differently before. mojoPortal's two references, counted `notRead` in the table of the first section, are `unkept` since the second piece's split of that cause (`IFileSystem.cs:168` and `:169`, `OpResult.FolderNotFound` and `OpResult.AlreadyExist`); why the reader keeps no such reference there was not established.
