@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/cli-answers.test.ts`
-- Generated At: 2026-11-22T02:17:48.294Z
+- Generated At: 2026-11-22T03:01:25.340Z
 
 ## Authored
 ### Purpose
@@ -28,5 +28,6 @@ _No public symbols detected_
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`fixture.NOT_FIXTURE`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-not_fixture)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

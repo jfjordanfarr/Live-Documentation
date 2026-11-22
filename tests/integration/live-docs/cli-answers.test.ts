@@ -15,6 +15,7 @@ import { afterAll, beforeAll, describe, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { NOT_FIXTURE } from "../../../scripts/oracle/fixture";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
@@ -32,7 +33,9 @@ function cli(script: string, workspace: string, args: string[]): { status: numbe
 async function estateCopy(config: Record<string, string>): Promise<string> {
   const folder = fs.mkdtempSync(path.join(os.tmpdir(), "cli-answers-"));
   folders.push(folder);
-  fs.cpSync(estateSource, folder, { recursive: true, filter: (from) => path.relative(estateSource, from).split(path.sep)[0] !== "expected" });
+  // A fixture is copied without what a compiler or an indexer left in it (`obj`, `bin`): a checkout that has run the
+  // C# oracles holds such folders, ignored by git, and a copy that took them scanned thirty files more.
+  fs.cpSync(estateSource, folder, { recursive: true, filter: (from) => !NOT_FIXTURE.has(path.basename(from)) });
   if (Object.keys(config).length) {
     fs.writeFileSync(path.join(folder, ".live-docs.config.json"), JSON.stringify(config), "utf8");
   }

@@ -33,7 +33,9 @@ const withheld = (file) => /^(AI-Agent-Workspace\/|\.agents\/|\.claude\/|AGENTS\
 
 if (source === 'estate') {
   const estate = path.join(checkout, 'tests', 'integration', 'programs', 'csharp', 'estate');
-  fs.cpSync(estate, out, { recursive: true, filter: (from) => path.relative(estate, from).split(path.sep)[0] !== 'expected' });
+  // Without what a compiler or an indexer left in the sample (`obj`, `bin`), which git ignores and a copy would take.
+  const notSample = new Set(['bin', 'obj', 'expected']);
+  fs.cpSync(estate, out, { recursive: true, filter: (from) => !notSample.has(path.basename(from)) });
 } else {
   const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: checkout, encoding: 'utf8', maxBuffer: 1 << 28 }).split('\0').filter(Boolean);
   for (const file of tracked.filter((f) => !withheld(f))) {

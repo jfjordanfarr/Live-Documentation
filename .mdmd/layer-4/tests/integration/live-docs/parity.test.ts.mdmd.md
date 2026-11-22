@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/parity.test.ts`
-- Generated At: 2026-11-22T02:04:57.618Z
+- Generated At: 2026-11-22T03:01:25.689Z
 
 ## Authored
 ### Purpose
@@ -34,6 +34,7 @@ _No public symbols detected_
 - [`parity-table.ParityRow`](../../../scripts/doc-tools/parity-table.ts.mdmd.md#symbol-parityrow)
 - [`parity-table.renderParityTable`](../../../scripts/doc-tools/parity-table.ts.mdmd.md#symbol-renderparitytable)
 - [`parity-table.withTable`](../../../scripts/doc-tools/parity-table.ts.mdmd.md#symbol-withtable)
+- [`fixture.NOT_FIXTURE`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-not_fixture)
 - [`scripted-repository.SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-script)
 - [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `it`

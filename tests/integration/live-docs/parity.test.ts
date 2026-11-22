@@ -17,6 +17,7 @@ import { afterAll, beforeAll, describe, it } from "vitest";
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import { DOCUMENT_PATH, LEDGER_PATH, renderParityTable, withTable, type ParityLedger, type ParityRow } from "../../../scripts/doc-tools/parity-table";
+import { NOT_FIXTURE } from "../../../scripts/oracle/fixture";
 import { buildRepository, SCRIPT } from "./scripted-repository";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
@@ -42,7 +43,9 @@ function run(workspace: string, args: string[]): Promise<string> {
 beforeAll(async () => {
   const estate = fs.mkdtempSync(path.join(os.tmpdir(), "parity-estate-"));
   const source = path.join(repoRoot, "tests", "integration", "programs", "csharp", "estate");
-  fs.cpSync(source, estate, { recursive: true, filter: (from) => path.relative(source, from).split(path.sep)[0] !== "expected" });
+  // A fixture is copied without what a compiler or an indexer left in it (`obj`, `bin`): a checkout that has run the
+  // C# oracles holds such folders, ignored by git, and a copy that took them scanned thirty files more.
+  fs.cpSync(source, estate, { recursive: true, filter: (from) => !NOT_FIXTURE.has(path.basename(from)) });
   await generateLiveDocs({ workspaceRoot: estate, config: normalizeLiveDocumentationConfig({}),
     logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
   workspaces.estate = estate;
