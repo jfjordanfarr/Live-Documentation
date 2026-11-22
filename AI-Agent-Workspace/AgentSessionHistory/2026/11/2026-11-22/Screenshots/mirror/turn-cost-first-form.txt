@@ -1,0 +1,244 @@
+browser-lane: mirror holds the lane (waited 1031.8 s, cap 300 s)
+[
+ {
+  "rate": 1,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 7,
+    "ms": 900,
+    "longest": 217,
+    "over50": 4,
+    "mainThreadMs": {
+     "script": 38,
+     "style": 720,
+     "layout": 11,
+     "task": 931
+    },
+    "styleRecalcs": 18,
+    "layouts": 15
+   },
+   {
+    "direction": "back",
+    "frames": 8,
+    "ms": 1117,
+    "longest": 267,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 36,
+     "style": 913,
+     "layout": 13,
+     "task": 1173
+    },
+    "styleRecalcs": 21,
+    "layouts": 16
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 7,
+    "ms": 1000,
+    "longest": 250,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 39,
+     "style": 813,
+     "layout": 13,
+     "task": 1076
+    },
+    "styleRecalcs": 17,
+    "layouts": 14
+   },
+   {
+    "direction": "back",
+    "frames": 7,
+    "ms": 933,
+    "longest": 267,
+    "over50": 4,
+    "mainThreadMs": {
+     "script": 33,
+     "style": 848,
+     "layout": 12,
+     "task": 1047
+    },
+    "styleRecalcs": 19,
+    "layouts": 14
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 30,
+    "ms": 667,
+    "longest": 133,
+    "over50": 1,
+    "mainThreadMs": {
+     "script": 35,
+     "style": 99,
+     "layout": 8,
+     "task": 244
+    },
+    "styleRecalcs": 35,
+    "layouts": 11
+   },
+   {
+    "direction": "back",
+    "frames": 30,
+    "ms": 633,
+    "longest": 117,
+    "over50": 1,
+    "mainThreadMs": {
+     "script": 28,
+     "style": 85,
+     "layout": 8,
+     "task": 202
+    },
+    "styleRecalcs": 37,
+    "layouts": 12
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 4,
+    "ms": 1950,
+    "longest": 1050,
+    "over50": 2,
+    "mainThreadMs": {
+     "script": 190,
+     "style": 2052,
+     "layout": 44,
+     "task": 2787
+    },
+    "styleRecalcs": 15,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 1816,
+    "longest": 800,
+    "over50": 3,
+    "mainThreadMs": {
+     "script": 150,
+     "style": 1868,
+     "layout": 51,
+     "task": 2545
+    },
+    "styleRecalcs": 17,
+    "layouts": 14
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 5,
+    "ms": 1783,
+    "longest": 767,
+    "over50": 3,
+    "mainThreadMs": {
+     "script": 147,
+     "style": 1744,
+     "layout": 38,
+     "task": 2421
+    },
+    "styleRecalcs": 15,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 1583,
+    "longest": 750,
+    "over50": 3,
+    "mainThreadMs": {
+     "script": 133,
+     "style": 1736,
+     "layout": 48,
+     "task": 2304
+    },
+    "styleRecalcs": 16,
+    "layouts": 13
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 31,
+    "ms": 1317,
+    "longest": 650,
+    "over50": 2,
+    "mainThreadMs": {
+     "script": 144,
+     "style": 471,
+     "layout": 36,
+     "task": 1010
+    },
+    "styleRecalcs": 37,
+    "layouts": 12
+   },
+   {
+    "direction": "back",
+    "frames": 29,
+    "ms": 1150,
+    "longest": 517,
+    "over50": 3,
+    "mainThreadMs": {
+     "script": 123,
+     "style": 354,
+     "layout": 34,
+     "task": 819
+    },
+    "styleRecalcs": 36,
+    "layouts": 12
+   }
+  ],
+  "gpu": "processor",
+  "cards": 84,
+  "wires": 218,
+  "errors": []
+ }
+]
+browser-lane: released after 66.8 s, exit 0

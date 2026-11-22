@@ -1,0 +1,244 @@
+browser-lane: mirror holds the lane (waited 160.2 s, cap 300 s)
+[
+ {
+  "rate": 1,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 6,
+    "ms": 1900,
+    "longest": 683,
+    "over50": 4,
+    "mainThreadMs": {
+     "script": 245,
+     "style": 1519,
+     "layout": 31,
+     "task": 2519
+    },
+    "styleRecalcs": 14,
+    "layouts": 14
+   },
+   {
+    "direction": "back",
+    "frames": 8,
+    "ms": 1600,
+    "longest": 550,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 188,
+     "style": 1110,
+     "layout": 44,
+     "task": 1803
+    },
+    "styleRecalcs": 16,
+    "layouts": 14
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 7,
+    "ms": 1767,
+    "longest": 617,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 200,
+     "style": 1488,
+     "layout": 40,
+     "task": 2427
+    },
+    "styleRecalcs": 14,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 8,
+    "ms": 1483,
+    "longest": 567,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 214,
+     "style": 1079,
+     "layout": 41,
+     "task": 1788
+    },
+    "styleRecalcs": 15,
+    "layouts": 13
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 20,
+    "ms": 1200,
+    "longest": 433,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 112,
+     "style": 355,
+     "layout": 24,
+     "task": 899
+    },
+    "styleRecalcs": 23,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 19,
+    "ms": 1117,
+    "longest": 383,
+    "over50": 6,
+    "mainThreadMs": {
+     "script": 108,
+     "style": 309,
+     "layout": 29,
+     "task": 750
+    },
+    "styleRecalcs": 21,
+    "layouts": 12
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 5,
+    "ms": 5500,
+    "longest": 2433,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 787,
+     "style": 5547,
+     "layout": 156,
+     "task": 8286
+    },
+    "styleRecalcs": 14,
+    "layouts": 14
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 4850,
+    "longest": 2317,
+    "over50": 5,
+    "mainThreadMs": {
+     "script": 727,
+     "style": 4130,
+     "layout": 169,
+     "task": 6679
+    },
+    "styleRecalcs": 16,
+    "layouts": 14
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 5,
+    "ms": 4633,
+    "longest": 2000,
+    "over50": 3,
+    "mainThreadMs": {
+     "script": 648,
+     "style": 4906,
+     "layout": 96,
+     "task": 7162
+    },
+    "styleRecalcs": 13,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 5,
+    "ms": 4783,
+    "longest": 2233,
+    "over50": 4,
+    "mainThreadMs": {
+     "script": 759,
+     "style": 4430,
+     "layout": 146,
+     "task": 6714
+    },
+    "styleRecalcs": 15,
+    "layouts": 13
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 4,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 14,
+    "ms": 2600,
+    "longest": 1600,
+    "over50": 7,
+    "mainThreadMs": {
+     "script": 457,
+     "style": 1258,
+     "layout": 114,
+     "task": 2676
+    },
+    "styleRecalcs": 20,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 15,
+    "ms": 2417,
+    "longest": 1417,
+    "over50": 7,
+    "mainThreadMs": {
+     "script": 435,
+     "style": 1125,
+     "layout": 113,
+     "task": 2525
+    },
+    "styleRecalcs": 22,
+    "layouts": 13
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ }
+]
+browser-lane: released after 132.9 s, exit 0

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mirrorAxis, turnAngle } from "./mirror-turn";
+import { mirrorAxis, turnAngle, turnKeyframes, turnStrength } from "./mirror-turn";
 
 describe("the mirror's upright axis", () => {
   it("stands through what holds still, and says the camera of each of the two pictures", () => {
@@ -45,5 +45,43 @@ describe("the turn's angle", () => {
     expect(across(1)).toBeCloseTo(-1);
     // A quarter of the way in time is the eased quarter of the way across, 0.15625 of it, not the quarter of the angle.
     expect(across(0.25)).toBeCloseTo(1 - 2 * 0.15625);
+  });
+});
+
+describe("the motion as the browser is given it", () => {
+  it("is the whole turn, evenly spaced, from one picture to the other with the edge-on instant among its moments", () => {
+    for (const form of ["turn", "slide"] as const) {
+      const to = turnKeyframes(form, true), back = turnKeyframes(form, false);
+      expect(to.map(frame => frame.offset)).toEqual(Array.from({ length: 21 }, (_, index) => index / 20));
+      expect([to[0].angle, to[10].angle, to[20].angle].map(angle => Math.round(angle * 1e6) / 1e6)).toEqual([0, 90, 180]);
+      expect([back[0].angle, back[10].angle, back[20].angle].map(angle => Math.round(angle * 1e6) / 1e6)).toEqual([180, 270, 360]);
+      for (const frames of [to, back]) for (let index = 1; index < frames.length; index++) expect(frames[index].angle).toBeGreaterThan(frames[index - 1].angle);
+    }
+  });
+
+  it("fades everything but the held card to its faintest as the plane stands edge-on, and not at all at rest", () => {
+    const frames = turnKeyframes("turn", true);
+    expect(frames[0].strength).toBeCloseTo(1);
+    expect(frames[20].strength).toBeCloseTo(1);
+    expect(frames[10].strength).toBeCloseTo(0.12);
+    expect(Math.min(...frames.map(frame => frame.strength))).toBeCloseTo(0.12);
+    for (const frame of frames) expect(frame.strength).toBeCloseTo(turnStrength(frame.angle));
+  });
+
+  it("follows the eased angle closely enough that a straight line between two of its moments is the turn", () => {
+    // The browser moves in a straight line between two keyframes: half way between them it is off the eased angle by
+    // less than a third of a degree (0.32 at its worst), and every part of the picture is off by the same.
+    const frames = turnKeyframes("turn", true);
+    for (let index = 1; index < frames.length; index++) {
+      const between = (frames[index - 1].angle + frames[index].angle) / 2;
+      expect(Math.abs(between - turnAngle((frames[index - 1].offset + frames[index].offset) / 2, "turn", true))).toBeLessThan(0.34);
+    }
+  });
+
+  it("always holds the edge-on instant, whatever number of steps is asked", () => {
+    for (const steps of [1, 7, 20, 31]) {
+      const frames = turnKeyframes("turn", true, steps);
+      expect(frames.some(frame => Math.abs(frame.angle - 90) < 1e-9), String(steps)).toBe(true);
+    }
   });
 });

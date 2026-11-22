@@ -530,11 +530,18 @@ export const WAY_DOWNS: readonly WayDown[] = ["alone", "question"];
 /**
  * How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the turn, its plane
  * turned half way round about the card that holds still, the owner's idea; the slide, every card straight across to its
- * mirrored place; or the cut, a fade with no travel, which is also what reduced motion always gets.
+ * mirrored place; or the cut, a fade of everything but the held card with no travel, which is also what reduced motion
+ * always gets.
  */
 export type MirrorTurn = "turn" | "slide" | "cut";
 
-/** Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default of the trial, so that the owner meets their own idea first. */
+/**
+ * Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default: the owner played
+ * with it on 2026-11-22 and chose it by eye ("The mirror icon and interaction is _AWESOME!!!!!_ It is SO FUN and SO
+ * USEFUL!!"). For some hours that day the default was the cut, by a rule that stood in for their eye before they had
+ * looked: on a heavy picture (86 cards) the turn is about a dozen frames, and on a graphics card it stalled for up to
+ * three quarters of a second, which the design system's motion rule records.
+ */
 export const MIRROR_TURNS: readonly MirrorTurn[] = ["turn", "slide", "cut"];
 
 /**

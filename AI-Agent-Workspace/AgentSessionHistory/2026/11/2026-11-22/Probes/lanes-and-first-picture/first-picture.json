@@ -1,0 +1,66 @@
+{
+ "load": [
+  2.2,
+  10.8,
+  21.6
+ ],
+ "builds": [
+  {
+   "build": "start",
+   "ms": [
+    3425,
+    3392,
+    3444,
+    3393,
+    2975,
+    2945,
+    2874
+   ],
+   "median": 3392,
+   "least": 2874,
+   "most": 3444,
+   "over5s": 0,
+   "cards": 50,
+   "rows": 619,
+   "files": "1,294 files, 7,853 references, 1,354 dependencies outside the scan"
+  },
+  {
+   "build": "before-mirror",
+   "ms": [
+    3417,
+    3494,
+    3771,
+    3132,
+    3043,
+    2933,
+    2880
+   ],
+   "median": 3132,
+   "least": 2880,
+   "most": 3771,
+   "over5s": 0,
+   "cards": 52,
+   "rows": 650,
+   "files": "1,330 files, 8,071 references, 1,398 dependencies outside the scan"
+  },
+  {
+   "build": "tip",
+   "ms": [
+    3724,
+    3590,
+    3598,
+    3161,
+    3049,
+    3089,
+    3037
+   ],
+   "median": 3161,
+   "least": 3037,
+   "most": 3724,
+   "over5s": 0,
+   "cards": 52,
+   "rows": 658,
+   "files": "1,340 files, 8,153 references, 1,401 dependencies outside the scan"
+  }
+ ]
+}

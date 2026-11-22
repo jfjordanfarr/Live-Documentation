@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/mirror-turn.test.ts`
-- Generated At: 2026-11-22T05:48:58.416Z
+- Generated At: 2026-11-22T07:19:56.656Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@ Holds the turn's arithmetic to what the motion relies on: the axis read from the
 
 ### Notes
 - Written 2026-11-22, before the functions: all five cases were seen failing on a module that did not yet have them. They were not afterwards seen failing against a broken formula, as the mapping's cases in `reading-direction.test.ts` were.
+- Four cases of the keyframes were added the same day and seen failing against a function broken for them (the edge-on moment moved by three degrees and the fade left out). One of them corrected its author: a straight line between two keyframes is off the eased angle by up to 0.32 of a degree, not the fifth first written.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -23,5 +24,7 @@ _No public symbols detected_
 ### Dependencies
 - [`mirror-turn.mirrorAxis`](./mirror-turn.ts.mdmd.md#symbol-mirroraxis-function)
 - [`mirror-turn.turnAngle`](./mirror-turn.ts.mdmd.md#symbol-turnangle)
+- [`mirror-turn.turnKeyframes`](./mirror-turn.ts.mdmd.md#symbol-turnkeyframes)
+- [`mirror-turn.turnStrength`](./mirror-turn.ts.mdmd.md#symbol-turnstrength)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

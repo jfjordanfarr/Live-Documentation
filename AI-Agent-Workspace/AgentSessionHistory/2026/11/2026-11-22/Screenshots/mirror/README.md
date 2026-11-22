@@ -88,3 +88,126 @@ turn. The cut's own long frame (183 to 350 ms at full speed) is the picture comi
 picture measured and 218 wires drawn again, which every form pays once. Where the rest of the turn's time goes was not
 taken apart: the suspects are each card becoming a layer of its own in the third dimension and being drawn again at
 every frame as its nearness changes its size. Not measured: a light picture, and a browser compositing on a card.
+
+## The fourth round: the cut's signs, and where the turn's time goes
+
+### The cut's signs at the edges, mirrored
+
+Taken by [`cut-signs.mjs`](cut-signs.mjs) on the product as merged that morning (reduced motion, so the change is the
+cut): from the engine's `pathfind.ts`, `live-docs/history` is opened, a directory too large for the view, with Tuning's
+Cut Counted on, and what the signs say is read beside the directory's cards that really lie past each edge.
+
+| State | The cards past each edge | What the signs say | Judgment |
+| --- | --- | --- | --- |
+| as laid out (`cut-signs-as-laid-out.png`) | right 26, top 1, bottom 4 | right 26, top 1, bottom 4 | Right. |
+| mirrored, then opened (`cut-signs-mirrored-then-opened.png`) | left 26, top 1, bottom 4 | left 26, top 1, bottom 4 | Right: the sign stands at the left edge, its arrow and its words ("past the view's left edge") the mirrored reader's. A step taken under a mirrored picture is counted truly. |
+| **opened, then mirrored** (`cut-signs-opened-then-mirrored.png`) | left 21, top 6, bottom 4 | **right 32** | **Wrong.** The signs keep the places measured before the press: one sign at the right edge counting 32, while the directory now goes on to the left. The mirror's rest does not measure the step's cards again. |
+| that state put back | right 26, top 1, bottom 4 | right 26, top 1, bottom 4 | Right again, by the old measurement. |
+
+The builder looked at the two mirrored pictures. Mirrored and then opened: the sign with 26 stands at the left edge
+with its arrow pointing left, 1 above and 4 below, and the directory's own line at its top right corner; it reads
+rightly, the left sign lying over the edge of the first card as the right one does as laid out. Opened and then
+mirrored: the directory now starts at the right edge of the view, its line at its top right corner, and goes on to the
+left and down, while one sign at the right edge says 32 lie further right, where nothing of it lies. The as-laid-out
+picture was not looked at. The fault is the mirror's and is not mended in the commit this record goes with.
+
+### Where the first turn's time went
+
+The same cost run as the third round's, with the browser's own counters of its main thread read before and after each
+motion ([`turn-cost-first-form.txt`](turn-cost-first-form.txt)); the heavy subject, 84 cards and 218 wires, headless,
+composited on the processor, the lane held alone on a machine quieter than the third round's (which is why the frames
+are a little better than that table's).
+
+| Form, full speed, to mirrored | Frames, ms, longest | Main thread: style, layout, script, all | Style recalculations |
+| --- | --- | --- | --- |
+| Turn | 7, 900, 217 | **720**, 11, 38, 931 ms | 18 |
+| Slide | 7, 1,000, 250 | **813**, 13, 39, 1,076 ms | 17 |
+| Cut | 30, 667, 133 | 99, 8, 35, 244 ms | 35 |
+
+**Three quarters of the turn is the page restyling itself**: 720 of 931 ms in 18 recalculations, about 40 ms each on
+average. The first form writes one angle as a custom property on the map's layer each frame; a custom property is
+inherited, so every element under the layer, every row of all 84 cards, is styled again at each frame so that the
+cards can turn back from it. Layout and script are nothing beside it. The cut's 99 ms of style in the same counters is
+what the picture's rest costs every form once (the pins restyled as the reading changes). Slowed four times the same
+share holds (2,052 of 2,787 ms).
+
+## The fifth round: the turn mended, the cut holding the held card, the default decided
+
+### What the turn costs now
+
+The turn's first form wrote an angle on the map's layer each frame. It is now written once: an animation on the
+content root, on the wires' layer and on every card and directory line, which the browser runs between frames by
+itself, with what the turn needs of the boxes (the third dimension kept, the resting reflection set aside) written on
+those boxes. Two steps got there, and the second is the one that counted:
+
+| Form of the turn, heavy subject, to mirrored, on the processor | Frames the page drew, ms, longest | Main thread: style, all (ms) | Machine's load |
+| --- | --- | --- | --- |
+| an angle written each frame (fourth round) | 7, 900, 217 | 720, 931 | quiet |
+| animations, started under an attribute of the layer that the stylesheet's rules hung on | 6 to 8, 1,333 to 1,900, 483 to 683 | 961 to 1,519, 1,547 to 2,519 | 5 to 10 |
+| **animations, with the turn's needs written on the boxes and no rule in the stylesheet** | **13, 817, 250** | **143, 413** | 3 to 7 |
+
+The middle row is [`turn-cost-animated-under-a-rule.txt`](turn-cost-animated-under-a-rule.txt) and a run before it. The animations alone changed nothing: the attribute's coming, the pins' exchange and the attribute's going each
+restyled every row of every card, as the angle had at every frame. With no rule hanging on the layer the page's own
+work in the motion is the cut's (style 143 ms beside the cut's 156; all 413 beside 359).
+
+The last form measured once on the processor and once composited on the graphics card, at full speed, with the
+browser's own screencast counting the frames put on screen as well as the page's count of its own frames
+([`turn-cost-animated-processor.txt`](turn-cost-animated-processor.txt),
+[`turn-cost-animated-card.txt`](turn-cost-animated-card.txt)). 86 cards, 220 wires. One run each, with other builders'
+work on the machine (its one-minute load 7 falling to 3 for the processor's run, 3 falling to 1.7 for the card's), and
+the screencast costs frames itself.
+
+| Form | Where composited | To mirrored: frames on screen, longest gap | Back: frames on screen, longest gap | Main thread, to mirrored: style, all |
+| --- | --- | --- | --- | --- |
+| Turn | processor | 11, 183 ms | 10, 221 ms | 143, 413 ms |
+| Slide | processor | 9, 226 ms | 11, 160 ms | 170, 462 ms |
+| Cut | processor | 20, 171 ms | 18, 137 ms | 156, 359 ms |
+| Turn | card | **3, 784 ms** | 12, 413 ms | 168, 397 ms |
+| Slide | card | 13, 166 ms | 16, 134 ms | 135, 366 ms |
+| Cut | card | 20, 173 ms | 26, 155 ms | 132, 329 ms |
+
+**What a person sees now.** On the processor: a turn of about a dozen frames in some eight tenths of a second, with one
+hitch of about a fifth of a second; it can be followed, and it is not smooth. On the card, which is what the owner has:
+the slide is that or a little better, and the turn with depth stalled once in each run, for three quarters of a second
+the first time (three frames reached the screen) and four tenths the second. So on a heavy picture the turn is still a
+few jumps where it matters, and **the lever's default is the cut**; the turn and the slide stay choices.
+
+Left to try, in the order of likelihood: holding each card's drawing at one size while it turns (`will-change`), since
+only the form with depth stalls on the card and depth is what changes a card's drawn size at every frame; leaving the
+pins' exchange until rest, which is the one restyle left inside the motion. Not worth trying again: anything that
+writes to the layer or hangs a rule on it while the picture moves. Not measured: a light picture, a second run of each
+on a quiet machine, and the processor slowed four times in the last form.
+
+### The strips, retaken on the last form
+
+`turn-strips.mjs` now holds the animations and sets them by hand to each share of their length, with a picture at rest
+last. Retaken and looked at: the turn and the cut on the estate's hub and on the heavy subject.
+
+| Strip | What the eye judges |
+| --- | --- |
+| `strip-turn-estate-hub-focused.png` | Frame for frame what the first form drew: the hub never moves or dims, the neighbours cross it as faint ghosts, it stands alone edge-on with its pins exchanged, and the last frame is the mirrored picture at rest. |
+| `strip-turn-config-heavy-focused.png` | The same on the heavy subject: its card holds through all eight frames. |
+| `strip-cut-estate-hub-focused.png` | The hub stays at full strength in every frame. The others fade in two steps and are gone in the third, when the hub stands alone, its pins still as laid out; in the next its pins have changed sides and the others return faintly at their mirrored places. Looked at in its first take, where the directories' outlines stood through the fade and then jumped; they fade with the rest since, and the file kept is the retake after that mend, which was not looked at again. |
+| `strip-cut-config-heavy-focused.png` | Taken after that mend: the subject alone in the third frame, outlines gone with the neighbours; its pins exchanged in the fourth; the mirrored picture by the sixth. The held card never leaves. |
+
+### The cut's signs, mended
+
+`cut-signs.mjs` again, on the mended product: opened and then mirrored, the signs say left 21, top 6, bottom 4, which is
+where the cards lie, and put back they say right 25, top 2, bottom 4 again. The builder looked at
+`cut-signs-as-laid-out.png` this time (the directory at the right of the view with its line at its top left, a sign
+with 25 at the right edge, 2 above, 4 below: right) and at the retaken `cut-signs-opened-then-mirrored.png` (the sign
+with 21 at the left edge, 6 above, 4 below, where the fourth round's picture had one sign at the right saying 32).
+
+## The sixth round: the default is the turn again
+
+The fifth round made the cut the default by the root's rule (the turn not the default while it draws only a few frames
+on a heavy picture). While that round ran, the owner played with the mirror on the morning's build, where the turn was
+the default in its first and slowest form, and wrote: "The mirror icon and interaction is _AWESOME!!!!!_ It is SO FUN
+and SO USEFUL!!" ([Turn 12 of the day's record](../../2026-11-22.1.record.md#turn-12)). The turn was their idea and
+their eye has judged it on their own machine, so the rule was withdrawn and the lever's default is the turn; Slide and
+Cut are one choice away and reduced motion still gets the cut. Nothing else of the fifth round changed. What the turn
+costs on a heavy picture stands as measured above, and the two next steps named there (`will-change` on the turning
+cards, the pins' exchange left until rest) are not built.
+
+The lever's case, in its form for this default, was seen failing on the page whose default was still the cut (the
+control said "cut" where the turn was expected) and passes on the page as it now is.
