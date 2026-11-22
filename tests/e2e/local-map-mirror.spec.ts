@@ -199,18 +199,30 @@ async function atRest(page: Page, mirrored: boolean): Promise<void> {
   await localMapStill(page);
 }
 
-test("by default the press is the cut, and the lever chooses the turn of the picture's plane or the slide", async ({ page }) => {
+test("by default the press turns the picture's plane, and the lever chooses the slide or the cut", async ({ page }) => {
   await page.goto(ADDRESS);
   await localMapStill(page);
-  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("cut");
+  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
   const before = await middles(page);
+  /** As the plane stands edge-on everything but the held card is faded; the held card never is. */
+  const othersFadeAndTheHeldCardDoesNot = async (on: Page, form: string): Promise<void> => {
+    const strengths = await watched(on);
+    expect(strengths.heldFaintest, `${form} (dimmed by ${strengths.heldDimmedBy})`).toBeGreaterThan(0.99);
+    // Read at whatever frames the page drew, which under a loaded machine need not include the faintest: any frame of
+    // the motion's middle nine tenths shows the others below nine tenths of their strength.
+    expect(strengths.otherFaintest, form).toBeLessThan(0.9);
+  };
   await watchMotion(page);
   await button(page).click();
   await atRest(page, true);
-  expect(await motions(page), "the default names no turning").toEqual([]);
+  expect(await motions(page), "the default names the turn, and the plane turns").toEqual(["turn:turned"]);
+  await othersFadeAndTheHeldCardDoesNot(page, "turn");
+  // The turn ends in the mirror image: the subject where it stood, every other card as far from it on the other side.
   const after = await middles(page);
+  expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
+  for (const id of Object.keys(before)) expect(Math.abs((after[id].x - after[SUBJECT].x) + (before[id].x - before[SUBJECT].x)), id).toBeLessThan(1);
 
-  for (const [form, seen] of [["turn", ["turn:turned"]], ["slide", ["slide:turned"]]] as const) {
+  for (const [form, seen] of [["slide", ["slide:turned"]], ["cut", []]] as const) {
     const other = await page.context().browser()!.newContext({ baseURL: new URL(page.url()).origin, viewport: { width: 1280, height: 800 } });
     const chosen = await other.newPage();
     await seedTurn(chosen, form);
@@ -221,25 +233,16 @@ test("by default the press is the cut, and the lever chooses the turn of the pic
     await button(chosen).click();
     await atRest(chosen, true);
     expect(await motions(chosen), form).toEqual(seen);
-    // As the plane stands edge-on everything but the held card is faded; the held card never is.
-    const strengths = await watched(chosen);
-    expect(strengths.heldFaintest, form).toBeGreaterThan(0.99);
-    // Read at whatever frames the page drew, which under a loaded machine need not include the faintest: any frame of
-    // the motion's middle nine tenths shows the others below nine tenths of their strength.
-    expect(strengths.otherFaintest, form).toBeLessThan(0.9);
-    // The motion ends where the cut does: the subject where it stood, every other card as far from it on the other side.
-    const turned = await middles(chosen);
-    for (const id of Object.keys(before)) {
-      expect(Math.abs(turned[id].x - after[id].x), `${form}: ${id}`).toBeLessThan(1);
-      expect(Math.abs((turned[id].x - turned[SUBJECT].x) + (before[id].x - before[SUBJECT].x)), `${form}: ${id}`).toBeLessThan(1);
-    }
+    if (form === "slide") await othersFadeAndTheHeldCardDoesNot(chosen, form);
+    // Each form ends where the turn does, to the pixel.
+    const ended = await middles(chosen);
+    for (const id of Object.keys(after)) expect(Math.abs(ended[id].x - after[id].x), `${form}: ${id}`).toBeLessThan(1);
     await other.close();
   }
 });
 
 test("reduced motion takes the cut whatever the lever says", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await seedTurn(page, "turn");
   await page.goto(ADDRESS);
   await localMapStill(page);
   await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
@@ -250,7 +253,6 @@ test("reduced motion takes the cut whatever the lever says", async ({ page }) =>
 });
 
 test("a second press before the turn ends leaves the picture in one of its two states, never between", async ({ page }) => {
-  await seedTurn(page, "turn");
   await page.goto(ADDRESS);
   await localMapStill(page);
   const before = await middles(page);

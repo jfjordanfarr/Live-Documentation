@@ -177,7 +177,7 @@ export interface LocalMapTuning {
    * with the board's pin kept for the way back (worldMap/way-down.ts).
    */
   wayDown: WayDown;
-  /** How the 2D picture moves when the toolbar's mirror button is pressed (a trial of 2026-11-22, default the cut; mirror-turn.ts). */
+  /** How the 2D picture moves when the toolbar's mirror button is pressed (a trial of 2026-11-22, default the turn; mirror-turn.ts). */
   mirrorTurn: MirrorTurn;
   /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
@@ -528,20 +528,21 @@ export type WayDown = "alone" | "question";
 export const WAY_DOWNS: readonly WayDown[] = ["alone", "question"];
 
 /**
- * How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the cut, a fade of
- * everything but the held card with no travel, which is also what reduced motion always gets; the turn, its plane
- * turned half way round about the card that holds still, the owner's idea; or the slide, every card straight across to
- * its mirrored place.
+ * How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the turn, its plane
+ * turned half way round about the card that holds still, the owner's idea; the slide, every card straight across to its
+ * mirrored place; or the cut, a fade of everything but the held card with no travel, which is also what reduced motion
+ * always gets.
  */
-export type MirrorTurn = "cut" | "turn" | "slide";
+export type MirrorTurn = "turn" | "slide" | "cut";
 
 /**
- * Every Mirror Turn choice, in the order the control offers them; the first, the cut, is the default. The turn was the
- * trial's first default; measured on a heavy picture (86 cards) it drew a dozen frames with a stall of up to three
- * quarters of a second where the page is composited on a graphics card, so it stays a choice and is not the default
- * (the root's rule for the day's landing, 2026-11-22).
+ * Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default: the owner played
+ * with it on 2026-11-22 and chose it by eye ("The mirror icon and interaction is _AWESOME!!!!!_ It is SO FUN and SO
+ * USEFUL!!"). For some hours that day the default was the cut, by a rule that stood in for their eye before they had
+ * looked: on a heavy picture (86 cards) the turn is about a dozen frames, and on a graphics card it stalled for up to
+ * three quarters of a second, which the design system's motion rule records.
  */
-export const MIRROR_TURNS: readonly MirrorTurn[] = ["cut", "turn", "slide"];
+export const MIRROR_TURNS: readonly MirrorTurn[] = ["turn", "slide", "cut"];
 
 /**
  * Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what

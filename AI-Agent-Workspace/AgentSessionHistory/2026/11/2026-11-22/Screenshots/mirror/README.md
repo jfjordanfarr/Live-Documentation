@@ -197,3 +197,17 @@ where the cards lie, and put back they say right 25, top 2, bottom 4 again. The 
 `cut-signs-as-laid-out.png` this time (the directory at the right of the view with its line at its top left, a sign
 with 25 at the right edge, 2 above, 4 below: right) and at the retaken `cut-signs-opened-then-mirrored.png` (the sign
 with 21 at the left edge, 6 above, 4 below, where the fourth round's picture had one sign at the right saying 32).
+
+## The sixth round: the default is the turn again
+
+The fifth round made the cut the default by the root's rule (the turn not the default while it draws only a few frames
+on a heavy picture). While that round ran, the owner played with the mirror on the morning's build, where the turn was
+the default in its first and slowest form, and wrote: "The mirror icon and interaction is _AWESOME!!!!!_ It is SO FUN
+and SO USEFUL!!" ([Turn 12 of the day's record](../../2026-11-22.1.record.md#turn-12)). The turn was their idea and
+their eye has judged it on their own machine, so the rule was withdrawn and the lever's default is the turn; Slide and
+Cut are one choice away and reduced motion still gets the cut. Nothing else of the fifth round changed. What the turn
+costs on a heavy picture stands as measured above, and the two next steps named there (`will-change` on the turning
+cards, the pins' exchange left until rest) are not built.
+
+The lever's case, in its form for this default, was seen failing on the page whose default was still the cut (the
+control said "cut" where the turn was expected) and passes on the page as it now is.

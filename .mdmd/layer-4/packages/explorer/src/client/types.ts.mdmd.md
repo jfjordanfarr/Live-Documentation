@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/types.ts`
-- Generated At: 2026-11-22T14:16:43.667Z
+- Generated At: 2026-11-22T15:12:59.628Z
 
 ## Authored
 ### Purpose
@@ -516,24 +516,25 @@ Every Way Down choice, in the order the control offers them; the first, the fold
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L536)
 
 ##### `MirrorTurn` — Summary
-How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the cut, a fade of
-everything but the held card with no travel, which is also what reduced motion always gets; the turn, its plane
-turned half way round about the card that holds still, the owner's idea; or the slide, every card straight across to
-its mirrored place.
+How the 2D picture moves between as laid out and mirrored (a trial, 2026-11-22, mirror-turn.ts): the turn, its plane
+turned half way round about the card that holds still, the owner's idea; the slide, every card straight across to its
+mirrored place; or the cut, a fade of everything but the held card with no travel, which is also what reduced motion
+always gets.
 
 #### `MIRROR_TURNS` {#symbol-mirror_turns}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L544)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L545)
 
 ##### `MIRROR_TURNS` — Summary
-Every Mirror Turn choice, in the order the control offers them; the first, the cut, is the default. The turn was the
-trial's first default; measured on a heavy picture (86 cards) it drew a dozen frames with a stall of up to three
-quarters of a second where the page is composited on a graphics card, so it stays a choice and is not the default
-(the root's rule for the day's landing, 2026-11-22).
+Every Mirror Turn choice, in the order the control offers them; the first, the turn, is the default: the owner played
+with it on 2026-11-22 and chose it by eye ("The mirror icon and interaction is _AWESOME!!!!!_ It is SO FUN and SO
+USEFUL!!"). For some hours that day the default was the cut, by a rule that stood in for their eye before they had
+looked: on a heavy picture (86 cards) the turn is about a dozen frames, and on a graphics card it stalled for up to
+three quarters of a second, which the design system's motion rule records.
 
 #### `MapReads` {#symbol-mapreads}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L550)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L551)
 
 ##### `MapReads` — Summary
 Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what
@@ -541,14 +542,14 @@ uses first, the same picture mirrored. The colours never change with it.
 
 #### `MAP_READS` {#symbol-map_reads}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L553)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L554)
 
 ##### `MAP_READS` — Summary
 Both ways a 2D picture reads; the first is the default.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L559)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L560)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -556,14 +557,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L562)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L563)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L571)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L572)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -574,42 +575,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L574)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L575)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
 Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L577)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L578)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L700)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L701)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L705)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L706)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L712)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L713)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L718)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L719)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -617,7 +618,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L747)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L748)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
