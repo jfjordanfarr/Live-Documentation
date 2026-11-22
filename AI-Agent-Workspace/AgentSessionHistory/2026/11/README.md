@@ -65,7 +65,8 @@ Source inventory, maintained by the root agent. The October 31 session that ende
   - [the author's word](2026-11-22/Probes/authors-word/README.md): the C# compiler's resolution of every documentation reference as an oracle, counted on DNN and mojoPortal, with three ways the facts could carry the relation and how each other language's own tool would be asked;
   - [a blind reading of the owner's values](2026-11-22/Probes/design-philosophy-reading/README.md): every message the owner typed in the archive read by headless readers who had not seen the five values, 1,715 statements quoted word for word and linked, three groupings by a judge, and the comparison with the design philosophy;
   - [the stored form as one module](2026-11-22/Probes/stored-form-module/README.md): what was built, its measurements on three corpora against today's index, its fuzzer seen failing first, and SCIP read against our facts;
-  - [parity](2026-11-22/Probes/parity/README.md): what was run for each row of the table of the page against the command line, the pipeline's measurements, and 24 scored runs of agents given the files alone or the command line, each with its commands and its answer.
+  - [parity](2026-11-22/Probes/parity/README.md): what was run for each row of the table of the page against the command line, the pipeline's measurements, and 24 scored runs of agents given the files alone or the command line, each with its commands and its answer;
+  - [the hand reading of 222 PowerShell wires as a test](2026-11-22/Probes/powershell-extract/README.md): the extract of four public repositories and what it keeps, the reader's count against the judges, four readings of every row set side by side, and PowerShell's own answer on small files of the builder's.
 
 ## November 21, session 1 — Claude Code, Fable 5.2
 
