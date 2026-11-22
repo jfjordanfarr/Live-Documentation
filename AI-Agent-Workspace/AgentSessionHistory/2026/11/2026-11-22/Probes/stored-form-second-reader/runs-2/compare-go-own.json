@@ -1,0 +1,41 @@
+{
+ "reader": "go-reader-2",
+ "tally": {
+  "go-own name both refuse": 52,
+  "go-own read both refuse": 107,
+  "go-own read same": 1,
+  "go-own graph same": 1,
+  "go-own read both refuse the text past the export bound": 1,
+  "go-own graph both answer, differently": 1
+ },
+ "slowest": [
+  "target-backslash.fpk 183 ms, 11 MB",
+  "target-dotdot.fpk 176 ms, 11 MB",
+  "target-dotdot.txt 156 ms, 11 MB",
+  "tab-as-u-escape.txt 150 ms, 11 MB",
+  "target-slash.fpk 148 ms, 11 MB"
+ ],
+ "heaviest": [
+  "absolute-link.txt 11 MB of 1025",
+  "absolute-path.txt 11 MB of 1025",
+  "anchor-without-target.fpk 11 MB of 1024",
+  "anchor-without-target.txt 11 MB of 1025",
+  "archetype-number.txt 11 MB of 1025"
+ ],
+ "disagreements": [
+  {
+   "dir": "go-own",
+   "file": "valid-past-text-bound.fpk",
+   "kind": "read",
+   "outcome": "both refuse the text past the export bound",
+   "reader": "refused: the text is not offered, though the file is valid: its text would write 72098408 bytes of names, past the bound 64 x 442 + 1048576 = 1076864 (section 3.5)"
+  },
+  {
+   "dir": "go-own",
+   "file": "valid-past-text-bound.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 108 bytes"
+  }
+ ]
+}

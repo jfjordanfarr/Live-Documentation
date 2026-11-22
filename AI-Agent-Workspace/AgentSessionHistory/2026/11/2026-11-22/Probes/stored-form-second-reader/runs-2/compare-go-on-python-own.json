@@ -1,0 +1,50 @@
+{
+ "reader": "go-reader-2",
+ "tally": {
+  "py-own read both refuse": 121,
+  "py-own read same": 7,
+  "py-own graph both answer, differently": 4,
+  "py-own name same": 7,
+  "py-own graph same": 3,
+  "py-own name both refuse": 65,
+  "py-own name second reader refuses, module answers": 2
+ },
+ "disagreements": [
+  {
+   "file": "random-0.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 98880 bytes"
+  },
+  {
+   "file": "random-1.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 1697 bytes"
+  },
+  {
+   "file": "random-100.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 97760 bytes"
+  },
+  {
+   "file": "random-50.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 91825 bytes"
+  },
+  {
+   "file": "text-space.txt",
+   "kind": "name",
+   "outcome": "second reader refuses, module answers",
+   "reader": "refused: line 5: whitespace outside a string (section 8.1)"
+  },
+  {
+   "file": "text-trailing-space.txt",
+   "kind": "name",
+   "outcome": "second reader refuses, module answers",
+   "reader": "refused: line 5: bytes follow the line's value (section 8)"
+  }
+ ]
+}

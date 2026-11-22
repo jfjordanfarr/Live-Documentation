@@ -1,0 +1,188 @@
+sig-empty.fpk	3.1	an empty file
+sig-short.fpk	3.1	seven bytes of the signature
+sig-wrong.fpk	3.1	another signature (PNG)
+sig-crlf.fpk	3.1	the signature with its CR LF turned to LF
+unfinished-signature-only.fpk	3.3	the signature alone, no end frame
+unfinished-header-cut.fpk	3.3	a frame header cut short
+unfinished-no-end.fpk	3.3	every frame but the end
+unfinished-stored-past-end.fpk	3.5	the end frame stored bytes run past the file end
+trailing-byte.fpk	3.3	a byte after the end frame
+kind-0.fpk	3.2	a frame of kind 0
+kind-7.fpk	3.2	a frame of kind 7
+raw-over-max.fpk	3.5	a rawLength above 64 MiB
+raw-over-deflate-max.fpk	3.5	a rawLength above 1032 x storedLength + 1024
+total-over-bound.fpk	3.5	a deflate bomb: sections inflating past 64 x file length + 1 MiB
+order-no-head.fpk	3.3	no head frame
+order-head-count.fpk	3.3	a head whose count is not 0
+order-two-heads.fpk	3.3	two heads
+order-no-paths.fpk	3.3	no paths frame
+order-wires-before-paths.fpk	3.3	wires before paths
+order-end-only.fpk	3.3	an end frame alone
+order-strings-without-records.fpk	3.3	a strings frame not followed by records
+order-strings-empty.fpk	3.3	a strings frame holding no string
+order-strings-after-records.fpk	3.3	a strings frame after the records
+order-records-count-0.fpk	3.3	a records frame of 0 files
+order-records-count-257.fpk	3.3	a records frame of 257 files
+order-short-records-not-last.fpk	3.3	a records frame of fewer than 256 files that is not the last
+order-paths-count.fpk	3.3	a paths count other than the number of files
+order-wires-count.fpk	3.3	a wires count other than the number of files
+order-end-count.fpk	3.3	an end count other than the frames before it
+end-raw-33.fpk	3.3	an end whose rawLength is not 32
+end-wrong-name.fpk	3.4	an end that does not hold the name
+end-wrong-header-hash.fpk	3.4	an end whose header hash is not SHA-256 of the name
+end-content-not-name.fpk	3.4	an end whose header hash is right but whose content is not the name
+deflate-garbage.fpk	3.2	stored bytes that are not a deflate stream
+deflate-cut.fpk	3.2	a deflate stream cut short
+deflate-trailing.fpk	3.2	a whole byte after the deflate stream end
+deflate-longer.fpk	3.5	a stream that inflates to more than rawLength
+deflate-shorter.fpk	3.2	a stream that inflates to less than rawLength
+deflate-zlib-wrapped.fpk	3.2	a zlib-wrapped stream, not raw deflate
+hash-wrong.fpk	3.2	a section whose SHA-256 is not its hash
+head-version-2.fpk	4.1	version 2
+head-version-0.fpk	4.1	version 0
+head-empty.fpk	4.1	an empty head
+head-trailing.fpk	3.2	a byte after the head last item
+head-cut.fpk	4.1	a head cut before its left-out count
+head-root-absolute.fpk	2.4	a root that begins with /
+head-root-backslash.fpk	2.4	a root that begins with a backslash
+head-root-drive.fpk	2.4	a root that begins with a drive
+head-root-file.fpk	2.4	a root that begins with file: in mixed case
+head-root-dotdot.fpk	2.4	a root with a .. segment
+head-base-dot.fpk	2.4	a baseLayer with a . segment
+head-base-trailing-slash.fpk	2.4	a baseLayer with an empty segment
+head-root-nul.fpk	2.4	a root holding U+0000
+head-ext-slash.fpk	4.1	an extension holding /
+head-ext-backslash.fpk	4.1	an extension holding a backslash
+head-ext-nul.fpk	4.1	an extension holding U+0000
+utf8-overlong.fpk	2.2	an overlong form (C0 AF)
+utf8-overlong-3.fpk	2.2	a three-byte overlong form (E0 80 AF)
+utf8-surrogate.fpk	2.2	an encoded surrogate (ED A0 80)
+utf8-above-10ffff.fpk	2.2	a code point above U+10FFFF
+utf8-cut.fpk	2.2	a sequence cut short
+utf8-lone-continuation.fpk	2.2	a byte that cannot begin a sequence
+utf8-ff.fpk	2.2	a byte FF
+varint-not-shortest.fpk	2.1	a varint not in its shortest form (80 00)
+varint-six-bytes.fpk	2.1	a varint of six bytes
+varint-above-u32.fpk	2.1	a varint above 2^32 - 1
+varint-cut.fpk	2.1	a varint cut short at the section end
+count-too-large.fpk	2.1	a left-out count larger than the bytes left
+text-length-past-end.fpk	2.2	a text whose length runs past its section
+strings-duplicate.fpk	4.2	a string that appears twice
+strings-unmet.fpk	4.2	a string nobody names
+strings-trailing.fpk	3.2	a byte after the strings section last text
+strings-count-short.fpk	4.2	fewer texts than the strings count
+strings-bad-utf8.fpk	2.2	a string table entry holding a surrogate
+sid-skips.fpk	4.2	a sid larger than the next not yet met
+sid-no-string.fpk	4.2	a sid naming a string not set down
+sid-out-of-order.fpk	4.2	a new sid beyond the next
+records-trailing.fpk	4.3	a byte after the last record
+records-cut.fpk	4.3	a record cut short
+mark-file-bit4.fpk	2.1	a file mark with bit 4 set
+mark-file-not-shortest.fpk	2.1	a mark not in its shortest form
+entry-reason-6.fpk	4.3	an entry reason of 6
+entry-mark-bit4.fpk	2.1	an entry mark with bit 4 set
+entry-link-without-name.fpk	4.3	an entry symbol link without its symbol name
+entry-link-absolute.fpk	2.4	an entry symbol link that begins with /
+entry-declarer-link-drive.fpk	2.4	an entry declarer link that begins with a drive (c:foo)
+symbol-mark-bit2.fpk	2.1	a symbol mark with bit 2 set
+symbol-source-file.fpk	2.4	a source path that begins with FILE:
+reference-role-5.fpk	4.3	a reference role of 5
+type-mark-bit5.fpk	2.1	a type mark with bit 5 set
+type-target-without-link.fpk	4.3	a type with a target and no link
+type-anchor-without-target.fpk	4.3	a type with an anchor and no target
+type-target-not-path.fpk	2.4	a type whose target is not a path (../x)
+type-link-backslash.fpk	2.4	a type whose link begins with a backslash
+docref-mark-bit4.fpk	2.1	a documentation reference mark with bit 4
+docref-anchor-without-target.fpk	4.3	a documentation reference with an anchor and no target
+dep-mark-bit4.fpk	2.1	a dependency mark with bit 4 set
+dep-target-empty-segment.fpk	2.4	a dependency target with an empty segment (a//b)
+dep-target-empty.fpk	2.4	a dependency target that is empty
+cited-link-absolute.fpk	2.4	a cited-by link that begins with /
+reexport-mark-bit2.fpk	2.1	a re-export mark with bit 2 set
+reexport-from-link-file.fpk	2.4	a re-export origin link that begins with file:
+record-path-absolute.fpk	2.4	a file path that begins with /
+record-path-not-paths.fpk	4.4	a record path that is not the paths section path
+record-path-dotdot.fpk	2.4	a file path with a .. segment
+paths-shared-too-long.fpk	4.4	a shared length above the path before it
+paths-first-shared.fpk	4.4	a first path that shares bytes with nothing
+paths-not-longest.fpk	4.4	a path not front-coded by its longest shared beginning
+paths-order.fpk	4.4	paths out of path order
+paths-repeat.fpk	4.4	a path repeated
+paths-trailing.fpk	3.2	a byte after the last path
+paths-total-over-strings.fpk	4.4	paths whose bytes exceed the strings frames raw lengths
+paths-invalid-utf8.fpk	2.2	a path that is not UTF-8
+wires-to-self.fpk	4.5	a wire from a file to itself
+wires-out-of-range.fpk	4.5	a wire to a file number past the last
+wires-trailing.fpk	3.2	a byte after the last file wires
+wires-count-too-large.fpk	2.1	a wires count larger than the bytes left
+wires-not-records.fpk	4.5	a wire the records do not give
+wires-gap-overflow.fpk	4.5	a wire whose gap runs past the last file
+wires-missing.fpk	4.5	a dependency landing on another file with its wire left out
+wires-from-docref.fpk	4.5	a wire made from a documentation reference
+text-empty.txt	8	an empty text
+text-bom.txt	8	a byte-order mark
+text-crlf.txt	8	CR LF line ends
+text-no-final-lf.txt	8	a last line without its LF
+text-blank-line.txt	8	an empty line
+text-bad-utf8.txt	8	bytes that are not UTF-8
+text-space.txt	8.1	a space between tokens
+text-trailing-space.txt	8.1	a space after the value
+text-4.0.txt	8.1	2.0 for 2
+text-exponent.txt	8.1	2e0 for 2
+text-leading-zero.txt	8.1	a leading zero
+text-negative.txt	8.1	a negative number
+text-number-too-big.txt	8.1	a number above 2^32 - 1
+text-nan.txt	8.1	NaN
+text-u-escape-letter.txt	8.1	a letter as a \u escape
+text-escaped-slash.txt	8.1	/ written \/
+text-uppercase-hex.txt	8.1	uppercase hex in a \u escape
+text-tab-as-u.txt	8.1	a tab written \u0009, not \t
+text-raw-control.txt	8.1	a control character written raw
+text-surrogate-pair-escape.txt	8.1	a code point above U+FFFF written as a pair of \u escapes
+text-lone-surrogate.txt	2.2	a lone surrogate
+text-false-mark.txt	8	false for an absent mark
+text-true-string.txt	8	a mark written as a string
+text-member-order.txt	8	members in another order
+text-member-twice.txt	8	a member written twice
+text-member-unknown.txt	8	a member the line does not have
+text-member-missing.txt	8	an always-present member left out
+text-null-for-absent.txt	8	null for an absent member
+text-source-line-string.txt	8	a number written as a string
+text-no-end.txt	8	no end line
+text-after-end.txt	8	a line after the end
+text-end-count.txt	8	an end count other than the files
+text-version-2.txt	4.1	version 2
+text-format-name.txt	8	another format name
+text-no-location.txt	8	no location line
+text-object-line.txt	8	a line that is an object
+text-deep-nesting.txt	8	an array nested 100000 deep
+text-left-out-after-file.txt	8	a left-out line after a file
+text-unknown-kind.txt	8	a line of an unknown kind
+text-no-authored.txt	8	a file without its authored line
+text-two-authored.txt	8	two authored lines
+text-two-file-lines.txt	8	a file line twice for one path
+text-cited-twice.txt	8	two cited-by lines
+text-dep-before-symbol.txt	8	a dependency line before a symbol line
+text-reexports-before-cited.txt	8	re-exports before cited-by
+text-line-of-other-file.txt	8	a line whose path is not its file
+text-path-order.txt	2.3	files out of path order
+text-path-repeat.txt	4.3	a path repeated
+text-path-utf16-order.txt	2.3	files in UTF-16 code unit order
+text-path-absolute.txt	2.4	an absolute file path
+text-path-drive.txt	2.4	a file path that begins with a drive
+text-path-trailing-slash.txt	2.4	a file path with an empty segment
+text-path-nul.txt	2.4	a file path holding U+0000
+text-path-null.txt	8	a file line with a null path
+text-root-absolute.txt	2.4	an absolute root
+text-ext-slash.txt	4.1	an extension holding /
+text-reason-word.txt	4.3	an entry reason not a word of 4.3
+text-role-word.txt	4.3	a role in the wrong case
+text-target-without-link.txt	8	a target without a link
+text-anchor-without-target.txt	8	an anchor without a target
+text-link-absolute.txt	2.4	an absolute link
+text-link-file.txt	2.4	a link that begins with file:
+text-target-dotdot.txt	2.4	a target with a .. segment
+text-symbol-no-name.txt	8	an entry symbol without its name
+text-declarer-no-link.txt	8	a declarer without its link
+text-file-line-short.txt	8	a file line missing its generatedAt
+text-params-as-types.txt	8	a Parameters reference written with types

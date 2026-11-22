@@ -199,3 +199,207 @@ Its only disagreements are the two files of the first finding. It prints their t
 - [`python-reader/`](python-reader/): the first implementer's program, questions and test scripts, unchanged.
 - [`go-reader/`](go-reader/): the second's, unchanged, without its built binary. The comparison runs it as `--reader "/bin/sh go-reader/run.sh"`, which builds it with the installed Go on first use.
 - [`runs/`](runs/): each headless run's prompt, answer, usage and cost.
+
+## Second reading, of the amended specification
+
+_Historical, written 2026-11-22 by a builder at the root's brief, on `day/2026-11-22` from `8cfd27b85`. Since the first reading, the specification was amended by every finding above, and the format grew: a symbol now carries its documentation references (section 4.3), the graph its `documentation` and `documentedBy` (section 5). The first readers cannot read today's files, so the claim was untested again. This repeats the reading on [the specification](../../../../../../../.mdmd/layer-3/stored-form.mdmd.md) as it stands at `3508a1895` (SHA-256 `2f773313…`), against [the module](../../../../../../../packages/stored-form/src/storedForm.ts) of the same commit. Everything down to "Findings of the second reading" is measured. The findings are the builder's reading of the text against each disagreement._
+
+### What changed in the method
+
+- **The same harness, tightened** ([`blind-implementer.mjs`](blind-implementer.mjs)):
+  - Two runs now go at once. Each run's sandbox also denies reading the other's folder and its temporary folder (`--hide`), and the guard on `/var/tmp` lets another folder stand there only when it is so hidden. Each run's records go to the builder's scratch, never beside its folder (`--runs`).
+  - The instruction (`implementPrompt2`) is the first one's with a third mode, `graph <file>`, that prints the graph of section 5 as `{"files":[...]}`, one object a file: `path`, `document`, `edges`, `outbound`, `inbound`, `documentation`, `documentedBy`. Member order and whitespace are free. It also asks for `refusals.md`, every kind of thing the program refuses with its section.
+  - The second reader's language is named, Go. Left free, as in the first reading, the first second run chose JavaScript, the module's own platform. It was stopped after 11 minutes, before it had written its questions; its folder was moved out, and a fresh folder at the same hidden path was checked again and given Go.
+- **What each folder held** ([`shown-2/`](shown-2/)): the specification with its two top lines removed, as before, and three small files the module wrote today, each in both forms: the empty scan (310 bytes), `everyFact` (1,068 bytes, which now holds documentation references with and without element, link, target and anchor), and `seededScan(5, 30)` (2,199 bytes). The estate sample is no longer shown, since it is now a test corpus.
+  - The text still says, in two **Provenance** sentences, that blind readers were written before (sections 3.5 and 3.2 name "Both blind readers" and Go's `compress/flate`). Nothing else in it names their record or code.
+- **The blindness checks**, each kept whole in [`runs-2/`](runs-2/), asked the first record's questions in each folder, launched exactly as the implementer would be:
+  - `/workspaces`, `/tmp`, `/home`, `/go`, `/opt`, `/root` and `/vscode` are empty stand-ins; the home folder "No such file or directory".
+  - `/var/tmp` lists the run's own folder and temporary folder, and the other run's two as 40-byte empty stand-ins: "`fpk-py` and `fpk-py.tmp` are read-denied, which is why they show as empty". Each sees the other's folder name, so each knew a reader in another language existed. Nothing of its content.
+  - Both network requests failed (`403 user denied`); `touch /var/tmp/outside-probe` failed (`Read-only file system`); one tool, Bash.
+  - What still reaches a run is the first record's list: the environment lines, the account's email address, the Bash and sandbox descriptions, and the `/dev/null` placeholders over dotfiles.
+- **The samples it had not seen**, made by [`samples.ts`](samples.ts) with today's module (`made`, `corpus`, `refusals`, and the new `second`), every one's SHA-256 and the module's answer in [`module-answers-2.json`](module-answers-2.json):
+
+| Kind | Files | The module |
+| --- | ---: | --- |
+| This repository's graph (the main checkout's `.mdmd/index.json` of 04:35 UTC, SHA-256 `e4da0477…`), estate sample's (made afresh, `a84dd91d…`) and DNN's (the readers' builder's, `6f7bd728…`, as in the first reading), each stored and as text | 3 corpora: 1,334, 41 and 10,777 files; 1.12 MB, 7.8 KB and 2.09 MB stored | reads all; DNN's `index.json` holds 4,924 `Links` sections, whose references the corpus carries |
+| The package's made scans not shown, and the first reading's own (order, characters, numbers, every enumeration, now with an empty extension) | 11, each both forms | reads |
+| New: `made-doc-references`, documentation references of every shape: a name alone; with an element; a link with no target; to its own file, with and without anchor; to another scanned file, with and without element and anchor; to a file outside the scan; from a symbol with no slug. `made-no-wires`: two files, one with a dependency without a link | 2, each both forms | reads |
+| The fuzzer's mutants, seeds 0 to 399, on `everyFact`, `seededScan(3, 300)` and the estate | 400 | refuses 395; reads 5 frame swaps of a frame with itself |
+| The unit cases' not-canonical files, the first reading's own 15, its 23 texts written another way | 47 | as before, except `probe-text-past-the-file-bound`: the module reads it and refuses its text (section 3.5 now allows either) |
+| New: the extension holding `\`, `.md\x`, U+0000, `/`, and empty, as binary; and as text with `\` | 6 | refuses all but the empty one |
+| New: texts misordered (`authored` before `file`, a dependency before a symbol, an entry after a symbol, the scanner before the location), doubled (`file`, `authored`, `cited-by`, `location`, a `symbol`), a symbol without `documentation`, a documentation reference with a target and no link, with its members reordered, with `"element":null` | 14 | refuses all but the doubled symbol, which is two symbols and valid |
+| New: a valid text past the export's bound (65.7 MB of text, the facts of `probe-text-past-the-file-bound`) | 1 | names it |
+
+- **The comparison** ([`compare.mjs`](compare.mjs)) is the first's, run with `--graph`: every file the module reads is run a third way, `graph`, and its JSON with every object's members sorted is set beside the module's `graphOf`, projected to the instruction's shape. A file the module reads but whose text it refuses past the export's bound counts as the same when the reader writes the module's `textOfScan` byte for byte, or as both refusing its text. Same limits as before.
+
+### What the Python reader answered
+
+It worked 74.0 minutes over 67 turns for **$9.47** ([`runs-2/implement-python.json`](runs-2/implement-python.json)), much of it on stress tests near the 64-times bound. It wrote [`python-reader-2/`](python-reader-2/), committed unchanged but for the files its tests build:
+- [`reader.py`](python-reader-2/reader.py), 2,118 lines;
+- [`questions.md`](python-reader-2/questions.md), 15 questions, and [`refusals.md`](python-reader-2/refusals.md), 129 lines;
+- its tests: `make_cases.py` builds 188 files to refuse (121 binary, 67 texts, indexed with the section each breaks in `tests/refuse/CASES.tsv`) and 14 valid ones; `roundtrip.py` writes 300 random scans' texts with Python's `json` and checks every way round, its graph against one derived separately from section 5; `mutate.py` 6,000 mutants; `stress.py` files near the bound.
+- It wrote its stress files into its temporary folder, beside its own, and said so; that folder was the sandbox's, and nothing else was reached.
+
+Its final `reader.py` is byte for byte the one copied at 05:53 UTC, which is the one compared.
+
+| Samples it had not seen | Files | Same as the module | Both refuse | Disagree |
+| --- | ---: | ---: | ---: | ---: |
+| Corpora, `read`, text byte for byte | 3 | 3 | | |
+| Corpora, `name` | 3 | 3 | | |
+| Corpora, `graph` | 3 | | | **3** |
+| Made scans, `read` and `name` | 11 each | 11 and 11 | | |
+| Made scans, `graph` | 11 | 4 | | **7** |
+| Mutants, unit cases' files, the first reading's own, texts written another way | 446 | 7 read the same, and `probe-text-past-the-file-bound`'s 65.7 MB text written the same | 438 | 0 |
+| The same, `graph` of the 8 it reads | 8 | 2 | | **6** |
+| The second reading's own, `read` and `name` | 20 | 3 | 17 | 0 |
+| The second reading's own, `graph` | 1 | | | **1** |
+| The six edge files after the Go reader's questions | 6 | 5, 5 and 5 graphs | 1 | 0 |
+| The Go reader's 161 files | 161 | 1, its graph differing as below; the past-bound file's 72 MB text written | 159 | **1** graph |
+| **Its own 202 files, run by the module and by the Go reader** | 202 | 7 read and 7 named alike by all three; 3 graphs | 186, by all three | **2** texts the module accepts; 4 graphs |
+
+The table is of the final `reader.py` run over every sample ([`runs-2/compare-python.json`](runs-2/compare-python.json), [`runs-2/compare-python-own.json`](runs-2/compare-python-own.json), [`runs-2/compare-go-on-python-own.json`](runs-2/compare-go-on-python-own.json)). A snapshot of 05:01 gave the same verdicts ([`runs-2/compare-python-snapshot.json`](runs-2/compare-python-snapshot.json)).
+
+- **Every disagreement is one.** Every graph that differs is the module's graph with the edges of dependencies that have no link taken out ([`gdiff.mts`](gdiff.mts) checks each): 6,576 such edges at DNN, 1,405 in this repository, 15 in the estate. With them out, all 17 agree byte for byte in sorted form, as the other 6 of the 23 graphs did already (files without such a dependency), `documentation` and `documentedBy` included: DNN's, the estate's and `made-doc-references`'s every shape.
+- **On our files everything else agrees**: every text byte for byte, every content name, every refusal, both sides of the extension's backslash, every misordered and doubled line.
+- **On its own files the module is wrong twice.** It accepts `text-space.txt`, whose end line is `[null, "end",0]`, and `text-trailing-space.txt`, `[null,"end",0] `. Both readers refuse them (finding 2). Its four graphs that differ are the one cause again.
+
+### What the Go reader answered
+
+It began at 04:58 UTC after its own blindness check ([`runs-2/check-go-after-the-stop.json`](runs-2/check-go-after-the-stop.json)), and worked 34.6 minutes over 49 turns for **$6.30** ([`runs-2/implement-go.json`](runs-2/implement-go.json)). It wrote [`go-reader-2/`](go-reader-2/), committed unchanged but for its built binary and its 45 MB build cache:
+- `main.go`, `binary.go`, `textform.go` and `walker.go`, 2,683 lines, and `run.sh`, which builds it with the installed Go into a cache beside it;
+- [`questions.md`](go-reader-2/questions.md), 20 questions, and [`refusals.md`](go-reader-2/refusals.md), 138 lines;
+- its tests: 161 files indexed by `tests/expected.tsv` (107 binary and 52 texts to be refused, a valid two-file scan, and a valid file past the text's bound), and Python tools in `tools/` that made them.
+
+| Samples it had not seen | Files | Same as the module | Both refuse | Disagree |
+| --- | ---: | ---: | ---: | ---: |
+| Corpora, `read` and `name` | 3 each | 3 and 3 | | |
+| Corpora, `graph` | 3 | | | **3** |
+| Made scans, `read` and `name` | 11 each | 11 and 11 | | |
+| Made scans, `graph` | 11 | 4 | | **7** |
+| Mutants, unit cases' files, the first reading's own, texts written another way | 446 | 7 | 438, and both refuse the text of `probe-text-past-the-file-bound` | 0 |
+| The same, `graph` of the 8 it reads | 8 | 2 | | **6** |
+| The second reading's own, `read` and `name` | 20 | 3 | 17 | 0 |
+| The second reading's own, `graph` | 1 | | | **1** |
+| Six files made after reading its questions 8 to 10: a path `a\b.ts`, an empty link, a link holding U+0000, an anchor on a target outside the scan, a dependency landing on its own file with every qualifier; and a target `../x`, as text | 6, 5 of them both forms | 5, 5 and 5 graphs | 1 | 0 |
+| **Its own tests, run by the module** | 161 | 1, and its graph | 159, and both refuse the past-bound file's text | **1** graph |
+
+- **The same one disagreement, and nothing else.** Each of its 18 graphs that differ is the module's with the unlinked dependencies' edges out (`gdiff.mts`). Every text, name and refusal agrees, on its own files as on ours.
+- **It refuses the text past the bound**, where the Python reader writes it; section 3.5 allows both. Its line says so: "refused: the text is not offered, though the file is valid".
+- **One run past a limit, and not the reader's**, as in the first reading. `name` of `made-seeded-11-773.txt` died in the Go runtime's start (`runtime.schedinit`) under an address-space limit of 1,185 MiB. Run alone under 1,024, 1,300 and 2,048 MiB it gave the module's name each time; at exactly 1,185 MiB it failed again. It counts as the same.
+- **Speed**, at a machine load of 30 to 40: DNN's stored form in 1.2 s (29 MB peak), its text named in 2.0 s (113 MB peak).
+
+### Findings of the second reading
+
+#### 1. Section 5 says two things of a dependency without a link (against the text)
+
+- **The sentences.** "**The links that make edges**, in order: each dependency with a link, then, for each symbol in order, each reference in order." And, of what an edge carries: "`link`, when there is one."
+- The first makes no edge for a dependency without a link. The second only has a use if some edge has no link, and a type's edge always has one ("A type makes an edge only when it has a link"), so it can only be a dependency's.
+- **The module** makes an edge for every dependency, linked or not (`{"kind":"import","label":"node:fs"}`). That is what this repository's `index.json` holds, and the graph read back prints byte for byte as it (section 11), so it is what the product means.
+- **Both readers** followed the first sentence, each on its own, and neither wrote it down as a question: to each the text read as settled. Read plainly, the text is on their side, and by the text's own rule the module is wrong. The mend is the text's: "each dependency, with a link or not", if the engine's edges are meant.
+
+#### 2. The module reads the end line of a text by its value, not its form (against the module)
+
+- **The sentences** (section 8.1): "There is no whitespace between any two tokens", and "Only these forms are written, and no other is accepted." Section 8 lists among what is refused "a space anywhere outside a string" and "`4.0` or `4e0` for `4`".
+- **The files**, from the Python reader's own tests: `text-space.txt` ends `[null, "end",0]`, and `text-trailing-space.txt` ends `[null,"end",0] `. The module names both; both readers refuse both.
+- Tried further on `everyFact`'s text, the module accepts as its end line `[null, "end",3]`, `[null,"end",3] `, `[null,"end", 3]`, `[ null,"end",3]` and `[null,"end",3.0]`. It refuses a space in the `format`, `location`, `scanner` and `left-out` lines. So the end line alone is parsed for its count and never written again and compared, as section 8 allows a reader to check each line.
+- Two texts then name one file, which section 3.4's "one form" is there to prevent.
+
+#### 3. The module names the wrong line in some refusals of a text (against the module, small)
+
+The verdicts agree; the reasons do not always point where they say. For `text-4.0-b`, whose line 4 is `["a","file",4.0,null,null]`, the module says "line 6 is not written as the text form writes it" and quotes from line 4 on. For `text-4.0` the line at fault is 5 and it says 16. Section 6 asks a refusal to say why; this one says why at the wrong place.
+
+#### 4. The text's bound counts the names two ways (against the text)
+
+- **The sentences** (section 3.5): "A reader that writes the text may refuse to, when the names it would write exceed the same bound", and "The names are counted in UTF-8 bytes: each string, once for every time a record names it."
+- A record names its path once, but the text writes the path at the head of every line of that file. Counted by the record, a small file of one 1 MiB path and many short entries is within the bound while its text runs to hundreds of gigabytes (the Go reader's question 1).
+- The module counts by the record: 65,544,891 bytes for `probe-text-past-the-file-bound`. The Go reader counts what the text writes, the path once a line: 65,546,892. Near the bound the two give different verdicts on whether the text must be written, and the second sentence then lets the bound fail at what it is for.
+- No sample sits between the two counts, so no verdict differed here. The mend is the text's: count what the text writes, the path once for each line it heads.
+
+#### 5. The graph is not bounded by the file (against the text, silent)
+
+- Section 6 says a reader's "time and memory are bounded by the file's size". Section 3.5 bounds the text, and says a file past that bound is valid and "a reader … gives its graph". Nothing bounds the graph.
+- Its strings repeat as the text's do: a dependency's label on every edge, a slug as `from` on every one of a symbol's edges, a path in every `inbound`, `outbound` and `documentedBy` list it is in. The Go reader's own `valid-past-text-bound.fpk` is 442 bytes; its text would be 72 MB of names, and the module's graph of it holds each of its long labels as an edge.
+- Both readers and the module give such a graph whole. The Go reader streams it, so memory stays bounded but time does not (its question 3). The mend is the text's: bound the graph as the text is bounded, or say that a consumer of the graph owes that bound.
+
+#### 6. Where the module goes beyond the text, and the readers agree with it
+
+The two readers' questions name rules each chose where the text does not state them. The two made the same choice on every one they share, the Python reader's question number given after the Go reader's. Where their own files or the six edge files reach one, the module made the same choice too; two of them no file here reaches (marked).
+- **The text's facts fit in a section** (Go 15, Python 4). Section 8's list of a valid text's checks leaves out `MAX_SECTION`. It refuses a text whose sections would exceed 64 MiB, since "a writer refuses facts that would need more". (No file here reaches it.)
+- **The first path shares nothing** (Go 11, Python 6). Section 4.4's "`shared` is at most that path's length" has no path before the first.
+- **The `format` line and every head line's `null` are checked** (Go 16, Python 13).
+- **A records frame needs no strings frame before it** when it meets no new string (Go 20). The grammar `( strings? records )*` allows it, and section 4.2's rule then refuses a new sid there. (No file here reaches it.)
+- **What a path and a link may hold** (Go 8 to 10, Python 5): `a\b.ts` is a path (section 9 says so; section 2.4's "A reader refuses anything else" reads otherwise), an empty link and a link holding U+0000 are links, and a target outside the scan must still be a path. The module agrees on all four: it reads the first three and its writer refuses `../x`.
+
+#### The questions the two runs wrote down, grouped
+
+**The Go reader's 20** ([`go-reader-2/questions.md`](go-reader-2/questions.md)):
+- *The bounds:* how the text's names are counted (1, finding 4); a valid file past the text's bound refused in words that say so (2); the graph unbounded (3, finding 5); what "bounded by the file's size" allows (18); a text's sections within `MAX_SECTION` (15).
+- *The graph:* `edges`, `outbound` and `inbound` always present, even empty (4); a parameter's edge carries both `from` and `parameter` (5); "qualifiers hold `re-export`" read as one qualifier exactly so (6); `toSymbol` only with `to` (7). The module agrees with all four.
+- *Paths and links:* a backslash after a path's first character (8); what a link must be (9); a target outside the scan checked as a path (10); the first path's `shared` (11); head strings outside the string table (12).
+- *Reading:* a `storedLength` past the end is refused as unfinished in every mode (13); which inflater decides deflate's corner cases, Go's `compress/flate`, unmeasured against zlib (14); the byte-order mark and the `format` line (16); which reason wins when several rules break (17); a records frame with no strings frame (20).
+- *The brief's own gap:* the exit status (19). It exits 0 for both answers.
+
+**The Python reader's 15** ([`python-reader-2/questions.md`](python-reader-2/questions.md)):
+- *The bounds:* a text past the bound is always written, since in the brief a refusal of the text alone would look like a refusal of the file (1); how far inflation may overrun `rawLength` to notice it, one byte (3); a text's sections within `MAX_SECTION` (4); how fast "bounded by the file's size" is, 2 to 40 s on adversarial 340 KB files in pure Python (12).
+- *The graph:* an empty anchor, present by its mark, gives `"toSymbol":""` (8), as the module does; how the graph is written, and `edges`, `outbound` and `inbound` always present (9); "qualifiers hold `re-export`" read as exactly (7).
+- *Paths and links:* what a link may hold, the empty link, U+0000, `https://` and `#frag` accepted (5); the first path's `shared` (6).
+- *Reading:* which inflater decides deflate's corner cases, Python's `zlib`, unmeasured against others (2); which reason wins (10); every optional early refusal made (11); the `format` line's name and version checked (13); Provenance sentences taken as history, not rules (14); where it trusts Python's strict UTF-8 and `json` to apply a stated rule (15).
+
+**What neither asked.** Neither wrote a question on section 5's edges from a dependency without a link (finding 1); each read the text as settled, and each read it the same way. Neither asked about the end line's form (finding 2); both apply the one form to it as to every line.
+
+**Their own refusal cases.** The Go reader's [`refusals.md`](go-reader-2/refusals.md) lists 138 lines by section, and its 159 files to refuse; the Python reader's [`refusals.md`](python-reader-2/refusals.md) 129 lines, and its 188 files with their sections in `tests/refuse/CASES.tsv`. The module refuses every one of the 159 and 186 of the 188, the two of finding 2 apart. Each reader refuses every one of the other's.
+
+#### The leaks, and whether either run used them
+
+- **Each run saw the other's folder name**, `fpk-py` or `fpk-go`, as an empty directory. That could tell a run that a second reader of the same files was being written, and in which language. It could not tell it anything of that reader's code or choices, since the folder read as empty. Neither run's code, tests, questions or summary names the other folder, a sibling, or another reader (searched for `fpk-go`, `fpk-py`, `sibling`, `blind` and `other reader`).
+- **The specification itself names the first blind readers** in one Provenance sentence of section 3.5: "Both blind readers stream the text and write it." That could tell a run what earlier readers chose where the text allows two choices. The Python reader writes the text past the bound, as that sentence says; the Go reader refuses it, against it. Neither run's questions cite the sentence: the Go reader's question 2 argues its choice from section 6's bound, and the Python reader's question 1 from the brief's two answers. Section 3.2's naming of Go's `compress/flate` is a platform's name, and the Go reader's question 14 cites it ("as the specification names").
+- So neither leak shows in what either run made. The first could be closed by naming the folders alike (`reader-a`, `reader-b`); the second is the specification's, and a Provenance sentence about earlier readers belongs in this record rather than in the text.
+
+### Cost of the second reading, as the program reports it
+
+**$16.51 reported in all:**
+- The Python implementer: $9.47, 4,438 s, 67 turns.
+- The Go implementer: $6.30, 2,074 s, 49 turns.
+- The three blindness checks: $0.22, $0.29 and $0.23.
+- The JavaScript run, stopped after 11 minutes: not reported, since a stopped run writes no account. Its folder was kept in the builder's scratch and removed with it; its reader was not compared, since Node does not start under the comparison's address-space limit (it exits 133).
+
+### Files of the second reading
+
+- [`blind-implementer.mjs`](blind-implementer.mjs): `--round 2` gives `implementPrompt2`; `--hide` hides another run's folder; `--runs` keeps the records apart.
+- [`samples.ts`](samples.ts): the made scans' symbols now carry `documentation`; `made-every-enumeration`'s extension is empty; `made-doc-references` and `made-no-wires` are new; `second <dir>` makes the second reading's own; `answers` records each graph's SHA-256 in sorted form and, for a file whose text the module refuses past the bound, its `textOfScan`.
+- [`compare.mjs`](compare.mjs): `--graph`.
+- [`gdiff.mts`](gdiff.mts): sets a reader's graph beside the module's with unlinked dependencies' edges out. Run as `npx tsx --tsconfig ./tsconfig.base.json gdiff.mts <file.fpk> <reader's graph.json>`.
+- [`edges.mts`](edges.mts): makes the six edge files after the Go reader's questions 8 to 10.
+- [`module-answers-2.json`](module-answers-2.json): every sample's SHA-256 and the module's answer, by folder (`corpora`, `made`, `refusals`, `second`).
+- [`shown-2/`](shown-2/): exactly what each blind folder held.
+- [`runs-2/`](runs-2/): each check's and implementer's prompt, answer, usage and cost; and each comparison's tally and disagreements (`compare-*.json`).
+- [`python-reader-2/`](python-reader-2/) and [`go-reader-2/`](go-reader-2/): the two programs, questions, refusals and test scripts, unchanged, without the files their tests build (each reader's `make_cases.py` builds them again), the Go reader's binary and build cache, or Python's `__pycache__`.
+- The samples are made again by `samples.ts made`, `corpus`, `refusals` (with the bases `made-every-fact.fpk made-seeded-3-300.fpk corpus-estate.fpk`) and `second`. The corpora and every larger sample are not committed.
+
+### Running a third reading from this record
+
+The specification will change again, so a later reading repeats this one with these steps. Each command is run from the repository's root unless it says otherwise. `H` is this folder; `S` is a scratch folder of the reader's own, outside `/var/tmp`, and `/var/tmp` must start empty.
+
+1. **What the module needs.** `npm ci` (or, in a worktree, a link to a checkout's `node_modules`), then `npm run build`. The corpora's `index.json` files come from the generator: this repository's `.mdmd/index.json` after `npm run live-docs:generate`; the estate's from `npm run live-docs:generate -- --workspace <a copy of tests/integration/programs/csharp/estate>`, which writes `<copy>/.live-documentation/index.json`; DNN's from the same command on a DNN checkout (this reading used the readers' builder's, SHA-256 `6f7bd728…`).
+2. **Bring the probe's samples up to the format.** `samples.ts` builds scans by the module's types. When the format changes (a symbol's new field, a link's new shape), its scans and the `second` files must be given the new fields, and new samples aimed at the new sections added, before anything is made. A type-check of the file (`npx tsc --noEmit` over it, or a first `made` run, which fails on a missing field as this reading's did) finds what is missing.
+3. **Make the samples.** `T="npx tsx --tsconfig ./tsconfig.base.json $H/samples.ts"`, then:
+   - `$T made $S/samples/made`
+   - `$T corpus <index.json> $S/samples/corpora/corpus-<name>` for each corpus
+   - `$T refusals $S/samples/refusals $S/samples/made/made-every-fact.fpk $S/samples/made/made-seeded-3-300.fpk $S/samples/corpora/corpus-estate.fpk --seeds 400`
+   - `$T second $S/samples/second`
+   - `$T answers $S/samples/corpora $S/samples/made $S/samples/refusals $S/samples/second`, the module's answers, each folder's `answers.json`.
+4. **Prepare two folders.** For each of `py` and `go`: `node $H/blind-implementer.mjs prepare /var/tmp/fpk-<x> .mdmd/layer-3/stored-form.mdmd.md` followed by the six shown files (`made-empty`, `made-every-fact`, `made-seeded-5-30`, each `.fpk` and `.txt`, from `$S/samples/made`). `prepare` removes the specification's two top lines by their opening words (`_A proposal of 2026-11-22. Built as one module` and `_Written so that a second reader can be written`) and refuses to go on unless it removed exactly two. If those lines are reworded, its two patterns are changed to match, and nothing else.
+5. **Check each folder before its run.** `node $H/blind-implementer.mjs check /var/tmp/fpk-py --hide /var/tmp/fpk-go --runs $S/runs/py`, and the same for `fpk-go` hiding `fpk-py`. Read each answer. It must show `/workspaces`, `/tmp`, `/home`, `/go`, `/opt`, `/root` and `/vscode` as empty stand-ins, the other folder and its `.tmp` as empty stand-ins, both network requests refused, `touch /var/tmp/outside-probe` refused, and Bash as its one tool. Anything else readable is a leak, closed before going on.
+6. **Start both implementers**, in the background:
+   - `node $H/blind-implementer.mjs implement /var/tmp/fpk-py --round 2 --hide /var/tmp/fpk-go --runs $S/runs/py`
+   - `node $H/blind-implementer.mjs implement /var/tmp/fpk-go --round 2 --language Go --hide /var/tmp/fpk-py --runs $S/runs/go`
+   - The prompt is `implementPrompt2` in the harness, and each run's record in `runs-2/` holds it word for word. Here they took 74 and 35 minutes; brief a third reading's root for an hour and more.
+   - If a folder must be begun again, its run is stopped, the folder moved out of `/var/tmp`, and a fresh one prepared at the same path, since the other run's sandbox hides that path and no other. It is checked again before it starts.
+7. **Compare.** From this folder, for each reader:
+   - `node compare.mjs $S/py.json --reader "/usr/bin/python3 -I <its reader.py>" --graph --skip <the six shown files, comma-separated> $S/samples/corpora $S/samples/made $S/samples/refusals $S/samples/second`
+   - the same with `--reader "/bin/sh <its folder>/run.sh"` for Go, run from a copy of its folder outside the repository, since `run.sh` builds into the folder it stands in.
+   - **The other side:** copy each reader's own test files into a folder of their own, run `$T answers` on it, and compare both readers over it. This is where this reading found the module's end-line fault.
+   - **After reading their questions:** make files at the edges they name (as `edges.mts` does), record the module's answers, and compare again.
+   - A reader in Node does not start under the comparison's address-space limit (it exits 133), so a Node reader would need that limit changed in `compare.mjs`.
+   - Each disagreement is printed, and a graph or text that differs is kept beside the output as `<out>.<kind>.<file>.out`. `gdiff.mts` sets a kept graph beside the module's without the unlinked dependencies' edges. Once section 5's sentence is mended, that check is either retired or turned the other way.
+8. **Copy the readers out unchanged**, without built binaries or `__pycache__`, into new folders here; record the module's answers (a merged `module-answers-<n>.json`), the shown files and the run records; then clear `/var/tmp`.
