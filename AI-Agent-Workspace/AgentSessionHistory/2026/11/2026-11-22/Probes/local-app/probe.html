@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xaHLYYEO7w4QhIfouzii5o/PWjQuVMC9vsmSY5I3icM='; style-src 'sha256-oUUmD4TeVVXb1w/YtnNgCsHrNviwqO7Ipv3LI+5KT4A='; base-uri 'none'; form-action 'none'">
+<title>Local app probe</title>
+<style>
+  :root { color-scheme: light dark; --ink: #1d1d1f; --muted: #5f6368; --paper: #fbfbfd; --card: #ffffff; --line: #d2d2d7; --offer: #0b57d0; --offer-ink: #ffffff; --good: #146c2e; --warn: #8a4b00; --focus: #0b57d0; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #f2f2f7; --muted: #a1a1a6; --paper: #161618; --card: #1f1f22; --line: #3a3a3e; --offer: #8ab4f8; --offer-ink: #0b1d3a; --good: #7fd48f; --warn: #f2b66d; --focus: #8ab4f8; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, "Segoe UI", sans-serif; }
+  main { max-width: 50rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 .5rem; }
+  section, header { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; margin: 0 0 1rem; }
+  .answer { font-size: 1.1rem; font-weight: 600; margin: .25rem 0 .5rem; overflow-wrap: anywhere; }
+  .answer.good { color: var(--good); }
+  .answer.warn { color: var(--warn); }
+  .raw { font: 12.5px/1.45 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--muted); margin: .25rem 0; overflow-wrap: anywhere; }
+  .hint { color: var(--muted); margin: .4rem 0; }
+  ul.items { margin: .25rem 0 .5rem; padding-left: 1.2rem; }
+  ul.items li { overflow-wrap: anywhere; }
+  .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .5rem 0; }
+  .target { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: center; margin: .4rem 0; }
+  .target code { display: block; font: 12.5px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .45rem .55rem; overflow-wrap: anywhere; user-select: all; }
+  button { font: inherit; color: var(--offer-ink); background: var(--offer); border: 1px solid var(--offer); border-radius: 7px; padding: .45rem .9rem; cursor: pointer; }
+  button.quiet { color: var(--offer); background: transparent; }
+  button:disabled { opacity: .5; cursor: default; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, label.file:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+  fieldset { border: 1px solid var(--line); border-radius: 8px; margin: .6rem 0 0; padding: .5rem .8rem .6rem; }
+  legend { padding: 0 .3rem; color: var(--muted); }
+  fieldset label { display: inline-flex; gap: .35rem; align-items: center; margin: .15rem 1rem .15rem 0; }
+  label.file { display: inline-flex; flex-wrap: wrap; gap: .5rem; align-items: center; color: var(--muted); border-radius: 7px; }
+  label.file input { max-width: 100%; color: var(--ink); }
+  textarea { width: 100%; min-height: 11rem; font: 12.5px/1.45 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: .5rem; resize: vertical; }
+  .target button { min-width: 11rem; }
+  .status { color: var(--good); margin: .25rem 0; }
+  .status:empty { margin: 0; }
+  @media (max-width: 34rem) { .target { grid-template-columns: 1fr; } .target button { justify-self: start; } h1 { font-size: 1.35rem; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Local app probe</h1>
+  <p class="answer" id="where-answer">Starting...</p>
+  <p class="raw" id="where-raw"></p>
+  <p class="hint">It reads no file's contents and sends nothing anywhere.</p>
+</header>
+
+<section aria-labelledby="h-window">
+  <h2 id="h-window">1. A window of its own</h2>
+  <p class="answer" id="window-answer"></p>
+  <p class="raw" id="window-raw"></p>
+  <p class="hint">Right-click the desktop, New, Shortcut, and paste one of these:</p>
+  <div class="target"><code id="target-edge"></code><button type="button" id="copy-edge">Copy for Edge</button></div>
+  <div class="target"><code id="target-chrome"></code><button type="button" id="copy-chrome">Copy for Chrome</button></div>
+  <p class="status" id="target-status" aria-live="polite"></p>
+  <p class="hint">It worked if this page opens with no address bar and an icon of its own on the taskbar.</p>
+  <fieldset id="saw-window">
+    <legend>What you saw</legend>
+    <label><input type="radio" name="saw-window" value="own window, own taskbar icon"> Own window, own icon</label>
+    <label><input type="radio" name="saw-window" value="own window, the browser's taskbar icon"> Own window, the browser's icon</label>
+    <label><input type="radio" name="saw-window" value="an ordinary tab"> An ordinary tab</label>
+  </fieldset>
+</section>
+
+<section aria-labelledby="h-remember">
+  <h2 id="h-remember">2. A folder remembered</h2>
+  <p class="answer" id="remember-answer" aria-live="polite"></p>
+  <ul class="items" id="remember-list"></ul>
+  <div class="row"><button type="button" id="ask">Ask for them again</button></div>
+  <p class="raw" id="remember-raw"></p>
+</section>
+
+<section aria-labelledby="h-copies">
+  <h2 id="h-copies">3. A second copy</h2>
+  <p class="answer" id="copies-answer"></p>
+  <ul class="items" id="copies-list"></ul>
+  <p class="raw" id="copies-raw"></p>
+</section>
+
+<section aria-labelledby="h-walk">
+  <h2 id="h-walk">4. Listing a folder</h2>
+  <div class="row"><button type="button" id="pick">Pick a folder</button></div>
+  <p class="answer" id="walk-answer" aria-live="polite"></p>
+  <p class="raw" id="walk-raw"></p>
+  <div class="row"><label class="file">The older way: <input type="file" id="older" webkitdirectory></label></div>
+</section>
+
+<section aria-labelledby="h-save">
+  <h2 id="h-save">5. Saving a file</h2>
+  <div class="row"><button type="button" id="save">Save a copy of this page</button></div>
+  <p class="answer" id="save-answer" aria-live="polite"></p>
+  <p class="raw" id="save-raw"></p>
+  <fieldset id="marked">
+    <legend>Is this copy marked by Windows as downloaded? (Properties shows an Unblock box)</legend>
+    <label><input type="radio" name="marked" value="yes"> Yes</label>
+    <label><input type="radio" name="marked" value="no"> No</label>
+    <label><input type="radio" name="marked" value="not known"> Not known</label>
+  </fieldset>
+</section>
+
+<section aria-labelledby="h-results">
+  <h2 id="h-results">Results</h2>
+  <div class="row"><label><input type="checkbox" id="names"> Include folder and file names</label></div>
+  <textarea id="results" readonly aria-label="Results as plain text"></textarea>
+  <div class="row"><button type="button" id="copy-results">Copy the results</button><button type="button" class="quiet" id="start-over">Start over</button></div>
+  <p class="status" id="results-status" aria-live="polite"></p>
+</section>
+</main>
+<script>
+"use strict";
+// A probe of November 22, 2026, not product code: what a page opened from disk can do in Edge or Chrome on Windows.
+// It keeps its marks in this browser's own storage and nowhere else.
+const ORIGINAL = "<!doctype html>\n" + document.documentElement.outerHTML + "\n";
+const KEY = "local-app-probe";
+const DB_NAME = "local-app-probe";
+const $ = (id) => document.getElementById(id);
+const nowIso = () => new Date().toISOString();
+const when = (iso) => new Date(iso).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+const count = (n) => n.toLocaleString("en-US");
+const newId = () => Array.from(crypto.getRandomValues(new Uint8Array(4)), (b) => b.toString(16).padStart(2, "0")).join("");
+
+function browserName() {
+  const brands = (navigator.userAgentData && navigator.userAgentData.brands) || [];
+  const named = (re) => brands.find((b) => re.test(b.brand));
+  const edge = named(/Microsoft Edge/), chrome = named(/Google Chrome/), chromium = named(/Chromium/);
+  if (edge) return { name: "Edge", version: edge.version };
+  if (/Edg\//.test(navigator.userAgent)) return { name: "Edge", version: (/Edg\/(\d+)/.exec(navigator.userAgent) || [])[1] };
+  if (chrome) return { name: "Chrome", version: chrome.version };
+  if (chromium) return { name: "Chromium", version: chromium.version };
+  return { name: "The browser", version: "" };
+}
+const BROWSER = browserName();
+const B = BROWSER.name;
+const PLATFORM = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "unknown";
+
+function windowsPath(pathname) {
+  const p = decodeURIComponent(pathname);
+  return /^\/[A-Za-z]:/.test(p) ? p.slice(1).replace(/\//g, "\\") : p;
+}
+const HERE = windowsPath(location.pathname);
+
+// ---- Storage: localStorage holds the record, IndexedDB holds a second mark and the folders' handles.
+function readLocal() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch { return null; } }
+function writeLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); return true; } catch { return false; } }
+function openDb() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1);
+    request.addEventListener("upgradeneeded", () => { request.result.createObjectStore("marks"); request.result.createObjectStore("folders", { autoIncrement: true }); });
+    request.addEventListener("success", () => resolve(request.result));
+    request.addEventListener("error", () => reject(request.error));
+  });
+}
+function inStore(store, mode, act) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, mode);
+    const request = act(tx.objectStore(store));
+    tx.addEventListener("complete", () => resolve(request ? request.result : undefined));
+    tx.addEventListener("error", () => reject(tx.error));
+    tx.addEventListener("abort", () => reject(tx.error));
+  });
+}
+
+let db = null;
+let dbProblem = "";
+const fresh = { storageId: newId(), created: nowIso(), copies: [], launches: [], walks: [], asks: [], saves: [], sawWindow: "", marked: {} };
+const stored = readLocal();
+const state = Object.assign({}, fresh, stored || {});
+const localWorks = writeLocal() && readLocal() !== null;
+let copyIndex = state.copies.findIndex((c) => c.path === HERE);
+if (copyIndex < 0) { state.copies.push({ path: HERE, firstSeen: nowIso(), launches: 0 }); copyIndex = state.copies.length - 1; }
+const thisCopy = state.copies[copyIndex];
+thisCopy.launches += 1;
+thisCopy.lastSeen = nowIso();
+const LAUNCH_AT = nowIso();
+
+const MODES = ["browser", "minimal-ui", "standalone", "fullscreen", "window-controls-overlay", "picture-in-picture"];
+const displayMode = MODES.find((m) => matchMedia(`(display-mode: ${m})`).matches) || "none matched";
+const addressBar = window.locationbar ? window.locationbar.visible : null;
+const inOwnWindow = displayMode === "standalone" || displayMode === "minimal-ui" || addressBar === false;
+state.launches.push({ at: LAUNCH_AT, copy: copyIndex, window: inOwnWindow ? "own window" : "tab", displayMode });
+state.launches = state.launches.slice(-30);
+writeLocal();
+
+const copyLabel = (i, names) => (names ? state.copies[i].path : `copy ${i + 1}`);
+const folderLabel = (f, i, names) => (names ? f.name : `folder ${i + 1}`);
+
+// ---- Section: where it was opened.
+function showWhere(extra) {
+  const fromFile = location.protocol === "file:";
+  $("where-answer").textContent = fromFile ? "This page was opened from a file on disk." : `This page was opened from ${location.protocol}//, not from a file on disk.`;
+  $("where-answer").className = "answer " + (fromFile ? "good" : "warn");
+  $("where-raw").textContent = [`${B} ${BROWSER.version} on ${PLATFORM}`, `protocol ${location.protocol}`, `secure context ${window.isSecureContext ? "yes" : "no"}`,
+    `folder picker ${"showDirectoryPicker" in window ? "yes" : "no"}`, `save picker ${"showSaveFilePicker" in window ? "yes" : "no"}`, extra].filter(Boolean).join(" · ");
+}
+
+// ---- Section 1: its own window.
+function shortcutTarget(exe) {
+  const address = (() => { try { return decodeURI(location.href); } catch { return location.href; } })();
+  return `"${exe}" --app="${address}"`;
+}
+const TARGETS = {
+  edge: shortcutTarget("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"),
+  chrome: shortcutTarget("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
+};
+function showWindow() {
+  $("window-answer").textContent = inOwnWindow ? "This page is in a window of its own." : "This page is in an ordinary browser tab.";
+  $("window-answer").className = "answer " + (inOwnWindow ? "good" : "");
+  const tally = { tab: 0, "own window": 0 };
+  for (const l of state.launches) tally[l.window] += 1;
+  $("window-raw").textContent = `display-mode: ${displayMode} · address bar visible: ${addressBar} · launches so far: ${tally.tab} in a tab, ${tally["own window"]} in a window of its own`;
+  $("target-edge").textContent = TARGETS.edge;
+  $("target-chrome").textContent = TARGETS.chrome;
+  const long = Math.max(TARGETS.edge.length, TARGETS.chrome.length) > 259;
+  if (long) $("target-status").textContent = "Too long for a shortcut. Move this file to a shorter path.";
+  for (const input of document.querySelectorAll('input[name="saw-window"]')) input.checked = input.value === state.sawWindow;
+}
+
+// ---- Section 2: folders remembered.
+let folders = []; // { key, name, pickedAt, handle, onOpening, now, reachable }
+let remembered = { message: "", tone: "" };
+async function permission(handle, ask) {
+  try { return await (ask ? handle.requestPermission({ mode: "read" }) : handle.queryPermission({ mode: "read" })); }
+  catch (error) { return `error: ${error.name}`; }
+}
+async function reachable(handle) {
+  try { for await (const entry of handle.values()) { void entry; break; } return "yes"; }
+  catch (error) { return error.name === "NotFoundError" ? "no longer there" : `error: ${error.name}`; }
+}
+async function loadFolders() {
+  if (!db) return;
+  const keys = await inStore("folders", "readonly", (s) => s.getAllKeys());
+  const values = await inStore("folders", "readonly", (s) => s.getAll());
+  folders = values.map((v, i) => ({ key: keys[i], name: v.name, pickedAt: v.pickedAt, handle: v.handle, launch: v.launch }));
+  for (const f of folders) {
+    f.onOpening = f.launch === LAUNCH_AT ? "picked now" : await permission(f.handle, false);
+    f.now = f.onOpening;
+    f.reachable = f.now === "granted" || f.now === "picked now" ? await reachable(f.handle) : "";
+  }
+}
+function judgeRemembered() {
+  const older = folders.filter((f) => f.onOpening !== "picked now");
+  const picks = state.walks.filter((w) => w.how === "folder picker");
+  const pickedBefore = picks.some((w) => w.kept === "yes" && w.at < LAUNCH_AT);
+  const lastPick = picks[picks.length - 1];
+  if (!db) return { message: `This page could not open its storage, so it cannot remember a folder. ${dbProblem}`, tone: "warn" };
+  if (lastPick && lastPick.kept && lastPick.kept !== "yes") return { message: `${B} would not let this page keep the folder (${lastPick.kept.slice(8)}).`, tone: "warn" };
+  if (!older.length && pickedBefore) return { message: `${B} had forgotten the folder from last time.`, tone: "warn" };
+  if (!older.length && folders.length) return { message: `Picked just now. Close every ${B} window, then open this page again.`, tone: "" };
+  if (!older.length) return { message: "No folder picked yet. Pick one in section 4.", tone: "" };
+  const gone = older.filter((f) => f.reachable === "no longer there");
+  if (gone.length === older.length) return { message: "The folder from last time is no longer where it was.", tone: "warn" };
+  const opening = older.map((f) => f.onOpening);
+  const nowStates = older.map((f) => f.now);
+  if (opening.every((s) => s === "granted")) return { message: `${B} kept your folder from last time and gave it back without asking.`, tone: "good" };
+  if (nowStates.every((s) => s === "granted")) {
+    const presses = state.asks.filter((a) => a.launch === LAUNCH_AT).length;
+    return { message: `${B} asked again, and gave the folder back without picking it again${older.length > 1 ? (presses > 1 ? `; it took ${presses} presses for ${older.length} folders` : `; one press gave back all ${older.length}`) : ""}.`, tone: "good" };
+  }
+  if (nowStates.some((s) => s === "denied")) return { message: "You said no, so the folder stays closed.", tone: "warn" };
+  if (nowStates.some((s) => String(s).startsWith("error"))) return { message: `${B} gave back ${nowStates.filter((s) => s === "granted").length} of ${older.length}; the rest need another press.`, tone: "warn" };
+  return { message: `${B} kept your folder from last time, but asks before giving it back. Press the button.`, tone: "" };
+}
+function showRemembered() {
+  remembered = judgeRemembered();
+  $("remember-answer").textContent = remembered.message;
+  $("remember-answer").className = "answer " + remembered.tone;
+  const list = $("remember-list");
+  list.replaceChildren(...folders.map((f, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${f.name}, picked ${when(f.pickedAt)}`;
+    return li;
+  }));
+  const waiting = folders.some((f) => f.now === "prompt" || String(f.now).startsWith("error"));
+  $("ask").hidden = !waiting;
+  $("remember-raw").textContent = folders.length
+    ? folders.map((f, i) => `folder ${i + 1}: on opening ${f.onOpening}, now ${f.now}${f.reachable ? `, reachable ${f.reachable}` : ""}`).join(" · ")
+    : "";
+}
+async function askAgain() {
+  const record = { at: nowIso(), launch: LAUNCH_AT, copy: copyIndex, results: [] };
+  for (const f of folders) {
+    if (f.now === "granted" || f.now === "picked now") continue;
+    f.now = await permission(f.handle, true);
+    f.reachable = f.now === "granted" ? await reachable(f.handle) : "";
+    record.results.push(f.now);
+  }
+  state.asks.push(record);
+  state.asks = state.asks.slice(-20);
+  writeLocal();
+  showRemembered();
+  showResults();
+}
+
+// ---- Section 3: copies at other paths.
+let idbMark = null;
+async function markIdb() {
+  if (!db) return;
+  idbMark = (await inStore("marks", "readonly", (s) => s.get("mark"))) || { storageId: state.storageId, created: nowIso(), copies: [] };
+  if (!idbMark.copies.includes(HERE)) idbMark.copies.push(HERE);
+  await inStore("marks", "readwrite", (s) => s.put(idbMark, "mark"));
+}
+function storageAgreement() {
+  if (!localWorks) return "localStorage did not keep a value";
+  if (!idbMark) return "IndexedDB unavailable";
+  const same = idbMark.storageId === state.storageId && idbMark.copies.length === state.copies.length;
+  return same ? "localStorage and IndexedDB agree" : `localStorage and IndexedDB disagree (marks ${state.storageId} and ${idbMark.storageId}, ${state.copies.length} and ${idbMark.copies.length} copies)`;
+}
+function judgeCopies() {
+  const others = state.copies.length - 1;
+  if (!localWorks && !idbMark) return { message: "This page could not keep anything in this browser's storage.", tone: "warn" };
+  if (others === 0) return { message: "This storage has seen only this copy. Open a copy from another folder: if it lists this one, they share storage.", tone: "" };
+  if (thisCopy.launches === 1 && copyIndex > 0) return { message: `This copy sees ${others === 1 ? "the copy" : `${others} copies`} opened before it from another folder: they share one storage.`, tone: "good" };
+  return { message: `This storage holds marks from ${state.copies.length} copies at different paths: they share one storage.`, tone: "good" };
+}
+function showCopies() {
+  const judged = judgeCopies();
+  $("copies-answer").textContent = judged.message;
+  $("copies-answer").className = "answer " + judged.tone;
+  $("copies-list").replaceChildren(...state.copies.map((c, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${c.path}${i === copyIndex ? " (this one)" : ""}, first opened ${when(c.firstSeen)}, ${c.launches} ${c.launches === 1 ? "launch" : "launches"}`;
+    return li;
+  }));
+  $("copies-raw").textContent = `storage mark ${state.storageId}, set ${when(state.created)} · ${storageAgreement()}`;
+}
+
+// ---- Section 4: listing a folder, folder by folder, reading no file.
+let walking = false;
+function showProgress(files) { $("walk-answer").textContent = `Listing Files... (${count(files)})`; $("walk-answer").className = "answer"; }
+async function walk(root) {
+  const started = performance.now();
+  let files = 0, subfolders = 0, unreadable = 0, shown = 0;
+  const stack = [root];
+  showProgress(0);
+  while (stack.length) {
+    const dir = stack.pop();
+    try {
+      for await (const entry of dir.values()) {
+        if (entry.kind === "file") files += 1; else { subfolders += 1; stack.push(entry); }
+        const t = performance.now();
+        if (t - shown > 100) { shown = t; showProgress(files); }
+      }
+    } catch { unreadable += 1; }
+  }
+  return { files, folders: subfolders, unreadable, seconds: (performance.now() - started) / 1000 };
+}
+function countFileList(list) {
+  const dirs = new Set();
+  for (const file of list) {
+    const parts = (file.webkitRelativePath || file.name).split("/");
+    for (let i = 2; i < parts.length; i += 1) dirs.add(parts.slice(0, i).join("/"));
+  }
+  const name = list.length ? (list[0].webkitRelativePath || "").split("/")[0] : "";
+  return { files: list.length, folders: dirs.size, unreadable: 0, name };
+}
+function recordWalk(how, name, result, extra) {
+  state.walks.push(Object.assign({ at: nowIso(), copy: copyIndex, how, name }, result, extra || {}));
+  state.walks = state.walks.slice(-20);
+  writeLocal();
+}
+function showWalk() {
+  if (walking) return;
+  const last = state.walks[state.walks.length - 1];
+  if (!last) { $("walk-answer").textContent = "No folder listed yet."; $("walk-answer").className = "answer"; $("walk-raw").textContent = ""; return; }
+  const secs = last.how === "folder picker" ? ` in ${last.seconds.toFixed(1)} s` : `, ${last.seconds.toFixed(1)} s after your click, your own clicks included`;
+  $("walk-answer").textContent = `Listed ${count(last.files)} files in ${count(last.folders)} folders${secs}.`;
+  $("walk-answer").className = "answer good";
+  $("walk-raw").textContent = state.walks.slice(-4).map((w) => `${w.how}: ${w.files} files, ${w.folders} folders, ${w.seconds.toFixed(2)} s${w.unreadable ? `, ${w.unreadable} unreadable` : ""}`).join(" · ");
+}
+async function pickFolder() {
+  if (!("showDirectoryPicker" in window)) { $("walk-answer").textContent = `${B} offers no folder picker to this page.`; $("walk-answer").className = "answer warn"; return; }
+  let handle;
+  try { handle = await window.showDirectoryPicker({ id: "local-app-probe", mode: "read" }); }
+  catch (error) { $("walk-answer").textContent = error.name === "AbortError" ? "Nothing was picked." : `${B} refused the folder: ${error.name}.`; $("walk-answer").className = "answer warn"; return; }
+  let kept = "";
+  if (db) {
+    try { await inStore("folders", "readwrite", (s) => s.add({ handle, name: handle.name, pickedAt: nowIso(), launch: LAUNCH_AT })); kept = "yes"; }
+    catch (error) { kept = `failed: ${error.name}`; }
+  }
+  walking = true;
+  $("pick").disabled = true;
+  const result = await walk(handle);
+  walking = false;
+  $("pick").disabled = false;
+  recordWalk("folder picker", handle.name, result, { kept });
+  showWalk();
+  await loadFolders();
+  showRemembered();
+  showResults();
+}
+let olderClickAt = 0;
+function olderChosen(event) {
+  const ended = performance.now();
+  const result = countFileList(event.target.files);
+  if (!result.files) return;
+  recordWalk("older folder input", result.name, { files: result.files, folders: result.folders, unreadable: 0, seconds: olderClickAt ? (ended - olderClickAt) / 1000 : 0 });
+  showWalk();
+  showResults();
+}
+
+// ---- Section 5: saving where the person chooses.
+function showSave() {
+  const last = state.saves[state.saves.length - 1];
+  if (last) {
+    const a = $("save-answer");
+    a.textContent = last.outcome === "saved" ? `${B} saved a copy where you chose, as ${last.name}. Open that copy for section 3.` : last.message;
+    a.className = "answer " + (last.outcome === "saved" ? "good" : "warn");
+    $("save-raw").textContent = state.saves.slice(-4).map((s) => `${s.outcome}${s.error ? ` (${s.error})` : ""}, ${s.bytes || 0} bytes`).join(" · ");
+  }
+  const mark = state.marked[copyIndex] || "";
+  for (const input of document.querySelectorAll('input[name="marked"]')) input.checked = input.value === mark;
+}
+async function saveCopy() {
+  const record = { at: nowIso(), copy: copyIndex };
+  if (!("showSaveFilePicker" in window)) Object.assign(record, { outcome: "unavailable", message: `${B} offers no save picker to this page.` });
+  else {
+    try {
+      const file = await window.showSaveFilePicker({ suggestedName: "probe.html", id: "local-app-probe-save", types: [{ description: "Web page", accept: { "text/html": [".html"] } }] });
+      const out = await file.createWritable();
+      await out.write(ORIGINAL);
+      await out.close();
+      Object.assign(record, { outcome: "saved", name: file.name, bytes: new Blob([ORIGINAL]).size });
+    } catch (error) {
+      Object.assign(record, error.name === "AbortError" ? { outcome: "cancelled", message: "Nothing was saved." } : { outcome: "refused", error: error.name, message: `${B} refused to save: ${error.name}.` });
+    }
+  }
+  state.saves.push(record);
+  state.saves = state.saves.slice(-10);
+  writeLocal();
+  showSave();
+  showResults();
+}
+
+// ---- Results: a few lines of plain text, names left out unless asked for.
+function resultsText() {
+  const names = $("names").checked;
+  const lines = [];
+  lines.push(`Local app probe, ${when(nowIso())}: ${B} ${BROWSER.version} on ${PLATFORM}; ${location.protocol === "file:" ? "opened from a file on disk" : `opened from ${location.protocol}`}; ${copyLabel(copyIndex, names)}, launch ${thisCopy.launches}.`);
+  const tally = { tab: 0, "own window": 0 };
+  for (const l of state.launches) tally[l.window] += 1;
+  lines.push(`1. Window: now ${inOwnWindow ? "a window of its own" : "a tab"} (display-mode ${displayMode}, address bar ${addressBar}); launches ${tally.tab} in a tab, ${tally["own window"]} in own window; you saw: ${state.sawWindow || "not said"}.`);
+  const older = folders.filter((f) => f.onOpening !== "picked now");
+  lines.push(`2. Folders: ${remembered.message} ${older.length ? `[on opening: ${older.map((f) => f.onOpening).join(", ")}; now: ${older.map((f) => f.now).join(", ")}; presses: ${state.asks.filter((a) => a.launch === LAUNCH_AT).length}]` : ""}${names && folders.length ? ` (${folders.map((f, i) => folderLabel(f, i, true)).join(", ")})` : ""}`.trim());
+  lines.push(`3. Copies: ${state.copies.length} seen in this storage (${state.copies.map((c, i) => copyLabel(i, names) + (i === copyIndex ? " this one" : "")).join("; ")}); ${storageAgreement()}.`);
+  const walks = state.walks.slice(-3).map((w) => `${count(w.files)} files in ${count(w.folders)} folders, ${w.seconds.toFixed(1)} s (${w.how}${names && w.name ? `, ${w.name}` : ""})`);
+  lines.push(`4. Listing: ${walks.length ? walks.join("; ") : "none"}.`);
+  const saves = state.saves.slice(-3).map((s) => `${s.outcome}${s.error ? ` ${s.error}` : ""}${names && s.name ? ` as ${s.name}` : ""}`);
+  const marks = state.copies.map((c, i) => `${copyLabel(i, names)} ${state.marked[i] || "not said"}`).join(", ");
+  lines.push(`5. Save picker: ${saves.length ? saves.join("; ") : "not tried"}; marked as downloaded: ${marks}.`);
+  return lines.join("\n");
+}
+function showResults() { $("results").value = resultsText(); }
+
+async function copyText(text, status) {
+  let done = false;
+  try { await navigator.clipboard.writeText(text); done = true; } catch { /* fall back below */ }
+  if (!done) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.append(area);
+    area.select();
+    try { done = document.execCommand("copy"); } catch { done = false; }
+    area.remove();
+  }
+  $(status).textContent = done ? "Copied." : "Could not copy. Select the text and copy it yourself.";
+}
+
+async function startOver() {
+  if (!confirm("Forget everything this page has kept in this browser?")) return;
+  try { localStorage.removeItem(KEY); } catch { /* nothing kept */ }
+  if (db) db.close();
+  await new Promise((resolve) => { const r = indexedDB.deleteDatabase(DB_NAME); r.addEventListener("success", resolve); r.addEventListener("error", resolve); r.addEventListener("blocked", resolve); });
+  location.reload();
+}
+
+// ---- Wiring.
+$("copy-edge").addEventListener("click", () => copyText(TARGETS.edge, "target-status"));
+$("copy-chrome").addEventListener("click", () => copyText(TARGETS.chrome, "target-status"));
+$("saw-window").addEventListener("change", (e) => { state.sawWindow = e.target.value; writeLocal(); showResults(); });
+$("ask").addEventListener("click", askAgain);
+$("pick").addEventListener("click", pickFolder);
+$("older").addEventListener("click", () => { olderClickAt = performance.now(); });
+$("older").addEventListener("change", olderChosen);
+$("save").addEventListener("click", saveCopy);
+$("marked").addEventListener("change", (e) => { state.marked[copyIndex] = e.target.value; writeLocal(); showResults(); });
+$("names").addEventListener("change", showResults);
+$("copy-results").addEventListener("click", () => copyText($("results").value, "results-status"));
+$("start-over").addEventListener("click", startOver);
+
+(async () => {
+  showWhere("");
+  showWindow();
+  showWalk();
+  showSave();
+  try { db = await openDb(); } catch (error) { dbProblem = `(${error && error.name})`; }
+  try { await markIdb(); } catch (error) { dbProblem = `(${error && error.name})`; }
+  try { await loadFolders(); } catch (error) { dbProblem = `(${error && error.name})`; }
+  let kept = "";
+  try { kept = navigator.storage && navigator.storage.persisted ? `storage kept for good ${(await navigator.storage.persisted()) ? "yes" : "no"}` : ""; } catch { /* not offered */ }
+  showWhere(kept);
+  showRemembered();
+  showCopies();
+  showResults();
+  document.documentElement.dataset.ready = "yes";
+})();
+</script>
+</body>
+</html>
