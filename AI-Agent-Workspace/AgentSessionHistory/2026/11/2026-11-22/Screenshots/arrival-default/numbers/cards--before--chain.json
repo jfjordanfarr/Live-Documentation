@@ -1,0 +1,1307 @@
+{
+ "press-0": {
+  "before": {
+   "lod": "reading",
+   "k": "1.4500",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "reading",
+  "after": {
+   "lod": "reading",
+   "k": "1.4500",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  },
+  "cardsAfter": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  }
+ },
+ "press-3": {
+  "before": {
+   "lod": "far",
+   "k": "0.8391",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "far",
+  "after": {
+   "lod": "far",
+   "k": "0.8391",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  },
+  "cardsAfter": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  }
+ },
+ "press-7": {
+  "before": {
+   "lod": "overview",
+   "k": "0.4047",
+   "count": 52,
+   "reach": 0
+  },
+  "lodRightAfterRender": "overview",
+  "after": {
+   "lod": "overview",
+   "k": "0.4047",
+   "count": 52,
+   "reach": 0
+  },
+  "cardsBefore": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  },
+  "cardsAfter": {
+   "packages/engine/src/live-docs/history/format.ts": [
+    486,
+    277
+   ],
+   "packages/explorer/src/client/bootstrap/index.ts": [
+    359,
+    209
+   ],
+   "packages/explorer/src/client/bootstrap/landing.ts": [
+    359,
+    277
+   ],
+   "packages/explorer/src/client/search/graph-search.ts": [
+    494,
+    349
+   ],
+   "packages/explorer/src/client/search/search-bar.ts": [
+    503,
+    301
+   ],
+   "packages/explorer/src/client/persistence/history.ts": [
+    466,
+    565
+   ],
+   "packages/explorer/src/client/persistence/compressed-url-state.ts": [
+    503,
+    565
+   ],
+   "packages/explorer/src/client/persistence/place.ts": [
+    359,
+    256
+   ],
+   "packages/explorer/src/client/persistence/index.ts": [
+    359,
+    579
+   ],
+   "packages/explorer/src/client/history/file-identity.ts": [
+    466,
+    349
+   ],
+   "packages/explorer/src/client/history/moment.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/history/history-control.ts": [
+    503,
+    323
+   ],
+   "packages/explorer/src/client/history/moment-paths.ts": [
+    503,
+    472
+   ],
+   "packages/explorer/src/client/views/worldMap/index.ts": [
+    333,
+    351
+   ],
+   "packages/explorer/src/client/views/localView/directory-state.ts": [
+    468,
+    471
+   ],
+   "packages/explorer/src/client/views/localView/types.ts": [
+    477,
+    277
+   ],
+   "packages/explorer/src/client/views/localView/index.ts": [
+    333,
+    251
+   ],
+   "packages/explorer/src/client/views/localView/returning-connections.ts": [
+    333,
+    421
+   ],
+   "packages/explorer/src/client/views/pin-state.ts": [
+    434,
+    709
+   ],
+   "packages/explorer/src/client/views/retained-state.ts": [
+    466,
+    1141
+   ],
+   "packages/explorer/src/client/views/forceGraphScope.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/scanGrowth.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/views/perspectiveTransition.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/views/webgl-support.ts": [
+    359,
+    637
+   ],
+   "packages/explorer/src/client/views/forceGraphView.ts": [
+    359,
+    251
+   ],
+   "packages/explorer/src/client/views/scanGrowthPlay.ts": [
+    359,
+    231
+   ],
+   "packages/explorer/src/client/panels/stats-line.ts": [
+    434,
+    256
+   ],
+   "packages/explorer/src/client/panels/frame-crumbs.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/item-menu.ts": [
+    466,
+    303
+   ],
+   "packages/explorer/src/client/panels/sources-facts.ts": [
+    466,
+    277
+   ],
+   "packages/explorer/src/client/panels/icon-button.ts": [
+    466,
+    251
+   ],
+   "packages/explorer/src/client/panels/sources-view.ts": [
+    503,
+    251
+   ],
+   "packages/explorer/src/client/panels/spatial-legend.ts": [
+    503,
+    277
+   ],
+   "packages/explorer/src/client/panels/tuning.ts": [
+    503,
+    395
+   ],
+   "packages/explorer/src/client/panels/pin-tray.ts": [
+    503,
+    231
+   ],
+   "packages/explorer/src/client/panels/frame.ts": [
+    503,
+    375
+   ],
+   "packages/explorer/src/client/pathfind.ts": [
+    460,
+    709
+   ],
+   "packages/explorer/src/client/reading-state.ts": [
+    460,
+    349
+   ],
+   "packages/explorer/src/client/types.ts": [
+    520,
+    709
+   ],
+   "packages/explorer/src/client/dom.ts": [
+    492,
+    467
+   ],
+   "packages/explorer/src/client/layout-presets.ts": [
+    492,
+    349
+   ],
+   "packages/explorer/src/client/graph-helpers.ts": [
+    492,
+    395
+   ],
+   "packages/explorer/src/client/detailPanel.ts": [
+    529,
+    349
+   ],
+   "packages/explorer/src/client/announce.ts": [
+    529,
+    251
+   ],
+   "packages/explorer/src/client/errors.ts": [
+    529,
+    426
+   ],
+   "packages/explorer/src/client/download.ts": [
+    385,
+    423
+   ],
+   "packages/explorer/src/client/index.ts": [
+    200,
+    177
+   ],
+   "packages/explorer/src/shared/types.ts": [
+    423,
+    349
+   ],
+   "packages/explorer/src/shared/graph.ts": [
+    460,
+    277
+   ],
+   "packages/explorer/src/shared/staticExplorerData.ts": [
+    520,
+    277
+   ],
+   "packages/explorer/src/shared/template.html": [
+    492,
+    429
+   ],
+   ".live-docs.config.json": [
+    267,
+    204
+   ]
+  }
+ }
+}

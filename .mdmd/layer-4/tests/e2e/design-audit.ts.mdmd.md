@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/design-audit.ts`
-- Generated At: 2026-11-19T21:10:20.653Z
+- Generated At: 2026-11-22T15:17:00.431Z
 
 ## Authored
 ### Purpose
@@ -48,9 +48,33 @@ Text drawn across a shape: a piece's edge through a label, which a screenshot sh
 - Type: interface
 - Source: [source](../../../../tests/e2e/design-audit.ts#L47)
 
+#### `FarLookName` {#symbol-farlookname}
+- Type: interface
+- Source: [source](../../../../tests/e2e/design-audit.ts#L57)
+
+##### `FarLookName` — Summary
+One row's name as the Local Map draws it, judged by the one standard for a name in the far looks.
+
+#### `farLookNames` {#symbol-farlooknames}
+- Type: function
+- Source: [source](../../../../tests/e2e/design-audit.ts#L82)
+- Parameters: `page`: `Page`
+
+##### `farLookNames` — Summary
+The one standard for a symbol row's name in the far looks (the root's ruling of 2026-11-22, from the design system's
+fifth principle: where room runs out a name "is cut with an ellipsis or leaves the picture; it is never drawn
+smaller"). In the connections look and beyond, a name is right when what is drawn of it stands inside its own button
+and it is whole, or cut by its own ellipsis with its button's title saying the whole name. Its own ellipsis is the
+stylesheet's on one line, the clamp's on its last line, or the one the card reading writes into a name cut at a seam.
+Everything else is a fault: a name past its button, one clipped with no ellipsis, one shortened under no title or a
+wrong one. At reading size nothing is shortened, and any cut is a fault.
+
+The names' case of `zoom-looks.spec.ts` asserts no fault; the still picture counts the shortened names apart from the
+cut-offs it keeps at none (`still-picture.ts`, `scoreText`). One copy, so the two cannot come to disagree.
+
 #### `textBoxes` {#symbol-textboxes}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L65)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L133)
 - Parameters: `page`: `Page`
 
 ##### `textBoxes` — Summary
@@ -66,7 +90,7 @@ carries it.
 
 #### `outlines` {#symbol-outlines}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L123)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L191)
 - Parameters: `page`: `Page`
 
 ##### `outlines` — Summary
@@ -75,7 +99,7 @@ attribute on it or its nearest ancestor that carries it. Polygons faded below a 
 
 #### `textOverShapes` {#symbol-textovershapes}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L162)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L230)
 - Returns: [`Strike`](#symbol-strike)[]
 - Parameters: `boxes`: [`TextBox`](#symbol-textbox)[]; `shapes`: [`Outline`](#symbol-outline)[]
 
@@ -86,7 +110,7 @@ for each text and each owner, however many of the owner's polygons meet it; a te
 
 #### `overlapsAmong` {#symbol-overlapsamong}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L231)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L299)
 - Returns: [`Overlap`](#symbol-overlap)[]
 - Parameters: `boxes`: [`TextBox`](#symbol-textbox)[]
 
@@ -95,7 +119,7 @@ Every pair of boxes that intersect by more than the tolerance on both axes.
 
 #### `truncations` {#symbol-truncations}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L253)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L321)
 - Parameters: `page`: `Page`
 
 ##### `truncations` — Summary
@@ -106,7 +130,7 @@ navigation frames, so panning or scrolling content out of them does not turn tha
 
 #### `describeFaults` {#symbol-describefaults}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L389)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L459)
 - Parameters: `overlaps`: [`Overlap`](#symbol-overlap)[]; `cut`: [`Truncation`](#symbol-truncation)[]; `strikes`: [`Strike`](#symbol-strike)[]
 
 ##### `describeFaults` — Summary
