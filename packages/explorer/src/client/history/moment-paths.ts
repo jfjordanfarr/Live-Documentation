@@ -16,8 +16,9 @@
  * @module moment-paths
  */
 
+import { under } from "@live-documentation/engine/live-docs/pathfind";
+
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../shared/types";
-import { under } from "../views/localView/directory-state";
 import type { RetainedItem } from "../views/retained-state";
 import type { HistoryMoment } from "./moment";
 

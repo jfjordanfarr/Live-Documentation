@@ -21,7 +21,7 @@ import {
   normalizeLiveDocumentationConfig,
   type LiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { resolveDocLink, type GraphFile } from "@live-documentation/engine/live-docs/graph";
+import { resolveDocLink, type GraphFile, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   fileGroups,
@@ -30,6 +30,7 @@ import {
   reachability,
   searchGraph,
   searchSymbolPath,
+  under,
   type Direction,
   type OneWay
 } from "@live-documentation/engine/live-docs/pathfind";
@@ -217,26 +218,29 @@ async function main(): Promise<void> {
     return;
   }
 
-  // Standard file-level pathfinding
-  const fromId = resolveArtifactIdentifier(from, workspaceRoot, configInput, graph);
-  if (!fromId) {
+  // Standard file-level pathfinding. An end is a file, or a directory standing for every file under it, as the
+  // Explorer's path takes one (2026-11-22): both resolve a directory by the engine's `under`.
+  const start = resolveEnd(from, workspaceRoot, configInput, graph);
+  if (!start) {
     console.error(`Unable to resolve --from '${from}'.`);
     process.exit(1);
     return;
   }
+  const fromId = start.label;
 
   if (args.to) {
-    const toId = resolveArtifactIdentifier(args.to, workspaceRoot, configInput, graph);
-    if (!toId) {
+    const end = resolveEnd(args.to, workspaceRoot, configInput, graph);
+    if (!end) {
       console.error(`Unable to resolve --to '${args.to}'.`);
       process.exit(1);
       return;
     }
+    const toId = end.label;
 
     // Handle dual-direction search
     if (direction === "both") {
-      const outboundResult = searchGraph(graph, fromId, toId, "outbound", args.maxDepth);
-      const inboundResult = searchGraph(graph, fromId, toId, "inbound", args.maxDepth);
+      const outboundResult = searchGraph(graph, start.files, end.files, "outbound", args.maxDepth);
+      const inboundResult = searchGraph(graph, start.files, end.files, "inbound", args.maxDepth);
       emitDualDirectionResult(fromId, toId, outboundResult, inboundResult, graph, args.json, args.verbose);
       // Exit with success if at least one path found
       if (!outboundResult.path && !inboundResult.path) {
@@ -247,13 +251,13 @@ async function main(): Promise<void> {
 
     // Without --direction the route is found whichever way the dependency runs and told as asked: along what --from
     // uses first, else along what uses it (2026-11-22). --direction keeps the search to one way.
-    const searchResult = searchGraph(graph, fromId, toId, direction, args.maxDepth);
+    const searchResult = searchGraph(graph, start.files, end.files, direction, args.maxDepth);
     if (searchResult.path) {
       emitPathResult(searchResult.path, direction, graph, args.json, args.verbose);
       return;
     }
     if (!args.directionGiven) {
-      const against = searchGraph(graph, fromId, toId, "inbound", args.maxDepth);
+      const against = searchGraph(graph, start.files, end.files, "inbound", args.maxDepth);
       if (against.path) {
         emitPathResult(against.path, "inbound", graph, args.json, args.verbose);
         return;
@@ -263,18 +267,21 @@ async function main(): Promise<void> {
       return;
     }
 
-    const back = searchGraph(graph, toId, fromId, direction, args.maxDepth).path;
+    const back = searchGraph(graph, end.files, start.files, direction, args.maxDepth).path;
     emitNotFound(fromId, toId, direction, graph, searchResult, args.json, args.verbose, back ? { hops: back.length - 1 } : undefined);
     process.exit(1);
     return;
   }
 
-  // Every file a path reaches, nearest first: the Explorer's destination field asks the same of the same walk
+  // Every file a path reaches, nearest first: the Explorer's destination field asks the same of the same walk; from a
+  // directory, every file a path reaches from any of its files, its own files not listed.
   if (args.reachable) {
     const ways: OneWay[] = direction === "both" ? ["outbound", "inbound"] : [direction];
+    const own = new Set(start.files);
     const reached = ways.map((way) => ({
       direction: way,
-      files: [...reachFrom([fromId], (id) => getNeighbors(graph, id, way), args.maxDepth)]
+      files: [...reachFrom(start.files, (id) => getNeighbors(graph, id, way), args.maxDepth)]
+        .filter(([node]) => !own.has(node))
         .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
         .map(([node, hops]) => ({ node, hops }))
     }));
@@ -282,10 +289,39 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (start.directory) {
+    console.error(`${from} is a directory: give --to for a path from any of its files, or --reachable for what they reach.`);
+    process.exit(1);
+    return;
+  }
+
   // A file alone: its direct neighbours each way asked, counted and bounded (until 2026-11-22, every terminal path whole)
   const ways: OneWay[] = direction === "both" ? ["outbound", "inbound"] : [direction];
   const neighbours = ways.map((way) => ({ direction: way, files: [...new Set(getNeighbors(graph, fromId, way))].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)) }));
   emitNeighbourResult(fromId, neighbours, graph, args.json, args.verbose, documentsOf(graph.files[fromId], configInput));
+}
+
+/**
+ * An end of a path or a reach: a file the docs know, or else a directory holding some, standing for every file under
+ * it by the engine's `under`, the rule the Explorer's path ends use. A directory is named as typed, with or without a
+ * closing slash, and found in any case when not as spelled; its label ends in a slash.
+ */
+function resolveEnd(typed: string, workspaceRoot: string, config: LiveDocumentationConfig, graph: LiveDocGraph): { label: string; files: string[]; directory?: string } | undefined {
+  const file = resolveArtifactIdentifier(typed, workspaceRoot, config, graph);
+  if (file) {
+    return { label: file, files: [file] };
+  }
+  const directory = typed.replace(/\\/g, "/").replace(/^\.\//, "").replace(/\/+$/, "");
+  if (directory === "" || directory === ".") {
+    return undefined;
+  }
+  const ids = Object.keys(graph.files).sort();
+  let files = ids.filter((id) => under(id, directory));
+  if (files.length === 0) {
+    const folded = directory.toLowerCase();
+    files = ids.filter((id) => under(id.toLowerCase(), folded));
+  }
+  return files.length > 0 ? { label: `${directory}/`, files, directory } : undefined;
 }
 
 /** A file's related documents, both ways: what its authored words cite, and what cites it by its doc's `Cited By` section. */
