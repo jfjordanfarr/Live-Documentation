@@ -374,7 +374,11 @@ export interface PictureReading {
  * page's hit test and the membranes' fill tests were the greater part (21 s of 52 on the branches case's 385 wires,
  * 195,000 samples, on a slow day, 2026-11-07), so each is asked only where it can answer: the hit test where the sample
  * lies within a card other than the wire's ends, the fill test within the membrane's box; the rest of a reading is the
- * browser's own walk along each path to its sample points, kept as the oracle's arithmetic.
+ * browser's own walk along each path to its sample points, kept as the oracle's arithmetic. By 2026-11-22 that walk
+ * was itself seven tenths of a reading (56 s of 82 under the profiler on the lanes case's 516 wires, 247,000 samples):
+ * the browser walks a path from its start at every call. It is still the browser's arithmetic, asked of a short path
+ * for each segment (below), and every sample's questions are asked only of the boxes that meet the wire's own; the
+ * reading is the same to the last digit, which `still-picture-reference.spec.ts` holds against the reading kept as it was.
  */
 export async function readPicture(page: Page, view: ViewReading, names: Record<string, Record<string, string>>, along = true): Promise<PictureReading> {
   return page.evaluate(
@@ -435,11 +439,16 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         }
         return { id: card.dataset.id ?? "", bounds: grown(hull, 8) };
       });
+      // Each card's box, read once, and the cards of each file, in the page's order: a wire asks for its two files'
+      // cards, and nothing moves while the picture is read.
+      const cardBoxes = cards.map(card => card.getBoundingClientRect());
+      const cardsOf = new Map<string, number[]>();
+      cards.forEach((card, at) => { const id = card.dataset.id ?? ""; const list = cardsOf.get(id); if (list) list.push(at); else cardsOf.set(id, [at]); });
       let cardsInFrame = 0;
       let cardsPartlyInFrame = 0;
       const cardReadings: CardReading[] = [];
-      for (const card of cards) {
-        const r = card.getBoundingClientRect();
+      for (const [at, card] of cards.entries()) {
+        const r = cardBoxes[at];
         if (inside(r)) cardsInFrame += 1;
         else if (meets(r)) cardsPartlyInFrame += 1;
         const id = card.dataset.id ?? "";
@@ -479,7 +488,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
 
       /** The row of a symbol on a file's card, by the display name the DOM carries, or the file's internals row, or the card. */
       const endpointTexts = (file: string, symbol: string): Element[] | null => {
-        const fileCards = cards.filter(card => card.dataset.id === file);
+        const fileCards = (cardsOf.get(file) ?? []).map(at => cards[at]);
         if (fileCards.length === 0) return null;
         const display = symbol === "" ? "__internals__" : names[file]?.[symbol];
         for (const card of fileCards) {
@@ -495,8 +504,64 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         return null;
       };
 
+      // The walk along a wire, made short. The browser finds a point at a length by walking the path from its start, at
+      // every call, so a point far along a long wire pays for everything before it, and a wire's walk costs its length
+      // squared: on a retained picture of 516 wires that was seven tenths of a reading's time (measured 2026-11-22).
+      // So each wire of several segments is given, for each segment, a short path that stands for the wire up to that
+      // segment: everything before it as one straight line of the same length, as the browser itself measures that much
+      // of the wire, in a sub-path of its own, and then the segment from its own start. The browser's walk reaches the
+      // segment with the same length behind it and the same point under it, and gives the same point to the last digit
+      // (compared on every sample of three pictures that day, and held by `still-picture-reference.spec.ts`). A wire
+      // whose short paths do not measure the wire's own length to the digit is walked whole, as before; so is a stub
+      // and any path written in other than absolute moves, lines and curves.
+      const NUMBER = /[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?/gi;
+      const segmentsOf = (d: string): Array<{ from: string[]; text: string }> | null => {
+        const commands = [...d.matchAll(/([A-Za-z])([^A-Za-z]*)/g)];
+        if (commands.length < 2 || commands[0][1] !== "M") return null;
+        let at: string[] = commands[0][2].match(NUMBER) ?? [];
+        if (at.length !== 2) return null;
+        const segments: Array<{ from: string[]; text: string }> = [];
+        for (const [, letter, args] of commands.slice(1)) {
+          const size = ({ L: 2, C: 6, Q: 4 } as Record<string, number>)[letter];
+          const numbers: string[] = args.match(NUMBER) ?? [];
+          if (!size || numbers.length === 0 || numbers.length % size !== 0) return null;
+          for (let i = 0; i < numbers.length; i += size) {
+            const part = numbers.slice(i, i + size);
+            segments.push({ from: at, text: `${letter}${part.join(" ")}` });
+            at = part.slice(-2);
+          }
+        }
+        return segments;
+      };
+      const SVG = "http://www.w3.org/2000/svg";
+      // Where the short paths stand while the picture is read: rendered, as a path must be to be measured, and taking no
+      // room, no paint and no pointer. Taken away again before the reading returns.
+      const bench = document.createElementNS(SVG, "svg");
+      bench.setAttribute("style", "position:fixed;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none");
+      const benchPath = (d: string): SVGPathElement => { const path = document.createElementNS(SVG, "path"); path.setAttribute("d", d); bench.append(path); return path; };
+      const wireElements = [...document.querySelectorAll<SVGGeometryElement>(view.wires)];
+      const shortPaths = new Map<Element, { before: number[]; paths: SVGPathElement[] }>();
+      if (along) {
+        const planned = wireElements.flatMap(el => {
+          const segments = el.tagName.toLowerCase() === "path" ? segmentsOf(el.getAttribute("d") ?? "") : null;
+          if (!segments || segments.length < 2) return [];
+          const start = `M${segments[0].from.join(" ")}`;
+          // The wire up to each segment, to be measured: all of them stand before any is asked, so that the page is
+          // laid out once for them and not once for each.
+          const upTo = segments.slice(1).map((_, k) => benchPath(start + segments.slice(0, k + 1).map(segment => segment.text).join("")));
+          return [{ el, segments, start, upTo }];
+        });
+        document.body.append(bench);
+        const measured = planned.map(plan => ({ ...plan, before: [0, ...plan.upTo.map(path => path.getTotalLength())] }));
+        bench.replaceChildren();
+        for (const plan of measured) {
+          const paths = plan.segments.map((segment, k) => benchPath(k === 0 ? plan.start + segment.text : `M0 0L${plan.before[k]} 0M${segment.from.join(" ")}${segment.text}`));
+          shortPaths.set(plan.el, { before: plan.before, paths });
+        }
+      }
+
       const wires: WireReading[] = [];
-      for (const el of document.querySelectorAll<SVGGeometryElement>(view.wires)) {
+      for (const el of wireElements) {
         const data = (el as unknown as HTMLElement).dataset;
         const sourceId = data.sourceId ?? "";
         const targetId = data.targetId ?? "";
@@ -531,24 +596,48 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         if (along && ctm && typeof el.getTotalLength === "function") {
           const length = el.getTotalLength();
           lengthPx = length * Math.hypot(ctm.a, ctm.b);
-          const sample = (at: number): DOMPoint => el.getPointAtLength(at).matrixTransform(ctm);
+          // The wire's short paths, where it has them and the last of them measures what the wire measures.
+          const short = shortPaths.get(el);
+          const plan = short && Object.is(short.paths[short.paths.length - 1].getTotalLength(), length) ? short : null;
+          let segment = 0;
+          const sample = (at: number): DOMPoint => {
+            if (!plan) return el.getPointAtLength(at).matrixTransform(ctm);
+            // The samples are asked in the order they lie along the wire; a point at a seam is the end of the segment before it.
+            while (segment + 1 < plan.before.length && plan.before[segment + 1] < at) segment += 1;
+            return plan.paths[segment].getPointAtLength(at).matrixTransform(ctm);
+          };
+          // The walk first, then the questions: once the wire's samples are known, so is the box they lie in, and only
+          // a directory, a lane or a card whose own box meets that box can hold one of them. Each question is then
+          // asked of those few and not of every box in the picture; the answers are the same (2026-11-22).
+          let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity;
           for (let at = 0; at <= length; at += 8) {
             const point = sample(at);
             points.push(point.x, point.y);
+            if (point.x < left) left = point.x;
+            if (point.x > right) right = point.x;
+            if (point.y < top) top = point.y;
+            if (point.y > bottom) bottom = point.y;
+          }
+          const near = (r: Edges): boolean => r.left <= right && r.right >= left && r.top <= bottom && r.bottom >= top;
+          const foreignFolders = folders.filter(folder => !under(folder.directory, consumer) && !under(folder.directory, provider) && near("rect" in folder ? folder.rect : folder.bounds));
+          const lanesNear = laneBoxes.filter(near);
+          const hullsNear = hulls.filter(hull => hull.id !== consumer && hull.id !== provider && near(hull.bounds));
+          for (let i = 0; i < points.length; i += 2) {
+            const x = points[i], y = points[i + 1];
             // Where the wire is drawn, in or out of the frame: a directory's box is a fact of the layout, not of the camera.
-            const foreign = folders.some(folder => inFolder(folder, point.x, point.y) && !under(folder.directory, consumer) && !under(folder.directory, provider));
+            const foreign = foreignFolders.some(folder => inFolder(folder, x, y));
             if (foreign) foreignSamples += 1;
-            if (laneBoxes.some(rect => within(rect, point.x, point.y))) {
+            if (lanesNear.some(rect => within(rect, x, y))) {
               laneSamples += 1;
               if (foreign) foreignLaneSamples += 1;
             }
-            if (point.x < frame.left || point.x > frame.right || point.y < frame.top || point.y > frame.bottom) continue;
+            if (x < frame.left || x > frame.right || y < frame.top || y > frame.bottom) continue;
             samples += 1;
             // Occluded where the page's topmost element at the sample belongs to a card other than the wire's ends; the
             // hit test, the costly reading, is asked only within such a card's hull, where alone it can say so.
-            if (hulls.some(hull => hull.id !== consumer && hull.id !== provider && within(hull.bounds, point.x, point.y))) {
-              const top = document.elementFromPoint(point.x, point.y);
-              const card = top?.closest<HTMLElement>(view.card);
+            if (hullsNear.some(hull => within(hull.bounds, x, y))) {
+              const over = document.elementFromPoint(x, y);
+              const card = over?.closest<HTMLElement>(view.card);
               if (card && card.dataset.id !== consumer && card.dataset.id !== provider) occludedSamples += 1;
             }
           }
@@ -561,9 +650,8 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         if (points.length >= 4) {
           const gapTo = (id: string, x: number, y: number): number => {
             let nearest = Infinity;
-            for (const card of cards) {
-              if (card.dataset.id !== id) continue;
-              const r = card.getBoundingClientRect();
+            for (const at of cardsOf.get(id) ?? []) {
+              const r = cardBoxes[at];
               const gap = Math.hypot(Math.max(0, r.left - x, x - r.right), Math.max(0, r.top - y, y - r.bottom));
               if (gap < nearest) nearest = gap;
             }
@@ -587,6 +675,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         for (let i = 2; i < points.length; i += 2) { horizontalPx += Math.abs(points[i] - points[i - 2]); verticalPx += Math.abs(points[i + 1] - points[i - 1]); }
         wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, horizontalPx, verticalPx, points, providerEnd, endpointBox, stub, kind, opacity: Number(style.opacity), filter: style.filter });
       }
+      bench.remove();
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },
     { view, names, frameSelector: FRAME, readingPx: READING_PX, along }

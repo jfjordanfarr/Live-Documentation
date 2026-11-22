@@ -103,6 +103,15 @@ Asked whether a route told against the drawing should also be drawn that way rou
 
 **Second piece, not sent:** a route drawn from its start by the same mirror, after the route's telling ([the task above](#the-way-down-from-the-world-map-keeps-the-request-in-view)) has landed. **What changes with it:** the guide's line that uses enter on the left, the design system's rule of a connection's direction in 2D, and the Explorer design's rule that a path is drawn only in the direction the map reads.
 
+### An opened directory does not rearrange the picture by surprise
+- state: open
+- holds: nothing built. After the landing of 2026-11-22: reproduce, measure what moves, then a trial of matched alternatives
+- evidence: the owner's playtest of the preview ([Turn 12 of the November 22 record](../AgentSessionHistory/2026/11/2026-11-22/2026-11-22.1.record.md#turn-12))
+
+Browsing down through directories, the owner met one whose files connect, and "the whole layout goes wild and things _massively_ reshuffle to accommodate. That is too much surprise". Flow has been an opened directory's default since November 13, by their own eye; a week of use is what changed it. Their proposal: Flow as a state behind a control that "glows amber like the 3D indicator does" when connections can be drawn, the shuffle at a press of it: "an amber indicator that connections _can_ be drawn onscreen now is _not_ too much surprise. A click on it which then does the big layout shuffle is likely more okay."
+
+**To find first:** what moves on that step (the opened directory's own cards, or every card on screen), by how much, and whether the layout's price weighs churn there at all; a picture before and after on the directories they walked, on this repository and on the estate. **Alternatives to build matched, as a trial:** their toggle with a cue that calls; Flow kept, with everything outside the opened directory held where it stands; the rearrangement shown as a transition that carries each card to its place. **To settle with it:** the cue's colour, since amber already means the connections 2D cannot draw in order; what a newcomer concludes from a grid with a cue (on November 12 one concluded from the grid alone that the map draws no connections), measured by blind testers; and what a link carries.
+
 ### A folder reached by its own name
 - state: active
 - holds: the search's part merged into the day branch (`890b32bca`, 2026-11-21) after root ran its browser cases on a quiet machine (the search bar's 12 and 18 of two other specs pass; four of the history panel's failed only for want of a history in that worktree); a folder too large for the window, chosen in the search, stood with its label 1,400 px below the window, and is now entered at its label and first row at reading size (`27c20cea8`, a failing case first); the World Map's box name not begun
