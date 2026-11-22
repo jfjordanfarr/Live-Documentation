@@ -21,6 +21,8 @@ Measured on 2026-11-13, 15:41 to 15:45 UTC, while a recomputation of the reposit
 
 Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-10)) the key's rows are a sample and at most two words, and the cases here read *Beyond* and *More connected* where they read the rows' sentences: a change of wording and nothing else.
 
+**Why the growth's count swings, measured 2026-11-22.** The second landing of that day stopped the growth at the bound; alone, the picture came to rest in 2,863 substeps, where it had taken 1,925 that morning. Traced, the settle is calm by 880 substeps and then glides for two thousand more with its largest move at about the stillness threshold itself, so rest is said wherever that glide first holds under the line ten ticks running, and a small change to the picture moves the count by a thousand either way. Two files dropped from the data changed nothing. The bound was left as it is; what the case could hold instead is in [the measurements](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/landing2-3d/README.md).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
