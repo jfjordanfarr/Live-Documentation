@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/force-graph-observation.ts`
-- Generated At: 2026-11-19T21:10:21.177Z
+- Generated At: 2026-11-22T22:34:37.603Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,8 @@ The [projected-wire regressions](force-graph-wires.spec.ts.mdmd.md) isolate one 
 Since November 13, 2026, `cameToRest` waits for the picture to come to rest under two bounds, for the two cases that wait for this repository's own whole 3D picture: [the update spec's motion case](force-graph-update.spec.ts.mdmd.md) and [the discovery spec's archipelago case](force-graph-discovery.spec.ts.mdmd.md). The engine takes one physics step per drawn frame and the gate's software renderer draws about four frames a second, so a settle's seconds measure the machine as much as the picture: the same commit settled in 111 s one night and 154 to 158 s the next. The wait ends when `aria-busy` says still or when the frames drawn since it began reach the case's bound, whichever comes first. The bound in frames is a hard expectation and answers whether the picture came to rest at all ("the picture did not come to rest within N drawn frames; after F frames and T s it was still moving"). The clock, the seconds each wait allowed before, is a soft expectation ("… the clock allows S s. Slow, not broken"), so a slow machine still turns the case red, by the clock alone, after the case has gone on to check the picture at rest. `caseClock` keeps a case's own former timeout as the same kind of soft expectation at its end, leaving the hard timeout as a net for a page that stops drawing. The clock stays red on a slow day on purpose: the owner, offered the frame bound in place of the clock, kept both: "I personally like that this keeps going red because it literally makes the perf a red-hot sticking point", and "A is a good idea though. I just don't want to see that urgency of bad perf going away" ([Turn 3 of the November 12 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/2026-11-12.1.record.md#turn-3)). Each settle writes one line beginning `came to rest?` to the test's output, and each case one beginning `case clock:`; the `list` reporter prints a test's output as it comes, so the gate's log carries the frames, seconds and frame rate of every settle (annotations would reach only the HTML report).
 
 **The bound counts substeps since 2026-11-19.** Until then a drawn frame took one evaluation of the field, a substep of the motion, so a bound in frames was a bound on the picture alone. Since the pacing let a frame take as many of a tick's substeps as fit in its ten milliseconds, frames to rest depend on the machine: the discovery case's grown group rested in 2,638 frames on a quiet machine and crossed its 2,700 at a load of 21. The motion force now counts its evaluations of the field (`MotionForce.evaluations`), the 3D map says the count on its container as `data-motion-substeps`, and `cameToRest` bounds that count where it bounded frames, at the same numbers, its soft clock unchanged; its line gives substeps and frames. Measured with the new unit and the callers' bounds in [the settle-sooner evidence](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/Screenshots/settle-sooner/README.md).
+
+**Whose actions are offered, since 2026-11-22.** `expectActionsOf` holds in one look that the actions the 3D map offers are a given body's, and where they are not its failure says whose they are as the page names them, what a press at the pointer's place would take hold of, whether the map says it is building and busy, and how far its motion has run. It was written for [the focus spec's first case](force-graph-focus.spec.ts.mdmd.md) after a landing in which a directory shell's actions stood where graph.ts's were expected and the case, pressing More by its name, said only after thirty seconds that the button was not found; no cause was found, so the case was made to say what the next occurrence needs ([the measurements, section 4](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/landing2-3d/README.md)). It waits for nothing and tries once.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -67,9 +69,22 @@ owner wants performance kept a red-hot sticking point (2026-11-12), and the case
 rest, so a red result says by itself whether the picture was wrong or the machine was slow. Each settle writes one
 line to the test's output, which the gate's `list` reporter prints.
 
+#### `expectActionsOf` {#symbol-expectactionsof}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L146)
+- Parameters: `page`: `Page`
+
+##### `expectActionsOf` — Summary
+Hold that the actions the 3D map offers are the given body's, read in one look and never waited for; where they are
+another's, or none, the failure says whose they are as the page names them, what a press at the pointer's place would
+take hold of, whether the map says it is building and busy, and how far its motion has run. A case that goes on to
+press one of a body's actions by its name calls this first: pressed blind, the button of a body whose actions are not
+the ones offered is waited for until the case's time runs out, and the failure then says only that it was not found
+(the landing of 2026-11-22, AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/landing2-3d/README.md).
+
 #### `caseClock` {#symbol-caseclock}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L143)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L166)
 
 ##### `caseClock` — Summary
 A case's own clock, kept as a soft expectation at its end: the case's alarm on performance, apart from its hard
@@ -78,7 +93,7 @@ at the case's end.
 
 #### `markRenderedLinks` {#symbol-markrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L153)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L176)
 - Parameters: `page`: `Page`
 
 ##### `markRenderedLinks` — Summary
@@ -86,7 +101,7 @@ Mark stable wire-to-buffer bindings so updates can prove they retained surviving
 
 #### `markedRenderedLinks` {#symbol-markedrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L166)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L189)
 - Parameters: `page`: `Page`
 
 ##### `markedRenderedLinks` — Summary
@@ -94,7 +109,7 @@ Surviving wires retain both their binding and GPU batch, including across histor
 
 #### `renderedNodes` {#symbol-renderednodes}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L183)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L206)
 - Parameters: `page`: `Page`
 
 ##### `renderedNodes` — Summary
@@ -102,7 +117,7 @@ Read identity from the picking index and geometry/alpha/positions from the actua
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L216)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L239)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
@@ -113,14 +128,14 @@ was withdrawn with the gradient, 2026-10-31).
 
 #### `referenceWire` {#symbol-referencewire}
 - Type: const
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L252)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L275)
 
 ##### `referenceWire` — Summary
 Whether a wire is a documented reference between two files, rather than containment or a document's citation.
 
 #### `clearStroke` {#symbol-clearstroke}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L259)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L282)
 - Parameters: `page`: `Page`
 
 ##### `clearStroke` — Summary
@@ -130,7 +145,7 @@ control, since a sphere or a label under the pointer takes the hover instead.
 
 #### `renderedBodyCarriers` {#symbol-renderedbodycarriers}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L273)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L296)
 - Parameters: `page`: `Page`
 
 ##### `renderedBodyCarriers` — Summary

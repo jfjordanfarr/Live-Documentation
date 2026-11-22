@@ -67,3 +67,15 @@ The page's own measures for the plain run: the whole press 312 ms, of which the 
 So the press does real work at the edge of its bound of 500 ms, 467 to 503 without the profiler, and most of it is one layout of the page. The 3D client's own share, its render, is 35 to 45 ms. Turning Wire Answers off did not remove the layout. Whether the press was this long before today was not measured: the first landing did not reach these lines, and yesterday's `main` was not built.
 
 **Nothing was changed for this case.** The cause lies in the perspective change in `index.ts`, which another builder holds this round.
+
+## 4. What the second case now says when it fails (added about 22:30 UTC)
+
+No cause was found for the More that was not found, so nothing was mended; the case was made to say what would have had to be captured. Before it presses "More actions for graph.ts" it waits, in the case's own time as the press waited before, until any actions are offered, and then holds in one look that they are graph.ts's (`expectActionsOf` in `tests/e2e/force-graph-observation.ts`). It adds no wait of its own and no second try, and it cannot pass where the case failed: another body's actions fail it at once.
+
+Seen red by a made fault, the pointer taken to rest on a directory shell's skin after the click and before the look (lines added for the run and removed):
+
+> the actions offered should be those of packages/engine/src/live-docs/graph.ts; they are: "Actions for the shell of scripts/layout-lab" (shell:scripts/layout-lab). A press at the pointer's place (719.5, 83.5) would take hold of: shell:scripts/layout-lab. The map does not say it is building; aria-busy is false; its motion has run 433 substeps
+
+It failed in 17.5 s where the landing's failure took the case's whole thirty. Without the fault the case passed alone (22.7 s).
+
+The same press is made the same blind way in two more places of `force-graph-focus.spec.ts`, both on the estate sample after its picture is held at rest, and both left as they are: "mouse Unpin releases hover attention" presses "Unpin PaymentResultModel.cs" straight after moving the pointer to the sphere, and "keyboard More keeps its sphere's controls available" holds "More actions for PaymentResultModel.cs" visible by its name and then focuses "Pin PaymentResultModel.cs". The two later places that reach Pin by name first hold the actions' `data-node-id`. `force-graph-discovery.spec.ts` presses no body's action.

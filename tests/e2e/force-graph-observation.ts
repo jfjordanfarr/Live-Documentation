@@ -136,6 +136,29 @@ export async function cameToRest(page: Page, bounds: { label: string; substeps: 
 }
 
 /**
+ * Hold that the actions the 3D map offers are the given body's, read in one look and never waited for; where they are
+ * another's, or none, the failure says whose they are as the page names them, what a press at the pointer's place would
+ * take hold of, whether the map says it is building and busy, and how far its motion has run. A case that goes on to
+ * press one of a body's actions by its name calls this first: pressed blind, the button of a body whose actions are not
+ * the ones offered is waited for until the case's time runs out, and the failure then says only that it was not found
+ * (the landing of 2026-11-22, AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/landing2-3d/README.md).
+ */
+export async function expectActionsOf(page: Page, id: string, pointer: { x: number; y: number }): Promise<void> {
+  const look = await page.evaluate(({ x, y }) => {
+    const container = document.getElementById("graph-svg"), strip = document.querySelector<HTMLElement>(".force-graph-actions");
+    const pick = (window as unknown as { renderedGraph?: { scene: { userData: { spatialPick?(x: number, y: number): string | null } } } }).renderedGraph?.scene.userData.spatialPick;
+    return {
+      offered: strip && !strip.hidden ? { id: strip.dataset.nodeId ?? null, name: strip.getAttribute("aria-label") } : null,
+      under: pick ? pick(x, y) ?? "the background" : "not known, the scene is not observed",
+      building: container?.dataset.building ?? null, busy: container?.getAttribute("aria-busy") ?? null, substeps: container?.dataset.motionSubsteps ?? null,
+    };
+  }, pointer);
+  const whose = look.offered ? `"${look.offered.name}" (${look.offered.id})` : "none";
+  expect(look.offered?.id ?? null, `the actions offered should be those of ${id}; they are: ${whose}. A press at the pointer's place (${pointer.x.toFixed(1)}, ${pointer.y.toFixed(1)}) would take hold of: ${look.under}. `
+    + `The map ${look.building ? `says it is building (${look.building})` : "does not say it is building"}; aria-busy is ${look.busy}; its motion has run ${look.substeps ?? "no"} substeps`).toBe(id);
+}
+
+/**
  * A case's own clock, kept as a soft expectation at its end: the case's alarm on performance, apart from its hard
  * timeout, which is only a safety net for a page that stops drawing. Call it at the case's start; call what it returns
  * at the case's end.
