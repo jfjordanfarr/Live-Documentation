@@ -1,0 +1,5 @@
+## 1
+find . -ipath '*PaymentService*' -not -path '*/node_modules/*' | head -100
+
+## 2
+cd PaymentService; cat PaymentService.csproj App.config PaymentService.cs Data/*.cs ../Contracts/IPaymentService.cs

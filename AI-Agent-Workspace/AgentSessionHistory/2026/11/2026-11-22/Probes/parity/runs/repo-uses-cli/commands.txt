@@ -1,0 +1,8 @@
+## 1
+live-docs --help 2>&1 | head -30
+
+## 2
+grep -rn "pathfind" . --include=*.ts --include=*.tsx --include=*.js --include=*.jsx --include=*.json --include=*.mjs -l --exclude-dir=node_modules | head -50
+
+## 3
+grep -rnI "pathfind" . --exclude-dir=node_modules --exclude-dir=.git | head -50

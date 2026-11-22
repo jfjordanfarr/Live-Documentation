@@ -1,0 +1,8 @@
+## 1
+find . -name "IPaymentService.cs" && grep -rn "IPaymentService" --include="*" . -I | head -100
+
+## 2
+cat Contracts/IPaymentService.cs; grep -rn "Contracts" --include=*.csproj . ; sed -n 1,60p Hub/PaymentHub.cs
+
+## 3
+grep -rn "Contracts" -I . | grep -i proj; sed -n 1,60p Hub/PaymentHub.cs

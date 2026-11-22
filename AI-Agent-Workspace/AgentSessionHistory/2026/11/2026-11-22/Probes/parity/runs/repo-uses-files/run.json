@@ -1,0 +1,88 @@
+{
+  "task": "repo-uses",
+  "arm": "files",
+  "source": "repository",
+  "base": "/tmp/claude-1000/-workspaces-Live-Documentation/8edd198a-ddfc-4db4-98d3-afb50c64b8a7/scratchpad/parity/base/repository-files",
+  "words": "A colleague pointed me to one of the files in our code, packages/explorer/src/client/pathfind.ts. What uses this file?",
+  "model": "claude-sonnet-5-5",
+  "effort": "default",
+  "maxTurns": 80,
+  "maxMinutes": 20,
+  "systemPrompt": "You are at a shell, in a folder that holds a copy of someone's code. Through your one tool you can run commands. They have sent you a message about the code. Do what they ask, then reply to them in plain words. Your reply is all they will read.",
+  "startedAt": "2026-11-22T01:43:09.085Z",
+  "finishedAt": "2026-11-22T01:43:18.641Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 9455,
+  "apiMs": 7707,
+  "turns": 3,
+  "commands": 2,
+  "commandsNamingLiveDocs": 0,
+  "commandsOutsideFolder": [],
+  "usage": {
+    "input": 6,
+    "cacheWrite": 3736,
+    "cacheRead": 7340,
+    "output": 1010
+  },
+  "costUsd": 0.02579,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 1010,
+      "cacheReadInputTokens": 7340,
+      "cacheCreationInputTokens": 3736,
+      "webSearchRequests": 0,
+      "costUSD": 0.02579,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 73,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3736,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "init": {
+    "cwd": "/tmp/session-33KKeb/code",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "Bash"
+    ],
+    "mcp_servers": [],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ]
+  }
+}

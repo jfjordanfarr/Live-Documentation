@@ -1,0 +1,5 @@
+## 1
+find . -name "IPaymentService.cs" && grep -rn --include="*" -I "IPaymentService" . | head -100
+
+## 2
+cat Contracts/IPaymentService.cs; grep -rn "Contracts" --include=*.csproj --include=*.sln . | head; grep -rn "Estate.Contracts" --include=*.cs . | head

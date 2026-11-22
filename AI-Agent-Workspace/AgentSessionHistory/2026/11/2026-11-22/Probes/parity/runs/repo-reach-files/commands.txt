@@ -1,0 +1,37 @@
+## 1
+cat scripts/live-docs/board.ts | head -50; grep -nE "import|require\(|export .* from" scripts/live-docs/board.ts
+
+## 2
+grep -rn "@live-documentation" tsconfig*.json package.json 2>/dev/null | head; ls; ls scripts/live-docs
+
+## 3
+mkdir -p /tmp/tools && cat > /tmp/tools/deps.py <<'E'
+import re,os,sys
+root=sys.argv[1]
+al={"@live-documentation/engine/":"packages/engine/src/","@live-documentation/explorer/":"packages/explorer/src/","@live-documentation/generator/":"packages/generator/src/"}
+pat=re.compile(r'''(?:import|export)\s[^;'"]*?from\s*['"]([^'"]+)['"]|import\s*['"]([^'"]+)['"]|import\(\s*['"]([^'"]+)['"]\s*\)|require\(\s*['"]([^'"]+)['"]\)''',re.S)
+def res(spec,f):
+    for k,v in al.items():
+        if spec.startswith(k): b=os.path.join(root,v+spec[len(k):])
+        else: continue
+        break
+    else:
+        if not spec.startswith('.'): return None
+        b=os.path.normpath(os.path.join(os.path.dirname(f),spec))
+    for c in [b,b+'.ts',b+'.tsx',b+'/index.ts',re.sub(r'\.js$','.ts',b)]:
+        if os.path.isfile(c): return c
+seen=set();st=[os.path.join(root,'scripts/live-docs/board.ts')]
+while st:
+    f=st.pop()
+    if f in seen: continue
+    seen.add(f)
+    for m in pat.finditer(open(f).read()):
+        s=next(g for g in m.groups() if g)
+        r=res(s,f)
+        if r: st.append(r)
+for f in sorted(seen): print(os.path.relpath(f,root))
+E
+python3 -I /tmp/tools/deps.py <folder>
+
+## 4
+grep -rhoE "from ['\"][^.@'\"][^'\"]*['\"]" scripts/live-docs/board.ts scripts/live-docs/cli.ts | sort -u

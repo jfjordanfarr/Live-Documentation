@@ -1,0 +1,91 @@
+{
+  "task": "repo-directory",
+  "arm": "cli",
+  "source": "repository",
+  "base": "/tmp/claude-1000/-workspaces-Live-Documentation/8edd198a-ddfc-4db4-98d3-afb50c64b8a7/scratchpad/parity/base/repository-cli",
+  "words": "Can you look at the folder packages/explorer/src/client/search and tell me how the files in it connect?",
+  "model": "claude-sonnet-5-5",
+  "effort": "default",
+  "maxTurns": 80,
+  "maxMinutes": 20,
+  "systemPrompt": "You are at a shell, in a folder that holds a copy of someone's code. Through your one tool you can run commands. The command `live-docs` is installed. They have sent you a message about the code. Do what they ask, then reply to them in plain words. Your reply is all they will read.",
+  "startedAt": "2026-11-22T01:43:18.092Z",
+  "finishedAt": "2026-11-22T01:43:32.055Z",
+  "exitCode": 0,
+  "outcome": "success",
+  "wallMs": 13751,
+  "apiMs": 10971,
+  "turns": 5,
+  "commands": 4,
+  "commandsNamingLiveDocs": 1,
+  "commandsOutsideFolder": [
+    "head -12 graph-search.ts search-field.ts search-bar.ts; sed -n 13,66p search-field.ts; sed -n 30,66p search-bar.ts; grep -rn \"search/\" ../ --include=*.ts | grep import | grep -v \"^../search/\"",
+    "cd ../..; grep -rn \"search/\\|search-bar\\|search-field\\|graph-search\" . --include=\"*.ts\" | grep import | grep -v \"^./client/search/\""
+  ],
+  "usage": {
+    "input": 8,
+    "cacheWrite": 6151,
+    "cacheRead": 16408,
+    "output": 1286
+  },
+  "costUsd": 0.039120800000000004,
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 8,
+      "outputTokens": 1286,
+      "cacheReadInputTokens": 16408,
+      "cacheCreationInputTokens": 6151,
+      "webSearchRequests": 0,
+      "costUSD": 0.039120800000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 27,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 6151,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "init": {
+    "cwd": "/tmp/session-Pkclfb/code",
+    "model": "claude-sonnet-5-5",
+    "permissionMode": "dontAsk",
+    "tools": [
+      "Bash"
+    ],
+    "mcp_servers": [],
+    "slash_commands": [],
+    "skills": [],
+    "agents": [
+      "claude",
+      "Explore",
+      "general-purpose",
+      "Plan",
+      "statusline-setup",
+      "web-fetch"
+    ],
+    "plugins": [
+      {
+        "name": "cc-plugin-agents-md",
+        "path": "builtin",
+        "source": "cc-plugin-agents-md@builtin"
+      },
+      {
+        "name": "cc-plugin-telemetry",
+        "path": "builtin",
+        "source": "cc-plugin-telemetry@builtin"
+      },
+      {
+        "name": "cc-plugin-privacy",
+        "path": "builtin",
+        "source": "cc-plugin-privacy@builtin"
+      },
+      {
+        "name": "cc-plugin-plugin-authoring",
+        "path": "builtin",
+        "source": "cc-plugin-plugin-authoring@builtin"
+      }
+    ]
+  }
+}

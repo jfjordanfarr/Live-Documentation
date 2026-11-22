@@ -1,0 +1,8 @@
+## 1
+live-docs --help 2>&1 | head -30; cat Hub/PaymentHub.cs | head -40; grep -rn "PaymentHub" . --exclude-dir=bin --exclude-dir=obj --exclude-dir=node_modules | head -40
+
+## 2
+cat Hub/App.config; grep -n -i "hub" Gateway/Web.config; sed -n 1,60p Gateway/Wcf/HubProxy.cs; ls Hub
+
+## 3
+sed -n 1,30p README.md
