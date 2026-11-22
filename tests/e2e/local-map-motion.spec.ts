@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 
 /**
  * The animated re-layout: a change of pins moves the branch picture from one
@@ -49,7 +49,7 @@ test("wires keep their elements and follow pins through interrupted, zoomed pin 
   // The stepped ladder, which at the wheel's zoom below still draws a row's Pin to press and to press again by the
   // keyboard: the three looks, the default since 2026-11-13, draw only a row's More there.
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); },
-    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0, zoomLooks: "stepped" } } }) });
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, moveMs: 1200, searchStarts: 0, zoomLooks: "stepped" } } }) });
   await page.goto(`/?view=local&node=${ROOT}main.ts`);
   await localMapSettled(page);
   await page.waitForTimeout(700);
@@ -102,7 +102,7 @@ test("wires keep their elements and follow pins through interrupted, zoomed pin 
 });
 
 async function openPicture(page: Page, moveMs?: number): Promise<void> {
-  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });
+  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, moveMs, searchStarts: 0 } } }) });
   await page.goto(localRetainUrl("/", FILES));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });

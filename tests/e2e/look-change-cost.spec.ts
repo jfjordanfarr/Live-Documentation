@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * What a change of look costs the page, held by count and not by the clock (the machine is shared; 2026-11-19, the
@@ -27,7 +27,7 @@ test.use({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
   await page.goto(estate);
   await page.locator(`.node-card[data-id="${payment}"]`).waitFor();

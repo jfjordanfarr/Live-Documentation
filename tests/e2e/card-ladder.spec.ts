@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_HYSTERESIS, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * The card ladder of November 5 (Turn 9), slot composition: inside a box that never changes, the camera's zoom picks a
@@ -74,7 +74,7 @@ test.beforeEach(async ({ page }) => {
   // The stepped ladder this spec holds, one choice away from the three looks since they became the default (2026-11-13).
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", zoomLooks: "stepped" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slot", zoomLooks: "stepped" } } })
   });
 });
 
@@ -83,7 +83,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   // sees a symbol's name grow into the room its description leaves.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", nameGrowth: 1.5, zoomLooks: "stepped" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slot", nameGrowth: 1.5, zoomLooks: "stepped" } } })
   });
   await page.goto(url({ selectedNodeId: payment }));
   const subject = page.locator(`.node-card[data-id="${payment}"]`);
@@ -476,7 +476,7 @@ for (const looks of ["stepped", "three"] as const) test(looks === "stepped"
   ? "beyond the middle band a row's Pin folds into its More, which a keyboard reaches and which pins and unpins"
   : "in the three looks' connections look a row's Pin folds into its More, which a keyboard reaches and which pins and unpins", async ({ page }) => {
   if (looks === "three") await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "slot", zoomLooks: "three" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, cardText: "slot", zoomLooks: "three" } } })
   });
   await page.goto(url({ selectedNodeId: stillPicture }));
   const subject = page.locator(`.node-card[data-id="${stillPicture}"]`);

@@ -6,14 +6,14 @@ import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/eval
 import { refine } from "../../scripts/layout-lab/refine";
 import { loadBundleGraph, type ScopeRun } from "../../scripts/layout-lab/scopes";
 import { DECK_SCOPES } from "./scopes";
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled, localRetainUrl } from "./still-picture";
 
 /** The inspected generator/warehouse improvements and the actual browser-to-command competition, including its wires. */
 test.use({ viewport: { width: 1600, height: 1000 } });
 
 async function tuning(page: Page, localMap: Record<string, number>): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, ...localMap } } })
   });
 }
 

@@ -141,8 +141,8 @@
           <label class="tuning-slider">
             <span>Wire Answers</span>
             <select id="tuning-wire-answers">
-              <option value="off" selected>Off</option>
-              <option value="on">On</option>
+              <option value="on" selected>On</option>
+              <option value="off">Off</option>
             </select>
           </label>
           <label class="tuning-slider">
@@ -291,9 +291,9 @@
           <label class="tuning-slider">
             <span>Arrival</span>
             <select id="tuning-arrival">
-              <option value="reading" selected>Reading Size</option>
+              <option value="then-neighbours-after" selected>Reading, Then Neighbours, Look After</option>
+              <option value="reading">Reading Size</option>
               <option value="then-neighbours">Reading, Then Neighbours</option>
-              <option value="then-neighbours-after">Reading, Then Neighbours, Look After</option>
               <option value="then-neighbours-before">Reading, Then Neighbours, Look Before</option>
               <option value="neighbours">Neighbours</option>
             </select>
@@ -301,9 +301,15 @@
           <label class="tuning-slider">
             <span>Arrival Waits</span>
             <select id="tuning-arrival-waits">
-              <option value="never" selected>Never</option>
-              <option value="pointed">While Pointed At</option>
+              <option value="attended" selected>While Pointed At Or Focused</option>
+              <option value="never">Never</option>
+              <option value="pointed">While Pointed At, Then A Rest More</option>
             </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Arrival Rest</span>
+            <input type="range" id="tuning-arrival-rest" min="0.5" max="6" step="0.25" value="1.5" />
+            <output id="tuning-arrival-rest-value">1.5</output>
           </label>
           <label class="tuning-slider">
             <span>Framing</span>

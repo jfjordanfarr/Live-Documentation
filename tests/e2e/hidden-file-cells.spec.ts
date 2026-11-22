@@ -3,7 +3,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { HiddenFilesLook } from "../../packages/explorer/src/client/types";
-import { localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled } from "./still-picture";
 
 /**
  * Hidden Files, a trial of 2026-11-17 behind Tuning → 2D Layout (the owner: "Could those be represented as cute little
@@ -30,7 +30,7 @@ async function still(page: Page): Promise<void> {
 async function visit(browser: Browser, hiddenFiles: HiddenFilesLook, address = `/?view=local&node=${SUBJECT}`) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, hiddenFiles } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, hiddenFiles } } })
   });
   const page = await context.newPage();
   await page.goto(address);

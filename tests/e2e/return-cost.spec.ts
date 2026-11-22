@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { DEFAULT_RETURN_COST } from "../../packages/explorer/src/client/views/localView/cycle-order";
-import { localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled } from "./still-picture";
 
 /**
  * A cycle's other orders as trials of the continuing search (2026-11-16). The first draw stands every cycle in the greedy
@@ -25,7 +25,7 @@ const link = (returnCost?: number, node = MANIFEST, site = "/"): string => `${si
 
 /** Opens the address, the manifest's by default, with the search seeded as asked, and records every count of returning connections the overlay shows. */
 async function open(page: Page, localMap: Record<string, number>, address = link()): Promise<void> {
-  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } }) });
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, ...localMap } } }) });
   await page.addInitScript(() => {
     const counts: number[] = [];
     (window as unknown as { backwardCounts: number[] }).backwardCounts = counts;

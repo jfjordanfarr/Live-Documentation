@@ -610,8 +610,9 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
 }
 #map-connections .wire-band:focus { outline: none; }
 /* A wire's words, in the World Map wire panel's form (world.css, .world-evidence) and the 2D map's own floating ground:
-   its head names the two files, then what is used and how many references. A peek takes no pointer; pinned, it takes
-   one for its close control, and its border is the selected colour's. */
+   its head names the two files, then what is used and how many references. It takes the pointer, peeked at or pinned,
+   so that the pointer can go onto it and its words be selected and copied (2026-11-22; WCAG 2.1, 1.4.13, *hoverable*);
+   pinned, it has a close control and its border is the selected colour's. */
 .wire-answer {
     position: absolute;
     z-index: 32;
@@ -625,10 +626,12 @@ body:has(#map-container[data-lod="overview"]) #local-legend .legend-row--gathere
     font-size: 12px;
     line-height: 1.5;
     color: var(--text-muted);
-    pointer-events: none;
+    pointer-events: auto;
+    user-select: text;
+    cursor: auto;
 }
 .wire-answer[hidden] { display: none; }
-.wire-answer.pinned { pointer-events: auto; border-color: var(--state-selected); border-left-width: 3px; }
+.wire-answer.pinned { border-color: var(--state-selected); border-left-width: 3px; }
 .wire-answer .head { display: flex; align-items: flex-start; gap: 8px; }
 .wire-answer .h { flex: 1; font-weight: 600; font-size: 13px; margin-bottom: 3px; color: var(--text-muted); }
 .wire-answer .name { color: var(--text-normal); }

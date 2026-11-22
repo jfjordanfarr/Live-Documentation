@@ -6,7 +6,7 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
 import { DEFAULT_RETURN_COST } from "../../packages/explorer/src/client/views/localView/cycle-order";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { DECK_SCOPES } from "./scopes";
-import { keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
 
 const generator = "packages/generator/src/generator.ts";
 test.use({ viewport: { width: 1600, height: 1000 } });
@@ -150,7 +150,7 @@ test("packing changes keep the selected file in place through 2D and 3D motion",
 
 test("instant continuing layouts redraw the actual wires onto their pins", async ({ page }) => {
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); },
-    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 0, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0 } } }) });
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, moveMs: 0, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0 } } }) });
   const scope = DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!;
   await page.goto(localRetainUrl(scope.base, scope.scope));
   await page.locator(".local-placed").waitFor();

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: `tests/e2e/playwright.config.ts`
 - Entry: tooling
-- Generated At: 2026-11-19T21:10:23.552Z
+- Generated At: 2026-11-22T02:10:46.202Z
 
 ## Authored
 ### Purpose
@@ -32,11 +32,11 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 ### Public Symbols
 #### `configFor` {#symbol-configfor}
 - Type: const
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L32)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L33)
 
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L88)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L92)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -48,4 +48,5 @@ Playwright configuration for the Explorer's browser suite: one Chromium worker o
 - [`browser-launch.browserLaunchOptions`](./browser-launch.ts.mdmd.md#symbol-browserlaunchoptions)
 - [`served-build.ServerPort`](./served-build.ts.mdmd.md#symbol-serverport)
 - [`served-build.serverPortForThisRun`](./served-build.ts.mdmd.md#symbol-serverportforthisrun)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 <!-- LIVE-DOC:END Dependencies -->

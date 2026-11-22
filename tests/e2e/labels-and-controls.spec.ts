@@ -4,6 +4,7 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
 import { seamBefore } from "../../packages/explorer/src/client/views/localView/word-seams";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { clearStroke, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { AT_READING_SIZE } from "./still-picture";
 
 /**
  * Labels and controls (the October 23 review's findings 8, 11, 14 and 16; built 2026-10-30): a name wraps only at a
@@ -20,7 +21,7 @@ const NAMES = ".node-title, .node-path, .symbol-label, .local-directory-leaf, .l
 async function narrowCards(page: Page): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { cardMaxWidth: 150 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, cardMaxWidth: 150 } } })
   });
 }
 
@@ -130,7 +131,7 @@ test("the toolbar's groups stand parted by rules, each choice group with one cho
 /** Chooses how an opened directory stands for every page this test opens, beside the suite's own saved tuning. */
 async function chooseLayout(page: Page, layout: "flow" | "grid"): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, directoryLayout: layout } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, directoryLayout: layout } } })
   });
 }
 

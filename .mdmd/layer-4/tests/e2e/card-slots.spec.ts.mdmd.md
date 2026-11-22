@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/card-slots.spec.ts`
-- Generated At: 2026-11-19T21:10:20.270Z
+- Generated At: 2026-11-22T02:10:43.297Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

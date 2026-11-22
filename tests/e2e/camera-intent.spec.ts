@@ -3,17 +3,22 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ArrivalFraming, CameraFraming, CutCounted, StepFraming } from "../../packages/explorer/src/client/types";
-import { ARRIVAL_FLOOR_RATIO } from "../../packages/explorer/src/client/views/localView/camera-intent";
+import { ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S } from "../../packages/explorer/src/client/views/localView/camera-intent";
 import { choose } from "./search-bar";
-import { loadGraph, localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, loadGraph, localMapSettled } from "./still-picture";
 
 /**
  * The 2D camera follows the intent a gesture declares (2026-11-19). A step from inside the map keeps the camera's scale
  * and brings what it brought into view: the owner, on the cells, "I might wish the camera followed the newly-opened one
- * though, as I quickly lose it." A fresh subject is framed by Tuning's Arrival: at reading size, the default; at reading
- * size and then eased back to the neighbours, the owner's "reasonable best-of-both-worlds default?" for a reader who
- * must first see that the deepest level of detail exists; or on the neighbours at once. Read on this repository's
- * `pathfind.ts`, the owner's picture, and the estate's `PaymentsContext.cs`, whose neighbours all fit.
+ * though, as I quickly lose it." A fresh subject is framed by Tuning's Arrival: at reading size and then eased back to
+ * the neighbours, for a reader who must first see that the deepest level of detail exists, its look changed at rest
+ * after the ease, the default since 2026-11-22 (the owner, of the three forms: "Reading, Then Neighbours, Look After");
+ * the same with the look changed where the zoom crosses its edge, or before the ease; at reading size, the default until
+ * then; or on the neighbours at once. The pull-back waits on the person (Arrival Waits and Arrival Rest; the owner the
+ * same day: "ensure a minimum of N seconds of reading view size time, then permit immediate zoom-out when pointer exits
+ * node"). Read on this repository's `pathfind.ts`, the owner's picture, and the estate's `PaymentsContext.cs`, whose
+ * neighbours all fit. A case whose subject is a step, the following camera or the cut counted, and not the arrival,
+ * arrives at reading size and says so (`AT_READING_SIZE`, still-picture.ts).
  */
 
 const SUBJECT = "packages/engine/src/live-docs/pathfind.ts";
@@ -73,7 +78,8 @@ test("a cell's press brings its new card wholly into view at the same scale, or 
   // The owner's case: the reading look at pathfind.ts, a cell under live-docs/history. Its first cell's card was placed
   // past the view's right edge; its sixteenth cell's card is taller than the view at this scale.
   for (const index of [0, 15]) {
-    const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`);
+    // The step is the subject here, taken from reading size as the owner took it: the arrival is held there.
+    const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "reading");
     await still(page);
     const cell = page.locator(`.local-directory-label[data-directory="${HISTORY}"] .local-directory-field .local-directory-cell--file:not([hidden])`).nth(index);
     const path = (await cell.getAttribute("data-path"))!;
@@ -97,21 +103,21 @@ test("a cell's press brings its new card wholly into view at the same scale, or 
   }
 });
 
-test("the default arrival rests on the subject's card at reading size and stays there", async ({ browser }) => {
-  const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`);
+test("Reading Size, the default until 2026-11-22, rests on the subject's card at reading size and stays there", async ({ browser }) => {
+  const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "reading");
   await still(page);
   const rest = await cameraOf(page);
   expect(rest.look).toBe("reading");
   await expect(page.locator("#tuning-arrival")).toHaveValue("reading");
-  // Longer than any hold and ease: nothing eases back.
-  await page.waitForTimeout(2500);
+  // Longer than any rest and ease: nothing eases back.
+  await page.waitForTimeout(ARRIVAL_REST_S * 1000 + 1600);
   expect(await cameraOf(page)).toEqual(rest);
   await context.close();
 });
 
 test("Reading, Then Neighbours rests at reading size, then ends with every card one connection from PaymentsContext.cs in view", async ({ browser }) => {
   test.setTimeout(90_000);
-  const reading = await visit(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`);
+  const reading = await visit(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, "reading");
   await still(reading.page);
   const readingK = (await cameraOf(reading.page)).k;
   await reading.context.close();
@@ -156,21 +162,24 @@ test("Reading, Then Neighbours on pathfind.ts stops where names still read and c
  * Every frame's scale and look from the page's start, read by the page itself (the pull-back's trials of 2026-11-21:
  * where in the motion the look changes is what they change).
  */
-async function frameLog(page: Page): Promise<Array<{ k: number; look: string }>> {
-  return page.evaluate(() => (window as unknown as { frameLog: Array<{ k: number; look: string }> }).frameLog);
+interface LoggedFrame { k: number; look: string; t: number; arrival: string | null }
+
+async function frameLog(page: Page): Promise<LoggedFrame[]> {
+  return page.evaluate(() => (window as unknown as { frameLog: LoggedFrame[] }).frameLog);
 }
 
-async function visitLogged(browser: Browser, address: string, localMap: Record<string, string>) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+/** A fresh visitor whose page logs every frame: its scale, its look, its time and what the map says of its arrival. */
+async function visitLogged(browser: Browser, address: string, localMap: Record<string, string | number>, reducedMotion: "reduce" | "no-preference" = "no-preference") {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, reducedMotion });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
   });
   await context.addInitScript(() => {
-    const log: Array<{ k: number; look: string }> = (window as unknown as { frameLog: typeof log }).frameLog = [];
+    const log: Array<{ k: number; look: string; t: number; arrival: string | null }> = (window as unknown as { frameLog: typeof log }).frameLog = [];
     const tick = (): void => {
       const viewport = document.querySelector<HTMLElement>("#map-viewport"), map = document.querySelector<HTMLElement>("#map-container");
       const k = Number((viewport?.style.transform.match(/scale\(([\d.e-]+)\)/) ?? [])[1]);
-      if (map?.dataset.look && Number.isFinite(k)) log.push({ k, look: map.dataset.look });
+      if (map?.dataset.look && Number.isFinite(k)) log.push({ k, look: map.dataset.look, t: performance.now(), arrival: map.dataset.arrival ?? null });
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -202,7 +211,131 @@ test("Look After holds the reading look through the whole ease and changes it on
   }
 });
 
-test("Arrival Waits, While Pointed At: a pointer brought to the subject's card holds the rest at reading size until it leaves", async ({ browser }) => {
+/** What the map says of its arrival: resting, waiting on the person, easing, or nothing. */
+const arrivalOf = (page: Page) => page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.arrival ?? null);
+
+/** When, by the page's own clock, the first frame after `since` was drawn at a scale below `k`; null when none was. */
+const firstBelow = async (page: Page, k: number, since: number): Promise<number | null> =>
+  (await frameLog(page)).find(frame => frame.t >= since && frame.k < k - 1e-6)?.t ?? null;
+
+test("the default arrival rests at reading size for the rest, eases back in the reading look and changes the look once at its end", async ({ browser }) => {
+  test.setTimeout(120_000);
+  // Nothing chosen: the product's own defaults, with only the continuing search off.
+  const { context, page } = await visitLogged(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, {});
+  await expect(page.locator("#tuning-arrival")).toHaveValue("then-neighbours-after");
+  await expect(page.locator("#tuning-arrival-waits")).toHaveValue("attended");
+  await expect(page.locator("#tuning-arrival-rest")).toHaveValue(String(ARRIVAL_REST_S));
+  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).toBe("resting");
+  await still(page);
+  expect(await arrivalOf(page), "the arrival is over").toBeNull();
+  const log = await frameLog(page), start = log[0].k, end = log.at(-1)!;
+  expect(end.look, "it ends in the connections look, where every card's names read").toBe("connections");
+  expect(end.k).toBeCloseTo(start * ARRIVAL_FLOOR_RATIO, 6);
+  // At reading size for at least the rest, counted on the page's own clock from the first frame it said it rested.
+  const rested = log.find(frame => frame.arrival === "resting")!, eased = log.find(frame => frame.k < start - 1e-6)!;
+  expect(eased.t - rested.t, "the rest at reading size").toBeGreaterThanOrEqual(ARRIVAL_REST_S * 1000);
+  // Nobody pointed at the card or focused it: it never waited on anyone, and went when the rest had passed.
+  expect(log.some(frame => frame.arrival === "waiting"), "it waited on nobody").toBe(false);
+  // The reading look through the whole ease, and one change, at rest at its end.
+  const moving = log.filter(frame => frame.k < start - 1e-6 && frame.k > end.k + 1e-6);
+  expect(moving.length, "the ease draws frames").toBeGreaterThan(2);
+  expect([...new Set(moving.map(frame => frame.look))], "one look through the whole motion").toEqual(["reading"]);
+  expect(log.filter((frame, index) => index > 0 && frame.look !== log[index - 1].look).length, "the look changes once").toBe(1);
+  const subject = (await boxOf(page, card(SUBJECT)))!, frame = await frameOf(page);
+  expect((subject.left + subject.right) / 2).toBeCloseTo((frame.left + frame.right) / 2, 0);
+  await context.close();
+});
+
+test("the default arrival waits while the pointer is on the card it arrived at, at rest and at reading size, and eases back as soon as the pointer leaves", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitLogged(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, {});
+  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).toBe("resting");
+  const name = (await page.locator(`${card(PAYMENTS)} .local-file-name`).boundingBox())!;
+  await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2, { steps: 4 });
+  // Past its rest it waits on the reader, and says so: the camera does not move, and whoever waits for rest has it.
+  await expect.poll(() => arrivalOf(page), { timeout: 10_000, intervals: [50] }).toBe("waiting");
+  expect((await cameraOf(page)).moving, "waiting on the reader, the camera is at rest").toBe(false);
+  // Reading size, read once the camera's own move to it has ended.
+  const readingK = (await cameraOf(page)).k;
+  // Twice the rest more, the pointer still on the card: nothing has moved.
+  await page.waitForTimeout(ARRIVAL_REST_S * 2000);
+  expect(await arrivalOf(page)).toBe("waiting");
+  expect((await cameraOf(page)).k, "still at reading size").toBeCloseTo(readingK, 6);
+  // The pointer leaves the card for the empty map at the view's foot: the ease begins at once, with no second rest.
+  const left = await page.evaluate(() => performance.now());
+  await page.mouse.move(2, 890, { steps: 4 });
+  await expect.poll(() => firstBelow(page, readingK, left), { timeout: 5_000, intervals: [20] }).not.toBeNull();
+  const began = (await firstBelow(page, readingK, left))!;
+  expect(began - left, "the pull-back begins as soon as the pointer is off the card").toBeLessThan(500);
+  await still(page);
+  expect((await cameraOf(page)).k).toBeLessThan(readingK);
+  expect(await arrivalOf(page)).toBeNull();
+  await context.close();
+});
+
+test("the keyboard's focus holds the default arrival as the pointer does: inside the card it waits, a Tab within the card keeps it, and it eases back when the focus leaves", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitLogged(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, {});
+  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).toBe("resting");
+  // The focus comes to the card's name as a keyboard brings it: no pointer has been used on this page.
+  await page.locator(`${card(PAYMENTS)} .local-file-name`).focus();
+  const inCard = () => page.evaluate(id => !!document.activeElement?.closest(`.node-card[data-id="${CSS.escape(id)}"]`), PAYMENTS);
+  expect(await page.evaluate(() => document.activeElement?.matches(":focus-visible")), "the focus is a keyboard's").toBe(true);
+  await expect.poll(() => arrivalOf(page), { timeout: 10_000, intervals: [50] }).toBe("waiting");
+  // Reading size, read once the camera's own move to it has ended.
+  const readingK = (await cameraOf(page)).k;
+  await page.waitForTimeout(ARRIVAL_REST_S * 1000);
+  expect((await cameraOf(page)).k, "still at reading size").toBeCloseTo(readingK, 6);
+  // A key that only moves the focus is no act on the picture: on to the card's next control, the arrival still waits.
+  await page.keyboard.press("Tab");
+  expect(await inCard(), "the next stop is in the same card").toBe(true);
+  await page.waitForTimeout(300);
+  expect(await arrivalOf(page), "a Tab inside the card neither ends the arrival nor lets it go").toBe("waiting");
+  // Back out of the card, a stop at a time: the pull-back begins when the focus has left it.
+  const left = await page.evaluate(() => performance.now());
+  for (let presses = 0; presses < 6 && await inCard(); presses += 1) await page.keyboard.press("Shift+Tab");
+  expect(await inCard(), "the focus left the card").toBe(false);
+  await expect.poll(() => firstBelow(page, readingK, left), { timeout: 5_000, intervals: [20] }).not.toBeNull();
+  await still(page);
+  expect((await cameraOf(page)).k).toBeLessThan(readingK);
+  await context.close();
+});
+
+test("a person who moves the camera while the default arrival waits has taken it: no pull-back follows when the pointer leaves the card", async ({ browser }) => {
+  test.setTimeout(120_000);
+  const { context, page } = await visitLogged(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, {});
+  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).toBe("resting");
+  const name = (await page.locator(`${card(PAYMENTS)} .local-file-name`).boundingBox())!;
+  await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2, { steps: 4 });
+  await expect.poll(() => arrivalOf(page), { timeout: 10_000, intervals: [50] }).toBe("waiting");
+  // Their own camera move, a turn of the wheel on the card.
+  await page.mouse.wheel(0, 120);
+  await still(page);
+  expect(await arrivalOf(page), "the arrival ended where it stood").toBeNull();
+  const taken = await cameraOf(page);
+  await page.mouse.move(2, 890, { steps: 4 });
+  // Longer than any rest and ease: the picture is theirs and stays where they put it.
+  await page.waitForTimeout(ARRIVAL_REST_S * 1000 + 1600);
+  expect(await cameraOf(page)).toEqual(taken);
+  await context.close();
+});
+
+test("where the person prefers reduced motion, the default arrival is on the neighbours at once, with no rest and no ease", async ({ browser }) => {
+  test.setTimeout(90_000);
+  const reduced = await visitLogged(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, {}, "reduce");
+  await still(reduced.page);
+  const log = await frameLog(reduced.page), first = await cameraOf(reduced.page);
+  await reduced.context.close();
+  const neighbours = await visit(browser, `${ESTATE}?view=local&node=${encodeURIComponent(PAYMENTS)}`, "neighbours");
+  await still(neighbours.page);
+  const end = await cameraOf(neighbours.page);
+  await neighbours.context.close();
+  expect(first.k, "the neighbours' frame").toBeCloseTo(end.k, 6);
+  expect(first.look).toBe(end.look);
+  expect(log.some(frame => frame.arrival !== null), "no arrival rested, waited or eased").toBe(false);
+});
+
+test("Arrival Waits, Never and the trial of 2026-11-21: never, the pull-back goes while the pointer rests on the card; in the trial, a pointer brought to the card holds the rest until it leaves", async ({ browser }) => {
   test.setTimeout(120_000);
   for (const arrivalWaits of ["never", "pointed"] as const) {
     const { context, page } = await visitLogged(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, { arrival: "then-neighbours", arrivalWaits });
@@ -210,7 +343,8 @@ test("Arrival Waits, While Pointed At: a pointer brought to the subject's card h
     const readingK = (await cameraOf(page)).k;
     const name = (await page.locator(`${card(SUBJECT)} .local-file-name`).boundingBox())!;
     await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2, { steps: 4 });
-    await page.waitForTimeout(3000);
+    // Three seconds when the rest was 0.9 s, fixed, as this case was written; longer by what the rest is longer since.
+    await page.waitForTimeout(3000 + ARRIVAL_REST_S * 1000 - 900);
     const held = (await cameraOf(page)).k;
     if (arrivalWaits === "never") expect(held, "never: pulled back while the pointer rests on the card").toBeLessThan(readingK * 0.9);
     else {
@@ -222,19 +356,23 @@ test("Arrival Waits, While Pointed At: a pointer brought to the subject's card h
   }
 });
 
-test("the person's input during the hold ends the arrival where it stands", async ({ browser }) => {
-  const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, "then-neighbours");
-  await expect.poll(async () => { const camera = await cameraOf(page); return camera.moving && camera.look === "reading"; }, { timeout: 5_000, intervals: [20] }).toBe(true);
-  const frame = await frameOf(page);
-  await page.mouse.move((frame.left + frame.right) / 2, (frame.top + frame.bottom) / 2);
-  await page.mouse.wheel(0, 1);
-  await still(page);
-  const at = await cameraOf(page);
-  await page.waitForTimeout(2500);
-  const later = await cameraOf(page);
-  expect(later).toEqual(at);
-  expect(later.look, "the camera never eased back to the neighbours").toBe("reading");
-  await context.close();
+test("the person's input during the rest ends the arrival where it stands, under the default and under Reading, Then Neighbours", async ({ browser }) => {
+  test.setTimeout(90_000);
+  for (const arrival of [undefined, "then-neighbours"] as const) {
+    const { context, page } = await visit(browser, `/?view=local&node=${encodeURIComponent(SUBJECT)}`, arrival);
+    await expect.poll(async () => { const camera = await cameraOf(page); return camera.moving && camera.look === "reading"; }, { timeout: 5_000, intervals: [20] }).toBe(true);
+    const frame = await frameOf(page);
+    await page.mouse.move((frame.left + frame.right) / 2, (frame.top + frame.bottom) / 2);
+    await page.mouse.wheel(0, 1);
+    await still(page);
+    const at = await cameraOf(page);
+    // Longer than any rest and ease.
+    await page.waitForTimeout(ARRIVAL_REST_S * 1000 + 1600);
+    const later = await cameraOf(page);
+    expect(later, arrival ?? "the default").toEqual(at);
+    expect(later.look, "the camera never eased back to the neighbours").toBe("reading");
+    await context.close();
+  }
 });
 
 test("where the person prefers reduced motion, Reading, Then Neighbours arrives on the neighbours at once, as Neighbours does", async ({ browser }) => {
@@ -276,7 +414,7 @@ const ROW = "PaymentService/Data/PostPaymentRow.cs";
 async function visitFraming(browser: Browser, address: string, framing: CameraFraming) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, framing } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, framing } } })
   });
   const page = await context.newPage();
   await page.goto(address);
@@ -368,7 +506,7 @@ test("following, the continuing search's rearrangement never zooms in and keeps 
   for (const framing of ["hand", "follows"] as const) {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
     await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 6, framing } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 6, framing } } })
     });
     const page = await context.newPage();
     await page.goto(link("/", pins, SUBJECT));
@@ -417,7 +555,7 @@ test("following, pins that cannot all be framed leave the oldest out, always fra
 async function visitStep(browser: Browser, step: StepFraming, cutCounted: CutCounted = "off") {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step, cutCounted } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, step, cutCounted } } })
   });
   const page = await context.newPage();
   await page.goto(`/?view=local&node=${encodeURIComponent(SUBJECT)}`);
@@ -475,7 +613,7 @@ test("Step, With Its Lines: Data opened inside the estate's PaymentService is fr
   test.setTimeout(120_000);
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, step: "lines" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, step: "lines" } } })
   });
   const page = await context.newPage();
   await page.goto(ESTATE);
@@ -564,7 +702,7 @@ test("a link carries Step: a fresh browser opens the link's choice", async ({ br
 test("a folder chosen in the search stands whole in the frame, not centred on its name with the window's upper half empty", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
   const page = await context.newPage();
   await page.goto(ESTATE);
@@ -587,7 +725,7 @@ test("a folder chosen in the search that no frame holds is entered at its label 
   test.setTimeout(120_000);
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
   const page = await context.newPage();
   await page.goto(`/?view=local&mode=2d&node=${encodeURIComponent(SUBJECT)}`);

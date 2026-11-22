@@ -1,0 +1,3324 @@
+[
+ {
+  "subject": "estate",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 1197,
+   "cards": 8,
+   "bands": 4,
+   "wires": 23
+  },
+  "restBeforeEase": 5883,
+  "ease": {
+   "ms": 733,
+   "frames": 9,
+   "fromK": 1.45,
+   "toK": 0.576,
+   "median": 66.7,
+   "p90": 149.9,
+   "worst": 149.9,
+   "whole": {
+    "script": 316.1,
+    "style": 79.7,
+    "layout": 6.1,
+    "paint": 135.4,
+    "other": 54.1,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 5.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 2.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 8.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 7.3,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 6.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 633,
+   "ms": 149.9,
+   "k": 0.598,
+   "state": "reading|reading|0|false|moving",
+   "script": 42.7,
+   "style": 16.8,
+   "layout": 1.6,
+   "paint": 10.6,
+   "other": 7.5,
+   "styles": [
+    {
+     "ms": 7.3,
+     "elements": 2,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "Ir:293:15902",
+      "frameRect:5177:72379",
+      "s:5177:78593"
+     ]
+    },
+    {
+     "ms": 2.8,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:72216",
+      "frameRect:5177:72524",
+      "s:5177:78593"
+     ]
+    },
+    {
+     "ms": 1.9,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 3.5,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "sayCut:5177:54467",
+      "updateMapTransform:5177:67279",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 1.3,
+     "elements": 4,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+     4
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+     3
+    ],
+    [
+     "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+     3
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+     3
+    ],
+    [
+     "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+     3
+    ],
+    [
+     "StyleRecalc: Animation SPAN class='map-edge map-edge-above'",
+     1
+    ],
+    [
+     "ScheduleStyle: data-left DIV class='map-edges'",
+     1
+    ],
+    [
+     "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+     1
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-left'",
+     1
+    ],
+    [
+     "StyleRecalc: Related style rule SPAN class='map-edge map-edge-left'",
+     1
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 67,
+    "ms": 66.6,
+    "k": 1.445,
+    "state": "reading|reading|0|false|moving",
+    "script": 42.1,
+    "style": 8,
+    "layout": 0,
+    "paint": 9.6,
+    "other": 3.7,
+    "styles": [
+     {
+      "ms": 0.7,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.4,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ]
+    ]
+   },
+   {
+    "at": 333,
+    "ms": 116.7,
+    "k": 1.135,
+    "state": "reading|reading|0|false|moving",
+    "script": 36.3,
+    "style": 5.6,
+    "layout": 0,
+    "paint": 42.7,
+    "other": 11.1,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      6
+     ],
+     [
+      "ScheduleStyle: data-above DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-above'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-above'",
+      1
+     ]
+    ]
+   },
+   {
+    "at": 400,
+    "ms": 66.7,
+    "k": 0.771,
+    "state": "reading|reading|0|false|moving",
+    "script": 37.6,
+    "style": 6.3,
+    "layout": 0,
+    "paint": 12.4,
+    "other": 7.6,
+    "styles": [
+     {
+      "ms": 1.4,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Animation SPAN class='map-edge map-edge-above'",
+      1
+     ]
+    ]
+   },
+   {
+    "at": 483,
+    "ms": 83.3,
+    "k": 0.661,
+    "state": "reading|reading|0|false|moving",
+    "script": 21,
+    "style": 13.7,
+    "layout": 1.2,
+    "paint": 19.7,
+    "other": 9.1,
+    "styles": [
+     {
+      "ms": 8.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 0.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Animation SPAN class='map-edge map-edge-above'",
+      1
+     ],
+     [
+      "ScheduleStyle: data-below DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-below'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-below'",
+      1
+     ]
+    ]
+   },
+   {
+    "at": 633,
+    "ms": 149.9,
+    "k": 0.598,
+    "state": "reading|reading|0|false|moving",
+    "script": 42.7,
+    "style": 16.8,
+    "layout": 1.6,
+    "paint": 10.6,
+    "other": 7.5,
+    "styles": [
+     {
+      "ms": 7.3,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.9,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 3.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Animation SPAN class='map-edge map-edge-above'",
+      1
+     ],
+     [
+      "ScheduleStyle: data-left DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-left'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-left'",
+      1
+     ]
+    ]
+   },
+   {
+    "at": 733,
+    "ms": 100,
+    "k": 0.576,
+    "state": "reading|reading|0|false|moving",
+    "script": 49.7,
+    "style": 8.6,
+    "layout": 2.5,
+    "paint": 16.1,
+    "other": 5.6,
+    "styles": [
+     {
+      "ms": 6.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Animation SPAN class='map-edge map-edge-below'",
+      1
+     ],
+     [
+      "ScheduleStyle: data-right DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-right'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-right'",
+      1
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 67,
+    "ms": 66.6,
+    "k": 1.445,
+    "look": "reading",
+    "style": 8,
+    "paint": 9.6,
+    "restyled": 11
+   },
+   {
+    "at": 117,
+    "ms": 50,
+    "k": 1.414,
+    "look": "reading",
+    "style": 5.9,
+    "paint": 7,
+    "restyled": 7
+   },
+   {
+    "at": 167,
+    "ms": 50,
+    "k": 1.357,
+    "look": "reading",
+    "style": 8.2,
+    "paint": 10.8,
+    "restyled": 3
+   },
+   {
+    "at": 217,
+    "ms": 50,
+    "k": 1.265,
+    "look": "reading",
+    "style": 6.5,
+    "paint": 6.6,
+    "restyled": 4
+   },
+   {
+    "at": 333,
+    "ms": 116.7,
+    "k": 1.135,
+    "look": "reading",
+    "style": 5.6,
+    "paint": 42.7,
+    "restyled": 11
+   },
+   {
+    "at": 400,
+    "ms": 66.7,
+    "k": 0.771,
+    "look": "reading",
+    "style": 6.3,
+    "paint": 12.4,
+    "restyled": 8
+   },
+   {
+    "at": 483,
+    "ms": 83.3,
+    "k": 0.661,
+    "look": "reading",
+    "style": 13.7,
+    "paint": 19.7,
+    "restyled": 3
+   },
+   {
+    "at": 633,
+    "ms": 149.9,
+    "k": 0.598,
+    "look": "reading",
+    "style": 16.8,
+    "paint": 10.6,
+    "restyled": 9
+   },
+   {
+    "at": 733,
+    "ms": 100,
+    "k": 0.576,
+    "look": "reading",
+    "style": 8.6,
+    "paint": 16.1,
+    "restyled": 5
+   }
+  ],
+  "changes": [
+   {
+    "at": -5883,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1933,
+    "k": 0.576,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 2317,
+    "k": 0.576,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -5883,
+    "ms": 166.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1700,
+    "ms": 4183.2,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1933,
+    "ms": 1200,
+    "k": 0.576,
+    "look": "connections",
+    "script": 264.4,
+    "style": 789.2,
+    "layout": 23.1,
+    "paint": 102.7,
+    "other": 29.4,
+    "styles": [
+     {
+      "ms": 19.7,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 736.2,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 4.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 0.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 46,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 26.1,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 2317,
+    "ms": 383.3,
+    "k": 0.576,
+    "look": "connections",
+    "script": 143,
+    "style": 122.7,
+    "layout": 11.1,
+    "paint": 67.8,
+    "other": 49.4,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 4,
+      "script": "FunctionCall @index.js:5177:69477",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 3.8,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:69477",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       ":5177:69535"
+      ]
+     },
+     {
+      "ms": 13.4,
+      "elements": 38,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 385.4,
+      "elements": 231,
+      "script": "FunctionCall @index.js:5177:70222",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1933,
+   "ms": 1200,
+   "k": 0.576,
+   "state": "connections|far||true|",
+   "script": 264.4,
+   "style": 789.2,
+   "layout": 23.1,
+   "paint": 102.7,
+   "other": 29.4,
+   "styles": [
+    {
+     "ms": 19.7,
+     "elements": 149,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "releaseLook:5177:79356",
+      "s:5177:78744"
+     ]
+    },
+    {
+     "ms": 736.2,
+     "elements": 625,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "Ir:293:15902",
+      "KE:293:15998",
+      "measureLayoutExtents:5177:65725",
+      "measureLayoutExtents:5177:48468",
+      "n$:5176:38261"
+     ]
+    },
+    {
+     "ms": 4.4,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "KG:5176:33984",
+      "n$:5176:38379",
+      "rP:5176:32303",
+      "drawConnections:5177:48312",
+      "s:5177:78856"
+     ]
+    },
+    {
+     "ms": 0.6,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      ":5176:34089",
+      ":5176:38558",
+      ":5176:38540",
+      "n$:5176:38451",
+      "rP:5176:32303"
+     ]
+    },
+    {
+     "ms": 1.8,
+     "elements": 46,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 26.1,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 24,
+   "gaps": [
+    41,
+    63,
+    56,
+    46,
+    36,
+    43,
+    37,
+    47,
+    68,
+    46,
+    30,
+    21,
+    24,
+    48,
+    37,
+    44,
+    41,
+    43,
+    30,
+    28,
+    35,
+    41,
+    59
+   ]
+  }
+ },
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 5916,
+   "cards": 16,
+   "bands": 12,
+   "wires": 151
+  },
+  "restBeforeEase": 18383,
+  "ease": {
+   "ms": 7300,
+   "frames": 5,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 199.9,
+   "p90": 6516.4,
+   "worst": 6516.4,
+   "whole": {
+    "script": 1799.8,
+    "style": 4112.4,
+    "layout": 139.3,
+    "paint": 959,
+    "other": 281.2,
+    "styles": [
+     {
+      "ms": 1.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 3.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 4.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 2.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 10.5,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 255.2,
+      "elements": 798,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 3338.6,
+      "elements": 2599,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 52.3,
+      "elements": 238,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 143.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 278.9,
+      "elements": 652,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 7300,
+   "ms": 6516.4,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 1556.4,
+   "style": 4072.6,
+   "layout": 137.1,
+   "paint": 523.6,
+   "other": 212.7,
+   "styles": [
+    {
+     "ms": 2,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 255.2,
+     "elements": 798,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "releaseLook:5177:79356",
+      "s:5177:78744"
+     ]
+    },
+    {
+     "ms": 3338.6,
+     "elements": 2599,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "Ir:293:15902",
+      "KE:293:15998",
+      "measureLayoutExtents:5177:65725",
+      "measureLayoutExtents:5177:48468",
+      "n$:5176:38261"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "KG:5176:33984",
+      "n$:5176:38379",
+      "rP:5176:32303",
+      "drawConnections:5177:48312",
+      "s:5177:78856"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      ":5176:34089",
+      ":5176:38558",
+      ":5176:38540",
+      "n$:5176:38451",
+      "rP:5176:32303"
+     ]
+    },
+    {
+     "ms": 52.3,
+     "elements": 238,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 143.4,
+     "elements": 163,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 278.9,
+     "elements": 652,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     640
+    ],
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     638
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     538
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     444
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     244
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     200
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     198
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     198
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     175
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     175
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     104
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     104
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 133,
+    "ms": 133.4,
+    "k": 0.98,
+    "state": "reading|reading|0|false|moving",
+    "script": 67.3,
+    "style": 11.7,
+    "layout": 0,
+    "paint": 42.8,
+    "other": 7.8,
+    "styles": [
+     {
+      "ms": 1.6,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 3.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 4.5,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.8,
+      "elements": 4,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      8
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ]
+    ]
+   },
+   {
+    "at": 333,
+    "ms": 199.9,
+    "k": 0.819,
+    "state": "reading|reading|0|false|moving",
+    "script": 61.2,
+    "style": 5.8,
+    "layout": 0,
+    "paint": 111.4,
+    "other": 23.5,
+    "styles": [
+     {
+      "ms": 1.4,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2.2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ]
+    ]
+   },
+   {
+    "at": 517,
+    "ms": 183.3,
+    "k": 0.409,
+    "state": "reading|reading|0|false|moving",
+    "script": 35,
+    "style": 4.4,
+    "layout": 0,
+    "paint": 132.4,
+    "other": 11.4,
+    "styles": [
+     {
+      "ms": 2.8,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ]
+    ]
+   },
+   {
+    "at": 783,
+    "ms": 266.7,
+    "k": 0.336,
+    "state": "reading|reading|0|false|moving",
+    "script": 80,
+    "style": 18,
+    "layout": 2.2,
+    "paint": 148.7,
+    "other": 25.8,
+    "styles": [
+     {
+      "ms": 1.3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "frameRect:5177:72379",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 3,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 10.5,
+      "elements": 2,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "sayCut:5177:54467",
+       "updateMapTransform:5177:67279",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 4,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      4
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: style DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "StyleRecalc: Related style rule DIV id='map-viewport' class='viewport-layer camera-moving'",
+      3
+     ],
+     [
+      "ScheduleStyle: data-left DIV class='map-edges'",
+      1
+     ],
+     [
+      "ScheduleStyle: data-right DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Element has pending invalidation list DIV class='map-edges'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-left'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-left'",
+      1
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class SPAN class='map-edge map-edge-right'",
+      1
+     ],
+     [
+      "StyleRecalc: Related style rule SPAN class='map-edge map-edge-right'",
+      1
+     ]
+    ]
+   },
+   {
+    "at": 7300,
+    "ms": 6516.4,
+    "k": 0.335,
+    "state": "connections|far||true|",
+    "script": 1556.4,
+    "style": 4072.6,
+    "layout": 137.1,
+    "paint": 523.6,
+    "other": 212.7,
+    "styles": [
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 255.2,
+      "elements": 798,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 3338.6,
+      "elements": 2599,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 52.3,
+      "elements": 238,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 143.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 278.9,
+      "elements": 652,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      640
+     ],
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      638
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      538
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      444
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      244
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      200
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      198
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      198
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      175
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      175
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      104
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      104
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 133,
+    "ms": 133.4,
+    "k": 0.98,
+    "look": "reading",
+    "style": 11.7,
+    "paint": 42.8,
+    "restyled": 7
+   },
+   {
+    "at": 333,
+    "ms": 199.9,
+    "k": 0.819,
+    "look": "reading",
+    "style": 5.8,
+    "paint": 111.4,
+    "restyled": 3
+   },
+   {
+    "at": 517,
+    "ms": 183.3,
+    "k": 0.409,
+    "look": "reading",
+    "style": 4.4,
+    "paint": 132.4,
+    "restyled": 2
+   },
+   {
+    "at": 783,
+    "ms": 266.7,
+    "k": 0.336,
+    "look": "reading",
+    "style": 18,
+    "paint": 148.7,
+    "restyled": 9
+   },
+   {
+    "at": 7300,
+    "ms": 6516.4,
+    "k": 0.335,
+    "look": "connections",
+    "style": 4072.6,
+    "paint": 523.6,
+    "restyled": 4453
+   }
+  ],
+  "changes": [
+   {
+    "at": -18383,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 7300,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 8766,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -18383,
+    "ms": 1666.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -2300,
+    "ms": 16082.7,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 7300,
+    "ms": 6516.4,
+    "k": 0.335,
+    "look": "connections",
+    "script": 1556.4,
+    "style": 4072.6,
+    "layout": 137.1,
+    "paint": 523.6,
+    "other": 212.7,
+    "styles": [
+     {
+      "ms": 2,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 255.2,
+      "elements": 798,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 3338.6,
+      "elements": 2599,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 0.7,
+      "elements": 1,
+      "script": "FunctionCall s@index.js:5177:76987",
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 52.3,
+      "elements": 238,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 143.4,
+      "elements": 163,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 278.9,
+      "elements": 652,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 8766,
+    "ms": 1466.6,
+    "k": 0.335,
+    "look": "connections",
+    "script": 907,
+    "style": 372.5,
+    "layout": 10.1,
+    "paint": 148.1,
+    "other": 121,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 3,
+      "script": "FunctionCall @index.js:5177:69477",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 96.9,
+      "elements": 177,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 1160.6,
+      "elements": 1046,
+      "script": "FunctionCall @index.js:5177:70222",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 7300,
+   "ms": 6516.4,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 1556.4,
+   "style": 4072.6,
+   "layout": 137.1,
+   "paint": 523.6,
+   "other": 212.7,
+   "styles": [
+    {
+     "ms": 2,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 255.2,
+     "elements": 798,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "releaseLook:5177:79356",
+      "s:5177:78744"
+     ]
+    },
+    {
+     "ms": 3338.6,
+     "elements": 2599,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "Ir:293:15902",
+      "KE:293:15998",
+      "measureLayoutExtents:5177:65725",
+      "measureLayoutExtents:5177:48468",
+      "n$:5176:38261"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      "KG:5176:33984",
+      "n$:5176:38379",
+      "rP:5176:32303",
+      "drawConnections:5177:48312",
+      "s:5177:78856"
+     ]
+    },
+    {
+     "ms": 0.7,
+     "elements": 1,
+     "script": "FunctionCall s@index.js:5177:76987",
+     "stack": [
+      ":5176:34089",
+      ":5176:38558",
+      ":5176:38540",
+      "n$:5176:38451",
+      "rP:5176:32303"
+     ]
+    },
+    {
+     "ms": 52.3,
+     "elements": 238,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 143.4,
+     "elements": 163,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 278.9,
+     "elements": 652,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 8,
+   "gaps": [
+    231,
+    282,
+    149,
+    79,
+    73,
+    56,
+    52
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "weak",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 11965,
+   "cards": 81,
+   "bands": 20,
+   "wires": 222
+  },
+  "restBeforeEase": 43898,
+  "ease": {
+   "ms": 25099,
+   "frames": 3,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 683.2,
+   "p90": 24232.4,
+   "worst": 24232.4,
+   "whole": {
+    "script": 1815.5,
+    "style": 16153.4,
+    "layout": 644.9,
+    "paint": 2120.1,
+    "other": 102,
+    "styles": [
+     {
+      "ms": 32.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 687.5,
+      "elements": 1294,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 14061.9,
+      "elements": 6541,
+      "script": null,
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 157.4,
+      "elements": 428,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 322.9,
+      "elements": 281,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 872.7,
+      "elements": 1021,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 25099,
+   "ms": 24232.4,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 1815.5,
+   "style": 16153.4,
+   "layout": 644.9,
+   "paint": 2120.1,
+   "other": 102,
+   "styles": [
+    {
+     "ms": 32.9,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:72216",
+      "frameRect:5177:72524",
+      "s:5177:78593"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 687.5,
+     "elements": 1294,
+     "script": null,
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "releaseLook:5177:79356",
+      "s:5177:78744"
+     ]
+    },
+    {
+     "ms": 14061.9,
+     "elements": 6541,
+     "script": null,
+     "stack": [
+      "Ir:293:15902",
+      "KE:293:15998",
+      "measureLayoutExtents:5177:65725",
+      "measureLayoutExtents:5177:48468",
+      "n$:5176:38261"
+     ]
+    },
+    {
+     "ms": 8.9,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      "KG:5176:33984",
+      "n$:5176:38379",
+      "rP:5176:32303",
+      "drawConnections:5177:48312",
+      "s:5177:78856"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      ":5176:34089",
+      ":5176:38558",
+      ":5176:38540",
+      "n$:5176:38451",
+      "rP:5176:32303"
+     ]
+    },
+    {
+     "ms": 157.4,
+     "elements": 428,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 322.9,
+     "elements": 281,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 872.7,
+     "elements": 1021,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     939
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     922
+    ],
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     920
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     800
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     616
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     539
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     539
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     328
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     328
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     323
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     170
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     170
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 183,
+    "ms": 183.4,
+    "k": 0.903,
+    "state": "reading|reading|0|false|moving",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": [],
+    "invalidations": []
+   },
+   {
+    "at": 867,
+    "ms": 683.2,
+    "k": 0.502,
+    "state": "reading|reading|0|false|moving",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": [],
+    "invalidations": []
+   },
+   {
+    "at": 25099,
+    "ms": 24232.4,
+    "k": 0.335,
+    "state": "connections|far||true|",
+    "script": 1815.5,
+    "style": 16153.4,
+    "layout": 644.9,
+    "paint": 2120.1,
+    "other": 102,
+    "styles": [
+     {
+      "ms": 32.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 687.5,
+      "elements": 1294,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 14061.9,
+      "elements": 6541,
+      "script": null,
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 157.4,
+      "elements": 428,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 322.9,
+      "elements": 281,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 872.7,
+      "elements": 1021,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      939
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      922
+     ],
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      920
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      800
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      616
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      539
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      539
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      328
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      328
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      323
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      170
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      170
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 183,
+    "ms": 183.4,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0,
+    "paint": 0,
+    "restyled": 0
+   },
+   {
+    "at": 867,
+    "ms": 683.2,
+    "k": 0.502,
+    "look": "reading",
+    "style": 0,
+    "paint": 0,
+    "restyled": 0
+   },
+   {
+    "at": 25099,
+    "ms": 24232.4,
+    "k": 0.335,
+    "look": "connections",
+    "style": 16153.4,
+    "paint": 2120.1,
+    "restyled": 9569
+   }
+  ],
+  "changes": [
+   {
+    "at": -43898,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 25099,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 27866,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -43898,
+    "ms": 150,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -2983,
+    "ms": 40915.1,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 25099,
+    "ms": 24232.4,
+    "k": 0.335,
+    "look": "connections",
+    "script": 1815.5,
+    "style": 16153.4,
+    "layout": 644.9,
+    "paint": 2120.1,
+    "other": 102,
+    "styles": [
+     {
+      "ms": 32.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5202:11745",
+       "bottomObstructions:5202:11736",
+       "uncoveredHeight:5177:72216",
+       "frameRect:5177:72524",
+       "s:5177:78593"
+      ]
+     },
+     {
+      "ms": 1.7,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "s:5177:78663"
+      ]
+     },
+     {
+      "ms": 687.5,
+      "elements": 1294,
+      "script": null,
+      "stack": [
+       "framePlace:5177:71711",
+       "updateMapTransform:5177:67260",
+       "releaseLook:5177:79356",
+       "s:5177:78744"
+      ]
+     },
+     {
+      "ms": 14061.9,
+      "elements": 6541,
+      "script": null,
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 8.9,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       "s:5177:78856"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 1,
+      "script": null,
+      "stack": [
+       ":5176:34089",
+       ":5176:38558",
+       ":5176:38540",
+       "n$:5176:38451",
+       "rP:5176:32303"
+      ]
+     },
+     {
+      "ms": 157.4,
+      "elements": 428,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 322.9,
+      "elements": 281,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 872.7,
+      "elements": 1021,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 27866,
+    "ms": 2766.5,
+    "k": 0.335,
+    "look": "connections",
+    "script": 1388,
+    "style": 316.3,
+    "layout": 12.9,
+    "paint": 410,
+    "other": 705,
+    "styles": [
+     {
+      "ms": 0.5,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:69477",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     },
+     {
+      "ms": 8,
+      "elements": 1,
+      "script": "FunctionCall @index.js:5177:69477",
+      "stack": [
+       "KG:5176:33984",
+       "n$:5176:38379",
+       "rP:5176:32303",
+       "drawConnections:5177:48312",
+       ":5177:69535"
+      ]
+     },
+     {
+      "ms": 102.9,
+      "elements": 325,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3090.9,
+      "elements": 2431,
+      "script": "FunctionCall @index.js:5177:70222",
+      "stack": [
+       "Ir:293:15902",
+       "KE:293:15998",
+       "measureLayoutExtents:5177:65725",
+       "measureLayoutExtents:5177:48468",
+       "n$:5176:38261"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 25099,
+   "ms": 24232.4,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 1815.5,
+   "style": 16153.4,
+   "layout": 644.9,
+   "paint": 2120.1,
+   "other": 102,
+   "styles": [
+    {
+     "ms": 32.9,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      ":5202:11745",
+      "bottomObstructions:5202:11736",
+      "uncoveredHeight:5177:72216",
+      "frameRect:5177:72524",
+      "s:5177:78593"
+     ]
+    },
+    {
+     "ms": 1.7,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "s:5177:78663"
+     ]
+    },
+    {
+     "ms": 687.5,
+     "elements": 1294,
+     "script": null,
+     "stack": [
+      "framePlace:5177:71711",
+      "updateMapTransform:5177:67260",
+      "releaseLook:5177:79356",
+      "s:5177:78744"
+     ]
+    },
+    {
+     "ms": 14061.9,
+     "elements": 6541,
+     "script": null,
+     "stack": [
+      "Ir:293:15902",
+      "KE:293:15998",
+      "measureLayoutExtents:5177:65725",
+      "measureLayoutExtents:5177:48468",
+      "n$:5176:38261"
+     ]
+    },
+    {
+     "ms": 8.9,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      "KG:5176:33984",
+      "n$:5176:38379",
+      "rP:5176:32303",
+      "drawConnections:5177:48312",
+      "s:5177:78856"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 1,
+     "script": null,
+     "stack": [
+      ":5176:34089",
+      ":5176:38558",
+      ":5176:38540",
+      "n$:5176:38451",
+      "rP:5176:32303"
+     ]
+    },
+    {
+     "ms": 157.4,
+     "elements": 428,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 322.9,
+     "elements": 281,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 872.7,
+     "elements": 1021,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 3,
+   "gaps": [
+    354,
+    23859
+   ]
+  }
+ }
+]

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/layout-lab.spec.ts`
-- Generated At: 2026-11-19T21:10:22.195Z
+- Generated At: 2026-11-22T02:10:45.157Z
 
 ## Authored
 ### Purpose
@@ -48,6 +48,7 @@ _No public symbols detected_
 - [`scopes.ScopeRun`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-scoperun)
 - [`scopes.loadBundleGraph`](../../scripts/layout-lab/scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 <!-- LIVE-DOC:END Dependencies -->

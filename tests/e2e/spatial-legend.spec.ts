@@ -7,7 +7,7 @@ import { spatialNodeStyles } from "../../packages/explorer/src/client/views/forc
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
-import { localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled } from "./still-picture";
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -172,7 +172,7 @@ async function still(page: Page): Promise<void> {
 /** A visit with a choice of how a closed directory is drawn, beside the suite's own setting. */
 const choosing = async (page: Page, localMap: Record<string, string>): Promise<void> => {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap } } })
   });
 };
 

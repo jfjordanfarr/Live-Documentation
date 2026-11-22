@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/localView/camera-intent.test.ts`
-- Generated At: 2026-11-21T19:01:35.527Z
+- Generated At: 2026-11-22T02:10:38.059Z
 
 ## Authored
 ### Purpose
@@ -21,15 +21,22 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`layout-presets.LAYOUT_RANGES`](../../layout-presets.ts.mdmd.md#symbol-layout_ranges)
+- [`local-storage.getDefaultTuning`](../../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`types.ARRIVAL_WAITS`](../../types.ts.mdmd.md#symbol-arrival_waits)
 - [`camera-intent.ARRIVAL_EASE_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_ease_ms)
+- [`camera-intent.ARRIVAL_ENDING_INPUTS`](./camera-intent.ts.mdmd.md#symbol-arrival_ending_inputs)
 - [`camera-intent.ARRIVAL_FLOOR_RATIO`](./camera-intent.ts.mdmd.md#symbol-arrival_floor_ratio)
-- [`camera-intent.ARRIVAL_HOLD_MS`](./camera-intent.ts.mdmd.md#symbol-arrival_hold_ms)
+- [`camera-intent.ARRIVAL_REST_S`](./camera-intent.ts.mdmd.md#symbol-arrival_rest_s)
 - [`camera-intent.FRAMING_EASE_MAX_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_max_ms)
 - [`camera-intent.FRAMING_EASE_MIN_MS`](./camera-intent.ts.mdmd.md#symbol-framing_ease_min_ms)
 - [`camera-intent.FramingTarget`](./camera-intent.ts.mdmd.md#symbol-framingtarget)
 - [`camera-intent.arrivalEndFrame`](./camera-intent.ts.mdmd.md#symbol-arrivalendframe)
+- [`camera-intent.arrivalEndedBy`](./camera-intent.ts.mdmd.md#symbol-arrivalendedby)
 - [`camera-intent.arrivalLookChange`](./camera-intent.ts.mdmd.md#symbol-arrivallookchange-function)
 - [`camera-intent.arrivalPose`](./camera-intent.ts.mdmd.md#symbol-arrivalpose)
+- [`camera-intent.arrivalReleased`](./camera-intent.ts.mdmd.md#symbol-arrivalreleased)
+- [`camera-intent.arrivalRestStartsAgain`](./camera-intent.ts.mdmd.md#symbol-arrivalreststartsagain)
 - [`camera-intent.cutByEdge`](./camera-intent.ts.mdmd.md#symbol-cutbyedge)
 - [`camera-intent.cutPan`](./camera-intent.ts.mdmd.md#symbol-cutpan)
 - [`camera-intent.easeInOutCubic`](./camera-intent.ts.mdmd.md#symbol-easeinoutcubic)

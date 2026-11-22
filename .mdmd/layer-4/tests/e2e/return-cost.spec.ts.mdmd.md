@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/return-cost.spec.ts`
-- Generated At: 2026-11-19T21:10:23.710Z
+- Generated At: 2026-11-22T02:10:46.281Z
 
 ## Authored
 ### Purpose
@@ -29,5 +29,6 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`cycle-order.DEFAULT_RETURN_COST`](../../packages/explorer/src/client/views/localView/cycle-order.ts.mdmd.md#symbol-default_return_cost)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

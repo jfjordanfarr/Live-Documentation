@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { choose } from "./search-bar";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * Files only at the farthest zoom (Tuning → 2D Layout → Zoomed Out Fully, a trial for the owner's eye of 2026-11-13; the
@@ -22,7 +22,7 @@ test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
 
 async function open(page: Page, choice: "keep" | "files", path = pinned()): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: choice } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: choice } } })
   });
   await page.goto(path);
   await page.locator(`.node-card[data-id="${links}"]`).waitFor();
@@ -134,7 +134,7 @@ for (const [what, pins] of [
     // row and no wire of its own at this look, and nothing on the map said which symbol was pinned.
     test.setTimeout(240_000);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
     });
     await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: branchRenderer, pinSet: { entries: [...pins] } })}`);
     await page.locator(`.node-card[data-id="${branchRenderer}"]`).waitFor({ timeout: 60_000 });
@@ -187,7 +187,7 @@ for (const [what, pins] of [
 test("with a symbol pinned by name, files only and back in returns every card, row and wire to where it stood", async ({ page }) => {
   test.setTimeout(180_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
   await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: branchRenderer,
     pinSet: { entries: [{ nodeId: branchRenderer, symbol: "renderBranches" }, { nodeId: branchRenderer, symbol: "BranchStage" }, { nodeId: branchRestarts, symbol: "startOrder" }] } })}`);
@@ -291,7 +291,7 @@ test("files only is the default, a link carries the cards' size only when chosen
   const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
   });
   // Files only is Zoomed Out Fully's default since 2026-11-15, a design change by the owner's eye and a comparison with the cards' rows drawn as bars: until then
   // this case opened a link that said files only and expected the default to keep the cards' size.
@@ -357,7 +357,7 @@ for (const [what, pin] of [
     // continues after every picture, which this spec turns off, then prices the picture shown and moves to a better one.
     test.setTimeout(240_000);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
     });
     const address = `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: stillPicture })}`;
     const arrive = async (): Promise<void> => {

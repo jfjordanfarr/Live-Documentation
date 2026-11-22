@@ -24,10 +24,10 @@ test.use({ viewport: { width: 1280, height: 800 } });
 const ESTATE = "/samples/estate/";
 const entry = (base = "/"): string => `${base}?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure", filters: { showTests: true, showAssets: false } })}`;
 
-/** Choose the wrappers and the hops before the page starts, as saved Tuning choices, keeping the suite's still Local Map search. */
+/** Choose the wrappers and the hops before the page starts, as saved Tuning choices, keeping the suite's still Local Map search and its arrival at reading size (still-picture.ts, AT_READING_SIZE, written out here because the page runs this). */
 async function choose(page: Page, look: GroupWrappers, hops: number): Promise<void> {
   await page.addInitScript(([key, version, wrappers, hopsShown]) => {
-    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: wrappers, hops: hopsShown } } }));
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0, arrival: "reading" }, forceGraph: { groupWrappers: wrappers, hops: hopsShown } } }));
   }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION, look, hops] as const);
 }
 

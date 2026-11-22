@@ -2,7 +2,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)
@@ -35,7 +35,7 @@ test.beforeEach(async ({ page }) => {
   // this spec holds the composition of a card whose box no zoom changes, the overview look's included.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
   });
 });
 
@@ -379,7 +379,7 @@ const SEGOE_LINES = ["400", "700"].map(weight => `@font-face { font-family: "Seg
 async function openUnder(browser: Browser, path: string, subject: string, lines: "fallback" | "segoe", presses: number) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };
@@ -534,7 +534,7 @@ test("in the far looks a closed directory's name is held after its chevron, fitt
 test("in the connections look a card's counts stand at the look's held size or not at all, and +N connections still reveals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "three", overviewFiles: "keep" } } })
   });
   const links = "scripts/doc-tools/documentationLinks.ts";
   await page.goto("/?view=local&dir=scripts/doc-tools");
@@ -637,7 +637,7 @@ test("a change of look moves the held parts where motion is welcome, and nothing
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1, reducedMotion });
     await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
     });
     const page = await context.newPage();
     await page.goto(estate("three"));

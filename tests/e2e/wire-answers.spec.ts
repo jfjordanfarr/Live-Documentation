@@ -5,7 +5,7 @@ import type { DirectionMarks, WireAnswersChoice } from "../../packages/explorer/
 import { REST_DWELL } from "../../packages/explorer/src/client/views/pointerRest";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * The two wire trials of 2026-11-21, on strangers' top-ranked stumble, which way a line runs (the probe
@@ -23,7 +23,7 @@ const directoryBand = (directory: string): string => `.local-directory-band:has(
 async function visit(browser: Browser, localMap: { wireAnswers?: WireAnswersChoice; directionMarks?: DirectionMarks }) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap } } })
   });
   const page = await context.newPage();
   await page.goto(ESTATE);
@@ -74,12 +74,107 @@ const faded = (page: Page): Promise<number> => page.evaluate(() =>
 const transformOf = (page: Page): Promise<string> => page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform);
 
 test.describe("Wire Answers", () => {
-  test("off, the default, a wire takes no pointer and has no band", async ({ browser }) => {
-    test.setTimeout(90_000);
+  test("off, a wire takes no pointer and has no band; on, the default since 2026-11-22, every wire has one", async ({ browser }) => {
+    test.setTimeout(120_000);
+    const off = await visit(browser, { wireAnswers: "off" });
+    expect(await off.page.locator("#map-connections .connection-path").count()).toBeGreaterThan(0);
+    await expect(off.page.locator("#map-connections .wire-band")).toHaveCount(0);
+    await expect(off.page.locator(".wire-answer")).toBeHidden();
+    await off.context.close();
+    // Nothing chosen: the product's default.
     const { context, page } = await visit(browser, {});
-    expect(await page.locator("#map-connections .connection-path").count()).toBeGreaterThan(0);
-    await expect(page.locator("#map-connections .wire-band")).toHaveCount(0);
+    await expect(page.locator("#tuning-wire-answers")).toHaveValue("on");
+    expect(await page.locator("#map-connections .wire-band").count()).toBeGreaterThan(0);
     await expect(page.locator(".wire-answer")).toBeHidden();
+    await context.close();
+  });
+
+  /** The panel's box on the screen. */
+  const panelBox = (page: Page) => page.evaluate(() => {
+    const rect = document.querySelector(".wire-answer")!.getBoundingClientRect();
+    return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+  });
+
+  /** A pointer brought to rest on a wire in view, its words showing; the default lever. */
+  async function rested(browser: Browser) {
+    const { context, page } = await visit(browser, {});
+    const wire = await bandPoint(page);
+    expect(wire, "a wire in view").not.toBeNull();
+    await page.mouse.move(wire!.x - 30, wire!.y - 30);
+    await page.mouse.move(wire!.x, wire!.y, { steps: 3 });
+    await page.waitForTimeout(REST_DWELL + 150);
+    const words = await answer(page);
+    expect(words?.pinned, "a rested pointer's words, not pinned").toBe(false);
+    return { context, page, wire: wire!, words: words! };
+  }
+
+  // WCAG 2.1, 1.4.13 Content on Hover or Focus, its three words, and the owner's wish of 2026-11-22: "the ability to
+  // mouse into those popovers so I can copy some text out".
+  test("hoverable: the pointer goes from the wire onto its words without their going, their text is selected and copied, and nothing pans or pins", async ({ browser }) => {
+    test.setTimeout(90_000);
+    const { context, page, wire, words } = await rested(browser);
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const panel = await panelBox(page);
+    // Nothing covers what is pointed at: the panel stands beside the point, not on it.
+    expect(wire.x > panel.left && wire.x < panel.right && wire.y > panel.top && wire.y < panel.bottom, "the panel is off the point asked at").toBe(false);
+    // The way there, a few pixels at a time, to the panel's middle: the same words stand at every step.
+    const to = { x: (panel.left + panel.right) / 2, y: (panel.top + panel.bottom) / 2 };
+    const steps = Math.ceil(Math.hypot(to.x - wire.x, to.y - wire.y) / 4);
+    for (let step = 1; step <= steps; step += 1) {
+      await page.mouse.move(wire.x + (to.x - wire.x) * step / steps, wire.y + (to.y - wire.y) * step / steps);
+      expect(await answer(page), `the words at step ${step} of ${steps}`).toEqual(words);
+    }
+    // At rest inside the panel, the words stay and their wire is still the one that stands out.
+    await page.waitForTimeout(REST_DWELL + 400);
+    expect(await answer(page)).toEqual(words);
+    expect(await faded(page), "the others still faded").toBeGreaterThan(0);
+    // Their text, selected by a drag along the head and copied: the map does not pan, and nothing is pinned.
+    const head = (await page.locator(".wire-answer .h").boundingBox())!;
+    const before = await transformOf(page);
+    await page.mouse.move(head.x + 1, head.y + head.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(head.x + head.width - 1, head.y + head.height / 2, { steps: 8 });
+    await page.mouse.up();
+    const selected = await page.evaluate(() => getSelection()?.toString() ?? "");
+    expect(selected, "the head's words selected").toContain(" uses ");
+    await page.keyboard.press("ControlOrMeta+c");
+    expect(await page.evaluate(() => navigator.clipboard.readText()), "and copied").toBe(selected);
+    expect(await transformOf(page), "the map did not pan").toBe(before);
+    expect(await answer(page), "the words stand, not pinned").toEqual(words);
+    // Off the panel and its wire, for the foot of the view: the words go.
+    await page.mouse.move(20, 780, { steps: 4 });
+    await expect.poll(() => answer(page)).toBeNull();
+    expect(await faded(page)).toBe(0);
+    await context.close();
+  });
+
+  test("dismissible: Escape takes a rested pointer's words away where the pointer stands, and they stay away until it has been elsewhere", async ({ browser }) => {
+    test.setTimeout(90_000);
+    const { context, page, wire, words } = await rested(browser);
+    await page.keyboard.press("Escape");
+    expect(await answer(page), "gone, the pointer not moved").toBeNull();
+    expect(await faded(page), "and the fading with them").toBe(0);
+    // Still on that wire, a pixel's drift and a rest: they do not come back.
+    await page.mouse.move(wire.x + 1, wire.y);
+    await page.waitForTimeout(REST_DWELL + 250);
+    expect(await answer(page), "dismissed words stay away while the pointer stays on their wire").toBeNull();
+    // Elsewhere, then back to rest on it: asked again, they are shown again.
+    await page.mouse.move(20, 780, { steps: 4 });
+    await page.mouse.move(wire.x, wire.y, { steps: 3 });
+    await page.waitForTimeout(REST_DWELL + 150);
+    expect(await answer(page)).toEqual(words);
+    await context.close();
+  });
+
+  test("persistent: no clock takes the words away, on the wire or inside the panel", async ({ browser }) => {
+    test.setTimeout(90_000);
+    const { context, page, wire, words } = await rested(browser);
+    await page.waitForTimeout(4000);
+    expect(await answer(page), "after four seconds at rest on the wire").toEqual(words);
+    const panel = await panelBox(page);
+    await page.mouse.move((panel.left + panel.right) / 2, (panel.top + panel.bottom) / 2, { steps: Math.ceil(Math.hypot(panel.left - wire.x, panel.top - wire.y) / 4) + 8 });
+    await page.waitForTimeout(4000);
+    expect(await answer(page), "after four seconds at rest inside the panel").toEqual(words);
     await context.close();
   });
 
@@ -261,7 +356,7 @@ test.describe("the design audit with both levers on", () => {
     test.setTimeout(90_000);
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
     await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, wireAnswers: "on", directionMarks: "against" } } })
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, wireAnswers: "on", directionMarks: "against" } } })
     });
     const page = await context.newPage();
     await page.goto(`/?view=local&node=${encodeURIComponent("packages/engine/src/live-docs/pathfind.ts")}`);

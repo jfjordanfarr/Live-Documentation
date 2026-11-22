@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * A file's name in the overview look of a card that keeps its size (2026-11-15): read from its drawn lines, it is not
@@ -52,7 +52,7 @@ function seamSegments(name: string): string[] {
 test("in the overview look a file's name is not broken inside a word while a smaller size, down to the connections look's, keeps its pieces whole", async ({ page }) => {
   test.setTimeout(120_000);
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, overviewFiles: "keep" } } })
   });
   await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: narrowNames, pinSet: { entries: [{ nodeId: narrowNames, symbol: "*" }] } })}`);
   await page.locator(`.node-card[data-id="${narrowNames}"]`).waitFor({ timeout: 60_000 });

@@ -189,22 +189,51 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(count, undefined).localMap.hiddenFiles).toBe("count");
   });
 
-  it("carries Arrival only when it is not reading size, and reads its absence as reading size (2026-11-19)", () => {
+  it("carries Arrival only when it is not the pull-back with its look changed after, the default since 2026-11-22, and reads its absence as that", () => {
     const plain = getDefaultTuning();
-    expect(plain.localMap.arrival).toBe("reading");
+    expect(plain.localMap.arrival).toBe("then-neighbours-after");
     expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("arrival");
-    expect(readLayoutSettings({ localMap: { arrival: "reading" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { arrival: "then-neighbours-after" } })).toBeUndefined();
     expect(readLayoutSettings({ localMap: { arrival: "everywhere" } })).toBeUndefined();
-    for (const value of ["then-neighbours", "neighbours"] as const) {
+    // Reading size, the default until 2026-11-22, and every other choice are each carried.
+    for (const value of ["reading", "then-neighbours", "then-neighbours-before", "neighbours"] as const) {
       const chosen = getDefaultTuning();
       chosen.localMap.arrival = value;
       const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
       expect(carried.layout?.localMap?.arrival).toBe(value);
       expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.arrival).toBe(value);
-      // A link made with the default shows reading size in a browser whose own tuning holds another choice.
+      // A link made with the default shows the default in a browser whose own tuning holds another choice.
       const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
-      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.arrival).toBe("reading");
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap.arrival).toBe("then-neighbours-after");
     }
+  });
+
+  it("carries Arrival Waits and Wire Answers only when they are not their defaults since 2026-11-22, waiting while attended and on", () => {
+    const plain = getDefaultTuning();
+    expect([plain.localMap.arrivalWaits, plain.localMap.wireAnswers]).toEqual(["attended", "on"]);
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("arrivalWaits");
+    expect(layoutSettingsOf(plain).localMap).not.toHaveProperty("wireAnswers");
+    expect(readLayoutSettings({ localMap: { arrivalWaits: "attended", wireAnswers: "on" } })).toBeUndefined();
+    for (const waits of ["never", "pointed"] as const) {
+      const chosen = getDefaultTuning();
+      chosen.localMap.arrivalWaits = waits;
+      chosen.localMap.wireAnswers = "off";
+      const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+      expect(carried.layout?.localMap).toMatchObject({ arrivalWaits: waits, wireAnswers: "off" });
+      expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap).toMatchObject({ arrivalWaits: waits, wireAnswers: "off" });
+      const unsaid = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(plain) }));
+      expect(applyLayoutSettings(chosen, unsaid.layout).localMap).toMatchObject({ arrivalWaits: "attended", wireAnswers: "on" });
+    }
+  });
+
+  it("carries the arrival's rest, held to its lever's range and step", () => {
+    const chosen = getDefaultTuning();
+    chosen.localMap.arrivalRest = 3;
+    const carried = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, layout: layoutSettingsOf(chosen) }));
+    expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.arrivalRest).toBe(3);
+    expect(readLayoutSettings({ localMap: { arrivalRest: 0.1 } })?.localMap?.arrivalRest).toBe(0.5);
+    expect(readLayoutSettings({ localMap: { arrivalRest: 99 } })?.localMap?.arrivalRest).toBe(6);
+    expect(readLayoutSettings({ localMap: { arrivalRest: 1.6 } })?.localMap?.arrivalRest).toBe(1.5);
   });
 
   it("carries Framing only when it follows the pins, and reads its absence as by hand (2026-11-19)", () => {

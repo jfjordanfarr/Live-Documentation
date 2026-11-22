@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/descriptions-zoomed-out.spec.ts`
-- Generated At: 2026-11-19T21:10:20.566Z
+- Generated At: 2026-11-22T02:10:43.570Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
+- [`still-picture.AT_READING_SIZE`](./still-picture.ts.mdmd.md#symbol-at_reading_size)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

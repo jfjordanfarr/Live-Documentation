@@ -1,7 +1,9 @@
 /**
  * The 2D camera follows the intent a gesture declares (2026-11-19). A fresh subject (a link, a search choice, the first
- * open) is an arrival, framed by Tuning's Arrival: at reading size, as before; at reading size and then, once the picture
- * has settled and a moment has passed, eased back to the neighbours; or on the neighbours at once. A step from inside the
+ * open) is an arrival, framed by Tuning's Arrival: at reading size and then, once the picture has settled and its rest
+ * has passed, eased back to the neighbours, the default since 2026-11-22 in the form that changes the cards' look at rest
+ * after the ease, and waiting on the person's pointer and focus ({@link arrivalReleased}); at reading size, as before
+ * that day; or on the neighbours at once. A step from inside the
  * map (a cell pressed to pin its file, a directory's skin opened, a neighbour pinned from a card) is a climb: the camera
  * keeps its scale and moves only as far as brings the newcomer into view. This module holds the arithmetic and the
  * timing; the controller measures the page and moves the camera.
@@ -12,15 +14,42 @@
  *
  * @module camera-intent
  */
-import type { ArrivalFraming } from "../../types";
+import type { ArrivalFraming, ArrivalWait } from "../../types";
 import { farthestRatioOf, STEP_RATIO } from "./ladder-steps";
 import { clamp, framePadding, type Bounds, type Frame } from "./layout-measure";
 import type { MapTransform } from "./types";
 
-/** How long the arrival rests on the subject at reading size, once the picture has settled, before it eases back. */
-export const ARRIVAL_HOLD_MS = 900;
+/**
+ * The default of Tuning's Arrival Rest: how long, in seconds, an arrival that pulls back stays on the subject at reading
+ * size, at the least, once the picture has settled (the owner, 2026-11-22: "ensure a minimum of N seconds of reading view
+ * size time, then permit immediate zoom-out when pointer exits node"). It was 0.9 s, fixed, from 2026-11-19, and the
+ * probe of 2026-11-21 found a reader "pulled off" the words at that. The rest is not the time to read the card, which the
+ * pointer or the focus on the card gives for as long as it stays: it is the time to see what stands there and to bring a
+ * pointer to it. Counted from what a person does in it: about a quarter of a second to take in a new picture, the file's
+ * name and the first words under it read at some four words a second (silent reading of English runs near 240 words a
+ * minute), and a hand's move to a large card in the middle of the view, about half a second. That is near a second and a
+ * half, and half a second more would begin to read as the page having stopped.
+ */
+export const ARRIVAL_REST_S = 1.5;
 /** How long the ease from reading size to the neighbours takes. */
 export const ARRIVAL_EASE_MS = 700;
+
+/**
+ * Whether an arrival's rest at reading size is over and its pull-back may begin (Tuning's Arrival Waits): `rested` is how
+ * long the picture has stood settled, `rest` the least it stays (both in milliseconds), and `attended` whether a pointer
+ * brought to the subject's card stands on it or the keyboard's focus is inside it. Under "attended" the pull-back begins
+ * at the first moment the rest has passed and the card is not attended: at once when the pointer or the focus leaves a
+ * card it stayed on past the rest, and at the rest's end where neither was ever there. Under "never" and "pointed" it
+ * begins when the rest has passed; "pointed" starts the rest again while pointed at ({@link arrivalRestStartsAgain}).
+ */
+export function arrivalReleased(waits: ArrivalWait, rested: number, rest: number, attended: boolean): boolean {
+  return rested >= rest && !(waits === "attended" && attended);
+}
+
+/** Whether the rest's clock starts again this frame: under "pointed", while the pointer stands on the subject's card. */
+export function arrivalRestStartsAgain(waits: ArrivalWait, pointed: boolean): boolean {
+  return waits === "pointed" && pointed;
+}
 /**
  * Where an arrival's pull-back changes the cards' look (trials of 2026-11-21, after the owner's "the stutter of
  * performance as the stylesheet breakpoints were hit was jarring", the November 18 record's Turn 37): "crossing", where
@@ -80,14 +109,14 @@ export function arrivalEndFrame(content: Bounds, subject: Bounds, frame: Frame, 
 export type ArrivalPhase = "hold" | "ease" | "done";
 
 /**
- * The camera of an arrival that eases back to the neighbours, `elapsed` milliseconds after the picture settled at
- * reading size (`start`): still for {@link ARRIVAL_HOLD_MS}, then eased in and out to `end` over {@link ARRIVAL_EASE_MS}.
- * The scale is eased in its logarithm, so that the zoom reads as even; the point under the frame's middle travels in a
- * straight line between the two frames' middles.
+ * The camera of an arrival that eases back to the neighbours, `elapsed` milliseconds after its rest at reading size
+ * (`start`) was over ({@link arrivalReleased}; negative while it rests): eased in and out to `end` over
+ * {@link ARRIVAL_EASE_MS}. The scale is eased in its logarithm, so that the zoom reads as even; the point under the
+ * frame's middle travels in a straight line between the two frames' middles.
  */
 export function arrivalPose(start: MapTransform, end: MapTransform, elapsed: number, frame: Frame): { phase: ArrivalPhase; transform: MapTransform } {
-  if (elapsed < ARRIVAL_HOLD_MS) return { phase: "hold", transform: start };
-  const t = clamp((elapsed - ARRIVAL_HOLD_MS) / ARRIVAL_EASE_MS, 0, 1);
+  if (elapsed < 0) return { phase: "hold", transform: start };
+  const t = clamp(elapsed / ARRIVAL_EASE_MS, 0, 1);
   if (t >= 1) return { phase: "done", transform: end };
   return { phase: "ease", transform: poseBetween(start, end, easeInOutCubic(t), frame) };
 }
@@ -292,6 +321,20 @@ export function easeInOutCubic(t: number): number {
  * pressed, a wheel turned, a key pressed or a touch begun; a pointer that only passes over the map does not.
  */
 export const ARRIVAL_ENDING_INPUTS = ["pointerdown", "wheel", "keydown", "touchstart"] as const;
+
+/** The keys that only move the keyboard's focus, or are held with one that does: no act on the picture. */
+const FOCUS_MOVING_KEYS: ReadonlySet<string> = new Set(["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Home", "End", "Shift", "Control", "Alt", "Meta"]);
+
+/**
+ * Whether one of {@link ARRIVAL_ENDING_INPUTS} ends an arrival where it stands. Every one does, but for a key that only
+ * moves the focus while the arrival waits on attention ("attended"): there the focus is what holds the picture and what
+ * lets it go, as the pointer is, so the key that carries it into the subject's card or out of it is not an act on the
+ * picture (the owner, 2026-11-22, of gamepads: "their focus element is quantized rather than continuous"). Enter, Space,
+ * Escape and every other key act, and end it.
+ */
+export function arrivalEndedBy(type: string, key: string | undefined, waits: ArrivalWait): boolean {
+  return !(type === "keydown" && waits === "attended" && key !== undefined && FOCUS_MOVING_KEYS.has(key));
+}
 
 /**
  * The least pan, in the screen's pixels, that brings a newcomer wholly inside the frame's padding at the camera given.

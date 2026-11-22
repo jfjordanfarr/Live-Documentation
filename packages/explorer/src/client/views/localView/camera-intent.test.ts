@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { ARRIVAL_EASE_MS, ARRIVAL_FLOOR_RATIO, ARRIVAL_HOLD_MS, arrivalEndFrame, arrivalLookChange, arrivalPose, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
+import { LAYOUT_RANGES } from "../../layout-presets";
+import { getDefaultTuning } from "../../persistence/local-storage";
+import { ARRIVAL_WAITS } from "../../types";
+import { ARRIVAL_EASE_MS, ARRIVAL_ENDING_INPUTS, ARRIVAL_FLOOR_RATIO, ARRIVAL_REST_S, arrivalEndedBy, arrivalEndFrame, arrivalLookChange, arrivalPose, arrivalReleased, arrivalRestStartsAgain, cutByEdge, cutPan, easeInOutCubic, FRAMING_EASE_MAX_MS, FRAMING_EASE_MIN_MS, framingEaseMs, framingTravel, keepFrame, smoothZoom, pinsFrame, poseBetween, revealPan, sameCamera, stepLinesFrame, stepWholeFrame, unionOf, type FramingTarget } from "./camera-intent";
 import { STEP_RATIO, zoomLook } from "./ladder-steps";
 import { framePadding, type Bounds } from "./layout-measure";
 
@@ -45,23 +48,84 @@ describe("an arrival's end frame", () => {
   });
 });
 
-describe("an arrival's hold and ease", () => {
+describe("when an arrival's rest at reading size is over", () => {
+  const rest = ARRIVAL_REST_S * 1000;
+
+  it("never before the rest has passed, whoever attends or does not", () => {
+    for (const waits of ARRIVAL_WAITS) {
+      for (const attended of [false, true]) expect(arrivalReleased(waits, rest - 1, rest, attended), `${waits}, attended ${attended}`).toBe(false);
+    }
+  });
+
+  it("at the rest's end where the pointer and the focus were never on the card", () => {
+    for (const waits of ARRIVAL_WAITS) expect(arrivalReleased(waits, rest, rest, false), waits).toBe(true);
+  });
+
+  it("waiting on attention: not while the card is attended, however long, and at once when it no longer is", () => {
+    expect(arrivalReleased("attended", rest, rest, true)).toBe(false);
+    expect(arrivalReleased("attended", rest * 40, rest, true)).toBe(false);
+    // The frame after the pointer or the focus left a card it stayed on past the rest: no second rest is owed.
+    expect(arrivalReleased("attended", rest * 40 + 16, rest, false)).toBe(true);
+  });
+
+  it("never waiting: at the rest's end, attended or not", () => {
+    expect(arrivalReleased("never", rest, rest, true)).toBe(true);
+  });
+
+  it("the trial of 2026-11-21 starts the rest again while pointed at, so its ease begins a whole rest after the pointer left", () => {
+    expect(arrivalRestStartsAgain("pointed", true)).toBe(true);
+    expect(arrivalRestStartsAgain("pointed", false)).toBe(false);
+    for (const waits of ["attended", "never"] as const) expect(arrivalRestStartsAgain(waits, true), waits).toBe(false);
+  });
+
+  it("the default rest is the one the template and the defaults carry, inside the lever's range", () => {
+    const [min, max] = LAYOUT_RANGES.localMap.arrivalRest;
+    expect(ARRIVAL_REST_S).toBeGreaterThanOrEqual(min);
+    expect(ARRIVAL_REST_S).toBeLessThanOrEqual(max);
+    expect(getDefaultTuning().localMap.arrivalRest).toBe(ARRIVAL_REST_S);
+  });
+});
+
+describe("which input ends an arrival where it stands", () => {
+  it("a press, the wheel and a touch always do", () => {
+    for (const waits of ARRIVAL_WAITS) {
+      for (const type of ["pointerdown", "wheel", "touchstart"]) expect(arrivalEndedBy(type, undefined, waits), `${type} under ${waits}`).toBe(true);
+    }
+  });
+
+  it("waiting on attention, a key that only moves the focus does not: the focus holds the picture and lets it go", () => {
+    for (const key of ["Tab", "Shift", "ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "Home", "End"]) {
+      expect(arrivalEndedBy("keydown", key, "attended"), key).toBe(false);
+    }
+  });
+
+  it("a key that acts does, and under the other choices every key does, as before", () => {
+    for (const key of ["Enter", " ", "Escape", "ContextMenu", "a", "+"]) expect(arrivalEndedBy("keydown", key, "attended"), key).toBe(true);
+    for (const waits of ["never", "pointed"] as const) expect(arrivalEndedBy("keydown", "Tab", waits), waits).toBe(true);
+  });
+
+  it("every ending input is one the rule knows", () => {
+    expect([...ARRIVAL_ENDING_INPUTS].sort()).toEqual(["keydown", "pointerdown", "touchstart", "wheel"]);
+  });
+});
+
+describe("an arrival's ease", () => {
   const start = { x: -500, y: -200, k: 1.2 }, end = { x: 100, y: 50, k: 0.4 };
 
-  it("rests at reading size for the hold, then eases, then ends exactly on the end frame", () => {
-    expect(arrivalPose(start, end, 0, frame)).toEqual({ phase: "hold", transform: start });
-    expect(arrivalPose(start, end, ARRIVAL_HOLD_MS - 1, frame).phase).toBe("hold");
-    const middle = arrivalPose(start, end, ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS / 2, frame);
+  it("rests at reading size until its rest is over, then eases, then ends exactly on the end frame", () => {
+    expect(arrivalPose(start, end, -1, frame)).toEqual({ phase: "hold", transform: start });
+    expect(arrivalPose(start, end, 0, frame)).toEqual({ phase: "ease", transform: start });
+    const middle = arrivalPose(start, end, ARRIVAL_EASE_MS / 2, frame);
     expect(middle.phase).toBe("ease");
     expect(middle.transform.k).toBeLessThan(start.k);
     expect(middle.transform.k).toBeGreaterThan(end.k);
-    expect(arrivalPose(start, end, ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS, frame)).toEqual({ phase: "done", transform: end });
+    expect(arrivalPose(start, end, ARRIVAL_EASE_MS, frame)).toEqual({ phase: "done", transform: end });
   });
 
   it("zooms out without ever passing the end scale, and moves the frame's middle along a straight line", () => {
     let previous = start.k;
     const middles: Array<{ x: number; y: number }> = [];
-    for (let elapsed = ARRIVAL_HOLD_MS; elapsed <= ARRIVAL_HOLD_MS + ARRIVAL_EASE_MS; elapsed += 35) {
+    for (let elapsed = 0; elapsed <= ARRIVAL_EASE_MS; elapsed += 35) {
       const { transform } = arrivalPose(start, end, elapsed, frame);
       expect(transform.k).toBeLessThanOrEqual(previous + 1e-12);
       expect(transform.k).toBeGreaterThanOrEqual(end.k - 1e-12);

@@ -125,18 +125,26 @@ export interface LocalMapTuning {
    */
   hiddenFiles: HiddenFilesLook;
   /**
-   * How the camera meets a fresh subject (a link, a search choice, the first open; 2026-11-19): "reading", the default,
-   * the subject's card at reading size with its neighbours cut; "then-neighbours", the same and then, once the picture
-   * has settled and a moment has passed, an ease back to the neighbours; "neighbours", on the neighbours at once. The
-   * neighbours' frame is Fit's, held between reading scale and the connections look's farthest press (camera-intent.ts).
+   * How the camera meets a fresh subject (a link, a search choice, the first open; 2026-11-19): "reading", the subject's
+   * card at reading size with its neighbours cut; "then-neighbours", the same and then, once the picture has settled and
+   * the rest has passed, an ease back to the neighbours, in three forms by where the cards' look changes, of which
+   * "then-neighbours-after", the look changed at rest after the ease, is the default since 2026-11-22; "neighbours", on
+   * the neighbours at once. The neighbours' frame is Fit's, held between reading scale and the connections look's
+   * farthest press (camera-intent.ts).
    */
   arrival: ArrivalFraming;
   /**
-   * Whether an arrival's rest at reading size waits while a pointer rests on the subject's card (a trial of 2026-11-21,
-   * default "never"): "pointed", the pull-back's hold starts again at every frame the pointer, moved there since the
-   * arrival began, stands on the card, so that a person reading it with the pointer on it is not pulled off its words.
+   * Whether an arrival's pull-back waits for the person. "attended", the default since 2026-11-22: once the rest has
+   * passed, it goes as soon as neither a pointer brought to the subject's card nor the keyboard's focus is on that card,
+   * and stays for as long as either is. "never": it goes when the rest has passed. "pointed", the trial of 2026-11-21:
+   * the rest starts again at every frame the pointer stands on the card, so the ease begins a whole rest after it left.
    */
   arrivalWaits: ArrivalWait;
+  /**
+   * How long, in seconds, an arrival that pulls back stays at reading size once the picture has settled, at the least
+   * (the owner's "minimum of N seconds of reading view size time", 2026-11-22; camera-intent.ts, `ARRIVAL_REST_S`).
+   */
+  arrivalRest: number;
   /**
    * Who frames the camera after an arrival (a trial for the owner's eye, 2026-11-19, Turn 37 of the November 18 record):
    * "hand", the default, the person, with Arrival and the step as they are; "follows", the camera follows the pinned set,
@@ -158,9 +166,9 @@ export interface LocalMapTuning {
    */
   cutCounted: CutCounted;
   /**
-   * Whether a 2D wire answers when asked (a trial of 2026-11-21, default off, on strangers' stumble over which way a line
-   * runs): a pointer resting on a wire, a press on it or the keyboard's focus fades the others and shows, beside it, which
-   * file uses which, what it uses and how many references (wire-answers.ts).
+   * Whether a 2D wire answers when asked (a trial of 2026-11-21 on strangers' stumble over which way a line runs, on by
+   * default since 2026-11-22): a pointer resting on a wire, a press on it or the keyboard's focus fades the others and
+   * shows, beside it, which file uses which, what it uses and how many references (wire-answers.ts).
    */
   wireAnswers: WireAnswersChoice;
   /**
@@ -427,14 +435,27 @@ export const HIDDEN_FILES_LOOKS: readonly HiddenFilesLook[] = ["under", "cells",
  */
 export type ArrivalFraming = "reading" | "then-neighbours" | "then-neighbours-after" | "then-neighbours-before" | "neighbours";
 
-/** Whether an arrival's pull-back waits while the pointer rests on the subject's card: never, the default, or while pointed at. */
-export type ArrivalWait = "never" | "pointed";
+/**
+ * Whether an arrival's pull-back waits for the person: "attended", after the rest at reading size (Tuning's Arrival
+ * Rest) it goes as soon as neither the pointer nor the keyboard's focus is on the subject's card, and stays while either
+ * is; "never", it goes when the rest has passed; "pointed", the trial of 2026-11-21, the rest starts again at every frame
+ * the pointer stands on the card (camera-intent.ts, `arrivalReleased`).
+ */
+export type ArrivalWait = "attended" | "never" | "pointed";
 
-/** Every Arrival Waits choice, in the order the control offers them; the first, never, is the default. */
-export const ARRIVAL_WAITS: readonly ArrivalWait[] = ["never", "pointed"];
+/**
+ * Every Arrival Waits choice, in the order the control offers them; the first is the default: "attended" since
+ * 2026-11-22, the owner's "ensure a minimum of N seconds of reading view size time, then permit immediate zoom-out when
+ * pointer exits node". Never was the default before.
+ */
+export const ARRIVAL_WAITS: readonly ArrivalWait[] = ["attended", "never", "pointed"];
 
-/** Every Arrival choice, in the order the control offers them; the first, reading size, is the default until the owner has seen the others. */
-export const ARRIVALS: readonly ArrivalFraming[] = ["reading", "then-neighbours", "then-neighbours-after", "then-neighbours-before", "neighbours"];
+/**
+ * Every Arrival choice, in the order the control offers them; the first is the default: the pull-back with its look
+ * changed at rest after it since 2026-11-22, the owner's choice by eye among the three forms ("\"Reading, Then
+ * Neighbours, Look After\""). Reading size was the default before.
+ */
+export const ARRIVALS: readonly ArrivalFraming[] = ["then-neighbours-after", "reading", "then-neighbours", "then-neighbours-before", "neighbours"];
 
 /**
  * Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",
@@ -462,11 +483,14 @@ export type CutCounted = "off" | "on";
 /** Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
 export const CUT_COUNTED: readonly CutCounted[] = ["off", "on"];
 
-/** Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: off, the default, or on (a trial, 2026-11-21). */
+/** Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: on or off. */
 export type WireAnswersChoice = "off" | "on";
 
-/** Every Wire Answers choice, in the order the control offers them; the first, off, is the default until the owner has seen the other. */
-export const WIRE_ANSWERS: readonly WireAnswersChoice[] = ["off", "on"];
+/**
+ * Every Wire Answers choice, in the order the control offers them; the first is the default: on since 2026-11-22, by the
+ * owner's eye ("Yeah the Wire Answers \"On\" is really awesome"). Off was the default while it was a trial of 2026-11-21.
+ */
+export const WIRE_ANSWERS: readonly WireAnswersChoice[] = ["on", "off"];
 
 /** The way a 2D wire's marks point: none drawn, along the owner's rule, or against it (a trial, 2026-11-21). */
 export type DirectionMarks = "none" | "along" | "against";

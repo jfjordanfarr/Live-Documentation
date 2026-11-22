@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { LAST_STEP, STEP_RATIO } from "../../packages/explorer/src/client/views/localView/ladder-steps";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * The card ladder's boxes, audited at every Zoom Out press from reading scale to the farthest zoom (the far-zoom review
@@ -41,7 +41,7 @@ test.beforeEach(async ({ page }) => {
   // (2026-11-13; `zoom-looks.spec.ts` audits those).
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, zoomLooks: "stepped" } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, zoomLooks: "stepped" } } })
   });
 });
 
@@ -424,7 +424,7 @@ async function drawnAfter(page: Page, presses: number, pin: (page: Page) => Prom
   // the owner's eye and a comparison with the cards' rows drawn as bars, and under it the overview look lays the picture
   // out again for compact cards by design. The promise held here is the card's whose box no zoom changes.
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts, zoomLooks, overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts, zoomLooks, overviewFiles: "keep" } } })
   });
   await page.goto(url(stillPicture));
   await page.locator(`.node-card[data-id="${stillPicture}"]`).waitFor();

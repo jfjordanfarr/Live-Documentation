@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { NO_REST, REST_DWELL, REST_TOLERANCE, restAt, restedOn, restsAt, type PointerRest, type RestPoint } from "./pointerRest";
+import { NO_REST, onTheWay, REST_DWELL, REST_TOLERANCE, restAt, restedOn, restsAt, WAY_SLACK, type PointerRest, type RestPoint } from "./pointerRest";
 
 /** Feeds a run of looks, each a thing under the pointer, a place and a time, and returns the rest after the last. */
 function feed(looks: Array<[string | null, RestPoint, number]>, from: PointerRest = NO_REST): PointerRest {
@@ -82,5 +82,50 @@ describe("pointerRest", () => {
     const stepped = restAt(rested, "b", { x: 6, y: 5 }, REST_DWELL + 16);
     expect(restedOn(stepped, REST_DWELL + 16)).toBeNull();
     expect(restsAt(stepped)).toBe(REST_DWELL + 16 + REST_DWELL);
+  });
+});
+
+describe("the way from a thing to the panel of its words", () => {
+  // Words asked for at (100, 100); their panel stands to the right and a little below, a gap of 40 px between.
+  const from = { x: 100, y: 100 }, panel = { left: 140, top: 110, right: 340, bottom: 170 };
+
+  it("holds the point asked at, the panel, and every point of a straight walk between them", () => {
+    expect(onTheWay(from, from, panel)).toBe(true);
+    expect(onTheWay({ x: 240, y: 140 }, from, panel)).toBe(true);
+    for (let step = 0; step <= 20; step += 1) {
+      for (const corner of [{ x: panel.left, y: panel.top }, { x: panel.left, y: panel.bottom }, { x: panel.right, y: panel.top }, { x: panel.right, y: panel.bottom }]) {
+        const at = { x: from.x + (corner.x - from.x) * step / 20, y: from.y + (corner.y - from.y) * step / 20 };
+        expect(onTheWay(at, from, panel), JSON.stringify(at)).toBe(true);
+      }
+    }
+  });
+
+  it("allows a hand the slack on either side of that walk, and no more", () => {
+    // Half way across the gap, the walk to the panel's near edge runs from y 105 to 135 or so.
+    expect(onTheWay({ x: 120, y: 100 - WAY_SLACK + 2 }, from, panel)).toBe(true);
+    expect(onTheWay({ x: 120, y: 100 - WAY_SLACK - 2 }, from, panel)).toBe(false);
+    expect(onTheWay({ x: 100 - WAY_SLACK - 1, y: 100 }, from, panel)).toBe(false);
+  });
+
+  it("does not hold a pointer that goes elsewhere: away from the panel, or past it", () => {
+    expect(onTheWay({ x: 60, y: 100 }, from, panel)).toBe(false);
+    expect(onTheWay({ x: 100, y: 40 }, from, panel)).toBe(false);
+    expect(onTheWay({ x: 100, y: 170 }, from, panel)).toBe(false);
+    expect(onTheWay({ x: 340 + WAY_SLACK + 1, y: 140 }, from, panel)).toBe(false);
+  });
+
+  it("is the same wherever the panel stands about the point: left, above, below", () => {
+    const boxes = [{ left: -140, top: 90, right: 60, bottom: 150 }, { left: 60, top: -20, right: 260, bottom: 40 }, { left: 0, top: 160, right: 200, bottom: 220 }];
+    for (const box of boxes) {
+      const middle = { x: (box.left + box.right) / 2, y: (box.top + box.bottom) / 2 };
+      expect(onTheWay({ x: (from.x + middle.x) / 2, y: (from.y + middle.y) / 2 }, from, box), JSON.stringify(box)).toBe(true);
+      // The mirror of the panel's middle through the point lies on the far side of the point from the panel.
+      expect(onTheWay({ x: 2 * from.x - middle.x, y: 2 * from.y - middle.y }, from, box), JSON.stringify(box)).toBe(false);
+    }
+  });
+
+  it("with the point inside the panel, is the panel and its slack", () => {
+    expect(onTheWay({ x: 150, y: 120 }, { x: 200, y: 140 }, panel)).toBe(true);
+    expect(onTheWay({ x: 120, y: 140 }, { x: 200, y: 140 }, panel)).toBe(false);
   });
 });

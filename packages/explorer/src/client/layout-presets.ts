@@ -8,7 +8,7 @@ type SpatialPacking = Pick<ForceGraphTuning, "linkGap" | "charge" | "collisionGa
 
 /** Portable numeric settings behind the presets and spatial encodings; older URLs may omit them. */
 export interface LayoutSettings {
-  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
+  localMap?: Partial<FlatPacking & Pick<LocalMapTuning, "returnCost" | "arrivalRest" | "zoomLooks" | "directoryLayout" | "closedDirectory" | "closedShape" | "closedCells" | "hiddenFiles" | "arrival" | "arrivalWaits" | "framing" | "step" | "cutCounted" | "wireAnswers" | "directionMarks" | "overviewFiles" | "descriptionsZoomedOut">>;
   forceGraph?: Partial<ForceGraphTuning>;
 }
 
@@ -16,7 +16,8 @@ export interface LayoutSettings {
 export const LAYOUT_RANGES = {
   localMap: {
     columnGap: [24, 160, 4], itemGap: [8, 80, 2], bandGap: [8, 80, 2], heightCost: [0, 40, 1], widthCost: [0, 40, 1],
-    membraneEvenness: [0, 5, 0.25], membraneSimplicity: [0, 1000, 10], rowLevelness: [0, 5, 0.25], returnCost: [0, 5000, 25]
+    membraneEvenness: [0, 5, 0.25], membraneSimplicity: [0, 1000, 10], rowLevelness: [0, 5, 0.25], returnCost: [0, 5000, 25],
+    arrivalRest: [0.5, 6, 0.25]
   },
   forceGraph: {
     linkGap: [8, 200, 2], charge: [0, 300, 5], collisionGap: [0, 20, 0.5], coupling: [0, 3, 0.1], nodeSize: [1, 10, 0.25], symbolScale: [0, 2, 0.1],
@@ -61,8 +62,11 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
  * the count until 2026-11-18 and is Cells under name since; so a link of November 17 or 18 that carries Local Map
  * settings and says nothing of Hidden Files, made with the count, now opens with the cells under the name. Beyond the Hops (2026-11-18, a
  * trial of the 3D map): only the next step is carried, and its absence reads as everything. Arrival (2026-11-19) likewise:
- * only a choice other than reading size is carried, and its absence reads as reading size; and Framing (2026-11-19), only
- * Follows Pins, its absence reading as By Hand.
+ * only a choice other than the default is carried, and its absence reads as the default, which was reading size until
+ * 2026-11-22 and is the pull-back with its look changed after it since; so a link made before then that carries Local
+ * Map settings and says nothing of Arrival, made at reading size, now opens with the pull-back, and one that says
+ * "reading" exists only from now on. Arrival Waits and Wire Answers changed their defaults the same day, to waiting while
+ * attended and to on, and read the same way. And Framing (2026-11-19), only Follows Pins, its absence reading as By Hand.
  */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;

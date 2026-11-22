@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { engineActivity, observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { AT_READING_SIZE, localMapSettled, localRetainUrl } from "./still-picture";
 
 /**
  * The Local Map's work stays with the view (the owner's choice, 2026-10-16).
@@ -31,7 +31,7 @@ interface Reading { status: string; tried: number; next: number; marked: number;
 
 /** Opens the retained scope with a long search, so that a view is switched while it runs. */
 async function open(page: Page): Promise<void> {
-  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { orderStarts: 0, searchStarts: 80, searchPatience: 80, moveMs: 0 } } }) });
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, orderStarts: 0, searchStarts: 80, searchPatience: 80, moveMs: 0 } } }) });
   await page.goto(localRetainUrl("/", FILES));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });

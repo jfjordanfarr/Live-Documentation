@@ -3,7 +3,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { overlapsAmong, textBoxes } from "./design-audit";
-import { LOCAL_MAP, localMapSettled } from "./still-picture";
+import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 
 /**
  * The Descriptions Zoomed Out trial (2026-11-13): with "First line, where the name leaves room", the connections look
@@ -45,7 +45,7 @@ async function visit(browser: Browser, choice: Choice, lines: "fallback" | "sego
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     // Zoomed Out Fully is chosen as "Cards keep their size", so that the case of the overview look reads rows: files only,
     // its default since 2026-11-15, lays none out there.
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep" } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, descriptionsZoomedOut: choice, overviewFiles: "keep" } } })
   });
   if (lines === "segoe") await context.addInitScript(css => {
     const add = (): void => { const style = document.createElement("style"); style.textContent = css; document.documentElement.appendChild(style); };

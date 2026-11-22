@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { backwardStrength } from "../../packages/explorer/src/client/views/localView/returning-connections";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
-import { localMapStill } from "./still-picture";
+import { AT_READING_SIZE, localMapStill } from "./still-picture";
 
 /**
  * The 3D button's cue (2026-11-15): it lights while the 2D picture draws connections against its left-to-right order,
@@ -29,7 +29,7 @@ async function still(page: Page): Promise<void> {
 /** Seeds the remembered tuning before the page loads: the suite's stilled search, and whatever the case adds. */
 async function tuning(page: Page, localMap: Record<string, unknown>): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...localMap } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap } } })
   });
 }
 
