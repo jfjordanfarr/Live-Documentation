@@ -298,3 +298,75 @@ The second pass recorded each of these as a broken link at the base, not a resol
 - **The path's new rule** (item 5): three nested ends, the scan root as an end, a directory whose only file is the other end, and the JSON against the text.
 - **Item 6:** the merges between branches, the PowerShell and SQL ledgers, the page check's `differences.json`, and each answer against its stated bound.
 - **The Explorer's lookups and the page's built bundle** with a file named `__proto__`.
+
+## 2026-11-22, at the close: the fourth pass
+
+This pass runs on the branch as it stood after the third pass: `7449cfea8`, which is `3cd947724` with the third pass's tests.
+
+**Nothing found here should stop the history rebuild or the landing on `main`.** The one finding is a sentence of the command line's that denies a path in words that are false for nested ends. It moves no fact of the graph, the history or the page.
+
+### Findings of the fourth pass, in rank order
+
+#### A wrong fact shown: between nested ends, the denial of a path is written from the ends as asked
+
+- **Input.** `src/lone/w.ts` uses `src/lone/z.ts`, and `src/a.ts` stands beside them.
+- **Commands and answers.**
+  - `inspect --from src/lone --to src --direction both` says `src/ taken without src/lone/` once at the top. It then prints `No file of src/lone/ uses a file of src/, directly or through other files.` and `No file of src/ uses a file of src/lone/, directly or through other files.`
+  - `inspect --from src --to src/lone --direction outbound` prints `No path runs from src/ to src/lone/ (outbound), nor the other way.`, with no word of the narrowing.
+- **Why it is wrong.** `w.ts` is a file of both ends and uses `z.ts`, so each sentence is false as printed. `emitDualDirectionResult` and the one-way answer that finds nothing write their denials from the ends as typed, not from the ends `endsApart` walked.
+- **Where it came from.** Two of the day's mends meet here: the second pass's sentence for the search both ways, and the rule of nested ends.
+- **Elsewhere.** The default answer (`No path runs between src/ and src/lone/, either way; src/ taken without src/lone/.`) carries the clause and is true.
+- **Test.** `scripts/live-docs/inspect.narrowed-end-denials.test.ts`, red. It first checks, through the command line's own neighbours, the fact it relies on.
+
+### A fork for the root: the two surfaces prefer opposite directions when both run
+
+The page and the command line walk through the same `walkBetween`, with the same `endsApart`, and agree on whether a path exists in every case below. Where paths run both ways, though, each tells a different one:
+
+- The command line, with no `--direction`, tells first the path along what `--from` uses.
+- The page's `findPath` tells first the path along what uses `--from`, the direction the map draws (its own case: "prefers the drawable direction when the files depend on each other").
+
+So `--from src/a.ts --to src` answers `src/a.ts uses src/b.ts`, while the page answers `src/a.ts > src/sub/c.ts`, that is, `c.ts` uses `a.ts`. Both are true. Whether one question should get one answer on both surfaces is the root's to rule; no test is added.
+
+### A gap between the surfaces: the scan root as an end
+
+The engine's `under` says "the scan root, "", holds everything", and the page's path ends take a directory of `""` as every file. There `findPath` from the root to `src/b.ts` answers `src/a.ts` uses `src/b.ts`.
+
+The command line refuses the root as an end:
+- `--from .` answers "Unable to resolve --from '.'.";
+- `--from ""` answers that `--from` is required.
+
+The refusal is the command line's honest limit or a gap to close, and that is the root's to rule; no test is added.
+
+### Attacked and held in the fourth pass
+
+**The path's rule.** I built a workspace with `src/b.ts`, `src/a.ts`, `src/sub/c.ts`, `src/sub/deep/d.ts`, `src/only/x.ts`, `src/lone/` and `lib/y.ts`. Each case below was asked by text and by `--json`, and of the page's `findPath` over the same graph. Text and JSON agree throughout, and the page finds a path exactly when the command line does.
+
+- **Three levels of nesting, both ways:** `src` and `src/sub`, `src` and `src/sub/deep`, `src/sub` and `src/sub/deep`, and `src/sub/deep` to `src`. Each path runs between the inner end and the rest of the outer, and the answer says which end was taken without which.
+- **A directory whose only file is the other end:** `src/only` and `src/only/x.ts`, both ways. "the two ends are the same", exit 1, `narrowed: "same"`.
+- **A file and its own directory, both ways:** a path to the rest of the directory.
+- **One directory in two spellings:** `src` and `src/`, and `src` and `SRC`. "the two ends are the same".
+- **`--direction both` between nested ends with a path:** the paths are right; the denials are the finding above.
+
+**A path at a moment of the history.** The parity ledger registers this as a gap: `--at --from A --to B` gives the links between the two files, not a path, and is held by its symptom. Not re-measured.
+
+**The registers.** Each would fail on a made change, by its own check:
+- the PowerShell hand reading (`powershell-judged.test.ts`): differences, arguable rows and unscored rows each held by exact equality, and the agreeing count derived from them;
+- the SQL oracle (`sql-oracle.test.ts`): `disagreements(report)` equal to `MEASURED_MISSES` for each fixture;
+- the page check: `readsHeldToLedger` and `heldToLedger` report both unlisted and gone entries;
+- the package register: its counts are compared whole.
+
+This was found by reading these checks; the registers were not mutated and run.
+
+**Stated bounds.** A file using 205 others and used by 250:
+- `inspect --from hub.ts --direction both` lists 200 each way and says `… and N more, not listed`;
+- its JSON gives `count` 205 and 250, 200 files each, and `cut` 5 and 50.
+
+`--reachable` and `--groups` list everything they reach, and claim no bound.
+
+**Cases made vacuous by the merges.** I read the path finder's cases in `pathfind.test.ts` and the Explorer's `pathfind.test.ts`. Each holds for the reason its name gives under `endsApart`. A file alone in both sets now fails at `narrowed: "same"`, before any walk, which is still the rule its name states. The graph's and the C# reader's cases were not read for this.
+
+### Not reached in the fourth pass
+
+- **The board's bound of 20.** My made board was not in the board's format.
+- **The graph's and the C# reader's cases**, read for a case made vacuous.
+- **The manifest reader as rewritten.**
