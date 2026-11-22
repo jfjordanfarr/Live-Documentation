@@ -52,6 +52,25 @@ The instrument counts a wire's sample as covered where the page's topmost elemen
 
 Only the estate's five files draw laces, and 15 samples of one picture lie on one. A reading that sees through laces reports no crossing in any of the nine, and neither does one that sees through bands only: the seeing reading finds no wire across a card in these pictures. So the rule was extended to laces in the same piece.
 
+### The route's case after the bands stopped taking the pointer (21:55 to 22:00 UTC)
+
+Later that evening another builder's mend had the bands take no pointer at all: the wire under the pointer is found by its route (`wire-reach.ts`), and the page's hit test is never handed a band. The route's case had checked, as its made input's own condition, that the hit test found a band where the card stood; on the merged state it failed there, alone and at two workers, before it read anything. Everything above about bands as the hit test's answer is of the hours in which they were.
+
+The reading's rule did not change: it looks past the wires' drawing by where a thing stands, whatever the page puts there next. What changed is what can hold it. With nothing of a route taking the pointer, a card across a route is seen by a reading that asks only for the topmost element too, so a case on the page as it ships cannot tell the rule from its absence. The route now has two cases:
+
+- **As the page ships:** a card stood across a wire is read as covering it. It holds the law's plain sight and not the rule.
+- **The rule, on a made input:** the case itself adds an undrawn stroke along the wire, in the wires' own drawing, that takes the pointer, as each band did; it checks that the page's hit test is handed that stroke where the card stands, and then both readings must see the card. It makes its own stroke and does not give the page's band the pointer back, so that it does not depend on the page having bands.
+
+Each seen failing by a made fault, in one hold with the spec whole (5 of 5), against two copies of the reading:
+
+| Case | On the readings as they stand | Against a reading that takes the plain topmost element | Against a reading that sees no card at all |
+| --- | --- | --- | --- |
+| A card across a wire | passes | passes | fails |
+| A card across a wire, a made stroke taking the pointer there | passes | fails: "sees `Portal/Controllers/PaymentsController.cs` across the wire: expected more than 0, received 0" | fails |
+| A card across a returning connection's lace | passes | fails: "sees `Contracts/PaymentRequest.cs` across the wire: expected more than 0, received 0" | fails |
+
+**The sweep**, of every hit test under `tests/` and `scripts/` and every place a band is named: the wire answers' and the learning spec's cases find a wire by its band's own geometry (`isPointInStroke`) and take the hit test's word only for what stands under it (ground, a card, a control), as their builder had written them for bands that take no pointer; two of their hit tests still filter a band out of the stack, which can no longer be there and hides nothing. The overview's spec reads a band's spoken name by its key, with no hit test. A band taking the keyboard's focus is asked of the focused element, not of a hit test. Nothing else finds or counts a band by hit testing, and nothing rests the pointer on a band and expects the band as the target. The instrument's own comment beside `drawnAt` in `still-picture.ts` still says a band takes the pointer; that file was left untouched this round, being another case's subject that evening.
+
 ## The ladder audit's `shown`, mended
 
 `card-ladder-boxes.spec.ts` sets against a card what is drawn of each part: its box within every ancestor that clips, up to its card; a part with nothing left is not drawn (`drawn`). Its own case stands three made parts in one card of the estate's picture: one far below the lines a description's slot shows, one out of the card's side, and one inside a clipping box that itself stands out of the card. On the audit as it was the first was reported ("`made-unseen` 213.5 px outside its card"); now it is not, and the other two and the clipping box still are.
