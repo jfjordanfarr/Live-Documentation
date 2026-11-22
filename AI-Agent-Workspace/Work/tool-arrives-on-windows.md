@@ -109,6 +109,24 @@ Most of what the indexed lines cost in the second leg was their simplest reader'
 
 The Explorer and the engine in one file under a policy that admits one hashed script; a folder picked; progress shown while it scans; the facts kept in the page; a blank copy and a filled copy saved. The same file is what the command line writes, filled, so there is one page and two ways to fill it.
 
+### The page says its guarantees where a person decides to trust, and its progress plainly
+- state: open
+- holds: not begun; set down on 2026-11-22 at the owner's word that these not be lost
+- evidence:
+
+The owner's direction ([Turn 11](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-11) and [Turn 12](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-12)): the rare text of our own on screen is our security guarantees, "when the app is _doing hard work for you_", in spirit and not in root's words; and of root's first examples, "a little corny". Of root's four further places ([Turn 13](../AgentSessionHistory/2026/11/2026-11-21/2026-11-21.1.record.md#turn-13)): "I think, are wise. Let's make sure we don't lose these ideas".
+
+**Progress, in the owner's wording:** "Listing Files... ({fileCountSoFar})"; "Reading File Text... ({scannedCount}/{listedCount})"; "Saving... (% if available).". Nothing is counted as sent or not sent: a page seen to watch the network "feels weird and invasive", and the point is "everything happening now is happening on _your_ machine".
+
+**The five places a guarantee may stand, one line each:**
+1. Starting up on a file that holds a big scan, where there is time to read (the owner's).
+2. Just before the browser asks for a folder: what the page will do with it (designers' "permission priming").
+3. The blank first screen, the one place a newcomer reads before doing anything.
+4. Just before saving or sharing: what the file holds, names and descriptions and not the code (the stored form's statement of what a scan holds).
+5. On opening someone else's data file: it is read as data and nothing in it runs.
+
+**Rules root proposes for any such line:** it is true of the page as built and a test of the gate holds it, or it is not shown; it says "this page" where it speaks of what is prevented, since the browser and its extensions are not ours. The design system's rule on text of our own changes in the commit that builds the first of these. The command line's twin is the statement in the scan's stored result.
+
 ### A package that holds the built Explorer
 - state: open
 - holds: not begun
