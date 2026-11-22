@@ -15,11 +15,14 @@ export interface ParityRow {
   section: string;
   page: string;
   agent: string;
-  /** `the command line's own`: what the command line gives that the page does not draw yet. */
-  status: "yes" | "yes, as files" | "yes, as JSON only" | "no: lacks part" | "no: no command" | "the command line's own";
+  /**
+   * `the command line's own`: what the command line gives that the page does not draw yet. `no: the page differs`: the
+   * command line answers by the rule and the page otherwise, shown by a line of the page's code.
+   */
+  status: "yes" | "yes, as files" | "yes, as JSON only" | "no: lacks part" | "no: no command" | "no: the page differs" | "the command line's own";
   /** The workspace (`estate` or `history`), the command and its arguments. */
   run?: string[];
-  /** The workspace and a file in it whose text the row rests on. */
+  /** The workspace and a file in it whose text the row rests on; `repository` is this checkout, read in place. */
   file?: [string, string];
   /** For an equivalent: what its output holds. */
   expect?: string[];
@@ -57,7 +60,8 @@ export function renderParityTable(ledger: ParityLedger): string {
   const onlyAs = yes.filter((row) => row.status !== "yes").length;
   const lacks = ledger.rows.filter((row) => row.status === "no: lacks part").length;
   const none = ledger.rows.filter((row) => row.status === "no: no command").length;
-  lines.push("", `**Totals:** ${ledger.rows.length} rows; ${yes.length} with an equivalent (${onlyAs} of them only as files or JSON), ${lacks + none} gaps: ${none} with no command, ${lacks} where a command lacks part${own ? `; and ${own} the command line's own, which the page does not draw yet` : ""}.`);
+  const differs = ledger.rows.filter((row) => row.status === "no: the page differs").length;
+  lines.push("", `**Totals:** ${ledger.rows.length} rows; ${yes.length} with an equivalent (${onlyAs} of them only as files or JSON), ${lacks + none + differs} gaps: ${none} with no command, ${lacks} where a command lacks part${differs ? `, ${differs} where the page differs from the rule` : ""}${own ? `; and ${own} the command line's own, which the page does not draw yet` : ""}.`);
   return lines.join("\n");
 }
 

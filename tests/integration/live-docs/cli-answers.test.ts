@@ -285,3 +285,19 @@ describe("live-docs:inspect, both ways between two directories", () => {
     assert.strictEqual(json.to.codePath, "PaymentService/App.config");
   });
 });
+
+describe("live-docs:inspect, the scan root as an end", () => {
+  // Root's ruling, 2026-11-22: "." and "./" are the scan root, every file, by the rule of any directory, as on the page.
+  it("is every file, taken without the other end it holds", () => {
+    for (const typed of [".", "./"]) {
+      const result = cli("inspect.ts", estate, ["--from", typed, "--to", "Database/SqlServer/dbo.Payment.sql", "--json"]);
+      assert.strictEqual(result.status, 0, `${typed}: ${result.stderr}`);
+      const json = JSON.parse(result.stdout) as { asked: unknown; to: { codePath: string }; length: number };
+      assert.deepStrictEqual(json.asked, { from: "./", to: "Database/SqlServer/dbo.Payment.sql", narrowed: "from" }, typed);
+      assert.strictEqual(json.to.codePath, "Database/SqlServer/dbo.Payment.sql");
+      assert.strictEqual(json.length, 1, typed);
+    }
+    const same = cli("inspect.ts", estate, ["--from", ".", "--to", "./"]);
+    assert.strictEqual(same.stdout, "No path runs between ./ and ./: the two ends are the same.\n");
+  });
+});

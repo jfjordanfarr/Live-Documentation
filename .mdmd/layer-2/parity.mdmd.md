@@ -46,6 +46,7 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | The path between two symbols | `inspect --from A#S --to B#T` | yes |
 | A path to or from a directory | `inspect --from A --to <directory>` (or a directory as `--from`): the nearest file under it answers | yes |
 | A route asked against the direction of dependency, told as asked | `inspect --from A --to B` finds it either way and says each file uses, or is used by, the next; with `--direction` kept to one way, it gives the command for the other | yes |
+| When a path runs both ways between two ends, which one is told: by root's rule of 2026-11-22, the one along what the first end uses, sought first; the page tells the one along what uses it | `inspect --from A --to B` seeks along what A uses first; the page's `findPath` walks along what uses A first | no: the page differs |
 | **The reader** | | |
 | Purpose, symbols, dependencies, Notes | the file's Live Doc | yes, as files |
 | **The history** | | |
@@ -60,7 +61,7 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 | **Only the command line, for now** | | |
 | (not drawn yet) The declarations a file's documentation names, and the files whose documentation names it: the author's word, never counted as a use | `inspect --from <file>`, after the neighbours, under headings of their own (`--json`: `documentation.names`, `documentation.namedBy`) | the command line's own |
 
-**Totals:** 32 rows; 22 with an equivalent (4 of them only as files or JSON), 9 gaps: 7 with no command, 2 where a command lacks part; and 1 the command line's own, which the page does not draw yet.
+**Totals:** 33 rows; 22 with an equivalent (4 of them only as files or JSON), 10 gaps: 7 with no command, 2 where a command lacks part, 1 where the page differs from the rule; and 1 the command line's own, which the page does not draw yet.
 
 <!-- end of the parity table -->
 
@@ -72,6 +73,8 @@ A row says "yes" only where the command was run and seen to answer, on the estat
 - **Asks a question mid-run or needs a network:** none found. Every command finished with its input closed, opened no network connection under `strace`, and gave the same exit in a namespace with no network.
 - **Only a script of this repository** (3): every command is an npm script of this checkout, so a stranger's agent gets no command on its path and its `--help` begins `npm run live-docs:inspect --`; `live-docs:orphans` read `.mdmd/layer-4` whatever the folder's configuration said (mended on 2026-11-22: it reads the configuration's); the audits and link enforcement (`slopcop:*`, `docs:links:enforce`) are this repository's own checks.
 - **The command line can do what the page cannot** (5): since 2026-11-22, an author's documentation reference, which the page does not draw yet and which the table lists as the command line's own; `generate --check`, which fails when the committed docs are stale; `lint`; `--between` any two commits, where the page steps; and `--json` of every answer.
+
+**One question, one answer.** When a path runs both ways between two ends, both surfaces are to tell the one along what the first end uses, sought first (root's ruling, 2026-11-22); the command line does, and the page, which tells the one along what uses it, is a row of the table until it does.
 
 ## What is the page's by nature
 

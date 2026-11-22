@@ -231,8 +231,8 @@ export function emitNotFound(
     : eitherWay
     ? `No path runs between ${from} and ${to}, either way${narrowedClause(asked)}.`
     : reverse
-    ? `No path runs from ${from} to ${to} (${direction}); one runs the other way, ${reverse.hops} hop(s): ${command}`
-    : `No path runs from ${from} to ${to} (${direction}), nor the other way.`);
+    ? `No path runs from ${from} to ${to} (${direction})${narrowedClause(asked)}; one runs the other way, ${reverse.hops} hop(s): ${command}`
+    : `No path runs from ${from} to ${to} (${direction}), nor the other way${narrowedClause(asked)}.`);
 }
 
 /** The two ends of a path as asked, and which gave way when one held the other (see the engine's `endsApart`). */
@@ -536,8 +536,10 @@ export function emitDualDirectionResult(
     return docPath ? ` [${docPath}]` : "";
   };
   // An end named for the sentence: a file as itself, a directory as "a file of" it.
-  const filesOf = (end: string): string => (end.endsWith("/") ? `a file of ${end}` : end);
-  const noneOf = (end: string): string => (end.endsWith("/") ? `No file of ${end}` : end);
+  // Each end as the walk took it: an outer end taken without the inner is named so (the review's fourth pass).
+  const taken = (end: string): string => ((asked?.narrowed === "from" && end === from) || (asked?.narrowed === "to" && end === to) ? `${end} outside ${end === from ? to : from}` : end);
+  const filesOf = (end: string): string => (end.endsWith("/") ? `a file of ${taken(end)}` : end);
+  const noneOf = (end: string): string => (end.endsWith("/") ? `No file of ${taken(end)}` : end);
 
   if (outboundResult.path) {
     const pathNodes = outboundResult.path;
