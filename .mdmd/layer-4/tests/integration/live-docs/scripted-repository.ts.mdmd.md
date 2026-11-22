@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/scripted-repository.ts`
-- Generated At: 2026-11-20T12:13:12.282Z
+- Generated At: 2026-11-22T18:35:35.873Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ A small git repository built from a script of seven commits, the subject of the 
 - `COLLISION_SCRIPT` (2026-10-18) is a second script of four commits, a helper moved onto the path of a file that died the commit before, built as a third sample bundle for the scrubber spec after the owner found lines leading nowhere in the played history ([Turn 8](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-17/2026-10-17.1.record.md#turn-8)).
 - Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/10/2026-10-20/2026-10-20.1.record.md#turn-9)) the mirror the script commits links documents in its authored words: the main file's doc links the design and a plan written only at the fourth commit, the legacy helper's links its old notes and is retired with them, the main file's doc drops the design at the fifth, and the orphan's doc links the design too, a link that must never count.
 - `GROWTH_SCRIPT` and `GROWTH_CONFIG` (November 8, 2026) supply a separate two-commit camera-follow fixture: one root-level TypeScript file on January 1 becomes a 64-file import chain on December 1. The configuration remains in the normal lens, making canonical membership two then 65 documents. The normal history/generator/static build produces its canonical facts; it changes none of the original script's counts or expected steps.
-- `VEIL_SCRIPT` and `VEIL_CONFIG` (2026-11-11, for [Turn 6 of the November 10 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)) supply a four-commit history large enough that the 3D Structure picture veils: a `big` tree of 1,050 files, past the 1,024 files a picture draws within skins, a small `wide` tree of ten files and the entry. While `wide` stands `big` is veiled whole; once it is gone `big` is open and `big/d20/e2` to `e4` are veiled bubbles within it. The steps touch a file in each veiled part and delete one, so that the history's emphasis can be checked inside veils.
+- `veilScript`, `veilShape` and `VEIL_CONFIG` (2026-11-11, as `VEIL_SCRIPT` until 2026-11-22, for [Turn 6 of the November 10 record](../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)) supply a four-commit history large enough that the 3D Structure picture veils: a `big` tree that passes the files a picture draws within skins, a small `wide` tree of ten files and the entry. While `wide` stands `big` is veiled whole; once it is gone `big` is open and the last three innermost directories of its last directory are veiled bubbles within it. Since 2026-11-22 the tree is sized from the limit it is given, which its builder and the browser cases read from the product (`DRAWN_FILES`), and `veilShape` names what it veils. It had been written as 1,050 files against a budget of 1,024 (`big/d20/e2` to `e4`); when the budget became 2,048 that day it veiled nothing, and the two cases over it failed in the day's gate, alone as under load, on a premise that no longer held. At 2,048 it is 2,070 files in 42 directories, the first short of five so that the three left veiled stay side by side (`big/d41/e2` to `e4`); at 1,024 it is the sample as it was. The steps touch a file in each veiled part and delete one, so that the history's emphasis can be checked inside veils.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -104,28 +104,44 @@ lines resolved to the dropped object led nowhere after a play through this repos
 ##### `GROWTH_SCRIPT` — Summary
 A separate fixed history grows one root file into a 64-file import chain, to exercise overview reframing.
 
-#### `VEIL_SCRIPT` {#symbol-veil_script}
-- Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L384)
+#### `veilShape` {#symbol-veilshape}
+- Type: function
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L381)
+
+##### `veilShape` — Summary
+Where the veiling sample veils, for a picture that draws at most `limit` files within its skins: the big tree's
+directories, the three innermost directories that stay veiled once the small tree is gone, and the files its steps
+touch and delete. The tree is sized from the limit and never from a number written here (2026-11-22): written for a
+limit of 1,024 as 1,050 files, it veiled nothing once the product drew 2,048, and the cases over it failed on a
+premise that no longer held.
+
+A skin opens its innermost directories ten files at a time while the files shown stay within the limit, so
+`floor(limit / 10)` of them open; the tree holds three more than that, which stay veiled. The directories are five
+to a directory, and the one that is short of five, when the count does not divide, is the first: a skin opens the
+smaller directory first, so the three left veiled are always the last three of the last directory, side by side.
+
+#### `veilScript` {#symbol-veilscript}
+- Type: function
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L415)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
-##### `VEIL_SCRIPT` — Summary
+##### `veilScript` — Summary
 A separate history large enough that the 3D Structure picture veils what it cannot draw (2026-11-11), so that the
-history's emphasis can be checked inside veils. While `wide` stands, the picture's files pass 1,024 and the `big`
-bubble is veiled whole; once `wide` is gone, `big` is open and its last three directories of ten files,
-`big/d20/e2` to `e4`, are veiled bubbles within it. Each step touches one file of a veiled part, and the last
-deletes one.
+history's emphasis can be checked inside veils, for a picture that draws at most `limit` files within its skins
+(`veilShape`). While `wide` stands, the picture's files pass the limit and the `big` bubble is veiled whole; once
+`wide` is gone, `big` is open and the last three innermost directories of its last directory are veiled bubbles
+within it. Each step touches one file of a veiled part, and the last deletes one.
 
 #### `CHECKED_CONFIG` {#symbol-checked_config}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L401)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L435)
 
 ##### `CHECKED_CONFIG` — Summary
 The lens of the checked sample, whose main file is its entry.
 
 #### `CHECKED_SCRIPT` {#symbol-checked_script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L412)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L446)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `CHECKED_SCRIPT` — Summary
@@ -136,7 +152,7 @@ the mirror the generator writes at the head, so that the history's last step can
 
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L428)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L462)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 <!-- LIVE-DOC:END Public Symbols -->
 

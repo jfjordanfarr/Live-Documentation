@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/history-emphasis.spec.ts`
-- Generated At: 2026-11-19T21:10:21.709Z
+- Generated At: 2026-11-22T18:35:34.416Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Written on 2026-10-31 for the owner's ask in [Turn 8 of the October 31 record](.
 Since 2026-11-11 ([Turn 6 of the November 10 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/2026-11-10.1.record.md#turn-6)) five cases read what the skins show within them over the same sample, from the uploaded unit buffers (`spatialOpacity`, `spatialLit`, the instance colour) and the skins' own `wrapperLit` and `wrapperAlpha`. In the Structure layout with nothing pinned, `src` is a bubble whose balloons `src/app` and `src/engine` hold two dots each: under Glow main.ts's dot is white at the spheres' alpha while util.ts's keeps its kind's colour, neither balloon nor the skin is lit, the next step moves the light, and closing the history restores every unit; at "Rewrite the big helper as a huge one" the deleted lib/big.ts, which has no dot, lights `lib`'s skin; under Dim an unchanged dot falls to 0.15, a balloon holding nothing to 0.2 and `lib`'s skin to 0.2 at a step that touches nothing in it; under None nothing within a skin is lit or dimmed; and in the Connections layout a changed file's dot inside the island wrapped about main.ts is white, while main.ts, the seed, glows as a sphere and is never a dot. Each case failed against the build before the change. Two more read veils over the veiling sample (`VEIL_SCRIPT`, `samples/history-veil`): a change inside a veiled bubble lights that balloon instance and none of its veiled siblings, and a body veiled whole lights for a change in it while the body beside it does not; both failed under a deliberate break that lit the skin instead ([the evidence](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-10/Screenshots/history-bubbles/README.md)).
 
 Since 2026-11-18, when marbles became the default ([Turn 13 of the November 17 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-17/2026-11-17.1.record.md#turn-13)), the cases run on that default and read each file's base colour as that file's own at the moment shown, from a second visitor at the same address with Changed Files at None (`ownColours`); until then an unchanged file of the same kind stood for it, which a marble's own veins no longer allow. They also read, from the veins' instance attribute, that Glow's white replaces the changed file's marble and the next step gives it back, and that Dim keeps every marble, for spheres and for the dots within the skins.
+
+The two cases inside veils and the budget (2026-11-22). Both failed in the day's gate, and alone at one worker with the same words: the three bubbles were not veiled, and the whole-body veil never came. The product was right. That day the budget of files drawn within skins went from 1,024 to 2,048, and the veiling sample, written as 1,050 files to pass 1,024, no longer veiled anything; the builder who raised the budget ran the specs it thought affected and missed this one. The sample is now sized from the product's `DRAWN_FILES`, where it is built and here (`veilShape`), and the cases name what it veils from the same function; a bundle built for another budget is said at once, by the sample's own files, before any wait. Each case was seen to fail again with the lighting broken behind a temporary switch, since removed: lighting every bubble that holds a change, where the innermost alone should light, turned the first red; leaving a body veiled whole unlit turned the second.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -29,7 +31,9 @@ _No public symbols detected_
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
+- [`forceGraphShells.DRAWN_FILES`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-drawn_files)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
+- [`scripted-repository.veilShape`](../integration/live-docs/scripted-repository.ts.mdmd.md#symbol-veilshape)
 - `three` - `InstancedMesh`, `MeshLambertMaterial`, `Scene` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

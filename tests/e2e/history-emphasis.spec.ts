@@ -3,6 +3,8 @@ import type { InstancedMesh, MeshLambertMaterial, Scene } from "three";
 
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
+import { DRAWN_FILES } from "../../packages/explorer/src/client/views/forceGraphShells";
+import { veilShape } from "../integration/live-docs/scripted-repository";
 import { observeGraph, renderedNodes } from "./force-graph-observation";
 
 /**
@@ -447,14 +449,28 @@ test.describe("inside the wrappers", () => {
 });
 
 /**
- * Inside veils (2026-11-11), over the veiling sample (`VEIL_SCRIPT`), whose 1,050-file `big` tree passes the 1,024 files a
- * picture draws within skins: while its small `wide` tree stands, `big` is veiled whole, one milky bubble; once `wide`
- * is gone, `big` is open and `big/d20/e2` to `e4` are veiled bubbles within it. A change the picture does not draw as a
- * dot lights the innermost bubble drawn that holds it, read from the balloons' uploaded `spatialLit`.
+ * Inside veils (2026-11-11), over the veiling sample (`veilScript`), whose `big` tree passes the files a picture draws
+ * within skins, `DRAWN_FILES`: while its small `wide` tree stands, `big` is veiled whole, one milky bubble; once `wide`
+ * is gone, `big` is open and the last three innermost directories of its last directory are veiled bubbles within it.
+ * A change the picture does not draw as a dot lights the innermost bubble drawn that holds it, read from the balloons'
+ * uploaded `spatialLit`.
+ *
+ * The sample is sized from the product's own budget, here and where it is built (2026-11-22). It was written as 1,050
+ * files against a budget of 1,024; when the budget became 2,048 it veiled nothing, and both cases failed in the gate on
+ * a premise that no longer held, the product lighting nothing wrongly. `VEILS` names what the sample veils today.
  */
+const VEILS = veilShape(DRAWN_FILES);
 const veiling = (commit: string): string => `/samples/history-veil/?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure", commit, layout: { forceGraph: { updateEnergy: 0 } }
 } as Parameters<typeof compressSnapshot>[0])}`;
+
+/** The bundle served holds the sample as today's budget shapes it: a bundle built for another budget is said at once. */
+async function sampleFitsBudget(page: Page): Promise<void> {
+  const data = await (await page.request.get("/samples/history-veil/explorer-data.json")).json() as { graph: { files: Record<string, unknown> } };
+  const paths = new Set(Object.keys(data.graph.files));
+  expect(paths.has(`${VEILS.corner[2]}/f09.ts`), `the veiling sample was built for a budget of ${DRAWN_FILES} files: its last veiled directory is ${VEILS.corner[2]}`).toBe(true);
+  expect([...paths].filter(path => path.startsWith("big/")).length, "the big tree alone passes the budget").toBeGreaterThan(DRAWN_FILES);
+}
 
 /** The settled picture with these balloons drawn and the big tree's skin built. */
 async function balloonsDrawn(page: Page, ids: readonly string[]): Promise<void> {
@@ -471,16 +487,17 @@ test.describe("inside veils", () => {
   test("a change inside a veiled bubble lights that bubble and none of its veiled siblings", async ({ page, context }) => {
     await emphasis("glow")({ context });
     await observeGraph(page);
+    await sampleFitsBudget(page);
     await page.goto(veiling(await commitWith(page, "Retire the small tree and touch a veiled corner", "history-veil")));
-    const corner = ["big/d20/e2", "big/d20/e3", "big/d20/e4"];
+    const corner = [...VEILS.corner], around = corner[1].slice(0, corner[1].lastIndexOf("/"));
     await balloonsDrawn(page, corner);
     const drawn = await drawnBubbles(page);
     expect(corner.map(id => unit(drawn.balloons, id).veiled), "the three are veiled, their files not drawn").toEqual([true, true, true]);
-    expect(drawn.files.some(file => file.id === "big/d20/e3/f04.ts")).toBe(false);
+    expect(drawn.files.some(file => file.id === VEILS.touchedCorner)).toBe(false);
     expect(corner.map(id => unit(drawn.balloons, id).lit)).toEqual([0, 1, 0]);
-    expect(drawn.balloons.filter(balloon => balloon.lit === 1).map(balloon => balloon.id)).toEqual(["big/d20/e3"]);
+    expect(drawn.balloons.filter(balloon => balloon.lit === 1).map(balloon => balloon.id)).toEqual([corner[1]]);
     // The open bubble around it holds the change and is not lit; nor is the skin.
-    expect(unit(drawn.balloons, "big/d20").lit).toBe(0);
+    expect(unit(drawn.balloons, around).lit).toBe(0);
     expect(skin(drawn.skins, "directory:big").lit).toBe(0);
     expect(drawn.files.some(white)).toBe(false);
   });
@@ -488,6 +505,7 @@ test.describe("inside veils", () => {
   test("a body veiled whole lights for a change in it, and the body beside it does not", async ({ page, context }) => {
     await emphasis("glow")({ context });
     await observeGraph(page);
+    await sampleFitsBudget(page);
     await page.goto(veiling(await commitWith(page, "Touch a corner of the big tree", "history-veil")));
     await balloonsDrawn(page, ["directory:big"]);
     const drawn = await drawnBubbles(page);
