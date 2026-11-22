@@ -1,0 +1,5 @@
+[null,"format","fact-pack",1]
+[null,"location",".mdmd","layer-4",".mdmd.md"]
+[null,"scanner","a test 1.0"]
+[null,"left-out","excluded by configuration",2,"AI-Agent-Workspace/**"]
+[null,"end",0]

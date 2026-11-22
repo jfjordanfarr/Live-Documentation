@@ -18,7 +18,7 @@ import { constants, deflateRawSync, inflateRawSync } from "node:zlib";
 
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
-import { bytesOfText, readScan, SIGNATURE, textOf, textOfScan, writeScan, type Scan, type StoredFile } from "../../../../../../../packages/stored-form/src/storedForm";
+import { bytesOfText, docPathOf, graphOf, readScan, SIGNATURE, textOf, textOfScan, writeScan, type Scan, type StoredDocumentation, type StoredFile } from "../../../../../../../packages/stored-form/src/storedForm";
 import { mutant } from "../../../../../../../packages/stored-form/test/fuzz/mutants.mjs";
 import { everyFact, seededScan } from "../../../../../../../packages/stored-form/test/testScans";
 import { scanOfGraph } from "../stored-form-module/scan-of-graph";
@@ -114,23 +114,42 @@ function madeScans(): [string, Scan][] {
   scans.push(["made-order-hard-case", { head: smallHead, files: order.map((p, i) => plain(p, { dependencies: order.filter((q) => q !== p).map((q) => ({ label: q, link: `${q.slice(4)}.md`, target: q, qualifiers: [] })), authored: `file ${i}` })) }]);
   // Every character the text form's rule names, each in a string of its own.
   const characters = ['"', "\\", "\b", "\t", "\n", "\f", "\r", "\u0000", "\u0001", "\u000b", "\u001f", "/", "\u007f", "\u0080", "\u009f", "é", " ", " ", "﻿", "\u{E000}", "\u{FFFF}", "\u{1F600}", "\u{10FFFF}"];
-  scans.push(["made-characters", { head: { ...smallHead, scanner: "﻿a scanner" }, files: [plain("a", { authored: characters.map((c) => `x${c}y`).join("|"), symbols: characters.map((c, i) => ({ name: `n${c}`, kind: `k${i}`, flags: [c], references: [], sections: [{ title: c, body: [c, `${c}${c}`] }] })) })] }]);
+  scans.push(["made-characters", { head: { ...smallHead, scanner: "﻿a scanner" }, files: [plain("a", { authored: characters.map((c) => `x${c}y`).join("|"), symbols: characters.map((c, i) => ({ name: `n${c}`, kind: `k${i}`, flags: [c], references: [], sections: [{ title: c, body: [c, `${c}${c}`] }], documentation: [] })) })] }]);
   // Every word of every enumeration, which the package's scans do not all reach (no Constraints, no opening, no
   // declared), and an extension that is empty but for a backslash and U+0000, which the specification allows.
   const linked = (q: string) => ({ name: `T${q}`, link: `${q}.md#x`, target: q, anchor: "x" });
   scans.push(["made-every-enumeration", {
-    head: { location: { root: "", baseLayer: "b", extension: "\\\u0000" }, scanner: "s", leftOut: [] },
+    // The second reading: section 4.1 now refuses `\` and U+0000 in the extension, so this one is empty, which it allows.
+    head: { location: { root: "", baseLayer: "b", extension: "" }, scanner: "s", leftOut: [] },
     files: [
       plain("p", {
         entries: (["program", "command", "module", "opening", "tooling", "declared"] as const).map((reason) => ({ reason })),
-        symbols: [{ name: "f", slug: "f", kind: "function", flags: [], references: [{ role: "Returns", types: [linked("q")] }, { role: "Extends", types: [linked("q")] }, { role: "Implements", types: [linked("q")] }, { role: "Constraints", types: [linked("q")] }, { role: "Parameters", parameters: [{ name: "a", types: [linked("q")] }, { name: "b", types: [] }] }], sections: [] }],
+        symbols: [{ name: "f", slug: "f", kind: "function", flags: [], references: [{ role: "Returns", types: [linked("q")] }, { role: "Extends", types: [linked("q")] }, { role: "Implements", types: [linked("q")] }, { role: "Constraints", types: [linked("q")] }, { role: "Parameters", parameters: [{ name: "a", types: [linked("q")] }, { name: "b", types: [] }] }], sections: [], documentation: [] }],
         dependencies: [{ label: "q", link: "q.md", target: "q", qualifiers: ["contract", "re-export", "configuration", "type-only"] }, { label: "self", link: "p.md", target: "p", qualifiers: [] }]
       }),
       plain("q", { reExports: [{ name: "f", slug: "f", from: { label: "p", link: "p.md" }, flags: ["type-only"] }] })
     ]
   }]);
   // Numbers at their edges.
-  scans.push(["made-numbers", { head: { ...smallHead, leftOut: [{ reason: "r", count: 4294967295, detail: "" }, { reason: "", count: 0, detail: "d" }] }, files: [plain("a", { layer: 0 }), plain("b", { layer: 4294967295, symbols: [{ name: "x", kind: "k", flags: [], source: { path: "../b", line: 4294967295 }, references: [], sections: [] }] })] }]);
+  scans.push(["made-numbers", { head: { ...smallHead, leftOut: [{ reason: "r", count: 4294967295, detail: "" }, { reason: "", count: 0, detail: "d" }] }, files: [plain("a", { layer: 0 }), plain("b", { layer: 4294967295, symbols: [{ name: "x", kind: "k", flags: [], source: { path: "../b", line: 4294967295 }, references: [], sections: [], documentation: [] }] })] }]);
+  // The second reading's own, aimed at the amended sections. Documentation references of every shape: a name alone;
+  // with an element; a link with no target; to its own file, with and without an anchor; to another scanned file, with
+  // and without element and anchor; to a file outside the scan; from a symbol with no slug. And a file with no wires.
+  const doc = (name: string, more: Partial<StoredDocumentation> = {}): StoredDocumentation => ({ name, ...more });
+  const documented = (name: string, slug: string | undefined, documentation: StoredDocumentation[]) => ({ name, ...(slug ? { slug } : {}), kind: "function", flags: [], references: [], sections: [{ title: "Links", body: documentation.map((d) => `- ${d.name}`) }], documentation });
+  scans.push(["made-doc-references", {
+    head: { location: { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }, scanner: "s", leftOut: [] },
+    files: [
+      plain("lib/a.cs", { symbols: [
+        documented("A", "a", [doc("Plain"), doc("Thrown", { element: "exception" }), doc("Loose", { link: "x.md" }), doc("Self", { link: "#a", target: "lib/a.cs", anchor: "a" }), doc("SelfFile", { link: "a.cs.md", target: "lib/a.cs" })]),
+        documented("B", undefined, [doc("ToB", { link: "b.cs.md#b", target: "lib/b.cs", anchor: "b" }), doc("ToBWhole", { element: "seealso", link: "b.cs.md", target: "lib/b.cs" }), doc("Outside", { element: "exception", link: "../../ext/z.cs.md#z", target: "ext/z.cs", anchor: "z" })])
+      ] }),
+      plain("lib/b.cs", { symbols: [documented("Bee", "b", [doc("BackToA", { element: "inheritdoc", link: "a.cs.md#a", target: "lib/a.cs", anchor: "a" }), doc("ToC", { link: "c.cs.md", target: "lib/c.cs" })])], dependencies: [{ label: "lib/a.cs", link: "a.cs.md", target: "lib/a.cs", qualifiers: [] }] }),
+      plain("lib/c.cs", { symbols: [documented("Sea", "sea", [])] }),
+      plain("lib/d.cs", { dependencies: [{ label: "outside", link: "../../ext/z.cs.md", target: "ext/z.cs", qualifiers: [] }, { label: "System" }].map((d) => ({ qualifiers: [], ...d })) })
+    ]
+  }]);
+  scans.push(["made-no-wires", { head: smallHead, files: [plain("a"), plain("b", { dependencies: [{ label: "x", qualifiers: [] }] })] }]);
   return scans;
 }
 
@@ -207,7 +226,7 @@ async function probeRefusals(): Promise<[string, Uint8Array][]> {
   }
   // A valid scan whose text names one long string many times: small stored, its text far past the file's bound.
   const long = "k".repeat(32 * 1024);
-  out.push(["probe-text-past-the-file-bound", await bytesOf({ head: smallHead, files: [plain("a", { symbols: Array.from({ length: 2000 }, (_, i) => ({ name: `s${i}`, kind: long, flags: [], references: [], sections: [] })) })] })]);
+  out.push(["probe-text-past-the-file-bound", await bytesOf({ head: smallHead, files: [plain("a", { symbols: Array.from({ length: 2000 }, (_, i) => ({ name: `s${i}`, kind: long, flags: [], references: [], sections: [], documentation: [] })) })] })]);
   return out;
 }
 
@@ -239,6 +258,53 @@ function textRefusals(): [string, string | Uint8Array][] {
 
 const sha = (b: Uint8Array | string): string => createHash("sha256").update(b).digest("hex");
 
+/** The second reading's own, aimed at the amended sections: the extension's characters, the text's order and members. */
+async function secondRefusals(): Promise<[string, string | Uint8Array][]> {
+  const out: [string, string | Uint8Array][] = [];
+  const frames = framesOf(await bytesOf(everyFact()));
+  const head = frames.findIndex((f) => f.kind === 1);
+  const text = (t: string): Uint8Array => Buffer.from([...varint(Buffer.byteLength(t)), ...Buffer.from(t)]);
+  const headWith = (extension: string): Uint8Array => { const h = frames[head].raw; let at = 1; const take = (): void => { const [n, next] = readVarint(h, at); at = next + n; }; take(); take(); const before = h.subarray(0, at); take(); return Buffer.concat([before, text(extension), h.subarray(at)]); };
+  for (const [name, extension] of [["second-extension-backslash", "\\"], ["second-extension-backslash-inside", ".md\\x"], ["second-extension-nul", ".md\u0000"], ["second-extension-slash", "/md"], ["second-extension-empty", ""]] as const) {
+    out.push([`${name}.fpk`, framed(frames.map((f, i) => (i === head ? { ...f, raw: headWith(extension) } : f)))]);
+  }
+  const t = textOfScan(everyFact());
+  const lines = t.split("\n").slice(0, -1);
+  const find = (kind: string, p = "src/a.ts"): number => lines.findIndex((l) => l.startsWith(`[${JSON.stringify(p)},${JSON.stringify(kind)}`));
+  const moved = (from: number, to: number): string => { const l = [...lines]; const [x] = l.splice(from, 1); l.splice(to, 0, x); return `${l.join("\n")}\n`; };
+  const doubled = (at: number): string => { const l = [...lines]; l.splice(at, 0, lines[at]); return `${l.join("\n")}\n`; };
+  out.push(["second-text-authored-before-file.txt", moved(find("authored"), find("file"))]);
+  out.push(["second-text-dependency-before-symbol.txt", moved(find("dependency"), find("symbol"))]);
+  out.push(["second-text-entry-after-symbol.txt", moved(find("entry"), find("symbol"))]);
+  out.push(["second-text-scanner-before-location.txt", moved(2, 1)]);
+  out.push(["second-text-file-twice.txt", doubled(find("file"))]);
+  out.push(["second-text-authored-twice.txt", doubled(find("authored"))]);
+  out.push(["second-text-cited-by-twice.txt", doubled(find("cited-by"))]);
+  out.push(["second-text-symbol-twice.txt", doubled(find("symbol"))]);
+  out.push(["second-text-location-twice.txt", doubled(1)]);
+  out.push(["second-text-no-documentation-member.txt", t.replace(',"documentation":[]', "")]);
+  out.push(["second-text-doc-target-without-link.txt", t.replace('{"name":"Widget","link":"b.ts.mdmd.md#widget","target":"src/b.ts","anchor":"widget"}', '{"name":"Widget","target":"src/b.ts","anchor":"widget"}')]);
+  out.push(["second-text-doc-members-reordered.txt", t.replace('{"name":"Gone","element":"exception"', '{"element":"exception","name":"Gone"')]);
+  out.push(["second-text-doc-element-null.txt", t.replace('{"name":"Unlinked"}', '{"name":"Unlinked","element":null}')]);
+  const back = { ...everyFact(), head: { ...everyFact().head, location: { ...everyFact().head.location, extension: "\\" } } };
+  out.push(["second-text-extension-backslash.txt", textOfScan(back)]);
+  // A valid text past the export's bound (section 3.5): the facts of probe-text-past-the-file-bound, whose text textOf refuses.
+  const long = "k".repeat(32 * 1024);
+  out.push(["second-text-past-the-export-bound.txt", textOfScan({ head: smallHead, files: [plain("a", { symbols: Array.from({ length: 2000 }, (_, i) => ({ name: `s${i}`, kind: long, flags: [], references: [], sections: [], documentation: [] })) })] })]);
+  for (const [name, body] of out) if (typeof body === "string" && body === t) throw new Error(`${name} is unchanged`);
+  return out;
+}
+
+/** The graph as the second reading's instruction asks it printed, with every object's members sorted, as one string. */
+function graphAnswer(scan: Scan): string {
+  const g = graphOf(scan);
+  const files = Object.values(g.files).map((f) => ({ path: f.codePath, document: docPathOf(scan.head.location, f.codePath), edges: f.edges, outbound: f.outbound, inbound: f.inbound, documentation: f.documentation, documentedBy: f.documentedBy }));
+  return canonical({ files });
+}
+function canonical(v: unknown): string {
+  return JSON.stringify(v, (_k, x: unknown) => (x && typeof x === "object" && !Array.isArray(x) ? Object.fromEntries(Object.entries(x as Record<string, unknown>).filter(([, y]) => y !== undefined).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) : x));
+}
+
 void (async () => {
   if (mode === "corpus") {
     const [indexPath, base] = positional;
@@ -262,6 +328,9 @@ void (async () => {
     for (const [name, bytes] of [...(await unitRefusals()), ...(await probeRefusals())]) writeFileSync(path.join(dir, `${name}.fpk`), bytes);
     for (const [name, text] of textRefusals()) writeFileSync(path.join(dir, `${name}.txt`), text);
     console.log(JSON.stringify(kinds));
+  } else if (mode === "second") {
+    const [dir] = positional; mkdirSync(dir, { recursive: true });
+    for (const [name, body] of await secondRefusals()) writeFileSync(path.join(dir, name), body);
   } else if (mode === "answers") {
     for (const dir of positional) {
       const answers: Record<string, unknown> = {};
@@ -270,7 +339,11 @@ void (async () => {
         if (f.endsWith(".fpk")) {
           const read = await readScan(bytes);
           const text = read.ok ? await textOf(bytes) : read;
-          answers[f] = text.ok ? { reads: true, textSha256: sha(text.value), textBytes: Buffer.byteLength(text.value), name: read.ok ? read.value.name : undefined, fileSha256: sha(bytes) } : { reads: false, readOk: read.ok, reason: text.reason, fileSha256: sha(bytes) };
+          // The second reading: the graph of every file the module reads, and for a file whose text the module refuses
+          // past the export's bound, the text its textOfScan writes, which section 3.5 now lets a reader write too.
+          const graph = read.ok ? sha(graphAnswer(read.value)) : undefined;
+          const written = read.ok && !text.ok ? textOfScan(read.value) : undefined;
+          answers[f] = text.ok ? { reads: true, textSha256: sha(text.value), textBytes: Buffer.byteLength(text.value), name: read.ok ? read.value.name : undefined, graphSha256: graph, fileSha256: sha(bytes) } : { reads: false, readOk: read.ok, reason: text.reason, ...(written !== undefined ? { graphSha256: graph, textSha256: sha(written), textBytes: Buffer.byteLength(written) } : {}), fileSha256: sha(bytes) };
         } else if (f.endsWith(".txt")) {
           const again = await bytesOfText(bytes);
           const read = again.ok ? await readScan(again.value) : again;

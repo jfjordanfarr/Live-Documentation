@@ -12,7 +12,8 @@ Holds the reader of `package.json` to Node's own resolver over real manifests ra
 
 ### Notes
 - Written on 2026-11-22 at root's ask, after the reader was mended to read `exports` as Node does (`json.exports.test.ts` holds eleven made shapes). Of 281 packages, 229 agreed with the reader as it then was. It read `main` as written, with no `index.js` when a package had no `main`, no completion of a `main` that leaves off its extension or names a folder, and no fall-back when `main` names no file. Following Node's legacy resolution of `main` made 273 agree.
-- The disagreements left are registered, each with its reason: two packages named as Node's own modules (`punycode`, `string_decoder`), and six nested copies, for which Node's ESM resolver answered with the top-level copy's file, a question left open.
+- The disagreements left are registered, each with its reason: two packages named as Node's own modules (`punycode`, `string_decoder`).
+- The ESM side is asked with `--experimental-import-meta-resolve`, without which Node ignores `import.meta.resolve`'s parent. Until that was found later on 2026-11-22, six nested copies were registered as answered with the top-level copy's file; asked with the flag, they agree, and 279 of 281 packages agree.
 - Files are compared as files on the disk, as the reader takes the first of Node's candidates that its listing holds; Node's ESM resolver may name a file an export names that is not there.
 
 ## Generated

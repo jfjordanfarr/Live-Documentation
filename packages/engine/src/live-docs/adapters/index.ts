@@ -2,6 +2,7 @@ import path from "node:path";
 
 import type { LiveDocumentationArchetype } from "../../config/liveDocumentationConfig";
 import type { WorkspaceReads } from "../../tooling/workspaceFiles";
+import type { WorkspaceListing } from "../../tooling/workspaceListing";
 import type { SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
@@ -40,7 +41,7 @@ import { sqlAdapter } from "./sql";
  * test's, has neither, and its reader reads the disk. It is the run's own
  * object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
  */
-export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype } & Partial<WorkspaceReads>;
+export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype } & Partial<WorkspaceReads> & Partial<WorkspaceListing>;
 
 /**
  * Contract for a language-specific source analyser.

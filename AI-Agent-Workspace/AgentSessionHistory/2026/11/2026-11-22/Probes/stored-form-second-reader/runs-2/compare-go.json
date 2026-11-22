@@ -1,0 +1,173 @@
+{
+ "reader": "go-reader-2",
+ "tally": {
+  "corpora read same": 3,
+  "corpora graph both answer, differently": 3,
+  "corpora name same": 3,
+  "made read same": 11,
+  "made graph same": 4,
+  "made name same": 10,
+  "made graph both answer, differently": 7,
+  "made name second reader ran out of its memory limit": 1,
+  "refusals read both refuse": 415,
+  "refusals read same": 7,
+  "refusals graph both answer, differently": 6,
+  "refusals read both refuse the text past the export bound": 1,
+  "refusals graph same": 2,
+  "refusals name both refuse": 23,
+  "second read both refuse": 4,
+  "second read same": 1,
+  "second graph both answer, differently": 1,
+  "second name both refuse": 13,
+  "second name same": 2
+ },
+ "slowest": [
+  "corpus-dnn.txt 2041 ms, 113 MB",
+  "corpus-repository.fpk 1473 ms, 14 MB",
+  "corpus-dnn.fpk 1156 ms, 29 MB",
+  "corpus-repository.txt 971 ms, 32 MB",
+  "second-text-past-the-export-bound.txt 848 ms, 133 MB"
+ ],
+ "heaviest": [
+  "second-text-past-the-export-bound.txt 133 MB of 17074",
+  "corpus-dnn.txt 113 MB of 10103",
+  "corpus-repository.txt 32 MB of 2837",
+  "corpus-dnn.fpk 29 MB of 1535",
+  "corpus-dnn.fpk 28 MB of 1535"
+ ],
+ "disagreements": [
+  {
+   "dir": "corpora",
+   "file": "corpus-dnn.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 17064026 bytes"
+  },
+  {
+   "dir": "corpora",
+   "file": "corpus-estate.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 43417 bytes"
+  },
+  {
+   "dir": "corpora",
+   "file": "corpus-repository.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 2515476 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-doc-references.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 1136 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-no-wires.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 153 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-1-40.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 19333 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-11-773.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 381882 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-11-773.txt",
+   "kind": "name",
+   "outcome": "second reader ran out of its memory limit",
+   "reader": "ran out of its memory limit"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-2-257.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 117686 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-3-300.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 140797 bytes"
+  },
+  {
+   "dir": "made",
+   "file": "made-seeded-7-529.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 237403 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0014-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 140797 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0134-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 140797 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0158-made-seeded-3-300-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 140797 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0190-corpus-estate-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 43417 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "mutant-0246-made-every-fact-frames-rearranged.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 1266 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "probe-as-written.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 1266 bytes"
+  },
+  {
+   "dir": "refusals",
+   "file": "probe-text-past-the-file-bound.fpk",
+   "kind": "read",
+   "outcome": "both refuse the text past the export bound",
+   "reader": "refused: the text is not offered, though the file is valid: its text would write 65546892 bytes of names, past the bound 64 x 7423 + 1048576 = 1523648 (section 3.5)"
+  },
+  {
+   "dir": "second",
+   "file": "second-extension-empty.fpk",
+   "kind": "graph",
+   "outcome": "both answer, differently",
+   "reader": "answered, 1242 bytes"
+  }
+ ]
+}

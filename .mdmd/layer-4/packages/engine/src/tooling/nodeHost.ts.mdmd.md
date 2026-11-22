@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/nodeHost.ts`
-- Generated At: 2026-11-22T01:51:58.113Z
+- Generated At: 2026-11-22T04:48:23.839Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,39 @@ Where the command line reads a source file from the disk: a file's bytes, and it
 ### Public Symbols
 #### `readFileBytes` {#symbol-readfilebytes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L19)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L22)
 
 ##### `readFileBytes` — Summary
 A file's bytes, from the disk.
 
 #### `readFileHead` {#symbol-readfilehead}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L24)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L27)
 
 ##### `readFileHead` — Summary
 The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter.
 
+#### `kindOnDisk` {#symbol-kindondisk}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L43)
+- Returns: [`PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind)
+
+##### `kindOnDisk` — Summary
+What lies at a path on the disk, links followed: a file, a folder, or nothing. A failure of the machine's is thrown;
+any other (no such file, a name the disk cannot hold) is nothing there. For a reader called with no run's listing,
+as a reader's own tests call it (`pathKind` in `workspaceProbes.ts`).
+
+#### `childrenOnDisk` {#symbol-childrenondisk}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L54)
+- Returns: [`FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren)
+
+##### `childrenOnDisk` — Summary
+A folder's files and folders on the disk, by name, links followed; nothing when it is no folder (`folderChildren`).
+
 #### `NODE_FILE_HOST` {#symbol-node_file_host}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/tooling/nodeHost.ts#L67)
 - Returns: [`FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost)
 
 ##### `NODE_FILE_HOST` — Summary
@@ -42,8 +60,12 @@ The disk, as Node reads it.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
+- `node:fs` - `promises`, `readdirSync`, `statSync`
+- `node:path` - `path`
+- [`sourceText.throwIfMachineFailure`](./sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - [`workspaceFiles.FileHost`](./workspaceFiles.ts.mdmd.md#symbol-filehost) (type-only)
+- [`workspaceListing.FolderChildren`](./workspaceListing.ts.mdmd.md#symbol-folderchildren) (type-only)
+- [`workspaceListing.PathKind`](./workspaceListing.ts.mdmd.md#symbol-pathkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/index.ts`
-- Generated At: 2026-11-22T01:36:19.495Z
+- Generated At: 2026-11-22T04:48:21.730Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L43)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L44)
 - Returns: [`LiveDocumentationArchetype`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 
 ##### `WorkspaceFileIndex` — Summary
@@ -42,7 +42,7 @@ object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L55)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L56)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -56,14 +56,14 @@ the first whose `extensions` include its extension.
 
 #### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L85)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L86)
 
 ##### `LANGUAGE_ADAPTERS` — Summary
 Every language adapter, in the order they are asked: the first whose file names include a file's name reads it, else the first whose extensions include its extension.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L117)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L118)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -104,6 +104,7 @@ Analyzer output when an adapter reads the file by its name or its extension, oth
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`workspaceFiles.WorkspaceReads`](../../tooling/workspaceFiles.ts.mdmd.md#symbol-workspacereads-interface) (type-only)
+- [`WorkspaceListing`](../../tooling/workspaceListing.ts.mdmd.md#symbol-workspacelisting-interface) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

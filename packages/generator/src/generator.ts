@@ -28,6 +28,7 @@ import { NODE_FILE_HOST } from "@live-documentation/engine/tooling/nodeHost";
 import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
 import { readSourceReading, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
 import { type FileHost, workspaceReads } from "@live-documentation/engine/tooling/workspaceFiles";
+import { workspaceListing } from "@live-documentation/engine/tooling/workspaceListing";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -170,11 +171,15 @@ export async function generateLiveDocs(
   // the binary test and the count of how each file was decoded take a file's bytes from one read of the run, through
   // the host (2026-11-22; before, each file was read three to five times).
   const gathered: { tests?: WorkspaceTestIndex } = {};
+  // And it answers a reader's probes, what lies at a path and what a folder holds, from the listing of the kept files
+  // alone, so that no reader sees a file the scan leaves out (2026-11-22, `workspaceListing.ts`).
   const reads = workspaceReads(options.host ?? NODE_FILE_HOST, BINARY_SNIFF_BYTES);
+  const keptPaths = allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)));
   const fileIndex: WorkspaceFileIndex = Object.assign(
-    new Set(allTargetFiles.map((absPath) => normalizeWorkspacePath(path.relative(workspaceRoot, absPath)))),
+    new Set(keptPaths),
     { archetypeOf: (file: string) => resolveArchetype(file, normalizedConfig, false, gathered.tests) },
-    reads
+    reads,
+    workspaceListing(workspaceRoot, keptPaths)
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 

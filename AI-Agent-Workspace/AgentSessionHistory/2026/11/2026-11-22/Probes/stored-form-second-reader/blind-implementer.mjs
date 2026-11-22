@@ -31,18 +31,22 @@ export const SYSTEM = 'You are a careful software engineer working alone in the 
 /** The folders a run may not read: this repository, every home folder, /tmp and the editor's server. */
 const HIDDEN = ['/workspaces', '/home', '/root', '/tmp', '/vscode', '/go', '/opt'];
 
+/** Other runs' folders beside this one in /var/tmp, hidden from it too (`--hide a,b`), so that two may run at once. */
+const hide = (option('--hide', '') ?? '').split(',').filter(Boolean).flatMap((f) => [f.replace(/\/$/, ''), `${f.replace(/\/$/, '')}.tmp`]);
+
 function settings(folder) {
+  const denied = [...HIDDEN, ...hide];
   return JSON.stringify({
     sandbox: {
       enabled: true,
       autoAllowBashIfSandboxed: true,
       allowUnsandboxedCommands: false,
       network: { allowedDomains: [], allowLocalBinding: false, allowUnixSockets: [] },
-      filesystem: { allowWrite: [folder], denyRead: HIDDEN }
+      filesystem: { allowWrite: [folder], denyRead: denied }
     },
     permissions: {
       allow: ['Bash'],
-      deny: [...HIDDEN.map((p) => `Read(/${p}/**)`), 'WebFetch', 'WebSearch']
+      deny: [...denied.map((p) => `Read(/${p}/**)`), 'WebFetch', 'WebSearch']
     }
   });
 }
@@ -51,7 +55,8 @@ function settings(folder) {
 function run({ folder, prompt, model, effort, session, resume }) {
   // /var/tmp stays readable, so a run must find nothing there but its own folder: not another run's program.
   const base = path.basename(folder.replace(/\/$/, ''));
-  const others = fs.readdirSync('/var/tmp').filter((f) => f !== base && f !== `${base}.tmp`);
+  // Another run's folder may stand there only when it is hidden from this one (`--hide`).
+  const others = fs.readdirSync('/var/tmp').filter((f) => f !== base && f !== `${base}.tmp` && !hide.includes(`/var/tmp/${f}`));
   if (others.length) throw new Error(`/var/tmp holds ${others.join(', ')}, which this run could read`);
   return new Promise((resolve) => {
     // Claude Code gives a sandboxed command a temporary folder under TMPDIR and lets it read and write there. Left to
@@ -127,11 +132,22 @@ The specification is your only authority. Wherever it does not tell you enough t
 
 Test your program on the three samples, and make files of your own that a reader must refuse, to test that it refuses them. When you are done, say in a few lines what you built, how you tested it, and what you are least sure of.`;
 
+// The second reading's instruction (README.md, "Second reading, of the amended specification"): the first one's, with a
+// third mode that gives the graph, and the refusals it makes written down as well as its questions.
+// A language other than Python is named in it: the second reading's first run left free chose JavaScript, the module's
+// own platform, and was stopped.
+export const implementPrompt2 = (language) => `${implementPrompt(language).replace('in a language of your own choosing other than Python, one that is installed here,', `in ${language},`).replace(/ with two modes\.\n/, ' with three modes.\n').replace(/\n\nThe specification is your only authority\./, `
+- \`graph <file>\`: reads a file of the binary format. If it is a valid file, print its graph (section 5) as one JSON value, \`{"files":[...]}\`, one object a file in path order: \`{"path":...,"document":...,"edges":[...],"outbound":[...],"inbound":[...],"documentation":[...],"documentedBy":[...]}\`, where \`document\` is the file's document path, each edge and each documentation item is an object of the members section 5 names, and every member is present or absent by section 5's rules. Whitespace and the order of an object's members are yours to choose. Otherwise print one line beginning \`refused:\` with the reason.
+
+The specification is your only authority.`)}
+
+Also write \`refusals.md\`: every kind of file or text your program refuses, one to a line, each with the section that requires it.`;
+
 if (step === 'implement') {
   const [folder] = rest;
   const model = option('--model', 'claude-opus-5-5'); const effort = option('--effort', 'high'); const language = option('--language', 'Python');
   const session = option('--session', randomUUID());
-  const prompt = implementPrompt(language);
+  const prompt = option('--round', '1') === '2' ? implementPrompt2(language) : implementPrompt(language);
   const r = await run({ folder, prompt, model, effort, session });
   keep(folder, `implement-${Date.now()}`, { step, model, effort, language, system: SYSTEM, prompt, session, wallMs: r.wallMs, cost: r.json?.total_cost_usd, usage: r.json?.usage, turns: r.json?.num_turns, answer: r.json?.result, err: r.err });
 }

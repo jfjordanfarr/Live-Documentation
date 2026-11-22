@@ -8,10 +8,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/c.ts": {
-      "node:fs": [
-        "readdirSync",
-        "statSync"
-      ],
       "node:path": [
         "dirname",
         "extname",
@@ -43,9 +39,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/css.ts": {
-      "node:fs": [
-        "statSync"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -87,9 +80,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/html.ts": {
-      "node:fs": [
-        "statSync"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -113,9 +103,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/json.ts": {
-      "node:fs": [
-        "statSync"
-      ],
       "node:path": [
         "basename",
         "dirname",
@@ -168,10 +155,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/python.ts": {
-      "node:fs": [
-        "readdirSync",
-        "statSync"
-      ],
       "node:path": [
         "basename",
         "dirname",
@@ -180,9 +163,6 @@
       ]
     },
     "packages/engine/src/live-docs/adapters/ruby.ts": {
-      "node:fs": [
-        "statSync"
-      ],
       "node:path": [
         "dirname",
         "join",
@@ -193,9 +173,6 @@
     "packages/engine/src/live-docs/adapters/rust.ts": {
       "glob": [
         "glob"
-      ],
-      "node:fs": [
-        "promises.access"
       ],
       "node:path": [
         "basename",
@@ -307,9 +284,6 @@
       ]
     },
     "packages/engine/src/live-docs/heuristics/dom.ts": {
-      "node:fs/promises": [
-        "readdir"
-      ],
       "node:path": [
         "dirname",
         "extname",
@@ -349,11 +323,24 @@
     "packages/engine/src/tooling/nodeHost.ts": {
       "node:fs": [
         "promises.open",
-        "promises.readFile"
+        "promises.readFile",
+        "readdirSync",
+        "statSync"
+      ],
+      "node:path": [
+        "join"
       ]
     },
     "packages/engine/src/tooling/pathUtils.ts": {
       "node:path": [
+        "relative",
+        "resolve",
+        "sep"
+      ]
+    },
+    "packages/engine/src/tooling/workspaceListing.ts": {
+      "node:path": [
+        "isAbsolute",
         "relative",
         "resolve",
         "sep"
@@ -396,7 +383,6 @@
     ],
     "node:fs": [
       "lstatSync",
-      "promises.access",
       "promises.mkdir",
       "promises.open",
       "promises.readFile",

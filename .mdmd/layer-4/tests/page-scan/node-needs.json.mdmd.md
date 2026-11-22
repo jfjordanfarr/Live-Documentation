@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-22T02:30:00.455Z
+- Generated At: 2026-11-22T05:19:50.404Z
 
 ## Authored
 ### Purpose
@@ -29,9 +29,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/c.ts` {#symbol-enginepackagesenginesrclive-docsadapterscts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/c.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersctsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/c.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersctsnodepath}
 - Type: key
 
@@ -51,9 +48,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/css.ts` {#symbol-enginepackagesenginesrclive-docsadapterscssts}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/css.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadapterscsstsnodefs}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/css.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterscsstsnodepath}
@@ -95,9 +89,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/html.ts` {#symbol-enginepackagesenginesrclive-docsadaptershtmlts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/html.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptershtmltsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/html.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptershtmltsnodepath}
 - Type: key
 
@@ -117,9 +108,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/json.ts` {#symbol-enginepackagesenginesrclive-docsadaptersjsonts}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/json.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersjsontsnodefs}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/json.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersjsontsnodepath}
@@ -158,16 +146,10 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/adapters/python.ts` {#symbol-enginepackagesenginesrclive-docsadapterspythonts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/adapters/python.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadapterspythontsnodefs}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/adapters/python.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadapterspythontsnodepath}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/ruby.ts` {#symbol-enginepackagesenginesrclive-docsadaptersrubyts}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/ruby.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersrubytsnodefs}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/ruby.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersrubytsnodepath}
@@ -177,9 +159,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/rust.ts:glob` {#symbol-enginepackagesenginesrclive-docsadaptersrusttsglob}
-- Type: key
-
-#### `engine:packages/engine/src/live-docs/adapters/rust.ts:node:fs` {#symbol-enginepackagesenginesrclive-docsadaptersrusttsnodefs}
 - Type: key
 
 #### `engine:packages/engine/src/live-docs/adapters/rust.ts:node:path` {#symbol-enginepackagesenginesrclive-docsadaptersrusttsnodepath}
@@ -272,9 +251,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/live-docs/heuristics/dom.ts` {#symbol-enginepackagesenginesrclive-docsheuristicsdomts}
 - Type: key
 
-#### `engine:packages/engine/src/live-docs/heuristics/dom.ts:node:fs/promises` {#symbol-enginepackagesenginesrclive-docsheuristicsdomtsnodefspromises}
-- Type: key
-
 #### `engine:packages/engine/src/live-docs/heuristics/dom.ts:node:path` {#symbol-enginepackagesenginesrclive-docsheuristicsdomtsnodepath}
 - Type: key
 
@@ -305,10 +281,19 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/tooling/nodeHost.ts:node:fs` {#symbol-enginepackagesenginesrctoolingnodehosttsnodefs}
 - Type: key
 
+#### `engine:packages/engine/src/tooling/nodeHost.ts:node:path` {#symbol-enginepackagesenginesrctoolingnodehosttsnodepath}
+- Type: key
+
 #### `engine:packages/engine/src/tooling/pathUtils.ts` {#symbol-enginepackagesenginesrctoolingpathutilsts}
 - Type: key
 
 #### `engine:packages/engine/src/tooling/pathUtils.ts:node:path` {#symbol-enginepackagesenginesrctoolingpathutilstsnodepath}
+- Type: key
+
+#### `engine:packages/engine/src/tooling/workspaceListing.ts` {#symbol-enginepackagesenginesrctoolingworkspacelistingts}
+- Type: key
+
+#### `engine:packages/engine/src/tooling/workspaceListing.ts:node:path` {#symbol-enginepackagesenginesrctoolingworkspacelistingtsnodepath}
 - Type: key
 
 #### `engine:packages/generator/src/generator.ts` {#symbol-enginepackagesgeneratorsrcgeneratorts}
