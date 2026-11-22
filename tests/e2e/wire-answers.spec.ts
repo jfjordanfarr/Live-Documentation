@@ -393,6 +393,73 @@ test.describe("Wire Answers", () => {
     await context.close();
   });
 
+  // The hand over a wire's reach is a spot that stands under the pointer (wire-answers.ts, `.wire-hand`). The one way it
+  // could cost a reader a control: the pointer rests in a wire's reach on the ground, the picture moves under it without
+  // the pointer moving, a card's control comes to stand under the pointer, and the reader presses without moving. The
+  // spot is taken away whenever the picture moves or is drawn again, and this case does exactly that.
+  test("the hand's spot is gone when the picture moves under a resting pointer: a control brought under the pointer by a zoom takes the press", async ({ browser }) => {
+    test.setTimeout(120_000);
+    const context = await browser.newContext({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
+    await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+    });
+    const page = await context.newPage();
+    await page.goto(`/?view=local&node=${encodeURIComponent("tests/e2e/still-picture.ts")}`);
+    await page.locator(".local-placed").waitFor();
+    await expect(page.locator("#map-container")).toHaveAttribute("data-look", "connections", { timeout: 20_000 });
+    await still(page);
+    const camera = () => page.evaluate(() => { const m = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform); return { k: m.a, x: m.e, y: m.f }; });
+    // The keyboard's press of a zoom button, which moves no pointer.
+    const zoom = async (name: "Zoom In" | "Zoom Out") => {
+      await page.getByRole("button", { name, exact: true }).focus();
+      await page.keyboard.press("Enter");
+      await still(page);
+    };
+    // One press in and back, to learn where a press in puts each point of the screen.
+    const before = await camera();
+    await zoom("Zoom In");
+    const closer = await camera();
+    await zoom("Zoom Out");
+    const back = await camera();
+    expect([Math.abs(back.k - before.k) < 1e-6, Math.abs(back.x - before.x) < 0.5, Math.abs(back.y - before.y) < 0.5], "a press in and a press out return the camera").toEqual([true, true, true]);
+    // A control of a card whose middle, after a press in, will stand where a wire's reach now holds the map's ground.
+    const chosen = await page.evaluate(({ before, closer }) => {
+      const view = document.querySelector("#view-map")!.getBoundingClientRect(), layer = document.querySelector<HTMLElement>("#map-viewport")!;
+      // A screen point belongs to a point of the map; the camera's two transforms say where that point goes.
+      const origin = { x: layer.getBoundingClientRect().left - before.x, y: layer.getBoundingClientRect().top - before.y };
+      const bands = [...document.querySelectorAll<SVGPathElement>(".wire-band")], inverse = bands[0]?.getScreenCTM()?.inverse();
+      if (!inverse) return null;
+      for (const control of document.querySelectorAll<HTMLElement>("#map-container .node-card button")) {
+        const box = control.getBoundingClientRect();
+        if (box.width < 8 || box.height < 6 || getComputedStyle(control).visibility !== "visible") continue;
+        const now = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+        const then = { x: origin.x + closer.x + (now.x - origin.x - before.x) * closer.k / before.k, y: origin.y + closer.y + (now.y - origin.y - before.y) * closer.k / before.k };
+        if (then.x < view.left + 30 || then.x > view.right - 30 || then.y < view.top + 80 || then.y > view.bottom - 100) continue;
+        const hit = document.elementFromPoint(then.x, then.y);
+        const ground = !!hit && (hit.id === "view-map" || !!hit.closest("#map-viewport")) && !hit.closest(".node-card, .local-directory-closed, button, a, input, select, .connection-path");
+        if (!ground || !bands.some(band => band.isPointInStroke(new DOMPoint(then.x, then.y).matrixTransform(inverse)))) continue;
+        control.dataset.broughtUnder = "true";
+        control.addEventListener("click", () => { (window as unknown as { pressedAfterTheMove?: boolean }).pressedAfterTheMove = true; }, { once: true, capture: true });
+        return { x: then.x, y: then.y, control: control.getAttribute("aria-label") ?? control.className };
+      }
+      return null;
+    }, { before, closer });
+    expect(chosen, "a control that a press in will bring under a point now in a wire's reach on the ground").not.toBeNull();
+    await page.mouse.move(chosen!.x - 30, chosen!.y - 30);
+    await page.mouse.move(chosen!.x, chosen!.y, { steps: 3 });
+    await expect(page.locator(".wire-hand"), "the hand's spot stands under the pointer in the wire's reach").toBeVisible();
+    await zoom("Zoom In");
+    // The control stands at the pointer's point now, and nothing of a wire stands over it.
+    const under = await page.evaluate(({ x, y }) => { const hit = document.elementFromPoint(x, y); return { control: !!hit?.closest("[data-brought-under]"), what: hit ? `${hit.tagName.toLowerCase()}.${[...hit.classList].join(".")}` : "" }; }, chosen!);
+    expect(under, `"${chosen!.control}" stands at the pointer after the picture moved`).toEqual({ control: true, what: under.what });
+    // The press, with no move before it.
+    await page.mouse.down();
+    await page.mouse.up();
+    expect(await page.evaluate(() => (window as unknown as { pressedAfterTheMove?: boolean }).pressedAfterTheMove === true), `the press is "${chosen!.control}"'s own`).toBe(true);
+    expect((await answer(page))?.pinned ?? false, "and pins no wire's words").toBe(false);
+    await context.close();
+  });
+
   test("a drag begun on a wire pans the map and pins nothing", async ({ browser }) => {
     test.setTimeout(90_000);
     const { context, page } = await visit(browser, { wireAnswers: "on" });

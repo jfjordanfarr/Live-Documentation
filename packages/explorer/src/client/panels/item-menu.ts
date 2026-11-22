@@ -43,6 +43,15 @@ export function createItemMenu(): {
       buttons[next]?.focus();
     }
   }, { signal: lifetime.signal });
+  // A press on the menu's own ground keeps the menu's focus: the ground of a menu is the menu (the root's ruling of
+  // 2026-11-22). The browser's default for a press on something that cannot hold the focus is to take the focus from
+  // whatever has it, and a menu without the focus hears no Escape and no arrow key. A reader meets it by holding a
+  // card on a touch screen: the menu opens under the finger, and when the finger lifts the browser sends its own mouse
+  // press for the touch to the point it lifted from, which is now the menu's ground beside its first item
+  // (tests/e2e/local-map-learning.spec.ts, "touch taps retain command activation…"). A press on an item is the item's.
+  menu.addEventListener("mousedown", event => {
+    if (!(event.target instanceof Element && event.target.closest("button, a[href], input, select, textarea"))) event.preventDefault();
+  }, { signal: lifetime.signal });
   document.addEventListener("pointerdown", event => {
     if (!menu.hidden && event.target instanceof Node && !menu.contains(event.target)) close();
   }, { capture: true, signal: lifetime.signal });
