@@ -3,16 +3,18 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { parseLiveDoc } from "@live-documentation/engine/live-docs/document";
 
-import { optionValue, runCommand, UsageError, workspaceFolder } from "./cli";
+import { optionValue, readConfiguration, runCommand, UsageError, workspaceFolder } from "./cli";
 
 interface CliOptions {
   help: boolean;
   workspace?: string;
-  docsRoot: string;
-  baseLayer: string;
+  configPath?: string;
+  docsRoot?: string;
+  baseLayer?: string;
+  extension?: string;
   quiet: boolean;
 }
 
@@ -24,8 +26,6 @@ interface OrphanRecord {
 function parseArgs(argv: string[]): CliOptions {
   const options: CliOptions = {
     help: false,
-    docsRoot: ".live-documentation",
-    baseLayer: "source",
     quiet: false
   };
 
@@ -44,6 +44,17 @@ function parseArgs(argv: string[]): CliOptions {
         break;
       }
 
+      case "--config": {
+        options.configPath = optionValue(argv, ++index, arg);
+        break;
+      }
+
+      case "--extension": {
+        options.extension = optionValue(argv, ++index, arg);
+        break;
+      }
+
+      case "--root":
       case "--docs-root": {
         options.docsRoot = optionValue(argv, ++index, arg);
         break;
@@ -71,17 +82,20 @@ function parseArgs(argv: string[]): CliOptions {
 function usage(): string {
   return "Usage: npm run live-docs:orphans -- [options]\n\n" +
     "Lists the Live Docs whose source file no longer exists, and exits 1 when there is one.\n" +
-    "The npm script passes this repository's --docs-root .mdmd --base-layer layer-4.\n\n" +
+    "The docs are where the workspace's configuration puts them, its root, baseLayer and extension.\n\n" +
     "Options:\n" +
     "  --workspace <path>    Workspace root (default: the nearest folder, from the current directory up, that\n" +
     "                        holds a .live-docs.config.json; else the current directory).\n" +
-    "  --docs-root <path>    The docs root, relative to the workspace (default: .live-documentation).\n" +
-    "  --base-layer <name>   The folder under it that mirrors the source (default: source).\n" +
+    "  --config <file>       The configuration (default: the workspace's .live-docs.config.json when it\n" +
+    "                        has one, else the shipped defaults).\n" +
+    "  --root <path>         In place of the configuration's root (also --docs-root).\n" +
+    "  --base-layer <name>   In place of the configuration's baseLayer.\n" +
+    "  --extension <suffix>  In place of the configuration's extension.\n" +
     "  --quiet               Print nothing when there is no orphan.\n" +
     "  -h, --help            Print this help.";
 }
 
-async function collectLiveDocFiles(root: string): Promise<string[]> {
+async function collectLiveDocFiles(root: string, extension: string): Promise<string[]> {
   const results: string[] = [];
   async function walk(current: string): Promise<void> {
     const entries = await fs.readdir(current, { withFileTypes: true });
@@ -91,7 +105,7 @@ async function collectLiveDocFiles(root: string): Promise<string[]> {
         await walk(fullPath);
         continue;
       }
-      if (entry.isFile() && entry.name.endsWith(LIVE_DOCUMENTATION_FILE_EXTENSION)) {
+      if (entry.isFile() && entry.name.endsWith(extension)) {
         results.push(fullPath);
       }
     }
@@ -133,15 +147,18 @@ async function pathExists(candidate: string): Promise<boolean> {
 
 async function findOrphans(options: CliOptions): Promise<OrphanRecord[]> {
   const workspaceRoot = workspaceFolder(options.workspace);
-  const docsRoot = path.resolve(workspaceRoot, options.docsRoot);
-  const baseLayerPath = path.join(docsRoot, options.baseLayer);
+  // The configuration's root, base layer and extension, as every other command reads them (until 2026-11-22 this
+  // command read .live-documentation/source unless told, and the npm script told it this repository's .mdmd/layer-4).
+  const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, ...(await readConfiguration(workspaceRoot, options.configPath)),
+    ...(options.docsRoot ? { root: options.docsRoot } : {}), ...(options.baseLayer ? { baseLayer: options.baseLayer } : {}), ...(options.extension ? { extension: options.extension } : {}) });
+  const baseLayerPath = path.resolve(workspaceRoot, config.root, config.baseLayer);
 
   const stats = await fs.stat(baseLayerPath).catch(() => undefined);
   if (!stats || !stats.isDirectory()) {
     throw new Error(`Live documentation layer not found: ${baseLayerPath}`);
   }
 
-  const liveDocs = await collectLiveDocFiles(baseLayerPath);
+  const liveDocs = await collectLiveDocFiles(baseLayerPath, config.extension);
   const orphans: OrphanRecord[] = [];
 
   for (const liveDoc of liveDocs) {
@@ -149,8 +166,8 @@ async function findOrphans(options: CliOptions): Promise<OrphanRecord[]> {
     const codePathFromMetadata = await extractCodePath(liveDoc);
 
     let expectedCodePath = codePathFromMetadata ?? relativeDoc;
-    if (expectedCodePath.endsWith(LIVE_DOCUMENTATION_FILE_EXTENSION)) {
-      expectedCodePath = expectedCodePath.slice(0, -LIVE_DOCUMENTATION_FILE_EXTENSION.length);
+    if (expectedCodePath.endsWith(config.extension)) {
+      expectedCodePath = expectedCodePath.slice(0, -config.extension.length);
     }
 
     const absoluteTarget = path.resolve(workspaceRoot, expectedCodePath);

@@ -29,7 +29,7 @@ import path from "node:path";
 import { rustSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -546,12 +546,12 @@ class FileExtractor {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names, with `packageCache` below: a run with another index, or
 // none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) {
@@ -561,13 +561,12 @@ function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   factsRun = fileIndex;
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
-  const stats  = await fs.stat(absolutePath);
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await readSourceText(absolutePath);
+  if (cached) return cached;
+  const content = await readSourceText(absolutePath, reads);
   const facts   = await readTree("rust", content, (root) => new FileExtractor().extract(root));
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
@@ -643,7 +642,7 @@ function isConventionalRoot(relative: string): boolean {
 }
 
 /** Cargo's conventional targets under each package (lib, main, bins, tests, examples, benches); a file with no package is a root when it is a `main.rs` or `lib.rs`. */
-async function crateRoots(workspaceRoot: string, rustFiles: string[]): Promise<CrateRoot[]> {
+async function crateRoots(workspaceRoot: string, rustFiles: string[], fileIndex: WorkspaceFileIndex | undefined): Promise<CrateRoot[]> {
   const roots: CrateRoot[] = [];
   const names = new Map<string, string>();
   for (const file of rustFiles) {
@@ -656,7 +655,7 @@ async function crateRoots(workspaceRoot: string, rustFiles: string[]): Promise<C
     let name = names.get(packageDir);
     if (!name) {
       // Read by the TOML parser, so that a comment, or any `[` before the name, neither hides it nor is read as it (until 2026-11-21 a pattern over the text).
-      const manifest = await readToml(path.join(packageDir, "Cargo.toml"));
+      const manifest = await readToml(path.join(packageDir, "Cargo.toml"), fileIndex);
       name = (stringOf(tableOf(manifest?.package)?.name) ?? path.basename(packageDir)).replace(/-/g, "_");
       names.set(packageDir, name);
     }
@@ -683,7 +682,7 @@ async function buildModuleTable(workspaceRoot: string, fileIndex: WorkspaceFileI
   const factsOf = async (file: string): Promise<FileFacts | undefined> => {
     if (known.has(file)) return known.get(file);
     try {
-      const facts = await fileFacts(path.join(workspaceRoot, file));
+      const facts = await fileFacts(path.join(workspaceRoot, file), fileIndex);
       known.set(file, facts);
       return facts;
     } catch (error) {
@@ -718,7 +717,7 @@ async function buildModuleTable(workspaceRoot: string, fileIndex: WorkspaceFileI
     return module;
   };
 
-  for (const root of await crateRoots(workspaceRoot, rustFiles)) {
+  for (const root of await crateRoots(workspaceRoot, rustFiles, fileIndex)) {
     const crate: Crate = { name: root.name, root: undefined as unknown as Module };
     const module = await build(root.file, undefined, undefined, true);
     if (!module) continue;
@@ -917,7 +916,7 @@ export const rustAdapter: LanguageAdapter = {
   extensions: [".rs"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts    = await fileFacts(absolutePath);
+    const facts    = await fileFacts(absolutePath, fileIndex);
     const table    = await moduleTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const result: SourceAnalysisResult = {

@@ -38,12 +38,11 @@
  * the C# compiler's own binding on any folder.
  */
 import { glob } from "glob";
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -1019,12 +1018,12 @@ class FileExtractor {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
 // a process that generates commit after commit in one folder never reads a fact of another commit.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
@@ -1073,15 +1072,14 @@ function withoutFalseSections(text: string): string {
   return changed ? pieces.join("") : text;
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
-  const stats  = await fs.stat(absolutePath);
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) {
-    return cached.facts;
+  if (cached) {
+    return cached;
   }
-  const content = withoutFalseSections(await readSourceText(absolutePath));
+  const content = withoutFalseSections(await readSourceText(absolutePath, reads));
   const facts   = await readTree("c-sharp", content, (root) => ({ ...new FileExtractor().extract(root), comments: rangesOf(root) }));
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
@@ -1137,7 +1135,7 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
   for (const file of await listCSharpFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
-      facts = await fileFacts(path.join(workspaceRoot, file));
+      facts = await fileFacts(path.join(workspaceRoot, file), fileIndex);
     } catch (error) {
       throwIfMachineFailure(error);
       continue;
@@ -1651,11 +1649,11 @@ export const csharpAdapter: LanguageAdapter = {
   extensions: [".cs"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts    = await fileFacts(absolutePath);
+    const facts    = await fileFacts(absolutePath, fileIndex);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     // The text the syntax tree was read from, its comments' places counted in it.
-    const content  = withoutFalseSections(await readSourceText(absolutePath));
+    const content  = withoutFalseSections(await readSourceText(absolutePath, fileIndex));
     const reach    = await projectReach(workspaceRoot, fileIndex);
     // `resolved.notices` says why each type name left unlinked has no link, for the run to count at its end.
     const resolved = toDependencies(facts, thisFile, content, table, reach, fileIndex, symbolIndex);

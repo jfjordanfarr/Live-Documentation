@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/types.ts`
-- Generated At: 2026-11-22T02:10:36.219Z
+- Generated At: 2026-11-22T03:46:10.334Z
 
 ## Authored
 ### Purpose
@@ -251,16 +251,48 @@ brings it to the edge (`forceGraphShells.ts`).
 ##### `BEYOND_HOPS` — Summary
 Every choice of what stands beyond the hops, the default first, in the order the control offers them.
 
+#### `ScanGrowth` {#symbol-scangrowth}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L387)
+
+##### `ScanGrowth` — Summary
+Whether the 3D Local Map, opened with nothing asked about, plays a scan (a trial for the owner's eye, 2026-11-22: "let
+users do some exploring in 2D/3D local map _while the scan is happening_"): off, the picture as it is and the
+default; or the finished graph's files arriving one by one after a scan's waits, in path order, as a scan finishes
+them, or in the order the history says they were first committed (`views/scanGrowth.ts`). Nothing is scanned: the
+bundle's finished graph is fed in a scan's rhythm, so that the look can be judged before the engine is changed.
+
+#### `SCAN_GROWTHS` {#symbol-scan_growths}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L390)
+
+##### `SCAN_GROWTHS` — Summary
+Every choice of the scan trial, the default first, in the order the control offers them.
+
+#### `ScanPace` {#symbol-scanpace}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L393)
+
+##### `ScanPace` — Summary
+The rhythm the scan trial plays at: the one measured on this repository, or four times slower, as on a weak machine.
+
+#### `SCAN_PACES` {#symbol-scan_paces}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L396)
+
+##### `SCAN_PACES` — Summary
+Every pace of the scan trial, the default first, in the order the control offers them.
+
 #### `ZoomLooks` {#symbol-zoomlooks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L381)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L399)
 
 ##### `ZoomLooks` — Summary
 How a slot card changes as the 2D map zooms out: the card ladder's steps, or the three looks of the 2026-11-10 trial.
 
 #### `ZOOM_LOOKS` {#symbol-zoom_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L387)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L405)
 
 ##### `ZOOM_LOOKS` — Summary
 Every Zoom Looks choice, in the order the control offers them, the default first: the three looks since 2026-11-13,
@@ -268,14 +300,14 @@ when the owner asked that what they judge be what the build shows without a swit
 
 #### `DirectoryLayout` {#symbol-directorylayout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L390)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L408)
 
 ##### `DirectoryLayout` — Summary
 How an opened directory stands in the 2D map: the flow order and pair lines first tried on 2026-11-12, or the grid.
 
 #### `DIRECTORY_LAYOUTS` {#symbol-directory_layouts}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L397)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L415)
 
 ##### `DIRECTORY_LAYOUTS` — Summary
 Every Opened Directory choice, in the order the control offers them, the default first: Flow since 2026-11-13, when
@@ -284,49 +316,49 @@ shows without a switch; the grid one choice away.
 
 #### `ClosedDirectoryLook` {#symbol-closeddirectorylook}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L400)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L418)
 
 ##### `ClosedDirectoryLook` — Summary
 How a closed directory's box is drawn in the 2D map: a skin with cells, the plain box, or a stack.
 
 #### `CLOSED_DIRECTORY_LOOKS` {#symbol-closed_directory_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L403)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L421)
 
 ##### `CLOSED_DIRECTORY_LOOKS` — Summary
 Every Closed Directory choice, in the order the control offers them; the first, the skin with cells, is the default.
 
 #### `ClosedDirectoryShape` {#symbol-closeddirectoryshape}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L406)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L424)
 
 ##### `ClosedDirectoryShape` — Summary
 The shape of a closed directory's skin with cells: a folder's silhouette, the capsule, or a card's corners.
 
 #### `CLOSED_DIRECTORY_SHAPES` {#symbol-closed_directory_shapes}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L409)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L427)
 
 ##### `CLOSED_DIRECTORY_SHAPES` — Summary
 Every shape, in the order the control offers them; the first is the default until the owner chooses.
 
 #### `ClosedCellColour` {#symbol-closedcellcolour}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L412)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L430)
 
 ##### `ClosedCellColour` — Summary
 What colours a skin's cells: each file's kind, as in the 3D map, or one grey.
 
 #### `CLOSED_CELL_COLOURS` {#symbol-closed_cell_colours}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L415)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L433)
 
 ##### `CLOSED_CELL_COLOURS` — Summary
 Every cell colouring, in the order the control offers them; the first is the default.
 
 #### `HiddenFilesLook` {#symbol-hiddenfileslook}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L421)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L439)
 
 ##### `HiddenFilesLook` — Summary
 What a drawn directory's handle says of what it does not draw: the count's words; a cell for each beside its name; or, at the
@@ -334,7 +366,7 @@ reading look, a cell for each under its name, in the strip's free height, and be
 
 #### `HIDDEN_FILES_LOOKS` {#symbol-hidden_files_looks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L428)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L446)
 
 ##### `HIDDEN_FILES_LOOKS` — Summary
 Every Hidden Files choice, in the order the control offers them; the first, Cells under name, is the default since
@@ -343,7 +375,7 @@ root chose which of the two cell values. The count was the default before.
 
 #### `ArrivalFraming` {#symbol-arrivalframing}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L436)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L454)
 
 ##### `ArrivalFraming` — Summary
 How the 2D camera meets a fresh subject: at reading size, at reading size and then on the neighbours, or on the
@@ -353,7 +385,7 @@ its motion: "then-neighbours-after" holds the cards' look through the ease and c
 
 #### `ArrivalWait` {#symbol-arrivalwait}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L444)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L462)
 
 ##### `ArrivalWait` — Summary
 Whether an arrival's pull-back waits for the person: "attended", after the rest at reading size (Tuning's Arrival
@@ -363,7 +395,7 @@ the pointer stands on the card (camera-intent.ts, `arrivalReleased`).
 
 #### `ARRIVAL_WAITS` {#symbol-arrival_waits}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L451)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L469)
 
 ##### `ARRIVAL_WAITS` — Summary
 Every Arrival Waits choice, in the order the control offers them; the first is the default: "attended" since
@@ -372,7 +404,7 @@ pointer exits node". Never was the default before.
 
 #### `ARRIVALS` {#symbol-arrivals}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L458)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L476)
 
 ##### `ARRIVALS` — Summary
 Every Arrival choice, in the order the control offers them; the first is the default: the pull-back with its look
@@ -381,7 +413,7 @@ Neighbours, Look After\""). Reading size was the default before.
 
 #### `CameraFraming` {#symbol-cameraframing}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L465)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L483)
 
 ##### `CameraFraming` — Summary
 Who frames the 2D camera: the person by hand, or the camera following the pins until the person takes it; "follows-files",
@@ -390,14 +422,14 @@ target is a whole-file pin.
 
 #### `FRAMINGS` {#symbol-framings}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L468)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L486)
 
 ##### `FRAMINGS` — Summary
 Every Framing choice, in the order the control offers them; the first, by hand, is the default until the owner has seen the other.
 
 #### `StepFraming` {#symbol-stepframing}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L475)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L493)
 
 ##### `StepFraming` — Summary
 What the 2D camera frames after a step: the newcomer's start by the least pan, the newcomer whole, or the newcomer
@@ -406,35 +438,35 @@ follow).
 
 #### `STEPS` {#symbol-steps}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L478)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L496)
 
 ##### `STEPS` — Summary
 Every Step choice, in the order the control offers them; the first, the least pan, is the default until the owner has seen the others.
 
 #### `CutCounted` {#symbol-cutcounted}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L481)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L499)
 
 ##### `CutCounted` — Summary
 Whether the cut is said at the edges after a step: off, the default, or on (a trial, 2026-11-21).
 
 #### `CUT_COUNTED` {#symbol-cut_counted}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L484)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L502)
 
 ##### `CUT_COUNTED` — Summary
 Every Cut Counted choice, in the order the control offers them; the first, off, is the default until the owner has seen the other.
 
 #### `WireAnswersChoice` {#symbol-wireanswerschoice}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L487)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L505)
 
 ##### `WireAnswersChoice` — Summary
 Whether a 2D wire answers a rested pointer, a press and the keyboard's focus: on or off.
 
 #### `WIRE_ANSWERS` {#symbol-wire_answers}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L493)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L511)
 
 ##### `WIRE_ANSWERS` — Summary
 Every Wire Answers choice, in the order the control offers them; the first is the default: on since 2026-11-22, by the
@@ -442,21 +474,21 @@ owner's eye ("Yeah the Wire Answers \"On\" is really awesome"). Off was the defa
 
 #### `DirectionMarks` {#symbol-directionmarks}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L496)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L514)
 
 ##### `DirectionMarks` — Summary
 The way a 2D wire's marks point: none drawn, along the owner's rule, or against it (a trial, 2026-11-21).
 
 #### `DIRECTION_MARKS` {#symbol-direction_marks}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L499)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L517)
 
 ##### `DIRECTION_MARKS` — Summary
 Every Direction Marks choice, in the order the control offers them; the first, none, is the default.
 
 #### `OverviewFiles` {#symbol-overviewfiles}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L505)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L523)
 
 ##### `OverviewFiles` — Summary
 What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of
@@ -464,14 +496,14 @@ What the 2D map's overview look draws: files only, as in Flow, or cards at their
 
 #### `OVERVIEW_FILES` {#symbol-overview_files}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L508)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L526)
 
 ##### `OVERVIEW_FILES` — Summary
 Every Zoomed Out Fully choice, in the order the control offers them, the default first.
 
 #### `DescriptionsZoomedOut` {#symbol-descriptionszoomedout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L517)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L535)
 
 ##### `DescriptionsZoomedOut` — Summary
 What a described row keeps of its description in the connections look: nothing; its first line where its name leaves
@@ -482,42 +514,42 @@ line").
 
 #### `DESCRIPTIONS_ZOOMED_OUT` {#symbol-descriptions_zoomed_out}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L520)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L538)
 
 ##### `DESCRIPTIONS_ZOOMED_OUT` — Summary
 Every Descriptions Zoomed Out choice, in the order the control offers them; the first, nothing kept, is the default.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L523)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L541)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L640)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L662)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L645)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L667)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L652)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L674)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L658)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L680)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -525,7 +557,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L687)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L709)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

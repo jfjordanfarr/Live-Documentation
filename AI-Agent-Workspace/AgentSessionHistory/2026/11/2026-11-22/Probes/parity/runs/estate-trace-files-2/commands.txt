@@ -1,0 +1,5 @@
+## 1
+find . -type f -not -path './node_modules/*' -not -path './.git/*' | head -200
+
+## 2
+cat README.md board.md Portal/Scripts/portal.js Portal/Pages/Default.aspx.cs Portal/Controllers/PaymentsController.cs Portal/Services/GatewayClient.cs Gateway/Controllers/PaymentsController.cs Gateway/Wcf/HubProxy.cs Hub/PaymentHub.cs Hub/ServiceRouting.cs PaymentService/PaymentService.cs PaymentService/Data/PaymentsContext.cs Database/SqlServer/*.sql

@@ -55,9 +55,9 @@ The symbol's docstring, when it has one.
 | Option | Meaning |
 | --- | --- |
 | `--from <path>` | The start; `path#Symbol` for a symbol-level search |
-| `--to <path>` | The target; omit to list the terminal paths from `--from` |
+| `--to <path>` | The target; omit for the direct neighbours of `--from`, counted |
 | `--reachable` | Every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points, what they reach, what nothing reaches, what only a test reaches |
-| `--direction outbound\|inbound\|both` | Outbound (default) follows what a file depends on; inbound what depends on it; both only with `--to` or `--reachable` |
+| `--direction outbound\|inbound\|both` | Outbound (default) follows what a file depends on; inbound what depends on it; both, each way |
 | `--max-depth <n>` | Default 25 |
 | `--json` | Data instead of text |
 | `--verbose` | Full symbol lists |

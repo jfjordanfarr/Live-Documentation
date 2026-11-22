@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-22T02:10:35.789Z
+- Generated At: 2026-11-22T03:46:09.826Z
 
 ## Authored
 ### Purpose
@@ -80,7 +80,7 @@ Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L34)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L36)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L581)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L604)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -97,6 +97,15 @@ stop marked `aria-disabled` whose tooltip and description say why, and a press o
 are left as they are, for the browser that draws 3D. The History group, also kept for 3D before 2026-11-19, drives the
 scrubber both maps share and stays offered. The group is found by the lever it holds, the 3D map's Hops Shown. Called
 once, when the browser is known to refuse WebGL, which may be after the page's first picture (`index.ts`).
+
+#### `withholdFirstCommitOrder` {#symbol-withholdfirstcommitorder}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L620)
+
+##### `withholdFirstCommitOrder` — Summary
+Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
+history says when each file was first committed: the choice stays in its list, disabled, and the lever's tooltip and
+description say why, as the 3D control does where the browser refuses WebGL. A stored choice of it is left as it is.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -128,6 +137,8 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`types.HIDDEN_FILES_LOOKS`](../types.ts.mdmd.md#symbol-hidden_files_looks)
 - [`types.MARBLE_CHOICES`](../types.ts.mdmd.md#symbol-marble_choices)
 - [`types.OVERVIEW_FILES`](../types.ts.mdmd.md#symbol-overview_files)
+- [`types.SCAN_GROWTHS`](../types.ts.mdmd.md#symbol-scan_growths)
+- [`types.SCAN_PACES`](../types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](../types.ts.mdmd.md#symbol-steps)
 - [`types.WIRE_ANSWERS`](../types.ts.mdmd.md#symbol-wire_answers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
@@ -149,6 +160,8 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
 - [`template.tuning-force-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-hops)
+- [`template.tuning-force-scan-growth`](../../shared/template.html.mdmd.md#symbol-tuning-force-scan-growth)
+- [`template.tuning-force-scan-pace`](../../shared/template.html.mdmd.md#symbol-tuning-force-scan-pace)
 - [`template.tuning-frame`](../../shared/template.html.mdmd.md#symbol-tuning-frame)
 - [`template.tuning-framing`](../../shared/template.html.mdmd.md#symbol-tuning-framing)
 - [`template.tuning-hidden-files`](../../shared/template.html.mdmd.md#symbol-tuning-hidden-files)

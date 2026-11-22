@@ -1,0 +1,5 @@
+drag of packages/engine/src/live-docs/graph.ts, slowed: at rest before the drag
+drag took 37149 ms; frames during it: 120 frames, median 292 ms, 95th 458 ms, worst 513 ms
+at the drag's end, still held: the dragged sphere moved 217 units; spheres: 183, moved over 1 unit: 183, median 47.4, most 613.6; shells: 12, moved over 1 unit: 12, median 141.6, most 195.3; busy true
+held two seconds more: the dragged sphere moved 245 units; spheres: 183, moved over 1 unit: 183, median 59.7, most 613.6; shells: 12, moved over 1 unit: 12, median 176.0, most 233.4; busy true
+after release: at rest in 53.7 s; the dragged sphere moved 217 units; spheres: 183, moved over 1 unit: 183, median 96.8, most 299.6; shells: 12, moved over 1 unit: 12, median 166.6, most 221.0

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2024", "DOM"],
+    "types": [],
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"]
+}

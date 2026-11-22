@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect.ts`
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-19T20:08:19.960Z
+- Generated At: 2026-11-22T02:17:41.609Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,6 @@ _No public symbols detected_
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`pathfind.Direction`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
 - [`pathfind.OneWay`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-oneway)
-- [`pathfind.enumerateTerminalPaths`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-enumerateterminalpaths)
 - [`pathfind.fileGroups`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
 - [`pathfind.getNeighbors`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-getneighbors)
 - [`pathfind.reachFrom`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachfrom)
@@ -56,8 +55,8 @@ _No public symbols detected_
 - [`cli.workspaceFolder`](./cli.ts.mdmd.md#symbol-workspacefolder)
 - [`emit.emitDualDirectionResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionresult)
 - [`emit.emitDualDirectionSymbolResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
-- [`emit.emitFanoutResult`](./inspect/emit.ts.mdmd.md#symbol-emitfanoutresult)
 - [`emit.emitGroups`](./inspect/emit.ts.mdmd.md#symbol-emitgroups)
+- [`emit.emitNeighbourResult`](./inspect/emit.ts.mdmd.md#symbol-emitneighbourresult)
 - [`emit.emitNotFound`](./inspect/emit.ts.mdmd.md#symbol-emitnotfound)
 - [`emit.emitPathResult`](./inspect/emit.ts.mdmd.md#symbol-emitpathresult)
 - [`emit.emitReachableFromEntries`](./inspect/emit.ts.mdmd.md#symbol-emitreachablefromentries)

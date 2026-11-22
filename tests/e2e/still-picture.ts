@@ -145,9 +145,9 @@ export function symbolCounts(graph: ExplorerGraphPayload): Record<string, number
  * The Local Map tuning of a case whose subject is not the arrival: the subject framed at reading size and left there
  * (Tuning → 2D Layout → Arrival, Reading Size). Since 2026-11-22 the product's default arrival rests at reading size and
  * then eases back to the neighbours, so a picture read at rest would be the neighbours' frame, in another look on a
- * large neighbourhood. Every case written before that day reads the picture at reading size and means to; it says so by
- * spreading this into the tuning it seeds, and the suite's stored state (playwright.config.ts) carries it for the cases
- * that seed none. The arrival itself is read in `camera-intent.spec.ts`, with the default left as the product has it.
+ * large neighbourhood. A case whose subject is the picture at reading size says so by spreading this into the tuning it
+ * seeds. The suite's stored state does not carry it: every other case runs on the arrival that ships. The arrival
+ * itself is read in `camera-intent.spec.ts`.
  */
 export const AT_READING_SIZE = { arrival: "reading" } as const;
 

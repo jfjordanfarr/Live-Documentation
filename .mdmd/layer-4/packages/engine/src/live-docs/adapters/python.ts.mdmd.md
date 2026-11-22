@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/python.ts`
-- Generated At: 2026-11-20T15:12:45.980Z
+- Generated At: 2026-11-22T02:29:39.689Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,7 @@ Language adapter for Python (`.py`): tree-sitter symbols, import resolution that
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 <!-- LIVE-DOC:END Dependencies -->

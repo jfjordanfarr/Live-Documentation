@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-21T04:32:48.755Z
+- Generated At: 2026-11-22T01:29:32.360Z
 
 ## Authored
 ### Purpose
@@ -106,6 +106,7 @@ _No public symbols detected_
 - [`spatial-legend.watchLocalKinds`](./panels/spatial-legend.ts.mdmd.md#symbol-watchlocalkinds)
 - [`stats-line.statsLineOf`](./panels/stats-line.ts.mdmd.md#symbol-statslineof)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
+- [`tuning.withholdFirstCommitOrder`](./panels/tuning.ts.mdmd.md#symbol-withholdfirstcommitorder)
 - [`tuning.withholdThreeDLayout`](./panels/tuning.ts.mdmd.md#symbol-withholdthreedlayout)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
 - [`pathfind.Reach`](./pathfind.ts.mdmd.md#symbol-reach)
@@ -179,6 +180,8 @@ _No public symbols detected_
 - [`retained-state.releaseRetained`](./views/retained-state.ts.mdmd.md#symbol-releaseretained)
 - [`retained-state.retainedKey`](./views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`retained-state.subjectAfterRelease`](./views/retained-state.ts.mdmd.md#symbol-subjectafterrelease)
+- [`scanGrowth.birthSteps`](./views/scanGrowth.ts.mdmd.md#symbol-birthsteps)
+- [`scanGrowthPlay.createScanGrowthPlay`](./views/scanGrowthPlay.ts.mdmd.md#symbol-createscangrowthplay)
 - [`webgl-support.WEBGL_REFUSED`](./views/webgl-support.ts.mdmd.md#symbol-webgl_refused)
 - [`webgl-support.perspectiveRemembered`](./views/webgl-support.ts.mdmd.md#symbol-perspectiveremembered)
 - [`webgl-support.perspectiveShown`](./views/webgl-support.ts.mdmd.md#symbol-perspectiveshown)
@@ -193,6 +196,7 @@ _No public symbols detected_
 - [`template.history-back`](../shared/template.html.mdmd.md#symbol-history-back)
 - [`template.history-forward`](../shared/template.html.mdmd.md#symbol-history-forward)
 - [`template.sidebar`](../shared/template.html.mdmd.md#symbol-sidebar)
+- [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

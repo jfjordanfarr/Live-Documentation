@@ -247,7 +247,7 @@ describe("the folder a person runs a command from", () => {
     for (const name of ["npm in the checkout", "npm in a folder of the checkout"]) {
       const result = ran(name);
       expect(result.status, `${name}: ${result.stderr}`).toBe(0);
-      expect(result.stdout, name).toMatch(/^Terminal inbound paths from scripts\/live-docs\/cli\.ts /u);
+      expect(result.stdout, name).toMatch(/^scripts\/live-docs\/cli\.ts is used by \d+ files directly \(inbound\)\./u);
     }
   });
 

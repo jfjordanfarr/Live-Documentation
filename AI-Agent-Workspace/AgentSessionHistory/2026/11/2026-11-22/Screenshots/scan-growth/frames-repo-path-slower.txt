@@ -1,0 +1,32 @@
+repo-path-slower-00.png	0.5 s	Listing Files… (18)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-01.png	4.5 s	Listing Files… (369)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-02.png	8.5 s	Listing Files… (799)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-03.png	12.5 s	Listing Files… (1,230)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-04.png	16.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-05.png	20.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-06.png	24.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-07.png	28.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-08.png	32.5 s	Reading File Text… (0/1,297)	0 files, 0 references · 0 of 0 files shown · 0 groups, 0 alone
+repo-path-slower-09.png	36.5 s	Reading File Text… (89/1,297)	89 files, 257 references · 29 of 88 files shown · 1 group, 28 alone
+repo-path-slower-10.png	40.5 s	Reading File Text… (197/1,297)	196 files, 1,314 references · 32 of 195 files shown · 1 group, 31 alone
+orbited by a drag and zoomed in by the wheel
+repo-path-slower-11.png	44.5 s	Reading File Text… (305/1,297)	295 files, 1,937 references · 33 of 294 files shown · 3 groups, 30 alone
+repo-path-slower-12.png	48.5 s	Reading File Text… (413/1,297)	396 files, 3,108 references · 35 of 395 files shown · 3 groups, 32 alone
+repo-path-slower-13.png	52.5 s	Reading File Text… (521/1,297)	500 files, 4,403 references · 40 of 499 files shown · 5 groups, 35 alone
+repo-path-slower-14.png	56.5 s	Reading File Text… (628/1,297)	610 files, 5,362 references · 51 of 609 files shown · 6 groups, 45 alone
+repo-path-slower-15.png	60.5 s	Reading File Text… (736/1,297)	689 files, 5,926 references · 50 of 688 files shown · 6 groups, 44 alone
+repo-path-slower-16.png	64.5 s	Reading File Text… (844/1,297)	842 files, 6,404 references · 90 of 841 files shown · 23 groups, 67 alone
+repo-path-slower-17.png	68.5 s	Reading File Text… (952/1,297)	926 files, 6,748 references · 100 of 925 files shown · 29 groups, 71 alone
+repo-path-slower-18.png	72.5 s	Reading File Text… (1,060/1,297)	1,060 files, 7,210 references · 116 of 1,059 files shown · 37 groups, 79 alone
+repo-path-slower-19.png	76.6 s	Reading File Text… (1,167/1,297)	1,167 files, 7,535 references · 122 of 1,166 files shown · 42 groups, 80 alone
+repo-path-slower-20.png	80.6 s	Reading File Text… (1,275/1,297)	1,275 files, 7,855 references · 134 of 1,261 files shown · 48 groups, 86 alone
+repo-path-slower-21.png	84.6 s	(no sign)	1,297 files, 7,899 references, 1,355 dependencies outside the scan · 132 of 1,283 files shown · 47 groups, 85 alone
+frames at no scan	98	median 29 ms	worst 819 ms	over 100 ms: 4 frames, 1623 ms
+frames at waiting	1648	median 17 ms	worst 372 ms	over 100 ms: 2 frames, 589 ms
+frames at 0+	167	median 42 ms	worst 364 ms	over 100 ms: 1 frames, 364 ms
+frames at 200+	171	median 40 ms	worst 193 ms	over 100 ms: 12 frames, 1656 ms
+frames at 400+	150	median 38 ms	worst 296 ms	over 100 ms: 8 frames, 1939 ms
+frames at 600+	196	median 32 ms	worst 843 ms	over 100 ms: 4 frames, 2254 ms
+frames at 800+	173	median 25 ms	worst 578 ms	over 100 ms: 2 frames, 1023 ms
+frames at 1000+	195	median 33 ms	worst 133 ms	over 100 ms: 2 frames, 263 ms
+frames at 1200+	124	median 26 ms	worst 442 ms	over 100 ms: 2 frames, 556 ms

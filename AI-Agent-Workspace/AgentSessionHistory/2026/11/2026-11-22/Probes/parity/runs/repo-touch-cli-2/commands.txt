@@ -1,0 +1,11 @@
+## 1
+live-docs --help 2>&1 | head -40
+
+## 2
+live-docs inspect --help 2>&1 | head -40
+
+## 3
+grep -rnE "client/markdown|\./markdown|/markdown['\"]" packages --include=*.ts --include=*.tsx --include=*.js --include=*.json --include=*.mjs -l --exclude-dir=node_modules 2>&1 | head -30
+
+## 4
+live-docs inspect --from packages/explorer/src/client/markdown.ts --direction inbound --reachable 2>&1 | head -50

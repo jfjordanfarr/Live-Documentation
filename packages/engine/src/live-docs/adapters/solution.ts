@@ -41,7 +41,7 @@ export const solutionAdapter: LanguageAdapter = {
   id:         "dotnet-solution",
   extensions: [".sln", ".slnx"],
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
-    const content  = await readSourceText(absolutePath);
+    const content  = await readSourceText(absolutePath, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const projects = new Map<string, DependencyEntry>();
     for (const written of solutionProjects(content, path.extname(absolutePath).toLowerCase())) {

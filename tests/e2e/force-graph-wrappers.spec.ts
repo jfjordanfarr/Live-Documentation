@@ -147,19 +147,25 @@ test("the skin shows within each wrapped group every file it holds about its see
     return found;
   });
   // The picture draws at most DRAWN_FILES files within its skins, as one body does (2026-11-07): past it the bodies
-  // farthest from what was asked are veiled, the largest first, each shown as one veiled bubble while its name keeps its
-  // count. With nothing asked every seed stands at the same hop. This repository's archipelago came within 8 files of the
-  // budget on 2026-11-19 (1,016 files beside their seeds) and passed it on 2026-11-21, when the readers of SQL,
-  // PowerShell and .NET brought 1,137, and its largest group, 696 files, is veiled.
-  // The rule written out here rather than asked of the page's own function: the largest bodies veiled, one by one, while
-  // the files the skins would draw pass the budget.
+  // farthest from what was asked are veiled, each shown as one veiled bubble while its name says its count. With nothing
+  // asked every seed stands at the same hop. This repository's archipelago came within 8 files of the budget on
+  // 2026-11-19 (1,016 files beside their seeds) and passed it on 2026-11-21, when the readers of SQL, PowerShell and
+  // .NET brought 1,137; until 2026-11-22 the largest was veiled first, so its largest group, 696 files, the
+  // repository's main body, stood as a blank ball. The owner, shown it: "Oh man I know that annoys the heck out of me."
+  // Since then whole groups are veiled the smallest first, and the main body's files stay in sight.
+  // The rule written out here rather than asked of the page's own function: the smallest groups veiled, one by one,
+  // while the files the skins would draw pass the budget.
   const veiled = new Set<string>();
   let drawing = wrapped.reduce((sum, seed) => sum + sizes.get(seed)! - 1, 0);
-  for (const seed of [...wrapped].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1))) {
+  for (const seed of [...wrapped].sort((a, b) => sizes.get(a)! - sizes.get(b)! || (a < b ? -1 : 1))) {
     if (drawing <= DRAWN_FILES) break;
     veiled.add(seed);
     drawing -= sizes.get(seed)! - 1;
   }
+  const [largest] = [...wrapped].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1));
+  expect(veiled.size, "this repository's archipelago passes the budget, so some group is veiled").toBeGreaterThan(0);
+  expect(veiled.has(largest), "the main body is not among the veiled").toBe(false);
+  expect(units.filter(unit => unit.seed === largest).length + 1, "every file of the main body is drawn").toBe(sizes.get(largest));
   const balloons = await page.evaluate(() => {
     const found: Array<{ seed: string; veiled?: boolean }> = [];
     (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
@@ -180,6 +186,22 @@ test("the skin shows within each wrapped group every file it holds about its see
     const skin = ranges.find(range => range.seed === seed)!;
     for (const unit of files) expect(Math.hypot(unit.x - skin.x, unit.y - skin.y, unit.z - skin.z) + unit.radius, unit.seed).toBeLessThanOrEqual(skin.radius + 1e-3);
   }
+  // A veil is an honest sign: the veiled group's name, shown when the pointer rests on it, says how many files it
+  // hides. A nearer wrapper may stand in front of a seed from this camera, so the veiled seeds are tried in turn until
+  // the page names the one aimed at.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const seeds = await renderedNodes(page);
+  let said: { seed: string; text: string } | null = null;
+  for (const seed of [...veiled].sort((a, b) => sizes.get(b)! - sizes.get(a)! || (a < b ? -1 : 1))) {
+    const at = seeds.find(node => node.id === seed);
+    if (!at) continue;
+    await page.mouse.move(at.x + 1, at.y + 1);
+    await page.mouse.move(at.x, at.y);
+    const named = page.locator(`.force-graph-label[data-node-id="${seed.replace(/["\\]/g, "\\$&")}"]:not([hidden])`);
+    if (await named.waitFor({ state: "visible", timeout: 1_500 }).then(() => true, () => false)) { said = { seed, text: (await named.textContent()) ?? "" }; break; }
+  }
+  expect(said, "a veiled group was named under the pointer").not.toBeNull();
+  expect(said!.text, `${said!.seed}'s name says the files its veil hides`).toMatch(new RegExp(` · ${sizes.get(said!.seed)}$`));
 });
 
 test("hovering a wrapper names its group; a click pops it open into its files, and releasing the pin wraps it again", async ({ page }) => {

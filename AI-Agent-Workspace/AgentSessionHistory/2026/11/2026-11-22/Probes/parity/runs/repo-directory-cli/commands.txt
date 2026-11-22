@@ -1,0 +1,11 @@
+## 1
+cd packages/explorer/src/client/search && ls -la && wc -l * && grep -n "import\|export" * | head -150
+
+## 2
+live-docs --help 2>&1 | head -30
+
+## 3
+head -12 graph-search.ts search-field.ts search-bar.ts; sed -n 13,66p search-field.ts; sed -n 30,66p search-bar.ts; grep -rn "search/" ../ --include=*.ts | grep import | grep -v "^../search/"
+
+## 4
+cd ../..; grep -rn "search/\|search-bar\|search-field\|graph-search" . --include="*.ts" | grep import | grep -v "^./client/search/"

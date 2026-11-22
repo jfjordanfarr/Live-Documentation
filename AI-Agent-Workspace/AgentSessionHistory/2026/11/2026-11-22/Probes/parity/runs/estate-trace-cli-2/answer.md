@@ -1,0 +1,9 @@
+A submitted payment passes through these pieces, in order. I took the order from the README's architecture diagram. I then checked it against the code and config, and found the portal's `api/payments` route, the gateway base-URL setting, the hub's endpoints and the stored procedure. I did not open every file along the way.
+
+1. **Portal web page (browser).** The page's vanilla JavaScript, `Scripts/portal.js`, calls `postPayment`. It gets the gateway address from a hidden field that the server fills from the `Portal.GatewayBaseUrl` setting in `Web.config`.
+2. **Portal Web API.** `PaymentsController` handles `POST api/payments`. It uses a `GatewayClient` to send the request on. The portal has its own request and result models, and it sends JSON.
+3. **Gateway (Web API 2, in the cloud).** It receives the call over HTTP. It then calls the hub over WCF, through the IPSEC tunnel into the on-prem network. It uses the client endpoint named `PaymentHub`.
+4. **Hub (WCF, on-prem).** It implements `IPaymentHub` and listens at `net.tcp://hub.onprem.example:8731/PaymentHub`. It picks the payment service for the request's workload and environment, such as `PaymentService.Consumer.Production` or `PaymentService.Consumer.Staging`. It then calls that service over WCF.
+5. **PaymentService (WCF with Entity Framework 6).** It implements `IPaymentService` and runs `EXEC dbo.usp_PostPayment`. The shared WCF contracts the gateway, hub and service use live in the `Contracts` project.
+6. **SQL Server.** The stored procedure `dbo.usp_PostPayment` writes the payment to the `dbo.Payment` table. That is where it is stored.
+7. **Oracle (a lookup, not where the payment is stored).** The procedure also reads the account balance from `CENTRAL.ACCOUNT` in Oracle. It reaches it through the `ORACLE_CENTRAL` linked server. The README lists this as the last hop in the chain.

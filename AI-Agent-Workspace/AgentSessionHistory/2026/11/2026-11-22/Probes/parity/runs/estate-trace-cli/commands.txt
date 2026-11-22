@@ -1,0 +1,11 @@
+## 1
+live-docs --help; ls
+
+## 2
+cat README.md board.md | head -80; live-docs inspect --help; live-docs visualize --help
+
+## 3
+cd <folder>; find . -type f -not -path './*/obj/*' -not -path './*/bin/*' | grep -v '^./expected' | head -80; grep -rn "GatewayBaseUrl\|PaymentHub\|usp_PostPayment\|ORACLE_CENTRAL" --include=*.cs --include=*.config --include=*.sql --include=*.js --include=*.aspx . | head -40
+
+## 4
+cd <folder>; cat Portal/Pages/Default.aspx Portal/Scripts/portal.js Portal/Controllers/PaymentsController.cs Portal/Services/GatewayClient.cs Gateway/Controllers/PaymentsController.cs Gateway/Wcf/HubProxy.cs Hub/PaymentHub.cs Hub/ServiceRouting.cs PaymentService/PaymentService.cs PaymentService/Data/PaymentsContext.cs Database/SqlServer/dbo.usp_PostPayment.sql Database/Oracle/*.sql | cut -c1-200

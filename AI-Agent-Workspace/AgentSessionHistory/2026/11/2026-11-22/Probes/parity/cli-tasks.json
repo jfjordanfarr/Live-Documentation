@@ -1,0 +1,53 @@
+{
+  "about": "Command-line tasks of 2026-11-22, written and committed before any run. A tester is shown only `words`, in a folder made by make-cli-folder.mjs from `source`. `rightAnswer` is for the judge only. The first five are the page testers' tasks (AI-Agent-Workspace/scripts/playtest/tasks.json, same ids) reworded for a folder in place of a link, their keys carried over and adapted where the page's condition does not hold; the last three are new, of the kind the command line should be best at, their keys written from the source: estate-dead by reading the estate's files, repo-reach and repo-touch from TypeScript's own module resolution (import-oracle.mjs beside this file, run at 64ab0ed54).",
+  "tasks": [
+    {
+      "id": "estate-uses",
+      "source": "estate",
+      "words": "A colleague pointed me to one of the files in our payments code, Contracts/IPaymentService.cs. What uses this file?",
+      "rightAnswer": "Carried from tasks.json. Contracts/IPaymentService.cs is used by four files: Hub/PaymentHub.cs and PaymentService/PaymentService.cs (code), and Hub/App.config and PaymentService/App.config (configuration that names the service contract). Right: the two code files and the two configuration files. Partly: the code files alone. Wrong: a file named that does not use it, or neither code file."
+    },
+    {
+      "id": "estate-directory",
+      "source": "estate",
+      "words": "Can you look at the PaymentService folder and tell me how the files in it connect?",
+      "rightAnswer": "Carried from tasks.json, less its sentence on finding the World Map's box. PaymentService/ holds App.config, PaymentService.cs, PaymentService.csproj and a Data/ subfolder (Payment.cs, PaymentsContext.cs, PostPaymentRow.cs). Inside: PaymentService.cs uses Payment.cs, PostPaymentRow.cs and PaymentsContext.cs; PaymentsContext.cs uses Payment.cs, PostPaymentRow.cs and App.config (its PaymentsDb connection string); App.config names PaymentService.cs as the service, which closes a cycle PaymentService.cs -> PaymentsContext.cs -> App.config -> PaymentService.cs; PaymentService.csproj connects to nothing inside the folder. Outside: PaymentService.cs uses four Contracts files (IPaymentService, PaymentQuery, PaymentRequest, PaymentResult); App.config names Contracts/IPaymentService.cs and is used by Hub/App.config; Payment.cs and PaymentsContext.cs reach the SQL Server scripts; the .csproj references Contracts.csproj. Right: the inside connections with their directions and PaymentService.cs as the hub; the cycle and the outside connections are a plus. Partly: the files listed with some connections, or directions missing. Wrong: files invented or the connections contradicted."
+    },
+    {
+      "id": "estate-trace",
+      "source": "estate",
+      "words": "This folder holds our payments system. When someone submits a payment on the web page, what happens to it? Name each piece of the system it passes through, in order, until it is stored.",
+      "rightAnswer": "Carried from tasks.json. A full answer names, in this order, Portal/Pages/Default.aspx and Portal/Scripts/portal.js, the portal's Portal/Controllers/PaymentsController.cs and Portal/Services/GatewayClient.cs, the gateway (Gateway/Controllers/PaymentsController.cs and Gateway/Wcf/HubProxy.cs, over the endpoint PaymentHub in Gateway/Web.config), the hub (Hub/PaymentHub.cs with Hub/ServiceRouting.cs, endpoints in Hub/App.config), the payment service PaymentService/PaymentService.cs and its PaymentService/Data/PaymentsContext.cs, the stored procedure Database/SqlServer/dbo.usp_PostPayment.sql, and the table dbo.Payment (Database/SqlServer/dbo.Payment.sql); the Oracle read of CENTRAL.ACCOUNT through ORACLE_CENTRAL and the configuration files that carry each hop are a plus. Partly: the right order with a piece missing or merged (the portal's own controller skipped, the hub's routing not named, or the answer stopping at the service or the database without the table). Wrong: an order that contradicts the flow, or the payment said to be stored somewhere else."
+    },
+    {
+      "id": "repo-uses",
+      "source": "repository",
+      "words": "A colleague pointed me to one of the files in our code, packages/explorer/src/client/pathfind.ts. What uses this file?",
+      "rightAnswer": "Carried from tasks.json and checked by import-oracle.mjs (--touch, its 1-hop rows): packages/explorer/src/client/pathfind.ts is used by five files: client/index.ts, client/search/graph-search.ts and client/search/search-bar.ts, and two tests, client/pathfind.test.ts and client/history/moment-paths.test.ts. The page's key counted the three code files a full answer because the page hid tests; here nothing hides them. Right: the three code files, with the tests named or said to use it. Partly: the three code files and no word of tests, or two of the three. Wrong: a file named that does not import it, or fewer than two of the three."
+    },
+    {
+      "id": "repo-directory",
+      "source": "repository",
+      "words": "Can you look at the folder packages/explorer/src/client/search and tell me how the files in it connect?",
+      "rightAnswer": "Carried from tasks.json. Four files: search-bar.ts uses graph-search.ts and search-field.ts; search-field.ts uses graph-search.ts; graph-search.test.ts tests graph-search.ts. graph-search.ts is the hub of the folder (seven users, four from outside: client/index.ts, panels/sources-view.ts, history/file-identity.ts, a history test); search-bar.ts is used by client/index.ts; search-field.ts by panels/sources-view.ts. Outward, graph-search.ts and search-bar.ts use client/pathfind.ts and shared/types.ts. Right: the four files with the inside connections and their directions; the outside users and uses are a plus. Partly: the files with some connections, or directions missing. Wrong: files invented or the connections contradicted."
+    },
+    {
+      "id": "estate-dead",
+      "source": "estate",
+      "words": "Nothing in our C# code ever creates a PaymentHub (the class in Hub/PaymentHub.cs). Is it dead code that we can delete?",
+      "rightAnswer": "Written 2026-11-22 from the estate's files, before any run. No. Hub/App.config hosts it: `<service name=\"Estate.Hub.PaymentHub\">` with its endpoint at net.tcp://hub.onprem.example:8731/PaymentHub, so the WCF host creates it from configuration, not code. The gateway calls it: Gateway/Wcf/HubProxy.cs opens the client endpoint \"PaymentHub\" of Gateway/Web.config, whose address is that same net.tcp://hub.onprem.example:8731/PaymentHub, and every payment posted through the portal passes through PaymentHub on its way to the payment service (it asks Hub/ServiceRouting.cs for the endpoint and forwards the call). Right: no, naming the hosting by Hub/App.config's service entry, or the gateway's call to it over that address (both are a plus). Partly: no, with a reason that names neither (it implements IPaymentHub, it might be used by reflection, it is in the solution). Wrong: yes, or safe to delete, or no answer."
+    },
+    {
+      "id": "repo-reach",
+      "source": "repository",
+      "words": "Which files of this repository does scripts/live-docs/board.ts depend on, directly or through other files?",
+      "rightAnswer": "Written 2026-11-22 before any run, from TypeScript's module resolution over the tracked files (`import-oracle.mjs <checkout> <tracked> --reach scripts/live-docs/board.ts`, 64ab0ed54): 16 code files. Directly (6): scripts/live-docs/cli.ts, packages/engine/src/config/liveDocumentationConfig.ts and packages/engine/src/live-docs/{board,boardGraph,document,graphFiles}.ts. Through those (10): packages/engine/src/live-docs/{estateGraph,graph,openings,coreTypes,processMark}.ts and packages/engine/src/tooling/{gitIgnored,sourceText,markdownLinks,htmlEntities,pathUtils}.ts. Packages from npm and Node's own modules are neither right nor wrong. Right: 15 or 16 of the 16 and no file of the repository that it does not reach. Partly: the six direct ones, or 8 or more of the 16, with at most one file it does not reach. Wrong: fewer than 8, or two or more files it does not reach."
+    },
+    {
+      "id": "repo-touch",
+      "source": "repository",
+      "words": "If I change packages/explorer/src/client/markdown.ts, which other files could be affected?",
+      "rightAnswer": "Written 2026-11-22 before any run, from TypeScript's module resolution over the tracked files (`import-oracle.mjs <checkout> <tracked> --touch packages/explorer/src/client/markdown.ts`, 64ab0ed54): 11 code files import it directly or through others. Directly (6): client/detailPanel.ts, client/reader-sections.ts, client/views/localView/card-reading.ts, and the tests client/detailPanel.test.ts, client/markdown.test.ts and client/reader-sections.test.ts. Through those (5): client/index.ts, client/views/localView/branch-renderer.ts, client/views/localView/controller.ts, client/views/localView/directory-ancestry.ts and client/views/localView/index.ts (all under packages/explorer/src/). Naming the built page or .live-docs.config.json (which declares client/index.ts an entry point) is neither right nor wrong. Right: 10 or 11 of the 11 and no code file that does not import it directly or through others. Partly: the six direct ones, or 6 or more of the 11, with at most one file outside them. Wrong: fewer than 6, or two or more files outside them."
+    }
+  ]
+}

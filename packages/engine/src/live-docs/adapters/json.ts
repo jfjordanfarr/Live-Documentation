@@ -24,13 +24,13 @@
  * @module
  */
 
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { decodeSourceText, readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceReading, readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
@@ -42,7 +42,7 @@ const PACKAGE_JSON = "package.json";
 const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
 
 /** What a `package.json` says: the package it names, the packages it stands on, and the files its scripts, binaries and main module start. */
-function analyzePackageManifest(parsed: unknown, context: ManifestContext): SourceAnalysisResult {
+async function analyzePackageManifest(parsed: unknown, context: ManifestContext): Promise<SourceAnalysisResult> {
   const manifest = tableOf(parsed) ?? {};
   const symbols = packageSymbols(stringOf(manifest.name));
 
@@ -53,7 +53,7 @@ function analyzePackageManifest(parsed: unknown, context: ManifestContext): Sour
     }
   }
 
-  const declares = context.fileIndex ? declaredEntries(manifest, context.absolutePath, context.workspaceRoot, context.fileIndex) : [];
+  const declares = context.fileIndex ? await declaredEntries(manifest, context.absolutePath, context.workspaceRoot, context.fileIndex) : [];
   return declares.length > 0 ? { symbols, dependencies: dependencies.entries(), declares } : { symbols, dependencies: dependencies.entries() };
 }
 
@@ -68,9 +68,9 @@ function analyzePackageManifest(parsed: unknown, context: ManifestContext): Sour
  * manifest: a file under `outDir` is looked for under `rootDir` with the
  * TypeScript extension that compiles to it.
  */
-function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): DeclaredEntry[] {
+async function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): Promise<DeclaredEntry[]> {
   const directory = path.dirname(manifestAbsolute);
-  const toSource = sourceMapper(directory, workspaceRoot, fileIndex);
+  const toSource = await sourceMapper(directory, workspaceRoot, fileIndex);
   const declared = new Map<string, DeclaredEntry>();
   const declare = (entry: DeclaredEntry): void => {
     declared.set(`${entry.reason}\u0000${entry.file}\u0000${entry.name ?? ""}`, entry);
@@ -289,8 +289,8 @@ function shellCommands(line: string): ShellWord[][] {
 }
 
 /** Maps a path a manifest names, relative to the manifest, to the workspace source file it stands for, through the tsconfig beside the manifest. */
-function sourceMapper(directory: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): (candidate: string) => string | undefined {
-  const compiled = compilerPaths(directory);
+async function sourceMapper(directory: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): Promise<(candidate: string) => string | undefined> {
+  const compiled = await compilerPaths(directory, fileIndex);
   const inIndex = (absolute: string): string | undefined => {
     const relative = normalizeWorkspacePath(path.relative(workspaceRoot, absolute));
     return fileIndex.has(relative) ? relative : undefined;
@@ -329,44 +329,72 @@ function sourcesOf(built: string): string[] {
  *
  * @remarks
  * TypeScript reads the tsconfig, and each one it extends, through the host it is handed, and turns whatever that host
- * throws into a diagnostic; its own host, `ts.sys`, reads every failure as no file. So the host here reads the disk by
- * the one rule of the readers (`decodeSourceText`), keeps a failure of the machine's (`throwIfMachineFailure`), and
- * throws it once TypeScript has read: a tsconfig that could not be read for a cause of the machine's never reads as one
- * with no paths (since 2026-11-20). The files the tsconfig includes are not listed, since only its options are read.
+ * throws into a diagnostic; its own host, `ts.sys`, reads every failure as no file. So the host here reads by the one
+ * rule of the readers, keeps a failure of the machine's (`throwIfMachineFailure`), and throws it once TypeScript has
+ * read: a tsconfig that could not be read for a cause of the machine's never reads as one with no paths (since
+ * 2026-11-20). The files the tsconfig includes are not listed, since only its options are read.
+ *
+ * TypeScript asks its host for a file's text and must be answered at once, where a run's reads (`readSourceText`'s
+ * `reads`, through the host that runs the engine, which in a page waits on the browser) take their time. So the files
+ * TypeScript asks for are read ahead: it is asked to read the configuration with what has been read so far, every file
+ * it asked for and was not given is then read through the run's reads, and it is asked again, until it asks for no file
+ * not yet read. Each round reads at least one more file, so the rounds end; a tsconfig that extends one other takes
+ * three, and TypeScript's own reading of what it was given is the same as before (since 2026-11-22: until then the host
+ * read the disk with Node's `readFileSync`, which a page has not, and a second time beside the run's read of the file).
  */
-function compilerPaths(directory: string): { outDir: string; rootDirs: string[] } | undefined {
-  const failures: unknown[] = [];
-  const kept = <T>(call: () => T, otherwise: T): T => {
-    try {
-      return call();
-    } catch (error) {
-      failures.push(error);
-      return otherwise;
-    }
-  };
-  const host: ts.ParseConfigHost = {
-    // The scan reads names as they are written, whatever machine it runs on. Until 2026-11-21 this asked TypeScript's
-    // host on Node (`ts.sys`), whose answer differs between Windows and Linux for the same folder, which a repository's
-    // history must not, and which is undefined where TypeScript runs without Node, as in a page, where the read threw.
-    useCaseSensitiveFileNames: true,
-    readDirectory: () => [],
-    fileExists: (file) => kept(() => statSync(file).isFile(), false),
-    readFile: (file) => kept(() => {
-      const reading = decodeSourceText(readFileSync(file));
-      return reading.encoding === "unread" ? undefined : reading.text;
-    }, undefined)
-  };
+async function compilerPaths(directory: string, reads: SourceReads | undefined): Promise<{ outDir: string; rootDirs: string[] } | undefined> {
   const tsconfig = path.join(directory, "tsconfig.json");
-  const read = ts.readConfigFile(tsconfig, (file) => host.readFile(file));
-  failures.forEach(throwIfMachineFailure);
-  if (read.error || !read.config) return undefined;
-  // TypeScript's reader of JSON recurses as its parser does: measured once it has read, as after a parse of a module.
-  nestingBeyondDepth(read.config as unknown, jsonChildren, READING_DEPTH);
-  const options = ts.parseJsonConfigFileContent(read.config, host, directory, undefined, tsconfig).options;
-  failures.forEach(throwIfMachineFailure);
-  if (!options.outDir) return undefined;
-  const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
-  return { outDir: path.resolve(directory, options.outDir), rootDirs: rootDirs.map((root) => path.resolve(directory, root)) };
+  /** Each file TypeScript asked for and was read ahead: its text, or nothing where there is no such file or no text. */
+  const given = new Map<string, string | undefined>();
+  for (;;) {
+    const failures: unknown[] = [];
+    const kept = <T>(call: () => T, otherwise: T): T => {
+      try {
+        return call();
+      } catch (error) {
+        failures.push(error);
+        return otherwise;
+      }
+    };
+    const wanted = new Set<string>();
+    const host: ts.ParseConfigHost = {
+      // The scan reads names as they are written, whatever machine it runs on. Until 2026-11-21 this asked TypeScript's
+      // host on Node (`ts.sys`), whose answer differs between Windows and Linux for the same folder, which a repository's
+      // history must not, and which is undefined where TypeScript runs without Node, as in a page, where the read threw.
+      useCaseSensitiveFileNames: true,
+      readDirectory: () => [],
+      fileExists: (file) => kept(() => statSync(file).isFile(), false),
+      readFile: (file) => {
+        if (!given.has(file)) wanted.add(file);
+        return given.get(file);
+      }
+    };
+    const read = ts.readConfigFile(tsconfig, (file) => host.readFile(file));
+    failures.forEach(throwIfMachineFailure);
+    let options: ts.CompilerOptions | undefined;
+    if (!read.error && read.config) {
+      // TypeScript's reader of JSON recurses as its parser does: measured once it has read, as after a parse of a module.
+      nestingBeyondDepth(read.config as unknown, jsonChildren, READING_DEPTH);
+      options = ts.parseJsonConfigFileContent(read.config, host, directory, undefined, tsconfig).options;
+      failures.forEach(throwIfMachineFailure);
+    }
+    if (wanted.size === 0) {
+      if (!options?.outDir) return undefined;
+      const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
+      return { outDir: path.resolve(directory, options.outDir), rootDirs: rootDirs.map((root) => path.resolve(directory, root)) };
+    }
+    for (const file of wanted) {
+      try {
+        const reading = await readSourceReading(file, reads);
+        given.set(file, reading.encoding === "unread" ? undefined : reading.text);
+      } catch (error) {
+        // A failure of the machine's is thrown, as TypeScript would have been handed it and it thrown once TypeScript had
+        // read; any other is no such file, which TypeScript is handed as one it could not read.
+        throwIfMachineFailure(error);
+        given.set(file, undefined);
+      }
+    }
+  }
 }
 
 // ============================================================================
@@ -596,7 +624,7 @@ export const jsonAdapter: LanguageAdapter = {
   async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     let content: string;
     try {
-      content = await readSourceText(absolutePath);
+      content = await readSourceText(absolutePath, fileIndex);
     } catch (error) {
       throwIfMachineFailure(error);
       return null;

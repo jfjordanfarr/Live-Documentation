@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/build-page.mjs`
-- Generated At: 2026-11-21T03:40:56.621Z
+- Generated At: 2026-11-22T01:22:10.803Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ that a call of one throws in the page, and `node-needs.json` lists them.
 
 #### `GRAMMARS` {#symbol-grammars}
 - Type: const
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L47)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L46)
 
 ##### `GRAMMARS` — Summary
 The `.wasm` files the readers load, repository-relative: the tree-sitter runtime, the engine's own build of the
@@ -45,14 +45,14 @@ at `ENGINE_ROOT/<this path>`, which is where the engine looks.
 
 #### `bundleScanner` {#symbol-bundlescanner}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L76)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L75)
 
 ##### `bundleScanner` — Summary
 The bundle of the page's script, built in memory: its text and esbuild's metafile.
 
 #### `bundleInputs` {#symbol-bundleinputs}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L103)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L102)
 
 ##### `bundleInputs` — Summary
 The files a bundle was built from, repository-relative, each with the digest of its bytes, to tell a page built
@@ -61,7 +61,7 @@ package's `browser` field turns off), which are left out.
 
 #### `buildScanPage` {#symbol-buildscanpage}
 - Type: function
-- Source: [source](../../../../tests/page-scan/build-page.mjs#L108)
+- Source: [source](../../../../tests/page-scan/build-page.mjs#L107)
 
 ##### `buildScanPage` — Summary
 Writes `page.html` and `inputs.json` into `out`; returns the page's path.

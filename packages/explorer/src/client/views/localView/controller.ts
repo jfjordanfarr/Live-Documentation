@@ -2257,6 +2257,7 @@ export class LocalViewController implements LocalViewApi {
         }
         arrival.restAt = now;
         arrival.start = { ...this.mapTransform };
+        this.sayArrival();
       }
       if (!arrival.releasedAt) {
         // The rest at reading size (camera-intent.ts, arrivalReleased): at least Tuning's Arrival Rest, and under Arrival
@@ -2267,8 +2268,9 @@ export class LocalViewController implements LocalViewApi {
         const focus = document.activeElement;
         const focused = !!card && !!focus && card.contains(focus) && focus.matches(":focus-visible");
         if (arrivalRestStartsAgain(arrivalWaits, pointed)) arrival.restAt = now;
-        const rested = now - arrival.restAt >= arrivalRest * 1000;
-        if (!arrivalReleased(arrivalWaits, now - arrival.restAt, arrivalRest * 1000, pointed || focused)) {
+        const restMs = arrivalRest * 1000;
+        const rested = now - arrival.restAt >= restMs;
+        if (!arrivalReleased(arrivalWaits, now - arrival.restAt, restMs, pointed || focused)) {
           // Past its rest and held only by the person's attention, the picture is at rest and says so: nothing will move
           // until they do, and whoever waits for the map's rest must not wait on a reader.
           if (arrival.waiting !== rested) { arrival.waiting = rested; this.sayArrival(); }
@@ -2337,13 +2339,14 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * The map says where an arrival that pulls back stands (`data-arrival`): "resting" at reading size for its rest,
-   * "waiting" past it while the person's pointer or focus is on the card, "easing" back to the neighbours; nothing when
-   * none runs. Resting and easing, its camera moves; waiting, it does not.
+   * The map says where an arrival that pulls back stands (`data-arrival`): "settling" while the picture still comes to
+   * reading size, "resting" there for its rest, whose clock starts when the picture has settled, "waiting" past it while
+   * the person's pointer or focus is on the card, "easing" back to the neighbours; nothing when none runs. Settling,
+   * resting and easing, its camera moves; waiting, it does not.
    */
   private sayArrival(): void {
     const arrival = this.arrival;
-    const says = !arrival ? null : arrival.releasedAt ? "easing" : arrival.waiting ? "waiting" : "resting";
+    const says = !arrival ? null : arrival.releasedAt ? "easing" : arrival.waiting ? "waiting" : arrival.restAt ? "resting" : "settling";
     if (says) this.container.dataset.arrival = says;
     else delete this.container.dataset.arrival;
     this.watchCamera();

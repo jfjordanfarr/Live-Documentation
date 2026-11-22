@@ -1,6 +1,7 @@
 import path from "node:path";
 
 import type { LiveDocumentationArchetype } from "../../config/liveDocumentationConfig";
+import type { WorkspaceReads } from "../../tooling/workspaceFiles";
 import type { SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
@@ -32,9 +33,14 @@ import { sqlAdapter } from "./sql";
  * analysis begins. Built by the generator, it also answers each path's
  * archetype under the workspace's own configuration (`archetypeOf`), so that a
  * reader telling a test from working code reads the workspace's overrides and
- * sample roots; an index made otherwise, as a test's, has none.
+ * sample roots, and carries the run's reads of its files (`readingOf`,
+ * `headOf`; `workspaceFiles.ts`), so that every reader, and every table a
+ * reader builds from many files, takes a file's text from the one read of the
+ * run, by handing this index to `readSourceText`. An index made otherwise, as a
+ * test's, has neither, and its reader reads the disk. It is the run's own
+ * object: what a reader keeps of a run is kept by it (a `WeakMap` keyed by it).
  */
-export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype };
+export type WorkspaceFileIndex = Set<string> & { archetypeOf?: (path: string) => LiveDocumentationArchetype } & Partial<WorkspaceReads>;
 
 /**
  * Contract for a language-specific source analyser.

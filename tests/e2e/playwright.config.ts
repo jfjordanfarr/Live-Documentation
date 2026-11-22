@@ -4,7 +4,6 @@ import path from "node:path";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { browserLaunchOptions } from "./browser-launch";
 import { serverPortForThisRun, type ServerPort } from "./served-build";
-import { AT_READING_SIZE } from "./still-picture";
 
 /**
  * Playwright E2E configuration for the Live Docs Explorer.
@@ -64,13 +63,13 @@ export const configFor = (pass: string | undefined, { port, reuse }: ServerPort 
     // test's trace held 57 MB of them. The action log, console, network and screencast remain.
     trace: { mode: "retain-on-failure", snapshots: false },
     // The Local Map's continuing search is off for the suite, so that a picture read after it is drawn is the picture
-    // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07). The
-    // arrival likewise rests at reading size for the suite, where the product's default eases back to the neighbours
-    // since 2026-11-22: a picture read at rest is the picture at reading size, as the cases mean; the arrival has its
-    // own cases in camera-intent.spec.ts (AT_READING_SIZE in still-picture.ts says why).
+    // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07). Nothing
+    // else is seeded: the suite runs on the arrival that ships, at reading size and then eased back to the neighbours
+    // (2026-11-22), and a case whose subject is the picture at reading size says so in its own seed (AT_READING_SIZE,
+    // still-picture.ts). A suite seeded away from the default would test a product nobody has.
     storageState: {
       cookies: [],
-      origins: [{ origin: `http://localhost:${port}`, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...AT_READING_SIZE } } }) }] }]
+      origins: [{ origin: `http://localhost:${port}`, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
     },
   },
 

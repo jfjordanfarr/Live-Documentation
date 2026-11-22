@@ -1,0 +1,8 @@
+## 1
+live-docs --help 2>&1 | head -50
+
+## 2
+live-docs inspect --help 2>&1 | head -30; live-docs visualize --help 2>&1 | head -30
+
+## 3
+live-docs inspect --from scripts/live-docs/board.ts --reachable 2>&1 | head -80

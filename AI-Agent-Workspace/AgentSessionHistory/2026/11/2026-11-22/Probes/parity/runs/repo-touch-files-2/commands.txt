@@ -1,0 +1,5 @@
+## 1
+ls packages/explorer/src/client/ | head -50; grep -rnE "markdown(\.ts|\.js)?['\"]" --include=*.ts --include=*.tsx --include=*.js --include=*.jsx --include=*.json --include=*.mjs --exclude-dir=node_modules --exclude-dir=dist . | head -50
+
+## 2
+grep -rnE "/markdown(\.js|\.ts)?['\"]" --include='*.ts' --include='*.tsx' --include='*.js' --include='*.mjs' --include='*.json' --exclude-dir=node_modules --exclude-dir=dist . | head -50; echo ---; grep -n "^export" packages/explorer/src/client/markdown.ts

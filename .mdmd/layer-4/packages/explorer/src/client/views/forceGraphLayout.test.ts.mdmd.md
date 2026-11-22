@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/views/forceGraphLayout.test.ts`
-- Generated At: 2026-11-19T21:10:15.012Z
+- Generated At: 2026-11-22T03:00:07.847Z
 
 ## Authored
 ### Purpose
@@ -36,6 +36,7 @@ _No public symbols detected_
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`forceGraphLayout.COLLISION_STIFFNESS`](./forceGraphLayout.ts.mdmd.md#symbol-collision_stiffness)
+- [`forceGraphLayout.HAND_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-hand_ticks)
 - [`forceGraphLayout.PlaceableNode`](./forceGraphLayout.ts.mdmd.md#symbol-placeablenode)
 - [`forceGraphLayout.QUIET_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-quiet_ticks)
 - [`forceGraphLayout.SHELL_SOFTNESS`](./forceGraphLayout.ts.mdmd.md#symbol-shell_softness)

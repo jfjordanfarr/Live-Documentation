@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/live-docs/inspect/emit.ts`
-- Generated At: 2026-11-19T21:10:19.164Z
+- Generated At: 2026-11-22T02:17:41.636Z
 
 ## Authored
 ### Purpose
@@ -25,35 +25,35 @@ What the inspect CLI prints: node descriptors, and the text or JSON of a path, a
 ### Public Symbols
 #### `NodeDescriptor` {#symbol-nodedescriptor}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L30)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L28)
 
 ##### `NodeDescriptor` — Summary
 Descriptor for a node in path output.
 
 #### `HopDescriptor` {#symbol-hopdescriptor}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L37)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L35)
 
 ##### `HopDescriptor` — Summary
 Descriptor for a hop (edge) in path output.
 
 #### `SymbolDescriptor` {#symbol-symboldescriptor}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L43)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L41)
 
 ##### `SymbolDescriptor` — Summary
 Descriptor for a public symbol.
 
 #### `SymbolParameterDescriptor` {#symbol-symbolparameterdescriptor}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L51)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L49)
 
 ##### `SymbolParameterDescriptor` — Summary
 Descriptor for a symbol parameter.
 
 #### `describeNode` {#symbol-describenode}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L68)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L66)
 - Returns: [`NodeDescriptor`](#symbol-nodedescriptor)
 - Parameters: `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -70,7 +70,7 @@ Node descriptor with optional symbol information
 
 #### `buildSymbolDescriptors` {#symbol-buildsymboldescriptors}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L90)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L88)
 - Returns: [`SymbolDescriptor`](#symbol-symboldescriptor)[]
 - Parameters: `file`: [`GraphFile`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
 
@@ -86,7 +86,7 @@ Array of symbol descriptors with documentation
 
 #### `emitPathResult` {#symbol-emitpathresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L148)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L146)
 - Parameters: `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitPathResult` — Summary
@@ -101,41 +101,46 @@ Emits a successful path result.
 
 #### `emitNotFound` {#symbol-emitnotfound}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L198)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L192)
 - Parameters: `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `result`: [`PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult)
 
 ##### `emitNotFound` — Summary
-Emits a "path not found" result with frontier information.
+Emits a "path not found" result: one line that says no path runs this way and, when one runs the other way, the
+exact command that asks for it, as the Explorer offers the reverse question as a link (the owner, 2025-12-18: "we
+should show no results and offer the reverse (via hyperlink)"). The JSON keeps the walk's frontier as well.
 
 ##### `emitNotFound` — Parameters
-- `direction`: Traversal direction used
-- `from`: Source node code path
-- `graph`: The Live Doc graph
-- `json`: If true, emit JSON format
-- `result`: The search result with frontier information
-- `to`: Target node code path
-- `verbose`: If true, include symbol details
+- `reverse`: The hops of the path from `to` to `from` the same way, when one runs.
 
-#### `emitFanoutResult` {#symbol-emitfanoutresult}
+#### `reverseCommand` {#symbol-reversecommand}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L247)
-- Parameters: `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction); `fanout`: [`FanoutPath`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-fanoutpath)[]; `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `documents`: [`FileDocuments`](#symbol-filedocuments)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L228)
+- Parameters: `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
 
-##### `emitFanoutResult` — Summary
-Emits fanout (terminal paths) result.
+##### `reverseCommand` — Summary
+The command that asks the reverse question: from the end back to the start, the same way.
 
-##### `emitFanoutResult` — Parameters
-- `direction`: Traversal direction used
-- `fanout`: Array of terminal paths
-- `from`: Source node code path
-- `graph`: The Live Doc graph
-- `json`: If true, emit JSON format
-- `maxDepth`: Maximum depth used
-- `verbose`: If true, include symbol details
+#### `NEIGHBOURS_LISTED` {#symbol-neighbours_listed}
+- Type: const
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L234)
+
+##### `NEIGHBOURS_LISTED` — Summary
+How many of a file's neighbours one way are listed before the rest are counted.
+
+#### `emitNeighbourResult` {#symbol-emitneighbourresult}
+- Type: function
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L242)
+- Parameters: `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `documents`: [`FileDocuments`](#symbol-filedocuments)
+
+##### `emitNeighbourResult` — Summary
+Emits a file's direct neighbours each way asked: what it depends on (outbound) and what depends on it (inbound),
+each list counted, sorted by path, and cut at {@link NEIGHBOURS_LISTED} with the number cut said. Until 2026-11-22
+this printed every terminal path whole, up to 200 of them, each repeating the file, so that the users of a file
+were only the second name of each line (the parity probe of that day).
 
 #### `FileDocuments` {#symbol-filedocuments}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L298)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L282)
 
 ##### `FileDocuments` — Summary
 A file's related documents, both ways, by their workspace-relative paths: the documents its authored words cite, and
@@ -143,14 +148,14 @@ the documents whose links cite it, as its doc's `Cited By` section lists them (2
 
 #### `ReachedFiles` {#symbol-reachedfiles}
 - Type: interface
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L304)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L288)
 
 ##### `ReachedFiles` — Summary
 The files a path reaches one way from a file, nearest first, each with the hops to it.
 
 #### `emitReachableResult` {#symbol-emitreachableresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L321)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L305)
 - Parameters: `reached`: [`ReachedFiles`](#symbol-reachedfiles)[]; `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitReachableResult` — Summary
@@ -168,7 +173,7 @@ same files with the same distances.
 
 #### `emitReachableFromEntries` {#symbol-emitreachablefromentries}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L367)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L351)
 - Parameters: `result`: [`Reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-interface); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitReachableFromEntries` — Summary
@@ -185,7 +190,7 @@ reaches with their archetypes, and the files only a test reaches.
 
 #### `emitGroups` {#symbol-emitgroups}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L415)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L399)
 - Parameters: `result`: [`FileGroups`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitGroups` — Summary
@@ -203,7 +208,7 @@ and its size, then the lone files; the JSON lists every group's members.
 
 #### `emitDualDirectionResult` {#symbol-emitdualdirectionresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L454)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L438)
 - Parameters: `outboundResult`: [`PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult); `inboundResult`: [`PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitDualDirectionResult` — Summary
@@ -221,7 +226,7 @@ Reports both paths if found, clearly labeling the direction of each.
 
 #### `emitSymbolPathResult` {#symbol-emitsymbolpathresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L557)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L541)
 - Parameters: `symbolPath`: [`SymbolHop`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolhop)[]; `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitSymbolPathResult` — Summary
@@ -237,7 +242,7 @@ Emits a successful symbol-aware path result.
 
 #### `emitSymbolPathNotFound` {#symbol-emitsymbolpathnotfound}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L600)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L584)
 - Parameters: `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
 
 ##### `emitSymbolPathNotFound` — Summary
@@ -251,7 +256,7 @@ Emits a "symbol path not found" result.
 
 #### `emitDualDirectionSymbolResult` {#symbol-emitdualdirectionsymbolresult}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L630)
+- Source: [source](../../../../../scripts/live-docs/inspect/emit.ts#L614)
 - Parameters: `from`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolreference); `outboundResult`: [`SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult); `inboundResult`: [`SymbolPathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-symbolpathsearchresult); `graph`: [`LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitDualDirectionSymbolResult` — Summary
@@ -274,9 +279,7 @@ Emits results for a dual-direction symbol path search.
 - [`graph.GraphFile`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](../../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`pathfind.Direction`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
-- [`pathfind.FanoutPath`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-fanoutpath)
 - [`pathfind.FileGroups`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface)
-- [`pathfind.MAX_ENUMERATED_PATHS`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-max_enumerated_paths)
 - [`pathfind.OneWay`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-oneway)
 - [`pathfind.PathSearchResult`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathsearchresult)
 - [`pathfind.Reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-interface)

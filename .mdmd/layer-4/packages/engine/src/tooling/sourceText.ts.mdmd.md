@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/tooling/sourceText.ts`
-- Generated At: 2026-11-20T15:53:17.138Z
+- Generated At: 2026-11-22T01:36:21.196Z
 
 ## Authored
 ### Purpose
@@ -20,14 +20,14 @@ The one reading step for a source file's text: a byte-order mark decides (UTF-8,
 ### Public Symbols
 #### `SourceTextReading` {#symbol-sourcetextreading}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L40)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L39)
 
 ##### `SourceTextReading` — Summary
 How a file's bytes became text, or why they did not.
 
 #### `decodeSourceText` {#symbol-decodesourcetext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L47)
 - Returns: [`SourceTextReading`](#symbol-sourcetextreading)
 
 ##### `decodeSourceText` — Summary
@@ -35,24 +35,44 @@ A file's bytes read by the rule of this module.
 
 #### `unmarkedUtf16` {#symbol-unmarkedutf16}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L82)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L81)
 
 ##### `unmarkedUtf16` — Summary
 The byte order of UTF-16 without a mark, where it is certain: an even, non-zero number of bytes in which every
 pair is one zero byte and one byte that is not zero, the zero always on the same side. The binary sniff
 (`isBinaryContent`) asks the same of a file's head, so that what this step reads as text is never called binary.
 
+#### `SourceReads` {#symbol-sourcereads}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L101)
+
+##### `SourceReads` — Summary
+The run's reads of its files, where a run hands them: the file index the generator hands every reader carries them
+(`WorkspaceFileIndex`, `workspaceReads` in `workspaceFiles.ts`), so that each file is read once per run and decoded
+once, through the host that runs the engine. An index made otherwise, as a reader's own tests make one, has none.
+
+#### `readSourceReading` {#symbol-readsourcereading}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L109)
+- Parameters: `reads`: [`SourceReads`](#symbol-sourcereads)
+
+##### `readSourceReading` — Summary
+A source file's reading by {@link decodeSourceText}: from the run's reads where they are handed, else from the disk
+by the Node host (`nodeHost.ts`), as for a reader called with no run.
+
 #### `readSourceText` {#symbol-readsourcetext}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L101)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L119)
+- Parameters: `reads`: [`SourceReads`](#symbol-sourcereads)
 
 ##### `readSourceText` — Summary
 A source file's text, for a language reader: read by {@link decodeSourceText}, and empty when the bytes are not
 text this step knows, so that such a file is read as holding nothing and the run goes on; the generator names it.
+Every reader hands the run's reads it was handed (`fileIndex`), so that the file is read once in the run.
 
 #### `throwIfMachineFailure` {#symbol-throwifmachinefailure}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L113)
+- Source: [source](../../../../../../packages/engine/src/tooling/sourceText.ts#L131)
 
 ##### `throwIfMachineFailure` — Summary
 For a catch around a read or a probe of a file that reads a failure as "not read" or "not there": throws on a failure
@@ -64,7 +84,7 @@ swallowed the machine's failures too, and a file read in one went into a summary
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
 - [`processMark.failedCall`](../live-docs/processMark.ts.mdmd.md#symbol-failedcall)
 - [`processMark.machineFailure`](../live-docs/processMark.ts.mdmd.md#symbol-machinefailure)
+- [`nodeHost.readFileBytes`](./nodeHost.ts.mdmd.md#symbol-readfilebytes)
 <!-- LIVE-DOC:END Dependencies -->

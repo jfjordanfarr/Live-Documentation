@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `vitest.config.ts`
 - Entry: tooling
-- Generated At: 2026-11-19T22:40:16.016Z
+- Generated At: 2026-11-22T02:14:03.756Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ On November 18, 2026, the coverage report was turned off by default ([Turn 13 of
 ### Public Symbols
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../vitest.config.ts#L29)
+- Source: [source](../../vitest.config.ts#L33)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

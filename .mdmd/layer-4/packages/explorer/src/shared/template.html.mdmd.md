@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/shared/template.html`
-- Generated At: 2026-11-22T02:10:40.088Z
+- Generated At: 2026-11-22T03:46:15.554Z
 
 ## Authored
 ### Purpose
@@ -370,6 +370,12 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 - Type: variable
 
 #### `tuning-force-reveal-frames-value` {#symbol-tuning-force-reveal-frames-value}
+- Type: variable
+
+#### `tuning-force-scan-growth` {#symbol-tuning-force-scan-growth}
+- Type: variable
+
+#### `tuning-force-scan-pace` {#symbol-tuning-force-scan-pace}
 - Type: variable
 
 #### `tuning-force-settle-hold` {#symbol-tuning-force-settle-hold}

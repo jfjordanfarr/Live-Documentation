@@ -1,0 +1,41 @@
+## 1
+cat scripts/live-docs/board.ts | head -60; grep -nE "import|require\(|export .* from" scripts/live-docs/board.ts
+
+## 2
+grep -rn "@live-documentation/engine" --include=tsconfig*.json --include=package.json . 2>/dev/null | grep -v node_modules | head; ls
+
+## 3
+grep -n "live-documentation" tsconfig.base.json tsconfig.json package.json; ls packages packages/*; 
+
+## 4
+mkdir -p /tmp/tools && cat > /tmp/tools/deps.py <<'E'
+import re,os,sys
+root=sys.argv[1]
+alias={"@live-documentation/engine/":"packages/engine/src/","@live-documentation/explorer/":"packages/explorer/src/","@live-documentation/generator/":"packages/generator/src/"}
+pat=re.compile(r'''(?:import|export)\s[^;]*?from\s*["']([^"']+)["']|import\s*["']([^"']+)["']|import\(\s*["']([^"']+)["']\s*\)|require\(\s*["']([^"']+)["']\)''',re.S)
+def res(spec,frm):
+    for a,p in alias.items():
+        if spec.startswith(a): base=os.path.join(root,p+spec[len(a):]);break
+    elif_=None
+    else:
+        if not spec.startswith('.'): return None
+        base=os.path.normpath(os.path.join(os.path.dirname(frm),spec))
+    for c in [base,base+'.ts',base+'.tsx',base+'.js',base+'.json',os.path.join(base,'index.ts')]:
+        if os.path.isfile(c): return c
+    return 'UNRESOLVED:'+base
+seen=set();ext=set();st=[os.path.join(root,'scripts/live-docs/board.ts')]
+while st:
+    f=st.pop()
+    if f in seen: continue
+    seen.add(f)
+    if f.startswith('UNRES'): continue
+    for m in pat.finditer(open(f).read()):
+        s=[x for x in m.groups() if x][0]
+        r=res(s,f)
+        if r is None: ext.add(s)
+        else: st.append(r)
+for s in sorted(seen): print(os.path.relpath(s,root) if not s.startswith('UNRES') else s)
+print('EXT',sorted(ext))
+E
+sed -i '/elif_=None/d' /tmp/tools/deps.py
+python3 -I /tmp/tools/deps.py <folder>

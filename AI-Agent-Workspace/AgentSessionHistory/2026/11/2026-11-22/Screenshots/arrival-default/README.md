@@ -61,8 +61,30 @@ The rest is not the time to read the card. The pointer on the card, or the focus
 | repo, wire | the same on the wire from `pathfind.ts` to `queries.test.ts`: the words stood on the way, "queries.test.ts uses pathfind.ts" was selected, Escape took them away |
 
 **My eye, on the two I looked at.** [`estate--pointer--release--strip.png`](estate--pointer--release--strip.png): the card with its descriptions draws back evenly into its folder and its neighbours, one look through the motion, and in the last frame the names stand larger, the look changed at rest. It reads as one picture moving away. [`estate--wire--3-inside-selected.png`](estate--wire--3-inside-selected.png): the panel stands below and to the right of the point asked at, on neither card the wire joins; its head is selected end to end; the wire's two cards keep their look and the others are faded, so what the words speak of is still what stands out while the pointer is inside them.
+Two more, opened in the second milestone. [`estate--focus--2-waits.png`](estate--focus--2-waits.png): the card stands at reading size four seconds after it landed, the focus ring drawn round the file's name and nothing else marked; a person sees where the keyboard is and that the picture is waiting on it. [`repo--wire--3-inside-selected.png`](repo--wire--3-inside-selected.png): on this repository's pulled-back picture the panel says "queries.test.ts uses pathfind.ts", its head selected; it stands to the right of the wire, clear of both the cards it names, and lies over three rows of `emit.ts`, a card it does not speak of, as a floating panel does. Everything but the one wire is faded, and on a view this dense that is what makes the wire findable at all.
+
+## Second milestone, 03:10 to 03:55 UTC: the new cases seen failing, and one case's failure understood
+
+**Each new browser case against a build that breaks what it holds.** One build carried a switch the page read at start, taken out again before the commit; each mutant was run once through the lane on the case named.
+
+| The product broken so | The case | It failed with |
+| --- | --- | --- |
+| the wait ignores the pointer | the default arrival waits while the pointer is on the card | the map never said `waiting` |
+| the wait ignores the focus | the keyboard's focus holds the default arrival | the map never said `waiting` |
+| the rest shortened to nothing | the default arrival rests at reading size for the rest | the map never said `resting` |
+| no input ends an arrival | a person who moves the camera while the arrival waits has taken it | after the wheel the map still said `waiting` |
+| no input ends an arrival | the person's input during the rest ends the arrival | passed at first: the pointer stood on the card, and under the default a held arrival keeps the camera as still as an ended one. The case now also asks that the arrival is over, and then failed with `waiting` |
+| reduced motion ignored | where the person prefers reduced motion, the default arrival is on the neighbours at once | an arrival rested and eased |
+| the panel takes no pointer | hoverable | nothing was selected by the drag along the head |
+| the way to the panel drops the words | hoverable | the words were gone at step 2 of 38 |
+| Escape dismisses nothing | dismissible | the words still stood |
+| a clock removes the words after two seconds | persistent | the words were gone after four seconds on the wire |
+
+To tell the rest's start from the picture's settling, the map now says `settling` before `resting`; before that the rest's case could not have failed on a picture that took longer than the rest to settle.
+
+**The trial's case that pulled back at a rest of 0.75 s.** In the first milestone the trial value "pointed" let the picture pull back although the case had brought the pointer to the card. Run again twice at 0.75 s and twice at 1.5 s on a calmer lane (load 11 to 22), with the page logging each frame, it held all four times: the picture said it rested 70 to 180 ms before the pointer was over the card, and the pointer was over the card for every frame after. The trial holds only a pointer that reaches the card before the rest ends, and the case reaches it after half a dozen round trips to the page; the failing run was at a load near 30, with a lint and the unit tests running beside it. So the case races the rest and lost: the case's fault, not the product's. Its own trace was overwritten before I read it, so this is the reading the four later runs support and not one taken from the failing run. The case now says which it was, by asking that the map still says it settles or rests when the pointer is on the card.
+
 ## Not done
 
-- The other pictures were taken and not looked at one by one: the waits, the focus journey's stills and strips, and this repository's.
-- A measurement on a quiet machine (above).
-- The new browser cases were seen passing; they were not yet seen failing against a build without the mend.
+- A measurement on a quiet machine (above): the load did not fall below 8 in either milestone.
+- The strips of the focus journey and this repository's stills were not opened.

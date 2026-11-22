@@ -21,6 +21,8 @@ Since 2026-11-16 ([Turn 10 of the November 15 record](../../../../AI-Agent-Works
 
 Since 2026-11-18 no sphere of the archipelago under Skin wears a ring, and the owner's picture of November 17, this repository pinned on `archetype.ts` at one hop with both kinds of document shown, wears none under Skin or Cloud and keeps its rings and the key's row with the wrappers Off; that case fails on the build before the mend ([Turn 12 of the November 16 record](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/2026-11-16.1.record.md#turn-12)).
 
+Since 2026-11-22 the case of the skin's files holds the new order of the picture's budget: the smallest whole groups are veiled first, so this repository's main body, the largest group, draws every one of its files, each veiled group is one veiled ball, and a veiled group's name, read under a resting pointer, ends with the count of the files its veil hides. Until then it held the largest veiled first, which veiled the main body ([the matched pictures](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/veil-order/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

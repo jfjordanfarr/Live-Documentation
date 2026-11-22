@@ -225,15 +225,18 @@ test("the default arrival rests at reading size for the rest, eases back in the 
   await expect(page.locator("#tuning-arrival")).toHaveValue("then-neighbours-after");
   await expect(page.locator("#tuning-arrival-waits")).toHaveValue("attended");
   await expect(page.locator("#tuning-arrival-rest")).toHaveValue(String(ARRIVAL_REST_S));
-  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).toBe("resting");
+  await expect.poll(() => arrivalOf(page), { timeout: 5_000, intervals: [20] }).not.toBeNull();
   await still(page);
   expect(await arrivalOf(page), "the arrival is over").toBeNull();
   const log = await frameLog(page), start = log[0].k, end = log.at(-1)!;
   expect(end.look, "it ends in the connections look, where every card's names read").toBe("connections");
   expect(end.k).toBeCloseTo(start * ARRIVAL_FLOOR_RATIO, 6);
-  // At reading size for at least the rest, counted on the page's own clock from the first frame it said it rested.
-  const rested = log.find(frame => frame.arrival === "resting")!, eased = log.find(frame => frame.k < start - 1e-6)!;
-  expect(eased.t - rested.t, "the rest at reading size").toBeGreaterThanOrEqual(ARRIVAL_REST_S * 1000);
+  // At reading size for at least the rest, counted on the page's own clock from the first frame the map said it rested,
+  // the picture settled, to the first frame drawn smaller; less two frames, since the log reads each a frame late.
+  const rested = log.find(frame => frame.arrival === "resting");
+  expect(rested, "the map said it rested at reading size").toBeDefined();
+  const eased = log.find(frame => frame.t > rested!.t && frame.k < rested!.k - 1e-6)!;
+  expect(eased.t - rested!.t, "the rest at reading size").toBeGreaterThanOrEqual(ARRIVAL_REST_S * 1000 - 34);
   // Nobody pointed at the card or focused it: it never waited on anyone, and went when the rest had passed.
   expect(log.some(frame => frame.arrival === "waiting"), "it waited on nobody").toBe(false);
   // The reading look through the whole ease, and one change, at rest at its end.
@@ -343,6 +346,11 @@ test("Arrival Waits, Never and the trial of 2026-11-21: never, the pull-back goe
     const readingK = (await cameraOf(page)).k;
     const name = (await page.locator(`${card(SUBJECT)} .local-file-name`).boundingBox())!;
     await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2, { steps: 4 });
+    // The trial holds only a pointer that reaches the card before the rest is over: this case races the rest, and on a
+    // loaded machine it has lost (2026-11-22, at a rest of 0.75 s and a load near 30, the picture pulled back; on a
+    // calmer lane the pointer reached the card 70 to 180 ms after the picture settled, and it held). So the case says
+    // which it was: the pointer is on the card while the map still says it settles or rests.
+    if (arrivalWaits === "pointed") expect(["settling", "resting"], "the pointer reached the card before the rest was over").toContain(await arrivalOf(page));
     // Three seconds when the rest was 0.9 s, fixed, as this case was written; longer by what the rest is longer since.
     await page.waitForTimeout(3000 + ARRIVAL_REST_S * 1000 - 900);
     const held = (await cameraOf(page)).k;
@@ -365,6 +373,10 @@ test("the person's input during the rest ends the arrival where it stands, under
     await page.mouse.move((frame.left + frame.right) / 2, (frame.top + frame.bottom) / 2);
     await page.mouse.wheel(0, 1);
     await still(page);
+    // The arrival is over, not held: the pointer stands on the card here, and under the default a held arrival would
+    // keep the camera as still as an ended one does (seen 2026-11-22: without this line the case passed on a build
+    // whose inputs ended nothing).
+    expect(await arrivalOf(page), "the arrival ended where it stood").toBeNull();
     const at = await cameraOf(page);
     // Longer than any rest and ease.
     await page.waitForTimeout(ARRIVAL_REST_S * 1000 + 1600);

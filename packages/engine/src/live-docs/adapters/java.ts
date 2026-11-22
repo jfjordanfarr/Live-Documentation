@@ -19,13 +19,12 @@
  * not private, static or instance, taking one `String[]` or nothing.
  */
 import { glob } from "glob";
-import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { javaSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
@@ -492,25 +491,24 @@ class FileExtractor {
 }
 
 // ---------------------------------------------------------------------------
-// Per-file facts, cached by modification time
+// Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
 // Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so
 // a process that generates commit after commit in one folder never reads a fact of another commit.
-const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
   factsRun = fileIndex;
 }
 
-async function fileFacts(absolutePath: string): Promise<FileFacts> {
-  const stats  = await fs.stat(absolutePath);
+async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
-  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
-  const content = await readSourceText(absolutePath);
+  if (cached) return cached;
+  const content = await readSourceText(absolutePath, reads);
   const facts   = await readTree("java", content, (root) => new FileExtractor().extract(root));
-  factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+  factsCache.set(absolutePath, facts);
   return facts;
 }
 
@@ -560,7 +558,7 @@ async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileInd
   for (const file of await listJavaFiles(workspaceRoot, fileIndex)) {
     let facts: FileFacts;
     try {
-      facts = await fileFacts(path.join(workspaceRoot, file));
+      facts = await fileFacts(path.join(workspaceRoot, file), fileIndex);
     } catch (error) {
       throwIfMachineFailure(error);
       continue;
@@ -700,7 +698,7 @@ export const javaAdapter: LanguageAdapter = {
   extensions: [".java"],
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
     beginRun(fileIndex);
-    const facts    = await fileFacts(absolutePath);
+    const facts    = await fileFacts(absolutePath, fileIndex);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const result: SourceAnalysisResult = {

@@ -2,5 +2,5 @@
 // `node:fs`, over the same tree, counted under the same names.
 import { promises } from "./fs.mjs";
 
-export const { readFile, writeFile, stat, mkdir, readdir, rm, rmdir, open } = promises;
+export const { readFile, writeFile, stat, mkdir, readdir, rm, rmdir } = promises;
 export default promises;

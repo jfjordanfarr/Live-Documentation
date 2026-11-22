@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/dependencies.ts`
-- Generated At: 2026-11-20T15:12:46.179Z
+- Generated At: 2026-11-22T01:36:20.131Z
 
 ## Authored
 ### Purpose
@@ -124,6 +124,7 @@ Object containing augmented symbols and re-export info
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
 - [`compareText`](../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`sourceText.SourceReads`](../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
 - `typescript` - `ts`

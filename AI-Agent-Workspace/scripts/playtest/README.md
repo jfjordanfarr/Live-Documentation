@@ -78,6 +78,20 @@ node AI-Agent-Workspace/scripts/playtest/grade-narrative.mjs <records>/narrative
 
 A run takes a picture after every action, about 100 KB each, and half a ladder came to 16 MB. Following the owner's wish for fewer committed artifacts, `keep-pictures.mjs <records folder>` runs once the runs are judged and the folder's README links the pictures its findings rest on. It keeps each run's first and last picture and every picture the README links to, and moves the rest to the main checkout's `AI-Agent-Workspace/tmp/playtests/<run>/shots/`, which git ignores. Each run's `actions.jsonl` still names every picture. Run it again after the README changes: a newly cited picture comes back if it is still there. The ladder prints this step when it ends.
 
+## The command-line arm
+
+Added on 2026-11-22 for the owner's question of parity: the same kind of question put to an agent with no page, only a shell in a folder of code. Two arms: `files`, the code alone, the baseline of an agent with the repository open; `cli`, the same with its Live Docs generated and one command on the path. The first 24 runs and how to read them are in [the parity probe](../../AgentSessionHistory/2026/11/2026-11-22/Probes/parity/README.md).
+
+```bash
+node AI-Agent-Workspace/scripts/playtest/make-cli-folder.mjs --source estate|repository --arm files|cli --out <base folder>
+node AI-Agent-Workspace/scripts/playtest/cli-playtest.mjs --tasks <cli-tasks.json> --task <id> --arm files|cli \
+  --base <base folder> --model claude-sonnet-5-5 --effort default --out <run folder>
+```
+
+- [live-docs](live-docs) is the command the `cli` arm is given: the checkout's npm scripts as one command, its own `--help` a list of them. The tool has no installable command yet; this wrapper is the smallest stand-in.
+- [make-cli-folder.mjs](make-cli-folder.mjs) copies the estate sample or this repository's tracked files without the agents' guidance, records and documents, so that no tester reads the guide or a key; for `cli` it generates the folder's Live Docs.
+- [cli-playtest.mjs](cli-playtest.mjs) runs one tester in a fresh copy of the base folder: the shell as its only tool, no MCP server, settings, skills or saved session, a bare environment. A shell can read outside its folder; `run.json` lists the commands that name a path outside it, and the judge checks them. Its record is `run.json`, `commands.txt`, `transcript.jsonl` and `answer.md`.
+
 ## A run's record
 
 One folder a run:

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphShells.ts`
-- Generated At: 2026-11-19T21:10:15.407Z
+- Generated At: 2026-11-22T02:24:05.574Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,8 @@ Later on 2026-11-07 the owner, delighted by the shells' cells, asked "can we als
 On 2026-11-08 `structureSpokes` gave the structure layout's spokes their lengths: each hub shown with children shown is packed with them about it, the hub the fixed centre of `packBall`, a bubble at its body's size and an open child hub at the extent of its own children, packed first; each child's distance from its hub is its spoke's rest length and its place where it is born. A first try packed every bubble with its own hub at its centre, so that one packing would serve the skins, the spokes and the pops alike; a ball centred on a small hub must be twice as wide as its largest child, and nested so this repository's tests bubble grew from 545 units to 5,748, so the skins keep their packing free of their hubs and a pop's children move from where the skin showed them to where their spokes rest.
 
 Since 2026-11-18 `nextStepFiles` builds the horizon of Beyond the Hops, a trial for the owner's eye and not the default ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md)): only the files of `hidden` one step past what stands, the shown and the released, are held, carried over every pop until nothing more reaches the edge; `shellPicture` uses it when its source's `reach` is the next step. The owner wondered whether things more than a configured number of hops away should be hidden completely, "membranes kind of form and break and re-form as new hops were taken" ([Turn 10 of the November 18 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-18/2026-11-18.1.record.md#turn-10)). The reckoning only grows, so that it always ends: a file a step brought to the edge stays there for the picture even when a later step folds the released file that reached it back into a shell.
+
+Since 2026-11-22 `pictureVeils` veils whole groups, the ones a picture shows only by their seed, the smallest first, and after the directory shells as far as they are, which keep the largest-first order chosen for a pin's neighbourhood. With nothing asked every group is as far as every other, and the largest first had veiled this repository's main body, 707 files, as the one blank ball of its first picture; the owner, shown it: "Oh man I know that annoys the heck out of me." The budget is as it was, 1,024. Three matched pictures, the old order, the new and one with nothing veiled, with frame times on the graphics card and on a slowed machine, are in [the veil order's folder](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/veil-order/README.md): the new order draws 1,024 files where the old drew 446 and no frame took longer; the picture with nothing veiled took no longer either, and whether the budget should stand for the start is left open there.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -236,22 +238,26 @@ picture's budget (`pictureVeils`) veils.
 
 #### `pictureVeils` {#symbol-pictureveils}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L624)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L628)
 - Parameters: `bodies`: `ReadonlyArray`
 
 ##### `pictureVeils` — Summary
 Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
 skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the body
-farthest from what was asked about is veiled, and among bodies as far, the largest by the files it holds, so that the
-budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors a person can read (the root's
-order; the builder's brief had said the smallest first, which on the T3 sample gave the whole budget to one giant far
-from the pin and veiled the shells beside it). Each body is given by its id, the files it holds, the files its skin
-would draw and its hop from what was asked about, the nearest hop of a shown file it is wired to, or none when it is
-wired to no shown file; the ids veiled are returned. Labels keep the true counts.
+farthest from what was asked about is veiled. Among bodies as far, a directory shell goes before a whole group, the
+largest shell first, so that the budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors
+a person can read (the root's order of 2026-11-07; the smallest first had, on the T3 sample, given the whole budget to
+one giant far from the pin and veiled the shells beside it). A whole group, one the picture shows only by its seed, is
+veiled the smallest first (2026-11-22): with nothing asked about every group stands as far as every other, and the
+largest first veiled the repository's main body, the thing a first picture is for, to keep a few dozen small groups
+open. The owner, shown it: "Oh man I know that annoys the heck out of me." A small group veiled hides a few files, and
+the main body's stay in sight. Each body is given by its id, the files it holds, the files its skin would draw, its
+hop from what was asked about, the nearest hop of a shown file it is wired to, or none when it is wired to no shown
+file, and whether it is a whole group; the ids veiled are returned. Labels keep the true counts.
 
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L682)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L690)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary
@@ -259,7 +265,7 @@ The pops of a picture after `directory` is popped open, or wrapped again with ev
 
 #### `releaseOf` {#symbol-releaseof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L695)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L703)
 - Parameters: `shape`: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape); `place`: [`Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 
 ##### `releaseOf` — Summary
@@ -270,14 +276,14 @@ shell's id in the Connections layout, the directory's hub's in the Structure lay
 
 #### `StructureCell` {#symbol-structurecell}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L707)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L715)
 
 ##### `StructureCell` — Summary
 One bubble of the Structure layout: a directory's hub drawn as the body of what stands under it, by the hub's id.
 
 #### `structureCells` {#symbol-structurecells}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L729)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L737)
 - Parameters: `nodes`: `ReadonlyArray`; `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
 
 ##### `structureCells` — Summary
@@ -297,14 +303,14 @@ frontier with one file under it is no bubble; that file stands in the hub's plac
 
 #### `Spoke` {#symbol-spoke}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L761)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L769)
 
 ##### `Spoke` — Summary
 Where a child of the structure layout stands about its hub: the hub's id, its spoke's rest length, its place about the hub.
 
 #### `structureSpokes` {#symbol-structurespokes}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L787)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L795)
 - Parameters: `links`: `ReadonlyArray`; `shown`: `ReadonlySet`
 
 ##### `structureSpokes` — Summary
