@@ -354,7 +354,7 @@ describe("the text's end line", () => {
 describe("names an object's prototype answers", () => {
   it("are files like any other: __proto__, constructor, toString and hasOwnProperty are each in the graph, wired, and a path no file has answers nothing", async () => {
     const names = ["__proto__", "constructor", "hasOwnProperty", "toString"];
-    const file = (codePath: string, to?: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: to ? [{ label: to, link: `${to}.mdmd.md`, target: to, qualifiers: [] }] : [] });
+    const file = (codePath: string, to?: string): StoredFile => ({ codePath, layer: 4, entries: [], authored: "", symbols: [], dependencies: to ? [{ label: to, link: `${to}.mdmd.md`, qualifiers: [] }] : [] });
     // Each depends on the next, the last on the first.
     const scan: Scan = { head: everyFact().head, files: names.map((n, i) => file(n, names[(i + 1) % names.length])) };
     const read = await readScan(await bytesOf(scan));
@@ -390,7 +390,7 @@ describe("the documentation a file's symbols name", () => {
     expect(graph.files["src/c.ts"].documentation).toBeUndefined();
     expect(a.edges.some((e) => e.label === "Self")).toBe(false);
     const text = textOfScan(scan);
-    expect(text).toContain('"documentation":[{"name":"Widget","link":"b.ts.mdmd.md#widget","target":"src/b.ts","anchor":"widget"},');
+    expect(text).toContain('"documentation":[{"name":"Widget","link":"b.ts.mdmd.md#widget"},');
     expect(scanOfText(text).ok).toBe(true);
   });
 });

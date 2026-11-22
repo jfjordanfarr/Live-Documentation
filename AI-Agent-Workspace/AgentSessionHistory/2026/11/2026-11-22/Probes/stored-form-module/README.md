@@ -883,3 +883,71 @@ The graph as asked now costs about 30 ms past the walk.
 ### Commands the harness refused in the sixth milestone's first leg
 
 None.
+
+## Sixth milestone, second leg, 2026-11-22: a link and what it names, held once
+
+The day's tip, `d555bd4a9`, was merged in first.
+
+### C. What a link names, derived, and stored nowhere
+
+**The change:**
+- The layout and the text no longer hold a link's target or anchor. `linked` is the link alone, so the marks' bits 1 and 2 are now undefined, and refused.
+- What a link names is derived from the link, the document path of the file that holds it and the head's location, by the link rule, now `linkNames` in the module. This covers a dependency's, a type's and a documentation reference's links.
+- The wires, the edges' `to` and `toSymbol`, and the documentation relation all come from the rule.
+- **The rule is written in full in section 4.3.1**, step by step, for a reader in any language:
+  - the fragment as written, after the first `#` and up to a second;
+  - the path before the `#` and the `?`;
+  - percent-decoding, with the path kept as written where an escape is not one or the bytes are not UTF-8;
+  - a path beginning with `letters://` names nothing;
+  - the folding of `.` and `..` against the document's folder;
+  - nothing above the scanned folder;
+  - the docs' prefix, and the extension compared in Unicode's default lower case.
+- **A reader caches the rule** by a document's folder and the link, since links repeat within a folder. For a link of only a fragment it caches by the document itself.
+
+**The same at the sink.** The probe's `scan-of-graph.ts` now hands links over as written, as the engine's sink will.
+
+**The tests:**
+- The made scans no longer hand over targets and anchors.
+- The seeded scan's links are now made relative to its one-folder-deep files (`../<path>.mdmd.md`), so that most land and its wires mean something.
+- The review's test file still hands a `target` over in some cases. The writer reads only what the model holds, so those cases run untouched, and they pass.
+
+**On the three corpora**, the graph derived by the module's rule prints byte for byte as the engine's `index.json`, and both round trips are exact:
+
+| Corpus | Files | Stored before C | Stored after |
+| --- | ---: | ---: | ---: |
+| This repository | 1,349 | 1,137,321 B | 1,121,919 B (−1.4 %) |
+| Estate | 41 | 7,839 B | 7,640 B (−2.5 %) |
+| DNN | 10,777 | 2,238,358 B | 2,154,945 B (−3.7 %) |
+
+**What deriving costs the read is not measured.** The machine stood at a load of 54 to 66 when I tried, and DNN's whole read took ten seconds. A file written before C cannot be read by the module after it, so a fair pair needs its own two files.
+
+The first leg's probe measured the uncached rule at 269 ms over DNN's 48,689 links, with the engine's functions. What the folder cache buys is not measured either.
+
+**The package's cases** pass: 71, with 4 skipped. The resume case once timed out at a load of 38 beside the other suites, and passed alone.
+
+### D. What a link field holds: measured, not yet refused
+
+[`link-fields.ts`](link-fields.ts) measured every link field of the three corpora: dependencies', types', sources', entries' symbols and declarers', cited-by lines' and re-exports' origins'. For each it asked whether the field begins with a scheme, holds a NUL, or, resolved against its document's folder, climbs above the scanned folder.
+
+| Corpus | Link fields | A scheme | A NUL | Climbing above the scanned folder |
+| --- | ---: | ---: | ---: | ---: |
+| This repository | 13,730 | 0 | 0 | 0 |
+| Estate | 290 | 0 | 0 | 0 |
+| DNN | 82,335 | 0 | 0 | 0 |
+
+So the root's rule, as I proposed it, refuses nothing an honest scan holds: no scheme, no NUL, nothing above the scanned folder. **It is not built yet.**
+- Its climbing check depends on the file's folder, not on the string alone. So it cannot ride the per-string cache the other link checks use; it needs a check per file, by folder and link.
+- A documentation reference's link was not counted, since those come from documentation lines.
+
+### Not reached in the sixth milestone's second leg
+
+- **D built**, with its cases.
+- **The cost of deriving, and of the folder cache**, measured on a quiet machine.
+- **The thirty-five questions.**
+- **G.**
+- **The page and bidirectional controls.**
+- **The whole unit project:** not run at this load.
+
+### Commands the harness refused in the sixth milestone's second leg
+
+None.
