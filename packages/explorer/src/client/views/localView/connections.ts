@@ -481,7 +481,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
   const extents = context.measureLayoutExtents();
   if (!extents) return { drawn: 0, doubling: 0 };
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
-  const reading = pictureReading(runtime, state.tuning.localMap.reads);
+  const reading = pictureReading(runtime, state.tuning.appearance.reads);
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1, reading);
   // The extents are the page's; the overlay is drawn in the layout's own across and reflected with the cards.
   const shown = shownSpan({ start: extents.content.left, end: extents.content.right }, reading.axisInLayer, reading.mirrored);

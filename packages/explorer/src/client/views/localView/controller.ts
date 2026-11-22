@@ -800,7 +800,7 @@ export class LocalViewController implements LocalViewApi {
     const stage = this.stage ?? (this.stage = createStage(root));
     // A picture not yet drawn takes the stored reading with nothing to hold in place (applyReads, for a change under a shown one).
     if (keepStage) this.applyReads();
-    else if (this.container.parentElement) writeReads(this.container.parentElement, this.options.state.tuning.localMap.reads);
+    else if (this.container.parentElement) writeReads(this.container.parentElement, this.options.state.tuning.appearance.reads);
     renderBranches(this, stage);
     this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
@@ -1531,7 +1531,7 @@ export class LocalViewController implements LocalViewApi {
   applyReads(): void {
     const layer = this.container.parentElement;
     if (!layer) return;
-    const reads = this.options.state.tuning.localMap.reads, mirrored = isMirrored(reads);
+    const reads = this.options.state.tuning.appearance.reads, mirrored = isMirrored(reads);
     if (layer.hasAttribute(READS_ATTRIBUTE) === mirrored) return;
     const root = this.isShown() ? this.contentRoot : null;
     const newest = this.pins.entries.at(-1)?.nodeId;

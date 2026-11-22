@@ -170,33 +170,46 @@ function nearestCard(cards: readonly CardRead[], file: string, x: number, y: num
  * written as "at the card's edge", it failed on every Rosetta map; the screenshot of the TypeScript processor in focus
  * (2026-11-18) showed why: each dot stands at the end of its row, inside the card's padding, some 21 px in from the
  * edge at scale 1, and the wires end on the dots. The promise is the side, not the edge.
+ *
+ * A picture drawn mirrored (the toolbar's button, 2026-11-22) promises the same with the sides exchanged, and the
+ * reading says which way it is drawn: the law is judged across the picture, from where what offers stands to where what
+ * uses does, so a picture that mixes the two ways fails whichever it says it is.
  */
 export function usesLeftOfferingsRight(reading: Reading): Verdict {
   const findings: string[] = [];
   const tolerance = Math.max(4, EDGE_TOLERANCE_PX * Math.min(1, reading.scale));
-  const centre = (card: CardRead): number => card.box.x + card.box.width / 2;
+  // Across: a place measured the way the picture reads, growing from what offers toward what uses.
+  const across = (x: number): number => (reading.mirrored ? -x : x);
+  const [usesSide, offersSide] = reading.mirrored ? ["right", "left"] : ["left", "right"];
+  const centre = (card: CardRead): number => across(card.box.x + card.box.width / 2);
+  const far = (card: CardRead): number => Math.max(across(card.box.x), across(right(card.box)));
+  const near = (card: CardRead): number => Math.min(across(card.box.x), across(right(card.box)));
   const lines = routes(reading);
   for (const wire of lines) {
     const providerPoint = wire.providerEnd === 0 ? wire.points[0] : wire.points[wire.points.length - 1];
     const consumerPoint = wire.providerEnd === 0 ? wire.points[wire.points.length - 1] : wire.points[0];
     const provider = nearestCard(reading.cards, wire.provider, ...providerPoint);
     const consumer = nearestCard(reading.cards, wire.consumer, ...consumerPoint);
-    if (provider && (providerPoint[0] < centre(provider) || providerPoint[0] > right(provider.box) + tolerance)) findings.push(`${short(wire.provider)} offers ${short(wire.consumer)} from outside its right half`);
-    if (consumer && (consumerPoint[0] > centre(consumer) || consumerPoint[0] < consumer.box.x - tolerance)) findings.push(`${short(wire.consumer)} takes ${short(wire.provider)} outside its left half`);
+    if (provider && (across(providerPoint[0]) < centre(provider) || across(providerPoint[0]) > far(provider) + tolerance)) findings.push(`${short(wire.provider)} offers ${short(wire.consumer)} from outside its ${offersSide} half`);
+    if (consumer && (across(consumerPoint[0]) > centre(consumer) || across(consumerPoint[0]) < near(consumer) - tolerance)) findings.push(`${short(wire.consumer)} takes ${short(wire.provider)} outside its ${usesSide} half`);
   }
   for (const anchor of reading.anchors) {
     const card = nearestCard(reading.cards, anchor.file, anchor.x, anchor.y);
     if (!card) continue;
-    const wrong = anchor.side === "inbound" ? anchor.x > centre(card) : anchor.x < centre(card);
-    if (wrong) findings.push(`the ${anchor.side === "inbound" ? "using" : "offering"} dot of ${anchor.symbol} on ${short(anchor.file)} stands in the ${anchor.side === "inbound" ? "right" : "left"} half`);
+    const wrong = anchor.side === "inbound" ? across(anchor.x) > centre(card) : across(anchor.x) < centre(card);
+    if (wrong) findings.push(`the ${anchor.side === "inbound" ? "using" : "offering"} dot of ${anchor.symbol} on ${short(anchor.file)} stands in the ${anchor.side === "inbound" ? offersSide : usesSide} half`);
   }
-  return verdict("uses enter on the left and offerings leave on the right", "law", findings, lines.length + reading.anchors.length > 0, "no route or dot is drawn");
+  return verdict(`uses enter on the ${usesSide} and offerings leave on the ${offersSide}`, "law", findings, lines.length + reading.anchors.length > 0, "no route or dot is drawn");
 }
 
-/** Every route reads forward, from what offers on the left to what uses on the right; a cycle's feedback is a stub. */
+/**
+ * Every route reads forward, from what offers to what uses the way the picture reads (left to right as laid out, right
+ * to left mirrored); a cycle's feedback is a stub.
+ */
 export function routesForward(reading: Reading): Verdict {
   const lines = routes(reading);
-  const findings = lines.filter(wire => flowOf(wire.points, wire.providerEnd).backward).map(wire => `${short(wire.provider)} to ${short(wire.consumer)} runs backward`);
+  const asRead = (points: WireRead["points"]): WireRead["points"] => (reading.mirrored ? points.map(([x, y]) => [-x, y]) : points);
+  const findings = lines.filter(wire => flowOf(asRead(wire.points), wire.providerEnd).backward).map(wire => `${short(wire.provider)} to ${short(wire.consumer)} runs backward`);
   return verdict("every route reads forward", "law", findings, lines.length > 0, "no route is drawn");
 }
 

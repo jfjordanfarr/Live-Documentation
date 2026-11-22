@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning-changes.ts`
-- Generated At: 2026-11-19T21:10:13.964Z
+- Generated At: 2026-11-22T04:50:10.922Z
 
 ## Authored
 ### Purpose
@@ -34,9 +34,18 @@ One setting that differs from its default: its group and its key in that group.
 ##### `changedSettings` — Summary
 Every Tuning setting that differs from `defaults`, group by group in the order the tuning holds them.
 
+#### `takeTuning` {#symbol-taketuning}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L39)
+- Parameters: `into`: [`TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig); `next`: [`TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig)
+
+##### `takeTuning` — Summary
+Writes `next` into the tuning the views hold, group by group, so that no view keeps a stale record; what is the
+viewer's own and not counted stays as they have it. A reset and its taking back both go through here.
+
 #### `tuningControlId` {#symbol-tuningcontrolid}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L43)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L58)
 - Parameters: `setting`: [`ChangedSetting`](#symbol-changedsetting)
 
 ##### `tuningControlId` — Summary
@@ -45,7 +54,7 @@ kebab case (`forceGraph.linkGap` is `tuning-force-link-gap`). A setting no lever
 
 #### `changedSettingsWords` {#symbol-changedsettingswords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-changes.ts#L63)
 
 ##### `changedSettingsWords` — Summary
 What the count beside Tuning's heading says to a screen reader and on hover.

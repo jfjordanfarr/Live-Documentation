@@ -719,6 +719,10 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 #map-viewport[data-reads="usesFirst"] .symbol-anchor.hub.outbound { right: auto; left: -6px; }
 #map-viewport[data-reads="usesFirst"] .local-slot-card .symbol-anchor.dot.inbound { transform-origin: left center; }
 #map-viewport[data-reads="usesFirst"] .local-slot-card .symbol-anchor.dot.outbound { transform-origin: right center; }
+/* A row's two type badges are arrows that borrow the map's rule, blue toward what uses and green toward what is used:
+   each points the other way in a mirrored picture, and the pair changes order with them, as its reflection would. */
+#map-viewport[data-reads="usesFirst"] .type-refs-indicator { flex-direction: row-reverse; }
+#map-viewport[data-reads="usesFirst"] :is(.type-badge-return, .type-badge-param) { scale: -1 1; }
 /* The key is drawn the way round the map is: its two words and the sample between them change sides with the picture. */
 #local-legend .legend-row--roles[data-mirrored] { flex-direction: row-reverse; justify-content: flex-end; }
 #local-legend .legend-row--roles[data-mirrored] .legend-roles { scale: -1 1; }
