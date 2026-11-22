@@ -180,6 +180,10 @@ The evidence collections are [tap reading](2026-11-05/Screenshots/tap-reading/RE
 
 Each day's pictures of the built Explorer, as the index `Screenshots/README.md` listed them until 2026-11-18, when it was carried into the month inventories. The convention, and the owner's standing request behind it, are in [the archive's README](../../README.md#where-things-are). Newest first.
 
+### 2026-11-22
+
+[The way down from the World Map, as it stands](2026-11-22/Screenshots/way-down/README.md): the estate's board, what "open hub" lands on, and the twelve-file route the Local Map already draws between a table and a page, arriving and after Fit.
+
 ### 2026-11-21
 
 [A browser that gives no WebGL](2026-11-21/Screenshots/webgl-refused/README.md): a 3D link shown in 2D, the 3D control and Tuning's 3D Layout unavailable and saying why.
