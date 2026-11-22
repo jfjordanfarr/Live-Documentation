@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/integration/live-docs/csharp-oracle.test.ts`
-- Generated At: 2026-11-21T07:25:47.706Z
+- Generated At: 2026-11-22T01:24:26.743Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`csharp-compare.CSharpReport`](../../../scripts/oracle/csharp-compare.ts.mdmd.md#symbol-csharpreport)
 - [`csharp-compare.CompilerRecord`](../../../scripts/oracle/csharp-compare.ts.mdmd.md#symbol-compilerrecord)
+- [`csharp-compare.DocumentationReference`](../../../scripts/oracle/csharp-compare.ts.mdmd.md#symbol-documentationreference)
 - [`csharp-compare.compareCSharp`](../../../scripts/oracle/csharp-compare.ts.mdmd.md#symbol-comparecsharp)
 - [`csharp-compare.compiledSources`](../../../scripts/oracle/csharp-compare.ts.mdmd.md#symbol-compiledsources)
 - [`powershell-compare.folderFiles`](../../../scripts/oracle/powershell-compare.ts.mdmd.md#symbol-folderfiles)

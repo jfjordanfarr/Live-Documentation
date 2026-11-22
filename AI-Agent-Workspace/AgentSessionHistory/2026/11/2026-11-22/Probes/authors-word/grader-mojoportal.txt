@@ -1,0 +1,12 @@
+The C# reader against Microsoft.CodeAnalysis.CSharp 4.12.0.0's binding, without framework references
+Folder: corpora/mojoportal
+Files: 1900 C# files in 25 projects; references read by MSBuild's evaluation for 21, by their XML elements for 4, which MSBuild could not evaluate here
+Names: 567301 simple names, 300985 bound
+References under a condition the default configuration does not meet: 15
+
+Edges (C# file pairs): the compiler's 8299, the adapter's 7061, both 7023
+  the adapter's only: 38: a namesake 3, resting on a reference under a condition the default configuration does not meet 0, other 35
+  the compiler's only: 1276
+Documentation references (cref): 35, resolved to nothing 6 (a framework type among them, having no framework references), ambiguous 1
+  C# file pairs they name: 4; the compiler binds 4 of them through code too, the author's word alone makes 0; the adapter draws 4
+

@@ -1,0 +1,12 @@
+The C# reader against Microsoft.CodeAnalysis.CSharp 4.12.0.0's binding, without framework references
+Folder: corpora/dnn
+Files: 3973 C# files in 82 projects; references read by MSBuild's evaluation for 48, by their XML elements for 34, which MSBuild could not evaluate here
+Names: 631719 simple names, 409254 bound
+References under a condition the default configuration does not meet: 0
+
+Edges (C# file pairs): the compiler's 24837, the adapter's 20874, both 20376
+  the adapter's only: 498: a namesake 1, resting on a reference under a condition the default configuration does not meet 0, other 497
+  the compiler's only: 4461
+Documentation references (cref): 8453, resolved to nothing 2197 (a framework type among them, having no framework references), ambiguous 0
+  C# file pairs they name: 1312; the compiler binds 1018 of them through code too, the author's word alone makes 294; the adapter draws 982
+

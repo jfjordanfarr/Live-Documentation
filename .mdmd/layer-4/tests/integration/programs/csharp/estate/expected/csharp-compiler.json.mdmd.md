@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/estate/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T07:25:48.456Z
+- Generated At: 2026-11-22T01:24:27.232Z
 
 ## Authored
 ### Purpose
@@ -98,6 +98,9 @@ The C# compiler's binding of the `estate` C# sample, written by `npm run oracle:
 - Type: key
 
 #### `declared:Portal/Services/GatewayClient.cs` {#symbol-declaredportalservicesgatewayclientcs}
+- Type: key
+
+#### `crefs` {#symbol-crefs}
 - Type: key
 
 #### `sources` {#symbol-sources}

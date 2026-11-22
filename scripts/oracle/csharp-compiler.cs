@@ -17,7 +17,11 @@
 // too, so that the caller can tell a reference under a condition the default configuration does not meet.
 //
 // It prints, as JSON: the tool, the projects with how each one's references were read, the counts of names bound, every
-// edge, and every file's declared type names (simple, without type parameters), by which the caller tells a namesake.
+// edge, every file's declared type names (simple, without type parameters), by which the caller tells a namesake, and
+// every documentation comment's `cref` (on whatever element carries it) with the compiler's resolution of it: the
+// symbol's kind and name and the files that declare it, every candidate where it cannot choose, or none. A `cref` in a
+// section the preprocessor symbols above leave inactive is not parsed, and is not among them. Added on 2026-11-22, so
+// that an author's documentation reference, which the owner asked to be honoured, is measured before a reader draws it.
 // Written on 2026-11-21 from the November 19 probe's compiler-edges program (Probes/dotnet-gaps), whose references were
 // read by a pattern that took a commented-out reference for a real one.
 using System.Text.Json;
@@ -81,7 +85,9 @@ foreach (var p in projectFiles)
     projects.Add(new { project = rel, readBy, references = taken, xmlReferences = xml });
 }
 
-var parseOptions = new CSharpParseOptions(LanguageVersion.Latest, DocumentationMode.None, SourceCodeKind.Regular, new[] { "DEBUG", "TRACE", "NET48", "NETFRAMEWORK" });
+// Documentation comments are parsed (not diagnosed), so that each `cref` is a node the semantic model resolves; the
+// code's names are walked without descending into trivia, so the edges are those the code binds, as before.
+var parseOptions = new CSharpParseOptions(LanguageVersion.Latest, DocumentationMode.Parse, SourceCodeKind.Regular, new[] { "DEBUG", "TRACE", "NET48", "NETFRAMEWORK" });
 var compilations = new Dictionary<string, CSharpCompilation>();
 var visiting = new HashSet<string>();
 CSharpCompilation Build(string dir)
@@ -101,6 +107,7 @@ CSharpCompilation Build(string dir)
 
 long names = 0, bound = 0;
 var edges = new List<object>();
+var crefs = new List<object>();
 var declared = new SortedDictionary<string, string[]>(StringComparer.Ordinal);
 foreach (var dir in filesByProject.Keys.OrderBy(d => d, StringComparer.Ordinal))
 {
@@ -134,8 +141,38 @@ foreach (var dir in filesByProject.Keys.OrderBy(d => d, StringComparer.Ordinal))
             }
         }
         foreach (var (to, sets) in byTarget) edges.Add(new { from, to, type = sets.type, member = sets.member });
+
+        // Every documentation reference: a `cref` on any element of a documentation comment, resolved as the compiler
+        // resolves it for its documentation file. A symbol the compiler cannot choose among (`cref="M"` with overloads,
+        // its warning CS0419) is kept with every candidate; a reference it resolves to nothing (CS1574) has no symbol.
+        foreach (var attribute in tree.GetRoot().DescendantNodes(descendIntoTrivia: true).OfType<XmlCrefAttributeSyntax>())
+        {
+            var element = attribute.Parent switch
+            {
+                XmlElementStartTagSyntax start => start.Name.ToString(),
+                XmlEmptyElementSyntax empty => empty.Name.ToString(),
+                _ => "?"
+            };
+            var info = model.GetSymbolInfo(attribute.Cref);
+            var found = info.Symbol != null ? new[] { info.Symbol } : info.CandidateSymbols.ToArray();
+            var resolved = found.Select(s =>
+            {
+                if (s is INamedTypeSymbol named && !SymbolEqualityComparer.Default.Equals(named, named.OriginalDefinition)) s = named.OriginalDefinition;
+                var files = s.DeclaringSyntaxReferences.Select(r => r.SyntaxTree.FilePath).Where(f => !string.IsNullOrEmpty(f)).Select(Rel).Distinct().OrderBy(f => f, StringComparer.Ordinal).ToArray();
+                return new { kind = s.Kind.ToString(), symbol = s.ToDisplayString(), files };
+            }).OrderBy(r => r.symbol, StringComparer.Ordinal).ToArray();
+            crefs.Add(new
+            {
+                from,
+                line = attribute.GetLocation().GetLineSpan().StartLinePosition.Line + 1,
+                element,
+                written = attribute.Cref.ToString(),
+                outcome = info.Symbol != null ? "resolved" : found.Length > 0 ? info.CandidateReason.ToString() : "unresolved",
+                resolved
+            });
+        }
     }
 }
 
 var version = typeof(CSharpCompilation).Assembly.GetName().Version;
-Console.WriteLine(JsonSerializer.Serialize(new { tool = $"Microsoft.CodeAnalysis.CSharp {version}", projects, files = csFiles.Count, names, bound, edges, declared }));
+Console.WriteLine(JsonSerializer.Serialize(new { tool = $"Microsoft.CodeAnalysis.CSharp {version}", projects, files = csFiles.Count, names, bound, edges, declared, crefs }));

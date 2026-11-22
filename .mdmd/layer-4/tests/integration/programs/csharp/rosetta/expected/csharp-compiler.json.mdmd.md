@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/rosetta/expected/csharp-compiler.json`
-- Generated At: 2026-11-21T07:25:48.528Z
+- Generated At: 2026-11-22T01:24:27.276Z
 
 ## Authored
 ### Purpose
@@ -71,6 +71,9 @@ The C# compiler's binding of the `rosetta` C# sample, written by `npm run oracle
 - Type: key
 
 #### `declared:src/Types/Status.cs` {#symbol-declaredsrctypesstatuscs}
+- Type: key
+
+#### `crefs` {#symbol-crefs}
 - Type: key
 
 #### `sources` {#symbol-sources}

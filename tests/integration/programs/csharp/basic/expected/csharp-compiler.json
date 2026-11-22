@@ -152,6 +152,7 @@
       "ReportService"
     ]
   },
+  "crefs": [],
   "sources": {
     "CSharpBasic.csproj": "753b6bae7cc0e384041d9c9d0284d8e75f9caa0568f74d170b3be9e743cf406a",
     "src/Diagnostics/App.cs": "79621f8e3fd05d149719157e00964d98c1a1060c7731a18ed87f8a75466d4dbc",

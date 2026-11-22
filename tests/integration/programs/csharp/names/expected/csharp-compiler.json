@@ -20,9 +20,9 @@
       "xmlReferences": []
     }
   ],
-  "files": 9,
-  "names": 24,
-  "bound": 21,
+  "files": 12,
+  "names": 29,
+  "bound": 26,
   "edges": [
     {
       "from": "App/Derived.cs",
@@ -63,6 +63,9 @@
     "App/Derived.cs": [
       "Derived"
     ],
+    "App/Documented.cs": [
+      "Documented"
+    ],
     "App/Helper.cs": [
       "Helper"
     ],
@@ -76,6 +79,14 @@
       "Gadget",
       "Options"
     ],
+    "App/Runner.Text.cs": [
+      "Runner",
+      "Text"
+    ],
+    "App/Runner.cs": [
+      "Count",
+      "Runner"
+    ],
     "App/Use.cs": [
       "Use"
     ],
@@ -83,16 +94,220 @@
       "Thing"
     ]
   },
+  "crefs": [
+    {
+      "from": "App/Documented.cs",
+      "line": 5,
+      "element": "see",
+      "written": "Base",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "App.Base",
+          "files": [
+            "App/Base.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 5,
+      "element": "see",
+      "written": "Base.Gadget",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Property",
+          "symbol": "App.Base.Gadget",
+          "files": [
+            "App/Base.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 5,
+      "element": "see",
+      "written": "Base.Options",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "App.Base.Options",
+          "files": [
+            "App/Base.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 6,
+      "element": "see",
+      "written": "Lib.Helper{T}",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "Lib.Helper<T>",
+          "files": [
+            "App/HelperOfT.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 6,
+      "element": "see",
+      "written": "Lib.Helper",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "Lib.Helper",
+          "files": [
+            "App/Helper.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 7,
+      "element": "see",
+      "written": "Runner.Run(Runner.Count)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Runner.Run(App.Runner.Count)",
+          "files": [
+            "App/Runner.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 8,
+      "element": "seealso",
+      "written": "Runner.Run(Runner.Text)",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Runner.Run(App.Runner.Text)",
+          "files": [
+            "App/Runner.Text.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 8,
+      "element": "see",
+      "written": "Runner.Run",
+      "outcome": "Ambiguous",
+      "resolved": [
+        {
+          "kind": "Method",
+          "symbol": "App.Runner.Run(App.Runner.Count)",
+          "files": [
+            "App/Runner.cs"
+          ]
+        },
+        {
+          "kind": "Method",
+          "symbol": "App.Runner.Run(App.Runner.Text)",
+          "files": [
+            "App/Runner.Text.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 9,
+      "element": "see",
+      "written": "App.Other",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Namespace",
+          "symbol": "App.Other",
+          "files": [
+            "App/Other.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 10,
+      "element": "see",
+      "written": "Missing",
+      "outcome": "unresolved",
+      "resolved": []
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 12,
+      "element": "permission",
+      "written": "Derived",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "NamedType",
+          "symbol": "App.Derived",
+          "files": [
+            "App/Derived.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 15,
+      "element": "inheritdoc",
+      "written": "Base.Gadget",
+      "outcome": "resolved",
+      "resolved": [
+        {
+          "kind": "Property",
+          "symbol": "App.Base.Gadget",
+          "files": [
+            "App/Base.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "App/Documented.cs",
+      "line": 16,
+      "element": "exception",
+      "written": "Lib.Thing",
+      "outcome": "unresolved",
+      "resolved": []
+    }
+  ],
   "sources": {
     "A/A.csproj": "a6ddeb2eb5d88dff9de299e8da342db78b52002bddc37cb2d4023e3282cd784b",
     "A/UseIt.cs": "07e97d47dbed08a14efb74f91f962a49beb865196c210a3bfb8b1df9c7ec3e38",
     "App/App.csproj": "387bd7a5b6aa5fa23c0327100fd00245817440df8f7d80c29d1785a5e49a3b43",
     "App/Base.cs": "cbb37e893062520e879be97d54561d2ef36019f7771c752593ec212c0e6ae2a4",
     "App/Derived.cs": "695f514adb7879b0943cf27329fa6d722d179d0ca26c6812ee53cb38b915374d",
+    "App/Documented.cs": "8f2234b035a6b3bf5967c1c15aaed273f0e870b5ed2e3c1a3d607026aca03769",
     "App/Helper.cs": "ab7076bdb719b087ab73130653a60232897c8e47dcc62df213d2b800acfb0315",
     "App/HelperOfT.cs": "895ed8f11dc55644572d93a4269e2809b4ff2a1138ce02140708cc4f75a82f84",
     "App/MemberOverUsing.cs": "70c97ee8f94b7b14b118e72dfe023e22d519265ac7cf6e2eb28c3c7d1c74d3c7",
     "App/Other.cs": "15a3cc84c25f88b528ae762e702a561c484b8aad21994fcb729982eb1305adf0",
+    "App/Runner.Text.cs": "2ff6daf7b8698e963a3245aa81e8d8005425bb36c7ae259721f0290e77f6ebe7",
+    "App/Runner.cs": "e1f77f45ea50b53d9d15ab010958ebc19554543c6beadbbe3b8aadc2ca791582",
     "App/Use.cs": "00a8bc374c736da127447737934b62d91e6b49d5f9f3554c4ff2678c0ed1c46c",
     "B/B.csproj": "21d747d7f5f7cdfa64c1899954e3f616db877e150d4389a4c98937a3c738a268",
     "B/Thing.cs": "07cc3473e386c35851628af0cc9835d10a8b38333464112516b9f289616d0a57"
