@@ -2,7 +2,9 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import { AT_READING_SIZE, localMapStill } from "./still-picture";
+import { farLookNames, truncations } from "./design-audit";
+import { CHAIN_REPOSITORY } from "./scopes";
+import { AT_READING_SIZE, LOCAL_MAP, localMapStill } from "./still-picture";
 
 /**
  * The zoom looks (Tuning → 2D Layout → Zoom Looks; the owner's hypothesis of 2026-11-08, "very very FEW breakpoints (2-3)
@@ -343,26 +345,6 @@ const cutBesideRoom = (page: Page) => page.evaluate(() => {
   return { look: map.dataset.look ?? null, cut, whole, wrapped };
 });
 
-/**
- * Every row's name drawn in the map, against its own button: how far its drawn text runs past the button's box across,
- * and whether it is whole or cut, and if cut whether the button's title says it whole.
- */
-const namesInButtons = (page: Page) => page.evaluate(() => {
-  const found: Array<{ name: string; past: number; cut: boolean; titled: boolean; lines: number }> = [];
-  for (const row of document.querySelectorAll<HTMLElement>("#map-container .local-slot-card .symbol-row")) {
-    const label = row.querySelector<HTMLElement>(".symbol-label"), text = row.querySelector<HTMLElement>(".symbol-label-text");
-    if (!label || !text || !text.checkVisibility({ visibilityProperty: true }) || !label.offsetWidth) continue;
-    const range = document.createRange();
-    range.selectNodeContents(text);
-    const drawn = [...range.getClientRects()].filter(rect => rect.width > 0 && rect.height > 0), box = label.getBoundingClientRect();
-    if (!drawn.length) continue;
-    const past = Math.max(...drawn.map(rect => Math.max(rect.right - box.right, box.left - rect.left)));
-    const cut = row.classList.contains("local-name-cut") || text.scrollWidth > text.clientWidth + 1 || text.scrollHeight > text.clientHeight + 1;
-    found.push({ name: row.dataset.symbol ?? "", past: Math.round(past * 10) / 10, cut, titled: label.title === (row.dataset.symbol ?? ""), lines: new Set(drawn.map(rect => Math.round(rect.top))).size });
-  }
-  return found;
-});
-
 test("in the connections look every row's name stands inside its own button: whole, on one line or two, or cut with its ellipsis and its whole name in the title", async ({ page }) => {
   test.setTimeout(120_000);
   // The five-file picture of this repository, where the still picture's instrument found six names running past their
@@ -386,12 +368,73 @@ test("in the connections look every row's name stands inside its own button: who
       await still(page);
     }
     expect(await page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.look), `press ${press}`).toBe("connections");
-    const names = await namesInButtons(page);
+    // The one standard for a name in the far looks (design-audit.ts): inside its own button, and whole or shortened by
+    // its own ellipsis under a title that says it whole.
+    const names = await farLookNames(page);
     expect(names.length, "names drawn").toBeGreaterThan(20);
     for (const wanted of six) expect(names.some(row => row.name === wanted), `${wanted} is drawn`).toBe(true);
-    expect(names.filter(row => row.past > 0.5).map(row => `${row.name} runs ${row.past} px past its button`), `press ${press}: no name runs past its own button`).toEqual([]);
-    expect(names.filter(row => row.cut && !row.titled).map(row => row.name), `press ${press}: a name that is cut says itself whole in its title`).toEqual([]);
+    expect(names.filter(row => row.verdict === "fault").map(row => `${row.name} ${row.fault}`), `press ${press}: every name is whole, or shortened by its own ellipsis and titled, inside its own button`).toEqual([]);
   }
+});
+
+test("the far looks' standard for a name counts a shortened name apart, and still counts one clipped with no ellipsis, one under no title or a wrong one, one past its button, and any cut at reading size", async ({ page }) => {
+  test.setTimeout(120_000);
+  // The chain's picture of this repository, where the still picture found `inferDefaultEntryNodeId` cut on the one line
+  // its row holds (2026-11-22): More at its held size leaves that name less room than it is wide, in any window.
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
+  await page.goto(`/?view=local&node=${encodeURIComponent(CHAIN_REPOSITORY[0])}`);
+  await page.locator(".local-placed").waitFor();
+  await still(page);
+  /** Changes one row's name on the page as a fault would, and gives back the standard's word on that row. */
+  const judged = async (row: string, change: { title?: string | null; style?: string }) => {
+    const at = row.lastIndexOf(":");
+    await page.evaluate(({ card, symbol, change }) => {
+      const found = document.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(card)}"] .symbol-row[data-symbol="${CSS.escape(symbol)}"]`)!;
+      const label = found.querySelector<HTMLElement>(".symbol-label")!, text = found.querySelector<HTMLElement>(".symbol-label-text")!;
+      if (change.title === null) label.removeAttribute("title"); else if (change.title !== undefined) label.setAttribute("title", change.title);
+      if (change.style !== undefined) text.style.cssText = change.style;
+    }, { card: row.slice(0, at), symbol: row.slice(at + 1), change });
+    return (await farLookNames(page)).find(name => name.row === row)!;
+  };
+  // At reading size nothing is shortened, and a name cut there is a fault whatever cuts it and whatever its title says.
+  const reading = await farLookNames(page);
+  expect(reading.length, "names drawn at reading size").toBeGreaterThan(5);
+  expect(reading.filter(name => name.verdict !== "whole").map(name => `${name.name} ${name.fault ?? name.verdict}`)).toEqual([]);
+  const read = reading[0];
+  const cutAtReading = await judged(read.row, { title: read.name, style: "display: block; max-width: 24px; overflow: clip; white-space: nowrap; text-overflow: ellipsis;" });
+  expect([cutAtReading.verdict, cutAtReading.fault]).toEqual(["fault", "is cut at reading size"]);
+  await judged(read.row, { title: null, style: "" });
+  // Three presses out, the connections look.
+  for (let press = 0; press < 3; press += 1) {
+    const before = await page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform);
+    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => document.querySelector<HTMLElement>("#map-viewport")!.style.transform)).not.toBe(before);
+    await still(page);
+  }
+  expect(await page.evaluate(() => document.querySelector<HTMLElement>("#map-container")!.dataset.look)).toBe("connections");
+  const names = await farLookNames(page);
+  expect(names.filter(name => name.verdict === "fault").map(name => `${name.name} ${name.fault}`), "as the product draws it, no name is a fault").toEqual([]);
+  const one = names.find(name => name.verdict === "shortened" && name.name === "inferDefaultEntryNodeId");
+  expect(one, "the picture shortens inferDefaultEntryNodeId").toBeDefined();
+  // The audit's cut-off check does report the shortened name: counting it apart is what the standard is for.
+  expect((await truncations(page, LOCAL_MAP.text)).map(item => item.row), "the audit sees the name's hidden end").toContain(one!.row);
+  // No title, and a wrong one.
+  const untitled = await judged(one!.row, { title: null });
+  expect([untitled.verdict, untitled.fault]).toEqual(["fault", "is shortened and its button's title is absent"]);
+  const mistitled = await judged(one!.row, { title: "inferDefault" });
+  expect([mistitled.verdict, mistitled.fault]).toEqual(["fault", "is shortened and its button's title is \"inferDefault\""]);
+  expect((await judged(one!.row, { title: one!.name })).verdict, "its title put back").toBe("shortened");
+  // Clipped with no ellipsis.
+  const clipped = await judged(one!.row, { style: "text-overflow: clip;" });
+  expect([clipped.verdict, clipped.fault]).toEqual(["fault", "is clipped with no ellipsis"]);
+  expect((await judged(one!.row, { style: "" })).verdict, "its ellipsis put back").toBe("shortened");
+  // Past its own button: drawn with no limit across, as a name stood past its button before the button spanned its room.
+  const past = await judged(one!.row, { style: "max-width: none; overflow: visible;" });
+  expect(past.verdict, "a name drawn past its own button").toBe("fault");
+  expect(past.fault).toMatch(/^runs [\d.]+ px past its button$/u);
 });
 
 test("in the connections and overview looks a symbol's name is cut only where its row holds no further line of it", async ({ page }) => {

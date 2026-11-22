@@ -103,7 +103,7 @@ function recordBoard(board: Scoreboard): void {
       ...(row.journey ? [`- ${row.view} journey, ${row.journey.question}: answer ${row.journey.answer.join(", ") || "(none)"}; ${row.journey.notes.join("; ")}`] : []),
       ...(row.chain ? [`- ${row.view} chain journey, ${row.chain.question}: ${row.chain.notes.join("; ")}`] : []),
       ...(row.tour && row.tour.notes.length > 0 ? [`- ${row.view} tour: ${row.tour.notes.join("; ")}`] : []),
-      ...(row.text.collisions + row.text.cutOffs > 0 ? [`- ${row.view} text faults:\n\n\`\`\`text\n${row.text.faults}\n\`\`\``] : [])
+      ...(row.text.collisions + row.text.cutOffs + (row.text.shortened ?? 0) > 0 ? [`- ${row.view} text:\n\n\`\`\`text\n${row.text.faults}\n\`\`\``] : [])
     ]);
     const chain = rows.some(row => row.chain) ? `\n\n${chainTable(rows)}` : "";
     return `## ${run.bundle}, ${run.scopeName}\n\n${scoreboardTable(rows)}\n\n${expandedTable(rows)}${chain}\n\n${notes.join("\n")}\n`;

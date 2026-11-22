@@ -49,6 +49,74 @@ export interface Truncation {
   tag: string;
   /** The greatest horizontal or vertical overrun in pixels. */
   hidden: number;
+  /** For a symbol row's name in the Local Map, its card's file and its symbol: the key {@link farLookNames} gives it. */
+  row?: string;
+}
+
+/** One row's name as the Local Map draws it, judged by the one standard for a name in the far looks. */
+export interface FarLookName {
+  /** Its card's file and its symbol, the key a {@link Truncation} of the same button carries. */
+  row: string;
+  name: string;
+  /** How far what is drawn of it runs past its own button across, in pixels. */
+  past: number;
+  /** The lines it is drawn on. */
+  lines: number;
+  /** Whole; shortened as the standard allows; or a fault, with the reason. */
+  verdict: "whole" | "shortened" | "fault";
+  fault?: string;
+}
+
+/**
+ * The one standard for a symbol row's name in the far looks (the root's ruling of 2026-11-22, from the design system's
+ * fifth principle: where room runs out a name "is cut with an ellipsis or leaves the picture; it is never drawn
+ * smaller"). In the connections look and beyond, a name is right when what is drawn of it stands inside its own button
+ * and it is whole, or cut by its own ellipsis with its button's title saying the whole name. Its own ellipsis is the
+ * stylesheet's on one line, the clamp's on its last line, or the one the card reading writes into a name cut at a seam.
+ * Everything else is a fault: a name past its button, one clipped with no ellipsis, one shortened under no title or a
+ * wrong one. At reading size nothing is shortened, and any cut is a fault.
+ *
+ * The names' case of `zoom-looks.spec.ts` asserts no fault; the still picture counts the shortened names apart from the
+ * cut-offs it keeps at none (`still-picture.ts`, `scoreText`). One copy, so the two cannot come to disagree.
+ */
+export async function farLookNames(page: Page): Promise<FarLookName[]> {
+  return page.evaluate(() => {
+    const lod = document.querySelector<HTMLElement>("#map-container")?.dataset.lod;
+    const far = lod === "far" || lod === "overview";
+    const found: FarLookName[] = [];
+    for (const row of document.querySelectorAll<HTMLElement>("#map-container .local-slot-card .symbol-row")) {
+      const label = row.querySelector<HTMLElement>(".symbol-label"), text = row.querySelector<HTMLElement>(".symbol-label-text");
+      if (!label || !text || !text.checkVisibility({ visibilityProperty: true }) || !label.offsetWidth) continue;
+      const style = getComputedStyle(text), own = text.getBoundingClientRect(), box = label.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      // What is drawn of it: its line fragments inside its own box where that box clips, all of them where it does not.
+      const clipsAcross = style.overflowX !== "visible", clipsDown = style.overflowY !== "visible";
+      const drawn = [...range.getClientRects()].filter(rect => rect.width > 0 && rect.height > 0
+        && (!clipsAcross || rect.left < own.right - 0.5) && (!clipsDown || rect.top < own.bottom - 0.5))
+        .map(rect => ({ left: rect.left, right: clipsAcross ? Math.min(rect.right, own.right) : rect.right, top: rect.top }));
+      if (!drawn.length) continue;
+      const past = Math.round(Math.max(...drawn.map(rect => Math.max(rect.right - box.right, box.left - rect.left))) * 10) / 10;
+      const written = row.classList.contains("local-name-cut");
+      const cutAcross = text.scrollWidth > text.clientWidth + 1, cutDown = text.scrollHeight > text.clientHeight + 1;
+      const ellipsis = written ? (text.dataset.nameCut ?? "").includes("…")
+        : cutDown ? style.webkitLineClamp !== "none" && style.display === "-webkit-box" && clipsDown
+        : style.textOverflow === "ellipsis" && style.whiteSpace === "nowrap" && clipsAcross;
+      const whole = (text.textContent ?? "").trim(), title = label.getAttribute("title");
+      const fault = past > 0.5 ? `runs ${past} px past its button`
+        : !(written || cutAcross || cutDown) ? null
+        : !far ? "is cut at reading size"
+        : !ellipsis ? "is clipped with no ellipsis"
+        : title !== whole ? `is shortened and its button's title is ${title === null ? "absent" : `"${title}"`}`
+        : null;
+      found.push({
+        row: `${row.closest<HTMLElement>(".node-card")?.dataset.id ?? ""}:${row.dataset.symbol ?? ""}`, name: whole, past,
+        lines: new Set(drawn.map(rect => Math.round(rect.top))).size,
+        verdict: fault ? "fault" : written || cutAcross || cutDown ? "shortened" : "whole", ...(fault ? { fault } : {})
+      });
+    }
+    return found;
+  });
 }
 
 /**
@@ -377,7 +445,9 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
         }
         if (overrun > 1) {
           const className = node.getAttribute("class")?.split(" ")[0];
-          result.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, hidden: Math.round(overrun) });
+          const row = node.matches(".symbol-label") ? node.closest<HTMLElement>(".symbol-row") : null;
+          result.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, hidden: Math.round(overrun),
+            ...(row ? { row: `${row.closest<HTMLElement>(".node-card")?.dataset.id ?? ""}:${row.dataset.symbol ?? ""}` } : {}) });
         }
       }
     }

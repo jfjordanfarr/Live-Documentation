@@ -24,7 +24,7 @@ import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/vi
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
-import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { describeFaults, farLookNames, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import {
   crossings,
   flowOf,
@@ -840,15 +840,29 @@ export interface TextScore {
   labels: number;
   collisions: number;
   cutOffs: number;
+  /** Row names a far look shortens as its standard allows; absent on rows measured before it was counted. */
+  shortened?: number;
   faults: string;
 }
 
-/** Test 3: the design audit over the view's text. */
+/**
+ * Test 3: the design audit over the view's text. Since 2026-11-22 the default arrival rests in the connections look,
+ * so the picture measured is a far look, and a far look has a standard of its own for a row's name (`farLookNames` in
+ * `design-audit.ts`): shortened by its own ellipsis under a title that says it whole is right there. Those names are
+ * counted apart and named, so the report says how many names the resting picture shortens; every other cut is still a
+ * cut-off, and at reading size every cut is.
+ */
 export async function scoreText(page: Page, view: ViewReading): Promise<TextScore> {
   const boxes = await textBoxes(page, view.text);
   const overlaps = overlapsAmong(boxes);
-  const cut = await truncations(page, view.text);
-  return { labels: boxes.length, collisions: overlaps.length, cutOffs: cut.length, faults: describeFaults(overlaps, cut) };
+  const all = await truncations(page, view.text);
+  const allowed = new Set((await farLookNames(page)).filter(name => name.verdict === "shortened").map(name => name.row));
+  const shortened = all.filter(item => item.row !== undefined && allowed.has(item.row)), cut = all.filter(item => !shortened.includes(item));
+  const faults = [
+    ...(overlaps.length + cut.length > 0 || shortened.length === 0 ? [describeFaults(overlaps, cut)] : []),
+    ...(shortened.length ? [`shortened with an ellipsis: ${shortened.length}: ${shortened.map(item => item.text).join(", ")}`] : [])
+  ].join("\n");
+  return { labels: boxes.length, collisions: overlaps.length, cutOffs: cut.length, shortened: shortened.length, faults };
 }
 
 /** The shape of every wire with its translation removed, keyed by its edge and its order among wires of that edge. */
@@ -1185,8 +1199,8 @@ const cell = (value: number | string | null | undefined): string => (value === n
 /** The scoreboard of one bundle as a markdown table, one row per view, one column per number the deck defines. */
 export function scoreboardTable(rows: readonly Scoreboard[]): string {
   const header = [
-    "| View | State | Facts in scope | Legible | In frame | Drawn | Not drawn | Off frame | Covered | Small | Scale | Smallest label px | Cards (in frame / partly / all) | Wires | Occluded wires | Occluded samples / samples | Collisions | Cut-offs | Routes changed / compared | Gestures | Smallest target px | Subject moved px | Answer legible / answer | History entry | Return error px |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | --- | --- | ---: |"
+    "| View | State | Facts in scope | Legible | In frame | Drawn | Not drawn | Off frame | Covered | Small | Scale | Smallest label px | Cards (in frame / partly / all) | Wires | Occluded wires | Occluded samples / samples | Collisions | Cut-offs | Shortened names | Routes changed / compared | Gestures | Smallest target px | Subject moved px | Answer legible / answer | History entry | Return error px |",
+    "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | --- | --- | ---: |"
   ];
   const lines = rows.map(row => {
     const l = row.legibility;
@@ -1213,6 +1227,7 @@ export function scoreboardTable(rows: readonly Scoreboard[]): string {
       o ? `${o.occludedSamples} / ${o.samples}` : "n/a",
       row.text.collisions,
       row.text.cutOffs,
+      cell(row.text.shortened),
       r ? `${r.changed} / ${r.compared}` : "n/a",
       j ? j.gestures : "n/a",
       j ? cell(j.smallestTargetPx) : "n/a",
