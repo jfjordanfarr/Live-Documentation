@@ -25,18 +25,26 @@ const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
 const ledger = JSON.parse(fs.readFileSync(path.join(repoRoot, LEDGER_PATH), "utf8")) as ParityLedger;
 const workspaces: Record<string, string> = {};
 const commits: Record<string, string> = {};
-const outputs = new Map<ParityRow, string>();
+/** What a command gave: its exit status and its two streams, kept apart (the engine review's second pass, 2026-11-22). */
+interface Ran {
+  status: number;
+  stdout: string;
+  stderr: string;
+}
 
-function run(workspace: string, args: string[]): Promise<string> {
+const outputs = new Map<ParityRow, Ran>();
+
+function run(workspace: string, args: string[]): Promise<Ran> {
   const [command, ...rest] = args;
   const script = path.join(repoRoot, "scripts", "live-docs", `${command}.ts`);
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [tsxCli, "--tsconfig", path.join(repoRoot, "tsconfig.base.json"), script, "--workspace", workspace, ...rest], { cwd: workspace, stdio: ["ignore", "pipe", "pipe"] });
-    let text = "";
-    child.stdout.on("data", (chunk: Buffer) => (text += chunk.toString("utf8")));
-    child.stderr.on("data", (chunk: Buffer) => (text += chunk.toString("utf8")));
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk: Buffer) => (stdout += chunk.toString("utf8")));
+    child.stderr.on("data", (chunk: Buffer) => (stderr += chunk.toString("utf8")));
     child.on("error", reject);
-    child.on("close", () => resolve(text));
+    child.on("close", (status) => resolve({ status: status ?? 1, stdout, stderr }));
   });
 }
 
@@ -87,8 +95,20 @@ describe("the parity ledger", () => {
   for (const row of ledger.rows) {
     const label = `${row.section}: ${row.page}`;
     it(row.status.startsWith("yes") || row.status === "the command line's own" ? `still answers: ${label}` : `is still a gap: ${label}`, () => {
-      const text = row.file ? fs.readFileSync(path.join(workspaces[row.file[0]], row.file[1]), "utf8") : outputs.get(row) ?? "";
-      if (row.status.startsWith("yes") || row.status === "the command line's own") {
+      const answers = row.status.startsWith("yes") || row.status === "the command line's own";
+      // An equivalent exits 0 and is read from standard output; a gap's refusal exits 1 and is read from standard
+      // error, unless its row says otherwise (a gap shown by an answer that lacks part, as the links between two files).
+      let text: string;
+      if (row.file) {
+        text = fs.readFileSync(path.join(workspaces[row.file[0]], row.file[1]), "utf8");
+      } else {
+        const ran = outputs.get(row)!;
+        const stream = row.stream ?? (answers ? "stdout" : "stderr");
+        const exit = row.exit ?? (answers ? 0 : 1);
+        assert.strictEqual(ran.status, exit, `${label}: exited ${ran.status}, not ${exit}; it printed:\n${(ran.stdout + ran.stderr).slice(0, 2000)}`);
+        text = ran[stream];
+      }
+      if (answers) {
         for (const fragment of row.expect ?? []) {
           assert.ok(text.includes(fragment), `${label}: the equivalent no longer says ${JSON.stringify(fragment)}; it printed:\n${text.slice(0, 2000)}`);
         }

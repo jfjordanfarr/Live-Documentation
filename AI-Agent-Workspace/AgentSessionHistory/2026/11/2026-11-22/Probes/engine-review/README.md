@@ -128,3 +128,98 @@ Thirteen cases are red and two are green.
 - **Item 5 in full.** These were not tried: two runs compared for the same output, each answer's stated bound, and the JSON of every answer against its text. One was seen: the not-found JSON above lists the target among `visited`.
 - **Item 6 in full.** The parity ledger and `parity.test.ts`, and the day's other registers, were not read for a miss they would accept silently.
 - **Item 7.** The merges between branches were not examined.
+
+## 2026-11-22, later: the second pass
+
+The root asked for this pass after reading the first milestone. It runs on `bcd44843b`, the day's tip, merged in, which adds the readers' probes answered from the scan's listing (`tooling/workspaceListing.ts`, `workspaceProbes.ts`).
+
+The package oracle's import side (the last weakness in section 1) had already been mended there by the engine's builder: it asks with the flag now, and 279 of 281 packages agree.
+
+### Findings, in rank order
+
+#### A wrong fact shown: the reverse search's "no path" claims something it did not test
+
+- **Input.** A copy of the estate sample.
+- **Command.** `inspect --from PaymentService --to Contracts --direction both`
+- **Answer.** `REVERSE PATH (inbound): No path found.`, followed by `Nothing that depends on "PaymentService" also depends on "Contracts".`
+- **Why it is wrong.** `Hub/App.config` uses `PaymentService/App.config` and `Contracts/IPaymentService.cs`, as `inspect --from Hub/App.config --direction outbound` lists. The reverse search shows only that `Contracts` does not depend on `PaymentService`.
+- **History.** The sentence is older than the day (`emitDualDirectionResult`). The day's directories as ends now name a directory by its last segment in it.
+- **Test.** `scripts/live-docs/inspect.reverse-path-wording.test.ts`, red.
+
+#### A wrong fact shown: a reference to one overload links two overloads, or one that is not named
+
+Two small projects were built: `Lib` declares `Mix(Calc[])`, `Mix(ref Calc)` and `Mix(Calc, Calc)`, and `App` names them. The compiler oracle (`scripts/oracle/csharp-compiler.cs`, Roslyn 4.12) was run on them. The reader's answers were read from `csharpAdapter` for each reference.
+
+| `cref` | The compiler | The reader |
+| --- | --- | --- |
+| `Lib.Calc.Mix(Lib.Calc[])` | `Mix(Calc[])` | `Mix(Calc[])` and `Mix(ref Calc)` |
+| `Lib.Calc.Mix(ref Lib.Calc)` | `Mix(ref Calc)` | both |
+| `Lib.Calc.Mix(Lib.Pair{Lib.Calc})` | nothing | both one-parameter overloads |
+| `Lib.Calc.Mix(Lib.Calc,)` | nothing (the parser recovers, the binding finds none) | `Mix(Calc, Calc)` |
+
+There are two causes:
+
+- `parameterShape` drops array marks and modifiers, which both a `cref` and a declaration write as text and could compare as written.
+- `namedMembers` links every overload with the same number of parameters where none matches (`matching.length > 0 ? matching : counted`), a guess shown as a link.
+
+The test is `packages/engine/src/live-docs/adapters/csharp.cref-overloads.test.ts`: four cases red, and a control, `Mix(Lib.Calc, Lib.Calc)`, green.
+
+#### A weakness of the tests: the C# oracle's documentation comparison cannot see a wrong declaration
+
+- **Command.** `npm run oracle:csharp -- <the two projects> --detail`
+- **Answer.** "the reader's documentation relation: 2 pairs, 2 of them the compiler's; the compiler's only: 0; the reader's only: 0". It reports that while four references above link the wrong declarations.
+- **Why.** `compareDocumentation` works on file pairs and drops a reference within one file (`to !== reference.from`). So a wrong overload, a wrong member of the right file, and every reference to a declaration of the same file are invisible to it, on DNN and on mojoPortal as here.
+- **Two further gaps.** A `cref` the compiler cannot parse at all (seen: `L::Calc`, which Roslyn's cref grammar does not take) is absent from its record. If the reader linked one, `compareDocumentation` would file it as "unwritten", a cause that names inactive preprocessor sections.
+- No test file is added: the mend changes the oracle's comparison to declarations, and the product case above is the test.
+
+#### A weakness of the tests: the parity ledger reads neither the exit status nor which stream
+
+`run` in `tests/integration/live-docs/parity.test.ts` joins standard output and standard error and resolves on close whatever the exit status. So a "yes" row passes while its fragment appears anywhere, an error message included, even when the command fails.
+
+This was found by reading; no input was built, since every "yes" row exits 0 today. Each row could record its expected status.
+
+### Attacked and held
+
+**The readers' probes on the listing.** The HTML, CSS, Python and Ruby readers were each asked once with the run's listing and once with the disk, on a made workspace. `count-host`'s seven samples were not re-run.
+
+- A file and a folder the listing holds: the same answers.
+- Python's package and namespace imports, and Ruby's `require_relative`: the same.
+
+Two answers do differ from the base, and both were already wrong at the base. Each is now an unlinked name where it was a broken link. Neither is the listing's fault, and the honest link was in neither. They are remarks only:
+
+- **A link to a document.** `<a href="../README.md">`, `<a href="guide.md">`, `<a href="../LICENSE">` and a CSS `url("../docs/intro.md")` are drawn at the base as links to `../README.md.md`, a doc that does not exist, because documents get no Live Doc. At the tip they are unlinked names, because discovery keeps documents out of the listing. The document is in the scan as a document, and the honest link would be to it.
+- **An include through a symbolic link.** `#include "../vendor/x.h"`, where `vendor` links to `third_party` inside the workspace, and `../shared/y.h`, where `shared` links outside, are drawn at the base as links to `../vendor/x.h.md` and `../shared/y.h.md`, docs that do not exist. At the tip they are unlinked. The listing holds `third_party/x.h` under its real path, and the honest link would be to it.
+
+**The author's reference against the compiler.** These agree with the compiler, declaration by declaration:
+
+- an overload named by `int`, `Int32` or `System.Int32`;
+- a generic method `Echo{T}(T)` beside `Echo(int)`;
+- a nested type's member, `Lib.Calc.Inner.Run`, beside the outer `Run`;
+- a nested type's own `Run` and `Add` from within it, and the outer `Calc.Run` from within the nested type;
+- generics of one and of two parameters, and `Pair{,}`;
+- `global::`;
+- a namespace alias (`L.Pair{X}`);
+- `Run ()` with a space before the parenthesis.
+
+`L::Calc`: Roslyn does not parse it as a reference, and the reader links nothing, so they agree.
+
+Where the reader and the compiler part by known classes:
+
+- **An operator.** The compiler resolves `operator +`; the reader links none. This is the oracle's `notRead` class.
+- **Framework types.** Parameters of `int` without framework references resolve to nothing in the compiler. This is the oracle's `framework` class.
+
+**The command line, the same input twice.** Twenty-five invocations over the estate copy, each run twice, gave identical output, error output and exit status:
+
+- `inspect` with `--reachable`, `--groups`, neighbours, directory routes each way, `--direction both`, and each of these with `--json`;
+- five malformed invocations;
+- `board`, `lint` and `find-orphans`.
+
+Every malformed one exits 1 with a message. None reads standard input: each was run with empty input and none waited.
+
+**The JSON against the text.** Three answers were compared and agree, but for the reverse wording above. A remark: for a route between directories, `kind: "path"` names the path's end files as `from` and `to`, while `kind: "dual-direction"` names the directories asked. The text of the first does not mention the directories at all.
+
+### Not reached in this pass
+
+- **Item 5.** What the merges between branches may have broken was not examined.
+- **The registers.** Only the C# oracle's documentation comparison and the parity ledger were read for this. The PowerShell and SQL ledgers and the page check's `differences.json` were not.
+- **Stated bounds.** Each answer was not checked against its stated bound.

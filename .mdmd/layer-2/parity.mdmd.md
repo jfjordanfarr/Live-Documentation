@@ -105,8 +105,8 @@ Each command run twice on the same input, with its input closed (2026-11-22, est
 
 Decided by the root on 2026-11-22: a ledger and a test, as the oracles' registers of measured misses are held. Each row of the table is an entry of [the ledger](../../tests/integration/live-docs/parity-ledger.json), and the table above is printed from it by `scripts/doc-tools/parity-table.ts --write`. [The test](../../tests/integration/live-docs/parity.test.ts) runs every entry's command over the estate sample, or over a two-commit scripted repository with its history, and fails in three cases:
 
-- **An equivalent stops answering:** its output no longer holds what its entry expects.
-- **A gap starts answering:** its output no longer shows the symptom its entry names, so the mend that closes it moves its row in the same commit. A gap with no command is probed by the option its smallest design would take, which is refused today.
+- **An equivalent stops answering:** it exits other than 0, or its standard output no longer holds what its entry expects. Since the engine review's second pass (2026-11-22) the streams are read apart, so that an error message holding a fragment passes nothing.
+- **A gap starts answering:** it exits other than 1, or its standard error no longer shows the symptom its entry names (a gap shown by an answer that lacks part names its own exit and stream), so the mend that closes it moves its row in the same commit. A gap with no command is probed by the option its smallest design would take, which is refused today.
 - **The table here differs** from what the ledger prints.
 
 It runs the 30 commands four at a time, about 23 s of the integration suite. **Not held:** that every control of the page has a row. Until a cheap and honest definition of "a control" is found, a control added to the page without a row goes unnoticed, and so does a gap whose option takes another name.
