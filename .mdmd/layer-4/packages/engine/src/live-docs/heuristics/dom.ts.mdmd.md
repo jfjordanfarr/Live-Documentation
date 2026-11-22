@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/heuristics/dom.ts`
-- Generated At: 2026-11-22T01:36:20.328Z
+- Generated At: 2026-11-22T05:03:58.987Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Infers markup dependencies for scripts that query the DOM by element id, connect
 ### Public Symbols
 #### `inferDomDependencies` {#symbol-inferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L48)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L47)
 - Parameters: `params`: `DomDependencyParams`
 
 ##### `inferDomDependencies` — Summary
@@ -38,8 +38,6 @@ the raw text).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `Dirent` (type-only)
-- `node:fs/promises`
 - `node:path` - `path`
 - [`aspnet.markupWithoutComments`](../adapters/aspnet.ts.mdmd.md#symbol-markupwithoutcomments)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
@@ -47,5 +45,7 @@ the raw text).
 - [`sourceText.SourceReads`](../../tooling/sourceText.ts.mdmd.md#symbol-sourcereads)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
 - [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.folderChildren`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-folderchildren)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

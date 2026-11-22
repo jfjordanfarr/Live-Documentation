@@ -111,3 +111,24 @@ One limit of this measure: the page check's page puts every file it is handed in
 | a name of one of Node's own modules (`punycode`, `string_decoder`) | 2 | 2 |
 
 The first count also had seven it could not explain. Once files were counted as files on both sides, `@types/three` agreed (its `exports` name files that are not there), and the other six took the class of nested copies. The mend is Node's legacy resolution of `main`: the path it names, then with `.js`, `.json` or `.node`, then its `index` with each, then the package's own `index`. A `main` of `""` names nothing and falls through to `index`. Mixed keys in `exports` (subpaths beside conditions, which Node refuses) occur in no installed package. For the six nested copies, Node 26's `import.meta.resolve`, asked both from the folder that holds the copy and from inside the copy, gave the top-level copy's file of the same name (`eslint-visitor-keys` 5.0.1 under `eslint` resolved to 3.4.3's `lib/index.js`); why is not established. The register is `tests/integration/live-docs/expected/package-modules.json`.
+
+*Established in the next section: it was the oracle's question, not Node.*
+
+## 2026-11-22, step 4: every reader's probes moved onto the listing
+
+Taken from the day's tip `8cfd27b85`. Before the first move, this repository's whole `.mdmd` (1,334 docs and the index) was generated and saved. After each move or small group of moves, the docs were generated again and compared whole by [`compare-docs.mjs`](compare-docs.mjs). Every doc but those of the source files edited must be the same bytes, and the index must be the same once the edited files' own nodes and the edges of their new imports (`inbound`) are set aside.
+
+| Move | Docs differing, the edited files' aside | Index | `node-needs.json` after |
+| --- | ---: | --- | --- |
+| Rust's `promises.access` (`packageDirOf`) | 0 | same | `promises.access` gone from the engine and the stand-ins; the Node host gains `statSync`, `readdirSync` for its fallback |
+| Python's folder entries and `statSync`; C's folder listings (each kept until then by a folder's time of change) | 0 | same | `readdirSync`, `statSync` gone from `python.ts` and `c.ts` |
+| CSS, HTML and Ruby `statSync` | 0 | same | `statSync` gone from `css.ts`, `html.ts`, `ruby.ts` |
+| `dependencies.ts`'s `stat` (the TypeScript resolution), the DOM heuristics' `readdir`, the JSON reader's `statSync` in TypeScript's host | 0 | same | `node:fs/promises` gone from `heuristics/dom.ts`; `node:fs` from `json.ts`; `dependencies.ts`'s move undone, below |
+
+The ASP.NET, project and C# dependency readers named no file probe by then; the day's other merges had taken theirs. With `node_modules` installed, the TypeScript resolution's move changed no byte of this repository, as the count in place predicted.
+
+**But the TypeScript resolution's move failed a case of the integration suite, and was undone.** In `tests/integration/live-docs/history-reading.test.ts`, "reads excluded code an included file imports and re-exports, as a checkout does": an included file imports and re-exports from a folder the configuration excludes. The repository's decision, written in the case, is that the import resolves "against the excluded files on disk, as a checkout's generator resolves them". Asked of the listing, the excluded provider is not there: the dependency's labels came back without `api` and `types.thing`. That is the fork between that decision and root's ruling that what a scan leaves out no reader sees, and it is the owner's. With `dependencies.ts` and its two callers restored to the tip, the case passes, and the whole comparison shows no generated doc differing. So every reader but `dependencies.ts` names no `node:fs`. Left in `node-needs.json`: `glob` in the C#, Go, Java and Rust readers, for a walk only when no run is handed (step 5); discovery's `readFile` and `stat` (step 5); `gitIgnored.ts` and `gitUtils.ts` (steps 5 and 8); `graphFiles.ts` and the generator, the docs written and read back (step 6); `treeSitter.ts` (step 7); the Node host itself (step 9).
+
+## The six nested copies: the oracle's question, not Node
+
+Node documents `import.meta.resolve`'s second argument, the parent to resolve from, as honoured only under `--experimental-import-meta-resolve`. Without the flag it is ignored, and the name resolves from the asking script. Asked from `node_modules/eslint/consumer.mjs`, `eslint-visitor-keys` resolved to the top-level copy's `lib/index.js` without the flag and to the nested copy's with it. The oracle now asks with the flag: the six agree, and 279 of 281 packages agree, the two left being `punycode` and `string_decoder`, named as Node's own modules.

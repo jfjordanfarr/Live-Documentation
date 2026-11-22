@@ -1,10 +1,9 @@
-import type { Dirent } from "node:fs";
-import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";
 import { markupWithoutComments } from "../adapters/aspnet";
 import type { DependencyEntry } from "../core";
 
@@ -14,7 +13,7 @@ interface DomDependencyParams {
   /** The parsed script, from which the calls are read, so that none a comment holds is. */
   sourceFile: ts.SourceFile;
   /** The files selected for this scan, with the run's reads of them; absent for standalone source analysis. */
-  fileIndex?: ReadonlySet<string> & SourceReads;
+  fileIndex?: ReadonlySet<string> & SourceReads & ListedFiles;
 }
 
 const CANDIDATE_EXTENSIONS = [".aspx", ".ascx", ".cshtml", ".razor", ".html"] as const;
@@ -52,7 +51,7 @@ export async function inferDomDependencies(params: DomDependencyParams): Promise
   }
 
   const fileCache: FileContentCache = new Map();
-  const nearbyFiles = await gatherNearbyMarkupFiles(params.absolutePath, params.workspaceRoot);
+  const nearbyFiles = gatherNearbyMarkupFiles(params.absolutePath, params.workspaceRoot, params.fileIndex);
   const fileIndex = params.fileIndex;
   const candidateFiles = fileIndex
     ? nearbyFiles.filter((absolute) => fileIndex.has(normalizeWorkspacePath(path.relative(params.workspaceRoot, absolute))))
@@ -167,7 +166,7 @@ async function locateMarkupFilesForId(args: {
   return matches;
 }
 
-async function gatherNearbyMarkupFiles(sourceFile: string, workspaceRoot: string): Promise<string[]> {
+function gatherNearbyMarkupFiles(sourceFile: string, workspaceRoot: string, listed: ListedFiles | undefined): string[] {
   const directories = gatherCandidateDirectories(sourceFile, workspaceRoot);
   const files = new Set<string>();
   const visitedDirs = new Set<string>();
@@ -183,36 +182,30 @@ async function gatherNearbyMarkupFiles(sourceFile: string, workspaceRoot: string
     }
     visitedDirs.add(dir);
 
-    const entries = await readDirectoryEntries(dir);
+    // What the folder holds, from the run's listing (2026-11-22; before, the disk's own entries).
+    const entries = folderChildren(dir, listed);
     if (!entries) {
       continue;
     }
 
-    for (const entry of entries) {
-      const entryPath = path.join(dir, entry.name);
-
-      if (entry.isFile()) {
-        const extension = path.extname(entry.name).toLowerCase() as Extension;
-        if (CANDIDATE_EXTENSIONS.includes(extension)) {
-          files.add(entryPath);
-        }
-        continue;
+    for (const name of entries.files) {
+      const extension = path.extname(name).toLowerCase() as Extension;
+      if (CANDIDATE_EXTENSIONS.includes(extension)) {
+        files.add(path.join(dir, name));
       }
+    }
 
-      if (!entry.isDirectory()) {
-        continue;
-      }
+    if (depth >= MAX_DIRECTORY_SCAN_DEPTH) {
+      continue;
+    }
 
-      if (depth >= MAX_DIRECTORY_SCAN_DEPTH) {
-        continue;
-      }
-
-      if (!shouldDescendIntoDirectory(entry.name)) {
+    for (const name of entries.folders) {
+      if (!shouldDescendIntoDirectory(name)) {
         continue;
       }
 
       queue.push({
-        dir: entryPath,
+        dir: path.join(dir, name),
         depth: depth + 1
       });
     }
@@ -263,15 +256,6 @@ function buildAttributePattern(elementId: string): RegExp {
 
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-async function readDirectoryEntries(dir: string): Promise<Dirent[] | null> {
-  try {
-    return await fs.readdir(dir, { withFileTypes: true });
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return null;
-  }
 }
 
 /** A markup file's text with its comments written over, so that an element a comment holds is no element; null when it cannot be read. */

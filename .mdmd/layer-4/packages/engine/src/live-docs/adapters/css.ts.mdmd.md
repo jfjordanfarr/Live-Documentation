@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/css.ts`
-- Generated At: 2026-11-21T21:13:43.009Z
+- Generated At: 2026-11-22T04:54:28.393Z
 
 ## Authored
 ### Purpose
@@ -37,7 +37,7 @@ no string. `//` is no comment in CSS. A comment left open runs to the end. The g
 
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L338)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/css.ts#L336)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `cssAdapter` — Summary
@@ -46,7 +46,6 @@ Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
@@ -55,7 +54,8 @@ Language adapter for CSS (`.css`). Extracts `@import` and `url()` dependencies, 
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

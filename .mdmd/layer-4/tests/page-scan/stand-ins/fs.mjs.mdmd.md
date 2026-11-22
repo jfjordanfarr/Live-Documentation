@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/stand-ins/fs.mjs`
-- Generated At: 2026-11-22T01:36:30.607Z
+- Generated At: 2026-11-22T05:07:17.029Z
 
 ## Authored
 ### Purpose
@@ -27,30 +27,30 @@ Stands in for `node:fs` in the scanning page: a file system held in memory, answ
 
 #### `readdir` {#symbol-readdir}
 - Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L197)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L194)
 
 #### `readdirSync` {#symbol-readdirsync}
 - Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L206)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L203)
 
 #### `statSync` {#symbol-statsync}
 - Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L217)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L214)
 
 #### `lstatSync` {#symbol-lstatsync}
 - Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L218)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L215)
 
 #### `tree` {#symbol-tree}
 - Type: const
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L221)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L218)
 
 ##### `tree` — Summary
 The page's own hand on the tree, uncounted: to fill it, empty it, and read back what the scan wrote and read.
 
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L247)
+- Source: [source](../../../../../tests/page-scan/stand-ins/fs.mjs#L244)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -181,9 +181,6 @@ export const promises = {
   readFile: counted("fs.promises.readFile", async (path, options) => text(bytesOf(path, "open"), options)),
   writeFile: counted("fs.promises.writeFile", async (path, data) => writeTo(path, data, "open")),
   stat: counted("fs.promises.stat", async (path) => statOf(path, "stat")),
-  access: counted("fs.promises.access", async (path) => {
-    statOf(path, "access");
-  }),
   mkdir: counted("fs.promises.mkdir", async (path, options) => makeFolder(path, options)),
   readdir: counted("fs.promises.readdir", async (path, options) => entriesOf(path, options)),
   rm: counted("fs.promises.rm", async (path, options) => remove(path, options)),

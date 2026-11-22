@@ -30,13 +30,13 @@
  * The program's entry point is a definition of `main`, `wmain`, `WinMain` or
  * `wWinMain` with a body, in a file that is not a header.
  */
-import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { cSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -606,15 +606,12 @@ function capitalize(value: string): string {
 // Per-file facts, kept for the run
 // ---------------------------------------------------------------------------
 
-// Kept for one generation, the run its file index names, with `listingCache` below: a run with another index, or
-// none, begins with nothing, so a process that generates commit after commit in one folder never reads another's.
+// Kept for one generation, the run its file index names: a run with another index, or none, begins with nothing, so a
+// process that generates commit after commit in one folder never reads another's.
 const factsCache = new Map<string, FileFacts>();
 let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
-  if (fileIndex === undefined || fileIndex !== factsRun) {
-    factsCache.clear();
-    listingCache.clear();
-  }
+  if (fileIndex === undefined || fileIndex !== factsRun) factsCache.clear();
   factsRun = fileIndex;
 }
 
@@ -622,7 +619,7 @@ async function extractFacts(content: string, absolutePath: string): Promise<File
   return readTree("cpp", content, (root) => new FileExtractor(isCppFile(absolutePath)).extract(root));
 }
 
-async function fileFacts(absolutePath: string, reads: SourceReads | undefined): Promise<FileFacts> {
+async function fileFacts(absolutePath: string, reads: (SourceReads & ListedFiles) | undefined): Promise<FileFacts> {
   const cached = factsCache.get(absolutePath);
   if (cached) return cached;
   const facts = await extractFacts(await readSourceText(absolutePath, reads), absolutePath);
@@ -649,61 +646,34 @@ export const DEFAULT_INCLUDE_STRATEGY: IncludeStrategy = "ancestors-with-include
 /** Directories a workspace walk never enters. */
 const UNWALKED_DIRECTORIES = new Set([".git", "node_modules"]);
 
-interface Listing {
-  files: Set<string>;
-  directories: Set<string>;
-}
-
-const listingCache = new Map<string, { mtimeMs: number; listing: Listing }>();
-
-/** A directory's entries by exact name, read again when the directory changes: an include names a file case-sensitively even where the filesystem does not. */
-function listingOf(directory: string): Listing | undefined {
-  let mtimeMs: number;
-  try {
-    const stats = statSync(directory);
-    if (!stats.isDirectory()) return undefined;
-    mtimeMs = stats.mtimeMs;
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return undefined;
-  }
-  const cached = listingCache.get(directory);
-  if (cached && cached.mtimeMs === mtimeMs) return cached.listing;
-  const listing: Listing = { files: new Set(), directories: new Set() };
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    let isDirectory = entry.isDirectory();
-    if (entry.isSymbolicLink()) {
-      try {
-        isDirectory = statSync(path.join(directory, entry.name)).isDirectory();
-      } catch (error) {
-        throwIfMachineFailure(error);
-        continue;
-      }
-    }
-    (isDirectory ? listing.directories : listing.files).add(entry.name);
-  }
-  listingCache.set(directory, { mtimeMs, listing });
-  return listing;
+/**
+ * A directory's entries by exact name: an include names a file case-sensitively even where the filesystem does not.
+ * From the run's listing (`folderChildren`) since 2026-11-22; before, each directory was read from the disk and kept by
+ * its time of change.
+ */
+function listingOf(directory: string, files: ListedFiles | undefined): { files: ReadonlySet<string>; directories: ReadonlySet<string> } | undefined {
+  const children = folderChildren(directory, files);
+  return children && { files: children.files, directories: children.folders };
 }
 
 /** Whether `relativePath` names a file under `workspaceRoot`, each segment spelled as on disk. */
-function workspaceFileExists(workspaceRoot: string, relativePath: string): boolean {
+function workspaceFileExists(workspaceRoot: string, relativePath: string, files: ListedFiles | undefined): boolean {
   const segments = relativePath.split("/");
   const name = segments.pop() ?? "";
   let directory = workspaceRoot;
   for (const segment of segments) {
-    if (!listingOf(directory)?.directories.has(segment)) return false;
+    if (!listingOf(directory, files)?.directories.has(segment)) return false;
     directory = path.join(directory, segment);
   }
-  return listingOf(directory)?.files.has(name) ?? false;
+  return listingOf(directory, files)?.files.has(name) ?? false;
 }
 
 /** Every directory of the workspace as a workspace-relative path, the root as `""`. */
-function workspaceDirectories(workspaceRoot: string): string[] {
+function workspaceDirectories(workspaceRoot: string, files: ListedFiles | undefined): string[] {
   const found: string[] = [];
   const walk = (relative: string): void => {
     found.push(relative);
-    for (const name of listingOf(path.join(workspaceRoot, relative))?.directories ?? []) {
+    for (const name of listingOf(path.join(workspaceRoot, relative), files)?.directories ?? []) {
       if (!UNWALKED_DIRECTORIES.has(name)) walk(relative ? `${relative}/${name}` : name);
     }
   };
@@ -733,7 +703,7 @@ function ancestorDirectories(includingDirectory: string): string[] {
 }
 
 /** The directories an include is tried against under a strategy, in order. */
-function baseDirectories(includingDirectory: string, workspaceRoot: string, strategy: IncludeStrategy): string[] {
+function baseDirectories(includingDirectory: string, workspaceRoot: string, strategy: IncludeStrategy, files: ListedFiles | undefined): string[] {
   switch (strategy) {
     case "including-directory":
       return [includingDirectory];
@@ -746,7 +716,7 @@ function baseDirectories(includingDirectory: string, workspaceRoot: string, stra
         path.posix.join(directory, "src")
       ]);
     case "any-directory":
-      return workspaceDirectories(workspaceRoot).sort(
+      return workspaceDirectories(workspaceRoot, files).sort(
         (left, right) => directoryDistance(includingDirectory, left) - directoryDistance(includingDirectory, right) || compareText(left, right)
       );
   }
@@ -757,16 +727,16 @@ function baseDirectories(includingDirectory: string, workspaceRoot: string, stra
  * include names under a strategy, or undefined when none exists inside the
  * workspace. A specifier without an extension is also tried with `.h`.
  */
-export function resolveInclude(options: { includingFile: string; workspaceRoot: string; specifier: string; strategy: IncludeStrategy }): string | undefined {
+export function resolveInclude(options: { includingFile: string; workspaceRoot: string; specifier: string; strategy: IncludeStrategy; fileIndex?: ListedFiles }): string | undefined {
   const specifier = options.specifier.replace(/\\/g, "/");
   if (path.posix.isAbsolute(specifier)) return undefined;
   const includingDirectory = normalizeWorkspacePath(path.relative(options.workspaceRoot, path.dirname(options.includingFile)));
   const spellings = path.posix.extname(specifier) ? [specifier] : [specifier, `${specifier}.h`];
-  for (const base of baseDirectories(includingDirectory, options.workspaceRoot, options.strategy)) {
+  for (const base of baseDirectories(includingDirectory, options.workspaceRoot, options.strategy, options.fileIndex)) {
     for (const spelling of spellings) {
       const candidate = path.posix.normalize(path.posix.join(base, spelling));
       if (candidate === ".." || candidate.startsWith("../")) continue;
-      if (workspaceFileExists(options.workspaceRoot, candidate)) return candidate;
+      if (workspaceFileExists(options.workspaceRoot, candidate, options.fileIndex)) return candidate;
     }
   }
   return undefined;
@@ -788,7 +758,7 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
 }
 
 /** The names the file uses that the header declares at file scope. */
-async function usedNames(facts: FileFacts, headerPath: string, reads: SourceReads | undefined): Promise<string[]> {
+async function usedNames(facts: FileFacts, headerPath: string, reads: (SourceReads & ListedFiles) | undefined): Promise<string[]> {
   let header: FileFacts;
   try {
     header = await fileFacts(headerPath, reads);
@@ -803,12 +773,12 @@ async function usedNames(facts: FileFacts, headerPath: string, reads: SourceRead
   return Array.from(names).sort();
 }
 
-async function toDependencies(facts: FileFacts, absolutePath: string, workspaceRoot: string, strategy: IncludeStrategy, reads: SourceReads | undefined): Promise<DependencyEntry[]> {
+async function toDependencies(facts: FileFacts, absolutePath: string, workspaceRoot: string, strategy: IncludeStrategy, reads: (SourceReads & ListedFiles) | undefined): Promise<DependencyEntry[]> {
   const dependencies = new Map<string, DependencyEntry>();
   for (const include of facts.includes) {
     const resolvedPath = include.system
       ? undefined
-      : resolveInclude({ includingFile: absolutePath, workspaceRoot, specifier: include.specifier, strategy });
+      : resolveInclude({ includingFile: absolutePath, workspaceRoot, specifier: include.specifier, strategy, fileIndex: reads });
     const key = `${include.specifier}:${resolvedPath ?? ""}`;
     if (dependencies.has(key)) continue;
     dependencies.set(key, {
@@ -825,7 +795,7 @@ async function toDependencies(facts: FileFacts, absolutePath: string, workspaceR
  * Analyzes one C or C++ file from its text, without the generator: its
  * symbols, its includes resolved under the strategy, and its program entry.
  */
-export async function analyzeCSource(options: { content: string; absolutePath: string; workspaceRoot: string; strategy?: IncludeStrategy; fileIndex?: SourceReads }): Promise<SourceAnalysisResult> {
+export async function analyzeCSource(options: { content: string; absolutePath: string; workspaceRoot: string; strategy?: IncludeStrategy; fileIndex?: SourceReads & ListedFiles }): Promise<SourceAnalysisResult> {
   const strategy = options.strategy ?? DEFAULT_INCLUDE_STRATEGY;
   const facts = await extractFacts(options.content, options.absolutePath);
   const result: SourceAnalysisResult = {
