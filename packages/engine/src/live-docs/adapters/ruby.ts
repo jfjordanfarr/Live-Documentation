@@ -1,8 +1,8 @@
-import { statSync } from "node:fs";
 import path from "node:path";
 
 import { compareText } from "../../tooling/compareText";
-import { readSourceText, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText } from "../../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -74,7 +74,7 @@ export const rubyAdapter: LanguageAdapter = {
     const { unrun, data } = await readTree("ruby", content, (root) => ({ unrun: rangesOf(root, UNRUN_NODES), data: rangesOf(root, DATA_NODES) }));
     const code = writtenOver(content, unrun);
     const symbols = extractSymbols(writtenOver(content, data));
-    const dependencies = extractDependencies(code, absolutePath, workspaceRoot);
+    const dependencies = extractDependencies(code, absolutePath, workspaceRoot, fileIndex);
     return hasMainGuard(code) ? { symbols, dependencies, program: {} } : { symbols, dependencies };
   }
 };
@@ -259,7 +259,7 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   return entries;
 }
 
-function extractDependencies(content: string, absolutePath: string, workspaceRoot: string): DependencyEntry[] {
+function extractDependencies(content: string, absolutePath: string, workspaceRoot: string, files: ListedFiles | undefined): DependencyEntry[] {
   const dependencies = new Map<string, DependencyEntry>();
   const lines = content.split(/\r?\n/);
   const directory = path.dirname(absolutePath);
@@ -274,7 +274,7 @@ function extractDependencies(content: string, absolutePath: string, workspaceRoo
       if (!dependencies.has(key)) {
         dependencies.set(key, {
           specifier: normalized,
-          resolvedPath: resolveRequirePath(directory, workspaceRoot, normalized, Boolean(relativeKeyword)),
+          resolvedPath: resolveRequirePath(directory, workspaceRoot, normalized, Boolean(relativeKeyword), files),
           symbols: [],
           kind: "import"
         });
@@ -346,7 +346,7 @@ function parseAttrSymbols(value: string): string[] {
     .map(symbol => symbol.replace(/\s+.*$/, ""));
 }
 
-function resolveRequirePath(directory: string, workspaceRoot: string, specifier: string, isRelative: boolean): string | undefined {
+function resolveRequirePath(directory: string, workspaceRoot: string, specifier: string, isRelative: boolean, files: ListedFiles | undefined): string | undefined {
   if (!isRelative) {
     return undefined;
   }
@@ -359,7 +359,7 @@ function resolveRequirePath(directory: string, workspaceRoot: string, specifier:
       continue;
     }
 
-    if (!isFile(candidate)) {
+    if (pathKind(candidate, files) !== "file") {
       continue;
     }
 
@@ -367,15 +367,6 @@ function resolveRequirePath(directory: string, workspaceRoot: string, specifier:
   }
 
   return undefined;
-}
-
-function isFile(candidate: string): boolean {
-  try {
-    return statSync(candidate).isFile();
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return false;
-  }
 }
 
 function parseRubyDocumentation(rawLines: string[]): SymbolDocumentation | undefined {

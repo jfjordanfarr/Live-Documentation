@@ -11,9 +11,12 @@
  *
  * @module
  */
-import { promises as fs } from "node:fs";
+import { promises as fs, readdirSync, statSync } from "node:fs";
+import path from "node:path";
 
+import { throwIfMachineFailure } from "./sourceText";
 import type { FileHost } from "./workspaceFiles";
+import type { FolderChildren, PathKind } from "./workspaceListing";
 
 /** A file's bytes, from the disk. */
 export async function readFileBytes(absolutePath: string): Promise<Uint8Array> {
@@ -30,6 +33,34 @@ export async function readFileHead(absolutePath: string, bytes: number): Promise
   } finally {
     await handle.close();
   }
+}
+
+/**
+ * What lies at a path on the disk, links followed: a file, a folder, or nothing. A failure of the machine's is thrown;
+ * any other (no such file, a name the disk cannot hold) is nothing there. For a reader called with no run's listing,
+ * as a reader's own tests call it (`pathKind` in `workspaceProbes.ts`).
+ */
+export function kindOnDisk(absolutePath: string): PathKind | undefined {
+  try {
+    const stats = statSync(absolutePath);
+    return stats.isFile() ? "file" : stats.isDirectory() ? "folder" : undefined;
+  } catch (error) {
+    throwIfMachineFailure(error);
+    return undefined;
+  }
+}
+
+/** A folder's files and folders on the disk, by name, links followed; nothing when it is no folder (`folderChildren`). */
+export function childrenOnDisk(absoluteFolder: string): FolderChildren | undefined {
+  if (kindOnDisk(absoluteFolder) !== "folder") return undefined;
+  const files = new Set<string>();
+  const folders = new Set<string>();
+  for (const entry of readdirSync(absoluteFolder, { withFileTypes: true })) {
+    const kind = entry.isSymbolicLink() ? kindOnDisk(path.join(absoluteFolder, entry.name)) : entry.isDirectory() ? "folder" : entry.isFile() ? "file" : undefined;
+    if (kind === "file") files.add(entry.name);
+    else if (kind === "folder") folders.add(entry.name);
+  }
+  return { files, folders };
 }
 
 /** The disk, as Node reads it. */

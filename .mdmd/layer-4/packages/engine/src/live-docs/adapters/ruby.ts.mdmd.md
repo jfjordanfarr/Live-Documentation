@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/ruby.ts`
-- Generated At: 2026-11-21T21:13:43.589Z
+- Generated At: 2026-11-22T04:54:28.722Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,6 @@ the guard, the data and the heredocs alone for the symbols, whose documentation 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`treeSitter.COMMENT_NODES`](./treeSitter.ts.mdmd.md#symbol-comment_nodes)
@@ -55,7 +54,8 @@ the guard, the data and the heredocs alone for the symbols, whose documentation 
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

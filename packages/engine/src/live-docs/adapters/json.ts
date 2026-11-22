@@ -24,13 +24,13 @@
  * @module
  */
 
-import { statSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import { readSourceReading, readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { type ListedFiles, pathKind } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
 import { isToolingFile } from "../openings";
@@ -409,7 +409,7 @@ function sourcesOf(built: string): string[] {
  * three, and TypeScript's own reading of what it was given is the same as before (since 2026-11-22: until then the host
  * read the disk with Node's `readFileSync`, which a page has not, and a second time beside the run's read of the file).
  */
-async function compilerPaths(directory: string, reads: SourceReads | undefined): Promise<{ outDir: string; rootDirs: string[] } | undefined> {
+async function compilerPaths(directory: string, reads: (SourceReads & ListedFiles) | undefined): Promise<{ outDir: string; rootDirs: string[] } | undefined> {
   const tsconfig = path.join(directory, "tsconfig.json");
   /** Each file TypeScript asked for and was read ahead: its text, or nothing where there is no such file or no text. */
   const given = new Map<string, string | undefined>();
@@ -430,7 +430,8 @@ async function compilerPaths(directory: string, reads: SourceReads | undefined):
       // history must not, and which is undefined where TypeScript runs without Node, as in a page, where the read threw.
       useCaseSensitiveFileNames: true,
       readDirectory: () => [],
-      fileExists: (file) => kept(() => statSync(file).isFile(), false),
+      // Asked of the run's listing (2026-11-22): what TypeScript may read is what the scan keeps.
+      fileExists: (file) => kept(() => pathKind(file, reads) === "file", false),
       readFile: (file) => {
         if (!given.has(file)) wanted.add(file);
         return given.get(file);

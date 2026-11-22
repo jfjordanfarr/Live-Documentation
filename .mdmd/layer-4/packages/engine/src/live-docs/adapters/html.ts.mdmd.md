@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/html.ts`
-- Generated At: 2026-11-21T21:13:43.130Z
+- Generated At: 2026-11-22T04:54:28.462Z
 
 ## Authored
 ### Purpose
@@ -42,7 +42,7 @@ of 2026-11-21, `commentGuard.test.ts`). A `<noscript>`'s text, raw to a browser 
 
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L411)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L409)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -51,7 +51,7 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L432)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L430)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
@@ -60,7 +60,6 @@ Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such a
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `statSync`
 - `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`spaces.inSpaces`](./spaces.ts.mdmd.md#symbol-inspaces)
@@ -69,7 +68,8 @@ Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such a
 - [`compareText`](../../tooling/compareText.ts.mdmd.md#symbol-comparetext)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`sourceText.readSourceText`](../../tooling/sourceText.ts.mdmd.md#symbol-readsourcetext)
-- [`sourceText.throwIfMachineFailure`](../../tooling/sourceText.ts.mdmd.md#symbol-throwifmachinefailure)
+- [`workspaceProbes.ListedFiles`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-listedfiles)
+- [`workspaceProbes.pathKind`](../../tooling/workspaceProbes.ts.mdmd.md#symbol-pathkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

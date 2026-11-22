@@ -52,7 +52,9 @@ function installed(nodeModules: string, owner: string, into: Installed[] = []): 
 function importedByNode(packages: readonly Installed[]): Array<string | undefined> {
   const asked = JSON.stringify(packages.map(({ name, owner }) => [name, pathToFileURL(path.join(owner, "consumer.mjs")).href]));
   const script = `const asked = JSON.parse(process.argv[1]); console.log(JSON.stringify(asked.map(([name, parent]) => { try { return import.meta.resolve(name, parent); } catch { return null; } })));`;
-  const answers = JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script, asked], { encoding: "utf8", maxBuffer: 1 << 26 })) as Array<string | null>;
+  // Without `--experimental-import-meta-resolve`, Node ignores `import.meta.resolve`'s second argument and resolves from
+  // the asking script, so that a nested copy was answered with the top-level copy's file (found 2026-11-22).
+  const answers = JSON.parse(execFileSync(process.execPath, ["--experimental-import-meta-resolve", "--no-warnings", "--input-type=module", "-e", script, asked], { encoding: "utf8", maxBuffer: 1 << 26 })) as Array<string | null>;
   return answers.map((url) => (url && url.startsWith("file:") ? fileURLToPath(url) : undefined));
 }
 
@@ -68,10 +70,6 @@ function requiredByNode({ name, owner }: Installed): string | undefined {
 function causeOf(found: Installed, byNode: readonly string[]): string {
   const { manifest } = found;
   if (isBuiltin(found.name)) return "a name of one of Node's own modules: Node loads its own";
-  // Measured on 2026-11-22: asked from the folder that holds a nested copy, and from inside the copy itself, Node 26's
-  // `import.meta.resolve` gives the top-level copy's file of the same name (`eslint-visitor-keys` 5.0.1 nested under
-  // `eslint` resolves to 3.4.3's `lib/index.js`), so for a nested copy the import side asks about another package.
-  if (found.owner !== REPO) return "a nested copy: Node's ESM resolver answers with the top-level copy's file";
   const exported = manifest.exports;
   if (exported === undefined) {
     if (typeof manifest.main !== "string") return "no exports and no main: Node takes index.js";

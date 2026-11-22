@@ -26,13 +26,13 @@
  * entry point; the guard inside a function or a class, or in a string or a
  * comment, is not.
  */
-import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 import { pythonSyntax } from "../../languages";
 import { compareText } from "../../tooling/compareText";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import { readSourceText, type SourceReads, throwIfMachineFailure } from "../../tooling/sourceText";
+import { readSourceText, type SourceReads } from "../../tooling/sourceText";
+import { folderChildren, type ListedFiles } from "../../tooling/workspaceProbes";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseDocstring } from "./python.docstring";
@@ -397,12 +397,11 @@ let factsRun: WorkspaceFileIndex | undefined;
 function beginRun(fileIndex: WorkspaceFileIndex | undefined): void {
   if (fileIndex === undefined || fileIndex !== factsRun) {
     factsCache.clear();
-    directoryCache.clear();
   }
   factsRun = fileIndex;
 }
 
-async function moduleFacts(absolutePath: string, reads: SourceReads | undefined): Promise<ModuleFacts> {
+async function moduleFacts(absolutePath: string, reads: (SourceReads & ListedFiles) | undefined): Promise<ModuleFacts> {
   const cached = factsCache.get(absolutePath);
   if (cached) return cached;
   const facts = readSourceText(absolutePath, reads).then(extractFacts);
@@ -410,77 +409,57 @@ async function moduleFacts(absolutePath: string, reads: SourceReads | undefined)
   return facts;
 }
 
-const directoryCache = new Map<string, { mtimeMs: number; entries: Set<string> }>();
-
-/** The entries of a directory, cached until the directory changes. */
-function directoryEntries(directory: string): Set<string> {
-  let mtimeMs: number;
-  try {
-    mtimeMs = statSync(directory).mtimeMs;
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return new Set();
-  }
-  const cached = directoryCache.get(directory);
-  if (cached && cached.mtimeMs === mtimeMs) return cached.entries;
-  const entries = new Set(readdirSync(directory));
-  directoryCache.set(directory, { mtimeMs, entries });
-  return entries;
-}
-
-/** Whether `candidate` exists as a file with exactly that name: Python imports are case-sensitive even where the filesystem is not. */
-function isFile(candidate: string): boolean {
-  if (!directoryEntries(path.dirname(candidate)).has(path.basename(candidate))) return false;
-  try {
-    return statSync(candidate).isFile();
-  } catch (error) {
-    throwIfMachineFailure(error);
-    return false;
-  }
+/**
+ * Whether `candidate` exists as a file with exactly that name: Python imports are case-sensitive even where the
+ * filesystem is not. Asked of the run's listing (`folderChildren`), whose names are as written; since 2026-11-22, when
+ * it stopped asking the disk for each folder's entries and each file's kind.
+ */
+function isFile(candidate: string, files: ListedFiles | undefined): boolean {
+  return folderChildren(path.dirname(candidate), files)?.files.has(path.basename(candidate)) === true;
 }
 
 /** The file for module `parts` under `base`: `a/b.py`, else `a/b/__init__.py`; `base/__init__.py` for no parts. */
-function probeModule(base: string, parts: string[]): string | undefined {
+function probeModule(base: string, parts: string[], files: ListedFiles | undefined): string | undefined {
   if (parts.length === 0) {
     const init = path.join(base, "__init__.py");
-    return isFile(init) ? init : undefined;
+    return isFile(init, files) ? init : undefined;
   }
   const stem = path.join(base, ...parts);
-  if (isFile(`${stem}.py`)) return `${stem}.py`;
+  if (isFile(`${stem}.py`, files)) return `${stem}.py`;
   const init = path.join(stem, "__init__.py");
-  return isFile(init) ? init : undefined;
+  return isFile(init, files) ? init : undefined;
 }
 
 /** Where an absolute import is looked up from `importer`, in order. */
-function importRoots(importer: string, workspaceRoot: string): string[] {
+function importRoots(importer: string, workspaceRoot: string, files: ListedFiles | undefined): string[] {
   const directory = path.dirname(importer);
   const roots     = [directory];
-  if (isFile(path.join(directory, "__init__.py"))) {
+  if (isFile(path.join(directory, "__init__.py"), files)) {
     let top = directory;
-    while (path.dirname(top) !== top && isFile(path.join(path.dirname(top), "__init__.py"))) top = path.dirname(top);
+    while (path.dirname(top) !== top && isFile(path.join(path.dirname(top), "__init__.py"), files)) top = path.dirname(top);
     roots.push(path.dirname(top));
   }
   roots.push(workspaceRoot, path.join(workspaceRoot, "src"));
   return Array.from(new Set(roots));
 }
 
-function resolveModule(entry: ModuleImport, importer: string, workspaceRoot: string): string | undefined {
+function resolveModule(entry: ModuleImport, importer: string, workspaceRoot: string, files: ListedFiles | undefined): string | undefined {
   if (entry.level > 0) {
     let base = path.dirname(importer);
     for (let up = 1; up < entry.level; up += 1) base = path.dirname(base);
-    return probeModule(base, entry.module);
+    return probeModule(base, entry.module, files);
   }
   if (entry.module[0] === FUTURE_MODULE) return undefined;
-  for (const root of importRoots(importer, workspaceRoot)) {
-    const found = probeModule(root, entry.module);
+  for (const root of importRoots(importer, workspaceRoot, files)) {
+    const found = probeModule(root, entry.module, files);
     if (found) return found;
   }
   return undefined;
 }
 
 /** For a package's `__init__.py`, the file of its submodule `name`; otherwise nothing. */
-function submoduleOf(moduleFile: string, name: string): string | undefined {
-  return path.basename(moduleFile) === "__init__.py" ? probeModule(path.dirname(moduleFile), [name]) : undefined;
+function submoduleOf(moduleFile: string, name: string, files: ListedFiles | undefined): string | undefined {
+  return path.basename(moduleFile) === "__init__.py" ? probeModule(path.dirname(moduleFile), [name], files) : undefined;
 }
 
 interface Origin {
@@ -489,13 +468,13 @@ interface Origin {
 }
 
 /** The public names of a module: `__all__` when it says, else every bound name without a leading underscore. */
-async function publicNames(moduleFile: string, reads: SourceReads | undefined): Promise<Set<string>> {
+async function publicNames(moduleFile: string, reads: (SourceReads & ListedFiles) | undefined): Promise<Set<string>> {
   const facts = await moduleFacts(moduleFile, reads);
   return new Set(facts.all ?? Array.from(facts.boundNames).filter((name) => !name.startsWith("_")));
 }
 
 /** Where `name`, as exported by `moduleFile`, is defined: the module itself, a submodule, or the file a re-export leads to. */
-async function originOf(moduleFile: string, name: string, workspaceRoot: string, reads: SourceReads | undefined, seen = new Set<string>()): Promise<Origin | undefined> {
+async function originOf(moduleFile: string, name: string, workspaceRoot: string, reads: (SourceReads & ListedFiles) | undefined, seen = new Set<string>()): Promise<Origin | undefined> {
   const key = `${moduleFile}|${name}`;
   if (seen.has(key)) return undefined;
   seen.add(key);
@@ -509,23 +488,23 @@ async function originOf(moduleFile: string, name: string, workspaceRoot: string,
     if (entry.names) {
       const imported = entry.names.find((candidate) => candidate.alias === name);
       if (!imported) continue;
-      const target = resolveModule(entry, moduleFile, workspaceRoot);
+      const target = resolveModule(entry, moduleFile, workspaceRoot, reads);
       if (!target) return undefined;
-      const submodule = submoduleOf(target, imported.name);
+      const submodule = submoduleOf(target, imported.name, reads);
       return submodule ? { file: submodule } : originOf(target, imported.name, workspaceRoot, reads, seen);
     }
     if ((entry.alias ?? entry.module[0]) === name) {
-      const target = resolveModule(entry, moduleFile, workspaceRoot);
+      const target = resolveModule(entry, moduleFile, workspaceRoot, reads);
       return target ? { file: target } : undefined;
     }
   }
 
-  const submodule = submoduleOf(moduleFile, name);
+  const submodule = submoduleOf(moduleFile, name, reads);
   if (submodule) return { file: submodule };
 
   for (const entry of facts.imports) {
     if (!entry.wildcard) continue;
-    const target = resolveModule(entry, moduleFile, workspaceRoot);
+    const target = resolveModule(entry, moduleFile, workspaceRoot, reads);
     if (!target || !(await publicNames(target, reads)).has(name)) continue;
     const origin = await originOf(target, name, workspaceRoot, reads, seen);
     if (origin) return origin;
@@ -591,7 +570,7 @@ async function toDependencies(
   facts: ModuleFacts,
   absolutePath: string,
   workspaceRoot: string,
-  reads: SourceReads | undefined
+  reads: (SourceReads & ListedFiles) | undefined
 ): Promise<{ dependencies: DependencyEntry[]; bindings: Map<string, ModuleBinding> }> {
   const byFile   = new Map<string, { specifier?: string; symbols: Set<string> }>();
   const external = new Map<string, Set<string>>();
@@ -611,7 +590,7 @@ async function toDependencies(
   for (const entry of facts.imports) {
     if (entry.level === 0 && entry.module[0] === FUTURE_MODULE) continue;
     const specifier  = specifierOf(entry);
-    const moduleFile = resolveModule(entry, absolutePath, workspaceRoot);
+    const moduleFile = resolveModule(entry, absolutePath, workspaceRoot, reads);
     if (!moduleFile) {
       const symbols = external.get(specifier) ?? new Set<string>();
       for (const name of entry.names ?? []) symbols.add(name.name);
@@ -625,7 +604,7 @@ async function toDependencies(
       continue;
     }
     for (const imported of entry.names) {
-      const submodule = submoduleOf(moduleFile, imported.name);
+      const submodule = submoduleOf(moduleFile, imported.name, reads);
       if (submodule) {
         link(submodule, undefined, `${specifier}.${imported.name}`);
         bindings.set(imported.alias, { module: [...entry.module, imported.name], file: submodule, alias: true });
