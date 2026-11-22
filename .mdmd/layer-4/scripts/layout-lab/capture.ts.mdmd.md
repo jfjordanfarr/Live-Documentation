@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `scripts/layout-lab/capture.ts`
-- Generated At: 2026-11-22T07:12:57.450Z
+- Generated At: 2026-11-22T20:12:49.828Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,8 @@ Since 2026-11-08 the capture records each card's `titleRoom` (the controls its h
 Since 2026-11-13 ([the milestone after Turn 3](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-13/2026-11-13.1.record.md#turn-3)) a fixed-slot row whose description is not shown is short: the capture records it (`short`) and the slot's short height, and the card model gives such a row that height.
 
 Since 2026-11-15 ([November 15, Turn 1](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/2026-11-15.1.record.md#turn-1)) the capture reads only a drawn directory's label height from the page, for the drift check: the label is a strip of constant height, so its text, its controls' column and its padding, which the model laid out before, are no longer recorded. A capture made before that day still carries them and still loads.
+
+Since 2026-11-22 the capture makes each kind of change to the page once for the whole picture. Two readings need the page changed first: a "more" or "read the whole file" control is read while shown, and a chip's own box while aligned to its line's start. Each was changed, read and put back where the walk met it, card by card, and every such write made the next read recompute the map: on the repository's pictures of 114 and 132 cards the capture took 21 and 22 s where the page had been drawn in 5. Now the controls the walk will meet are found first, in its own order, shown together, read and hidden again, and the chips likewise; the capture takes 6 to 7 s there and reads what it read, compared whole on the four deck scopes on one page back to back, the fonts merely listed in another order ([what was measured](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Probes/gate-six-cases/README.md)). The natural widths and the probes had been read together since they were written, for the same reason.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -120,7 +122,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L599)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L639)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -128,7 +130,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L605)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L645)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.
