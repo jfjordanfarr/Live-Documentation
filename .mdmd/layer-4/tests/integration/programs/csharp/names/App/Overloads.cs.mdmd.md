@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/programs/csharp/names/App/Overloads.cs`
-- Generated At: 2026-11-22T06:21:10.878Z
+- Generated At: 2026-11-22T07:11:41.151Z
 
 ## Authored
 ### Purpose
@@ -75,7 +75,7 @@ Overloads told apart only by what their parameters' types are written with.
 #### `Opt (method overload 2)` {#symbol-opt-method-overload-2}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/csharp/names/App/Overloads.cs#L18)
-- Parameters: `a`: [`Mixer`](#symbol-mixer-class)
+- Parameters: `a`: [`Mixer`](#symbol-mixer-class); `rest`: [`Mixer`](#symbol-mixer-class)
 
 #### `Out (method overload 1)` {#symbol-out-method-overload-1}
 - Type: method
@@ -128,9 +128,21 @@ Names one overload each, within its own file, as the compiler resolves it:
 - `Mixer.Out(ref Mixer)`
 - [`Mixer.Take(Box<Box<Mixer>>)`](#symbol-take-method-overload-2)
 - [`Mixer.Take(Box<Mixer>)`](#symbol-take-method-overload-1)
+
+#### `Gatherer` {#symbol-gatherer}
+- Type: class
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/names/App/Overloads.cs#L39)
+
+##### `Gatherer` — Summary
+Uses another file's type only as the type of a `params` parameter.
+
+#### `Gather` {#symbol-gather}
+- Type: method
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/names/App/Overloads.cs#L41)
+- Parameters: `parts`: [`Derived`](./Derived.cs.mdmd.md#symbol-derived)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Derived`](./Derived.cs.mdmd.md#symbol-derived)
 <!-- LIVE-DOC:END Dependencies -->

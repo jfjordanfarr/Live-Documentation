@@ -532,35 +532,46 @@ function typeReferencesOf(node: SyntaxNode | null, role: TypeReference["role"], 
   return references;
 }
 
+/** A parameter as written: its modifiers (`ref`, `out`, `this`, `params`), its type and its name. */
+interface WrittenParameter {
+  modifiers: string[];
+  type:      SyntaxNode | null;
+  name:      string | undefined;
+}
+
 /**
- * A parameter list's parameters as written, each with its modifiers (`ref Calc`, `out Calc`, `this Calc`) and its type,
- * which tell one overload from another. The grammar reads a `params` parameter not as a parameter but as the keyword,
- * its array type and its name, each a child of the list; it is kept as `params` and the type.
+ * A parameter list's parameters. The grammar reads a `params` parameter not as a parameter but as the keyword, its
+ * array type and its name, each a child of the list; they are read here as the one parameter they are, so that its
+ * type is a use like any other parameter's and its overload is told from another by it.
  */
-function declaredParameters(parameterList: SyntaxNode): string[] {
-  const parameters: string[] = [];
-  let params = false;
-  for (const child of parameterList.children) {
+function writtenParameters(parameterList: SyntaxNode | null): WrittenParameter[] {
+  const parameters: WrittenParameter[] = [];
+  let pending: WrittenParameter | undefined;
+  for (const child of parameterList?.children ?? []) {
     if (!child) continue;
-    if (child.type === "params") params = true;
+    if (child.type === "params") pending = { modifiers: ["params"], type: null, name: undefined };
     else if (child.type === "parameter") {
-      const modifiers = child.namedChildren.filter((part) => part.type === "modifier").map((part) => part.text);
-      parameters.push([...modifiers, fieldText(child, "type")].join(" "));
-    } else if (params && child.isNamed) {
-      parameters.push(`params ${child.text.replace(/\s+/gu, "")}`);
-      params = false;
+      parameters.push({ modifiers: child.namedChildren.filter((part) => part.type === "modifier").map((part) => part.text), type: child.childForFieldName("type"), name: child.childForFieldName("name")?.text });
+    } else if (pending && child.isNamed) {
+      if (pending.type === null) {
+        pending.type = child;
+        parameters.push(pending);
+      } else {
+        pending.name = child.text;
+        pending = undefined;
+      }
     }
   }
   return parameters;
 }
 
+/** A parameter list's parameters as {@link parameterShape} compares them: `ref Calc`, `params Calc[]`. */
+function declaredParameters(parameterList: SyntaxNode): string[] {
+  return writtenParameters(parameterList).map((parameter) => [...parameter.modifiers, parameter.type?.text.replace(/\s+/gu, "") ?? ""].join(" "));
+}
+
 function parameterReferences(parameterList: SyntaxNode | null): TypeReference[] {
-  const references: TypeReference[] = [];
-  for (const parameter of parameterList?.namedChildren ?? []) {
-    if (parameter.type !== "parameter") continue;
-    references.push(...typeReferencesOf(parameter.childForFieldName("type"), "parameter", parameter.childForFieldName("name")?.text));
-  }
-  return references;
+  return writtenParameters(parameterList).flatMap((parameter) => typeReferencesOf(parameter.type, "parameter", parameter.name));
 }
 
 function baseListReferences(baseList: SyntaxNode, kind: string): TypeReference[] {

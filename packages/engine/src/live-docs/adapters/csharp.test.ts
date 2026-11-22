@@ -105,6 +105,28 @@ describe("csharpAdapter", () => {
         { name: "Item",    role: "parameter", parameterName: "items" }
       ]);
     });
+
+    it("records a params parameter's type, which the grammar reads as three children of the list", async () => {
+      await write("Service.cs", [
+        "namespace Shop;",
+        "public class Service",
+        "{",
+        "    public void Pay(ref Order order, params Item[] items) { }",
+        "    public void Each(this Order order, params List<Item>[] lists) { }",
+        "}"
+      ]);
+
+      const { symbols } = await analyze("Service.cs");
+
+      expect(symbols.find((symbol) => symbol.name === "Pay")?.typeReferences).toEqual([
+        { name: "Order", role: "parameter", parameterName: "order" },
+        { name: "Item",  role: "parameter", parameterName: "items" }
+      ]);
+      expect(symbols.find((symbol) => symbol.name === "Each")?.typeReferences).toEqual([
+        { name: "Order", role: "parameter", parameterName: "order" },
+        { name: "Item",  role: "parameter", parameterName: "lists" }
+      ]);
+    });
   });
 
   describe("dependencies", () => {

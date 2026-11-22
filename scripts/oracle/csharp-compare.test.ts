@@ -118,7 +118,8 @@ describe("the pairs a documentation reference makes", () => {
         at("Far", "unresolved", []),
         at("L::Calc", "unparsed", []),
         at("M::Calc", "unparsed", []),
-        at("Unread", "resolved", [named("D.cs", 1)], 40)
+        at("Unread", "resolved", [named("D.cs", 1)], 40),
+        at("Unkept", "resolved", [named("D.cs", 2)])
       ]
     };
     const reader = [
@@ -139,11 +140,11 @@ describe("the pairs a documentation reference makes", () => {
       { from: "A.cs", on: 2, written: "M::Calc", targets: [] },
       { from: "A.cs", on: 2, written: "Inactive", targets: [{ file: "K.cs", line: 1 }] }
     ];
-    const relation = compareDocumentation(record, reader, (_from, to) => to === "I.cs");
+    const relation = compareDocumentation(record, reader, (_from, to) => to === "I.cs", new Set(["A.cs:2", "A.cs:5"]));
     expect(relation.pairs).toEqual(["A.cs → B.cs", "A.cs → F.cs", "A.cs → H.cs", "A.cs → I.cs", "A.cs → K.cs"]);
     // Both, Here on line 2, Calc.Run (every candidate of an ambiguous one), Space (a namespace, linked to none) and M::Calc.
     expect(relation.agree).toBe(5);
-    expect(relation.compared).toBe(17);
+    expect(relation.compared).toBe(18);
     expect(relation.byCause).toEqual({
       [DOCUMENTATION_CAUSES.elsewhere]:    ["A.cs:1 <see> Here: the compiler A.cs:12; the reader A.cs:9", "A.cs:1 <see> Moved: the compiler B.cs:13; the reader F.cs:1"],
       [DOCUMENTATION_CAUSES.more]:         ["A.cs:1 <see> Calc.Mix(Calc[]): the compiler B.cs:5; the reader B.cs:5, B.cs:6"],
@@ -155,6 +156,7 @@ describe("the pairs a documentation reference makes", () => {
       [DOCUMENTATION_CAUSES.transitive]:   ["A.cs:1 <see> Far: the compiler nothing; the reader I.cs:1"],
       [DOCUMENTATION_CAUSES.unparsed]:     ["A.cs:1 <see> L::Calc: the compiler cannot parse it; the reader B.cs:3"],
       [DOCUMENTATION_CAUSES.notRead]:      ["A.cs:1 <see> Unread"],
+      [DOCUMENTATION_CAUSES.unkept]:       ["A.cs:1 <see> Unkept"],
       [DOCUMENTATION_CAUSES.unwritten]:    ["A.cs:2 Inactive: the reader K.cs:1"]
     });
   });
