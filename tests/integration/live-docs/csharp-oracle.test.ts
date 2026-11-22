@@ -66,7 +66,9 @@ const MEASURED_MISSES: Record<string, string[]> = {
  * pairs hide a wrong overload): `agree` counts those that name the same declarations, and every one on which they part
  * is in `differences`, by cause (`DOCUMENTATION_CAUSES`), so that a difference mended in silence, or a new one, fails
  * here. `names/App/Overloads.cs`, written by that leg, names overloads told apart only by an array's mark or rank, a
- * modifier, a type's arguments or `params`, references no overload answers, and a name the compiler cannot parse.
+ * modifier, a type's arguments or `params`, references no overload answers, and a name the compiler cannot parse;
+ * `names/App/Inheritance.cs`, written by the next, members named through a type that only inherits them, which the
+ * compiler binds to nothing, and a generic's members named with its type parameters renamed, which it binds by position.
  */
 const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; authorOnly: string[]; drawn: string[]; related: string[]; agree: number; differences: string[] }> = {
   "programs/csharp/basic":  { references: [], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 0, differences: [] },
@@ -94,6 +96,19 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs:12 <permission> Derived: resolved, NamedType App.Derived in App/Derived.cs",
       "App/Documented.cs:15 <inheritdoc> Base.Gadget: resolved, Property App.Base.Gadget in App/Base.cs",
       "App/Documented.cs:16 <exception> Lib.Thing: unresolved",
+      "App/Inheritance.cs:13 <see> Shrink(Parent): unresolved",
+      "App/Inheritance.cs:13 <see> Layout: unresolved",
+      "App/Inheritance.cs:13 <see> Grow(Parent): unresolved",
+      "App/Inheritance.cs:13 <see> Grow(Parent[]): resolved, Method App.Child.Grow(App.Parent[]) in App/Inheritance.cs",
+      "App/Inheritance.cs:29 <see> Child.Shrink(Parent): unresolved",
+      "App/Inheritance.cs:29 <see> Child.Shrink: unresolved",
+      "App/Inheritance.cs:29 <see> Child.Layout: unresolved",
+      "App/Inheritance.cs:29 <see> Child.Grow(Parent): unresolved",
+      "App/Inheritance.cs:30 <see> Parent.Shrink(Parent): resolved, Method App.Parent.Shrink(App.Parent) in App/Inheritance.cs",
+      "App/Inheritance.cs:30 <see> Child.Grow(Parent[]): resolved, Method App.Child.Grow(App.Parent[]) in App/Inheritance.cs",
+      "App/Inheritance.cs:32 <see> Holder{X}.Put(X): resolved, Method App.Holder<T>.Put(T) in App/Inheritance.cs",
+      "App/Inheritance.cs:32 <see> Holder{X}.Echo{U}(U): resolved, Method App.Holder<T>.Echo<M>(M) in App/Inheritance.cs",
+      "App/Inheritance.cs:32 <see> Holder{T}.Put(T): resolved, Method App.Holder<T>.Put(T) in App/Inheritance.cs",
       "App/Overloads.cs:23 <see> Mixer: resolved, NamedType App.Mixer in App/Overloads.cs",
       "App/Overloads.cs:28 <see> Mixer.Mix(Mixer[]): resolved, Method App.Mixer.Mix(App.Mixer[]) in App/Overloads.cs",
       "App/Overloads.cs:28 <see> Mixer.Mix(ref Mixer): resolved, Method App.Mixer.Mix(ref App.Mixer) in App/Overloads.cs",
@@ -130,7 +145,7 @@ const DOCUMENTATION: Record<string, { references: string[]; alsoCode: string[]; 
       "App/Documented.cs → App/Runner.Text.cs",
       "App/Documented.cs → App/Runner.cs"
     ],
-    agree: 30,
+    agree: 43,
     differences: []
   },
   "programs/csharp/rosetta":  { references: ["src/Processor/Processor.cs:33 <exception> ArgumentException: unresolved"], alsoCode: [], authorOnly: [], drawn: [], related: [], agree: 1, differences: [] },

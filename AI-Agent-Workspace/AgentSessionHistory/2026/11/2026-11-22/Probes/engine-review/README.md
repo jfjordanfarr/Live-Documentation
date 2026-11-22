@@ -223,3 +223,78 @@ Every malformed one exits 1 with a message. None reads standard input: each was 
 - **Item 5.** What the merges between branches may have broken was not examined.
 - **The registers.** Only the C# oracle's documentation comparison and the parity ledger were read for this. The PowerShell and SQL ledgers and the page check's `differences.json` were not.
 - **Stated bounds.** Each answer was not checked against its stated bound.
+
+## 2026-11-22, last: the third pass
+
+This pass reviews `3cd947724`, the day's tip, merged in with a plain merge and no conflict. Every finding of the first two passes had been mended and merged by then. The pass gated one rebuild of the history and the day's landing on `main`.
+
+**Nothing found stops either of them.**
+
+- **The history.** The history and a checkout agree on a made repository whose files carry a plain object's member names. No import resolved by a kept file was lost for a reason other than "left out".
+- **The two new findings.** Both are in the C# reader's resolution of an author's documentation reference. That relation is held apart from the edges, so neither moves a use, a path or a reachability answer. Each does show a person a wrong link, or a missing one, in a symbol's Links list.
+
+### Findings of the third pass, in rank order
+
+#### A wrong fact shown: a member named through a type that only inherits it is linked; the compiler finds nothing
+
+- **Input.** Two projects. In `Lib`, `Derived : Base`. `Derived` declares `Grow(Calc[])`, and `Base` declares `Grow(Calc)`, `Shrink(Calc)` and a property `Layout`. `App` names the members through `Derived`.
+- **The C# compiler's answer.** It resolves none of these references:
+  - `Lib.Derived.Grow(Lib.Calc)`;
+  - `Lib.Derived.Shrink(Lib.Calc)`;
+  - `Lib.Derived.Shrink`;
+  - `Lib.Derived.Layout`.
+
+  Two runs agree on this. `scripts/oracle/csharp-compiler.cs` (Roslyn 4.12, without framework references) gives it, with the same references inside `Lib` too. So does `dotnet build` with the framework and `GenerateDocumentationFile`, which warns CS1574 "could not be resolved" for each.
+- **The reader's answer.** It links each one to `Base`'s declaration.
+- **Why.** The reader's stated rule says the opposite of the compiler: "A member named through its type (`Base.Gadget`) is found where the type inherits it too". So does its own case in `csharp.test.ts` ("Named through its type, an inherited member is found": `Derived.Layout`), and so does the day's new fall-back to the base types' overloads. None of the three was held to the compiler on such a reference. The mended oracle reports these as "the compiler resolves the reference to nothing, and the reader links it".
+- **Test.** `packages/engine/src/live-docs/adapters/csharp.cref-inherited-member.test.ts`, 4 red. Two controls are green: `Derived`'s own `Grow(Lib.Calc[])`, and `Shrink` through `Base`. The existing case in `csharp.test.ts` will need to change with the mend.
+
+#### A link the author made is missing: a reference that renames a generic's type parameter is left as text
+
+- **Input.** `Lib.Calc.Echo{U}(U)` for `Echo<T>(T)`, and `Lib.Box{X}.Put(X)` for `Box<T>.Put(T)`.
+- **The compiler's answer.** It binds both, by the type parameter's position. The oracle gives this, and `dotnet build` raises no warning.
+- **The reader's answer.** It links nothing.
+- **Why.** `parameterShape` compares the written name, so `X` is not `T` to it.
+- **Test.** `packages/engine/src/live-docs/adapters/csharp.cref-renamed-type-parameters.test.ts`, 2 red. The spellings as declared are green.
+
+### Attacked and held in the third pass
+
+**What a scan leaves out is never read.** A made workspace held excluded `generated/api.ts` and `generated/types.ts`. Five kept files imported them in every form the reader takes:
+- `import` with and without `.js`;
+- a dynamic `import()`;
+- `export *`;
+- a re-export chain through a kept barrel;
+- an absent `./gone` and `./missing`.
+
+The docs label each as written. The run's notices count five imports and two re-exports-of-all, by file and specifier, which is what I counted by hand.
+
+For a kept file, the resolver's candidates are the same strings on the listing as on the disk: a `.js` specifier naming its `.ts` source, an `index` file, the `@/` and `~/` aliases. The listing and the disk differ only for:
+- a path the scan does not keep;
+- a path reached through a symbolic link to a folder (the walk does not follow one);
+- a path outside the workspace.
+
+The second pass recorded each of these as a broken link at the base, not a resolved import. One older gap was seen, not new: `require("./nothere")` in a TypeScript file is read as no dependency at all.
+
+**The graph's files keyed with no prototype.** A made git repository of two commits had files named `__proto__`, `constructor`, `toString`, `hasOwnProperty` and `valueOf`, `src/__proto__.ts` and `src/constructor.ts`, with a configuration naming the root-level ones.
+- The history's paths, and its last step's files with their dependencies, equal a checkout's index file for file.
+- `inspect` answers to and from them: `--reachable`, `--to`, `--direction both --json` and `--groups --json`.
+- `lint` validates all eleven.
+- The board was not exercised: the made board was not in its format.
+- The Explorer's built bundle was not tried.
+
+**The author's reference as mended.** Each of these agrees with the compiler, declaration by declaration:
+- overloads told apart by `in`, by `ref readonly`, by `ref`, by array and by `params`;
+- `out` written where the overload takes `ref`: nothing on both sides;
+- a nullable annotation `Lib.Calc?` on a reference type;
+- an extension method, named with its `this` parameter left off;
+- a method of a generic type named through its own type parameter;
+- `Box{X}.Put(Lib.Calc)`.
+
+**The oracle's register.** `csharp-oracle.test.ts` now holds each documentation difference by cause and entry, so a new one fails. `framework` is filed only where a parameter writes a framework keyword or a type the folder does not declare. Nothing was found that would accept a new miss silently.
+
+### Not reached in the third pass
+
+- **The manifest reader as rewritten** (item 3).
+- **The path's new rule** (item 5): three nested ends, the scan root as an end, a directory whose only file is the other end, and the JSON against the text.
+- **Item 6:** the merges between branches, the PowerShell and SQL ledgers, the page check's `differences.json`, and each answer against its stated bound.
+- **The Explorer's lookups and the page's built bundle** with a file named `__proto__`.
