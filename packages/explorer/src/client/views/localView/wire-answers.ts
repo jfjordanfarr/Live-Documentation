@@ -426,10 +426,7 @@ export class WireAnswers {
     if (!press || press.pointerId !== event.pointerId) return;
     this.press = null;
     if (!this.host.enabled() || Math.hypot(event.clientX - press.x, event.clientY - press.y) > PRESS_SLOP) return;
-    // The wire pressed, or, where the press itself made the picture draw its wires again, the wire that stands under
-    // the release: the press did not travel, so it is the same wire's place.
-    const band = press.band?.isConnected ? press.band : press.band ? this.bandUnder(event.target, event.clientX, event.clientY) : null;
-    if (band) this.show(band, this.anchorAt(press.x, press.y), true);
+    if (press.band && press.band.isConnected) this.show(press.band, this.anchorAt(press.x, press.y), true);
     else if (this.shown?.pinned) this.close();
   };
 
