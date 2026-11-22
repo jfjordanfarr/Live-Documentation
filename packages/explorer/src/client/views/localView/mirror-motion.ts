@@ -5,9 +5,9 @@
  * The turn and the slide are written once, as animations the browser runs with no script between frames: the content
  * root and the wires' layer turn about the upright axis through what holds still, each card and each directory's line
  * turns back by the same angle about its own middle so that it faces the viewer throughout, and at the edge-on instant
- * the pins change sides (the stylesheet's rules under `data-turning` in `styles/local.css` keep the third dimension
- * between them). The real cards and the real wires move: nothing is copied, and no wire is measured or rewritten
- * until the motion ends.
+ * the pins change sides. What the turn needs of the boxes is written on the boxes, and no rule of the stylesheet hangs
+ * on the motion. The real cards and the real wires move: nothing is copied, and no wire is measured or rewritten until
+ * the motion ends.
  * The move between 2D and 3D (`perspectiveTransition.ts`) could not serve: it is a copy of the picture folded to file
  * tokens and moved between two drawings on a canvas, with no turning plane in it, and its copies alone take longer to
  * make than this motion lasts; its easing is the one thing shared.
@@ -18,7 +18,7 @@
 import type { MirrorTurn } from "../../types";
 import { MIRROR_TURN_MS, turnDistance, turnKeyframes, type MirrorAxis } from "./mirror-turn";
 
-/** The attribute on the map's layer while the picture turns or slides, holding which; the stylesheet draws from it. */
+/** The attribute on the map's layer while the picture turns or slides, holding which: for a reader of the page, not for the stylesheet. */
 export const TURNING_ATTRIBUTE = "data-turning";
 
 /** What a motion needs of the map, and what it gives back. */
@@ -118,10 +118,20 @@ function turn(options: MirrorMotionOptions, form: Exclude<MirrorTurn, "cut">): M
   const motion = { holdsWires: true, toMirrored, end };
   // Drawn from the picture as laid out, whichever way it goes: at 180 degrees about this axis it is the mirrored one.
   options.cameraAcross(axis.laidOutX);
+  // The attribute names the motion for whoever reads the page; no rule of the stylesheet hangs on it. What the turn
+  // needs of the boxes is written on those boxes themselves: a rule under an attribute of the layer restyled every row
+  // of every card when the attribute came and when it went, twice the cost of the whole motion (measured 2026-11-22).
   layer.setAttribute(TURNING_ATTRIBUTE, form);
-  layer.style.setProperty("--mirror-axis", `${axis.across}px`);
+  const picture = layer.querySelector<HTMLElement>(".local-layout");
+  // Every box between the view and a card keeps the third dimension, or a card's turning back against the plane would
+  // be flattened into its directory's plane; the resting reflection, a scale, gives way to the turning.
+  const deep = [layer, layer.querySelector<HTMLElement>(":scope > .dom-layer"), picture, ...layer.querySelectorAll<HTMLElement>(".local-placed .local-directory-band")]
+    .filter((box): box is HTMLElement => box !== null);
+  for (const box of deep) box.style.transformStyle = "preserve-3d";
   const wiresOrigin = overlay.style.transformOrigin;
   overlay.style.transformOrigin = `${options.rootEdgeInLayer + axis.across}px 0`;
+  overlay.style.scale = "none";
+  if (picture) Object.assign(picture.style, { transformOrigin: `${axis.across}px 0`, scale: "none" });
   // The slide is flat: no viewer's distance, so nothing grows or shrinks as it crosses.
   view.style.perspective = form === "turn" ? `${turnDistance(options.reach, view.clientWidth)}px` : "none";
   view.style.perspectiveOrigin = `${options.holdAt - view.getBoundingClientRect().left}px 50%`;
@@ -131,12 +141,12 @@ function turn(options: MirrorMotionOptions, form: Exclude<MirrorTurn, "cut">): M
   // edge-on; the held card turns back and keeps its strength; a lane, which holds no words, only fades.
   const plane = frames.map(({ offset, angle }) => ({ offset, rotate: `y ${angle}deg` }));
   const wires = frames.map(({ offset, angle, strength }) => ({ offset, rotate: `y ${angle}deg`, opacity: strength }));
-  const facing = frames.map(({ offset, angle, strength }) => ({ offset, rotate: `y ${-angle}deg`, opacity: strength }));
-  const holding = frames.map(({ offset, angle }) => ({ offset, rotate: `y ${-angle}deg` }));
+  // A card's own resting reflection is set aside in its keyframes, for as long as they run.
+  const facing = frames.map(({ offset, angle, strength }) => ({ offset, rotate: `y ${-angle}deg`, scale: "1 1", opacity: strength }));
+  const holding = frames.map(({ offset, angle }) => ({ offset, rotate: `y ${-angle}deg`, scale: "1 1" }));
   const fading = frames.map(({ offset, strength }) => ({ offset, opacity: strength }));
   const heldPlace = options.held?.closest<HTMLElement>(".local-column") ?? null;
   const running: Animation[] = [];
-  const picture = layer.querySelector<HTMLElement>(".local-layout");
   if (picture) running.push(picture.animate(plane, timing));
   running.push(overlay.animate(wires, timing));
   for (const place of layer.querySelectorAll<HTMLElement>(OTHERS)) {
@@ -151,7 +161,9 @@ function turn(options: MirrorMotionOptions, form: Exclude<MirrorTurn, "cut">): M
     for (const animation of running) { animation.onfinish = null; animation.cancel(); }
     motion.holdsWires = false;
     layer.removeAttribute(TURNING_ATTRIBUTE);
-    layer.style.removeProperty("--mirror-axis");
+    for (const box of deep) box.style.transformStyle = "";
+    if (picture) Object.assign(picture.style, { transformOrigin: "", scale: "" });
+    overlay.style.scale = "";
     overlay.style.transformOrigin = wiresOrigin;
     view.style.perspective = "";
     view.style.perspectiveOrigin = "";

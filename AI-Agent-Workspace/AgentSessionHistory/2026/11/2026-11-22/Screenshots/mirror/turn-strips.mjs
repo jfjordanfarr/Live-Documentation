@@ -122,7 +122,11 @@ if (what === "strips") {
     }
   }
 } else {
-  for (const rate of [1, 4]) {
+  // `shown` as a word also counts the frames the browser put on screen, by its own screencast of them: the turn is
+  // animations the browser may run off the page's main thread, whose frames the page's own count does not see. The
+  // screencast costs frames itself, so it is a second run, at full speed only, beside the plain one.
+  const countShown = process.argv.includes("shown");
+  for (const rate of countShown ? [1] : [1, 4]) {
     for (const form of ["turn", "slide", "cut"]) {
       const { context, page, errors } = await open("/?view=local&node=packages/engine/src/config/liveDocumentationConfig.ts", form);
       const session = await context.newCDPSession(page);
@@ -130,10 +134,16 @@ if (what === "strips") {
       // Where the page's main thread spent the motion: the browser's own counters, read before and after.
       const counters = async () => Object.fromEntries((await session.send("Performance.getMetrics")).metrics.map(metric => [metric.name, metric.value]));
       await session.send("Emulation.setCPUThrottlingRate", { rate });
+      const shown = [];
+      if (countShown) {
+        session.on("Page.screencastFrame", frame => { shown.push(frame.metadata.timestamp * 1000); void session.send("Page.screencastFrameAck", { sessionId: frame.sessionId }); });
+        await session.send("Page.startScreencast", { format: "jpeg", quality: 30, everyNthFrame: 1 });
+      }
       await page.waitForTimeout(500);
       const result = { rate, form, runs: [] };
       for (const direction of ["to mirrored", "back"]) {
         const was = await counters();
+        const pressed = Date.now();
         const run = await page.evaluate(() => new Promise(resolve => {
           const layer = document.getElementById("map-viewport");
           const stamps = [];
@@ -148,8 +158,11 @@ if (what === "strips") {
           document.querySelector('button[aria-label="Mirror the map"]').click();
         }));
         const is = await counters();
+        const rested = Date.now();
+        const during = shown.filter(at => at >= pressed && at <= rested), between = during.slice(1).map((at, index) => at - during[index]);
+        const onScreen = countShown ? { shownFrames: during.length, shownLongestGap: between.length ? Math.round(Math.max(...between)) : null, shownOver50: between.filter(gap => gap > 50).length } : {};
         const spent = name => Math.round((is[name] - was[name]) * 1000);
-        result.runs.push({ direction, ...run, mainThreadMs: { script: spent("ScriptDuration"), style: spent("RecalcStyleDuration"), layout: spent("LayoutDuration"), task: spent("TaskDuration") },
+        result.runs.push({ direction, ...run, ...onScreen, mainThreadMs: { script: spent("ScriptDuration"), style: spent("RecalcStyleDuration"), layout: spent("LayoutDuration"), task: spent("TaskDuration") },
           styleRecalcs: is.RecalcStyleCount - was.RecalcStyleCount, layouts: is.LayoutCount - was.LayoutCount });
         await page.waitForTimeout(600);
       }

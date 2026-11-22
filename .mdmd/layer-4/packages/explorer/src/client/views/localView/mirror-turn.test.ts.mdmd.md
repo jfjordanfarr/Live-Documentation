@@ -12,6 +12,7 @@ Holds the turn's arithmetic to what the motion relies on: the axis read from the
 
 ### Notes
 - Written 2026-11-22, before the functions: all five cases were seen failing on a module that did not yet have them. They were not afterwards seen failing against a broken formula, as the mapping's cases in `reading-direction.test.ts` were.
+- Four cases of the keyframes were added the same day and seen failing against a function broken for them (the edge-on moment moved by three degrees and the fade left out). One of them corrected its author: a straight line between two keyframes is off the eased angle by up to 0.32 of a degree, not the fifth first written.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

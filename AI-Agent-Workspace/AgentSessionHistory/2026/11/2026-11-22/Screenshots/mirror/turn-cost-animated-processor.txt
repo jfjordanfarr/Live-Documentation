@@ -1,0 +1,144 @@
+ 14:01:29 up 9 days, 10 min,  0 users,  load average: 7.09, 14.04, 10.66
+browser-lane: mirror holds the lane (waited 252.6 s, cap 300 s)
+[
+ {
+  "rate": 1,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 13,
+    "ms": 817,
+    "longest": 250,
+    "over50": 6,
+    "shownFrames": 11,
+    "shownLongestGap": 183,
+    "shownOver50": 5,
+    "mainThreadMs": {
+     "script": 58,
+     "style": 143,
+     "layout": 11,
+     "task": 413
+    },
+    "styleRecalcs": 21,
+    "layouts": 14
+   },
+   {
+    "direction": "back",
+    "frames": 13,
+    "ms": 850,
+    "longest": 283,
+    "over50": 4,
+    "shownFrames": 10,
+    "shownLongestGap": 221,
+    "shownOver50": 6,
+    "mainThreadMs": {
+     "script": 63,
+     "style": 140,
+     "layout": 13,
+     "task": 397
+    },
+    "styleRecalcs": 22,
+    "layouts": 14
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 12,
+    "ms": 900,
+    "longest": 233,
+    "over50": 8,
+    "shownFrames": 9,
+    "shownLongestGap": 226,
+    "shownOver50": 6,
+    "mainThreadMs": {
+     "script": 64,
+     "style": 170,
+     "layout": 16,
+     "task": 462
+    },
+    "styleRecalcs": 20,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 16,
+    "ms": 817,
+    "longest": 217,
+    "over50": 4,
+    "shownFrames": 11,
+    "shownLongestGap": 160,
+    "shownOver50": 9,
+    "mainThreadMs": {
+     "script": 61,
+     "style": 173,
+     "layout": 12,
+     "task": 390
+    },
+    "styleRecalcs": 25,
+    "layouts": 13
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 24,
+    "ms": 733,
+    "longest": 167,
+    "over50": 1,
+    "shownFrames": 20,
+    "shownLongestGap": 171,
+    "shownOver50": 1,
+    "mainThreadMs": {
+     "script": 42,
+     "style": 156,
+     "layout": 9,
+     "task": 359
+    },
+    "styleRecalcs": 30,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 23,
+    "ms": 667,
+    "longest": 133,
+    "over50": 1,
+    "shownFrames": 18,
+    "shownLongestGap": 137,
+    "shownOver50": 1,
+    "mainThreadMs": {
+     "script": 43,
+     "style": 120,
+     "layout": 12,
+     "task": 333
+    },
+    "styleRecalcs": 29,
+    "layouts": 12
+   }
+  ],
+  "gpu": "processor",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ }
+]
+browser-lane: released after 30.3 s, exit 0
+ 14:06:12 up 9 days, 15 min,  0 users,  load average: 3.24, 8.73, 9.39

@@ -54,8 +54,8 @@ test("a press mirrors the picture about the subject, which keeps its place, and 
   }
 
   await button(page).click();
-  await expect(button(page)).toHaveAttribute("aria-pressed", "false");
-  await localMapStill(page);
+  // The button says so at once; the picture changes when the cut has faded the others out, which is what is waited for.
+  await atRest(page, false);
   const back = await middles(page);
   for (const id of Object.keys(before)) expect(Math.abs(back[id].x - before[id].x), id).toBeLessThan(1);
 });
@@ -112,6 +112,7 @@ test("a mirrored picture keeps every law of the picture, the sides exchanged", a
   expect(laidOut.mirrored).toBeUndefined();
   expect(usesLeftOfferingsRight(laidOut)).toMatchObject({ judgment: "uses enter on the left and offerings leave on the right", outcome: "kept" });
   await button(page).click();
+  await atRest(page, true);
   const reading = await readSettled(page, { scenario: "the pathfinder mirrored", map: "/", watch, names, shotPath: path.join(testInfo.outputDir, "mirrored.png") });
   expect(reading.mirrored).toBe(true);
   expect(reading.wires.length).toBeGreaterThan(10);
@@ -146,12 +147,16 @@ async function watchMotion(page: Page): Promise<void> {
     const layer = document.getElementById("map-viewport")!, picture = document.querySelector("#map-container .local-layout")!;
     const held = document.querySelector("#map-container .node-card.local-focus");
     const other = [...document.querySelectorAll("#map-container .node-card")].find(card => card !== held) ?? null;
-    const watch = { seen: [] as string[], heldFaintest: 1, otherFaintest: 1 };
+    const watch = { seen: [] as string[], heldFaintest: 1, heldDimmedBy: "", otherFaintest: 1 };
     (window as unknown as { mirrorWatch: typeof watch }).mirrorWatch = watch;
-    /** How strongly an element is drawn: its own opacity and every box's around it, as the page computes them now. */
+    /**
+     * How strongly an element is drawn within the map: its own opacity and every box's around it up to the map's
+     * layer, as the page computes them now. Not further: the view around the map fades in when the page opens, and
+     * under a loaded machine that fade was still ending as a case began (found 2026-11-22, the view at 0.98).
+     */
     const strength = (element: Element | null): number => {
       let drawn = 1;
-      for (let at = element; at && at !== document.body; at = at.parentElement) drawn *= Number(getComputedStyle(at).opacity);
+      for (let at = element; at && at !== layer.parentElement; at = at.parentElement) drawn *= Number(getComputedStyle(at).opacity);
       return drawn;
     };
     let form: string | null = null, turned = false;
@@ -167,14 +172,20 @@ async function watchMotion(page: Page): Promise<void> {
         form = null;
         turned = false;
       }
-      if (held) watch.heldFaintest = Math.min(watch.heldFaintest, strength(held));
+      if (held && strength(held) < watch.heldFaintest) {
+        watch.heldFaintest = strength(held);
+        // Which box dimmed it, so that a failure says whose doing it was.
+        for (let at: Element | null = held; at && at !== layer.parentElement; at = at.parentElement) {
+          if (Number(getComputedStyle(at).opacity) < 1) watch.heldDimmedBy = `${at.tagName.toLowerCase()}.${at.className} at ${getComputedStyle(at).opacity}, animations: ${at.getAnimations().map(animation => (animation as CSSAnimation).animationName ?? animation.constructor.name).join(",")}, transition: ${getComputedStyle(at).transitionProperty}`;
+        }
+      }
       if (other) watch.otherFaintest = Math.min(watch.otherFaintest, strength(other));
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   });
 }
-interface MirrorWatch { seen: string[]; heldFaintest: number; otherFaintest: number }
+interface MirrorWatch { seen: string[]; heldFaintest: number; heldDimmedBy: string; otherFaintest: number }
 const watched = (page: Page): Promise<MirrorWatch> => page.evaluate(() => (window as unknown as { mirrorWatch: MirrorWatch }).mirrorWatch);
 const motions = async (page: Page): Promise<string[]> => (await watched(page)).seen;
 const seedTurn = async (page: Page, mirrorTurn: string): Promise<void> => void await page.addInitScript(({ key, value }) => localStorage.setItem(key, value),
@@ -188,25 +199,18 @@ async function atRest(page: Page, mirrored: boolean): Promise<void> {
   await localMapStill(page);
 }
 
-test("by default the press turns the picture's plane, and the lever chooses the slide or the cut", async ({ page }) => {
+test("by default the press is the cut, and the lever chooses the turn of the picture's plane or the slide", async ({ page }) => {
   await page.goto(ADDRESS);
   await localMapStill(page);
-  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
+  await expect(page.locator("#tuning-mirror-turn")).toHaveValue("cut");
   const before = await middles(page);
   await watchMotion(page);
   await button(page).click();
   await atRest(page, true);
-  expect(await motions(page)).toEqual(["turn:turned"]);
-  // As the plane stands edge-on everything but the held card is faded; the held card never is.
-  const strengths = await watched(page);
-  expect(strengths.heldFaintest).toBeGreaterThan(0.99);
-  expect(strengths.otherFaintest).toBeLessThan(0.5);
-  // The turn ends where the cut would: the subject where it stood, every other card as far from it on the other side.
+  expect(await motions(page), "the default names no turning").toEqual([]);
   const after = await middles(page);
-  expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
-  for (const id of Object.keys(before)) expect(Math.abs((after[id].x - after[SUBJECT].x) + (before[id].x - before[SUBJECT].x)), id).toBeLessThan(1);
 
-  for (const [form, seen] of [["slide", ["slide:turned"]], ["cut", []]] as const) {
+  for (const [form, seen] of [["turn", ["turn:turned"]], ["slide", ["slide:turned"]]] as const) {
     const other = await page.context().browser()!.newContext({ baseURL: new URL(page.url()).origin, viewport: { width: 1280, height: 800 } });
     const chosen = await other.newPage();
     await seedTurn(chosen, form);
@@ -217,12 +221,25 @@ test("by default the press turns the picture's plane, and the lever chooses the 
     await button(chosen).click();
     await atRest(chosen, true);
     expect(await motions(chosen), form).toEqual(seen);
+    // As the plane stands edge-on everything but the held card is faded; the held card never is.
+    const strengths = await watched(chosen);
+    expect(strengths.heldFaintest, form).toBeGreaterThan(0.99);
+    // Read at whatever frames the page drew, which under a loaded machine need not include the faintest: any frame of
+    // the motion's middle nine tenths shows the others below nine tenths of their strength.
+    expect(strengths.otherFaintest, form).toBeLessThan(0.9);
+    // The motion ends where the cut does: the subject where it stood, every other card as far from it on the other side.
+    const turned = await middles(chosen);
+    for (const id of Object.keys(before)) {
+      expect(Math.abs(turned[id].x - after[id].x), `${form}: ${id}`).toBeLessThan(1);
+      expect(Math.abs((turned[id].x - turned[SUBJECT].x) + (before[id].x - before[SUBJECT].x)), `${form}: ${id}`).toBeLessThan(1);
+    }
     await other.close();
   }
 });
 
 test("reduced motion takes the cut whatever the lever says", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  await seedTurn(page, "turn");
   await page.goto(ADDRESS);
   await localMapStill(page);
   await expect(page.locator("#tuning-mirror-turn")).toHaveValue("turn");
@@ -233,6 +250,7 @@ test("reduced motion takes the cut whatever the lever says", async ({ page }) =>
 });
 
 test("a second press before the turn ends leaves the picture in one of its two states, never between", async ({ page }) => {
+  await seedTurn(page, "turn");
   await page.goto(ADDRESS);
   await localMapStill(page);
   const before = await middles(page);
@@ -267,8 +285,9 @@ test("the cut fades everything but the held card, which a mirror does not move a
   await page.waitForTimeout(500);
   const cut = await watched(page);
   expect(cut.seen).toEqual([]);
-  expect(cut.heldFaintest, "the held card keeps its strength throughout").toBeGreaterThan(0.99);
-  expect(cut.otherFaintest, "every other card is gone while the picture changes").toBeLessThan(0.2);
+  expect(cut.heldFaintest, `the held card keeps its strength throughout (dimmed by ${cut.heldDimmedBy})`).toBeGreaterThan(0.99);
+  // Read at whatever frames the page drew: the others are at nothing as the picture changes and a frame near it is enough.
+  expect(cut.otherFaintest, "every other card fades while the picture changes").toBeLessThan(0.5);
   const after = await middles(page);
   expect(Math.abs(after[SUBJECT].x - before[SUBJECT].x)).toBeLessThan(1);
 });

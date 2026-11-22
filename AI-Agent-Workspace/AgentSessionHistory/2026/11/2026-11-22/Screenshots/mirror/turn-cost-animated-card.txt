@@ -1,0 +1,144 @@
+ 14:06:12 up 9 days, 15 min,  0 users,  load average: 3.24, 8.73, 9.39
+browser-lane: mirror holds the lane (waited 169.3 s, cap 300 s)
+[
+ {
+  "rate": 1,
+  "form": "turn",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 9,
+    "ms": 1133,
+    "longest": 733,
+    "over50": 4,
+    "shownFrames": 3,
+    "shownLongestGap": 784,
+    "shownOver50": 1,
+    "mainThreadMs": {
+     "script": 54,
+     "style": 168,
+     "layout": 10,
+     "task": 397
+    },
+    "styleRecalcs": 17,
+    "layouts": 14
+   },
+   {
+    "direction": "back",
+    "frames": 12,
+    "ms": 1150,
+    "longest": 367,
+    "over50": 5,
+    "shownFrames": 12,
+    "shownLongestGap": 413,
+    "shownOver50": 3,
+    "mainThreadMs": {
+     "script": 73,
+     "style": 131,
+     "layout": 11,
+     "task": 365
+    },
+    "styleRecalcs": 24,
+    "layouts": 14
+   }
+  ],
+  "gpu": "ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "slide",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 13,
+    "ms": 917,
+    "longest": 200,
+    "over50": 5,
+    "shownFrames": 13,
+    "shownLongestGap": 166,
+    "shownOver50": 4,
+    "mainThreadMs": {
+     "script": 48,
+     "style": 135,
+     "layout": 10,
+     "task": 366
+    },
+    "styleRecalcs": 21,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 21,
+    "ms": 767,
+    "longest": 200,
+    "over50": 3,
+    "shownFrames": 16,
+    "shownLongestGap": 134,
+    "shownOver50": 4,
+    "mainThreadMs": {
+     "script": 60,
+     "style": 158,
+     "layout": 12,
+     "task": 389
+    },
+    "styleRecalcs": 30,
+    "layouts": 13
+   }
+  ],
+  "gpu": "ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ },
+ {
+  "rate": 1,
+  "form": "cut",
+  "runs": [
+   {
+    "direction": "to mirrored",
+    "frames": 24,
+    "ms": 633,
+    "longest": 133,
+    "over50": 2,
+    "shownFrames": 20,
+    "shownLongestGap": 173,
+    "shownOver50": 1,
+    "mainThreadMs": {
+     "script": 42,
+     "style": 132,
+     "layout": 9,
+     "task": 329
+    },
+    "styleRecalcs": 31,
+    "layouts": 13
+   },
+   {
+    "direction": "back",
+    "frames": 28,
+    "ms": 600,
+    "longest": 117,
+    "over50": 1,
+    "shownFrames": 26,
+    "shownLongestGap": 155,
+    "shownOver50": 1,
+    "mainThreadMs": {
+     "script": 38,
+     "style": 112,
+     "layout": 11,
+     "task": 324
+    },
+    "styleRecalcs": 36,
+    "layouts": 12
+   }
+  ],
+  "gpu": "ANGLE (Microsoft Corporation, D3D12 (NVIDIA GeForce RTX 3090), OpenGL ES 3.1)",
+  "cards": 86,
+  "wires": 220,
+  "errors": []
+ }
+]
+browser-lane: released after 31.3 s, exit 0
+ 14:09:33 up 9 days, 18 min,  0 users,  load average: 1.66, 5.51, 8.00

@@ -130,3 +130,70 @@ inherited, so every element under the layer, every row of all 84 cards, is style
 cards can turn back from it. Layout and script are nothing beside it. The cut's 99 ms of style in the same counters is
 what the picture's rest costs every form once (the pins restyled as the reading changes). Slowed four times the same
 share holds (2,052 of 2,787 ms).
+
+## The fifth round: the turn mended, the cut holding the held card, the default decided
+
+### What the turn costs now
+
+The turn's first form wrote an angle on the map's layer each frame. It is now written once: an animation on the
+content root, on the wires' layer and on every card and directory line, which the browser runs between frames by
+itself, with what the turn needs of the boxes (the third dimension kept, the resting reflection set aside) written on
+those boxes. Two steps got there, and the second is the one that counted:
+
+| Form of the turn, heavy subject, to mirrored, on the processor | Frames the page drew, ms, longest | Main thread: style, all (ms) | Machine's load |
+| --- | --- | --- | --- |
+| an angle written each frame (fourth round) | 7, 900, 217 | 720, 931 | quiet |
+| animations, started under an attribute of the layer that the stylesheet's rules hung on | 6 to 8, 1,333 to 1,900, 483 to 683 | 961 to 1,519, 1,547 to 2,519 | 5 to 10 |
+| **animations, with the turn's needs written on the boxes and no rule in the stylesheet** | **13, 817, 250** | **143, 413** | 3 to 7 |
+
+The middle row is [`turn-cost-animated-under-a-rule.txt`](turn-cost-animated-under-a-rule.txt) and a run before it. The animations alone changed nothing: the attribute's coming, the pins' exchange and the attribute's going each
+restyled every row of every card, as the angle had at every frame. With no rule hanging on the layer the page's own
+work in the motion is the cut's (style 143 ms beside the cut's 156; all 413 beside 359).
+
+The last form measured once on the processor and once composited on the graphics card, at full speed, with the
+browser's own screencast counting the frames put on screen as well as the page's count of its own frames
+([`turn-cost-animated-processor.txt`](turn-cost-animated-processor.txt),
+[`turn-cost-animated-card.txt`](turn-cost-animated-card.txt)). 86 cards, 220 wires. One run each, with other builders'
+work on the machine (its one-minute load 7 falling to 3 for the processor's run, 3 falling to 1.7 for the card's), and
+the screencast costs frames itself.
+
+| Form | Where composited | To mirrored: frames on screen, longest gap | Back: frames on screen, longest gap | Main thread, to mirrored: style, all |
+| --- | --- | --- | --- | --- |
+| Turn | processor | 11, 183 ms | 10, 221 ms | 143, 413 ms |
+| Slide | processor | 9, 226 ms | 11, 160 ms | 170, 462 ms |
+| Cut | processor | 20, 171 ms | 18, 137 ms | 156, 359 ms |
+| Turn | card | **3, 784 ms** | 12, 413 ms | 168, 397 ms |
+| Slide | card | 13, 166 ms | 16, 134 ms | 135, 366 ms |
+| Cut | card | 20, 173 ms | 26, 155 ms | 132, 329 ms |
+
+**What a person sees now.** On the processor: a turn of about a dozen frames in some eight tenths of a second, with one
+hitch of about a fifth of a second; it can be followed, and it is not smooth. On the card, which is what the owner has:
+the slide is that or a little better, and the turn with depth stalled once in each run, for three quarters of a second
+the first time (three frames reached the screen) and four tenths the second. So on a heavy picture the turn is still a
+few jumps where it matters, and **the lever's default is the cut**; the turn and the slide stay choices.
+
+Left to try, in the order of likelihood: holding each card's drawing at one size while it turns (`will-change`), since
+only the form with depth stalls on the card and depth is what changes a card's drawn size at every frame; leaving the
+pins' exchange until rest, which is the one restyle left inside the motion. Not worth trying again: anything that
+writes to the layer or hangs a rule on it while the picture moves. Not measured: a light picture, a second run of each
+on a quiet machine, and the processor slowed four times in the last form.
+
+### The strips, retaken on the last form
+
+`turn-strips.mjs` now holds the animations and sets them by hand to each share of their length, with a picture at rest
+last. Retaken and looked at: the turn and the cut on the estate's hub and on the heavy subject.
+
+| Strip | What the eye judges |
+| --- | --- |
+| `strip-turn-estate-hub-focused.png` | Frame for frame what the first form drew: the hub never moves or dims, the neighbours cross it as faint ghosts, it stands alone edge-on with its pins exchanged, and the last frame is the mirrored picture at rest. |
+| `strip-turn-config-heavy-focused.png` | The same on the heavy subject: its card holds through all eight frames. |
+| `strip-cut-estate-hub-focused.png` | The hub stays at full strength in every frame. The others fade in two steps and are gone in the third, when the hub stands alone, its pins still as laid out; in the next its pins have changed sides and the others return faintly at their mirrored places. Looked at in its first take, where the directories' outlines stood through the fade and then jumped; they fade with the rest since, and the file kept is the retake after that mend, which was not looked at again. |
+| `strip-cut-config-heavy-focused.png` | Taken after that mend: the subject alone in the third frame, outlines gone with the neighbours; its pins exchanged in the fourth; the mirrored picture by the sixth. The held card never leaves. |
+
+### The cut's signs, mended
+
+`cut-signs.mjs` again, on the mended product: opened and then mirrored, the signs say left 21, top 6, bottom 4, which is
+where the cards lie, and put back they say right 25, top 2, bottom 4 again. The builder looked at
+`cut-signs-as-laid-out.png` this time (the directory at the right of the view with its line at its top left, a sign
+with 25 at the right edge, 2 above, 4 below: right) and at the retaken `cut-signs-opened-then-mirrored.png` (the sign
+with 21 at the left edge, 6 above, 4 below, where the fourth round's picture had one sign at the right saying 32).

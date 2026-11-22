@@ -15,6 +15,7 @@ Holds the arithmetic of the motion between a 2D picture as laid out and mirrored
 - `mirrorAxis` replaced a measurement: the first mirror pressed the button, measured where the held card had gone and moved the camera by the difference. The closed form says the camera of both pictures before anything moves, which a motion needs, and serves the cut as well.
 - The angle runs 0 to 180 to mirror and 180 to 360 to come back, never back down, so that the right side goes away from the viewer in both directions, as the owner described it.
 - `turnStrength` was added after the first strip of frames: without it the card swinging nearest the viewer covered the subject whole at the edge-on instant ([the strips' record](../../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/mirror/README.md)).
+- `turnKeyframes` gives the whole motion as 21 moments for the browser to run as animations, in place of an angle asked for at each frame; between two of them the browser moves in a straight line, at most a third of a degree off the eased angle and every part of the picture off by the same.
 - Kept apart from `reading-direction.ts`, which another builder was extending the same day.
 
 ## Generated
