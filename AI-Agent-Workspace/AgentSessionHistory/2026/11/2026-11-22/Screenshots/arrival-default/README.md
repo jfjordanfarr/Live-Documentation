@@ -153,9 +153,15 @@ The band's part was mine, a tenth to a seventh of the frame at full speed and th
 | Case | Alone | What parts the causes | Class |
 | --- | --- | --- | --- |
 | `card-reading-refresh`, two cases | failed: the card's Read control has no box | with the arrival held at reading size, both pass | needs the picture at reading size; seeded, with the reason |
-| `explorer-history`, "an opened folder is a step back" | failed at 34.5 s of its 30 | with the arrival at reading size it passes, in 30.2 s | its own work nearly fills its limit on the heaviest neighbourhood, and the pull-back's waits take it over; seeded, with the reason |
+| `explorer-history`, "an opened folder is a step back" | failed at 33.8 and 34.5 s of its 30 | with the arrival at reading size it passed once, in 30.2 s, and failed once, at 33.9 s | a time limit its own work fills, on the heaviest neighbourhood of this repository; the arrival is not what decides it. Not seeded and not mended: the loads were 12 to 15 |
 | `local-map-path`, the direct link to `client/index.ts` | passed once, failed once | failed with Wire Answers off too | a time limit at its edge: the map is to be drawn within 5 s and takes about that; not the arrival (the map is not drawn yet when it fails) and not the wires' bands |
 | `local-map-branches`, the lanes case | failed, past its minute reading every wire | failed with Wire Answers off (a wire 856 px above the top), and in the third milestone with the arrival at reading size | not the arrival and not the wires' bands; not found. It should be run on the day's tip without this branch before anything is concluded |
+
+**Found on the way, and whose they are.**
+
+- The search bar's case of a symbol's row "and its actions" now stays at reading size and says why: the row's Pin is the reading look's. With that, it reached its last line for the first time today and failed there on a fact of this repository: `walkBetween`, added to `pathfind.ts` that day, takes a `Neighbours`, so hovering `Neighbours` lights five rows and not four. The list is brought level with the source.
+- The rest's case counted the rest between two frames of its log and once read 1,439 ms for a rest of 1,500, a late frame after the picture settled. It now reads the frame in which the map says each word, by an observer and the frames' own clock, and asks for the whole rest with no allowance.
+- Two cases of the following camera (Framing, Follows Pins) expect the map to say that `pathfind.ts` is left out of the frame after a far cell is pinned, and it no longer says so. The arrival is not in them (they hold reading size, and Follows Pins frames its own arrival). `pathfind.ts` lost a function that day, and a shorter card may now fit the frame with the new one; not looked into.
 
 ## Not done
 

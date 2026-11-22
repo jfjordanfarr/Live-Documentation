@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { currentSnapshot } from "./search-bar";
-import { arriveAtReadingSize, localMapSettled, panIntoView } from "./still-picture";
+import { localMapSettled, panIntoView } from "./still-picture";
 
 const FIXTURE_DIR = "packages/engine/src";
 const FIXTURE_SUBDIR = `${FIXTURE_DIR}/config`;
@@ -47,10 +47,6 @@ test.describe("Back and Forward", () => {
   });
 
   test("an opened folder is a step back, and pins made in it are not", async ({ page }) => {
-    // Back and Forward are the subject, on the heaviest neighbourhood of this repository, and its work nearly fills the
-    // half minute (30.2 s alone on 2026-11-22). The default arrival's rest, ease and change of look are waited through
-    // each time the map settles and took it past the limit (34.5 s); held at reading size it is as it was written.
-    await arriveAtReadingSize(page);
     await page.goto(`/?view=local&node=${FIXTURE_FILE}&dir=${FIXTURE_DIR}`);
     const open = page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true });
     await panIntoView(page, open);

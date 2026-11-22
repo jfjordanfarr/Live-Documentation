@@ -53,7 +53,7 @@ for (const width of [952, 1280]) {
     await row.locator(".symbol-label").hover();
     const highlighted=page.locator(`.node-card[data-id="${pathfind}"] .symbol-highlighted`);
     expect(await highlighted.evaluateAll(rows=>rows.map(row=>row.getAttribute("data-symbol"))).then(names=>names.sort()))
-      .toEqual(["Neighbours","components","reachFrom","walk (function)"].sort());
+      .toEqual(["Neighbours","components","reachFrom","walk (function)","walkBetween"].sort()); // walkBetween takes a Neighbours since 2026-11-22 (the path between two directories)
   });
 }
 

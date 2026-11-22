@@ -229,8 +229,16 @@ async function visitLogged(browser: Browser, address: string, localMap: Record<s
   });
   await context.addInitScript(() => {
     const log: Array<{ k: number; look: string; t: number; arrival: string | null }> = (window as unknown as { frameLog: typeof log }).frameLog = [];
-    const tick = (): void => {
+    // The frame, by its own clock, in which the map first said each word of its arrival: the page's frames are stamped
+    // with the clock the arrival itself counts by, and a word is read in the frame it is written, by an observer, not a
+    // frame later by the log (a late frame once made a rest of 1,500 ms read as 1,439).
+    const said: Record<string, number> = (window as unknown as { arrivalSaid: typeof said }).arrivalSaid = {};
+    let frame = 0, watched: Element | null = null;
+    const watcher = new MutationObserver(() => { const word = (watched as HTMLElement | null)?.dataset.arrival; if (word) said[word] ??= frame; });
+    const tick = (now: number): void => {
+      frame = now;
       const viewport = document.querySelector<HTMLElement>("#map-viewport"), map = document.querySelector<HTMLElement>("#map-container");
+      if (map && map !== watched) { watched = map; watcher.observe(map, { attributes: true, attributeFilter: ["data-arrival"] }); }
       const k = Number((viewport?.style.transform.match(/scale\(([\d.e-]+)\)/) ?? [])[1]);
       if (map?.dataset.look && Number.isFinite(k)) log.push({ k, look: map.dataset.look, t: performance.now(), arrival: map.dataset.arrival ?? null });
       requestAnimationFrame(tick);
@@ -284,12 +292,12 @@ test("the default arrival rests at reading size for the rest, eases back in the 
   const log = await frameLog(page), start = log[0].k, end = log.at(-1)!;
   expect(end.look, "it ends in the connections look, where every card's names read").toBe("connections");
   expect(end.k).toBeCloseTo(start * ARRIVAL_FLOOR_RATIO, 6);
-  // At reading size for at least the rest, counted on the page's own clock from the first frame the map said it rested,
-  // the picture settled, to the first frame drawn smaller; less two frames, since the log reads each a frame late.
-  const rested = log.find(frame => frame.arrival === "resting");
-  expect(rested, "the map said it rested at reading size").toBeDefined();
-  const eased = log.find(frame => frame.t > rested!.t && frame.k < rested!.k - 1e-6)!;
-  expect(eased.t - rested!.t, "the rest at reading size").toBeGreaterThanOrEqual(ARRIVAL_REST_S * 1000 - 34);
+  // At reading size for at least the rest: from the frame in which the map said it rested, the picture settled, to the
+  // frame in which it said it eased, each by the frames' own clock, the one the arrival counts by. No allowance.
+  const said = await page.evaluate(() => (window as unknown as { arrivalSaid: Record<string, number> }).arrivalSaid);
+  expect(said.resting, "the map said it rested at reading size").toBeDefined();
+  expect(said.easing, "and then that it eased").toBeDefined();
+  expect(said.easing - said.resting, "the rest at reading size").toBeGreaterThanOrEqual(ARRIVAL_REST_S * 1000);
   // Nobody pointed at the card or focused it: it never waited on anyone, and went when the rest had passed.
   expect(log.some(frame => frame.arrival === "waiting"), "it waited on nobody").toBe(false);
   // The reading look through the whole ease, and one change, at rest at its end.
