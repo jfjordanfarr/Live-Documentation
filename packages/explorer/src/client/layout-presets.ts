@@ -1,4 +1,5 @@
 import { ARRIVAL_WAITS, ARRIVALS, CUT_COUNTED, DIRECTION_MARKS, MIRROR_TURNS, WAY_DOWNS, WIRE_ANSWERS, FRAMINGS, STEPS, BEYOND_HOPS, SCAN_GROWTHS, SCAN_PACES, DRAGS, CLOSED_CELL_COLOURS, CLOSED_DIRECTORY_LOOKS, CLOSED_DIRECTORY_SHAPES, DESCRIPTIONS_ZOOMED_OUT, DIRECTORY_LAYOUTS, GROUP_WRAPPERS, HIDDEN_FILES_LOOKS, OVERVIEW_FILES, ZOOM_LOOKS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
+import { ARRIVAL_REST_S } from "./views/localView/camera-intent";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -87,6 +88,9 @@ export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
       }
     }
     if (group === "localMap") {
+      // The arrival's rest is a lever of the arrival, not of the packing: like Arrival and Arrival Waits it is carried
+      // only where it is not its default, and its absence reads as the default (2026-11-22; a share had carried 1.5).
+      if (numbers.arrivalRest === ARRIVAL_REST_S) delete numbers.arrivalRest;
       const zoomLooks = ZOOM_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).zoomLooks);
       const directoryLayout = DIRECTORY_LAYOUTS.slice(1).find(choice => choice === (input as Record<string, unknown>).directoryLayout);
       const closedDirectory = CLOSED_DIRECTORY_LOOKS.slice(1).find(choice => choice === (input as Record<string, unknown>).closedDirectory);
@@ -145,7 +149,7 @@ export function layoutSettingsOf(tuning: TuningConfig): LayoutSettings {
 export function applyLayoutSettings(tuning: TuningConfig, settings: LayoutSettings | undefined): TuningConfig {
   const directory = settings?.localMap ? { directoryLayout: DIRECTORY_LAYOUTS[0] } : null;
   const looks = settings?.localMap ? { zoomLooks: ZOOM_LOOKS[0], overviewFiles: OVERVIEW_FILES[0] } : null;
-  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0], wayDown: WAY_DOWNS[0], mirrorTurn: MIRROR_TURNS[0] } : null;
+  const closed = settings?.localMap ? { closedDirectory: CLOSED_DIRECTORY_LOOKS[0], closedShape: CLOSED_DIRECTORY_SHAPES[0], closedCells: CLOSED_CELL_COLOURS[0], hiddenFiles: HIDDEN_FILES_LOOKS[0], arrival: ARRIVALS[0], arrivalWaits: ARRIVAL_WAITS[0], arrivalRest: ARRIVAL_REST_S, framing: FRAMINGS[0], step: STEPS[0], cutCounted: CUT_COUNTED[0], wireAnswers: WIRE_ANSWERS[0], directionMarks: DIRECTION_MARKS[0], wayDown: WAY_DOWNS[0], mirrorTurn: MIRROR_TURNS[0] } : null;
   // Descriptions Zoomed Out likewise (2026-11-13): only a value that keeps a line is written, and its absence reads as hidden.
   const descriptions = settings?.localMap ? { descriptionsZoomedOut: DESCRIPTIONS_ZOOMED_OUT[0] } : null;
   // Beyond the Hops likewise (2026-11-18): only the next step is written, and its absence reads as everything.

@@ -310,6 +310,35 @@ All eight passed. The four names the narrowing had put on two lines wanting a th
 
 **The other runs on the final build:** `zoom-looks.spec.ts` 12 of 12 (the standard's case passed on its second run, after the ellipsis' fragment was placed; "a change of look moves the held parts…" failed in its hold under a load of 18 and passed alone, 17 s); `descriptions-zoomed-out.spec.ts` 9 of 9; `camera-intent.spec.ts` whole, 29 cases in three parts; the search bar's two ran out of their 30 s limit in a hold shared with the rule's cases under that load (38 and 40 s) and passed alone (19 s each); `look-change-cost.spec.ts`, run because the reach gives a look change two more properties to lay out, 2 passed. The repository's five-file retained case was cut once by the lane's five minutes under the same load and passed in 1.4 minutes when the machine was quiet; no limit was changed.
 
+## Ninth milestone, from 18:16 UTC: the gate's seventeen
+
+The gate ran the whole browser suite on the merged day branch (`2d2f18f2b`) and seventeen of its failures were this branch's, the sweep left to the gate at 05:11. Each was run alone, one worker, before anything was concluded; all seventeen failed alone, so none was the load's.
+
+**Mended in the product (two faults a person would meet).**
+
+- *A change of perspective is not an arrival.* A subject first drawn in 2D begins an arrival, and the change from 3D to 2D then puts the subject where it stood in 3D. The arrival went on under that carried place, so a reader who had panned the 3D picture found it 284 to 290 px away after a round trip (`force-graph-focus.spec.ts`, "manual pan survives a 2D and 3D round trip…"). With the arrival held at reading size by a temporary seed that case passed, which parted it from the 3D client's own changes. The carried place now ends the arrival and begins none (`controller.ts`, `placeReturnedSubject`, called by the change of perspective alone). Both round-trip cases pass on it, the other ("the 2D and 3D presses return at once…", 215 to 220 px from the room's centre) with it.
+- *A link does not carry the arrival's rest at its default.* The rest was read as one of the packing's numbers, which a share always carries, so a share of the defaults said `arrivalRest: 1.5`. It is a lever of the arrival and is carried as Arrival and Arrival Waits are, only where it is not its default, its absence reading as the default (`layout-presets.ts`; a unit case holds both directions).
+
+**The case was wrong (the subject is not the arrival, and the case says so now).**
+
+| Case | What it met | Mend |
+| --- | --- | --- |
+| `local-map-tone` "three tones" | pulled back already, three presses out was the overview | begins at reading size |
+| `local-map-pins` "ancestor disclosure" | the pull-back easing under its presses | begins at reading size |
+| `local-map-packing` "packing changes keep the selected file in place" | pulled back, the same change moves the cards for three frames | begins at reading size |
+| `card-reading` "the portrait reading frame returns from overview" | compared the reading frame with the pulled-back picture, 2,001 px | begins at reading size |
+| `local-map-overview` "the overview band joins each pair" | a gathered wire's name read from the wire, which is unnamed under Wire Answers so that it is not said twice | reads the name from the wire's band where the wire has none |
+| `wire-answers` "the arrow keys go the way they point" | seeded the reading direction among the Local Map's levers; it is a choice of Appearance since the mirror's button | seeds it where the product reads it |
+| `card-reading` "taps on Walk and walk" (two), "tapping Walk and walk" | neither the arrival nor a wire: with both of `pathfind.ts`'s descriptions open the second name stood at y 956, below the frame's bottom at 891, in a window 960 tall | a window 1,500 tall for that file; the third also begins at reading size |
+
+**Seen passing on the mended build, one worker:** the two round-trip cases (16.6 and 16.5 s); `local-map-packing.spec.ts` whole, 5 of 5, its two share cases among them; and in one hold the four tap cases of `card-reading.spec.ts`, its "tapping Walk and walk" and its portrait frame, the overview's pairs, the pins' disclosure, the three tones and the arrow keys, 10 of 10. The other cases of the changed spec files were not run again: three other builders held the lane and the milestone's time ran out.
+
+**Not mended.**
+
+- *A wire's band over a card's control* (`card-ladder-boxes.spec.ts` at 444 and 469, `overview-files.spec.ts` at 348). It is a fault of the product. The wires' layer stands above the cards' (`view-shared.css`, 20 over 1), and a band is twelve of the screen's pixels wide whatever the zoom, so in the map's own units it is 36 wide at the arrival's floor and 43 at the overview's first press: eighteen to twenty-one units to each side of a wire in a lane, over the edge of whatever card stands beside it. The More of `still-picture.ts` is under the band of a wire between two other files. A cap on the band's width would take away what makes a wire easy to point at when zoomed out. The two mends that keep it are structural: the bands in a layer of their own under the cards, which needs the cards' layer and the layout's own box to let the pointer through where they are empty; or bands that take no pointer at all, the wire under the pointer found by geometry where the pointer's target is not a card. Neither is small and neither was begun.
+- *The phone's hold* (`local-map-learning.spec.ts`, "touch taps retain command activation…"). It fails alone and fails the same way begun at reading size, so it is not the arrival's pull-back: after the hold the menu shows, Escape does not close it, and the next tap lands on its first item. The menu hears Escape only while the focus is inside it; a probe found the focus on the page's body after the hold. Why the focus is not in the menu was not found. The case keeps the reading-size seed, which it needs on a phone, where nothing attends a card and the arrival pulls back a second and a half after it lands.
+- *The hidden map's search* (`local-map-hidden.spec.ts`, alone pass). It fails alone: the search does not end within its 45 s after the return. The case begins at reading size already and its own comment gives the search 41 to 42 s on November 18's repository; nothing was changed and nothing was established beyond that.
+
 ## Not done
 
 - The sweep: eight holds of twenty-five ran.

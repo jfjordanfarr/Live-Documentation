@@ -186,6 +186,9 @@ test("releasing the last pinned symbol on a card leaves the file pinned whole, t
 });
 
 test("ancestor disclosure stays readable after zooming and opens an ancestor without changing file pins", async ({ page }) => {
+  // Its subject is the disclosure three presses out from reading size, not the arrival, whose pull-back (the default
+  // since 2026-11-22) was still easing under the case's presses and moved the button it went to press.
+  await arriveAtReadingSize(page);
   await page.goto(sharedUrl(state));
   await localMapSettled(page);
   await openTray(page);

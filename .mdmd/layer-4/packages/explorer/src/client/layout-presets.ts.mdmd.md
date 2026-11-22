@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T07:12:53.973Z
+- Generated At: 2026-11-22T18:51:23.883Z
 
 ## Authored
 ### Purpose
@@ -54,35 +54,35 @@ Since 2026-11-18 Hidden Files' default is Cells under name ([Turn 13 of the Nove
 ### Public Symbols
 #### `LayoutPreset` {#symbol-layoutpreset}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L4)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L5)
 
 ##### `LayoutPreset` — Summary
 One packing preference interpreted by both Local Map representations.
 
 #### `LayoutSettings` {#symbol-layoutsettings}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L10)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L11)
 
 ##### `LayoutSettings` — Summary
 Portable numeric settings behind the presets and spatial encodings; older URLs may omit them.
 
 #### `LAYOUT_RANGES` {#symbol-layout_ranges}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L16)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L17)
 
 ##### `LAYOUT_RANGES` — Summary
 Public control minimum, maximum and step, also used when reading saved or shared values.
 
 #### `LAYOUT_PRESETS` {#symbol-layout_presets}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L31)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L32)
 
 ##### `LAYOUT_PRESETS` — Summary
 Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls.
 
 #### `applyLayoutPreset` {#symbol-applylayoutpreset}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L43)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L44)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `preset`: [`LayoutPreset`](#symbol-layoutpreset)
 
@@ -91,7 +91,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L74)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L75)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -122,7 +122,7 @@ holding its ground.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L130)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L134)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -131,7 +131,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L145)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L149)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -174,6 +174,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.WAY_DOWNS`](./types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](./types.ts.mdmd.md#symbol-wire_answers)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)
+- [`camera-intent.ARRIVAL_REST_S`](./views/localView/camera-intent.ts.mdmd.md#symbol-arrival_rest_s)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

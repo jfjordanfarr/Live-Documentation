@@ -98,6 +98,8 @@ export interface LocalViewApi {
   focusDirectory(directory: string): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
+  /** Put the subject back where it stood in the other perspective: a return, which begins no arrival and ends one begun. */
+  placeReturnedSubject(nodeId: string, anchor: { x: number; y: number }): void;
   /** After a hold, slide the picture the least that brings it into the frame at its scale; nothing moves when it is in. */
   settleIntoFrame(): void;
   drawConnections(): void;

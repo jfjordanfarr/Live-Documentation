@@ -20,10 +20,12 @@ import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 const ESTATE = "/samples/estate/";
 const directoryBand = (directory: string): string => `.local-directory-band:has(> .local-directory-label[data-directory="${directory}"])`;
 
-async function visit(browser: Browser, localMap: { wireAnswers?: WireAnswersChoice; directionMarks?: DirectionMarks; reads?: MapReads }) {
+async function visit(browser: Browser, { reads, ...localMap }: { wireAnswers?: WireAnswersChoice; directionMarks?: DirectionMarks; reads?: MapReads }) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  // The way the picture reads is a choice of Appearance since the mirror's button (2026-11-22): it is stored there,
+  // not among the Local Map's levers, where this visit first wrote it and the product no longer looks.
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap }, ...(reads ? { appearance: { reads } } : {}) } })
   });
   const page = await context.newPage();
   await page.goto(ESTATE);

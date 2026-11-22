@@ -1376,7 +1376,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (visualId && anchor) {
       const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
-        (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(visualId, anchor);
+        if (perspective === "2d") localView.placeReturnedSubject(visualId, anchor);
+        else forceGraphView.placeSubjectAnchor(visualId, anchor);
       } else anchor = null;
     }
     const ready = perspective === "3d" ? forceGraphView.whenReady() : Promise.resolve();
@@ -1387,7 +1388,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     // its flight goes on from where the transition leaves it.
     const arrived = ready.then(() => {
       if (epoch !== perspectiveEpoch) return null;
-      if (visualId && anchor) (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(visualId, anchor);
+      if (visualId && anchor) {
+        if (perspective === "2d") localView.placeReturnedSubject(visualId, anchor);
+        else forceGraphView.placeSubjectAnchor(visualId, anchor);
+      }
       if (perspective !== "3d" || !previous || previous === perspective) return null;
       const graph = forceGraphView.captureScene();
       forceGraphView.setActive(false);

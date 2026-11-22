@@ -173,6 +173,12 @@ test.describe("phone reading", () => {
   });
 
   test("touch taps retain command activation and a stationary card hold opens its actions", async ({ page }) => {
+    // Its subject is what a tap and a hold do on a card at reading size, not the arrival. On a phone nothing attends
+    // the card (no pointer rests, a tap gives no visible focus), so the arrival that ships (2026-11-22) pulls back a
+    // second and a half after it lands, under the case's taps.
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+    });
     await page.goto(entry);
     const subject = page.locator(`.node-card[data-id="${payment}"]`);
     await subject.waitFor();

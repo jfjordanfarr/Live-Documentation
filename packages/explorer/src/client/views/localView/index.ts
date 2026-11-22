@@ -19,6 +19,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     focusDirectory: directory => controller.focusDirectory(directory),
     getSubjectAnchor: nodeId => controller.getSubjectAnchor(nodeId),
     placeSubjectAnchor: (nodeId, anchor) => controller.placeSubjectAnchor(nodeId, anchor),
+    placeReturnedSubject: (nodeId, anchor) => controller.placeReturnedSubject(nodeId, anchor),
     settleIntoFrame: () => controller.settleIntoFrame(),
     drawConnections: () => controller.drawConnections(),
     highlightSelection: () => controller.highlightSelection(),

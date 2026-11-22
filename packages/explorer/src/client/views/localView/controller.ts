@@ -385,6 +385,18 @@ export class LocalViewController implements LocalViewApi {
     return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
   }
 
+  /**
+   * The subject put back where it stood in the other perspective. A change of perspective is a return to the same
+   * place, not an arrival: the frame is the reader's, whose own pan it carries, and nothing pulls back from it (the
+   * root's rule of 2026-11-22). Until then the arrival that the first 2D drawing of a subject begins went on under the
+   * carried place, and a reader who had panned the 3D picture found it 284 px away after a round trip.
+   */
+  placeReturnedSubject(nodeId: string, anchor: { x: number; y: number }): void {
+    this.cancelArrival();
+    this.arrivalPending = false;
+    this.placeSubjectAnchor(nodeId, anchor);
+  }
+
   /** Keep the file under the person's eye while the surrounding representation changes. */
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void {
     cancelAnimationFrame(this.runtime.mapAnimationFrame);

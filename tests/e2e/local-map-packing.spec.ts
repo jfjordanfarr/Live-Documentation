@@ -109,6 +109,11 @@ test("packing changes keep the selected file in place through 2D and 3D motion",
   // change's reheat settles them again: the whole test took 48 to 53 seconds in a night's green runs and lost one run at
   // the settle's 25-second wait with the box in use beside it (2026-10-19). The budgets are twice the measured times.
   test.setTimeout(120_000);
+  // Its subject is the packing's motion about a card held in place at reading size, not the arrival: pulled back, as
+  // the arrival that ships leaves the picture (2026-11-22), the same change moves the cards for three frames only.
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0 } } })
+  });
   await page.goto(`/?view=local&node=${generator}`);
   await page.locator(".local-placed").waitFor();
   await localMapSettled(page);

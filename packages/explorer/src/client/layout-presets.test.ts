@@ -233,7 +233,19 @@ describe("shared packing preferences", () => {
     expect(applyLayoutSettings(getDefaultTuning(), carried.layout).localMap.arrivalRest).toBe(3);
     expect(readLayoutSettings({ localMap: { arrivalRest: 0.1 } })?.localMap?.arrivalRest).toBe(0.5);
     expect(readLayoutSettings({ localMap: { arrivalRest: 99 } })?.localMap?.arrivalRest).toBe(6);
-    expect(readLayoutSettings({ localMap: { arrivalRest: 1.6 } })?.localMap?.arrivalRest).toBe(1.5);
+    expect(readLayoutSettings({ localMap: { arrivalRest: 1.7 } })?.localMap?.arrivalRest).toBe(1.75);
+  });
+
+  it("carries the arrival's rest only where it is not its default, and reads its absence as the default", () => {
+    // A share of the defaults said arrivalRest 1.5 (the gate of 2026-11-22, local-map-packing.spec.ts): a lever of the
+    // arrival, it is carried as Arrival and Arrival Waits are.
+    expect(layoutSettingsOf(getDefaultTuning()).localMap).not.toHaveProperty("arrivalRest");
+    expect(readLayoutSettings({ localMap: { arrivalRest: 1.5, columnGap: 72 } })?.localMap).toEqual({ columnGap: 72 });
+    const chosen = getDefaultTuning();
+    chosen.localMap.arrivalRest = 3;
+    // A link that carries Local Map settings and says nothing of the rest shows the default in a browser that chose another.
+    expect(applyLayoutSettings(chosen, { localMap: { columnGap: 72 } }).localMap.arrivalRest).toBe(1.5);
+    expect(applyLayoutSettings(chosen, undefined).localMap.arrivalRest).toBe(3);
   });
 
   it("carries Framing only when it follows the pins, and reads its absence as by hand (2026-11-19)", () => {

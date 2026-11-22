@@ -59,7 +59,12 @@ const wires = (page: Page) => page.evaluate(() => [...document.querySelectorAll<
     key: data.connectionKey ?? "", classes: [...path.classList].sort().join(" "), sourceId: data.sourceId ?? "", targetId: data.targetId ?? "",
     sourceSymbol: data.sourceSymbol ?? "", targetSymbol: data.targetSymbol ?? "", d: path.getAttribute("d") ?? path.getAttribute("points") ?? "",
     width: parseFloat((path as unknown as HTMLElement).style.strokeWidth) || 0, references: Number(data.references ?? 0),
-    label: path.getAttribute("aria-label") ?? "", start: isPath ? point(0) : null, end: isPath ? point(path.getTotalLength()) : null
+    // A wire's accessible name: its own, or, under Wire Answers, its band's, which carries it there so that it is not
+    // said twice (connections.ts, dressGathered). Wire Answers is on by default since 2026-11-22.
+    label: path.getAttribute("aria-label")
+      ?? [...document.querySelectorAll<SVGElement>("#map-connections .wire-band")].find(band => band.dataset.connectionKey === JSON.stringify([data.connectionKey, "band"]))?.getAttribute("aria-label")
+      ?? "",
+    start: isPath ? point(0) : null, end: isPath ? point(path.getTotalLength()) : null
   };
 }));
 type Wire = Awaited<ReturnType<typeof wires>>[number];
@@ -113,7 +118,8 @@ test("the overview band joins each pair of files by one wire each way, hub to hu
     for (const hub of [offers, uses]) expect(Math.min(hub.top, hub.bottom), where).toBeGreaterThanOrEqual(-0.5);
     expect(wire.width, where).toBeGreaterThanOrEqual(GATHERED_WIDTH.least);
     expect(wire.width, where).toBeLessThanOrEqual(GATHERED_WIDTH.greatest);
-    expect(wire.label, where).toMatch(/ offers .+ \d+ references?$/u);
+    // Its own name says "A offers B, N references"; its band's sentence, "B uses A: what it uses, N references".
+    expect(wire.label, where).toMatch(/ (offers|uses) .+ \d+ references?$/u);
   }
   const byCount = [...gathered].sort((a, b) => a.references - b.references);
   for (let index = 1; index < byCount.length; index += 1) expect(byCount[index].width).toBeGreaterThanOrEqual(byCount[index - 1].width);
