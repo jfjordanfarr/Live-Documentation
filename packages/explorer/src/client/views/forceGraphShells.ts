@@ -543,11 +543,15 @@ function enclose(id: string, units: BodyNode[], gaps: BodyGaps, centre?: string)
 }
 
 /**
- * The most files a body draws within its skins (2026-11-06, second round): over it, the bubbles whose files would pass it
- * are drawn veiled, their files unseen. Set by the cost of drawing spheres in the software renderer this repository's
- * pictures are taken in; the label keeps the true count.
+ * The most files a body draws within its skins (2026-11-06, second round), and a picture within all of them: over it,
+ * the bubbles whose files would pass it are drawn veiled, their files unseen; the label keeps the true count. It was
+ * 1,024 until 2026-11-22, set by the cost of drawing spheres in the software renderer this repository's pictures were
+ * then taken in. Measured that day on this repository with nothing asked, drawing 1,152 files within skins took no
+ * longer a frame than drawing 446, on a graphics card or with WebGL in software and the processor slowed four times,
+ * and at 1,024 the start veiled either its main body or its 32 smallest groups; so root raised it to 2,048, where this
+ * repository veils nothing, as an interim number until a larger picture says where a budget buys frames.
  */
-export const DRAWN_FILES = 1024;
+export const DRAWN_FILES = 2048;
 
 /**
  * A body's packing of its files, as the tuning sizes them, built from the leaves (2026-11-06, second round). A directory
@@ -614,16 +618,18 @@ export function veiledUnits(shape: Pick<GroupShape, "seed" | "radius" | "margin"
 /**
  * Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
  * skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the body
- * farthest from what was asked about is veiled. Among bodies as far, a directory shell goes before a whole group, the
- * largest shell first, so that the budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors
- * a person can read (the root's order of 2026-11-07; the smallest first had, on the T3 sample, given the whole budget to
- * one giant far from the pin and veiled the shells beside it). A whole group, one the picture shows only by its seed, is
- * veiled the smallest first (2026-11-22): with nothing asked about every group stands as far as every other, and the
- * largest first veiled the repository's main body, the thing a first picture is for, to keep a few dozen small groups
- * open. The owner, shown it: "Oh man I know that annoys the heck out of me." A small group veiled hides a few files, and
- * the main body's stay in sight. Each body is given by its id, the files it holds, the files its skin would draw, its
- * hop from what was asked about, the nearest hop of a shown file it is wired to, or none when it is wired to no shown
- * file, and whether it is a whole group; the ids veiled are returned. Labels keep the true counts.
+ * farthest from what was asked about is veiled, and among bodies as far, the largest by the files it holds, so that the
+ * budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors a person can read, and the
+ * fewest bodies are veiled (the root's order; the smallest first had, on the T3 sample, given the whole budget to one
+ * giant far from the pin and veiled the shells beside it). One body is kept back to the last among those as far as it
+ * (2026-11-22): the start's main body, the largest of the whole groups a picture with nothing asked about stands on.
+ * There every group is as far as every other, and the largest first veiled this repository's main body, the thing a
+ * first picture is for; the owner, shown it: "Oh man I know that annoys the heck out of me." The smallest first was
+ * built that day and looked at, with nothing asked and with a pin: it kept the main body and veiled thirty-two small
+ * groups at the start and twenty-eight bodies round a pin, a field of blank balls where the largest first veils one.
+ * Each body is given by its id, the files it holds, the files its skin would draw, its hop from what was asked about,
+ * the nearest hop of a shown file it is wired to, or none when it is wired to no shown file, and whether it is a whole
+ * group, one the picture shows only by its seed; the ids veiled are returned. Labels keep the true counts.
  */
 export function pictureVeils(bodies: ReadonlyArray<{ id: string; files: number; drawn: number; hop?: number; whole?: boolean }>, limit = DRAWN_FILES): Set<string> {
   let drawn = 0;
@@ -632,10 +638,10 @@ export function pictureVeils(bodies: ReadonlyArray<{ id: string; files: number; 
   type Body = (typeof bodies)[number];
   const far = (body: Body): number => body.hop ?? Infinity;
   const farther = (a: Body, b: Body): number => (far(b) > far(a) ? 1 : far(b) < far(a) ? -1 : 0);
-  /** Shells before whole groups; the larger shell first, the smaller group first. */
-  const sooner = (a: Body, b: Body): number => Number(!!a.whole) - Number(!!b.whole)
-    || (a.whole ? a.files - b.files || a.drawn - b.drawn : b.files - a.files || b.drawn - a.drawn);
-  const order = bodies.filter(body => body.drawn > 0).sort((a, b) => farther(a, b) || sooner(a, b) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const larger = (a: Body, b: Body): number => b.files - a.files || b.drawn - a.drawn || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  // The start's main body: the largest whole group standing at what was asked about, which only a start's seeds do.
+  const main = bodies.filter(body => body.whole && body.hop === 0).sort(larger)[0]?.id;
+  const order = bodies.filter(body => body.drawn > 0).sort((a, b) => farther(a, b) || Number(a.id === main) - Number(b.id === main) || larger(a, b));
   for (const body of order) {
     if (drawn <= limit) break;
     veiled.add(body.id);

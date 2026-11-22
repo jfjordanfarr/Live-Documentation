@@ -40,7 +40,8 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at).
   // Scan Growth and Scan Pace joined the 3D layout group on 2026-11-22 (the trial of a map that fills as a scan would);
   // this case was not run to its end that day, and stood at 77 until the suite's whole run found it.
-  await expect(controls).toHaveCount(79);
+  // Drag joined the 3D forces the same day (the trial of what is tied to a dragged sphere swinging after it).
+  await expect(controls).toHaveCount(80);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

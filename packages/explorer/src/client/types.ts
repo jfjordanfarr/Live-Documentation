@@ -381,6 +381,19 @@ export type ScanGrowth = "off" | "path" | "first-commit";
 /** Every choice of the scan trial, the default first, in the order the control offers them. */
 export const SCAN_GROWTHS: readonly ScanGrowth[] = ["off", "path", "first-commit"];
 
+/**
+ * What is tied to a sphere does while a hand drags that sphere in the 3D Local Map (a trial for the owner's hand,
+ * 2026-11-22: "the one place I would want that responsiveness back is when I'm clicking and dragging an item and
+ * swinging the graph around with me"): it holds its ground, the default and the picture as it was, every sphere held
+ * toward where it stood when the drag began, so that tied files come about half the hand's way; or it swings, the files
+ * and shells tied to the held sphere let go of where they stood for as long as it is held, following by their ties, and
+ * resting where they lie when it is let go.
+ */
+export type DragChoice = "holds" | "swings";
+
+/** Every choice of the drag trial, the default first, in the order the control offers them. */
+export const DRAGS: readonly DragChoice[] = ["holds", "swings"];
+
 /** The rhythm the scan trial plays at: the one measured on this repository, or four times slower, as on a weak machine. */
 export type ScanPace = "measured" | "slower";
 
@@ -632,6 +645,8 @@ export interface ForceGraphTuning {
   scanGrowth: ScanGrowth;
   /** The rhythm the scan trial plays at (`ScanPace`). */
   scanPace: ScanPace;
+  /** What is tied to a dragged sphere does while it is held (a trial, 2026-11-22; `DragChoice`). */
+  drag: DragChoice;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

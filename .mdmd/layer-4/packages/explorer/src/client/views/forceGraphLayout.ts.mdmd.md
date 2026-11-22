@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/views/forceGraphLayout.ts`
-- Generated At: 2026-11-22T03:00:07.910Z
+- Generated At: 2026-11-22T03:37:59.973Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,8 @@ On 2026-11-08, for the structure layout's bag of cells, a link may carry its own
 What the motion's rest means (2026-11-16). The owner keeps the browser cases that wait for this repository's 3D picture red by their clocks, "it literally makes the perf a red-hot sticking point" ([Turn 3 of the November 12 record](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/2026-11-12.1.record.md#turn-3)), and the [November 15 measurement](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-15/Screenshots/building-map/README.md) found the estate's seed click busy for 1,309 frames while no sphere stepped a pixel between two frames after frame 186, which read as a tail no one could see. [Measured again](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-16/Screenshots/motion-rest/README.md) by logging every tick in the page and replaying the motion headless to the last digit, the tail is the directory shells gliding below a pixel a frame, plainly visible (one travels 117 px after frame 186), some gathering speed off shallow balances. So `STILL_FRACTION` and `QUIET_TICKS` stand and their comment says what they are: a speed under what the eye follows, held for ten ticks, which does not know a lull from a balance. A rule waiting for what is left to move to be under a pixel rested 1.4 to 6 times later on every picture measured, and a looser speed froze pictures still visibly gliding; how long a shell glides is the forces' matter, and the measurement sets out what a round on them would have to decide.
 
 A hand and the pacing (2026-11-22). The owner: "I notice that the 3D graph stops simulating rather quickly. It's efficient, which is awesome, but the one place I would want that responsiveness back is when I'm clicking and dragging an item and swinging the graph around with me." Two things held the picture back under a hand, both in `motionForce`'s paced call. A dragged sphere is moved from outside at every frame, and a call after such a move was held to one evaluation of the field, the rule that lets a newly entered piece be drawn first where it was placed; so a moving hand gave the motion one evaluation a frame, often only the reading of the forces again. Now only a sphere no hand holds counts as such a move. And a frame took at most one tick, while this repository's pinned picture gave a frame every 64 to 88 ms under a drag on a graphics card; while a hand holds a sphere a call now goes on through whole ticks for as long as its budget holds, up to `HAND_TICKS`, eight, a starting value for the owner's hand to judge. Nothing changes with no sphere in a hand, and the rest a release settles to is the field's as before. The unit test of the first was seen failing before the mend; the measurements of the same drag before and after are in [the drag's folder](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/drag-live/README.md).
+
+Tuning's Drag (2026-11-22, a trial for the owner's hand; the default holds its ground and is the motion as it was). At Swings, while a hand holds a sphere, `motionForce` brings the anchors of every sphere tied to it, by a pulling link or a chain of them (`tiedTo`, found once for a hold), to where those spheres stand at each call, so that the tether pulls them nowhere and they follow by their ties; nothing else is touched, and on release the picture is held from where it lies, as after any drag. Both unit assertions of the pacing were seen failing behind a temporary switch that restored the old pacing, then the first mend alone, before it was removed; and the browser case failed on the old pacing at its first assertion, the dragged sphere itself having come 23 units when the forty moves were done ([the two values side by side](../../../../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/drag-swings/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -363,14 +365,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L634)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L663)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L659)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L688)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

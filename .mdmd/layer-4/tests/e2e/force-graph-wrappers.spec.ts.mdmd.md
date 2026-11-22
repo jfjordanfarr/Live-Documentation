@@ -23,6 +23,8 @@ Since 2026-11-18 no sphere of the archipelago under Skin wears a ring, and the o
 
 Since 2026-11-22 the case of the skin's files holds the new order of the picture's budget: the smallest whole groups are veiled first, so this repository's main body, the largest group, draws every one of its files, each veiled group is one veiled ball, and a veiled group's name, read under a resting pointer, ends with the count of the files its veil hides. Until then it held the largest veiled first, which veiled the main body ([the matched pictures](../../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-22/Screenshots/veil-order/README.md)).
 
+The same afternoon the budget became 2,048, at which this repository's archipelago veils nothing, and the order the largest first with the start's main body last: the case now holds that nothing is veiled here and the main body's files are drawn, writes the order out for the day the repository passes the budget, and leaves the order itself to the unit tests of `pictureVeils`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

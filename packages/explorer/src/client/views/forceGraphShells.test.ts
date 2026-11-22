@@ -437,27 +437,27 @@ describe("the picture's budget of files drawn within skins (2026-11-07, third ro
     expect(pictureVeils([body("a", 600), body("b", 424)], 1024)).toEqual(new Set());
   });
 
-  it("veils whole groups the smallest first, so that the main body's files stay in sight (2026-11-22)", () => {
+  it("keeps the start's main body to the last, and veils the largest of the rest first (2026-11-22)", () => {
     const group = (id: string, files: number, hop = 0) => ({ id, files, drawn: files - 1, hop, whole: true });
-    // The archipelago with nothing asked: every group as far as every other, 1,137 files drawn against 1,024.
+    // The archipelago with nothing asked: every group as far as every other, 1,139 files drawn against 1,024.
     const start = [group("main", 697), group("second", 201), group("third", 120), group("fourth", 60), group("fifth", 40), group("pair-a", 2), group("pair-b", 2),
       ...Array.from({ length: 12 }, (_, i) => group(`trio-${String(i).padStart(2, "0")}`, 3))];
-    const drawn = start.reduce((sum, body) => sum + body.drawn, 0);
-    expect(drawn).toBe(1139);
-    const veiled = pictureVeils(start, 1024);
-    // The two pairs, the twelve trios and the two next smallest go, 124 files drawn, until 1,024 hold; the largest stay.
-    expect(veiled).toEqual(new Set(["pair-a", "pair-b", ...Array.from({ length: 12 }, (_, i) => `trio-${String(i).padStart(2, "0")}`), "fifth", "fourth"]));
-    expect([...veiled].some(id => id === "main" || id === "second" || id === "third")).toBe(false);
-    expect(pictureVeils([...start].reverse(), 1024)).toEqual(veiled);
-    // As far as one another, a directory shell goes before a whole group, the largest shell first.
+    expect(start.reduce((sum, body) => sum + body.drawn, 0)).toBe(1139);
+    // One veil, the largest group but the main body, where the largest first veiled the main body itself.
+    expect(pictureVeils(start, 1024)).toEqual(new Set(["second"]));
+    expect(pictureVeils([...start].reverse(), 1024)).toEqual(new Set(["second"]));
+    // The main body goes only when every other group has gone and the picture still passes the limit.
+    expect(pictureVeils(start, 722)).toEqual(new Set(["second", "third", "fourth", "fifth"]));
+    const all = pictureVeils(start, 300);
+    expect(all.size).toBe(start.length);
+    // Round a pin nothing is kept back: no whole group stands at what was asked about, and the largest far body goes.
     const shell = (id: string, files: number, hop: number) => ({ id, files, drawn: files, hop });
-    expect(pictureVeils([shell("shell-large", 300, 2), shell("shell-small", 50, 2), group("island", 500, 2), group("islet", 400, 2)], 1000)).toEqual(new Set(["shell-large"]));
-    expect(pictureVeils([shell("shell-large", 300, 2), shell("shell-small", 50, 2), group("island", 500, 2), group("islet", 400, 2)], 600)).toEqual(new Set(["shell-large", "shell-small", "islet"]));
-    // The hop still decides first: a small group a hop farther goes before a large one nearer.
+    expect(pictureVeils([shell("shell-large", 300, 2), shell("shell-small", 50, 2), group("island", 500, 2), group("islet", 400, 2)], 1000)).toEqual(new Set(["island"]));
+    // The hop still decides first: the main body at the start outlasts nothing nearer, and a far small group goes before it.
     expect(pictureVeils([group("near", 900, 0), group("far", 200, 1)], 1024)).toEqual(new Set(["far"]));
   });
 
-  it("veils the farthest bodies first, and among shells as far the largest, until the rest draw within the limit, whatever order they come in", () => {
+  it("veils the farthest bodies first, and among bodies as far the largest, until the rest draw within the limit, whatever order they come in", () => {
     const near = (id: string, files: number, hop: number, drawn = files) => ({ ...body(id, files, drawn), hop });
     // 1,326 drawn: the giant beside the pin stands over the middling body two hops out; the far ones go first.
     const bodies = [near("giant", 2000, 0, 1000), near("middle", 300, 2), near("small", 20, 1), near("tiny", 3, 1), body("adrift", 3)];

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T01:29:32.402Z
+- Generated At: 2026-11-22T03:37:59.040Z
 
 ## Authored
 ### Purpose
@@ -91,7 +91,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L68)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L69)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -113,11 +113,12 @@ settings and says nothing of Hidden Files, made with the count, now opens with t
 trial of the 3D map): only the next step is carried, and its absence reads as everything. Arrival (2026-11-19) likewise:
 only a choice other than reading size is carried, and its absence reads as reading size; and Framing (2026-11-19), only
 Follows Pins, its absence reading as By Hand. Scan Growth and Scan Pace (2026-11-22, a trial of the 3D map): only an
-order of arrival and the slower pace are carried, their absence reading as off and as measured.
+order of arrival and the slower pace are carried, their absence reading as off and as measured; and Drag (the same day),
+only Swings, its absence reading as holding its ground.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L121)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L123)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -126,7 +127,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L136)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L138)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -154,6 +155,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](./types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTION_MARKS`](./types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](./types.ts.mdmd.md#symbol-directory_layouts)
+- [`types.DRAGS`](./types.ts.mdmd.md#symbol-drags)
 - [`types.FRAMINGS`](./types.ts.mdmd.md#symbol-framings)
 - [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
 - [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)

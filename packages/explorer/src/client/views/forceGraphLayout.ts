@@ -527,6 +527,26 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     if (!holding) next.release();
     return next;
   };
+  /** The spheres tied to the held ones by pulling links, the held ones left out; found once for a hold. */
+  let tied: { held: string; nodes: N[]; spheres: number[] } | null = null;
+  const tiedTo = (fixed: ReadonlySet<number>): number[] => {
+    const held = [...fixed].map(i => nodes[i].id).join("\0");
+    if (tied && tied.held === held && tied.nodes === nodes) return tied.spheres;
+    const index = new Map(nodes.map((node, i) => [node.id, i]));
+    const beside = new Map<number, number[]>();
+    const end = (value: string | N): number | undefined => index.get(typeof value === "string" ? value : value.id);
+    for (const link of source.links()) {
+      if (!linkPulls(link, source.layout(), source.tuning())) continue;
+      const a = end(link.source), b = end(link.target);
+      if (a === undefined || b === undefined || a === b) continue;
+      (beside.get(a) ?? beside.set(a, []).get(a)!).push(b);
+      (beside.get(b) ?? beside.set(b, []).get(b)!).push(a);
+    }
+    const reached = new Set(fixed), queue = [...fixed];
+    for (let at = 0; at < queue.length; at++) for (const next of beside.get(queue[at]) ?? []) if (!reached.has(next)) { reached.add(next); queue.push(next); }
+    tied = { held, nodes, spheres: queue.filter(i => !fixed.has(i)) };
+    return tied.spheres;
+  };
   const force = ((): void => {
     if (!nodes.length) return;
     motion ??= build();
@@ -546,6 +566,15 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       holding = begin === "hold";
       if (holding) motion.anchorHere(); else motion.release();
       begin = null;
+    }
+    // The Drag trial (2026-11-22, Tuning's Drag at Swings; the default holds its ground and does none of this): while a
+    // hand holds a sphere, the files and shells tied to it, by a pulling link or a chain of them, let go of where they
+    // stood. Their anchors are brought to where they stand at every call, so that the tether pulls them nowhere and they
+    // follow the hand by their ties alone; let go, the picture is held from where it lies, as after any drag.
+    if (fixed.size && holding && source.tuning().drag === "swings") {
+      const anchor = motion.anchor;
+      for (const i of tiedTo(fixed)) for (let k = 0; k < 3; k++) anchor[3 * i + k] = x[3 * i + k];
+      motion.refresh();
     }
     const budget = source.budget?.();
     let tick: MotionTick | null;

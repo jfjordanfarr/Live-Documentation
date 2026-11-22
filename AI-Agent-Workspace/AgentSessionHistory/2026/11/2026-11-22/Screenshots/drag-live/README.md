@@ -2,6 +2,8 @@
 
 **Historical evidence, 2026-11-22.** Taken by the builder on its own builds of this repository's map, 1,440 by 900, in the Connections layout with `packages/engine/src/live-docs/graph.ts` pinned, the repository's most connected file. A temporary instrument waited for rest, took the pinned sphere, carried it 280 px to the right and 120 px up in forty moves of the pointer with 20 ms between them, read every sphere's place with the button still down, held two seconds more, let go and waited for rest. It ran on the container's graphics card, and once on the slowed machine of [the weak-machine probe](../../../2026-11-21/Probes/weak-machine/README.md) (WebGL in software, the page's processor slowed four times).
 
+**Corrected the same day** (source: [the drag measured by what is tied](../drag-swings/README.md), 2026-11-22). The "spheres" of this page's table are every sphere of the picture, 144 of which no wire ties to the dragged file. Counted apart that afternoon, the 49 files tied to it were with the hand once the pacing was mended; what trailed was the group's shells. The reading below that tied files end at half the hand's way is wrong for the tied files, and the fork it leaves was built as Tuning's Drag.
+
 ## Why
 
 The owner, 2026-11-22: "I notice that the 3D graph stops simulating rather quickly. It's efficient, which is awesome, but the one place I would want that responsiveness back is when I'm clicking and dragging an item and swinging the graph around with me."

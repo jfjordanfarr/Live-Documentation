@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning.ts`
-- Generated At: 2026-11-22T01:29:32.692Z
+- Generated At: 2026-11-22T03:37:59.319Z
 
 ## Authored
 ### Purpose
@@ -88,7 +88,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 #### `withholdThreeDLayout` {#symbol-withholdthreedlayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L594)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L604)
 
 ##### `withholdThreeDLayout` — Summary
 Where the browser cannot draw 3D (2026-11-21), the 3D layout's group is not offered, as the 3D control is not: its
@@ -100,7 +100,7 @@ once, when the browser is known to refuse WebGL, which may be after the page's f
 
 #### `withholdFirstCommitOrder` {#symbol-withholdfirstcommitorder}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L610)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L620)
 
 ##### `withholdFirstCommitOrder` — Summary
 Where the bundle carries no history (2026-11-22), the scan trial's first-commit order is not offered, since only a
@@ -129,6 +129,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`types.DESCRIPTIONS_ZOOMED_OUT`](../types.ts.mdmd.md#symbol-descriptions_zoomed_out)
 - [`types.DIRECTION_MARKS`](../types.ts.mdmd.md#symbol-direction_marks)
 - [`types.DIRECTORY_LAYOUTS`](../types.ts.mdmd.md#symbol-directory_layouts)
+- [`types.DRAGS`](../types.ts.mdmd.md#symbol-drags)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`types.FRAME_CHOICES`](../types.ts.mdmd.md#symbol-frame_choices)
 - [`types.FRAMINGS`](../types.ts.mdmd.md#symbol-framings)
@@ -156,6 +157,7 @@ description say why, as the 3D control does where the browser refuses WebGL. A s
 - [`template.tuning-direction-marks`](../../shared/template.html.mdmd.md#symbol-tuning-direction-marks)
 - [`template.tuning-directory-layout`](../../shared/template.html.mdmd.md#symbol-tuning-directory-layout)
 - [`template.tuning-force-beyond-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-beyond-hops)
+- [`template.tuning-force-drag`](../../shared/template.html.mdmd.md#symbol-tuning-force-drag)
 - [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
 - [`template.tuning-force-hops`](../../shared/template.html.mdmd.md#symbol-tuning-force-hops)
 - [`template.tuning-force-scan-growth`](../../shared/template.html.mdmd.md#symbol-tuning-force-scan-growth)
