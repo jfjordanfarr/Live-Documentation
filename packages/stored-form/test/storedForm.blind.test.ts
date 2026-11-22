@@ -6,7 +6,7 @@
 import { deflateRawSync, deflateSync, inflateRawSync } from "node:zlib";
 import { describe, expect, it } from "vitest";
 
-import { createWriter, readScan, scanOfText, SIGNATURE, textOfScan, writeScan, type Scan } from "../src/storedForm";
+import { createWriter, READ_AHEAD, readScan, scanOfText, SIGNATURE, textOfScan, writeScan, type Scan } from "../src/storedForm";
 import { everyFact } from "./testScans";
 
 interface Frame {
@@ -161,4 +161,57 @@ describe("the extension", () => {
     expect((await writeScan(scan(""))).ok).toBe(true);
     expect((await writeScan(scan(".mdmd.md"))).ok).toBe(true);
   });
+});
+
+describe("the read's window ahead", () => {
+  it(
+    "inflates at most READ_AHEAD past the section it checks: 24 incompressible sections of 2 MiB, the first refused, cost the read a few sections, not 48 MiB",
+    async () => {
+      const { randomBytes } = await import("node:crypto");
+      const { setFlagsFromString } = await import("node:v8");
+      const { runInNewContext } = await import("node:vm");
+      setFlagsFromString("--expose-gc");
+      const gc = runInNewContext("gc") as () => void;
+      const sections = 24;
+      const files = sections * 256;
+      const names = Array.from({ length: files }, (_, i) => `f${String(i).padStart(5, "0")}`);
+      // Every path shares "f" and as many digits as it can with the one before it.
+      const coded = names.map((name, i) => {
+        let shared = 0;
+        const before = i === 0 ? "" : names[i - 1];
+        while (shared < before.length && before[shared] === name[shared]) shared += 1;
+        return [shared, name.slice(shared)] as [number, string];
+      });
+      const records = Array.from({ length: sections }, () => {
+        const raw = new Uint8Array(randomBytes(2 * 1024 * 1024));
+        // The first record names string 5 of a scan with no strings: refused at its first byte.
+        raw[0] = 5;
+        return { kind: 3, count: 256, raw };
+      });
+      // The strings hold every path, so that the paths are no longer than the strings that hold them.
+      const strings = { kind: 2, count: files, raw: Buffer.concat(names.map((n) => text(n))) };
+      const bytes = await framed([{ kind: 1, count: 0, raw: head("", "", ".md") }, strings, ...records, { kind: 4, count: files, raw: paths(coded) }, { kind: 5, count: files, raw: new Uint8Array(files) }, { kind: 6, count: 0, raw: new Uint8Array(32) }]);
+      const used = (): number => {
+        const m = process.memoryUsage();
+        return m.arrayBuffers + m.external;
+      };
+      gc();
+      const baseline = used();
+      let peak = baseline;
+      const sampler = setInterval(() => {
+        peak = Math.max(peak, used());
+      }, 1);
+      const read = await readScan(bytes);
+      // What the window started may still be finishing: wait for it, sampling, so that the peak is all of it.
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      clearInterval(sampler);
+      peak = Math.max(peak, used());
+      expect(read.ok ? "read" : read.reason).toMatch(/a string numbered 5/u);
+      const extra = peak - baseline;
+      // The window, the section being read, and room for the inflater's own buffers: far under the 48 MiB the
+      // sections hold.
+      expect(extra, `${(extra / 1048576).toFixed(1)} MiB held past the file`).toBeLessThan(READ_AHEAD + 8 * 1024 * 1024);
+    },
+    120_000
+  );
 });

@@ -821,3 +821,65 @@ Run alone at a load of 12, the discovery oracle passed 60 of 60 and the package'
 ### Commands the harness refused in the fourth leg
 
 One: an empty heredoc left by mistake before a `grep`, refused as too complex to verify. It did not name git. The `grep` was run alone.
+
+## Sixth milestone, first leg, 2026-11-22: a file's own lists as a view, the graph's index from the walk, and the window
+
+The fifth milestone's state, `3cd947724`, was merged in first.
+
+### 1. A file's own lists, decoded as they are read
+
+Decoded after the walk, a file's entries, symbols and dependencies are now lazy lists:
+- Decoding the file walks each item once, to learn where each begins, and keeps nothing of it but four bytes an item.
+- An item is decoded from where it begins when it is read.
+- They go through one method of the codec, `items`. Its decoding after the walk is lazy, and the writer and the counter walk such a list as any list.
+
+**The case:** a file of 300,000 symbols, read back.
+- Its symbols' count must keep under 4 MiB, and symbol 123,456 must read as it was written.
+- Against the module before this change it failed, holding 63,037,408 bytes. It passes now.
+
+**What remains true and is said:** finding where the lists end still walks each item once, transiently. A skip that allocates nothing would need a second walk of the grammar in the module, which it should not hold.
+
+### 2. The graph's index from the walk
+
+The walk now gathers documented-by, as file numbers, beside the wires it already checks. The inbound comes from the wires section. A scan read back carries both, kept apart in a `WeakMap` keyed by its view of files, and `graphViewOf` uses them rather than reading every file again.
+
+**A fault found and mended on the way:** `graphViewOf` had kept every file it decoded, in a map by path, which undid the view. It now looks files up by number and builds only what is asked.
+
+**Measured at a load of about 7, interleaved** (the graph as asked, the hub's Local Map):
+
+| | Before | After | Peak, before → after |
+| --- | ---: | ---: | --- |
+| DNN | 1.86 to 2.55 s | **1.04 to 1.32 s** | 360 → 234 MB |
+| Five times DNN | 5.39 to 6.94 s | **1.72 to 2.08 s** | 433 to 535 → 311 MB |
+
+The graph as asked now costs about 30 ms past the walk.
+
+### 3. The window, at 8 MiB, with its case
+
+- **The whole read inflates sections in order**, and ahead of the one it checks only within `READ_AHEAD`, 8 MiB of raw bytes. Only sections whose headers have passed every header-only check are inflated ahead. The window runs over the strings and records sections, which are read after the head, the paths and the wires.
+- **Its case:** 24 incompressible records sections of 2 MiB each, after valid paths, wires and strings, the first section refused at its first byte. The memory held past the file during the read, sampled every millisecond, must stay under `READ_AHEAD` and 8 MiB.
+  - With the window made unbounded, the case failed, holding 120.5 MiB.
+  - At 8 MiB it passes.
+
+### Checked again
+
+- On this repository (1,349 files), the estate (41) and DNN (10,777), the graph read back prints byte for byte as each `index.json`, and both round trips are exact.
+- The package's 73 cases pass, with 4 skipped.
+- Section 6 now states the lists, the index from the walk and the window, and its caveat on lists is gone.
+- **The whole unit project, run once:** 3,776 cases passed and 4 were skipped. One failed: the history's identity case "names as roots every package…", a five-second timeout.
+  - Run alone at a load of 41, it took 8.6 s.
+  - It reads only the engine's and the generator's sources, which this work does not touch.
+  - It is the same load-bound case recorded in the second milestone (8.2 s alone at a load of 15).
+
+  Lint, the docs, `docs:links:enforce` and the audits are clean.
+
+### Not reached in the sixth milestone's first leg
+
+- **C and D**, which change the format.
+- **The thirty-five questions**, answered in the text.
+- **G.**
+- **The page and bidirectional controls.**
+
+### Commands the harness refused in the sixth milestone's first leg
+
+None.

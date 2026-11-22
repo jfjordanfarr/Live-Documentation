@@ -322,9 +322,10 @@ The first four are mended. The fifth is not a fault of a loop: the bound counts 
   - each records section's inflated bytes.
   
   It keeps no file's facts. So after the walk, its memory is what the file inflates to, bounded by section 3.5, and its time is the walk's, linear in what the file inflates to.
+  - The walk also gathers what the graph needs of every file: the files that land on each file, from the wires, and the files whose documentation names it.
+  - It inflates sections in order, and ahead of the one it checks only within a constant: at most 8 MiB of raw bytes, of sections whose headers have passed every header-only check. So a file refused by one section has cost at most that much inflation past it.
 - **A file's facts are decoded when they are asked for,** from their section's kept bytes, and are not kept. What a reader then holds is what was asked for.
-  - Asking for one file decodes its section, at most 256 files and 64 MiB of records. So one file can still cost much: a section's records may build some thirty bytes of a reader's objects for each byte.
-  - A file's own lists are not yet decoded lazily, so asking for a file of a million symbols builds its million symbols.
+  - **A file's own lists** (its entries, symbols and dependencies) **are decoded as they are read.** Asking a file for its symbols' count keeps four bytes a symbol (where each begins), not the symbols. Finding where the lists begin and end walks each item once and keeps nothing of it.
 - **The graph and the text are made from what is asked for, and are bounded by it.** A graph holds an edge for each dependency and linked type it is made from, and a text a line for each fact. Each costs a reader's objects, or bytes written, in proportion to the facts it describes.
   - A small file can describe many facts that name long strings. The graph shares such a string; it does not copy it.
   - A text, or a graph printed as text, writes the string once for every naming. The text's own bound (section 3.5) refuses past the bound.

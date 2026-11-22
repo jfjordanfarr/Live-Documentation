@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/stored-form/test/storedForm.blind.test.ts`
-- Generated At: 2026-11-22T03:25:12.493Z
+- Generated At: 2026-11-22T07:20:18.997Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `node:crypto`
+- `node:v8`
+- `node:vm`
 - `node:zlib` - `deflateRawSync`, `deflateSync`, `inflateRawSync`
+- [`storedForm.READ_AHEAD`](../src/storedForm.ts.mdmd.md#symbol-read_ahead)
 - [`storedForm.SIGNATURE`](../src/storedForm.ts.mdmd.md#symbol-signature)
 - [`storedForm.Scan`](../src/storedForm.ts.mdmd.md#symbol-scan)
 - [`storedForm.createWriter`](../src/storedForm.ts.mdmd.md#symbol-createwriter)
