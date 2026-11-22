@@ -24,7 +24,8 @@
  * The keyboard: from a focused card, the right arrow goes to the first wire leaving it on the right (to what uses it),
  * the left arrow to the first entering it on the left (what it uses); on a wire, up and down go to the card's next and
  * previous wire on that side, right and left go on to the card at that end, Enter or Space pins its words, and Escape
- * lets go of a pin, then goes back to the card the walk came from.
+ * lets go of a pin, then goes back to the card the walk came from. Right and left are the page's: in a mirrored picture
+ * (reading-direction.ts) what uses the card stands at its left, and the left arrow goes there.
  *
  * @module wire-answers
  */
@@ -32,6 +33,7 @@
 import { CLOSE_ICON, iconButton } from "../../panels/icon-button";
 import { NO_REST, onTheWay, restAt, restedOn, restsAt, type PointerRest } from "../pointerRest";
 import { panelBeside, type Avoid } from "../worldMap/layout";
+import { layoutEndAt, READS_ATTRIBUTE, type LayoutEnd } from "./reading-direction";
 import { clearSymbolHighlightDOM, lightConnections } from "./symbol-highlight";
 import type { LocalEdge } from "./types";
 import { headText, listText, referencesText, sentence, type WireWords } from "./wire-words";
@@ -378,10 +380,21 @@ export class WireAnswers {
     this.close();
   };
 
-  /** The bands at one side of a card, top to bottom by where they meet it. */
-  private bandsOf(cardId: string, side: "right" | "left"): SVGElement[] {
-    const end = side === "right" ? "targetId" : "sourceId";
-    const y = side === "right" ? "fromY" : "toY";
+  /**
+   * The end of the layout an arrow key points toward: the page's side it names, read through the picture's one mapping
+   * (reading-direction.ts), so that Right is the page's right in a picture as laid out and in one mirrored.
+   */
+  private toward(key: string): LayoutEnd {
+    return layoutEndAt(key === "ArrowRight" ? "right" : "left", !!this.host.layer()?.hasAttribute(READS_ATTRIBUTE));
+  }
+
+  /**
+   * The bands of a card toward one end of the layout, top to bottom by where they meet it: toward its end, the wires
+   * to what uses the card; toward its start, the wires from what it uses.
+   */
+  private bandsOf(cardId: string, side: LayoutEnd): SVGElement[] {
+    const end = side === "end" ? "targetId" : "sourceId";
+    const y = side === "end" ? "fromY" : "toY";
     return [...this.host.overlay.querySelectorAll<SVGElement>(".wire-band:not(.run-band)")]
       .filter(band => band.dataset[end] === cardId)
       .sort((a, b) => Number(a.dataset[y]) - Number(b.dataset[y]));
@@ -397,7 +410,7 @@ export class WireAnswers {
     if (!target) return;
     const band = this.bandAt(target);
     if (!band && target.matches(".node-card") && (event.key === "ArrowRight" || event.key === "ArrowLeft")) {
-      const side = event.key === "ArrowRight" ? "right" : "left";
+      const side = this.toward(event.key);
       const first = this.bandsOf((target as HTMLElement).dataset.id ?? "", side)[0];
       if (!first) return;
       event.preventDefault();
@@ -407,8 +420,8 @@ export class WireAnswers {
       return;
     }
     if (!band) return;
-    const side = band.dataset.walk === "left" ? "left" : "right";
-    const cardId = side === "right" ? band.dataset.targetId : band.dataset.sourceId;
+    const side: LayoutEnd = band.dataset.walk === "start" ? "start" : "end";
+    const cardId = side === "end" ? band.dataset.targetId : band.dataset.sourceId;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       this.show(band, this.anchorOfBand(band), true);
@@ -419,8 +432,9 @@ export class WireAnswers {
       const next = bands[Math.max(0, Math.min(bands.length - 1, at + (event.key === "ArrowDown" ? 1 : -1)))];
       if (next && next !== band) { next.dataset.walk = side; (next as unknown as HTMLElement).focus({ preventScroll: true }); }
     } else if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-      // On to the card at that end: right to the file that uses, left to the file that offers.
-      const card = this.cardOf(event.key === "ArrowRight" ? band.dataset.sourceId : band.dataset.targetId);
+      // On to the card on that side of the page: toward the layout's end the file that uses, toward its start the file
+      // that offers.
+      const card = this.cardOf(this.toward(event.key) === "end" ? band.dataset.sourceId : band.dataset.targetId);
       if (!card) return;
       event.preventDefault();
       this.close();

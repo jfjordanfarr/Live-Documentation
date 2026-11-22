@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/layout-presets.ts`
-- Generated At: 2026-11-22T03:46:09.263Z
+- Generated At: 2026-11-22T05:00:45.642Z
 
 ## Authored
 ### Purpose
@@ -121,7 +121,7 @@ carried, their absence reading as off and as measured.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L126)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L127)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -130,7 +130,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L141)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L142)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -168,6 +168,7 @@ picture). So a link made with the defaults shows them in a browser whose own tun
 - [`types.SCAN_PACES`](./types.ts.mdmd.md#symbol-scan_paces)
 - [`types.STEPS`](./types.ts.mdmd.md#symbol-steps)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
+- [`types.WAY_DOWNS`](./types.ts.mdmd.md#symbol-way_downs)
 - [`types.WIRE_ANSWERS`](./types.ts.mdmd.md#symbol-wire_answers)
 - [`types.ZOOM_LOOKS`](./types.ts.mdmd.md#symbol-zoom_looks)
 <!-- LIVE-DOC:END Dependencies -->

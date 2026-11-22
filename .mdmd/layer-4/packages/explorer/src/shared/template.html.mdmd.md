@@ -597,6 +597,9 @@ Since 2026-11-19 ([Turn 14 of the November 18 record](../../../../../../AI-Agent
 #### `tuning-vertical-offset-value` {#symbol-tuning-vertical-offset-value}
 - Type: variable
 
+#### `tuning-way-down` {#symbol-tuning-way-down}
+- Type: variable
+
 #### `tuning-width-cost` {#symbol-tuning-width-cost}
 - Type: variable
 

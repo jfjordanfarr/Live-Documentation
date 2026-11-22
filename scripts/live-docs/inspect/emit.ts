@@ -158,10 +158,14 @@ export function emitPathResult(
     });
   }
 
+  // The route is told as asked, from --from to --to; each step says which file uses which (the owner, 2026-11-22:
+  // a route asked is told as asked). Walked outbound, each file uses the next; walked inbound, each is used by it.
+  const each = direction === "inbound" ? "is used by" : "uses";
   if (json) {
     const payload = {
       kind: "path" as const,
       direction,
+      each,
       length: pathNodes.length - 1,
       from: describeNode(graph, pathNodes[0], verbose),
       to: describeNode(graph, pathNodes[pathNodes.length - 1], verbose),
@@ -172,13 +176,11 @@ export function emitPathResult(
     return;
   }
 
-  console.log(
-    `Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]} (${pathNodes.length - 1} hop(s), ${direction}).`
-  );
+  console.log(`Path from ${pathNodes[0]} to ${pathNodes[pathNodes.length - 1]}, ${pathNodes.length - 1} hop(s): each file ${each} the next.`);
   hops.forEach((hop, index) => {
     const fromDoc = hop.from.docPath ? ` [${hop.from.docPath}]` : "";
     const toDoc = hop.to.docPath ? ` [${hop.to.docPath}]` : "";
-    console.log(`  ${index + 1}. ${hop.from.codePath}${fromDoc} -> ${hop.to.codePath}${toDoc}`);
+    console.log(`  ${index + 1}. ${hop.from.codePath}${fromDoc} ${each} ${hop.to.codePath}${toDoc}`);
   });
 }
 
@@ -197,12 +199,13 @@ export function emitNotFound(
   result: PathSearchResult,
   json: boolean,
   verbose: boolean,
-  reverse?: { hops: number }
+  reverse?: { hops: number },
+  eitherWay = false
 ): void {
   const command = reverseCommand(from, to, direction);
   const payload = {
     kind: "not-found" as const,
-    direction,
+    direction: eitherWay ? ("both" as const) : direction,
     from: describeNode(graph, from, verbose),
     to: describeNode(graph, to, verbose),
     reverse: reverse ? { hops: reverse.hops, command } : null,
@@ -219,7 +222,9 @@ export function emitNotFound(
     return;
   }
 
-  console.log(reverse
+  console.log(eitherWay
+    ? `No path runs between ${from} and ${to}, either way.`
+    : reverse
     ? `No path runs from ${from} to ${to} (${direction}); one runs the other way, ${reverse.hops} hop(s): ${command}`
     : `No path runs from ${from} to ${to} (${direction}), nor the other way.`);
 }
@@ -253,8 +258,18 @@ export function emitNeighbourResult(
     files: files.slice(0, NEIGHBOURS_LISTED).map((node) => describeNode(graph, node, verbose)),
     cut: Math.max(0, files.length - NEIGHBOURS_LISTED)
   }));
+  // The author's word, apart from the neighbours and never counted as a use (the owner, 2026-11-21: "we should honor
+  // their word"; root's ruling of 2026-11-22): the declarations this file's documentation names, and the files whose
+  // documentation names it. Reach, paths and the unreachable list do not read it.
+  const file = graph.files[from];
+  const named = (file?.documentation ?? []).map((reference) => ({ label: reference.label, ...(reference.element ? { element: reference.element } : {}), to: reference.to }));
+  const namedBy = file?.documentedBy ?? [];
+  const word = {
+    names: { count: named.length, references: named.slice(0, NEIGHBOURS_LISTED), cut: Math.max(0, named.length - NEIGHBOURS_LISTED) },
+    namedBy: { count: namedBy.length, files: namedBy.slice(0, NEIGHBOURS_LISTED), cut: Math.max(0, namedBy.length - NEIGHBOURS_LISTED) }
+  };
   if (json) {
-    console.log(JSON.stringify({ kind: "neighbours" as const, from: describeNode(graph, from, verbose), ...(documents ? { documents } : {}), neighbours: listed }, null, 2));
+    console.log(JSON.stringify({ kind: "neighbours" as const, from: describeNode(graph, from, verbose), ...(documents ? { documents } : {}), neighbours: listed, documentation: word }, null, 2));
     return;
   }
   for (const way of listed) {
@@ -265,6 +280,25 @@ export function emitNeighbourResult(
     }
     if (way.cut > 0) {
       console.log(`  … and ${way.cut} more, not listed`);
+    }
+  }
+  if (word.names.count > 0) {
+    const files = new Set(named.map((reference) => reference.to)).size;
+    console.log(`${from}'s documentation names ${word.names.count} declaration${word.names.count === 1 ? "" : "s"} in ${files} file${files === 1 ? "" : "s"} (the author's word, not a use).`);
+    for (const reference of word.names.references) {
+      console.log(`  ${reference.label}${reference.element ? ` (${reference.element})` : ""} in ${reference.to}`);
+    }
+    if (word.names.cut > 0) {
+      console.log(`  … and ${word.names.cut} more, not listed`);
+    }
+  }
+  if (word.namedBy.count > 0) {
+    console.log(`${from} is named by the documentation of ${word.namedBy.count} file${word.namedBy.count === 1 ? "" : "s"} (the author's word, not a use).`);
+    for (const by of word.namedBy.files) {
+      console.log(`  ${by}`);
+    }
+    if (word.namedBy.cut > 0) {
+      console.log(`  … and ${word.namedBy.cut} more, not listed`);
     }
   }
   if (documents?.cites.length) {

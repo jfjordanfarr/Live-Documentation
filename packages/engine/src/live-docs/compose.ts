@@ -26,6 +26,7 @@ import type {
   SourceAnalysisResult,
   DependencyEntry,
   ReExportedSymbolInfo,
+  SymbolDocumentationTarget,
   TypeReference,
   ResolvedSymbolLocation,
   WorkspaceSymbolIndex
@@ -37,7 +38,7 @@ import {
   displayDependencyKey,
   createProximityAwareComparator
 } from "./coreUtils";
-import { encodeLinkPath, symbolName, type CitedBy, type Dependency, type DocSection, type Entry, type ReExport, type ReferenceLine, type SymbolBlock, type TypeRef } from "./document";
+import { documentationReferenceLine, encodeLinkPath, LINKS_SECTION, symbolName, type CitedBy, type Dependency, type DocSection, type Entry, type ReExport, type ReferenceLine, type SymbolBlock, type TypeRef } from "./document";
 import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
 
 /**
@@ -220,7 +221,7 @@ export function composeSymbolBlocks(args: {
       kind: symbol.kind ? symbol.kind : "symbol",
       flags,
       references: composeReferences(symbol.typeReferences, args),
-      sections: composeDocSections(symbol)
+      sections: composeDocSections(symbol, (target) => documentationLink(target, args))
     };
     if (symbol.location) {
       block.source = {
@@ -423,7 +424,31 @@ function composeTypeRef(
 // Symbol Documentation
 // ============================================================================
 
-function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
+/**
+ * The link to the declaration a documentation reference names, as the reader resolved it: within the doc when this
+ * file declares it, else to the doc of the file that does, each at the anchor of the symbol at the target's line (an
+ * overload's own), or of the first of its name in that file. Undefined where no doc of the workspace index answers for
+ * the file and symbol, so that the line stays the name as written.
+ */
+function documentationLink(
+  target: SymbolDocumentationTarget,
+  args: { headings: PublicSymbolHeadingInfo[]; docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string }
+): string | undefined {
+  if (target.path === args.sourceRelativePath) {
+    const named = args.headings.filter((info) => info.symbol.name === target.symbol);
+    const heading = named.find((info) => info.symbol.location?.line === target.line) ?? named[0];
+    return heading?.slug ? `#${heading.slug}` : undefined;
+  }
+  if (!args.symbolIndex || !args.liveDocsRootAbsolute) return undefined;
+  const located = (args.symbolIndex.get(target.symbol) ?? []).filter((location) => location.sourcePath === target.path && !location.isReExport);
+  const location = located.find((candidate) => candidate.line === target.line) ?? located[0];
+  if (!location) return undefined;
+  // liveDocPath is workspace-relative; the Live Docs root sits two levels below the workspace root.
+  const targetDocAbsolute = path.resolve(args.liveDocsRootAbsolute, "..", "..", location.liveDocPath);
+  return `${linkTo(args.docDir, targetDocAbsolute)}${location.anchor ? `#${location.anchor}` : ""}`;
+}
+
+function composeDocSections(symbol: PublicSymbolEntry, linkFor: (target: SymbolDocumentationTarget) => string | undefined): DocSection[] {
   const documentation = symbol.documentation;
   if (!documentation) {
     return [];
@@ -498,19 +523,23 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
   }
 
   if (documentation.links && documentation.links.length > 0) {
-    pushSection("Links", documentation.links.map((link) => {
+    pushSection(LINKS_SECTION, documentation.links.flatMap((link) => {
       switch (link.kind) {
         case "href": {
           const label = link.text?.trim() || link.target;
-          return `- [${label}](${link.target})`;
+          return [`- [${label}](${link.target})`];
         }
         case "cref": {
-          const suffix = link.text?.trim() ? ` — ${link.text.trim()}` : "";
-          return `- \`${link.target}\`${suffix}`;
+          // The author's word, a line for each declaration it names; the name as written where it names none.
+          const reference = { name: link.target, element: link.element, text: link.text?.trim() || undefined };
+          const links = Array.from(new Set((link.targets ?? []).map(linkFor).filter((target): target is string => target !== undefined)));
+          return links.length > 0
+            ? links.map((target) => documentationReferenceLine({ ...reference, link: target }))
+            : [documentationReferenceLine(reference)];
         }
         default: {
           const suffix = link.text?.trim() ? ` — ${link.text.trim()}` : "";
-          return `- ${link.target}${suffix}`;
+          return [`- ${link.target}${suffix}`];
         }
       }
     }));

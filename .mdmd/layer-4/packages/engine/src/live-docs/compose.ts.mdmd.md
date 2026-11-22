@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/compose.ts`
-- Generated At: 2026-11-19T21:40:13.735Z
+- Generated At: 2026-11-22T02:42:17.571Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L69)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L70)
 - Returns: [`PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
 - Parameters: `symbols`: [`PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
@@ -46,7 +46,7 @@ Array of heading info with display names and slugs
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L199)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L200)
 - Returns: [`SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)[]
 
 ##### `composeSymbolBlocks` — Summary
@@ -63,7 +63,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L581)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L610)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -87,7 +87,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeCitedBy` {#symbol-composecitedby}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L777)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L806)
 - Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
 
 ##### `composeCitedBy` — Summary
@@ -104,7 +104,7 @@ engine's rule, `citingDocuments`.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L812)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L841)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -134,7 +134,7 @@ no line here.
 
 #### `anchorReExports` {#symbol-anchorreexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L881)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L910)
 
 ##### `anchorReExports` — Summary
 A file's re-exports in the order its doc writes them, by name, each with its anchor: its name's anchor, and where it
@@ -148,7 +148,7 @@ a re-export lands on the heading it names.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L892)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L921)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -171,6 +171,7 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`coreTypes.ReExportedSymbolInfo`](./coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
 - [`coreTypes.SourceAnalysisResult`](./coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`coreTypes.SymbolDocumentationTarget`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationtarget) (type-only)
 - [`coreTypes.TypeReference`](./coreTypes.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`coreUtils.createProximityAwareComparator`](./coreUtils.ts.mdmd.md#symbol-createproximityawarecomparator)
@@ -182,10 +183,12 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`document.Dependency`](./document.ts.mdmd.md#symbol-dependency)
 - [`document.DocSection`](./document.ts.mdmd.md#symbol-docsection)
 - [`document.Entry`](./document.ts.mdmd.md#symbol-entry)
+- [`document.LINKS_SECTION`](./document.ts.mdmd.md#symbol-links_section)
 - [`document.ReExport`](./document.ts.mdmd.md#symbol-reexport)
 - [`document.ReferenceLine`](./document.ts.mdmd.md#symbol-referenceline)
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref)
+- [`document.documentationReferenceLine`](./document.ts.mdmd.md#symbol-documentationreferenceline)
 - [`document.encodeLinkPath`](./document.ts.mdmd.md#symbol-encodelinkpath)
 - [`document.symbolName`](./document.ts.mdmd.md#symbol-symbolname)
 - [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)

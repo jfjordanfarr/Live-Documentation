@@ -39,8 +39,12 @@ test("every tuning control explains what changing it does, as its tooltip and it
   // Wire Answers and Direction Marks joined the 2D wires group the same day (a wire that says who uses what, and its way),
   // and Arrival Waits the 2D layout group that evening (a pull-back that waits while the subject's card is pointed at).
   // Scan Growth and Scan Pace joined the 3D layout group on 2026-11-22 (the trial of a map that fills as a scan would);
-  // this case was not run to its end that day, and stood at 77 until the suite's whole run found it.
-  await expect(controls).toHaveCount(79);
+  // this case was not run to its end that day, and stood at 77 until the suite's whole run found it. Way Down joined
+  // the 2D layout group the same day (what a way down from the World Map brings to the Local Map, a trial); its
+  // builder did not run this case, and root found the count at the merge. Arrival Rest joined the 2D layout group the
+  // same day (the least time an arrival stays at reading size), found by the sweep that brought the suite to the
+  // arrival that ships.
+  await expect(controls).toHaveCount(81);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

@@ -53,6 +53,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-wire-answers":              "Whether a 2D wire you rest on, press, or reach from a card by an arrow key says which file uses which, and what.",
   "tuning-direction-marks":           "Arrows on each 2D wire: along, from what is offered to what uses it; against, the other way, a trial, not our rule.",
   "tuning-cut-counted":               "Whether, after a step, an arrow at each edge counts the cards of what it opened beyond that edge, and takes you to them.",
+  "tuning-way-down":                  "What a way down from the World Map brings: a thing's folder alone, or the files that carry what was asked there.",
   "tuning-arrival-waits":             "Whether easing out to the neighbours waits while your pointer or the keyboard's focus is on the card you arrived at.",
   "tuning-arrival-rest":              "The least time, in seconds, an arrival stays at reading size before it eases out to the neighbours.",
   "tuning-step":                      "What a step inside the map frames: the start of what it opened, all of it, or all of it with what its lines reach.",

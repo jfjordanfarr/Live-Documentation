@@ -1,7 +1,7 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
-import type { DirectionMarks, WireAnswersChoice } from "../../packages/explorer/src/client/types";
+import type { DirectionMarks, MapReads, WireAnswersChoice } from "../../packages/explorer/src/client/types";
 import { REST_DWELL } from "../../packages/explorer/src/client/views/pointerRest";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
@@ -20,7 +20,7 @@ import { AT_READING_SIZE, LOCAL_MAP, localMapSettled } from "./still-picture";
 const ESTATE = "/samples/estate/";
 const directoryBand = (directory: string): string => `.local-directory-band:has(> .local-directory-label[data-directory="${directory}"])`;
 
-async function visit(browser: Browser, localMap: { wireAnswers?: WireAnswersChoice; directionMarks?: DirectionMarks }) {
+async function visit(browser: Browser, localMap: { wireAnswers?: WireAnswersChoice; directionMarks?: DirectionMarks; reads?: MapReads }) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
   await context.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...AT_READING_SIZE, searchStarts: 0, ...localMap } } })
@@ -297,6 +297,37 @@ test.describe("Wire Answers", () => {
     await expect.poll(() => page.evaluate(() => (document.activeElement as HTMLElement | null)?.dataset.id)).toBe(card);
     await expect.poll(() => answer(page)).toBeNull();
     await context.close();
+  });
+
+  test("the arrow keys go the way they point on the page, in a picture as laid out and in one mirrored", async ({ browser }) => {
+    test.setTimeout(120_000);
+    // Judged by where things stand on the screen, not by which end of a wire is which: Right from a card takes a wire
+    // that reaches beyond the card's right edge, and Right again a card standing to the right; Left likewise. Mirrored
+    // (the map's mirror button, 2026-11-22), what uses stands at the left, and the keys still mean the page's sides.
+    for (const reads of ["offersFirst", "usesFirst"] as const) {
+      const { context, page } = await visit(browser, { reads });
+      const card = "PaymentService/Data/PaymentsContext.cs";
+      if (reads === "usesFirst") await expect(page.locator("#map-viewport")).toHaveAttribute("data-reads", "usesFirst");
+      const focused = () => page.evaluate(() => {
+        const element = document.activeElement as HTMLElement, box = element.getBoundingClientRect();
+        return { x: box.left + box.width / 2, left: box.left, right: box.right, band: element.classList.contains("wire-band"), id: element.dataset.id ?? null };
+      });
+      for (const [key, sign] of [["ArrowRight", 1], ["ArrowLeft", -1]] as const) {
+        await page.locator(`#map-container .node-card[data-id="${card}"]`).focus();
+        const from = await focused();
+        await page.keyboard.press(key);
+        const wire = await focused();
+        expect(wire.band, `${reads}, ${key}: a wire takes the focus`).toBe(true);
+        if (sign > 0) expect(wire.right, `${reads}, ${key}: the wire reaches beyond the card's right edge`).toBeGreaterThan(from.right + 4);
+        else expect(wire.left, `${reads}, ${key}: the wire reaches beyond the card's left edge`).toBeLessThan(from.left - 4);
+        await page.keyboard.press(key);
+        const to = await focused();
+        expect(to.band, `${reads}, ${key} again: on to a card`).toBe(false);
+        expect(to.id, `${reads}, ${key} again: another card`).not.toBe(card);
+        expect(sign * (to.x - from.x), `${reads}, ${key} again: the card at that end stands on that side`).toBeGreaterThan(0);
+      }
+      await context.close();
+    }
   });
 
   test("a gathered wire's band speaks the user-as-subject sentence in place of the wire's own name", async ({ browser }) => {

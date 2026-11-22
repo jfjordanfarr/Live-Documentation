@@ -25,8 +25,9 @@ describe("tuning help", () => {
     // Direction Marks the same day in the 2D wires group, the trials of a wire that says who uses what, and of its way;
     // Arrival Waits the same evening, beside Arrival, the trial of a pull-back that waits while the subject is pointed at;
     // Arrival Rest on 2026-11-22, the least time an arrival stays at reading size (the owner's "minimum of N seconds");
+    // Way Down the same day, before Arrival, the trial of a way down from the World Map that carries its question;
     // Scan Growth and Scan Pace the same day, the 3D map's trial of a picture that fills as a scan would.
-    expect(ids.length).toBe(80);
+    expect(ids.length).toBe(81);
     expect(Object.keys(TUNING_HELP).sort()).toEqual([...ids].sort());
   });
 
@@ -82,7 +83,7 @@ describe("the template's initial tuning values", () => {
   it("equal the defaults in getDefaultTuning for every control", () => {
     const defaults = getDefaultTuning();
     const ids = templateControlIds();
-    expect(ids.length).toBe(80);
+    expect(ids.length).toBe(81);
     for (const id of ids) {
       const { group, key } = settingOf(id, defaults);
       const expected = (defaults[group] as unknown as Record<string, unknown>)[key];

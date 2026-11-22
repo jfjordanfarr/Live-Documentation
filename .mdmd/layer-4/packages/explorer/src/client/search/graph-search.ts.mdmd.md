@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/search/graph-search.ts`
-- Generated At: 2026-11-21T09:00:29.928Z
+- Generated At: 2026-11-22T03:29:28.566Z
 
 ## Authored
 ### Purpose
@@ -60,7 +60,7 @@ What a field searches: the index offered, the words on an offered row, and the f
 
 #### `SearchRow` {#symbol-searchrow}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L69)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L74)
 - Returns: [`SearchHit`](#symbol-searchhit)
 
 ##### `SearchRow` — Summary
@@ -70,14 +70,14 @@ the directories beyond the limit.
 
 #### `SearchIndex` {#symbol-searchindex}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L77)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L82)
 
 ##### `SearchIndex` — Summary
 What a search is run over: the files, and every directory above them, computed once.
 
 #### `SearchOptions` {#symbol-searchoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L91)
 
 ##### `SearchOptions` — Summary
 What a search is told beyond its words: which files list their matched symbols in full, which directories list
@@ -85,28 +85,28 @@ their matched files in full, and how many files, directories and symbols are off
 
 #### `FILE_LIMIT` {#symbol-file_limit}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L102)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L107)
 
 ##### `FILE_LIMIT` — Summary
 The files listed at first, and how many more a press on the files left elsewhere lists.
 
 #### `DIRECTORY_LIMIT` {#symbol-directory_limit}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L104)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L109)
 
 ##### `DIRECTORY_LIMIT` — Summary
 The directories offered at first, and how many more a press on the directories left out offers.
 
 #### `directoriesOf` {#symbol-directoriesof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L113)
 
 ##### `directoriesOf` — Summary
 Every directory above the files, the scan root as "", deepest last within a branch.
 
 #### `searchIndexOf` {#symbol-searchindexof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L118)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L123)
 - Returns: [`SearchIndex`](#symbol-searchindex)
 
 ##### `searchIndexOf` — Summary
@@ -114,21 +114,30 @@ The index a bar searches, built once from the bundle's files.
 
 #### `directoryOf` {#symbol-directoryof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L123)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L128)
 
 ##### `directoryOf` — Summary
 The directory a file stands in.
 
 #### `termsOf` {#symbol-termsof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L129)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L134)
 
 ##### `termsOf` — Summary
 The words of a query, lowercased; an empty query has none.
 
+#### `namedMatches` {#symbol-namedmatches}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L149)
+- Returns: `T`[]
+
+##### `namedMatches` — Summary
+The named directories a query offers (a scope's `named`): those whose name every word is found in, the best
+answered first, then as given. An empty query offers none.
+
 #### `directoryScore` {#symbol-directoryscore}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L148)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L167)
 
 ##### `directoryScore` — Summary
 How well a directory answers the words, each word scored on its own and the scores summed. A word without a slash
@@ -140,14 +149,14 @@ testers asked what a folder held typed its path, and no row offered the folder).
 
 #### `stemOf` {#symbol-stemof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L170)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L189)
 
 ##### `stemOf` — Summary
 A file's name without its extension: "generator" for generator.ts; the whole name when it has none or its only dot leads.
 
 #### `fileNameScore` {#symbol-filenamescore}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L179)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L198)
 
 ##### `fileNameScore` — Summary
 How well a file's name answers the words: each word scored against the name with and without its extension and
@@ -155,7 +164,7 @@ the better taken, so that "generator" and "generator.ts" are both an exact match
 
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L194)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L213)
 - Returns: [`SearchResult`](#symbol-searchresult)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `options`: [`SearchOptions`](#symbol-searchoptions)
 
@@ -169,7 +178,7 @@ out is counted where it would stand: under its directory's group when one stands
 
 #### `searchRows` {#symbol-searchrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L284)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L303)
 - Returns: [`SearchRow`](#symbol-searchrow)[]
 - Parameters: `result`: [`SearchResult`](#symbol-searchresult)
 
@@ -180,15 +189,17 @@ directories left out.
 
 #### `reachWords` {#symbol-reachwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L301)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L324)
 - Parameters: `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
 
 ##### `reachWords` — Summary
-The words a destination row carries: the files a path to it would show, and whether it runs the other way.
+The words a destination row carries: the files a path to it would show. A path is answered whichever way it runs
+(2026-11-22), the way the map draws where both run, as the finder looks; until then a file reached only along
+dependencies said "N files, the other way", foretelling a refusal.
 
 #### `destinationScope` {#symbol-destinationscope}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L311)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L333)
 - Returns: [`SearchScope`](#symbol-searchscope)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
 

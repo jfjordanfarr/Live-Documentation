@@ -47,6 +47,7 @@ import {
   handleWheel as handleWheelFn,
   startDrag
 } from "./pan-zoom";
+import { isMirrored, READS_ATTRIBUTE, writeReads } from "./reading-direction";
 import {
   clearAnchorRegistry,
   createRuntime,
@@ -230,6 +231,11 @@ export class LocalViewController implements LocalViewApi {
    * of a file pinned from a cell or a card, or the label of a directory opened (camera-intent.ts).
    */
   private stepNewcomer: { card: string } | { directory: string } | null = null;
+  /**
+   * An arrival from the World Map that carries its question (Tuning's Way Down, a trial of 2026-11-22): what it brought,
+   * framed with the cards its lines reach once the picture has settled, whatever Tuning's Step says ({@link arriveWithLines}).
+   */
+  private linesArrival: { card: string } | { directory: string } | null = null;
   /**
    * The last step whose cut Tuning's Cut Counted says at the frame's edges (cut-signs.ts, a trial of 2026-11-21), with
    * what it opened as last measured; null after an arrival, and before any step.
@@ -803,6 +809,9 @@ export class LocalViewController implements LocalViewApi {
     this.container.toggleAttribute(OVERVIEW_FILES_ATTRIBUTE, overviewFilesShown(this.options.state.tuning.localMap, this.look));
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root));
+    // A picture not yet drawn takes the stored reading with nothing to hold in place (applyReads, for a change under a shown one).
+    if (keepStage) this.applyReads();
+    else if (this.container.parentElement) writeReads(this.container.parentElement, this.options.state.tuning.localMap.reads);
     renderBranches(this, stage);
     this.applyHistoryEmphasis();
     if (path) this.fitMapToPath();
@@ -1409,6 +1418,25 @@ export class LocalViewController implements LocalViewApi {
     this.settleArrival();
   }
 
+  /**
+   * An arrival from the World Map that carries its question (Tuning's Way Down, a trial of 2026-11-22): once the picture
+   * has settled, the opened directory, or the file's card, is framed with the cards its lines reach, by the rule of Step's
+   * With Its Lines (camera-intent.ts's `stepLinesFrame`): never closer than reading scale, never past the scale at which
+   * every name still reads, and where that floor cannot hold it, entered at its start as a step enters it. The frame of
+   * the newest pin at reading size, which an arrival would otherwise owe, gives way to it.
+   */
+  arriveWithLines(target: { card: string } | { directory: string }): void {
+    this.cancelArrival();
+    this.focusRequest = null;
+    this.arrivalFocus = false;
+    this.arrivalPending = false;
+    this.readingFrameTarget = null;
+    this.linesArrival = target;
+    this.stepNewcomer = target;
+    this.directoryArrivalPending = false;
+    if (!this.stage?.move) this.settleArrival();
+  }
+
   /** Bring a directory's label into reading position without opening or pinning anything. */
   focusDirectory(directory: string): void {
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
@@ -1502,6 +1530,39 @@ export class LocalViewController implements LocalViewApi {
     }
     if (this.getActivePath()) this.fitMapToPath();
     else this.fitMapToContent();
+  }
+
+  /**
+   * Writes which way the picture reads (the person's own setting, reading-direction.ts) on the map's layer, where the
+   * stylesheet draws the reflection from. When it changes under a shown picture the card last acted on, else the
+   * subject's, else the newest pin's, keeps its place and the others change sides round it; with none of them, the
+   * picture is reflected about the middle of the view, so that what was on screen stays on screen. The wires are drawn
+   * again at once, since they are laid out in the layout's own across and reflected with the cards.
+   */
+  applyReads(): void {
+    const layer = this.container.parentElement;
+    if (!layer) return;
+    const reads = this.options.state.tuning.localMap.reads, mirrored = isMirrored(reads);
+    if (layer.hasAttribute(READS_ATTRIBUTE) === mirrored) return;
+    const root = this.isShown() ? this.contentRoot : null;
+    const newest = this.pins.entries.at(-1)?.nodeId;
+    const held = !root ? null : this.actedOnElement()?.closest<HTMLElement>(".node-card")
+      ?? root.querySelector<HTMLElement>(".node-card.local-focus")
+      ?? (newest ? root.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(newest)}"]`) : null);
+    const middle = (rect: DOMRect): number => rect.left + rect.width / 2;
+    const before = held ? middle(held.getBoundingClientRect()) : null;
+    // With no card to hold: the line the root is reflected about, as the page shows it, which the change does not move.
+    const axis = root ? (mirrored ? root.getBoundingClientRect().left : root.getBoundingClientRect().right) : 0;
+    writeReads(layer, reads);
+    if (!root) return;
+    const frame = this.frameRect();
+    const shift = held && before !== null ? before - middle(held.getBoundingClientRect()) : 2 * (frame.left + frame.width / 2 - axis);
+    this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + shift };
+    if (this.mapInitialTransform) this.mapInitialTransform = { ...this.mapInitialTransform, x: this.mapInitialTransform.x + shift };
+    if (this.runtime.mapAnimationTarget) this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, x: this.runtime.mapAnimationTarget.x + shift };
+    this.measureLayoutExtents();
+    this.updateMapTransform();
+    this.drawConnections();
   }
 
   /**
@@ -2071,7 +2132,10 @@ export class LocalViewController implements LocalViewApi {
     // A step's newcomer (camera-intent.ts): the least pan that brings it wholly into view at this scale, which wins over
     // the hold of what was pressed, and its outline emphasised for a moment, so that the eye finds it.
     const newcomer = step ? this.newcomerOf(step) : null;
-    const lever = this.options.state.tuning.localMap.step;
+    // An arrival that carries the World Map's question is framed with its lines, whatever the lever says.
+    const carried = step !== null && this.linesArrival === step;
+    this.linesArrival = null;
+    const lever = carried ? "lines" : this.options.state.tuning.localMap.step;
     const whole = step && (lever === "whole" || lever === "lines") ? this.stepProduced(step) : null;
     if (newcomer && whole) {
       // Tuning's Step, a trial (2026-11-21): the whole newcomer, eased out only as far as it needs; or the newcomer with

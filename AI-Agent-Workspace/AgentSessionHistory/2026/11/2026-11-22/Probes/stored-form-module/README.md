@@ -311,3 +311,102 @@ At fifty thousand files the stored form is a third of the gzipped index. It answ
 ### Commands the harness refused this milestone
 
 None.
+
+## Third milestone, 2026-11-22: the second reader's findings answered, and the documentation relation
+
+[The second reader's record](../stored-form-second-reader/README.md) and both blind readers' `questions.md` were read whole. The day's tip, `201fdfcc7`, was merged in first. Each finding is answered below in that record's order. "The text" is [the specification](../../../../../../../.mdmd/layer-3/stored-form.mdmd.md).
+
+### Finding by finding
+
+1. **The text export's bound.** The text gains the module's rule, in section 3.5 beside the sections' bound.
+   - A reader that writes the text may refuse to when the names it would write exceed `64 × file length + 1 MiB`. The names are counted in UTF-8 bytes: each string, once for every time a record names it.
+   - It must say it refuses the text, not the file. Such a file is valid: it is read, answered from, given its graph and its name, and only its text is not offered.
+   - Writing the text anyway is right too.
+   - So the text requires a file within the bound to be written as text, and allows both answers past it. Both blind readers (who write it) and the module (which refuses) are right.
+   - The module was already doing this, so nothing in it changed.
+2. **The wires' grammar.** Now `n:count [ first gapMinusOne{n−1} ]`, the bracket present only when n is at least 1. It also says that a file with no wires is the one byte `00`.
+3. **Rules the module enforced and the text never stated.** Each is now stated:
+   - **No byte after a section's last item:** a general rule in section 3.2 for all six sections.
+   - **What makes a text valid beyond its form:** section 8. Every check made on the facts applies, which makes a valid text exactly the text a reader writes for some valid file. The inflation bound is excluded from these checks, since it depends on the writer.
+   - **The order of a file's lines, and which are required:** section 8.
+     - `file` and `authored` come exactly once.
+     - Then entries, symbols and dependencies.
+     - Then `cited-by` and `re-exports` at most once each, present by their marks even when empty.
+     - The head's lines come first and the end last, and any other line is refused.
+   - **Which members are always present:** section 8 lists them all, and the members present by a mark.
+   - **The enumerations' words:** section 4.3, with roles capitalised and kept apart from the graph's edge kinds. Section 8 also maps the two grammars' field names.
+   - **Which links make wires:** section 4.5 now says by section 5's rule. Only dependencies' and types' targets make wires. Not entries, cited-by, re-exports, sources or documentation references.
+   - **What `extension` may hold:** decided. No `/`, no `\` and no NUL; it may be empty. I found no reason for a backslash or a NUL in an extension: it ends every document path, a backslash puts the document in another folder on Windows, and no file system's names hold a NUL. **The module changed:** it now refuses both, in the writer and in the reader. The case was seen failing first ("holds no slash, backslash or NUL" red, then green).
+   - **"The declared length of the strings sections":** the sum of every strings frame's `rawLength` from the headers, as both blind readers chose. It is said that no valid file fails the check.
+4. **Storability and the compressor.** The bound stays reckoned from the compressed file, since that is what keeps a reader's cost bounded by the file it is handed.
+   - The text now says plainly that near the bound whether a set of facts can be stored depends on the writer, and that no reader's verdict on a given file does.
+   - It also says why a compressor-free bound was not chosen: it would not bound what a reader of a small file must inflate.
+5. **Code the text names.** Every mention of the module's functions, its tests, the engine, `JSON.stringify`, `CompressionStream` and the platforms' versions is now a sentence marked **Provenance**. A line at the top says no rule rests on one.
+6. **The brief's gaps** (exit status) are not the specification's, and were left.
+
+**The Go reader's further questions:**
+- **The name from the headers, or by inflating the end** (section 3.4):
+  - A reader **must** inflate the end, check it against its hash and compare it with the name.
+  - It **may** first check, from headers alone, that the end's header hash is the SHA-256 of the name.
+  - That header check alone never stands in for inflating, since it does not check the end's stored bytes. Both hold for a correct writer's file.
+- **Raw deflate's corner cases** (section 3.2): the text names them: incomplete or over-subscribed Huffman codes, distance codes 30 and 31, length codes 286 and 287, and bits after the final block.
+  - It states the guarantee. Every section's content is hashed, so two correct readers can never be shown two maps from one file, only a map and a refusal.
+  - Whether zlib and Go's `compress/flate` split on any of these is **unmeasured**. Building such streams by hand was not cheap enough for this milestone.
+  - One stream with its last byte's high bit set was accepted by Node's zlib with the same output. Whether that bit was padding was not established.
+- **The drive rule's cost** (section 2.4): `a:b.txt` at the scanned folder's top, or anything inside a top folder named `c:…`, cannot be stored. A scanner leaves it out and lists it, with its reason. Only a path's first two characters are tested, so `src/a:b.txt` is stored.
+- **The order sids are first met** (section 4.2): the layout's record order is now named, apart from the text's line order.
+- **`[array]` and `[promise]`** are marks and carry no bytes (section 4.3).
+- **The file length** in the bound is the whole input's, signature included (section 3.5).
+
+### The blind readers' refusal cases, in the package
+
+`packages/stored-form/test/storedForm.blind.test.ts` holds the kinds from their own tests that the package's unit cases and fuzzer did not already make, each named after the blind reader's file. The module refused every one of them before they came here, so they could not be seen failing. They are kept so that it goes on refusing them:
+- a trailing byte in the head, strings, paths and wires;
+- `wires-n0-with-first` and `wires-self`;
+- `head-version-2` and `head-count-1`;
+- `kind-7` and `strings-count-0`;
+- `records-file-mark-bit-4`;
+- `paths-not-longest-shared` and `paths-repeat`;
+- `root-absolute`, `root-trailing-slash` and `extension-slash`;
+- `zlib-wrapped` and `after-deflate-end`;
+- a wrong end count, and a raw length longer than its stream;
+- texts with `no-authored`, `entry-before-authored`, `symbol-before-entry`, `two-cited-by`, an unknown line and `member-twice`.
+
+### The documentation relation
+
+The engine's graph at the tip gains `documentation` (with `documentedBy` on the target). These are the declarations a symbol's documentation names, read from its `Links` section's lines and held apart from the edges.
+
+**The fork, decided here.** Those lines are written in the engine's markdown grammar. To derive the relation without calling the engine, the module would have to re-implement that grammar: a second copy of it.
+- Instead, each symbol now carries `documentation`: the scanner's reading of each reference (name, element, link, and what the link names, as for every other link), beside the verbatim lines.
+- This is ruling 3's principle: carried as the scanner read it, not checked, and said so.
+- The relation's rule is the text's own (section 5): an item for each reference whose target is a scanned file, `documentedBy` turned around and never the file itself, and never an edge or a wire.
+- The layout gains one list per symbol (`docReference`, section 4.3), and the text form gains a `documentation` member on every symbol.
+- The layout's version stays 1, since nothing has been written by anyone else.
+- The probe's `scan-of-graph.ts` makes the reading with the engine's own `readDocumentationReference` and `linkTarget`, as the sink would.
+
+**Red first:** a case of `graphOf` and the text form was written before the module carried the list. It failed ("expected undefined to deeply equal …"), then passed. The case covers a reference landing, one to a file outside the scan, one to the file itself, and one unlinked.
+
+**Measured again on the three corpora**, regenerated by the tip's generator:
+
+| Corpus | Files | Documentation references, in files | `documentedBy` entries | Stored, against `index.json` gzipped | Graph prints byte for byte as `index.json` | Bytes → text → bytes, text → bytes → text |
+| --- | ---: | --- | ---: | --- | --- | --- |
+| This repository | 1,325 | 17, in 3 | 8 | 1.11 MB against 1.41 MB | yes | yes, yes |
+| Estate sample | 41 | 1, in 1 | 1 | 7.8 KB against 10.5 KB | yes | yes, yes |
+| DNN | 10,777 | 5,637, in 1,586 | 1,313 | 2.24 MB against 3.79 MB | yes | yes, yes |
+
+### What held
+
+All of these passed:
+- `npm run lint` and `npm run build`;
+- the three audits and `docs:links:enforce`;
+- the package's cases and fuzzer;
+- the whole unit project, run once: 3,670 of 3,670 cases in 241 files.
+
+### Not reached in this milestone
+
+- **The graph built only when asked.** It is the last 15 to 20 % of the whole read with the graph, and was not built.
+- **The browser tab through the lane.** Not run.
+
+### Commands the harness refused in the third milestone
+
+One: a heredoc that appended a test case and ran an inline Python edit, refused as too complex to verify that it stays in the worktree. It did not name git. The same edits were made with the file tools.

@@ -701,3 +701,27 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
 #map-container.history-glows .local-directory-closed.is-history-changed:not(.local-closed-shape--tab) { border-color: var(--history-changed); box-shadow: 0 0 0 1px var(--history-changed); }
 #map-container.history-glows .local-directory-closed.is-history-changed .local-closed-outline__look { stroke: var(--history-changed); stroke-width: 2px; }
 #map-container.history-dims .local-directory-closed:not(.is-history-changed) { opacity: .3; }
+/* The mirrored picture (2026-11-22, reading-direction.ts): what uses stands first from the left. The layout is the one
+   laid out for the picture that reads the other way, reflected about the upright line through the content root's own
+   edge: the root and the wires' layer are reflected, so every place, every membrane and every wire is, and no wire
+   reaches backwards in either picture. What a person reads faces them: each card and each directory's label is turned
+   back about its own middle, in its reflected place, so no name is ever drawn reversed. Inside a card the two sides
+   change places, so that a wire still ends on the pin it is drawn to: the rows' columns run the other way, and the
+   node's hubs stand at the other edges. The individual `scale` property, not `transform`, which the camera, the moves
+   and the looks write. Colours never change with it. */
+#map-viewport[data-reads="usesFirst"] .local-layout { transform-origin: left top; scale: -1 1; }
+#map-viewport[data-reads="usesFirst"] > .connections-layer { scale: -1 1; }
+#map-viewport[data-reads="usesFirst"] .local-placed :is(.local-column, .local-directory-label) { scale: -1 1; }
+/* A directory's line starts at its membrane's first corner, which a mirrored picture shows at the right: the line keeps
+   its order, since its words still read from the left, and stands against the right end of its label. */
+#map-viewport[data-reads="usesFirst"] .local-directory-row { justify-content: flex-end; margin-left: calc(100% - 100% / var(--dir-scale)); transform-origin: right top; }
+#map-viewport[data-reads="usesFirst"] .symbol-grid { direction: rtl; }
+#map-viewport[data-reads="usesFirst"] .symbol-grid > :not(.symbol-row),
+#map-viewport[data-reads="usesFirst"] .symbol-grid .symbol-row > * { direction: ltr; }
+#map-viewport[data-reads="usesFirst"] .symbol-anchor.hub.inbound { left: auto; right: -6px; }
+#map-viewport[data-reads="usesFirst"] .symbol-anchor.hub.outbound { right: auto; left: -6px; }
+#map-viewport[data-reads="usesFirst"] .local-slot-card .symbol-anchor.dot.inbound { transform-origin: left center; }
+#map-viewport[data-reads="usesFirst"] .local-slot-card .symbol-anchor.dot.outbound { transform-origin: right center; }
+/* The key is drawn the way round the map is: its two words and the sample between them change sides with the picture. */
+#local-legend .legend-row--roles[data-mirrored] { flex-direction: row-reverse; justify-content: flex-end; }
+#local-legend .legend-row--roles[data-mirrored] .legend-roles { scale: -1 1; }

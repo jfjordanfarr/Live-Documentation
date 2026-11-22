@@ -17,7 +17,7 @@ const INDEX = "packages/explorer/src/client/index.ts";
 const LAYOUT = "packages/explorer/src/client/views/forceGraphLayout.ts";
 const VIEWS = "packages/explorer/src/client/views";
 const ESTATE = "/samples/estate/";
-const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", ".search-fold-count", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol"];
+const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", ".search-fold-count", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol", ".pathfind-path-relation"];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
@@ -366,10 +366,11 @@ test("the bar stands in every view, a file chosen on the World Map opens the Loc
   expect(overlaps.length + cut.length, describeFaults(overlaps, cut)).toBe(0);
   await page.keyboard.press("Escape");
 
-  // With a path answered, the status and the strip read whole too
+  // With a path answered, the status and the strip read whole too, the relation said between the strip's names
+  // included. The path is asked from the file that depends and is answered at once (until 2026-11-22 it was refused,
+  // and this case took the reverse question's link to reach an answered path).
   await choose(page, "destination", "IPaymentHub", { file: "Contracts/IPaymentHub.cs" });
   await page.waitForSelector("#pathfind-status:not([hidden])");
-  await page.click("#pathfind-status a");
   await page.waitForSelector("#view-map.has-path");
   await page.waitForTimeout(600);
   boxes = await textBoxes(page, BAR_TEXT);

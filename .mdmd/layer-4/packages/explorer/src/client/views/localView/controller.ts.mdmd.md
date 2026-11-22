@@ -74,7 +74,7 @@ Since 2026-11-15 ([Turn 1 of the November 15 record](../../../../../../../../AI-
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L88)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L89)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -168,6 +168,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`pan-zoom.startInertia`](./pan-zoom.ts.mdmd.md#symbol-startinertia)
 - [`pan-zoom.zoomAtPoint`](./pan-zoom.ts.mdmd.md#symbol-zoomatpoint)
 - [`pan-zoom.zoomByFactor`](./pan-zoom.ts.mdmd.md#symbol-zoombyfactor)
+- [`reading-direction.READS_ATTRIBUTE`](./reading-direction.ts.mdmd.md#symbol-reads_attribute)
+- [`reading-direction.isMirrored`](./reading-direction.ts.mdmd.md#symbol-ismirrored)
+- [`reading-direction.writeReads`](./reading-direction.ts.mdmd.md#symbol-writereads)
 - [`runtime.clearAnchorRegistry`](./runtime.ts.mdmd.md#symbol-clearanchorregistry)
 - [`runtime.createRuntime`](./runtime.ts.mdmd.md#symbol-createruntime)
 - [`runtime.getAnchor`](./runtime.ts.mdmd.md#symbol-getanchor)

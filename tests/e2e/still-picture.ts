@@ -151,6 +151,17 @@ export function symbolCounts(graph: ExplorerGraphPayload): Record<string, number
  */
 export const AT_READING_SIZE = { arrival: "reading" } as const;
 
+/**
+ * Before the page starts, the suite's stored tuning with the arrival held at reading size ({@link AT_READING_SIZE}), for
+ * one case among others that run on the arrival that ships: a case whose subject is not the arrival and which reads or
+ * presses what only the picture at reading size holds. The caller says in a line what that is.
+ */
+export async function arriveAtReadingSize(page: Page): Promise<void> {
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, ...AT_READING_SIZE } } })
+  });
+}
+
 export const localMapUrl = (base: string, file: string): string => `${base}?view=local&node=${encodeURIComponent(file)}`;
 
 /** The address of the Local Map with every file of the set retained whole, the first as the subject, at the view's own fit. */

@@ -289,6 +289,13 @@
             </select>
           </label>
           <label class="tuning-slider">
+            <span>Way Down</span>
+            <select id="tuning-way-down">
+              <option value="alone" selected>Folder Alone</option>
+              <option value="question">Carries The Question</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
             <span>Arrival</span>
             <select id="tuning-arrival">
               <option value="then-neighbours-after" selected>Reading, Then Neighbours, Look After</option>
@@ -622,7 +629,7 @@
     <!-- One path report for both Local Map representations; other views keep the question without showing its report -->
     <section id="path-report" class="path-report" aria-label="Path result" hidden>
       <p id="pathfind-status" class="pathfind-status" role="status" aria-atomic="true" hidden></p>
-      <ol id="pathfind-path" class="pathfind-path" aria-label="Path files, from provider to consumer" hidden></ol>
+      <ol id="pathfind-path" class="pathfind-path" aria-label="Path files, each is used by the next" hidden></ol>
     </section>
 
     <!-- The views, under the bar and report; the detail panel and the zoom controls stand over them -->

@@ -1,0 +1,4450 @@
+[
+ {
+  "subject": "estate",
+  "run": 1,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 1197,
+   "cards": 8,
+   "bands": 4,
+   "wires": 23
+  },
+  "restBeforeEase": 2250,
+  "ease": {
+   "ms": 783,
+   "frames": 42,
+   "fromK": 1.45,
+   "toK": 0.576,
+   "median": 16.7,
+   "p90": 16.7,
+   "worst": 100,
+   "whole": {
+    "script": 109.5,
+    "style": 80.8,
+    "layout": 5,
+    "paint": 54.8,
+    "other": 21.9,
+    "styles": [
+     {
+      "ms": 2.3,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 55.6,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 46,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 783,
+   "ms": 100,
+   "k": 0.576,
+   "state": "connections|far||true|",
+   "script": 22.3,
+   "style": 62.9,
+   "layout": 4.7,
+   "paint": 2.1,
+   "other": 2.9,
+   "styles": [
+    {
+     "ms": 2.3,
+     "elements": 149,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 55.6,
+     "elements": 625,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 1.1,
+     "elements": 46,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 3,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     45
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     40
+    ],
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     38
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     38
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     35
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     35
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable local-row-short branch-symbol-",
+     21
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable local-row-short branch-symbol-hidden branch-sym",
+     21
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     20
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     19
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     19
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+     16
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 783,
+    "ms": 100,
+    "k": 0.576,
+    "state": "connections|far||true|",
+    "script": 22.3,
+    "style": 62.9,
+    "layout": 4.7,
+    "paint": 2.1,
+    "other": 2.9,
+    "styles": [
+     {
+      "ms": 2.3,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 55.6,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 46,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      45
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      40
+     ],
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      38
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      38
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      35
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      35
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable local-row-short branch-symbol-",
+      21
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable local-row-short branch-symbol-hidden branch-sym",
+      21
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      20
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      19
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      19
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      16
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1.45,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1.449,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 1.448,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.7,
+    "k": 1.445,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.7,
+    "k": 1.441,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.6,
+    "k": 1.434,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.5,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 16.7,
+    "k": 1.425,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.6,
+    "k": 1.413,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.7,
+    "k": 1.398,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.7,
+    "k": 1.38,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 1.357,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.6,
+    "k": 1.33,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 217,
+    "ms": 16.7,
+    "k": 1.3,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 233,
+    "ms": 16.7,
+    "k": 1.265,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 16.6,
+    "k": 1.225,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 267,
+    "ms": 16.7,
+    "k": 1.182,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 16.6,
+    "k": 1.135,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 300,
+    "ms": 16.7,
+    "k": 1.085,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.9,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 16.7,
+    "k": 1.03,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 16.7,
+    "k": 0.973,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 16.7,
+    "k": 0.914,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.6,
+    "k": 0.858,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.6,
+    "k": 0.811,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.8,
+    "k": 0.771,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 417,
+    "ms": 16.6,
+    "k": 0.736,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.6,
+    "k": 0.707,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.7,
+    "k": 0.682,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 16.7,
+    "k": 0.661,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 16.6,
+    "k": 0.643,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 500,
+    "ms": 16.7,
+    "k": 0.628,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 16.6,
+    "k": 0.616,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 16.7,
+    "k": 0.606,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 16.7,
+    "k": 0.598,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 16.7,
+    "k": 0.591,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 1.3,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.7,
+    "k": 0.586,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 600,
+    "ms": 16.6,
+    "k": 0.583,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 16.6,
+    "k": 0.58,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 16.8,
+    "k": 0.578,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 16.6,
+    "k": 0.577,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 16.6,
+    "k": 0.577,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.7,
+    "k": 0.576,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 783,
+    "ms": 100,
+    "k": 0.576,
+    "look": "connections",
+    "style": 62.9,
+    "paint": 2.1,
+    "restyled": 895
+   }
+  ],
+  "changes": [
+   {
+    "at": -2250,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 783,
+    "k": 0.576,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 917,
+    "k": 0.576,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -2250,
+    "ms": 16.8,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1867,
+    "ms": 383.2,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 783,
+    "ms": 100,
+    "k": 0.576,
+    "look": "connections",
+    "script": 22.3,
+    "style": 62.9,
+    "layout": 4.7,
+    "paint": 2.1,
+    "other": 2.9,
+    "styles": [
+     {
+      "ms": 2.3,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 55.6,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 1.1,
+      "elements": 46,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 3,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 800,
+    "ms": 16.7,
+    "k": 0.576,
+    "look": "connections",
+    "script": 5.6,
+    "style": 0.4,
+    "layout": 0.5,
+    "paint": 6.3,
+    "other": 1.9,
+    "styles": []
+   }
+  ],
+  "longestAround": {
+   "at": 783,
+   "ms": 100,
+   "k": 0.576,
+   "state": "connections|far||true|",
+   "script": 22.3,
+   "style": 62.9,
+   "layout": 4.7,
+   "paint": 2.1,
+   "other": 2.9,
+   "styles": [
+    {
+     "ms": 2.3,
+     "elements": 149,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 55.6,
+     "elements": 625,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 1.1,
+     "elements": 46,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 3,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 61,
+   "gaps": [
+    20,
+    20,
+    20,
+    21,
+    17,
+    16,
+    17,
+    17,
+    17,
+    17,
+    17,
+    16,
+    17,
+    16,
+    16,
+    17,
+    17,
+    17,
+    17,
+    16,
+    17,
+    17,
+    17,
+    16,
+    17,
+    17,
+    16,
+    17,
+    17,
+    16,
+    16,
+    17,
+    18,
+    16,
+    18,
+    17,
+    23,
+    16,
+    16,
+    16,
+    16,
+    17,
+    16,
+    16,
+    15,
+    15,
+    17,
+    24,
+    16,
+    33,
+    30,
+    19,
+    32,
+    18,
+    17,
+    16,
+    15,
+    14,
+    14,
+    15
+   ]
+  }
+ },
+ {
+  "subject": "estate",
+  "run": 2,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 1197,
+   "cards": 8,
+   "bands": 4,
+   "wires": 23
+  },
+  "restBeforeEase": 2200,
+  "ease": {
+   "ms": 767,
+   "frames": 41,
+   "fromK": 1.45,
+   "toK": 0.576,
+   "median": 16.7,
+   "p90": 16.7,
+   "worst": 83.3,
+   "whole": {
+    "script": 100.6,
+    "style": 69.3,
+    "layout": 4.7,
+    "paint": 51.4,
+    "other": 18.4,
+    "styles": [
+     {
+      "ms": 1.9,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 45.3,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 46,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 43,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2.9,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 767,
+   "ms": 83.3,
+   "k": 0.576,
+   "state": "connections|far||true|",
+   "script": 21.8,
+   "style": 53.5,
+   "layout": 4.3,
+   "paint": 1.9,
+   "other": 2.7,
+   "styles": [
+    {
+     "ms": 1.9,
+     "elements": 149,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 45.3,
+     "elements": 625,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 0.8,
+     "elements": 46,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 1.5,
+     "elements": 43,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 2.9,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     45
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable local-row-short branch-symbol-",
+     42
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable local-row-short branch-symbol-hidden branch-sym",
+     42
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     40
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     40
+    ],
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     38
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     35
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     35
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     20
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     19
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     19
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+     16
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 767,
+    "ms": 83.3,
+    "k": 0.576,
+    "state": "connections|far||true|",
+    "script": 21.8,
+    "style": 53.5,
+    "layout": 4.3,
+    "paint": 1.9,
+    "other": 2.7,
+    "styles": [
+     {
+      "ms": 1.9,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 45.3,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 46,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 43,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2.9,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      45
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable local-row-short branch-symbol-",
+      42
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable local-row-short branch-symbol-hidden branch-sym",
+      42
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      40
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      40
+     ],
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      38
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      35
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      35
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      20
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      19
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      19
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='map-cut-sign'",
+      16
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1.45,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.7,
+    "k": 1.449,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 33.3,
+    "k": 1.448,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.7,
+    "k": 1.441,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.6,
+    "k": 1.434,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 16.8,
+    "k": 1.425,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.6,
+    "k": 1.413,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.7,
+    "k": 1.398,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.6,
+    "k": 1.38,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 1.357,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.7,
+    "k": 1.33,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 0.9,
+    "restyled": 0
+   },
+   {
+    "at": 217,
+    "ms": 16.6,
+    "k": 1.3,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 233,
+    "ms": 16.7,
+    "k": 1.265,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 16.7,
+    "k": 1.226,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 267,
+    "ms": 16.6,
+    "k": 1.182,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 16.6,
+    "k": 1.135,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 300,
+    "ms": 16.7,
+    "k": 1.085,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 16.7,
+    "k": 1.031,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 16.7,
+    "k": 0.974,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 16.7,
+    "k": 0.914,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.6,
+    "k": 0.859,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.6,
+    "k": 0.811,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.8,
+    "k": 0.771,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 417,
+    "ms": 16.6,
+    "k": 0.736,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.7,
+    "k": 0.707,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.7,
+    "k": 0.682,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 16.6,
+    "k": 0.661,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 16.7,
+    "k": 0.643,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 500,
+    "ms": 16.6,
+    "k": 0.628,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 16.7,
+    "k": 0.616,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 16.7,
+    "k": 0.606,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 16.6,
+    "k": 0.598,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 16.7,
+    "k": 0.591,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 1.2,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.6,
+    "k": 0.586,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 600,
+    "ms": 16.7,
+    "k": 0.583,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 16.7,
+    "k": 0.58,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 16.6,
+    "k": 0.578,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 16.7,
+    "k": 0.577,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 16.7,
+    "k": 0.577,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.7,
+    "k": 0.576,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.1,
+    "restyled": 0
+   },
+   {
+    "at": 767,
+    "ms": 83.3,
+    "k": 0.576,
+    "look": "connections",
+    "style": 53.5,
+    "paint": 1.9,
+    "restyled": 938
+   }
+  ],
+  "changes": [
+   {
+    "at": -2200,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 767,
+    "k": 0.576,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 883,
+    "k": 0.576,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -2200,
+    "ms": 16.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1867,
+    "ms": 333.3,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 767,
+    "ms": 83.3,
+    "k": 0.576,
+    "look": "connections",
+    "script": 21.8,
+    "style": 53.5,
+    "layout": 4.3,
+    "paint": 1.9,
+    "other": 2.7,
+    "styles": [
+     {
+      "ms": 1.9,
+      "elements": 149,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 45.3,
+      "elements": 625,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 0.8,
+      "elements": 46,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 1.5,
+      "elements": 43,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 2.9,
+      "elements": 75,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 800,
+    "ms": 33.3,
+    "k": 0.576,
+    "look": "connections",
+    "script": 6.7,
+    "style": 1.5,
+    "layout": 0.6,
+    "paint": 9.3,
+    "other": 1.8,
+    "styles": [
+     {
+      "ms": 1,
+      "elements": 38,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 767,
+   "ms": 83.3,
+   "k": 0.576,
+   "state": "connections|far||true|",
+   "script": 21.8,
+   "style": 53.5,
+   "layout": 4.3,
+   "paint": 1.9,
+   "other": 2.7,
+   "styles": [
+    {
+     "ms": 1.9,
+     "elements": 149,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 45.3,
+     "elements": 625,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 0.8,
+     "elements": 46,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 1.5,
+     "elements": 43,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 2.9,
+     "elements": 75,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 58,
+   "gaps": [
+    20,
+    29,
+    20,
+    20,
+    20,
+    20,
+    16,
+    17,
+    17,
+    17,
+    25,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    17,
+    17,
+    17,
+    17,
+    16,
+    17,
+    16,
+    17,
+    17,
+    16,
+    17,
+    17,
+    17,
+    16,
+    17,
+    17,
+    16,
+    32,
+    18,
+    16,
+    17,
+    24,
+    26,
+    16,
+    25,
+    24,
+    23,
+    23,
+    21,
+    15,
+    15,
+    14,
+    14,
+    13,
+    12
+   ]
+  }
+ },
+ {
+  "subject": "pathfind",
+  "run": 1,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 6130,
+   "cards": 17,
+   "bands": 12,
+   "wires": 141
+  },
+  "restBeforeEase": 2767,
+  "ease": {
+   "ms": 1050,
+   "frames": 40,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 16.7,
+   "p90": 16.8,
+   "worst": 366.6,
+   "whole": {
+    "script": 255,
+    "style": 248.9,
+    "layout": 10.9,
+    "paint": 228.6,
+    "other": 43.5,
+    "styles": [
+     {
+      "ms": 8.3,
+      "elements": 757,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 202.3,
+      "elements": 2594,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 226,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 18.8,
+      "elements": 678,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1050,
+   "ms": 366.6,
+   "k": 0.335,
+   "state": "connections|far||false|",
+   "script": 89.9,
+   "style": 233.4,
+   "layout": 10.8,
+   "paint": 26.9,
+   "other": 10,
+   "styles": [
+    {
+     "ms": 8.3,
+     "elements": 757,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 202.3,
+     "elements": 2594,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 3.2,
+     "elements": 226,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 18.8,
+     "elements": 678,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     656
+    ],
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     656
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     552
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     458
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     250
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     208
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     182
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     182
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     107
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     107
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     99
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     99
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 1050,
+    "ms": 366.6,
+    "k": 0.335,
+    "state": "connections|far||false|",
+    "script": 89.9,
+    "style": 233.4,
+    "layout": 10.8,
+    "paint": 26.9,
+    "other": 10,
+    "styles": [
+     {
+      "ms": 8.3,
+      "elements": 757,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 202.3,
+      "elements": 2594,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 226,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 18.8,
+      "elements": 678,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      656
+     ],
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      656
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      552
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      458
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      250
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      208
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      182
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      182
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      107
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      107
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      99
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      99
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 2.3,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 2.9,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.5,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.7,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 3.5,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.6,
+    "k": 0.993,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.4,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.7,
+    "k": 0.987,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.4,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 16.7,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.6,
+    "k": 0.97,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.8,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.5,
+    "k": 0.943,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.8,
+    "k": 0.925,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.6,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 8.5,
+    "restyled": 0
+   },
+   {
+    "at": 217,
+    "ms": 16.7,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 233,
+    "ms": 16.6,
+    "k": 0.85,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 16.7,
+    "k": 0.819,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.9,
+    "restyled": 0
+   },
+   {
+    "at": 267,
+    "ms": 16.7,
+    "k": 0.785,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.9,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 16.7,
+    "k": 0.748,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 8,
+    "restyled": 0
+   },
+   {
+    "at": 300,
+    "ms": 16.7,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 4,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 16.6,
+    "k": 0.667,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.4,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 16.6,
+    "k": 0.624,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 16.7,
+    "k": 0.579,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 10.5,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.7,
+    "k": 0.537,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.5,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.6,
+    "k": 0.502,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 6.7,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.7,
+    "k": 0.473,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 6.9,
+    "restyled": 0
+   },
+   {
+    "at": 417,
+    "ms": 16.7,
+    "k": 0.448,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 6.8,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.7,
+    "k": 0.427,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.6,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.6,
+    "k": 0.409,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 33.3,
+    "k": 0.394,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 12.2,
+    "restyled": 0
+   },
+   {
+    "at": 500,
+    "ms": 16.7,
+    "k": 0.371,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.8,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 16.7,
+    "k": 0.362,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.8,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 16.6,
+    "k": 0.355,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.3,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 16.7,
+    "k": 0.35,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 6.7,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 33.3,
+    "k": 0.345,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 6.8,
+    "restyled": 0
+   },
+   {
+    "at": 600,
+    "ms": 16.7,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.3,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 16.6,
+    "k": 0.337,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 4,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 16.7,
+    "k": 0.336,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.1,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 1.8,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.1,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.9,
+    "paint": 6,
+    "restyled": 0
+   },
+   {
+    "at": 1050,
+    "ms": 366.6,
+    "k": 0.335,
+    "look": "connections",
+    "style": 233.4,
+    "paint": 26.9,
+    "restyled": 4255
+   }
+  ],
+  "changes": [
+   {
+    "at": -2767,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1050,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -2767,
+    "ms": 233.3,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1767,
+    "ms": 1000,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1050,
+    "ms": 366.6,
+    "k": 0.335,
+    "look": "connections",
+    "script": 89.9,
+    "style": 233.4,
+    "layout": 10.8,
+    "paint": 26.9,
+    "other": 10,
+    "styles": [
+     {
+      "ms": 8.3,
+      "elements": 757,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 202.3,
+      "elements": 2594,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 3.2,
+      "elements": 226,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 18.8,
+      "elements": 678,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1200,
+    "ms": 150,
+    "k": 0.335,
+    "look": "connections",
+    "script": 61.5,
+    "style": 71.9,
+    "layout": 2.8,
+    "paint": 5.3,
+    "other": 4.1,
+    "styles": [
+     {
+      "ms": 64,
+      "elements": 1047,
+      "script": "FunctionCall @index.js:5177:71649",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 3.3,
+      "elements": 227,
+      "script": "FunctionCall @index.js:5177:70904",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 4.3,
+      "elements": 169,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1050,
+   "ms": 366.6,
+   "k": 0.335,
+   "state": "connections|far||false|",
+   "script": 89.9,
+   "style": 233.4,
+   "layout": 10.8,
+   "paint": 26.9,
+   "other": 10,
+   "styles": [
+    {
+     "ms": 8.3,
+     "elements": 757,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 202.3,
+     "elements": 2594,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 3.2,
+     "elements": 226,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 18.8,
+     "elements": 678,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 53,
+   "gaps": [
+    19,
+    21,
+    17,
+    17,
+    17,
+    17,
+    17,
+    16,
+    17,
+    17,
+    16,
+    17,
+    17,
+    17,
+    17,
+    17,
+    16,
+    17,
+    23,
+    17,
+    18,
+    18,
+    18,
+    18,
+    19,
+    20,
+    19,
+    20,
+    20,
+    21,
+    21,
+    20,
+    20,
+    20,
+    20,
+    21,
+    19,
+    19,
+    18,
+    19,
+    20,
+    19,
+    19,
+    19,
+    18,
+    20,
+    18,
+    457,
+    19,
+    20,
+    26,
+    20
+   ]
+  }
+ },
+ {
+  "subject": "pathfind",
+  "run": 2,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 6130,
+   "cards": 17,
+   "bands": 12,
+   "wires": 141
+  },
+  "restBeforeEase": 2783,
+  "ease": {
+   "ms": 717,
+   "frames": 41,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 16.7,
+   "p90": 16.7,
+   "worst": 33.3,
+   "whole": {
+    "script": 158.7,
+    "style": 15.3,
+    "layout": 0.1,
+    "paint": 200.8,
+    "other": 32.7,
+    "styles": []
+   }
+  },
+  "worstFrame": null,
+  "longFrames": [],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 2.6,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.8,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.2,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.6,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 2.2,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.8,
+    "k": 0.993,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 4.8,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.6,
+    "k": 0.987,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.8,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 16.6,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.7,
+    "k": 0.97,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.7,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.6,
+    "k": 0.943,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 0.925,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.7,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 8.8,
+    "restyled": 0
+   },
+   {
+    "at": 217,
+    "ms": 16.7,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 233,
+    "ms": 16.6,
+    "k": 0.85,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 16.7,
+    "k": 0.819,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 8.2,
+    "restyled": 0
+   },
+   {
+    "at": 267,
+    "ms": 16.6,
+    "k": 0.785,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 16.8,
+    "k": 0.748,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.1,
+    "restyled": 0
+   },
+   {
+    "at": 300,
+    "ms": 16.6,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 4,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 16.6,
+    "k": 0.667,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.5,
+    "restyled": 0
+   },
+   {
+    "at": 333,
+    "ms": 16.7,
+    "k": 0.624,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 16.7,
+    "k": 0.579,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 6.9,
+    "restyled": 0
+   },
+   {
+    "at": 367,
+    "ms": 16.6,
+    "k": 0.537,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.1,
+    "restyled": 0
+   },
+   {
+    "at": 383,
+    "ms": 16.7,
+    "k": 0.502,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.9,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 16.7,
+    "k": 0.473,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.5,
+    "restyled": 0
+   },
+   {
+    "at": 417,
+    "ms": 16.6,
+    "k": 0.448,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 8,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 16.7,
+    "k": 0.427,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.8,
+    "restyled": 0
+   },
+   {
+    "at": 450,
+    "ms": 16.7,
+    "k": 0.409,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 4.3,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 16.7,
+    "k": 0.394,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.2,
+    "restyled": 0
+   },
+   {
+    "at": 483,
+    "ms": 16.7,
+    "k": 0.381,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 1.5,
+    "restyled": 0
+   },
+   {
+    "at": 500,
+    "ms": 16.6,
+    "k": 0.371,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 6.9,
+    "restyled": 0
+   },
+   {
+    "at": 533,
+    "ms": 33.3,
+    "k": 0.362,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 10.7,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 16.6,
+    "k": 0.35,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 16.7,
+    "k": 0.345,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 7.8,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.7,
+    "k": 0.342,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 600,
+    "ms": 16.7,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.6,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 16.6,
+    "k": 0.337,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.7,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 16.7,
+    "k": 0.336,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.6,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2.6,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 2,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.6,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 3.5,
+    "restyled": 0
+   },
+   {
+    "at": 717,
+    "ms": 33.3,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 7,
+    "restyled": 0
+   }
+  ],
+  "changes": [
+   {
+    "at": -2783,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1067,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 1117,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -2783,
+    "ms": 233.4,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1767,
+    "ms": 1016.6,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1067,
+    "ms": 350.1,
+    "k": 0.335,
+    "look": "connections",
+    "script": 88.9,
+    "style": 215.1,
+    "layout": 11,
+    "paint": 25.9,
+    "other": 10.6,
+    "styles": [
+     {
+      "ms": 7.4,
+      "elements": 757,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 185.4,
+      "elements": 2594,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 3.1,
+      "elements": 226,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 18.3,
+      "elements": 678,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1117,
+    "ms": 50,
+    "k": 0.335,
+    "look": "connections",
+    "script": 26.2,
+    "style": 4.4,
+    "layout": 0.9,
+    "paint": 9.5,
+    "other": 8.2,
+    "styles": [
+     {
+      "ms": 4.1,
+      "elements": 169,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1067,
+   "ms": 350.1,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 88.9,
+   "style": 215.1,
+   "layout": 11,
+   "paint": 25.9,
+   "other": 10.6,
+   "styles": [
+    {
+     "ms": 7.4,
+     "elements": 757,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 185.4,
+     "elements": 2594,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 3.1,
+     "elements": 226,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 18.3,
+     "elements": 678,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 47,
+   "gaps": [
+    20,
+    23,
+    24,
+    16,
+    16,
+    17,
+    18,
+    15,
+    17,
+    18,
+    16,
+    16,
+    16,
+    17,
+    17,
+    17,
+    16,
+    16,
+    17,
+    17,
+    18,
+    17,
+    18,
+    20,
+    19,
+    18,
+    18,
+    20,
+    19,
+    18,
+    19,
+    18,
+    18,
+    19,
+    18,
+    19,
+    18,
+    18,
+    18,
+    18,
+    32,
+    34,
+    17,
+    17,
+    17,
+    18
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 1,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 12515,
+   "cards": 84,
+   "bands": 22,
+   "wires": 226
+  },
+  "restBeforeEase": 3750,
+  "ease": {
+   "ms": 700,
+   "frames": 29,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 16.7,
+   "p90": 49.9,
+   "worst": 50,
+   "whole": {
+    "script": 204.7,
+    "style": 11.9,
+    "layout": 0,
+    "paint": 394.8,
+    "other": 55.6,
+    "styles": []
+   }
+  },
+  "worstFrame": null,
+  "longFrames": [],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 5.6,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 5.4,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.3,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.6,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.3,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.7,
+    "k": 0.993,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.5,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.7,
+    "k": 0.987,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.4,
+    "restyled": 0
+   },
+   {
+    "at": 117,
+    "ms": 16.6,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 7.9,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 16.7,
+    "k": 0.97,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.7,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.7,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.6,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.6,
+    "k": 0.943,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.4,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 0.924,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.2,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.7,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 6.2,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 49.9,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 37.8,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 33.4,
+    "k": 0.785,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 18.9,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 33.4,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 20.7,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 33.2,
+    "k": 0.623,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 21.7,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 50,
+    "k": 0.537,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 34.7,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 33.4,
+    "k": 0.448,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 17.3,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 33.4,
+    "k": 0.409,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 19.9,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 49.9,
+    "k": 0.381,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 34.5,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 33.3,
+    "k": 0.355,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 22,
+    "restyled": 0
+   },
+   {
+    "at": 567,
+    "ms": 16.8,
+    "k": 0.345,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 9.3,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 16.6,
+    "k": 0.342,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.7,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 33.3,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 18.6,
+    "restyled": 0
+   },
+   {
+    "at": 633,
+    "ms": 16.7,
+    "k": 0.336,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 10.6,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 9.4,
+    "restyled": 0
+   },
+   {
+    "at": 667,
+    "ms": 16.6,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.9,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 16.6,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.7,
+    "restyled": 0
+   },
+   {
+    "at": 700,
+    "ms": 16.7,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 8.7,
+    "restyled": 0
+   }
+  ],
+  "changes": [
+   {
+    "at": -3750,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1467,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 1550,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -3750,
+    "ms": 216.6,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1667,
+    "ms": 2083.3,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1467,
+    "ms": 766.7,
+    "k": 0.335,
+    "look": "connections",
+    "script": 147.9,
+    "style": 493.1,
+    "layout": 28.5,
+    "paint": 76.9,
+    "other": 25.3,
+    "styles": [
+     {
+      "ms": 15.1,
+      "elements": 1322,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 441.2,
+      "elements": 6867,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 6,
+      "elements": 436,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 29.8,
+      "elements": 1204,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1550,
+    "ms": 83.3,
+    "k": 0.335,
+    "look": "connections",
+    "script": 39.6,
+    "style": 8.6,
+    "layout": 1.6,
+    "paint": 14,
+    "other": 14.7,
+    "styles": [
+     {
+      "ms": 8.3,
+      "elements": 332,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1467,
+   "ms": 766.7,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 147.9,
+   "style": 493.1,
+   "layout": 28.5,
+   "paint": 76.9,
+   "other": 25.3,
+   "styles": [
+    {
+     "ms": 15.1,
+     "elements": 1322,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 441.2,
+     "elements": 6867,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 6,
+     "elements": 436,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 29.8,
+     "elements": 1204,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 29,
+   "gaps": [
+    25,
+    17,
+    18,
+    16,
+    17,
+    17,
+    16,
+    18,
+    19,
+    18,
+    20,
+    49,
+    37,
+    34,
+    34,
+    50,
+    42,
+    43,
+    32,
+    34,
+    19,
+    22,
+    27,
+    18,
+    16,
+    17,
+    17,
+    18
+   ]
+  }
+ },
+ {
+  "subject": "heavy",
+  "run": 2,
+  "condition": "full",
+  "arrival": "then-neighbours-after",
+  "extra": {},
+  "elements": {
+   "map": 12515,
+   "cards": 84,
+   "bands": 22,
+   "wires": 226
+  },
+  "restBeforeEase": 3883,
+  "ease": {
+   "ms": 1717,
+   "frames": 25,
+   "fromK": 1,
+   "toK": 0.335,
+   "median": 33.3,
+   "p90": 50,
+   "worst": 1033.2,
+   "whole": {
+    "script": 408,
+    "style": 655.5,
+    "layout": 40.6,
+    "paint": 510.3,
+    "other": 98.9,
+    "styles": [
+     {
+      "ms": 20.7,
+      "elements": 1322,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 537.9,
+      "elements": 6867,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 436,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 16.8,
+      "elements": 285,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 59.5,
+      "elements": 1204,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  },
+  "worstFrame": {
+   "at": 1717,
+   "ms": 1033.2,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 198.3,
+   "style": 643.2,
+   "layout": 40.6,
+   "paint": 119.9,
+   "other": 39.3,
+   "styles": [
+    {
+     "ms": 20.7,
+     "elements": 1322,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 537.9,
+     "elements": 6867,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 436,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 16.8,
+     "elements": 285,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 59.5,
+     "elements": 1204,
+     "script": null,
+     "stack": []
+    }
+   ],
+   "invalidations": [
+    [
+     "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+     1110
+    ],
+    [
+     "ScheduleStyle:  MAIN id='main'",
+     1108
+    ],
+    [
+     "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+     942
+    ],
+    [
+     "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+     891
+    ],
+    [
+     "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+     480
+    ],
+    [
+     "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+     420
+    ],
+    [
+     "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+     420
+    ],
+    [
+     "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+     411
+    ],
+    [
+     "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+     330
+    ],
+    [
+     "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+     330
+    ],
+    [
+     "StyleRecalc: Attribute path class='connection-path outbound'",
+     174
+    ],
+    [
+     "StyleRecalc: Attribute path class='wire-band'",
+     174
+    ]
+   ]
+  },
+  "longFrames": [
+   {
+    "at": 1717,
+    "ms": 1033.2,
+    "k": 0.335,
+    "state": "connections|far||true|",
+    "script": 198.3,
+    "style": 643.2,
+    "layout": 40.6,
+    "paint": 119.9,
+    "other": 39.3,
+    "styles": [
+     {
+      "ms": 20.7,
+      "elements": 1322,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 537.9,
+      "elements": 6867,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 436,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 16.8,
+      "elements": 285,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 59.5,
+      "elements": 1204,
+      "script": null,
+      "stack": []
+     }
+    ],
+    "invalidations": [
+     [
+      "ScheduleStyle:  BODY class='local-map-active zoom-controls-active'",
+      1110
+     ],
+     [
+      "ScheduleStyle:  MAIN id='main'",
+      1108
+     ],
+     [
+      "ScheduleStyle: hidden BUTTON class='local-directory-cell local-directory-cell--file'",
+      942
+     ],
+     [
+      "StyleInvalidator: Invalidation set invalidates self BUTTON class='local-directory-cell local-directory-cell--file'",
+      891
+     ],
+     [
+      "StyleRecalc: Related style rule BUTTON class='local-directory-cell local-directory-cell--file'",
+      480
+     ],
+     [
+      "StyleRecalc: Inline CSS style declaration was mutated BUTTON class='local-directory-cell local-directory-cell--file'",
+      420
+     ],
+     [
+      "ScheduleStyle: style BUTTON class='local-directory-cell local-directory-cell--file'",
+      420
+     ],
+     [
+      "StyleRecalc: Attribute BUTTON class='local-directory-cell local-directory-cell--file'",
+      411
+     ],
+     [
+      "StyleInvalidator: Invalidation set matched class DIV class='symbol-row local-row-readable branch-symbol-hidden branch-sy",
+      330
+     ],
+     [
+      "StyleRecalc: Related style rule DIV class='symbol-row local-row-readable branch-symbol-hidden branch-symbol-muted'",
+      330
+     ],
+     [
+      "StyleRecalc: Attribute path class='connection-path outbound'",
+      174
+     ],
+     [
+      "StyleRecalc: Attribute path class='wire-band'",
+      174
+     ]
+    ]
+   }
+  ],
+  "everyFrame": [
+   {
+    "at": 17,
+    "ms": 16.7,
+    "k": 1,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 5.8,
+    "restyled": 0
+   },
+   {
+    "at": 33,
+    "ms": 16.6,
+    "k": 1,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 6.8,
+    "restyled": 0
+   },
+   {
+    "at": 50,
+    "ms": 16.7,
+    "k": 0.998,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 6.5,
+    "restyled": 0
+   },
+   {
+    "at": 67,
+    "ms": 16.7,
+    "k": 0.996,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 8.8,
+    "restyled": 0
+   },
+   {
+    "at": 83,
+    "ms": 16.7,
+    "k": 0.993,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 9.4,
+    "restyled": 0
+   },
+   {
+    "at": 100,
+    "ms": 16.6,
+    "k": 0.987,
+    "look": "reading",
+    "style": 0.2,
+    "paint": 8.7,
+    "restyled": 0
+   },
+   {
+    "at": 133,
+    "ms": 33.4,
+    "k": 0.98,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 16.7,
+    "restyled": 0
+   },
+   {
+    "at": 150,
+    "ms": 16.6,
+    "k": 0.958,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 7.2,
+    "restyled": 0
+   },
+   {
+    "at": 167,
+    "ms": 16.7,
+    "k": 0.943,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 6.9,
+    "restyled": 0
+   },
+   {
+    "at": 183,
+    "ms": 16.7,
+    "k": 0.924,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 7.9,
+    "restyled": 0
+   },
+   {
+    "at": 200,
+    "ms": 16.6,
+    "k": 0.903,
+    "look": "reading",
+    "style": 0.3,
+    "paint": 6,
+    "restyled": 0
+   },
+   {
+    "at": 250,
+    "ms": 50,
+    "k": 0.878,
+    "look": "reading",
+    "style": 0.7,
+    "paint": 35,
+    "restyled": 0
+   },
+   {
+    "at": 283,
+    "ms": 33.3,
+    "k": 0.785,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 20.2,
+    "restyled": 0
+   },
+   {
+    "at": 317,
+    "ms": 33.4,
+    "k": 0.709,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 21.7,
+    "restyled": 0
+   },
+   {
+    "at": 350,
+    "ms": 33.3,
+    "k": 0.624,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 20.7,
+    "restyled": 0
+   },
+   {
+    "at": 400,
+    "ms": 50,
+    "k": 0.537,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 38,
+    "restyled": 0
+   },
+   {
+    "at": 433,
+    "ms": 33.4,
+    "k": 0.448,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 16.4,
+    "restyled": 0
+   },
+   {
+    "at": 467,
+    "ms": 33.3,
+    "k": 0.409,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 16.5,
+    "restyled": 0
+   },
+   {
+    "at": 517,
+    "ms": 50,
+    "k": 0.381,
+    "look": "reading",
+    "style": 0.5,
+    "paint": 35.2,
+    "restyled": 0
+   },
+   {
+    "at": 550,
+    "ms": 33.4,
+    "k": 0.355,
+    "look": "reading",
+    "style": 0.4,
+    "paint": 21.1,
+    "restyled": 0
+   },
+   {
+    "at": 583,
+    "ms": 33.3,
+    "k": 0.345,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 21.6,
+    "restyled": 0
+   },
+   {
+    "at": 617,
+    "ms": 33.3,
+    "k": 0.339,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 15.3,
+    "restyled": 0
+   },
+   {
+    "at": 650,
+    "ms": 33.3,
+    "k": 0.336,
+    "look": "reading",
+    "style": 0.6,
+    "paint": 18.5,
+    "restyled": 0
+   },
+   {
+    "at": 683,
+    "ms": 33.4,
+    "k": 0.335,
+    "look": "reading",
+    "style": 0.8,
+    "paint": 19.5,
+    "restyled": 0
+   },
+   {
+    "at": 1717,
+    "ms": 1033.2,
+    "k": 0.335,
+    "look": "connections",
+    "style": 643.2,
+    "paint": 119.9,
+    "restyled": 10114
+   }
+  ],
+  "changes": [
+   {
+    "at": -3883,
+    "k": null,
+    "state": "reading|reading|0|false|moving"
+   },
+   {
+    "at": 1717,
+    "k": 0.335,
+    "state": "connections|far||true|"
+   },
+   {
+    "at": 1850,
+    "k": 0.335,
+    "state": "connections|far||false|"
+   }
+  ],
+  "lookFrames": [
+   {
+    "at": -3883,
+    "ms": 216.7,
+    "k": null,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": -1617,
+    "ms": 2266.6,
+    "k": 1,
+    "look": "reading",
+    "script": 0,
+    "style": 0,
+    "layout": 0,
+    "paint": 0,
+    "other": 0,
+    "styles": []
+   },
+   {
+    "at": 1717,
+    "ms": 1033.2,
+    "k": 0.335,
+    "look": "connections",
+    "script": 198.3,
+    "style": 643.2,
+    "layout": 40.6,
+    "paint": 119.9,
+    "other": 39.3,
+    "styles": [
+     {
+      "ms": 20.7,
+      "elements": 1322,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "framePlace:5177:73138",
+       "updateMapTransform:5177:68687",
+       "releaseLook:5177:80892",
+       "s:5177:80260"
+      ]
+     },
+     {
+      "ms": 537.9,
+      "elements": 6867,
+      "script": "FunctionCall s@index.js:5177:78485",
+      "stack": [
+       "Nr:293:16308",
+       "S2:293:16404",
+       "measureLayoutExtents:5177:67152",
+       "measureLayoutExtents:5177:48615",
+       "N$:5176:38461"
+      ]
+     },
+     {
+      "ms": 7.4,
+      "elements": 436,
+      "script": "FunctionCall r@index.js:293:2824",
+      "stack": [
+       "r:293:2987"
+      ]
+     },
+     {
+      "ms": 16.8,
+      "elements": 285,
+      "script": null,
+      "stack": []
+     },
+     {
+      "ms": 59.5,
+      "elements": 1204,
+      "script": null,
+      "stack": []
+     }
+    ]
+   },
+   {
+    "at": 1850,
+    "ms": 133.4,
+    "k": 0.335,
+    "look": "connections",
+    "script": 60.2,
+    "style": 11.2,
+    "layout": 2.6,
+    "paint": 32.6,
+    "other": 19.4,
+    "styles": [
+     {
+      "ms": 10.7,
+      "elements": 332,
+      "script": null,
+      "stack": []
+     }
+    ]
+   }
+  ],
+  "longestAround": {
+   "at": 1717,
+   "ms": 1033.2,
+   "k": 0.335,
+   "state": "connections|far||true|",
+   "script": 198.3,
+   "style": 643.2,
+   "layout": 40.6,
+   "paint": 119.9,
+   "other": 39.3,
+   "styles": [
+    {
+     "ms": 20.7,
+     "elements": 1322,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "framePlace:5177:73138",
+      "updateMapTransform:5177:68687",
+      "releaseLook:5177:80892",
+      "s:5177:80260"
+     ]
+    },
+    {
+     "ms": 537.9,
+     "elements": 6867,
+     "script": "FunctionCall s@index.js:5177:78485",
+     "stack": [
+      "Nr:293:16308",
+      "S2:293:16404",
+      "measureLayoutExtents:5177:67152",
+      "measureLayoutExtents:5177:48615",
+      "N$:5176:38461"
+     ]
+    },
+    {
+     "ms": 7.4,
+     "elements": 436,
+     "script": "FunctionCall r@index.js:293:2824",
+     "stack": [
+      "r:293:2987"
+     ]
+    },
+    {
+     "ms": 16.8,
+     "elements": 285,
+     "script": null,
+     "stack": []
+    },
+    {
+     "ms": 59.5,
+     "elements": 1204,
+     "script": null,
+     "stack": []
+    }
+   ]
+  },
+  "errors": [],
+  "screencast": {
+   "inside": 24,
+   "gaps": [
+    19,
+    19,
+    19,
+    19,
+    19,
+    20,
+    18,
+    23,
+    18,
+    20,
+    47,
+    34,
+    34,
+    39,
+    39,
+    37,
+    50,
+    32,
+    43,
+    20,
+    55,
+    24,
+    33
+   ]
+  }
+ }
+]

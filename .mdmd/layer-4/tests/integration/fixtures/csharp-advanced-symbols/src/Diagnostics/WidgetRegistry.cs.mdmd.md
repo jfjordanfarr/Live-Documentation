@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs`
-- Generated At: 2026-11-19T21:10:24.850Z
+- Generated At: 2026-11-22T02:45:13.677Z
 
 ## Authored
 ### Purpose
@@ -29,7 +29,7 @@ Widget registries coordinate cross-module widget discovery.
 Thread-safety is provided by a concurrent dictionary shared by all callers.
 
 ##### `WidgetRegistry` — Links
-- `../../docs/registry.md` — Widget architecture
+- ../../docs/registry.md — Widget architecture
 
 #### `WidgetRegistered` {#symbol-widgetregistered}
 - Type: event
@@ -42,7 +42,7 @@ Raised when a widget is successfully added to the registry.
 Subscribers receive `WidgetRegisteredEventArgs` instances describing the change.
 
 ##### `WidgetRegistered` — Links
-- `WidgetRegisteredEventArgs`
+- [`WidgetRegisteredEventArgs`](#symbol-widgetregisteredeventargs-class)
 
 #### `TryRegister` {#symbol-tryregister}
 - Type: method
@@ -77,7 +77,8 @@ registry.TryRegister(widget);
 ```
 
 ##### `TryRegister` — Links
-- `WidgetRegistered`
+- `ArgumentNullException` (exception)
+- [`WidgetRegistered`](#symbol-widgetregistered)
 
 #### `All` {#symbol-all}
 - Type: property
@@ -109,6 +110,9 @@ The registered widget, or `null` when the name is unknown.
 ##### `Resolve` — Exceptions
 - `ArgumentNullException`: Thrown when `name` is `null`.
 
+##### `Resolve` — Links
+- `ArgumentNullException` (exception)
+
 #### `TryMerge` {#symbol-trymerge}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L86)
@@ -130,13 +134,17 @@ Delegates to `BaseWidget.TryMerge(BaseWidget)` for the merge semantics.
 - `ArgumentNullException`: Thrown when `widget` is `null`.
 
 ##### `TryMerge` — Links
-- `BaseWidget.TryMerge(BaseWidget)`
-- `Resolve(string)`
+- `ArgumentNullException` (exception)
+- [`BaseWidget.TryMerge(BaseWidget)`](./BaseWidget.cs.mdmd.md#symbol-trymerge)
+- [`Resolve(string)`](#symbol-resolve)
 
 #### `OnWidgetRegistered` {#symbol-onwidgetregistered}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L99)
 - Parameters: `args`: [`WidgetRegisteredEventArgs`](#symbol-widgetregisteredeventargs-class)
+
+##### `OnWidgetRegistered` — Links
+- [`WidgetRegistered`](#symbol-widgetregistered) (inheritdoc)
 
 ##### `OnWidgetRegistered` — Additional Documentation
 - <inheritdoc cref="WidgetRegistered"/>

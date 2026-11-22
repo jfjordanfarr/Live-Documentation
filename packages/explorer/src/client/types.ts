@@ -178,6 +178,19 @@ export interface LocalMapTuning {
    */
   directionMarks: DirectionMarks;
   /**
+   * What a way down from the World Map brings to the Local Map (a trial of 2026-11-22, on six strangers who named the
+   * chain of systems from the board and none of whom reached a file): "alone", the default, a thing's folder opened and
+   * every pin let go, as since the World Map was built; "question", the thing's folder with the files that carry its
+   * wires pinned, a wire as the files at its two ends, and two things as the path between their folders, each landing
+   * with the board's pin kept for the way back (worldMap/way-down.ts).
+   */
+  wayDown: WayDown;
+  /**
+   * Which way the 2D picture reads (2026-11-22, the toolbar's mirror button): the person's own, kept with their other
+   * settings and carried by no link, as a palette is not (reading-direction.ts).
+   */
+  reads: MapReads;
+  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -515,6 +528,21 @@ export type DirectionMarks = "none" | "along" | "against";
 
 /** Every Direction Marks choice, in the order the control offers them; the first, none, is the default. */
 export const DIRECTION_MARKS: readonly DirectionMarks[] = ["none", "along", "against"];
+
+/** What a way down from the World Map brings: the thing's folder alone, or the question asked on the board (a trial, 2026-11-22). */
+export type WayDown = "alone" | "question";
+
+/** Every Way Down choice, in the order the control offers them; the first, the folder alone, is the default until the owner has seen the other. */
+export const WAY_DOWNS: readonly WayDown[] = ["alone", "question"];
+
+/**
+ * Which way a 2D picture reads (2026-11-22): what offers first from the left, the rule since December 2025, or what
+ * uses first, the same picture mirrored. The colours never change with it.
+ */
+export type MapReads = "offersFirst" | "usesFirst";
+
+/** Both ways a 2D picture reads; the first is the default. */
+export const MAP_READS: readonly MapReads[] = ["offersFirst", "usesFirst"];
 
 /**
  * What the 2D map's overview look draws: files only, as in Flow, or cards at their size. Files only was a trial of

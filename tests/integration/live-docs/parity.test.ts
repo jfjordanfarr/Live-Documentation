@@ -50,6 +50,14 @@ beforeAll(async () => {
     logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
   workspaces.estate = estate;
 
+  // The names sample, whose App/Documented.cs names six files only in its documentation.
+  const names = fs.mkdtempSync(path.join(os.tmpdir(), "parity-names-"));
+  const namesSource = path.join(repoRoot, "tests", "integration", "programs", "csharp", "names");
+  fs.cpSync(namesSource, names, { recursive: true, filter: (from) => !NOT_FIXTURE.has(path.basename(from)) });
+  await generateLiveDocs({ workspaceRoot: names, config: normalizeLiveDocumentationConfig({}),
+    logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
+  workspaces.names = names;
+
   const history = fs.mkdtempSync(path.join(os.tmpdir(), "parity-history-"));
   const ids = buildRepository(history, SCRIPT.slice(0, 2));
   commits.first = ids[0];
@@ -78,9 +86,9 @@ afterAll(() => {
 describe("the parity ledger", () => {
   for (const row of ledger.rows) {
     const label = `${row.section}: ${row.page}`;
-    it(row.status.startsWith("yes") ? `still answers: ${label}` : `is still a gap: ${label}`, () => {
+    it(row.status.startsWith("yes") || row.status === "the command line's own" ? `still answers: ${label}` : `is still a gap: ${label}`, () => {
       const text = row.file ? fs.readFileSync(path.join(workspaces[row.file[0]], row.file[1]), "utf8") : outputs.get(row) ?? "";
-      if (row.status.startsWith("yes")) {
+      if (row.status.startsWith("yes") || row.status === "the command line's own") {
         for (const fragment of row.expect ?? []) {
           assert.ok(text.includes(fragment), `${label}: the equivalent no longer says ${JSON.stringify(fragment)}; it printed:\n${text.slice(0, 2000)}`);
         }

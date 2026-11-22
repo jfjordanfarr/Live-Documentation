@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { GraphEdge, GraphFile, LiveDocGraph } from "./graph";
-import { components, enumerateTerminalPaths, fileGroups, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
+import { components, fileGroups, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
 
 /** A graph from the files each file depends on, and the dependencies of each that resolved to no file. */
 function graphOf(dependencies: Record<string, string[]>, unresolved: Record<string, string[]> = {}): LiveDocGraph {
@@ -195,12 +195,5 @@ describe("searchGraph", () => {
     const result = searchGraph(graph, "a", "c", "outbound", 1);
     expect(result.path).toBeUndefined();
     expect(result.frontier).toEqual([{ node: "b", docPath: "b.md", reason: "max-depth" }]);
-  });
-});
-
-describe("enumerateTerminalPaths", () => {
-  it("lists every path away from a file to where it ends", () => {
-    expect(enumerateTerminalPaths(graph, "c", "inbound", 10).map((entry) => entry.nodes)).toEqual([["c", "d"], ["c", "b", "a"]]);
-    expect(enumerateTerminalPaths(graph, "a", "outbound", 1)).toEqual([{ nodes: ["a", "b"] }]);
   });
 });

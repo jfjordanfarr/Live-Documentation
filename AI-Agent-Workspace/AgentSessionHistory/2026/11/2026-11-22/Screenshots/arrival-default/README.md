@@ -84,7 +84,42 @@ To tell the rest's start from the picture's settling, the map now says `settling
 
 **The trial's case that pulled back at a rest of 0.75 s.** In the first milestone the trial value "pointed" let the picture pull back although the case had brought the pointer to the card. Run again twice at 0.75 s and twice at 1.5 s on a calmer lane (load 11 to 22), with the page logging each frame, it held all four times: the picture said it rested 70 to 180 ms before the pointer was over the card, and the pointer was over the card for every frame after. The trial holds only a pointer that reaches the card before the rest ends, and the case reaches it after half a dozen round trips to the page; the failing run was at a load near 30, with a lint and the unit tests running beside it. So the case races the rest and lost: the case's fault, not the product's. Its own trace was overwritten before I read it, so this is the reading the four later runs support and not one taken from the failing run. The case now says which it was, by asking that the map still says it settles or rests when the pointer is on the card.
 
+## Third milestone, from 04:30 UTC: the quiet measurement, the keys in a mirrored picture, the last pictures
+
+**The quiet measurement**, the same probe on the build with the band's mend, merged with the day's tip at `3a710ca38`; the load average was 3.1 at the start of the full-speed run and 3.1 to 4.4 through the slowed one. Numbers in [`numbers/quiet--full.json`](numbers/quiet--full.json) and [`numbers/quiet--weak.json`](numbers/quiet--weak.json), strips beside them.
+
+| Condition (load) | Subject | Ease | Frames in it | Longest frame in the ease | Restyled in a frame of the ease | The look's change at rest |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| full (3.1) | estate | 767–783 ms | 41–42 | 17–33 ms | 0 | 83–100 ms, 625 elements and 149 wires |
+| full (3.1) | `pathfind.ts` | about 700 ms | 40–41 | 33 ms | 0 | 350–367 ms, 2,594 and 757 wires |
+| full (3.1) | heavy | 700 ms | 25–29 | 50 ms | 0 | **767–1,033 ms**, 6,867 and 1,322 wires |
+| two slowed cores (3.1–4.4) | estate | 717 ms | 25 | 67 ms | 9 at most | 467 ms |
+| two slowed cores (3.1–4.4) | `pathfind.ts` | about 700 ms | 10 | 100 ms | 7 at most | 2,267 ms |
+| two slowed cores (3.1–4.4) | heavy | about 700 ms | 5 | 200 ms | 6 at most | **5,716 ms** |
+
+The motion itself is clean at full speed: every frame of the ease on time on the estate and `pathfind.ts`, none over 50 ms on the heavy subject, and nothing restyled while the picture moves. **The pause at rest is longer than the figures of November 21** (450 to 467 ms at full speed and 1.2 to 2.2 s slowed, on the heavy subject), about double at full speed and more than double slowed. Not traced to its cause. Two things differ in that frame and I measured neither apart: the wires' bands, on by default now, take their width when the camera stops, in the same frame as the look's change (1,322 elements on the heavy subject), which is where this change put it; and the day's tip adds rules the cards are matched against. The next step is to write the band's width a frame after the look's change and measure the two frames.
+
+**The arrow keys in a mirrored picture.** With the map's mirror on, Right on a card took a wire on the card's left: the case judged it by where things stand on the screen and failed on the unmended build ("the wire reaches beyond the card's right edge": expected beyond 848 px, received 577). The keys now go through the picture's one mapping (`layoutEndAt` in `reading-direction.ts`).
+
+**The last pictures, each opened.**
+
+- [`estate--focus--release--strip.png`](estate--focus--release--strip.png) and [`repo--focus--release--strip.png`](repo--focus--release--strip.png): Shift+Tab takes the focus to the card before the subject, and the camera, which brings a focused control into the frame, has already slid to that card in the first frame (the estate's `PostPaymentRow.cs` and `Payment.cs` stand at the left edge with their first letters at the view's edge, this repository's `graph.ts` in the middle with `pathfind.ts` pushed to the right). The pull-back then starts from there and ends on the neighbours' frame. So by keyboard a person sees two movements run together, a slide to where the focus went and the draw-back. Nothing jumps, and the ease begins where the camera stands. Whether the slide should be left out when a pull-back is about to follow is a question for the owner's eye; I did not change it.
+- [`repo--pointer--2-waits.png`](repo--pointer--2-waits.png): `pathfind.ts` at reading size, its name lit under the pointer, its descriptions readable, waiting.
+- [`repo--pointer--3-released.png`](repo--pointer--3-released.png): the neighbours' frame at the floor. Names read at about 9 px. **The subject's own name is not on screen:** its card is taller than the view and is centred, so the view begins at its second row. It was so under the trial too (the frame is the same), and it is the plainest fault I see in where the default lands on a tall file: a person arrives on a file and, after the pull-back, cannot read which one. A frame that enters a tall subject at its top would keep the name; not built, since it changes where the arrival ends.
+- [`repo--pointer--release--strip.png`](repo--pointer--release--strip.png) was taken under load in the first milestone, four frames in 1.7 s, and shows nothing of the motion; the quiet strips under `numbers/quiet--full--*` are the ones to look at.
+
+**What the sweep on the arrival that ships found in the product** (the sweep is not finished; its table is in the handback of that hour).
+
+- *Names cut at the frame the arrival ends on.* The still-picture instrument, which had always read the Local Map at reading size, found six to nine symbol names cut by 1 to 24 px on three pictures of this repository once the default had pulled back. A probe on the five-file picture reached the same frame four ways (the default, the pull-back that crosses the look, Neighbours at once, and six presses of Zoom Out by hand from reading size): the same six names were cut by the same amounts every time, at scale 0.335 in the connections look. So it is not how the arrival gets there; the connections look cuts those names at its farthest press, and that press is where the arrival's floor is set, described until now as "the farthest zoom at which every card's names still read". Not mended.
+- *A tall subject's name off the screen*, the picture above: found also by `pin-clicks.spec.ts`, whose fifth click, the first symbol's Pin on `branches.ts`, lies above the view after the pull-back. Not mended; the mend I would make is to enter a subject taller than the room at its top, as a step and the reading frame already do.
+- *A card's Close, Pin and Read are not drawn in the connections look*, where the arrival now ends; they are in the card's menu there. One case (`local-map-pins`) pressed Close on a neighbour after arriving and now says it stays at reading size. Whether the pull-back should end in a look without those controls is the owner's to weigh.
+
+- *A symbol chosen in the search is pulled away from.* `search-bar.spec.ts` asks that a symbol chosen in the search has its row and its actions in view; a search choice is an arrival, and the pull-back leaves the row outside the view on `pathfind.ts`. Not mended: whether a symbol's choice should pull back at all, or the end frame should hold the row, is a choice about what the arrival means.
+
+Two more failures are not understood and may not be the arrival's: `local-map-path`'s direct link to `client/index.ts` did not draw within its five seconds, three times, and `local-map-branches`'s reading of every lane ran past its minute, also with the arrival held at reading size. Wire Answers being on, which gives every wire a second path, and the day's merged tip are the two things that differ from the last time they passed; neither was tried apart.
+
 ## Not done
 
-- A measurement on a quiet machine (above): the load did not fall below 8 in either milestone.
-- The strips of the focus journey and this repository's stills were not opened.
+- The sweep: eight holds of twenty-five ran.
+- The pause at rest traced to its parts (above).
+- The estate's remaining stills (`1-lands`, `3-released`, the wire's `1`, `2` and `4`) were not opened one by one.

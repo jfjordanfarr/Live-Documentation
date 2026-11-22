@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/local-map-branches.spec.ts`
-- Generated At: 2026-11-19T21:10:22.281Z
+- Generated At: 2026-11-22T05:09:40.865Z
 
 ## Authored
 ### Purpose

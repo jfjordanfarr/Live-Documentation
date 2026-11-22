@@ -18,6 +18,7 @@ import { dotRoom, evenRows, FILE_KEPT_AIR, fileLineRoom, fitKept, fitLines, foot
 import { FIRST_STEP, LAST_STEP, ladderScales, LOOK_BANDS, LOOK_SCALES, type LadderResistances, type ZoomLook } from "./ladder-steps";
 import { oneLineName } from "./name-cut";
 import { COMPACT_AIR, filesNameScale, OVERVIEW_FILES_ATTRIBUTE, pinnedRowScales, wholeNameScale } from "./overview-files";
+import { READS_ATTRIBUTE } from "./reading-direction";
 import type { LocalEdge, ReadingControl } from "./types";
 import { seamsOf } from "./word-seams";
 
@@ -522,7 +523,8 @@ function measureRooms(card: HTMLElement, resistances: LadderResistances, looks: 
     let dotMiddle = nameTop + nameHeight / 2, dotHeight = 14, dotScale = Infinity;
     for (const dot of row.querySelectorAll<HTMLElement>(".symbol-anchor.dot")) {
       const rect = dot.getBoundingClientRect(), drawn = new DOMMatrix(getComputedStyle(dot).transform);
-      const direction = dot.classList.contains("inbound") ? "inbound" : "outbound";
+      // The room is on the dot's own side of the card: a mirrored picture stands a use-dot where an offer-dot stood.
+      const direction = dot.classList.contains("inbound") !== !!card.closest(`[${READS_ATTRIBUTE}]`) ? "inbound" : "outbound";
       const left = direction === "inbound" ? (rect.right - cardRect.left) / k - dot.offsetWidth : (rect.left - cardRect.left) / k;
       dotScale = Math.min(dotScale, dotRoom({ left, right: left + dot.offsetWidth, direction }, innerLeft, innerRight));
       dotHeight = dot.offsetHeight;

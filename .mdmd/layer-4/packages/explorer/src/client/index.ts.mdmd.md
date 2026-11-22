@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/index.ts`
 - Entry: declared
-- Generated At: 2026-11-22T01:29:32.360Z
+- Generated At: 2026-11-22T03:29:26.797Z
 
 ## Authored
 ### Purpose
@@ -108,8 +108,10 @@ _No public symbols detected_
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
 - [`tuning.withholdFirstCommitOrder`](./panels/tuning.ts.mdmd.md#symbol-withholdfirstcommitorder)
 - [`tuning.withholdThreeDLayout`](./panels/tuning.ts.mdmd.md#symbol-withholdthreedlayout)
-- [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
+- [`pathfind.Adjacency`](./pathfind.ts.mdmd.md#symbol-adjacency)
+- [`pathfind.PathHop`](./pathfind.ts.mdmd.md#symbol-pathhop)
 - [`pathfind.Reach`](./pathfind.ts.mdmd.md#symbol-reach)
+- [`pathfind.adjacencyOf`](./pathfind.ts.mdmd.md#symbol-adjacencyof)
 - [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
 - [`pathfind.reachOf`](./pathfind.ts.mdmd.md#symbol-reachof)
 - [`pathfind.referencesAgainstPath`](./pathfind.ts.mdmd.md#symbol-referencesagainstpath)
@@ -162,7 +164,6 @@ _No public symbols detected_
 - [`pin-state.EMPTY_PIN_SET`](./views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.INTERNAL_SYMBOL`](./views/pin-state.ts.mdmd.md#symbol-internal_symbol)
 - [`pin-state.PinSet`](./views/pin-state.ts.mdmd.md#symbol-pinset)
-- [`pin-state.addPin`](./views/pin-state.ts.mdmd.md#symbol-addpin)
 - [`pin-state.isSymbolPinned`](./views/pin-state.ts.mdmd.md#symbol-issymbolpinned)
 - [`pin-state.pressSymbol`](./views/pin-state.ts.mdmd.md#symbol-presssymbol)
 - [`pin-state.removePinsForNode`](./views/pin-state.ts.mdmd.md#symbol-removepinsfornode)
@@ -188,7 +189,9 @@ _No public symbols detected_
 - [`webgl-support.webglKnown`](./views/webgl-support.ts.mdmd.md#symbol-webglknown)
 - [`webgl-support.webglOffered`](./views/webgl-support.ts.mdmd.md#symbol-webgloffered)
 - [`webgl-support.whenIdle`](./views/webgl-support.ts.mdmd.md#symbol-whenidle)
+- [`index.OpenedThing`](./views/worldMap/index.ts.mdmd.md#symbol-openedthing)
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
+- [`index.heldFiles`](./views/worldMap/index.ts.mdmd.md#symbol-heldfiles)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`template.context-name`](../shared/template.html.mdmd.md#symbol-context-name)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/engine/src/live-docs/adapters/csharp.xmldoc.ts`
-- Generated At: 2026-11-19T21:10:09.427Z
+- Generated At: 2026-11-22T02:45:06.933Z
 
 ## Authored
 ### Purpose
@@ -114,11 +114,14 @@ Array of parsed examples with optional code blocks
 
 #### `extractLinkTags` {#symbol-extractlinktags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L250)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L253)
 - Returns: [`SymbolDocumentationLink`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationlink)[]
 
 ##### `extractLinkTags` — Summary
-Extracts <see> and <seealso> link tags.
+Extracts the references a documentation comment makes: each `<see>` and `<seealso>`, by its `href` or its `cref`, and
+the `cref` of every other element that carries one (`exception`, `inheritdoc`, `permission`, `event` …), which keeps
+the element's name, so that every reference the compiler resolves is read. A `<see>` with neither attribute names
+nothing the compiler resolves, so its text is kept as a link of no kind (`unknown`), not as a `cref`.
 
 ##### `extractLinkTags` — Parameters
 - `block`: Raw XML doc block
@@ -126,9 +129,28 @@ Extracts <see> and <seealso> link tags.
 ##### `extractLinkTags` — Returns
 Array of deduplicated, sorted links
 
+#### `CrefName (interface)` {#symbol-crefname-interface}
+- Type: interface
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L319)
+
+##### `CrefName (interface)` — Summary
+A documentation reference's name as C# reads it: its dotted segments, and the parameter list a member's reference writes.
+
+#### `crefName (function)` {#symbol-crefname-function}
+- Type: function
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L351)
+- Returns: [`CrefName`](#symbol-crefname-interface)
+
+##### `crefName (function)` — Summary
+Reads a reference's name, as {@link normalizeCrefTarget} gives it, into what the C# reader resolves: `Base.Gadget`
+the segments `Base` and `Gadget`, `Lib.Helper<T>` (written `Lib.Helper{T}`) `Lib` and `Helper` of one type
+parameter, `Runner.Run(Runner.Count)` a member with one parameter, `Runner..ctor` (written `Runner.#ctor`) a
+constructor. An operator, a conversion, an indexer or anything else that is not a dotted name is undefined: the
+reader declares no such member to resolve it to.
+
 #### `extractRawDocFragments` {#symbol-extractrawdocfragments}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L309)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L377)
 
 ##### `extractRawDocFragments` — Summary
 Extracts raw documentation fragments like <inheritdoc> and <include>.
@@ -141,7 +163,7 @@ Array of raw tag strings
 
 #### `detectUnsupportedTags` {#symbol-detectunsupportedtags}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L333)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L401)
 
 ##### `detectUnsupportedTags` — Summary
 Detects XML tags that are not in the recognized set.
@@ -154,7 +176,7 @@ Array of unrecognized tag names
 
 #### `parseXmlAttributes` {#symbol-parsexmlattributes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L356)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L424)
 
 ##### `parseXmlAttributes` — Summary
 Parses XML attributes from a tag fragment.
@@ -167,7 +189,7 @@ Object mapping attribute names to values
 
 #### `normalizeXmlText` {#symbol-normalizexmltext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L373)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L441)
 
 ##### `normalizeXmlText` — Summary
 Normalizes XML documentation text into readable plain text.
@@ -181,7 +203,7 @@ Cleaned, normalized text
 
 #### `decodeXmlEntities` {#symbol-decodexmlentities}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L442)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L516)
 
 ##### `decodeXmlEntities` — Summary
 Decodes common XML entities to their character equivalents.
@@ -194,7 +216,7 @@ Decoded string
 
 #### `normalizeCrefTarget` {#symbol-normalizecreftarget}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L458)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L532)
 
 ##### `normalizeCrefTarget` — Summary
 Normalizes a cref target by stripping prefixes and converting syntax.
@@ -207,7 +229,7 @@ Normalized reference (e.g., "MyNamespace.MyClass")
 
 #### `renderCrefText` {#symbol-rendercreftext}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L482)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L556)
 
 ##### `renderCrefText` — Summary
 Renders a cref target as display text, optionally with custom inner text.
@@ -221,7 +243,7 @@ Formatted reference text
 
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L497)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L571)
 - Parameters: `doc`: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary

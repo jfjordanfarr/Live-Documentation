@@ -31,9 +31,18 @@ export function everyFact(): Scan {
             { role: "Returns", types: [{ name: "Widget", link: "b.ts.mdmd.md#widget", target: "src/b.ts", anchor: "widget", promise: true }] },
             { role: "Parameters", parameters: [{ name: "items", types: [{ name: "Item", link: "b.ts.mdmd.md", target: "src/b.ts", array: true }, { name: "string" }] }] }
           ],
-          sections: [{ title: "Summary", body: ["Starts the program.", "Line two, with a tab\tand ünïcödé 😀."] }]
+          sections: [
+            { title: "Summary", body: ["Starts the program.", "Line two, with a tab\tand ünïcödé 😀."] },
+            { title: "Links", body: ["- [`Widget`](b.ts.mdmd.md#widget)", "- [`Gone`](gone.ts.mdmd.md) (exception)", "- [`Self`](#thing) (inheritdoc)", "- `Unlinked`"] }
+          ],
+          documentation: [
+            { name: "Widget", link: "b.ts.mdmd.md#widget", target: "src/b.ts", anchor: "widget" },
+            { name: "Gone", element: "exception", link: "gone.ts.mdmd.md", target: "src/gone.ts" },
+            { name: "Self", element: "inheritdoc", link: "#thing", target: "src/a.ts", anchor: "thing" },
+            { name: "Unlinked" }
+          ]
         },
-        { name: "Thing (interface)", kind: "interface", flags: [], references: [{ role: "Extends", types: [{ name: "Gone", link: "gone.ts.mdmd.md", target: "src/gone.ts" }] }], sections: [] }
+        { name: "Thing (interface)", kind: "interface", flags: [], references: [{ role: "Extends", types: [{ name: "Gone", link: "gone.ts.mdmd.md", target: "src/gone.ts" }] }], sections: [], documentation: [] }
       ],
       dependencies: [
         { label: "src/b.ts", link: "b.ts.mdmd.md", target: "src/b.ts", qualifiers: ["type-only"] },
@@ -47,7 +56,7 @@ export function everyFact(): Scan {
       layer: 4,
       entries: [],
       authored: "### Purpose\n_Pending authored purpose_",
-      symbols: [{ name: "Widget", slug: "widget", kind: "class", flags: [], references: [{ role: "Implements", types: [{ name: "Thing", link: "a.ts.mdmd.md#thing", target: "src/a.ts", anchor: "thing" }] }], sections: [] }],
+      symbols: [{ name: "Widget", slug: "widget", kind: "class", flags: [], references: [{ role: "Implements", types: [{ name: "Thing", link: "a.ts.mdmd.md#thing", target: "src/a.ts", anchor: "thing" }] }], sections: [], documentation: [] }],
       dependencies: [{ label: "src/a.ts", link: "a.ts.mdmd.md", target: "src/a.ts", qualifiers: ["re-export"] }],
       reExports: [{ name: "Thing", slug: "thing", from: { label: "src/a.ts", link: "a.ts.mdmd.md" }, flags: ["type-only"] }, { name: "Other", flags: [] }]
     },
@@ -101,7 +110,8 @@ export function seededScan(seed: number, count: number): Scan {
         flags: next() < 0.1 ? ["default"] : [],
         ...(next() < 0.5 ? { source: { path: `../${codePath}`, line: Math.floor(next() * 500) } } : {}),
         references: next() < 0.5 ? [{ role: "Returns" as const, types: [type()] }, { role: "Parameters" as const, parameters: [{ name: "p", types: [type(), type()] }] }] : [],
-        sections: next() < 0.5 ? [{ title: "Summary", body: [`${pick(words)} ${Math.floor(next() * 1e9)}`] }] : []
+        sections: next() < 0.5 ? [{ title: "Summary", body: [`${pick(words)} ${Math.floor(next() * 1e9)}`] }] : [],
+        documentation: next() < 0.2 ? [{ name: pick(words), link: `${pick(words)}.mdmd.md`, target: pick(paths), ...(next() < 0.5 ? { element: "exception" } : {}) }] : []
       })),
       dependencies: Array.from({ length: Math.floor(next() * 5) }, () => {
         const t = type();

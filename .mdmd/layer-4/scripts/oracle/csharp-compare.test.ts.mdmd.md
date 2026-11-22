@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `scripts/oracle/csharp-compare.test.ts`
-- Generated At: 2026-11-22T01:24:24.072Z
+- Generated At: 2026-11-22T02:42:21.649Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,9 @@ _No public symbols detected_
 - `node:os` - `tmpdir`
 - `node:path` - `path`
 - [`csharp-compare.CompilerRecord`](./csharp-compare.ts.mdmd.md#symbol-compilerrecord)
+- [`csharp-compare.DOCUMENTATION_CAUSES`](./csharp-compare.ts.mdmd.md#symbol-documentation_causes)
 - [`csharp-compare.compareCSharp`](./csharp-compare.ts.mdmd.md#symbol-comparecsharp)
+- [`csharp-compare.compareDocumentation`](./csharp-compare.ts.mdmd.md#symbol-comparedocumentation)
 - [`csharp-compare.documentationPairs`](./csharp-compare.ts.mdmd.md#symbol-documentationpairs-function)
 - `vitest` - `afterAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

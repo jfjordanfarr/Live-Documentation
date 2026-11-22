@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/pathfind.test.ts`
-- Generated At: 2026-11-19T21:10:12.578Z
+- Generated At: 2026-11-22T03:27:55.445Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,6 @@ _No public symbols detected_
 - [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`pathfind.components`](./pathfind.ts.mdmd.md#symbol-components)
-- [`pathfind.enumerateTerminalPaths`](./pathfind.ts.mdmd.md#symbol-enumerateterminalpaths)
 - [`pathfind.fileGroups`](./pathfind.ts.mdmd.md#symbol-filegroups-function)
 - [`pathfind.getNeighbors`](./pathfind.ts.mdmd.md#symbol-getneighbors)
 - [`pathfind.isEntry`](./pathfind.ts.mdmd.md#symbol-isentry)

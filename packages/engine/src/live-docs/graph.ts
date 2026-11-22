@@ -14,7 +14,7 @@
  */
 
 import { linkPath } from "../tooling/markdownLinks";
-import { type LiveDoc, type SymbolBlock, type TypeRef } from "./document";
+import { LINKS_SECTION, readDocumentationReference, type LiveDoc, type SymbolBlock, type TypeRef } from "./document";
 
 // ============================================================================
 // The model
@@ -43,6 +43,35 @@ export interface GraphFile extends LiveDoc {
   outbound: string[];
   /** Files that have a resolved edge to this one, other than itself, sorted. */
   inbound: string[];
+  /**
+   * The declarations this file's documentation names, each from the symbol whose comment names it: the author's word
+   * that the two are related, read from the symbols' `Links` sections where a reference is linked. Present only when
+   * there is one.
+   *
+   * @remarks
+   * A relation of its own kind, held apart from {@link edges}, {@link outbound} and {@link inbound}: a word is not a
+   * use, so that reachability, the paths and the dead-code answer, which read those three, never follow it, and a class
+   * named only in a comment is still one nothing uses (root's ruling of 2026-11-22 on the owner's word of 2026-11-21).
+   */
+  documentation?: DocumentationEdge[];
+  /** Files whose documentation names a declaration of this one, other than itself, sorted; present only when there is one. */
+  documentedBy?: string[];
+}
+
+/** One reference a symbol's documentation makes to a declaration of the corpus, resolved as an edge's link is. */
+export interface DocumentationEdge {
+  /** The reference as its author wrote it. */
+  label: string;
+  /** The element that carries it, when it is not a `see` or a `seealso`: `exception`, `inheritdoc`, `permission`. */
+  element?: string;
+  /** The link as written on the doc. */
+  link: string;
+  /** The file the link resolved to. */
+  to: string;
+  /** The slug of the symbol the link names on the target. */
+  toSymbol?: string;
+  /** The slug of the symbol on this file whose documentation makes the reference. */
+  from?: string;
 }
 
 /** How an edge arose: a dependency line, or a type reference on a symbol. */
@@ -149,13 +178,44 @@ export function deriveLiveDocGraph(docs: Iterable<{ docPath: string; doc: LiveDo
       }
     }
     file.outbound = unique(file.edges.map((edge) => edge.to).filter((to): to is string => to !== undefined && to !== file.codePath));
+    const documentation = documentationOf(file, resolve);
+    if (documentation.length > 0) {
+      file.documentation = documentation;
+    }
   }
   for (const file of Object.values(files)) {
     for (const to of file.outbound) {
       files[to].inbound.push(file.codePath);
     }
   }
+  for (const file of Object.values(files)) {
+    for (const to of unique((file.documentation ?? []).map((reference) => reference.to).filter((to) => to !== file.codePath))) {
+      (files[to].documentedBy ??= []).push(file.codePath);
+    }
+  }
   return { root: location.root, baseLayer: location.baseLayer, extension: location.extension, files };
+}
+
+/** The linked references of a file's symbols' `Links` sections that land on a doc of the corpus, in the doc's order. */
+function documentationOf(file: GraphFile, resolve: (file: GraphFile, link: string) => Pick<GraphEdge, "link" | "to" | "toSymbol">): DocumentationEdge[] {
+  const references: DocumentationEdge[] = [];
+  for (const symbol of file.symbols) {
+    for (const section of symbol.sections) {
+      if (section.title !== LINKS_SECTION) continue;
+      for (const line of section.body) {
+        const reference = readDocumentationReference(line);
+        if (reference?.link === undefined) continue;
+        const { to, toSymbol } = resolve(file, reference.link);
+        if (to === undefined) continue;
+        const edge: DocumentationEdge = { label: reference.name, link: reference.link, to };
+        if (reference.element !== undefined) edge.element = reference.element;
+        if (toSymbol !== undefined) edge.toSymbol = toSymbol;
+        if (symbol.slug) edge.from = symbol.slug;
+        references.push(edge);
+      }
+    }
+  }
+  return references;
 }
 
 const REFERENCE_KIND = { Returns: "returns", Extends: "extends", Implements: "implements", Constraints: "constraint" } as const;

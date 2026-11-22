@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/engine/src/live-docs/document.test.ts`
-- Generated At: 2026-11-19T22:40:10.408Z
+- Generated At: 2026-11-22T02:45:07.700Z
 
 ## Authored
 ### Purpose
@@ -24,11 +24,14 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.DEFAULT_AUTHORED_BLOCK`](./document.ts.mdmd.md#symbol-default_authored_block)
+- [`document.DocumentationReference`](./document.ts.mdmd.md#symbol-documentationreference)
 - [`document.LiveDoc`](./document.ts.mdmd.md#symbol-livedoc)
 - [`document.LiveDocSyntaxError`](./document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`document.authoredBlockOf`](./document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.documentationReferenceLine`](./document.ts.mdmd.md#symbol-documentationreferenceline)
 - [`document.encodeLinkPath`](./document.ts.mdmd.md#symbol-encodelinkpath)
 - [`document.parseLiveDoc`](./document.ts.mdmd.md#symbol-parselivedoc)
+- [`document.readDocumentationReference`](./document.ts.mdmd.md#symbol-readdocumentationreference)
 - [`document.renderLiveDoc`](./document.ts.mdmd.md#symbol-renderlivedoc)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

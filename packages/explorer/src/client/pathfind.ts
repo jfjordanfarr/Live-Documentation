@@ -18,15 +18,16 @@ export interface PathHop {
 /** What a search between two sets of files found. */
 export interface PathfindResult {
   /**
-   * The hops from the start to the end when the end depends on the start. This is the only path the Local Map draws:
-   * what offers stands left of what uses it, so the start must offer and the end must use. Empty when no such path
-   * exists.
+   * The hops from the start to the end when the end depends on the start: the order the Local Map draws, what offers
+   * left of what uses it, and here also the order asked. Empty when no such path exists.
    */
   path: PathHop[];
   /**
    * The hops from the end to the start when only the start depends on the end: the same files, read in the direction
-   * the map can draw. The map never draws a path against its reading direction; it says there is none and offers this
-   * reverse question instead (the owner's rule of 2025-12-18). Empty when `path` is found or no path exists either way.
+   * the map draws. The map never draws a path against its reading direction (the owner's rule of 2025-12-18), so it
+   * draws these hops as they stand and tells them from the start, each file using the next (the owner's word of
+   * 2026-11-22; until then it drew nothing and offered this as the reverse question). Empty when `path` is found or no
+   * path exists either way.
    */
   reversePath: PathHop[];
   /** Files visited by the searches, counted only when nothing is drawn. */
@@ -37,9 +38,9 @@ export interface PathfindResult {
 
 /** Every file a path can reach from a set of files, by the number of files on the path, in each direction. */
 export interface Reach {
-  /** The files that depend on the set, directly or through others: a path to any of them is drawn. */
+  /** The files that depend on the set, directly or through others: a path to any of them runs as the map draws. */
   forward: Map<string, number>;
-  /** The files the set depends on: a path to any of them exists only the other way, and the reverse question is offered. */
+  /** The files the set depends on: a path to any of them runs against the drawing, and is told from the set. */
   reverse: Map<string, number>;
 }
 
@@ -117,8 +118,8 @@ export function findPath(
 }
 
 /**
- * Every file a path can reach from a set of files, forward along dependents, which the map draws, and in reverse
- * along dependencies, which the reverse question offers, each with the number of files the path would show. The
+ * Every file a path can reach from a set of files, forward along dependents, as the map draws, and in reverse
+ * along dependencies, against the drawing, each with the number of files the path would show. The
  * set's own files are not listed.
  */
 export function reachOf(

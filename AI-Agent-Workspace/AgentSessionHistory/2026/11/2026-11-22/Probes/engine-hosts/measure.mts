@@ -1,11 +1,13 @@
 // Measures one scan under Node: time, peak memory, reads per file, and a digest of what it wrote.
-//   tsx --tsconfig tsconfig.base.json measure.mts <corpus> <label>
+//   tsx --tsconfig tsconfig.base.json measure.mts <corpus> <label> [<budget in MiB>]
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 const fsSync = createRequire(import.meta.url)("node:fs") as typeof import("node:fs");
 import path from "node:path";
 
-const [corpus, label] = process.argv.slice(2);
+const [corpus, label, budget] = process.argv.slice(2);
+// An optional third argument: the bytes the run keeps between its passes (`readBudget`, from 2026-11-22), in MiB.
+const readBudget = budget === undefined ? {} : { readBudget: Number(budget) * 1024 * 1024 };
 const work = path.join(path.dirname(corpus), `run-${label}`);
 fsSync.rmSync(work, { recursive: true, force: true });
 fsSync.cpSync(corpus, work, { recursive: true });
@@ -33,7 +35,7 @@ syncFs.readFileSync = function (this: unknown, ...args: unknown[]) {
 const { generateLiveDocs } = await import("@live-documentation/generator/generator");
 const quiet = (): undefined => undefined;
 const started = performance.now();
-const result = await generateLiveDocs({ workspaceRoot: work, now: () => new Date("2026-01-01T00:00:00.000Z"), logger: { info: quiet, warn: quiet, error: quiet } });
+const result = await generateLiveDocs({ workspaceRoot: work, ...readBudget, now: () => new Date("2026-01-01T00:00:00.000Z"), logger: { info: quiet, warn: quiet, error: quiet } });
 const ms = performance.now() - started;
 
 const docsRoot = path.join(work, ".live-documentation");

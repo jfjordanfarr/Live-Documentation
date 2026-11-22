@@ -306,3 +306,28 @@ describe("the text form's bytes, as the specification states them", () => {
     expect(scanOfText(text.replace(/\n/gu, "\r\n")).ok).toBe(false);
   });
 });
+
+describe("the documentation a file's symbols name", () => {
+  it("is carried as the scanner read it, and gives the graph a relation of its own, apart from the edges", async () => {
+    const scan = everyFact();
+    const read = await readScan(await bytesOf(scan));
+    if (!read.ok) throw new Error(read.reason);
+    expect(read.value.files[0].symbols[0].documentation).toEqual(scan.files[0].symbols[0].documentation);
+    const graph = graphOf(read.value);
+    const a = graph.files["src/a.ts"];
+    // Only a reference whose link names a scanned file is in the relation: `Gone` names a file outside the scan, and
+    // `Unlinked` names nothing the scanner resolved.
+    expect(a.documentation).toEqual([
+      { label: "Widget", link: "b.ts.mdmd.md#widget", to: "src/b.ts", toSymbol: "widget", from: "main" },
+      { label: "Self", link: "#thing", to: "src/a.ts", element: "inheritdoc", toSymbol: "thing", from: "main" }
+    ]);
+    expect(graph.files["src/b.ts"].documentedBy).toEqual(["src/a.ts"]);
+    // A file is never documented by itself, and the relation is not a use: the edges and wires are as they were.
+    expect(a.documentedBy).toBeUndefined();
+    expect(graph.files["src/c.ts"].documentation).toBeUndefined();
+    expect(a.edges.some((e) => e.label === "Self")).toBe(false);
+    const text = textOfScan(scan);
+    expect(text).toContain('"documentation":[{"name":"Widget","link":"b.ts.mdmd.md#widget","target":"src/b.ts","anchor":"widget"},');
+    expect(scanOfText(text).ok).toBe(true);
+  });
+});

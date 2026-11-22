@@ -1,9 +1,10 @@
 // Probe of 2026-11-22 (not product code): a scan for the stored form made from today's graph index, as the engine's sink
 // would hand it over. Each link is given what it names by the engine's own link rule (`linkTarget`), so that the
 // stored form's graph can be held against the engine's graph, which resolved the same links itself.
+import { LINKS_SECTION, readDocumentationReference } from "@live-documentation/engine/live-docs/document";
 import { linkTarget, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
-import { comparePaths, type Scan, type StoredFile, type StoredType } from "../../../../../../../packages/stored-form/src/storedForm";
+import { comparePaths, type Scan, type StoredDocumentation, type StoredFile, type StoredType } from "../../../../../../../packages/stored-form/src/storedForm";
 
 /** The scan a graph's files describe, each link given the path and anchor it names. */
 export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
@@ -32,7 +33,19 @@ export function scanOfGraph(graph: LiveDocGraph, scanner: string): Scan {
       authored: file.authored,
       symbols: file.symbols.map((s) => ({
         ...s,
-        references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((p) => ({ name: p.name, types: p.types.map(type) })) } : { role: r.role, types: r.types.map(type) }))
+        references: s.references.map((r) => (r.role === "Parameters" ? { role: r.role, parameters: r.parameters.map((p) => ({ name: p.name, types: p.types.map(type) })) } : { role: r.role, types: r.types.map(type) })),
+        // The references its documentation makes, read from its `Links` sections' lines by the engine's own grammar,
+        // each link given what it names: what the sink hands over beside the lines themselves.
+        documentation: s.sections
+          .filter((section) => section.title === LINKS_SECTION)
+          .flatMap((section) => section.body.map(readDocumentationReference))
+          .filter((r): r is NonNullable<typeof r> => r !== undefined)
+          .map((r): StoredDocumentation => {
+            const out: StoredDocumentation = { name: r.name };
+            if (r.element !== undefined) out.element = r.element;
+            if (r.link !== undefined) Object.assign(out, { link: r.link }, named(r.link));
+            return out;
+          })
       })),
       dependencies: file.dependencies.map((d) => ({ ...d, ...named(d.link) })),
       ...(file.citedBy !== undefined ? { citedBy: file.citedBy } : {}),

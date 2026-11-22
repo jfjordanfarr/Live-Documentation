@@ -62,14 +62,16 @@ The owner closed every Chrome window and opened `index.html` again ([Turn 4 of t
 
 **What it means.** A remembered folder costs the person one press and the browser's own question, and no other local page is given the folder in silence after a restart; within one session it still is, as the first run showed. "Update all" can therefore be one press for each folder, or one for all if the browser gives several back at once, which a run with two folders would show. And if Chrome offers "allow on every visit" and the person takes it, every HTML file they open from disk in that profile has the folder from then on: that is a place where the product says one plain line before the person chooses.
 
-**The icon is still open.** The picture sent with that turn shows the second copy in an ordinary tab, its two dots beside the tab's title and the window grouped under Chrome's own icon on the taskbar, as any tab is. The shortcut's window with the second copy has not been looked at.
+**The icon: the browser's, by the owner's second look.** The picture sent with that turn shows the second copy in an ordinary tab, its two dots beside the tab's title and the window grouped under Chrome's own icon on the taskbar, as any tab is. Half an hour later ([Turn 6 of the day's record](../../2026-11-22.1.record.md#turn-6)) they made the shortcut again from the second copy: "I recreated the desktop icon and it kept the chrome icon. Icon was only shown inside the browser's tab itself. I was not asked or prompted for any additional file access." Root's reading: a page's own icon reaches a tab and nothing else; the shortcut on the desktop and, by the first run, the app window on the taskbar wear the browser's. Their sentence does not say which of the two they looked at this time, and root has not asked again. A shortcut made anew asks for nothing, since storage and a folder's permission belong to the browser's profile and not to the shortcut.
+
+**What it means.** A shortcut to the local file cannot carry the product's identity by the page's doing. What a Windows shortcut can carry is an icon it names itself, set by whoever writes the shortcut; the installed form, which would bring an icon everywhere, is the one the owner refused as the product's path on 2026-11-21, since it reaches out to a URL.
 
 ## A second copy of the page, for the two things left
 
 `probe.html` as committed after the run differs from the one the owner ran in two ways: it carries an icon of its own (two joined dots, blue and green), and its results begin "Local app probe 2". Two things, about two minutes:
 
 1. **The restart, with either copy.** Close every Chrome window (and Edge's, if trying Edge), open the page again from disk, and read section 2: whether the folder came back, and whether the browser asked.
-2. **The icon, with the second copy.** Make the shortcut again from the second copy and open it: does the taskbar show the two dots, or the browser's icon still?
+2. **The icon, with the second copy.** Make the shortcut again from the second copy and open it: does the taskbar show the two dots, or the browser's icon still? *Done, 2026-11-22: the browser's, as told above.*
 
 ## What automation tested here
 

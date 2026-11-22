@@ -34,10 +34,15 @@ interface ParsedArgs {
   board?: string;
   workspace?: string;
   configPath?: string;
+  /** Print each thing's files and each wire's file-level edges, each list cut at {@link LISTED}. */
+  files: boolean;
 }
 
+/** How many of a thing's files, or of a wire's edges, `--files` lists before it counts the rest. */
+export const LISTED = 20;
+
 function parseArgs(argv: string[]): ParsedArgs {
-  const parsed: ParsedArgs = { help: false };
+  const parsed: ParsedArgs = { help: false, files: false };
   for (let index = 0; index < argv.length; index += 1) {
     const current = argv[index];
     switch (current) {
@@ -47,6 +52,9 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       case "--workspace":
         parsed.workspace = optionValue(argv, ++index, current);
+        break;
+      case "--files":
+        parsed.files = true;
         break;
       case "--config":
         parsed.configPath = optionValue(argv, ++index, current);
@@ -76,12 +84,22 @@ function usage(): string {
     "                       holds a .live-docs.config.json; else the current directory).",
     "  --config <file>      The configuration (default: the workspace's .live-docs.config.json",
     "                       when it has one, else the shipped defaults).",
+    `  --files              Under each thing its files, and under each wire the file that uses and the file`,
+    `                       it uses, at most ${LISTED} of each with the number left out said.`,
     "  -h, --help           Print this help."
   ].join("\n");
 }
 
-/** The lines the report prints. */
-function renderBoardReport(boardPath: string, title: string, scans: string[], derived: BoardGraph, wanting: string[]): string[] {
+/** The lines the report prints; with `files`, each thing's files and each wire's edges, each list cut at {@link LISTED}. */
+export function renderBoardReport(boardPath: string, title: string, scans: string[], derived: BoardGraph, wanting: string[], files = false): string[] {
+  const listed = (lines: string[], items: string[]): void => {
+    for (const item of items.slice(0, LISTED)) {
+      lines.push(`      ${item}`);
+    }
+    if (items.length > LISTED) {
+      lines.push(`      … and ${items.length - LISTED} more, not listed`);
+    }
+  };
   const lines: string[] = [`${title} (${boardPath})`, ""];
   lines.push(`Scans (${scans.length}): ${scans.map((scan) => scan || "the workspace root").join(", ") || "none"}`, "");
   lines.push(`Things (${derived.things.length}):`);
@@ -99,6 +117,10 @@ function renderBoardReport(boardPath: string, title: string, scans: string[], de
     for (const ghost of entry.ghosts) {
       lines.push(`    ghost ${ghost.label} (${ghost.basis}) from ${ghost.files.join(", ")}`);
     }
+    if (files && entry.files.length) {
+      lines.push(`    files (${entry.files.length}):`);
+      listed(lines, [...entry.files].sort());
+    }
   }
   lines.push("", `Wires (${derived.wires.length}):`);
   for (const wire of derived.wires) {
@@ -106,6 +128,9 @@ function renderBoardReport(boardPath: string, title: string, scans: string[], de
     const over = wire.over ? `  over ${wire.over}` : "";
     const count = wire.edges > 1 ? `  x${wire.edges}` : "";
     lines.push(`  ${wire.from} -> ${wire.to}${door}${over}  [${wire.basis}]${count}`);
+    if (files && wire.lines.length) {
+      listed(lines, wire.lines.map((line) => `${line.from} uses ${line.to} (${line.label})`).sort());
+    }
   }
   const issues = [...wanting, ...derived.issues.map((issue) => issue.message)];
   if (issues.length) {
@@ -157,7 +182,7 @@ async function main(): Promise<void> {
 
   const reading = await readEstateGraph({ workspaceRoot, config, board, boardPath });
   const derived = deriveBoardGraph(board, reading.graph, boardPath);
-  console.log(renderBoardReport(boardPath, board.title, reading.scans, derived, reading.issues).join("\n"));
+  console.log(renderBoardReport(boardPath, board.title, reading.scans, derived, reading.issues, args.files).join("\n"));
 }
 
 if (require.main === module) {

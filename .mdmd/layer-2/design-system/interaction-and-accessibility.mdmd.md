@@ -172,7 +172,7 @@ These are stated so a builder does not mistake them for accidents. Each is in [t
 | Act | Meanings | Recorded as |
 | --- | --- | --- |
 | A click on a file | 2D: inspect. 3D: pin. | Two decisions, 2026-10-20 and 2026-11-02. |
-| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. |
+| The word "pin" | Local Maps: retain a file or symbol and its connections across exploration. World Map: keep one thing's panel open. | No decision names the clash. The Way Down trial (2026-11-22, off by default) joins the two for the length of a way down: what is pinned on the board opens as the Local Map's pins, a thing as the files that carry its calls and a wire as the files at its ends, and stays pinned on the board for the way back ([the Explorer design](../../layer-3/live-documentation-explorer.mdmd.md#independent-exploration)). |
 | The wheel | Local Maps: zoom. World Map: zoom, and past half the view, change view. | The World Map's journey into the Local Map is the open ticket T8 of [the World Map plan](../../layer-3/world-map.mdmd.md). |
 | Enter on a focused card body | 2D: opens the reader (`views/localView/card-factory.ts:278-282`), where a click on the same body does nothing (`:276`). The card is reachable only by script focus (`tabIndex = -1`, `:100`). | Not recorded. |
 
@@ -414,10 +414,10 @@ How each was judged: **code** means read from the source here, which can show a 
 | 1.2.1–1.2.5 Media | A/AA | Not applicable | No audio or video. |
 | 1.3.1 Info and Relationships | A | Meets (code, tested) | Lists, headings, combobox and dialog roles hold (code); `main` and the views' `nav` stand since 2026-11-19 (5.1; `tests/e2e/shell-accessibility.spec.ts`). |
 | 1.3.2 Meaningful Sequence | A | Meets (code) | DOM order is reading order. |
-| 1.3.3 Sensory Characteristics | A | Partly | The legend explains wires by colour and side (left, right); the World Map's help says "blue offers, green uses" (code). Not tested. |
+| 1.3.3 Sensory Characteristics | A | Partly | The legend explains wires by colour and side (left, right), and since 2026-11-22 names the sides of the picture shown: a mirrored picture's key is drawn mirrored and its words exchange left and right; the World Map's help says "blue offers, green uses" (code). Not tested. |
 | 1.3.4 Orientation | AA | Meets (code) | Nothing locks orientation; `tests/e2e/inspection.spec.ts:295` opens the reader at 390×844 and 844×390. |
 | 1.3.5 Identify Input Purpose | AA | Not applicable | No field asks for personal data. |
-| 1.4.1 Use of Color | A | Partly | In 2D what offers and what uses differ by side as well as colour (holds). On the World Map a wire's direction is told by its colour gradient and by the flow's motion along it, with no arrowhead ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 19); under reduced motion the flow stops (`styles/world.css:153`) and colour alone is left; the hover's words say it. Owned with [Visual Foundations](visual-foundations.mdmd.md). |
+| 1.4.1 Use of Color | A | Partly | In 2D what offers and what uses differ by side as well as colour (holds); the side is the picture's own, which the toolbar's mirror button exchanges (2026-11-22), and the key says which side is which in the picture shown. On the World Map a wire's direction is told by its colour gradient and by the flow's motion along it, with no arrowhead ([first visit](../../../AI-Agent-Workspace/AgentSessionHistory/2026/11/2026-11-12/Screenshots/first-visit/README.md), finding 19); under reduced motion the flow stops (`styles/world.css:153`) and colour alone is left; the hover's words say it. Owned with [Visual Foundations](visual-foundations.mdmd.md). |
 | 1.4.2 Audio Control | A | Not applicable | |
 | 1.4.3 Contrast (Minimum) | AA | **Fails** at one place (code), partly tested | `tests/e2e/contrast.ts` measures text against what lies behind it at 4.5:1 in `backward-cue`, `labels-and-controls`, `local-map-path`, `local-map-tone` and `search-bar` specs. Since 2026-11-19 `shell-accessibility` measures the sidebar's section labels and the search's placeholder, hint and "Nothing found" (5.27 to 5.43), which had been in the disabled grey at 2.30 to 2.90, and Today's quiet text tones pass on a card (`palette.test.ts`). The code still shows one failure in every palette: the action button's white on `#0091ff` at 3.23 ([Visual Foundations](visual-foundations.mdmd.md#text-tones)). An outsider read 3.3:1 on a card's directory line on 2026-11-12. |
 | 1.4.4 Resize Text | AA | Not tested | Text at 200% zoom has not been tried. |
@@ -455,7 +455,7 @@ How each was judged: **code** means read from the source here, which can show a 
 | 3.2.6 Consistent Help | A | Partly | Help exists in the World Map only (`?`). |
 | 3.3.1 Error Identification | A | Meets (code) | The path report says what failed; a refusal says why. |
 | 3.3.2 Labels or Instructions | A | Meets (code) | Fields have names and placeholders. |
-| 3.3.3 Error Suggestion | AA | Partly | A failed path offers the reverse question; an empty search suggests nothing. |
+| 3.3.3 Error Suggestion | AA | Partly | A path is answered whichever way it runs (since 2026-11-22; until then one asked against the drawing failed and offered the reverse question), so the only failed path is one that runs neither way, which says so; an empty search suggests nothing. |
 | 3.3.4 Error Prevention (Legal, Financial, Data) | AA | Not applicable | |
 | 3.3.7 Redundant Entry | A | Meets (code) | |
 | 3.3.8 Accessible Authentication (Minimum) | AA | Not applicable | |

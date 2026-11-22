@@ -1,6 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
 
-import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
@@ -9,8 +8,12 @@ import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSett
 /**
  * The Local Map's path mode draws a path only in the map's reading direction:
  * what offers stands left of what uses it, every wire leaves a blue pin and
- * enters a green one. Asked the other way round it draws nothing and offers
- * the reverse question as a link (the owner's rule of 2025-12-18). A path is
+ * enters a green one (the owner's rule of 2025-12-18, which still governs the
+ * drawing). Until 2026-11-22 a path asked the other way round drew nothing and
+ * offered the reverse question as a link; since the owner's word of that day
+ * it is answered whichever way it runs, drawn the same and told as asked: the
+ * bar keeps the two ends as given and the report names the files from the end
+ * asked from, saying of each that it uses the next. A path is
  * asked through the search bar (2026-10-14): the newest pin is where it starts,
  * the destination field, shown once anything is pinned, is where it ends, and
  * clearing the destination returns to the exploration.
@@ -24,6 +27,8 @@ const DEPENDENT = "Portal/Services/GatewayClient.cs";
 const DEPENDENCY = "Contracts/IPaymentHub.cs";
 const FRAME = { width: 1600, height: 1000 };
 const ROUTE = ["IPaymentHub.cs", "HubProxy.cs", "PaymentsController.cs", "GatewayClient.cs"];
+/** The same route told from the file that depends, as it is when asked from that end: each file uses the next. */
+const TOLD = [...ROUTE].reverse();
 
 test.use({ viewport: FRAME });
 
@@ -90,48 +95,44 @@ for (const perspective of ["2d", "3d"] as const) {
     await page.goto(pathAddress(BASE, DEPENDENT, { kind: "file", nodeId: DEPENDENCY }, DEPENDENT, { perspective }));
     const surface = perspective === "2d" ? "#view-map" : "#view-graph";
     await expect(page.locator(surface)).toHaveClass(/active/u);
-    await expect(page.locator("#pathfind-status")).toContainText("IPaymentHub.cs reaches GatewayClient.cs through 4 files");
+    // Asked from the file that depends: answered at once, in both representations, and told from that file. Until
+    // 2026-11-22 this address was refused ("IPaymentHub.cs reaches GatewayClient.cs through 4 files") with the reverse
+    // question as a link, the second Tab stop of the report, which pinned the other end and exchanged the two.
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
     await readablePathStatus(page);
-    await expect(page.locator("#pathfind-path")).toBeHidden();
+    await expect(page.locator("#pathfind-status a")).toHaveCount(0);
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(TOLD);
+    const question = currentSnapshot(page);
+    expect(question.pinSet.entries, "nothing is pinned to answer").toEqual([{ nodeId: DEPENDENT, symbol: "*" }]);
+    expect(question.destination, "the two ends stay as given").toEqual({ kind: "file", nodeId: DEPENDENCY });
 
     // These are actual Tab stops in the visible report, outside either inactive surface.
     await page.locator("#search-destination").focus();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Clear the path", exact: true })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("link", { name: "show IPaymentHub.cs to GatewayClient.cs", exact: true })).toBeFocused();
-    await page.keyboard.press("Enter");
-    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
-    await readablePathStatus(page);
-    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(ROUTE);
-    const question = currentSnapshot(page);
-    expect(question.pinSet.entries).toEqual([
-      { nodeId: DEPENDENT, symbol: "*" }, { nodeId: DEPENDENCY, symbol: "*" }
-    ]);
-    expect(question.destination).toEqual({ kind: "file", nodeId: DEPENDENT });
-
-    await page.locator("#search-destination").focus();
-    for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
-    const hop = page.getByRole("button", { name: "Inspect path file 2 of 4: Gateway/Wcf/HubProxy.cs", exact: true });
+    await expect(page.getByRole("button", { name: `Inspect path file 1 of 4: ${DEPENDENT}`, exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    const hop = page.getByRole("button", { name: "Inspect path file 2 of 4: Gateway/Controllers/PaymentsController.cs", exact: true });
     await expect(hop).toBeFocused();
     await expect(hop).toBeInViewport({ ratio: 1 });
     await page.keyboard.press("Enter");
-    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Wcf/HubProxy.cs");
+    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Controllers/PaymentsController.cs");
     expect(currentSnapshot(page)).toMatchObject({
       selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination,
-      inspection: { kind: "file", nodeId: "Gateway/Wcf/HubProxy.cs" }
+      inspection: { kind: "file", nodeId: "Gateway/Controllers/PaymentsController.cs" }
     });
 
     const other = perspective === "2d" ? "3D" : "2D";
     await page.getByRole("button", { name: other, exact: true }).click();
     await expect(page.getByRole("button", { name: other, exact: true })).toBeEnabled();
     await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
-    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(ROUTE);
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(TOLD);
     expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination });
     await page.reload();
     await expect(page.locator(other === "3D" ? "#view-graph" : "#view-map")).toHaveClass(/active/u);
     await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
-    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Wcf/HubProxy.cs");
+    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Controllers/PaymentsController.cs");
     expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination });
     await page.keyboard.press("Escape");
     await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
@@ -213,7 +214,9 @@ for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BAS
 }
 
 test.describe("Local Map path mode", () => {
-  test("asked with the dependent first, it draws nothing and offers the reverse; the reverse pins the destination and draws blue to green; clearing returns to the exploration", async ({ page }) => {
+  // Until 2026-11-22: "asked with the dependent first, it draws nothing and offers the reverse; the reverse pins the
+  // destination and draws blue to green". The drawing's assertions are those it made after taking the offer.
+  test("asked with the dependent first, it is answered at once: drawn blue to green, told from the dependent; clearing returns to the exploration", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
     const subject = `#map-container .node-card[data-id="${DEPENDENT}"]`;
     await expect(page.locator("#search-destination-field")).toBeHidden();
@@ -229,37 +232,32 @@ test.describe("Local Map path mode", () => {
     expect(wiresBefore).toBeGreaterThan(0);
 
     await choose(page, "destination", "IPaymentHub", { file: DEPENDENCY });
-    await page.waitForSelector("#pathfind-status a");
-    await page.waitForTimeout(200);
-
-    // Nothing drawn, the reverse offered as a link whose address pins the destination and asks the way back
-    await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
-    const status = page.locator("#pathfind-status");
-    await expect(status).toContainText("No path runs from GatewayClient.cs to IPaymentHub.cs");
-    await expect(status).toContainText("IPaymentHub.cs reaches GatewayClient.cs through 4 files");
-    const href = await page.locator("#pathfind-status a").getAttribute("href");
-    const offered = decompressSnapshot(new URL(href!, page.url()).searchParams.get("s")!);
-    expect(offered.destination).toEqual({ kind: "file", nodeId: DEPENDENT });
-    expect(newestKey(offered)).toBe(retainedKey({ kind: "pin", pin: { nodeId: DEPENDENCY, symbol: "*" } }));
-    expect(currentSnapshot(page).destination, "the question asked rides the address").toEqual({ kind: "file", nodeId: DEPENDENCY });
-    expect(centerDistance(start, await boxOf(page, subject)), "the offer leaves the picture as it was").toBeLessThanOrEqual(1);
-
-    // Taking the offer pins the destination, newest, and draws from it
-    await page.click("#pathfind-status a");
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
-    await page.waitForTimeout(800);
-    expect(currentSnapshot(page).destination).toEqual({ kind: "file", nodeId: DEPENDENT });
-    expect(newestKey(currentSnapshot(page))).toBe(retainedKey({ kind: "pin", pin: { nodeId: DEPENDENCY, symbol: "*" } }));
-    await expect(page.locator("#search-subject")).toHaveValue("IPaymentHub.cs");
-    await expect(page.locator("#search-destination")).toHaveValue("GatewayClient.cs");
-    await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+    await localMapSettled(page);
+    await page.waitForTimeout(400);
+
+    // Answered: no refusal, no link, nothing pinned to answer, and the two ends as the person gave them
+    const status = page.locator("#pathfind-status");
     await expect(status).toHaveText("Path found: 4 files");
+    await expect(page.locator("#pathfind-status a")).toHaveCount(0);
+    expect(currentSnapshot(page).destination, "the question asked rides the address").toEqual({ kind: "file", nodeId: DEPENDENCY });
+    expect(newestKey(currentSnapshot(page))).toBe(retainedKey({ kind: "pin", pin: { nodeId: DEPENDENT, symbol: "*" } }));
+    await expect(page.locator("#search-subject")).toHaveValue("GatewayClient.cs");
+    await expect(page.locator("#search-destination")).toHaveValue("IPaymentHub.cs");
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+    // Drawn as the map reads, what offers first; told as asked, each file using the next
     expect(await pathFiles(page)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
     await expect(page.locator(".path-mode.local-placed")).toBeVisible();
     expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
     const strip = await page.locator("#pathfind-path .pathfind-path-hop-name").allTextContents();
-    expect(strip).toEqual(["IPaymentHub.cs", "HubProxy.cs", "PaymentsController.cs", "GatewayClient.cs"]);
+    expect(strip).toEqual(TOLD);
+    expect(await page.locator("#pathfind-path .pathfind-path-relation").allTextContents()).toEqual(["uses", "uses", "uses"]);
+    // The file asked from is in the frame, though it stands at the drawing's right end
+    const asked = await boxOf(page, subject);
+    expect(asked).not.toBeNull();
+    expect(asked!.x).toBeGreaterThanOrEqual(260);
+    expect(asked!.x + asked!.width).toBeLessThanOrEqual(FRAME.width);
 
     // Every wire leaves a blue (offers) pin and enters a green (uses) pin, left to right
     const ends = await wireEnds(page);
@@ -276,24 +274,66 @@ test.describe("Local Map path mode", () => {
     expect(flow.backward).toBe(0);
     expect(flow.flowing).toBe(flow.drawn);
 
-    // The path's first file is in the frame, at reading size
-    const first = await boxOf(page, `#map-container .local-column[data-path-index="0"] .node-card, #map-container .path-origin .node-card`);
-    expect(first).not.toBeNull();
-    expect(first!.x).toBeGreaterThanOrEqual(260);
-    expect(first!.x + first!.width).toBeLessThanOrEqual(FRAME.width);
-
-    // Clearing the destination returns to the exploration, both pins kept, the question gone from the address
+    // Clearing the destination returns to the exploration as it was: the one pin kept, the question gone from the
+    // address, the subject where it stood (until 2026-11-22 the reverse question had pinned the other end and made
+    // it the subject, so two pins and the other file were asserted here)
     await page.click("#search-destination-clear");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
     await expect(status).toBeHidden();
     expect(currentSnapshot(page).destination).toBeNull();
-    await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
     await expect(page.locator("#search-destination")).toHaveValue("");
     await expect(page.locator(subject)).toBeVisible();
-    await expect(page.locator(`#map-container .node-card[data-id="${DEPENDENCY}"]`)).toBeVisible();
-    expect(currentSnapshot(page).selectedNodeId, "the file chosen by the reverse question is the subject now").toBe(DEPENDENCY);
+    expect(currentSnapshot(page).selectedNodeId, "the subject is still the file asked from").toBe(DEPENDENT);
+    expect(centerDistance(start, await boxOf(page, subject)), "clearing returns the picture to where it stood").toBeLessThanOrEqual(1);
+  });
+
+  // The owner's own telling runs page first: "the consumer payment portal talks to its API, to the WCF router …, to the
+  // databases". Until 2026-11-22 this question was refused, since the page uses and the table offers.
+  test("asked page first, the estate's route from Default.aspx to dbo.Payment.sql is answered: drawn as the map reads, told as asked", async ({ page }) => {
+    const PAGE = "Portal/Pages/Default.aspx";
+    const TABLE = "Database/SqlServer/dbo.Payment.sql";
+    await page.goto(pathAddress(BASE, PAGE, { kind: "file", nodeId: TABLE }));
+    await expect(page.locator("#view-map")).toHaveClass(/has-path/u);
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
+    await localMapSettled(page);
+
+    // Answered, with no refusal and no link to another question.
+    const status = page.locator("#pathfind-status");
+    await expect(status).toHaveText(/^Path found: 12 files/u);
+    await expect(status).not.toContainText("No path");
+    await expect(page.locator("#pathfind-status a")).toHaveCount(0);
+
+    // The telling follows the asking: the bar keeps the two ends as given, and the report names the files from the
+    // end asked from to the end asked for, saying of each that it uses the next.
+    await expect(page.locator("#search-subject")).toHaveValue("Default.aspx");
+    await expect(page.locator("#search-destination")).toHaveValue("dbo.Payment.sql");
+    const told = await page.locator("#pathfind-path .pathfind-path-hop").evaluateAll(hops => hops.map(hop => hop.getAttribute("title")!));
+    expect(told).toHaveLength(12);
+    expect(told[0]).toBe(PAGE);
+    expect(told.at(-1)).toBe(TABLE);
+    expect(await page.locator("#pathfind-path .pathfind-path-relation").allTextContents()).toEqual(Array.from({ length: 11 }, () => "uses"));
+    await expect(page.locator("#pathfind-path")).toHaveAttribute("aria-label", "Path files, each uses the next");
+
+    // The drawing does not change: what offers stands before what uses it, the table at the left and the page at the
+    // right, every wire leaving an offering pin and entering a using pin, left to right, none reaching backwards.
+    const drawn = await pathFiles(page);
+    expect(drawn).toEqual([...told].reverse());
+    const ends = await wireEnds(page);
+    expect(ends.length).toBeGreaterThanOrEqual(11);
+    for (const wire of ends) {
+      expect(wire.startPin, "a wire leaves an offering pin").toMatch(/symbol-anchor.*outbound/);
+      expect(wire.endPin, "a wire enters a using pin").toMatch(/symbol-anchor.*inbound/);
+      expect(wire.endX, "a wire runs left to right").toBeGreaterThan(wire.startX + 24);
+    }
+
+    // The address is the question as asked, and nothing was pinned to answer it.
+    const asked = currentSnapshot(page);
+    expect(asked.pinSet.entries).toEqual([{ nodeId: PAGE, symbol: "*" }]);
+    expect(asked.destination).toEqual({ kind: "file", nodeId: TABLE });
+    expect(asked.selectedNodeId).toBe(PAGE);
   });
 
   test("asked in the map's direction, it draws at once, and a path from the address draws the same", async ({ page }) => {
@@ -305,6 +345,11 @@ test.describe("Local Map path mode", () => {
     await page.waitForTimeout(800);
     await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
     expect(await page.locator("#pathfind-status a").count()).toBe(0);
+    // Asked as the map draws, the telling is the drawing's own order, and each file is used by the next: said in
+    // words between the names (until 2026-11-22 a bare arrow stood there, which this case did not read).
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(ROUTE);
+    expect(await page.locator("#pathfind-path .pathfind-path-relation").allTextContents()).toEqual(["is used by", "is used by", "is used by"]);
+    await expect(page.locator("#pathfind-path")).toHaveAttribute("aria-label", "Path files, each is used by the next");
     const drawn = await wireEnds(page);
     expect(drawn.length).toBeGreaterThanOrEqual(3);
 
@@ -320,40 +365,42 @@ test.describe("Local Map path mode", () => {
     await expect(page.locator("#search-destination")).toHaveValue("GatewayClient.cs");
   });
 
-  test("a direct dependency asked the wrong way round is offered, two files that do not connect get no path either way, and a directory is an end of a path too", async ({ page }) => {
+  // Until 2026-11-22: "a direct dependency asked the wrong way round is offered, …": each of the two answers was the
+  // refusal's words with the reverse as a link, and taking the directory's link opened Contracts as the newest pin.
+  test("a direct dependency asked from the file that depends is answered, two files that do not connect get no path either way, and a directory is an end of a path too", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
     await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
     await choose(page, "destination", "PaymentRequestModel", { file: "Portal/Models/PaymentRequestModel.cs" });
-    await page.waitForSelector("#pathfind-status:not([hidden])");
-    // GatewayClient.cs depends on PaymentRequestModel.cs, so the drawable direction is the reverse: offered
-    await expect(page.locator("#pathfind-status")).toContainText("PaymentRequestModel.cs reaches GatewayClient.cs through 2 files");
+    await page.waitForSelector("#view-map.has-path");
+    // GatewayClient.cs depends on PaymentRequestModel.cs: drawn with the model first, told from the client
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 2 files");
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(["GatewayClient.cs", "PaymentRequestModel.cs"]);
     await choose(page, "destination", "Default.aspx.cs", { file: "Portal/Pages/Default.aspx.cs" });
     await page.waitForSelector("#pathfind-status.error");
     await expect(page.locator("#pathfind-status")).toContainText("No path either way");
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
 
-    // A directory as the end stands for any file inside it: GatewayClient.cs depends on files of Contracts, so the drawable
-    // direction is the reverse, and the nearest file of the directory answers, closer than IPaymentHub.cs alone (4 files)
+    // A directory as the end stands for any file inside it: GatewayClient.cs depends on files of Contracts, and the
+    // nearest file of the directory answers, closer than IPaymentHub.cs alone (4 files)
     await choose(page, "destination", "Contracts", { directory: "Contracts" });
-    await page.waitForSelector("#pathfind-status a");
-    await expect(page.locator("#pathfind-status")).toContainText("No path runs from GatewayClient.cs to Contracts. Contracts reaches GatewayClient.cs through");
-    const offered = (await page.locator("#pathfind-status").textContent())!.match(/through (\d+) files/)!;
-    const hops = Number(offered[1]);
-    expect(hops, "the nearest file of the directory is nearer than IPaymentHub.cs").toBeLessThan(4);
-    expect(currentSnapshot(page).destination).toEqual({ kind: "directory", directory: "Contracts" });
-    await page.click("#pathfind-status a");
     await page.waitForSelector("#view-map.has-path");
     await page.waitForTimeout(800);
-    await expect(page.locator("#pathfind-status")).toHaveText(`Path found: ${hops} files`);
+    await expect(page.locator("#pathfind-status a")).toHaveCount(0);
+    const found = (await page.locator("#pathfind-status").textContent())!.match(/^Path found: (\d+) files$/u)!;
+    const hops = Number(found[1]);
+    expect(hops, "the nearest file of the directory is nearer than IPaymentHub.cs").toBeLessThan(4);
+    expect(currentSnapshot(page).destination).toEqual({ kind: "directory", directory: "Contracts" });
     const drawn = await pathFiles(page);
     expect(drawn).toHaveLength(hops);
-    expect(drawn[0].startsWith("Contracts/"), "the path leaves from a file of the directory").toBe(true);
+    expect(drawn[0].startsWith("Contracts/"), "the drawing leaves from a file of the directory, which offers").toBe(true);
     expect(drawn.at(-1)).toBe(DEPENDENT);
-    expect(currentSnapshot(page).openDirectories.has("Contracts"), "the reverse question opened the directory as the newest pin").toBe(true);
-    await expect(page.locator("#search-subject")).toHaveValue("Contracts");
+    expect(currentSnapshot(page).openDirectories.has("Contracts"), "nothing is opened or pinned to answer").toBe(false);
+    await expect(page.locator("#search-subject")).toHaveValue("GatewayClient.cs");
+    await expect(page.locator("#search-destination")).toHaveValue("Contracts");
   });
 
-  test("the destination field offers only what a path from the newest pin reaches, says how far and which way, and folds the rest", async ({ page }) => {
+  // Until 2026-11-22 a row a path reached only against the drawing said "N files, the other way", the refusal foretold.
+  test("the destination field offers only what a path from the newest pin reaches, says how far, and folds the rest", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
     await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
     const field = page.locator("#search-destination");
@@ -372,27 +419,27 @@ test.describe("Local Map path mode", () => {
       }));
     };
 
-    // Both controllers connect: the Portal's depends on GatewayClient.cs and would draw, the Gateway's is behind it
+    // Both controllers connect: the Portal's depends on GatewayClient.cs, and GatewayClient.cs on the Gateway's
     const controllers = await offered("PaymentsController");
     expect(controllers.rows).toEqual([
-      ["Gateway/Controllers/PaymentsController.cs", "2 files, the other way"],
+      ["Gateway/Controllers/PaymentsController.cs", "2 files"],
       ["Portal/Controllers/PaymentsController.cs", "2 files"]
     ]);
     expect(controllers.fold).toBeNull();
-    expect((await offered("IPaymentHub")).rows).toEqual([[DEPENDENCY, "4 files, the other way"]]);
+    expect((await offered("IPaymentHub")).rows).toEqual([[DEPENDENCY, "4 files"]]);
 
-    // A directory offered by name says what its nearest file says: Contracts answers in three files, the other way
+    // A directory offered by name says what its nearest file says: Contracts answers in three files
     await page.keyboard.press("Escape");
     await page.click("#search-destination");
     await page.keyboard.type("Contracts");
-    await expect(results.locator('.search-row--directory:has(.search-row-name:text-is("Contracts")) .search-row-badge')).toHaveText("3 files, the other way");
+    await expect(results.locator('.search-row--directory:has(.search-row-name:text-is("Contracts")) .search-row-badge')).toHaveText("3 files");
 
     // The project file matches "Payment" by name but no path joins it to the pin (it is of the group Estate.sln and the
     // projects it names make, read since 2026-11-21), as with files matched by a symbol alone, the pin's own file among
     // them: folded under a count, and under the fold once opened, each marked
     const payment = await offered("Payment");
     expect(payment.rows.length).toBeGreaterThan(2);
-    for (const [, words] of payment.rows) expect(words).toMatch(/^\d+ files(, the other way)?$/u);
+    for (const [, words] of payment.rows) expect(words).toMatch(/^\d+ files$/u);
     expect(payment.rows.map(([file]) => file)).not.toContain("PaymentService/PaymentService.csproj");
     expect(payment.fold).toMatch(/^\d+ more files match, but no path connects them$/u);
     await expect(results.locator(".search-row.is-apart")).toHaveCount(0);

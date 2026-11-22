@@ -346,6 +346,17 @@ describe("csharp.xmldoc unit tests", () => {
       expect(normalizeXmlText("<unknown>text</unknown>")).toBe("text");
     });
 
+    it("keeps a generic reference's type parameters, so that it does not read as its plain namesake", () => {
+      expect(normalizeXmlText('a <see cref="Lib.Helper{T}"/> beside <see cref="Lib.Helper"/>')).toBe("a `Lib.Helper<T>` beside `Lib.Helper`");
+      expect(normalizeXmlText('<see cref="Map{TKey, TValue}"/>')).toBe("`Map<TKey, TValue>`");
+      expect(normalizeXmlText('<see cref="List&lt;T&gt;"/>')).toBe("`List<T>`");
+    });
+
+    it("keeps a seealso written inside the text, as a see is kept", () => {
+      expect(normalizeXmlText('one, <see cref="A"/>, and the other, <seealso cref="B"/>; done')).toBe("one, `A`, and the other, `B`; done");
+      expect(normalizeXmlText('<seealso cref="B">the other</seealso>')).toBe("the other");
+    });
+
     it("collapses multiple newlines", () => {
       expect(normalizeXmlText("a\n\n\n\nb")).toBe("a\n\nb");
     });
