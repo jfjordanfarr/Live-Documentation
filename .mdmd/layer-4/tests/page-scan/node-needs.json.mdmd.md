@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/page-scan/node-needs.json`
-- Generated At: 2026-11-21T04:17:33.557Z
+- Generated At: 2026-11-22T01:22:10.824Z
 
 ## Authored
 ### Purpose
@@ -314,9 +314,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 #### `engine:packages/engine/src/tooling/pathUtils.ts:node:path` {#symbol-enginepackagesenginesrctoolingpathutilstsnodepath}
 - Type: key
 
-#### `engine:packages/engine/src/tooling/pathUtils.ts:node:url` {#symbol-enginepackagesenginesrctoolingpathutilstsnodeurl}
-- Type: key
-
 #### `engine:packages/engine/src/tooling/sourceText.ts` {#symbol-enginepackagesenginesrctoolingsourcetextts}
 - Type: key
 
@@ -357,9 +354,6 @@ The committed list of what of Node the scanning page's bundle needs: by engine a
 - Type: key
 
 #### `standIns:node:process` {#symbol-standinsnodeprocess}
-- Type: key
-
-#### `standIns:node:url` {#symbol-standinsnodeurl}
 - Type: key
 
 #### `hostedByNode` {#symbol-hostedbynode}

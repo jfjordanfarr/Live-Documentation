@@ -360,14 +360,9 @@
     },
     "packages/engine/src/tooling/pathUtils.ts": {
       "node:path": [
-        "isAbsolute",
         "relative",
         "resolve",
         "sep"
-      ],
-      "node:url": [
-        "fileURLToPath",
-        "pathToFileURL"
       ]
     },
     "packages/engine/src/tooling/sourceText.ts": {
@@ -452,10 +447,6 @@
     "node:process": [
       "env",
       "nextTick"
-    ],
-    "node:url": [
-      "fileURLToPath",
-      "pathToFileURL"
     ]
   },
   "hostedByNode": {},

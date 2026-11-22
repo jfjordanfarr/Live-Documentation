@@ -24,11 +24,7 @@ import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/
 import { markProcess } from "@live-documentation/engine/live-docs/processMark";
 import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import { gitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
-import {
-  normalizeWorkspacePath,
-  toWorkspaceFileUri,
-  toWorkspaceRelativePath
-} from "@live-documentation/engine/tooling/pathUtils";
+import { normalizeWorkspacePath, toWorkspaceRelativePath } from "@live-documentation/engine/tooling/pathUtils";
 import { decodeSourceText, throwIfMachineFailure, type SourceTextReading } from "@live-documentation/engine/tooling/sourceText";
 
 interface GenerateLiveDocsOptions {
@@ -215,10 +211,7 @@ export async function generateLiveDocs(
   const docExtension = normalizedConfig.extension;
 
   for (const absoluteSourcePath of targetFiles) {
-    const relativeSourcePath = toWorkspaceRelativePath(
-      toWorkspaceFileUri(workspaceRoot, absoluteSourcePath),
-      workspaceRoot
-    );
+    const relativeSourcePath = toWorkspaceRelativePath(absoluteSourcePath, workspaceRoot);
 
     if (!relativeSourcePath) {
       logger.warn(`Skipping ${absoluteSourcePath} (outside workspace)`);

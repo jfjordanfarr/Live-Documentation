@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: `packages/generator/src/generator.ts`
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-11-21T20:21:45.517Z
+- Generated At: 2026-11-22T01:22:05.678Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L62)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L58)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -44,14 +44,14 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `SourceReadings` {#symbol-sourcereadings}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L83)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L79)
 
 ##### `SourceReadings` — Summary
 The files the one reading step read as UTF-16 or as Windows-1252, and those it did not read as text, by source path.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L124)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L120)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -122,7 +122,6 @@ behind the `Entry` lines (2026-10-15).
 - [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`gitIgnored`](../../engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 - [`sourceText.SourceTextReading`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-sourcetextreading)
 - [`sourceText.decodeSourceText`](../../engine/src/tooling/sourceText.ts.mdmd.md#symbol-decodesourcetext)
