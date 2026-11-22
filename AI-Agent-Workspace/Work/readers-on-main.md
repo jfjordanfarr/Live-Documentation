@@ -4,6 +4,8 @@ state: active
 milestone: december-showing
 order: 10
 opened: 2026-11-20
+value: The map does not lie
+also: It meets you where you are
 ---
 # Their kinds of code read truthfully: the readers on `main`
 

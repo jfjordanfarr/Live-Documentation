@@ -4,6 +4,8 @@ state: open
 milestone: december-showing
 order: 40
 opened: 2026-11-20
+value: The map does not lie
+also: It meets you where you are
 ---
 # Proven on real repositories, on Linux and on Windows
 

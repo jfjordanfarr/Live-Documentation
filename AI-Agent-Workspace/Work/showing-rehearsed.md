@@ -4,6 +4,7 @@ state: waiting
 milestone: december-showing
 order: 70
 opened: 2026-11-20
+value: none            # a date, crossing all five
 ---
 # The showing rehearsed, at home and then at work
 

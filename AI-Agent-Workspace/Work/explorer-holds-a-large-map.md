@@ -4,6 +4,8 @@ state: active
 milestone: december-showing
 order: 60
 opened: 2026-11-20
+value: It meets you where you are
+also: A person can see it
 ---
 # The Explorer holds up on a weak machine
 

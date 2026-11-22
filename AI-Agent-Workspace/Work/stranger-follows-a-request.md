@@ -4,6 +4,7 @@ state: active
 milestone: december-showing
 order: 15
 opened: 2026-11-21
+value: A person can see it
 ---
 # A stranger follows a request from the World Map down to its files
 
