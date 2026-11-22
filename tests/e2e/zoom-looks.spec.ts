@@ -21,7 +21,10 @@ const estate = (zoomLooks?: "stepped" | "three"): string => `/samples/estate/?s=
   pinSet: { entries: [{ nodeId: payment, symbol: "*" }] },
   // The probe links' reading choices (2026-11-10): the file's Purpose folded, PaymentService's description kept open.
   reading: [{ nodeId: payment, open: false }, { nodeId: payment, symbol: "PaymentService", open: true }],
-  ...(zoomLooks ? { layout: { localMap: { zoomLooks } } } : {})
+  // A link that carries a setting resets every lever it does not name, the arrival among them, over what the browser
+  // stored. The three looks are the default and are not carried; the ladder is, so its link says that the case begins
+  // at reading size, as the stored state says it for the others (2026-11-22).
+  ...(zoomLooks ? { layout: { localMap: zoomLooks === "stepped" ? { zoomLooks, arrival: "reading" as const } : { zoomLooks } } } : {})
 })}`;
 
 /** The smallest size on screen, in pixels at 1440×960 and DPR 1, of any text or control a slot card draws past reading. */

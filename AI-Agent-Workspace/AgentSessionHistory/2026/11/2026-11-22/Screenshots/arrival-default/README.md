@@ -182,7 +182,7 @@ Every name was drawn whole, 9 to 30 px clear of More, and nothing clipped it (th
 
 The case, `zoom-looks.spec.ts`, "in the connections look every row's name stands inside its own button…", failed on the build before the mend with exactly these six (12.9, 10.2, 2.6, 4.6, 7 and 15.5 px past their buttons at press 3) and passes after it; the audit's count of cut names on that picture is then 0.
 
-**What the mend turned red, not resolved.** `zoom-looks.spec.ts`, "what the connections look shows does not depend on the platform font's line", fails after it on one name: under Segoe UI's line metrics, `formatDocumentationLinkComment` in `documentationLinks.ts` is cut on one line "with 15.4 px below it, a line being 14.0 px". With the narrower room that name now needs a second line, which this machine's lines give it and Segoe UI's do not, the card reading's budget of lines falling one short there. The case counts a line as the name's font size at the scale drawn (14.0 px); the line the look draws is its line height, 12.65 at that scale, 16.1 px, more than the 15.4 px free. So by the line as drawn the row does not hold another, and by the case's measure it does. I changed neither: which measure of a line is the standard is the same question as the still picture's, and it is the root's.
+**What the mend turned red, not resolved.** `zoom-looks.spec.ts`, "what the connections look shows does not depend on the platform font's line", fails after it on one name: under Segoe UI's line metrics, `formatDocumentationLinkComment` in `documentationLinks.ts` is cut "with 15.4 px below it, a line being 14.0 px". (Corrected the same day, from the sixth milestone's measure below: the next sentence, as first written, said the name "now needs a second line, which this machine's lines give it and Segoe UI's do not". That was a guess and it was wrong. The name is on two lines and wants a third under both fonts' lines, and its line is the same under both.) The case counts a line as the name's font size at the scale drawn (14.0 px); the line the look draws is its line height, 12.65 at that scale, 16.1 px, more than the 15.4 px free. So by the line as drawn the row does not hold another, and by the case's measure it does. I changed neither: which measure of a line is the standard is the same question as the still picture's, and it is the root's.
 
 **Two more of `zoom-looks.spec.ts` red on that run, neither mended.** "stepped, chosen by a link, still reports the card ladder's bands and steps at every press" waits two minutes on a Zoom Out that is disabled; "a change of look moves the held parts where motion is welcome…" counts no moving part at one of its four changes of look. Both open the estate by a link that carries a Local Map setting (`zoomLooks`). A link that carries any such setting says the whole of Tuning, each lever it does not name at its default, so it puts the arrival back to Reading, Then Neighbours, Look After over the reading size these cases stored: the page pulls back to the floor and the first has no ten presses outward left. That is the cause of the first by its own evidence (the disabled button) and a likely cause of the second, not shown. The mend belongs in the cases, the link carrying `arrival: "reading"` beside its other setting, and is not made here because no hold was left to see it pass. The other specs that open such links (`descriptions-zoomed-out`, `local-map-directories`, `return-cost`, `tuning-reset`) were not looked at for the same thing.
 
@@ -204,6 +204,34 @@ The case, `zoom-looks.spec.ts`, "in the connections look every row's name stands
 | 30 | `words.ts` | 1,391 by 2,480 | 0.283 | yes |
 
 The subject is said left out exactly where the box does not fit at the floor, in all ten. The cases pressed "the first cell", which was far enough when they were written and is now `bundled.test.ts`, a small card that lands near enough to be framed beside `pathfind.ts`. They now find their far cell by measure (`farCellIndex` in `camera-intent.spec.ts`).
+
+## Sixth milestone: the platform's line, measured
+
+The fifth milestone's account of the platform font case was mine and was misleading: it set the line drawn (16.1 px) against the room (15.4 px) as though the font's own line made the difference. It does not. The one name the case reports, `formatDocumentationLinkComment` in `documentationLinks.ts` (the file pinned, three presses out, the map at 0.5787, the name held at 2.2), measured on a fresh visit under each font's lines:
+
+| | This machine's lines | Segoe UI's lines |
+| --- | ---: | ---: |
+| One line of the name, as the card reading measures it (`--row-line`) | 12.646 | 12.646 |
+| The name's computed line height | 12.646 px | 12.646 px |
+| Lines the name takes | 2 | 2 |
+| Height its text needs against the height it has | 38 against 25 | 38 against 25 |
+| From its text's bottom to its row's bottom | 28.63 | 28.63 |
+| Its button's title | the whole name | the whole name |
+| Its button's width, the room to the wrapper's edge, the name's width | 226, 311, 173.1 | 269, 354, 200.1 |
+
+The line is the stylesheet's already: the slot card states 1.15 and the name 11 px, 12.65, and it measures the same under both. The name is cut the same way under both: it needs three lines of its button's width and has two, the most a name takes in that look (`lookHeadWrites`: "up to what a slot row holds there"). The case asserts no cut name under Segoe UI's lines only, which is why it read as a difference of platform. Only the widths differ, the emulation's face being wider than this machine's.
+
+What each instrument says of that one name:
+
+- **The product:** too long for two lines of its button, so cut by the stylesheet's ellipsis on the second and titled whole, as ruled for the names' mend. A third line would need 27.8 more units in a row 66 tall that holds 60.4 already.
+- **The platform case** (`cutBesideRoom`): "cut with 15.4 px below it, a line being 14.0 px". Its room is from the text's drawn bottom to the row's box, 28.63 units, 16.6 px on screen less its 2 px of air; the text stands 23 units above its own row's place because the look spaces the card's heads evenly, so that room is the even gap after the head and not room the row's two lines left. Its line is the font's size as drawn, 14.0 px; the line as drawn is 1.15 of that, 16.1 px, and does not fit in 15.4.
+- **The names' case and the audit's own-width check:** nothing; the text ends inside its button.
+
+Before the mend the name had the room up to More, and the case, which passed then, counted it whole; the mend narrowed its room to its button and it now wants a third line. (That the text stands 23 units above its row's place is reckoned from the numbers above, 66 less the 60.4 two lines take against the 28.63 measured, not read from the page.) [`names--cut-on-two--segoe-lines.png`](names--cut-on-two--segoe-lines.png) and [`names--cut-on-two--this-machine.png`](names--cut-on-two--this-machine.png): "format / DocumentationLink…" and, under it, "parse / Documentation…", each with blank room between its ellipsis and More. My eye: this is worse than what the mend replaced. The fault it mended could not be seen (a name's end outside a button that draws no box); what it costs can (names cut beside empty room). The other mend, the button made as wide in the far looks as the room the name is given there, should keep the names this mend cut and still put each inside its button; it is not built or measured, and it has a trap to measure first (a card's width is taken from its content, so the button must widen without changing what the row contributes to it).
+
+Nothing was changed for this: not the case, and not the product, since a line the stylesheet states is what it already has.
+
+**The other two of `zoom-looks.spec.ts`.** "stepped, chosen by a link…" passes alone (6.0 s) now that its link says its arrival: the ladder's link carries a setting, and a link that carries one resets every lever it does not name. "a change of look moves the held parts…" passes alone unchanged (14.3 s): its link names the three looks, the default, which a link does not carry, so nothing was reset; it had failed in a hold the lane cut at its limit, and the load made that number.
 
 ## Not done
 
