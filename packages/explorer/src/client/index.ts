@@ -724,8 +724,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // settings and carried by no link. The glyph is the drafting sign for a reflection: two shapes facing across an axis.
   const mirrorButton = iconButton("Mirror the map", '<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M8.5 7.5 3.5 16.5h5z"/><path d="M15.5 7.5l5 9h-5z" fill="currentColor"/>');
   mirrorButton.addEventListener("click", () => {
-    state.tuning.localMap.reads = state.tuning.localMap.reads === "usesFirst" ? "offersFirst" : "usesFirst";
-    syncTuningControls();
+    state.tuning.appearance.reads = state.tuning.appearance.reads === "usesFirst" ? "offersFirst" : "usesFirst";
     schedulePersistUi();
     syncPerspectiveControls();
   });
@@ -1217,7 +1216,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     frame?.sync();
     for (const button of [fitButton, wholeButton, keyButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
-    const mirrored = state.tuning.localMap.reads === "usesFirst";
+    const mirrored = state.tuning.appearance.reads === "usesFirst";
     mirrorButton.hidden = state.perspective !== "2d";
     mirrorButton.disabled = changingPerspective;
     mirrorButton.setAttribute("aria-pressed", String(mirrored));

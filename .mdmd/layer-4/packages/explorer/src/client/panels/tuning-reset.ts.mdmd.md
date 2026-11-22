@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: `packages/explorer/src/client/panels/tuning-reset.ts`
-- Generated At: 2026-11-19T21:10:14.020Z
+- Generated At: 2026-11-22T04:50:10.935Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,7 @@ of a reset that stood to be taken back.
 - [`announce`](../announce.ts.mdmd.md#symbol-announce)
 - [`tuning-changes.changedSettings`](./tuning-changes.ts.mdmd.md#symbol-changedsettings)
 - [`tuning-changes.changedSettingsWords`](./tuning-changes.ts.mdmd.md#symbol-changedsettingswords)
+- [`tuning-changes.takeTuning`](./tuning-changes.ts.mdmd.md#symbol-taketuning)
 - [`tuning-changes.tuningControlId`](./tuning-changes.ts.mdmd.md#symbol-tuningcontrolid)
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)

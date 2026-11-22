@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `tests/e2e/scenarios/judgments.ts`
-- Generated At: 2026-11-19T21:10:23.883Z
+- Generated At: 2026-11-22T04:50:14.798Z
 
 ## Authored
 ### Purpose
@@ -89,7 +89,7 @@ How far from a card's edge an end or a dot may stand and still be on that edge, 
 
 #### `usesLeftOfferingsRight` {#symbol-usesleftofferingsright}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L174)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L178)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -100,18 +100,23 @@ written as "at the card's edge", it failed on every Rosetta map; the screenshot 
 (2026-11-18) showed why: each dot stands at the end of its row, inside the card's padding, some 21 px in from the
 edge at scale 1, and the wires end on the dots. The promise is the side, not the edge.
 
+A picture drawn mirrored (the toolbar's button, 2026-11-22) promises the same with the sides exchanged, and the
+reading says which way it is drawn: the law is judged across the picture, from where what offers stands to where what
+uses does, so a picture that mixes the two ways fails whichever it says it is.
+
 #### `routesForward` {#symbol-routesforward}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L197)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L209)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
 ##### `routesForward` — Summary
-Every route reads forward, from what offers on the left to what uses on the right; a cycle's feedback is a stub.
+Every route reads forward, from what offers to what uses the way the picture reads (left to right as laid out, right
+to left mirrored); a cycle's feedback is a stub.
 
 #### `noRouteAcrossACard` {#symbol-norouteacrossacard}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L204)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L217)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -120,7 +125,7 @@ No route passes over a card it does not end at.
 
 #### `lanesAtHome` {#symbol-lanesathome}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L211)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L224)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -129,7 +134,7 @@ No lane lies in a directory that holds neither end of the wires through it.
 
 #### `nothingOverTheTop` {#symbol-nothingoverthetop}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L217)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L230)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -138,7 +143,7 @@ Nothing is drawn over the top of the picture: no route rises above the highest c
 
 #### `framedWhole` {#symbol-framedwhole}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L234)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L247)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -149,7 +154,7 @@ owner's choices of 2026-10-30, `frameWhole` in the layout measure).
 
 #### `edgeSignsHonest` {#symbol-edgesignshonest}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L255)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L268)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -158,7 +163,7 @@ The signs at the frame's edges are honest: a sign stands at exactly the edges th
 
 #### `subjectInFrame` {#symbol-subjectinframe}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L273)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L286)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -167,7 +172,7 @@ The subject's card stands whole inside the frame.
 
 #### `wiresPlainAtRest` {#symbol-wiresplainatrest}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L282)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L295)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -176,28 +181,28 @@ At rest no wire glows, and every route is drawn at one strength: the map fades t
 
 #### `SMALL_TEXT_CONTRAST` {#symbol-small_text_contrast}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L290)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L303)
 
 ##### `SMALL_TEXT_CONTRAST` — Summary
 WCAG's least contrast for small text, which every name and line on a card meets.
 
 #### `NAME_LEADS_PROSE` {#symbol-name_leads_prose}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L292)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L305)
 
 ##### `NAME_LEADS_PROSE` — Summary
 How much more contrast a symbol's name has than the prose that describes it: names lead (2026-11-15).
 
 #### `OUTLINE_SEEN` {#symbol-outline_seen}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L294)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L307)
 
 ##### `OUTLINE_SEEN` — Summary
 The least contrast at which an outline is seen against the map's surface.
 
 #### `textTones` {#symbol-texttones}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L300)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L313)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -207,7 +212,7 @@ name leads the prose that describes it.
 
 #### `outlineIsGround` {#symbol-outlineisground}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L314)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L327)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -216,7 +221,7 @@ An opened directory's outline is seen, is no stronger than a card's border, and 
 
 #### `outlinesDrawn` {#symbol-outlinesdrawn}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L325)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L338)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -225,7 +230,7 @@ Every directory but the root draws an outline, and the root draws none.
 
 #### `rootColumnsAligned` {#symbol-rootcolumnsaligned}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L333)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L346)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -234,7 +239,7 @@ A picture with no subject stands its root's independent columns at one top, so t
 
 #### `proseOneTone` {#symbol-proseonetone}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L343)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L356)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -243,7 +248,7 @@ A symbol's description and the file's Purpose are prose of one tone.
 
 #### `namesBreakAtSeams` {#symbol-namesbreakatseams}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L367)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L380)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -254,7 +259,7 @@ the connections look, seen 2026-11-18) is mended.
 
 #### `pageHealthy` {#symbol-pagehealthy}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L380)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L393)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -263,7 +268,7 @@ The page logged no error and asked nothing of another site.
 
 #### `LAWS` {#symbol-laws}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L388)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L401)
 - Returns: `ReadonlyArray`, [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -272,7 +277,7 @@ Every law, in the order a report lists them.
 
 #### `PENDING_LAWS` {#symbol-pending_laws}
 - Type: const
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L411)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L424)
 - Returns: `ReadonlyArray`, [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -281,7 +286,7 @@ Laws written and tested but kept out of the table until the defect each would re
 
 #### `samePicture` {#symbol-samepicture}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L416)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L429)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `before`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `after`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -290,7 +295,7 @@ Two readings of one scenario agree within a pixel: the same cards in the same pl
 
 #### `tonesHeld` {#symbol-tonesheld}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L453)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L466)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `near`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `far`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 
@@ -300,21 +305,21 @@ drawn in the same colours in both readings of one run.
 
 #### `OracleEdge` {#symbol-oracleedge}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L464)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L477)
 
 ##### `OracleEdge` — Summary
 One reference an independent oracle knows, file to file: the consumer uses the provider.
 
 #### `CompilerRecord` {#symbol-compilerrecord}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L470)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L483)
 
 ##### `CompilerRecord` — Summary
 What the compiler says of a program.
 
 #### `KnownGap` {#symbol-knowngap}
 - Type: interface
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L482)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L495)
 - Extends: [`OracleEdge`](#symbol-oracleedge)
 
 ##### `KnownGap` — Summary
@@ -325,7 +330,7 @@ the cell red (the root's correction of 2026-11-18).
 
 #### `wiresMatchOracle` {#symbol-wiresmatchoracle}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L498)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L511)
 - Returns: [`Verdict`](#symbol-verdict)[]
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading); `oracle`: [`CompilerRecord`](#symbol-compilerrecord)
 
@@ -342,7 +347,7 @@ stays broken in the oracle's verdict.
 
 #### `wiresMatchData` {#symbol-wiresmatchdata}
 - Type: function
-- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L524)
+- Source: [source](../../../../../tests/e2e/scenarios/judgments.ts#L537)
 - Returns: [`Verdict`](#symbol-verdict)
 - Parameters: `reading`: [`Reading`](./reading.ts.mdmd.md#symbol-reading)
 

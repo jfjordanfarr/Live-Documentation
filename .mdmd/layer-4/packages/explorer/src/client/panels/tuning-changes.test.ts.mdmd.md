@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: `packages/explorer/src/client/panels/tuning-changes.test.ts`
-- Generated At: 2026-11-19T21:10:13.952Z
+- Generated At: 2026-11-22T04:50:10.918Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`tuning-changes.ChangedSetting`](./tuning-changes.ts.mdmd.md#symbol-changedsetting)
 - [`tuning-changes.changedSettings`](./tuning-changes.ts.mdmd.md#symbol-changedsettings)
 - [`tuning-changes.changedSettingsWords`](./tuning-changes.ts.mdmd.md#symbol-changedsettingswords)
+- [`tuning-changes.takeTuning`](./tuning-changes.ts.mdmd.md#symbol-taketuning)
 - [`tuning-changes.tuningControlId`](./tuning-changes.ts.mdmd.md#symbol-tuningcontrolid)
 - [`local-storage.changedFromDefaults`](../persistence/local-storage.ts.mdmd.md#symbol-changedfromdefaults)
 - [`local-storage.getDefaultFilters`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaultfilters)

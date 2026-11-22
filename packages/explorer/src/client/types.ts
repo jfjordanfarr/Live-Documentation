@@ -178,11 +178,6 @@ export interface LocalMapTuning {
    */
   wayDown: WayDown;
   /**
-   * Which way the 2D picture reads (2026-11-22, the toolbar's mirror button): the person's own, kept with their other
-   * settings and carried by no link, as a palette is not (reading-direction.ts).
-   */
-  reads: MapReads;
-  /**
    * With the three looks, what the overview look draws (a trial for the owner's eye, 2026-11-13): "keep", the default,
    * every card at the size its rows give it, as at the closer looks; "files", every file card in the compact form an
    * opened directory's member has in Flow, one line for each pair of cards where one uses the other, laid out again for
@@ -301,6 +296,12 @@ export interface AppearanceTuning {
   palette: PaletteName;
   marbles: MarbleChoice;
   frame: FrameChoice;
+  /**
+   * Which way the 2D picture reads (2026-11-22, the toolbar's mirror button, reading-direction.ts): how a person looks
+   * at the map, not a tuned lever, so it is kept as the frame is, in the browser and in no link, neither counted by
+   * Tuning nor taken by its Reset.
+   */
+  reads: MapReads;
 }
 
 /**

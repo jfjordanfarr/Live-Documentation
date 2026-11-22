@@ -13,7 +13,7 @@ Says which way a 2D Local Map picture reads, what offers first from the left or 
 ### Notes
 - Written 2026-11-22, when the owner asked for a mirroring button in the 2D Local Map ("I could imagine swapping all the time") and for the mechanism a right-to-left layout would later ride. The layout modules and their tests are untouched: the stylesheet reflects the content root and the wires' layer about the root's own edge (`data-reads` on `#map-viewport`, the rules at the end of `styles/local.css`) and turns each card and each directory's line back to face the viewer.
 - Only a measurement taken from the page and written back into the reflected layers crosses the reflection, and it crosses it here: the wires' anchors and the wires' overlay in `connections.ts`. The camera's measurements are the page's own and need no mapping, because the layer that carries the camera's transform is not reflected.
-- The choice is `tuning.localMap.reads`, read from the browser's own storage only: a link's layout settings do not carry it, as they do not carry a palette.
+- The choice is `tuning.appearance.reads`, beside the frame and kept as the frame is (the root's ruling, 2026-11-22: "it is a control of the view"): in the browser's own storage and in no link, neither counted by Tuning's badge nor taken by its Reset (`panels/tuning-changes.ts`). It was first kept among the 2D map's levers, where the badge counted it and Reset turned the picture round.
 - Not built: right-to-left text. A locale would drive `writeReads`; names with mixed directions, the cards' own inner order and the page outside the map would still need their own work.
 
 ## Generated

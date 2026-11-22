@@ -138,6 +138,8 @@ export interface Reading {
   edgeSigns: { above: boolean; below: boolean; left: boolean; right: boolean };
   /** The camera's scale. */
   scale: number;
+  /** Whether the picture is drawn mirrored, what uses first from the left (the map layer's `data-reads`); absent, as laid out. */
+  mirrored?: boolean;
   /** The map's look (`data-look`): reading, connections, overview, or the ladder's band. */
   look: string | null;
   cards: CardRead[];

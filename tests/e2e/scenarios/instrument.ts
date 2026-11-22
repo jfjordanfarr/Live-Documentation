@@ -44,6 +44,7 @@ interface Extras {
   picture: Box | null;
   edgeSigns: Reading["edgeSigns"];
   look: string | null;
+  mirrored: boolean;
   cards: Array<{ id: string; subject: boolean; pinned: boolean; directory: string | null }>;
   anchors: Reading["anchors"];
   directories: Reading["directories"];
@@ -85,13 +86,16 @@ async function readExtras(page: Page): Promise<Extras> {
     const placed = document.querySelector<HTMLElement>("#map-container .local-placed");
     const origin = placed?.getBoundingClientRect();
     const scale = placed && origin ? origin.width / (placed.offsetWidth || 1) : 1;
+    // A mirrored picture is the layout reflected about the root's own edge, which its box then lies to the left of: a
+    // segment published in the layout's across stands that far to the left of the box's right edge.
+    const reflected = document.getElementById("map-viewport")?.getAttribute("data-reads") === "usesFirst";
     const directories = [...document.querySelectorAll<HTMLElement>("#map-container .local-directory-band[data-segments]")].map(band => ({
       directory: band.dataset.directory ?? "",
       parent: band.parentElement?.closest<HTMLElement>(".local-directory-band")?.dataset.directory ?? null,
       drawn: band.querySelector(":scope > .local-membrane > .local-membrane-shape[d]") !== null,
       segments: (band.dataset.segments ?? "").split(";").filter(Boolean).map(part => {
         const [column, left, top, right, bottom] = part.split(":").map(Number);
-        return { column, box: { x: origin!.left + left * scale, y: origin!.top + top * scale, width: (right - left) * scale, height: (bottom - top) * scale } };
+        return { column, box: { x: reflected ? origin!.right - right * scale : origin!.left + left * scale, y: origin!.top + top * scale, width: (right - left) * scale, height: (bottom - top) * scale } };
       }),
       // The padding and border the map keeps between a directory's edge and its members, as the renderer publishes it.
       insetPx: Number(band.dataset.inset ?? Number.NaN) * scale
@@ -170,6 +174,7 @@ async function readExtras(page: Page): Promise<Extras> {
       picture: layout ? toBox(layout.getBoundingClientRect()) : null,
       edgeSigns: { above: signs.dataset.above === "true", below: signs.dataset.below === "true", left: signs.dataset.left === "true", right: signs.dataset.right === "true" },
       look: map.dataset.look ?? null,
+      mirrored: document.getElementById("map-viewport")?.getAttribute("data-reads") === "usesFirst",
       cards,
       anchors,
       directories,
@@ -227,6 +232,7 @@ export async function readSettled(page: Page, context: { scenario: string; map: 
     edgeSigns: extras.edgeSigns,
     scale: picture.scale,
     look: extras.look,
+    ...(extras.mirrored ? { mirrored: true } : null),
     cards: picture.cards.map((read, i) => ({ id: read.id, box: read.box, subject: card.get(i)?.subject ?? false, pinned: card.get(i)?.pinned ?? false, directory: card.get(i)?.directory ?? null })),
     anchors: extras.anchors,
     wires: picture.wires.map(read => {

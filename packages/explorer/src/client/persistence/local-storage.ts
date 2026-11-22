@@ -82,7 +82,6 @@ export const getDefaultTuning = (): TuningConfig => ({
     wireAnswers: WIRE_ANSWERS[0],
     directionMarks: DIRECTION_MARKS[0],
     wayDown: WAY_DOWNS[0],
-    reads: MAP_READS[0],
     overviewFiles: "files",
     descriptionsZoomedOut: "hidden",
     slotLines: 2,
@@ -114,7 +113,7 @@ export const getDefaultTuning = (): TuningConfig => ({
   // Today's colours until a viewer chooses others (the colour pass, 2026-11-16), and no marbles until a viewer turns
   // them on (the marble trial, 2026-11-17; on was the default on 2026-11-18 and 19, off again since 2026-11-19, the
   // owner's "for immediate understandability of the system, Marbes Off is superior").
-  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], frame: FRAME_CHOICES[0] }
+  appearance: { palette: DEFAULT_PALETTE, marbles: MARBLE_CHOICES[0], frame: FRAME_CHOICES[0], reads: MAP_READS[0] }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -239,8 +238,6 @@ export const readPersistedUi = (): PersistedUi | null => {
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
-        // Which way the picture reads is the person's own and is read here only: a link's layout settings never carry it.
-        const reads = MAP_READS.find(choice => choice === localMapRaw.reads);
         const cardText = readCardText(localMapRaw.cardText);
         const slotLines = readFiniteNumber(localMapRaw.slotLines);
         const textResistance = readFiniteNumber(localMapRaw.textResistance);
@@ -279,7 +276,6 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),
-          ...(reads !== undefined ? { reads } : null),
           ...(cardText !== undefined ? { cardText } : null),
           ...(slotLines !== undefined ? { slotLines } : null),
           ...(textResistance !== undefined ? { textResistance } : null),
@@ -327,10 +323,12 @@ export const readPersistedUi = (): PersistedUi | null => {
       if (appearanceRaw) {
         const marbles = MARBLE_CHOICES.find(choice => choice === appearanceRaw.marbles);
         const frame = FRAME_CHOICES.find(choice => choice === appearanceRaw.frame);
+        const reads = MAP_READS.find(choice => choice === appearanceRaw.reads);
         tuning.appearance = {
           ...(isPaletteName(appearanceRaw.palette) ? { palette: appearanceRaw.palette } : null),
           ...(marbles ? { marbles } : null),
-          ...(frame ? { frame } : null)
+          ...(frame ? { frame } : null),
+          ...(reads ? { reads } : null)
         };
       }
 
